@@ -75,8 +75,8 @@ public final class StructSpec {
             for (int i = 0; i < tags.size(); i++) {
                 if (!tags.contains(i)) {
                     throw new RuntimeException("In " + name + ", the tag IDs are not " +
-                        "contiguous.  Make use of tag " + i + " before using any " +
-                        "higher tag IDs.");
+                            "contiguous.  Make use of tag " + i + " before using any " +
+                            "higher tag IDs.");
                 }
             }
         }

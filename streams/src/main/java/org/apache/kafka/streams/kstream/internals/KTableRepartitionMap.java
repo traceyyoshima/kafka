@@ -144,9 +144,9 @@ public class KTableRepartitionMap<K, V, K1, V1> implements KTableRepartitionMapS
 
             // if the value is null, we do not need to forward its selected key-value further
             final KeyValue<? extends K1, ? extends V1> newPair = record.value().newValue == null ? null :
-                mapper.apply(record.key(), record.value().newValue);
+                    mapper.apply(record.key(), record.value().newValue);
             final KeyValue<? extends K1, ? extends V1> oldPair = record.value().oldValue == null ? null :
-                mapper.apply(record.key(), record.value().oldValue);
+                    mapper.apply(record.key(), record.value().oldValue);
 
             // if the selected repartition key or value is null, skip
             // forward oldPair first, to be consistent with reduce and aggregate
@@ -203,9 +203,9 @@ public class KTableRepartitionMap<K, V, K1, V1> implements KTableRepartitionMapS
 
         private ValueTimestampHeaders<KeyValue<? extends K1, ? extends V1>> mapValue(final K key, final ValueTimestampHeaders<V> valueTimestampHeaders) {
             return ValueTimestampHeaders.make(
-                mapper.apply(key, getValueOrNull(valueTimestampHeaders)),
-                valueTimestampHeaders == null ? context.recordContext().timestamp() : valueTimestampHeaders.timestamp(),
-                new RecordHeaders()
+                    mapper.apply(key, getValueOrNull(valueTimestampHeaders)),
+                    valueTimestampHeaders == null ? context.recordContext().timestamp() : valueTimestampHeaders.timestamp(),
+                    new RecordHeaders()
             );
         }
     }

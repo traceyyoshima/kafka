@@ -41,18 +41,18 @@ import java.util.concurrent.CompletableFuture;
  * {@link ConsumerConfig#GROUP_ID_CONFIG} and the share group protocol to get automatically
  * assigned partitions when calling the subscribe API.
  * <p/>
- *
+ * <p>
  * While the subscribe API hasn't been called (or if the consumer called unsubscribe), this manager
  * will only be responsible for keeping the member in the {@link MemberState#UNSUBSCRIBED} state,
  * without joining the group.
  * <p/>
- *
+ * <p>
  * If the consumer subscribe API is called, this manager will use the {@link #groupId()} to join the
  * share group, and based on the share group protocol heartbeats, will handle the full
  * lifecycle of the member as it joins the group, reconciles assignments, handles fatal errors,
  * and leaves the group.
  * <p/>
- *
+ * <p>
  * Reconciliation process:<p/>
  * The member accepts all assignments received from the broker, resolves topic names from
  * metadata, reconciles the resolved assignments, and keeps the unresolved to be reconciled when
@@ -61,7 +61,7 @@ import java.util.concurrent.CompletableFuture;
  * involves multiple async operations, so the member will continue to heartbeat while these
  * operations complete, to make sure that the member stays in the group while reconciling.
  * <p/>
- *
+ * <p>
  * Reconciliation steps:
  * <ol>
  *     <li>Resolve topic names for all topic IDs received in the target assignment. Topic names
@@ -153,7 +153,7 @@ public class ShareMembershipManager extends AbstractMembershipManager<ShareGroup
         }
         if (responseData.memberEpoch() < 0) {
             log.debug("Ignoring heartbeat response received from broker. Member {} with epoch {} " +
-                    "is in {} state and the member epoch is invalid: {}. ", memberId, memberEpoch, state,
+                            "is in {} state and the member epoch is invalid: {}. ", memberId, memberEpoch, state,
                     responseData.memberEpoch());
             maybeCompleteLeaveInProgress();
             return;

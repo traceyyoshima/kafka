@@ -49,10 +49,10 @@ public class FileStreamSourceConnector extends SourceConnector {
     public static final int DEFAULT_TASK_BATCH_SIZE = 2000;
 
     static final ConfigDef CONFIG_DEF = new ConfigDef()
-        .define(FILE_CONFIG, Type.STRING, null, Importance.HIGH, "Source filename. If not specified, the standard input will be used")
-        .define(TOPIC_CONFIG, Type.STRING, ConfigDef.NO_DEFAULT_VALUE, new ConfigDef.NonEmptyString(), Importance.HIGH, "The topic to publish data to")
-        .define(TASK_BATCH_SIZE_CONFIG, Type.INT, DEFAULT_TASK_BATCH_SIZE, Importance.LOW,
-                "The maximum number of records the source task can read from the file each time it is polled");
+            .define(FILE_CONFIG, Type.STRING, null, Importance.HIGH, "Source filename. If not specified, the standard input will be used")
+            .define(TOPIC_CONFIG, Type.STRING, ConfigDef.NO_DEFAULT_VALUE, new ConfigDef.NonEmptyString(), Importance.HIGH, "The topic to publish data to")
+            .define(TASK_BATCH_SIZE_CONFIG, Type.INT, DEFAULT_TASK_BATCH_SIZE, Importance.LOW,
+                    "The maximum number of records the source task can read from the file each time it is polled");
 
     private Map<String, String> props;
 

@@ -31,7 +31,7 @@ import java.util.concurrent.ExecutionException;
 
 /**
  * The result of {@link Admin#alterReplicaLogDirs(Map, AlterReplicaLogDirsOptions)}.
- *
+ * <p>
  * To retrieve the detailed result per specified {@link TopicPartitionReplica}, use {@link #values()}. To retrieve the
  * overall result only, use {@link #all()}.
  */
@@ -45,7 +45,7 @@ public class AlterReplicaLogDirsResult {
     /**
      * Return a map from {@link TopicPartitionReplica} to {@link KafkaFuture} which holds the status of individual
      * replica movement.
-     *
+     * <p>
      * To check the result of individual replica movement, call {@link KafkaFuture#get()} from the value contained
      * in the returned map. If there is no error, it will return silently; if not, an {@link Exception} will be thrown
      * like the following:

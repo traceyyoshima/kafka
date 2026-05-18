@@ -28,7 +28,7 @@ public class ThresholdPurgatory<T extends Comparable<T>> implements FuturePurgat
     private final AtomicLong idGenerator = new AtomicLong(0);
     private final ExpirationService expirationService;
     private final ConcurrentNavigableMap<ThresholdKey<T>, CompletableFuture<Long>> thresholdMap =
-        new ConcurrentSkipListMap<>();
+            new ConcurrentSkipListMap<>();
 
     public ThresholdPurgatory(ExpirationService expirationService) {
         this.expirationService = expirationService;

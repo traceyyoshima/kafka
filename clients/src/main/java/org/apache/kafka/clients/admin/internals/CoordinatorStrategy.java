@@ -39,7 +39,8 @@ import java.util.stream.Collectors;
 
 public class CoordinatorStrategy implements AdminApiLookupStrategy<CoordinatorKey> {
 
-    private static final ApiRequestScope BATCH_REQUEST_SCOPE = new ApiRequestScope() { };
+    private static final ApiRequestScope BATCH_REQUEST_SCOPE = new ApiRequestScope() {
+    };
 
     private final Logger log;
     private final FindCoordinatorRequest.CoordinatorType type;
@@ -48,8 +49,8 @@ public class CoordinatorStrategy implements AdminApiLookupStrategy<CoordinatorKe
     boolean batch = true;
 
     public CoordinatorStrategy(
-        FindCoordinatorRequest.CoordinatorType type,
-        LogContext logContext
+            FindCoordinatorRequest.CoordinatorType type,
+            LogContext logContext
     ) {
         this.type = type;
         this.log = logContext.logger(CoordinatorStrategy.class);
@@ -79,24 +80,24 @@ public class CoordinatorStrategy implements AdminApiLookupStrategy<CoordinatorKe
         } else {
             CoordinatorKey key = requireSingletonAndType(representableKeys);
             return new FindCoordinatorRequest.Builder(
-                new FindCoordinatorRequestData()
-                    .setKey(key.idValue)
-                    .setKeyType(key.type.id())
+                    new FindCoordinatorRequestData()
+                            .setKey(key.idValue)
+                            .setKeyType(key.type.id())
             );
         }
     }
 
     @Override
     public LookupResult<CoordinatorKey> handleResponse(
-        Set<CoordinatorKey> keys,
-        AbstractResponse abstractResponse
+            Set<CoordinatorKey> keys,
+            AbstractResponse abstractResponse
     ) {
         Map<CoordinatorKey, Integer> mappedKeys = new HashMap<>();
         Map<CoordinatorKey, Throwable> failedKeys = new HashMap<>();
 
         for (CoordinatorKey key : unrepresentableKeys) {
             failedKeys.put(key, new InvalidGroupIdException("The given group id '" +
-                key.idValue + "' cannot be represented in a request."));
+                    key.idValue + "' cannot be represented in a request."));
         }
 
         for (Coordinator coordinator : ((FindCoordinatorResponse) abstractResponse).coordinators()) {
@@ -109,10 +110,10 @@ public class CoordinatorStrategy implements AdminApiLookupStrategy<CoordinatorKe
                         : CoordinatorKey.byTransactionalId(coordinator.key());
             }
             handleError(Errors.forCode(coordinator.errorCode()),
-                        key,
-                        coordinator.nodeId(),
-                        mappedKeys,
-                        failedKeys);
+                    key,
+                    coordinator.nodeId(),
+                    mappedKeys,
+                    failedKeys);
         }
         return new LookupResult<>(failedKeys, mappedKeys);
     }
@@ -157,19 +158,19 @@ public class CoordinatorStrategy implements AdminApiLookupStrategy<CoordinatorKe
             case COORDINATOR_NOT_AVAILABLE:
             case COORDINATOR_LOAD_IN_PROGRESS:
                 log.debug("FindCoordinator request for key {} returned topic-level error {}. Will retry",
-                    key, error);
+                        key, error);
                 break;
             case GROUP_AUTHORIZATION_FAILED:
                 failedKeys.put(key, new GroupAuthorizationException("FindCoordinator request for groupId " +
-                    "`" + key + "` failed due to authorization failure", key.idValue));
+                        "`" + key + "` failed due to authorization failure", key.idValue));
                 break;
             case TRANSACTIONAL_ID_AUTHORIZATION_FAILED:
                 failedKeys.put(key, new TransactionalIdAuthorizationException("FindCoordinator request for " +
-                    "transactionalId `" + key + "` failed due to authorization failure"));
+                        "transactionalId `" + key + "` failed due to authorization failure"));
                 break;
             default:
                 failedKeys.put(key, error.exception("FindCoordinator request for key " +
-                    "`" + key + "` failed due to an unexpected error"));
+                        "`" + key + "` failed due to an unexpected error"));
         }
     }
 

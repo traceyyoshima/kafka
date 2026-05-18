@@ -41,7 +41,7 @@ public final class ConfigResource {
         UNKNOWN((byte) 0);
 
         private static final Map<Byte, Type> TYPES = Collections.unmodifiableMap(
-            Arrays.stream(values()).collect(Collectors.toMap(Type::id, Function.identity()))
+                Arrays.stream(values()).collect(Collectors.toMap(Type::id, Function.identity()))
         );
 
         private final byte id;

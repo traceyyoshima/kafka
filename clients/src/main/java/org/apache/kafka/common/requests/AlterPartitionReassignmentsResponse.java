@@ -36,7 +36,7 @@ public class AlterPartitionReassignmentsResponse extends AbstractResponse {
 
     public static AlterPartitionReassignmentsResponse parse(Readable readable, short version) {
         return new AlterPartitionReassignmentsResponse(
-            new AlterPartitionReassignmentsResponseData(readable, version));
+                new AlterPartitionReassignmentsResponseData(readable, version));
     }
 
     @Override
@@ -65,9 +65,9 @@ public class AlterPartitionReassignmentsResponse extends AbstractResponse {
         updateErrorCounts(counts, Errors.forCode(data.errorCode()));
 
         data.responses().forEach(topicResponse ->
-            topicResponse.partitions().forEach(partitionResponse ->
-                updateErrorCounts(counts, Errors.forCode(partitionResponse.errorCode()))
-        ));
+                topicResponse.partitions().forEach(partitionResponse ->
+                        updateErrorCounts(counts, Errors.forCode(partitionResponse.errorCode()))
+                ));
         return counts;
     }
 }

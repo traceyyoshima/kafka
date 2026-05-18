@@ -27,7 +27,7 @@ import java.util.List;
  * broker. Thus, it is the primary place in the code where the implementation details are known.
  *
  * <p>
- *
+ * <p>
  * Regarding threading, the {@link #init()} and {@link #close()} methods may be called from
  * different threads and so proper care should be taken by implementations of the
  * {@code MetricsCollector} interface to be thread-safe. However, the telemetry reporter must
@@ -74,6 +74,7 @@ public interface MetricsEmitter extends Closeable {
 
     /**
      * Emits a metric if {@link MetricsEmitter#shouldEmitMetric(MetricKeyable)} returns <tt>true</tt>.
+     *
      * @param metric to emit
      * @return true if emit is successful, false otherwise
      */
@@ -86,7 +87,7 @@ public interface MetricsEmitter extends Closeable {
      * by the telemetry reporter before calls to {@link #emitMetric(SinglePointMetric)} are made.
      *
      * <p>
-     *
+     * <p>
      * The telemetry reporter should not invoke this method more than once.
      */
     default void init() {
@@ -98,7 +99,7 @@ public interface MetricsEmitter extends Closeable {
      * method should ideally be invoked only once by the telemetry reporter.
      *
      * <p>
-     *
+     * <p>
      * Calls to {@link #emitMetric(SinglePointMetric)} once this method has been invoked should be
      * expected to fail by the telemetry reporter; it should take caution to handle that case.
      */

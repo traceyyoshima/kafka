@@ -96,9 +96,9 @@ public class RebalanceProtocolMigrationIntegrationTest {
         streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "app-" + safeTestName);
         streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, cluster.bootstrapServers());
         streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG,
-            Serdes.String().getClass());
+                Serdes.String().getClass());
         streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG,
-            Serdes.String().getClass());
+                Serdes.String().getClass());
         streamsConfiguration.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 100L);
         streamsConfiguration.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         streamsConfiguration.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, 500);
@@ -121,7 +121,7 @@ public class RebalanceProtocolMigrationIntegrationTest {
     public void shouldMigrateToAndFromStreamsRebalanceProtocol() throws Exception {
         final StreamsBuilder streamsBuilder = new StreamsBuilder();
         final KStream<String, String> input = streamsBuilder.stream(
-            inputTopic, Consumed.with(Serdes.String(), Serdes.String()));
+                inputTopic, Consumed.with(Serdes.String(), Serdes.String()));
         input.to(outputTopic, Produced.with(Serdes.String(), Serdes.String()));
 
         final Properties props = props();
@@ -144,7 +144,7 @@ public class RebalanceProtocolMigrationIntegrationTest {
     public void shouldMigrateFromAndToStreamsRebalanceProtocol() throws Exception {
         final StreamsBuilder streamsBuilder = new StreamsBuilder();
         final KStream<String, String> input = streamsBuilder.stream(
-            inputTopic, Consumed.with(Serdes.String(), Serdes.String()));
+                inputTopic, Consumed.with(Serdes.String(), Serdes.String()));
         input.to(outputTopic, Produced.with(Serdes.String(), Serdes.String()));
 
         final Properties props = props();
@@ -164,23 +164,23 @@ public class RebalanceProtocolMigrationIntegrationTest {
     }
 
     private void processExactlyOneRecord(
-        final StreamsBuilder streamsBuilder,
-        final Properties props,
-        final String key,
-        final String value)
-        throws Exception {
+            final StreamsBuilder streamsBuilder,
+            final Properties props,
+            final String key,
+            final String value)
+            throws Exception {
         kafkaStreams = new KafkaStreams(streamsBuilder.build(), props);
         kafkaStreams.start();
 
         final long currentTimeNew = cluster.time.milliseconds();
 
         processKeyValueAndVerify(
-            key,
-            value,
-            currentTimeNew,
-            List.of(
-                new KeyValueTimestamp<>(key, value, currentTimeNew)
-            )
+                key,
+                value,
+                currentTimeNew,
+                List.of(
+                        new KeyValueTimestamp<>(key, value, currentTimeNew)
+                )
         );
 
         kafkaStreams.close();
@@ -189,19 +189,19 @@ public class RebalanceProtocolMigrationIntegrationTest {
 
 
     private <K, V> void processKeyValueAndVerify(
-        final K key,
-        final V value,
-        final long timestamp,
-        final List<KeyValueTimestamp<K, V>> expected)
-        throws Exception {
+            final K key,
+            final V value,
+            final long timestamp,
+            final List<KeyValueTimestamp<K, V>> expected)
+            throws Exception {
 
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-            inputTopic,
-            singletonList(KeyValue.pair(key, value)),
-            TestUtils.producerConfig(cluster.bootstrapServers(),
-                StringSerializer.class,
-                StringSerializer.class),
-            timestamp);
+                inputTopic,
+                singletonList(KeyValue.pair(key, value)),
+                TestUtils.producerConfig(cluster.bootstrapServers(),
+                        StringSerializer.class,
+                        StringSerializer.class),
+                timestamp);
 
 
         final Properties consumerProperties = new Properties();
@@ -213,11 +213,11 @@ public class RebalanceProtocolMigrationIntegrationTest {
 
 
         final List<KeyValueTimestamp<K, V>> actual =
-            IntegrationTestUtils.waitUntilMinKeyValueWithTimestampRecordsReceived(
-                consumerProperties,
-                outputTopic,
-                expected.size(),
-                60 * 1000);
+                IntegrationTestUtils.waitUntilMinKeyValueWithTimestampRecordsReceived(
+                        consumerProperties,
+                        outputTopic,
+                        expected.size(),
+                        60 * 1000);
 
         assertThat(actual, is(expected));
 

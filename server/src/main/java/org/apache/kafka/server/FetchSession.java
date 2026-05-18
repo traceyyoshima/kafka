@@ -62,15 +62,15 @@ public class FetchSession {
     /**
      * The fetch session.
      *
-     * @param id                 The unique fetch session ID.
-     * @param privileged         True if this session is privileged.  Sessions created by followers
-     *                           are privileged; session created by consumers are not.
-     * @param partitionMap       The CachedPartitionMap.
-     * @param usesTopicIds       True if this session is using topic IDs
-     * @param creationMs         The time in milliseconds when this session was created.
-     * @param lastUsedMs         The last used time in milliseconds.  This should only be updated by
-     *                           FetchSessionCache#touch.
-     * @param epoch              The fetch session sequence number.
+     * @param id           The unique fetch session ID.
+     * @param privileged   True if this session is privileged.  Sessions created by followers
+     *                     are privileged; session created by consumers are not.
+     * @param partitionMap The CachedPartitionMap.
+     * @param usesTopicIds True if this session is using topic IDs
+     * @param creationMs   The time in milliseconds when this session was created.
+     * @param lastUsedMs   The last used time in milliseconds.  This should only be updated by
+     *                     FetchSessionCache#touch.
+     * @param epoch        The fetch session sequence number.
      */
     FetchSession(int id,
                  boolean privileged,
@@ -90,8 +90,8 @@ public class FetchSession {
 
     static String partitionsToLogString(Collection<TopicIdPartition> partitions, boolean traceEnabled) {
         return traceEnabled
-            ? partitions.toString()
-            : partitions.size() + " partition(s)";
+                ? partitions.toString()
+                : partitions.size() + " partition(s)";
     }
 
     synchronized ImplicitLinkedHashCollection<CachedPartition> partitionMap() {
@@ -157,7 +157,7 @@ public class FetchSession {
 
     synchronized Optional<Long> getFetchOffset(TopicIdPartition topicIdPartition) {
         return Optional.ofNullable(partitionMap.find(new CachedPartition(topicIdPartition)))
-            .map(partition -> partition.fetchOffset);
+                .map(partition -> partition.fetchOffset);
     }
 
     // Update the cached partition data based on the request.
@@ -191,12 +191,12 @@ public class FetchSession {
     public String toString() {
         synchronized (this) {
             return "FetchSession(id=" + id +
-                ", privileged=" + privileged +
-                ", partitionMap.size=" + partitionMap.size() +
-                ", usesTopicIds=" + usesTopicIds +
-                ", creationMs=" + creationMs +
-                ", lastUsedMs=" + lastUsedMs +
-                ", epoch=" + epoch + ")";
+                    ", privileged=" + privileged +
+                    ", partitionMap.size=" + partitionMap.size() +
+                    ", usesTopicIds=" + usesTopicIds +
+                    ", creationMs=" + creationMs +
+                    ", lastUsedMs=" + lastUsedMs +
+                    ", epoch=" + epoch + ")";
         }
     }
 
@@ -243,12 +243,12 @@ public class FetchSession {
 
         CachedPartition(TopicIdPartition part, FetchRequest.PartitionData reqData) {
             this(part.topic(), part.topicId(), part.partition(), reqData.maxBytes, reqData.fetchOffset, -1,
-                reqData.currentLeaderEpoch, reqData.logStartOffset, -1, reqData.lastFetchedEpoch);
+                    reqData.currentLeaderEpoch, reqData.logStartOffset, -1, reqData.lastFetchedEpoch);
         }
 
         CachedPartition(TopicIdPartition part, FetchRequest.PartitionData reqData, FetchResponseData.PartitionData respData) {
             this(part.topic(), part.topicId(), part.partition(), reqData.maxBytes, reqData.fetchOffset, respData.highWatermark(),
-                reqData.currentLeaderEpoch, reqData.logStartOffset, respData.logStartOffset(), reqData.lastFetchedEpoch);
+                    reqData.currentLeaderEpoch, reqData.logStartOffset, respData.logStartOffset(), reqData.lastFetchedEpoch);
         }
 
         CachedPartition(String topic,
@@ -329,7 +329,7 @@ public class FetchSession {
          * <p>
          * This function should be called while holding the appropriate session lock.
          *
-         * @param respData partition data
+         * @param respData           partition data
          * @param updateResponseData if set to true, update this CachedPartition with new request and response data.
          * @return True if this partition should be included in the response; false if it can be omitted.
          */
@@ -413,14 +413,14 @@ public class FetchSession {
         public String toString() {
             synchronized (this) {
                 return "CachedPartition(topic=" + topic +
-                    ", topicId=" + topicId +
-                    ", partition=" + partition +
-                    ", maxBytes=" + maxBytes +
-                    ", fetchOffset=" + fetchOffset +
-                    ", highWatermark=" + highWatermark +
-                    ", fetcherLogStartOffset=" + fetcherLogStartOffset +
-                    ", localLogStartOffset=" + localLogStartOffset  +
-                    ")";
+                        ", topicId=" + topicId +
+                        ", partition=" + partition +
+                        ", maxBytes=" + maxBytes +
+                        ", fetchOffset=" + fetchOffset +
+                        ", highWatermark=" + highWatermark +
+                        ", fetcherLogStartOffset=" + fetcherLogStartOffset +
+                        ", localLogStartOffset=" + localLogStartOffset +
+                        ")";
             }
         }
     }
@@ -463,9 +463,9 @@ public class FetchSession {
 
             // Set up metrics.
             FetchSessionCache.METRICS_GROUP.newGauge(FetchSession.NUM_INCREMENTAL_FETCH_SESSIONS,
-                () -> cacheShards.stream().mapToInt(FetchSessionCacheShard::size).sum());
+                    () -> cacheShards.stream().mapToInt(FetchSessionCacheShard::size).sum());
             FetchSessionCache.METRICS_GROUP.newGauge(FetchSession.NUM_INCREMENTAL_FETCH_PARTITIONS_CACHED,
-                () -> cacheShards.stream().mapToLong(FetchSessionCacheShard::totalPartitions).sum());
+                    () -> cacheShards.stream().mapToLong(FetchSessionCacheShard::totalPartitions).sum());
         }
 
         FetchSessionCacheShard getCacheShard(int sessionId) {

@@ -33,7 +33,7 @@ import java.util.Objects;
 public abstract class TaskSpec {
     /**
      * The maximum task duration.
-     *
+     * <p>
      * We cap the task duration at this value to avoid worrying about 64-bit overflow or floating
      * point rounding.  (Objects serialized as JSON canonically contain only floating point numbers,
      * because JavaScript did not support integers.)
@@ -51,7 +51,7 @@ public abstract class TaskSpec {
     private final long durationMs;
 
     protected TaskSpec(@JsonProperty("startMs") long startMs,
-            @JsonProperty("durationMs") long durationMs) {
+                       @JsonProperty("durationMs") long durationMs) {
         this.startMs = startMs;
         this.durationMs = Math.max(0, Math.min(durationMs, MAX_TASK_DURATION_MS));
     }
@@ -82,14 +82,14 @@ public abstract class TaskSpec {
     /**
      * Hydrate this task on the coordinator.
      *
-     * @param id        The task id.
+     * @param id The task id.
      */
     public abstract TaskController newController(String id);
 
     /**
      * Hydrate this task on the agent.
      *
-     * @param id        The worker id.
+     * @param id The worker id.
      */
     public abstract TaskWorker newTaskWorker(String id);
 

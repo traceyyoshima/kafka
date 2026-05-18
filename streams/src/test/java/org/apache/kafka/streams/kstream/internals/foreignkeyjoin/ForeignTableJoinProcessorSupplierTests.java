@@ -55,10 +55,10 @@ public class ForeignTableJoinProcessorSupplierTests {
 
     private static final Supplier<String> PK_SERDE_TOPIC_SUPPLIER = () -> "pk-topic";
     private static final CombinedKeySchema<String, String> COMBINED_KEY_SCHEMA = new CombinedKeySchema<>(
-        () -> "fk-topic",
-        Serdes.String(),
-        PK_SERDE_TOPIC_SUPPLIER,
-        Serdes.String()
+            () -> "fk-topic",
+            Serdes.String(),
+            PK_SERDE_TOPIC_SUPPLIER,
+            Serdes.String()
     );
 
     private MockInternalProcessorContext<String, SubscriptionResponseWrapper<String>> context = null;
@@ -74,8 +74,8 @@ public class ForeignTableJoinProcessorSupplierTests {
 
         final StoreBuilder<TimestampedKeyValueStoreWithHeaders<Bytes, SubscriptionWrapper<String>>> storeBuilder = storeBuilder();
         processor = new ForeignTableJoinProcessorSupplier<String, String, String>(
-            StoreBuilderWrapper.wrapStoreBuilder(storeBuilder()),
-            COMBINED_KEY_SCHEMA
+                StoreBuilderWrapper.wrapStoreBuilder(storeBuilder()),
+                COMBINED_KEY_SCHEMA
         ).get();
         stateStore = storeBuilder.build();
         context.addStateStore(stateStore);
@@ -108,12 +108,12 @@ public class ForeignTableJoinProcessorSupplierTests {
 
         assertThat(context.forwarded().size(), is(2));
         assertThat(
-            context.forwarded().get(0).record(),
-            is(new Record<>(pk1, new SubscriptionResponseWrapper<>(hash, "new_value", null), 0))
+                context.forwarded().get(0).record(),
+                is(new Record<>(pk1, new SubscriptionResponseWrapper<>(hash, "new_value", null), 0))
         );
         assertThat(
-            context.forwarded().get(1).record(),
-            is(new Record<>(pk2, new SubscriptionResponseWrapper<>(hash, "new_value", null), 0))
+                context.forwarded().get(1).record(),
+                is(new Record<>(pk2, new SubscriptionResponseWrapper<>(hash, "new_value", null), 0))
         );
 
         // test dropped-records sensors
@@ -146,12 +146,12 @@ public class ForeignTableJoinProcessorSupplierTests {
 
         assertThat(context.forwarded().size(), is(2));
         assertThat(
-            context.forwarded().get(0).record(),
-            is(new Record<>(pk1, new SubscriptionResponseWrapper<>(hash, null, null), 0))
+                context.forwarded().get(0).record(),
+                is(new Record<>(pk1, new SubscriptionResponseWrapper<>(hash, null, null), 0))
         );
         assertThat(
-            context.forwarded().get(1).record(),
-            is(new Record<>(pk2, new SubscriptionResponseWrapper<>(hash, null, null), 0))
+                context.forwarded().get(1).record(),
+                is(new Record<>(pk2, new SubscriptionResponseWrapper<>(hash, null, null), 0))
         );
 
         // test dropped-records sensors
@@ -170,8 +170,8 @@ public class ForeignTableJoinProcessorSupplierTests {
 
         assertThat(context.forwarded().size(), is(1));
         assertThat(
-            context.forwarded().get(0).record(),
-            is(new Record<>(pk2, new SubscriptionResponseWrapper<>(hash, "new_value", null), 0))
+                context.forwarded().get(0).record(),
+                is(new Record<>(pk2, new SubscriptionResponseWrapper<>(hash, "new_value", null), 0))
         );
 
         // test dropped-records sensors
@@ -195,11 +195,11 @@ public class ForeignTableJoinProcessorSupplierTests {
 
     private void putInStore(final String fk, final String pk) {
         final SubscriptionWrapper<String> oldWrapper = new SubscriptionWrapper<>(
-            hash,
-            SubscriptionWrapper.Instruction.PROPAGATE_ONLY_IF_FK_VAL_AVAILABLE,
-            pk,
-            SubscriptionWrapper.VERSION_0,
-            null
+                hash,
+                SubscriptionWrapper.Instruction.PROPAGATE_ONLY_IF_FK_VAL_AVAILABLE,
+                pk,
+                SubscriptionWrapper.VERSION_0,
+                null
         );
         final ValueTimestampHeaders<SubscriptionWrapper<String>> oldValue = ValueTimestampHeaders.make(oldWrapper, 0, new RecordHeaders());
 
@@ -209,13 +209,13 @@ public class ForeignTableJoinProcessorSupplierTests {
 
     private StoreBuilder<TimestampedKeyValueStoreWithHeaders<Bytes, SubscriptionWrapper<String>>> storeBuilder() {
         final Serde<SubscriptionWrapper<String>> subscriptionWrapperSerde = new SubscriptionWrapperSerde<>(
-            PK_SERDE_TOPIC_SUPPLIER, Serdes.String());
+                PK_SERDE_TOPIC_SUPPLIER, Serdes.String());
         return Stores.timestampedKeyValueStoreWithHeadersBuilder(
-            Stores.persistentTimestampedKeyValueStore(
-                "Store"
-            ),
-            new Serdes.BytesSerde(),
-            subscriptionWrapperSerde
+                Stores.persistentTimestampedKeyValueStore(
+                        "Store"
+                ),
+                new Serdes.BytesSerde(),
+                subscriptionWrapperSerde
         );
     }
 }

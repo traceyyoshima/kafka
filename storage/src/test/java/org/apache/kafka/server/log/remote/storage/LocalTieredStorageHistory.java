@@ -37,7 +37,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * Accumulates and retains the interactions between brokers and {@link LocalTieredStorage} instances.
  * These interactions are modelled via events of type {@link LocalTieredStorageEvent}.
- *
+ * <p>
  * Events from an instance of storage are captured by the {@link LocalTieredStorageHistory} after
  * {@link LocalTieredStorageHistory#listenTo(LocalTieredStorage)} is called.
  */
@@ -57,7 +57,7 @@ public final class LocalTieredStorageHistory {
      * Returns the list of events accumulated by this instance of history from the {@link LocalTieredStorage}
      * it captures events from.
      *
-     * @param type The type of the events to retrieve (e.g. offload or fetch a segment, fetch a time index, etc.)
+     * @param type           The type of the events to retrieve (e.g. offload or fetch a segment, fetch a time index, etc.)
      * @param topicPartition The topic-partition which the events relate to.
      * @return The list of events accumulated in this instance.
      */
@@ -74,7 +74,7 @@ public final class LocalTieredStorageHistory {
     /**
      * Returns the latest event captured so far of the given type and relating to the given topic-partition.
      *
-     * @param type The type of the events to retrieve (e.g. offload or fetch a segment, fetch a time index, etc.)
+     * @param type           The type of the events to retrieve (e.g. offload or fetch a segment, fetch a time index, etc.)
      * @param topicPartition The topic-partition which the events relate to.
      * @return The latest event captured, if any. Otherwise, returns an empty value.
      */

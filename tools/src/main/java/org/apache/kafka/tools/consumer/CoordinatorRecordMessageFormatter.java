@@ -54,22 +54,22 @@ public abstract class CoordinatorRecordMessageFormatter implements MessageFormat
         ObjectNode json = new ObjectNode(JsonNodeFactory.instance);
         try {
             CoordinatorRecord record = serde.deserialize(
-                ByteBuffer.wrap(consumerRecord.key()),
-                consumerRecord.value() != null ? ByteBuffer.wrap(consumerRecord.value()) : null
+                    ByteBuffer.wrap(consumerRecord.key()),
+                    consumerRecord.value() != null ? ByteBuffer.wrap(consumerRecord.value()) : null
             );
 
             if (!isRecordTypeAllowed(record.key().apiKey())) return;
 
             json
-                .putObject(KEY)
-                .put(TYPE, record.key().apiKey())
-                .set(DATA, keyAsJson(record.key()));
+                    .putObject(KEY)
+                    .put(TYPE, record.key().apiKey())
+                    .set(DATA, keyAsJson(record.key()));
 
             if (Objects.nonNull(record.value())) {
                 json
-                    .putObject(VALUE)
-                    .put(VERSION, record.value().version())
-                    .set(DATA, valueAsJson(record.value().message(), record.value().version()));
+                        .putObject(VALUE)
+                        .put(VERSION, record.value().version())
+                        .set(DATA, valueAsJson(record.value().message(), record.value().version()));
             } else {
                 json.set(VALUE, NullNode.getInstance());
             }
@@ -77,7 +77,7 @@ public abstract class CoordinatorRecordMessageFormatter implements MessageFormat
             return;
         } catch (RuntimeException ex) {
             throw new RuntimeException("Could not read record at offset " + consumerRecord.offset() +
-                " due to: " + ex.getMessage(), ex);
+                    " due to: " + ex.getMessage(), ex);
         }
 
         try {
@@ -88,6 +88,8 @@ public abstract class CoordinatorRecordMessageFormatter implements MessageFormat
     }
 
     protected abstract boolean isRecordTypeAllowed(short recordType);
+
     protected abstract JsonNode keyAsJson(ApiMessage message);
+
     protected abstract JsonNode valueAsJson(ApiMessage message, short version);
 }  

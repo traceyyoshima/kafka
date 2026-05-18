@@ -40,7 +40,7 @@ public enum LeaderRecoveryState {
 
     public static LeaderRecoveryState of(byte value) {
         return optionalOf(value)
-            .orElseThrow(() -> new IllegalArgumentException(String.format("Value %s is not a valid leader recovery state", value)));
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Value %s is not a valid leader recovery state", value)));
     }
 
     public static Optional<LeaderRecoveryState> optionalOf(byte value) {

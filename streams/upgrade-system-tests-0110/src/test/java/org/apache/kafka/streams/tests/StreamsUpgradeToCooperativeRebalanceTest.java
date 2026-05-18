@@ -50,22 +50,22 @@ public class StreamsUpgradeToCooperativeRebalanceTest {
         final String sourceTopic = config.getProperty("source.topic", "source");
         final String sinkTopic = config.getProperty("sink.topic", "sink");
         final int reportInterval = Integer.parseInt(config.getProperty("report.interval", "100"));
-        final String upgradePhase = config.getProperty("upgrade.phase",  "");
+        final String upgradePhase = config.getProperty("upgrade.phase", "");
 
         final KStreamBuilder builder = new KStreamBuilder();
 
         final KStream<String, String> upgradeStream = builder.stream(sourceTopic);
         upgradeStream.foreach(new ForeachAction<String, String>() {
-            int recordCounter = 0;
+                                  int recordCounter = 0;
 
-            @Override
-            public void apply(final String key, final String value) {
-                if (recordCounter++ % reportInterval == 0) {
-                    System.out.printf("%sProcessed %d records so far%n", upgradePhase, recordCounter);
-                    System.out.flush();
-                }
-            }
-        }
+                                  @Override
+                                  public void apply(final String key, final String value) {
+                                      if (recordCounter++ % reportInterval == 0) {
+                                          System.out.printf("%sProcessed %d records so far%n", upgradePhase, recordCounter);
+                                          System.out.flush();
+                                      }
+                                  }
+                              }
         );
         upgradeStream.to(sinkTopic);
 

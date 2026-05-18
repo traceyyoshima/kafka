@@ -18,7 +18,9 @@ package org.apache.kafka.streams.processor.assignment;
 
 import java.util.UUID;
 
-/** A simple wrapper around UUID that abstracts a Process ID */
+/**
+ * A simple wrapper around UUID that abstracts a Process ID
+ */
 public class ProcessId implements Comparable<ProcessId> {
 
     private final UUID id;

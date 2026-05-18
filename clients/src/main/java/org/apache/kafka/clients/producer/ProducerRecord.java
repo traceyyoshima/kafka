@@ -57,14 +57,14 @@ public class ProducerRecord<K, V> {
 
     /**
      * Creates a record with a specified timestamp to be sent to a specified topic and partition
-     * 
-     * @param topic The topic the record will be appended to
+     *
+     * @param topic     The topic the record will be appended to
      * @param partition The partition to which the record should be sent
      * @param timestamp The timestamp of the record, in milliseconds since epoch. If null, the producer will assign
      *                  the timestamp using System.currentTimeMillis().
-     * @param key The key that will be included in the record
-     * @param value The record contents
-     * @param headers the headers that will be included in the record
+     * @param key       The key that will be included in the record
+     * @param value     The record contents
+     * @param headers   the headers that will be included in the record
      */
     public ProducerRecord(String topic, Integer partition, Long timestamp, K key, V value, Iterable<Header> headers) {
         if (topic == null)
@@ -86,12 +86,12 @@ public class ProducerRecord<K, V> {
     /**
      * Creates a record with a specified timestamp to be sent to a specified topic and partition
      *
-     * @param topic The topic the record will be appended to
+     * @param topic     The topic the record will be appended to
      * @param partition The partition to which the record should be sent
      * @param timestamp The timestamp of the record, in milliseconds since epoch. If null, the producer will assign the
      *                  timestamp using System.currentTimeMillis().
-     * @param key The key that will be included in the record
-     * @param value The record contents
+     * @param key       The key that will be included in the record
+     * @param value     The record contents
      */
     public ProducerRecord(String topic, Integer partition, Long timestamp, K key, V value) {
         this(topic, partition, timestamp, key, value, null);
@@ -100,42 +100,42 @@ public class ProducerRecord<K, V> {
     /**
      * Creates a record to be sent to a specified topic and partition
      *
-     * @param topic The topic the record will be appended to
+     * @param topic     The topic the record will be appended to
      * @param partition The partition to which the record should be sent
-     * @param key The key that will be included in the record
-     * @param value The record contents
-     * @param headers The headers that will be included in the record
+     * @param key       The key that will be included in the record
+     * @param value     The record contents
+     * @param headers   The headers that will be included in the record
      */
     public ProducerRecord(String topic, Integer partition, K key, V value, Iterable<Header> headers) {
         this(topic, partition, null, key, value, headers);
     }
-    
+
     /**
      * Creates a record to be sent to a specified topic and partition
      *
-     * @param topic The topic the record will be appended to
+     * @param topic     The topic the record will be appended to
      * @param partition The partition to which the record should be sent
-     * @param key The key that will be included in the record
-     * @param value The record contents
+     * @param key       The key that will be included in the record
+     * @param value     The record contents
      */
     public ProducerRecord(String topic, Integer partition, K key, V value) {
         this(topic, partition, null, key, value, null);
     }
-    
+
     /**
      * Create a record to be sent to Kafka
-     * 
+     *
      * @param topic The topic the record will be appended to
-     * @param key The key that will be included in the record
+     * @param key   The key that will be included in the record
      * @param value The record contents
      */
     public ProducerRecord(String topic, K key, V value) {
         this(topic, null, null, key, value, null);
     }
-    
+
     /**
      * Create a record with no key
-     * 
+     *
      * @param topic The topic this record should be sent to
      * @param value The record contents
      */
@@ -192,7 +192,7 @@ public class ProducerRecord<K, V> {
         String value = this.value == null ? "null" : this.value.toString();
         String timestamp = this.timestamp == null ? "null" : this.timestamp.toString();
         return "ProducerRecord(topic=" + topic + ", partition=" + partition + ", headers=" + headers + ", key=" + key + ", value=" + value +
-            ", timestamp=" + timestamp + ")";
+                ", timestamp=" + timestamp + ")";
     }
 
     @Override
@@ -205,11 +205,11 @@ public class ProducerRecord<K, V> {
         ProducerRecord<?, ?> that = (ProducerRecord<?, ?>) o;
 
         return Objects.equals(key, that.key) &&
-            Objects.equals(partition, that.partition) &&
-            Objects.equals(topic, that.topic) &&
-            Objects.equals(headers, that.headers) &&
-            Objects.equals(value, that.value) &&
-            Objects.equals(timestamp, that.timestamp);
+                Objects.equals(partition, that.partition) &&
+                Objects.equals(topic, that.topic) &&
+                Objects.equals(headers, that.headers) &&
+                Objects.equals(value, that.value) &&
+                Objects.equals(timestamp, that.timestamp);
     }
 
     @Override

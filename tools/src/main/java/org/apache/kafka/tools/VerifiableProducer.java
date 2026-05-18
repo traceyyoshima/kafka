@@ -49,11 +49,11 @@ import static net.sourceforge.argparse4j.impl.Arguments.store;
  * in the form of JSON to stdout on each "send" request. For example, this helps
  * with end-to-end correctness tests by making externally visible which messages have been
  * acked and which have not.
- *
+ * <p>
  * When used as a command-line tool, it produces increasing integers. It will produce a
  * fixed number of messages unless the default max-messages -1 is used, in which case
  * it produces indefinitely.
- *
+ * <p>
  * If logging is left enabled, log output on stdout can be easily ignored by checking
  * whether a given line is valid JSON.
  */
@@ -107,108 +107,111 @@ public class VerifiableProducer implements AutoCloseable {
 
     }
 
-    /** Get the command-line argument parser. */
+    /**
+     * Get the command-line argument parser.
+     */
     private static ArgumentParser argParser() {
         ArgumentParser parser = ArgumentParsers
-            .newArgumentParser("verifiable-producer")
-            .defaultHelp(true)
-            .description("This tool produces increasing integers to the specified topic and prints JSON metadata to stdout on each \"send\" request, making externally visible which messages have been acked and which have not.");
+                .newArgumentParser("verifiable-producer")
+                .defaultHelp(true)
+                .description("This tool produces increasing integers to the specified topic and prints JSON metadata to stdout on each \"send\" request, making externally visible which messages have been acked and which have not.");
 
         parser.addArgument("--topic")
-            .action(store())
-            .required(true)
-            .type(String.class)
-            .metavar("TOPIC")
-            .help("Produce messages to this topic.");
+                .action(store())
+                .required(true)
+                .type(String.class)
+                .metavar("TOPIC")
+                .help("Produce messages to this topic.");
         MutuallyExclusiveGroup connectionGroup = parser.addMutuallyExclusiveGroup("Connection Group")
-            .description("Group of arguments for connection to brokers")
-            .required(true);
+                .description("Group of arguments for connection to brokers")
+                .required(true);
         connectionGroup.addArgument("--bootstrap-server")
-            .action(store())
-            .required(false)
-            .type(String.class)
-            .dest("bootstrapServer")
-            .metavar("HOST1:PORT1[,HOST2:PORT2[...]]")
-            .help("REQUIRED: The server(s) to connect to. Comma-separated list of Kafka brokers in the form HOST1:PORT1,HOST2:PORT2,...");
+                .action(store())
+                .required(false)
+                .type(String.class)
+                .dest("bootstrapServer")
+                .metavar("HOST1:PORT1[,HOST2:PORT2[...]]")
+                .help("REQUIRED: The server(s) to connect to. Comma-separated list of Kafka brokers in the form HOST1:PORT1,HOST2:PORT2,...");
 
         parser.addArgument("--max-messages")
-            .action(store())
-            .required(false)
-            .setDefault(-1)
-            .type(Integer.class)
-            .dest("maxMessages")
-            .metavar("MAX-MESSAGES")
-            .help("Produce this many messages. If -1, produce messages until the process is killed externally.");
+                .action(store())
+                .required(false)
+                .setDefault(-1)
+                .type(Integer.class)
+                .dest("maxMessages")
+                .metavar("MAX-MESSAGES")
+                .help("Produce this many messages. If -1, produce messages until the process is killed externally.");
 
         parser.addArgument("--throughput")
-            .action(store())
-            .required(false)
-            .setDefault(-1)
-            .type(Integer.class)
-            .metavar("THROUGHPUT")
-            .help("If set >= 0, throttle maximum message throughput to *approximately* THROUGHPUT messages/sec.");
+                .action(store())
+                .required(false)
+                .setDefault(-1)
+                .type(Integer.class)
+                .metavar("THROUGHPUT")
+                .help("If set >= 0, throttle maximum message throughput to *approximately* THROUGHPUT messages/sec.");
 
         parser.addArgument("--acks")
-            .action(store())
-            .required(false)
-            .setDefault(-1)
-            .type(Integer.class)
-            .choices(0, 1, -1)
-            .metavar("ACKS")
-            .help("Acks required on each produced message. See Kafka docs on acks for details.");
+                .action(store())
+                .required(false)
+                .setDefault(-1)
+                .type(Integer.class)
+                .choices(0, 1, -1)
+                .metavar("ACKS")
+                .help("Acks required on each produced message. See Kafka docs on acks for details.");
 
         parser.addArgument("--producer.config")
-            .action(store())
-            .required(false)
-            .type(String.class)
-            .metavar("CONFIG-FILE")
-            .help("(DEPRECATED) Producer config properties file. " +
-                    "This option will be removed in a future version. Use --command-config instead.");
+                .action(store())
+                .required(false)
+                .type(String.class)
+                .metavar("CONFIG-FILE")
+                .help("(DEPRECATED) Producer config properties file. " +
+                        "This option will be removed in a future version. Use --command-config instead.");
 
         parser.addArgument("--message-create-time")
-            .action(store())
-            .required(false)
-            .setDefault(-1L)
-            .type(Long.class)
-            .metavar("CREATE-TIME")
-            .dest("createTime")
-            .help("Send messages with creation time starting at the arguments value, in milliseconds since epoch");
+                .action(store())
+                .required(false)
+                .setDefault(-1L)
+                .type(Long.class)
+                .metavar("CREATE-TIME")
+                .dest("createTime")
+                .help("Send messages with creation time starting at the arguments value, in milliseconds since epoch");
 
         parser.addArgument("--value-prefix")
-            .action(store())
-            .required(false)
-            .type(Integer.class)
-            .metavar("VALUE-PREFIX")
-            .dest("valuePrefix")
-            .help("If specified, each produced value will have this prefix with a dot separator");
+                .action(store())
+                .required(false)
+                .type(Integer.class)
+                .metavar("VALUE-PREFIX")
+                .dest("valuePrefix")
+                .help("If specified, each produced value will have this prefix with a dot separator");
 
         parser.addArgument("--repeating-keys")
-            .action(store())
-            .required(false)
-            .type(Integer.class)
-            .metavar("REPEATING-KEYS")
-            .dest("repeatingKeys")
-            .help("If specified, each produced record will have a key starting at 0 increment by 1 up to the number specified (exclusive), then the key is set to 0 again");
+                .action(store())
+                .required(false)
+                .type(Integer.class)
+                .metavar("REPEATING-KEYS")
+                .dest("repeatingKeys")
+                .help("If specified, each produced record will have a key starting at 0 increment by 1 up to the number specified (exclusive), then the key is set to 0 again");
 
         parser.addArgument("--command-config")
-            .action(store())
-            .required(false)
-            .type(String.class)
-            .metavar("CONFIG-FILE")
-            .dest("commandConfigFile")
-            .help("Config properties file (config options shared with command line parameters will be overridden).");
+                .action(store())
+                .required(false)
+                .type(String.class)
+                .metavar("CONFIG-FILE")
+                .dest("commandConfigFile")
+                .help("Config properties file (config options shared with command line parameters will be overridden).");
 
         return parser;
     }
-    
+
     /**
      * Read a properties file from the given path
-     * @param filename The path of the file to read
      *
-     * Note: this duplication of org.apache.kafka.common.utils.Utils.loadProps is unfortunate
-     * but *intentional*. In order to use VerifiableProducer in compatibility and upgrade tests,
-     * we use VerifiableProducer from the development tools package, and run it against 0.8.X.X kafka jars.
-     * Since this method is not in Utils in the 0.8.X.X jars, we have to cheat a bit and duplicate.
+     * @param filename The path of the file to read
+     *                 <p>
+     *                 Note: this duplication of org.apache.kafka.common.utils.Utils.loadProps is unfortunate
+     *                 but *intentional*. In order to use VerifiableProducer in compatibility and upgrade tests,
+     *                 we use VerifiableProducer from the development tools package, and run it against 0.8.X.X kafka jars.
+     *                 Since this method is not in Utils in the 0.8.X.X jars, we have to cheat a bit and duplicate.
      */
     public static Properties loadProps(String filename) throws IOException {
         Properties props = new Properties();
@@ -218,7 +221,9 @@ public class VerifiableProducer implements AutoCloseable {
         return props;
     }
 
-    /** Construct a VerifiableProducer object from command-line arguments. */
+    /**
+     * Construct a VerifiableProducer object from command-line arguments.
+     */
     public static VerifiableProducer createFromArgs(ArgumentParser parser, String[] args) throws ArgumentParserException {
         Namespace res = parser.parseArgs(args);
 
@@ -275,7 +280,9 @@ public class VerifiableProducer implements AutoCloseable {
         return new VerifiableProducer(producer, topic, throughput, maxMessages, valuePrefix, createTime, repeatingKeys);
     }
 
-    /** Produce a message with given key and value. */
+    /**
+     * Produce a message with given key and value.
+     */
     public void send(String key, String value) {
         ProducerRecord<String, String> record;
 
@@ -300,7 +307,9 @@ public class VerifiableProducer implements AutoCloseable {
         }
     }
 
-    /** Returns a string to publish: ether 'valuePrefix'.'val' or 'val' */
+    /**
+     * Returns a string to publish: ether 'valuePrefix'.'val' or 'val'
+     */
     public String getValue(long val) {
         if (this.valuePrefix != null) {
             return String.format("%d.%d", this.valuePrefix, val);
@@ -319,13 +328,15 @@ public class VerifiableProducer implements AutoCloseable {
         return key;
     }
 
-    /** Close the producer to flush any remaining messages. */
+    /**
+     * Close the producer to flush any remaining messages.
+     */
     public void close() {
         producer.close();
         printJson(new ShutdownComplete());
     }
 
-    @JsonPropertyOrder({ "timestamp", "name" })
+    @JsonPropertyOrder({"timestamp", "name"})
     private abstract static class ProducerEvent {
         private final long timestamp = System.currentTimeMillis();
 
@@ -492,7 +503,9 @@ public class VerifiableProducer implements AutoCloseable {
         }
     }
 
-    /** Callback which prints errors to stdout when the producer fails to send. */
+    /**
+     * Callback which prints errors to stdout when the producer fails to send.
+     */
     private class PrintInfoCallback implements Callback {
 
         private final String key;

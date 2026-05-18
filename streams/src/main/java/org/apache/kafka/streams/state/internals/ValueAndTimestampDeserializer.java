@@ -81,16 +81,16 @@ class ValueAndTimestampDeserializer<V> implements WrappingNullableDeserializer<V
 
         final int rawValueLength = rawValueAndTimestamp.length - 8;
         return ByteBuffer
-            .allocate(rawValueLength)
-            .put(rawValueAndTimestamp, 8, rawValueLength)
-            .array();
+                .allocate(rawValueLength)
+                .put(rawValueAndTimestamp, 8, rawValueLength)
+                .array();
     }
 
     private static byte[] rawTimestamp(final byte[] rawValueAndTimestamp) {
         return ByteBuffer
-            .allocate(8)
-            .put(rawValueAndTimestamp, 0, 8)
-            .array();
+                .allocate(8)
+                .put(rawValueAndTimestamp, 0, 8)
+                .array();
     }
 
     static long timestamp(final byte[] rawValueAndTimestamp) {

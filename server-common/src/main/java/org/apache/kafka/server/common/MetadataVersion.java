@@ -160,7 +160,7 @@ public enum MetadataVersion {
 
     /**
      * An array containing all the MetadataVersion entries.
-     *
+     * <p>
      * This is essentially a cached copy of MetadataVersion.values. Unlike that function, it doesn't
      * allocate a new array each time.
      */
@@ -362,8 +362,8 @@ public enum MetadataVersion {
         MetadataVersion metadataVersion = IBP_VERSIONS.get(key);
         if (metadataVersion == null || (!unstableFeatureVersionsEnabled && !metadataVersion.isProduction())) {
             String errorMsg = "Unknown metadata.version '" + versionString + "'. Supported metadata.version are: "
-                + metadataVersionsToString(MetadataVersion.MINIMUM_VERSION,
-                unstableFeatureVersionsEnabled ? MetadataVersion.latestTesting() : MetadataVersion.latestProduction());
+                    + metadataVersionsToString(MetadataVersion.MINIMUM_VERSION,
+                    unstableFeatureVersionsEnabled ? MetadataVersion.latestTesting() : MetadataVersion.latestProduction());
             throw new IllegalArgumentException(errorMsg);
         }
         return metadataVersion;
@@ -372,18 +372,18 @@ public enum MetadataVersion {
     public static String metadataVersionsToString(MetadataVersion first, MetadataVersion last) {
         List<MetadataVersion> versions = List.of(MetadataVersion.VERSIONS).subList(first.ordinal(), last.ordinal() + 1);
         return versions.stream()
-            .map(String::valueOf)
-            .collect(Collectors.joining(", "));
+                .map(String::valueOf)
+                .collect(Collectors.joining(", "));
     }
 
     public static MetadataVersion fromFeatureLevel(short version) {
-        for (MetadataVersion metadataVersion: MetadataVersion.values()) {
+        for (MetadataVersion metadataVersion : MetadataVersion.values()) {
             if (metadataVersion.featureLevel() == version) {
                 return metadataVersion;
             }
         }
         throw new IllegalArgumentException("No MetadataVersion with feature level " + version + ". Valid feature levels are from "
-            + MINIMUM_VERSION.featureLevel + " to " + latestTesting().featureLevel + ".");
+                + MINIMUM_VERSION.featureLevel + " to " + latestTesting().featureLevel + ".");
     }
 
     // Testing only

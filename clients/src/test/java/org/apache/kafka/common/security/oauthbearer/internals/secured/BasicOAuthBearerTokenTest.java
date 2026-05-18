@@ -36,10 +36,10 @@ public class BasicOAuthBearerTokenTest {
     @Test
     public void basic() {
         OAuthBearerToken token = new BasicOAuthBearerToken("not.valid.token",
-            Collections.emptySet(),
-            0L,
-            "jdoe",
-            0L);
+                Collections.emptySet(),
+                0L,
+                "jdoe",
+                0L);
         assertEquals("not.valid.token", token.value());
         assertTrue(token.scope().isEmpty());
         assertEquals(0L, token.lifetimeMs());
@@ -50,10 +50,10 @@ public class BasicOAuthBearerTokenTest {
     @Test
     public void negativeLifetime() {
         OAuthBearerToken token = new BasicOAuthBearerToken("not.valid.token",
-            Collections.emptySet(),
-            -1L,
-            "jdoe",
-            0L);
+                Collections.emptySet(),
+                -1L,
+                "jdoe",
+                0L);
         assertEquals("not.valid.token", token.value());
         assertTrue(token.scope().isEmpty());
         assertEquals(-1L, token.lifetimeMs());
@@ -66,10 +66,10 @@ public class BasicOAuthBearerTokenTest {
         // Start with a basic set created by the caller.
         SortedSet<String> callerSet = new TreeSet<>(Arrays.asList("a", "b", "c"));
         OAuthBearerToken token = new BasicOAuthBearerToken("not.valid.token",
-            callerSet,
-            0L,
-            "jdoe",
-            0L);
+                callerSet,
+                0L,
+                "jdoe",
+                0L);
 
         // Make sure it all looks good
         assertNotNull(token.scope());

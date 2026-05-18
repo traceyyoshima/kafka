@@ -37,9 +37,9 @@ import static java.util.Objects.requireNonNull;
  * As named, this class validates positions in the {@link SubscriptionState} based on current {@link ConsumerMetadata}
  * version. It maintains just enough shared state to determine when it can avoid costly inter-thread communication
  * in the {@link Consumer#poll(Duration)} method.
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * Callers from the application thread should not mutate any of the state contained within this class.
  * It should be considered as <em>read-only</em>, and only the background thread should mutate the state.
  */
@@ -116,7 +116,7 @@ public class PositionsValidator {
      * positions as this is in the critical path for the {@link Consumer#poll(Duration)}. If the application thread
      * can safely and accurately determine that it doesn't need to perform the
      * {@link OffsetsRequestManager#updateFetchPositions(long)} call, a big performance savings can be realized.
-     *
+     * <p>
      * <p/>
      *
      * <ol>
@@ -132,7 +132,7 @@ public class PositionsValidator {
      *         ({@link SubscriptionState#hasAllFetchPositions()})
      *     </li>
      * </ol>
-     *
+     * <p>
      * If any checks fail, this method will return {@code false}, otherwise, it will return {@code true}, which
      * signals to the application thread that the position validation step can be skipped.
      *

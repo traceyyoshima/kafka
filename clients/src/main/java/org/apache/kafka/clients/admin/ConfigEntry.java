@@ -38,32 +38,32 @@ public class ConfigEntry {
     /**
      * Create a configuration entry with the provided values.
      *
-     * @param name the non-null config name
+     * @param name  the non-null config name
      * @param value the config value or null
      */
     public ConfigEntry(String name, String value) {
         this(name, value, ConfigSource.UNKNOWN, false, false,
-            Collections.emptyList(), ConfigType.UNKNOWN, null);
+                Collections.emptyList(), ConfigType.UNKNOWN, null);
     }
 
     /**
      * Create a configuration with the provided values.
      *
-     * @param name the non-null config name
-     * @param value the config value or null
-     * @param source the source of this config entry
+     * @param name        the non-null config name
+     * @param value       the config value or null
+     * @param source      the source of this config entry
      * @param isSensitive whether the config value is sensitive, the broker never returns the value if it is sensitive
-     * @param isReadOnly whether the config is read-only and cannot be updated
-     * @param synonyms Synonym configs in order of precedence
+     * @param isReadOnly  whether the config is read-only and cannot be updated
+     * @param synonyms    Synonym configs in order of precedence
      */
     public ConfigEntry(String name,
-            String value,
-            ConfigSource source,
-            boolean isSensitive,
-            boolean isReadOnly,
-            List<ConfigSynonym> synonyms,
-            ConfigType type,
-            String documentation) {
+                       String value,
+                       ConfigSource source,
+                       boolean isSensitive,
+                       boolean isReadOnly,
+                       List<ConfigSynonym> synonyms,
+                       ConfigType type,
+                       String documentation) {
         Objects.requireNonNull(name, "name should not be null");
         this.name = name;
         this.value = value;
@@ -124,7 +124,7 @@ public class ConfigEntry {
      * The list is empty if synonyms were not requested using {@link DescribeConfigsOptions#includeSynonyms(boolean)}
      */
     public List<ConfigSynonym> synonyms() {
-        return  synonyms;
+        return synonyms;
     }
 
     /**
@@ -236,8 +236,8 @@ public class ConfigEntry {
         /**
          * Create a configuration synonym with the provided values.
          *
-         * @param name Configuration name (this may be different from the name of the associated {@link ConfigEntry}
-         * @param value Configuration value
+         * @param name   Configuration name (this may be different from the name of the associated {@link ConfigEntry}
+         * @param value  Configuration value
          * @param source {@link ConfigSource} of this configuration
          */
         ConfigSynonym(String name, String value, ConfigSource source) {

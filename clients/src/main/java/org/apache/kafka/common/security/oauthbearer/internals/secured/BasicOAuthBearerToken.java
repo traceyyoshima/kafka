@@ -25,7 +25,7 @@ import java.util.StringJoiner;
 /**
  * An implementation of the {@link OAuthBearerToken} that fairly straightforwardly stores the values
  * given to its constructor (except the scope set which is copied to avoid modifications).
- *
+ * <p>
  * Very little validation is applied here with respect to the validity of the given values. All
  * validation is assumed to happen by users of this class.
  *
@@ -63,10 +63,10 @@ public class BasicOAuthBearerToken implements OAuthBearerToken {
      */
 
     public BasicOAuthBearerToken(String token,
-        Set<String> scopes,
-        long lifetimeMs,
-        String principalName,
-        Long startTimeMs) {
+                                 Set<String> scopes,
+                                 long lifetimeMs,
+                                 String principalName,
+                                 Long startTimeMs) {
         this.token = token;
         this.scopes = scopes;
         this.lifetimeMs = lifetimeMs;
@@ -80,8 +80,8 @@ public class BasicOAuthBearerToken implements OAuthBearerToken {
      * 2.1</a>
      *
      * @return <code>b64token</code> value as defined in
-     *         <a href="https://tools.ietf.org/html/rfc6750#section-2.1">RFC 6750
-     *         Section 2.1</a>
+     * <a href="https://tools.ietf.org/html/rfc6750#section-2.1">RFC 6750
+     * Section 2.1</a>
      */
 
     @Override
@@ -95,10 +95,10 @@ public class BasicOAuthBearerToken implements OAuthBearerToken {
      * 1.4</a>
      *
      * @return the token's (always non-null but potentially empty) scope of access,
-     *         as per <a href="https://tools.ietf.org/html/rfc6749#section-1.4">RFC
-     *         6749 Section 1.4</a>. Note that all values in the returned set will
-     *         be trimmed of preceding and trailing whitespace, and the result will
-     *         never contain the empty string.
+     * as per <a href="https://tools.ietf.org/html/rfc6749#section-1.4">RFC
+     * 6749 Section 1.4</a>. Note that all values in the returned set will
+     * be trimmed of preceding and trailing whitespace, and the result will
+     * never contain the empty string.
      */
 
     @Override
@@ -114,9 +114,9 @@ public class BasicOAuthBearerToken implements OAuthBearerToken {
      * 6749 Section 1.4</a>
      *
      * @return the token's lifetime, expressed as the number of milliseconds since
-     *         the epoch, as per
-     *         <a href="https://tools.ietf.org/html/rfc6749#section-1.4">RFC 6749
-     *         Section 1.4</a>.
+     * the epoch, as per
+     * <a href="https://tools.ietf.org/html/rfc6749#section-1.4">RFC 6749
+     * Section 1.4</a>.
      */
 
     @Override
@@ -142,7 +142,7 @@ public class BasicOAuthBearerToken implements OAuthBearerToken {
      * need to support a null return value here.
      *
      * @return the time when the credential became valid, in terms of the number of
-     *         milliseconds since the epoch, if known, otherwise null
+     * milliseconds since the epoch, if known, otherwise null
      */
 
     @Override
@@ -153,12 +153,12 @@ public class BasicOAuthBearerToken implements OAuthBearerToken {
     @Override
     public String toString() {
         return new StringJoiner(", ", BasicOAuthBearerToken.class.getSimpleName() + "[", "]")
-            .add("token='" + token + "'")
-            .add("scopes=" + scopes)
-            .add("lifetimeMs=" + lifetimeMs)
-            .add("principalName='" + principalName + "'")
-            .add("startTimeMs=" + startTimeMs)
-            .toString();
+                .add("token='" + token + "'")
+                .add("scopes=" + scopes)
+                .add("lifetimeMs=" + lifetimeMs)
+                .add("principalName='" + principalName + "'")
+                .add("startTimeMs=" + startTimeMs)
+                .toString();
     }
 
 }

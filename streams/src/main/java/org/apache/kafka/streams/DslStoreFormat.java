@@ -20,13 +20,19 @@ import java.util.Locale;
 
 public enum DslStoreFormat {
 
-    /** The non-timestamped state stores */
+    /**
+     * The non-timestamped state stores
+     */
     PLAIN("PLAIN"),
 
-    /** The timestamped state stores */
+    /**
+     * The timestamped state stores
+     */
     TIMESTAMPED("TIMESTAMPED"),
 
-    /** The headers-aware state stores */
+    /**
+     * The headers-aware state stores
+     */
     HEADERS("HEADERS");
 
     /**

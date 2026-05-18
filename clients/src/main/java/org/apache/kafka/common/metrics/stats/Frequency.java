@@ -59,8 +59,8 @@ public class Frequency {
     @Override
     public String toString() {
         return "Frequency(" +
-            "name=" + name +
-            ", centerValue=" + centerValue +
-            ')';
+                "name=" + name +
+                ", centerValue=" + centerValue +
+                ')';
     }
 }

@@ -19,7 +19,7 @@ package org.apache.kafka.common.errors;
 /**
  * In the context of the group coordinator, the broker returns this error code if it receives an offset fetch
  * or commit request for a group it's not the coordinator of.
- *
+ * <p>
  * In the context of the transactional coordinator, it returns this error when it receives a transactional
  * request with a transactionalId the coordinator doesn't own.
  */

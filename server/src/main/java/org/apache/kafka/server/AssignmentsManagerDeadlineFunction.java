@@ -55,11 +55,11 @@ public class AssignmentsManagerDeadlineFunction implements UnaryOperator<Optiona
     private final int numReadyRequests;
 
     AssignmentsManagerDeadlineFunction(
-        ExponentialBackoff backoff,
-        long nowNs,
-        int previousGlobalFailures,
-        boolean hasInflightRequests,
-        int numReadyRequests
+            ExponentialBackoff backoff,
+            long nowNs,
+            int previousGlobalFailures,
+            boolean hasInflightRequests,
+            int numReadyRequests
     ) {
         this.backoff = backoff;
         this.nowNs = nowNs;

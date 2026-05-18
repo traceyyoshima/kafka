@@ -52,39 +52,39 @@ public class TxnOffsetCommitRequestTest extends OffsetCommitRequestTest {
         super.setUp();
         OFFSETS.clear();
         OFFSETS.put(new TopicPartition(topicOne, partitionOne),
-            new CommittedOffset(
-                offset,
-                metadata,
-                Optional.of((int) leaderEpoch)));
+                new CommittedOffset(
+                        offset,
+                        metadata,
+                        Optional.of((int) leaderEpoch)));
         OFFSETS.put(new TopicPartition(topicTwo, partitionTwo),
-            new CommittedOffset(
-                offset,
-                metadata,
-                Optional.of((int) leaderEpoch)));
+                new CommittedOffset(
+                        offset,
+                        metadata,
+                        Optional.of((int) leaderEpoch)));
 
         String transactionalId = "transactionalId";
         int producerId = 10;
         short producerEpoch = 1;
         builder = new TxnOffsetCommitRequest.Builder(
-            transactionalId,
-            groupId,
-            producerId,
-            producerEpoch,
-            OFFSETS,
-            true
+                transactionalId,
+                groupId,
+                producerId,
+                producerEpoch,
+                OFFSETS,
+                true
         );
 
         int generationId = 5;
         builderWithGroupMetadata = new TxnOffsetCommitRequest.Builder(
-            transactionalId,
-            groupId,
-            producerId,
-            producerEpoch,
-            OFFSETS,
-            memberId,
-            generationId,
-            Optional.of(groupInstanceId),
-            true
+                transactionalId,
+                groupId,
+                producerId,
+                producerEpoch,
+                OFFSETS,
+                memberId,
+                generationId,
+                Optional.of(groupInstanceId),
+                true
         );
     }
 
@@ -96,24 +96,24 @@ public class TxnOffsetCommitRequestTest extends OffsetCommitRequestTest {
         errorsMap.put(new TopicPartition(topicTwo, partitionTwo), Errors.NOT_COORDINATOR);
 
         List<TxnOffsetCommitRequestTopic> expectedTopics = Arrays.asList(
-            new TxnOffsetCommitRequestTopic()
-                .setName(topicOne)
-                .setPartitions(Collections.singletonList(
-                    new TxnOffsetCommitRequestPartition()
-                        .setPartitionIndex(partitionOne)
-                        .setCommittedOffset(offset)
-                        .setCommittedLeaderEpoch(leaderEpoch)
-                        .setCommittedMetadata(metadata)
-                )),
-            new TxnOffsetCommitRequestTopic()
-                .setName(topicTwo)
-                .setPartitions(Collections.singletonList(
-                    new TxnOffsetCommitRequestPartition()
-                        .setPartitionIndex(partitionTwo)
-                        .setCommittedOffset(offset)
-                        .setCommittedLeaderEpoch(leaderEpoch)
-                        .setCommittedMetadata(metadata)
-                ))
+                new TxnOffsetCommitRequestTopic()
+                        .setName(topicOne)
+                        .setPartitions(Collections.singletonList(
+                                new TxnOffsetCommitRequestPartition()
+                                        .setPartitionIndex(partitionOne)
+                                        .setCommittedOffset(offset)
+                                        .setCommittedLeaderEpoch(leaderEpoch)
+                                        .setCommittedMetadata(metadata)
+                        )),
+                new TxnOffsetCommitRequestTopic()
+                        .setName(topicTwo)
+                        .setPartitions(Collections.singletonList(
+                                new TxnOffsetCommitRequestPartition()
+                                        .setPartitionIndex(partitionTwo)
+                                        .setCommittedOffset(offset)
+                                        .setCommittedLeaderEpoch(leaderEpoch)
+                                        .setCommittedMetadata(metadata)
+                        ))
         );
 
         for (short version : ApiKeys.TXN_OFFSET_COMMIT.allVersions()) {
@@ -127,7 +127,7 @@ public class TxnOffsetCommitRequestTest extends OffsetCommitRequestTest {
             assertEquals(expectedTopics, TxnOffsetCommitRequest.getTopics(request.offsets()));
 
             TxnOffsetCommitResponse response =
-                request.getErrorResponse(throttleTimeMs, Errors.NOT_COORDINATOR.exception());
+                    request.getErrorResponse(throttleTimeMs, Errors.NOT_COORDINATOR.exception());
 
             assertEquals(errorsMap, response.errors());
             assertEquals(Collections.singletonMap(Errors.NOT_COORDINATOR, 2), response.errorCounts());
@@ -139,19 +139,19 @@ public class TxnOffsetCommitRequestTest extends OffsetCommitRequestTest {
     @Override
     public void testGetErrorResponse() {
         TxnOffsetCommitResponseData expectedResponse = new TxnOffsetCommitResponseData()
-            .setTopics(Arrays.asList(
-                new TxnOffsetCommitResponseData.TxnOffsetCommitResponseTopic()
-                    .setName(topicOne)
-                    .setPartitions(Collections.singletonList(
-                        new TxnOffsetCommitResponseData.TxnOffsetCommitResponsePartition()
-                            .setErrorCode(Errors.UNKNOWN_MEMBER_ID.code())
-                            .setPartitionIndex(partitionOne))),
-                new TxnOffsetCommitResponseData.TxnOffsetCommitResponseTopic()
-                    .setName(topicTwo)
-                    .setPartitions(Collections.singletonList(
-                        new TxnOffsetCommitResponseData.TxnOffsetCommitResponsePartition()
-                            .setErrorCode(Errors.UNKNOWN_MEMBER_ID.code())
-                            .setPartitionIndex(partitionTwo)))));
+                .setTopics(Arrays.asList(
+                        new TxnOffsetCommitResponseData.TxnOffsetCommitResponseTopic()
+                                .setName(topicOne)
+                                .setPartitions(Collections.singletonList(
+                                        new TxnOffsetCommitResponseData.TxnOffsetCommitResponsePartition()
+                                                .setErrorCode(Errors.UNKNOWN_MEMBER_ID.code())
+                                                .setPartitionIndex(partitionOne))),
+                        new TxnOffsetCommitResponseData.TxnOffsetCommitResponseTopic()
+                                .setName(topicTwo)
+                                .setPartitions(Collections.singletonList(
+                                        new TxnOffsetCommitResponseData.TxnOffsetCommitResponsePartition()
+                                                .setErrorCode(Errors.UNKNOWN_MEMBER_ID.code())
+                                                .setPartitionIndex(partitionTwo)))));
 
         assertEquals(expectedResponse, getErrorResponse(builderWithGroupMetadata.data, Errors.UNKNOWN_MEMBER_ID));
     }
@@ -164,8 +164,8 @@ public class TxnOffsetCommitRequestTest extends OffsetCommitRequestTest {
                 assertDoesNotThrow(() -> builderWithGroupMetadata.build(version));
             } else {
                 assertEquals("Broker doesn't support group metadata commit API on version " + version +
-                    ", minimum supported request version is 3 which requires brokers to be on version 2.5 or above.",
-                    assertThrows(UnsupportedVersionException.class, () -> builderWithGroupMetadata.build(version)).getMessage());
+                                ", minimum supported request version is 3 which requires brokers to be on version 2.5 or above.",
+                        assertThrows(UnsupportedVersionException.class, () -> builderWithGroupMetadata.build(version)).getMessage());
             }
         }
     }

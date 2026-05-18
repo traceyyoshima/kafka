@@ -62,11 +62,11 @@ import java.util.Optional;
 import static org.apache.kafka.storage.internals.log.LogStartOffsetIncrementReason.LeaderOffsetIncremented;
 
 /**
- *  This class defines the APIs and implementation needed to handle any state transitions related to tiering
- *
- *  When started, the tier state machine will fetch the local log start offset of the
- *  leader and then build the follower's remote log aux state until the leader's
- *  local log start offset.
+ * This class defines the APIs and implementation needed to handle any state transitions related to tiering
+ * <p>
+ * When started, the tier state machine will fetch the local log start offset of the
+ * leader and then build the follower's remote log aux state until the leader's
+ * local log start offset.
  */
 public class TierStateMachine {
     private static final Logger log = LoggerFactory.getLogger(TierStateMachine.class);
@@ -74,6 +74,7 @@ public class TierStateMachine {
     private final LeaderEndPoint leader;
     private final ReplicaManager replicaMgr;
     private final boolean useFutureLog;
+
     public TierStateMachine(LeaderEndPoint leader,
                             ReplicaManager replicaMgr,
                             boolean useFutureLog) {
@@ -85,11 +86,11 @@ public class TierStateMachine {
     /**
      * Start the tier state machine for the provided topic partition.
      *
-     * @param topicPartition            the topic partition for which the tier state machine is to be started
-     * @param topicId                   the optional unique identifier of the topic
-     * @param currentLeaderEpoch        the current leader epoch of the partition
-     * @param fetchStartOffsetAndEpoch  the offset on the leader's local log from which to start replicating logs
-     * @param leaderLogStartOffset      the starting offset in the leader's log
+     * @param topicPartition           the topic partition for which the tier state machine is to be started
+     * @param topicId                  the optional unique identifier of the topic
+     * @param currentLeaderEpoch       the current leader epoch of the partition
+     * @param fetchStartOffsetAndEpoch the offset on the leader's local log from which to start replicating logs
+     * @param leaderLogStartOffset     the starting offset in the leader's log
      * @return the new PartitionFetchState after the successful start of the tier state machine
      * @throws Exception if an error occurs during the process, such as issues with remote storage
      */

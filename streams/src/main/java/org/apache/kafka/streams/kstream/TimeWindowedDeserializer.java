@@ -120,7 +120,7 @@ public class TimeWindowedDeserializer<T> implements Deserializer<Windowed<T>> {
             throw new IllegalArgumentException("Window size should not be set in both the time windowed deserializer constructor and the window.size.ms config");
         } else if (windowSize == null && configWindowSize == null) {
             throw new IllegalArgumentException("Window size needs to be set either through the time windowed deserializer " +
-                "constructor or the window.size.ms config but not both");
+                    "constructor or the window.size.ms config but not both");
         } else {
             windowSize = windowSize == null ? configWindowSize : windowSize;
         }
@@ -136,7 +136,7 @@ public class TimeWindowedDeserializer<T> implements Deserializer<Windowed<T>> {
                 deserializerConfigKey = StreamsConfig.WINDOWED_INNER_CLASS_SERDE;
                 deserializerConfigValue = windowedInnerClassSerdeConfig;
                 log.warn("Config {} is deprecated. Please use {} instead.",
-                    StreamsConfig.WINDOWED_INNER_CLASS_SERDE, WINDOWED_INNER_DESERIALIZER_CLASS);
+                        StreamsConfig.WINDOWED_INNER_CLASS_SERDE, WINDOWED_INNER_DESERIALIZER_CLASS);
             }
         }
 
@@ -146,20 +146,20 @@ public class TimeWindowedDeserializer<T> implements Deserializer<Windowed<T>> {
                 windowedInnerDeserializerClass = Utils.newInstance(deserializerConfigValue, Serde.class);
             } catch (final ClassNotFoundException e) {
                 throw new ConfigException(deserializerConfigKey, deserializerConfigValue,
-                    "Serde class " + deserializerConfigValue + " could not be found.");
+                        "Serde class " + deserializerConfigValue + " could not be found.");
             }
         }
 
         if (inner != null && deserializerConfigValue != null) {
             if (!inner.getClass().getName().equals(windowedInnerDeserializerClass.deserializer().getClass().getName())) {
                 throw new IllegalArgumentException("Inner class deserializer set using constructor "
-                    + "(" + inner.getClass().getName() + ")" +
-                    " is different from the one set in " + deserializerConfigKey + " config " +
-                    "(" + windowedInnerDeserializerClass.deserializer().getClass().getName() + ").");
+                        + "(" + inner.getClass().getName() + ")" +
+                        " is different from the one set in " + deserializerConfigKey + " config " +
+                        "(" + windowedInnerDeserializerClass.deserializer().getClass().getName() + ").");
             }
         } else if (inner == null && deserializerConfigValue == null) {
             throw new IllegalArgumentException("Inner class deserializer should be set either via  constructor " +
-                "or via the " + WINDOWED_INNER_DESERIALIZER_CLASS + " config");
+                    "or via the " + WINDOWED_INNER_DESERIALIZER_CLASS + " config");
         } else if (inner == null)
             inner = windowedInnerDeserializerClass.deserializer();
     }

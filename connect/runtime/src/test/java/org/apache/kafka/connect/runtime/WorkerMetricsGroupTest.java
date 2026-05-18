@@ -45,8 +45,9 @@ public class WorkerMetricsGroupTest {
     private final ConnectorTaskId task = new ConnectorTaskId(connector, 0);
     private final RuntimeException exception = new RuntimeException();
 
-    @Mock private ConnectMetrics connectMetrics;
-    
+    @Mock
+    private ConnectMetrics connectMetrics;
+
     private Sensor connectorStartupResults;
     private Sensor connectorStartupAttempts;
     private Sensor connectorStartupSuccesses;
@@ -57,11 +58,16 @@ public class WorkerMetricsGroupTest {
     private Sensor taskStartupSuccesses;
     private Sensor taskStartupFailures;
 
-    @Mock private ConnectorStatus.Listener delegateConnectorListener;
-    @Mock private TaskStatus.Listener delegateTaskListener;
-    @Mock private ConnectMetricsRegistry connectMetricsRegistry;
-    @Mock private ConnectMetrics.MetricGroup metricGroup;
-    @Mock private MetricName metricName;
+    @Mock
+    private ConnectorStatus.Listener delegateConnectorListener;
+    @Mock
+    private TaskStatus.Listener delegateTaskListener;
+    @Mock
+    private ConnectMetricsRegistry connectMetricsRegistry;
+    @Mock
+    private ConnectMetrics.MetricGroup metricGroup;
+    @Mock
+    private MetricName metricName;
 
     @BeforeEach
     public void setup() {
@@ -89,7 +95,7 @@ public class WorkerMetricsGroupTest {
         when(metricGroup.sensor(name)).thenReturn(sensor);
         return sensor;
     }
-    
+
     @Test
     public void testConnectorStartupRecordedMetrics() {
         WorkerMetricsGroup workerMetricsGroup = new WorkerMetricsGroup(new HashMap<>(), new HashMap<>(), connectMetrics);
@@ -120,7 +126,7 @@ public class WorkerMetricsGroupTest {
     public void testConnectorFailureBeforeStartupRecordedMetrics() {
         WorkerMetricsGroup workerMetricsGroup = new WorkerMetricsGroup(new HashMap<>(), new HashMap<>(), connectMetrics);
         final ConnectorStatus.Listener connectorListener = workerMetricsGroup.wrapStatusListener(delegateConnectorListener);
-        
+
         connectorListener.onFailure(connector, exception);
 
         verify(delegateConnectorListener).onFailure(connector, exception);
@@ -137,7 +143,7 @@ public class WorkerMetricsGroupTest {
         verify(delegateTaskListener).onStartup(task);
         verifyRecordTaskSuccess();
     }
-    
+
     @Test
     public void testTaskFailureAfterStartupRecordedMetrics() {
         WorkerMetricsGroup workerMetricsGroup = new WorkerMetricsGroup(new HashMap<>(), new HashMap<>(), connectMetrics);

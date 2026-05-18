@@ -35,9 +35,9 @@ public interface DetectThreadLeak {
      * @param predicate A {@link Predicate<Thread>} used to filter threads. Only threads that satisfy
      *                  the predicate are considered for detection.
      * @return An instance of {@link DetectThreadLeak} that can be used to detect new threads matching
-     *         the predicate that were not present at the time of this method's invocation.
-     *         The {@link DetectThreadLeak#newThreads()} method of the returned instance will return a list
-     *         of new threads that match the predicate and have been started after this method was called.
+     * the predicate that were not present at the time of this method's invocation.
+     * The {@link DetectThreadLeak#newThreads()} method of the returned instance will return a list
+     * of new threads that match the predicate and have been started after this method was called.
      */
     static DetectThreadLeak of(Predicate<Thread> predicate) {
         Set<Long> before = Thread.getAllStackTraces().keySet()

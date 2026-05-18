@@ -66,16 +66,16 @@ public class StateQueryResult<R> {
      */
     public QueryResult<R> getOnlyPartitionResult() {
         final List<QueryResult<R>> nonempty =
-            partitionResults
-                .values()
-                .stream()
-                .filter(QueryResult::isSuccess)
-                .filter(r -> r.getResult() != null)
-                .collect(Collectors.toList());
+                partitionResults
+                        .values()
+                        .stream()
+                        .filter(QueryResult::isSuccess)
+                        .filter(r -> r.getResult() != null)
+                        .collect(Collectors.toList());
 
         if (nonempty.size() > 1) {
             throw new IllegalArgumentException(
-                "The query did not return exactly one partition result: " + partitionResults
+                    "The query did not return exactly one partition result: " + partitionResults
             );
         } else {
             return nonempty.isEmpty() ? null : nonempty.get(0);
@@ -112,8 +112,8 @@ public class StateQueryResult<R> {
     @Override
     public String toString() {
         return "StateQueryResult{" +
-            "partitionResults=" + partitionResults +
-            ", globalResult=" + globalResult +
-            '}';
+                "partitionResults=" + partitionResults +
+                ", globalResult=" + globalResult +
+                '}';
     }
 }

@@ -92,13 +92,13 @@ public class MetadataSnapshotTest {
         String topic1 = "topic1";
         TopicPartition topic1Partition = new TopicPartition(topic1, 1);
         MetadataResponse.PartitionMetadata partitionMetadata1 = new MetadataResponse.PartitionMetadata(
-            Errors.NONE,
-            topic1Partition,
-            Optional.of(5),
-            Optional.of(10),
-            Arrays.asList(5, 6, 7),
-            Arrays.asList(5, 6, 7),
-            Collections.emptyList());
+                Errors.NONE,
+                topic1Partition,
+                Optional.of(5),
+                Optional.of(10),
+                Arrays.asList(5, 6, 7),
+                Arrays.asList(5, 6, 7),
+                Collections.emptyList());
 
         Map<Integer, Node> nodesById = new HashMap<>();
         nodesById.put(6, new Node(6, "localhost", 2077));
@@ -110,13 +110,13 @@ public class MetadataSnapshotTest {
         topicsIds.put(topic1Partition.topic(), topic1Id);
 
         MetadataSnapshot cache = new MetadataSnapshot("clusterId",
-            nodesById,
-            Collections.singleton(partitionMetadata1),
-            Collections.emptySet(),
-            Collections.emptySet(),
-            Collections.emptySet(),
-            null,
-            topicsIds);
+                nodesById,
+                Collections.singleton(partitionMetadata1),
+                Collections.emptySet(),
+                Collections.emptySet(),
+                Collections.emptySet(),
+                null,
+                topicsIds);
 
         Cluster cluster = cache.cluster();
         assertEquals(1, cluster.topics().size());
@@ -127,18 +127,18 @@ public class MetadataSnapshotTest {
         String topic2 = "topic2";
         TopicPartition topic2Partition = new TopicPartition(topic2, 2);
         MetadataResponse.PartitionMetadata partitionMetadata2 = new MetadataResponse.PartitionMetadata(
-            Errors.NONE,
-            topic2Partition,
-            Optional.of(5),
-            Optional.of(10),
-            Arrays.asList(5, 6, 7),
-            Arrays.asList(5, 6, 7),
-            Collections.emptyList());
+                Errors.NONE,
+                topic2Partition,
+                Optional.of(5),
+                Optional.of(10),
+                Arrays.asList(5, 6, 7),
+                Arrays.asList(5, 6, 7),
+                Collections.emptyList());
         topicsIds = new HashMap<>();
         Uuid topic2Id = Uuid.randomUuid();
         topicsIds.put(topic2Partition.topic(), topic2Id);
         cache = cache.mergeWith("clusterId", nodesById, Collections.singleton(partitionMetadata2),
-            Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), null, topicsIds, (topic, retain) -> true);
+                Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), null, topicsIds, (topic, retain) -> true);
         cluster = cache.cluster();
 
         // Verify topic1Partition is retained & topic2Partition is added.
@@ -192,24 +192,24 @@ public class MetadataSnapshotTest {
         // Setup partition 0 with a leader-epoch of 10.
         TopicPartition topicPartition1 = new TopicPartition("topic", 0);
         MetadataResponse.PartitionMetadata partitionMetadata1 = new MetadataResponse.PartitionMetadata(
-            Errors.NONE,
-            topicPartition1,
-            Optional.of(5),
-            Optional.of(10),
-            Arrays.asList(5, 6, 7),
-            Arrays.asList(5, 6, 7),
-            Collections.emptyList());
+                Errors.NONE,
+                topicPartition1,
+                Optional.of(5),
+                Optional.of(10),
+                Arrays.asList(5, 6, 7),
+                Arrays.asList(5, 6, 7),
+                Collections.emptyList());
 
         // Setup partition 1 with an unknown leader epoch.
         TopicPartition topicPartition2 = new TopicPartition("topic", 1);
         MetadataResponse.PartitionMetadata partitionMetadata2 = new MetadataResponse.PartitionMetadata(
-            Errors.NONE,
-            topicPartition2,
-            Optional.of(5),
-            Optional.empty(),
-            Arrays.asList(5, 6, 7),
-            Arrays.asList(5, 6, 7),
-            Collections.emptyList());
+                Errors.NONE,
+                topicPartition2,
+                Optional.of(5),
+                Optional.empty(),
+                Arrays.asList(5, 6, 7),
+                Arrays.asList(5, 6, 7),
+                Collections.emptyList());
 
         Map<Integer, Node> nodesById = new HashMap<>();
         nodesById.put(5, new Node(5, "localhost", 2077));
@@ -217,13 +217,13 @@ public class MetadataSnapshotTest {
         nodesById.put(7, new Node(7, "localhost", 2079));
 
         MetadataSnapshot cache = new MetadataSnapshot("clusterId",
-            nodesById,
-            Arrays.asList(partitionMetadata1, partitionMetadata2),
-            Collections.emptySet(),
-            Collections.emptySet(),
-            Collections.emptySet(),
-            null,
-            Collections.emptyMap());
+                nodesById,
+                Arrays.asList(partitionMetadata1, partitionMetadata2),
+                Collections.emptySet(),
+                Collections.emptySet(),
+                Collections.emptySet(),
+                null,
+                Collections.emptyMap());
 
         assertEquals(OptionalInt.of(10), cache.leaderEpochFor(topicPartition1));
 

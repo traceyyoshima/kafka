@@ -37,6 +37,6 @@ public class StreamsOnTasksRevokedCallbackNeededEvent extends CompletableBackgro
     @Override
     protected String toStringBase() {
         return super.toStringBase() +
-            ", active tasks to revoke=" + activeTasksToRevoke;
+                ", active tasks to revoke=" + activeTasksToRevoke;
     }
 }

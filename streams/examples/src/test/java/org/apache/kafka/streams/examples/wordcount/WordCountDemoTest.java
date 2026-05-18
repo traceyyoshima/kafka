@@ -114,10 +114,10 @@ public class WordCountDemoTest {
     public void testStreamsConfig() throws IOException {
         final File tmp = TestUtils.tempFile("bootstrap.servers=localhost:1234");
         try {
-            Properties config = WordCountDemo.streamsConfig(new String[] {tmp.getPath()});
+            Properties config = WordCountDemo.streamsConfig(new String[]{tmp.getPath()});
             assertThat("localhost:1234", equalTo(config.getProperty(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG)));
 
-            config = WordCountDemo.streamsConfig(new String[] {tmp.getPath(), "extra", "args"});
+            config = WordCountDemo.streamsConfig(new String[]{tmp.getPath(), "extra", "args"});
             assertThat("localhost:1234", equalTo(config.getProperty(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG)));
         } finally {
             Files.deleteIfExists(tmp.toPath());

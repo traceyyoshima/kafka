@@ -21,7 +21,6 @@ package org.apache.kafka.streams.kstream;
  * {@code Initializer} is used in combination with {@link Aggregator}.
  *
  * @param <VAgg> aggregate value type
- *
  * @see Aggregator
  * @see KGroupedStream#aggregate(Initializer, Aggregator)
  * @see KGroupedStream#aggregate(Initializer, Aggregator, Materialized)

@@ -64,7 +64,7 @@ public interface KGroupedStream<K, V> {
      * {@link StreamsConfig#APPLICATION_ID_CONFIG APPLICATION_ID_CONFIG}, "internalStoreName" is an internal name
      * and "-changelog" is a fixed suffix.
      * Note that the internal store name may not be queryable through Interactive Queries.
-     *
+     * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
      * @return a {@link KTable} that contains "update" records with unmodified keys and {@link Long} values that
@@ -92,11 +92,10 @@ public interface KGroupedStream<K, V> {
      * {@link StreamsConfig#APPLICATION_ID_CONFIG APPLICATION_ID_CONFIG}, "internalStoreName" is an internal name
      * and "-changelog" is a fixed suffix.
      * Note that the internal store name may not be queryable through Interactive Queries.
-     *
+     * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param named  a {@link Named} config used to name the processor in the topology
-     *
+     * @param named a {@link Named} config used to name the processor in the topology
      * @return a {@link KTable} that contains "update" records with unmodified keys and {@link Long} values that
      * represent the latest (rolling) count (i.e., number of records) for each key
      */
@@ -138,12 +137,12 @@ public interface KGroupedStream<K, V> {
      * user-specified in {@link StreamsConfig} via parameter
      * {@link StreamsConfig#APPLICATION_ID_CONFIG APPLICATION_ID_CONFIG}, "storeName" is the
      * provide store name defined in {@code Materialized}, and "-changelog" is a fixed suffix.
-     *
+     * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param materialized  an instance of {@link Materialized} used to materialize a state store. Cannot be {@code null}.
-     *                      Note: the valueSerde will be automatically set to {@link org.apache.kafka.common.serialization.Serdes#Long() Serdes#Long()}
-     *                      if there is no valueSerde provided
+     * @param materialized an instance of {@link Materialized} used to materialize a state store. Cannot be {@code null}.
+     *                     Note: the valueSerde will be automatically set to {@link org.apache.kafka.common.serialization.Serdes#Long() Serdes#Long()}
+     *                     if there is no valueSerde provided
      * @return a {@link KTable} that contains "update" records with unmodified keys and {@link Long} values that
      * represent the latest (rolling) count (i.e., number of records) for each key
      */
@@ -185,13 +184,13 @@ public interface KGroupedStream<K, V> {
      * user-specified in {@link StreamsConfig} via parameter
      * {@link StreamsConfig#APPLICATION_ID_CONFIG APPLICATION_ID_CONFIG}, "storeName" is the
      * provide store name defined in {@code Materialized}, and "-changelog" is a fixed suffix.
-     *
+     * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param named         a {@link Named} config used to name the processor in the topology
-     * @param materialized  an instance of {@link Materialized} used to materialize a state store. Cannot be {@code null}.
-     *                      Note: the valueSerde will be automatically set to {@link org.apache.kafka.common.serialization.Serdes#Long() Serdes#Long()}
-     *                      if there is no valueSerde provided
+     * @param named        a {@link Named} config used to name the processor in the topology
+     * @param materialized an instance of {@link Materialized} used to materialize a state store. Cannot be {@code null}.
+     *                     Note: the valueSerde will be automatically set to {@link org.apache.kafka.common.serialization.Serdes#Long() Serdes#Long()}
+     *                     if there is no valueSerde provided
      * @return a {@link KTable} that contains "update" records with unmodified keys and {@link Long} values that
      * represent the latest (rolling) count (i.e., number of records) for each key
      */
@@ -225,10 +224,10 @@ public interface KGroupedStream<K, V> {
      * {@link StreamsConfig#APPLICATION_ID_CONFIG APPLICATION_ID_CONFIG}, "internalStoreName" is an internal name
      * and "-changelog" is a fixed suffix.
      * Note that the internal store name may not be queryable through Interactive Queries.
-     *
+     * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param reducer   a {@link Reducer} that computes a new aggregate result. Cannot be {@code null}.
+     * @param reducer a {@link Reducer} that computes a new aggregate result. Cannot be {@code null}.
      * @return a {@link KTable} that contains "update" records with unmodified keys, and values that represent the
      * latest (rolling) aggregate for each key. If the reduce function returns {@code null}, it is then interpreted as
      * deletion for the key, and future messages of the same key coming from upstream operators
@@ -289,11 +288,11 @@ public interface KGroupedStream<K, V> {
      * {@link StreamsConfig#APPLICATION_ID_CONFIG APPLICATION_ID_CONFIG}, "internalStoreName" is an internal name
      * and "-changelog" is a fixed suffix.
      * Note that the internal store name may not be queryable through Interactive Queries.
-     *
+     * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param reducer       a {@link Reducer} that computes a new aggregate result. Cannot be {@code null}.
-     * @param materialized  an instance of {@link Materialized} used to materialize a state store. Cannot be {@code null}.
+     * @param reducer      a {@link Reducer} that computes a new aggregate result. Cannot be {@code null}.
+     * @param materialized an instance of {@link Materialized} used to materialize a state store. Cannot be {@code null}.
      * @return a {@link KTable} that contains "update" records with unmodified keys, and values that represent the
      * latest (rolling) aggregate for each key
      */
@@ -354,12 +353,12 @@ public interface KGroupedStream<K, V> {
      * {@link StreamsConfig#APPLICATION_ID_CONFIG APPLICATION_ID_CONFIG}, "internalStoreName" is an internal name
      * and "-changelog" is a fixed suffix.
      * Note that the internal store name may not be queryable through Interactive Queries.
-     *
+     * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param reducer       a {@link Reducer} that computes a new aggregate result. Cannot be {@code null}.
-     * @param named         a {@link Named} config used to name the processor in the topology.
-     * @param materialized  an instance of {@link Materialized} used to materialize a state store. Cannot be {@code null}.
+     * @param reducer      a {@link Reducer} that computes a new aggregate result. Cannot be {@code null}.
+     * @param named        a {@link Named} config used to name the processor in the topology.
+     * @param materialized an instance of {@link Materialized} used to materialize a state store. Cannot be {@code null}.
      * @return a {@link KTable} that contains "update" records with unmodified keys, and values that represent the
      * latest (rolling) aggregate for each key. If the reduce function returns {@code null}, it is then interpreted as
      * deletion for the key, and future messages of the same key coming from upstream operators
@@ -401,12 +400,12 @@ public interface KGroupedStream<K, V> {
      * {@link StreamsConfig#APPLICATION_ID_CONFIG APPLICATION_ID_CONFIG}, "internalStoreName" is an internal name
      * and "-changelog" is a fixed suffix.
      * Note that the internal store name may not be queryable through Interactive Queries.
-     *
+     * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param initializer   an {@link Initializer} that computes an initial intermediate aggregation result
-     * @param aggregator    an {@link Aggregator} that computes a new aggregate result
-     * @param <VOut>          the value type of the resulting {@link KTable}
+     * @param initializer an {@link Initializer} that computes an initial intermediate aggregation result
+     * @param aggregator  an {@link Aggregator} that computes a new aggregate result
+     * @param <VOut>      the value type of the resulting {@link KTable}
      * @return a {@link KTable} that contains "update" records with unmodified keys, and values that represent the
      * latest (rolling) aggregate for each key. If the aggregate function returns {@code null}, it is then interpreted as
      * deletion for the key, and future messages of the same key coming from upstream operators
@@ -461,13 +460,13 @@ public interface KGroupedStream<K, V> {
      * user-specified in {@link StreamsConfig} via parameter
      * {@link StreamsConfig#APPLICATION_ID_CONFIG APPLICATION_ID_CONFIG}, "storeName" is the
      * provide store name defined in {@code Materialized}, and "-changelog" is a fixed suffix.
-     *
+     * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param initializer   an {@link Initializer} that computes an initial intermediate aggregation result
-     * @param aggregator    an {@link Aggregator} that computes a new aggregate result
-     * @param materialized  an instance of {@link Materialized} used to materialize a state store. Cannot be {@code null}.
-     * @param <VOut>          the value type of the resulting {@link KTable}
+     * @param initializer  an {@link Initializer} that computes an initial intermediate aggregation result
+     * @param aggregator   an {@link Aggregator} that computes a new aggregate result
+     * @param materialized an instance of {@link Materialized} used to materialize a state store. Cannot be {@code null}.
+     * @param <VOut>       the value type of the resulting {@link KTable}
      * @return a {@link KTable} that contains "update" records with unmodified keys, and values that represent the
      * latest (rolling) aggregate for each key
      */
@@ -521,14 +520,14 @@ public interface KGroupedStream<K, V> {
      * user-specified in {@link StreamsConfig} via parameter
      * {@link StreamsConfig#APPLICATION_ID_CONFIG APPLICATION_ID_CONFIG}, "storeName" is the
      * provide store name defined in {@code Materialized}, and "-changelog" is a fixed suffix.
-     *
+     * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param initializer   an {@link Initializer} that computes an initial intermediate aggregation result
-     * @param aggregator    an {@link Aggregator} that computes a new aggregate result
-     * @param named         a {@link Named} config used to name the processor in the topology
-     * @param materialized  an instance of {@link Materialized} used to materialize a state store. Cannot be {@code null}.
-     * @param <VOut>          the value type of the resulting {@link KTable}
+     * @param initializer  an {@link Initializer} that computes an initial intermediate aggregation result
+     * @param aggregator   an {@link Aggregator} that computes a new aggregate result
+     * @param named        a {@link Named} config used to name the processor in the topology
+     * @param materialized an instance of {@link Materialized} used to materialize a state store. Cannot be {@code null}.
+     * @param <VOut>       the value type of the resulting {@link KTable}
      * @return a {@link KTable} that contains "update" records with unmodified keys, and values that represent the
      * latest (rolling) aggregate for each key. If the aggregate function returns {@code null}, it is then interpreted as
      * deletion for the key, and future messages of the same key coming from upstream operators
@@ -541,6 +540,7 @@ public interface KGroupedStream<K, V> {
 
     /**
      * Create a new {@link TimeWindowedKStream} instance that can be used to perform windowed aggregations.
+     *
      * @param windows the specification of the aggregation {@link Windows}
      * @param <W>     the window type
      * @return an instance of {@link TimeWindowedKStream}
@@ -549,6 +549,7 @@ public interface KGroupedStream<K, V> {
 
     /**
      * Create a new {@link TimeWindowedKStream} instance that can be used to perform sliding windowed aggregations.
+     *
      * @param windows the specification of the aggregation {@link SlidingWindows}
      * @return an instance of {@link TimeWindowedKStream}
      */
@@ -556,6 +557,7 @@ public interface KGroupedStream<K, V> {
 
     /**
      * Create a new {@link SessionWindowedKStream} instance that can be used to perform session windowed aggregations.
+     *
      * @param windows the specification of the aggregation {@link SessionWindows}
      * @return an instance of {@link TimeWindowedKStream}
      */
@@ -574,7 +576,7 @@ public interface KGroupedStream<K, V> {
      * is passed into {@link CogroupedKStream#aggregate(Initializer)}) and the record's value.
      *
      * @param aggregator an {@link Aggregator} that computes a new aggregate result
-     * @param <VOut> the type of the output values
+     * @param <VOut>     the type of the output values
      * @return a {@link CogroupedKStream}
      */
     <VOut> CogroupedKStream<K, VOut> cogroup(final Aggregator<? super K, ? super V, VOut> aggregator);

@@ -22,7 +22,7 @@ import java.util.OptionalLong;
 /**
  * This interface is used to send committed data from the {@link RaftClient}
  * down to registered {@link RaftClient.Listener} instances.
- *
+ * <p>
  * The advantage of hiding the consumption of committed batches behind an interface
  * is that it allows us to push blocking operations such as reads from disk outside
  * of the Raft IO thread. This helps to ensure that a slow state machine will not

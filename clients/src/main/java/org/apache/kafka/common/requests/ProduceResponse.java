@@ -33,9 +33,9 @@ import java.util.stream.Collectors;
 
 /**
  * This wrapper supports both v0 and v8 of ProduceResponse.
- *
+ * <p>
  * Possible error code:
- *
+ * <p>
  * {@link Errors#CORRUPT_MESSAGE}
  * {@link Errors#UNKNOWN_TOPIC_OR_PARTITION}
  * {@link Errors#NOT_LEADER_OR_FOLLOWER}
@@ -69,6 +69,7 @@ public class ProduceResponse extends AbstractResponse {
      * Constructor for Version 0
      * This is deprecated in favor of using the ProduceResponseData constructor, KafkaApis should switch to that
      * in KAFKA-10730
+     *
      * @param responses Produced data grouped by topic-partition
      */
     @Deprecated
@@ -79,7 +80,8 @@ public class ProduceResponse extends AbstractResponse {
     /**
      * This is deprecated in favor of using the ProduceResponseData constructor, KafkaApis should switch to that
      * in KAFKA-10730
-     * @param responses Produced data grouped by topic-partition
+     *
+     * @param responses      Produced data grouped by topic-partition
      * @param throttleTimeMs Time in milliseconds the response was throttled
      */
     @Deprecated
@@ -91,9 +93,10 @@ public class ProduceResponse extends AbstractResponse {
      * Constructor for the latest version
      * This is deprecated in favor of using the ProduceResponseData constructor, KafkaApis should switch to that
      * in KAFKA-10730
-     * @param responses Produced data grouped by topic-partition
+     *
+     * @param responses      Produced data grouped by topic-partition
      * @param throttleTimeMs Time in milliseconds the response was throttled
-     * @param nodeEndpoints List of node endpoints
+     * @param nodeEndpoints  List of node endpoints
      */
     @Deprecated
     public ProduceResponse(Map<TopicIdPartition, PartitionResponse> responses, int throttleTimeMs, List<Node> nodeEndpoints) {
@@ -109,20 +112,20 @@ public class ProduceResponse extends AbstractResponse {
                 data.responses().add(tpr);
             }
             tpr.partitionResponses()
-                .add(new ProduceResponseData.PartitionProduceResponse()
-                    .setIndex(tp.partition())
-                    .setBaseOffset(response.baseOffset)
-                    .setLogStartOffset(response.logStartOffset)
-                    .setLogAppendTimeMs(response.logAppendTime)
-                    .setErrorMessage(response.errorMessage)
-                    .setErrorCode(response.error.code())
-                    .setCurrentLeader(response.currentLeader != null ? response.currentLeader : new LeaderIdAndEpoch())
-                    .setRecordErrors(response.recordErrors
-                        .stream()
-                        .map(e -> new ProduceResponseData.BatchIndexAndErrorMessage()
-                            .setBatchIndex(e.batchIndex)
-                            .setBatchIndexErrorMessage(e.message))
-                        .collect(Collectors.toList())));
+                    .add(new ProduceResponseData.PartitionProduceResponse()
+                            .setIndex(tp.partition())
+                            .setBaseOffset(response.baseOffset)
+                            .setLogStartOffset(response.logStartOffset)
+                            .setLogAppendTimeMs(response.logAppendTime)
+                            .setErrorMessage(response.errorMessage)
+                            .setErrorCode(response.error.code())
+                            .setCurrentLeader(response.currentLeader != null ? response.currentLeader : new LeaderIdAndEpoch())
+                            .setRecordErrors(response.recordErrors
+                                    .stream()
+                                    .map(e -> new ProduceResponseData.BatchIndexAndErrorMessage()
+                                            .setBatchIndex(e.batchIndex)
+                                            .setBatchIndexErrorMessage(e.message))
+                                    .collect(Collectors.toList())));
         });
         nodeEndpoints.forEach(endpoint -> data.nodeEndpoints()
                 .add(new ProduceResponseData.NodeEndpoint()
@@ -185,13 +188,13 @@ public class ProduceResponse extends AbstractResponse {
         }
 
         public PartitionResponse(
-            Errors error,
-            long baseOffset,
-            long logAppendTime,
-            long logStartOffset,
-            List<RecordError> recordErrors,
-            String errorMessage,
-            ProduceResponseData.LeaderIdAndEpoch currentLeader
+                Errors error,
+                long baseOffset,
+                long logAppendTime,
+                long logStartOffset,
+                List<RecordError> recordErrors,
+                String errorMessage,
+                ProduceResponseData.LeaderIdAndEpoch currentLeader
         ) {
             this.error = error;
             this.baseOffset = baseOffset;

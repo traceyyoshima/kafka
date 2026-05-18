@@ -28,26 +28,26 @@ import java.util.Random;
 
 /**
  * A PayloadGenerator which generates a timestamped uniform random payload.
- *
+ * <p>
  * This generator generates pseudo-random payloads that can be reproduced from run to run.
  * The guarantees are the same as those of java.util.Random.
- *
+ * <p>
  * The timestamp used for this class is in milliseconds since epoch, encoded directly to the first several bytes of the
  * payload.
- *
+ * <p>
  * This should be used in conjunction with TimestampRecordProcessor in the Consumer to measure true end-to-end latency
  * of a system.
- *
+ * <p>
  * `size` - The size in bytes of each message.
  * `seed` - Used to initialize Random() to remove some non-determinism.
- *
+ * <p>
  * Here is an example spec:
- *
+ * <p>
  * {
- *    "type": "timestampRandom",
- *    "size": 512
+ * "type": "timestampRandom",
+ * "size": 512
  * }
- *
+ * <p>
  * This will generate a 512-byte random message with the first several bytes encoded with the timestamp.
  */
 public class TimestampRandomPayloadGenerator implements PayloadGenerator {

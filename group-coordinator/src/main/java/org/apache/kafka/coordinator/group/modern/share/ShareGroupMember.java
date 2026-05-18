@@ -63,8 +63,8 @@ public class ShareGroupMember extends ModernGroupMember {
 
         public Builder(ShareGroupMember member) {
             this(
-                Objects.requireNonNull(member),
-                member.memberId
+                    Objects.requireNonNull(member),
+                    member.memberId
             );
         }
 
@@ -157,15 +157,15 @@ public class ShareGroupMember extends ModernGroupMember {
 
         public ShareGroupMember build() {
             return new ShareGroupMember(
-                memberId,
-                memberEpoch,
-                previousMemberEpoch,
-                rackId,
-                clientId,
-                clientHost,
-                subscribedTopicNames,
-                state,
-                assignedPartitions
+                    memberId,
+                    memberEpoch,
+                    previousMemberEpoch,
+                    rackId,
+                    clientId,
+                    clientHost,
+                    subscribedTopicNames,
+                    state,
+                    assignedPartitions
             );
         }
     }
@@ -176,26 +176,26 @@ public class ShareGroupMember extends ModernGroupMember {
     private final Map<Uuid, Set<Integer>> assignedPartitions;
 
     private ShareGroupMember(
-          String memberId,
-          int memberEpoch,
-          int previousMemberEpoch,
-          String rackId,
-          String clientId,
-          String clientHost,
-          Set<String> subscribedTopicNames,
-          MemberState state,
-          Map<Uuid, Set<Integer>> assignedPartitions
+            String memberId,
+            int memberEpoch,
+            int previousMemberEpoch,
+            String rackId,
+            String clientId,
+            String clientHost,
+            Set<String> subscribedTopicNames,
+            MemberState state,
+            Map<Uuid, Set<Integer>> assignedPartitions
     ) {
         super(
-            memberId,
-            memberEpoch,
-            previousMemberEpoch,
-            null,
-            rackId,
-            clientId,
-            clientHost,
-            subscribedTopicNames,
-            state
+                memberId,
+                memberEpoch,
+                previousMemberEpoch,
+                null,
+                rackId,
+                clientId,
+                clientHost,
+                subscribedTopicNames,
+                state
         );
         this.assignedPartitions = assignedPartitions;
     }
@@ -211,8 +211,8 @@ public class ShareGroupMember extends ModernGroupMember {
      * @return True if the two provided members have different assigned partitions.
      */
     public static boolean hasAssignedPartitionsChanged(
-        ShareGroupMember member1,
-        ShareGroupMember member2
+            ShareGroupMember member1,
+            ShareGroupMember member2
     ) {
         return !member1.assignedPartitions().equals(member2.assignedPartitions());
     }
@@ -224,29 +224,29 @@ public class ShareGroupMember extends ModernGroupMember {
      * @return The ShareGroupMember mapped as ShareGroupDescribeResponseData.Member.
      */
     public ShareGroupDescribeResponseData.Member asShareGroupDescribeMember(
-        CoordinatorMetadataImage image
+            CoordinatorMetadataImage image
     ) {
         return new ShareGroupDescribeResponseData.Member()
-            .setMemberEpoch(memberEpoch)
-            .setMemberId(memberId)
-            .setAssignment(new ShareGroupDescribeResponseData.Assignment()
-                .setTopicPartitions(topicPartitionsFromMap(assignedPartitions, image)))
-            .setClientHost(clientHost)
-            .setClientId(clientId)
-            .setRackId(rackId)
-            .setSubscribedTopicNames(subscribedTopicNames == null ? null : new ArrayList<>(subscribedTopicNames));
+                .setMemberEpoch(memberEpoch)
+                .setMemberId(memberId)
+                .setAssignment(new ShareGroupDescribeResponseData.Assignment()
+                        .setTopicPartitions(topicPartitionsFromMap(assignedPartitions, image)))
+                .setClientHost(clientHost)
+                .setClientId(clientId)
+                .setRackId(rackId)
+                .setSubscribedTopicNames(subscribedTopicNames == null ? null : new ArrayList<>(subscribedTopicNames));
     }
 
     private static List<ShareGroupDescribeResponseData.TopicPartitions> topicPartitionsFromMap(
-        Map<Uuid, Set<Integer>> partitions,
-        CoordinatorMetadataImage image
+            Map<Uuid, Set<Integer>> partitions,
+            CoordinatorMetadataImage image
     ) {
         List<ShareGroupDescribeResponseData.TopicPartitions> topicPartitions = new ArrayList<>();
         partitions.forEach((topicId, partitionSet) -> {
             image.topicMetadata(topicId).ifPresent(topicMetadata -> topicPartitions.add(new ShareGroupDescribeResponseData.TopicPartitions()
-                .setTopicId(topicId)
-                .setTopicName(topicMetadata.name())
-                .setPartitions(new ArrayList<>(partitionSet))));
+                    .setTopicId(topicId)
+                    .setTopicName(topicMetadata.name())
+                    .setPartitions(new ArrayList<>(partitionSet))));
         });
         return topicPartitions;
     }
@@ -257,14 +257,14 @@ public class ShareGroupMember extends ModernGroupMember {
         if (o == null || getClass() != o.getClass()) return false;
         ShareGroupMember that = (ShareGroupMember) o;
         return memberEpoch == that.memberEpoch
-            && previousMemberEpoch == that.previousMemberEpoch
-            && state == that.state
-            && Objects.equals(memberId, that.memberId)
-            && Objects.equals(rackId, that.rackId)
-            && Objects.equals(clientId, that.clientId)
-            && Objects.equals(clientHost, that.clientHost)
-            && Objects.equals(subscribedTopicNames, that.subscribedTopicNames)
-            && Objects.equals(assignedPartitions, that.assignedPartitions);
+                && previousMemberEpoch == that.previousMemberEpoch
+                && state == that.state
+                && Objects.equals(memberId, that.memberId)
+                && Objects.equals(rackId, that.rackId)
+                && Objects.equals(clientId, that.clientId)
+                && Objects.equals(clientHost, that.clientHost)
+                && Objects.equals(subscribedTopicNames, that.subscribedTopicNames)
+                && Objects.equals(assignedPartitions, that.assignedPartitions);
     }
 
     @Override
@@ -284,15 +284,15 @@ public class ShareGroupMember extends ModernGroupMember {
     @Override
     public String toString() {
         return "ShareGroupMember(" +
-            "memberId='" + memberId + '\'' +
-            ", memberEpoch=" + memberEpoch + '\'' +
-            ", previousMemberEpoch=" + previousMemberEpoch + '\'' +
-            ", state='" + state + '\'' +
-            ", rackId='" + rackId + '\'' +
-            ", clientId='" + clientId + '\'' +
-            ", clientHost='" + clientHost + '\'' +
-            ", subscribedTopicNames=" + subscribedTopicNames + '\'' +
-            ", assignedPartitions=" + assignedPartitions +
-            ')';
+                "memberId='" + memberId + '\'' +
+                ", memberEpoch=" + memberEpoch + '\'' +
+                ", previousMemberEpoch=" + previousMemberEpoch + '\'' +
+                ", state='" + state + '\'' +
+                ", rackId='" + rackId + '\'' +
+                ", clientId='" + clientId + '\'' +
+                ", clientHost='" + clientHost + '\'' +
+                ", subscribedTopicNames=" + subscribedTopicNames + '\'' +
+                ", assignedPartitions=" + assignedPartitions +
+                ')';
     }
 }

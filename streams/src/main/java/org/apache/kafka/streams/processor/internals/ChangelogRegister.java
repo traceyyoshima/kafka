@@ -29,7 +29,7 @@ public interface ChangelogRegister {
     /**
      * Register a state store for restoration.
      *
-     * @param partition the state store's changelog partition for restoring
+     * @param partition    the state store's changelog partition for restoring
      * @param stateManager the state manager used for restoring (one per task)
      */
     void register(final TopicPartition partition, final ProcessorStateManager stateManager);
@@ -39,14 +39,16 @@ public interface ChangelogRegister {
     /**
      * Unregisters and removes the passed in partitions from the set of changelogs.
      * Defaults to {@link StandbyUpdateListener.SuspendReason#MIGRATED} for the standby suspend reason.
+     *
      * @param removedPartitions the set of partitions to remove
      */
     void unregister(final Collection<TopicPartition> removedPartitions);
 
     /**
      * Unregisters and removes the passed in partitions from the set of changelogs.
+     *
      * @param removedPartitions the set of partitions to remove
-     * @param reason the reason for suspending standby update, passed to the standby update listener
+     * @param reason            the reason for suspending standby update, passed to the standby update listener
      */
     void unregister(final Collection<TopicPartition> removedPartitions, final StandbyUpdateListener.SuspendReason reason);
 }

@@ -51,11 +51,11 @@ public interface StreamsMetrics {
      *
      * <p>The added sensor and its metrics can be removed with {@link #removeSensor(Sensor) removeSensor()}.
      *
-     * @param scopeName          name of the scope, which will be used as part of the metric type, e.g.: "stream-[scope]-metrics".
-     * @param entityName         name of the entity, which will be used as part of the metric tags, e.g.: "[scope]-id" = "[entity]".
-     * @param operationName      name of the operation, which will be used as the name of the metric, e.g.: "[operation]-latency-avg".
-     * @param recordingLevel     the recording level (e.g., INFO or DEBUG) for this sensor.
-     * @param tags               additional tags of the sensor
+     * @param scopeName      name of the scope, which will be used as part of the metric type, e.g.: "stream-[scope]-metrics".
+     * @param entityName     name of the entity, which will be used as part of the metric tags, e.g.: "[scope]-id" = "[entity]".
+     * @param operationName  name of the operation, which will be used as the name of the metric, e.g.: "[operation]-latency-avg".
+     * @param recordingLevel the recording level (e.g., INFO or DEBUG) for this sensor.
+     * @param tags           additional tags of the sensor
      * @return The added sensor.
      * @see #addRateTotalSensor(String, String, String, Sensor.RecordingLevel, String...)
      * @see #removeSensor(Sensor)
@@ -81,11 +81,11 @@ public interface StreamsMetrics {
      *
      * <p>The added sensor and its metrics can be removed with {@link #removeSensor(Sensor) removeSensor()}.
      *
-     * @param scopeName          name of the scope, which will be used as part of the metrics type, e.g.: "stream-[scope]-metrics".
-     * @param entityName         name of the entity, which will be used as part of the metric tags, e.g.: "[scope]-id" = "[entity]".
-     * @param operationName      name of the operation, which will be used as the name of the metric, e.g.: "[operation]-total".
-     * @param recordingLevel     the recording level (e.g., INFO or DEBUG) for this sensor.
-     * @param tags               additional tags of the sensor
+     * @param scopeName      name of the scope, which will be used as part of the metrics type, e.g.: "stream-[scope]-metrics".
+     * @param entityName     name of the entity, which will be used as part of the metric tags, e.g.: "[scope]-id" = "[entity]".
+     * @param operationName  name of the operation, which will be used as the name of the metric, e.g.: "[operation]-total".
+     * @param recordingLevel the recording level (e.g., INFO or DEBUG) for this sensor.
+     * @param tags           additional tags of the sensor
      * @return The added sensor.
      * @see #addLatencyRateTotalSensor(String, String, String, Sensor.RecordingLevel, String...)
      * @see #removeSensor(Sensor)
@@ -136,6 +136,7 @@ public interface StreamsMetrics {
 
     /**
      * Remove a sensor.
+     *
      * @param sensor sensor to be removed
      */
     void removeSensor(final Sensor sensor);

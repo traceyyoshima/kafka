@@ -29,15 +29,13 @@ public interface ReplicaPlacer {
     /**
      * Create a new replica placement.
      *
-     * @param placement     What we're trying to place.
-     * @param cluster       A description of the cluster we're trying to place in.
-     *
-     * @return              A topic assignment.
-     *
-     * @throws InvalidReplicationFactorException    If too many replicas were requested.
+     * @param placement What we're trying to place.
+     * @param cluster   A description of the cluster we're trying to place in.
+     * @return A topic assignment.
+     * @throws InvalidReplicationFactorException If too many replicas were requested.
      */
     TopicAssignment place(
-        PlacementSpec placement,
-        ClusterDescriber cluster
+            PlacementSpec placement,
+            ClusterDescriber cluster
     ) throws InvalidReplicationFactorException;
 }

@@ -33,9 +33,10 @@ public class ThrottledChannel implements Delayed {
 
     /**
      * Represents a request whose response has been delayed.
-     * @param time Time instance to use
+     *
+     * @param time           Time instance to use
      * @param throttleTimeMs Delay associated with this request
-     * @param callback Callback for channel throttling
+     * @param callback       Callback for channel throttling
      */
     public ThrottledChannel(Time time, int throttleTimeMs, ThrottleCallback callback) {
         this.time = time;

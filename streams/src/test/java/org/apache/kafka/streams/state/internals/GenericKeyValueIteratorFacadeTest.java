@@ -56,8 +56,8 @@ public class GenericKeyValueIteratorFacadeTest {
     @Test
     public void shouldConvertValues() {
         when(mockedInnerIterator.next())
-            .thenReturn(KeyValue.pair("key1", ValueAndTimestamp.make("value1", 42L)))
-            .thenReturn(KeyValue.pair("key2", ValueAndTimestamp.make("value2", 84L)));
+                .thenReturn(KeyValue.pair("key1", ValueAndTimestamp.make("value1", 42L)))
+                .thenReturn(KeyValue.pair("key2", ValueAndTimestamp.make("value2", 84L)));
 
         assertThat(facade.next(), is(KeyValue.pair("key1", "value1")));
         assertThat(facade.next(), is(KeyValue.pair("key2", "value2")));
@@ -66,8 +66,8 @@ public class GenericKeyValueIteratorFacadeTest {
     @Test
     public void shouldHandleNullValues() {
         when(mockedInnerIterator.next())
-            .thenReturn(KeyValue.pair("key1", null))
-            .thenReturn(KeyValue.pair("key2", ValueAndTimestamp.make("value2", 42L)));
+                .thenReturn(KeyValue.pair("key1", null))
+                .thenReturn(KeyValue.pair("key2", ValueAndTimestamp.make("value2", 42L)));
 
         assertThat(facade.next(), is(KeyValue.pair("key1", null)));
         assertThat(facade.next(), is(KeyValue.pair("key2", "value2")));

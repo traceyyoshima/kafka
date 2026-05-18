@@ -18,17 +18,29 @@ package org.apache.kafka.clients.admin;
 
 import java.util.Map;
 
-/** 
+/**
  * This class allows to specify the desired offsets when using {@link KafkaAdminClient#listOffsets(Map, ListOffsetsOptions)}
  */
 public class OffsetSpec {
 
-    public static class EarliestSpec extends OffsetSpec { }
-    public static class LatestSpec extends OffsetSpec { }
-    public static class MaxTimestampSpec extends OffsetSpec { }
-    public static class EarliestLocalSpec extends OffsetSpec { }
-    public static class LatestTieredSpec extends OffsetSpec { }
-    public static class EarliestPendingUploadSpec extends OffsetSpec { }
+    public static class EarliestSpec extends OffsetSpec {
+    }
+
+    public static class LatestSpec extends OffsetSpec {
+    }
+
+    public static class MaxTimestampSpec extends OffsetSpec {
+    }
+
+    public static class EarliestLocalSpec extends OffsetSpec {
+    }
+
+    public static class LatestTieredSpec extends OffsetSpec {
+    }
+
+    public static class EarliestPendingUploadSpec extends OffsetSpec {
+    }
+
     public static class TimestampSpec extends OffsetSpec {
         private final long timestamp;
 
@@ -58,6 +70,7 @@ public class OffsetSpec {
     /**
      * Used to retrieve the earliest offset whose timestamp is greater than
      * or equal to the given timestamp in the corresponding partition
+     *
      * @param timestamp in milliseconds
      */
     public static OffsetSpec forTimestamp(long timestamp) {

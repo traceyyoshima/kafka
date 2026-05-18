@@ -68,7 +68,7 @@ public final class Maybe<T> {
         // All undefined maybes are equal
         // All defined null maybes are equal
         return defined == maybe.defined &&
-            (!defined || Objects.equals(nullableValue, maybe.nullableValue));
+                (!defined || Objects.equals(nullableValue, maybe.nullableValue));
     }
 
     @Override

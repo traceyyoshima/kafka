@@ -36,31 +36,31 @@ public record StandardAcl(ResourceType resourceType, String resourceName, Patter
                           AclPermissionType permissionType) implements Comparable<StandardAcl> {
     public static StandardAcl fromRecord(AccessControlEntryRecord record) {
         return new StandardAcl(
-            ResourceType.fromCode(record.resourceType()),
-            record.resourceName(),
-            PatternType.fromCode(record.patternType()),
-            record.principal(),
-            record.host(),
-            AclOperation.fromCode(record.operation()),
-            AclPermissionType.fromCode(record.permissionType()));
+                ResourceType.fromCode(record.resourceType()),
+                record.resourceName(),
+                PatternType.fromCode(record.patternType()),
+                record.principal(),
+                record.host(),
+                AclOperation.fromCode(record.operation()),
+                AclPermissionType.fromCode(record.permissionType()));
     }
 
     public static StandardAcl fromAclBinding(AclBinding acl) {
         return new StandardAcl(
-            acl.pattern().resourceType(),
-            acl.pattern().name(),
-            acl.pattern().patternType(),
-            acl.entry().principal(),
-            acl.entry().host(),
-            acl.entry().operation(),
-            acl.entry().permissionType());
+                acl.pattern().resourceType(),
+                acl.pattern().name(),
+                acl.pattern().patternType(),
+                acl.entry().principal(),
+                acl.entry().host(),
+                acl.entry().operation(),
+                acl.entry().permissionType());
     }
 
     public KafkaPrincipal kafkaPrincipal() {
         int colonIndex = principal.indexOf(":");
         if (colonIndex == -1) {
             throw new IllegalStateException("Could not parse principal from `" + principal + "` " +
-                "(no colon is present separating the principal type from the principal name)");
+                    "(no colon is present separating the principal type from the principal name)");
         }
         String principalType = principal.substring(0, colonIndex);
         String principalName = principal.substring(colonIndex + 1);
@@ -69,9 +69,9 @@ public record StandardAcl(ResourceType resourceType, String resourceName, Patter
 
     public AclBinding toBinding() {
         ResourcePattern resourcePattern =
-            new ResourcePattern(resourceType, resourceName, patternType);
+                new ResourcePattern(resourceType, resourceName, patternType);
         AccessControlEntry accessControlEntry =
-            new AccessControlEntry(principal, host, operation, permissionType);
+                new AccessControlEntry(principal, host, operation, permissionType);
         return new AclBinding(resourcePattern, accessControlEntry);
     }
 

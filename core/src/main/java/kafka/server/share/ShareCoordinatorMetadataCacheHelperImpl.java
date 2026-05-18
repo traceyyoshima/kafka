@@ -43,9 +43,9 @@ public class ShareCoordinatorMetadataCacheHelperImpl implements ShareCoordinator
     private final Logger log = LoggerFactory.getLogger(ShareCoordinatorMetadataCacheHelperImpl.class);
 
     public ShareCoordinatorMetadataCacheHelperImpl(
-        MetadataCache metadataCache,
-        Function<SharePartitionKey, Integer> keyToPartitionMapper,
-        ListenerName interBrokerListenerName
+            MetadataCache metadataCache,
+            Function<SharePartitionKey, Integer> keyToPartitionMapper,
+            ListenerName interBrokerListenerName
     ) {
         this.metadataCache = Objects.requireNonNull(metadataCache, "metadataCache must not be null");
         this.keyToPartitionMapper = Objects.requireNonNull(keyToPartitionMapper, "keyToPartitionMapper must not be null");
@@ -70,10 +70,10 @@ public class ShareCoordinatorMetadataCacheHelperImpl implements ShareCoordinator
                 topicSet.add(internalTopicName);
 
                 List<MetadataResponseData.MetadataResponseTopic> topicMetadata = metadataCache.getTopicMetadata(
-                    topicSet,
-                    interBrokerListenerName,
-                    false,
-                    false
+                        topicSet,
+                        interBrokerListenerName,
+                        false,
+                        false
                 );
 
                 if (topicMetadata == null || topicMetadata.isEmpty() || topicMetadata.get(0).errorCode() != Errors.NONE.code()) {
@@ -81,13 +81,13 @@ public class ShareCoordinatorMetadataCacheHelperImpl implements ShareCoordinator
                 } else {
                     int partition = keyToPartitionMapper.apply(key);
                     Optional<MetadataResponseData.MetadataResponsePartition> response = topicMetadata.get(0).partitions().stream()
-                        .filter(responsePart -> responsePart.partitionIndex() == partition
-                            && responsePart.leaderId() != MetadataResponse.NO_LEADER_ID)
-                        .findFirst();
+                            .filter(responsePart -> responsePart.partitionIndex() == partition
+                                    && responsePart.leaderId() != MetadataResponse.NO_LEADER_ID)
+                            .findFirst();
 
                     if (response.isPresent()) {
                         return metadataCache.getAliveBrokerNode(response.get().leaderId(), interBrokerListenerName)
-                            .orElse(Node.noNode());
+                                .orElse(Node.noNode());
                     } else {
                         return Node.noNode();
                     }

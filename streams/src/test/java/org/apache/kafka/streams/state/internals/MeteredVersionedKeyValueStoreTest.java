@@ -98,7 +98,7 @@ public class MeteredVersionedKeyValueStoreTest {
     private static final Bytes RAW_KEY = new Bytes(STRING_SERDE.serializer().serialize(null, KEY));
     private static final byte[] RAW_VALUE = STRING_SERDE.serializer().serialize(null, VALUE);
     private static final byte[] RAW_VALUE_AND_TIMESTAMP = VALUE_AND_TIMESTAMP_SERDE.serializer()
-        .serialize(null, ValueAndTimestamp.make(VALUE, TIMESTAMP));
+            .serialize(null, ValueAndTimestamp.make(VALUE, TIMESTAMP));
 
     private final VersionedBytesStore inner = mock(VersionedBytesStore.class);
     private final Metrics metrics = new Metrics();
@@ -118,9 +118,9 @@ public class MeteredVersionedKeyValueStoreTest {
 
         metrics.config().recordLevel(Sensor.RecordingLevel.DEBUG);
         tags = mkMap(
-            mkEntry("thread-id", threadId),
-            mkEntry("task-id", TASK_ID.toString()),
-            mkEntry(METRICS_SCOPE + "-state-id", STORE_NAME)
+                mkEntry("thread-id", threadId),
+                mkEntry("task-id", TASK_ID.toString()),
+                mkEntry(METRICS_SCOPE + "-state-id", STORE_NAME)
         );
 
         store = newMeteredStore(inner);
@@ -129,11 +129,11 @@ public class MeteredVersionedKeyValueStoreTest {
 
     private MeteredVersionedKeyValueStore<String, String> newMeteredStore(final VersionedBytesStore inner) {
         return new MeteredVersionedKeyValueStore<>(
-            inner,
-            METRICS_SCOPE,
-            mockTime,
-            STRING_SERDE,
-            STRING_SERDE
+                inner,
+                METRICS_SCOPE,
+                mockTime,
+                STRING_SERDE,
+                STRING_SERDE
         );
     }
 
@@ -172,11 +172,11 @@ public class MeteredVersionedKeyValueStoreTest {
 
         store.close();
         store = new MeteredVersionedKeyValueStore<>(
-            inner,
-            METRICS_SCOPE,
-            mockTime,
-            keySerde,
-            valueSerde
+                inner,
+                METRICS_SCOPE,
+                mockTime,
+                keySerde,
+                valueSerde
         );
         store.init(context, store);
 
@@ -363,7 +363,7 @@ public class MeteredVersionedKeyValueStoreTest {
         final PositionBound bound = PositionBound.unbounded();
         final QueryConfig config = new QueryConfig(false);
         when(inner.query(any(), any(), any())).thenReturn(
-            QueryResult.forResult(new LogicalSegmentIterator(Collections.emptyListIterator(), RAW_KEY, 0L, 0L, ResultOrder.ANY)));
+                QueryResult.forResult(new LogicalSegmentIterator(Collections.emptyListIterator(), RAW_KEY, 0L, 0L, ResultOrder.ANY)));
 
         final KafkaMetric openIteratorsMetric = getMetric("num-open-iterators");
         assertThat(openIteratorsMetric, not(nullValue()));
@@ -463,9 +463,9 @@ public class MeteredVersionedKeyValueStoreTest {
 
     private List<MetricName> storeMetrics() {
         return metrics.metrics()
-            .keySet()
-            .stream()
-            .filter(name -> name.group().equals(STORE_LEVEL_GROUP) && name.tags().equals(tags))
-            .collect(Collectors.toList());
+                .keySet()
+                .stream()
+                .filter(name -> name.group().equals(STORE_LEVEL_GROUP) && name.tags().equals(tags))
+                .collect(Collectors.toList());
     }
 }

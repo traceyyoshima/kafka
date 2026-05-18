@@ -72,6 +72,7 @@ public class JoinGroupRequest extends AbstractRequest {
 
     /**
      * Ensures that the provided {@code reason} remains within a range of 255 chars.
+     *
      * @param reason This is the reason that is sent to the broker over the wire
      *               as a part of {@code JoinGroupRequest} or {@code LeaveGroupRequest} messages.
      * @return a provided reason as is or truncated reason if it exceeds the 255 chars threshold.
@@ -89,12 +90,11 @@ public class JoinGroupRequest extends AbstractRequest {
      * {@link #UNKNOWN_MEMBER_ID} needs to rejoin with a new member id generated
      * by the server. Once the second join group request is complete, the client is
      * added as a new member of the group.
-     *
+     * <p>
      * Prior to version 4, a client is immediately added as a new member if it sends a
      * join group request with UNKNOWN_MEMBER_ID.
      *
      * @param apiVersion The JoinGroupRequest api version.
-     *
      * @return whether a known member id is required or not.
      */
     public static boolean requiresKnownMemberId(int apiVersion) {
@@ -107,22 +107,21 @@ public class JoinGroupRequest extends AbstractRequest {
      * {@link #UNKNOWN_MEMBER_ID} needs to rejoin with a new member id generated
      * by the server. Once the second join group request is complete, the client is
      * added as a new member of the group.
-     *
+     * <p>
      * Prior to version 4, a client is immediately added as a new member if it sends a
      * join group request with UNKNOWN_MEMBER_ID.
      *
      * @param request    The request.
      * @param apiVersion The JoinGroupRequest api version.
-     *
      * @return whether a known member id is required or not.
      */
     public static boolean requiresKnownMemberId(
-        JoinGroupRequestData request,
-        int apiVersion
+            JoinGroupRequestData request,
+            int apiVersion
     ) {
         return request.groupInstanceId() == null
-            && request.memberId().equals(UNKNOWN_MEMBER_ID)
-            && requiresKnownMemberId(apiVersion);
+                && request.memberId().equals(UNKNOWN_MEMBER_ID)
+                && requiresKnownMemberId(apiVersion);
     }
 
     /**
@@ -138,7 +137,7 @@ public class JoinGroupRequest extends AbstractRequest {
      * we skip entirely the assignment step as it could generate a different group
      * assignment which would be ignored by the group coordinator because the group
      * is the stable state.
-     *
+     * <p>
      * Prior to version 9 of the JoinGroup API, we wanted to avoid current leader
      * performing trivial assignment while the group is in stable stage, because
      * the new assignment in leader's next sync call won't be broadcast by a stable group.
@@ -147,7 +146,6 @@ public class JoinGroupRequest extends AbstractRequest {
      * member.id won't match returned leader id, therefore no assignment will be performed.
      *
      * @param apiVersion The JoinGroupRequest api version.
-     *
      * @return whether the version supports skipping assignment.
      */
 
@@ -159,7 +157,6 @@ public class JoinGroupRequest extends AbstractRequest {
      * Get the client's join reason.
      *
      * @param request The JoinGroupRequest.
-     *
      * @return The join reason.
      */
     public static String joinReason(JoinGroupRequestData request) {
@@ -192,13 +189,13 @@ public class JoinGroupRequest extends AbstractRequest {
     @Override
     public AbstractResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         JoinGroupResponseData data = new JoinGroupResponseData()
-            .setThrottleTimeMs(throttleTimeMs)
-            .setErrorCode(Errors.forException(e).code())
-            .setGenerationId(UNKNOWN_GENERATION_ID)
-            .setProtocolName(UNKNOWN_PROTOCOL_NAME)
-            .setLeader(UNKNOWN_MEMBER_ID)
-            .setMemberId(UNKNOWN_MEMBER_ID)
-            .setMembers(List.of());
+                .setThrottleTimeMs(throttleTimeMs)
+                .setErrorCode(Errors.forException(e).code())
+                .setGenerationId(UNKNOWN_GENERATION_ID)
+                .setProtocolName(UNKNOWN_PROTOCOL_NAME)
+                .setLeader(UNKNOWN_MEMBER_ID)
+                .setMemberId(UNKNOWN_MEMBER_ID)
+                .setMembers(List.of());
 
         if (version() >= 7)
             data.setProtocolName(null);

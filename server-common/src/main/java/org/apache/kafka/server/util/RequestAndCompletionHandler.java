@@ -28,10 +28,10 @@ public final class RequestAndCompletionHandler {
     public final RequestCompletionHandler handler;
 
     public RequestAndCompletionHandler(
-        long creationTimeMs,
-        Node destination,
-        AbstractRequest.Builder<? extends AbstractRequest> request,
-        RequestCompletionHandler handler
+            long creationTimeMs,
+            Node destination,
+            AbstractRequest.Builder<? extends AbstractRequest> request,
+            RequestCompletionHandler handler
     ) {
         this.creationTimeMs = creationTimeMs;
         this.destination = destination;
@@ -42,10 +42,10 @@ public final class RequestAndCompletionHandler {
     @Override
     public String toString() {
         return "RequestAndCompletionHandler(" +
-            "creationTimeMs=" + creationTimeMs +
-            ", destination=" + destination +
-            ", request=" + request +
-            ", handler=" + handler +
-            ')';
+                "creationTimeMs=" + creationTimeMs +
+                ", destination=" + destination +
+                ", request=" + request +
+                ", handler=" + handler +
+                ')';
     }
 }

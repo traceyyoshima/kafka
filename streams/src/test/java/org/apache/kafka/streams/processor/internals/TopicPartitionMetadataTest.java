@@ -42,9 +42,9 @@ public class TopicPartitionMetadataTest {
     @Test
     public void shouldDecodeVersionOne() {
         final byte[] serialized = ByteBuffer.allocate(Byte.BYTES + Long.BYTES)
-            .put((byte) 1)
-            .putLong(100L)
-            .array();
+                .put((byte) 1)
+                .putLong(100L)
+                .array();
         final String serializedString = Base64.getEncoder().encodeToString(serialized);
 
         final TopicPartitionMetadata topicMeta = TopicPartitionMetadata.decode(serializedString);

@@ -48,22 +48,22 @@ public class TopicRegexResolverTest {
     @Test
     public void testBasicMatching() {
         CoordinatorMetadataImage image = new MetadataImageBuilder()
-            .addTopic(Uuid.randomUuid(), "foo", 10)
-            .addTopic(Uuid.randomUuid(), "bar", 10)
-            .addTopic(Uuid.randomUuid(), "baz", 10)
-            .addTopic(Uuid.randomUuid(), "qux", 10)
-            .buildCoordinatorMetadataImage();
+                .addTopic(Uuid.randomUuid(), "foo", 10)
+                .addTopic(Uuid.randomUuid(), "bar", 10)
+                .addTopic(Uuid.randomUuid(), "baz", 10)
+                .addTopic(Uuid.randomUuid(), "qux", 10)
+                .buildCoordinatorMetadataImage();
 
         Time time = new MockTime(0L, 0L, 0L);
 
         TopicRegexResolver resolver = new TopicRegexResolver(Optional::empty, time);
 
         var result = resolver.resolveRegularExpressions(
-            null,
-            "group-1",
-            log,
-            image,
-            Set.of("ba.*")
+                null,
+                "group-1",
+                log,
+                image,
+                Set.of("ba.*")
         );
 
         var resolved = result.get("ba.*");
@@ -76,20 +76,20 @@ public class TopicRegexResolverTest {
     @Test
     public void testInvalidRegexIgnored() {
         CoordinatorMetadataImage image = new MetadataImageBuilder()
-            .addTopic(Uuid.randomUuid(), "foo", 10)
-            .addTopic(Uuid.randomUuid(), "bar", 10)
-            .buildCoordinatorMetadataImage();
+                .addTopic(Uuid.randomUuid(), "foo", 10)
+                .addTopic(Uuid.randomUuid(), "bar", 10)
+                .buildCoordinatorMetadataImage();
 
         Time time = new MockTime(5L, 0L, 0L);
 
         TopicRegexResolver resolver = new TopicRegexResolver(Optional::empty, time);
 
         var result = resolver.resolveRegularExpressions(
-            null,
-            "group-2",
-            log,
-            image,
-            Set.of("a.*")
+                null,
+                "group-2",
+                log,
+                image,
+                Set.of("a.*")
         );
 
         var resolved = result.get("a.*");
@@ -102,10 +102,10 @@ public class TopicRegexResolverTest {
     @Test
     public void testAuthorizationFiltering() {
         CoordinatorMetadataImage image = new MetadataImageBuilder()
-            .addTopic(Uuid.randomUuid(), "allow1", 10)
-            .addTopic(Uuid.randomUuid(), "deny1", 10)
-            .addTopic(Uuid.randomUuid(), "allow2", 10)
-            .buildCoordinatorMetadataImage();
+                .addTopic(Uuid.randomUuid(), "allow1", 10)
+                .addTopic(Uuid.randomUuid(), "deny1", 10)
+                .addTopic(Uuid.randomUuid(), "allow2", 10)
+                .buildCoordinatorMetadataImage();
 
         Time time = new MockTime(10L, 0L, 0L);
 
@@ -125,11 +125,11 @@ public class TopicRegexResolverTest {
         TopicRegexResolver resolver = new TopicRegexResolver(() -> Optional.of(plugin), time);
 
         var result = resolver.resolveRegularExpressions(
-            null,
-            "group-3",
-            log,
-            image,
-            Set.of("a.*", "d.*")
+                null,
+                "group-3",
+                log,
+                image,
+                Set.of("a.*", "d.*")
         );
 
         var resolved = result.get("a.*");

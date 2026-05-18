@@ -50,7 +50,7 @@ import static java.time.Duration.ofMillis;
  */
 public class ExactlyOnceMessageProcessor extends Thread implements ConsumerRebalanceListener, AutoCloseable {
     private static final int MAX_RETRIES = 5;
-    
+
     private final String bootstrapServers;
     private final String inputTopic;
     private final String outputTopic;
@@ -117,7 +117,7 @@ public class ExactlyOnceMessageProcessor extends Thread implements ConsumerRebal
         try (KafkaProducer<Integer, String> producer = new Producer("processor-producer", bootstrapServers, outputTopic,
                 true, transactionalId, true, -1, transactionTimeoutMs, null).createKafkaProducer();
              KafkaConsumer<Integer, String> consumer = new Consumer("processor-consumer", bootstrapServers, inputTopic,
-                 "processor-group", Optional.of(groupInstanceId), readCommitted, -1, null).createKafkaConsumer()) {
+                     "processor-group", Optional.of(groupInstanceId), readCommitted, -1, null).createKafkaConsumer()) {
             // called first and once to fence zombies and abort any pending transaction
             producer.initTransactions();
             consumer.subscribe(Set.of(inputTopic), this);
@@ -133,7 +133,7 @@ public class ExactlyOnceMessageProcessor extends Thread implements ConsumerRebal
                         for (ConsumerRecord<Integer, String> record : records) {
                             // process the record and send downstream
                             ProducerRecord<Integer, String> newRecord =
-                                new ProducerRecord<>(outputTopic, record.key(), record.value() + "-ok");
+                                    new ProducerRecord<>(outputTopic, record.key(), record.value() + "-ok");
                             producer.send(newRecord);
                         }
 
@@ -223,8 +223,8 @@ public class ExactlyOnceMessageProcessor extends Thread implements ConsumerRebal
      * When we get a generic {@code KafkaException} while processing records, we retry up to {@code MAX_RETRIES} times.
      * If we exceed this threshold, we log an error and move on to the next batch of records.
      * In a real world application you may want to send these records to a dead letter topic (DLT) for further processing.
-     * 
-     * @param retries Current number of retries
+     *
+     * @param retries  Current number of retries
      * @param consumer Consumer instance
      * @return Updated number of retries
      */
@@ -233,7 +233,7 @@ public class ExactlyOnceMessageProcessor extends Thread implements ConsumerRebal
             Utils.printErr("The number of retries must be greater than zero");
             shutdown();
         }
-        
+
         if (retries < MAX_RETRIES) {
             // retry: reset fetch offset
             // the consumer fetch position needs to be restored to the committed offset before the transaction started

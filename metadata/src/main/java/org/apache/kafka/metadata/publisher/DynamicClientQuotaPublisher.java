@@ -35,10 +35,10 @@ public class DynamicClientQuotaPublisher implements MetadataPublisher {
     private final Consumer<ClientQuotasDelta> clientQuotaUpdater;
 
     public DynamicClientQuotaPublisher(
-        int nodeId,
-        FaultHandler faultHandler,
-        String nodeType,
-        Consumer<ClientQuotasDelta> clientQuotaUpdater
+            int nodeId,
+            FaultHandler faultHandler,
+            String nodeType,
+            Consumer<ClientQuotasDelta> clientQuotaUpdater
     ) {
         this.nodeId = nodeId;
         this.faultHandler = faultHandler;

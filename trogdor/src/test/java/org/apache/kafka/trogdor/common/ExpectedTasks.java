@@ -81,9 +81,9 @@ public class ExpectedTasks {
 
         @JsonCreator
         private ExpectedTask(@JsonProperty("id") String id,
-                     @JsonProperty("taskSpec") TaskSpec taskSpec,
-                     @JsonProperty("taskState") TaskState taskState,
-                     @JsonProperty("workerState") WorkerState workerState) {
+                             @JsonProperty("taskSpec") TaskSpec taskSpec,
+                             @JsonProperty("taskState") TaskState taskState,
+                             @JsonProperty("workerState") WorkerState workerState) {
             this.id = id;
             this.taskSpec = taskSpec;
             this.taskState = taskState;
@@ -96,11 +96,11 @@ public class ExpectedTasks {
             }
             if ((taskSpec != null) && (!actual.spec().equals(taskSpec))) {
                 return "Invalid spec for task " + id + ": expected " + taskSpec +
-                    ", got " + actual.spec();
+                        ", got " + actual.spec();
             }
             if ((taskState != null) && (!actual.equals(taskState))) {
                 return "Invalid state for task " + id + ": expected " + taskState +
-                    ", got " + actual;
+                        ", got " + actual;
             }
             return null;
         }
@@ -111,7 +111,7 @@ public class ExpectedTasks {
                     return "Did not find worker " + id + "\n";
                 }
                 return "Invalid state for task " + id + ": expected " + workerState +
-                    ", got " + actual;
+                        ", got " + actual;
             }
             return null;
         }

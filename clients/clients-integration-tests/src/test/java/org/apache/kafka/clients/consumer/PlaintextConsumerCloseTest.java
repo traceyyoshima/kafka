@@ -46,14 +46,14 @@ import static org.apache.kafka.coordinator.group.GroupCoordinatorConfig.OFFSETS_
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ClusterTestDefaults(
-    types = {Type.KRAFT},
-    brokers = BROKER_COUNT,
-    serverProperties = {
-        @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG, value = "100"),
-        @ClusterConfigProperty(key = GROUP_MAX_SESSION_TIMEOUT_MS_CONFIG, value = "60000"),
-        @ClusterConfigProperty(key = GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, value = "10"),
-    }
+        types = {Type.KRAFT},
+        brokers = BROKER_COUNT,
+        serverProperties = {
+                @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+                @ClusterConfigProperty(key = GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG, value = "100"),
+                @ClusterConfigProperty(key = GROUP_MAX_SESSION_TIMEOUT_MS_CONFIG, value = "60000"),
+                @ClusterConfigProperty(key = GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, value = "10"),
+        }
 )
 public class PlaintextConsumerCloseTest {
 
@@ -76,8 +76,8 @@ public class PlaintextConsumerCloseTest {
     private void testCloseWithDefaultTakesAtLeastFetchMaxWaitMs(GroupProtocol groupProtocol) throws Exception {
         long closeMs = calculateConsumerCloseDelay(groupProtocol, Consumer::close);
         assertTrue(
-            closeMs >= DEFAULT_FETCH_MAX_WAIT_MS,
-            "Closing a consumer with the default close() should take longer than " + DEFAULT_FETCH_MAX_WAIT_MS + " ms, but actually took " + closeMs + " ms"
+                closeMs >= DEFAULT_FETCH_MAX_WAIT_MS,
+                "Closing a consumer with the default close() should take longer than " + DEFAULT_FETCH_MAX_WAIT_MS + " ms, but actually took " + closeMs + " ms"
         );
     }
 
@@ -97,24 +97,24 @@ public class PlaintextConsumerCloseTest {
         // Close the Consumer with a specified timeout that's much shorter than the default fetch timeout
         // to ensure the fetch.max.wait.ms is effectively ignored.
         long closeMs = calculateConsumerCloseDelay(
-            groupProtocol,
-            c -> c.close(CloseOptions.timeout(Duration.ofMillis(timeoutMs)))
+                groupProtocol,
+                c -> c.close(CloseOptions.timeout(Duration.ofMillis(timeoutMs)))
         );
         assertTrue(
-            closeMs <= DEFAULT_FETCH_MAX_WAIT_MS,
-            "Closing a consumer with a timeout of " + timeoutMs + " ms should take less than " + DEFAULT_FETCH_MAX_WAIT_MS + " ms, but actually took " + closeMs + " ms"
+                closeMs <= DEFAULT_FETCH_MAX_WAIT_MS,
+                "Closing a consumer with a timeout of " + timeoutMs + " ms should take less than " + DEFAULT_FETCH_MAX_WAIT_MS + " ms, but actually took " + closeMs + " ms"
         );
     }
 
     private long calculateConsumerCloseDelay(GroupProtocol groupProtocol,
                                              java.util.function.Consumer<Consumer<byte[], byte[]>> closeOperation) throws Exception {
         Map<String, Object> consumerConfig = Map.of(
-            GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
-            KEY_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
-            VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
-            AUTO_OFFSET_RESET_CONFIG, "earliest",
-            GROUP_ID_CONFIG, "group_test",
-            BOOTSTRAP_SERVERS_CONFIG, cluster.bootstrapServers()
+                GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
+                KEY_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
+                VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
+                AUTO_OFFSET_RESET_CONFIG, "earliest",
+                GROUP_ID_CONFIG, "group_test",
+                BOOTSTRAP_SERVERS_CONFIG, cluster.bootstrapServers()
         );
         var topicName = "calculate-consumer-close-delay";
         var numRecords = 100;

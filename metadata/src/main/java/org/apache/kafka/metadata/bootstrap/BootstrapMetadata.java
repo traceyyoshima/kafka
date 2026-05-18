@@ -40,14 +40,14 @@ public class BootstrapMetadata {
     private final String source;
 
     public static BootstrapMetadata fromVersions(
-        MetadataVersion metadataVersion,
-        Map<String, Short> featureVersions,
-        String source
+            MetadataVersion metadataVersion,
+            Map<String, Short> featureVersions,
+            String source
     ) {
         List<ApiMessageAndVersion> records = new ArrayList<>();
         records.add(new ApiMessageAndVersion(new FeatureLevelRecord().
-            setName(MetadataVersion.FEATURE_NAME).
-            setFeatureLevel(metadataVersion.featureLevel()), (short) 0));
+                setName(MetadataVersion.FEATURE_NAME).
+                setFeatureLevel(metadataVersion.featureLevel()), (short) 0));
         List<String> featureNames = new ArrayList<>(featureVersions.size());
         featureVersions.keySet().forEach(n -> {
             // metadata.version is handled in a special way, and kraft.version generates no
@@ -62,8 +62,8 @@ public class BootstrapMetadata {
             short level = featureVersions.get(featureName);
             if (level > 0) {
                 records.add(new ApiMessageAndVersion(new FeatureLevelRecord().
-                    setName(featureName).
-                    setFeatureLevel(level), (short) 0));
+                        setName(featureName).
+                        setFeatureLevel(level), (short) 0));
             }
         }
         return new BootstrapMetadata(records, metadataVersion.featureLevel(), source);
@@ -71,9 +71,9 @@ public class BootstrapMetadata {
 
     public static BootstrapMetadata fromVersion(MetadataVersion metadataVersion, String source) {
         List<ApiMessageAndVersion> records = List.of(
-            new ApiMessageAndVersion(new FeatureLevelRecord().
-                setName(MetadataVersion.FEATURE_NAME).
-                setFeatureLevel(metadataVersion.featureLevel()), (short) 0));
+                new ApiMessageAndVersion(new FeatureLevelRecord().
+                        setName(MetadataVersion.FEATURE_NAME).
+                        setFeatureLevel(metadataVersion.featureLevel()), (short) 0));
         return new BootstrapMetadata(records, metadataVersion.featureLevel(), source);
     }
 
@@ -102,9 +102,9 @@ public class BootstrapMetadata {
     }
 
     BootstrapMetadata(
-        List<ApiMessageAndVersion> records,
-        short metadataVersionLevel,
-        String source
+            List<ApiMessageAndVersion> records,
+            short metadataVersionLevel,
+            String source
     ) {
         this.records = Objects.requireNonNull(records);
         this.metadataVersionLevel = metadataVersionLevel;
@@ -154,8 +154,8 @@ public class BootstrapMetadata {
         }
         if (i == records.size()) {
             FeatureLevelRecord newRecord = new FeatureLevelRecord().
-                setName(featureName).
-                setFeatureLevel(level);
+                    setName(featureName).
+                    setFeatureLevel(level);
             newRecords.add(new ApiMessageAndVersion(newRecord, (short) 0));
         }
         return BootstrapMetadata.fromRecords(newRecords, source);
@@ -171,15 +171,15 @@ public class BootstrapMetadata {
         if (o == null || !o.getClass().equals(this.getClass())) return false;
         BootstrapMetadata other = (BootstrapMetadata) o;
         return Objects.equals(records, other.records) &&
-            metadataVersionLevel == other.metadataVersionLevel &&
-            source.equals(other.source);
+                metadataVersionLevel == other.metadataVersionLevel &&
+                source.equals(other.source);
     }
 
     @Override
     public String toString() {
         return "BootstrapMetadata(records=" + records +
-            ", metadataVersionLevel=" + metadataVersionLevel +
-            ", source=" + source +
-            ")";
+                ", metadataVersionLevel=" + metadataVersionLevel +
+                ", source=" + source +
+                ")";
     }
 }

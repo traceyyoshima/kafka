@@ -104,91 +104,91 @@ public abstract class TransactionsCommand {
         @Override
         void addSubparser(Subparsers subparsers) {
             Subparser subparser = subparsers.addParser(name())
-                .help("abort a hanging transaction (requires administrative privileges)");
+                    .help("abort a hanging transaction (requires administrative privileges)");
 
             subparser.addArgument("--topic")
-                .help("topic name")
-                .action(store())
-                .type(String.class)
-                .required(true);
+                    .help("topic name")
+                    .action(store())
+                    .type(String.class)
+                    .required(true);
 
             subparser.addArgument("--partition")
-                .help("partition number")
-                .action(store())
-                .type(Integer.class)
-                .required(true);
+                    .help("partition number")
+                    .action(store())
+                    .type(Integer.class)
+                    .required(true);
 
             ArgumentGroup newBrokerArgumentGroup = subparser
-                .addArgumentGroup("Brokers on versions 3.0 and above")
-                .description("For newer brokers, only the start offset of the transaction " +
-                    "to be aborted is required");
+                    .addArgumentGroup("Brokers on versions 3.0 and above")
+                    .description("For newer brokers, only the start offset of the transaction " +
+                            "to be aborted is required");
 
             newBrokerArgumentGroup.addArgument("--start-offset")
-                .help("start offset of the transaction to abort")
-                .action(store())
-                .type(Long.class);
+                    .help("start offset of the transaction to abort")
+                    .action(store())
+                    .type(Long.class);
 
             ArgumentGroup olderBrokerArgumentGroup = subparser
-                .addArgumentGroup("Brokers on versions older than 3.0")
-                .description("For older brokers, you must provide all of these arguments");
+                    .addArgumentGroup("Brokers on versions older than 3.0")
+                    .description("For older brokers, you must provide all of these arguments");
 
             olderBrokerArgumentGroup.addArgument("--producer-id")
-                .help("producer id")
-                .action(store())
-                .type(Long.class);
+                    .help("producer id")
+                    .action(store())
+                    .type(Long.class);
 
             olderBrokerArgumentGroup.addArgument("--producer-epoch")
-                .help("producer epoch")
-                .action(store())
-                .type(Short.class);
+                    .help("producer epoch")
+                    .action(store())
+                    .type(Short.class);
 
             olderBrokerArgumentGroup.addArgument("--coordinator-epoch")
-                .help("coordinator epoch")
-                .action(store())
-                .type(Integer.class);
+                    .help("coordinator epoch")
+                    .action(store())
+                    .type(Integer.class);
         }
 
         private AbortTransactionSpec buildAbortSpec(
-            Admin admin,
-            TopicPartition topicPartition,
-            long startOffset
+                Admin admin,
+                TopicPartition topicPartition,
+                long startOffset
         ) throws Exception {
             final DescribeProducersResult.PartitionProducerState result;
             try {
                 result = admin.describeProducers(Set.of(topicPartition))
-                    .partitionResult(topicPartition)
-                    .get();
+                        .partitionResult(topicPartition)
+                        .get();
             } catch (ExecutionException e) {
                 printErrorAndExit("Failed to validate producer state for partition "
-                    + topicPartition, e.getCause());
+                        + topicPartition, e.getCause());
                 return null;
             }
 
             Optional<ProducerState> foundProducerState = result.activeProducers().stream()
-                .filter(producerState -> {
-                    OptionalLong txnStartOffsetOpt = producerState.currentTransactionStartOffset();
-                    return txnStartOffsetOpt.isPresent() && txnStartOffsetOpt.getAsLong() == startOffset;
-                })
-                .findFirst();
+                    .filter(producerState -> {
+                        OptionalLong txnStartOffsetOpt = producerState.currentTransactionStartOffset();
+                        return txnStartOffsetOpt.isPresent() && txnStartOffsetOpt.getAsLong() == startOffset;
+                    })
+                    .findFirst();
 
             if (foundProducerState.isEmpty()) {
                 printErrorAndExit("Could not find any open transactions starting at offset " +
-                    startOffset + " on partition " + topicPartition);
+                        startOffset + " on partition " + topicPartition);
                 return null;
             }
 
             ProducerState producerState = foundProducerState.get();
             return new AbortTransactionSpec(
-                topicPartition,
-                producerState.producerId(),
-                (short) producerState.producerEpoch(),
-                producerState.coordinatorEpoch().orElse(0)
+                    topicPartition,
+                    producerState.producerId(),
+                    (short) producerState.producerEpoch(),
+                    producerState.coordinatorEpoch().orElse(0)
             );
         }
 
         private void abortTransaction(
-            Admin admin,
-            AbortTransactionSpec abortSpec
+                Admin admin,
+                AbortTransactionSpec abortSpec
         ) throws Exception {
             try {
                 admin.abortTransaction(abortSpec).all().get();
@@ -208,8 +208,8 @@ public abstract class TransactionsCommand {
 
             if (startOffset == null && producerId == null) {
                 printErrorAndExit("The transaction to abort must be identified either with " +
-                    "--start-offset (for brokers on 3.0 or above) or with " +
-                    "--producer-id, --producer-epoch, and --coordinator-epoch (for older brokers)");
+                        "--start-offset (for brokers on 3.0 or above) or with " +
+                        "--producer-id, --producer-epoch, and --coordinator-epoch (for older brokers)");
                 return;
             }
 
@@ -237,10 +237,10 @@ public abstract class TransactionsCommand {
                 }
 
                 abortSpec = new AbortTransactionSpec(
-                    topicPartition,
-                    producerId,
-                    producerEpoch,
-                    coordinatorEpoch
+                        topicPartition,
+                        producerId,
+                        producerEpoch,
+                        coordinatorEpoch
                 );
             } else {
                 abortSpec = buildAbortSpec(admin, topicPartition, startOffset);
@@ -264,14 +264,14 @@ public abstract class TransactionsCommand {
         @Override
         void addSubparser(Subparsers subparsers) {
             Subparser subparser = subparsers.addParser(name())
-                .description("Force abort an ongoing transaction on transactionalId")
-                .help("Force abort an ongoing transaction on transactionalId (requires administrative privileges)");
+                    .description("Force abort an ongoing transaction on transactionalId")
+                    .help("Force abort an ongoing transaction on transactionalId (requires administrative privileges)");
 
             subparser.addArgument("--transactionalId")
-                .help("transactional id")
-                .action(store())
-                .type(String.class)
-                .required(true);
+                    .help("transactional id")
+                    .action(store())
+                    .type(String.class)
+                    .required(true);
         }
 
         @Override
@@ -288,12 +288,12 @@ public abstract class TransactionsCommand {
 
     static class DescribeProducersCommand extends TransactionsCommand {
         static final List<String> HEADERS = List.of(
-            "ProducerId",
-            "ProducerEpoch",
-            "LatestCoordinatorEpoch",
-            "LastSequence",
-            "LastTimestamp",
-            "CurrentTransactionStartOffset"
+                "ProducerId",
+                "ProducerEpoch",
+                "LatestCoordinatorEpoch",
+                "LastSequence",
+                "LastTimestamp",
+                "CurrentTransactionStartOffset"
         );
 
         DescribeProducersCommand(Time time) {
@@ -308,25 +308,25 @@ public abstract class TransactionsCommand {
         @Override
         public void addSubparser(Subparsers subparsers) {
             Subparser subparser = subparsers.addParser(name())
-                .help("describe the states of active producers for a topic partition");
+                    .help("describe the states of active producers for a topic partition");
 
             subparser.addArgument("--broker-id")
-                .help("optional broker id to describe the producer state on a specific replica")
-                .action(store())
-                .type(Integer.class)
-                .required(false);
+                    .help("optional broker id to describe the producer state on a specific replica")
+                    .action(store())
+                    .type(Integer.class)
+                    .required(false);
 
             subparser.addArgument("--topic")
-                .help("topic name")
-                .action(store())
-                .type(String.class)
-                .required(true);
+                    .help("topic name")
+                    .action(store())
+                    .type(String.class)
+                    .required(true);
 
             subparser.addArgument("--partition")
-                .help("partition number")
-                .action(store())
-                .type(Integer.class)
-                .required(true);
+                    .help("partition number")
+                    .action(store())
+                    .type(Integer.class)
+                    .required(true);
         }
 
         @Override
@@ -342,12 +342,12 @@ public abstract class TransactionsCommand {
 
             try {
                 result = admin.describeProducers(Set.of(topicPartition), options)
-                    .partitionResult(topicPartition)
-                    .get();
+                        .partitionResult(topicPartition)
+                        .get();
             } catch (ExecutionException e) {
                 String brokerClause = options.brokerId().isPresent() ?
-                    "broker " + options.brokerId().getAsInt() :
-                    "leader";
+                        "broker " + options.brokerId().getAsInt() :
+                        "leader";
                 printErrorAndExit("Failed to describe producers for partition " +
                         topicPartition + " on " + brokerClause, e.getCause());
                 return;
@@ -355,17 +355,17 @@ public abstract class TransactionsCommand {
 
             List<List<String>> rows = result.activeProducers().stream().map(producerState -> {
                 String currentTransactionStartOffsetColumnValue =
-                    producerState.currentTransactionStartOffset().isPresent() ?
-                        String.valueOf(producerState.currentTransactionStartOffset().getAsLong()) :
-                        "None";
+                        producerState.currentTransactionStartOffset().isPresent() ?
+                                String.valueOf(producerState.currentTransactionStartOffset().getAsLong()) :
+                                "None";
 
                 return List.of(
-                    String.valueOf(producerState.producerId()),
-                    String.valueOf(producerState.producerEpoch()),
-                    String.valueOf(producerState.coordinatorEpoch().orElse(-1)),
-                    String.valueOf(producerState.lastSequence()),
-                    String.valueOf(producerState.lastTimestamp()),
-                    currentTransactionStartOffsetColumnValue
+                        String.valueOf(producerState.producerId()),
+                        String.valueOf(producerState.producerEpoch()),
+                        String.valueOf(producerState.coordinatorEpoch().orElse(-1)),
+                        String.valueOf(producerState.lastSequence()),
+                        String.valueOf(producerState.lastTimestamp()),
+                        currentTransactionStartOffsetColumnValue
                 );
             }).collect(Collectors.toList());
 
@@ -375,15 +375,15 @@ public abstract class TransactionsCommand {
 
     static class DescribeTransactionsCommand extends TransactionsCommand {
         static final List<String> HEADERS = List.of(
-            "CoordinatorId",
-            "TransactionalId",
-            "ProducerId",
-            "ProducerEpoch",
-            "TransactionState",
-            "TransactionTimeoutMs",
-            "CurrentTransactionStartTimeMs",
-            "TransactionDurationMs",
-            "TopicPartitions"
+                "CoordinatorId",
+                "TransactionalId",
+                "ProducerId",
+                "ProducerEpoch",
+                "TransactionState",
+                "TransactionTimeoutMs",
+                "CurrentTransactionStartTimeMs",
+                "TransactionDurationMs",
+                "TopicPartitions"
         );
 
         DescribeTransactionsCommand(Time time) {
@@ -398,14 +398,14 @@ public abstract class TransactionsCommand {
         @Override
         public void addSubparser(Subparsers subparsers) {
             Subparser subparser = subparsers.addParser(name())
-                .description("Describe the state of an active transactional-id.")
-                .help("describe the state of an active transactional-id");
+                    .description("Describe the state of an active transactional-id.")
+                    .help("describe the state of an active transactional-id");
 
             subparser.addArgument("--transactional-id")
-                .help("transactional id")
-                .action(store())
-                .type(String.class)
-                .required(true);
+                    .help("transactional id")
+                    .action(store())
+                    .type(String.class)
+                    .required(true);
         }
 
         @Override
@@ -415,11 +415,11 @@ public abstract class TransactionsCommand {
             final TransactionDescription result;
             try {
                 result = admin.describeTransactions(Set.of(transactionalId))
-                    .description(transactionalId)
-                    .get();
+                        .description(transactionalId)
+                        .get();
             } catch (ExecutionException e) {
                 printErrorAndExit("Failed to describe transaction state of " +
-                    "transactional-id `" + transactionalId + "`", e.getCause());
+                        "transactional-id `" + transactionalId + "`", e.getCause());
                 return;
             }
 
@@ -436,15 +436,15 @@ public abstract class TransactionsCommand {
             }
 
             List<String> row = List.of(
-                String.valueOf(result.coordinatorId()),
-                transactionalId,
-                String.valueOf(result.producerId()),
-                String.valueOf(result.producerEpoch()),
-                result.state().toString(),
-                String.valueOf(result.transactionTimeoutMs()),
-                transactionStartTimeMsColumnValue,
-                transactionDurationMsColumnValue,
-                result.topicPartitions().stream().map(TopicPartition::toString).collect(Collectors.joining(","))
+                    String.valueOf(result.coordinatorId()),
+                    transactionalId,
+                    String.valueOf(result.producerId()),
+                    String.valueOf(result.producerEpoch()),
+                    result.state().toString(),
+                    String.valueOf(result.transactionTimeoutMs()),
+                    transactionStartTimeMsColumnValue,
+                    transactionDurationMsColumnValue,
+                    result.topicPartitions().stream().map(TopicPartition::toString).collect(Collectors.joining(","))
             );
 
             ToolsUtils.prettyPrintTable(HEADERS, List.of(row), out);
@@ -453,10 +453,10 @@ public abstract class TransactionsCommand {
 
     static class ListTransactionsCommand extends TransactionsCommand {
         static final List<String> HEADERS = List.of(
-            "TransactionalId",
-            "Coordinator",
-            "ProducerId",
-            "TransactionState"
+                "TransactionalId",
+                "Coordinator",
+                "ProducerId",
+                "TransactionState"
         );
 
         ListTransactionsCommand(Time time) {
@@ -471,7 +471,7 @@ public abstract class TransactionsCommand {
         @Override
         public void addSubparser(Subparsers subparsers) {
             Subparser subparser = subparsers.addParser(name())
-                .help("list transactions");
+                    .help("list transactions");
 
             subparser.addArgument("--duration-filter")
                     .help("Duration (in millis) to filter by: if < 0, all transactions will be returned; " +
@@ -496,8 +496,8 @@ public abstract class TransactionsCommand {
 
             try {
                 result = admin.listTransactions(options)
-                    .allByBrokerId()
-                    .get();
+                        .allByBrokerId()
+                        .get();
             } catch (ExecutionException e) {
                 printErrorAndExit("Failed to list transactions", e.getCause());
                 return;
@@ -510,10 +510,10 @@ public abstract class TransactionsCommand {
 
                 for (TransactionListing listing : listings) {
                     rows.add(List.of(
-                        listing.transactionalId(),
-                        coordinatorIdString,
-                        String.valueOf(listing.producerId()),
-                        listing.state().toString()
+                            listing.transactionalId(),
+                            coordinatorIdString,
+                            String.valueOf(listing.producerId()),
+                            listing.state().toString()
                     ));
                 }
             }
@@ -526,14 +526,14 @@ public abstract class TransactionsCommand {
         private static final int MAX_BATCH_SIZE = 500;
 
         static final List<String> HEADERS = List.of(
-            "Topic",
-            "Partition",
-            "ProducerId",
-            "ProducerEpoch",
-            "CoordinatorEpoch",
-            "StartOffset",
-            "LastTimestamp",
-            "Duration(min)"
+                "Topic",
+                "Partition",
+                "ProducerId",
+                "ProducerEpoch",
+                "CoordinatorEpoch",
+                "StartOffset",
+                "LastTimestamp",
+                "Duration(min)"
         );
 
         FindHangingTransactionsCommand(Time time) {
@@ -548,32 +548,32 @@ public abstract class TransactionsCommand {
         @Override
         void addSubparser(Subparsers subparsers) {
             Subparser subparser = subparsers.addParser(name())
-                .help("find hanging transactions");
+                    .help("find hanging transactions");
 
             subparser.addArgument("--broker-id")
-                .help("broker id to search for hanging transactions")
-                .action(store())
-                .type(Integer.class)
-                .required(false);
+                    .help("broker id to search for hanging transactions")
+                    .action(store())
+                    .type(Integer.class)
+                    .required(false);
 
             subparser.addArgument("--max-transaction-timeout")
-                .help("maximum transaction timeout in minutes to limit the scope of the search (15 minutes by default)")
-                .action(store())
-                .type(Integer.class)
-                .setDefault(15)
-                .required(false);
+                    .help("maximum transaction timeout in minutes to limit the scope of the search (15 minutes by default)")
+                    .action(store())
+                    .type(Integer.class)
+                    .setDefault(15)
+                    .required(false);
 
             subparser.addArgument("--topic")
-                .help("topic name to limit search to (required if --partition is specified)")
-                .action(store())
-                .type(String.class)
-                .required(false);
+                    .help("topic name to limit search to (required if --partition is specified)")
+                    .action(store())
+                    .type(String.class)
+                    .required(false);
 
             subparser.addArgument("--partition")
-                .help("partition number")
-                .action(store())
-                .type(Integer.class)
-                .required(false);
+                    .help("partition number")
+                    .action(store())
+                    .type(Integer.class)
+                    .required(false);
         }
 
         @Override
@@ -583,7 +583,7 @@ public abstract class TransactionsCommand {
 
             if (topic.isEmpty() && brokerId.isEmpty()) {
                 printErrorAndExit("The `find-hanging` command requires either --topic " +
-                    "or --broker-id to limit the scope of the search");
+                        "or --broker-id to limit the scope of the search");
                 return;
             }
 
@@ -594,20 +594,20 @@ public abstract class TransactionsCommand {
             }
 
             long maxTransactionTimeoutMs = TimeUnit.MINUTES.toMillis(
-                ns.getInt("max_transaction_timeout"));
+                    ns.getInt("max_transaction_timeout"));
 
             List<TopicPartition> topicPartitions = collectTopicPartitionsToSearch(
-                admin,
-                topic,
-                partition,
-                brokerId
+                    admin,
+                    topic,
+                    partition,
+                    brokerId
             );
 
             List<OpenTransaction> candidates = collectCandidateOpenTransactions(
-                admin,
-                brokerId,
-                maxTransactionTimeoutMs,
-                topicPartitions
+                    admin,
+                    brokerId,
+                    maxTransactionTimeoutMs,
+                    topicPartitions
             );
 
             if (candidates.isEmpty()) {
@@ -616,19 +616,19 @@ public abstract class TransactionsCommand {
                 Map<Long, List<OpenTransaction>> openTransactionsByProducerId = groupByProducerId(candidates);
 
                 Map<Long, String> transactionalIds = lookupTransactionalIds(
-                    admin,
-                    openTransactionsByProducerId.keySet()
+                        admin,
+                        openTransactionsByProducerId.keySet()
                 );
 
                 Map<String, TransactionDescription> descriptions = describeTransactions(
-                    admin,
-                    transactionalIds.values()
+                        admin,
+                        transactionalIds.values()
                 );
 
                 List<OpenTransaction> hangingTransactions = filterHangingTransactions(
-                    openTransactionsByProducerId,
-                    transactionalIds,
-                    descriptions
+                        openTransactionsByProducerId,
+                        transactionalIds,
+                        descriptions
                 );
 
                 printHangingTransactions(hangingTransactions, out);
@@ -636,10 +636,10 @@ public abstract class TransactionsCommand {
         }
 
         private List<TopicPartition> collectTopicPartitionsToSearch(
-            Admin admin,
-            Optional<String> topic,
-            Optional<Integer> partition,
-            Optional<Integer> brokerId
+                Admin admin,
+                Optional<String> topic,
+                Optional<Integer> partition,
+                Optional<Integer> brokerId
         ) throws Exception {
             final List<String> topics;
 
@@ -654,16 +654,16 @@ public abstract class TransactionsCommand {
             }
 
             return findTopicPartitions(
-                admin,
-                brokerId,
-                topics
+                    admin,
+                    brokerId,
+                    topics
             );
         }
 
         private List<OpenTransaction> filterHangingTransactions(
-            Map<Long, List<OpenTransaction>> openTransactionsByProducerId,
-            Map<Long, String> transactionalIds,
-            Map<String, TransactionDescription> descriptions
+                Map<Long, List<OpenTransaction>> openTransactionsByProducerId,
+                Map<Long, String> transactionalIds,
+                Map<String, TransactionDescription> descriptions
         ) {
             List<OpenTransaction> hangingTransactions = new ArrayList<>();
 
@@ -698,25 +698,25 @@ public abstract class TransactionsCommand {
         }
 
         private void printHangingTransactions(
-            List<OpenTransaction> hangingTransactions,
-            PrintStream out
+                List<OpenTransaction> hangingTransactions,
+                PrintStream out
         ) {
             long currentTimeMs = time.milliseconds();
             List<List<String>> rows = new ArrayList<>(hangingTransactions.size());
 
             for (OpenTransaction transaction : hangingTransactions) {
                 long transactionDurationMinutes = TimeUnit.MILLISECONDS.toMinutes(
-                    currentTimeMs - transaction.producerState.lastTimestamp());
+                        currentTimeMs - transaction.producerState.lastTimestamp());
 
                 rows.add(List.of(
-                    transaction.topicPartition.topic(),
-                    String.valueOf(transaction.topicPartition.partition()),
-                    String.valueOf(transaction.producerState.producerId()),
-                    String.valueOf(transaction.producerState.producerEpoch()),
-                    String.valueOf(transaction.producerState.coordinatorEpoch().orElse(-1)),
-                    String.valueOf(transaction.producerState.currentTransactionStartOffset().orElse(-1)),
-                    String.valueOf(transaction.producerState.lastTimestamp()),
-                    String.valueOf(transactionDurationMinutes)
+                        transaction.topicPartition.topic(),
+                        String.valueOf(transaction.topicPartition.partition()),
+                        String.valueOf(transaction.producerState.producerId()),
+                        String.valueOf(transaction.producerState.producerEpoch()),
+                        String.valueOf(transaction.producerState.coordinatorEpoch().orElse(-1)),
+                        String.valueOf(transaction.producerState.currentTransactionStartOffset().orElse(-1)),
+                        String.valueOf(transaction.producerState.lastTimestamp()),
+                        String.valueOf(transactionDurationMinutes)
                 ));
             }
 
@@ -724,8 +724,8 @@ public abstract class TransactionsCommand {
         }
 
         private Map<String, TransactionDescription> describeTransactions(
-            Admin admin,
-            Collection<String> transactionalIds
+                Admin admin,
+                Collection<String> transactionalIds
         ) throws Exception {
             try {
                 DescribeTransactionsResult result = admin.describeTransactions(new HashSet<>(transactionalIds));
@@ -747,19 +747,19 @@ public abstract class TransactionsCommand {
                 return descriptions;
             } catch (ExecutionException e) {
                 printErrorAndExit("Failed to describe " + transactionalIds.size()
-                    + " transactions", e.getCause());
+                        + " transactions", e.getCause());
                 return Map.of();
             }
         }
 
         private Map<Long, List<OpenTransaction>> groupByProducerId(
-            List<OpenTransaction> openTransactions
+                List<OpenTransaction> openTransactions
         ) {
             Map<Long, List<OpenTransaction>> res = new HashMap<>();
             for (OpenTransaction transaction : openTransactions) {
                 List<OpenTransaction> states = res.computeIfAbsent(
-                    transaction.producerState.producerId(),
-                    __ -> new ArrayList<>()
+                        transaction.producerState.producerId(),
+                        __ -> new ArrayList<>()
                 );
                 states.add(transaction);
             }
@@ -767,7 +767,7 @@ public abstract class TransactionsCommand {
         }
 
         private List<String> listTopics(
-            Admin admin
+                Admin admin
         ) throws Exception {
             try {
                 ListTopicsOptions listOptions = new ListTopicsOptions().listInternal(true);
@@ -779,36 +779,36 @@ public abstract class TransactionsCommand {
         }
 
         private List<TopicPartition> findTopicPartitions(
-            Admin admin,
-            Optional<Integer> brokerId,
-            List<String> topics
+                Admin admin,
+                Optional<Integer> brokerId,
+                List<String> topics
         ) throws Exception {
             List<TopicPartition> topicPartitions = new ArrayList<>();
             consumeInBatches(topics, MAX_BATCH_SIZE, batch ->
-                findTopicPartitions(
-                    admin,
-                    brokerId,
-                    batch,
-                    topicPartitions
-                )
+                    findTopicPartitions(
+                            admin,
+                            brokerId,
+                            batch,
+                            topicPartitions
+                    )
             );
             return topicPartitions;
         }
 
         private void findTopicPartitions(
-            Admin admin,
-            Optional<Integer> brokerId,
-            List<String> topics,
-            List<TopicPartition> topicPartitions
+                Admin admin,
+                Optional<Integer> brokerId,
+                List<String> topics,
+                List<TopicPartition> topicPartitions
         ) throws Exception {
             try {
                 Map<String, TopicDescription> topicDescriptions = admin.describeTopics(topics).allTopicNames().get();
                 topicDescriptions.forEach((topic, description) ->
-                    description.partitions().forEach(partitionInfo -> {
-                        if (brokerId.isEmpty() || hasReplica(brokerId.get(), partitionInfo)) {
-                            topicPartitions.add(new TopicPartition(topic, partitionInfo.partition()));
-                        }
-                    })
+                        description.partitions().forEach(partitionInfo -> {
+                            if (brokerId.isEmpty() || hasReplica(brokerId.get(), partitionInfo)) {
+                                topicPartitions.add(new TopicPartition(topic, partitionInfo.partition()));
+                            }
+                        })
                 );
             } catch (ExecutionException e) {
                 printErrorAndExit("Failed to describe " + topics.size() + " topics", e.getCause());
@@ -816,17 +816,17 @@ public abstract class TransactionsCommand {
         }
 
         private boolean hasReplica(
-            int brokerId,
-            TopicPartitionInfo partitionInfo
+                int brokerId,
+                TopicPartitionInfo partitionInfo
         ) {
             return partitionInfo.replicas().stream().anyMatch(node -> node.id() == brokerId);
         }
 
         private List<OpenTransaction> collectCandidateOpenTransactions(
-            Admin admin,
-            Optional<Integer> brokerId,
-            long maxTransactionTimeoutMs,
-            List<TopicPartition> topicPartitions
+                Admin admin,
+                Optional<Integer> brokerId,
+                long maxTransactionTimeoutMs,
+                List<TopicPartition> topicPartitions
         ) throws Exception {
             // We have to check all partitions on the broker. In order to avoid
             // overwhelming it with a giant request, we break the requests into
@@ -835,13 +835,13 @@ public abstract class TransactionsCommand {
             List<OpenTransaction> candidateTransactions = new ArrayList<>();
 
             consumeInBatches(topicPartitions, MAX_BATCH_SIZE, batch ->
-                collectCandidateOpenTransactions(
-                    admin,
-                    brokerId,
-                    maxTransactionTimeoutMs,
-                    batch,
-                    candidateTransactions
-                )
+                    collectCandidateOpenTransactions(
+                            admin,
+                            brokerId,
+                            maxTransactionTimeoutMs,
+                            batch,
+                            candidateTransactions
+                    )
             );
 
             return candidateTransactions;
@@ -851,61 +851,61 @@ public abstract class TransactionsCommand {
         }
 
         private void collectCandidateOpenTransactions(
-            Admin admin,
-            Optional<Integer> brokerId,
-            long maxTransactionTimeoutMs,
-            List<TopicPartition> topicPartitions,
-            List<OpenTransaction> candidateTransactions
+                Admin admin,
+                Optional<Integer> brokerId,
+                long maxTransactionTimeoutMs,
+                List<TopicPartition> topicPartitions,
+                List<OpenTransaction> candidateTransactions
         ) throws Exception {
             try {
                 DescribeProducersOptions describeOptions = new DescribeProducersOptions();
                 brokerId.ifPresent(describeOptions::brokerId);
 
                 Map<TopicPartition, DescribeProducersResult.PartitionProducerState> producersByPartition =
-                    admin.describeProducers(topicPartitions, describeOptions).all().get();
+                        admin.describeProducers(topicPartitions, describeOptions).all().get();
 
                 long currentTimeMs = time.milliseconds();
 
                 producersByPartition.forEach((topicPartition, producersStates) ->
-                    producersStates.activeProducers().forEach(activeProducer -> {
-                        if (activeProducer.currentTransactionStartOffset().isPresent()) {
-                            long transactionDurationMs = currentTimeMs - activeProducer.lastTimestamp();
-                            if (transactionDurationMs > maxTransactionTimeoutMs) {
-                                candidateTransactions.add(new OpenTransaction(
-                                    topicPartition,
-                                    activeProducer
-                                ));
+                        producersStates.activeProducers().forEach(activeProducer -> {
+                            if (activeProducer.currentTransactionStartOffset().isPresent()) {
+                                long transactionDurationMs = currentTimeMs - activeProducer.lastTimestamp();
+                                if (transactionDurationMs > maxTransactionTimeoutMs) {
+                                    candidateTransactions.add(new OpenTransaction(
+                                            topicPartition,
+                                            activeProducer
+                                    ));
+                                }
                             }
-                        }
-                    })
+                        })
                 );
             } catch (ExecutionException e) {
                 printErrorAndExit("Failed to describe producers for " + topicPartitions.size() +
-                    " partitions on broker " + brokerId, e.getCause());
+                        " partitions on broker " + brokerId, e.getCause());
             }
         }
 
         private Map<Long, String> lookupTransactionalIds(
-            Admin admin,
-            Set<Long> producerIds
+                Admin admin,
+                Set<Long> producerIds
         ) throws Exception {
             try {
                 ListTransactionsOptions listTransactionsOptions = new ListTransactionsOptions()
-                    .filterProducerIds(producerIds);
+                        .filterProducerIds(producerIds);
 
                 Collection<TransactionListing> transactionListings =
-                    admin.listTransactions(listTransactionsOptions).all().get();
+                        admin.listTransactions(listTransactionsOptions).all().get();
 
                 Map<Long, String> transactionalIdMap = new HashMap<>();
 
                 transactionListings.forEach(listing -> {
                     if (!producerIds.contains(listing.producerId())) {
                         log.debug("Received transaction listing {} which has a producerId " +
-                            "which was not requested", listing);
+                                "which was not requested", listing);
                     } else {
                         transactionalIdMap.put(
-                            listing.producerId(),
-                            listing.transactionalId()
+                                listing.producerId(),
+                                listing.transactionalId()
                         );
                     }
                 });
@@ -913,7 +913,7 @@ public abstract class TransactionsCommand {
                 return transactionalIdMap;
             } catch (ExecutionException e) {
                 printErrorAndExit("Failed to list transactions for " + producerIds.size() +
-                    " producers", e.getCause());
+                        " producers", e.getCause());
                 return Map.of();
             }
         }
@@ -924,17 +924,17 @@ public abstract class TransactionsCommand {
         }
 
         private <T> void consumeInBatches(
-            List<T> list,
-            int batchSize,
-            ThrowableConsumer<List<T>> consumer
+                List<T> list,
+                int batchSize,
+                ThrowableConsumer<List<T>> consumer
         ) throws Exception {
             int batchStartIndex = 0;
             int limitIndex = list.size();
 
             while (batchStartIndex < limitIndex) {
                 int batchEndIndex = Math.min(
-                    limitIndex,
-                    batchStartIndex + batchSize
+                        limitIndex,
+                        batchStartIndex + batchSize
                 );
 
                 consumer.accept(list.subList(batchStartIndex, batchEndIndex));
@@ -947,7 +947,7 @@ public abstract class TransactionsCommand {
         log.debug(message, t);
 
         String exitMessage = message + ": " + t.getMessage() + "." +
-            " Enable debug logging for additional detail.";
+                " Enable debug logging for additional detail.";
 
         printErrorAndExit(exitMessage);
     }
@@ -980,53 +980,53 @@ public abstract class TransactionsCommand {
 
     static ArgumentParser buildBaseParser() {
         ArgumentParser parser = ArgumentParsers
-            .newArgumentParser("kafka-transactions.sh");
+                .newArgumentParser("kafka-transactions.sh");
 
         parser.description("This tool is used to analyze the transactional state of producers in the cluster. " +
-            "It can be used to detect and recover from hanging transactions.");
+                "It can be used to detect and recover from hanging transactions.");
 
         parser.addArgument("-v", "--version")
-            .action(new PrintVersionAndExitAction())
-            .help("show the version of this Kafka distribution and exit");
+                .action(new PrintVersionAndExitAction())
+                .help("show the version of this Kafka distribution and exit");
 
         parser.addArgument("--command-config")
-            .help("property file containing configs to be passed to admin client")
-            .action(store())
-            .type(String.class)
-            .metavar("FILE")
-            .required(false);
+                .help("property file containing configs to be passed to admin client")
+                .action(store())
+                .type(String.class)
+                .metavar("FILE")
+                .required(false);
 
         parser.addArgument("--bootstrap-server")
-            .help("hostname and port for the broker to connect to, in the form `host:port`  " +
-                "(multiple comma-separated entries can be given)")
-            .action(store())
-            .type(String.class)
-            .metavar("host:port")
-            .required(true);
+                .help("hostname and port for the broker to connect to, in the form `host:port`  " +
+                        "(multiple comma-separated entries can be given)")
+                .action(store())
+                .type(String.class)
+                .metavar("host:port")
+                .required(true);
 
         return parser;
     }
 
     static void execute(
-        String[] args,
-        Function<Namespace, Admin> adminSupplier,
-        PrintStream out,
-        Time time
+            String[] args,
+            Function<Namespace, Admin> adminSupplier,
+            PrintStream out,
+            Time time
     ) throws Exception {
         List<TransactionsCommand> commands = List.of(
-            new ListTransactionsCommand(time),
-            new DescribeTransactionsCommand(time),
-            new DescribeProducersCommand(time),
-            new AbortTransactionCommand(time),
-            new FindHangingTransactionsCommand(time),
-            new ForceTerminateTransactionsCommand(time)
+                new ListTransactionsCommand(time),
+                new DescribeTransactionsCommand(time),
+                new DescribeProducersCommand(time),
+                new AbortTransactionCommand(time),
+                new FindHangingTransactionsCommand(time),
+                new ForceTerminateTransactionsCommand(time)
         );
 
         ArgumentParser parser = buildBaseParser();
         Subparsers subparsers = parser.addSubparsers()
-            .dest("command")
-            .title("commands")
-            .metavar("COMMAND");
+                .dest("command")
+                .title("commands")
+                .metavar("COMMAND");
         commands.forEach(command -> command.addSubparser(subparsers));
 
         final Namespace ns;
@@ -1043,8 +1043,8 @@ public abstract class TransactionsCommand {
         String commandName = ns.getString("command");
 
         Optional<TransactionsCommand> commandOpt = commands.stream()
-            .filter(cmd -> cmd.name().equals(commandName))
-            .findFirst();
+                .filter(cmd -> cmd.name().equals(commandName))
+                .findFirst();
 
         if (commandOpt.isEmpty()) {
             printErrorAndExit("Unexpected command " + commandName);

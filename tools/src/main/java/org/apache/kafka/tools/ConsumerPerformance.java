@@ -80,8 +80,8 @@ public class ConsumerPerformance {
                 long joinStartMs = currentTimeMs;
                 long startMs = currentTimeMs;
                 consume(consumer, options, totalRecordsRead, totalBytesRead, joinTimeMs,
-                    bytesRead, recordsRead, lastBytesRead, lastRecordsRead,
-                    joinStartMs, joinTimeMsInSingleRound);
+                        bytesRead, recordsRead, lastBytesRead, lastRecordsRead,
+                        joinStartMs, joinTimeMsInSingleRound);
                 long endMs = System.currentTimeMillis();
 
                 // print final stats
@@ -90,16 +90,16 @@ public class ConsumerPerformance {
                 if (!options.showDetailedStats()) {
                     double totalMbRead = (totalBytesRead.get() * 1.0) / (1024 * 1024);
                     System.out.printf("%s, %s, %.4f, %.4f, %d, %.4f, %d, %d, %.4f, %.4f%n",
-                        options.dateFormat().format(startMs),
-                        options.dateFormat().format(endMs),
-                        totalMbRead,
-                        totalMbRead / elapsedSec,
-                        totalRecordsRead.get(),
-                        totalRecordsRead.get() / elapsedSec,
-                        joinTimeMs.get(),
-                        fetchTimeInMs,
-                        totalMbRead / (fetchTimeInMs / 1000.0),
-                        totalRecordsRead.get() / (fetchTimeInMs / 1000.0)
+                            options.dateFormat().format(startMs),
+                            options.dateFormat().format(endMs),
+                            totalMbRead,
+                            totalMbRead / elapsedSec,
+                            totalRecordsRead.get(),
+                            totalRecordsRead.get() / elapsedSec,
+                            joinTimeMs.get(),
+                            fetchTimeInMs,
+                            totalMbRead / (fetchTimeInMs / 1000.0),
+                            totalRecordsRead.get() / (fetchTimeInMs / 1000.0)
                     );
                 }
 
@@ -165,7 +165,7 @@ public class ConsumerPerformance {
                 if (currentTimeMs - lastReportTimeMs >= reportingIntervalMs) {
                     if (showDetailedStats)
                         printConsumerProgress(0, bytesRead, lastBytesRead, recordsRead, lastRecordsRead,
-                            lastReportTimeMs, currentTimeMs, dateFormat, joinTimeMsInSingleRound.get());
+                                lastReportTimeMs, currentTimeMs, dateFormat, joinTimeMsInSingleRound.get());
                     joinTimeMsInSingleRound.set(0);
                     lastReportTimeMs = currentTimeMs;
                     lastRecordsRead = recordsRead;
@@ -176,7 +176,7 @@ public class ConsumerPerformance {
 
         if (recordsRead < numRecords)
             System.out.printf("WARNING: Exiting before consuming the expected number of records: timeout (%d ms) exceeded. " +
-                "You can use the --timeout option to increase the timeout.%n", recordFetchTimeoutMs);
+                    "You can use the --timeout option to increase the timeout.%n", recordFetchTimeoutMs);
         totalRecordsRead.set(recordsRead);
         totalBytesRead.set(bytesRead);
     }
@@ -209,7 +209,7 @@ public class ConsumerPerformance {
         double intervalMbPerSec = 1000.0 * intervalMbRead / elapsedMs;
         double intervalRecordsPerSec = ((recordsRead - lastRecordsRead) / elapsedMs) * 1000.0;
         System.out.printf("%s, %d, %.4f, %.4f, %d, %.4f", dateFormat.format(endMs), id,
-            totalMbRead, intervalMbPerSec, recordsRead, intervalRecordsPerSec);
+                totalMbRead, intervalMbPerSec, recordsRead, intervalRecordsPerSec);
     }
 
     private static void printExtendedProgress(long bytesRead,
@@ -225,7 +225,7 @@ public class ConsumerPerformance {
         double intervalMbPerSec = (fetchTimeMs <= 0) ? 0.0 : 1000.0 * intervalMbRead / fetchTimeMs;
         double intervalRecordsPerSec = (fetchTimeMs <= 0) ? 0.0 : 1000.0 * intervalRecordsRead / fetchTimeMs;
         System.out.printf(", %d, %d, %.4f, %.4f", joinTimeMsInSingleRound,
-            fetchTimeMs, intervalMbPerSec, intervalRecordsPerSec);
+                fetchTimeMs, intervalMbPerSec, intervalRecordsPerSec);
     }
 
     public static class ConsumerPerfRebListener implements ConsumerRebalanceListener {
@@ -285,77 +285,77 @@ public class ConsumerPerformance {
         public ConsumerPerfOptions(String[] args) {
             super(args);
             bootstrapServerOpt = parser.accepts("bootstrap-server", "REQUIRED: The server(s) to connect to.")
-                .withRequiredArg()
-                .describedAs("server to connect to")
-                .ofType(String.class);
+                    .withRequiredArg()
+                    .describedAs("server to connect to")
+                    .ofType(String.class);
             topicOpt = parser.accepts("topic", "The topic to consume from.")
-                .withRequiredArg()
-                .describedAs("topic")
-                .ofType(String.class);
+                    .withRequiredArg()
+                    .describedAs("topic")
+                    .ofType(String.class);
             includeOpt = parser.accepts("include", "Regular expression specifying list of topics to include for consumption.")
-                .withRequiredArg()
-                .describedAs("Java regex (String)")
-                .ofType(String.class);
+                    .withRequiredArg()
+                    .describedAs("Java regex (String)")
+                    .ofType(String.class);
             groupIdOpt = parser.accepts("group", "The group id to consume on.")
-                .withRequiredArg()
-                .describedAs("gid")
-                .defaultsTo("perf-consumer-" + RND.nextInt(100_000))
-                .ofType(String.class);
+                    .withRequiredArg()
+                    .describedAs("gid")
+                    .defaultsTo("perf-consumer-" + RND.nextInt(100_000))
+                    .ofType(String.class);
             fetchSizeOpt = parser.accepts("fetch-size", "The maximum amount of data to fetch from a single partition per request.")
-                .withRequiredArg()
-                .describedAs("size")
-                .ofType(Integer.class)
-                .defaultsTo(1024 * 1024);
+                    .withRequiredArg()
+                    .describedAs("size")
+                    .ofType(Integer.class)
+                    .defaultsTo(1024 * 1024);
             commandPropertiesOpt = parser.accepts("command-property", "Kafka consumer related configuration properties like client.id. " +
-                    "These configs take precedence over those passed via --command-config or --consumer.config.")
-                .withRequiredArg()
-                .describedAs("prop1=val1")
-                .ofType(String.class);
+                            "These configs take precedence over those passed via --command-config or --consumer.config.")
+                    .withRequiredArg()
+                    .describedAs("prop1=val1")
+                    .ofType(String.class);
             resetBeginningOffsetOpt = parser.accepts("from-latest", "If the consumer does not already have an established " +
-                "offset to consume from, start with the latest record present in the log rather than the earliest record.");
+                    "offset to consume from, start with the latest record present in the log rather than the earliest record.");
             socketBufferSizeOpt = parser.accepts("socket-buffer-size", "The size of the tcp RECV size.")
-                .withRequiredArg()
-                .describedAs("size")
-                .ofType(Integer.class)
-                .defaultsTo(2 * 1024 * 1024);
+                    .withRequiredArg()
+                    .describedAs("size")
+                    .ofType(Integer.class)
+                    .defaultsTo(2 * 1024 * 1024);
             consumerConfigOpt = parser.accepts("consumer.config", "(DEPRECATED) Consumer config properties file. " +
                             "This option will be removed in a future version. Use --command-config instead.")
-                .withRequiredArg()
-                .describedAs("config file")
-                .ofType(String.class);
+                    .withRequiredArg()
+                    .describedAs("config file")
+                    .ofType(String.class);
             commandConfigOpt = parser.accepts("command-config", "Config properties file.")
-                .withRequiredArg()
-                .describedAs("config file")
-                .ofType(String.class);
+                    .withRequiredArg()
+                    .describedAs("config file")
+                    .ofType(String.class);
             printMetricsOpt = parser.accepts("print-metrics", "Print out the metrics.");
             showDetailedStatsOpt = parser.accepts("show-detailed-stats", "If set, stats are reported for each reporting " +
-                "interval as configured by reporting-interval.");
+                    "interval as configured by reporting-interval.");
             recordFetchTimeoutOpt = parser.accepts("timeout", "The maximum allowed time in milliseconds between returned records.")
-                .withOptionalArg()
-                .describedAs("milliseconds")
-                .ofType(Long.class)
-                .defaultsTo(10_000L);
+                    .withOptionalArg()
+                    .describedAs("milliseconds")
+                    .ofType(Long.class)
+                    .defaultsTo(10_000L);
             numMessagesOpt = parser.accepts("messages", "(DEPRECATED) The number of records to consume. " +
                             "This option will be removed in a future version. Use --num-records instead.")
-                .withRequiredArg()
-                .describedAs("count")
-                .ofType(Long.class);
+                    .withRequiredArg()
+                    .describedAs("count")
+                    .ofType(Long.class);
             numRecordsOpt = parser.accepts("num-records", "REQUIRED: The number of records to consume.")
-                .withRequiredArg()
-                .describedAs("count")
-                .ofType(Long.class);
+                    .withRequiredArg()
+                    .describedAs("count")
+                    .ofType(Long.class);
             reportingIntervalOpt = parser.accepts("reporting-interval", "Interval in milliseconds at which to print progress info.")
-                .withRequiredArg()
-                .withValuesConvertedBy(regex("^\\d+$"))
-                .describedAs("interval_ms")
-                .ofType(Long.class)
-                .defaultsTo(5_000L);
+                    .withRequiredArg()
+                    .withValuesConvertedBy(regex("^\\d+$"))
+                    .describedAs("interval_ms")
+                    .ofType(Long.class)
+                    .defaultsTo(5_000L);
             dateFormatOpt = parser.accepts("date-format", "The date format to use for formatting the time field. " +
-                    "See java.text.SimpleDateFormat for options.")
-                .withRequiredArg()
-                .describedAs("date format")
-                .ofType(String.class)
-                .defaultsTo("yyyy-MM-dd HH:mm:ss:SSS");
+                            "See java.text.SimpleDateFormat for options.")
+                    .withRequiredArg()
+                    .describedAs("date format")
+                    .ofType(String.class)
+                    .defaultsTo("yyyy-MM-dd HH:mm:ss:SSS");
             hideHeaderOpt = parser.accepts("hide-header", "If set, skips printing the header for the stats.");
             try {
                 options = parser.parse(args);
@@ -411,7 +411,7 @@ public class ConsumerPerformance {
             props.put(ConsumerConfig.RECEIVE_BUFFER_CONFIG, options.valueOf(socketBufferSizeOpt).toString());
             props.put(ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG, options.valueOf(fetchSizeOpt).toString());
             props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,
-                options.has(resetBeginningOffsetOpt) ? "latest" : "earliest");
+                    options.has(resetBeginningOffsetOpt) ? "latest" : "earliest");
             props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class);
             props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class);
             props.put(ConsumerConfig.CHECK_CRCS_CONFIG, "false");

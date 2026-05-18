@@ -39,10 +39,10 @@ public final class ElectionState {
     private final Set<Integer> voters;
 
     ElectionState(
-        int epoch,
-        OptionalInt leaderId,
-        Optional<ReplicaKey> votedKey,
-        Set<Integer> voters
+            int epoch,
+            OptionalInt leaderId,
+            Optional<ReplicaKey> votedKey,
+            Set<Integer> voters
     ) {
         this.epoch = epoch;
         this.leaderId = leaderId;
@@ -62,7 +62,7 @@ public final class ElectionState {
 
     /**
      * Return if the replica has voted for the given candidate.
-     *
+     * <p>
      * A replica has voted for a candidate if all the following are true:
      * 1. the node's id and voted id match and
      * 2. if the voted directory id is set, it matches the node's directory id
@@ -122,25 +122,25 @@ public final class ElectionState {
 
     public QuorumStateData toQuorumStateData(short version) {
         QuorumStateData data = new QuorumStateData()
-            .setLeaderEpoch(epoch)
-            .setLeaderId(leaderIdOrSentinel())
-            .setVotedId(votedKey.map(ReplicaKey::id).orElse(NOT_VOTED));
+                .setLeaderEpoch(epoch)
+                .setLeaderId(leaderIdOrSentinel())
+                .setVotedId(votedKey.map(ReplicaKey::id).orElse(NOT_VOTED));
 
         if (version == 0) {
             List<QuorumStateData.Voter> dataVoters = voters
-                .stream()
-                .map(voterId -> new QuorumStateData.Voter().setVoterId(voterId))
-                .collect(Collectors.toList());
+                    .stream()
+                    .map(voterId -> new QuorumStateData.Voter().setVoterId(voterId))
+                    .collect(Collectors.toList());
             data.setCurrentVoters(dataVoters);
         } else if (version == 1) {
             data.setVotedDirectoryId(
-                votedKey.flatMap(ReplicaKey::directoryId).orElse(ReplicaKey.NO_DIRECTORY_ID)
+                    votedKey.flatMap(ReplicaKey::directoryId).orElse(ReplicaKey.NO_DIRECTORY_ID)
             );
         } else {
             throw new IllegalStateException(
-                String.format(
-                    "File quorum state store doesn't handle supported version %d", version
-                )
+                    String.format(
+                            "File quorum state store doesn't handle supported version %d", version
+                    )
             );
         }
 
@@ -150,11 +150,11 @@ public final class ElectionState {
     @Override
     public String toString() {
         return String.format(
-            "Election(epoch=%d, leaderId=%s, votedKey=%s, voters=%s)",
-            epoch,
-            leaderId,
-            votedKey,
-            voters
+                "Election(epoch=%d, leaderId=%s, votedKey=%s, voters=%s)",
+                epoch,
+                leaderId,
+                votedKey,
+                voters
         );
     }
 
@@ -186,10 +186,10 @@ public final class ElectionState {
     }
 
     public static ElectionState withElectedLeader(
-        int epoch,
-        int leaderId,
-        Optional<ReplicaKey> votedKey,
-        Set<Integer> voters
+            int epoch,
+            int leaderId,
+            Optional<ReplicaKey> votedKey,
+            Set<Integer> voters
     ) {
         if (leaderId < 0) {
             throw new IllegalArgumentException("Illegal leader Id " + leaderId + ": must be non-negative");
@@ -204,14 +204,14 @@ public final class ElectionState {
 
     public static ElectionState fromQuorumStateData(QuorumStateData data) {
         Optional<ReplicaKey> votedKey = data.votedId() == NOT_VOTED ?
-            Optional.empty() :
-            Optional.of(ReplicaKey.of(data.votedId(), data.votedDirectoryId()));
+                Optional.empty() :
+                Optional.of(ReplicaKey.of(data.votedId(), data.votedDirectoryId()));
 
         return new ElectionState(
-            data.leaderEpoch(),
-            data.leaderId() == UNKNOWN_LEADER_ID ? OptionalInt.empty() : OptionalInt.of(data.leaderId()),
-            votedKey,
-            data.currentVoters().stream().map(QuorumStateData.Voter::voterId).collect(Collectors.toSet())
+                data.leaderEpoch(),
+                data.leaderId() == UNKNOWN_LEADER_ID ? OptionalInt.empty() : OptionalInt.of(data.leaderId()),
+                votedKey,
+                data.currentVoters().stream().map(QuorumStateData.Voter::voterId).collect(Collectors.toSet())
         );
     }
 }

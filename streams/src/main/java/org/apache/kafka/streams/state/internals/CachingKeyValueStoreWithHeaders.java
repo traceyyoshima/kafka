@@ -25,7 +25,7 @@ import org.apache.kafka.streams.query.QueryResult;
 import org.apache.kafka.streams.state.KeyValueStore;
 
 /**
- * A caching key-value store with headers is a caching key-value store that only forwards the query to the 
+ * A caching key-value store with headers is a caching key-value store that only forwards the query to the
  * wrapped store.
  */
 public class CachingKeyValueStoreWithHeaders extends CachingKeyValueStore {

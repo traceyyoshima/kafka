@@ -39,7 +39,7 @@ import static org.apache.kafka.common.compress.Lz4BlockOutputStream.MAGIC;
  * A partial implementation of the v1.5.1 LZ4 Frame format.
  *
  * @see <a href="https://github.com/lz4/lz4/wiki/lz4_Frame_format.md">LZ4 Frame Format</a>
- *
+ * <p>
  * This class is not thread-safe.
  */
 public final class Lz4BlockInputStream extends InputStream {
@@ -53,6 +53,7 @@ public final class Lz4BlockInputStream extends InputStream {
     private static final XXHash32 CHECKSUM = XXHashFactory.fastestInstance().hash32();
 
     private static final RuntimeException BROKEN_LZ4_EXCEPTION;
+
     // https://issues.apache.org/jira/browse/KAFKA-9203
     // detect buggy lz4 libraries on the classpath
     static {
@@ -82,7 +83,7 @@ public final class Lz4BlockInputStream extends InputStream {
     /**
      * Create a new {@link InputStream} that will decompress data using the LZ4 algorithm.
      *
-     * @param in The byte buffer to decompress
+     * @param in                           The byte buffer to decompress
      * @param ignoreFlagDescriptorChecksum for compatibility with old kafka clients, ignore incorrect HC byte
      * @throws IOException
      */
@@ -183,7 +184,7 @@ public final class Lz4BlockInputStream extends InputStream {
         if (compressed) {
             try {
                 final int bufferSize = DECOMPRESSOR.decompress(in, in.position(), blockSize, decompressionBuffer, 0,
-                    maxBlockSize);
+                        maxBlockSize);
                 decompressionBuffer.position(0);
                 decompressionBuffer.limit(bufferSize);
                 decompressedBuffer = decompressionBuffer;
@@ -286,28 +287,28 @@ public final class Lz4BlockInputStream extends InputStream {
 
         final byte[] compressed = new byte[compressor.maxCompressedLength(source.length)];
         final int compressedLength = compressor.compress(source, 0, source.length, compressed, 0,
-                                                         compressed.length);
+                compressed.length);
 
         // allocate an array-backed ByteBuffer with non-zero array-offset containing the compressed data
         // a buggy decompressor will read the data from the beginning of the underlying array instead of
         // the beginning of the ByteBuffer, failing to decompress the invalid data.
         final byte[] zeroes = {0, 0, 0, 0, 0};
         ByteBuffer nonZeroOffsetBuffer = ByteBuffer
-            .allocate(zeroes.length + compressed.length) // allocates the backing array with extra space to offset the data
-            .put(zeroes) // prepend invalid bytes (zeros) before the compressed data in the array
-            .slice() // create a new ByteBuffer sharing the underlying array, offset to start on the compressed data
-            .put(compressed); // write the compressed data at the beginning of this new buffer
+                .allocate(zeroes.length + compressed.length) // allocates the backing array with extra space to offset the data
+                .put(zeroes) // prepend invalid bytes (zeros) before the compressed data in the array
+                .slice() // create a new ByteBuffer sharing the underlying array, offset to start on the compressed data
+                .put(compressed); // write the compressed data at the beginning of this new buffer
 
         ByteBuffer dest = ByteBuffer.allocate(source.length);
         try {
             DECOMPRESSOR.decompress(nonZeroOffsetBuffer, 0, compressedLength, dest, 0, source.length);
         } catch (Exception e) {
             throw new RuntimeException("Kafka has detected a buggy lz4-java library (< 1.4.x) on the classpath."
-                                       + " If you are using Kafka client libraries, make sure your application does not"
-                                       + " accidentally override the version provided by Kafka or include multiple versions"
-                                       + " of the library on the classpath. The lz4-java version on the classpath should"
-                                       + " match the version the Kafka client libraries depend on. Adding -verbose:class"
-                                       + " to your JVM arguments may help understand which lz4-java version is getting loaded.", e);
+                    + " If you are using Kafka client libraries, make sure your application does not"
+                    + " accidentally override the version provided by Kafka or include multiple versions"
+                    + " of the library on the classpath. The lz4-java version on the classpath should"
+                    + " match the version the Kafka client libraries depend on. Adding -verbose:class"
+                    + " to your JVM arguments may help understand which lz4-java version is getting loaded.", e);
         }
     }
 }

@@ -30,7 +30,7 @@ public class StoreQueryParameters<T> {
     private final String storeName;
     private final QueryableStoreType<T> queryableStoreType;
 
-    protected StoreQueryParameters(final String storeName, final QueryableStoreType<T>  queryableStoreType, final Integer partition, final boolean staleStores) {
+    protected StoreQueryParameters(final String storeName, final QueryableStoreType<T> queryableStoreType, final Integer partition, final boolean staleStores) {
         this.storeName = storeName;
         this.queryableStoreType = queryableStoreType;
         this.partition = partition;
@@ -38,15 +38,14 @@ public class StoreQueryParameters<T> {
     }
 
     public static <T> StoreQueryParameters<T> fromNameAndType(final String storeName,
-                                                              final QueryableStoreType<T>  queryableStoreType) {
+                                                              final QueryableStoreType<T> queryableStoreType) {
         return new StoreQueryParameters<>(storeName, queryableStoreType, null, false);
     }
 
     /**
      * Set a specific partition that should be queried exclusively.
      *
-     * @param partition   The specific integer partition to be fetched from the stores list by using {@link StoreQueryParameters}.
-     *
+     * @param partition The specific integer partition to be fetched from the stores list by using {@link StoreQueryParameters}.
      * @return StoreQueryParameters a new {@code StoreQueryParameters} instance configured with the specified partition
      */
     public StoreQueryParameters<T> withPartition(final Integer partition) {

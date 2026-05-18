@@ -76,9 +76,9 @@ public class DefaultJwtRetrieverTest extends OAuthBearerTest {
 
         try (JwtRetriever jwtRetriever = new DefaultJwtRetriever()) {
             assertThrowsWithMessage(
-                ConfigException.class,
-                () -> jwtRetriever.configure(configs, OAUTHBEARER_MECHANISM, getJaasConfigEntries()),
-                "that doesn't exist"
+                    ConfigException.class,
+                    () -> jwtRetriever.configure(configs, OAUTHBEARER_MECHANISM, getJaasConfigEntries()),
+                    "that doesn't exist"
             );
         }
     }
@@ -91,9 +91,9 @@ public class DefaultJwtRetrieverTest extends OAuthBearerTest {
 
         try (JwtRetriever jwtRetriever = new DefaultJwtRetriever()) {
             assertThrowsWithMessage(
-                ConfigException.class,
-                () -> jwtRetriever.configure(configs, OAUTHBEARER_MECHANISM, getJaasConfigEntries()),
-                ALLOWED_SASL_OAUTHBEARER_URLS_CONFIG
+                    ConfigException.class,
+                    () -> jwtRetriever.configure(configs, OAUTHBEARER_MECHANISM, getJaasConfigEntries()),
+                    ALLOWED_SASL_OAUTHBEARER_URLS_CONFIG
             );
         }
     }
@@ -135,10 +135,10 @@ public class DefaultJwtRetrieverTest extends OAuthBearerTest {
 
     private static Stream<Arguments> urlEncodeHeaderSupplier() {
         return Stream.of(
-            Arguments.of(Collections.emptyMap(), DEFAULT_SASL_OAUTHBEARER_HEADER_URLENCODE),
-            Arguments.of(Collections.singletonMap(SASL_OAUTHBEARER_HEADER_URLENCODE, null), DEFAULT_SASL_OAUTHBEARER_HEADER_URLENCODE),
-            Arguments.of(Collections.singletonMap(SASL_OAUTHBEARER_HEADER_URLENCODE, true), true),
-            Arguments.of(Collections.singletonMap(SASL_OAUTHBEARER_HEADER_URLENCODE, false), false)
+                Arguments.of(Collections.emptyMap(), DEFAULT_SASL_OAUTHBEARER_HEADER_URLENCODE),
+                Arguments.of(Collections.singletonMap(SASL_OAUTHBEARER_HEADER_URLENCODE, null), DEFAULT_SASL_OAUTHBEARER_HEADER_URLENCODE),
+                Arguments.of(Collections.singletonMap(SASL_OAUTHBEARER_HEADER_URLENCODE, true), true),
+                Arguments.of(Collections.singletonMap(SASL_OAUTHBEARER_HEADER_URLENCODE, false), false)
         );
     }
 }

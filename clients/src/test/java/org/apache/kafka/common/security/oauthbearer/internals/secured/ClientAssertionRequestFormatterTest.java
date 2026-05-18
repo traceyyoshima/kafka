@@ -126,8 +126,8 @@ public class ClientAssertionRequestFormatterTest extends OAuthBearerTest {
         String body = formatter.formatBody();
 
         String expected = "client_assertion_type=urn%3Aietf%3Aparams%3Aoauth%3Aclient-assertion-type%3Ajwt-bearer"
-            + "&client_assertion=" + ASSERTION
-            + "&grant_type=client_credentials";
+                + "&client_assertion=" + ASSERTION
+                + "&grant_type=client_credentials";
         assertEquals(expected, body);
     }
 
@@ -143,11 +143,11 @@ public class ClientAssertionRequestFormatterTest extends OAuthBearerTest {
 
     private static Stream<Arguments> scopeUrlEncodingSource() {
         return Stream.of(
-            Arguments.of("simple-scope", "simple-scope"),
-            Arguments.of("openid profile", "openid+profile"),
-            Arguments.of("scope!special", "scope%21special"),
-            Arguments.of("what?query", "what%3Fquery"),
-            Arguments.of("  trimmed  ", "trimmed")
+                Arguments.of("simple-scope", "simple-scope"),
+                Arguments.of("openid profile", "openid+profile"),
+                Arguments.of("scope!special", "scope%21special"),
+                Arguments.of("what?query", "what%3Fquery"),
+                Arguments.of("  trimmed  ", "trimmed")
         );
     }
 

@@ -58,7 +58,7 @@ import static org.mockito.Mockito.when;
 public class JaasBasicAuthFilterTest {
 
     private static final String LOGIN_MODULE =
-        "org.apache.kafka.connect.rest.basic.auth.extension.PropertyFileLoginModule";
+            "org.apache.kafka.connect.rest.basic.auth.extension.PropertyFileLoginModule";
 
     @Test
     public void testSuccess() throws IOException {
@@ -191,7 +191,7 @@ public class JaasBasicAuthFilterTest {
         when(requestContext.getUriInfo()).thenReturn(uriInfo);
         String authHeader = "Basic" + Base64.getEncoder().encodeToString(("user" + ":" + "password").getBytes());
         when(requestContext.getHeaderString(JaasBasicAuthFilter.AUTHORIZATION))
-            .thenReturn(authHeader);
+                .thenReturn(authHeader);
 
         File credentialFile = setupPropertyLoginFile(true);
         JaasBasicAuthFilter jaasBasicAuthFilter = setupJaasFilter("KafkaConnect", credentialFile.getPath());
@@ -208,13 +208,13 @@ public class JaasBasicAuthFilterTest {
         CallbackHandler callbackHandler = new JaasBasicAuthFilter.BasicAuthCallBackHandler(
                 new JaasBasicAuthFilter.BasicAuthCredentials(authHeader("basic", "user", "pwd")));
         Callback unsupportedCallback = new ChoiceCallback(
-            "You take the blue pill... the story ends, you wake up in your bed and believe whatever you want to believe. " 
-                + "You take the red pill... you stay in Wonderland, and I show you how deep the rabbit hole goes.",
-            new String[] {"blue pill", "red pill"},
-            1,
-            true
+                "You take the blue pill... the story ends, you wake up in your bed and believe whatever you want to believe. "
+                        + "You take the red pill... you stay in Wonderland, and I show you how deep the rabbit hole goes.",
+                new String[]{"blue pill", "red pill"},
+                1,
+                true
         );
-        assertThrows(ConnectException.class, () -> callbackHandler.handle(new Callback[] {unsupportedCallback}));
+        assertThrows(ConnectException.class, () -> callbackHandler.handle(new Callback[]{unsupportedCallback}));
     }
 
     @Test
@@ -242,7 +242,7 @@ public class JaasBasicAuthFilterTest {
         ContainerRequestContext requestContext = mock(ContainerRequestContext.class);
         when(requestContext.getMethod()).thenReturn(HttpMethod.GET);
         when(requestContext.getHeaderString(JaasBasicAuthFilter.AUTHORIZATION))
-            .thenReturn(authHeader(authorization, username, password));
+                .thenReturn(authHeader(authorization, username, password));
         return requestContext;
     }
 
@@ -260,8 +260,8 @@ public class JaasBasicAuthFilterTest {
     private JaasBasicAuthFilter setupJaasFilter(String name, String credentialFilePath) {
         TestJaasConfig configuration = new TestJaasConfig();
         Map<String, Object> moduleOptions = credentialFilePath != null
-            ? Map.of("file", credentialFilePath)
-            : Map.of();
+                ? Map.of("file", credentialFilePath)
+                : Map.of();
         configuration.addEntry(name, LOGIN_MODULE, moduleOptions);
         return new JaasBasicAuthFilter(configuration);
     }

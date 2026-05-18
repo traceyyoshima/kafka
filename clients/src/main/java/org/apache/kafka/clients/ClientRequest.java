@@ -36,13 +36,13 @@ public final class ClientRequest {
     private final RequestCompletionHandler callback;
 
     /**
-     * @param destination The brokerId to send the request to
+     * @param destination    The brokerId to send the request to
      * @param requestBuilder The builder for the request to make
-     * @param correlationId The correlation id for this client request
-     * @param clientId The client ID to use for the header
-     * @param createdTimeMs The unix timestamp in milliseconds for the time at which this request was created.
+     * @param correlationId  The correlation id for this client request
+     * @param clientId       The client ID to use for the header
+     * @param createdTimeMs  The unix timestamp in milliseconds for the time at which this request was created.
      * @param expectResponse Should we expect a response message or is this request complete once it is sent?
-     * @param callback A callback to execute when the response has been received (or null if no callback is necessary)
+     * @param callback       A callback to execute when the response has been received (or null if no callback is necessary)
      */
     public ClientRequest(String destination,
                          AbstractRequest.Builder<?> requestBuilder,
@@ -65,13 +65,13 @@ public final class ClientRequest {
     @Override
     public String toString() {
         return "ClientRequest(expectResponse=" + expectResponse +
-            ", callback=" + callback +
-            ", destination=" + destination +
-            ", correlationId=" + correlationId +
-            ", clientId=" + clientId +
-            ", createdTimeMs=" + createdTimeMs +
-            ", requestBuilder=" + requestBuilder +
-            ")";
+                ", callback=" + callback +
+                ", destination=" + destination +
+                ", correlationId=" + correlationId +
+                ", clientId=" + clientId +
+                ", createdTimeMs=" + createdTimeMs +
+                ", requestBuilder=" + requestBuilder +
+                ")";
     }
 
     public boolean expectResponse() {
@@ -85,12 +85,12 @@ public final class ClientRequest {
     public RequestHeader makeHeader(short version) {
         ApiKeys requestApiKey = apiKey();
         return new RequestHeader(
-            new RequestHeaderData()
-                .setRequestApiKey(requestApiKey.id)
-                .setRequestApiVersion(version)
-                .setClientId(clientId)
-                .setCorrelationId(correlationId),
-            requestApiKey.requestHeaderVersion(version));
+                new RequestHeaderData()
+                        .setRequestApiKey(requestApiKey.id)
+                        .setRequestApiVersion(version)
+                        .setClientId(clientId)
+                        .setCorrelationId(correlationId),
+                requestApiKey.requestHeaderVersion(version));
     }
 
     public AbstractRequest.Builder<?> requestBuilder() {

@@ -24,16 +24,17 @@ import java.util.Map;
 
 /**
  * A result returned from verifyAssignment.
- * @param partStates    A map from partitions to reassignment states.
- * @param partsOngoing  True if there are any ongoing partition reassignments.
- * @param moveStates    A map from log directories to movement states.
- * @param movesOngoing  True if there are any ongoing moves that we know about.
+ *
+ * @param partStates   A map from partitions to reassignment states.
+ * @param partsOngoing True if there are any ongoing partition reassignments.
+ * @param moveStates   A map from log directories to movement states.
+ * @param movesOngoing True if there are any ongoing moves that we know about.
  */
 public record VerifyAssignmentResult(
-    Map<TopicPartition, PartitionReassignmentState> partStates,
-    boolean partsOngoing,
-    Map<TopicPartitionReplica, LogDirMoveState> moveStates,
-    boolean movesOngoing
+        Map<TopicPartition, PartitionReassignmentState> partStates,
+        boolean partsOngoing,
+        Map<TopicPartitionReplica, LogDirMoveState> moveStates,
+        boolean movesOngoing
 ) {
     public VerifyAssignmentResult(Map<TopicPartition, PartitionReassignmentState> partStates) {
         this(partStates, false, Map.of(), false);

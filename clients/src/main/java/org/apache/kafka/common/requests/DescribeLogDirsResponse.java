@@ -58,7 +58,7 @@ public class DescribeLogDirsResponse extends AbstractResponse {
         Map<Errors, Integer> errorCounts = new EnumMap<>(Errors.class);
         errorCounts.put(Errors.forCode(data.errorCode()), 1);
         data.results().forEach(result ->
-            updateErrorCounts(errorCounts, Errors.forCode(result.errorCode()))
+                updateErrorCounts(errorCounts, Errors.forCode(result.errorCode()))
         );
         return errorCounts;
     }

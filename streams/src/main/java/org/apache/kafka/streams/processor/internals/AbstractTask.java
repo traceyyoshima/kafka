@@ -82,8 +82,8 @@ public abstract class AbstractTask implements Task {
      * The following exceptions maybe thrown from the state manager flushing call
      *
      * @throws TaskMigratedException recoverable error sending changelog records that would cause the task to be removed
-     * @throws StreamsException fatal error when flushing the state store, for example sending changelog records failed
-     *                          or flushing state store get IO errors; such error should cause the thread to die
+     * @throws StreamsException      fatal error when flushing the state store, for example sending changelog records failed
+     *                               or flushing state store get IO errors; such error should cause the thread to die
      */
     @Override
     public void maybeCheckpoint() {
@@ -159,10 +159,10 @@ public abstract class AbstractTask implements Task {
             deadlineMs = currentWallClockMs + config.taskTimeoutMs;
         } else if (currentWallClockMs > deadlineMs) {
             final String errorMessage = String.format(
-                "Task %s did not make progress within %d ms. Adjust `%s` if needed.",
-                id,
-                currentWallClockMs - deadlineMs + config.taskTimeoutMs,
-                StreamsConfig.TASK_TIMEOUT_MS_CONFIG
+                    "Task %s did not make progress within %d ms. Adjust `%s` if needed.",
+                    id,
+                    currentWallClockMs - deadlineMs + config.taskTimeoutMs,
+                    StreamsConfig.TASK_TIMEOUT_MS_CONFIG
             );
 
             if (cause != null) {
@@ -174,16 +174,16 @@ public abstract class AbstractTask implements Task {
 
         if (cause != null) {
             log.debug(
-                String.format(
-                    "Task did not make progress. Remaining time to deadline %d; retrying.",
-                    deadlineMs - currentWallClockMs
-                ),
-                cause
+                    String.format(
+                            "Task did not make progress. Remaining time to deadline %d; retrying.",
+                            deadlineMs - currentWallClockMs
+                    ),
+                    cause
             );
         } else {
             log.debug(
-                "Task did not make progress. Remaining time to deadline {}; retrying.",
-                deadlineMs - currentWallClockMs
+                    "Task did not make progress. Remaining time to deadline {}; retrying.",
+                    deadlineMs - currentWallClockMs
             );
         }
 

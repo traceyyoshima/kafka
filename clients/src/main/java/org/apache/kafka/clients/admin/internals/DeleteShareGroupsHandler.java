@@ -21,7 +21,7 @@ import org.apache.kafka.common.utils.LogContext;
 
 public class DeleteShareGroupsHandler extends DeleteGroupsHandler {
     public DeleteShareGroupsHandler(
-        LogContext logContext
+            LogContext logContext
     ) {
         super(logContext, DeleteShareGroupsHandler.class);
     }

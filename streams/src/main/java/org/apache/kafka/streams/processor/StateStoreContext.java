@@ -88,11 +88,10 @@ public interface StateStoreContext {
     /**
      * Registers and possibly restores the specified storage engine.
      *
-     * @param store the storage engine
+     * @param store                the storage engine
      * @param stateRestoreCallback the restoration callback logic for log-backed state stores upon restart
-     *
      * @throws IllegalStateException If store gets registered after initialized is already finished
-     * @throws StreamsException if the store's change log does not contain the partition
+     * @throws StreamsException      if the store's change log does not contain the partition
      */
     void register(final StateStore store,
                   final StateRestoreCallback stateRestoreCallback);
@@ -100,17 +99,16 @@ public interface StateStoreContext {
     /**
      * Registers and possibly restores the specified storage engine.
      *
-     * @param store the storage engine
+     * @param store                the storage engine
      * @param stateRestoreCallback the restoration callback logic for log-backed state stores upon restart
-     * @param commitCallback a callback to be invoked upon successful task commit, in case the store
-     *                           needs to perform any state tracking when the task is known to be in
-     *                           a consistent state. If the store has no such state to track, it may
-     *                           use {@link StateStoreContext#register(StateStore, StateRestoreCallback)} instead.
-     *                           Persistent stores provided by Kafka Streams use this method to save
-     *                           their Position information to local disk, for example.
-     *
+     * @param commitCallback       a callback to be invoked upon successful task commit, in case the store
+     *                             needs to perform any state tracking when the task is known to be in
+     *                             a consistent state. If the store has no such state to track, it may
+     *                             use {@link StateStoreContext#register(StateStore, StateRestoreCallback)} instead.
+     *                             Persistent stores provided by Kafka Streams use this method to save
+     *                             their Position information to local disk, for example.
      * @throws IllegalStateException If store gets registered after initialized is already finished
-     * @throws StreamsException if the store's change log does not contain the partition
+     * @throws StreamsException      if the store's change log does not contain the partition
      */
     @Evolving
     void register(final StateStore store,

@@ -37,13 +37,13 @@ public class OffsetOutOfRangeException extends InvalidOffsetException {
      */
     public OffsetOutOfRangeException(Map<TopicPartition, Long> offsetOutOfRangePartitions) {
         this("Offsets out of range with no configured reset policy for partitions: " +
-            offsetOutOfRangePartitions, offsetOutOfRangePartitions);
+                offsetOutOfRangePartitions, offsetOutOfRangePartitions);
     }
 
     /**
      * Constructs a new OffsetOutOfRangeException with a custom message.
      *
-     * @param message The detail message
+     * @param message                    The detail message
      * @param offsetOutOfRangePartitions Map of partition to the out-of-range offset
      */
     public OffsetOutOfRangeException(String message, Map<TopicPartition, Long> offsetOutOfRangePartitions) {

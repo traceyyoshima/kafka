@@ -28,16 +28,16 @@ import java.nio.ByteBuffer;
 
 /**
  * Control records specify a schema for the record key which includes a version and type:
- *
+ * <p>
  * Key => Version Type
- *   Version => Int16
- *   Type => Int16
- *
+ * Version => Int16
+ * Type => Int16
+ * <p>
  * In the future, the version can be bumped to indicate a new schema, but it must be backwards compatible
  * with the current schema. In general, this means we can add new fields, but we cannot remove old ones.
- *
+ * <p>
  * Note that control records are not considered for compaction by the log cleaner.
- *
+ * <p>
  * The schema for the value field is left to the control record type to specify.
  */
 public enum ControlRecordType {

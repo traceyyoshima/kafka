@@ -34,7 +34,7 @@ public class ListPartitionReassignmentsResponse extends AbstractResponse {
 
     public static ListPartitionReassignmentsResponse parse(Readable readable, short version) {
         return new ListPartitionReassignmentsResponse(new ListPartitionReassignmentsResponseData(
-            readable, version));
+                readable, version));
     }
 
     @Override

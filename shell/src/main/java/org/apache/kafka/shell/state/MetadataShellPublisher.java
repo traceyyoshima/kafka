@@ -45,9 +45,9 @@ public class MetadataShellPublisher implements MetadataPublisher {
 
     @Override
     public void onMetadataUpdate(
-        MetadataDelta delta,
-        MetadataImage newImage,
-        LoaderManifest manifest
+            MetadataDelta delta,
+            MetadataImage newImage,
+            LoaderManifest manifest
     ) {
         log.trace("onMetadataUpdate newImage={}", newImage);
         state.setRoot(new RootShellNode(newImage));

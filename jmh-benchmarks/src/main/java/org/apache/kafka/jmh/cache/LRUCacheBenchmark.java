@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * This is a simple example of a JMH benchmark.
- *
+ * <p>
  * The sample code provided by the JMH project is a great place to start learning how to write correct benchmarks:
  * http://hg.openjdk.java.net/code-tools/jmh/file/tip/jmh-samples/src/main/java/org/openjdk/jmh/samples/
  */

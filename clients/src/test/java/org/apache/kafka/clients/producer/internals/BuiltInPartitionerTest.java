@@ -38,19 +38,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BuiltInPartitionerTest {
-    private static final Node[] NODES = new Node[] {
-        new Node(0, "localhost", 99, "rack0"),
-        new Node(1, "localhost", 100, "rack1"),
-        new Node(2, "localhost", 101, "rack0"),
-        new Node(3, "localhost", 102, "rack1"),
-        new Node(11, "localhost", 103, "rack2")
+    private static final Node[] NODES = new Node[]{
+            new Node(0, "localhost", 99, "rack0"),
+            new Node(1, "localhost", 100, "rack1"),
+            new Node(2, "localhost", 101, "rack0"),
+            new Node(3, "localhost", 102, "rack1"),
+            new Node(11, "localhost", 103, "rack2")
     };
     private static final Node[] NODES_WITHOUT_RACKS = new Node[NODES.length];
+
     static {
         for (int i = 0; i < NODES.length; i++) {
             NODES_WITHOUT_RACKS[i] = new Node(NODES[i].id(), NODES[i].host(), NODES[i].port());
         }
     }
+
     static final String TOPIC_A = "topicA";
     static final String TOPIC_B = "topicB";
     static final String TOPIC_C = "topicC";
@@ -59,12 +61,12 @@ public class BuiltInPartitionerTest {
     @Test
     public void testStickyPartitioning() {
         List<PartitionInfo> allPartitions = asList(new PartitionInfo(TOPIC_A, 0, NODES[0], NODES, NODES),
-            new PartitionInfo(TOPIC_A, 1, NODES[1], NODES, NODES),
-            new PartitionInfo(TOPIC_A, 2, NODES[2], NODES, NODES),
-            new PartitionInfo(TOPIC_B, 0, NODES[0], NODES, NODES)
+                new PartitionInfo(TOPIC_A, 1, NODES[1], NODES, NODES),
+                new PartitionInfo(TOPIC_A, 2, NODES[2], NODES, NODES),
+                new PartitionInfo(TOPIC_B, 0, NODES[0], NODES, NODES)
         );
         Cluster testCluster = new Cluster("clusterId", asList(NODES), allPartitions,
-            Collections.emptySet(), Collections.emptySet());
+                Collections.emptySet(), Collections.emptySet());
 
         boolean rackAware = false;
         String clientRackId = "";
@@ -100,14 +102,14 @@ public class BuiltInPartitionerTest {
     @Test
     public void testStickyPartitioningWithRackAwareness() {
         List<PartitionInfo> allPartitionsOnline = asList(
-            new PartitionInfo(TOPIC_A, 0, NODES[0], NODES, NODES),
-            new PartitionInfo(TOPIC_A, 1, NODES[1], NODES, NODES),
-            new PartitionInfo(TOPIC_A, 2, NODES[2], NODES, NODES),
-            new PartitionInfo(TOPIC_A, 3, NODES[3], NODES, NODES),
-            new PartitionInfo(TOPIC_B, 0, NODES[0], NODES, NODES)
+                new PartitionInfo(TOPIC_A, 0, NODES[0], NODES, NODES),
+                new PartitionInfo(TOPIC_A, 1, NODES[1], NODES, NODES),
+                new PartitionInfo(TOPIC_A, 2, NODES[2], NODES, NODES),
+                new PartitionInfo(TOPIC_A, 3, NODES[3], NODES, NODES),
+                new PartitionInfo(TOPIC_B, 0, NODES[0], NODES, NODES)
         );
         Cluster testCluster = new Cluster("clusterId", asList(NODES), allPartitionsOnline,
-            Collections.emptySet(), Collections.emptySet());
+                Collections.emptySet(), Collections.emptySet());
 
         // Create partitions with "sticky" batch size to accommodate 1 record.
         BuiltInPartitioner builtInPartitionerA = new SequentialPartitioner(logContext, TOPIC_A, 1, true, NODES[0].rack());
@@ -127,14 +129,14 @@ public class BuiltInPartitionerTest {
         // Simulate one partition in "our" rack going offline.
         // The partitioner must select the remaining one.
         List<PartitionInfo> onePartitionOffline = asList(
-            new PartitionInfo(TOPIC_A, 0, NODES[0], NODES, NODES),
-            new PartitionInfo(TOPIC_A, 1, NODES[1], NODES, NODES),
-            new PartitionInfo(TOPIC_A, 2, null, NODES, new Node[0]),
-            new PartitionInfo(TOPIC_A, 3, NODES[3], NODES, NODES),
-            new PartitionInfo(TOPIC_B, 0, NODES[0], NODES, NODES)
+                new PartitionInfo(TOPIC_A, 0, NODES[0], NODES, NODES),
+                new PartitionInfo(TOPIC_A, 1, NODES[1], NODES, NODES),
+                new PartitionInfo(TOPIC_A, 2, null, NODES, new Node[0]),
+                new PartitionInfo(TOPIC_A, 3, NODES[3], NODES, NODES),
+                new PartitionInfo(TOPIC_B, 0, NODES[0], NODES, NODES)
         );
         testCluster = new Cluster("clusterId", asList(NODES), onePartitionOffline,
-            Collections.emptySet(), Collections.emptySet());
+                Collections.emptySet(), Collections.emptySet());
         builtInPartitionerA.updatePartitionInfo(partitionInfo, 1, testCluster);
 
         partitionInfo = builtInPartitionerA.peekCurrentPartitionInfo(testCluster);
@@ -147,35 +149,35 @@ public class BuiltInPartitionerTest {
         // Simulate all partitions in "our" rack going offline.
         // The partitioner must start selecting from "non-local" partitions.
         List<PartitionInfo> twoPartitionsOffline = asList(
-            new PartitionInfo(TOPIC_A, 0, null, NODES, new Node[0]),
-            new PartitionInfo(TOPIC_A, 1, NODES[1], NODES, NODES),
-            new PartitionInfo(TOPIC_A, 2, null, NODES, new Node[0]),
-            new PartitionInfo(TOPIC_A, 3, NODES[3], NODES, NODES),
-            new PartitionInfo(TOPIC_B, 0, NODES[0], NODES, NODES)
+                new PartitionInfo(TOPIC_A, 0, null, NODES, new Node[0]),
+                new PartitionInfo(TOPIC_A, 1, NODES[1], NODES, NODES),
+                new PartitionInfo(TOPIC_A, 2, null, NODES, new Node[0]),
+                new PartitionInfo(TOPIC_A, 3, NODES[3], NODES, NODES),
+                new PartitionInfo(TOPIC_B, 0, NODES[0], NODES, NODES)
         );
         testCluster = new Cluster("clusterId", asList(NODES), twoPartitionsOffline,
-            Collections.emptySet(), Collections.emptySet());
+                Collections.emptySet(), Collections.emptySet());
         builtInPartitionerA.updatePartitionInfo(partitionInfo, 1, testCluster);
         partitionInfo = builtInPartitionerA.peekCurrentPartitionInfo(testCluster);
         assertEquals(3, partitionInfo.partition());
 
         // When the local partitions are back online, the partitioner should again pick them.
         testCluster = new Cluster("clusterId", asList(NODES), allPartitionsOnline,
-            Collections.emptySet(), Collections.emptySet());
+                Collections.emptySet(), Collections.emptySet());
         builtInPartitionerA.updatePartitionInfo(partitionInfo, 1, testCluster);
         partitionInfo = builtInPartitionerA.peekCurrentPartitionInfo(testCluster);
         assertEquals(0, partitionInfo.partition());
 
         // Test the situation of brokers without racks.
         List<PartitionInfo> allPartitionsOnlineWithoutRacks = asList(
-            new PartitionInfo(TOPIC_A, 0, NODES_WITHOUT_RACKS[0], NODES_WITHOUT_RACKS, NODES_WITHOUT_RACKS),
-            new PartitionInfo(TOPIC_A, 1, NODES_WITHOUT_RACKS[1], NODES_WITHOUT_RACKS, NODES_WITHOUT_RACKS),
-            new PartitionInfo(TOPIC_A, 2, NODES_WITHOUT_RACKS[2], NODES_WITHOUT_RACKS, NODES_WITHOUT_RACKS),
-            new PartitionInfo(TOPIC_A, 3, NODES_WITHOUT_RACKS[3], NODES_WITHOUT_RACKS, NODES_WITHOUT_RACKS),
-            new PartitionInfo(TOPIC_B, 0, NODES_WITHOUT_RACKS[0], NODES_WITHOUT_RACKS, NODES_WITHOUT_RACKS)
+                new PartitionInfo(TOPIC_A, 0, NODES_WITHOUT_RACKS[0], NODES_WITHOUT_RACKS, NODES_WITHOUT_RACKS),
+                new PartitionInfo(TOPIC_A, 1, NODES_WITHOUT_RACKS[1], NODES_WITHOUT_RACKS, NODES_WITHOUT_RACKS),
+                new PartitionInfo(TOPIC_A, 2, NODES_WITHOUT_RACKS[2], NODES_WITHOUT_RACKS, NODES_WITHOUT_RACKS),
+                new PartitionInfo(TOPIC_A, 3, NODES_WITHOUT_RACKS[3], NODES_WITHOUT_RACKS, NODES_WITHOUT_RACKS),
+                new PartitionInfo(TOPIC_B, 0, NODES_WITHOUT_RACKS[0], NODES_WITHOUT_RACKS, NODES_WITHOUT_RACKS)
         );
         testCluster = new Cluster("clusterId", asList(NODES), allPartitionsOnlineWithoutRacks,
-            Collections.emptySet(), Collections.emptySet());
+                Collections.emptySet(), Collections.emptySet());
         for (final int expectedPartition : asList(3, 0, 1, 2, 3)) {
             builtInPartitionerA.updatePartitionInfo(partitionInfo, 1, testCluster);
             partitionInfo = builtInPartitionerA.peekCurrentPartitionInfo(testCluster);
@@ -185,23 +187,23 @@ public class BuiltInPartitionerTest {
 
     @ParameterizedTest
     @CsvSource({
-        "false,",
-        "true,rack0",
-        "true,rack1",
-        "true,rack2"
+            "false,",
+            "true,rack0",
+            "true,rack1",
+            "true,rack2"
     })
     public void unavailablePartitionsTest(boolean rackAware, String rack) {
         // Partition 1 in topic A, partition 0 in topic B and partition 0 in topic C are unavailable partitions.
         List<PartitionInfo> allPartitions = asList(new PartitionInfo(TOPIC_A, 0, NODES[0], NODES, NODES),
-            new PartitionInfo(TOPIC_A, 1, null, NODES, NODES),
-            new PartitionInfo(TOPIC_A, 2, NODES[2], NODES, NODES),
-            new PartitionInfo(TOPIC_B, 0, null, NODES, NODES),
-            new PartitionInfo(TOPIC_B, 1, NODES[0], NODES, NODES),
-            new PartitionInfo(TOPIC_C, 0, null, NODES, NODES)
+                new PartitionInfo(TOPIC_A, 1, null, NODES, NODES),
+                new PartitionInfo(TOPIC_A, 2, NODES[2], NODES, NODES),
+                new PartitionInfo(TOPIC_B, 0, null, NODES, NODES),
+                new PartitionInfo(TOPIC_B, 1, NODES[0], NODES, NODES),
+                new PartitionInfo(TOPIC_C, 0, null, NODES, NODES)
         );
 
         Cluster testCluster = new Cluster("clusterId", asList(NODES[0], NODES[1], NODES[2]), allPartitions,
-            Collections.emptySet(), Collections.emptySet());
+                Collections.emptySet(), Collections.emptySet());
 
         // Create partitions with "sticky" batch size to accommodate 1 record.
         BuiltInPartitioner builtInPartitionerA = new BuiltInPartitioner(logContext, TOPIC_A, 1, rackAware, rack);
@@ -252,9 +254,9 @@ public class BuiltInPartitionerTest {
     // All these cases exclude rack-aware partitioning,
     // but ensure various combinations of broker and client rack settings don't cause problems.
     @CsvSource({
-        "false,false,",
-        "true,false,",
-        "false,true,rack0",
+            "false,false,",
+            "true,false,",
+            "false,true,rack0",
     })
     public void adaptivePartitionsTest(boolean brokerRacksArePresent, boolean clientRackAware, String clientRack) {
         BuiltInPartitioner builtInPartitioner = new SequentialPartitioner(logContext, TOPIC_A, 1, clientRackAware, clientRack);
@@ -278,7 +280,7 @@ public class BuiltInPartitionerTest {
         builtInPartitioner.updatePartitionLoadStats(queueSizes, partitionIds, partitionRacks, queueSizes.length);
 
         Cluster testCluster = new Cluster("clusterId", asList(NODES), allPartitions,
-            Collections.emptySet(), Collections.emptySet());
+                Collections.emptySet(), Collections.emptySet());
 
         // Issue a certain number of partition calls to validate that the partitions would be
         // distributed with frequencies that are reciprocal to the queue sizes.  The number of
@@ -297,7 +299,7 @@ public class BuiltInPartitionerTest {
         // Verify that frequencies are reciprocal of queue sizes.
         for (int i = 0; i < frequencies.length; i++) {
             assertEquals(expectedFrequencies[i] * numberOfCycles, frequencies[i],
-                "Partition " + i + " was chosen " + frequencies[i] + " times");
+                    "Partition " + i + " was chosen " + frequencies[i] + " times");
         }
     }
 
@@ -326,7 +328,7 @@ public class BuiltInPartitionerTest {
         builtInPartitioner.updatePartitionLoadStats(queueSizes, partitionIds, partitionRacks, queueSizes.length);
 
         Cluster testCluster = new Cluster("clusterId", asList(NODES), allPartitions,
-            Collections.emptySet(), Collections.emptySet());
+                Collections.emptySet(), Collections.emptySet());
 
         // Issue a certain number of partition calls to validate that the partitions would be
         // distributed with frequencies that are reciprocal to the queue sizes.  The number of
@@ -346,24 +348,24 @@ public class BuiltInPartitionerTest {
         // Verify that frequencies are reciprocal of queue sizes.
         for (int i = 0; i < frequencies.length; i++) {
             assertEquals(expectedFrequencies[i] * numberOfCycles, frequencies[i],
-                "Partition " + i + " was chosen " + frequencies[i] + " times");
+                    "Partition " + i + " was chosen " + frequencies[i] + " times");
         }
 
         // Simulate one partition in "our" rack going offline.
         // The partitioner must select the remaining one.
-        queueSizes = new int[] {1, 2, 3};
-        partitionIds = new int[] {0, 1, 3};
-        partitionRacks = new String[] {NODES[0].rack(), NODES[1].rack(), NODES[3].rack()};
+        queueSizes = new int[]{1, 2, 3};
+        partitionIds = new int[]{0, 1, 3};
+        partitionRacks = new String[]{NODES[0].rack(), NODES[1].rack(), NODES[3].rack()};
         builtInPartitioner.updatePartitionLoadStats(queueSizes, partitionIds, partitionRacks, queueSizes.length);
 
         List<PartitionInfo> onePartitionOffline = asList(
-            new PartitionInfo(TOPIC_A, 0, NODES[0], NODES, NODES),
-            new PartitionInfo(TOPIC_A, 1, NODES[1], NODES, NODES),
-            new PartitionInfo(TOPIC_A, 2, null, NODES, new Node[0]),
-            new PartitionInfo(TOPIC_A, 3, NODES[3], NODES, NODES)
+                new PartitionInfo(TOPIC_A, 0, NODES[0], NODES, NODES),
+                new PartitionInfo(TOPIC_A, 1, NODES[1], NODES, NODES),
+                new PartitionInfo(TOPIC_A, 2, null, NODES, new Node[0]),
+                new PartitionInfo(TOPIC_A, 3, NODES[3], NODES, NODES)
         );
         testCluster = new Cluster("clusterId", asList(NODES), onePartitionOffline,
-            Collections.emptySet(), Collections.emptySet());
+                Collections.emptySet(), Collections.emptySet());
         partitionInfo = builtInPartitioner.peekCurrentPartitionInfo(testCluster);
         for (int i = 0; i < 4; i++) {
             builtInPartitioner.updatePartitionInfo(partitionInfo, 1, testCluster);
@@ -373,19 +375,19 @@ public class BuiltInPartitionerTest {
 
         // Simulate all partitions in "our" rack going offline.
         // The partitioner must start selecting from "non-local" partitions.
-        queueSizes = new int[] {1, 2};
-        partitionIds = new int[] {1, 3};
-        partitionRacks = new String[] {NODES[1].rack(), NODES[3].rack()};
+        queueSizes = new int[]{1, 2};
+        partitionIds = new int[]{1, 3};
+        partitionRacks = new String[]{NODES[1].rack(), NODES[3].rack()};
         builtInPartitioner.updatePartitionLoadStats(queueSizes, partitionIds, partitionRacks, queueSizes.length);
 
         List<PartitionInfo> twoPartitionsOffline = asList(
-            new PartitionInfo(TOPIC_A, 0, null, NODES, new Node[0]),
-            new PartitionInfo(TOPIC_A, 1, NODES[1], NODES, NODES),
-            new PartitionInfo(TOPIC_A, 2, null, NODES, new Node[0]),
-            new PartitionInfo(TOPIC_A, 3, NODES[3], NODES, NODES)
+                new PartitionInfo(TOPIC_A, 0, null, NODES, new Node[0]),
+                new PartitionInfo(TOPIC_A, 1, NODES[1], NODES, NODES),
+                new PartitionInfo(TOPIC_A, 2, null, NODES, new Node[0]),
+                new PartitionInfo(TOPIC_A, 3, NODES[3], NODES, NODES)
         );
         testCluster = new Cluster("clusterId", asList(NODES), twoPartitionsOffline,
-            Collections.emptySet(), Collections.emptySet());
+                Collections.emptySet(), Collections.emptySet());
         builtInPartitioner.updatePartitionInfo(partitionInfo, 1, testCluster);
         partitionInfo = builtInPartitioner.peekCurrentPartitionInfo(testCluster);
         assertEquals(1, partitionInfo.partition());

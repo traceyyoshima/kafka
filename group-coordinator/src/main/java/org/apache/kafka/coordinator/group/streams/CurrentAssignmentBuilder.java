@@ -118,7 +118,7 @@ public class CurrentAssignmentBuilder {
      * @return This object.
      */
     public CurrentAssignmentBuilder withCurrentStandbyTaskProcessIds(
-        BiFunction<String, Integer, Set<String>> currentStandbyTaskProcessIds
+            BiFunction<String, Integer, Set<String>> currentStandbyTaskProcessIds
     ) {
         this.currentStandbyTaskProcessIds = Objects.requireNonNull(currentStandbyTaskProcessIds);
         return this;
@@ -164,8 +164,8 @@ public class CurrentAssignmentBuilder {
                 // reconcile the member towards it. Otherwise, we return.
                 if (member.memberEpoch() != targetAssignmentEpoch) {
                     return computeNextAssignment(
-                        member.memberEpoch(),
-                        member.assignedTasks()
+                            member.memberEpoch(),
+                            member.assignedTasks()
                     );
                 } else {
                     return member;
@@ -182,7 +182,7 @@ public class CurrentAssignmentBuilder {
                 // owned tasks, or we still own some of the revoked tasks, we
                 // cannot progress.
                 if (
-                    ownedTasks.isEmpty() || ownedTasks.get().containsAny(member.tasksPendingRevocation())
+                        ownedTasks.isEmpty() || ownedTasks.get().containsAny(member.tasksPendingRevocation())
                 ) {
                     return member;
                 }
@@ -191,8 +191,8 @@ public class CurrentAssignmentBuilder {
                 // transition to the next epoch (current + 1) and we can reconcile
                 // its state towards the latest target assignment.
                 return computeNextAssignment(
-                    member.memberEpoch() + 1,
-                    member.assignedTasks()
+                        member.memberEpoch() + 1,
+                        member.assignedTasks()
                 );
 
             case UNRELEASED_TASKS:
@@ -200,8 +200,8 @@ public class CurrentAssignmentBuilder {
                 // member towards the latest target assignment. This will assign any
                 // of the unreleased tasks when they become available.
                 return computeNextAssignment(
-                    member.memberEpoch(),
-                    member.assignedTasks()
+                        member.memberEpoch(),
+                        member.assignedTasks()
                 );
 
             case UNKNOWN:
@@ -211,13 +211,13 @@ public class CurrentAssignmentBuilder {
                 // without any tasks and to reconcile it again from scratch.
                 if ((ownedTasks.isEmpty() || !ownedTasks.get().isEmpty())) {
                     throw new FencedMemberEpochException(
-                        "The streams group member is in a unknown state. "
-                            + "The member must abandon all its tasks and rejoin.");
+                            "The streams group member is in a unknown state. "
+                                    + "The member must abandon all its tasks and rejoin.");
                 }
 
                 return computeNextAssignment(
-                    targetAssignmentEpoch,
-                    member.assignedTasks()
+                        targetAssignmentEpoch,
+                        member.assignedTasks()
                 );
         }
 
@@ -227,7 +227,7 @@ public class CurrentAssignmentBuilder {
     /**
      * Takes the current currentAssignment and the targetAssignment, and generates three
      * collections:
-     *
+     * <p>
      * - the resultAssignedTasks: the tasks that are assigned in both the current and target
      * assignments.
      * - the resultTasksPendingRevocation: the tasks that are assigned in the current
@@ -249,13 +249,13 @@ public class CurrentAssignmentBuilder {
 
         for (String subtopologyId : allSubtopologyIds) {
             hasUnreleasedTasks |= computeAssignmentDifferenceForOneSubtopology(
-                subtopologyId,
-                currentAssignment.getOrDefault(subtopologyId, Set.of()),
-                targetAssignment.getOrDefault(subtopologyId, Set.of()),
-                resultAssignedTasks,
-                resultTasksPendingRevocation,
-                resultTasksPendingAssignment,
-                isUnreleasedTask
+                    subtopologyId,
+                    currentAssignment.getOrDefault(subtopologyId, Set.of()),
+                    targetAssignment.getOrDefault(subtopologyId, Set.of()),
+                    resultAssignedTasks,
+                    resultTasksPendingRevocation,
+                    resultTasksPendingAssignment,
+                    isUnreleasedTask
             );
         }
         return hasUnreleasedTasks;
@@ -286,7 +286,7 @@ public class CurrentAssignmentBuilder {
         Set<Integer> resultTasksPendingAssignmentForThisSubtopology = new HashSet<>(targetTasksForThisSubtopology);
         resultTasksPendingAssignmentForThisSubtopology.removeAll(resultAssignedTasksForThisSubtopology);
         boolean hasUnreleasedTasks = resultTasksPendingAssignmentForThisSubtopology.removeIf(taskId ->
-            isUnreleasedTask.test(subtopologyId, taskId)
+                isUnreleasedTask.test(subtopologyId, taskId)
         );
 
         if (!resultAssignedTasksForThisSubtopology.isEmpty()) {
@@ -307,7 +307,7 @@ public class CurrentAssignmentBuilder {
     /**
      * Takes the current currentAssignment and the targetAssignment, and generates three
      * collections:
-     *
+     * <p>
      * - the resultAssignedTasks: the tasks that are assigned in both the current and target
      * assignments.
      * - the resultTasksPendingRevocation: the tasks that are assigned in the current
@@ -315,7 +315,7 @@ public class CurrentAssignmentBuilder {
      * - the resultTasksPendingAssignment: the tasks that are assigned in the target assignment but
      * not in the current assignment, and can be assigned currently (i.e., they are not owned by
      * another member, as defined by the `isUnreleasedTask` predicate).
-     *
+     * <p>
      * Epoch Handling:
      * - For tasks in resultAssignedTasks and resultTasksPendingRevocation, the epoch from currentAssignment is preserved.
      * - For tasks in resultTasksPendingAssignment, the targetAssignmentEpoch is used.
@@ -334,14 +334,14 @@ public class CurrentAssignmentBuilder {
 
         for (String subtopologyId : allSubtopologyIds) {
             hasUnreleasedTasks |= computeAssignmentDifferenceForOneSubtopologyWithEpoch(
-                subtopologyId,
-                currentAssignment.getOrDefault(subtopologyId, Map.of()),
-                targetAssignment.getOrDefault(subtopologyId, Set.of()),
-                targetAssignmentEpoch,
-                resultAssignedTasks,
-                resultTasksPendingRevocation,
-                resultTasksPendingAssignment,
-                isUnreleasedTask
+                    subtopologyId,
+                    currentAssignment.getOrDefault(subtopologyId, Map.of()),
+                    targetAssignment.getOrDefault(subtopologyId, Set.of()),
+                    targetAssignmentEpoch,
+                    resultAssignedTasks,
+                    resultTasksPendingRevocation,
+                    resultTasksPendingAssignment,
+                    isUnreleasedTask
             );
         }
         return hasUnreleasedTasks;
@@ -381,7 +381,7 @@ public class CurrentAssignmentBuilder {
             }
         }
         boolean hasUnreleasedTasks = resultTasksPendingAssignmentForThisSubtopology.keySet().removeIf(taskId ->
-            isUnreleasedTask.test(subtopologyId, taskId)
+                isUnreleasedTask.test(subtopologyId, taskId)
         );
 
         if (!resultAssignedTasksForThisSubtopology.isEmpty()) {
@@ -420,68 +420,68 @@ public class CurrentAssignmentBuilder {
         Map<String, Set<Integer>> newWarmupTasksPendingAssignment = new HashMap<>();
 
         boolean hasUnreleasedActiveTasks = computeAssignmentDifferenceWithEpoch(
-            memberAssignedTasks.activeTasksWithEpochs(),
-            targetAssignment.activeTasks(),
-            targetAssignmentEpoch,
-            newActiveAssignedTasks,
-            newActiveTasksPendingRevocation,
-            newActiveTasksPendingAssignment,
-            (subtopologyId, partitionId) ->
-                currentActiveTaskProcessId.apply(subtopologyId, partitionId) != null ||
-                    currentStandbyTaskProcessIds.apply(subtopologyId, partitionId)
-                        .contains(member.processId()) ||
-                    currentWarmupTaskProcessIds.apply(subtopologyId, partitionId)
-                        .contains(member.processId())
+                memberAssignedTasks.activeTasksWithEpochs(),
+                targetAssignment.activeTasks(),
+                targetAssignmentEpoch,
+                newActiveAssignedTasks,
+                newActiveTasksPendingRevocation,
+                newActiveTasksPendingAssignment,
+                (subtopologyId, partitionId) ->
+                        currentActiveTaskProcessId.apply(subtopologyId, partitionId) != null ||
+                                currentStandbyTaskProcessIds.apply(subtopologyId, partitionId)
+                                        .contains(member.processId()) ||
+                                currentWarmupTaskProcessIds.apply(subtopologyId, partitionId)
+                                        .contains(member.processId())
         );
 
         boolean hasUnreleasedStandbyTasks = computeAssignmentDifference(
-            memberAssignedTasks.standbyTasks(),
-            targetAssignment.standbyTasks(),
-            newStandbyAssignedTasks,
-            newStandbyTasksPendingRevocation,
-            newStandbyTasksPendingAssignment,
-            (subtopologyId, partitionId) ->
-                Objects.equals(currentActiveTaskProcessId.apply(subtopologyId, partitionId),
-                    member.processId()) ||
-                    currentStandbyTaskProcessIds.apply(subtopologyId, partitionId)
-                        .contains(member.processId()) ||
-                    currentWarmupTaskProcessIds.apply(subtopologyId, partitionId)
-                        .contains(member.processId())
+                memberAssignedTasks.standbyTasks(),
+                targetAssignment.standbyTasks(),
+                newStandbyAssignedTasks,
+                newStandbyTasksPendingRevocation,
+                newStandbyTasksPendingAssignment,
+                (subtopologyId, partitionId) ->
+                        Objects.equals(currentActiveTaskProcessId.apply(subtopologyId, partitionId),
+                                member.processId()) ||
+                                currentStandbyTaskProcessIds.apply(subtopologyId, partitionId)
+                                        .contains(member.processId()) ||
+                                currentWarmupTaskProcessIds.apply(subtopologyId, partitionId)
+                                        .contains(member.processId())
         );
 
         boolean hasUnreleasedWarmupTasks = computeAssignmentDifference(
-            memberAssignedTasks.warmupTasks(),
-            targetAssignment.warmupTasks(),
-            newWarmupAssignedTasks,
-            newWarmupTasksPendingRevocation,
-            newWarmupTasksPendingAssignment,
-            (subtopologyId, partitionId) ->
-                Objects.equals(currentActiveTaskProcessId.apply(subtopologyId, partitionId),
-                    member.processId()) ||
-                    currentStandbyTaskProcessIds.apply(subtopologyId, partitionId)
-                        .contains(member.processId()) ||
-                    currentWarmupTaskProcessIds.apply(subtopologyId, partitionId)
-                        .contains(member.processId())
+                memberAssignedTasks.warmupTasks(),
+                targetAssignment.warmupTasks(),
+                newWarmupAssignedTasks,
+                newWarmupTasksPendingRevocation,
+                newWarmupTasksPendingAssignment,
+                (subtopologyId, partitionId) ->
+                        Objects.equals(currentActiveTaskProcessId.apply(subtopologyId, partitionId),
+                                member.processId()) ||
+                                currentStandbyTaskProcessIds.apply(subtopologyId, partitionId)
+                                        .contains(member.processId()) ||
+                                currentWarmupTaskProcessIds.apply(subtopologyId, partitionId)
+                                        .contains(member.processId())
         );
 
         return buildNewMember(
-            memberEpoch,
-            new TasksTupleWithEpochs(
-                newActiveTasksPendingRevocation,
-                newStandbyTasksPendingRevocation,
-                newWarmupTasksPendingRevocation
-            ),
-            new TasksTupleWithEpochs(
-                newActiveAssignedTasks,
-                newStandbyAssignedTasks,
-                newWarmupAssignedTasks
-            ),
-            new TasksTupleWithEpochs(
-                newActiveTasksPendingAssignment,
-                newStandbyTasksPendingAssignment,
-                newWarmupTasksPendingAssignment
-            ),
-            hasUnreleasedActiveTasks || hasUnreleasedStandbyTasks || hasUnreleasedWarmupTasks
+                memberEpoch,
+                new TasksTupleWithEpochs(
+                        newActiveTasksPendingRevocation,
+                        newStandbyTasksPendingRevocation,
+                        newWarmupTasksPendingRevocation
+                ),
+                new TasksTupleWithEpochs(
+                        newActiveAssignedTasks,
+                        newStandbyAssignedTasks,
+                        newWarmupAssignedTasks
+                ),
+                new TasksTupleWithEpochs(
+                        newActiveTasksPendingAssignment,
+                        newStandbyTasksPendingAssignment,
+                        newWarmupTasksPendingAssignment
+                ),
+                hasUnreleasedActiveTasks || hasUnreleasedStandbyTasks || hasUnreleasedWarmupTasks
         );
     }
 
@@ -492,8 +492,8 @@ public class CurrentAssignmentBuilder {
                                               final boolean hasUnreleasedTasks) {
 
         final boolean hasTasksToBeRevoked =
-            (!newTasksPendingRevocation.isEmpty())
-                && (ownedTasks.isEmpty() || ownedTasks.get().containsAny(newTasksPendingRevocation));
+                (!newTasksPendingRevocation.isEmpty())
+                        && (ownedTasks.isEmpty() || ownedTasks.get().containsAny(newTasksPendingRevocation));
 
         if (hasTasksToBeRevoked) {
             // If there are tasks to be revoked, the member remains in its current
@@ -501,11 +501,11 @@ public class CurrentAssignmentBuilder {
             // the UNREVOKED_TASKS state to wait until the client acknowledges the
             // revocation of the tasks.
             return new StreamsGroupMember.Builder(member)
-                .setState(MemberState.UNREVOKED_TASKS)
-                .updateMemberEpoch(memberEpoch)
-                .setAssignedTasks(newAssignedTasks)
-                .setTasksPendingRevocation(newTasksPendingRevocation)
-                .build();
+                    .setState(MemberState.UNREVOKED_TASKS)
+                    .updateMemberEpoch(memberEpoch)
+                    .setAssignedTasks(newAssignedTasks)
+                    .setTasksPendingRevocation(newTasksPendingRevocation)
+                    .build();
         } else if (!newTasksPendingAssignment.isEmpty()) {
             // If there are tasks to be assigned, the member transitions to the
             // target epoch and requests the assignment of those tasks. Note that
@@ -513,34 +513,34 @@ public class CurrentAssignmentBuilder {
             // member transitions to the STABLE state or to the UNRELEASED_TASKS
             // state depending on whether there are unreleased tasks or not.
             MemberState newState =
-                hasUnreleasedTasks
-                    ? MemberState.UNRELEASED_TASKS
-                    : MemberState.STABLE;
+                    hasUnreleasedTasks
+                            ? MemberState.UNRELEASED_TASKS
+                            : MemberState.STABLE;
             return new StreamsGroupMember.Builder(member)
-                .setState(newState)
-                .updateMemberEpoch(targetAssignmentEpoch)
-                .setAssignedTasks(newAssignedTasks.merge(newTasksPendingAssignment))
-                .setTasksPendingRevocation(TasksTupleWithEpochs.EMPTY)
-                .build();
+                    .setState(newState)
+                    .updateMemberEpoch(targetAssignmentEpoch)
+                    .setAssignedTasks(newAssignedTasks.merge(newTasksPendingAssignment))
+                    .setTasksPendingRevocation(TasksTupleWithEpochs.EMPTY)
+                    .build();
         } else if (hasUnreleasedTasks) {
             // If there are no tasks to be revoked nor to be assigned but some
             // tasks are not available yet, the member transitions to the target
             // epoch, to the UNRELEASED_TASKS state and waits.
             return new StreamsGroupMember.Builder(member)
-                .setState(MemberState.UNRELEASED_TASKS)
-                .updateMemberEpoch(targetAssignmentEpoch)
-                .setAssignedTasks(newAssignedTasks)
-                .setTasksPendingRevocation(TasksTupleWithEpochs.EMPTY)
-                .build();
+                    .setState(MemberState.UNRELEASED_TASKS)
+                    .updateMemberEpoch(targetAssignmentEpoch)
+                    .setAssignedTasks(newAssignedTasks)
+                    .setTasksPendingRevocation(TasksTupleWithEpochs.EMPTY)
+                    .build();
         } else {
             // Otherwise, the member transitions to the target epoch and to the
             // STABLE state.
             return new StreamsGroupMember.Builder(member)
-                .setState(MemberState.STABLE)
-                .updateMemberEpoch(targetAssignmentEpoch)
-                .setAssignedTasks(newAssignedTasks)
-                .setTasksPendingRevocation(TasksTupleWithEpochs.EMPTY)
-                .build();
+                    .setState(MemberState.STABLE)
+                    .updateMemberEpoch(targetAssignmentEpoch)
+                    .setAssignedTasks(newAssignedTasks)
+                    .setTasksPendingRevocation(TasksTupleWithEpochs.EMPTY)
+                    .build();
         }
     }
 }

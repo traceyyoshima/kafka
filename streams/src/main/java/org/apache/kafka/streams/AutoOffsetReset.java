@@ -61,7 +61,7 @@ public class AutoOffsetReset {
 
     /**
      * Creates an {@code AutoOffsetReset} instance representing "latest".
-     * 
+     *
      * @return An {@code AutoOffsetReset} instance for the "latest" offset.
      */
     public static AutoOffsetReset latest() {
@@ -70,7 +70,7 @@ public class AutoOffsetReset {
 
     /**
      * Creates an {@code AutoOffsetReset} instance for the specified reset duration.
-     * 
+     *
      * @param duration The duration to use for the offset reset; must be non-negative.
      * @return An {@code AutoOffsetReset} instance with the specified duration.
      * @throws IllegalArgumentException If the duration is negative.

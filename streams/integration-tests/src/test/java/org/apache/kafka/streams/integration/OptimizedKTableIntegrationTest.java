@@ -114,11 +114,11 @@ public class OptimizedKTableIntegrationTest {
 
         final StreamsBuilder builder = new StreamsBuilder();
         builder
-            .table(INPUT_TOPIC_NAME, Consumed.with(Serdes.Integer(), Serdes.Integer()),
-                Materialized.<Integer, Integer, KeyValueStore<Bytes, byte[]>>as(TABLE_NAME)
-                    .withCachingDisabled())
-            .toStream()
-            .peek((k, v) -> semaphore.release());
+                .table(INPUT_TOPIC_NAME, Consumed.with(Serdes.Integer(), Serdes.Integer()),
+                        Materialized.<Integer, Integer, KeyValueStore<Bytes, byte[]>>as(TABLE_NAME)
+                                .withCachingDisabled())
+                .toStream()
+                .peek((k, v) -> semaphore.release());
 
         final String safeTestName = safeUniqueTestName(testInfo);
         final KafkaStreams kafkaStreams1 = createKafkaStreams(builder, streamsConfiguration(safeTestName));
@@ -191,12 +191,12 @@ public class OptimizedKTableIntegrationTest {
         producerProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, IntegerSerializer.class);
 
         IntegrationTestUtils.produceKeyValuesSynchronously(
-            INPUT_TOPIC_NAME,
-            IntStream.range(start, endExclusive)
-                .mapToObj(i -> KeyValue.pair(key, i))
-                .collect(Collectors.toList()),
-            producerProps,
-            mockTime);
+                INPUT_TOPIC_NAME,
+                IntStream.range(start, endExclusive)
+                        .mapToObj(i -> KeyValue.pair(key, i))
+                        .collect(Collectors.toList()),
+                producerProps,
+                mockTime);
     }
 
     private KafkaStreams createKafkaStreams(final StreamsBuilder builder, final Properties config) {

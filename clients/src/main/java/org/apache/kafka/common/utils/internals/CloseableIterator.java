@@ -21,7 +21,7 @@ import java.util.Iterator;
 
 /**
  * Iterators that need to be closed in order to release resources should implement this interface.
- *
+ * <p>
  * Warning: before implementing this interface, consider if there are better options. The chance of misuse is
  * a bit high since people are used to iterating without closing.
  */
@@ -31,7 +31,8 @@ public interface CloseableIterator<T> extends Iterator<T>, Closeable {
     static <R> CloseableIterator<R> wrap(Iterator<R> inner) {
         return new CloseableIterator<>() {
             @Override
-            public void close() {}
+            public void close() {
+            }
 
             @Override
             public boolean hasNext() {

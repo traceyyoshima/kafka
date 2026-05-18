@@ -109,10 +109,10 @@ public class StoreBuilderWrapper implements StoreFactory {
     @Override
     public boolean isWindowStore() {
         return builder instanceof WindowStoreBuilder
-            || builder instanceof TimestampedWindowStoreBuilder
-            || builder instanceof TimestampedWindowStoreWithHeadersBuilder
-            || builder instanceof SessionStoreBuilder
-            || builder instanceof SessionStoreWithHeadersBuilder;
+                || builder instanceof TimestampedWindowStoreBuilder
+                || builder instanceof TimestampedWindowStoreWithHeadersBuilder
+                || builder instanceof SessionStoreBuilder
+                || builder instanceof SessionStoreWithHeadersBuilder;
     }
 
     @Override

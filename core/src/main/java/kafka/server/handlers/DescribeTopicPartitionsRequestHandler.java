@@ -46,9 +46,9 @@ public class DescribeTopicPartitionsRequestHandler {
     KafkaConfig config;
 
     public DescribeTopicPartitionsRequestHandler(
-        MetadataCache metadataCache,
-        AuthHelper authHelper,
-        KafkaConfig config
+            MetadataCache metadataCache,
+            AuthHelper authHelper,
+            KafkaConfig config
     ) {
         this.metadataCache = metadataCache;
         this.authHelper = authHelper;
@@ -91,44 +91,44 @@ public class DescribeTopicPartitionsRequestHandler {
 
         Stream<String> authorizedTopicsStream = topics.stream().filter(topicName -> {
             boolean isAuthorized = authHelper.authorize(
-                abstractRequest.context(), DESCRIBE, TOPIC, topicName, true, true, 1);
+                    abstractRequest.context(), DESCRIBE, TOPIC, topicName, true, true, 1);
             if (!fetchAllTopics && !isAuthorized) {
                 // We should not return topicId when on unauthorized error, so we return zero uuid.
                 unauthorizedForDescribeTopicMetadata.add(describeTopicPartitionsResponseTopic(
-                    Errors.TOPIC_AUTHORIZATION_FAILED, topicName, Uuid.ZERO_UUID, false, List.of())
+                        Errors.TOPIC_AUTHORIZATION_FAILED, topicName, Uuid.ZERO_UUID, false, List.of())
                 );
             }
             return isAuthorized;
         }).sorted();
 
         DescribeTopicPartitionsResponseData response = metadataCache.describeTopicResponse(
-            authorizedTopicsStream.iterator(),
-            abstractRequest.context().listenerName,
-            (String topicName) -> topicName.equals(cursorTopicName) ? cursor.partitionIndex() : 0,
-            Math.max(Math.min(config.maxRequestPartitionSizeLimit(), request.responsePartitionLimit()), 1),
-            fetchAllTopics
+                authorizedTopicsStream.iterator(),
+                abstractRequest.context().listenerName,
+                (String topicName) -> topicName.equals(cursorTopicName) ? cursor.partitionIndex() : 0,
+                Math.max(Math.min(config.maxRequestPartitionSizeLimit(), request.responsePartitionLimit()), 1),
+                fetchAllTopics
         );
 
         // get topic authorized operations
         response.topics().forEach(topicData ->
-            topicData.setTopicAuthorizedOperations(authHelper.authorizedOperations(abstractRequest, new Resource(TOPIC, topicData.name()))));
+                topicData.setTopicAuthorizedOperations(authHelper.authorizedOperations(abstractRequest, new Resource(TOPIC, topicData.name()))));
 
         response.topics().addAll(unauthorizedForDescribeTopicMetadata);
         return response;
     }
 
     private DescribeTopicPartitionsResponseTopic describeTopicPartitionsResponseTopic(
-        Errors error,
-        String topic,
-        Uuid topicId,
-        Boolean isInternal,
-        List<DescribeTopicPartitionsResponsePartition> partitionData
+            Errors error,
+            String topic,
+            Uuid topicId,
+            Boolean isInternal,
+            List<DescribeTopicPartitionsResponsePartition> partitionData
     ) {
         return new DescribeTopicPartitionsResponseTopic()
-            .setErrorCode(error.code())
-            .setName(topic)
-            .setTopicId(topicId)
-            .setIsInternal(isInternal)
-            .setPartitions(partitionData);
+                .setErrorCode(error.code())
+                .setName(topic)
+                .setTopicId(topicId)
+                .setIsInternal(isInternal)
+                .setPartitions(partitionData);
     }
 }

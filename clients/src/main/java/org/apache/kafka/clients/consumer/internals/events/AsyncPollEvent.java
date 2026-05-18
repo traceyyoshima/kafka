@@ -35,7 +35,7 @@ import java.util.concurrent.CompletableFuture;
  *     <li>{@link CheckAndUpdatePositionsEvent}</li>
  *     <li>{@link CreateFetchRequestsEvent}</li>
  * </ul>
- *
+ * <p>
  * {@link AsyncKafkaConsumer#poll(Duration)} is implemented using a non-blocking design to ensure performance is
  * at the same level as {@link ClassicKafkaConsumer#poll(Duration)}. The event is submitted in {@code poll()}, but
  * there are no blocking waits for the "result" of the event. Checks are made for the result at certain points, but
@@ -53,9 +53,9 @@ public class AsyncPollEvent extends ApplicationEvent implements MetadataErrorNot
     /**
      * Creates a new event to signify a multi-stage processing of {@link Consumer#poll(Duration)} logic.
      *
-     * @param deadlineMs        Time, in milliseconds, at which point the event must be completed; based on the
-     *                          {@link Duration} passed to {@link Consumer#poll(Duration)}
-     * @param pollTimeMs        Time, in milliseconds, at which point the event was created
+     * @param deadlineMs Time, in milliseconds, at which point the event must be completed; based on the
+     *                   {@link Duration} passed to {@link Consumer#poll(Duration)}
+     * @param pollTimeMs Time, in milliseconds, at which point the event was created
      */
     public AsyncPollEvent(long deadlineMs, long pollTimeMs) {
         super(Type.ASYNC_POLL);
@@ -140,11 +140,11 @@ public class AsyncPollEvent extends ApplicationEvent implements MetadataErrorNot
     @Override
     protected String toStringBase() {
         return super.toStringBase() +
-            ", deadlineMs=" + deadlineMs +
-            ", pollTimeMs=" + pollTimeMs +
-            ", error=" + error +
-            ", isComplete=" + isComplete +
-            ", isValidatePositionsComplete=" + isValidatePositionsComplete +
-            ", isReconciliationCheckComplete=" + isReconciliationCheckComplete();
+                ", deadlineMs=" + deadlineMs +
+                ", pollTimeMs=" + pollTimeMs +
+                ", error=" + error +
+                ", isComplete=" + isComplete +
+                ", isValidatePositionsComplete=" + isValidatePositionsComplete +
+                ", isReconciliationCheckComplete=" + isReconciliationCheckComplete();
     }
 }

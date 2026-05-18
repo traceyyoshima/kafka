@@ -123,14 +123,14 @@ public class ApplicationEventHandler implements Closeable {
     /**
      * Add a {@link CompletableApplicationEvent} to the handler. The method blocks waiting for the result, and will
      * return the result value upon successful completion; otherwise throws an error.
-     *
+     * <p>
      * <p/>
-     *
+     * <p>
      * See {@link ConsumerUtils#getResult(Future)} for more details.
      *
      * @param event A {@link CompletableApplicationEvent} created by the polling thread
-     * @return      Value that is the result of the event
      * @param <T>   Type of return value of the event
+     * @return Value that is the result of the event
      */
     public <T> T addAndGet(final CompletableApplicationEvent<T> event) {
         Objects.requireNonNull(event, "CompletableApplicationEvent provided to addAndGet must be non-null");

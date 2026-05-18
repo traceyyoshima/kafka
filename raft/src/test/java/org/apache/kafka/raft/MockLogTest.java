@@ -173,25 +173,25 @@ public class MockLogTest {
         final long initialOffset = log.endOffset().offset();
 
         log.appendAsLeader(
-            MemoryRecords.withRecords(initialOffset, Compression.NONE, currentEpoch, recordFoo),
-            currentEpoch
+                MemoryRecords.withRecords(initialOffset, Compression.NONE, currentEpoch, recordFoo),
+                currentEpoch
         );
 
         // Throw exception for out of order records
         assertThrows(
-            RuntimeException.class,
-            () -> log.appendAsLeader(
-                MemoryRecords.withRecords(initialOffset, Compression.NONE, currentEpoch, recordFoo),
-                currentEpoch
-            )
+                RuntimeException.class,
+                () -> log.appendAsLeader(
+                        MemoryRecords.withRecords(initialOffset, Compression.NONE, currentEpoch, recordFoo),
+                        currentEpoch
+                )
         );
 
         assertThrows(
-            RuntimeException.class,
-            () -> log.appendAsFollower(
-                MemoryRecords.withRecords(initialOffset, Compression.NONE, currentEpoch, recordFoo),
-                currentEpoch
-            )
+                RuntimeException.class,
+                () -> log.appendAsFollower(
+                        MemoryRecords.withRecords(initialOffset, Compression.NONE, currentEpoch, recordFoo),
+                        currentEpoch
+                )
         );
     }
 
@@ -199,17 +199,17 @@ public class MockLogTest {
     public void testAppendControlRecord() {
         final long initialOffset = 0;
         final int currentEpoch = 3;
-        LeaderChangeMessage messageData =  new LeaderChangeMessage().setLeaderId(0);
+        LeaderChangeMessage messageData = new LeaderChangeMessage().setLeaderId(0);
         ByteBuffer buffer = ByteBuffer.allocate(256);
         log.appendAsLeader(
-            MemoryRecords.withLeaderChangeMessage(
-                initialOffset,
-                0L,
-                currentEpoch,
-                buffer,
-                messageData
-            ),
-            currentEpoch
+                MemoryRecords.withLeaderChangeMessage(
+                        initialOffset,
+                        0L,
+                        currentEpoch,
+                        buffer,
+                        messageData
+                ),
+                currentEpoch
         );
 
         assertEquals(0, log.startOffset());
@@ -217,9 +217,9 @@ public class MockLogTest {
         assertEquals(currentEpoch, log.lastFetchedEpoch());
 
         Records records = log.read(
-            0,
-            Isolation.UNCOMMITTED,
-            Integer.MAX_VALUE
+                0,
+                Isolation.UNCOMMITTED,
+                Integer.MAX_VALUE
         ).records;
         for (RecordBatch batch : records.batches()) {
             assertTrue(batch.isControlBatch());
@@ -247,8 +247,8 @@ public class MockLogTest {
         log.truncateToLatestSnapshot();
 
         log.appendAsFollower(
-            MemoryRecords.withRecords(initialOffset, Compression.NONE, epoch, recordFoo),
-            epoch
+                MemoryRecords.withRecords(initialOffset, Compression.NONE, epoch, recordFoo),
+                epoch
         );
 
         assertEquals(initialOffset, log.startOffset());
@@ -256,9 +256,9 @@ public class MockLogTest {
         assertEquals(3, log.lastFetchedEpoch());
 
         Records records = log.read(
-            5L,
-            Isolation.UNCOMMITTED,
-            Integer.MAX_VALUE
+                5L,
+                Isolation.UNCOMMITTED,
+                Integer.MAX_VALUE
         ).records;
         List<ByteBuffer> extractRecords = new ArrayList<>();
         for (Record record : records.records()) {
@@ -286,9 +286,9 @@ public class MockLogTest {
         appendAsLeader(List.of(recordOne, recordTwo), epoch);
 
         Records records = log.read(
-            0,
-            Isolation.UNCOMMITTED,
-            Integer.MAX_VALUE
+                0,
+                Isolation.UNCOMMITTED,
+                Integer.MAX_VALUE
         ).records;
 
         List<ByteBuffer> extractRecords = new ArrayList<>();
@@ -312,21 +312,21 @@ public class MockLogTest {
         assertEquals(Optional.of(new OffsetRange(30L, 59L)), readOffsets(33L, Isolation.UNCOMMITTED));
         assertEquals(Optional.empty(), readOffsets(60L, Isolation.UNCOMMITTED));
         assertThrows(OffsetOutOfRangeException.class,
-            () -> log.read(
-                61L,
-                Isolation.UNCOMMITTED,
-                Integer.MAX_VALUE
-            )
+                () -> log.read(
+                        61L,
+                        Isolation.UNCOMMITTED,
+                        Integer.MAX_VALUE
+                )
         );
 
         // Verify range after truncation
         log.truncateTo(20L);
         assertThrows(OffsetOutOfRangeException.class,
-            () -> log.read(
-                21L,
-                Isolation.UNCOMMITTED,
-                Integer.MAX_VALUE
-            )
+                () -> log.read(
+                        21L,
+                        Isolation.UNCOMMITTED,
+                        Integer.MAX_VALUE
+                )
         );
     }
 
@@ -363,11 +363,11 @@ public class MockLogTest {
         assertEquals(Optional.of(new OffsetRange(30L, 59L)), readOffsets(50L, Isolation.COMMITTED));
         assertEquals(Optional.empty(), readOffsets(60L, Isolation.COMMITTED));
         assertThrows(OffsetOutOfRangeException.class,
-            () -> log.read(
-                61L,
-                Isolation.COMMITTED,
-                Integer.MAX_VALUE
-            )
+                () -> log.read(
+                        61L,
+                        Isolation.COMMITTED,
+                        Integer.MAX_VALUE
+                )
         );
     }
 
@@ -378,9 +378,9 @@ public class MockLogTest {
         appendBatch(5, 1);
 
         LogFetchInfo readInfo = log.read(
-            5,
-            Isolation.UNCOMMITTED,
-            Integer.MAX_VALUE
+                5,
+                Isolation.UNCOMMITTED,
+                Integer.MAX_VALUE
         );
         assertEquals(5L, readInfo.startOffsetMetadata.offset());
         assertTrue(readInfo.startOffsetMetadata.metadata().isPresent());
@@ -391,14 +391,14 @@ public class MockLogTest {
 
         // Now update to a high watermark with invalid metadata
         assertThrows(IllegalArgumentException.class, () ->
-            log.updateHighWatermark(new LogOffsetMetadata(10L,
-                Optional.of(new MockLog.MockOffsetMetadata(98230980L)))));
+                log.updateHighWatermark(new LogOffsetMetadata(10L,
+                        Optional.of(new MockLog.MockOffsetMetadata(98230980L)))));
 
         // Ensure we can update the high watermark to the end offset
         LogFetchInfo readFromEndInfo = log.read(
-            15L,
-            Isolation.UNCOMMITTED,
-            Integer.MAX_VALUE
+                15L,
+                Isolation.UNCOMMITTED,
+                Integer.MAX_VALUE
         );
         assertEquals(15, readFromEndInfo.startOffsetMetadata.offset());
         assertTrue(readFromEndInfo.startOffsetMetadata.metadata().isPresent());
@@ -410,9 +410,9 @@ public class MockLogTest {
 
         // Check handling of a fetch from the middle of a batch
         LogFetchInfo readFromMiddleInfo = log.read(
-            16L,
-            Isolation.UNCOMMITTED,
-            Integer.MAX_VALUE
+                16L,
+                Isolation.UNCOMMITTED,
+                Integer.MAX_VALUE
         );
         assertEquals(readFromEndInfo.startOffsetMetadata, readFromMiddleInfo.startOffsetMetadata);
     }
@@ -455,14 +455,14 @@ public class MockLogTest {
 
     @Property(tries = 100, afterFailure = AfterFailureMode.SAMPLE_ONLY)
     void testRandomRecords(
-        @ForAll(supplier = ArbitraryMemoryRecords.class) MemoryRecords records
+            @ForAll(supplier = ArbitraryMemoryRecords.class) MemoryRecords records
     ) {
         try (MockLog log = new MockLog(topicPartition, topicId, new LogContext())) {
             long previousEndOffset = log.endOffset().offset();
 
             assertThrows(
-                CorruptRecordException.class,
-                () -> log.appendAsFollower(records, Integer.MAX_VALUE)
+                    CorruptRecordException.class,
+                    () -> log.appendAsFollower(records, Integer.MAX_VALUE)
             );
 
             assertEquals(previousEndOffset, log.endOffset().offset());
@@ -476,23 +476,23 @@ public class MockLogTest {
         var numberOfRecords = 10;
 
         MemoryRecords batchWithValidEpoch = MemoryRecords.withRecords(
-            previousEndOffset,
-            Compression.NONE,
-            epoch,
-            IntStream
-                .range(0, numberOfRecords)
-                .mapToObj(number -> new SimpleRecord(Integer.toString(number).getBytes()))
-                .toArray(SimpleRecord[]::new)
+                previousEndOffset,
+                Compression.NONE,
+                epoch,
+                IntStream
+                        .range(0, numberOfRecords)
+                        .mapToObj(number -> new SimpleRecord(Integer.toString(number).getBytes()))
+                        .toArray(SimpleRecord[]::new)
         );
 
         MemoryRecords batchWithInvalidEpoch = MemoryRecords.withRecords(
-            previousEndOffset + numberOfRecords,
-            Compression.NONE,
-            epoch + 1,
-            IntStream
-                .range(0, numberOfRecords)
-                .mapToObj(number -> new SimpleRecord(Integer.toString(number).getBytes()))
-                .toArray(SimpleRecord[]::new)
+                previousEndOffset + numberOfRecords,
+                Compression.NONE,
+                epoch + 1,
+                IntStream
+                        .range(0, numberOfRecords)
+                        .mapToObj(number -> new SimpleRecord(Integer.toString(number).getBytes()))
+                        .toArray(SimpleRecord[]::new)
         );
 
         var buffer = ByteBuffer.allocate(batchWithValidEpoch.sizeInBytes() + batchWithInvalidEpoch.sizeInBytes());
@@ -522,25 +522,25 @@ public class MockLogTest {
         log.truncateToLatestSnapshot();
 
         log.appendAsFollower(
-            MemoryRecords.withRecords(initialOffset, Compression.NONE, epoch, recordFoo),
-            epoch
+                MemoryRecords.withRecords(initialOffset, Compression.NONE, epoch, recordFoo),
+                epoch
         );
 
         assertThrows(
-            OffsetOutOfRangeException.class,
-            () -> log.read(
-                log.startOffset() - 1,
-                Isolation.UNCOMMITTED,
-                Integer.MAX_VALUE
-            )
+                OffsetOutOfRangeException.class,
+                () -> log.read(
+                        log.startOffset() - 1,
+                        Isolation.UNCOMMITTED,
+                        Integer.MAX_VALUE
+                )
         );
         assertThrows(
-            OffsetOutOfRangeException.class,
-            () -> log.read(
-                log.endOffset().offset() + 1,
-                Isolation.UNCOMMITTED,
-                Integer.MAX_VALUE
-            )
+                OffsetOutOfRangeException.class,
+                () -> log.read(
+                        log.endOffset().offset() + 1,
+                        Isolation.UNCOMMITTED,
+                        Integer.MAX_VALUE
+                )
         );
     }
 
@@ -617,8 +617,8 @@ public class MockLogTest {
         log.updateHighWatermark(new LogOffsetMetadata(numberOfRecords));
 
         assertThrows(
-            IllegalArgumentException.class,
-            () -> log.createNewSnapshot(new OffsetAndEpoch(numberOfRecords - 1, epoch))
+                IllegalArgumentException.class,
+                () -> log.createNewSnapshot(new OffsetAndEpoch(numberOfRecords - 1, epoch))
         );
     }
 
@@ -631,8 +631,8 @@ public class MockLogTest {
         log.updateHighWatermark(new LogOffsetMetadata(numberOfRecords));
 
         assertThrows(
-            IllegalArgumentException.class,
-            () -> log.createNewSnapshot(new OffsetAndEpoch(numberOfRecords + 1, epoch))
+                IllegalArgumentException.class,
+                () -> log.createNewSnapshot(new OffsetAndEpoch(numberOfRecords + 1, epoch))
         );
     }
 
@@ -645,8 +645,8 @@ public class MockLogTest {
         log.updateHighWatermark(new LogOffsetMetadata(numberOfRecords));
 
         assertThrows(
-            IllegalArgumentException.class,
-            () -> log.createNewSnapshot(new OffsetAndEpoch(numberOfRecords, epoch + 1))
+                IllegalArgumentException.class,
+                () -> log.createNewSnapshot(new OffsetAndEpoch(numberOfRecords, epoch + 1))
         );
     }
 
@@ -686,8 +686,8 @@ public class MockLogTest {
         assertEquals(snapshotId.offset(), log.startOffset());
 
         assertThrows(
-            IllegalArgumentException.class,
-            () -> log.createNewSnapshot(new OffsetAndEpoch(numberOfRecords, epoch - 1))
+                IllegalArgumentException.class,
+                () -> log.createNewSnapshot(new OffsetAndEpoch(numberOfRecords, epoch - 1))
         );
     }
 
@@ -706,16 +706,16 @@ public class MockLogTest {
         log.updateHighWatermark(new LogOffsetMetadata(numberOfRecords));
 
         assertThrows(
-            IllegalArgumentException.class,
-            () -> log.createNewSnapshot(new OffsetAndEpoch(1, missingEpoch))
+                IllegalArgumentException.class,
+                () -> log.createNewSnapshot(new OffsetAndEpoch(1, missingEpoch))
         );
         assertThrows(
-            IllegalArgumentException.class,
-            () -> log.createNewSnapshot(new OffsetAndEpoch(firstBatchRecords, missingEpoch))
+                IllegalArgumentException.class,
+                () -> log.createNewSnapshot(new OffsetAndEpoch(firstBatchRecords, missingEpoch))
         );
         assertThrows(
-            IllegalArgumentException.class,
-            () -> log.createNewSnapshot(new OffsetAndEpoch(secondBatchRecords, missingEpoch))
+                IllegalArgumentException.class,
+                () -> log.createNewSnapshot(new OffsetAndEpoch(secondBatchRecords, missingEpoch))
         );
     }
 
@@ -802,8 +802,8 @@ public class MockLogTest {
         }
 
         assertThrows(
-            OffsetOutOfRangeException.class,
-            () -> log.deleteBeforeSnapshot(snapshotId)
+                OffsetOutOfRangeException.class,
+                () -> log.deleteBeforeSnapshot(snapshotId)
         );
     }
 
@@ -922,7 +922,7 @@ public class MockLogTest {
 
         ValidOffsetAndEpoch resultOffsetAndEpoch = log.validateOffsetAndEpoch(numberOfRecords, epoch + 1);
         assertEquals(ValidOffsetAndEpoch.diverging(new OffsetAndEpoch(log.endOffset().offset(), epoch)),
-            resultOffsetAndEpoch);
+                resultOffsetAndEpoch);
     }
 
     @Test
@@ -1017,7 +1017,7 @@ public class MockLogTest {
 
         ValidOffsetAndEpoch resultOffsetAndEpoch = log.validateOffsetAndEpoch(numberOfRecords + 1, epoch);
         assertEquals(ValidOffsetAndEpoch.diverging(new OffsetAndEpoch(log.endOffset().offset(), epoch)),
-            resultOffsetAndEpoch);
+                resultOffsetAndEpoch);
     }
 
     @Test
@@ -1052,9 +1052,9 @@ public class MockLogTest {
         // Set to be larger than 1 batch but smaller than 2.
         int magicMaxTotalBytes = 200;
         Records records = log.read(
-            0,
-            Isolation.UNCOMMITTED,
-            magicMaxTotalBytes
+                0,
+                Isolation.UNCOMMITTED,
+                magicMaxTotalBytes
         ).records;
         // MockLog#read returns data in batches and will return an additional batch if one of them
         // exceeds maxTotalBytes.
@@ -1070,17 +1070,17 @@ public class MockLogTest {
         // Meaning we will read only the first batch and not the second.
         int magicMaxTotalBytes = 1;
         Records records = log.read(
-            0,
-            Isolation.UNCOMMITTED,
-            magicMaxTotalBytes
+                0,
+                Isolation.UNCOMMITTED,
+                magicMaxTotalBytes
         ).records;
         assertTrue(
-            records.sizeInBytes() > magicMaxTotalBytes,
-            String.format(
-                "Expected records size (%d) > maxTotalBytes (%d) since one whole batch must be returned",
-                records.sizeInBytes(),
-                magicMaxTotalBytes
-            )
+                records.sizeInBytes() > magicMaxTotalBytes,
+                String.format(
+                        "Expected records size (%d) > maxTotalBytes (%d) since one whole batch must be returned",
+                        records.sizeInBytes(),
+                        magicMaxTotalBytes
+                )
         );
         int recordCount = 0;
         var iterator = records.records().iterator();
@@ -1098,9 +1098,9 @@ public class MockLogTest {
         appendBatch(recordsPerBatch, 5);
         // The MockLog is able to read a large internal batch
         Records records = log.read(
-            0,
-            Isolation.UNCOMMITTED,
-            Integer.MAX_VALUE
+                0,
+                Isolation.UNCOMMITTED,
+                Integer.MAX_VALUE
         ).records;
         int recordCount = 0;
         var iterator = records.records().iterator();
@@ -1118,9 +1118,9 @@ public class MockLogTest {
         appendBatch(recordsPerBatch, 5);
         // The MockLog is able to read a large internal batch
         Records records = log.read(
-            0,
-            Isolation.UNCOMMITTED,
-            1
+                0,
+                Isolation.UNCOMMITTED,
+                1
         ).records;
         int recordCount = 0;
         var iterator = records.records().iterator();
@@ -1142,9 +1142,9 @@ public class MockLogTest {
 
         int magicMaxBatchSizeBytes = 101;
         LogFetchInfo info = log.read(
-            0,
-            Isolation.UNCOMMITTED,
-            magicMaxBatchSizeBytes * expectedBatches
+                0,
+                Isolation.UNCOMMITTED,
+                magicMaxBatchSizeBytes * expectedBatches
         );
 
         assertEquals(expectedBatches * magicMaxBatchSizeBytes, info.records.sizeInBytes());
@@ -1175,9 +1175,9 @@ public class MockLogTest {
             foundRecord = false;
 
             Records records = log.read(
-                currentStart,
-                isolation,
-                Integer.MAX_VALUE
+                    currentStart,
+                    isolation,
+                    Integer.MAX_VALUE
             ).records;
             for (Record record : records.records()) {
                 foundRecord = true;
@@ -1206,13 +1206,13 @@ public class MockLogTest {
 
     private void appendAsLeader(Collection<SimpleRecord> records, int epoch) {
         log.appendAsLeader(
-            MemoryRecords.withRecords(
-                log.endOffset().offset(),
-                Compression.NONE,
-                epoch,
-                records.toArray(new SimpleRecord[0])
-            ),
-            epoch
+                MemoryRecords.withRecords(
+                        log.endOffset().offset(),
+                        Compression.NONE,
+                        epoch,
+                        records.toArray(new SimpleRecord[0])
+                ),
+                epoch
         );
     }
 
@@ -1232,9 +1232,9 @@ public class MockLogTest {
         int currentOffset = 0;
         while (currentOffset < log.endOffset().offset()) {
             Records records = log.read(
-                currentOffset,
-                Isolation.UNCOMMITTED,
-                Integer.MAX_VALUE
+                    currentOffset,
+                    Isolation.UNCOMMITTED,
+                    Integer.MAX_VALUE
             ).records;
             List<? extends RecordBatch> batches = Utils.toList(records.batches().iterator());
 

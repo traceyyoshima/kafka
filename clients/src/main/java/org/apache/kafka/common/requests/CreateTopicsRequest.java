@@ -43,19 +43,19 @@ public class CreateTopicsRequest extends AbstractRequest {
                         "CreateTopicsRequest");
 
             final List<String> topicsWithDefaults = data.topics()
-                .stream()
-                .filter(topic -> topic.assignments().isEmpty())
-                .filter(topic ->
-                    topic.numPartitions() == CreateTopicsRequest.NO_NUM_PARTITIONS
-                        || topic.replicationFactor() == CreateTopicsRequest.NO_REPLICATION_FACTOR)
-                .map(CreatableTopic::name)
-                .collect(Collectors.toList());
+                    .stream()
+                    .filter(topic -> topic.assignments().isEmpty())
+                    .filter(topic ->
+                            topic.numPartitions() == CreateTopicsRequest.NO_NUM_PARTITIONS
+                                    || topic.replicationFactor() == CreateTopicsRequest.NO_REPLICATION_FACTOR)
+                    .map(CreatableTopic::name)
+                    .collect(Collectors.toList());
 
             if (!topicsWithDefaults.isEmpty() && version < 4) {
                 throw new UnsupportedVersionException("Creating topics with default "
-                    + "partitions/replication factor are only supported in CreateTopicRequest "
-                    + "version 4+. The following topics need values for partitions and replicas: "
-                    + topicsWithDefaults);
+                        + "partitions/replication factor are only supported in CreateTopicRequest "
+                        + "version 4+. The following topics need values for partitions and replicas: "
+                        + topicsWithDefaults);
             }
 
             return new CreateTopicsRequest(data, version);
@@ -101,9 +101,9 @@ public class CreateTopicsRequest extends AbstractRequest {
         ApiError apiError = ApiError.fromThrowable(e);
         for (CreatableTopic topic : data.topics()) {
             response.topics().add(new CreatableTopicResult().
-                setName(topic.name()).
-                setErrorCode(apiError.error().code()).
-                setErrorMessage(apiError.message()));
+                    setName(topic.name()).
+                    setErrorCode(apiError.error().code()).
+                    setErrorMessage(apiError.message()));
         }
         return new CreateTopicsResponse(response);
     }

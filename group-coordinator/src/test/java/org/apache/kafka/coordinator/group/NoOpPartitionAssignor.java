@@ -36,7 +36,7 @@ public class NoOpPartitionAssignor implements ConsumerGroupPartitionAssignor, Sh
     @Override
     public GroupAssignment assign(GroupSpec groupSpec, SubscribedTopicDescriber subscribedTopicDescriber) {
         return new GroupAssignment(groupSpec.memberIds()
-            .stream()
-            .collect(Collectors.toMap(Function.identity(), groupSpec::memberAssignment)));
+                .stream()
+                .collect(Collectors.toMap(Function.identity(), groupSpec::memberAssignment)));
     }
 }

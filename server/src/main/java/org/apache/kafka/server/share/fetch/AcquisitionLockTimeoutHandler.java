@@ -27,9 +27,9 @@ public interface AcquisitionLockTimeoutHandler {
     /**
      * Handles the acquisition lock timeout for a share partition.
      *
-     * @param memberId the id of the member that requested the lock
+     * @param memberId    the id of the member that requested the lock
      * @param firstOffset the first offset
-     * @param lastOffset the last offset
+     * @param lastOffset  the last offset
      */
     void handle(String memberId, long firstOffset, long lastOffset, TimerTask timerTask);
 

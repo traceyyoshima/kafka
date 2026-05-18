@@ -42,39 +42,39 @@ public class NodeMetricsTest {
 
         // Metric description is not used for metric name equality
         Set<MetricName> stableFeatureMetrics = Set.of(
-            new MetricName("maximum-supported-level", expectedGroup, "", Map.of("feature-name", "metadata-version")),
-            new MetricName("minimum-supported-level", expectedGroup, "", Map.of("feature-name", "metadata-version")),
-            new MetricName("maximum-supported-level", expectedGroup, "", Map.of("feature-name", "kraft-version")),
-            new MetricName("minimum-supported-level", expectedGroup, "", Map.of("feature-name", "kraft-version")),
-            new MetricName("maximum-supported-level", expectedGroup, "", Map.of("feature-name", "transaction-version")),
-            new MetricName("minimum-supported-level", expectedGroup, "", Map.of("feature-name", "transaction-version")),
-            new MetricName("maximum-supported-level", expectedGroup, "", Map.of("feature-name", "group-version")),
-            new MetricName("minimum-supported-level", expectedGroup, "", Map.of("feature-name", "group-version")),
-            new MetricName("maximum-supported-level", expectedGroup, "", Map.of("feature-name", "eligible-leader-replicas-version")),
-            new MetricName("minimum-supported-level", expectedGroup, "", Map.of("feature-name", "eligible-leader-replicas-version")),
-            new MetricName("maximum-supported-level", expectedGroup, "", Map.of("feature-name", "share-version")),
-            new MetricName("minimum-supported-level", expectedGroup, "", Map.of("feature-name", "share-version")),
-            new MetricName("maximum-supported-level", expectedGroup, "", Map.of("feature-name", "streams-version")),
-            new MetricName("minimum-supported-level", expectedGroup, "", Map.of("feature-name", "streams-version"))
+                new MetricName("maximum-supported-level", expectedGroup, "", Map.of("feature-name", "metadata-version")),
+                new MetricName("minimum-supported-level", expectedGroup, "", Map.of("feature-name", "metadata-version")),
+                new MetricName("maximum-supported-level", expectedGroup, "", Map.of("feature-name", "kraft-version")),
+                new MetricName("minimum-supported-level", expectedGroup, "", Map.of("feature-name", "kraft-version")),
+                new MetricName("maximum-supported-level", expectedGroup, "", Map.of("feature-name", "transaction-version")),
+                new MetricName("minimum-supported-level", expectedGroup, "", Map.of("feature-name", "transaction-version")),
+                new MetricName("maximum-supported-level", expectedGroup, "", Map.of("feature-name", "group-version")),
+                new MetricName("minimum-supported-level", expectedGroup, "", Map.of("feature-name", "group-version")),
+                new MetricName("maximum-supported-level", expectedGroup, "", Map.of("feature-name", "eligible-leader-replicas-version")),
+                new MetricName("minimum-supported-level", expectedGroup, "", Map.of("feature-name", "eligible-leader-replicas-version")),
+                new MetricName("maximum-supported-level", expectedGroup, "", Map.of("feature-name", "share-version")),
+                new MetricName("minimum-supported-level", expectedGroup, "", Map.of("feature-name", "share-version")),
+                new MetricName("maximum-supported-level", expectedGroup, "", Map.of("feature-name", "streams-version")),
+                new MetricName("minimum-supported-level", expectedGroup, "", Map.of("feature-name", "streams-version"))
         );
 
         Set<MetricName> unstableFeatureMetrics = Set.of();
 
         Set<MetricName> expectedMetrics = enableUnstableVersions
-            ? Stream.concat(stableFeatureMetrics.stream(), unstableFeatureMetrics.stream()).collect(Collectors.toSet())
-            : stableFeatureMetrics;
+                ? Stream.concat(stableFeatureMetrics.stream(), unstableFeatureMetrics.stream()).collect(Collectors.toSet())
+                : stableFeatureMetrics;
 
         try (NodeMetrics ignored = new NodeMetrics(metrics, enableUnstableVersions)) {
             Map<MetricName, KafkaMetric> metricsMap = metrics.metrics().entrySet().stream()
-                .filter(entry -> Objects.equals(entry.getKey().group(), expectedGroup))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                    .filter(entry -> Objects.equals(entry.getKey().group(), expectedGroup))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
             assertEquals(expectedMetrics.size(), metricsMap.size());
             metricsMap.forEach((name, metric) -> assertTrue(expectedMetrics.contains(name)));
         }
 
         Map<MetricName, KafkaMetric> metricsMap = metrics.metrics().entrySet().stream()
-            .filter(entry -> Objects.equals(entry.getKey().group(), expectedGroup))
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .filter(entry -> Objects.equals(entry.getKey().group(), expectedGroup))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         assertEquals(0, metricsMap.size());
     }
 }

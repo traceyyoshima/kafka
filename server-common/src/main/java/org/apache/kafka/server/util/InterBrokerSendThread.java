@@ -50,20 +50,20 @@ public abstract class InterBrokerSendThread extends ShutdownableThread {
     private final UnsentRequests unsentRequests;
 
     protected InterBrokerSendThread(
-        String name,
-        KafkaClient networkClient,
-        int requestTimeoutMs,
-        Time time
+            String name,
+            KafkaClient networkClient,
+            int requestTimeoutMs,
+            Time time
     ) {
         this(name, networkClient, requestTimeoutMs, time, true);
     }
 
     protected InterBrokerSendThread(
-        String name,
-        KafkaClient networkClient,
-        int requestTimeoutMs,
-        Time time,
-        boolean isInterruptible
+            String name,
+            KafkaClient networkClient,
+            int requestTimeoutMs,
+            Time time,
+            boolean isInterruptible
     ) {
         super(name, isInterruptible);
         this.networkClient = networkClient;
@@ -88,17 +88,17 @@ public abstract class InterBrokerSendThread extends ShutdownableThread {
 
     private void drainGeneratedRequests() {
         generateRequests().forEach(request ->
-            unsentRequests.put(
-                request.destination,
-                networkClient.newClientRequest(
-                    request.destination.idString(),
-                    request.request,
-                    request.creationTimeMs,
-                    true,
-                    requestTimeoutMs,
-                    request.handler
+                unsentRequests.put(
+                        request.destination,
+                        networkClient.newClientRequest(
+                                request.destination.idString(),
+                                request.request,
+                                request.creationTimeMs,
+                                true,
+                                requestTimeoutMs,
+                                request.handler
+                        )
                 )
-            )
         );
     }
 
@@ -187,23 +187,23 @@ public abstract class InterBrokerSendThread extends ShutdownableThread {
     }
 
     private static void completeWithDisconnect(
-        ClientRequest request,
-        long now,
-        AuthenticationException authenticationException
+            ClientRequest request,
+            long now,
+            AuthenticationException authenticationException
     ) {
         final RequestCompletionHandler handler = request.callback();
         handler.onComplete(
-            new ClientResponse(
-                request.makeHeader(request.requestBuilder().latestAllowedVersion()),
-                handler,
-                request.destination(),
-                now /* createdTimeMs */,
-                now /* receivedTimeMs */,
-                true /* disconnected */,
-                null /* versionMismatch */,
-                authenticationException,
-                null
-            )
+                new ClientResponse(
+                        request.makeHeader(request.requestBuilder().latestAllowedVersion()),
+                        handler,
+                        request.destination(),
+                        now /* createdTimeMs */,
+                        now /* receivedTimeMs */,
+                        true /* disconnected */,
+                        null /* versionMismatch */,
+                        authenticationException,
+                        null
+                )
         );
     }
 

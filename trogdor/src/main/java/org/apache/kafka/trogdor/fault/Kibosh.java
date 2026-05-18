@@ -40,7 +40,7 @@ public final class Kibosh {
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
     @JsonSubTypes({
-        @JsonSubTypes.Type(value = KiboshFilesUnreadableFaultSpec.class, name = "unreadable"),
+            @JsonSubTypes.Type(value = KiboshFilesUnreadableFaultSpec.class, name = "unreadable"),
     })
     public abstract static class KiboshFaultSpec {
         @Override
@@ -122,7 +122,7 @@ public final class Kibosh {
         private final List<KiboshFaultSpec> faults;
 
         public static final KiboshControlFile EMPTY =
-            new KiboshControlFile(List.of());
+                new KiboshControlFile(List.of());
 
         public static KiboshControlFile read(Path controlPath) throws IOException {
             byte[] controlFileBytes = Files.readAllBytes(controlPath);

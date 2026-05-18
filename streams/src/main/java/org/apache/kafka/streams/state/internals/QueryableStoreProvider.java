@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A wrapper over all of the {@link StateStoreProvider}s in a Topology
- *
+ * <p>
  * The store providers field is a reference
  */
 public class QueryableStoreProvider {
@@ -44,11 +44,11 @@ public class QueryableStoreProvider {
      * Get a composite object wrapping the instances of the {@link StateStore} with the provided
      * storeName and {@link QueryableStoreType}
      *
-     * @param storeQueryParameters       if stateStoresEnabled is used i.e. staleStoresEnabled is true, include standbys and recovering stores;
-     *                                        if stateStoresDisabled i.e. staleStoresEnabled is false, only include running actives;
-     *                                        if partition is null then it fetches all local partitions on the instance;
-     *                                        if partition is set then it fetches a specific partition.
-     * @param <T>                The expected type of the returned store
+     * @param storeQueryParameters if stateStoresEnabled is used i.e. staleStoresEnabled is true, include standbys and recovering stores;
+     *                             if stateStoresDisabled i.e. staleStoresEnabled is false, only include running actives;
+     *                             if partition is null then it fetches all local partitions on the instance;
+     *                             if partition is set then it fetches a specific partition.
+     * @param <T>                  The expected type of the returned store
      * @return A composite object that wraps the store instances.
      */
     public <T> T store(final StoreQueryParameters<T> storeQueryParameters) {
@@ -59,8 +59,8 @@ public class QueryableStoreProvider {
             return queryableStoreType.create(globalStoreProvider, storeName);
         }
         return queryableStoreType.create(
-            new WrappingStoreProvider(storeProviders.values(), storeQueryParameters),
-            storeName
+                new WrappingStoreProvider(storeProviders.values(), storeQueryParameters),
+                storeName
         );
     }
 

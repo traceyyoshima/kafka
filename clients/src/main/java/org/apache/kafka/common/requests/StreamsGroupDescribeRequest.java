@@ -57,14 +57,14 @@ public class StreamsGroupDescribeRequest extends AbstractRequest {
     @Override
     public StreamsGroupDescribeResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         StreamsGroupDescribeResponseData data = new StreamsGroupDescribeResponseData()
-            .setThrottleTimeMs(throttleTimeMs);
+                .setThrottleTimeMs(throttleTimeMs);
         // Set error for each group
         this.data.groupIds().forEach(
-            groupId -> data.groups().add(
-                new StreamsGroupDescribeResponseData.DescribedGroup()
-                    .setGroupId(groupId)
-                    .setErrorCode(Errors.forException(e).code())
-            )
+                groupId -> data.groups().add(
+                        new StreamsGroupDescribeResponseData.DescribedGroup()
+                                .setGroupId(groupId)
+                                .setErrorCode(Errors.forException(e).code())
+                )
         );
         return new StreamsGroupDescribeResponse(data);
     }
@@ -76,19 +76,19 @@ public class StreamsGroupDescribeRequest extends AbstractRequest {
 
     public static StreamsGroupDescribeRequest parse(Readable readable, short version) {
         return new StreamsGroupDescribeRequest(
-            new StreamsGroupDescribeRequestData(readable, version),
-            version
+                new StreamsGroupDescribeRequestData(readable, version),
+                version
         );
     }
 
     public static List<StreamsGroupDescribeResponseData.DescribedGroup> getErrorDescribedGroupList(
-        List<String> groupIds,
-        Errors error
+            List<String> groupIds,
+            Errors error
     ) {
         return groupIds.stream()
-            .map(groupId -> new StreamsGroupDescribeResponseData.DescribedGroup()
-                .setGroupId(groupId)
-                .setErrorCode(error.code())
-            ).collect(Collectors.toList());
+                .map(groupId -> new StreamsGroupDescribeResponseData.DescribedGroup()
+                        .setGroupId(groupId)
+                        .setErrorCode(error.code())
+                ).collect(Collectors.toList());
     }
 }

@@ -56,16 +56,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StandardAuthorizerPropertyTest {
 
-    @Target({ ElementType.ANNOTATION_TYPE, ElementType.PARAMETER, ElementType.TYPE_USE })
+    @Target({ElementType.ANNOTATION_TYPE, ElementType.PARAMETER, ElementType.TYPE_USE})
     @Retention(RetentionPolicy.RUNTIME)
-    @AlphaChars @NumericChars @Chars({ '_', '-', '.' })
-    public @interface ValidTopicChars { }
+    @AlphaChars
+    @NumericChars
+    @Chars({'_', '-', '.'})
+    public @interface ValidTopicChars {
+    }
 
     @Property(tries = 5000)
     public void matchingPrefixDenyOverridesAllAllowRules(
-        @ForAll Random random,
-        @ForAll @ValidTopicChars String topic,
-        @ForAll @Size(max = 10) Set<@ValidTopicChars String> randomSuffixes
+            @ForAll Random random,
+            @ForAll @ValidTopicChars String topic,
+            @ForAll @Size(max = 10) Set<@ValidTopicChars String> randomSuffixes
     ) throws Exception {
         Assume.that(Topic.isValid(topic));
         StandardAuthorizer authorizer = buildAuthorizer();
@@ -79,17 +82,17 @@ public class StandardAuthorizerPropertyTest {
         addRandomPrefixAllowAcls(authorizer, topic, randomSuffixes);
 
         assertAuthorizationResult(
-            authorizer,
-            AuthorizationResult.DENIED,
-            AclOperation.WRITE,
-            new ResourcePattern(ResourceType.TOPIC, topic, PatternType.LITERAL)
+                authorizer,
+                AuthorizationResult.DENIED,
+                AclOperation.WRITE,
+                new ResourcePattern(ResourceType.TOPIC, topic, PatternType.LITERAL)
         );
     }
 
     @Property(tries = 5000)
     public void matchingLiteralDenyOverridesAllAllowRules(
-        @ForAll @ValidTopicChars String topic,
-        @ForAll @Size(max = 10) Set<@ValidTopicChars String> randomSuffixes
+            @ForAll @ValidTopicChars String topic,
+            @ForAll @Size(max = 10) Set<@ValidTopicChars String> randomSuffixes
     ) throws Exception {
         Assume.that(Topic.isValid(topic));
         StandardAuthorizer authorizer = buildAuthorizer();
@@ -102,18 +105,18 @@ public class StandardAuthorizerPropertyTest {
         addRandomPrefixAllowAcls(authorizer, topic, randomSuffixes);
 
         assertAuthorizationResult(
-            authorizer,
-            AuthorizationResult.DENIED,
-            AclOperation.WRITE,
-            new ResourcePattern(ResourceType.TOPIC, topic, PatternType.LITERAL)
+                authorizer,
+                AuthorizationResult.DENIED,
+                AclOperation.WRITE,
+                new ResourcePattern(ResourceType.TOPIC, topic, PatternType.LITERAL)
         );
     }
 
     @Property(tries = 5000)
     public void matchingPrefixAllowWithNoMatchingDenyRules(
-        @ForAll Random random,
-        @ForAll @ValidTopicChars String topic,
-        @ForAll @Size(max = 10) Set<@ValidTopicChars String> randomSuffixes
+            @ForAll Random random,
+            @ForAll @ValidTopicChars String topic,
+            @ForAll @Size(max = 10) Set<@ValidTopicChars String> randomSuffixes
     ) throws Exception {
         Assume.that(Topic.isValid(topic));
         StandardAuthorizer authorizer = buildAuthorizer();
@@ -128,17 +131,17 @@ public class StandardAuthorizerPropertyTest {
         addRandomNonMatchingPrefixDenyAcls(authorizer, topic, randomSuffixes);
 
         assertAuthorizationResult(
-            authorizer,
-            AuthorizationResult.ALLOWED,
-            AclOperation.WRITE,
-            new ResourcePattern(ResourceType.TOPIC, topic, PatternType.LITERAL)
+                authorizer,
+                AuthorizationResult.ALLOWED,
+                AclOperation.WRITE,
+                new ResourcePattern(ResourceType.TOPIC, topic, PatternType.LITERAL)
         );
     }
 
     @Property(tries = 5000)
     public void matchingLiteralAllowWithNoMatchingDenyRules(
-        @ForAll @ValidTopicChars String topic,
-        @ForAll @Size(max = 10) Set<@ValidTopicChars String> randomSuffixes
+            @ForAll @ValidTopicChars String topic,
+            @ForAll @Size(max = 10) Set<@ValidTopicChars String> randomSuffixes
     ) throws Exception {
         Assume.that(Topic.isValid(topic));
         StandardAuthorizer authorizer = buildAuthorizer();
@@ -152,10 +155,10 @@ public class StandardAuthorizerPropertyTest {
         addRandomNonMatchingPrefixDenyAcls(authorizer, topic, randomSuffixes);
 
         assertAuthorizationResult(
-            authorizer,
-            AuthorizationResult.ALLOWED,
-            AclOperation.WRITE,
-            new ResourcePattern(ResourceType.TOPIC, topic, PatternType.LITERAL)
+                authorizer,
+                AuthorizationResult.ALLOWED,
+                AclOperation.WRITE,
+                new ResourcePattern(ResourceType.TOPIC, topic, PatternType.LITERAL)
         );
     }
 
@@ -167,15 +170,15 @@ public class StandardAuthorizerPropertyTest {
     }
 
     private void assertAuthorizationResult(
-        StandardAuthorizer authorizer,
-        AuthorizationResult expectedResult,
-        AclOperation operation,
-        ResourcePattern pattern
+            StandardAuthorizer authorizer,
+            AuthorizationResult expectedResult,
+            AclOperation operation,
+            ResourcePattern pattern
     ) throws Exception {
         Action action = new Action(operation, pattern, 1, false, false);
         List<AuthorizationResult> results = authorizer.authorize(
-            newRequestContext(),
-            List.of(action)
+                newRequestContext(),
+                List.of(action)
         );
 
         assertEquals(1, results.size());
@@ -190,17 +193,17 @@ public class StandardAuthorizerPropertyTest {
     }
 
     private void printCounterExample(
-        StandardAuthorizer authorizer,
-        AclOperation operation,
-        ResourcePattern resourcePattern,
-        AuthorizationResult result
+            StandardAuthorizer authorizer,
+            AclOperation operation,
+            ResourcePattern resourcePattern,
+            AuthorizationResult result
     ) {
         System.out.println("Assertion FAILED: Operation " + operation + " on " +
-            resourcePattern + " is " + result + ". Current ACLS:");
+                resourcePattern + " is " + result + ". Current ACLS:");
 
         Iterable<AclBinding> allAcls = authorizer.acls(new AclBindingFilter(
-            new ResourcePatternFilter(ResourceType.ANY, null, PatternType.ANY),
-            new AccessControlEntryFilter(null, null, AclOperation.ANY, AclPermissionType.ANY)
+                new ResourcePatternFilter(ResourceType.ANY, null, PatternType.ANY),
+                new AccessControlEntryFilter(null, null, AclOperation.ANY, AclPermissionType.ANY)
         ));
 
         allAcls.forEach(System.out::println);
@@ -208,29 +211,29 @@ public class StandardAuthorizerPropertyTest {
 
     private static AuthorizableRequestContext newRequestContext() throws Exception {
         return new MockAuthorizableRequestContext.Builder()
-            .setPrincipal(new KafkaPrincipal(USER_TYPE, "user"))
-            .build();
+                .setPrincipal(new KafkaPrincipal(USER_TYPE, "user"))
+                .build();
     }
 
     private static StandardAcl buildTopicWriteAcl(
-        String resourceName,
-        PatternType patternType,
-        AclPermissionType permissionType
+            String resourceName,
+            PatternType patternType,
+            AclPermissionType permissionType
     ) {
         return new StandardAcl(
-            ResourceType.TOPIC,
-            resourceName,
-            patternType,
-            "User:*",
-            "*",
-            AclOperation.WRITE,
-            permissionType
+                ResourceType.TOPIC,
+                resourceName,
+                patternType,
+                "User:*",
+                "*",
+                AclOperation.WRITE,
+                permissionType
         );
     }
 
     private boolean isPrefix(
-        String value,
-        String prefix
+            String value,
+            String prefix
     ) {
         if (prefix.length() > value.length()) {
             return false;
@@ -241,39 +244,39 @@ public class StandardAuthorizerPropertyTest {
     }
 
     private void addRandomNonMatchingPrefixDenyAcls(
-        StandardAuthorizer authorizer,
-        String topic,
-        Set<String> randomSuffixes
+            StandardAuthorizer authorizer,
+            String topic,
+            Set<String> randomSuffixes
     ) {
         addRandomPrefixRules(
-            authorizer,
-            topic,
-            randomSuffixes,
-            AclPermissionType.DENY,
-            pattern -> !pattern.isEmpty() && !isPrefix(topic, pattern)
+                authorizer,
+                topic,
+                randomSuffixes,
+                AclPermissionType.DENY,
+                pattern -> !pattern.isEmpty() && !isPrefix(topic, pattern)
         );
     }
 
     private void addRandomPrefixAllowAcls(
-        StandardAuthorizer authorizer,
-        String topic,
-        Set<String> randomSuffixes
+            StandardAuthorizer authorizer,
+            String topic,
+            Set<String> randomSuffixes
     ) {
         addRandomPrefixRules(
-            authorizer,
-            topic,
-            randomSuffixes,
-            AclPermissionType.ALLOW,
-            pattern -> !pattern.isEmpty()
+                authorizer,
+                topic,
+                randomSuffixes,
+                AclPermissionType.ALLOW,
+                pattern -> !pattern.isEmpty()
         );
     }
-    
+
     private void addRandomPrefixRules(
-        StandardAuthorizer authorizer,
-        String topic,
-        Set<String> randomSuffixes,
-        AclPermissionType permissionType,
-        Predicate<String> patternFilter
+            StandardAuthorizer authorizer,
+            String topic,
+            Set<String> randomSuffixes,
+            AclPermissionType permissionType,
+            Predicate<String> patternFilter
     ) {
         Set<String> prefixPatterns = new HashSet<>();
 
@@ -289,11 +292,11 @@ public class StandardAuthorizerPropertyTest {
 
         for (String randomResourcePattern : prefixPatterns) {
             authorizer.addAcl(Uuid.randomUuid(), buildTopicWriteAcl(
-                randomResourcePattern,
-                PatternType.PREFIXED,
-                permissionType
+                    randomResourcePattern,
+                    PatternType.PREFIXED,
+                    permissionType
             ));
-        }        
+        }
     }
 
 }

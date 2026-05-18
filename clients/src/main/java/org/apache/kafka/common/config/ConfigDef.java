@@ -43,13 +43,13 @@ import java.util.stream.Collectors;
  * This class is used for specifying the set of expected configurations. For each configuration, you can specify
  * the name, the type, the default value, the documentation, the group information, the order in the group,
  * the width of the configuration value and the name suitable for display in the UI.
- *
+ * <p>
  * You can provide special validation logic used for single configuration validation by overriding {@link Validator}.
- *
+ * <p>
  * Moreover, you can specify the dependents of a configuration. The valid values and visibility of a configuration
  * may change according to the values of other configurations. You can override {@link Recommender} to get valid
  * values and set visibility of a configuration given the current configuration values.
- *
+ * <p>
  * <p/>
  * To use the class:
  * <p/>
@@ -139,6 +139,7 @@ public class ConfigDef {
 
     /**
      * Define a new configuration
+     *
      * @param name          the name of the config parameter
      * @param type          the type of the config
      * @param defaultValue  the default value to use if this config isn't present
@@ -160,19 +161,20 @@ public class ConfigDef {
 
     /**
      * Define a new configuration
-     * @param name               the name of the config parameter
-     * @param type               the type of the config
-     * @param defaultValue       the default value to use if this config isn't present
-     * @param validator          the validator to use in checking the correctness of the config
-     * @param importance         the importance of this config
-     * @param documentation      the documentation string for the config
-     * @param group              the group this config belongs to
-     * @param orderInGroup       the order of this config in the group
-     * @param width              the width of the config
-     * @param displayName        the name suitable for display
-     * @param dependents         the configurations that are dependents of this configuration
-     * @param recommender        the recommender provides valid values given the parent configuration values
-     * @param alternativeString  the string which will be used to override the string of defaultValue
+     *
+     * @param name              the name of the config parameter
+     * @param type              the type of the config
+     * @param defaultValue      the default value to use if this config isn't present
+     * @param validator         the validator to use in checking the correctness of the config
+     * @param importance        the importance of this config
+     * @param documentation     the documentation string for the config
+     * @param group             the group this config belongs to
+     * @param orderInGroup      the order of this config in the group
+     * @param width             the width of the config
+     * @param displayName       the name suitable for display
+     * @param dependents        the configurations that are dependents of this configuration
+     * @param recommender       the recommender provides valid values given the parent configuration values
+     * @param alternativeString the string which will be used to override the string of defaultValue
      * @return This ConfigDef so you can chain calls
      */
     public ConfigDef define(String name, Type type, Object defaultValue, Validator validator, Importance importance, String documentation,
@@ -183,6 +185,7 @@ public class ConfigDef {
 
     /**
      * Define a new configuration with no custom recommender
+     *
      * @param name          the name of the config parameter
      * @param type          the type of the config
      * @param defaultValue  the default value to use if this config isn't present
@@ -203,6 +206,7 @@ public class ConfigDef {
 
     /**
      * Define a new configuration with no dependents
+     *
      * @param name          the name of the config parameter
      * @param type          the type of the config
      * @param defaultValue  the default value to use if this config isn't present
@@ -223,6 +227,7 @@ public class ConfigDef {
 
     /**
      * Define a new configuration with no dependents and no custom recommender
+     *
      * @param name          the name of the config parameter
      * @param type          the type of the config
      * @param defaultValue  the default value to use if this config isn't present
@@ -242,6 +247,7 @@ public class ConfigDef {
 
     /**
      * Define a new configuration with no special validation logic
+     *
      * @param name          the name of the config parameter
      * @param type          the type of the config
      * @param defaultValue  the default value to use if this config isn't present
@@ -262,6 +268,7 @@ public class ConfigDef {
 
     /**
      * Define a new configuration with no special validation logic and no custom recommender
+     *
      * @param name          the name of the config parameter
      * @param type          the type of the config
      * @param defaultValue  the default value to use if this config isn't present
@@ -281,6 +288,7 @@ public class ConfigDef {
 
     /**
      * Define a new configuration with no special validation logic and no custom recommender
+     *
      * @param name          the name of the config parameter
      * @param type          the type of the config
      * @param defaultValue  the default value to use if this config isn't present
@@ -300,6 +308,7 @@ public class ConfigDef {
 
     /**
      * Define a new configuration with no special validation logic, not dependents and no custom recommender
+     *
      * @param name          the name of the config parameter
      * @param type          the type of the config
      * @param defaultValue  the default value to use if this config isn't present
@@ -318,6 +327,7 @@ public class ConfigDef {
 
     /**
      * Define a new configuration with no default value and no special validation logic
+     *
      * @param name          the name of the config parameter
      * @param type          the type of the config
      * @param importance    the importance of this config
@@ -337,6 +347,7 @@ public class ConfigDef {
 
     /**
      * Define a new configuration with no default value, no special validation logic and no custom recommender
+     *
      * @param name          the name of the config parameter
      * @param type          the type of the config
      * @param importance    the importance of this config
@@ -355,6 +366,7 @@ public class ConfigDef {
 
     /**
      * Define a new configuration with no default value, no special validation logic and no custom recommender
+     *
      * @param name          the name of the config parameter
      * @param type          the type of the config
      * @param importance    the importance of this config
@@ -373,6 +385,7 @@ public class ConfigDef {
 
     /**
      * Define a new configuration with no default value, no special validation logic, no dependents and no custom recommender
+     *
      * @param name          the name of the config parameter
      * @param type          the type of the config
      * @param importance    the importance of this config
@@ -390,6 +403,7 @@ public class ConfigDef {
 
     /**
      * Define a new configuration with no group, no order in group, no width, no display name, no dependents and no custom recommender
+     *
      * @param name          the name of the config parameter
      * @param type          the type of the config
      * @param defaultValue  the default value to use if this config isn't present
@@ -404,6 +418,7 @@ public class ConfigDef {
 
     /**
      * Define a new configuration with no special validation logic
+     *
      * @param name          The name of the config parameter
      * @param type          The type of the config
      * @param defaultValue  The default value to use if this config isn't present
@@ -417,6 +432,7 @@ public class ConfigDef {
 
     /**
      * Define a new configuration with no special validation logic
+     *
      * @param name              The name of the config parameter
      * @param type              The type of the config
      * @param defaultValue      The default value to use if this config isn't present
@@ -432,6 +448,7 @@ public class ConfigDef {
 
     /**
      * Define a new configuration with no default value and no special validation logic
+     *
      * @param name          The name of the config parameter
      * @param type          The type of the config
      * @param importance    The importance of this config: is this something you will likely need to change.
@@ -445,10 +462,11 @@ public class ConfigDef {
     /**
      * Define a new internal configuration. Internal configuration won't show up in the docs and aren't
      * intended for general use.
-     * @param name              The name of the config parameter
-     * @param type              The type of the config
-     * @param defaultValue      The default value to use if this config isn't present
-     * @param importance        The importance of this config (i.e. is this something you will likely need to change?)
+     *
+     * @param name         The name of the config parameter
+     * @param type         The type of the config
+     * @param defaultValue The default value to use if this config isn't present
+     * @param importance   The importance of this config (i.e. is this something you will likely need to change?)
      * @return This ConfigDef so you can chain calls
      */
     public ConfigDef defineInternal(final String name, final Type type, final Object defaultValue, final Importance importance) {
@@ -458,12 +476,13 @@ public class ConfigDef {
     /**
      * Define a new internal configuration. Internal configuration won't show up in the docs and aren't
      * intended for general use.
-     * @param name              The name of the config parameter
-     * @param type              The type of the config
-     * @param defaultValue      The default value to use if this config isn't present
-     * @param validator         The validator to use in checking the correctness of the config
-     * @param importance        The importance of this config (i.e. is this something you will likely need to change?)
-     * @param documentation     The documentation string for the config
+     *
+     * @param name          The name of the config parameter
+     * @param type          The type of the config
+     * @param defaultValue  The default value to use if this config isn't present
+     * @param validator     The validator to use in checking the correctness of the config
+     * @param importance    The importance of this config (i.e. is this something you will likely need to change?)
+     * @param documentation The documentation string for the config
      * @return This ConfigDef so you can chain calls
      */
     public ConfigDef defineInternal(final String name, final Type type, final Object defaultValue, final Validator validator, final Importance importance, final String documentation) {
@@ -472,6 +491,7 @@ public class ConfigDef {
 
     /**
      * Get the configuration keys
+     *
      * @return a map containing all configuration keys
      */
     public Map<String, ConfigKey> configKeys() {
@@ -480,6 +500,7 @@ public class ConfigDef {
 
     /**
      * Get the groups for the configuration
+     *
      * @return a list of group names
      */
     public List<String> groups() {
@@ -488,6 +509,7 @@ public class ConfigDef {
 
     /**
      * Add standard SSL client configuration options.
+     *
      * @return this
      */
     public ConfigDef withClientSslSupport() {
@@ -497,6 +519,7 @@ public class ConfigDef {
 
     /**
      * Add standard SASL client configuration options.
+     *
      * @return this
      */
     public ConfigDef withClientSaslSupport() {
@@ -532,7 +555,7 @@ public class ConfigDef {
         Object parsedValue;
         if (isSet) {
             parsedValue = parseType(key.name, value, key.type);
-        // props map doesn't contain setting, the key is required because no default value specified - its an error
+            // props map doesn't contain setting, the key is required because no default value specified - its an error
         } else if (NO_DEFAULT_VALUE.equals(key.defaultValue)) {
             throw new ConfigException("Missing required configuration \"" + key.name + "\" which has no default value.");
         } else {
@@ -555,6 +578,7 @@ public class ConfigDef {
 
     /**
      * Validate the current configuration values with the configuration definition.
+     *
      * @param props the current configuration values
      * @return List of Config, each Config contains the updated configuration information given
      * the current configuration values.
@@ -565,12 +589,12 @@ public class ConfigDef {
 
     public Map<String, ConfigValue> validateAll(Map<String, String> props) {
         Map<String, ConfigValue> configValues = new HashMap<>();
-        for (String name: configKeys.keySet()) {
+        for (String name : configKeys.keySet()) {
             configValues.put(name, new ConfigValue(name));
         }
 
         List<String> undefinedConfigKeys = undefinedDependentConfigs();
-        for (String undefinedConfigKey: undefinedConfigKeys) {
+        for (String undefinedConfigKey : undefinedConfigKeys) {
             ConfigValue undefinedConfigValue = new ConfigValue(undefinedConfigKey);
             undefinedConfigValue.addErrorMessage(undefinedConfigKey + " is referred in the dependents, but not defined.");
             undefinedConfigValue.visible(false);
@@ -585,7 +609,7 @@ public class ConfigDef {
     Map<String, Object> parseForValidate(Map<String, String> props, Map<String, ConfigValue> configValues) {
         Map<String, Object> parsed = new HashMap<>();
         Set<String> configsWithNoParent = getConfigsWithNoParent();
-        for (String name: configsWithNoParent) {
+        for (String name : configsWithNoParent) {
             parseForValidate(name, props, parsed, configValues);
         }
         return parsed;
@@ -594,7 +618,7 @@ public class ConfigDef {
 
     private Map<String, ConfigValue> validate(Map<String, Object> parsed, Map<String, ConfigValue> configValues) {
         Set<String> configsWithNoParent = getConfigsWithNoParent();
-        for (String name: configsWithNoParent) {
+        for (String name : configsWithNoParent) {
             validate(name, parsed, configValues);
         }
         return configValues;
@@ -603,7 +627,7 @@ public class ConfigDef {
     private List<String> undefinedDependentConfigs() {
         Set<String> undefinedConfigKeys = new HashSet<>();
         for (ConfigKey configKey : configKeys.values()) {
-            for (String dependent: configKey.dependents) {
+            for (String dependent : configKey.dependents) {
                 if (!configKeys.containsKey(dependent)) {
                     undefinedConfigKeys.add(dependent);
                 }
@@ -619,7 +643,7 @@ public class ConfigDef {
         }
         Set<String> configsWithParent = new HashSet<>();
 
-        for (ConfigKey configKey: configKeys.values()) {
+        for (ConfigKey configKey : configKeys.values()) {
             List<String> dependents = configKey.dependents;
             configsWithParent.addAll(dependents);
         }
@@ -659,7 +683,7 @@ public class ConfigDef {
         }
         config.value(value);
         parsed.put(name, value);
-        for (String dependent: key.dependents) {
+        for (String dependent : key.dependents) {
             parseForValidate(dependent, props, parsed, configs);
         }
     }
@@ -686,13 +710,14 @@ public class ConfigDef {
         }
 
         configs.put(name, value);
-        for (String dependent: key.dependents) {
+        for (String dependent : key.dependents) {
             validate(dependent, parsed, configs);
         }
     }
 
     /**
      * Parse a value according to its expected type.
+     *
      * @param name  The config name
      * @param value The config value
      * @param type  The expected type
@@ -797,8 +822,9 @@ public class ConfigDef {
      * {@link Type#LONG}, {@link Type#DOUBLE}, {@link Type#STRING} and {@link Type#PASSWORD} objects.
      * For {@link Type#LIST} objects, Java's {@link #toString()} is used for each entry and entries are concatenated
      * separated by commas. For {@link Type#CLASS} objects, {@link Class#getName()} is used.
+     *
      * @param parsedValue The object to convert into a string
-     * @param type The type of the object
+     * @param type        The type of the object
      * @return The string representation of the provided object and type
      */
     public static String convertToString(Object parsedValue, Type type) {
@@ -835,7 +861,7 @@ public class ConfigDef {
      * is converted to a string. This method should be used with care since it stores
      * actual password values to String. Values from this map should never be used in log entries.
      */
-    public static  Map<String, String> convertToStringMapWithPasswordValues(Map<String, ?> configs) {
+    public static Map<String, String> convertToStringMapWithPasswordValues(Map<String, ?> configs) {
         Map<String, String> result = new HashMap<>();
         for (Map.Entry<String, ?> entry : configs.entrySet()) {
             Object value = entry.getValue();
@@ -910,6 +936,7 @@ public class ConfigDef {
 
         /**
          * Whether this type contains sensitive data such as a password or key.
+         *
          * @return true if the type is {@link #PASSWORD}
          */
         public boolean isSensitive() {
@@ -941,7 +968,8 @@ public class ConfigDef {
 
         /**
          * The valid values for the configuration given the current configuration values.
-         * @param name The name of the configuration
+         *
+         * @param name         The name of the configuration
          * @param parsedConfig The parsed configuration values
          * @return The list of valid values. To function properly, the returned objects should have the type
          * defined for the configuration using the recommender.
@@ -950,7 +978,8 @@ public class ConfigDef {
 
         /**
          * Set the visibility of the configuration given the current configuration values.
-         * @param name The name of the configuration
+         *
+         * @param name         The name of the configuration
          * @param parsedConfig The parsed configuration values
          * @return The visibility of the configuration
          */
@@ -963,7 +992,8 @@ public class ConfigDef {
     public interface Validator {
         /**
          * Perform single configuration validation.
-         * @param name The name of the configuration
+         *
+         * @param name  The name of the configuration
          * @param value The value of the configuration
          * @throws ConfigException if the value is invalid.
          */
@@ -978,9 +1008,10 @@ public class ConfigDef {
         private final Number max;
 
         /**
-         *  A numeric range with inclusive upper bound and inclusive lower bound
-         * @param min  the lower bound
-         * @param max  the upper bound
+         * A numeric range with inclusive upper bound and inclusive lower bound
+         *
+         * @param min the lower bound
+         * @param max the upper bound
          */
         private Range(Number min, Number max) {
             this.min = min;
@@ -1127,8 +1158,8 @@ public class ConfigDef {
 
         private CaseInsensitiveValidString(List<String> validStrings) {
             this.validStrings = validStrings.stream()
-                .map(s -> s.toUpperCase(Locale.ROOT))
-                .collect(Collectors.toSet());
+                    .map(s -> s.toUpperCase(Locale.ROOT))
+                    .collect(Collectors.toSet());
         }
 
         public static CaseInsensitiveValidString in(String... validStrings) {
@@ -1201,7 +1232,7 @@ public class ConfigDef {
 
         @Override
         public void ensureValid(String name, Object value) {
-            for (Validator validator: validators) {
+            for (Validator validator : validators) {
                 validator.ensureValid(name, value);
             }
         }
@@ -1210,7 +1241,7 @@ public class ConfigDef {
         public String toString() {
             if (validators == null) return "";
             StringBuilder desc = new StringBuilder();
-            for (Validator v: validators) {
+            for (Validator v : validators) {
                 if (desc.length() > 0) {
                     desc.append(',').append(' ');
                 }
@@ -1324,14 +1355,14 @@ public class ConfigDef {
                          List<String> dependents, Recommender recommender,
                          boolean internalConfig) {
             this(name, type, defaultValue, validator, importance, documentation, group, orderInGroup, width, displayName,
-                dependents, recommender, internalConfig, null);
+                    dependents, recommender, internalConfig, null);
         }
 
         private ConfigKey(String name, Type type, Object defaultValue, Validator validator,
-                         Importance importance, String documentation, String group,
-                         int orderInGroup, Width width, String displayName,
-                         List<String> dependents, Recommender recommender,
-                         boolean internalConfig, String alternativeString) {
+                          Importance importance, String documentation, String group,
+                          int orderInGroup, Width width, String displayName,
+                          List<String> dependents, Recommender recommender,
+                          boolean internalConfig, String alternativeString) {
             this.name = name;
             this.type = type;
             boolean hasDefault = !NO_DEFAULT_VALUE.equals(defaultValue);
@@ -1465,6 +1496,7 @@ public class ConfigDef {
      * If <code>dynamicUpdateModes</code> is non-empty, a "Dynamic Update Mode" column
      * will be included n the table with the value of the update mode. Default
      * mode is "read-only".
+     *
      * @param dynamicUpdateModes Config name -&gt; update mode mapping
      */
     public String toHtmlTable(Map<String, String> dynamicUpdateModes) {
@@ -1588,13 +1620,13 @@ public class ConfigDef {
 
     /**
      * Get a list of configs sorted taking the 'group' and 'orderInGroup' into account.
-     *
+     * <p>
      * If grouping is not specified, the result will reflect "natural" order: listing required fields first, then ordering by importance, and finally by name.
      */
     private List<ConfigKey> sortedConfigs() {
         final Map<String, Integer> groupOrd = new HashMap<>(groups.size());
         int ord = 0;
-        for (String group: groups) {
+        for (String group : groups) {
             groupOrd.put(group, ord++);
         }
 
@@ -1605,8 +1637,8 @@ public class ConfigDef {
 
     private int compare(ConfigKey k1, ConfigKey k2, Map<String, Integer> groupOrd) {
         int cmp = k1.group == null
-            ? (k2.group == null ? 0 : -1)
-            : (k2.group == null ? 1 : Integer.compare(groupOrd.get(k1.group), groupOrd.get(k2.group)));
+                ? (k2.group == null ? 0 : -1)
+                : (k2.group == null ? 1 : Integer.compare(groupOrd.get(k1.group), groupOrd.get(k2.group)));
         if (cmp == 0) {
             cmp = Integer.compare(k1.orderInGroup, k2.orderInGroup);
             if (cmp == 0) {
@@ -1652,7 +1684,7 @@ public class ConfigDef {
     private static Validator embeddedValidator(final String keyPrefix, final Validator base) {
         if (base == null) return null;
         return ConfigDef.LambdaValidator.with(
-            (name, value) -> base.ensureValid(name.substring(keyPrefix.length()), value), base::toString);
+                (name, value) -> base.ensureValid(name.substring(keyPrefix.length()), value), base::toString);
     }
 
     /**
@@ -1705,6 +1737,7 @@ public class ConfigDef {
 
     /**
      * Converts this config into an HTML list that can be embedded into docs.
+     *
      * @param headerDepth The top level header depth in the generated HTML.
      * @param idGenerator A function for computing the HTML id attribute in the generated HTML from a given config name.
      */
@@ -1717,6 +1750,7 @@ public class ConfigDef {
      * If <code>dynamicUpdateModes</code> is non-empty, a "Dynamic Update Mode" label
      * will be included in the config details with the value of the update mode. Default
      * mode is "read-only".
+     *
      * @param dynamicUpdateModes Config name -&gt; update mode mapping.
      */
     public String toHtml(Map<String, String> dynamicUpdateModes) {
@@ -1728,8 +1762,9 @@ public class ConfigDef {
      * If <code>dynamicUpdateModes</code> is non-empty, a "Dynamic Update Mode" label
      * will be included in the config details with the value of the update mode. Default
      * mode is "read-only".
-     * @param headerDepth The top level header depth in the generated HTML.
-     * @param idGenerator A function for computing the HTML id attribute in the generated HTML from a given config name.
+     *
+     * @param headerDepth        The top level header depth in the generated HTML.
+     * @param idGenerator        A function for computing the HTML id attribute in the generated HTML from a given config name.
      * @param dynamicUpdateModes Config name -&gt; update mode mapping.
      */
     public String toHtml(int headerDepth, Function<String, String> idGenerator,

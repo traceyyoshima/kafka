@@ -110,6 +110,7 @@ public abstract class AbstractWorkerSourceTask extends WorkerTask<SourceRecord, 
     /**
      * Invoked when a record provided by the task has been filtered out by a transform or the converter,
      * or will be discarded due to failures during transformation or conversion.
+     *
      * @param record the pre-transform record that has been dropped; never null.
      */
     protected abstract void recordDropped(SourceRecord record);
@@ -117,9 +118,10 @@ public abstract class AbstractWorkerSourceTask extends WorkerTask<SourceRecord, 
     /**
      * Invoked when a record is about to be dispatched to the producer. May be invoked multiple times for the same
      * record if retriable errors are encountered.
-     * @param sourceRecord the pre-transform {@link SourceRecord} provided by the source task; never null.
+     *
+     * @param sourceRecord   the pre-transform {@link SourceRecord} provided by the source task; never null.
      * @param producerRecord the {@link ProducerRecord} produced by transforming and converting the
-     * {@code sourceRecord}; never null;
+     *                       {@code sourceRecord}; never null;
      * @return a {@link SubmittedRecords.SubmittedRecord} to be {@link SubmittedRecords.SubmittedRecord#ack() acknowledged}
      * if the corresponding producer record is ack'd by Kafka or {@link SubmittedRecords.SubmittedRecord#drop() dropped}
      * if synchronously rejected by the producer. Can also be {@link Optional#empty()} if it is not necessary to track the acknowledgment
@@ -134,6 +136,7 @@ public abstract class AbstractWorkerSourceTask extends WorkerTask<SourceRecord, 
      * Invoked when a record has been transformed, converted, and dispatched to the producer successfully via
      * {@link Producer#send}. Does not guarantee that the record has been sent to Kafka or ack'd by the required number
      * of brokers, but does guarantee that it will never be re-processed.
+     *
      * @param record the pre-transform {@link SourceRecord} that was successfully dispatched to the producer; never null.
      */
     protected abstract void recordDispatched(SourceRecord record);
@@ -149,10 +152,11 @@ public abstract class AbstractWorkerSourceTask extends WorkerTask<SourceRecord, 
 
     /**
      * Invoked when a record has been sent and ack'd by the Kafka cluster. Note that this method may be invoked
-     *  concurrently and should therefore be made thread-safe.
-     * @param sourceRecord  the pre-transform {@link SourceRecord} that was successfully sent to Kafka; never null.
+     * concurrently and should therefore be made thread-safe.
+     *
+     * @param sourceRecord   the pre-transform {@link SourceRecord} that was successfully sent to Kafka; never null.
      * @param producerRecord the {@link ProducerRecord} produced by transforming and converting the
-     * {@code sourceRecord}; never null;
+     *                       {@code sourceRecord}; never null;
      * @param recordMetadata the {@link RecordMetadata} for the corresponding producer record; never null.
      */
     protected abstract void recordSent(
@@ -163,13 +167,14 @@ public abstract class AbstractWorkerSourceTask extends WorkerTask<SourceRecord, 
 
     /**
      * Invoked when a record given to {@link Producer#send(ProducerRecord, Callback)} has failed with a non-retriable error.
-     * @param context the context for this record
-     * @param synchronous whether the error occurred during the invocation of {@link Producer#send(ProducerRecord, Callback)}.
-     *                    If {@code false}, indicates that the error was reported asynchronously by the producer by a {@link Callback}
-     * @param producerRecord the {@link ProducerRecord} that the producer failed to send; never null
+     *
+     * @param context            the context for this record
+     * @param synchronous        whether the error occurred during the invocation of {@link Producer#send(ProducerRecord, Callback)}.
+     *                           If {@code false}, indicates that the error was reported asynchronously by the producer by a {@link Callback}
+     * @param producerRecord     the {@link ProducerRecord} that the producer failed to send; never null
      * @param preTransformRecord the pre-transform {@link SourceRecord} that the producer record was derived from; never null
-     * @param e the exception that was either thrown from {@link Producer#send(ProducerRecord, Callback)}, or reported by the producer
-     *          via {@link Callback} after the call to {@link Producer#send(ProducerRecord, Callback)} completed
+     * @param e                  the exception that was either thrown from {@link Producer#send(ProducerRecord, Callback)}, or reported by the producer
+     *                           via {@link Callback} after the call to {@link Producer#send(ProducerRecord, Callback)} completed
      */
     protected abstract void producerSendFailed(
             ProcessingContext<SourceRecord> context,
@@ -182,6 +187,7 @@ public abstract class AbstractWorkerSourceTask extends WorkerTask<SourceRecord, 
     /**
      * Invoked when no more records will be polled from the task or dispatched to the producer. Should attempt to
      * commit the offsets for any outstanding records when possible.
+     *
      * @param failed whether the task is undergoing a healthy or an unhealthy shutdown
      */
     protected abstract void finalOffsetCommit(boolean failed);
@@ -402,6 +408,7 @@ public abstract class AbstractWorkerSourceTask extends WorkerTask<SourceRecord, 
     /**
      * Try to send a batch of records. If a send fails and is retriable, this saves the remainder of the batch so it can
      * be retried after backing off. If a send fails and is not retriable, this will throw a ConnectException.
+     *
      * @return true if all messages were sent, false if some need to be retried
      */
     // Visible for testing
@@ -427,33 +434,33 @@ public abstract class AbstractWorkerSourceTask extends WorkerTask<SourceRecord, 
                 final String topic = producerRecord.topic();
                 maybeCreateTopic(topic);
                 producer.send(
-                    producerRecord,
-                    (recordMetadata, e) -> {
-                        if (e != null) {
-                            if (producerClosed) {
-                                log.trace("{} failed to send record to {}; this is expected as the producer has already been closed", AbstractWorkerSourceTask.this, topic, e);
+                        producerRecord,
+                        (recordMetadata, e) -> {
+                            if (e != null) {
+                                if (producerClosed) {
+                                    log.trace("{} failed to send record to {}; this is expected as the producer has already been closed", AbstractWorkerSourceTask.this, topic, e);
+                                } else {
+                                    log.error("{} failed to send record to {}: ", AbstractWorkerSourceTask.this, topic, e);
+                                }
+                                log.trace("{} Failed record: {}", AbstractWorkerSourceTask.this, preTransformRecord);
+                                producerSendFailed(context, false, producerRecord, preTransformRecord, e);
+                                if (retryWithToleranceOperator.getErrorToleranceType() == ToleranceType.ALL) {
+                                    counter.skipRecord();
+                                    submittedRecord.ifPresent(SubmittedRecords.SubmittedRecord::ack);
+                                }
                             } else {
-                                log.error("{} failed to send record to {}: ", AbstractWorkerSourceTask.this, topic, e);
-                            }
-                            log.trace("{} Failed record: {}", AbstractWorkerSourceTask.this, preTransformRecord);
-                            producerSendFailed(context, false, producerRecord, preTransformRecord, e);
-                            if (retryWithToleranceOperator.getErrorToleranceType() == ToleranceType.ALL) {
-                                counter.skipRecord();
+                                counter.completeRecord();
+                                log.trace("{} Wrote record successfully: topic {} partition {} offset {}",
+                                        AbstractWorkerSourceTask.this,
+                                        recordMetadata.topic(), recordMetadata.partition(),
+                                        recordMetadata.offset());
+                                recordSent(preTransformRecord, producerRecord, recordMetadata);
                                 submittedRecord.ifPresent(SubmittedRecords.SubmittedRecord::ack);
+                                if (topicTrackingEnabled) {
+                                    recordActiveTopic(producerRecord.topic());
+                                }
                             }
-                        } else {
-                            counter.completeRecord();
-                            log.trace("{} Wrote record successfully: topic {} partition {} offset {}",
-                                    AbstractWorkerSourceTask.this,
-                                    recordMetadata.topic(), recordMetadata.partition(),
-                                    recordMetadata.offset());
-                            recordSent(preTransformRecord, producerRecord, recordMetadata);
-                            submittedRecord.ifPresent(SubmittedRecords.SubmittedRecord::ack);
-                            if (topicTrackingEnabled) {
-                                recordActiveTopic(producerRecord.topic());
-                            }
-                        }
-                    });
+                        });
                 // Note that this will cause retries to take place within a transaction
             } catch (RetriableException | org.apache.kafka.common.errors.RetriableException e) {
                 log.warn("{} Failed to send record to topic '{}' and partition '{}'. Backing off before retrying: ",
@@ -616,20 +623,24 @@ public abstract class AbstractWorkerSourceTask extends WorkerTask<SourceRecord, 
             counter = batchSize;
             this.metricsGroup = metricsGroup;
         }
+
         public void skipRecord() {
             skipped += 1;
             if (counter > 0 && --counter == 0) {
                 finishedAllWrites();
             }
         }
+
         public void completeRecord() {
             if (counter > 0 && --counter == 0) {
                 finishedAllWrites();
             }
         }
+
         public void retryRemaining() {
             finishedAllWrites();
         }
+
         private void finishedAllWrites() {
             if (!completed) {
                 metricsGroup.recordWrite(batchSize - counter, skipped);

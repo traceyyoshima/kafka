@@ -85,7 +85,7 @@ public class CachedSharePartition implements ImplicitLinkedHashCollection.Elemen
      * the fetcher and update it if requested.
      * This function should be called while holding the appropriate session lock.
      *
-     * @param respData partition data
+     * @param respData           partition data
      * @param updateResponseData if set to true, update this CachedSharePartition with new request and response data.
      * @return True if this partition should be included in the response; false if it can be omitted.
      */
@@ -112,7 +112,7 @@ public class CachedSharePartition implements ImplicitLinkedHashCollection.Elemen
     }
 
     public String toString() {
-        return  "CachedSharePartition(topic=" + topic +
+        return "CachedSharePartition(topic=" + topic +
                 ", topicId=" + topicId +
                 ", partition=" + partition +
                 ", leaderEpoch=" + leaderEpoch +

@@ -42,6 +42,6 @@ public class ConfigResourceTest {
     @Test
     public void shouldRoundTripEveryType() {
         Arrays.stream(ConfigResource.Type.values()).forEach(type ->
-            assertEquals(type, ConfigResource.Type.forId(type.id()), type.toString()));
+                assertEquals(type, ConfigResource.Type.forId(type.id()), type.toString()));
     }
 }

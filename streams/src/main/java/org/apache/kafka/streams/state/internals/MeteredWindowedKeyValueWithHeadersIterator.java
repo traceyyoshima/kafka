@@ -36,26 +36,26 @@ final class MeteredWindowedKeyValueWithHeadersIterator<K, VInner, VOuter> extend
     private final Function<VInner, VOuter> valueConverter;
 
     MeteredWindowedKeyValueWithHeadersIterator(
-        final KeyValueIterator<Windowed<Bytes>, byte[]> iter,
-        final Sensor operationSensor,
-        final Sensor iteratorSensor,
-        final Function<byte[], VInner> deserializeValue,
-        final BiFunction<byte[], Headers, K> deserializeKey,
-        final Function<VInner, Headers> headersExtractor,
-        final Function<VInner, VOuter> valueConverter,
-        final Time time,
-        final LongAdder numOpenIterators,
-        final Set<MeteredIterator> openIterators
+            final KeyValueIterator<Windowed<Bytes>, byte[]> iter,
+            final Sensor operationSensor,
+            final Sensor iteratorSensor,
+            final Function<byte[], VInner> deserializeValue,
+            final BiFunction<byte[], Headers, K> deserializeKey,
+            final Function<VInner, Headers> headersExtractor,
+            final Function<VInner, VOuter> valueConverter,
+            final Time time,
+            final LongAdder numOpenIterators,
+            final Set<MeteredIterator> openIterators
     ) {
         super(
-            iter,
-            operationSensor,
-            iteratorSensor,
-            null, // should not be used in super-class
-            null, // should not be used in super-class
-            time,
-            numOpenIterators,
-            openIterators
+                iter,
+                operationSensor,
+                iteratorSensor,
+                null, // should not be used in super-class
+                null, // should not be used in super-class
+                time,
+                numOpenIterators,
+                openIterators
         );
 
         this.deserializeValue = deserializeValue;
@@ -69,8 +69,8 @@ final class MeteredWindowedKeyValueWithHeadersIterator<K, VInner, VOuter> extend
         final KeyValue<Windowed<Bytes>, byte[]> next = iter.next();
         final VInner valueTimestampHeaders = deserializeValue.apply(next.value);
         return KeyValue.pair(
-            windowedKey(next.key, headersExtractor.apply(valueTimestampHeaders)),
-            valueConverter.apply(valueTimestampHeaders)
+                windowedKey(next.key, headersExtractor.apply(valueTimestampHeaders)),
+                valueConverter.apply(valueTimestampHeaders)
         );
     }
 

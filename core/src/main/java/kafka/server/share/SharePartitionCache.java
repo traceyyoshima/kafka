@@ -85,7 +85,7 @@ public class SharePartitionCache {
      * Computes the value for the given key if it is not already present in the cache. Method also
      * updates the group map with the topic-partition for the group id.
      *
-     * @param partitionKey The key to compute the value for.
+     * @param partitionKey    The key to compute the value for.
      * @param mappingFunction The function to compute the value.
      * @return The computed or existing value.
      */

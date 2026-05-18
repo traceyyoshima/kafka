@@ -49,19 +49,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Timeout(1200)
 @ClusterTestDefaults(
-    types = {Type.KRAFT},
-    serverProperties = {
-        @ClusterConfigProperty(key = "auto.create.topics.enable", value = "false"),
-        @ClusterConfigProperty(key = "group.share.max.partition.max.record.locks", value = "10000"),
-        @ClusterConfigProperty(key = "group.share.partition.max.record.locks", value = "10000"),
-        @ClusterConfigProperty(key = "group.share.record.lock.duration.ms", value = "15000"),
-        @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "1"),
-        @ClusterConfigProperty(key = "share.coordinator.state.topic.min.isr", value = "1"),
-        @ClusterConfigProperty(key = "share.coordinator.state.topic.num.partitions", value = "3"),
-        @ClusterConfigProperty(key = "share.coordinator.state.topic.replication.factor", value = "1"),
-        @ClusterConfigProperty(key = "transaction.state.log.min.isr", value = "1"),
-        @ClusterConfigProperty(key = "transaction.state.log.replication.factor", value = "1")
-    }
+        types = {Type.KRAFT},
+        serverProperties = {
+                @ClusterConfigProperty(key = "auto.create.topics.enable", value = "false"),
+                @ClusterConfigProperty(key = "group.share.max.partition.max.record.locks", value = "10000"),
+                @ClusterConfigProperty(key = "group.share.partition.max.record.locks", value = "10000"),
+                @ClusterConfigProperty(key = "group.share.record.lock.duration.ms", value = "15000"),
+                @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "1"),
+                @ClusterConfigProperty(key = "share.coordinator.state.topic.min.isr", value = "1"),
+                @ClusterConfigProperty(key = "share.coordinator.state.topic.num.partitions", value = "3"),
+                @ClusterConfigProperty(key = "share.coordinator.state.topic.replication.factor", value = "1"),
+                @ClusterConfigProperty(key = "transaction.state.log.min.isr", value = "1"),
+                @ClusterConfigProperty(key = "transaction.state.log.replication.factor", value = "1")
+        }
 )
 public class ShareConsumerCallbackTest extends ShareConsumerTestBase {
 
@@ -89,7 +89,7 @@ public class ShareConsumerCallbackTest extends ShareConsumerTestBase {
             assertEquals(Optional.empty(), shareConsumer.acquisitionLockTimeoutMs());
 
             TestUtils.waitForCondition(() -> shareConsumer.poll(Duration.ofMillis(2000)).count() == 1,
-                DEFAULT_MAX_WAIT_MS, 100L, () -> "Failed to consume records for share consumer");
+                    DEFAULT_MAX_WAIT_MS, 100L, () -> "Failed to consume records for share consumer");
 
             assertEquals(Optional.of(15000), shareConsumer.acquisitionLockTimeoutMs());
             shareConsumer.subscribe(Set.of(tp2.topic()));
@@ -125,7 +125,7 @@ public class ShareConsumerCallbackTest extends ShareConsumerTestBase {
             shareConsumer.subscribe(Set.of(tp.topic()));
 
             TestUtils.waitForCondition(() -> shareConsumer.poll(Duration.ofMillis(2000)).count() == 1,
-                DEFAULT_MAX_WAIT_MS, 100L, () -> "Failed to consume records for share consumer");
+                    DEFAULT_MAX_WAIT_MS, 100L, () -> "Failed to consume records for share consumer");
 
             // The callback should be called before the return of the poll, even when there are no more records.
             ConsumerRecords<byte[], byte[]> records = shareConsumer.poll(Duration.ofMillis(2000));
@@ -155,7 +155,7 @@ public class ShareConsumerCallbackTest extends ShareConsumerTestBase {
             shareConsumer.subscribe(Set.of(tp.topic()));
 
             TestUtils.waitForCondition(() -> shareConsumer.poll(Duration.ofMillis(2000)).count() == 1,
-                DEFAULT_MAX_WAIT_MS, 100L, () -> "Failed to consume records for share consumer");
+                    DEFAULT_MAX_WAIT_MS, 100L, () -> "Failed to consume records for share consumer");
 
             // The acknowledgement commit callback should be called before the commitSync returns
             // once the records have been confirmed to have been acknowledged.
@@ -288,7 +288,7 @@ public class ShareConsumerCallbackTest extends ShareConsumerTestBase {
             shareConsumer.subscribe(Set.of(tp.topic()));
 
             TestUtils.waitForCondition(() -> shareConsumer.poll(Duration.ofMillis(2000)).count() == 1,
-                DEFAULT_MAX_WAIT_MS, 100L, () -> "Failed to consume records for share consumer");
+                    DEFAULT_MAX_WAIT_MS, 100L, () -> "Failed to consume records for share consumer");
 
             // The second poll sends the acknowledgements implicitly.
             shareConsumer.poll(Duration.ofMillis(2000));
@@ -330,7 +330,7 @@ public class ShareConsumerCallbackTest extends ShareConsumerTestBase {
             shareConsumer.subscribe(Set.of(tp.topic()));
 
             TestUtils.waitForCondition(() -> shareConsumer.poll(Duration.ofMillis(2000)).count() == 1,
-                DEFAULT_MAX_WAIT_MS, 100L, () -> "Failed to consume records for share consumer");
+                    DEFAULT_MAX_WAIT_MS, 100L, () -> "Failed to consume records for share consumer");
 
             TestUtils.waitForCondition(() -> {
                 try {

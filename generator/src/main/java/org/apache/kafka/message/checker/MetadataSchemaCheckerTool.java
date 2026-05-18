@@ -37,39 +37,39 @@ public class MetadataSchemaCheckerTool {
     }
 
     public static void run(
-        String[] args,
-        PrintStream writer
+            String[] args,
+            PrintStream writer
     ) throws Exception {
         ArgumentParser argumentParser = ArgumentParsers.
-            newArgumentParser("metadata-schema-checker").
-            defaultHelp(true).
-            description("The Kafka metadata schema checker tool.");
+                newArgumentParser("metadata-schema-checker").
+                defaultHelp(true).
+                description("The Kafka metadata schema checker tool.");
         Subparsers subparsers = argumentParser.addSubparsers().dest("command");
         Subparser parseParser = subparsers.addParser("parse").
-            help("Verify that a JSON file can be parsed as a MessageSpec.");
+                help("Verify that a JSON file can be parsed as a MessageSpec.");
         parseParser.addArgument("--path", "-p").
-            required(true).
-            help("The path to a schema JSON file.");
+                required(true).
+                help("The path to a schema JSON file.");
         Subparser evolutionVerifierParser = subparsers.addParser("verify-evolution").
-            help("Verify that a schema JSON file is a valid evolution of a parent schema.");
+                help("Verify that a schema JSON file is a valid evolution of a parent schema.");
         evolutionVerifierParser.addArgument("--path", "-1").
-            required(true).
-            help("The path to a schema JSON file.");
+                required(true).
+                help("The path to a schema JSON file.");
         evolutionVerifierParser.addArgument("--parent_path", "-2").
-            required(true).
-            help("The path to the parent schema JSON file.");
+                required(true).
+                help("The path to the parent schema JSON file.");
         Subparser evolutionGitVerifierParser = subparsers.addParser("verify-evolution-git").
-            help("Verify that a schema JSON file is a valid evolution of your local git master branch.");
+                help("Verify that a schema JSON file is a valid evolution of your local git master branch.");
         evolutionGitVerifierParser.addArgument("--path", "-3").
-            required(true).
-            help("The path to your edited JSON file");
+                required(true).
+                help("The path to your edited JSON file");
         evolutionGitVerifierParser.addArgument("--ref", "-4")
-            .required(false)
-            .setDefault("refs/heads/trunk")
-            .help("Optional Git reference to be used for testing. Defaults to 'refs/heads/trunk' if not specified.");
+                .required(false)
+                .setDefault("refs/heads/trunk")
+                .help("Optional Git reference to be used for testing. Defaults to 'refs/heads/trunk' if not specified.");
         Namespace namespace;
         if (args.length == 0) {
-            namespace = argumentParser.parseArgs(new String[] {"--help"});
+            namespace = argumentParser.parseArgs(new String[]{"--help"});
         } else {
             namespace = argumentParser.parseArgs(args);
         }
@@ -85,8 +85,8 @@ public class MetadataSchemaCheckerTool {
                 String child = namespace.getString("path");
                 String parent = namespace.getString("parent_path");
                 EvolutionVerifier verifier = new EvolutionVerifier(
-                    CheckerUtils.readMessageSpecFromFile(parent),
-                    CheckerUtils.readMessageSpecFromFile(child));
+                        CheckerUtils.readMessageSpecFromFile(parent),
+                        CheckerUtils.readMessageSpecFromFile(child));
                 verifier.verify();
                 writer.println("Successfully verified evolution of path: " + child +
                         " from parent: " + parent);
@@ -96,8 +96,8 @@ public class MetadataSchemaCheckerTool {
                 String path = namespace.getString("path");
                 String gitContent = readFileFromGitRef(path, namespace.getString("ref"));
                 EvolutionVerifier verifier = new EvolutionVerifier(
-                    CheckerUtils.readMessageSpecFromFile(path),
-                    CheckerUtils.readMessageSpecFromString(gitContent));
+                        CheckerUtils.readMessageSpecFromFile(path),
+                        CheckerUtils.readMessageSpecFromString(gitContent));
                 verifier.verify();
                 writer.println("Successfully verified evolution of file: " + namespace.getString("path"));
                 break;

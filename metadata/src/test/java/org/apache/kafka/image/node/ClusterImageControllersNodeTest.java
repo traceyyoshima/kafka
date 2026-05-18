@@ -45,7 +45,7 @@ public class ClusterImageControllersNodeTest {
                     setSupportedFeatures(Map.of(
                             MetadataVersion.FEATURE_NAME, VersionRange.of(1, 4))).
                     setListeners(Map.of()).
-                        build()));
+                    build()));
 
     private static final ClusterImageControllersNode NODE = new ClusterImageControllersNode(TEST_IMAGE);
 
@@ -59,11 +59,11 @@ public class ClusterImageControllersNodeTest {
         MetadataNode child = NODE.child("2");
         assertNotNull(child);
         assertEquals("ControllerRegistration(id=2, " +
-            "incarnationId=adGo6sTPS0uJshjvdTUmqQ, " +
-            "zkMigrationReady=false, " +
-            "listeners=[], " +
-            "supportedFeatures={metadata.version: 1-4})",
-            child.stringify());
+                        "incarnationId=adGo6sTPS0uJshjvdTUmqQ, " +
+                        "zkMigrationReady=false, " +
+                        "listeners=[], " +
+                        "supportedFeatures={metadata.version: 1-4})",
+                child.stringify());
     }
 
     @Test

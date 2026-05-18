@@ -77,8 +77,8 @@ public class RelaxedNullKeyRequirementJoinTest {
     void testRelaxedLeftStreamStreamJoin(final boolean withHeaders) {
         this.withHeaders = withHeaders;
         leftStream
-            .leftJoin(rightStream, JOINER, WINDOW)
-            .to(OUT);
+                .leftJoin(rightStream, JOINER, WINDOW)
+                .to(OUT);
         initTopology();
         left.pipeInput(null, "leftValue", 1);
         assertEquals(Collections.singletonList(new KeyValue<>(null, "leftValue|null")), out.readKeyValuesToList());
@@ -89,8 +89,8 @@ public class RelaxedNullKeyRequirementJoinTest {
     void testRelaxedLeftStreamTableJoin(final boolean withHeaders) {
         this.withHeaders = withHeaders;
         leftStream
-            .leftJoin(rightStream.toTable(), JOINER)
-            .to(OUT);
+                .leftJoin(rightStream.toTable(), JOINER)
+                .to(OUT);
         initTopology();
         left.pipeInput(null, "leftValue", 1);
         assertEquals(Collections.singletonList(new KeyValue<>(null, "leftValue|null")), out.readKeyValuesToList());
@@ -101,14 +101,14 @@ public class RelaxedNullKeyRequirementJoinTest {
     void testRelaxedOuterStreamStreamJoin(final boolean withHeaders) {
         this.withHeaders = withHeaders;
         leftStream
-            .outerJoin(rightStream, JOINER, WINDOW)
-            .to(OUT);
+                .outerJoin(rightStream, JOINER, WINDOW)
+                .to(OUT);
         initTopology();
         right.pipeInput(null, "rightValue", 1);
         left.pipeInput(null, "leftValue");
         assertEquals(
-            Arrays.asList(new KeyValue<>(null, "null|rightValue"), new KeyValue<>(null, "leftValue|null")),
-            out.readKeyValuesToList()
+                Arrays.asList(new KeyValue<>(null, "null|rightValue"), new KeyValue<>(null, "leftValue|null")),
+                out.readKeyValuesToList()
         );
     }
 
@@ -118,8 +118,8 @@ public class RelaxedNullKeyRequirementJoinTest {
         this.withHeaders = withHeaders;
         final GlobalKTable<String, String> global = builder.globalTable("global");
         leftStream
-            .leftJoin(global, (key, value) -> null, JOINER)
-            .to(OUT);
+                .leftJoin(global, (key, value) -> null, JOINER)
+                .to(OUT);
         initTopology();
         left.pipeInput(null, "leftValue", 1);
         assertEquals(Collections.singletonList(new KeyValue<>(null, "leftValue|null")), out.readKeyValuesToList());
@@ -130,8 +130,8 @@ public class RelaxedNullKeyRequirementJoinTest {
     void testDropNullKeyRecordsForRepartitionNodesWithNoRelaxedJoinDownstream(final boolean withHeaders) {
         this.withHeaders = withHeaders;
         leftStream
-            .repartition()
-            .to(OUT);
+                .repartition()
+                .to(OUT);
         initTopology();
         left.pipeInput(null, "leftValue", 1);
         assertEquals(Collections.emptyList(), out.readKeyValuesToList());
@@ -143,19 +143,19 @@ public class RelaxedNullKeyRequirementJoinTest {
         testDriver = new TopologyTestDriver(builder.build(), props);
 
         left = testDriver.createInputTopic(
-            LEFT,
-            new StringSerializer(),
-            new StringSerializer()
+                LEFT,
+                new StringSerializer(),
+                new StringSerializer()
         );
         right = testDriver.createInputTopic(
-            RIGHT,
-            new StringSerializer(),
-            new StringSerializer()
+                RIGHT,
+                new StringSerializer(),
+                new StringSerializer()
         );
         out = testDriver.createOutputTopic(
-            OUT,
-            new StringDeserializer(),
-            new StringDeserializer()
+                OUT,
+                new StringDeserializer(),
+                new StringDeserializer()
         );
     }
 

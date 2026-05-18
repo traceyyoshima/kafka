@@ -25,7 +25,7 @@ import java.util.Objects;
 /**
  * Encapsulates an error code (via the Errors enum) and an optional message. Generally, the optional message is only
  * defined if it adds information over the default message associated with the error code.
- *
+ * <p>
  * This is an internal class (like every class in the requests package).
  */
 public class ApiError {
@@ -41,7 +41,7 @@ public class ApiError {
         Throwable throwableToBeEncoded = Errors.maybeUnwrapException(t);
         Errors error = Errors.forException(throwableToBeEncoded);
         String message = error == Errors.UNKNOWN_SERVER_ERROR ||
-            error.message().equals(throwableToBeEncoded.getMessage()) ? null : throwableToBeEncoded.getMessage();
+                error.message().equals(throwableToBeEncoded.getMessage()) ? null : throwableToBeEncoded.getMessage();
         return new ApiError(error, message);
     }
 
@@ -108,7 +108,7 @@ public class ApiError {
         }
         ApiError other = (ApiError) o;
         return Objects.equals(error, other.error) &&
-            Objects.equals(message, other.message);
+                Objects.equals(message, other.message);
     }
 
     @Override

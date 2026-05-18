@@ -49,8 +49,8 @@ public class Change<T> {
         }
         final Change<?> change = (Change<?>) o;
         return Objects.equals(newValue, change.newValue)
-            && Objects.equals(oldValue, change.oldValue)
-            && isLatest == change.isLatest;
+                && Objects.equals(oldValue, change.oldValue)
+                && isLatest == change.isLatest;
     }
 
     @Override

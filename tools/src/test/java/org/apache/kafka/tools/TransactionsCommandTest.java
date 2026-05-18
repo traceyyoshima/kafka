@@ -92,36 +92,36 @@ public class TransactionsCommandTest {
     @Test
     public void testDescribeProducersTopicRequired() throws Exception {
         assertCommandFailure(new String[]{
-            "--bootstrap-server",
-            "localhost:9092",
-            "describe-producers",
-            "--partition",
-            "0"
+                "--bootstrap-server",
+                "localhost:9092",
+                "describe-producers",
+                "--partition",
+                "0"
         });
     }
 
     @Test
     public void testDescribeProducersPartitionRequired() throws Exception {
         assertCommandFailure(new String[]{
-            "--bootstrap-server",
-            "localhost:9092",
-            "describe-producers",
-            "--topic",
-            "foo"
+                "--bootstrap-server",
+                "localhost:9092",
+                "describe-producers",
+                "--topic",
+                "foo"
         });
     }
 
     @Test
     public void testDescribeProducersLeader() throws Exception {
         TopicPartition topicPartition = new TopicPartition("foo", 5);
-        String[] args = new String[] {
-            "--bootstrap-server",
-            "localhost:9092",
-            "describe-producers",
-            "--topic",
-            topicPartition.topic(),
-            "--partition",
-            String.valueOf(topicPartition.partition())
+        String[] args = new String[]{
+                "--bootstrap-server",
+                "localhost:9092",
+                "describe-producers",
+                "--topic",
+                topicPartition.topic(),
+                "--partition",
+                String.valueOf(topicPartition.partition())
         };
 
         testDescribeProducers(topicPartition, args, new DescribeProducersOptions());
@@ -132,34 +132,34 @@ public class TransactionsCommandTest {
         TopicPartition topicPartition = new TopicPartition("foo", 5);
         int brokerId = 5;
 
-        String[] args = new String[] {
-            "--bootstrap-server",
-            "localhost:9092",
-            "describe-producers",
-            "--topic",
-            topicPartition.topic(),
-            "--partition",
-            String.valueOf(topicPartition.partition()),
-            "--broker-id",
-            String.valueOf(brokerId)
+        String[] args = new String[]{
+                "--bootstrap-server",
+                "localhost:9092",
+                "describe-producers",
+                "--topic",
+                topicPartition.topic(),
+                "--partition",
+                String.valueOf(topicPartition.partition()),
+                "--broker-id",
+                String.valueOf(brokerId)
         };
 
         testDescribeProducers(topicPartition, args, new DescribeProducersOptions().brokerId(brokerId));
     }
 
     private void testDescribeProducers(
-        TopicPartition topicPartition,
-        String[] args,
-        DescribeProducersOptions expectedOptions
+            TopicPartition topicPartition,
+            String[] args,
+            DescribeProducersOptions expectedOptions
     ) throws Exception {
         DescribeProducersResult describeResult = Mockito.mock(DescribeProducersResult.class);
         KafkaFuture<PartitionProducerState> describeFuture = completedFuture(
-            new PartitionProducerState(List.of(
-                new ProducerState(12345L, 15, 1300, 1599509565L,
-                    OptionalInt.of(20), OptionalLong.of(990)),
-                new ProducerState(98765L, 30, 2300, 1599509599L,
-                    OptionalInt.empty(), OptionalLong.empty())
-            )));
+                new PartitionProducerState(List.of(
+                        new ProducerState(12345L, 15, 1300, 1599509565L,
+                                OptionalInt.of(20), OptionalLong.of(990)),
+                        new ProducerState(98765L, 30, 2300, 1599509599L,
+                                OptionalInt.empty(), OptionalLong.empty())
+                )));
 
 
         Mockito.when(describeResult.partitionResult(topicPartition)).thenReturn(describeFuture);
@@ -175,8 +175,8 @@ public class TransactionsCommandTest {
         assertEquals(expectedHeaders, table.get(0));
 
         Set<List<String>> expectedRows = Set.of(
-            List.of("12345", "15", "20", "1300", "1599509565", "990"),
-            List.of("98765", "30", "-1", "2300", "1599509599", "None")
+                List.of("12345", "15", "20", "1300", "1599509565", "990"),
+                List.of("98765", "30", "-1", "2300", "1599509599", "None")
         );
         assertEquals(expectedRows, new HashSet<>(table.subList(1, table.size())));
     }
@@ -184,29 +184,29 @@ public class TransactionsCommandTest {
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void testListTransactions(boolean hasDurationFilter) throws Exception {
-        String[] args = new String[] {
-            "--bootstrap-server",
-            "localhost:9092",
-            "list"
+        String[] args = new String[]{
+                "--bootstrap-server",
+                "localhost:9092",
+                "list"
         };
 
         if (hasDurationFilter) {
-            args = new String[] {
-                "--bootstrap-server",
-                "localhost:9092",
-                "list",
-                "--duration-filter",
-                Long.toString(Long.MAX_VALUE)
+            args = new String[]{
+                    "--bootstrap-server",
+                    "localhost:9092",
+                    "list",
+                    "--duration-filter",
+                    Long.toString(Long.MAX_VALUE)
             };
         }
 
         Map<Integer, Collection<TransactionListing>> transactions = new HashMap<>();
         transactions.put(0, List.of(
-            new TransactionListing("foo", 12345L, TransactionState.ONGOING),
-            new TransactionListing("bar", 98765L, TransactionState.PREPARE_ABORT)
+                new TransactionListing("foo", 12345L, TransactionState.ONGOING),
+                new TransactionListing("bar", 98765L, TransactionState.PREPARE_ABORT)
         ));
         transactions.put(1, List.of(
-            new TransactionListing("baz", 13579L, TransactionState.COMPLETE_COMMIT)
+                new TransactionListing("baz", 13579L, TransactionState.COMPLETE_COMMIT)
         ));
 
         if (hasDurationFilter) {
@@ -226,9 +226,9 @@ public class TransactionsCommandTest {
         assertEquals(expectedHeaders, table.get(0));
 
         Set<List<String>> expectedRows = Set.of(
-            List.of("foo", "0", "12345", "Ongoing"),
-            List.of("bar", "0", "98765", "PrepareAbort"),
-            List.of("baz", "1", "13579", "CompleteCommit")
+                List.of("foo", "0", "12345", "Ongoing"),
+                List.of("bar", "0", "98765", "PrepareAbort"),
+                List.of("baz", "1", "13579", "CompleteCommit")
         );
         assertEquals(expectedRows, new HashSet<>(table.subList(1, table.size())));
     }
@@ -236,12 +236,12 @@ public class TransactionsCommandTest {
     @Test
     public void testForceTerminateTransaction() throws Exception {
         String transactionalId = "foo";
-        String[] args = new String[] {
-            "--bootstrap-server",
-            "localhost:9092",
-            "forceTerminateTransaction",
-            "--transactionalId",
-            transactionalId
+        String[] args = new String[]{
+                "--bootstrap-server",
+                "localhost:9092",
+                "forceTerminateTransaction",
+                "--transactionalId",
+                transactionalId
         };
 
         TerminateTransactionResult terminateTransactionResult = Mockito.mock(TerminateTransactionResult.class);
@@ -256,30 +256,30 @@ public class TransactionsCommandTest {
     @Test
     public void testForceTerminateTransactionTransactionalIdRequired() throws Exception {
         assertCommandFailure(new String[]{
-            "--bootstrap-server",
-            "localhost:9092",
-            "forceTerminateTransaction"
+                "--bootstrap-server",
+                "localhost:9092",
+                "forceTerminateTransaction"
         });
     }
 
     @Test
     public void testDescribeTransactionsTransactionalIdRequired() throws Exception {
         assertCommandFailure(new String[]{
-            "--bootstrap-server",
-            "localhost:9092",
-            "describe"
+                "--bootstrap-server",
+                "localhost:9092",
+                "describe"
         });
     }
 
     @Test
     public void testDescribeTransaction() throws Exception {
         String transactionalId = "foo";
-        String[] args = new String[] {
-            "--bootstrap-server",
-            "localhost:9092",
-            "describe",
-            "--transactional-id",
-            transactionalId
+        String[] args = new String[]{
+                "--bootstrap-server",
+                "localhost:9092",
+                "describe",
+                "--transactional-id",
+                transactionalId
         };
 
         DescribeTransactionsResult describeResult = Mockito.mock(DescribeTransactionsResult.class);
@@ -288,15 +288,15 @@ public class TransactionsCommandTest {
         long transactionStartTime = time.milliseconds();
 
         KafkaFuture<TransactionDescription> describeFuture = completedFuture(
-            new TransactionDescription(
-                coordinatorId,
-                TransactionState.ONGOING,
-                12345L,
-                15,
-                10000,
-                OptionalLong.of(transactionStartTime),
-                Set.of(new TopicPartition("bar", 0))
-        ));
+                new TransactionDescription(
+                        coordinatorId,
+                        TransactionState.ONGOING,
+                        12345L,
+                        15,
+                        10000,
+                        OptionalLong.of(transactionStartTime),
+                        Set.of(new TopicPartition("bar", 0))
+                ));
 
         Mockito.when(describeResult.description(transactionalId)).thenReturn(describeFuture);
         Mockito.when(admin.describeTransactions(Set.of(transactionalId))).thenReturn(describeResult);
@@ -314,35 +314,35 @@ public class TransactionsCommandTest {
         assertEquals(expectedHeaders, table.get(0));
 
         List<String> expectedRow = List.of(
-            String.valueOf(coordinatorId),
-            transactionalId,
-            "12345",
-            "15",
-            "Ongoing",
-            "10000",
-            String.valueOf(transactionStartTime),
-            "5000",
-            "bar-0"
+                String.valueOf(coordinatorId),
+                transactionalId,
+                "12345",
+                "15",
+                "Ongoing",
+                "10000",
+                String.valueOf(transactionStartTime),
+                "5000",
+                "bar-0"
         );
         assertEquals(expectedRow, table.get(1));
     }
 
     @Test
     public void testListTransactionsWithTransactionalIdPattern() throws Exception {
-        String[] args = new String[] {
-            "--bootstrap-server",
-            "localhost:9092",
-            "list",
-            "--transactional-id-pattern",
-            "ba.*"
+        String[] args = new String[]{
+                "--bootstrap-server",
+                "localhost:9092",
+                "list",
+                "--transactional-id-pattern",
+                "ba.*"
         };
 
         Map<Integer, Collection<TransactionListing>> transactions = new HashMap<>();
         transactions.put(0, List.of(
-            new TransactionListing("bar", 98765L, TransactionState.PREPARE_ABORT)
+                new TransactionListing("bar", 98765L, TransactionState.PREPARE_ABORT)
         ));
         transactions.put(1, List.of(
-            new TransactionListing("baz", 13579L, TransactionState.COMPLETE_COMMIT)
+                new TransactionListing("baz", 13579L, TransactionState.COMPLETE_COMMIT)
         ));
 
         expectListTransactions(new ListTransactionsOptions().filterOnTransactionalIdPattern("ba.*"), transactions);
@@ -357,8 +357,8 @@ public class TransactionsCommandTest {
         List<String> expectedHeaders = TransactionsCommand.ListTransactionsCommand.HEADERS;
         assertEquals(expectedHeaders, table.get(0));
         Set<List<String>> expectedRows = Set.of(
-            List.of("bar", "0", "98765", "PrepareAbort"),
-            List.of("baz", "1", "13579", "CompleteCommit")
+                List.of("bar", "0", "98765", "PrepareAbort"),
+                List.of("baz", "1", "13579", "CompleteCommit")
         );
         assertEquals(expectedRows, new HashSet<>(table.subList(1, table.size())));
     }
@@ -366,71 +366,71 @@ public class TransactionsCommandTest {
     @Test
     public void testDescribeTransactionsStartOffsetOrProducerIdRequired() throws Exception {
         assertCommandFailure(new String[]{
-            "--bootstrap-server",
-            "localhost:9092",
-            "abort",
-            "--topic",
-            "foo",
-            "--partition",
-            "0"
+                "--bootstrap-server",
+                "localhost:9092",
+                "abort",
+                "--topic",
+                "foo",
+                "--partition",
+                "0"
         });
     }
 
     @Test
     public void testDescribeTransactionsTopicRequired() throws Exception {
         assertCommandFailure(new String[]{
-            "--bootstrap-server",
-            "localhost:9092",
-            "abort",
-            "--partition",
-            "0",
-            "--start-offset",
-            "9990"
+                "--bootstrap-server",
+                "localhost:9092",
+                "abort",
+                "--partition",
+                "0",
+                "--start-offset",
+                "9990"
         });
     }
 
     @Test
     public void testDescribeTransactionsPartitionRequired() throws Exception {
         assertCommandFailure(new String[]{
-            "--bootstrap-server",
-            "localhost:9092",
-            "abort",
-            "--topic",
-            "foo",
-            "--start-offset",
-            "9990"
+                "--bootstrap-server",
+                "localhost:9092",
+                "abort",
+                "--topic",
+                "foo",
+                "--start-offset",
+                "9990"
         });
     }
 
     @Test
     public void testDescribeTransactionsProducerEpochRequiredWithProducerId() throws Exception {
         assertCommandFailure(new String[]{
-            "--bootstrap-server",
-            "localhost:9092",
-            "abort",
-            "--topic",
-            "foo",
-            "--partition",
-            "0",
-            "--producer-id",
-            "12345"
+                "--bootstrap-server",
+                "localhost:9092",
+                "abort",
+                "--topic",
+                "foo",
+                "--partition",
+                "0",
+                "--producer-id",
+                "12345"
         });
     }
 
     @Test
     public void testDescribeTransactionsCoordinatorEpochRequiredWithProducerId() throws Exception {
         assertCommandFailure(new String[]{
-            "--bootstrap-server",
-            "localhost:9092",
-            "abort",
-            "--topic",
-            "foo",
-            "--partition",
-            "0",
-            "--producer-id",
-            "12345",
-            "--producer-epoch",
-            "15"
+                "--bootstrap-server",
+                "localhost:9092",
+                "abort",
+                "--topic",
+                "foo",
+                "--partition",
+                "0",
+                "--producer-id",
+                "12345",
+                "--producer-epoch",
+                "15"
         });
     }
 
@@ -442,29 +442,29 @@ public class TransactionsCommandTest {
         short producerEpoch = 15;
         int coordinatorEpoch = 76;
 
-        String[] args = new String[] {
-            "--bootstrap-server",
-            "localhost:9092",
-            "abort",
-            "--topic",
-            topicPartition.topic(),
-            "--partition",
-            String.valueOf(topicPartition.partition()),
-            "--start-offset",
-            String.valueOf(startOffset)
+        String[] args = new String[]{
+                "--bootstrap-server",
+                "localhost:9092",
+                "abort",
+                "--topic",
+                topicPartition.topic(),
+                "--partition",
+                String.valueOf(topicPartition.partition()),
+                "--start-offset",
+                String.valueOf(startOffset)
         };
 
         DescribeProducersResult describeResult = Mockito.mock(DescribeProducersResult.class);
         KafkaFuture<PartitionProducerState> describeFuture = completedFuture(
-            new PartitionProducerState(List.of(
-                new ProducerState(producerId, producerEpoch, 1300, 1599509565L,
-                    OptionalInt.of(coordinatorEpoch), OptionalLong.of(startOffset))
-            )));
+                new PartitionProducerState(List.of(
+                        new ProducerState(producerId, producerEpoch, 1300, 1599509565L,
+                                OptionalInt.of(coordinatorEpoch), OptionalLong.of(startOffset))
+                )));
 
         AbortTransactionResult abortTransactionResult = Mockito.mock(AbortTransactionResult.class);
         KafkaFuture<Void> abortFuture = completedFuture(null);
         AbortTransactionSpec expectedAbortSpec = new AbortTransactionSpec(
-            topicPartition, producerId, producerEpoch, coordinatorEpoch);
+                topicPartition, producerId, producerEpoch, coordinatorEpoch);
 
         Mockito.when(describeResult.partitionResult(topicPartition)).thenReturn(describeFuture);
         Mockito.when(admin.describeProducers(Set.of(topicPartition))).thenReturn(describeResult);
@@ -483,20 +483,20 @@ public class TransactionsCommandTest {
         long producerId = 12345L;
         short producerEpoch = 15;
 
-        String[] args = new String[] {
-            "--bootstrap-server",
-            "localhost:9092",
-            "abort",
-            "--topic",
-            topicPartition.topic(),
-            "--partition",
-            String.valueOf(topicPartition.partition()),
-            "--producer-id",
-            String.valueOf(producerId),
-            "--producer-epoch",
-            String.valueOf(producerEpoch),
-            "--coordinator-epoch",
-            String.valueOf(coordinatorEpoch)
+        String[] args = new String[]{
+                "--bootstrap-server",
+                "localhost:9092",
+                "abort",
+                "--topic",
+                topicPartition.topic(),
+                "--partition",
+                String.valueOf(topicPartition.partition()),
+                "--producer-id",
+                String.valueOf(producerId),
+                "--producer-epoch",
+                String.valueOf(producerEpoch),
+                "--coordinator-epoch",
+                String.valueOf(coordinatorEpoch)
         };
 
         AbortTransactionResult abortTransactionResult = Mockito.mock(AbortTransactionResult.class);
@@ -504,7 +504,7 @@ public class TransactionsCommandTest {
 
         int expectedCoordinatorEpoch = Math.max(coordinatorEpoch, 0);
         AbortTransactionSpec expectedAbortSpec = new AbortTransactionSpec(
-            topicPartition, producerId, producerEpoch, expectedCoordinatorEpoch);
+                topicPartition, producerId, producerEpoch, expectedCoordinatorEpoch);
 
         Mockito.when(abortTransactionResult.all()).thenReturn(abortFuture);
         Mockito.when(admin.abortTransaction(expectedAbortSpec)).thenReturn(abortTransactionResult);
@@ -516,34 +516,34 @@ public class TransactionsCommandTest {
     @Test
     public void testFindHangingRequiresEitherBrokerIdOrTopic() throws Exception {
         assertCommandFailure(new String[]{
-            "--bootstrap-server",
-            "localhost:9092",
-            "find-hanging"
+                "--bootstrap-server",
+                "localhost:9092",
+                "find-hanging"
         });
     }
 
     @Test
     public void testFindHangingRequiresTopicIfPartitionIsSpecified() throws Exception {
         assertCommandFailure(new String[]{
-            "--bootstrap-server",
-            "localhost:9092",
-            "find-hanging",
-            "--broker-id",
-            "0",
-            "--partition",
-            "5"
+                "--bootstrap-server",
+                "localhost:9092",
+                "find-hanging",
+                "--broker-id",
+                "0",
+                "--partition",
+                "5"
         });
     }
 
     private void expectListTransactions(
-        Map<Integer, Collection<TransactionListing>> listingsByBroker
+            Map<Integer, Collection<TransactionListing>> listingsByBroker
     ) {
         expectListTransactions(new ListTransactionsOptions(), listingsByBroker);
     }
 
     private void expectListTransactions(
-        ListTransactionsOptions options,
-        Map<Integer, Collection<TransactionListing>> listingsByBroker
+            ListTransactionsOptions options,
+            Map<Integer, Collection<TransactionListing>> listingsByBroker
     ) {
         ListTransactionsResult listResult = Mockito.mock(ListTransactionsResult.class);
         Mockito.when(admin.listTransactions(options)).thenReturn(listResult);
@@ -556,49 +556,49 @@ public class TransactionsCommandTest {
     }
 
     private void expectDescribeProducers(
-        TopicPartition topicPartition,
-        long producerId,
-        short producerEpoch,
-        long lastTimestamp,
-        OptionalInt coordinatorEpoch,
-        OptionalLong txnStartOffset
+            TopicPartition topicPartition,
+            long producerId,
+            short producerEpoch,
+            long lastTimestamp,
+            OptionalInt coordinatorEpoch,
+            OptionalLong txnStartOffset
     ) {
         PartitionProducerState partitionProducerState = new PartitionProducerState(List.of(
-            new ProducerState(
-                producerId,
-                producerEpoch,
-                500,
-                lastTimestamp,
-                coordinatorEpoch,
-                txnStartOffset
-            )
+                new ProducerState(
+                        producerId,
+                        producerEpoch,
+                        500,
+                        lastTimestamp,
+                        coordinatorEpoch,
+                        txnStartOffset
+                )
         ));
 
         DescribeProducersResult result = Mockito.mock(DescribeProducersResult.class);
         Mockito.when(result.all()).thenReturn(
-            completedFuture(Map.of(topicPartition, partitionProducerState))
+                completedFuture(Map.of(topicPartition, partitionProducerState))
         );
 
         Mockito.when(admin.describeProducers(
-            List.of(topicPartition),
-            new DescribeProducersOptions()
+                List.of(topicPartition),
+                new DescribeProducersOptions()
         )).thenReturn(result);
     }
 
     private void expectDescribeTransactions(
-        Map<String, TransactionDescription> descriptions
+            Map<String, TransactionDescription> descriptions
     ) {
         DescribeTransactionsResult result = Mockito.mock(DescribeTransactionsResult.class);
         descriptions.forEach((transactionalId, description) ->
-            Mockito.when(result.description(transactionalId))
-                .thenReturn(completedFuture(description))
+                Mockito.when(result.description(transactionalId))
+                        .thenReturn(completedFuture(description))
         );
         Mockito.when(result.all()).thenReturn(completedFuture(descriptions));
         Mockito.when(admin.describeTransactions(descriptions.keySet())).thenReturn(result);
     }
 
     private void expectListTopics(
-        Set<String> topics
+            Set<String> topics
     ) {
         ListTopicsResult result = Mockito.mock(ListTopicsResult.class);
         Mockito.when(result.names()).thenReturn(completedFuture(topics));
@@ -607,7 +607,7 @@ public class TransactionsCommandTest {
     }
 
     private void expectDescribeTopics(
-        Map<String, TopicDescription> descriptions
+            Map<String, TopicDescription> descriptions
     ) {
         DescribeTopicsResult result = Mockito.mock(DescribeTopicsResult.class);
         Mockito.when(result.allTopicNames()).thenReturn(completedFuture(descriptions));
@@ -619,11 +619,11 @@ public class TransactionsCommandTest {
         int brokerId = 5;
 
         String[] args = new String[]{
-            "--bootstrap-server",
-            "localhost:9092",
-            "find-hanging",
-            "--broker-id",
-            String.valueOf(brokerId)
+                "--bootstrap-server",
+                "localhost:9092",
+                "find-hanging",
+                "--broker-id",
+                String.valueOf(brokerId)
         };
 
         String topic = "foo";
@@ -634,22 +634,22 @@ public class TransactionsCommandTest {
         Node node5 = new Node(5, "localhost", 9097);
 
         TopicPartitionInfo partition0 = new TopicPartitionInfo(
-            0,
-            node0,
-            List.of(node0, node1),
-            List.of(node0, node1)
+                0,
+                node0,
+                List.of(node0, node1),
+                List.of(node0, node1)
         );
         TopicPartitionInfo partition1 = new TopicPartitionInfo(
-            1,
-            node1,
-            List.of(node1, node5),
-            List.of(node1, node5)
+                1,
+                node1,
+                List.of(node1, node5),
+                List.of(node1, node5)
         );
 
         TopicDescription description = new TopicDescription(
-            topic,
-            false,
-            List.of(partition0, partition1)
+                topic,
+                false,
+                List.of(partition0, partition1)
         );
         expectDescribeTopics(Map.of(topic, description));
 
@@ -657,8 +657,8 @@ public class TransactionsCommandTest {
         Mockito.when(result.all()).thenReturn(completedFuture(Map.of()));
 
         Mockito.when(admin.describeProducers(
-            List.of(new TopicPartition(topic, 1)),
-            new DescribeProducersOptions().brokerId(brokerId)
+                List.of(new TopicPartition(topic, 1)),
+                new DescribeProducersOptions().brokerId(brokerId)
         )).thenReturn(result);
 
         execute(args);
@@ -672,13 +672,13 @@ public class TransactionsCommandTest {
         String topic = "foo";
 
         String[] args = new String[]{
-            "--bootstrap-server",
-            "localhost:9092",
-            "find-hanging",
-            "--broker-id",
-            String.valueOf(brokerId),
-            "--topic",
-            topic
+                "--bootstrap-server",
+                "localhost:9092",
+                "find-hanging",
+                "--broker-id",
+                String.valueOf(brokerId),
+                "--topic",
+                topic
         };
 
         Node node0 = new Node(0, "localhost", 9092);
@@ -686,22 +686,22 @@ public class TransactionsCommandTest {
         Node node5 = new Node(5, "localhost", 9097);
 
         TopicPartitionInfo partition0 = new TopicPartitionInfo(
-            0,
-            node0,
-            List.of(node0, node1),
-            List.of(node0, node1)
+                0,
+                node0,
+                List.of(node0, node1),
+                List.of(node0, node1)
         );
         TopicPartitionInfo partition1 = new TopicPartitionInfo(
-            1,
-            node1,
-            List.of(node1, node5),
-            List.of(node1, node5)
+                1,
+                node1,
+                List.of(node1, node5),
+                List.of(node1, node5)
         );
 
         TopicDescription description = new TopicDescription(
-            topic,
-            false,
-            List.of(partition0, partition1)
+                topic,
+                false,
+                List.of(partition0, partition1)
         );
         expectDescribeTopics(Map.of(topic, description));
 
@@ -709,8 +709,8 @@ public class TransactionsCommandTest {
         Mockito.when(result.all()).thenReturn(completedFuture(Map.of()));
 
         Mockito.when(admin.describeProducers(
-            List.of(new TopicPartition(topic, 1)),
-            new DescribeProducersOptions().brokerId(brokerId)
+                List.of(new TopicPartition(topic, 1)),
+                new DescribeProducersOptions().brokerId(brokerId)
         )).thenReturn(result);
 
         execute(args);
@@ -723,11 +723,11 @@ public class TransactionsCommandTest {
         String topic = "foo";
 
         String[] args = new String[]{
-            "--bootstrap-server",
-            "localhost:9092",
-            "find-hanging",
-            "--topic",
-            topic
+                "--bootstrap-server",
+                "localhost:9092",
+                "find-hanging",
+                "--topic",
+                topic
         };
 
         Node node0 = new Node(0, "localhost", 9092);
@@ -735,22 +735,22 @@ public class TransactionsCommandTest {
         Node node5 = new Node(5, "localhost", 9097);
 
         TopicPartitionInfo partition0 = new TopicPartitionInfo(
-            0,
-            node0,
-            List.of(node0, node1),
-            List.of(node0, node1)
+                0,
+                node0,
+                List.of(node0, node1),
+                List.of(node0, node1)
         );
         TopicPartitionInfo partition1 = new TopicPartitionInfo(
-            1,
-            node1,
-            List.of(node1, node5),
-            List.of(node1, node5)
+                1,
+                node1,
+                List.of(node1, node5),
+                List.of(node1, node5)
         );
 
         TopicDescription description = new TopicDescription(
-            topic,
-            false,
-            List.of(partition0, partition1)
+                topic,
+                false,
+                List.of(partition0, partition1)
         );
         expectDescribeTopics(Map.of(topic, description));
 
@@ -758,8 +758,8 @@ public class TransactionsCommandTest {
         Mockito.when(result.all()).thenReturn(completedFuture(Map.of()));
 
         Mockito.when(admin.describeProducers(
-            List.of(new TopicPartition(topic, 0), new TopicPartition(topic, 1)),
-            new DescribeProducersOptions()
+                List.of(new TopicPartition(topic, 0), new TopicPartition(topic, 1)),
+                new DescribeProducersOptions()
         )).thenReturn(result);
 
         execute(args);
@@ -780,13 +780,13 @@ public class TransactionsCommandTest {
         TopicPartition topicPartition = new TopicPartition("foo", 5);
 
         String[] args = new String[]{
-            "--bootstrap-server",
-            "localhost:9092",
-            "find-hanging",
-            "--topic",
-            topicPartition.topic(),
-            "--partition",
-            String.valueOf(topicPartition.partition())
+                "--bootstrap-server",
+                "localhost:9092",
+                "find-hanging",
+                "--topic",
+                topicPartition.topic(),
+                "--partition",
+                String.valueOf(topicPartition.partition())
         };
 
         long producerId = 132L;
@@ -796,12 +796,12 @@ public class TransactionsCommandTest {
         OptionalLong txnStartOffset = OptionalLong.of(29384L);
 
         expectDescribeProducers(
-            topicPartition,
-            producerId,
-            producerEpoch,
-            lastTimestamp,
-            coordinatorEpoch,
-            txnStartOffset
+                topicPartition,
+                producerId,
+                producerEpoch,
+                lastTimestamp,
+                coordinatorEpoch,
+                txnStartOffset
         );
 
         execute(args);
@@ -819,13 +819,13 @@ public class TransactionsCommandTest {
         TopicPartition topicPartition = new TopicPartition("foo", 5);
 
         String[] args = new String[]{
-            "--bootstrap-server",
-            "localhost:9092",
-            "find-hanging",
-            "--topic",
-            topicPartition.topic(),
-            "--partition",
-            String.valueOf(topicPartition.partition())
+                "--bootstrap-server",
+                "localhost:9092",
+                "find-hanging",
+                "--topic",
+                topicPartition.topic(),
+                "--partition",
+                String.valueOf(topicPartition.partition())
         };
 
         long producerId = 132L;
@@ -835,17 +835,17 @@ public class TransactionsCommandTest {
         long txnStartOffset = 29384L;
 
         expectDescribeProducers(
-            topicPartition,
-            producerId,
-            producerEpoch,
-            lastTimestamp,
-            OptionalInt.of(coordinatorEpoch),
-            OptionalLong.of(txnStartOffset)
+                topicPartition,
+                producerId,
+                producerEpoch,
+                lastTimestamp,
+                OptionalInt.of(coordinatorEpoch),
+                OptionalLong.of(txnStartOffset)
         );
 
         expectListTransactions(
-            new ListTransactionsOptions().filterProducerIds(Set.of(producerId)),
-            Map.of(1, List.of())
+                new ListTransactionsOptions().filterProducerIds(Set.of(producerId)),
+                Map.of(1, List.of())
         );
 
         expectDescribeTransactions(Map.of());
@@ -854,12 +854,12 @@ public class TransactionsCommandTest {
         assertNormalExit();
 
         assertHangingTransaction(
-            topicPartition,
-            producerId,
-            producerEpoch,
-            coordinatorEpoch,
-            txnStartOffset,
-            lastTimestamp
+                topicPartition,
+                producerId,
+                producerEpoch,
+                coordinatorEpoch,
+                txnStartOffset,
+                lastTimestamp
         );
     }
 
@@ -868,13 +868,13 @@ public class TransactionsCommandTest {
         TopicPartition topicPartition = new TopicPartition("foo", 5);
 
         String[] args = new String[]{
-            "--bootstrap-server",
-            "localhost:9092",
-            "find-hanging",
-            "--topic",
-            topicPartition.topic(),
-            "--partition",
-            String.valueOf(topicPartition.partition())
+                "--bootstrap-server",
+                "localhost:9092",
+                "find-hanging",
+                "--topic",
+                topicPartition.topic(),
+                "--partition",
+                String.valueOf(topicPartition.partition())
         };
 
         long producerId = 132L;
@@ -884,41 +884,41 @@ public class TransactionsCommandTest {
         long txnStartOffset = 29384L;
 
         expectDescribeProducers(
-            topicPartition,
-            producerId,
-            producerEpoch,
-            lastTimestamp,
-            OptionalInt.of(coordinatorEpoch),
-            OptionalLong.of(txnStartOffset)
+                topicPartition,
+                producerId,
+                producerEpoch,
+                lastTimestamp,
+                OptionalInt.of(coordinatorEpoch),
+                OptionalLong.of(txnStartOffset)
         );
 
         String transactionalId = "bar";
         TransactionListing listing = new TransactionListing(
-            transactionalId,
-            producerId,
-            TransactionState.ONGOING
+                transactionalId,
+                producerId,
+                TransactionState.ONGOING
         );
 
         expectListTransactions(
-            new ListTransactionsOptions().filterProducerIds(Set.of(producerId)),
-            Map.of(1, List.of(listing))
+                new ListTransactionsOptions().filterProducerIds(Set.of(producerId)),
+                Map.of(1, List.of(listing))
         );
 
         DescribeTransactionsResult result = Mockito.mock(DescribeTransactionsResult.class);
         Mockito.when(result.description(transactionalId))
-            .thenReturn(failedFuture(new TransactionalIdNotFoundException(transactionalId + " not found")));
+                .thenReturn(failedFuture(new TransactionalIdNotFoundException(transactionalId + " not found")));
         Mockito.when(admin.describeTransactions(Set.of(transactionalId))).thenReturn(result);
 
         execute(args);
         assertNormalExit();
 
         assertHangingTransaction(
-            topicPartition,
-            producerId,
-            producerEpoch,
-            coordinatorEpoch,
-            txnStartOffset,
-            lastTimestamp
+                topicPartition,
+                producerId,
+                producerEpoch,
+                coordinatorEpoch,
+                txnStartOffset,
+                lastTimestamp
         );
     }
 
@@ -933,13 +933,13 @@ public class TransactionsCommandTest {
         TopicPartition topicPartition = new TopicPartition("foo", 5);
 
         String[] args = new String[]{
-            "--bootstrap-server",
-            "localhost:9092",
-            "find-hanging",
-            "--topic",
-            topicPartition.topic(),
-            "--partition",
-            String.valueOf(topicPartition.partition())
+                "--bootstrap-server",
+                "localhost:9092",
+                "find-hanging",
+                "--topic",
+                topicPartition.topic(),
+                "--partition",
+                String.valueOf(topicPartition.partition())
         };
 
         long producerId = 132L;
@@ -949,37 +949,37 @@ public class TransactionsCommandTest {
         long txnStartOffset = 29384L;
 
         expectDescribeProducers(
-            topicPartition,
-            producerId,
-            producerEpoch,
-            lastTimestamp,
-            OptionalInt.of(coordinatorEpoch),
-            OptionalLong.of(txnStartOffset)
+                topicPartition,
+                producerId,
+                producerEpoch,
+                lastTimestamp,
+                OptionalInt.of(coordinatorEpoch),
+                OptionalLong.of(txnStartOffset)
         );
 
         String transactionalId = "bar";
         TransactionListing listing = new TransactionListing(
-            transactionalId,
-            producerId,
-            TransactionState.ONGOING
+                transactionalId,
+                producerId,
+                TransactionState.ONGOING
         );
 
         expectListTransactions(
-            new ListTransactionsOptions().filterProducerIds(Set.of(producerId)),
-            Map.of(1, List.of(listing))
+                new ListTransactionsOptions().filterProducerIds(Set.of(producerId)),
+                Map.of(1, List.of(listing))
         );
 
         // Although there is a transaction in progress from the same
         // producer epoch, it does not include the topic partition we
         // found when describing producers.
         TransactionDescription description = new TransactionDescription(
-            1,
-            TransactionState.ONGOING,
-            producerId,
-            producerEpoch,
-            60000,
-            OptionalLong.of(time.milliseconds()),
-            Set.of(new TopicPartition("foo", 10))
+                1,
+                TransactionState.ONGOING,
+                producerId,
+                producerEpoch,
+                60000,
+                OptionalLong.of(time.milliseconds()),
+                Set.of(new TopicPartition("foo", 10))
         );
 
         expectDescribeTransactions(Map.of(transactionalId, description));
@@ -988,22 +988,22 @@ public class TransactionsCommandTest {
         assertNormalExit();
 
         assertHangingTransaction(
-            topicPartition,
-            producerId,
-            producerEpoch,
-            coordinatorEpoch,
-            txnStartOffset,
-            lastTimestamp
+                topicPartition,
+                producerId,
+                producerEpoch,
+                coordinatorEpoch,
+                txnStartOffset,
+                lastTimestamp
         );
     }
 
     private void assertHangingTransaction(
-        TopicPartition topicPartition,
-        long producerId,
-        short producerEpoch,
-        int coordinatorEpoch,
-        long txnStartOffset,
-        long lastTimestamp
+            TopicPartition topicPartition,
+            long producerId,
+            short producerEpoch,
+            int coordinatorEpoch,
+            long txnStartOffset,
+            long lastTimestamp
     ) throws Exception {
         List<List<String>> table = readOutputAsTable();
         assertEquals(2, table.size());
@@ -1014,14 +1014,14 @@ public class TransactionsCommandTest {
         long durationMinutes = TimeUnit.MILLISECONDS.toMinutes(time.milliseconds() - lastTimestamp);
 
         List<String> expectedRow = List.of(
-            topicPartition.topic(),
-            String.valueOf(topicPartition.partition()),
-            String.valueOf(producerId),
-            String.valueOf(producerEpoch),
-            String.valueOf(coordinatorEpoch),
-            String.valueOf(txnStartOffset),
-            String.valueOf(lastTimestamp),
-            String.valueOf(durationMinutes)
+                topicPartition.topic(),
+                String.valueOf(topicPartition.partition()),
+                String.valueOf(producerId),
+                String.valueOf(producerEpoch),
+                String.valueOf(coordinatorEpoch),
+                String.valueOf(txnStartOffset),
+                String.valueOf(lastTimestamp),
+                String.valueOf(durationMinutes)
         );
         assertEquals(expectedRow, table.get(1));
     }
@@ -1031,13 +1031,13 @@ public class TransactionsCommandTest {
         TopicPartition topicPartition = new TopicPartition("foo", 5);
 
         String[] args = new String[]{
-            "--bootstrap-server",
-            "localhost:9092",
-            "find-hanging",
-            "--topic",
-            topicPartition.topic(),
-            "--partition",
-            String.valueOf(topicPartition.partition())
+                "--bootstrap-server",
+                "localhost:9092",
+                "find-hanging",
+                "--topic",
+                topicPartition.topic(),
+                "--partition",
+                String.valueOf(topicPartition.partition())
         };
 
         long producerId = 132L;
@@ -1047,37 +1047,37 @@ public class TransactionsCommandTest {
         long txnStartOffset = 29384L;
 
         expectDescribeProducers(
-            topicPartition,
-            producerId,
-            producerEpoch,
-            lastTimestamp,
-            OptionalInt.of(coordinatorEpoch),
-            OptionalLong.of(txnStartOffset)
+                topicPartition,
+                producerId,
+                producerEpoch,
+                lastTimestamp,
+                OptionalInt.of(coordinatorEpoch),
+                OptionalLong.of(txnStartOffset)
         );
 
         String transactionalId = "bar";
         TransactionListing listing = new TransactionListing(
-            transactionalId,
-            producerId,
-            TransactionState.ONGOING
+                transactionalId,
+                producerId,
+                TransactionState.ONGOING
         );
 
         expectListTransactions(
-            new ListTransactionsOptions().filterProducerIds(Set.of(producerId)),
-            Map.of(1, List.of(listing))
+                new ListTransactionsOptions().filterProducerIds(Set.of(producerId)),
+                Map.of(1, List.of(listing))
         );
 
         // The coordinator shows an active transaction with the same epoch
         // which includes the partition, so no hanging transaction should
         // be detected.
         TransactionDescription description = new TransactionDescription(
-            1,
-            TransactionState.ONGOING,
-            producerId,
-            producerEpoch,
-            60000,
-            OptionalLong.of(lastTimestamp),
-            Set.of(topicPartition)
+                1,
+                TransactionState.ONGOING,
+                producerId,
+                producerEpoch,
+                60000,
+                OptionalLong.of(lastTimestamp),
+                Set.of(topicPartition)
         );
 
         expectDescribeTransactions(Map.of(transactionalId, description));

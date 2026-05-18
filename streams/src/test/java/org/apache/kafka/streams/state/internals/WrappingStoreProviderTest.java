@@ -51,8 +51,8 @@ public class WrappingStoreProviderTest {
 
         for (int partition = 0; partition < numStateStorePartitions; partition++) {
             stubProviderOne.addStore("kv", partition, Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore("kv"),
-                    Serdes.serdeFrom(String.class),
-                    Serdes.serdeFrom(String.class))
+                            Serdes.serdeFrom(String.class),
+                            Serdes.serdeFrom(String.class))
                     .build());
             stubProviderOne.addStore("window", partition, new NoOpWindowStore());
             wrappingStoreProvider = new WrappingStoreProvider(

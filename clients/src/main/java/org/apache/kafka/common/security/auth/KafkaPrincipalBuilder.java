@@ -19,7 +19,7 @@ package org.apache.kafka.common.security.auth;
 /**
  * Pluggable principal builder interface which supports both SSL authentication through
  * {@link SslAuthenticationContext} and SASL through {@link SaslAuthenticationContext}.
- *
+ * <p>
  * Note that the {@link org.apache.kafka.common.Configurable} and {@link java.io.Closeable}
  * interfaces are respected if implemented. Additionally, implementations must provide a
  * default no-arg constructor.
@@ -27,10 +27,11 @@ package org.apache.kafka.common.security.auth;
 public interface KafkaPrincipalBuilder extends KafkaPrincipalSerde {
     /**
      * Build a kafka principal from the authentication context.
+     *
      * @param context The authentication context (either {@link SslAuthenticationContext} or
-     *        {@link SaslAuthenticationContext})
+     *                {@link SaslAuthenticationContext})
      * @return The built principal which may provide additional enrichment through a subclass of
-     *        {@link KafkaPrincipalBuilder}.
+     * {@link KafkaPrincipalBuilder}.
      */
     KafkaPrincipal build(AuthenticationContext context);
 }

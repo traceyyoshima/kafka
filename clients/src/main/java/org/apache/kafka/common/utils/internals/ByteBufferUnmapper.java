@@ -28,7 +28,7 @@ import static java.lang.invoke.MethodType.methodType;
 
 /**
  * Provides a mechanism to unmap mapped and direct byte buffers.
- *
+ * <p>
  * The implementation was inspired by the one in Lucene's MMapDirectory.
  */
 public final class ByteBufferUnmapper {
@@ -56,11 +56,12 @@ public final class ByteBufferUnmapper {
         }
     }
 
-    private ByteBufferUnmapper() {}
+    private ByteBufferUnmapper() {
+    }
 
     /**
      * Unmap the provided mapped or direct byte buffer.
-     *
+     * <p>
      * This buffer cannot be referenced after this call, so it's highly recommended that any fields referencing it
      * should be set to null.
      *
@@ -91,7 +92,7 @@ public final class ByteBufferUnmapper {
             return unmapper.bindTo(theUnsafe);
         } catch (ReflectiveOperationException | RuntimeException e1) {
             throw new UnsupportedOperationException("Unmapping is not supported on this platform, because internal " +
-                "Java APIs are not compatible with this Kafka version", e1);
+                    "Java APIs are not compatible with this Kafka version", e1);
         }
     }
 }

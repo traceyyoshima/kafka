@@ -43,11 +43,11 @@ public class ControllerMutationQuotaManager extends ClientQuotaManager {
     private static final Logger LOG = LoggerFactory.getLogger(ControllerMutationQuotaManager.class);
 
     /**
-     * @param config ClientQuotaManagerConfig quota configs
-     * @param metrics Metrics instance
-     * @param time Time object to use
+     * @param config           ClientQuotaManagerConfig quota configs
+     * @param metrics          Metrics instance
+     * @param time             Time object to use
      * @param threadNamePrefix The thread prefix to use
-     * @param quotaCallback ClientQuotaCallback to use
+     * @param quotaCallback    ClientQuotaCallback to use
      */
     public ControllerMutationQuotaManager(ClientQuotaManagerConfig config,
                                           Metrics metrics,
@@ -88,12 +88,12 @@ public class ControllerMutationQuotaManager extends ClientQuotaManager {
      * specified time, returns throttle time in milliseconds. The quota is strict, meaning that it
      * does not accept any mutations once the quota is exhausted until it gets back to the defined rate.
      *
-     * @param session The session from which the user is extracted
+     * @param session  The session from which the user is extracted
      * @param clientId The client id
-     * @param value The value to accumulate
-     * @param timeMs The time at which to accumulate the value
+     * @param value    The value to accumulate
+     * @param timeMs   The time at which to accumulate the value
      * @return The throttle time in milliseconds defines as the time to wait until the average
-     *         rate gets back to the defined quota
+     * rate gets back to the defined quota
      */
     @Override
     public int recordAndGetThrottleTimeMs(Session session, String clientId, double value, long timeMs) {
@@ -120,7 +120,7 @@ public class ControllerMutationQuotaManager extends ClientQuotaManager {
      * Returns a StrictControllerMutationQuota for the given user/clientId pair or
      * a UNBOUNDED_CONTROLLER_MUTATION_QUOTA if the quota is disabled.
      *
-     * @param session The session from which the user is extracted
+     * @param session  The session from which the user is extracted
      * @param clientId The client id
      * @return ControllerMutationQuota
      */
@@ -141,7 +141,7 @@ public class ControllerMutationQuotaManager extends ClientQuotaManager {
      * Returns a PermissiveControllerMutationQuota for the given user/clientId pair or
      * a UNBOUNDED_CONTROLLER_MUTATION_QUOTA if the quota is disabled.
      *
-     * @param session The session from which the user is extracted
+     * @param session  The session from which the user is extracted
      * @param clientId The client id
      * @return ControllerMutationQuota
      */
@@ -161,8 +161,8 @@ public class ControllerMutationQuotaManager extends ClientQuotaManager {
      * When the quota is strictly enforced. Any operation above the quota is not allowed
      * and rejected with a THROTTLING_QUOTA_EXCEEDED error.
      *
-     * @param session The session from which the user is extracted
-     * @param header The request header to extract the clientId and apiVersion from
+     * @param session            The session from which the user is extracted
+     * @param header             The request header to extract the clientId and apiVersion from
      * @param strictSinceVersion The version since quota is strict
      * @return ControllerMutationQuota instance
      */
@@ -180,8 +180,8 @@ public class ControllerMutationQuotaManager extends ClientQuotaManager {
     public static long throttleTimeMs(QuotaViolationException e) {
         if (e.metric().measurable() instanceof TokenBucket) {
             return Math.round(-e.value() / e.bound() * 1000);
-        } 
-        throw new IllegalArgumentException("Metric " + e.metric().metricName() + 
-            " is not a TokenBucket metric, value " + e.metric().measurable());
+        }
+        throw new IllegalArgumentException("Metric " + e.metric().metricName() +
+                " is not a TokenBucket metric, value " + e.metric().measurable());
     }
 }

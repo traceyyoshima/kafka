@@ -161,9 +161,9 @@ public class ClientMetricsCommand {
                 entities = List.of(entityNameOpt.get());
             } else {
                 Collection<ConfigResource> resources = adminClient
-                    .listConfigResources(Set.of(ConfigResource.Type.CLIENT_METRICS), new ListConfigResourcesOptions())
-                    .all()
-                    .get(30, TimeUnit.SECONDS);
+                        .listConfigResources(Set.of(ConfigResource.Type.CLIENT_METRICS), new ListConfigResourcesOptions())
+                        .all()
+                        .get(30, TimeUnit.SECONDS);
                 entities = resources.stream().map(ConfigResource::name).toList();
             }
 
@@ -176,9 +176,9 @@ public class ClientMetricsCommand {
 
         public void listClientMetrics() throws Exception {
             Collection<ConfigResource> resources = adminClient
-                .listConfigResources(Set.of(ConfigResource.Type.CLIENT_METRICS), new ListConfigResourcesOptions())
-                .all()
-                .get(30, TimeUnit.SECONDS);
+                    .listConfigResources(Set.of(ConfigResource.Type.CLIENT_METRICS), new ListConfigResourcesOptions())
+                    .all()
+                    .get(30, TimeUnit.SECONDS);
             String results = resources.stream().map(ConfigResource::name).collect(Collectors.joining("\n"));
             System.out.println(results);
         }
@@ -223,17 +223,17 @@ public class ClientMetricsCommand {
         private final ArgumentAcceptingOptionSpec<String> matchOpt;
 
         private final ArgumentAcceptingOptionSpec<String> metricsOpt;
-  
+
         public ClientMetricsCommandOptions(String[] args) {
             super(args);
             bootstrapServerOpt = parser.accepts("bootstrap-server", "REQUIRED: The Kafka server to connect to.")
-                .withRequiredArg()
-                .describedAs("server to connect to")
-                .ofType(String.class);
+                    .withRequiredArg()
+                    .describedAs("server to connect to")
+                    .ofType(String.class);
             commandConfigOpt = parser.accepts("command-config", "Property file containing configs to be passed to Admin Client.")
-                .withRequiredArg()
-                .describedAs("command config property file")
-                .ofType(String.class);
+                    .withRequiredArg()
+                    .describedAs("command config property file")
+                    .ofType(String.class);
 
             alterOpt = parser.accepts("alter", "Alter the configuration for the client metrics resource.");
             deleteOpt = parser.accepts("delete", "Delete the configuration for the client metrics resource.");
@@ -241,33 +241,33 @@ public class ClientMetricsCommand {
             listOpt = parser.accepts("list", "List the client metrics resources.");
 
             nameOpt = parser.accepts("name", "Name of client metrics configuration resource.")
-                .withRequiredArg()
-                .describedAs("name")
-                .ofType(String.class);
+                    .withRequiredArg()
+                    .describedAs("name")
+                    .ofType(String.class);
             generateNameOpt = parser.accepts("generate-name", "Generate a UUID to use as the name.");
             String nl = System.lineSeparator();
 
             intervalOpt = parser.accepts("interval", "The metrics push interval in milliseconds." + nl + "Leave empty to reset the interval.")
-                .withRequiredArg()
-                .describedAs("push interval")
-                .ofType(String.class);
+                    .withRequiredArg()
+                    .describedAs("push interval")
+                    .ofType(String.class);
 
 
-            String[] matchSelectors = new String[] {
-                "client_id", "client_instance_id", "client_software_name",
-                "client_software_version", "client_source_address", "client_source_port"
+            String[] matchSelectors = new String[]{
+                    "client_id", "client_instance_id", "client_software_name",
+                    "client_software_version", "client_source_address", "client_source_port"
             };
             String matchSelectorNames = Arrays.stream(matchSelectors).map(config -> "\t" + config).collect(Collectors.joining(nl));
             matchOpt = parser.accepts("match", "Matching selector 'k1=v1,k2=v2'. The following is a list of valid selector names: " + nl + matchSelectorNames)
-                .withRequiredArg()
-                .describedAs("k1=v1,k2=v2")
-                .ofType(String.class)
-                .withValuesSeparatedBy(',');
+                    .withRequiredArg()
+                    .describedAs("k1=v1,k2=v2")
+                    .ofType(String.class)
+                    .withValuesSeparatedBy(',');
             metricsOpt = parser.accepts("metrics", "Telemetry metric name prefixes 'm1,m2'.")
-                .withRequiredArg()
-                .describedAs("m1,m2")
-                .ofType(String.class)
-                .withValuesSeparatedBy(',');
+                    .withRequiredArg()
+                    .describedAs("m1,m2")
+                    .ofType(String.class)
+                    .withValuesSeparatedBy(',');
 
             try {
                 options = parser.parse(args);
@@ -369,7 +369,7 @@ public class ClientMetricsCommand {
             CommandLineUtils.checkInvalidArgs(parser, options, deleteOpt, generateNameOpt, intervalOpt, matchOpt, metricsOpt);
             CommandLineUtils.checkInvalidArgs(parser, options, describeOpt, generateNameOpt, intervalOpt, matchOpt, metricsOpt);
             CommandLineUtils.checkInvalidArgs(parser, options, listOpt, nameOpt, generateNameOpt, intervalOpt, matchOpt, metricsOpt);
-          
+
             boolean isNamePresent = has(nameOpt);
 
             if (has(alterOpt)) {

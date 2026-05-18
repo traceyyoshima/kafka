@@ -33,8 +33,8 @@ public enum KRaftVersion implements FeatureVersion {
     private final MetadataVersion bootstrapMetadataVersion;
 
     KRaftVersion(
-        int featureLevel,
-        MetadataVersion bootstrapMetadataVersion
+            int featureLevel,
+            MetadataVersion bootstrapMetadataVersion
     ) {
         this.featureLevel = (short) featureLevel;
         this.bootstrapMetadataVersion = bootstrapMetadataVersion;

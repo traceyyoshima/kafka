@@ -74,11 +74,11 @@ public class TableSourceNodeTest {
         final MaterializedInternal<String, String, KeyValueStore<Bytes, byte[]>>
                 materializedInternal = new MaterializedInternal<>(Materialized.as(STORE_NAME));
         final TableSourceNode<String, String> tableSourceNode = tableSourceNodeBuilder
-            .withTopic(TOPIC)
-            .withConsumedInternal(new ConsumedInternal<>(Consumed.as("node-name")))
-            .withProcessorParameters(
-                    new ProcessorParameters<>(new KTableSource<>(materializedInternal), null))
-            .build();
+                .withTopic(TOPIC)
+                .withConsumedInternal(new ConsumedInternal<>(Consumed.as("node-name")))
+                .withProcessorParameters(
+                        new ProcessorParameters<>(new KTableSource<>(materializedInternal), null))
+                .build();
         tableSourceNode.reuseSourceTopicForChangeLog(shouldReuseSourceTopicForChangelog);
 
         tableSourceNode.writeToTopology(topologyBuilder);

@@ -512,7 +512,7 @@ public class WorkerSinkTaskTest {
                     rebalanceListener.getValue().onPartitionsRevoked(INITIAL_ASSIGNMENT);
                     rebalanceListener.getValue().onPartitionsAssigned(List.of());
                     return new ConsumerRecords<>(Map.of(TOPIC_PARTITION3, List.of(newRecord)),
-                        Map.of(TOPIC_PARTITION3, new OffsetAndMetadata(FIRST_OFFSET + 1, Optional.empty(), "")));
+                            Map.of(TOPIC_PARTITION3, new OffsetAndMetadata(FIRST_OFFSET + 1, Optional.empty(), "")));
                 });
         expectConversionAndTransformation(null, new RecordHeaders());
 
@@ -1179,7 +1179,7 @@ public class WorkerSinkTaskTest {
 
         workerTask.iteration(); // iter 2 -- deliver 2 records
 
-    // iter 3
+        // iter 3
         final Map<TopicPartition, OffsetAndMetadata> workerCurrentOffsets = new HashMap<>();
         workerCurrentOffsets.put(TOPIC_PARTITION, new OffsetAndMetadata(FIRST_OFFSET + 1));
         workerCurrentOffsets.put(TOPIC_PARTITION2, new OffsetAndMetadata(FIRST_OFFSET));
@@ -1234,7 +1234,7 @@ public class WorkerSinkTaskTest {
 
         // Delay the result of trying to commit offsets to Kafka via the consumer.commitAsync method.
         ArgumentCaptor<OffsetCommitCallback> offsetCommitCallbackArgumentCaptor =
-            ArgumentCaptor.forClass(OffsetCommitCallback.class);
+                ArgumentCaptor.forClass(OffsetCommitCallback.class);
         verify(consumer).commitAsync(eq(workerCurrentOffsets), offsetCommitCallbackArgumentCaptor.capture());
 
         final OffsetCommitCallback callback = offsetCommitCallbackArgumentCaptor.getValue();
@@ -1411,7 +1411,7 @@ public class WorkerSinkTaskTest {
 
         doAnswer(invocation -> {
             final Map<TopicPartition, OffsetAndMetadata> offsets = invocation.getArgument(0);
-            final OffsetCommitCallback callback =  invocation.getArgument(1);
+            final OffsetCommitCallback callback = invocation.getArgument(1);
             asyncCallbackRunner.set(() -> {
                 callback.onComplete(offsets, null);
                 asyncCallbackRan.set(true);
@@ -1942,7 +1942,7 @@ public class WorkerSinkTaskTest {
         return expectConsumerPoll(numMessages, RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, new RecordHeaders());
     }
 
-    private Answer<ConsumerRecords<byte[], byte[]>> expectConsumerPoll(final int numMessages,  Headers headers) {
+    private Answer<ConsumerRecords<byte[], byte[]>> expectConsumerPoll(final int numMessages, Headers headers) {
         return expectConsumerPoll(numMessages, RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, headers);
     }
 
@@ -1953,7 +1953,7 @@ public class WorkerSinkTaskTest {
             for (int i = 0; i < numMessages; i++) {
                 offset = FIRST_OFFSET + recordsReturnedTp1 + i;
                 records.add(new ConsumerRecord<>(TOPIC, PARTITION, offset, timestamp, timestampType,
-                    0, 0, RAW_KEY, RAW_VALUE, headers, Optional.empty()));
+                        0, 0, RAW_KEY, RAW_VALUE, headers, Optional.empty()));
             }
             recordsReturnedTp1 += numMessages;
             final TopicPartition tp = new TopicPartition(TOPIC, PARTITION);

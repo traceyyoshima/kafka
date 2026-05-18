@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ListTransactionsResultTest {
     private final KafkaFutureImpl<Map<Integer, KafkaFutureImpl<Collection<TransactionListing>>>> future =
-        new KafkaFutureImpl<>();
+            new KafkaFutureImpl<>();
     private final ListTransactionsResult result = new ListTransactionsResult(future);
 
     @Test
@@ -59,18 +59,18 @@ public class ListTransactionsResultTest {
         future.complete(brokerFutures);
 
         List<TransactionListing> broker1Listings = asList(
-            new TransactionListing("foo", 12345L, TransactionState.ONGOING),
-            new TransactionListing("bar", 98765L, TransactionState.PREPARE_ABORT)
+                new TransactionListing("foo", 12345L, TransactionState.ONGOING),
+                new TransactionListing("bar", 98765L, TransactionState.PREPARE_ABORT)
         );
         future1.complete(broker1Listings);
 
         List<TransactionListing> broker2Listings = singletonList(
-            new TransactionListing("baz", 13579L, TransactionState.COMPLETE_COMMIT)
+                new TransactionListing("baz", 13579L, TransactionState.COMPLETE_COMMIT)
         );
         future2.complete(broker2Listings);
 
         Map<Integer, KafkaFuture<Collection<TransactionListing>>> resultBrokerFutures =
-            result.byBrokerId().get();
+                result.byBrokerId().get();
 
         assertEquals(Set.of(1, 2), resultBrokerFutures.keySet());
         assertEquals(broker1Listings, resultBrokerFutures.get(1).get());
@@ -97,14 +97,14 @@ public class ListTransactionsResultTest {
         future.complete(brokerFutures);
 
         List<TransactionListing> broker1Listings = asList(
-            new TransactionListing("foo", 12345L, TransactionState.ONGOING),
-            new TransactionListing("bar", 98765L, TransactionState.PREPARE_ABORT)
+                new TransactionListing("foo", 12345L, TransactionState.ONGOING),
+                new TransactionListing("bar", 98765L, TransactionState.PREPARE_ABORT)
         );
         future1.complete(broker1Listings);
         future2.completeExceptionally(new KafkaException());
 
         Map<Integer, KafkaFuture<Collection<TransactionListing>>> resultBrokerFutures =
-            result.byBrokerId().get();
+                result.byBrokerId().get();
 
         // Ensure that the future for broker 1 completes successfully
         assertEquals(Set.of(1, 2), resultBrokerFutures.keySet());

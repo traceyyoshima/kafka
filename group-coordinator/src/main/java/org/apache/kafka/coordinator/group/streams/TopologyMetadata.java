@@ -33,7 +33,8 @@ import java.util.SortedMap;
  * @param metadataImage  The metadata image
  * @param subtopologyMap The configured subtopologies
  */
-public record TopologyMetadata(CoordinatorMetadataImage metadataImage, SortedMap<String, ConfiguredSubtopology> subtopologyMap) implements TopologyDescriber {
+public record TopologyMetadata(CoordinatorMetadataImage metadataImage,
+                               SortedMap<String, ConfiguredSubtopology> subtopologyMap) implements TopologyDescriber {
 
     public TopologyMetadata {
         Objects.requireNonNull(metadataImage);
@@ -44,8 +45,8 @@ public record TopologyMetadata(CoordinatorMetadataImage metadataImage, SortedMap
      * Checks whether the given subtopology is associated with a changelog topic.
      *
      * @param subtopologyId String identifying the subtopology.
-     * @throws NoSuchElementException if the subtopology ID does not exist.
      * @return true if the subtopology is associated with a changelog topic, false otherwise.
+     * @throws NoSuchElementException if the subtopology ID does not exist.
      */
     @Override
     public boolean isStateful(String subtopologyId) {
@@ -67,10 +68,9 @@ public record TopologyMetadata(CoordinatorMetadataImage metadataImage, SortedMap
      * The maximal number of input partitions among all source topics for the given subtopology.
      *
      * @param subtopologyId String identifying the subtopology.
-     *
-     * @throws NoSuchElementException if the subtopology ID does not exist.
-     * @throws IllegalStateException if the subtopology contains no source topics.
      * @return The maximal number of input partitions among all source topics for the given subtopology.
+     * @throws NoSuchElementException if the subtopology ID does not exist.
+     * @throws IllegalStateException  if the subtopology contains no source topics.
      */
     @Override
     public int maxNumInputPartitions(String subtopologyId) {

@@ -32,7 +32,7 @@ import java.lang.reflect.Executable;
  * This resolver provides an instance of {@link ClusterInstance} to a test invocation. The instance represents the
  * underlying cluster being run for the current test. It can be injected into test methods or into the class
  * constructor.
- *
+ * <p>
  * N.B., if injected into the class constructor, the instance will not be fully initialized until the actual test method
  * is being invoked. This is because the cluster is not started until after class construction and after "before"
  * lifecycle methods have been run. Constructor injection is meant for convenience so helper methods can be defined on

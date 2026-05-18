@@ -62,22 +62,22 @@ public class FetchRequest extends AbstractRequest {
         public final Optional<Integer> lastFetchedEpoch;
 
         public PartitionData(
-            Uuid topicId,
-            long fetchOffset,
-            long logStartOffset,
-            int maxBytes,
-            Optional<Integer> currentLeaderEpoch
+                Uuid topicId,
+                long fetchOffset,
+                long logStartOffset,
+                int maxBytes,
+                Optional<Integer> currentLeaderEpoch
         ) {
             this(topicId, fetchOffset, logStartOffset, maxBytes, currentLeaderEpoch, Optional.empty());
         }
 
         public PartitionData(
-            Uuid topicId,
-            long fetchOffset,
-            long logStartOffset,
-            int maxBytes,
-            Optional<Integer> currentLeaderEpoch,
-            Optional<Integer> lastFetchedEpoch
+                Uuid topicId,
+                long fetchOffset,
+                long logStartOffset,
+                int maxBytes,
+                Optional<Integer> currentLeaderEpoch,
+                Optional<Integer> lastFetchedEpoch
         ) {
             this.topicId = topicId;
             this.fetchOffset = fetchOffset;
@@ -93,11 +93,11 @@ public class FetchRequest extends AbstractRequest {
             if (o == null || getClass() != o.getClass()) return false;
             PartitionData that = (PartitionData) o;
             return Objects.equals(topicId, that.topicId) &&
-                fetchOffset == that.fetchOffset &&
-                logStartOffset == that.logStartOffset &&
-                maxBytes == that.maxBytes &&
-                Objects.equals(currentLeaderEpoch, that.currentLeaderEpoch) &&
-                Objects.equals(lastFetchedEpoch, that.lastFetchedEpoch);
+                    fetchOffset == that.fetchOffset &&
+                    logStartOffset == that.logStartOffset &&
+                    maxBytes == that.maxBytes &&
+                    Objects.equals(currentLeaderEpoch, that.currentLeaderEpoch) &&
+                    Objects.equals(lastFetchedEpoch, that.lastFetchedEpoch);
         }
 
         @Override
@@ -108,13 +108,13 @@ public class FetchRequest extends AbstractRequest {
         @Override
         public String toString() {
             return "PartitionData(" +
-                "topicId=" + topicId +
-                ", fetchOffset=" + fetchOffset +
-                ", logStartOffset=" + logStartOffset +
-                ", maxBytes=" + maxBytes +
-                ", currentLeaderEpoch=" + currentLeaderEpoch +
-                ", lastFetchedEpoch=" + lastFetchedEpoch +
-                ')';
+                    "topicId=" + topicId +
+                    ", fetchOffset=" + fetchOffset +
+                    ", logStartOffset=" + logStartOffset +
+                    ", maxBytes=" + maxBytes +
+                    ", currentLeaderEpoch=" + currentLeaderEpoch +
+                    ", lastFetchedEpoch=" + lastFetchedEpoch +
+                    ')';
         }
     }
 
@@ -164,7 +164,7 @@ public class FetchRequest extends AbstractRequest {
 
         public static Builder forConsumer(short maxVersion, int maxWait, int minBytes, Map<TopicPartition, PartitionData> fetchData) {
             return new Builder(ApiKeys.FETCH.oldestVersion(), maxVersion,
-                CONSUMER_REPLICA_ID,  -1, maxWait, minBytes, fetchData);
+                    CONSUMER_REPLICA_ID, -1, maxWait, minBytes, fetchData);
         }
 
         public static Builder forReplica(short allowedVersion, int replicaId, long replicaEpoch, int maxWait, int minBytes,
@@ -258,8 +258,8 @@ public class FetchRequest extends AbstractRequest {
                 fetchRequestData.setReplicaId(replicaId);
             } else {
                 fetchRequestData.setReplicaState(new ReplicaState()
-                    .setReplicaId(replicaId)
-                    .setReplicaEpoch(replicaEpoch));
+                        .setReplicaId(replicaId)
+                        .setReplicaEpoch(replicaEpoch));
             }
 
             Map<String, FetchRequestData.ForgottenTopic> forgottenTopicMap = new LinkedHashMap<>();
@@ -284,19 +284,19 @@ public class FetchRequest extends AbstractRequest {
 
                 if (fetchTopic == null || !topicPartition.topic().equals(fetchTopic.topic())) {
                     fetchTopic = new FetchRequestData.FetchTopic()
-                       .setTopic(topicPartition.topic())
-                       .setTopicId(partitionData.topicId)
-                       .setPartitions(new ArrayList<>());
+                            .setTopic(topicPartition.topic())
+                            .setTopicId(partitionData.topicId)
+                            .setPartitions(new ArrayList<>());
                     fetchRequestData.topics().add(fetchTopic);
                 }
 
                 FetchRequestData.FetchPartition fetchPartition = new FetchRequestData.FetchPartition()
-                    .setPartition(topicPartition.partition())
-                    .setCurrentLeaderEpoch(partitionData.currentLeaderEpoch.orElse(RecordBatch.NO_PARTITION_LEADER_EPOCH))
-                    .setLastFetchedEpoch(partitionData.lastFetchedEpoch.orElse(RecordBatch.NO_PARTITION_LEADER_EPOCH))
-                    .setFetchOffset(partitionData.fetchOffset)
-                    .setLogStartOffset(partitionData.logStartOffset)
-                    .setPartitionMaxBytes(partitionData.maxBytes);
+                        .setPartition(topicPartition.partition())
+                        .setCurrentLeaderEpoch(partitionData.currentLeaderEpoch.orElse(RecordBatch.NO_PARTITION_LEADER_EPOCH))
+                        .setLastFetchedEpoch(partitionData.lastFetchedEpoch.orElse(RecordBatch.NO_PARTITION_LEADER_EPOCH))
+                        .setFetchOffset(partitionData.fetchOffset)
+                        .setLogStartOffset(partitionData.logStartOffset)
+                        .setPartitionMaxBytes(partitionData.maxBytes);
 
                 fetchTopic.partitions().add(fetchPartition);
             }
@@ -402,17 +402,17 @@ public class FetchRequest extends AbstractRequest {
                 name = topicNames.get(fetchTopic.topicId());
             }
             fetchTopic.partitions().forEach(fetchPartition ->
-                // Topic name may be null here if the topic name was unable to be resolved using the topicNames map.
-                fetchData.put(new TopicIdPartition(fetchTopic.topicId(), new TopicPartition(name, fetchPartition.partition())),
-                    new PartitionData(
-                        fetchTopic.topicId(),
-                        fetchPartition.fetchOffset(),
-                        fetchPartition.logStartOffset(),
-                        fetchPartition.partitionMaxBytes(),
-                        optionalEpoch(fetchPartition.currentLeaderEpoch()),
-                        optionalEpoch(fetchPartition.lastFetchedEpoch())
+                    // Topic name may be null here if the topic name was unable to be resolved using the topicNames map.
+                    fetchData.put(new TopicIdPartition(fetchTopic.topicId(), new TopicPartition(name, fetchPartition.partition())),
+                            new PartitionData(
+                                    fetchTopic.topicId(),
+                                    fetchPartition.fetchOffset(),
+                                    fetchPartition.logStartOffset(),
+                                    fetchPartition.partitionMaxBytes(),
+                                    optionalEpoch(fetchPartition.currentLeaderEpoch()),
+                                    optionalEpoch(fetchPartition.lastFetchedEpoch())
+                            )
                     )
-                )
             );
         });
         return fetchData;
@@ -466,9 +466,12 @@ public class FetchRequest extends AbstractRequest {
 
     public static String describeReplicaId(int replicaId) {
         switch (replicaId) {
-            case ORDINARY_CONSUMER_ID: return "consumer";
-            case DEBUGGING_CONSUMER_ID: return "debug consumer";
-            case FUTURE_LOCAL_REPLICA_ID: return "future local replica";
+            case ORDINARY_CONSUMER_ID:
+                return "consumer";
+            case DEBUGGING_CONSUMER_ID:
+                return "debug consumer";
+            case FUTURE_LOCAL_REPLICA_ID:
+                return "future local replica";
             default: {
                 if (isValidBrokerId(replicaId))
                     return "replica [" + replicaId + "]";

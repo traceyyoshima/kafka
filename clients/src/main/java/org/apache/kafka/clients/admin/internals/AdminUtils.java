@@ -25,18 +25,19 @@ import java.util.stream.Collectors;
 
 public final class AdminUtils {
 
-    private AdminUtils() {}
+    private AdminUtils() {
+    }
 
     public static Set<AclOperation> validAclOperations(final int authorizedOperations) {
         if (authorizedOperations == MetadataResponse.AUTHORIZED_OPERATIONS_OMITTED) {
             return null;
         }
         return Utils.from32BitField(authorizedOperations)
-            .stream()
-            .map(AclOperation::fromCode)
-            .filter(operation -> operation != AclOperation.UNKNOWN
-                && operation != AclOperation.ALL
-                && operation != AclOperation.ANY)
-            .collect(Collectors.toSet());
+                .stream()
+                .map(AclOperation::fromCode)
+                .filter(operation -> operation != AclOperation.UNKNOWN
+                        && operation != AclOperation.ALL
+                        && operation != AclOperation.ANY)
+                .collect(Collectors.toSet());
     }
 }

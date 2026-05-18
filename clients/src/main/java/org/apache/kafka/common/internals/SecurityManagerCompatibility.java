@@ -49,14 +49,11 @@ public interface SecurityManagerCompatibility {
      * <p> Note that any DomainCombiner associated with the current
      * AccessControlContext will be ignored while the action is performed.
      *
-     * @param <T> the type of the value returned by the PrivilegedAction's
-     *            {@code run} method.
-     *
+     * @param <T>    the type of the value returned by the PrivilegedAction's
+     *               {@code run} method.
      * @param action the action to be performed.
-     *
      * @return the value returned by the action's {@code run} method.
-     *
-     * @exception NullPointerException if the action is {@code null}
+     * @throws NullPointerException if the action is {@code null}
      * @see java.security.AccessController#doPrivileged(PrivilegedAction)
      */
     <T> T doPrivileged(PrivilegedAction<T> action);
@@ -72,7 +69,7 @@ public interface SecurityManagerCompatibility {
      * subject is {@code null} before the first call of {@code callAs()}.
      *
      * @return the current subject, or {@code null} if a current subject is
-     *         not installed or the current subject is set to {@code null}.
+     * not installed or the current subject is set to {@code null}.
      * @see #callAs(Subject, Callable)
      * @see Subject#current()
      * @see Subject#callAs(Subject, Callable)
@@ -85,15 +82,15 @@ public interface SecurityManagerCompatibility {
      *
      * @param subject the {@code Subject} that the specified {@code action}
      *                will run as.  This parameter may be {@code null}.
-     * @param action the code to be run with {@code subject} as its current
-     *               subject. Must not be {@code null}.
-     * @param <T> the type of value returned by the {@code call} method
-     *            of {@code action}
+     * @param action  the code to be run with {@code subject} as its current
+     *                subject. Must not be {@code null}.
+     * @param <T>     the type of value returned by the {@code call} method
+     *                of {@code action}
      * @return the value returned by the {@code call} method of {@code action}
      * @throws NullPointerException if {@code action} is {@code null}
-     * @throws CompletionException if {@code action.call()} throws an exception.
-     *      The cause of the {@code CompletionException} is set to the exception
-     *      thrown by {@code action.call()}.
+     * @throws CompletionException  if {@code action.call()} throws an exception.
+     *                              The cause of the {@code CompletionException} is set to the exception
+     *                              thrown by {@code action.call()}.
      * @see #current()
      * @see Subject#current()
      * @see Subject#callAs(Subject, Callable)

@@ -40,19 +40,19 @@ public class LogAndSkipOnInvalidTimestampTest extends TimestampExtractorTest {
 
         final TimestampExtractor extractor = new LogAndSkipOnInvalidTimestamp();
         final long timestamp = extractor.extract(
-            new ConsumerRecord<>(
-                "anyTopic",
-                0,
-                0,
-                invalidMetadataTimestamp,
-                TimestampType.NO_TIMESTAMP_TYPE,
-                0,
-                0,
-                null,
-                null,
-                new RecordHeaders(),
-                Optional.empty()),
-            0
+                new ConsumerRecord<>(
+                        "anyTopic",
+                        0,
+                        0,
+                        invalidMetadataTimestamp,
+                        TimestampType.NO_TIMESTAMP_TYPE,
+                        0,
+                        0,
+                        null,
+                        null,
+                        new RecordHeaders(),
+                        Optional.empty()),
+                0
         );
 
         assertThat(timestamp, is(invalidMetadataTimestamp));

@@ -67,9 +67,9 @@ public final class ExitCommandHandler implements Commands.Handler {
 
         @Override
         public void completeNext(
-            MetadataShellState nodeManager,
-            List<String> nextWords,
-            List<Candidate> candidates
+                MetadataShellState nodeManager,
+                List<String> nextWords,
+                List<Candidate> candidates
         ) throws Exception {
             // nothing to do
         }
@@ -77,9 +77,9 @@ public final class ExitCommandHandler implements Commands.Handler {
 
     @Override
     public void run(
-        Optional<InteractiveShell> shell,
-        PrintWriter writer,
-        MetadataShellState state
+            Optional<InteractiveShell> shell,
+            PrintWriter writer,
+            MetadataShellState state
     ) {
         Exit.exit(0);
     }

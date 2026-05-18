@@ -75,7 +75,7 @@ import java.util.function.Function;
  * // query the value for a key
  * ValueAndTimestamp value = view.get(key);
  * }</pre>
- *
+ * <p>
  * Note that a {@code KTable} is partitioned, and thus not all keys can be queried locally.
  * See the Apache Kafka Streams
  * <a href="https://kafka.apache.org/documentation/streams/developer-guide/interactive-queries.html">documentation</a>
@@ -83,7 +83,6 @@ import java.util.function.Function;
  *
  * @param <K> the key type of this table
  * @param <V> the value type of this table
- *
  * @see GlobalKTable
  */
 public interface KTable<K, V> {
@@ -165,9 +164,9 @@ public interface KTable<K, V> {
      * The store name to query with is specified by {@link Materialized#as(String)} or {@link Materialized#as(KeyValueBytesStoreSupplier)}.
      * <p>
      *
-     * @param predicate     a filter {@link Predicate} that is applied to each record
-     * @param materialized  a {@link Materialized} that describes how the {@link StateStore} for the resulting {@code KTable}
-     *                      should be materialized. Cannot be {@code null}
+     * @param predicate    a filter {@link Predicate} that is applied to each record
+     * @param materialized a {@link Materialized} that describes how the {@link StateStore} for the resulting {@code KTable}
+     *                     should be materialized. Cannot be {@code null}
      * @return a {@code KTable} that contains only those records that satisfy the given predicate
      * @see #filterNot(Predicate, Materialized)
      */
@@ -205,10 +204,10 @@ public interface KTable<K, V> {
      * The store name to query with is specified by {@link Materialized#as(String)} or {@link Materialized#as(KeyValueBytesStoreSupplier)}.
      * <p>
      *
-     * @param predicate     a filter {@link Predicate} that is applied to each record
-     * @param named         a {@link Named} config used to name the processor in the topology
-     * @param materialized  a {@link Materialized} that describes how the {@link StateStore} for the resulting {@code KTable}
-     *                      should be materialized. Cannot be {@code null}
+     * @param predicate    a filter {@link Predicate} that is applied to each record
+     * @param named        a {@link Named} config used to name the processor in the topology
+     * @param materialized a {@link Materialized} that describes how the {@link StateStore} for the resulting {@code KTable}
+     *                     should be materialized. Cannot be {@code null}
      * @return a {@code KTable} that contains only those records that satisfy the given predicate
      * @see #filterNot(Predicate, Materialized)
      */
@@ -292,9 +291,10 @@ public interface KTable<K, V> {
      * query the value of the key on a parallel running instance of your Kafka Streams application.
      * The store name to query with is specified by {@link Materialized#as(String)} or {@link Materialized#as(KeyValueBytesStoreSupplier)}.
      * <p>
-     * @param predicate a filter {@link Predicate} that is applied to each record
-     * @param materialized  a {@link Materialized} that describes how the {@link StateStore} for the resulting {@code KTable}
-     *                      should be materialized. Cannot be {@code null}
+     *
+     * @param predicate    a filter {@link Predicate} that is applied to each record
+     * @param materialized a {@link Materialized} that describes how the {@link StateStore} for the resulting {@code KTable}
+     *                     should be materialized. Cannot be {@code null}
      * @return a {@code KTable} that contains only those records that do <em>not</em> satisfy the given predicate
      * @see #filter(Predicate, Materialized)
      */
@@ -331,10 +331,11 @@ public interface KTable<K, V> {
      * query the value of the key on a parallel running instance of your Kafka Streams application.
      * The store name to query with is specified by {@link Materialized#as(String)} or {@link Materialized#as(KeyValueBytesStoreSupplier)}.
      * <p>
-     * @param predicate a filter {@link Predicate} that is applied to each record
-     * @param named     a {@link Named} config used to name the processor in the topology
-     * @param materialized  a {@link Materialized} that describes how the {@link StateStore} for the resulting {@code KTable}
-     *                      should be materialized. Cannot be {@code null}
+     *
+     * @param predicate    a filter {@link Predicate} that is applied to each record
+     * @param named        a {@link Named} config used to name the processor in the topology
+     * @param materialized a {@link Materialized} that describes how the {@link StateStore} for the resulting {@code KTable}
+     *                     should be materialized. Cannot be {@code null}
      * @return a {@code KTable} that contains only those records that do <em>not</em> satisfy the given predicate
      * @see #filter(Predicate, Materialized)
      */
@@ -506,11 +507,10 @@ public interface KTable<K, V> {
      * Thus, for tombstones the provided value-mapper is not evaluated but the tombstone record is forwarded directly to
      * delete the corresponding record in the result {@code KTable}.
      *
-     * @param mapper a {@link ValueMapper} that computes a new output value
-     * @param materialized  a {@link Materialized} that describes how the {@link StateStore} for the resulting {@code KTable}
-     *                      should be materialized. Cannot be {@code null}
-     * @param <VR>   the value type of the result {@code KTable}
-     *
+     * @param mapper       a {@link ValueMapper} that computes a new output value
+     * @param materialized a {@link Materialized} that describes how the {@link StateStore} for the resulting {@code KTable}
+     *                     should be materialized. Cannot be {@code null}
+     * @param <VR>         the value type of the result {@code KTable}
      * @return a {@code KTable} that contains records with unmodified keys and new values (possibly of different type)
      */
     <VR> KTable<K, VR> mapValues(final ValueMapper<? super V, ? extends VR> mapper,
@@ -552,12 +552,11 @@ public interface KTable<K, V> {
      * Thus, for tombstones the provided value-mapper is not evaluated but the tombstone record is forwarded directly to
      * delete the corresponding record in the result {@code KTable}.
      *
-     * @param mapper a {@link ValueMapper} that computes a new output value
-     * @param named  a {@link Named} config used to name the processor in the topology
-     * @param materialized  a {@link Materialized} that describes how the {@link StateStore} for the resulting {@code KTable}
-     *                      should be materialized. Cannot be {@code null}
-     * @param <VR>   the value type of the result {@code KTable}
-     *
+     * @param mapper       a {@link ValueMapper} that computes a new output value
+     * @param named        a {@link Named} config used to name the processor in the topology
+     * @param materialized a {@link Materialized} that describes how the {@link StateStore} for the resulting {@code KTable}
+     *                     should be materialized. Cannot be {@code null}
+     * @param <VR>         the value type of the result {@code KTable}
      * @return a {@code KTable} that contains records with unmodified keys and new values (possibly of different type)
      */
     <VR> KTable<K, VR> mapValues(final ValueMapper<? super V, ? extends VR> mapper,
@@ -601,11 +600,10 @@ public interface KTable<K, V> {
      * Thus, for tombstones the provided value-mapper is not evaluated but the tombstone record is forwarded directly to
      * delete the corresponding record in the result {@code KTable}.
      *
-     * @param mapper a {@link ValueMapperWithKey} that computes a new output value
-     * @param materialized  a {@link Materialized} that describes how the {@link StateStore} for the resulting {@code KTable}
-     *                      should be materialized. Cannot be {@code null}
-     * @param <VR>   the value type of the result {@code KTable}
-     *
+     * @param mapper       a {@link ValueMapperWithKey} that computes a new output value
+     * @param materialized a {@link Materialized} that describes how the {@link StateStore} for the resulting {@code KTable}
+     *                     should be materialized. Cannot be {@code null}
+     * @param <VR>         the value type of the result {@code KTable}
      * @return a {@code KTable} that contains records with unmodified keys and new values (possibly of different type)
      */
     <VR> KTable<K, VR> mapValues(final ValueMapperWithKey<? super K, ? super V, ? extends VR> mapper,
@@ -648,12 +646,11 @@ public interface KTable<K, V> {
      * Thus, for tombstones the provided value-mapper is not evaluated but the tombstone record is forwarded directly to
      * delete the corresponding record in the result {@code KTable}.
      *
-     * @param mapper a {@link ValueMapperWithKey} that computes a new output value
-     * @param named  a {@link Named} config used to name the processor in the topology
-     * @param materialized  a {@link Materialized} that describes how the {@link StateStore} for the resulting {@code KTable}
-     *                      should be materialized. Cannot be {@code null}
-     * @param <VR>   the value type of the result {@code KTable}
-     *
+     * @param mapper       a {@link ValueMapperWithKey} that computes a new output value
+     * @param named        a {@link Named} config used to name the processor in the topology
+     * @param materialized a {@link Materialized} that describes how the {@link StateStore} for the resulting {@code KTable}
+     *                     should be materialized. Cannot be {@code null}
+     * @param <VR>         the value type of the result {@code KTable}
      * @return a {@code KTable} that contains records with unmodified keys and new values (possibly of different type)
      */
     <VR> KTable<K, VR> mapValues(final ValueMapperWithKey<? super K, ? super V, ? extends VR> mapper,
@@ -676,8 +673,7 @@ public interface KTable<K, V> {
      * Note that this is a logical operation and only changes the "interpretation" of the stream, i.e., each record of
      * this changelog stream is no longer treated as an updated record (cf. {@link KStream} vs {@code KTable}).
      *
-     * @param named  a {@link Named} config used to name the processor in the topology
-     *
+     * @param named a {@link Named} config used to name the processor in the topology
      * @return a {@link KStream} that contains the same records as this {@code KTable}
      */
     KStream<K, V> toStream(final Named named);
@@ -704,7 +700,7 @@ public interface KTable<K, V> {
      * each record of this changelog stream is no longer treated as an updated record (cf. {@link KStream} vs {@code KTable}).
      *
      * @param mapper a {@link KeyValueMapper} that computes a new key for each record
-     * @param <KR> the new key type of the result stream
+     * @param <KR>   the new key type of the result stream
      * @return a {@link KStream} that contains the same records as this {@code KTable}
      */
     <KR> KStream<KR, V> toStream(final KeyValueMapper<? super K, ? super V, ? extends KR> mapper);
@@ -732,7 +728,7 @@ public interface KTable<K, V> {
      *
      * @param mapper a {@link KeyValueMapper} that computes a new key for each record
      * @param named  a {@link Named} config used to name the processor in the topology
-     * @param <KR> the new key type of the result stream
+     * @param <KR>   the new key type of the result stream
      * @return a {@link KStream} that contains the same records as this {@code KTable}
      */
     <KR> KStream<KR, V> toStream(final KeyValueMapper<? super K, ? super V, ? extends KR> mapper,
@@ -1113,11 +1109,11 @@ public interface KTable<K, V> {
      * records to and rereading all updated records from it, such that the resulting {@link KGroupedTable} is partitioned
      * on the new key.
      *
-     * @param selector      a {@link KeyValueMapper} that computes a new grouping key and value to be aggregated
-     * @param grouped       the {@link Grouped} instance used to specify {@link org.apache.kafka.common.serialization.Serdes}
-     *                      and the name for a repartition topic if repartitioning is required.
-     * @param <KR>          the key type of the result {@link KGroupedTable}
-     * @param <VR>          the value type of the result {@link KGroupedTable}
+     * @param selector a {@link KeyValueMapper} that computes a new grouping key and value to be aggregated
+     * @param grouped  the {@link Grouped} instance used to specify {@link org.apache.kafka.common.serialization.Serdes}
+     *                 and the name for a repartition topic if repartitioning is required.
+     * @param <KR>     the key type of the result {@link KGroupedTable}
+     * @param <VR>     the value type of the result {@link KGroupedTable}
      * @return a {@link KGroupedTable} that contains the re-grouped records of the original {@code KTable}
      */
     <KR, VR> KGroupedTable<KR, VR> groupBy(final KeyValueMapper<? super K, ? super V, ? extends KeyValue<? extends KR, ? extends VR>> selector,
@@ -1339,12 +1335,12 @@ public interface KTable<K, V> {
      * Both input streams (or to be more precise, their underlying source topics) need to have the same number of
      * partitions.
      *
-     * @param other         the other {@code KTable} to be joined with this {@code KTable}
-     * @param joiner        a {@link ValueJoiner} that computes the join result for a pair of matching records
-     * @param materialized  an instance of {@link Materialized} used to describe how the state store should be materialized.
-     *                      Cannot be {@code null}
-     * @param <VO>          the value type of the other {@code KTable}
-     * @param <VR>          the value type of the result {@code KTable}
+     * @param other        the other {@code KTable} to be joined with this {@code KTable}
+     * @param joiner       a {@link ValueJoiner} that computes the join result for a pair of matching records
+     * @param materialized an instance of {@link Materialized} used to describe how the state store should be materialized.
+     *                     Cannot be {@code null}
+     * @param <VO>         the value type of the other {@code KTable}
+     * @param <VR>         the value type of the result {@code KTable}
      * @return a {@code KTable} that contains join-records for each key and values computed by the given
      * {@link ValueJoiner}, one for each matched record-pair with the same key
      * @see #leftJoin(KTable, ValueJoiner, Materialized)
@@ -1418,13 +1414,13 @@ public interface KTable<K, V> {
      * Both input streams (or to be more precise, their underlying source topics) need to have the same number of
      * partitions.
      *
-     * @param other         the other {@code KTable} to be joined with this {@code KTable}
-     * @param joiner        a {@link ValueJoiner} that computes the join result for a pair of matching records
-     * @param named         a {@link Named} config used to name the processor in the topology
-     * @param materialized  an instance of {@link Materialized} used to describe how the state store should be materialized.
-     *                      Cannot be {@code null}
-     * @param <VO>          the value type of the other {@code KTable}
-     * @param <VR>          the value type of the result {@code KTable}
+     * @param other        the other {@code KTable} to be joined with this {@code KTable}
+     * @param joiner       a {@link ValueJoiner} that computes the join result for a pair of matching records
+     * @param named        a {@link Named} config used to name the processor in the topology
+     * @param materialized an instance of {@link Materialized} used to describe how the state store should be materialized.
+     *                     Cannot be {@code null}
+     * @param <VO>         the value type of the other {@code KTable}
+     * @param <VR>         the value type of the result {@code KTable}
      * @return a {@code KTable} that contains join-records for each key and values computed by the given
      * {@link ValueJoiner}, one for each matched record-pair with the same key
      * @see #leftJoin(KTable, ValueJoiner, Materialized)
@@ -1671,12 +1667,12 @@ public interface KTable<K, V> {
      * Both input streams (or to be more precise, their underlying source topics) need to have the same number of
      * partitions.
      *
-     * @param other         the other {@code KTable} to be joined with this {@code KTable}
-     * @param joiner        a {@link ValueJoiner} that computes the join result for a pair of matching records
-     * @param materialized  an instance of {@link Materialized} used to describe how the state store should be materialized.
-     *                      Cannot be {@code null}
-     * @param <VO>          the value type of the other {@code KTable}
-     * @param <VR>          the value type of the result {@code KTable}
+     * @param other        the other {@code KTable} to be joined with this {@code KTable}
+     * @param joiner       a {@link ValueJoiner} that computes the join result for a pair of matching records
+     * @param materialized an instance of {@link Materialized} used to describe how the state store should be materialized.
+     *                     Cannot be {@code null}
+     * @param <VO>         the value type of the other {@code KTable}
+     * @param <VR>         the value type of the result {@code KTable}
      * @return a {@code KTable} that contains join-records for each key and values computed by the given
      * {@link ValueJoiner}, one for each matched record-pair with the same key plus one for each non-matching record of
      * left {@code KTable}
@@ -1757,13 +1753,13 @@ public interface KTable<K, V> {
      * Both input streams (or to be more precise, their underlying source topics) need to have the same number of
      * partitions.
      *
-     * @param other         the other {@code KTable} to be joined with this {@code KTable}
-     * @param joiner        a {@link ValueJoiner} that computes the join result for a pair of matching records
-     * @param named         a {@link Named} config used to name the processor in the topology
-     * @param materialized  an instance of {@link Materialized} used to describe how the state store should be materialized.
-     *                      Cannot be {@code null}
-     * @param <VO>          the value type of the other {@code KTable}
-     * @param <VR>          the value type of the result {@code KTable}
+     * @param other        the other {@code KTable} to be joined with this {@code KTable}
+     * @param joiner       a {@link ValueJoiner} that computes the join result for a pair of matching records
+     * @param named        a {@link Named} config used to name the processor in the topology
+     * @param materialized an instance of {@link Materialized} used to describe how the state store should be materialized.
+     *                     Cannot be {@code null}
+     * @param <VO>         the value type of the other {@code KTable}
+     * @param <VR>         the value type of the result {@code KTable}
      * @return a {@code KTable} that contains join-records for each key and values computed by the given
      * {@link ValueJoiner}, one for each matched record-pair with the same key plus one for each non-matching record of
      * left {@code KTable}
@@ -2009,12 +2005,12 @@ public interface KTable<K, V> {
      * Both input streams (or to be more precise, their underlying source topics) need to have the same number of
      * partitions.
      *
-     * @param other         the other {@code KTable} to be joined with this {@code KTable}
-     * @param joiner        a {@link ValueJoiner} that computes the join result for a pair of matching records
-     * @param materialized  an instance of {@link Materialized} used to describe how the state store should be materialized.
-     *                      Cannot be {@code null}
-     * @param <VO>          the value type of the other {@code KTable}
-     * @param <VR>          the value type of the result {@code KTable}
+     * @param other        the other {@code KTable} to be joined with this {@code KTable}
+     * @param joiner       a {@link ValueJoiner} that computes the join result for a pair of matching records
+     * @param materialized an instance of {@link Materialized} used to describe how the state store should be materialized.
+     *                     Cannot be {@code null}
+     * @param <VO>         the value type of the other {@code KTable}
+     * @param <VR>         the value type of the result {@code KTable}
      * @return a {@code KTable} that contains join-records for each key and values computed by the given
      * {@link ValueJoiner}, one for each matched record-pair with the same key plus one for each non-matching record of
      * both {@code KTable}s
@@ -2095,13 +2091,13 @@ public interface KTable<K, V> {
      * Both input streams (or to be more precise, their underlying source topics) need to have the same number of
      * partitions.
      *
-     * @param other         the other {@code KTable} to be joined with this {@code KTable}
-     * @param joiner        a {@link ValueJoiner} that computes the join result for a pair of matching records
-     * @param named         a {@link Named} config used to name the processor in the topology
-     * @param materialized  an instance of {@link Materialized} used to describe how the state store should be materialized.
-     *                      Cannot be {@code null}
-     * @param <VO>          the value type of the other {@code KTable}
-     * @param <VR>          the value type of the result {@code KTable}
+     * @param other        the other {@code KTable} to be joined with this {@code KTable}
+     * @param joiner       a {@link ValueJoiner} that computes the join result for a pair of matching records
+     * @param named        a {@link Named} config used to name the processor in the topology
+     * @param materialized an instance of {@link Materialized} used to describe how the state store should be materialized.
+     *                     Cannot be {@code null}
+     * @param <VO>         the value type of the other {@code KTable}
+     * @param <VR>         the value type of the result {@code KTable}
      * @return a {@code KTable} that contains join-records for each key and values computed by the given
      * {@link ValueJoiner}, one for each matched record-pair with the same key plus one for each non-matching record of
      * both {@code KTable}s
@@ -2194,6 +2190,7 @@ public interface KTable<K, V> {
                                     final BiFunction<? super K, ? super V, ? extends KO> foreignKeyExtractor,
                                     final ValueJoiner<? super V, ? super VO, ? extends VR> joiner,
                                     final TableJoined<K, KO> tableJoined);
+
     /**
      * Join records of this {@code KTable} with another {@code KTable} using non-windowed inner join.
      * <p>

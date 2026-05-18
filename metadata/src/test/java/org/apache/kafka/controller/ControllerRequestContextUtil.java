@@ -27,14 +27,15 @@ import java.util.function.Consumer;
 
 public class ControllerRequestContextUtil {
     public static final ControllerRequestContext ANONYMOUS_CONTEXT =
-        new ControllerRequestContext(
-            new RequestHeaderData(),
-            KafkaPrincipal.ANONYMOUS,
-            OptionalLong.empty());
+            new ControllerRequestContext(
+                    new RequestHeaderData(),
+                    KafkaPrincipal.ANONYMOUS,
+                    OptionalLong.empty());
     public static final String QUOTA_EXCEEDED_IN_TEST_MSG = "Quota exceeded in test";
 
     public static ControllerRequestContext anonymousContextFor(ApiKeys apiKeys) {
-        return anonymousContextFor(apiKeys, apiKeys.latestVersion(), __ -> { });
+        return anonymousContextFor(apiKeys, apiKeys.latestVersion(), __ -> {
+        });
     }
 
     public static ControllerRequestContext anonymousContextWithMutationQuotaExceededFor(ApiKeys apiKeys) {
@@ -44,24 +45,25 @@ public class ControllerRequestContextUtil {
     }
 
     public static ControllerRequestContext anonymousContextFor(
-        ApiKeys apiKeys,
-        short version
+            ApiKeys apiKeys,
+            short version
     ) {
-        return anonymousContextFor(apiKeys, version, __ -> { });
+        return anonymousContextFor(apiKeys, version, __ -> {
+        });
     }
 
     public static ControllerRequestContext anonymousContextFor(
-        ApiKeys apiKeys,
-        short version,
-        Consumer<Integer> partitionChangeQuotaApplier
+            ApiKeys apiKeys,
+            short version,
+            Consumer<Integer> partitionChangeQuotaApplier
     ) {
         return new ControllerRequestContext(
-            new RequestHeaderData()
-                .setRequestApiKey(apiKeys.id)
-                .setRequestApiVersion(version),
-            KafkaPrincipal.ANONYMOUS,
-            OptionalLong.empty(),
-            partitionChangeQuotaApplier
+                new RequestHeaderData()
+                        .setRequestApiKey(apiKeys.id)
+                        .setRequestApiVersion(version),
+                KafkaPrincipal.ANONYMOUS,
+                OptionalLong.empty(),
+                partitionChangeQuotaApplier
         );
     }
 }

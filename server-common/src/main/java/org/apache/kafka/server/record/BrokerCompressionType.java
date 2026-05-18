@@ -51,7 +51,7 @@ public enum BrokerCompressionType {
     public static BrokerCompressionType forName(String n) {
         String name = n.toLowerCase(Locale.ROOT);
         return VALUES.stream().filter(v -> v.name.equals(name)).findFirst().orElseThrow(() ->
-            new IllegalArgumentException("Unknown broker compression type name: " + name)
+                new IllegalArgumentException("Unknown broker compression type name: " + name)
         );
     }
 }

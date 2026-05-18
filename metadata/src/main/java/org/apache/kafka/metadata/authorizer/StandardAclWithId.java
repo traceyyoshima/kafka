@@ -31,14 +31,14 @@ public record StandardAclWithId(Uuid id, StandardAcl acl) {
 
     public AccessControlEntryRecord toRecord() {
         return new AccessControlEntryRecord().
-            setId(id).
-            setResourceType(acl.resourceType().code()).
-            setResourceName(acl.resourceName()).
-            setPatternType(acl.patternType().code()).
-            setPrincipal(acl.principal()).
-            setHost(acl.host()).
-            setOperation(acl.operation().code()).
-            setPermissionType(acl.permissionType().code());
+                setId(id).
+                setResourceType(acl.resourceType().code()).
+                setResourceName(acl.resourceName()).
+                setPatternType(acl.patternType().code()).
+                setPrincipal(acl.principal()).
+                setHost(acl.host()).
+                setOperation(acl.operation().code()).
+                setPermissionType(acl.permissionType().code());
     }
 
     public AclBinding toBinding() {

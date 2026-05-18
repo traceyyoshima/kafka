@@ -151,7 +151,7 @@ public class GroupsCommand {
 
             if (groupTypeFilter.isPresent()) {
                 pass = groupType.filter(gt -> gt == groupTypeFilter.get()).isPresent()
-                    && protocolFilter.map(protocol::equals).orElse(true);
+                        && protocolFilter.map(protocol::equals).orElse(true);
             } else if (protocolFilter.isPresent()) {
                 pass = protocol.equals(protocolFilter.get());
             } else if (consumerGroupFilter) {
@@ -218,7 +218,7 @@ public class GroupsCommand {
                     .ofType(String.class);
 
             consumerOpt = parser.accepts("consumer", "Filter the groups to show all kinds of consumer groups, including classic and simple consumer groups. "
-                            + "This matches group type 'consumer', and group type 'classic' where the protocol type is 'consumer' or empty.");
+                    + "This matches group type 'consumer', and group type 'classic' where the protocol type is 'consumer' or empty.");
             shareOpt = parser.accepts("share", "Filter the groups to show share groups.");
             streamsOpt = parser.accepts("streams", "Filter the groups to show streams groups.");
 

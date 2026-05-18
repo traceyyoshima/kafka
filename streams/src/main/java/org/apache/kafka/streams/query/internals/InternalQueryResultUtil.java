@@ -26,25 +26,26 @@ import org.apache.kafka.streams.query.QueryResult;
 @Unstable
 public final class InternalQueryResultUtil {
     // uninstantiable utility class
-    public InternalQueryResultUtil() {}
+    public InternalQueryResultUtil() {
+    }
 
     /**
      * Creates a new `QueryResult` preserving the execution info
      * and position of the provided result.
      */
     public static <R> QueryResult<R> copyAndSubstituteDeserializedResult(
-        final QueryResult<?> rawResult,
-        final R deserializedResult) {
+            final QueryResult<?> rawResult,
+            final R deserializedResult) {
 
         if (rawResult.isFailure()) {
             throw new IllegalArgumentException(
-                "Callers must avoid calling this method on a failed result."
+                    "Callers must avoid calling this method on a failed result."
             );
         } else {
             return new SucceededQueryResult<>(
-                deserializedResult,
-                rawResult.getExecutionInfo(),
-                rawResult.getPosition()
+                    deserializedResult,
+                    rawResult.getExecutionInfo(),
+                    rawResult.getPosition()
             );
         }
     }

@@ -47,14 +47,13 @@ public class EndpointReadyFutures {
         /**
          * Add a readiness future that will block all endpoints.
          *
-         * @param name          The future name.
-         * @param future        The future object.
-         *
-         * @return              This builder object.
+         * @param name   The future name.
+         * @param future The future object.
+         * @return This builder object.
          */
         public Builder addReadinessFuture(
-            String name,
-            CompletableFuture<?> future
+                String name,
+                CompletableFuture<?> future
         ) {
             stages.add(new EndpointCompletionStage(name, future));
             return this;
@@ -63,31 +62,29 @@ public class EndpointReadyFutures {
         /**
          * Add readiness futures for individual endpoints.
          *
-         * @param name          The future name.
-         * @param newFutures    A map from endpoints to futures.
-         *
-         * @return              This builder object.
+         * @param name       The future name.
+         * @param newFutures A map from endpoints to futures.
+         * @return This builder object.
          */
         public Builder addReadinessFutures(
-            String name,
-            Map<Endpoint, ? extends CompletionStage<?>> newFutures
+                String name,
+                Map<Endpoint, ? extends CompletionStage<?>> newFutures
         ) {
             newFutures.forEach((endpoint, future) -> endpointStages.computeIfAbsent(endpoint, __ -> new ArrayList<>()).
-                add(new EndpointCompletionStage(name, future)));
+                    add(new EndpointCompletionStage(name, future)));
             return this;
         }
 
         /**
          * Build the EndpointReadyFutures object.
          *
-         * @param authorizerPlugin    The authorizer to use, if any. Will be started.
-         * @param info                Server information to be passed to the authorizer.
-         *
-         * @return              The new futures object.
+         * @param authorizerPlugin The authorizer to use, if any. Will be started.
+         * @param info             Server information to be passed to the authorizer.
+         * @return The new futures object.
          */
         public EndpointReadyFutures build(
-            Optional<Plugin<Authorizer>> authorizerPlugin,
-            AuthorizerServerInfo info
+                Optional<Plugin<Authorizer>> authorizerPlugin,
+                AuthorizerServerInfo info
         ) {
             if (authorizerPlugin.isPresent()) {
                 return build(authorizerPlugin.get().get().start(info), info);
@@ -97,8 +94,8 @@ public class EndpointReadyFutures {
         }
 
         EndpointReadyFutures build(
-            Map<Endpoint, ? extends CompletionStage<?>> authorizerStartFutures,
-            AuthorizerServerInfo info
+                Map<Endpoint, ? extends CompletionStage<?>> authorizerStartFutures,
+                AuthorizerServerInfo info
         ) {
             if (logContext == null) logContext = new LogContext();
             Map<Endpoint, CompletionStage<?>> effectiveStartFutures =
@@ -187,8 +184,8 @@ public class EndpointReadyFutures {
     private final Map<Endpoint, CompletableFuture<Void>> futures;
 
     private EndpointReadyFutures(
-        LogContext logContext,
-        Map<Endpoint, List<EndpointCompletionStage>> endpointStages
+            LogContext logContext,
+            Map<Endpoint, List<EndpointCompletionStage>> endpointStages
     ) {
         this.log = logContext.logger(EndpointReadyFutures.class);
         Map<Endpoint, CompletableFuture<Void>> newFutures = new HashMap<>();

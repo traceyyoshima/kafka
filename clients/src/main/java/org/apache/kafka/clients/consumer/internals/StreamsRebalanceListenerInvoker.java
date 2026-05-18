@@ -67,9 +67,9 @@ public class StreamsRebalanceListenerInvoker {
             throw e;
         } catch (Exception e) {
             log.error(
-                "Streams rebalance listener failed on invocation of onTasksAssigned for tasks {}",
-                assignment,
-                e
+                    "Streams rebalance listener failed on invocation of onTasksAssigned for tasks {}",
+                    assignment,
+                    e
             );
             return e;
         }
@@ -87,9 +87,9 @@ public class StreamsRebalanceListenerInvoker {
             throw e;
         } catch (Exception e) {
             log.error(
-                "Streams rebalance listener failed on invocation of onTasksRevoked for tasks {}",
-                tasks,
-                e
+                    "Streams rebalance listener failed on invocation of onTasksRevoked for tasks {}",
+                    tasks,
+                    e
             );
             return e;
         }
@@ -107,8 +107,8 @@ public class StreamsRebalanceListenerInvoker {
             throw e;
         } catch (Exception e) {
             log.error(
-                "Streams rebalance listener failed on invocation of onTasksLost.",
-                e
+                    "Streams rebalance listener failed on invocation of onTasksLost.",
+                    e
             );
             return e;
         }

@@ -54,11 +54,13 @@ public class DirectoryConfigProvider implements ConfigProvider {
     }
 
     @Override
-    public void close() throws IOException { }
+    public void close() throws IOException {
+    }
 
     /**
      * Retrieves the data contained in regular files in the directory given by {@code path}.
      * Non-regular files (such as directories) in the given directory are silently ignored.
+     *
      * @param path the directory where data files reside.
      * @return the configuration data.
      */
@@ -70,6 +72,7 @@ public class DirectoryConfigProvider implements ConfigProvider {
     /**
      * Retrieves the data contained in the regular files named by {@code keys} in the directory given by {@code path}.
      * Non-regular files (such as directories) in the given directory are silently ignored.
+     *
      * @param path the directory where data files reside.
      * @param keys the keys whose values will be retrieved.
      * @return the configuration data.
@@ -100,10 +103,10 @@ public class DirectoryConfigProvider implements ConfigProvider {
             } else {
                 try (Stream<Path> stream = Files.list(dir)) {
                     map = stream
-                        .filter(fileFilter)
-                        .collect(Collectors.toMap(
-                            p -> p.getFileName().toString(),
-                            p -> read(p)));
+                            .filter(fileFilter)
+                            .collect(Collectors.toMap(
+                                    p -> p.getFileName().toString(),
+                                    p -> read(p)));
                 } catch (IOException e) {
                     log.error("Could not list directory {}", dir, e);
                     throw new ConfigException("Could not list directory " + dir);

@@ -82,66 +82,66 @@ public class QuotaFactory {
     }
 
     public static QuotaManagers instantiate(
-        KafkaConfig cfg,
-        Metrics metrics,
-        Time time,
-        String threadNamePrefix,
-        String role
+            KafkaConfig cfg,
+            Metrics metrics,
+            Time time,
+            String threadNamePrefix,
+            String role
     ) {
         Optional<Plugin<ClientQuotaCallback>> clientQuotaCallbackPlugin = createClientQuotaCallback(cfg, metrics, role);
 
         return new QuotaManagers(
-            new ClientQuotaManager(clientConfig(cfg), metrics, QuotaType.FETCH, time, threadNamePrefix, clientQuotaCallbackPlugin),
-            new ClientQuotaManager(clientConfig(cfg), metrics, QuotaType.PRODUCE, time, threadNamePrefix, clientQuotaCallbackPlugin),
-            new ClientRequestQuotaManager(clientConfig(cfg), metrics, time, threadNamePrefix, clientQuotaCallbackPlugin),
-            new ControllerMutationQuotaManager(clientControllerMutationConfig(cfg), metrics, time, threadNamePrefix, clientQuotaCallbackPlugin),
-            new ReplicationQuotaManager(replicationConfig(cfg), metrics, QuotaType.LEADER_REPLICATION, time),
-            new ReplicationQuotaManager(replicationConfig(cfg), metrics, QuotaType.FOLLOWER_REPLICATION, time),
-            new ReplicationQuotaManager(alterLogDirsReplicationConfig(cfg), metrics, QuotaType.ALTER_LOG_DIRS_REPLICATION, time),
-            clientQuotaCallbackPlugin
+                new ClientQuotaManager(clientConfig(cfg), metrics, QuotaType.FETCH, time, threadNamePrefix, clientQuotaCallbackPlugin),
+                new ClientQuotaManager(clientConfig(cfg), metrics, QuotaType.PRODUCE, time, threadNamePrefix, clientQuotaCallbackPlugin),
+                new ClientRequestQuotaManager(clientConfig(cfg), metrics, time, threadNamePrefix, clientQuotaCallbackPlugin),
+                new ControllerMutationQuotaManager(clientControllerMutationConfig(cfg), metrics, time, threadNamePrefix, clientQuotaCallbackPlugin),
+                new ReplicationQuotaManager(replicationConfig(cfg), metrics, QuotaType.LEADER_REPLICATION, time),
+                new ReplicationQuotaManager(replicationConfig(cfg), metrics, QuotaType.FOLLOWER_REPLICATION, time),
+                new ReplicationQuotaManager(alterLogDirsReplicationConfig(cfg), metrics, QuotaType.ALTER_LOG_DIRS_REPLICATION, time),
+                clientQuotaCallbackPlugin
         );
     }
 
     private static Optional<Plugin<ClientQuotaCallback>> createClientQuotaCallback(
-        KafkaConfig cfg, 
-        Metrics metrics, 
-        String role
+            KafkaConfig cfg,
+            Metrics metrics,
+            String role
     ) {
         ClientQuotaCallback clientQuotaCallback = cfg.getConfiguredInstance(
-            QuotaConfig.CLIENT_QUOTA_CALLBACK_CLASS_CONFIG, ClientQuotaCallback.class);
+                QuotaConfig.CLIENT_QUOTA_CALLBACK_CLASS_CONFIG, ClientQuotaCallback.class);
         return clientQuotaCallback == null ? Optional.empty() : Optional.of(Plugin.wrapInstance(
-            clientQuotaCallback,
-            metrics,
-            QuotaConfig.CLIENT_QUOTA_CALLBACK_CLASS_CONFIG,
-            "role", role
+                clientQuotaCallback,
+                metrics,
+                QuotaConfig.CLIENT_QUOTA_CALLBACK_CLASS_CONFIG,
+                "role", role
         ));
     }
 
     private static ClientQuotaManagerConfig clientConfig(KafkaConfig cfg) {
         return new ClientQuotaManagerConfig(
-            cfg.quotaConfig().numQuotaSamples(),
-            cfg.quotaConfig().quotaWindowSizeSeconds()
+                cfg.quotaConfig().numQuotaSamples(),
+                cfg.quotaConfig().quotaWindowSizeSeconds()
         );
     }
 
     private static ClientQuotaManagerConfig clientControllerMutationConfig(KafkaConfig cfg) {
         return new ClientQuotaManagerConfig(
-            cfg.quotaConfig().numControllerQuotaSamples(),
-            cfg.quotaConfig().controllerQuotaWindowSizeSeconds()
+                cfg.quotaConfig().numControllerQuotaSamples(),
+                cfg.quotaConfig().controllerQuotaWindowSizeSeconds()
         );
     }
 
     private static ReplicationQuotaManagerConfig replicationConfig(KafkaConfig cfg) {
         return new ReplicationQuotaManagerConfig(
-            cfg.quotaConfig().numReplicationQuotaSamples(),
-            cfg.quotaConfig().replicationQuotaWindowSizeSeconds()
+                cfg.quotaConfig().numReplicationQuotaSamples(),
+                cfg.quotaConfig().replicationQuotaWindowSizeSeconds()
         );
     }
 
     private static ReplicationQuotaManagerConfig alterLogDirsReplicationConfig(KafkaConfig cfg) {
         return new ReplicationQuotaManagerConfig(
-            cfg.quotaConfig().numAlterLogDirsReplicationQuotaSamples(),
-            cfg.quotaConfig().alterLogDirsReplicationQuotaWindowSizeSeconds()
+                cfg.quotaConfig().numAlterLogDirsReplicationQuotaSamples(),
+                cfg.quotaConfig().alterLogDirsReplicationQuotaWindowSizeSeconds()
         );
     }
 }

@@ -105,8 +105,8 @@ public interface Task {
 
     /**
      * @throws TaskCorruptedException if the state cannot be reused (with EOS) and needs to be reset
-     * @throws LockException    could happen when multi-threads within the single instance, could retry
-     * @throws StreamsException fatal error, should close the thread
+     * @throws LockException          could happen when multi-threads within the single instance, could retry
+     * @throws StreamsException       fatal error, should close the thread
      */
     void initializeIfNeeded();
 

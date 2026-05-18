@@ -60,8 +60,8 @@ class InternalTopicManagerTest {
     @Test
     void testConfigureTopicsSetsConfigurationExceptionWhenSourceTopicIsMissing() {
         MetadataImage metadataImage = new MetadataImageBuilder()
-            .addTopic(Uuid.randomUuid(), SOURCE_TOPIC_1, 2)
-            .build();
+                .addTopic(Uuid.randomUuid(), SOURCE_TOPIC_1, 2)
+                .build();
         // SOURCE_TOPIC_2 is missing from topicMetadata
         StreamsTopology topology = makeTestTopology();
 
@@ -76,10 +76,10 @@ class InternalTopicManagerTest {
     @Test
     void testConfigureTopics() {
         MetadataImage metadataImage = new MetadataImageBuilder()
-            .addTopic(Uuid.randomUuid(), SOURCE_TOPIC_1, 2)
-            .addTopic(Uuid.randomUuid(), SOURCE_TOPIC_2, 2)
-            .addTopic(Uuid.randomUuid(), STATE_CHANGELOG_TOPIC_2, 2)
-            .build();
+                .addTopic(Uuid.randomUuid(), SOURCE_TOPIC_1, 2)
+                .addTopic(Uuid.randomUuid(), SOURCE_TOPIC_2, 2)
+                .addTopic(Uuid.randomUuid(), STATE_CHANGELOG_TOPIC_2, 2)
+                .build();
         StreamsTopology topology = makeTestTopology();
 
         ConfiguredTopology configuredTopology = InternalTopicManager.configureTopics(LOG, "test-group", "test-member", 0, topology, new KRaftCoordinatorMetadataImage(metadataImage), TIME);
@@ -87,22 +87,22 @@ class InternalTopicManagerTest {
 
         assertEquals(2, internalTopicsToBeCreated.size());
         assertEquals(
-            new CreatableTopic()
-                .setName(REPARTITION_TOPIC)
-                .setNumPartitions(2)
-                .setReplicationFactor((short) 3),
-            internalTopicsToBeCreated.get(REPARTITION_TOPIC)
+                new CreatableTopic()
+                        .setName(REPARTITION_TOPIC)
+                        .setNumPartitions(2)
+                        .setReplicationFactor((short) 3),
+                internalTopicsToBeCreated.get(REPARTITION_TOPIC)
         );
         assertEquals(
-            new CreatableTopic()
-                .setName(STATE_CHANGELOG_TOPIC_1)
-                .setNumPartitions(2)
-                .setReplicationFactor((short) -1)
-                .setConfigs(
-                    new CreatableTopicConfigCollection(
-                        List.of(new CreatableTopicConfig().setName(CONFIG_KEY).setValue(CONFIG_VALUE)).iterator())
-                ),
-            internalTopicsToBeCreated.get(STATE_CHANGELOG_TOPIC_1));
+                new CreatableTopic()
+                        .setName(STATE_CHANGELOG_TOPIC_1)
+                        .setNumPartitions(2)
+                        .setReplicationFactor((short) -1)
+                        .setConfigs(
+                                new CreatableTopicConfigCollection(
+                                        List.of(new CreatableTopicConfig().setName(CONFIG_KEY).setValue(CONFIG_VALUE)).iterator())
+                        ),
+                internalTopicsToBeCreated.get(STATE_CHANGELOG_TOPIC_1));
 
         Optional<Map<String, ConfiguredSubtopology>> expectedConfiguredTopology = Optional.of(makeExpectedConfiguredSubtopologies());
         assertEquals(expectedConfiguredTopology, configuredTopology.subtopologies());
@@ -110,76 +110,76 @@ class InternalTopicManagerTest {
 
     private static Map<String, ConfiguredSubtopology> makeExpectedConfiguredSubtopologies() {
         return mkMap(
-            mkEntry(SUBTOPOLOGY_1,
-                new ConfiguredSubtopology(
-                    2,
-                    Set.of(SOURCE_TOPIC_1),
-                    Map.of(),
-                    Set.of(REPARTITION_TOPIC),
-                    Map.of(STATE_CHANGELOG_TOPIC_1,
-                        new ConfiguredInternalTopic(
-                            STATE_CHANGELOG_TOPIC_1,
-                            2,
-                            Optional.empty(),
-                            Map.of(CONFIG_KEY, CONFIG_VALUE)
-                        ))
-                )
-            ),
-            mkEntry(SUBTOPOLOGY_2,
-                new ConfiguredSubtopology(
-                    2,
-                    Set.of(SOURCE_TOPIC_2),
-                    Map.of(REPARTITION_TOPIC,
-                        new ConfiguredInternalTopic(REPARTITION_TOPIC,
-                            2,
-                            Optional.of((short) 3),
-                            Map.of()
+                mkEntry(SUBTOPOLOGY_1,
+                        new ConfiguredSubtopology(
+                                2,
+                                Set.of(SOURCE_TOPIC_1),
+                                Map.of(),
+                                Set.of(REPARTITION_TOPIC),
+                                Map.of(STATE_CHANGELOG_TOPIC_1,
+                                        new ConfiguredInternalTopic(
+                                                STATE_CHANGELOG_TOPIC_1,
+                                                2,
+                                                Optional.empty(),
+                                                Map.of(CONFIG_KEY, CONFIG_VALUE)
+                                        ))
                         )
-                    ),
-                    Set.of(),
-                    Map.of(STATE_CHANGELOG_TOPIC_2,
-                        new ConfiguredInternalTopic(STATE_CHANGELOG_TOPIC_2,
-                            2,
-                            Optional.empty(),
-                            Map.of()
-                        )))
-            )
+                ),
+                mkEntry(SUBTOPOLOGY_2,
+                        new ConfiguredSubtopology(
+                                2,
+                                Set.of(SOURCE_TOPIC_2),
+                                Map.of(REPARTITION_TOPIC,
+                                        new ConfiguredInternalTopic(REPARTITION_TOPIC,
+                                                2,
+                                                Optional.of((short) 3),
+                                                Map.of()
+                                        )
+                                ),
+                                Set.of(),
+                                Map.of(STATE_CHANGELOG_TOPIC_2,
+                                        new ConfiguredInternalTopic(STATE_CHANGELOG_TOPIC_2,
+                                                2,
+                                                Optional.empty(),
+                                                Map.of()
+                                        )))
+                )
         );
     }
 
     private static StreamsTopology makeTestTopology() {
         // Create a subtopology source -> repartition
         Subtopology subtopology1 = new Subtopology()
-            .setSubtopologyId(SUBTOPOLOGY_1)
-            .setSourceTopics(List.of(SOURCE_TOPIC_1))
-            .setRepartitionSinkTopics(List.of(REPARTITION_TOPIC))
-            .setStateChangelogTopics(List.of(
-                new StreamsGroupTopologyValue.TopicInfo()
-                    .setName(STATE_CHANGELOG_TOPIC_1)
-                    .setTopicConfigs(List.of(
-                        new StreamsGroupTopologyValue.TopicConfig()
-                            .setKey(CONFIG_KEY)
-                            .setValue(CONFIG_VALUE)
-                    ))
-            ));
+                .setSubtopologyId(SUBTOPOLOGY_1)
+                .setSourceTopics(List.of(SOURCE_TOPIC_1))
+                .setRepartitionSinkTopics(List.of(REPARTITION_TOPIC))
+                .setStateChangelogTopics(List.of(
+                        new StreamsGroupTopologyValue.TopicInfo()
+                                .setName(STATE_CHANGELOG_TOPIC_1)
+                                .setTopicConfigs(List.of(
+                                        new StreamsGroupTopologyValue.TopicConfig()
+                                                .setKey(CONFIG_KEY)
+                                                .setValue(CONFIG_VALUE)
+                                ))
+                ));
         // Create a subtopology repartition/source2 -> sink (copartitioned)
         Subtopology subtopology2 = new Subtopology()
-            .setSubtopologyId(SUBTOPOLOGY_2)
-            .setSourceTopics(List.of(SOURCE_TOPIC_2))
-            .setRepartitionSourceTopics(List.of(
-                new StreamsGroupTopologyValue.TopicInfo()
-                    .setName(REPARTITION_TOPIC)
-                    .setReplicationFactor((short) 3)
-            ))
-            .setStateChangelogTopics(List.of(
-                new StreamsGroupTopologyValue.TopicInfo()
-                    .setName(STATE_CHANGELOG_TOPIC_2)
-            ))
-            .setCopartitionGroups(List.of(
-                new StreamsGroupTopologyValue.CopartitionGroup()
-                    .setSourceTopics(List.of((short) 0))
-                    .setRepartitionSourceTopics(List.of((short) 0))
-            ));
+                .setSubtopologyId(SUBTOPOLOGY_2)
+                .setSourceTopics(List.of(SOURCE_TOPIC_2))
+                .setRepartitionSourceTopics(List.of(
+                        new StreamsGroupTopologyValue.TopicInfo()
+                                .setName(REPARTITION_TOPIC)
+                                .setReplicationFactor((short) 3)
+                ))
+                .setStateChangelogTopics(List.of(
+                        new StreamsGroupTopologyValue.TopicInfo()
+                                .setName(STATE_CHANGELOG_TOPIC_2)
+                ))
+                .setCopartitionGroups(List.of(
+                        new StreamsGroupTopologyValue.CopartitionGroup()
+                                .setSourceTopics(List.of((short) 0))
+                                .setRepartitionSourceTopics(List.of((short) 0))
+                ));
 
         return new StreamsTopology(3, Map.of(SUBTOPOLOGY_1, subtopology1, SUBTOPOLOGY_2, subtopology2));
     }

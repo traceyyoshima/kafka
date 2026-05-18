@@ -52,7 +52,7 @@ public class MockApiFixedKeyProcessor<KIn, VIn, VOut> implements FixedKeyProcess
     private FixedKeyProcessorContext<KIn, VOut> context;
 
     public MockApiFixedKeyProcessor(final PunctuationType punctuationType,
-                            final long scheduleInterval) {
+                                    final long scheduleInterval) {
         this.punctuationType = punctuationType;
         this.scheduleInterval = scheduleInterval;
     }
@@ -66,9 +66,9 @@ public class MockApiFixedKeyProcessor<KIn, VIn, VOut> implements FixedKeyProcess
         this.context = context;
         if (scheduleInterval > 0L) {
             scheduleCancellable = context.schedule(
-                Duration.ofMillis(scheduleInterval),
-                punctuationType,
-                (punctuationType == PunctuationType.STREAM_TIME ? punctuatedStreamTime : punctuatedSystemTime)::add
+                    Duration.ofMillis(scheduleInterval),
+                    punctuationType,
+                    (punctuationType == PunctuationType.STREAM_TIME ? punctuatedStreamTime : punctuatedSystemTime)::add
             );
         }
     }
@@ -97,9 +97,9 @@ public class MockApiFixedKeyProcessor<KIn, VIn, VOut> implements FixedKeyProcess
         for (int i = 0; i < expected.length; i++) {
             final FixedKeyRecord<KIn, VIn> record = processed.get(i);
             assertThat(
-                "output[" + i + "]:",
-                new KeyValueTimestamp<>(record.key(), record.value(), record.timestamp()),
-                is(expected[i])
+                    "output[" + i + "]:",
+                    new KeyValueTimestamp<>(record.key(), record.value(), record.timestamp()),
+                    is(expected[i])
             );
         }
 
@@ -137,9 +137,9 @@ public class MockApiFixedKeyProcessor<KIn, VIn, VOut> implements FixedKeyProcess
 
     public ArrayList<KeyValueTimestamp<KIn, VIn>> processed() {
         return processed
-            .stream()
-            .map(r -> new KeyValueTimestamp<>(r.key(), r.value(), r.timestamp()))
-            .collect(Collectors.toCollection(ArrayList::new));
+                .stream()
+                .map(r -> new KeyValueTimestamp<>(r.key(), r.value(), r.timestamp()))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public Map<KIn, ValueAndTimestamp<VIn>> lastValueAndTimestampPerKey() {

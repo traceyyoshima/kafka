@@ -183,6 +183,7 @@ public class LogConfig extends AbstractConfig {
             .defineInternal(ServerLogConfigs.LOG_INITIAL_TASK_DELAY_MS_CONFIG, LONG, ServerLogConfigs.LOG_INITIAL_TASK_DELAY_MS_DEFAULT, atLeast(0), LOW, ServerLogConfigs.LOG_INITIAL_TASK_DELAY_MS_DOC);
 
     private static final LogConfigDef CONFIG = new LogConfigDef();
+
     static {
         CONFIG.
                 define(TopicConfig.SEGMENT_BYTES_CONFIG, INT, DEFAULT_SEGMENT_BYTES, atLeast(1024 * 1024), MEDIUM,
@@ -466,6 +467,7 @@ public class LogConfig extends AbstractConfig {
      * Validates the values of the given properties. Can be called by both client and server.
      * The `props` supplied should contain all the LogConfig properties and the default values are extracted from the
      * LogConfig class.
+     *
      * @param props The properties to be validated
      */
     public static void validateValues(Map<String, ?> props) {
@@ -482,6 +484,7 @@ public class LogConfig extends AbstractConfig {
      * Validates the values of the given properties. Should be called only by the broker.
      * The `props` supplied doesn't contain any topic-level configs, only broker-level configs.
      * The default values should be extracted from the KafkaConfig.
+     *
      * @param props The properties to be validated
      */
     public static void validateBrokerLogConfigValues(Map<String, ?> props,
@@ -497,9 +500,10 @@ public class LogConfig extends AbstractConfig {
      * Validates the values of the given properties. Should be called only by the broker.
      * The `newConfigs` supplied contains the topic-level configs,
      * The default values should be extracted from the KafkaConfig.
-     * @param existingConfigs                   The existing properties
-     * @param newConfigs                        The new properties to be validated
-     * @param isRemoteLogStorageSystemEnabled   true if system wise remote log storage is enabled
+     *
+     * @param existingConfigs                 The existing properties
+     * @param newConfigs                      The new properties to be validated
+     * @param isRemoteLogStorageSystemEnabled true if system wise remote log storage is enabled
      */
     private static void validateTopicLogConfigValues(Map<String, String> existingConfigs,
                                                      Map<String, ?> newConfigs,

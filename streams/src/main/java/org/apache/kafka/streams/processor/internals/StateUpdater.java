@@ -63,9 +63,9 @@ public interface StateUpdater {
         @Override
         public String toString() {
             return "ExceptionAndTask{" +
-                "task=" + task.id() +
-                ", exception=" + exception +
-                '}';
+                    "task=" + task.id() +
+                    ", exception=" + exception +
+                    '}';
         }
     }
 
@@ -107,9 +107,9 @@ public interface StateUpdater {
         @Override
         public String toString() {
             return "RemovedTaskResult{" +
-                "task=" + task.id() +
-                ", exception=" + exception +
-                '}';
+                    "task=" + task.id() +
+                    ", exception=" + exception +
+                    '}';
         }
     }
 
@@ -122,15 +122,13 @@ public interface StateUpdater {
      * Shuts down the state updater.
      *
      * @param timeout duration how long to wait until the state updater is shut down
-     *
-     * @throws
-     *     org.apache.kafka.streams.errors.StreamsException if the state updater thread cannot shutdown within the timeout
+     * @throws org.apache.kafka.streams.errors.StreamsException if the state updater thread cannot shutdown within the timeout
      */
     void shutdown(final Duration timeout);
 
     /**
      * Adds a task (active or standby) to the state updater.
-     *
+     * <p>
      * This method does not block until the task is added to the state updater.
      *
      * @param task task to add
@@ -139,12 +137,12 @@ public interface StateUpdater {
 
     /**
      * Removes a task (active or standby) from the state updater.
-     *
+     * <p>
      * This method does not block until the removed task is removed from the state updater. But it returns a future on
      * which processing can be blocked. The task to remove is removed from the updating tasks, paused tasks,
      * restored tasks, or failed tasks.
      *
-     * @param taskId ID of the task to remove
+     * @param taskId        ID of the task to remove
      * @param suspendReason the reason for suspending standby update, passed through to the changelog reader
      */
     CompletableFuture<RemovedTaskResult> remove(final TaskId taskId, final StandbyUpdateListener.SuspendReason suspendReason);
@@ -156,20 +154,19 @@ public interface StateUpdater {
 
     /**
      * Drains the restored active tasks from the state updater.
-     *
+     * <p>
      * The returned active tasks are removed from the state updater.
-     *
+     * <p>
      * With a timeout of zero the method tries to drain the restored active tasks at least once.
      *
      * @param timeout duration how long the calling thread should wait for restored active tasks
-     *
      * @return set of active tasks with up-to-date states
      */
     Set<StreamTask> drainRestoredActiveTasks(final Duration timeout);
 
     /**
      * Drains the failed tasks and the corresponding exceptions.
-     *
+     * <p>
      * The returned failed tasks are removed from the state updater
      *
      * @return list of failed tasks and the corresponding exceptions
@@ -186,7 +183,7 @@ public interface StateUpdater {
 
     /**
      * Gets all tasks that are managed by the state updater.
-     *
+     * <p>
      * The state updater manages all tasks that were added with the {@link StateUpdater#add(Task)} and that have
      * not been removed from the state updater with one of the following methods:
      * <ul>
@@ -201,7 +198,7 @@ public interface StateUpdater {
 
     /**
      * Gets all tasks that are currently being restored inside the state updater.
-     *
+     * <p>
      * Tasks that have just being added into the state updater via {@link StateUpdater#add(Task)}
      * or have restored completely or removed will not be returned; tasks that have just being
      * removed via {@link StateUpdater#remove(TaskId)} may still be returned.
@@ -212,7 +209,7 @@ public interface StateUpdater {
 
     /**
      * Returns if the state updater restores active tasks.
-     *
+     * <p>
      * The state updater restores active tasks if at least one active task was added with {@link StateUpdater#add(Task)},
      * and the task was not removed from the state updater with one of the following methods:
      * <ul>
@@ -231,7 +228,7 @@ public interface StateUpdater {
 
     /**
      * Gets standby tasks that are managed by the state updater.
-     *
+     * <p>
      * The state updater manages all standby tasks that were added with the {@link StateUpdater#add(Task)} and that have
      * not been removed from the state updater with one of the following methods:
      * <ul>

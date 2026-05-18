@@ -21,6 +21,7 @@ import java.util.Set;
 
 /**
  * A partition movement.  The source and destination brokers may overlap.
+ *
  * @param sources      The source brokers.
  * @param destinations The destination brokers.
  */

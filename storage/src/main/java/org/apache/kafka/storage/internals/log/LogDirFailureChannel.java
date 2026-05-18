@@ -34,7 +34,7 @@ import java.util.concurrent.ConcurrentMap;
  * directory is added for the first time, a thread which is blocked waiting for new offline log directories
  * can take the name of the new offline log directory out of the LogDirFailureChannel and handle the log failure properly.
  * An offline log directory will stay offline until the broker is restarted.
- */ 
+ */
 public class LogDirFailureChannel {
     private static final Logger log = LoggerFactory.getLogger(LogDirFailureChannel.class);
     private final ConcurrentMap<String, String> offlineLogDirs;
@@ -52,10 +52,10 @@ public class LogDirFailureChannel {
     /**
      * If the given logDir is not already offline, add it to the
      * set of offline log dirs and enqueue it to the logDirFailureEvent queue.
-     * 
+     *
      * @param logDir The offline logDir.
-     * @param msg Error message.
-     * @param e Exception instance.
+     * @param msg    Error message.
+     * @param e      Exception instance.
      */
     public void maybeAddOfflineLogDir(String logDir, String msg, IOException e) {
         log.error(msg, e);
@@ -67,7 +67,7 @@ public class LogDirFailureChannel {
     /**
      * Get the next offline log dir from logDirFailureEvent queue.
      * The method will wait if necessary until a new offline log directory becomes available
-     * 
+     *
      * @return The next offline log dir.
      * @throws InterruptedException if the current thread is interrupted while waiting
      */

@@ -163,7 +163,7 @@ public class ShareSessionHandlerTest {
         LinkedHashMap<TopicIdPartition, ShareFetchResponseData.PartitionData> topicIdPartitionToPartition = new LinkedHashMap<>();
         for (RespEntry entry : entries) {
             ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-                .setPartitionIndex(entry.part.partition());
+                    .setPartitionIndex(entry.part.partition());
             topicIdPartitionToPartition.put(entry.part, partitionData);
         }
         return topicIdPartitionToPartition;
@@ -190,10 +190,10 @@ public class ShareSessionHandlerTest {
         assertEquals(memberId.toString(), requestData1.memberId());
 
         ShareFetchResponse resp = ShareFetchResponse.of(Errors.NONE,
-            0,
-            buildResponseData(new RespEntry("foo", 0, fooId), new RespEntry("foo", 1, fooId)),
-            List.of(),
-            0);
+                0,
+                buildResponseData(new RespEntry("foo", 0, fooId), new RespEntry("foo", 1, fooId)),
+                List.of(),
+                0);
         handler.handleResponse(resp, ApiKeys.SHARE_FETCH.latestVersion());
 
         // Test a fetch request which adds one partition
@@ -212,10 +212,10 @@ public class ShareSessionHandlerTest {
         assertListEquals(expectedToSend2, reqFetchList(requestData2, topicNames));
 
         ShareFetchResponse resp2 = ShareFetchResponse.of(Errors.NONE,
-            0,
-            buildResponseData(new RespEntry("foo", 1, fooId)),
-            List.of(),
-            0);
+                0,
+                buildResponseData(new RespEntry("foo", 1, fooId)),
+                List.of(),
+                0);
         handler.handleResponse(resp2, ApiKeys.SHARE_FETCH.latestVersion());
 
         // A top-level error code will reset the session epoch
@@ -266,13 +266,13 @@ public class ShareSessionHandlerTest {
         assertEquals(memberId.toString(), requestData1.memberId());
 
         ShareFetchResponse resp = ShareFetchResponse.of(Errors.NONE,
-            0,
-            buildResponseData(
-                new RespEntry("foo", 0, fooId),
-                new RespEntry("foo", 1, fooId),
-                new RespEntry("bar", 0, barId)),
-            List.of(),
-            0);
+                0,
+                buildResponseData(
+                        new RespEntry("foo", 0, fooId),
+                        new RespEntry("foo", 1, fooId),
+                        new RespEntry("bar", 0, barId)),
+                List.of(),
+                0);
         handler.handleResponse(resp, ApiKeys.SHARE_FETCH.latestVersion());
 
         // Test a fetch request which removes two partitions
@@ -322,10 +322,10 @@ public class ShareSessionHandlerTest {
         assertListEquals(expectedToSend1, reqFetchList(requestData1, topicNames));
 
         ShareFetchResponse resp = ShareFetchResponse.of(Errors.NONE,
-            0,
-            buildResponseData(new RespEntry("foo", 0, topicId1)),
-            List.of(),
-            0);
+                0,
+                buildResponseData(new RespEntry("foo", 0, topicId1)),
+                List.of(),
+                0);
         handler.handleResponse(resp, ApiKeys.SHARE_FETCH.latestVersion());
 
         // Try to add a new topic ID
@@ -366,10 +366,10 @@ public class ShareSessionHandlerTest {
         assertListEquals(expectedToSend1, reqFetchList(requestData1, topicNames));
 
         ShareFetchResponse resp = ShareFetchResponse.of(Errors.NONE,
-            0,
-            buildResponseData(new RespEntry("foo", 0, topicId)),
-            List.of(),
-            0);
+                0,
+                buildResponseData(new RespEntry("foo", 0, topicId)),
+                List.of(),
+                0);
         handler.handleResponse(resp, ApiKeys.SHARE_FETCH.latestVersion());
 
         // Remove the topic from the session by setting acknowledgements only - this is not asking to fetch records
@@ -401,10 +401,10 @@ public class ShareSessionHandlerTest {
         assertListEquals(expectedToSend1, reqFetchList(requestData1, topicNames));
 
         ShareFetchResponse resp = ShareFetchResponse.of(Errors.NONE,
-            0,
-            buildResponseData(new RespEntry("foo", 0, topicId)),
-            List.of(),
-            0);
+                0,
+                buildResponseData(new RespEntry("foo", 0, topicId)),
+                List.of(),
+                0);
         handler.handleResponse(resp, ApiKeys.SHARE_FETCH.latestVersion());
 
         // Remove the topic from the session
@@ -434,10 +434,10 @@ public class ShareSessionHandlerTest {
         assertListEquals(expectedToSend1, reqFetchList(requestData1, topicNames));
 
         ShareFetchResponse resp = ShareFetchResponse.of(Errors.NONE,
-            0,
-            buildResponseData(new RespEntry("foo", 0, topicId)),
-            List.of(),
-            0);
+                0,
+                buildResponseData(new RespEntry("foo", 0, topicId)),
+                List.of(),
+                0);
         handler.handleResponse(resp, ApiKeys.SHARE_FETCH.latestVersion());
 
         // Remove the partition from the session
@@ -511,10 +511,10 @@ public class ShareSessionHandlerTest {
         assertNotNull(builder);
 
         ShareFetchResponse resp = ShareFetchResponse.of(Errors.NONE,
-            0,
-            buildResponseData(new RespEntry("foo", 0, fooId)),
-            List.of(),
-            0);
+                0,
+                buildResponseData(new RespEntry("foo", 0, fooId)),
+                List.of(),
+                0);
         handler.handleResponse(resp, ApiKeys.SHARE_FETCH.latestVersion());
 
         // The request can be skipped when the same topic-partition is already in the share session.

@@ -125,10 +125,10 @@ public class KafkaRaftLog implements RaftLog {
 
         try {
             FetchDataInfo fetchInfo = log.read(
-                startOffset,
-                maxTotalBatchBytes,
-                isolation,
-                true
+                    startOffset,
+                    maxTotalBatchBytes,
+                    isolation,
+                    true
             );
             return new LogFetchInfo(
                     fetchInfo.records,
@@ -186,8 +186,8 @@ public class KafkaRaftLog implements RaftLog {
             } else {
                 throw new KafkaException(
                         "Log doesn't have a last fetch epoch and there is a snapshot (" + snapshotId + "). " +
-                        "Expected the snapshot's end offset to match the log's end offset (" + logEndOffset +
-                        ") and the log start offset (" + startOffset + ")"
+                                "Expected the snapshot's end offset to match the log's end offset (" + logEndOffset +
+                                ") and the log start offset (" + startOffset + ")"
                 );
             }
         }).orElse(0));
@@ -364,15 +364,15 @@ public class KafkaRaftLog implements RaftLog {
           follower will be unable to append it since (X - M) < (X).
          */
         long baseOffset = read(
-            snapshotId.offset(),
-            Isolation.COMMITTED,
-            1 // maxTotalBatchBytes - ensures that we only fetch one batch.
+                snapshotId.offset(),
+                Isolation.COMMITTED,
+                1 // maxTotalBatchBytes - ensures that we only fetch one batch.
         ).startOffsetMetadata.offset();
 
         if (snapshotId.offset() != baseOffset) {
             throw new IllegalArgumentException(
                     "Cannot create snapshot at offset (" + snapshotId.offset() + ") because it is not batch aligned. " +
-                    "The batch containing the requested offset has a base offset of (" + baseOffset + ")"
+                            "The batch containing the requested offset has a base offset of (" + baseOffset + ")"
             );
         }
         return createNewSnapshotUnchecked(snapshotId);
@@ -465,7 +465,7 @@ public class KafkaRaftLog implements RaftLog {
      * <li>The given snapshot precedes the latest snapshot</li>
      * <li>The offset of the given snapshot is greater than the log start offset</li>
      * <li>The log layer can advance the offset to the given snapshot</li>
-     *
+     * <p>
      * This method is thread-safe
      */
     @Override
@@ -519,7 +519,7 @@ public class KafkaRaftLog implements RaftLog {
      */
     private Optional<Long> readSnapshotTimestamp(OffsetAndEpoch snapshotId) {
         return readSnapshot(snapshotId).map(reader ->
-            Snapshots.lastContainedLogTimestamp(reader, new LogContext(logIdent))
+                Snapshots.lastContainedLogTimestamp(reader, new LogContext(logIdent))
         );
     }
 
@@ -530,7 +530,7 @@ public class KafkaRaftLog implements RaftLog {
      * <li>Find the oldest snapshot and delete it</li>
      * <li>Advance log start offset to end of next oldest snapshot</li>
      * <li>Delete log segments which wholly precede the new log start offset</li>
-     *
+     * <p>
      * This process is repeated until the retention size is no longer violated, or until only
      * a single snapshot remains.
      */
@@ -589,14 +589,14 @@ public class KafkaRaftLog implements RaftLog {
 
         // Keep deleting snapshots as long as the
         Function<OffsetAndEpoch, Optional<SnapshotDeletionReason>> shouldClean = snapshotId ->
-            readSnapshotTimestamp(snapshotId).flatMap(timestamp -> {
-                long now = time.milliseconds();
-                if (now - timestamp > config.retentionMillis()) {
-                    return Optional.of(new RetentionMsBreach(now, timestamp, config.retentionMillis()));
-                } else {
-                    return Optional.empty();
-                }
-            });
+                readSnapshotTimestamp(snapshotId).flatMap(timestamp -> {
+                    long now = time.milliseconds();
+                    if (now - timestamp > config.retentionMillis()) {
+                        return Optional.of(new RetentionMsBreach(now, timestamp, config.retentionMillis()));
+                    } else {
+                        return Optional.empty();
+                    }
+                });
 
         return cleanSnapshots(shouldClean);
     }
@@ -737,7 +737,7 @@ public class KafkaRaftLog implements RaftLog {
 
         if (defaultLogConfig.segmentSize() < config.logSegmentBytes()) {
             metadataLog.logger.error("Overriding {} is only supported for testing. Setting this value too low may " +
-                    "lead to an inability to write batches of metadata records.",
+                            "lead to an inability to write batches of metadata records.",
                     MetadataLogConfig.INTERNAL_METADATA_LOG_SEGMENT_BYTES_CONFIG);
         }
 
@@ -814,7 +814,8 @@ public class KafkaRaftLog implements RaftLog {
         }
     }
 
-    record RetentionSizeBreach(long logSize, long snapshotsSize, long retentionMaxBytes) implements SnapshotDeletionReason {
+    record RetentionSizeBreach(long logSize, long snapshotsSize,
+                               long retentionMaxBytes) implements SnapshotDeletionReason {
         @Override
         public String reason(OffsetAndEpoch snapshotId) {
             return "Marking snapshot " + snapshotId + " for deletion because the log size (" + logSize + ") and snapshots size (" +

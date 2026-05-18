@@ -58,16 +58,16 @@ public class FeaturesImageTest {
         DELTA1_RECORDS = new ArrayList<>();
         // change feature level
         DELTA1_RECORDS.add(new ApiMessageAndVersion(new FeatureLevelRecord().
-            setName("foo").setFeatureLevel((short) 3),
-            (short) 0));
+                setName("foo").setFeatureLevel((short) 3),
+                (short) 0));
         // remove feature
         DELTA1_RECORDS.add(new ApiMessageAndVersion(new FeatureLevelRecord().
-            setName("bar").setFeatureLevel((short) 0),
-            (short) 0));
+                setName("bar").setFeatureLevel((short) 0),
+                (short) 0));
         // add feature
         DELTA1_RECORDS.add(new ApiMessageAndVersion(new FeatureLevelRecord().
-            setName("baz").setFeatureLevel((short) 8),
-            (short) 0));
+                setName("baz").setFeatureLevel((short) 8),
+                (short) 0));
 
         DELTA1 = new FeaturesDelta(IMAGE1);
         RecordTestUtils.replayAll(DELTA1, DELTA1_RECORDS);
@@ -80,15 +80,15 @@ public class FeaturesImageTest {
         DELTA2_RECORDS = new ArrayList<>();
         // remove all features
         DELTA2_RECORDS.add(new ApiMessageAndVersion(new FeatureLevelRecord().
-            setName("foo").setFeatureLevel((short) 0),
-            (short) 0));
+                setName("foo").setFeatureLevel((short) 0),
+                (short) 0));
         DELTA2_RECORDS.add(new ApiMessageAndVersion(new FeatureLevelRecord().
-            setName("baz").setFeatureLevel((short) 0),
-            (short) 0));
+                setName("baz").setFeatureLevel((short) 0),
+                (short) 0));
         // add feature back with different feature level
         DELTA2_RECORDS.add(new ApiMessageAndVersion(new FeatureLevelRecord().
-            setName("bar").setFeatureLevel((short) 1),
-            (short) 0));
+                setName("bar").setFeatureLevel((short) 1),
+                (short) 0));
 
         DELTA2 = new FeaturesDelta(IMAGE2);
         RecordTestUtils.replayAll(DELTA2, DELTA2_RECORDS);
@@ -152,8 +152,8 @@ public class FeaturesImageTest {
     private static void testToImage(FeaturesImage image, List<ApiMessageAndVersion> fromRecords) {
         // test from empty image stopping each of the various intermediate images along the way
         new RecordTestUtils.TestThroughAllIntermediateImagesLeadingToFinalImageHelper<>(
-            () -> FeaturesImage.EMPTY,
-            FeaturesDelta::new
+                () -> FeaturesImage.EMPTY,
+                FeaturesDelta::new
         ).test(image, fromRecords);
     }
 
@@ -167,22 +167,22 @@ public class FeaturesImageTest {
     public void testEmpty() {
         assertTrue(FeaturesImage.EMPTY.isEmpty());
         assertFalse(new FeaturesImage(Map.of("foo", (short) 1),
-            MetadataVersion.MINIMUM_VERSION).isEmpty());
+                MetadataVersion.MINIMUM_VERSION).isEmpty());
         assertFalse(new FeaturesImage(FeaturesImage.EMPTY.finalizedVersions(),
-            MetadataVersion.MINIMUM_VERSION).isEmpty());
+                MetadataVersion.MINIMUM_VERSION).isEmpty());
     }
 
     @Test
     public void testElrEnabled() {
         FeaturesImage image1 = new FeaturesImage(
-            Map.of(EligibleLeaderReplicasVersion.FEATURE_NAME, EligibleLeaderReplicasVersion.ELRV_0.featureLevel()),
-            MetadataVersion.latestTesting()
+                Map.of(EligibleLeaderReplicasVersion.FEATURE_NAME, EligibleLeaderReplicasVersion.ELRV_0.featureLevel()),
+                MetadataVersion.latestTesting()
         );
         assertFalse(image1.isElrEnabled());
 
         FeaturesImage image2 = new FeaturesImage(
-            Map.of(EligibleLeaderReplicasVersion.FEATURE_NAME, EligibleLeaderReplicasVersion.ELRV_1.featureLevel()),
-            MetadataVersion.latestTesting()
+                Map.of(EligibleLeaderReplicasVersion.FEATURE_NAME, EligibleLeaderReplicasVersion.ELRV_1.featureLevel()),
+                MetadataVersion.latestTesting()
         );
         assertTrue(image2.isElrEnabled());
     }

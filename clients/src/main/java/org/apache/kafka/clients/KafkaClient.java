@@ -33,7 +33,7 @@ public interface KafkaClient extends Closeable {
      * aren't.
      *
      * @param node The node to check
-     * @param now The current timestamp
+     * @param now  The current timestamp
      */
     boolean isReady(Node node, long now);
 
@@ -42,7 +42,7 @@ public interface KafkaClient extends Closeable {
      * node will change only when poll is invoked.
      *
      * @param node The node to connect to.
-     * @param now The current time
+     * @param now  The current time
      * @return true iff we are ready to immediately initiate the sending of another request to the given node.
      */
     boolean ready(Node node, long now);
@@ -53,7 +53,7 @@ public interface KafkaClient extends Closeable {
      * connections.
      *
      * @param node The node to check
-     * @param now The current timestamp
+     * @param now  The current timestamp
      * @return The number of milliseconds to wait.
      */
     long connectionDelay(Node node, long now);
@@ -64,7 +64,7 @@ public interface KafkaClient extends Closeable {
      * Otherwise, return connection delay.
      *
      * @param node the connection to check
-     * @param now the current time in ms
+     * @param now  the current time in ms
      */
     long pollDelayMs(Node node, long now);
 
@@ -89,8 +89,9 @@ public interface KafkaClient extends Closeable {
 
     /**
      * Queue up the given request for sending. Requests can only be sent on ready connections.
+     *
      * @param request The request
-     * @param now The current timestamp
+     * @param now     The current timestamp
      */
     void send(ClientRequest request, long now);
 
@@ -100,7 +101,7 @@ public interface KafkaClient extends Closeable {
      * @param timeout The maximum amount of time to wait for responses in ms, must be non-negative. The implementation
      *                is free to use a lower value if appropriate (common reasons for this are a lower request or
      *                metadata update timeout)
-     * @param now The current time in ms
+     * @param now     The current time in ms
      * @throws IllegalStateException If a request is sent to an unready node
      */
     List<ClientResponse> poll(long timeout, long now);
@@ -170,9 +171,9 @@ public interface KafkaClient extends Closeable {
     /**
      * Create a new ClientRequest.
      *
-     * @param nodeId the node to send to
+     * @param nodeId         the node to send to
      * @param requestBuilder the request builder to use
-     * @param createdTimeMs the time in milliseconds to use as the creation time of the request
+     * @param createdTimeMs  the time in milliseconds to use as the creation time of the request
      * @param expectResponse true iff we expect a response
      */
     ClientRequest newClientRequest(String nodeId, AbstractRequest.Builder<?> requestBuilder,
@@ -181,14 +182,14 @@ public interface KafkaClient extends Closeable {
     /**
      * Create a new ClientRequest.
      *
-     * @param nodeId the node to send to
-     * @param requestBuilder the request builder to use
-     * @param createdTimeMs the time in milliseconds to use as the creation time of the request
-     * @param expectResponse true iff we expect a response
+     * @param nodeId           the node to send to
+     * @param requestBuilder   the request builder to use
+     * @param createdTimeMs    the time in milliseconds to use as the creation time of the request
+     * @param expectResponse   true iff we expect a response
      * @param requestTimeoutMs Upper bound time in milliseconds to await a response before disconnecting the socket and
      *                         cancelling the request. The request may get cancelled sooner if the socket disconnects
      *                         for any reason including if another pending request to the same node timed out first.
-     * @param callback the callback to invoke when we get a response
+     * @param callback         the callback to invoke when we get a response
      */
     ClientRequest newClientRequest(String nodeId,
                                    AbstractRequest.Builder<?> requestBuilder,
@@ -196,7 +197,6 @@ public interface KafkaClient extends Closeable {
                                    boolean expectResponse,
                                    int requestTimeoutMs,
                                    RequestCompletionHandler callback);
-
 
 
     /**

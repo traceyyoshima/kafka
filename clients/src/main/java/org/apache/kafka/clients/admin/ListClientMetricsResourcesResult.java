@@ -25,6 +25,7 @@ import java.util.Collection;
 /**
  * The result of the {@link Admin#listClientMetricsResources()} call.
  * <p>
+ *
  * @deprecated Since 4.1. Use {@link ListConfigResourcesResult} instead.
  */
 @Deprecated(since = "4.1")
@@ -38,7 +39,7 @@ public class ListClientMetricsResourcesResult {
     /**
      * Returns a future that yields either an exception, or the full set of client metrics
      * listings.
-     *
+     * <p>
      * In the event of a failure, the future yields nothing but the first exception which
      * occurred.
      */

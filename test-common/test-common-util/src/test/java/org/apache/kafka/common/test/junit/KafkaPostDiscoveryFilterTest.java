@@ -171,8 +171,8 @@ public class KafkaPostDiscoveryFilterTest {
     @Test
     public void testNoCatalogRunFlakyTests() {
         KafkaPostDiscoveryFilter filter = new KafkaPostDiscoveryFilter(
-            CatalogTestFilter.create(null),
-            false, true
+                CatalogTestFilter.create(null),
+                false, true
         );
         assertTrue(filter.apply(new MockTestDescriptor("o.a.k.Foo", "testBar1", "flaky")).included());
         assertTrue(filter.apply(new MockTestDescriptor("o.a.k.Foo", "testBar2", "flaky")).included());
@@ -189,7 +189,7 @@ public class KafkaPostDiscoveryFilterTest {
         assertTrue(filter.apply(new MockTestDescriptor("o.a.k.Foo", "testBar2", "flaky")).excluded());
         assertTrue(filter.apply(new MockTestDescriptor("o.a.k.Spam", "testEggs")).excluded());
         assertTrue(filter.apply(new MockTestDescriptor("o.a.k.Spam", "testNew")).excluded(),
-            "Should not select a new test because there is no catalog loaded");
+                "Should not select a new test because there is no catalog loaded");
     }
 
     @Test

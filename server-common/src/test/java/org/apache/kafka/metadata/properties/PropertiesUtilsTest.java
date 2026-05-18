@@ -76,9 +76,9 @@ public final class PropertiesUtilsTest {
     public void loadMissingRequiredIntProp() {
         Properties props = new Properties();
         assertEquals("Failed to find foo.bar",
-            assertThrows(RuntimeException.class,
-                () -> PropertiesUtils.loadRequiredIntProp(props, "foo.bar")).
-                    getMessage());
+                assertThrows(RuntimeException.class,
+                        () -> PropertiesUtils.loadRequiredIntProp(props, "foo.bar")).
+                        getMessage());
     }
 
     @Test
@@ -86,8 +86,8 @@ public final class PropertiesUtilsTest {
         Properties props = new Properties();
         props.setProperty("foo.bar", "b");
         assertEquals("Unable to read foo.bar as a base-10 number.",
-            assertThrows(RuntimeException.class,
-                () -> PropertiesUtils.loadRequiredIntProp(props, "foo.bar")).
-                    getMessage());
+                assertThrows(RuntimeException.class,
+                        () -> PropertiesUtils.loadRequiredIntProp(props, "foo.bar")).
+                        getMessage());
     }
 }

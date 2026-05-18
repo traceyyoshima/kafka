@@ -95,8 +95,8 @@ public class ListOffsetsRequest extends AbstractRequest {
                         IsolationLevel isolationLevel) {
             super(ApiKeys.LIST_OFFSETS, oldestAllowedVersion, latestAllowedVersion);
             data = new ListOffsetsRequestData()
-                      .setIsolationLevel(isolationLevel.id())
-                      .setReplicaId(replicaId);
+                    .setIsolationLevel(isolationLevel.id())
+                    .setReplicaId(replicaId);
         }
 
         public Builder setTargetTimes(List<ListOffsetsTopic> topics) {
@@ -151,7 +151,7 @@ public class ListOffsetsRequest extends AbstractRequest {
                         .setErrorCode(errorCode)
                         .setPartitionIndex(partition.partitionIndex());
                 partitionResponse.setOffset(ListOffsetsResponse.UNKNOWN_OFFSET)
-                         .setTimestamp(ListOffsetsResponse.UNKNOWN_TIMESTAMP);
+                        .setTimestamp(ListOffsetsResponse.UNKNOWN_TIMESTAMP);
                 partitions.add(partitionResponse);
             }
             topicResponse.setPartitions(partitions);

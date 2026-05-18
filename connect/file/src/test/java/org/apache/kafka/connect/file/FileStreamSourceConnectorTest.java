@@ -232,8 +232,8 @@ public class FileStreamSourceConnectorTest {
     @Test
     public void testAlterOffsetsTombstones() {
         Function<Map<String, ?>, Boolean> alterOffsets = partition -> connector.alterOffsets(
-            sourceProperties,
-            Collections.singletonMap(partition, null)
+                sourceProperties,
+                Collections.singletonMap(partition, null)
         );
 
         assertTrue(alterOffsets.apply(null));

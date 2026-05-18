@@ -146,11 +146,11 @@ public class KStreamAggregationDedupIntegrationTest {
                 new StringDeserializer(),
                 new StringDeserializer(),
                 Arrays.asList(
-                    new KeyValueTimestamp<>("A", "A:A", timestamp),
-                    new KeyValueTimestamp<>("B", "B:B", timestamp),
-                    new KeyValueTimestamp<>("C", "C:C", timestamp),
-                    new KeyValueTimestamp<>("D", "D:D", timestamp),
-                    new KeyValueTimestamp<>("E", "E:E", timestamp)),
+                        new KeyValueTimestamp<>("A", "A:A", timestamp),
+                        new KeyValueTimestamp<>("B", "B:B", timestamp),
+                        new KeyValueTimestamp<>("C", "C:C", timestamp),
+                        new KeyValueTimestamp<>("D", "D:D", timestamp),
+                        new KeyValueTimestamp<>("E", "E:E", timestamp)),
                 testInfo);
     }
 
@@ -164,10 +164,10 @@ public class KStreamAggregationDedupIntegrationTest {
         produceMessages(secondBatchTimestamp);
 
         groupedStream
-            .windowedBy(TimeWindows.ofSizeAndGrace(ofMillis(500L), ofMinutes(1L)))
-            .reduce(reducer, Materialized.as("reduce-time-windows"))
-            .toStream((windowedKey, value) -> windowedKey.key() + "@" + windowedKey.window().start())
-            .to(outputTopic, Produced.with(Serdes.String(), Serdes.String()));
+                .windowedBy(TimeWindows.ofSizeAndGrace(ofMillis(500L), ofMinutes(1L)))
+                .reduce(reducer, Materialized.as("reduce-time-windows"))
+                .toStream((windowedKey, value) -> windowedKey.key() + "@" + windowedKey.window().start())
+                .to(outputTopic, Produced.with(Serdes.String(), Serdes.String()));
 
         StreamsTestUtils.maybeSetDslStoreFormatHeaders(streamsConfiguration, withHeaders);
 
@@ -180,16 +180,16 @@ public class KStreamAggregationDedupIntegrationTest {
                 new StringDeserializer(),
                 new StringDeserializer(),
                 Arrays.asList(
-                    new KeyValueTimestamp<>("A@" + firstBatchWindow, "A", firstBatchTimestamp),
-                    new KeyValueTimestamp<>("A@" + secondBatchWindow, "A:A", secondBatchTimestamp),
-                    new KeyValueTimestamp<>("B@" + firstBatchWindow, "B", firstBatchTimestamp),
-                    new KeyValueTimestamp<>("B@" + secondBatchWindow, "B:B", secondBatchTimestamp),
-                    new KeyValueTimestamp<>("C@" + firstBatchWindow, "C", firstBatchTimestamp),
-                    new KeyValueTimestamp<>("C@" + secondBatchWindow, "C:C", secondBatchTimestamp),
-                    new KeyValueTimestamp<>("D@" + firstBatchWindow, "D", firstBatchTimestamp),
-                    new KeyValueTimestamp<>("D@" + secondBatchWindow, "D:D", secondBatchTimestamp),
-                    new KeyValueTimestamp<>("E@" + firstBatchWindow, "E", firstBatchTimestamp),
-                    new KeyValueTimestamp<>("E@" + secondBatchWindow, "E:E", secondBatchTimestamp)
+                        new KeyValueTimestamp<>("A@" + firstBatchWindow, "A", firstBatchTimestamp),
+                        new KeyValueTimestamp<>("A@" + secondBatchWindow, "A:A", secondBatchTimestamp),
+                        new KeyValueTimestamp<>("B@" + firstBatchWindow, "B", firstBatchTimestamp),
+                        new KeyValueTimestamp<>("B@" + secondBatchWindow, "B:B", secondBatchTimestamp),
+                        new KeyValueTimestamp<>("C@" + firstBatchWindow, "C", firstBatchTimestamp),
+                        new KeyValueTimestamp<>("C@" + secondBatchWindow, "C:C", secondBatchTimestamp),
+                        new KeyValueTimestamp<>("D@" + firstBatchWindow, "D", firstBatchTimestamp),
+                        new KeyValueTimestamp<>("D@" + secondBatchWindow, "D:D", secondBatchTimestamp),
+                        new KeyValueTimestamp<>("E@" + firstBatchWindow, "E", firstBatchTimestamp),
+                        new KeyValueTimestamp<>("E@" + secondBatchWindow, "E:E", secondBatchTimestamp)
                 ),
                 testInfo
         );
@@ -203,10 +203,10 @@ public class KStreamAggregationDedupIntegrationTest {
         produceMessages(timestamp);
 
         stream.groupByKey(Grouped.with(Serdes.Integer(), Serdes.String()))
-            .windowedBy(TimeWindows.ofSizeWithNoGrace(ofMillis(500L)))
-            .count(Materialized.as("count-windows"))
-            .toStream((windowedKey, value) -> windowedKey.key() + "@" + windowedKey.window().start())
-            .to(outputTopic, Produced.with(Serdes.String(), Serdes.Long()));
+                .windowedBy(TimeWindows.ofSizeWithNoGrace(ofMillis(500L)))
+                .count(Materialized.as("count-windows"))
+                .toStream((windowedKey, value) -> windowedKey.key() + "@" + windowedKey.window().start())
+                .to(outputTopic, Produced.with(Serdes.String(), Serdes.Long()));
 
         StreamsTestUtils.maybeSetDslStoreFormatHeaders(streamsConfiguration, withHeaders);
 
@@ -218,11 +218,11 @@ public class KStreamAggregationDedupIntegrationTest {
                 new StringDeserializer(),
                 new LongDeserializer(),
                 Arrays.asList(
-                    new KeyValueTimestamp<>("1@" + window, 2L, timestamp),
-                    new KeyValueTimestamp<>("2@" + window, 2L, timestamp),
-                    new KeyValueTimestamp<>("3@" + window, 2L, timestamp),
-                    new KeyValueTimestamp<>("4@" + window, 2L, timestamp),
-                    new KeyValueTimestamp<>("5@" + window, 2L, timestamp)
+                        new KeyValueTimestamp<>("1@" + window, 2L, timestamp),
+                        new KeyValueTimestamp<>("2@" + window, 2L, timestamp),
+                        new KeyValueTimestamp<>("3@" + window, 2L, timestamp),
+                        new KeyValueTimestamp<>("4@" + window, 2L, timestamp),
+                        new KeyValueTimestamp<>("5@" + window, 2L, timestamp)
                 ),
                 testInfo
         );
@@ -231,19 +231,19 @@ public class KStreamAggregationDedupIntegrationTest {
 
     private void produceMessages(final long timestamp) throws Exception {
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-            streamOneInput,
-            Arrays.asList(
-                new KeyValue<>(1, "A"),
-                new KeyValue<>(2, "B"),
-                new KeyValue<>(3, "C"),
-                new KeyValue<>(4, "D"),
-                new KeyValue<>(5, "E")),
-            TestUtils.producerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerSerializer.class,
-                StringSerializer.class,
-                new Properties()),
-            timestamp);
+                streamOneInput,
+                Arrays.asList(
+                        new KeyValue<>(1, "A"),
+                        new KeyValue<>(2, "B"),
+                        new KeyValue<>(3, "C"),
+                        new KeyValue<>(4, "D"),
+                        new KeyValue<>(5, "E")),
+                TestUtils.producerConfig(
+                        CLUSTER.bootstrapServers(),
+                        IntegerSerializer.class,
+                        StringSerializer.class,
+                        new Properties()),
+                timestamp);
     }
 
 
@@ -275,9 +275,9 @@ public class KStreamAggregationDedupIntegrationTest {
         consumerProperties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, valueDeserializer.getClass().getName());
 
         IntegrationTestUtils.waitUntilFinalKeyValueTimestampRecordsReceived(
-            consumerProperties,
-            outputTopic,
-            expectedRecords);
+                consumerProperties,
+                outputTopic,
+                expectedRecords);
     }
 
 }

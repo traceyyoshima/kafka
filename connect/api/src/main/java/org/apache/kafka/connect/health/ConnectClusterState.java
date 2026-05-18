@@ -55,7 +55,7 @@ public interface ConnectClusterState {
      * @param connName name of the connector
      * @return the configuration of the connector for the connector name
      * @throws org.apache.kafka.connect.errors.NotFoundException if the requested connector can't be found
-     * @throws java.lang.UnsupportedOperationException if the default implementation has not been overridden
+     * @throws java.lang.UnsupportedOperationException           if the default implementation has not been overridden
      */
     default Map<String, String> connectorConfig(String connName) {
         throw new UnsupportedOperationException();
@@ -63,6 +63,7 @@ public interface ConnectClusterState {
 
     /**
      * Get details about the setup of the Connect cluster.
+     *
      * @return a {@link ConnectClusterDetails} object containing information about the cluster
      * @throws java.lang.UnsupportedOperationException if the default implementation has not been overridden
      */

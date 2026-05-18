@@ -29,19 +29,22 @@ public interface ApiVersionManager {
 
     /**
      * Whether to mark unstable API versions as enabled
+     *
      * @return true if unstable API versions are enabled, otherwise false
      */
     boolean enableUnstableLastVersion();
 
     /**
      * The listener type
+     *
      * @return Broker or Controller depending on the server's role
      */
     ApiMessageType.ListenerType listenerType();
 
     /**
      * The ApiVersionsResponse to send back to client when they send an ApiVersionsRequest
-     * @param throttleTimeMs The throttle time in milliseconds
+     *
+     * @param throttleTimeMs     The throttle time in milliseconds
      * @param alterFeatureLevel0 Whether to filter feature v0 in the response
      * @return the ApiVersionsResponse to send back to the client
      */
@@ -49,13 +52,15 @@ public interface ApiVersionManager {
 
     /**
      * The features supported by the server
+     *
      * @return the FinalizedFeatures
      */
     FinalizedFeatures features();
 
     /**
      * Whether the specified API and version is supported
-     * @param apiKey the API key
+     *
+     * @param apiKey     the API key
      * @param apiVersion the API version
      * @return true if the API key and version is supported, otherwise false
      */
@@ -65,6 +70,7 @@ public interface ApiVersionManager {
 
     /**
      * Create a new RequestChannelMetrics for the enabled APIs
+     *
      * @return the RequestChannelMetrics
      */
     default RequestChannelMetrics newRequestMetrics() {

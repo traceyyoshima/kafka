@@ -62,7 +62,7 @@ public class OAuthBearerUnsecuredValidatorCallbackHandlerTest {
 
     @Test
     public void validToken() {
-        for (final boolean includeOptionalIssuedAtClaim : new boolean[] {true, false}) {
+        for (final boolean includeOptionalIssuedAtClaim : new boolean[]{true, false}) {
             String claimsJson = "{" + PRINCIPAL_CLAIM_TEXT + comma(EXPIRATION_TIME_CLAIM_TEXT)
                     + (includeOptionalIssuedAtClaim ? comma(ISSUED_AT_CLAIM_TEXT) : "") + "}";
             Object validationResult = validationResult(UNSECURED_JWT_HEADER_JSON, claimsJson,
@@ -74,7 +74,7 @@ public class OAuthBearerUnsecuredValidatorCallbackHandlerTest {
 
     @Test
     public void badOrMissingPrincipal() {
-        for (boolean exists : new boolean[] {true, false}) {
+        for (boolean exists : new boolean[]{true, false}) {
             String claimsJson = "{" + EXPIRATION_TIME_CLAIM_TEXT + (exists ? comma(BAD_PRINCIPAL_CLAIM_TEXT) : "")
                     + "}";
             confirmFailsValidation(UNSECURED_JWT_HEADER_JSON, claimsJson, MODULE_OPTIONS_MAP_NO_SCOPE_REQUIRED);
@@ -105,12 +105,12 @@ public class OAuthBearerUnsecuredValidatorCallbackHandlerTest {
     }
 
     private static void confirmFailsValidation(String headerJson, String claimsJson,
-            Map<String, String> moduleOptionsMap) throws OAuthBearerConfigException, OAuthBearerIllegalTokenException {
+                                               Map<String, String> moduleOptionsMap) throws OAuthBearerConfigException, OAuthBearerIllegalTokenException {
         confirmFailsValidation(headerJson, claimsJson, moduleOptionsMap, null);
     }
 
     private static void confirmFailsValidation(String headerJson, String claimsJson,
-            Map<String, String> moduleOptionsMap, String optionalFailureScope) throws OAuthBearerConfigException,
+                                               Map<String, String> moduleOptionsMap, String optionalFailureScope) throws OAuthBearerConfigException,
             OAuthBearerIllegalTokenException {
         Object validationResultObj = validationResult(headerJson, claimsJson, moduleOptionsMap);
         assertInstanceOf(OAuthBearerValidatorCallback.class, validationResultObj);
@@ -133,7 +133,7 @@ public class OAuthBearerUnsecuredValidatorCallbackHandlerTest {
                     urlEncoderNoPadding.encodeToString(headerJson.getBytes(StandardCharsets.UTF_8)),
                     urlEncoderNoPadding.encodeToString(claimsJson.getBytes(StandardCharsets.UTF_8)));
             OAuthBearerValidatorCallback callback = new OAuthBearerValidatorCallback(tokenValue);
-            createCallbackHandler(moduleOptionsMap).handle(new Callback[] {callback});
+            createCallbackHandler(moduleOptionsMap).handle(new Callback[]{callback});
             return callback;
         } catch (Exception e) {
             return e;

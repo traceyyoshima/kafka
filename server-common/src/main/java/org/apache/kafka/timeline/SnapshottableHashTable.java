@@ -96,6 +96,7 @@ class SnapshottableHashTable<T extends SnapshottableHashTable.ElementWithStartEp
 
     interface ElementWithStartEpoch {
         void setStartEpoch(long startEpoch);
+
         long startEpoch();
     }
 
@@ -257,7 +258,7 @@ class SnapshottableHashTable<T extends SnapshottableHashTable.ElementWithStartEp
                     if (tier != null && tier.deltaTable != null) {
                         BaseHashTable<T> deltaTable = tier.deltaTable;
                         int shift = Integer.numberOfLeadingZeros(deltaTable.baseElements().length) -
-                            Integer.numberOfLeadingZeros(topTier.length);
+                                Integer.numberOfLeadingZeros(topTier.length);
                         int tierSlot = slot >>> shift;
                         BaseHashTable.unpackSlot(temp, deltaTable.baseElements(), tierSlot);
                         for (T object : temp) {

@@ -24,16 +24,24 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public enum ConsumerGroupMigrationPolicy {
-    /** Both upgrade and downgrade are enabled.*/
+    /**
+     * Both upgrade and downgrade are enabled.
+     */
     BIDIRECTIONAL("bidirectional", true, true),
 
-    /** Only upgrade is enabled.*/
+    /**
+     * Only upgrade is enabled.
+     */
     UPGRADE("upgrade", true, false),
 
-    /** Only downgrade is enabled.*/
+    /**
+     * Only downgrade is enabled.
+     */
     DOWNGRADE("downgrade", false, true),
 
-    /** Neither upgrade nor downgrade is enabled.*/
+    /**
+     * Neither upgrade nor downgrade is enabled.
+     */
     DISABLED("disabled", false, false);
 
     private final String name;
@@ -60,7 +68,7 @@ public enum ConsumerGroupMigrationPolicy {
     }
 
     private static final Map<String, ConsumerGroupMigrationPolicy> NAME_TO_ENUM = Arrays.stream(values())
-        .collect(Collectors.toMap(policy -> policy.name.toLowerCase(Locale.ROOT), Function.identity()));
+            .collect(Collectors.toMap(policy -> policy.name.toLowerCase(Locale.ROOT), Function.identity()));
 
     /**
      * Parse a string into the corresponding {@code GroupProtocolMigrationPolicy} enum value, in a case-insensitive manner.

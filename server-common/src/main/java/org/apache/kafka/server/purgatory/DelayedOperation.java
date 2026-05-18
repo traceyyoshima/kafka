@@ -109,6 +109,7 @@ public abstract class DelayedOperation extends TimerTask {
 
     /**
      * Thread-safe variant of tryComplete() and call extra function if first tryComplete returns false
+     *
      * @param action else function to be executed after first tryComplete returns false
      * @return result of tryComplete
      */

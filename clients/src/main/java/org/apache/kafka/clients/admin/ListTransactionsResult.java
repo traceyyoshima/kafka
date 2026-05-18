@@ -43,7 +43,7 @@ public class ListTransactionsResult {
      * returned from this method will also fail with the first encountered error.
      *
      * @return A future containing the collection of transaction listings. The future completes
-     *         when all transaction listings are available and fails after any non-retriable error.
+     * when all transaction listings are available and fails after any non-retriable error.
      */
     public KafkaFuture<Collection<TransactionListing>> all() {
         return allByBrokerId().thenApply(map -> {
@@ -61,16 +61,16 @@ public class ListTransactionsResult {
      * sufficient, or if you want more granular error details.
      *
      * @return A future containing a map of futures by broker which complete individually when
-     *         their respective transaction listings are available. The top-level future returned
-     *         from this method may fail if the admin client is unable to lookup the available
-     *         brokers in the cluster.
+     * their respective transaction listings are available. The top-level future returned
+     * from this method may fail if the admin client is unable to lookup the available
+     * brokers in the cluster.
      */
     public KafkaFuture<Map<Integer, KafkaFuture<Collection<TransactionListing>>>> byBrokerId() {
         KafkaFutureImpl<Map<Integer, KafkaFuture<Collection<TransactionListing>>>> result = new KafkaFutureImpl<>();
         future.whenComplete((brokerFutures, exception) -> {
             if (brokerFutures != null) {
                 Map<Integer, KafkaFuture<Collection<TransactionListing>>> brokerFuturesCopy =
-                    new HashMap<>(brokerFutures.size());
+                        new HashMap<>(brokerFutures.size());
                 brokerFuturesCopy.putAll(brokerFutures);
                 result.complete(brokerFuturesCopy);
             } else {
@@ -86,8 +86,8 @@ public class ListTransactionsResult {
      * returned from this method will also fail with the first encountered error.
      *
      * @return A future containing a map from the broker ID to the transactions hosted by that
-     *         broker respectively. This future completes when all transaction listings are
-     *         available and fails after any non-retriable error.
+     * broker respectively. This future completes when all transaction listings are
+     * available and fails after any non-retriable error.
      */
     public KafkaFuture<Map<Integer, Collection<TransactionListing>>> allByBrokerId() {
         KafkaFutureImpl<Map<Integer, Collection<TransactionListing>>> allFuture = new KafkaFutureImpl<>();
@@ -101,18 +101,18 @@ public class ListTransactionsResult {
 
             Set<Integer> remainingResponses = new HashSet<>(map.keySet());
             map.forEach((brokerId, future) ->
-                future.whenComplete((listings, brokerException) -> {
-                    if (brokerException != null) {
-                        allFuture.completeExceptionally(brokerException);
-                    } else if (!allFuture.isDone()) {
-                        allListingsMap.put(brokerId, listings);
-                        remainingResponses.remove(brokerId);
+                    future.whenComplete((listings, brokerException) -> {
+                        if (brokerException != null) {
+                            allFuture.completeExceptionally(brokerException);
+                        } else if (!allFuture.isDone()) {
+                            allListingsMap.put(brokerId, listings);
+                            remainingResponses.remove(brokerId);
 
-                        if (remainingResponses.isEmpty()) {
-                            allFuture.complete(allListingsMap);
+                            if (remainingResponses.isEmpty()) {
+                                allFuture.complete(allListingsMap);
+                            }
                         }
-                    }
-                })
+                    })
             );
         });
 

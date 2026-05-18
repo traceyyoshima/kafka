@@ -51,7 +51,7 @@ public class CompositeReadOnlySessionStore<K, V> implements ReadOnlySessionStore
         for (final ReadOnlySessionStore<K, V> store : stores) {
             try {
                 final KeyValueIterator<Windowed<K>, V> result =
-                    store.findSessions(key, earliestSessionEndTime, latestSessionStartTime);
+                        store.findSessions(key, earliestSessionEndTime, latestSessionStartTime);
 
                 if (!result.hasNext()) {
                     result.close();
@@ -60,10 +60,10 @@ public class CompositeReadOnlySessionStore<K, V> implements ReadOnlySessionStore
                 }
             } catch (final InvalidStateStoreException ise) {
                 throw new InvalidStateStoreException(
-                    "State store  [" + storeName + "] is not available anymore" +
-                        " and may have been migrated to another instance; " +
-                        "please re-discover its location from the state metadata.",
-                    ise
+                        "State store  [" + storeName + "] is not available anymore" +
+                                " and may have been migrated to another instance; " +
+                                "please re-discover its location from the state metadata.",
+                        ise
                 );
             }
         }
@@ -86,10 +86,10 @@ public class CompositeReadOnlySessionStore<K, V> implements ReadOnlySessionStore
                 }
             } catch (final InvalidStateStoreException ise) {
                 throw new InvalidStateStoreException(
-                    "State store  [" + storeName + "] is not available anymore" +
-                        " and may have been migrated to another instance; " +
-                        "please re-discover its location from the state metadata.",
-                    ise
+                        "State store  [" + storeName + "] is not available anymore" +
+                                " and may have been migrated to another instance; " +
+                                "please re-discover its location from the state metadata.",
+                        ise
                 );
             }
         }
@@ -105,7 +105,7 @@ public class CompositeReadOnlySessionStore<K, V> implements ReadOnlySessionStore
         for (final ReadOnlySessionStore<K, V> store : stores) {
             try {
                 final KeyValueIterator<Windowed<K>, V> result =
-                    store.findSessions(keyFrom, keyTo, earliestSessionEndTime, latestSessionStartTime);
+                        store.findSessions(keyFrom, keyTo, earliestSessionEndTime, latestSessionStartTime);
                 if (!result.hasNext()) {
                     result.close();
                 } else {
@@ -113,10 +113,10 @@ public class CompositeReadOnlySessionStore<K, V> implements ReadOnlySessionStore
                 }
             } catch (final InvalidStateStoreException ise) {
                 throw new InvalidStateStoreException(
-                    "State store  [" + storeName + "] is not available anymore" +
-                        " and may have been migrated to another instance; " +
-                        "please re-discover its location from the state metadata.",
-                    ise
+                        "State store  [" + storeName + "] is not available anymore" +
+                                " and may have been migrated to another instance; " +
+                                "please re-discover its location from the state metadata.",
+                        ise
                 );
             }
         }
@@ -132,7 +132,7 @@ public class CompositeReadOnlySessionStore<K, V> implements ReadOnlySessionStore
         for (final ReadOnlySessionStore<K, V> store : stores) {
             try {
                 final KeyValueIterator<Windowed<K>, V> result =
-                    store.backwardFindSessions(keyFrom, keyTo, earliestSessionEndTime, latestSessionStartTime);
+                        store.backwardFindSessions(keyFrom, keyTo, earliestSessionEndTime, latestSessionStartTime);
                 if (!result.hasNext()) {
                     result.close();
                 } else {
@@ -140,10 +140,10 @@ public class CompositeReadOnlySessionStore<K, V> implements ReadOnlySessionStore
                 }
             } catch (final InvalidStateStoreException ise) {
                 throw new InvalidStateStoreException(
-                    "State store  [" + storeName + "] is not available anymore" +
-                        " and may have been migrated to another instance; " +
-                        "please re-discover its location from the state metadata.",
-                    ise
+                        "State store  [" + storeName + "] is not available anymore" +
+                                " and may have been migrated to another instance; " +
+                                "please re-discover its location from the state metadata.",
+                        ise
                 );
             }
         }
@@ -159,10 +159,10 @@ public class CompositeReadOnlySessionStore<K, V> implements ReadOnlySessionStore
                 return store.fetchSession(key, earliestSessionEndTime, latestSessionStartTime);
             } catch (final InvalidStateStoreException ise) {
                 throw new InvalidStateStoreException(
-                    "State store  [" + storeName + "] is not available anymore" +
-                        " and may have been migrated to another instance; " +
-                        "please re-discover its location from the state metadata.",
-                    ise
+                        "State store  [" + storeName + "] is not available anymore" +
+                                " and may have been migrated to another instance; " +
+                                "please re-discover its location from the state metadata.",
+                        ise
                 );
             }
         }
@@ -183,9 +183,9 @@ public class CompositeReadOnlySessionStore<K, V> implements ReadOnlySessionStore
                 }
             } catch (final InvalidStateStoreException ise) {
                 throw new InvalidStateStoreException("State store  [" + storeName + "] is not available anymore" +
-                                                             " and may have been migrated to another instance; " +
-                                                             "please re-discover its location from the state metadata. " +
-                                                             "Original error message: " + ise);
+                        " and may have been migrated to another instance; " +
+                        "please re-discover its location from the state metadata. " +
+                        "Original error message: " + ise);
             }
         }
         return KeyValueIterators.emptyIterator();
@@ -205,10 +205,10 @@ public class CompositeReadOnlySessionStore<K, V> implements ReadOnlySessionStore
                 }
             } catch (final InvalidStateStoreException ise) {
                 throw new InvalidStateStoreException(
-                    "State store  [" + storeName + "] is not available anymore" +
-                        " and may have been migrated to another instance; " +
-                        "please re-discover its location from the state metadata.",
-                    ise
+                        "State store  [" + storeName + "] is not available anymore" +
+                                " and may have been migrated to another instance; " +
+                                "please re-discover its location from the state metadata.",
+                        ise
                 );
             }
         }
@@ -218,23 +218,23 @@ public class CompositeReadOnlySessionStore<K, V> implements ReadOnlySessionStore
     @Override
     public KeyValueIterator<Windowed<K>, V> fetch(final K keyFrom, final K keyTo) {
         final NextIteratorFunction<Windowed<K>, V, ReadOnlySessionStore<K, V>> nextIteratorFunction =
-            store -> store.fetch(keyFrom, keyTo);
+                store -> store.fetch(keyFrom, keyTo);
         return new DelegatingPeekingKeyValueIterator<>(storeName,
-                                                       new CompositeKeyValueIterator<>(
-                                                               storeProvider.stores(storeName, queryableStoreType).iterator(),
-                                                               nextIteratorFunction));
+                new CompositeKeyValueIterator<>(
+                        storeProvider.stores(storeName, queryableStoreType).iterator(),
+                        nextIteratorFunction));
     }
 
     @Override
     public KeyValueIterator<Windowed<K>, V> backwardFetch(final K keyFrom, final K keyTo) {
         final NextIteratorFunction<Windowed<K>, V, ReadOnlySessionStore<K, V>> nextIteratorFunction =
-            store -> store.backwardFetch(keyFrom, keyTo);
+                store -> store.backwardFetch(keyFrom, keyTo);
         return new DelegatingPeekingKeyValueIterator<>(
-            storeName,
-            new CompositeKeyValueIterator<>(
-                storeProvider.stores(storeName, queryableStoreType).iterator(),
-                nextIteratorFunction
-            )
+                storeName,
+                new CompositeKeyValueIterator<>(
+                        storeProvider.stores(storeName, queryableStoreType).iterator(),
+                        nextIteratorFunction
+                )
         );
     }
 }

@@ -43,16 +43,17 @@ import java.util.stream.Collectors;
  */
 public abstract class AbstractPartitionAssignor implements ConsumerPartitionAssignor {
     private static final Logger log = LoggerFactory.getLogger(AbstractPartitionAssignor.class);
-    private static final Node[] NO_NODES = new Node[] {Node.noNode()};
+    private static final Node[] NO_NODES = new Node[]{Node.noNode()};
 
     // Used only in unit tests to verify rack-aware assignment when all racks have all partitions.
     boolean preferRackAwareLogic;
 
     /**
      * Perform the group assignment given the partition counts and member subscriptions
+     *
      * @param partitionsPerTopic The number of partitions for each subscribed topic. Topics not in metadata will be excluded
      *                           from this map.
-     * @param subscriptions Map from the member id to their respective topic subscription
+     * @param subscriptions      Map from the member id to their respective topic subscription
      * @return Map from each member to the list of partitions assigned to them.
      */
     public abstract Map<String, List<TopicPartition>> assign(Map<String, Integer> partitionsPerTopic,
@@ -64,7 +65,7 @@ public abstract class AbstractPartitionAssignor implements ConsumerPartitionAssi
      * Note that this class is internal, but to be safe, we are maintaining compatibility.
      */
     public Map<String, List<TopicPartition>> assignPartitions(Map<String, List<PartitionInfo>> partitionsPerTopic,
-            Map<String, Subscription> subscriptions) {
+                                                              Map<String, Subscription> subscriptions) {
         Map<String, Integer> partitionCountPerTopic = partitionsPerTopic.entrySet().stream()
                 .collect(Collectors.toMap(Entry::getKey, e -> e.getValue().size()));
         return assign(partitionCountPerTopic, subscriptions);

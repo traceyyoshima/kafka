@@ -61,9 +61,8 @@ abstract class AbstractMergedSortedCacheStoreIterator<K, KS, V, VS> implements K
      *
      * @param cacheKey The key from the cache.
      * @param storeKey The key from the store.
-     *
      * @return A negative integer, zero, or a positive integer as the cache key is less than,
-     *     equal to, or greater than the store key.
+     * equal to, or greater than the store key.
      */
     abstract int compare(final Bytes cacheKey, final KS storeKey);
 
@@ -71,7 +70,6 @@ abstract class AbstractMergedSortedCacheStoreIterator<K, KS, V, VS> implements K
      * Deserializes a store key into a generic merged key type.
      *
      * @param key The store key to deserialize.
-     *
      * @return The deserialized key.
      */
     abstract K deserializeStoreKey(final KS key);
@@ -80,7 +78,6 @@ abstract class AbstractMergedSortedCacheStoreIterator<K, KS, V, VS> implements K
      * Deserializes a key-value pair from the store into a generic merged key-value pair.
      *
      * @param pair The key-value pair from the store.
-     *
      * @return The deserialized key-value pair.
      */
     abstract KeyValue<K, V> deserializeStorePair(final KeyValue<KS, VS> pair);
@@ -89,7 +86,6 @@ abstract class AbstractMergedSortedCacheStoreIterator<K, KS, V, VS> implements K
      * Deserializes a cache key into a generic merged key type.
      *
      * @param cacheKey The cache key to deserialize.
-     *
      * @return The deserialized key.
      */
     abstract K deserializeCacheKey(final Bytes cacheKey);
@@ -98,7 +94,6 @@ abstract class AbstractMergedSortedCacheStoreIterator<K, KS, V, VS> implements K
      * Deserializes a cache entry into a generic value type.
      *
      * @param cacheEntry The cache entry to deserialize.
-     *
      * @return The deserialized value.
      */
     abstract V deserializeCacheValue(final LRUCacheEntry cacheEntry);
@@ -107,7 +102,6 @@ abstract class AbstractMergedSortedCacheStoreIterator<K, KS, V, VS> implements K
      * Checks if a cache entry is a tombstone (representing a deleted value).
      *
      * @param nextFromCache The cache entry to check.
-     *
      * @return True if the cache entry is a tombstone, false otherwise.
      */
     private boolean isDeletedCacheEntry(final KeyValue<Bytes, LRUCacheEntry> nextFromCache) {
@@ -164,7 +158,6 @@ abstract class AbstractMergedSortedCacheStoreIterator<K, KS, V, VS> implements K
      * Retrieves the next key-value pair in the merged iteration.
      *
      * @return The next key-value pair.
-     *
      * @throws NoSuchElementException If there are no more elements to iterate.
      */
     @Override
@@ -194,7 +187,6 @@ abstract class AbstractMergedSortedCacheStoreIterator<K, KS, V, VS> implements K
      * @param nextCacheKey The next key from the cache.
      * @param nextStoreKey The next key from the store.
      * @param comparison   The comparison result between the cache and store keys.
-     *
      * @return The next key-value pair.
      */
     private KeyValue<K, V> chooseNextValue(final Bytes nextCacheKey,
@@ -227,9 +219,7 @@ abstract class AbstractMergedSortedCacheStoreIterator<K, KS, V, VS> implements K
      * Fetches the next value from the store, ensuring it matches the expected key.
      *
      * @param nextStoreKey The expected next key from the store.
-     *
      * @return The next key-value pair from the store.
-     *
      * @throws IllegalStateException If the key does not match the expected key.
      */
     private KeyValue<K, V> nextStoreValue(final KS nextStoreKey) {
@@ -246,9 +236,7 @@ abstract class AbstractMergedSortedCacheStoreIterator<K, KS, V, VS> implements K
      * Fetches the next value from the cache, ensuring it matches the expected key.
      *
      * @param nextCacheKey The expected next key from the cache.
-     *
      * @return The next key-value pair from the cache.
-     *
      * @throws IllegalStateException If the key does not match the expected key.
      */
     private KeyValue<K, V> nextCacheValue(final Bytes nextCacheKey) {
@@ -265,7 +253,6 @@ abstract class AbstractMergedSortedCacheStoreIterator<K, KS, V, VS> implements K
      * Peeks at the next key in the merged iteration without advancing the iterator.
      *
      * @return The next key in the iteration.
-     *
      * @throws NoSuchElementException If there are no more elements to peek.
      */
     @Override
@@ -298,7 +285,6 @@ abstract class AbstractMergedSortedCacheStoreIterator<K, KS, V, VS> implements K
      * @param comparison   The comparison result between the cache and store keys. A negative value indicates the cache
      *                     key is smaller, zero indicates equality, and a positive value indicates the store key is
      *                     smaller.
-     *
      * @return The next key to return from the merged iteration.
      */
     private K chooseNextKey(final Bytes nextCacheKey,

@@ -24,16 +24,16 @@ public class ProducerTestUtils {
     private static final int MAX_TRIES = 10;
 
     static void runUntil(
-        Sender sender,
-        Supplier<Boolean> condition
+            Sender sender,
+            Supplier<Boolean> condition
     ) {
         runUntil(sender, condition, MAX_TRIES);
     }
 
     static void runUntil(
-        Sender sender,
-        Supplier<Boolean> condition,
-        int maxTries
+            Sender sender,
+            Supplier<Boolean> condition,
+            int maxTries
     ) {
         int tries = 0;
         while (!condition.get() && tries < maxTries) {

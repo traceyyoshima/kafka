@@ -61,7 +61,7 @@ public class StreamsRebalanceListenerInvokerTest {
     @Test
     public void testSetRebalanceListenerWithNull() {
         NullPointerException exception = assertThrows(NullPointerException.class,
-            () -> invoker.setRebalanceListener(null));
+                () -> invoker.setRebalanceListener(null));
         assertEquals("StreamsRebalanceListener cannot be null", exception.getMessage());
     }
 
@@ -125,7 +125,7 @@ public class StreamsRebalanceListenerInvokerTest {
         doThrow(wakeupException).when(mockListener).onTasksAssigned(assignment);
 
         WakeupException thrownException = assertThrows(WakeupException.class,
-            () -> invoker.invokeTasksAssigned(assignment));
+                () -> invoker.invokeTasksAssigned(assignment));
 
         assertEquals(wakeupException, thrownException);
         verify(mockListener).onTasksAssigned(eq(assignment));
@@ -139,7 +139,7 @@ public class StreamsRebalanceListenerInvokerTest {
         doThrow(interruptException).when(mockListener).onTasksAssigned(assignment);
 
         InterruptException thrownException = assertThrows(InterruptException.class,
-            () -> invoker.invokeTasksAssigned(assignment));
+                () -> invoker.invokeTasksAssigned(assignment));
 
         assertEquals(interruptException, thrownException);
         verify(mockListener).onTasksAssigned(eq(assignment));
@@ -177,7 +177,7 @@ public class StreamsRebalanceListenerInvokerTest {
         doThrow(wakeupException).when(mockListener).onTasksRevoked(tasks);
 
         WakeupException thrownException = assertThrows(WakeupException.class,
-            () -> invoker.invokeTasksRevoked(tasks));
+                () -> invoker.invokeTasksRevoked(tasks));
 
         assertEquals(wakeupException, thrownException);
         verify(mockListener).onTasksRevoked(eq(tasks));
@@ -191,7 +191,7 @@ public class StreamsRebalanceListenerInvokerTest {
         doThrow(interruptException).when(mockListener).onTasksRevoked(tasks);
 
         InterruptException thrownException = assertThrows(InterruptException.class,
-            () -> invoker.invokeTasksRevoked(tasks));
+                () -> invoker.invokeTasksRevoked(tasks));
 
         assertEquals(interruptException, thrownException);
         verify(mockListener).onTasksRevoked(eq(tasks));
@@ -227,7 +227,7 @@ public class StreamsRebalanceListenerInvokerTest {
         doThrow(wakeupException).when(mockListener).onAllTasksLost();
 
         WakeupException thrownException = assertThrows(WakeupException.class,
-            () -> invoker.invokeAllTasksLost());
+                () -> invoker.invokeAllTasksLost());
 
         assertEquals(wakeupException, thrownException);
         verify(mockListener).onAllTasksLost();
@@ -240,7 +240,7 @@ public class StreamsRebalanceListenerInvokerTest {
         doThrow(interruptException).when(mockListener).onAllTasksLost();
 
         InterruptException thrownException = assertThrows(InterruptException.class,
-            () -> invoker.invokeAllTasksLost());
+                () -> invoker.invokeAllTasksLost());
 
         assertEquals(interruptException, thrownException);
         verify(mockListener).onAllTasksLost();
@@ -268,8 +268,8 @@ public class StreamsRebalanceListenerInvokerTest {
 
     private Set<StreamsRebalanceData.TaskId> createMockTasks() {
         return Set.of(
-            new StreamsRebalanceData.TaskId("subtopology1", 0),
-            new StreamsRebalanceData.TaskId("subtopology1", 1)
+                new StreamsRebalanceData.TaskId("subtopology1", 0),
+                new StreamsRebalanceData.TaskId("subtopology1", 1)
         );
     }
 

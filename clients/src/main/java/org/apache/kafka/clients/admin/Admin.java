@@ -322,7 +322,7 @@ public interface Admin extends AutoCloseable {
 
     /**
      * Describe some topics in the cluster.
-     *
+     * <p>
      * When using topic IDs, this operation is supported by brokers with version 3.1.0 or higher.
      *
      * @param topics  The topics to describe.
@@ -528,7 +528,7 @@ public interface Admin extends AutoCloseable {
      * @return The AlterConfigsResult
      */
     AlterConfigsResult incrementalAlterConfigs(Map<ConfigResource,
-        Collection<AlterConfigOp>> configs, AlterConfigsOptions options);
+            Collection<AlterConfigOp>> configs, AlterConfigsOptions options);
 
     /**
      * Change the log directory for the specified replicas. If the replica does not exist on the broker, the result
@@ -543,8 +543,8 @@ public interface Admin extends AutoCloseable {
      * <p>
      * This operation is supported by brokers with version 1.1.0 or higher.
      *
-     * @param replicaAssignment     The replicas with their log directory absolute path
-     * @return                      The AlterReplicaLogDirsResult
+     * @param replicaAssignment The replicas with their log directory absolute path
+     * @return The AlterReplicaLogDirsResult
      */
     default AlterReplicaLogDirsResult alterReplicaLogDirs(Map<TopicPartitionReplica, String> replicaAssignment) {
         return alterReplicaLogDirs(replicaAssignment, new AlterReplicaLogDirsOptions());
@@ -560,9 +560,9 @@ public interface Admin extends AutoCloseable {
      * <p>
      * This operation is supported by brokers with version 1.1.0 or higher.
      *
-     * @param replicaAssignment     The replicas with their log directory absolute path
-     * @param options               The options to use when changing replica dir
-     * @return                      The AlterReplicaLogDirsResult
+     * @param replicaAssignment The replicas with their log directory absolute path
+     * @param options           The options to use when changing replica dir
+     * @return The AlterReplicaLogDirsResult
      */
     AlterReplicaLogDirsResult alterReplicaLogDirs(Map<TopicPartitionReplica, String> replicaAssignment,
                                                   AlterReplicaLogDirsOptions options);
@@ -881,10 +881,10 @@ public interface Admin extends AutoCloseable {
 
     /**
      * List the consumer groups available in the cluster.
-     * @deprecated Since 4.1. Use {@link Admin#listGroups(ListGroupsOptions)} instead.
      *
      * @param options The options to use when listing the consumer groups.
      * @return The ListConsumerGroupsResult.
+     * @deprecated Since 4.1. Use {@link Admin#listGroups(ListGroupsOptions)} instead.
      */
     @Deprecated(since = "4.1", forRemoval = true)
     ListConsumerGroupsResult listConsumerGroups(ListConsumerGroupsOptions options);
@@ -894,9 +894,9 @@ public interface Admin extends AutoCloseable {
      * <p>
      * This is a convenience method for {@link #listConsumerGroups(ListConsumerGroupsOptions)} with default options.
      * See the overload for more details.
-     * @deprecated Since 4.1. Use {@link Admin#listGroups(ListGroupsOptions)} instead.
      *
      * @return The ListConsumerGroupsResult.
+     * @deprecated Since 4.1. Use {@link Admin#listGroups(ListGroupsOptions)} instead.
      */
     @Deprecated(since = "4.1", forRemoval = true)
     default ListConsumerGroupsResult listConsumerGroups() {
@@ -933,8 +933,7 @@ public interface Admin extends AutoCloseable {
      * List the consumer group offsets available in the cluster for the specified consumer groups.
      *
      * @param groupSpecs Map of consumer group ids to a spec that specifies the topic partitions of the group to list offsets for.
-     *
-     * @param options The options to use when listing the consumer group offsets.
+     * @param options    The options to use when listing the consumer group offsets.
      * @return The ListConsumerGroupOffsetsResult
      */
     ListConsumerGroupOffsetsResult listConsumerGroupOffsets(Map<String, ListConsumerGroupOffsetsSpec> groupSpecs, ListConsumerGroupOffsetsOptions options);
@@ -958,8 +957,7 @@ public interface Admin extends AutoCloseable {
      * <em>Note</em>: this method effectively does the same as the corresponding consumer group method {@link Admin#listConsumerGroupOffsets} does.
      *
      * @param groupSpecs Map of streams group ids to a spec that specifies the topic partitions of the group to list offsets for.
-     *
-     * @param options The options to use when listing the streams group offsets.
+     * @param options    The options to use when listing the streams group offsets.
      * @return The ListStreamsGroupOffsetsResult
      */
     ListStreamsGroupOffsetsResult listStreamsGroupOffsets(Map<String, ListStreamsGroupOffsetsSpec> groupSpecs, ListStreamsGroupOffsetsOptions options);
@@ -1022,8 +1020,8 @@ public interface Admin extends AutoCloseable {
      * @return The DeleteConsumerGroupOffsetsResult.
      */
     DeleteConsumerGroupOffsetsResult deleteConsumerGroupOffsets(String groupId,
-        Set<TopicPartition> partitions,
-        DeleteConsumerGroupOffsetsOptions options);
+                                                                Set<TopicPartition> partitions,
+                                                                DeleteConsumerGroupOffsetsOptions options);
 
     /**
      * Delete committed offsets for a set of partitions in a consumer group with the default
@@ -1047,8 +1045,8 @@ public interface Admin extends AutoCloseable {
      * @return The DeleteStreamsGroupOffsetsResult.
      */
     DeleteStreamsGroupOffsetsResult deleteStreamsGroupOffsets(String groupId,
-                                                                Set<TopicPartition> partitions,
-                                                                DeleteStreamsGroupOffsetsOptions options);
+                                                              Set<TopicPartition> partitions,
+                                                              DeleteStreamsGroupOffsetsOptions options);
 
     /**
      * Delete committed offsets for a set of partitions in a streams group with the default
@@ -1132,20 +1130,20 @@ public interface Admin extends AutoCloseable {
      * @return The ElectLeadersResult.
      */
     ElectLeadersResult electLeaders(
-        ElectionType electionType,
-        Set<TopicPartition> partitions,
-        ElectLeadersOptions options);
+            ElectionType electionType,
+            Set<TopicPartition> partitions,
+            ElectLeadersOptions options);
 
 
     /**
      * Change the reassignments for one or more partitions.
      * Providing an empty Optional (e.g via {@link Optional#empty()}) will <bold>revert</bold> the reassignment for the associated partition.
-     *
+     * <p>
      * This is a convenience method for {@link #alterPartitionReassignments(Map, AlterPartitionReassignmentsOptions)}
      * with default options.  See the overload for more details.
      */
     default AlterPartitionReassignmentsResult alterPartitionReassignments(
-        Map<TopicPartition, Optional<NewPartitionReassignment>> reassignments) {
+            Map<TopicPartition, Optional<NewPartitionReassignment>> reassignments) {
         return alterPartitionReassignments(reassignments, new AlterPartitionReassignmentsOptions());
     }
 
@@ -1175,18 +1173,18 @@ public interface Admin extends AutoCloseable {
      *   If there was an attempt to cancel a reassignment for a partition which was not being reassigned.</li>
      * </ul>
      *
-     * @param reassignments   The reassignments to add, modify, or remove. See {@link NewPartitionReassignment}.
-     * @param options         The options to use.
-     * @return                The result.
+     * @param reassignments The reassignments to add, modify, or remove. See {@link NewPartitionReassignment}.
+     * @param options       The options to use.
+     * @return The result.
      */
     AlterPartitionReassignmentsResult alterPartitionReassignments(
-        Map<TopicPartition, Optional<NewPartitionReassignment>> reassignments,
-        AlterPartitionReassignmentsOptions options);
+            Map<TopicPartition, Optional<NewPartitionReassignment>> reassignments,
+            AlterPartitionReassignmentsOptions options);
 
 
     /**
      * List all of the current partition reassignments
-     *
+     * <p>
      * This is a convenience method for {@link #listPartitionReassignments(ListPartitionReassignmentsOptions)}
      * with default options. See the overload for more details.
      */
@@ -1196,7 +1194,7 @@ public interface Admin extends AutoCloseable {
 
     /**
      * List the current reassignments for the given partitions
-     *
+     * <p>
      * This is a convenience method for {@link #listPartitionReassignments(Set, ListPartitionReassignmentsOptions)}
      * with default options. See the overload for more details.
      */
@@ -1218,13 +1216,13 @@ public interface Admin extends AutoCloseable {
      *   If the request timed out before the controller could list the current reassignments.</li>
      * </ul>
      *
-     * @param partitions      The topic partitions to list reassignments for.
-     * @param options         The options to use.
-     * @return                The result.
+     * @param partitions The topic partitions to list reassignments for.
+     * @param options    The options to use.
+     * @return The result.
      */
     default ListPartitionReassignmentsResult listPartitionReassignments(
-        Set<TopicPartition> partitions,
-        ListPartitionReassignmentsOptions options) {
+            Set<TopicPartition> partitions,
+            ListPartitionReassignmentsOptions options) {
         return listPartitionReassignments(Optional.of(partitions), options);
     }
 
@@ -1242,8 +1240,8 @@ public interface Admin extends AutoCloseable {
      *   If the request timed out before the controller could list the current reassignments.</li>
      * </ul>
      *
-     * @param options         The options to use.
-     * @return                The result.
+     * @param options The options to use.
+     * @return The result.
      */
     default ListPartitionReassignmentsResult listPartitionReassignments(ListPartitionReassignmentsOptions options) {
         return listPartitionReassignments(Optional.empty(), options);
@@ -1251,8 +1249,8 @@ public interface Admin extends AutoCloseable {
 
     /**
      * @param partitions the partitions we want to get reassignment for, or an empty optional if we want to get the reassignments for all partitions in the cluster
-     * @param options         The options to use.
-     * @return                The result.
+     * @param options    The options to use.
+     * @return The result.
      */
     ListPartitionReassignmentsResult listPartitionReassignments(Optional<Set<TopicPartition>> partitions,
                                                                 ListPartitionReassignmentsOptions options);
@@ -1340,7 +1338,7 @@ public interface Admin extends AutoCloseable {
      * the beginning offset, end offset as well as the offset matching a timestamp in partitions.
      *
      * @param topicPartitionOffsets The mapping from partition to the OffsetSpec to look up.
-     * @param options The options to use when retrieving the offsets
+     * @param options               The options to use when retrieving the offsets
      * @return The ListOffsetsResult.
      */
     ListOffsetsResult listOffsets(Map<TopicPartition, OffsetSpec> topicPartitionOffsets, ListOffsetsOptions options);
@@ -1378,7 +1376,7 @@ public interface Admin extends AutoCloseable {
      * <p>
      * This operation is supported by brokers with version 2.6.0 or higher.
      *
-     * @param filter the filter to apply to match entities
+     * @param filter  the filter to apply to match entities
      * @param options the options to use
      * @return the DescribeClientQuotasResult containing the result
      */
@@ -1466,8 +1464,8 @@ public interface Admin extends AutoCloseable {
      * <p>
      * This operation is supported by brokers with version 2.7.0 or higher.
      *
-     * @param users the users for which credentials are to be described; all users' credentials are described if null
-     *              or empty.
+     * @param users   the users for which credentials are to be described; all users' credentials are described if null
+     *                or empty.
      * @param options The options to use when describing the credentials
      * @return The DescribeUserScramCredentialsResult.
      */
@@ -1509,11 +1507,12 @@ public interface Admin extends AutoCloseable {
      * This operation is supported by brokers with version 2.7.0 or higher.
      *
      * @param alterations the alterations to be applied
-     * @param options The options to use when altering the credentials
+     * @param options     The options to use when altering the credentials
      * @return The AlterUserScramCredentialsResult.
      */
     AlterUserScramCredentialsResult alterUserScramCredentials(List<UserScramCredentialAlteration> alterations,
                                                               AlterUserScramCredentialsOptions options);
+
     /**
      * Describes finalized as well as supported features.
      * <p>
@@ -1605,9 +1604,9 @@ public interface Admin extends AutoCloseable {
      * </ul>
      * <p>
      * This operation is supported by brokers with version 2.7.0 or higher.
-
+     *
      * @param featureUpdates the map of finalized feature name to {@link FeatureUpdate}
-     * @param options the options to use
+     * @param options        the options to use
      * @return the {@link UpdateFeaturesResult} containing the result
      */
     UpdateFeaturesResult updateFeatures(Map<String, FeatureUpdate> featureUpdates, UpdateFeaturesOptions options);
@@ -1645,11 +1644,10 @@ public interface Admin extends AutoCloseable {
      * Unregister a broker.
      * <p>
      * This operation does not have any effect on partition assignments.
-     *
+     * <p>
      * This is a convenience method for {@link #unregisterBroker(int, UnregisterBrokerOptions)}
      *
-     * @param brokerId  the broker id to unregister.
-     *
+     * @param brokerId the broker id to unregister.
      * @return the {@link UnregisterBrokerResult} containing the result
      */
     @InterfaceStability.Unstable
@@ -1661,7 +1659,7 @@ public interface Admin extends AutoCloseable {
      * Unregister a broker.
      * <p>
      * This operation does not have any effect on partition assignments.
-     *
+     * <p>
      * The following exceptions can be anticipated when calling {@code get()} on the future from the
      * returned {@link UnregisterBrokerResult}:
      * <ul>
@@ -1672,9 +1670,8 @@ public interface Admin extends AutoCloseable {
      * </ul>
      * <p>
      *
-     * @param brokerId  the broker id to unregister.
-     * @param options   the options to use.
-     *
+     * @param brokerId the broker id to unregister.
+     * @param options  the options to use.
      * @return the {@link UnregisterBrokerResult} containing the result
      */
     @InterfaceStability.Unstable
@@ -1697,7 +1694,7 @@ public interface Admin extends AutoCloseable {
      * query the partition leader to find the producer state.
      *
      * @param partitions The set of partitions to query
-     * @param options Options to control the method behavior
+     * @param options    Options to control the method behavior
      * @return The result
      */
     DescribeProducersResult describeProducers(Collection<TopicPartition> partitions, DescribeProducersOptions options);
@@ -1718,7 +1715,7 @@ public interface Admin extends AutoCloseable {
      * which are dynamically discovered.
      *
      * @param transactionalIds The set of transactional IDs to query
-     * @param options Options to control the method behavior
+     * @param options          Options to control the method behavior
      * @return The result
      */
     DescribeTransactionsResult describeTransactions(Collection<String> transactionalIds, DescribeTransactionsOptions options);
@@ -1739,7 +1736,7 @@ public interface Admin extends AutoCloseable {
      * send a `WriteTxnMarkers` request to the partition leader in order to abort the
      * transaction. This requires administrative privileges.
      *
-     * @param spec The transaction specification including topic partition and producer details
+     * @param spec    The transaction specification including topic partition and producer details
      * @param options Options to control the method behavior (including filters)
      * @return The result
      */
@@ -1796,7 +1793,7 @@ public interface Admin extends AutoCloseable {
      * If no config resource types are specified, all configuration resources will be listed.
      *
      * @param configResourceTypes The set of configuration resource types to list.
-     * @param options The options to use when listing the configuration resources.
+     * @param options             The options to use when listing the configuration resources.
      * @return The ListConfigurationResourcesResult.
      */
     ListConfigResourcesResult listConfigResources(Set<ConfigResource.Type> configResourceTypes, ListConfigResourcesOptions options);
@@ -1853,28 +1850,28 @@ public interface Admin extends AutoCloseable {
      * @param timeout The maximum time to wait for admin client to determine its client instance ID.
      *                The value must be non-negative. Specifying a timeout of zero means do not
      *                wait for the initial request to complete if it hasn't already.
-     * @throws InterruptException If the thread is interrupted while blocked.
-     * @throws KafkaException If an unexpected error occurs while trying to determine the client
-     *                        instance ID, though this error does not necessarily imply the
-     *                        admin client is otherwise unusable.
-     * @throws IllegalArgumentException If the {@code timeout} is negative.
-     * @throws IllegalStateException If telemetry is not enabled ie, config `{@code enable.metrics.push}`
-     *                               is set to `{@code false}`.
      * @return The client's assigned instance id used for metrics collection.
+     * @throws InterruptException       If the thread is interrupted while blocked.
+     * @throws KafkaException           If an unexpected error occurs while trying to determine the client
+     *                                  instance ID, though this error does not necessarily imply the
+     *                                  admin client is otherwise unusable.
+     * @throws IllegalArgumentException If the {@code timeout} is negative.
+     * @throws IllegalStateException    If telemetry is not enabled ie, config `{@code enable.metrics.push}`
+     *                                  is set to `{@code false}`.
      */
     Uuid clientInstanceId(Duration timeout);
 
     /**
      * Add a new voter node to the KRaft metadata quorum.
      *
-     * @param voterId           The node ID of the voter.
-     * @param voterDirectoryId  The directory ID of the voter.
-     * @param endpoints         The endpoints that the new voter has.
+     * @param voterId          The node ID of the voter.
+     * @param voterDirectoryId The directory ID of the voter.
+     * @param endpoints        The endpoints that the new voter has.
      */
     default AddRaftVoterResult addRaftVoter(
-        int voterId,
-        Uuid voterDirectoryId,
-        Set<RaftVoterEndpoint> endpoints
+            int voterId,
+            Uuid voterDirectoryId,
+            Set<RaftVoterEndpoint> endpoints
     ) {
         return addRaftVoter(voterId, voterDirectoryId, endpoints, new AddRaftVoterOptions());
     }
@@ -1889,27 +1886,27 @@ public interface Admin extends AutoCloseable {
      * will fail with {@link InconsistentClusterIdException}.
      * If not provided, the cluster id check is skipped.
      *
-     * @param voterId           The node ID of the voter.
-     * @param voterDirectoryId  The directory ID of the voter.
-     * @param endpoints         The endpoints that the new voter has.
-     * @param options           Additional options for the operation, including optional cluster ID.
+     * @param voterId          The node ID of the voter.
+     * @param voterDirectoryId The directory ID of the voter.
+     * @param endpoints        The endpoints that the new voter has.
+     * @param options          Additional options for the operation, including optional cluster ID.
      */
     AddRaftVoterResult addRaftVoter(
-        int voterId,
-        Uuid voterDirectoryId,
-        Set<RaftVoterEndpoint> endpoints,
-        AddRaftVoterOptions options
+            int voterId,
+            Uuid voterDirectoryId,
+            Set<RaftVoterEndpoint> endpoints,
+            AddRaftVoterOptions options
     );
 
     /**
      * Remove a voter node from the KRaft metadata quorum.
      *
-     * @param voterId           The node ID of the voter.
-     * @param voterDirectoryId  The directory ID of the voter.
+     * @param voterId          The node ID of the voter.
+     * @param voterDirectoryId The directory ID of the voter.
      */
     default RemoveRaftVoterResult removeRaftVoter(
-        int voterId,
-        Uuid voterDirectoryId
+            int voterId,
+            Uuid voterDirectoryId
     ) {
         return removeRaftVoter(voterId, voterDirectoryId, new RemoveRaftVoterOptions());
     }
@@ -1928,14 +1925,14 @@ public interface Admin extends AutoCloseable {
      * must be shutdown before removing the controller from the voter set to prevent the removed
      * controller from automatically joining again.
      *
-     * @param voterId           The node ID of the voter.
-     * @param voterDirectoryId  The directory ID of the voter.
-     * @param options           Additional options for the operation, including optional cluster ID.
+     * @param voterId          The node ID of the voter.
+     * @param voterDirectoryId The directory ID of the voter.
+     * @param options          Additional options for the operation, including optional cluster ID.
      */
     RemoveRaftVoterResult removeRaftVoter(
-        int voterId,
-        Uuid voterDirectoryId,
-        RemoveRaftVoterOptions options
+            int voterId,
+            Uuid voterDirectoryId,
+            RemoveRaftVoterOptions options
     );
 
     /**
@@ -1991,7 +1988,7 @@ public interface Admin extends AutoCloseable {
      * List the share group offsets available in the cluster for the specified share groups.
      *
      * @param groupSpecs Map of share group ids to a spec that specifies the topic partitions of the group to list offsets for.
-     * @param options The options to use when listing the share group offsets.
+     * @param options    The options to use when listing the share group offsets.
      * @return The ListShareGroupOffsetsResult
      */
     ListShareGroupOffsetsResult listShareGroupOffsets(Map<String, ListShareGroupOffsetsSpec> groupSpecs, ListShareGroupOffsetsOptions options);
@@ -2013,7 +2010,7 @@ public interface Admin extends AutoCloseable {
      * Delete offsets for a set of topics in a share group.
      *
      * @param groupId The group for which to delete offsets.
-     * @param topics The topics for which to delete offsets.
+     * @param topics  The topics for which to delete offsets.
      * @param options The options to use when deleting offsets in a share group.
      * @return The DeleteShareGroupOffsetsResult.
      */
@@ -2027,7 +2024,7 @@ public interface Admin extends AutoCloseable {
      * See the overload for more details.
      *
      * @param groupId The group for which to delete offsets.
-     * @param topics The topics for which to delete offsets.
+     * @param topics  The topics for which to delete offsets.
      * @return The DeleteShareGroupOffsetsResult.
      */
     default DeleteShareGroupOffsetsResult deleteShareGroupOffsets(String groupId, Set<String> topics) {
@@ -2038,7 +2035,7 @@ public interface Admin extends AutoCloseable {
      * Delete share groups from the cluster.
      *
      * @param groupIds Collection of share group ids which are to be deleted.
-     * @param options The options to use when deleting a share group.
+     * @param options  The options to use when deleting a share group.
      * @return The DeleteShareGroupsResult.
      */
     DeleteShareGroupsResult deleteShareGroups(Collection<String> groupIds, DeleteShareGroupsOptions options);
@@ -2144,7 +2141,7 @@ public interface Admin extends AutoCloseable {
      * This is a convenience method for {@link #forceTerminateTransaction(String, TerminateTransactionOptions)}
      * with default options.
      *
-     * @param transactionalId           The ID of the transaction to terminate.
+     * @param transactionalId The ID of the transaction to terminate.
      * @return The TerminateTransactionResult.
      */
     default TerminateTransactionResult forceTerminateTransaction(String transactionalId) {
@@ -2157,10 +2154,10 @@ public interface Admin extends AutoCloseable {
      * It's similar to fenceProducers but only targets a single transactional ID to handle
      * long-running transactions when 2PC is enabled.
      *
-     * @param transactionalId       The ID of the transaction to terminate.
-     * @param options               The options to use when terminating the transaction.
+     * @param transactionalId The ID of the transaction to terminate.
+     * @param options         The options to use when terminating the transaction.
      * @return The TerminateTransactionResult.
      */
-    TerminateTransactionResult forceTerminateTransaction(String transactionalId, 
+    TerminateTransactionResult forceTerminateTransaction(String transactionalId,
                                                          TerminateTransactionOptions options);
 }

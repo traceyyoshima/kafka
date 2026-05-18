@@ -36,7 +36,7 @@ public class StrictControllerMutationQuota extends AbstractControllerMutationQuo
     /**
      * Creates a new StrictControllerMutationQuota with the specified time source and quota sensor.
      *
-     * @param time the Time object used for time-based calculations and quota tracking
+     * @param time        the Time object used for time-based calculations and quota tracking
      * @param quotaSensor the Sensor object that tracks quota usage for a specific user/clientId pair
      * @throws IllegalArgumentException if time or quotaSensor is null
      */

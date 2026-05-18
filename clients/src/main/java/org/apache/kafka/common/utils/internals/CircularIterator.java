@@ -43,8 +43,7 @@ public class CircularIterator<T> implements Iterator<T> {
      * Iterator will be dictated by the Iterator returned by Collection itself.
      *
      * @param col The collection to iterate indefinitely
-     *
-     * @throws NullPointerException if col is {@code null}
+     * @throws NullPointerException     if col is {@code null}
      * @throws IllegalArgumentException if col is empty.
      */
     public CircularIterator(final Collection<T> col) {

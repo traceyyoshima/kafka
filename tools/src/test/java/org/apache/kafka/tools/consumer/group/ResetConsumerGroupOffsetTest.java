@@ -95,14 +95,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * - export/import
  */
 @ClusterTestDefaults(
-    types = {Type.CO_KRAFT},
-    serverProperties = {
-        @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, value = "1000"),
-        @ClusterConfigProperty(key = CONSUMER_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
-        @ClusterConfigProperty(key = CONSUMER_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
-    }
+        types = {Type.CO_KRAFT},
+        serverProperties = {
+                @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+                @ClusterConfigProperty(key = OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1"),
+                @ClusterConfigProperty(key = GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, value = "1000"),
+                @ClusterConfigProperty(key = CONSUMER_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
+                @ClusterConfigProperty(key = CONSUMER_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
+        }
 )
 public class ResetConsumerGroupOffsetTest {
 
@@ -111,8 +111,8 @@ public class ResetConsumerGroupOffsetTest {
 
     private String[] basicArgs(ClusterInstance cluster) {
         return new String[]{"--reset-offsets",
-            "--bootstrap-server", cluster.bootstrapServers(),
-            "--timeout", Long.toString(DEFAULT_MAX_WAIT_MS)};
+                "--bootstrap-server", cluster.bootstrapServers(),
+                "--timeout", Long.toString(DEFAULT_MAX_WAIT_MS)};
     }
 
     private String[] buildArgsForGroups(ClusterInstance cluster, List<String> groups, String... args) {
@@ -150,10 +150,10 @@ public class ResetConsumerGroupOffsetTest {
     }
 
     @ClusterTest(
-        brokers = 2,
-        serverProperties = {
-            @ClusterConfigProperty(key = OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "2"),
-        }
+            brokers = 2,
+            serverProperties = {
+                    @ClusterConfigProperty(key = OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "2"),
+            }
     )
     public void testResetOffsetsWithOfflinePartitionNotInResetTarget(ClusterInstance cluster) throws Exception {
         String topic = generateRandomTopic();
@@ -271,8 +271,8 @@ public class ResetConsumerGroupOffsetTest {
             DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
             LocalDateTime dateTime = now().minusDays(1);
             String[] args = buildArgsForGroup(cluster, group,
-                "--all-topics", "--to-datetime",
-                format.format(dateTime), "--execute");
+                    "--all-topics", "--to-datetime",
+                    format.format(dateTime), "--execute");
 
             produceMessages(cluster, topic, 100);
 
@@ -467,7 +467,7 @@ public class ResetConsumerGroupOffsetTest {
             String group = generateRandomGroupId();
             String topic = generateRandomTopic();
             String[] args = buildArgsForGroup(cluster, group, "--topic", topic + ":1",
-                "--to-earliest", "--execute");
+                    "--to-earliest", "--execute");
 
             try (Admin admin = cluster.admin();
                  ConsumerGroupCommand.ConsumerGroupService service = getConsumerGroupService(args)) {
@@ -494,9 +494,9 @@ public class ResetConsumerGroupOffsetTest {
             String topic1 = generateRandomTopic();
             String topic2 = generateRandomTopic();
             String[] args = buildArgsForGroup(cluster, group,
-                "--topic", topic1,
-                "--topic", topic2,
-                "--to-earliest", "--execute");
+                    "--topic", topic1,
+                    "--topic", topic2,
+                    "--to-earliest", "--execute");
 
             try (Admin admin = cluster.admin();
                  ConsumerGroupCommand.ConsumerGroupService service = getConsumerGroupService(args)) {
@@ -529,9 +529,9 @@ public class ResetConsumerGroupOffsetTest {
             String topic1 = generateRandomTopic();
             String topic2 = generateRandomTopic();
             String[] args = buildArgsForGroup(cluster, group,
-                "--topic", topic1 + ":1",
-                "--topic", topic2 + ":1",
-                "--to-earliest", "--execute");
+                    "--topic", topic1 + ":1",
+                    "--topic", topic2 + ":1",
+                    "--to-earliest", "--execute");
 
             try (Admin admin = cluster.admin();
                  ConsumerGroupCommand.ConsumerGroupService service = getConsumerGroupService(args)) {
@@ -618,7 +618,7 @@ public class ResetConsumerGroupOffsetTest {
             TopicPartition t2p0 = new TopicPartition(topic2, 0);
             TopicPartition t2p1 = new TopicPartition(topic2, 1);
             String[] cgcArgs = buildArgsForGroups(cluster, List.of(group1, group2),
-                "--all-topics", "--to-offset", "2", "--export");
+                    "--all-topics", "--to-offset", "2", "--export");
             File file = TestUtils.tempFile("reset", ".csv");
 
             try (Admin admin = cluster.admin();
@@ -674,9 +674,9 @@ public class ResetConsumerGroupOffsetTest {
     public void testResetWithUnrecognizedNewConsumerOption(ClusterInstance cluster) {
         String group = generateRandomGroupId();
         String[] cgcArgs = new String[]{"--new-consumer",
-            "--bootstrap-server", cluster.bootstrapServers(),
-            "--reset-offsets", "--group", group, "--all-topics",
-            "--to-offset", "2", "--export"};
+                "--bootstrap-server", cluster.bootstrapServers(),
+                "--reset-offsets", "--group", group, "--all-topics",
+                "--to-offset", "2", "--export"};
         assertThrows(OptionException.class, () -> getConsumerGroupService(cgcArgs));
     }
 
@@ -899,7 +899,7 @@ public class ResetConsumerGroupOffsetTest {
             GroupState state = service.collectGroupState(group).groupState();
             return Objects.equals(state, GroupState.EMPTY) || Objects.equals(state, GroupState.DEAD);
         }, "Expected that consumer group is inactive. Actual state: " +
-            service.collectGroupState(group).groupState());
+                service.collectGroupState(group).groupState());
     }
 
     private void resetAndAssertOffsetsCommitted(ClusterInstance cluster,

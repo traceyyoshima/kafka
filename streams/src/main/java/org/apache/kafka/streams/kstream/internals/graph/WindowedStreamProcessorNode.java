@@ -32,7 +32,7 @@ public class WindowedStreamProcessorNode<K, V> extends ProcessorGraphNode<K, V> 
     @Override
     public String toString() {
         return "WindowedStreamProcessorNode{" +
-            "storeName=" + windowStoreName +
-            "} " + super.toString();
+                "storeName=" + windowStoreName +
+                "} " + super.toString();
     }
 }

@@ -68,18 +68,18 @@ public class DescribeTopicPartitionsResponse extends AbstractResponse {
 
     public static DescribeTopicPartitionsResponse parse(Readable readable, short version) {
         return new DescribeTopicPartitionsResponse(
-            new DescribeTopicPartitionsResponseData(readable, version));
+                new DescribeTopicPartitionsResponseData(readable, version));
     }
 
     public static TopicPartitionInfo partitionToTopicPartitionInfo(
-        DescribeTopicPartitionsResponseData.DescribeTopicPartitionsResponsePartition partition,
-        Map<Integer, Node> nodes) {
+            DescribeTopicPartitionsResponseData.DescribeTopicPartitionsResponsePartition partition,
+            Map<Integer, Node> nodes) {
         return new TopicPartitionInfo(
-            partition.partitionIndex(),
-            nodes.get(partition.leaderId()),
-            partition.replicaNodes().stream().map(id -> nodes.getOrDefault(id, new Node(id, "", -1))).collect(Collectors.toList()),
-            partition.isrNodes().stream().map(id -> nodes.getOrDefault(id, new Node(id, "", -1))).collect(Collectors.toList()),
-            partition.eligibleLeaderReplicas().stream().map(id -> nodes.getOrDefault(id, new Node(id, "", -1))).collect(Collectors.toList()),
-            partition.lastKnownElr().stream().map(id -> nodes.getOrDefault(id, new Node(id, "", -1))).collect(Collectors.toList()));
+                partition.partitionIndex(),
+                nodes.get(partition.leaderId()),
+                partition.replicaNodes().stream().map(id -> nodes.getOrDefault(id, new Node(id, "", -1))).collect(Collectors.toList()),
+                partition.isrNodes().stream().map(id -> nodes.getOrDefault(id, new Node(id, "", -1))).collect(Collectors.toList()),
+                partition.eligibleLeaderReplicas().stream().map(id -> nodes.getOrDefault(id, new Node(id, "", -1))).collect(Collectors.toList()),
+                partition.lastKnownElr().stream().map(id -> nodes.getOrDefault(id, new Node(id, "", -1))).collect(Collectors.toList()));
     }
 }

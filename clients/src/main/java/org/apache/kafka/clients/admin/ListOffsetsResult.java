@@ -36,8 +36,8 @@ public class ListOffsetsResult {
     }
 
     /**
-    * Return a future which can be used to check the result for a given partition.
-    */
+     * Return a future which can be used to check the result for a given partition.
+     */
     public KafkaFuture<ListOffsetsResultInfo> partitionResult(final TopicPartition partition) {
         KafkaFuture<ListOffsetsResultInfo> future = futures.get(partition);
         if (future == null) {

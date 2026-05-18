@@ -51,9 +51,9 @@ class HeadersSerializer {
         final byte[][] rawHeaderValues;
 
         PreSerializedHeaders(
-            final int requiredBufferSizeForHeaders,
-            final byte[][] rawHeaderKeys,
-            final byte[][] rawHeaderValues
+                final int requiredBufferSizeForHeaders,
+                final byte[][] rawHeaderKeys,
+                final byte[][] rawHeaderValues
         ) {
             this.requiredBufferSizeForHeaders = requiredBufferSizeForHeaders;
             this.rawHeaderKeys = rawHeaderKeys;
@@ -114,7 +114,7 @@ class HeadersSerializer {
      * instead of encoding headerCount=0 (1 byte).
      *
      * @param preSerializedHeaders the preSerializedHeaders
-     * @param buffer the buffer to write the serialized header into (it's expected that the buffer position is set correctly)
+     * @param buffer               the buffer to write the serialized header into (it's expected that the buffer position is set correctly)
      * @return the modified {@code buffer} containing the serializer headers (empty array if headers are null or empty),
      * with corresponding advanced position
      */

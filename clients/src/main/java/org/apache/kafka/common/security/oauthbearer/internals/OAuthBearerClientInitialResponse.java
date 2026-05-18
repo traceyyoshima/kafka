@@ -77,15 +77,12 @@ public class OAuthBearerClientInitialResponse {
 
     /**
      * Constructor
-     * 
-     * @param tokenValue
-     *            the mandatory token value
-     * @param extensions
-     *            the optional extensions
-     * @throws SaslException
-     *             if any extension name or value fails to conform to the required
-     *             regular expression as defined by the specification, or if the
-     *             reserved {@code auth} appears as a key
+     *
+     * @param tokenValue the mandatory token value
+     * @param extensions the optional extensions
+     * @throws SaslException if any extension name or value fails to conform to the required
+     *                       regular expression as defined by the specification, or if the
+     *                       reserved {@code auth} appears as a key
      */
     public OAuthBearerClientInitialResponse(String tokenValue, SaslExtensions extensions) throws SaslException {
         this(tokenValue, "", extensions);
@@ -93,17 +90,13 @@ public class OAuthBearerClientInitialResponse {
 
     /**
      * Constructor
-     * 
-     * @param tokenValue
-     *            the mandatory token value
-     * @param authorizationId
-     *            the optional authorization ID
-     * @param extensions
-     *            the optional extensions
-     * @throws SaslException
-     *             if any extension name or value fails to conform to the required
-     *             regular expression as defined by the specification, or if the
-     *             reserved {@code auth} appears as a key
+     *
+     * @param tokenValue      the mandatory token value
+     * @param authorizationId the optional authorization ID
+     * @param extensions      the optional extensions
+     * @throws SaslException if any extension name or value fails to conform to the required
+     *                       regular expression as defined by the specification, or if the
+     *                       reserved {@code auth} appears as a key
      */
     public OAuthBearerClientInitialResponse(String tokenValue, String authorizationId, SaslExtensions extensions) throws SaslException {
         this.tokenValue = Objects.requireNonNull(tokenValue, "token value must not be null");
@@ -114,7 +107,7 @@ public class OAuthBearerClientInitialResponse {
 
     /**
      * Return the always non-null extensions
-     * 
+     *
      * @return the always non-null extensions
      */
     public SaslExtensions extensions() {
@@ -135,7 +128,7 @@ public class OAuthBearerClientInitialResponse {
 
     /**
      * Return the always non-null token value
-     * 
+     *
      * @return the always non-null token value
      */
     public String tokenValue() {
@@ -144,7 +137,7 @@ public class OAuthBearerClientInitialResponse {
 
     /**
      * Return the always non-null authorization ID
-     * 
+     *
      * @return the always non-null authorization ID
      */
     public String authorizationId() {
@@ -154,15 +147,12 @@ public class OAuthBearerClientInitialResponse {
     /**
      * Validates that the given extensions conform to the standard. They should also not contain the reserve key name {@link OAuthBearerClientInitialResponse#AUTH_KEY}
      *
-     * @param extensions
-     *            optional extensions to validate
-     * @throws SaslException
-     *             if any extension name or value fails to conform to the required
-     *             regular expression as defined by the specification, or if the
-     *             reserved {@code auth} appears as a key
-     *
+     * @param extensions optional extensions to validate
+     * @throws SaslException if any extension name or value fails to conform to the required
+     *                       regular expression as defined by the specification, or if the
+     *                       reserved {@code auth} appears as a key
      * @see <a href="https://tools.ietf.org/html/rfc7628#section-3.1">RFC 7628,
-     *  Section 3.1</a>
+     * Section 3.1</a>
      */
     public static void validateExtensions(SaslExtensions extensions) throws SaslException {
         if (extensions == null)

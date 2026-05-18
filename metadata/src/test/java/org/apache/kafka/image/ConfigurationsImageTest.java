@@ -57,32 +57,32 @@ public class ConfigurationsImageTest {
         broker0Map.put("foo", "bar");
         broker0Map.put("baz", "quux");
         map1.put(new ConfigResource(BROKER, "0"),
-            new ConfigurationImage(new ConfigResource(BROKER, "0"), broker0Map));
+                new ConfigurationImage(new ConfigResource(BROKER, "0"), broker0Map));
         Map<String, String> broker1Map = new HashMap<>();
         broker1Map.put("foobar", "foobaz");
         map1.put(new ConfigResource(BROKER, "1"),
-            new ConfigurationImage(new ConfigResource(BROKER, "1"), broker1Map));
+                new ConfigurationImage(new ConfigResource(BROKER, "1"), broker1Map));
         IMAGE1 = new ConfigurationsImage(map1);
 
         DELTA1_RECORDS = new ArrayList<>();
         // remove configs
         DELTA1_RECORDS.add(new ApiMessageAndVersion(new ConfigRecord().setResourceType(BROKER.id()).
-            setResourceName("0").setName("foo").setValue(null),
-            CONFIG_RECORD.highestSupportedVersion()));
+                setResourceName("0").setName("foo").setValue(null),
+                CONFIG_RECORD.highestSupportedVersion()));
         DELTA1_RECORDS.add(new ApiMessageAndVersion(new ConfigRecord().setResourceType(BROKER.id()).
-            setResourceName("0").setName("baz").setValue(null),
-            CONFIG_RECORD.highestSupportedVersion()));
+                setResourceName("0").setName("baz").setValue(null),
+                CONFIG_RECORD.highestSupportedVersion()));
         DELTA1_RECORDS.add(new ApiMessageAndVersion(new ConfigRecord().setResourceType(BROKER.id()).
-            setResourceName("1").setName("foobar").setValue(null),
-            CONFIG_RECORD.highestSupportedVersion()));
+                setResourceName("1").setName("foobar").setValue(null),
+                CONFIG_RECORD.highestSupportedVersion()));
         // add new config to b1
         DELTA1_RECORDS.add(new ApiMessageAndVersion(new ConfigRecord().setResourceType(BROKER.id()).
-            setResourceName("1").setName("barfoo").setValue("bazfoo"),
-            CONFIG_RECORD.highestSupportedVersion()));
+                setResourceName("1").setName("barfoo").setValue("bazfoo"),
+                CONFIG_RECORD.highestSupportedVersion()));
         // add new config to b2
         DELTA1_RECORDS.add(new ApiMessageAndVersion(new ConfigRecord().setResourceType(BROKER.id()).
-            setResourceName("2").setName("foo").setValue("bar"),
-            CONFIG_RECORD.highestSupportedVersion()));
+                setResourceName("2").setName("foo").setValue("bar"),
+                CONFIG_RECORD.highestSupportedVersion()));
 
         DELTA1 = new ConfigurationsDelta(IMAGE1, SupportedConfigChecker.TRUE);
         RecordTestUtils.replayAll(DELTA1, DELTA1_RECORDS);
@@ -90,7 +90,7 @@ public class ConfigurationsImageTest {
         Map<ConfigResource, ConfigurationImage> map2 = new HashMap<>();
         Map<String, String> broker1Map2 = Map.of("barfoo", "bazfoo");
         map2.put(new ConfigResource(BROKER, "1"),
-            new ConfigurationImage(new ConfigResource(BROKER, "1"), broker1Map2));
+                new ConfigurationImage(new ConfigResource(BROKER, "1"), broker1Map2));
         Map<String, String> broker2Map = Map.of("foo", "bar");
         map2.put(new ConfigResource(BROKER, "2"), new ConfigurationImage(new ConfigResource(BROKER, "2"), broker2Map));
         IMAGE2 = new ConfigurationsImage(map2);
@@ -130,9 +130,9 @@ public class ConfigurationsImageTest {
 
         ConfigurationDelta delta = new ConfigurationDelta(image, supportedConfigChecker);
         delta.replay(new ConfigRecord().setResourceType(BROKER.id()).setResourceName("0")
-            .setName("bar").setValue("value2"));
+                .setName("bar").setValue("value2"));
         delta.replay(new ConfigRecord().setResourceType(BROKER.id()).setResourceName("0")
-            .setName("qux").setValue("value3"));
+                .setName("qux").setValue("value3"));
 
         ConfigurationImage result = delta.apply();
 
@@ -148,7 +148,7 @@ public class ConfigurationsImageTest {
 
         ConfigurationDelta delta = new ConfigurationDelta(image, SupportedConfigChecker.TRUE);
         delta.replay(new ConfigRecord().setResourceType(BROKER.id()).setResourceName("0")
-            .setName("baz").setValue("value3"));
+                .setName("baz").setValue("value3"));
 
         ConfigurationImage result = delta.apply();
 
@@ -168,8 +168,8 @@ public class ConfigurationsImageTest {
     private static void testToImage(ConfigurationsImage image, List<ApiMessageAndVersion> fromRecords) {
         // test from empty image stopping each of the various intermediate images along the way
         new RecordTestUtils.TestThroughAllIntermediateImagesLeadingToFinalImageHelper<>(
-            () -> ConfigurationsImage.EMPTY,
-            img -> new ConfigurationsDelta(img, SupportedConfigChecker.TRUE)
+                () -> ConfigurationsImage.EMPTY,
+                img -> new ConfigurationsDelta(img, SupportedConfigChecker.TRUE)
         ).test(image, fromRecords);
     }
 

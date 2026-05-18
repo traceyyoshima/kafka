@@ -52,36 +52,36 @@ public class KafkaProducerMetrics implements AutoCloseable {
         this.metrics = metrics;
         tags = this.metrics.config().tags();
         flushTimeSensor = newLatencySensor(
-            FLUSH,
-            "Total time producer has spent in flush in nanoseconds."
+                FLUSH,
+                "Total time producer has spent in flush in nanoseconds."
         );
         initTimeSensor = newLatencySensor(
-            TXN_INIT,
-            "Total time producer has spent in initTransactions in nanoseconds."
+                TXN_INIT,
+                "Total time producer has spent in initTransactions in nanoseconds."
         );
         beginTxnTimeSensor = newLatencySensor(
-            TXN_BEGIN,
-            "Total time producer has spent in beginTransaction in nanoseconds."
+                TXN_BEGIN,
+                "Total time producer has spent in beginTransaction in nanoseconds."
         );
         sendOffsetsSensor = newLatencySensor(
-            TXN_SEND_OFFSETS,
-            "Total time producer has spent in sendOffsetsToTransaction in nanoseconds."
+                TXN_SEND_OFFSETS,
+                "Total time producer has spent in sendOffsetsToTransaction in nanoseconds."
         );
         commitTxnSensor = newLatencySensor(
-            TXN_COMMIT,
-            "Total time producer has spent in commitTransaction in nanoseconds."
+                TXN_COMMIT,
+                "Total time producer has spent in commitTransaction in nanoseconds."
         );
         abortTxnSensor = newLatencySensor(
-            TXN_ABORT,
-            "Total time producer has spent in abortTransaction in nanoseconds."
+                TXN_ABORT,
+                "Total time producer has spent in abortTransaction in nanoseconds."
         );
         prepareTxnSensor = newLatencySensor(
-            TXN_PREPARE,
-            "Total time producer has spent in prepareTransaction in nanoseconds."
+                TXN_PREPARE,
+                "Total time producer has spent in prepareTransaction in nanoseconds."
         );
         metadataWaitSensor = newLatencySensor(
-            METADATA_WAIT,
-            "Total time producer has spent waiting on topic metadata in nanoseconds."
+                METADATA_WAIT,
+                "Total time producer has spent waiting on topic metadata in nanoseconds."
         );
     }
 

@@ -30,7 +30,7 @@ import java.util.Comparator;
 
 /**
  * This classes exposes low-level methods for reading/writing from byte streams or buffers.
- *
+ * <p>
  * The implementation of these methods has been tuned for JVM and the empirical calculations could be found
  * using ByteUtilsBenchmark.java
  */
@@ -38,7 +38,8 @@ public final class ByteUtils {
 
     public static final ByteBuffer EMPTY_BUF = ByteBuffer.wrap(new byte[0]);
 
-    private ByteUtils() {}
+    private ByteUtils() {
+    }
 
     /**
      * Increment the underlying byte array by adding 1.
@@ -114,7 +115,7 @@ public final class ByteUtils {
      * Read an unsigned integer from the given position without modifying the buffers position
      *
      * @param buffer the buffer to read from
-     * @param index the index from which to read the integer
+     * @param index  the index from which to read the integer
      * @return The integer read, as a long to avoid signedness
      */
     public static long readUnsignedInt(ByteBuffer buffer, int index) {
@@ -154,17 +155,17 @@ public final class ByteUtils {
      */
     public static int readIntBE(byte[] buffer, int offset) {
         return ((buffer[offset] & 0xFF) << 24)
-            | ((buffer[offset + 1] & 0xFF) << 16)
-            | ((buffer[offset + 2] & 0xFF) << 8)
-            | (buffer[offset + 3] & 0xFF);
+                | ((buffer[offset + 1] & 0xFF) << 16)
+                | ((buffer[offset + 2] & 0xFF) << 8)
+                | (buffer[offset + 3] & 0xFF);
     }
 
     /**
      * Write the given long value as a 4 byte unsigned integer. Overflow is ignored.
      *
      * @param buffer The buffer to write to
-     * @param index The position in the buffer at which to begin writing
-     * @param value The value to write
+     * @param index  The position in the buffer at which to begin writing
+     * @param value  The value to write
      */
     public static void writeUnsignedInt(ByteBuffer buffer, int index, long value) {
         buffer.putInt(index, (int) (value & 0xffffffffL));
@@ -174,7 +175,7 @@ public final class ByteUtils {
      * Write the given long value as a 4 byte unsigned integer. Overflow is ignored.
      *
      * @param buffer The buffer to write to
-     * @param value The value to write
+     * @param value  The value to write
      */
     public static void writeUnsignedInt(ByteBuffer buffer, long value) {
         buffer.putInt((int) (value & 0xffffffffL));
@@ -183,7 +184,7 @@ public final class ByteUtils {
     /**
      * Write an unsigned integer in little-endian format to the {@link OutputStream}.
      *
-     * @param out The stream to write to
+     * @param out   The stream to write to
      * @param value The value to write
      */
     public static void writeUnsignedIntLE(OutputStream out, int value) throws IOException {
@@ -199,26 +200,25 @@ public final class ByteUtils {
      *
      * @param buffer The byte array to write to
      * @param offset The position in buffer to write to
-     * @param value The value to write
+     * @param value  The value to write
      */
     public static void writeUnsignedIntLE(byte[] buffer, int offset, int value) {
         buffer[offset] = (byte) value;
         buffer[offset + 1] = (byte) (value >>> 8);
         buffer[offset + 2] = (byte) (value >>> 16);
-        buffer[offset + 3]   = (byte) (value >>> 24);
+        buffer[offset + 3] = (byte) (value >>> 24);
     }
 
     /**
      * Read an integer stored in variable-length format using unsigned decoding from
      * <a href="http://code.google.com/apis/protocolbuffers/docs/encoding.html"> Google Protocol Buffers</a>.
-     *
+     * <p>
      * The implementation is based on Netty's decoding of varint.
-     * @see <a href="https://github.com/netty/netty/blob/59aa6e635b9996cf21cd946e64353270679adc73/codec/src/main/java/io/netty/handler/codec/protobuf/ProtobufVarint32FrameDecoder.java#L73">Netty's varint decoding</a>
      *
      * @param buffer The buffer to read from
      * @return The integer read
-     *
      * @throws IllegalArgumentException if variable-length value does not terminate after 5 bytes have been read
+     * @see <a href="https://github.com/netty/netty/blob/59aa6e635b9996cf21cd946e64353270679adc73/codec/src/main/java/io/netty/handler/codec/protobuf/ProtobufVarint32FrameDecoder.java#L73">Netty's varint decoding</a>
      */
     public static int readUnsignedVarint(ByteBuffer buffer) {
         byte tmp = buffer.get();
@@ -252,16 +252,15 @@ public final class ByteUtils {
     /**
      * Read an integer stored in variable-length format using unsigned decoding from
      * <a href="http://code.google.com/apis/protocolbuffers/docs/encoding.html"> Google Protocol Buffers</a>.
-     *
+     * <p>
      * The implementation is based on Netty's decoding of varint.
-     * @see <a href="https://github.com/netty/netty/blob/59aa6e635b9996cf21cd946e64353270679adc73/codec/src/main/java/io/netty/handler/codec/protobuf/ProtobufVarint32FrameDecoder.java#L73">Netty's varint decoding</a>
      *
      * @param in The input to read from
      * @return The integer read
-     *
      * @throws IllegalArgumentException if variable-length value does not terminate after 5 bytes have been read
      * @throws IOException              if {@link InputStream} throws {@link IOException}
      * @throws EOFException             if {@link InputStream} throws {@link EOFException}
+     * @see <a href="https://github.com/netty/netty/blob/59aa6e635b9996cf21cd946e64353270679adc73/codec/src/main/java/io/netty/handler/codec/protobuf/ProtobufVarint32FrameDecoder.java#L73">Netty's varint decoding</a>
      */
     static int readUnsignedVarint(InputStream in) throws IOException {
         byte tmp = (byte) in.read();
@@ -298,7 +297,6 @@ public final class ByteUtils {
      *
      * @param buffer The buffer to read from
      * @return The integer read
-     *
      * @throws IllegalArgumentException if variable-length value does not terminate after 5 bytes have been read
      */
     public static int readVarint(ByteBuffer buffer) {
@@ -312,7 +310,6 @@ public final class ByteUtils {
      *
      * @param in The input to read from
      * @return The integer read
-     *
      * @throws IllegalArgumentException if variable-length value does not terminate after 5 bytes have been read
      * @throws IOException              if {@link DataInput} throws {@link IOException}
      */
@@ -327,7 +324,6 @@ public final class ByteUtils {
      *
      * @param in The input to read from
      * @return The long value read
-     *
      * @throws IllegalArgumentException if variable-length value does not terminate after 10 bytes have been read
      * @throws IOException              if {@link DataInput} throws {@link IOException}
      */
@@ -351,16 +347,15 @@ public final class ByteUtils {
      *
      * @param buffer The buffer to read from
      * @return The long value read
-     *
      * @throws IllegalArgumentException if variable-length value does not terminate after 10 bytes have been read
      */
-    public static long readVarlong(ByteBuffer buffer)  {
-        long raw =  readUnsignedVarlong(buffer);
+    public static long readVarlong(ByteBuffer buffer) {
+        long raw = readUnsignedVarlong(buffer);
         return (raw >>> 1) ^ -(raw & 1);
     }
 
     // visible for testing
-    static long readUnsignedVarlong(ByteBuffer buffer)  {
+    static long readUnsignedVarlong(ByteBuffer buffer) {
         long value = 0L;
         int i = 0;
         long b;
@@ -398,12 +393,12 @@ public final class ByteUtils {
      * Write the given integer following the variable-length unsigned encoding from
      * <a href="http://code.google.com/apis/protocolbuffers/docs/encoding.html"> Google Protocol Buffers</a>
      * into the buffer.
-     *
+     * <p>
      * Implementation copied from https://github.com/astei/varint-writing-showdown/tree/dev (MIT License)
-     * @see <a href="https://github.com/astei/varint-writing-showdown/blob/6b1a4baec4b1f0ce65fa40cf0b282ec775fdf43e/src/jmh/java/me/steinborn/varintshowdown/res/SmartNoDataDependencyUnrolledVarIntWriter.java#L8"> Sample implementation </a>
      *
-     * @param value The value to write
+     * @param value  The value to write
      * @param buffer The output to write to
+     * @see <a href="https://github.com/astei/varint-writing-showdown/blob/6b1a4baec4b1f0ce65fa40cf0b282ec775fdf43e/src/jmh/java/me/steinborn/varintshowdown/res/SmartNoDataDependencyUnrolledVarIntWriter.java#L8"> Sample implementation </a>
      */
     public static void writeUnsignedVarint(int value, ByteBuffer buffer) {
         if ((value & (0xFFFFFFFF << 7)) == 0) {
@@ -433,11 +428,11 @@ public final class ByteUtils {
      * Write the given integer following the variable-length unsigned encoding from
      * <a href="http://code.google.com/apis/protocolbuffers/docs/encoding.html"> Google Protocol Buffers</a>
      * into the buffer.
-     * 
+     * <p>
      * For implementation notes, see {@link #writeUnsignedVarint(int, ByteBuffer)}
      *
      * @param value The value to write
-     * @param out The output to write to
+     * @param out   The output to write to
      */
     public static void writeUnsignedVarint(int value, DataOutput out) throws IOException {
         if ((value & (0xFFFFFFFF << 7)) == 0) {
@@ -469,7 +464,7 @@ public final class ByteUtils {
      * into the output.
      *
      * @param value The value to write
-     * @param out The output to write to
+     * @param out   The output to write to
      */
     public static void writeVarint(int value, DataOutput out) throws IOException {
         writeUnsignedVarint((value << 1) ^ (value >> 31), out);
@@ -480,7 +475,7 @@ public final class ByteUtils {
      * <a href="http://code.google.com/apis/protocolbuffers/docs/encoding.html"> Google Protocol Buffers</a>
      * into the buffer.
      *
-     * @param value The value to write
+     * @param value  The value to write
      * @param buffer The output to write to
      */
     public static void writeVarint(int value, ByteBuffer buffer) {
@@ -493,7 +488,7 @@ public final class ByteUtils {
      * into the output.
      *
      * @param value The value to write
-     * @param out The output to write to
+     * @param out   The output to write to
      */
     public static void writeVarlong(long value, DataOutput out) throws IOException {
         long v = (value << 1) ^ (value >> 63);
@@ -509,7 +504,7 @@ public final class ByteUtils {
      * <a href="http://code.google.com/apis/protocolbuffers/docs/encoding.html"> Google Protocol Buffers</a>
      * into the buffer.
      *
-     * @param value The value to write
+     * @param value  The value to write
      * @param buffer The buffer to write to
      */
     public static void writeVarlong(long value, ByteBuffer buffer) {
@@ -531,7 +526,7 @@ public final class ByteUtils {
      * Write the given double following the double-precision 64-bit format IEEE 754 value into the output.
      *
      * @param value The value to write
-     * @param out The output to write to
+     * @param out   The output to write to
      */
     public static void writeDouble(double value, DataOutput out) throws IOException {
         out.writeDouble(value);
@@ -540,7 +535,7 @@ public final class ByteUtils {
     /**
      * Write the given double following the double-precision 64-bit format IEEE 754 value into the buffer.
      *
-     * @param value The value to write
+     * @param value  The value to write
      * @param buffer The buffer to write to
      */
     public static void writeDouble(double value, ByteBuffer buffer) {
@@ -551,7 +546,6 @@ public final class ByteUtils {
      * Number of bytes needed to encode an integer in unsigned variable-length format.
      *
      * @param value The signed value
-     *
      * @see #writeUnsignedVarint(int, DataOutput)
      */
     public static int sizeOfUnsignedVarint(int value) {

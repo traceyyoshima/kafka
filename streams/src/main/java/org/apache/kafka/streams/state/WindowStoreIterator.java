@@ -24,7 +24,7 @@ import java.time.Instant;
 /**
  * Iterator interface of {@link KeyValue} with key typed {@link Long} used for {@link WindowStore#fetch(Object, long, long)}
  * and {@link WindowStore#fetch(Object, Instant, Instant)}
- *
+ * <p>
  * Users must call its {@code close} method explicitly upon completeness to release resources,
  * or use try-with-resources statement (available since JDK7) for this {@link Closeable} class.
  *

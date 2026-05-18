@@ -24,7 +24,7 @@ interface NamedOperation<T extends NamedOperation<T>> {
     /**
      * Sets the name to be used for an operation.
      *
-     * @param name  the name to use.
+     * @param name the name to use.
      * @return an instance of {@link NamedOperation}
      */
     T withName(final String name);

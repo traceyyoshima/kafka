@@ -42,13 +42,13 @@ import java.util.function.Supplier;
  * of the primary key. This eliminates race-condition results for rapidly-changing foreign-keys for a given primary key.
  * Applies the join and emits nulls according to LEFT/INNER rules.
  *
- * @param <KLeft> Type of primary keys
- * @param <VLeft> Type of primary values
+ * @param <KLeft>  Type of primary keys
+ * @param <VLeft>  Type of primary values
  * @param <VRight> Type of foreign values
- * @param <VOut> Type of joined result of primary and foreign values
+ * @param <VOut>   Type of joined result of primary and foreign values
  */
 public class ResponseJoinProcessorSupplier<KLeft, VLeft, VRight, VOut>
-    implements ProcessorSupplier<KLeft, SubscriptionResponseWrapper<VRight>, KLeft, VOut> {
+        implements ProcessorSupplier<KLeft, SubscriptionResponseWrapper<VRight>, KLeft, VOut> {
 
     private static final Logger LOG = LoggerFactory.getLogger(ResponseJoinProcessorSupplier.class);
     private final KTableValueGetterSupplier<KLeft, VLeft> valueGetterSupplier;
@@ -109,8 +109,8 @@ public class ResponseJoinProcessorSupplier<KLeft, VLeft, VRight, VOut>
                 final ValueTimestampHeaders<VLeft> currentValueWithTimestamp = valueGetter.get(record.key());
 
                 final long[] currentHash = currentValueWithTimestamp == null ?
-                    null :
-                    Murmur3.hash128(runtimeValueSerializer.serialize(valueHashSerdePseudoTopic, record.headers(), currentValueWithTimestamp.value()));
+                        null :
+                        Murmur3.hash128(runtimeValueSerializer.serialize(valueHashSerdePseudoTopic, record.headers(), currentValueWithTimestamp.value()));
 
                 final long[] messageHash = record.value().originalValueHash();
 

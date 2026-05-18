@@ -147,7 +147,7 @@ public class StripedReplicaPlacer implements ReplicaPlacer {
         /**
          * Initialize this broker list by sorting it and randomizing the start offset.
          *
-         * @param random    The random number generator.
+         * @param random The random number generator.
          */
         void initialize(Random random) {
             if (!brokers.isEmpty()) {
@@ -164,7 +164,7 @@ public class StripedReplicaPlacer implements ReplicaPlacer {
         }
 
         /**
-         * @return          The number of brokers in this list.
+         * @return The number of brokers in this list.
          */
         int size() {
             return brokers.size();
@@ -174,10 +174,9 @@ public class StripedReplicaPlacer implements ReplicaPlacer {
          * Get the next broker in this list, or -1 if there are no more elements to be
          * returned.
          *
-         * @param epoch     The current iteration epoch.
-         *
-         * @return          The broker ID, or -1 if there are no more brokers to be
-         *                  returned in this epoch.
+         * @param epoch The current iteration epoch.
+         * @return The broker ID, or -1 if there are no more brokers to be
+         * returned in this epoch.
          */
         int next(int epoch) {
             if (brokers.isEmpty()) return -1;
@@ -203,7 +202,7 @@ public class StripedReplicaPlacer implements ReplicaPlacer {
         /**
          * Initialize this rack.
          *
-         * @param random    The random number generator.
+         * @param random The random number generator.
          */
         void initialize(Random random) {
             fenced.initialize(random);
@@ -227,10 +226,9 @@ public class StripedReplicaPlacer implements ReplicaPlacer {
          * Get the next unfenced broker in this rack, or -1 if there are no more brokers
          * to be returned.
          *
-         * @param epoch     The current iteration epoch.
-         *
-         * @return          The broker ID, or -1 if there are no more brokers to be
-         *                  returned in this epoch.
+         * @param epoch The current iteration epoch.
+         * @return The broker ID, or -1 if there are no more brokers to be
+         * returned in this epoch.
          */
         int nextUnfenced(int epoch) {
             return unfenced.next(epoch);
@@ -240,10 +238,9 @@ public class StripedReplicaPlacer implements ReplicaPlacer {
          * Get the next broker in this rack, or -1 if there are no more brokers to be
          * returned.
          *
-         * @param epoch     The current iteration epoch.
-         *
-         * @return          The broker ID, or -1 if there are no more brokers to be
-         *                  returned in this epoch.
+         * @param epoch The current iteration epoch.
+         * @return The broker ID, or -1 if there are no more brokers to be
+         * returned in this epoch.
          */
         int next(int epoch) {
             int result = unfenced.next(epoch);
@@ -424,20 +421,20 @@ public class StripedReplicaPlacer implements ReplicaPlacer {
 
     @Override
     public TopicAssignment place(
-        PlacementSpec placement,
-        ClusterDescriber cluster
+            PlacementSpec placement,
+            ClusterDescriber cluster
     ) throws InvalidReplicationFactorException {
         RackList rackList = new RackList(random, cluster.usableBrokers());
         throwInvalidReplicationFactorIfNonPositive(placement.numReplicas());
         throwInvalidReplicationFactorIfZero(rackList.numUnfencedBrokers());
         throwInvalidReplicationFactorIfTooFewBrokers(placement.numReplicas(),
-            rackList.numTotalBrokers());
+                rackList.numTotalBrokers());
         List<List<Integer>> placements = new ArrayList<>(placement.numPartitions());
         for (int partition = 0; partition < placement.numPartitions(); partition++) {
             placements.add(rackList.place(placement.numReplicas()));
         }
         return new TopicAssignment(
-            placements.stream().map(replicas -> new PartitionAssignment(replicas, cluster)).toList()
+                placements.stream().map(replicas -> new PartitionAssignment(replicas, cluster)).toList()
         );
     }
 }

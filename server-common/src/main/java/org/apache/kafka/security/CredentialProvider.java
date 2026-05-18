@@ -34,17 +34,17 @@ public class CredentialProvider {
     }
 
     public void updateCredential(
-        ScramMechanism mechanism,
-        String name,
-        ScramCredential credential
+            ScramMechanism mechanism,
+            String name,
+            ScramCredential credential
     ) {
         CredentialCache.Cache<ScramCredential> cache = credentialCache.cache(mechanism.mechanismName(), ScramCredential.class);
         cache.put(name, credential);
     }
 
     public void removeCredentials(
-        ScramMechanism mechanism,
-        String name
+            ScramMechanism mechanism,
+            String name
     ) {
         CredentialCache.Cache<ScramCredential> cache = credentialCache.cache(mechanism.mechanismName(), ScramCredential.class);
         if (cache != null) {

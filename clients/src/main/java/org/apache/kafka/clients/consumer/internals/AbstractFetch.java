@@ -134,6 +134,7 @@ public abstract class AbstractFetch implements Closeable {
 
     /**
      * Return whether we have any completed fetches that are fetchable. This method is thread-safe.
+     *
      * @return true if there are completed fetches that can be returned, false otherwise
      */
     public boolean hasAvailableFetches() {
@@ -144,8 +145,8 @@ public abstract class AbstractFetch implements Closeable {
      * Implements the core logic for a successful fetch response.
      *
      * @param fetchTarget {@link Node} from which the fetch data was requested
-     * @param data {@link FetchSessionHandler.FetchRequestData} that represents the session data
-     * @param resp {@link ClientResponse} from which the {@link FetchResponse} will be retrieved
+     * @param data        {@link FetchSessionHandler.FetchRequestData} that represents the session data
+     * @param resp        {@link ClientResponse} from which the {@link FetchResponse} will be retrieved
      */
     @SuppressWarnings("NPathComplexity")
     protected void handleFetchSuccess(final Node fetchTarget,
@@ -210,7 +211,7 @@ public abstract class AbstractFetch implements Closeable {
                     log.debug("For {}, received error {}, with leaderIdAndEpoch {}", partition, partitionError, partitionData.currentLeader());
                     if (partitionData.currentLeader().leaderId() != -1 && partitionData.currentLeader().leaderEpoch() != -1) {
                         partitionsWithUpdatedLeaderInfo.put(partition, new Metadata.LeaderIdAndEpoch(
-                            Optional.of(partitionData.currentLeader().leaderId()), Optional.of(partitionData.currentLeader().leaderEpoch())));
+                                Optional.of(partitionData.currentLeader().leaderId()), Optional.of(partitionData.currentLeader().leaderEpoch())));
                     }
                 }
 
@@ -243,10 +244,10 @@ public abstract class AbstractFetch implements Closeable {
 
                 Set<TopicPartition> updatedPartitions = metadata.updatePartitionLeadership(partitionsWithUpdatedLeaderInfo, leaderNodes);
                 updatedPartitions.forEach(
-                    tp -> {
-                        log.debug("For {}, as the leader was updated, position will be validated.", tp);
-                        subscriptions.maybeValidatePositionForCurrentLeader(apiVersions, tp, metadata.currentLeader(tp));
-                    }
+                        tp -> {
+                            log.debug("For {}, as the leader was updated, position will be validated.", tp);
+                            subscriptions.maybeValidatePositionForCurrentLeader(apiVersions, tp, metadata.currentLeader(tp));
+                        }
                 );
             }
 
@@ -361,10 +362,10 @@ public abstract class AbstractFetch implements Closeable {
      *     <li>We're still within the lease time for the preferred replica</li>
      *     <li>The replica is still online/available</li>
      * </ul>
-     *
+     * <p>
      * If any of the above are not met, the leader node is returned.
      *
-     * @param partition {@link TopicPartition} for which we want to fetch data
+     * @param partition     {@link TopicPartition} for which we want to fetch data
      * @param leaderReplica {@link Node} for the leader of the given partition
      * @param currentTimeMs Current time in milliseconds; used to determine if we're within the optional lease window
      * @return Replica {@link Node node} from which to request the data
@@ -551,7 +552,7 @@ public abstract class AbstractFetch implements Closeable {
      *     <li>The leader responded with data</li>
      *     <li>The client received a response from the leader and stored that data in memory</li>
      * </ol>
-     *
+     * <p>
      * But it's possible that at the <em>current</em> point in time, that same partition might not be in a fetchable
      * state. For example:
      *
@@ -571,7 +572,7 @@ public abstract class AbstractFetch implements Closeable {
      *         awaiting validation or awaiting reset.
      *     </li>
      * </ul>
-     *
+     * <p>
      * For those reasons, a partition that was <em>previously</em> in a fetchable state might not <em>currently</em>
      * be in a fetchable state.
      * </p>
@@ -588,9 +589,8 @@ public abstract class AbstractFetch implements Closeable {
      * Otherwise, its node would end up in the set of nodes with buffered data and no fetch would be requested.
      * </p>
      *
-     * @param partitions Buffered partitions
+     * @param partitions    Buffered partitions
      * @param currentTimeMs Current timestamp
-     *
      * @return Set of zero or more IDs for leader nodes of buffered partitions
      */
     private Set<Integer> bufferedNodes(Set<TopicPartition> partitions, long currentTimeMs) {
@@ -638,6 +638,7 @@ public abstract class AbstractFetch implements Closeable {
 
     /**
      * Defines the contract for handling fetch responses from brokers.
+     *
      * @param <T> Type of response, usually either {@link ClientResponse} or {@link Throwable}
      */
     @FunctionalInterface

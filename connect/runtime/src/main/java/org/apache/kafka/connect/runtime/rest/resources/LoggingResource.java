@@ -96,8 +96,8 @@ public class LoggingResource {
      * Adjust level of a named logger. If the name corresponds to an ancestor, then the log level is applied to all child loggers.
      *
      * @param namespace name of the logger
-     * @param levelMap a map that is expected to contain one key 'level', and a value that is one of the log4j levels:
-     *                 DEBUG, ERROR, FATAL, INFO, TRACE, WARN
+     * @param levelMap  a map that is expected to contain one key 'level', and a value that is one of the log4j levels:
+     *                  DEBUG, ERROR, FATAL, INFO, TRACE, WARN
      * @return names of loggers whose levels were modified
      */
     @PUT

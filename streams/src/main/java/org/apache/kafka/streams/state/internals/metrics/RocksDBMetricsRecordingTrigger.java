@@ -34,19 +34,19 @@ public class RocksDBMetricsRecordingTrigger implements Runnable {
         final String metricsRecorderName = metricsRecorderName(metricsRecorder);
         if (metricsRecordersToTrigger.containsKey(metricsRecorderName)) {
             throw new IllegalStateException("RocksDB metrics recorder for store \"" + metricsRecorder.storeName() +
-                "\" of task " + metricsRecorder.taskId().toString() + " has already been added. "
-                + "This is a bug in Kafka Streams.");
+                    "\" of task " + metricsRecorder.taskId().toString() + " has already been added. "
+                    + "This is a bug in Kafka Streams.");
         }
         metricsRecordersToTrigger.put(metricsRecorderName, metricsRecorder);
     }
 
     public void removeMetricsRecorder(final RocksDBMetricsRecorder metricsRecorder) {
         final RocksDBMetricsRecorder removedMetricsRecorder =
-            metricsRecordersToTrigger.remove(metricsRecorderName(metricsRecorder));
+                metricsRecordersToTrigger.remove(metricsRecorderName(metricsRecorder));
         if (removedMetricsRecorder == null) {
             throw new IllegalStateException("No RocksDB metrics recorder for store "
-                + "\"" + metricsRecorder.storeName() + "\" of task " + metricsRecorder.taskId() + " could be found. "
-                + "This is a bug in Kafka Streams.");
+                    + "\"" + metricsRecorder.storeName() + "\" of task " + metricsRecorder.taskId() + " could be found. "
+                    + "This is a bug in Kafka Streams.");
         }
     }
 

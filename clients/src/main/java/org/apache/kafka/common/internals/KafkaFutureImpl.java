@@ -136,7 +136,7 @@ public class KafkaFutureImpl<T> extends KafkaFuture<T> {
      * CompletableFuture#get() does not wrap CancellationException in ExecutionException (nor does KafkaFuture).
      * CompletableFuture#get() always wraps the _cause_ of a CompletionException in ExecutionException
      * (which KafkaFuture does not).
-     *
+     * <p>
      * The semantics for KafkaFuture are that all exceptional completions of the future (via #completeExceptionally()
      * or exceptions from dependents) manifest as ExecutionException, as observed via both get() and getNow().
      */
@@ -258,7 +258,7 @@ public class KafkaFutureImpl<T> extends KafkaFuture<T> {
             // see https://bugs.openjdk.org/browse/JDK-8331987
             if (e.getCause() instanceof CancellationException) {
                 exception = e.getCause();
-            } else { 
+            } else {
                 exception = e;
             }
         } catch (CompletionException e) {

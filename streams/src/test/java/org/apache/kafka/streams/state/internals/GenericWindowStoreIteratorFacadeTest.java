@@ -57,8 +57,8 @@ public class GenericWindowStoreIteratorFacadeTest {
     @Test
     public void shouldConvertValues() {
         when(mockedInnerIterator.next())
-            .thenReturn(KeyValue.pair(100L, ValueAndTimestamp.make("value1", 42L)))
-            .thenReturn(KeyValue.pair(200L, ValueAndTimestamp.make("value2", 84L)));
+                .thenReturn(KeyValue.pair(100L, ValueAndTimestamp.make("value1", 42L)))
+                .thenReturn(KeyValue.pair(200L, ValueAndTimestamp.make("value2", 84L)));
 
         assertThat(facade.next(), is(KeyValue.pair(100L, "value1")));
         assertThat(facade.next(), is(KeyValue.pair(200L, "value2")));
@@ -67,8 +67,8 @@ public class GenericWindowStoreIteratorFacadeTest {
     @Test
     public void shouldHandleNullValues() {
         when(mockedInnerIterator.next())
-            .thenReturn(KeyValue.pair(100L, null))
-            .thenReturn(KeyValue.pair(200L, ValueAndTimestamp.make("value2", 42L)));
+                .thenReturn(KeyValue.pair(100L, null))
+                .thenReturn(KeyValue.pair(200L, ValueAndTimestamp.make("value2", 42L)));
 
         assertThat(facade.next(), is(KeyValue.pair(100L, null)));
         assertThat(facade.next(), is(KeyValue.pair(200L, "value2")));

@@ -88,11 +88,11 @@ public class CoordinatorRequestManagerTest {
      * disconnect:
      *
      * <code>
-     *     Consumer has been disconnected from the group coordinator for XXXXXms
+     * Consumer has been disconnected from the group coordinator for XXXXXms
      * </code>
-     *
+     * <p>
      * <p/>
-     *
+     * <p>
      * However, the logic used to calculate the length of the disconnect was not correct. This test exercises the
      * disconnect logic, controlling the logging and system time, to ensure the warning message is correct.
      *
@@ -132,19 +132,19 @@ public class CoordinatorRequestManagerTest {
     private Optional<Long> millisecondsFromLog(LogCaptureAppender appender) {
         Pattern pattern = Pattern.compile("^Consumer has been disconnected from the group coordinator for (?<millis>\\d+)+ms$");
         List<Long> milliseconds = appender.getMessages().stream()
-            .map(pattern::matcher)
-            .filter(Matcher::find)
-            .map(matcher -> matcher.group("millis"))
-            .filter(Objects::nonNull)
-            .map(millisString -> {
-                try {
-                    return Long.parseLong(millisString);
-                } catch (NumberFormatException e) {
-                    return null;
-                }
-            })
-            .filter(Objects::nonNull)
-            .collect(Collectors.toList());
+                .map(pattern::matcher)
+                .filter(Matcher::find)
+                .map(matcher -> matcher.group("millis"))
+                .filter(Objects::nonNull)
+                .map(millisString -> {
+                    try {
+                        return Long.parseLong(millisString);
+                    } catch (NumberFormatException e) {
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
 
         // Return the most recent log entry that matches the message in markCoordinatorUnknown, if present.
         return milliseconds.isEmpty() ? Optional.empty() : Optional.of(milliseconds.get(milliseconds.size() - 1));
@@ -253,8 +253,8 @@ public class CoordinatorRequestManagerTest {
     }
 
     private void expectFindCoordinatorRequest(
-        CoordinatorRequestManager  coordinatorManager,
-        Errors error
+            CoordinatorRequestManager coordinatorManager,
+            Errors error
     ) {
         NetworkClientDelegate.PollResult res = coordinatorManager.poll(time.milliseconds());
         assertEquals(1, res.unsentRequests.size());
@@ -268,33 +268,33 @@ public class CoordinatorRequestManagerTest {
 
     private CoordinatorRequestManager setupCoordinatorManager(String groupId) {
         return new CoordinatorRequestManager(
-            new LogContext(),
-            RETRY_BACKOFF_MS,
-            RETRY_BACKOFF_MS,
-            groupId
+                new LogContext(),
+                RETRY_BACKOFF_MS,
+                RETRY_BACKOFF_MS,
+                groupId
         );
     }
 
     private ClientResponse buildResponse(
-        NetworkClientDelegate.UnsentRequest request,
-        Errors error
+            NetworkClientDelegate.UnsentRequest request,
+            Errors error
     ) {
         AbstractRequest abstractRequest = request.requestBuilder().build();
         assertInstanceOf(FindCoordinatorRequest.class, abstractRequest);
         FindCoordinatorRequest findCoordinatorRequest = (FindCoordinatorRequest) abstractRequest;
 
         FindCoordinatorResponse findCoordinatorResponse =
-            FindCoordinatorResponse.prepareResponse(error, GROUP_ID, node);
+                FindCoordinatorResponse.prepareResponse(error, GROUP_ID, node);
         return new ClientResponse(
-            new RequestHeader(ApiKeys.FIND_COORDINATOR, findCoordinatorRequest.version(), "", 1),
-            request.handler(),
-            node.idString(),
-            time.milliseconds(),
-            time.milliseconds(),
-            false,
-            null,
-            null,
-            findCoordinatorResponse
+                new RequestHeader(ApiKeys.FIND_COORDINATOR, findCoordinatorRequest.version(), "", 1),
+                request.handler(),
+                node.idString(),
+                time.milliseconds(),
+                time.milliseconds(),
+                false,
+                null,
+                null,
+                findCoordinatorResponse
         );
     }
 }

@@ -31,8 +31,8 @@ public interface NodeToControllerChannelManager {
     Optional<NodeApiVersions> controllerApiVersions();
 
     void sendRequest(
-        AbstractRequest.Builder<? extends AbstractRequest> request,
-        ControllerRequestCompletionHandler callback
+            AbstractRequest.Builder<? extends AbstractRequest> request,
+            ControllerRequestCompletionHandler callback
     );
 
     long getTimeoutMs();

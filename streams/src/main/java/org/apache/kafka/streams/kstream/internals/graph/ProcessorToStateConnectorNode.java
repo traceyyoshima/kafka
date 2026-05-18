@@ -59,8 +59,8 @@ public class ProcessorToStateConnectorNode<K, V> extends ProcessorGraphNode<K, V
     @Override
     public String toString() {
         return "ProcessorNode{" +
-            "storeNames=" + Arrays.toString(storeNames) +
-            "} " + super.toString();
+                "storeNames=" + Arrays.toString(storeNames) +
+                "} " + super.toString();
     }
 
     @Override

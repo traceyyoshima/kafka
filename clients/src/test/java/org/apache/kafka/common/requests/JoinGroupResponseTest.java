@@ -30,7 +30,7 @@ public class JoinGroupResponseTest {
     @ApiKeyVersionsSource(apiKey = ApiKeys.JOIN_GROUP)
     public void testProtocolNameBackwardCompatibility(short version) {
         JoinGroupResponseData data = new JoinGroupResponseData()
-            .setProtocolName(null);
+                .setProtocolName(null);
 
         JoinGroupResponse joinGroupResponse = new JoinGroupResponse(data, version);
 
@@ -45,7 +45,7 @@ public class JoinGroupResponseTest {
     @ApiKeyVersionsSource(apiKey = ApiKeys.JOIN_GROUP)
     public void testProtocolNameComplianceWithVersion7AndAbove(short version) {
         JoinGroupResponseData data = new JoinGroupResponseData()
-            .setProtocolName("");
+                .setProtocolName("");
 
         JoinGroupResponse joinGroupResponse = new JoinGroupResponse(data, version);
 

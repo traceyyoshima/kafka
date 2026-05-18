@@ -43,21 +43,21 @@ public class TxnOffsetCommitResponseTest extends OffsetCommitResponseTest {
     @Override
     public void testParse() {
         TxnOffsetCommitResponseData data = new TxnOffsetCommitResponseData()
-            .setThrottleTimeMs(throttleTimeMs)
-            .setTopics(Arrays.asList(
-                new TxnOffsetCommitResponseData.TxnOffsetCommitResponseTopic().setPartitions(
-                    Collections.singletonList(new TxnOffsetCommitResponseData.TxnOffsetCommitResponsePartition()
-                        .setPartitionIndex(partitionOne)
-                        .setErrorCode(errorOne.code()))),
-                    new TxnOffsetCommitResponseData.TxnOffsetCommitResponseTopic().setPartitions(
-                        Collections.singletonList(new TxnOffsetCommitResponseData.TxnOffsetCommitResponsePartition()
-                            .setPartitionIndex(partitionTwo)
-                            .setErrorCode(errorTwo.code())))
+                .setThrottleTimeMs(throttleTimeMs)
+                .setTopics(Arrays.asList(
+                        new TxnOffsetCommitResponseData.TxnOffsetCommitResponseTopic().setPartitions(
+                                Collections.singletonList(new TxnOffsetCommitResponseData.TxnOffsetCommitResponsePartition()
+                                        .setPartitionIndex(partitionOne)
+                                        .setErrorCode(errorOne.code()))),
+                        new TxnOffsetCommitResponseData.TxnOffsetCommitResponseTopic().setPartitions(
+                                Collections.singletonList(new TxnOffsetCommitResponseData.TxnOffsetCommitResponsePartition()
+                                        .setPartitionIndex(partitionTwo)
+                                        .setErrorCode(errorTwo.code())))
                 ));
 
         for (short version : ApiKeys.TXN_OFFSET_COMMIT.allVersions()) {
             TxnOffsetCommitResponse response = TxnOffsetCommitResponse.parse(
-                MessageUtil.toByteBufferAccessor(data, version), version);
+                    MessageUtil.toByteBufferAccessor(data, version), version);
             assertEquals(expectedErrorCounts, response.errorCounts());
             assertEquals(throttleTimeMs, response.throttleTimeMs());
             assertEquals(version >= 1, response.shouldClientThrottle(version));

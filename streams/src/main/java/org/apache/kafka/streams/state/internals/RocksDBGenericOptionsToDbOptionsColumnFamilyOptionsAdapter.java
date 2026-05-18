@@ -59,7 +59,7 @@ import java.util.List;
  * The generic {@link Options} class allows users to set all configs on one object if only default column family
  * is used. Because we use multiple column families, we need to use {@link DBOptions} and {@link ColumnFamilyOptions}
  * that cover a part of all options each.
- *
+ * <p>
  * This class do the translation between generic {@link Options} into {@link DBOptions} and {@link ColumnFamilyOptions}.
  */
 public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter extends Options {
@@ -188,7 +188,7 @@ public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter extends 
     }
 
     @Override
-    public long writeBufferSize()  {
+    public long writeBufferSize() {
         return columnFamilyOptions.writeBufferSize();
     }
 
@@ -1653,7 +1653,7 @@ public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter extends 
     public boolean memtableWholeKeyFiltering() {
         return columnFamilyOptions.memtableWholeKeyFiltering();
     }
-    
+
     @Override
     public Options setExperimentalMempurgeThreshold(final double experimentalMempurgeThreshold) {
         columnFamilyOptions.setExperimentalMempurgeThreshold(experimentalMempurgeThreshold);
@@ -1668,7 +1668,7 @@ public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter extends 
     //
     // BEGIN options for blobs (integrated BlobDB)
     //
-    
+
     @Override
     public Options setEnableBlobFiles(final boolean enableBlobFiles) {
         columnFamilyOptions.setEnableBlobFiles(enableBlobFiles);

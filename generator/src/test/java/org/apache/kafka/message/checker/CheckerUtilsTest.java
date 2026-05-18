@@ -61,30 +61,30 @@ public class CheckerUtilsTest {
     @Test
     public void testValidateTaggedVersionsOnNontaggedField() {
         CheckerUtils.validateTaggedVersions("field1",
-            field("foo", "0+", "int64"),
-            Versions.parse("5+", Versions.NONE));
+                field("foo", "0+", "int64"),
+                Versions.parse("5+", Versions.NONE));
     }
 
     @Test
     public void testValidateTaggedVersionsOnTaggedField() {
         CheckerUtils.validateTaggedVersions("field1",
-            fieldWithTag("foo", 123, "1+", "1+"),
-            Versions.parse("1+", Versions.NONE));
+                fieldWithTag("foo", 123, "1+", "1+"),
+                Versions.parse("1+", Versions.NONE));
     }
 
     @Test
     public void testValidateTaggedVersionsOnTaggedFieldWithError() {
         assertThrows(RuntimeException.class,
-            () -> CheckerUtils.validateTaggedVersions("field1",
-                fieldWithTag("foo", 123, "1+", "1+"),
-                Versions.parse("2+", Versions.NONE)));
+                () -> CheckerUtils.validateTaggedVersions("field1",
+                        fieldWithTag("foo", 123, "1+", "1+"),
+                        Versions.parse("2+", Versions.NONE)));
     }
 
     @Test
     public void testReadMessageSpecFromFile() throws Exception {
         CheckerUtils.readMessageSpecFromFile(messageSpecStringToTempFile(
-            "{'apiKey':62, 'type': 'request', 'name': 'BrokerRegistrationRequest', " +
-            "'validVersions': '0-2', 'flexibleVersions': '0+', " +
-            "'fields': [{'name': 'BrokerId', 'type': 'int32', 'versions': '0+'}]}"));
+                "{'apiKey':62, 'type': 'request', 'name': 'BrokerRegistrationRequest', " +
+                        "'validVersions': '0-2', 'flexibleVersions': '0+', " +
+                        "'fields': [{'name': 'BrokerId', 'type': 'int32', 'versions': '0+'}]}"));
     }
 }

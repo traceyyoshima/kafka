@@ -20,7 +20,7 @@ import org.apache.kafka.common.utils.Bytes;
 
 /**
  * A store supplier that can be used to create one or more {@link KeyValueStore KeyValueStore&lt;Bytes, byte[]&gt;} instances of type &lt;Bytes, byte[]&gt;.
- *
+ * <p>
  * For any stores implementing the {@link KeyValueStore KeyValueStore&lt;Bytes, byte[]&gt;} interface, null value bytes are considered as "not exist". This means:
  *
  * <ol>
@@ -28,4 +28,5 @@ import org.apache.kafka.common.utils.Bytes;
  *   <li>If the key does not exist, get operations should return null value bytes.</li>
  * </ol>
  */
-public interface KeyValueBytesStoreSupplier extends StoreSupplier<KeyValueStore<Bytes, byte[]>> { }
+public interface KeyValueBytesStoreSupplier extends StoreSupplier<KeyValueStore<Bytes, byte[]>> {
+}

@@ -51,8 +51,8 @@ public class RecordTestUtils {
     /**
      * Replay a list of records.
      *
-     * @param target                The object to invoke the replay function on.
-     * @param recordsAndVersions    A list of records.
+     * @param target             The object to invoke the replay function on.
+     * @param recordsAndVersions A list of records.
      */
     public static void replayAll(Object target,
                                  List<ApiMessageAndVersion> recordsAndVersions) {
@@ -65,8 +65,8 @@ public class RecordTestUtils {
                 } catch (NoSuchMethodException e) {
                     try {
                         Method method = target.getClass().getMethod("replay",
-                            record.getClass(),
-                            long.class);
+                                record.getClass(),
+                                long.class);
                         method.invoke(target, record, 0L);
                     } catch (NoSuchMethodException i) {
                         // ignore
@@ -90,9 +90,9 @@ public class RecordTestUtils {
         } else {
             if (recordIndex == -1) {
                 return recordsAndVersions.stream().map(ApiMessageAndVersion::message)
-                    .filter(record -> record.getClass().isAssignableFrom(recordClazz))
-                    .map(recordClazz::cast)
-                    .findFirst();
+                        .filter(record -> record.getClass().isAssignableFrom(recordClazz))
+                        .map(recordClazz::cast)
+                        .findFirst();
             } else {
                 ApiMessageAndVersion messageAndVersion = recordsAndVersions.get(recordIndex);
                 ApiMessage record = messageAndVersion.message();
@@ -114,7 +114,7 @@ public class RecordTestUtils {
         private final Function<I, D> deltaUponImageCreator;
 
         public TestThroughAllIntermediateImagesLeadingToFinalImageHelper(
-            Supplier<I> emptyImageSupplier, Function<I, D> deltaUponImageCreator
+                Supplier<I> emptyImageSupplier, Function<I, D> deltaUponImageCreator
         ) {
             this.emptyImageSupplier = Objects.requireNonNull(emptyImageSupplier);
             this.deltaUponImageCreator = Objects.requireNonNull(deltaUponImageCreator);
@@ -178,7 +178,8 @@ public class RecordTestUtils {
 
         /**
          * Tests applying records in all variations of batch sizes will result in the same image as applying all records in one batch.
-         * @param fromRecords    The list of records to apply.
+         *
+         * @param fromRecords The list of records to apply.
          */
         public void test(List<ApiMessageAndVersion> fromRecords) {
             D finalImageDelta = createDeltaUponImage(getEmptyImage());
@@ -192,9 +193,8 @@ public class RecordTestUtils {
     /**
      * Materialize the output of an iterator into a set.
      *
-     * @param iterator      The input iterator.
-     *
-     * @return              The output set.
+     * @param iterator The input iterator.
+     * @return The output set.
      */
     public static <T> Set<T> iteratorToSet(Iterator<T> iterator) {
         HashSet<T> set = new HashSet<>();
@@ -207,7 +207,7 @@ public class RecordTestUtils {
     /**
      * Sort the contents of an object which contains records.
      *
-     * @param o     The input object. It will be modified in-place.
+     * @param o The input object. It will be modified in-place.
      */
     public static void deepSortRecords(Object o) throws Exception {
         if (o == null) {
@@ -238,39 +238,39 @@ public class RecordTestUtils {
     public static ApiMessageAndVersion testRecord(int index) {
         MockRandom random = new MockRandom(index);
         return new ApiMessageAndVersion(
-            new TopicRecord().setName("test" + index).
-            setTopicId(new Uuid(random.nextLong(), random.nextLong())), (short) 0);
+                new TopicRecord().setName("test" + index).
+                        setTopicId(new Uuid(random.nextLong(), random.nextLong())), (short) 0);
     }
 
     public static RegisterControllerRecord createTestControllerRegistration(
-        int id,
-        boolean zkMigrationReady
+            int id,
+            boolean zkMigrationReady
     ) {
         return new RegisterControllerRecord().
-            setControllerId(id).
-            setIncarnationId(new Uuid(3465346L, id)).
-            setZkMigrationReady(zkMigrationReady).
-            setEndPoints(new RegisterControllerRecord.ControllerEndpointCollection(
-                List.of(
-                    new RegisterControllerRecord.ControllerEndpoint().
-                        setName("CONTROLLER").
-                        setHost("localhost").
-                        setPort(8000 + id).
-                        setSecurityProtocol(SecurityProtocol.PLAINTEXT.id),
-                    new RegisterControllerRecord.ControllerEndpoint().
-                        setName("CONTROLLER_SSL").
-                        setHost("localhost").
-                        setPort(9000 + id).
-                        setSecurityProtocol(SecurityProtocol.SSL.id)
-                )
-            )).
-            setFeatures(new RegisterControllerRecord.ControllerFeatureCollection(
-                List.of(
-                    new RegisterControllerRecord.ControllerFeature().
-                        setName(MetadataVersion.FEATURE_NAME).
-                        setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
-                        setMaxSupportedVersion(MetadataVersion.IBP_3_6_IV1.featureLevel())
-                )
-            ));
+                setControllerId(id).
+                setIncarnationId(new Uuid(3465346L, id)).
+                setZkMigrationReady(zkMigrationReady).
+                setEndPoints(new RegisterControllerRecord.ControllerEndpointCollection(
+                        List.of(
+                                new RegisterControllerRecord.ControllerEndpoint().
+                                        setName("CONTROLLER").
+                                        setHost("localhost").
+                                        setPort(8000 + id).
+                                        setSecurityProtocol(SecurityProtocol.PLAINTEXT.id),
+                                new RegisterControllerRecord.ControllerEndpoint().
+                                        setName("CONTROLLER_SSL").
+                                        setHost("localhost").
+                                        setPort(9000 + id).
+                                        setSecurityProtocol(SecurityProtocol.SSL.id)
+                        )
+                )).
+                setFeatures(new RegisterControllerRecord.ControllerFeatureCollection(
+                        List.of(
+                                new RegisterControllerRecord.ControllerFeature().
+                                        setName(MetadataVersion.FEATURE_NAME).
+                                        setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
+                                        setMaxSupportedVersion(MetadataVersion.IBP_3_6_IV1.featureLevel())
+                        )
+                ));
     }
 }

@@ -43,8 +43,8 @@ public interface PartitionMaxBytesStrategy {
      * Returns the partition max bytes for a given partition based on the strategy type.
      * The partitions passed for maxBytes calculation can be a subset of total acquired partitions for the share fetch request.
      *
-     * @param requestMaxBytes - The total max bytes available for the share fetch request
-     * @param partitions - The topic partitions in the order for which we compute the partition max bytes.
+     * @param requestMaxBytes        - The total max bytes available for the share fetch request
+     * @param partitions             - The topic partitions in the order for which we compute the partition max bytes.
      * @param acquiredPartitionsSize - The total partitions that have been acquired.
      * @return the partition max bytes for the topic partitions
      */
@@ -87,9 +87,9 @@ public interface PartitionMaxBytesStrategy {
     }
 
     private static LinkedHashMap<TopicIdPartition, Integer> allotUniformBytesToPartitions(
-        Set<TopicIdPartition> partitions,
-        int requestMaxBytes,
-        int partitionsSize
+            Set<TopicIdPartition> partitions,
+            int requestMaxBytes,
+            int partitionsSize
     ) {
         LinkedHashMap<TopicIdPartition, Integer> partitionMaxBytes = new LinkedHashMap<>();
         int uniformPartitionBytes = requestMaxBytes / partitionsSize;
@@ -98,16 +98,16 @@ public interface PartitionMaxBytesStrategy {
         if (remainingBytes != 0) {
             int randomPartitionIndex = RANDOM.nextInt(partitionMaxBytes.keySet().size());
             allotBytesByPartitionIndex(uniformPartitionBytes + remainingBytes, partitions,
-                partitionMaxBytes, Set.of(randomPartitionIndex));
+                    partitionMaxBytes, Set.of(randomPartitionIndex));
         }
         return partitionMaxBytes;
     }
 
     private static void allotBytesByPartitionIndex(
-        int bytes,
-        Set<TopicIdPartition> partitions,
-        LinkedHashMap<TopicIdPartition, Integer> partitionMaxBytes,
-        Set<Integer> partitionIndexesToAllot
+            int bytes,
+            Set<TopicIdPartition> partitions,
+            LinkedHashMap<TopicIdPartition, Integer> partitionMaxBytes,
+            Set<Integer> partitionIndexesToAllot
     ) {
         int index = 0;
         int count = 0;

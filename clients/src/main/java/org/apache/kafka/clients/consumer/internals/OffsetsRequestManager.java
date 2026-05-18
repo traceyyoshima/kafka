@@ -381,11 +381,11 @@ public final class OffsetsRequestManager implements RequestManager, ClusterResou
                     commitRequestManager.fetchOffsets(initializingPartitions, fetchCommittedDeadlineMs);
             CompletableFuture<Map<TopicPartition, OffsetAndMetadata>> fetchOffsetsAndRefresh =
                     fetchOffsets.thenApply(CommitRequestManager.OffsetFetchResult::toOffsetMapWithNulls)
-                    .whenComplete((offsets, error) -> {
-                        pendingOffsetFetchEvent = null;
-                        // Update positions with the retrieved offsets
-                        refreshOffsets(offsets, error, result);
-                    });
+                            .whenComplete((offsets, error) -> {
+                                pendingOffsetFetchEvent = null;
+                                // Update positions with the retrieved offsets
+                                refreshOffsets(offsets, error, result);
+                            });
             pendingOffsetFetchEvent = new PendingFetchCommittedRequest(initializingPartitions, fetchOffsetsAndRefresh);
         } else {
             // Reuse pending OffsetFetch request that will complete when positions are refreshed with the committed offsets retrieved
@@ -495,9 +495,9 @@ public final class OffsetsRequestManager implements RequestManager, ClusterResou
      * This will generate OffsetsForLeaderEpoch requests for the partitions, with the known offset
      * epoch and current leader epoch. It will enqueue the generated requests, to be sent on the
      * next call to {@link #poll(long)}.
-     *
+     * <p>
      * <p/>
-     *
+     * <p>
      * When a response is received, positions are validated and, if a log truncation is detected, a
      * {@link LogTruncationException} will be saved in memory in cachedUpdatePositionsException, to be thrown on the
      * next call to this function.
@@ -718,7 +718,6 @@ public final class OffsetsRequestManager implements RequestManager, ClusterResou
      * This also adds the request to the list of unsentRequests.
      *
      * @param partitionsToValidate a map of topic-partition positions to validate
-
      */
     private void sendOffsetsForLeaderEpochRequestsAndValidatePositions(
             Map<TopicPartition, SubscriptionState.FetchPosition> partitionsToValidate) {

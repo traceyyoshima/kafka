@@ -58,10 +58,10 @@ public class ScramMessages {
 
     /**
      * Format:
-     *     gs2-header [reserved-mext ","] username "," nonce ["," extensions]
+     * gs2-header [reserved-mext ","] username "," nonce ["," extensions]
      * Limitations:
-     *     Only gs2-header "n" is supported.
-     *     Extensions are ignored.
+     * Only gs2-header "n" is supported.
+     * Extensions are ignored.
      *
      */
     public static class ClientFirstMessage extends AbstractScramMessage {
@@ -78,6 +78,7 @@ public class ScramMessages {
         private final String nonce;
         private final String authorizationId;
         private final ScramExtensions extensions;
+
         public ClientFirstMessage(byte[] messageBytes) throws SaslException {
             String message = toMessage(messageBytes);
             Matcher matcher = PATTERN.matcher(message);
@@ -91,24 +92,30 @@ public class ScramMessages {
 
             this.extensions = extString.startsWith(",") ? new ScramExtensions(extString.substring(1)) : new ScramExtensions();
         }
+
         public ClientFirstMessage(String saslName, String nonce, Map<String, String> extensions) {
             this.saslName = saslName;
             this.nonce = nonce;
             this.extensions = new ScramExtensions(extensions);
             this.authorizationId = ""; // Optional authzid not specified in gs2-header
         }
+
         public String saslName() {
             return saslName;
         }
+
         public String nonce() {
             return nonce;
         }
+
         public String authorizationId() {
             return authorizationId;
         }
+
         public String gs2Header() {
             return "n," + authorizationId + ",";
         }
+
         public ScramExtensions extensions() {
             return extensions;
         }
@@ -121,6 +128,7 @@ public class ScramMessages {
             else
                 return String.format("n=%s,r=%s,%s", saslName, nonce, extensionStr);
         }
+
         String toMessage() {
             return gs2Header() + clientFirstMessageBare();
         }
@@ -128,9 +136,9 @@ public class ScramMessages {
 
     /**
      * Format:
-     *     [reserved-mext ","] nonce "," salt "," iteration-count ["," extensions]
+     * [reserved-mext ","] nonce "," salt "," iteration-count ["," extensions]
      * Limitations:
-     *     Extensions are ignored.
+     * Extensions are ignored.
      *
      */
     public static class ServerFirstMessage extends AbstractScramMessage {
@@ -144,6 +152,7 @@ public class ScramMessages {
         private final String nonce;
         private final byte[] salt;
         private final int iterations;
+
         public ServerFirstMessage(byte[] messageBytes) throws SaslException {
             String message = toMessage(messageBytes);
             Matcher matcher = PATTERN.matcher(message);
@@ -160,29 +169,35 @@ public class ScramMessages {
             String salt = matcher.group("salt");
             this.salt = Base64.getDecoder().decode(salt);
         }
+
         public ServerFirstMessage(String clientNonce, String serverNonce, byte[] salt, int iterations) {
             this.nonce = clientNonce + serverNonce;
             this.salt = salt;
             this.iterations = iterations;
         }
+
         public String nonce() {
             return nonce;
         }
+
         public byte[] salt() {
             return salt;
         }
+
         public int iterations() {
             return iterations;
         }
+
         String toMessage() {
             return String.format("r=%s,s=%s,i=%d", nonce, Base64.getEncoder().encodeToString(salt), iterations);
         }
     }
+
     /**
      * Format:
-     *     channel-binding "," nonce ["," extensions]"," proof
+     * channel-binding "," nonce ["," extensions]"," proof
      * Limitations:
-     *     Extensions are ignored.
+     * Extensions are ignored.
      *
      */
     public static class ClientFinalMessage extends AbstractScramMessage {
@@ -196,6 +211,7 @@ public class ScramMessages {
         private final byte[] channelBinding;
         private final String nonce;
         private byte[] proof;
+
         public ClientFinalMessage(byte[] messageBytes) throws SaslException {
             String message = toMessage(messageBytes);
             Matcher matcher = PATTERN.matcher(message);
@@ -206,38 +222,46 @@ public class ScramMessages {
             this.nonce = matcher.group("nonce");
             this.proof = Base64.getDecoder().decode(matcher.group("proof"));
         }
+
         public ClientFinalMessage(byte[] channelBinding, String nonce) {
             this.channelBinding = channelBinding;
             this.nonce = nonce;
         }
+
         public byte[] channelBinding() {
             return channelBinding;
         }
+
         public String nonce() {
             return nonce;
         }
+
         public byte[] proof() {
             return proof;
         }
+
         public void proof(byte[] proof) {
             this.proof = proof;
         }
+
         public String clientFinalMessageWithoutProof() {
             return String.format("c=%s,r=%s",
                     Base64.getEncoder().encodeToString(channelBinding),
                     nonce);
         }
+
         String toMessage() {
             return String.format("%s,p=%s",
                     clientFinalMessageWithoutProof(),
                     Base64.getEncoder().encodeToString(proof));
         }
     }
+
     /**
      * Format:
-     *     ("e=" server-error-value | "v=" base64_server_signature) ["," extensions]
+     * ("e=" server-error-value | "v=" base64_server_signature) ["," extensions]
      * Limitations:
-     *     Extensions are ignored.
+     * Extensions are ignored.
      *
      */
     public static class ServerFinalMessage extends AbstractScramMessage {
@@ -249,6 +273,7 @@ public class ScramMessages {
 
         private final String error;
         private final byte[] serverSignature;
+
         public ServerFinalMessage(byte[] messageBytes) throws SaslException {
             String message = toMessage(messageBytes);
             Matcher matcher = PATTERN.matcher(message);
@@ -268,16 +293,20 @@ public class ScramMessages {
                 this.error = error;
             }
         }
+
         public ServerFinalMessage(String error, byte[] serverSignature) {
             this.error = error;
             this.serverSignature = serverSignature;
         }
+
         public String error() {
             return error;
         }
+
         public byte[] serverSignature() {
             return serverSignature;
         }
+
         String toMessage() {
             if (error != null)
                 return "e=" + error;

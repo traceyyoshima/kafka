@@ -32,7 +32,7 @@ public final class NotifyingRawSnapshotWriter implements RawSnapshotWriter {
     /**
      * Constructs a {@code RawSnapshotWriter}.
      *
-     * @param writer the raw snapshot writer
+     * @param writer   the raw snapshot writer
      * @param callback the consumer to call when freeze succeeds
      */
     public NotifyingRawSnapshotWriter(RawSnapshotWriter writer, Consumer<OffsetAndEpoch> callback) {

@@ -57,12 +57,12 @@ import java.util.function.Supplier;
 
 /**
  * <p>
- *     Implementation of OffsetBackingStore that uses a Kafka topic to store offset data.
+ * Implementation of OffsetBackingStore that uses a Kafka topic to store offset data.
  * </p>
  * <p>
- *     Internally, this implementation both produces to and consumes from a Kafka topic which stores the offsets.
- *     It accepts producer and consumer overrides via its configuration but forces some settings to specific values
- *     to ensure correct behavior (e.g. acks, auto.offset.reset).
+ * Internally, this implementation both produces to and consumes from a Kafka topic which stores the offsets.
+ * It accepts producer and consumer overrides via its configuration but forces some settings to specific values
+ * to ensure correct behavior (e.g. acks, auto.offset.reset).
  * </p>
  */
 public class KafkaOffsetBackingStore extends KafkaTopicBasedBackingStore implements OffsetBackingStore {
@@ -72,10 +72,11 @@ public class KafkaOffsetBackingStore extends KafkaTopicBasedBackingStore impleme
      * Build a connector-specific offset store with read and write support. The producer will be {@link Producer#close(Duration) closed}
      * and the consumer will be {@link Consumer#close(Duration) closed} when this store is {@link #stop() stopped}, but the topic admin
      * must be {@link TopicAdmin#close(Duration) closed} by the caller.
-     * @param topic the name of the offsets topic to use
-     * @param producer the producer to use for writing to the offsets topic
-     * @param consumer the consumer to use for reading from the offsets topic
-     * @param topicAdmin the topic admin to use for creating and querying metadata for the offsets topic
+     *
+     * @param topic        the name of the offsets topic to use
+     * @param producer     the producer to use for writing to the offsets topic
+     * @param consumer     the consumer to use for reading from the offsets topic
+     * @param topicAdmin   the topic admin to use for creating and querying metadata for the offsets topic
      * @param keyConverter the worker's internal key converter that can be used to deserialize offset keys from the {@link KafkaBasedLog}
      * @return an offset store backed by the given topic and Kafka clients
      */
@@ -107,9 +108,10 @@ public class KafkaOffsetBackingStore extends KafkaTopicBasedBackingStore impleme
     /**
      * Build a connector-specific offset store with read-only support. The consumer will be {@link Consumer#close(Duration) closed}
      * when this store is {@link #stop() stopped}, but the topic admin must be {@link TopicAdmin#close(Duration) closed} by the caller.
-     * @param topic the name of the offsets topic to use
-     * @param consumer the consumer to use for reading from the offsets topic
-     * @param topicAdmin the topic admin to use for creating and querying metadata for the offsets topic
+     *
+     * @param topic        the name of the offsets topic to use
+     * @param consumer     the consumer to use for reading from the offsets topic
+     * @param topicAdmin   the topic admin to use for creating and querying metadata for the offsets topic
      * @param keyConverter the worker's internal key converter that can be used to deserialize offset keys from the {@link KafkaBasedLog}
      * @return a read-only offset store backed by the given topic and Kafka clients
      */
@@ -155,10 +157,11 @@ public class KafkaOffsetBackingStore extends KafkaTopicBasedBackingStore impleme
      * {@link Supplier} to acquire a {@link TopicAdmin} that will be used for interactions with the backing
      * Kafka topic. The caller is expected to manage the lifecycle of that object, including
      * {@link TopicAdmin#close(Duration) closing} it when it is no longer needed.
-     * @param topicAdmin a {@link Supplier} for the {@link TopicAdmin} to use for this backing store;
-     *                   may not be null, and may not return null
+     *
+     * @param topicAdmin   a {@link Supplier} for the {@link TopicAdmin} to use for this backing store;
+     *                     may not be null, and may not return null
      * @param clientIdBase a {@link Supplier} that will be used to create a
-     * {@link CommonClientConfigs#CLIENT_ID_DOC client ID} for Kafka clients instantiated by this store;
+     *                     {@link CommonClientConfigs#CLIENT_ID_DOC client ID} for Kafka clients instantiated by this store;
      *                     may not be null, and may not return null, but may throw {@link UnsupportedOperationException}
      *                     if this offset store should not create its own Kafka clients
      */

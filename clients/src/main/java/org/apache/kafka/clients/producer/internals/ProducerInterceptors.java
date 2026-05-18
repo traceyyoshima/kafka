@@ -51,7 +51,7 @@ public class ProducerInterceptors<K, V> implements Closeable {
      * The method calls {@link ProducerInterceptor#onSend(ProducerRecord)} method. ProducerRecord
      * returned from the first interceptor's onSend() is passed to the second interceptor onSend(), and so on in the
      * interceptor chain. The record returned from the last interceptor is returned from this method.
-     *
+     * <p>
      * This method does not throw exceptions. Exceptions thrown by any of interceptor methods are caught and ignored.
      * If an interceptor in the middle of the chain, that normally modifies the record, throws an exception,
      * the next interceptor in the chain will be called with a record returned by the previous interceptor that did not
@@ -81,13 +81,13 @@ public class ProducerInterceptors<K, V> implements Closeable {
      * This method is called when the record sent to the server has been acknowledged, or when sending the record fails before
      * it gets sent to the server. This method calls {@link ProducerInterceptor#onAcknowledgement(RecordMetadata, Exception, Headers)}
      * method for each interceptor.
-     *
+     * <p>
      * This method does not throw exceptions. Exceptions thrown by any of interceptor methods are caught and ignored.
      *
-     * @param metadata The metadata for the record that was sent (i.e. the partition and offset).
-     *                 If an error occurred, metadata will only contain valid topic and maybe partition.
+     * @param metadata  The metadata for the record that was sent (i.e. the partition and offset).
+     *                  If an error occurred, metadata will only contain valid topic and maybe partition.
      * @param exception The exception thrown during processing of this record. Null if no error occurred.
-     * @param headers The headers for the record that was sent
+     * @param headers   The headers for the record that was sent
      */
     public void onAcknowledgement(RecordMetadata metadata, Exception exception, Headers headers) {
         for (Plugin<ProducerInterceptor<K, V>> interceptorPlugin : this.interceptorPlugins) {
@@ -105,10 +105,10 @@ public class ProducerInterceptors<K, V> implements Closeable {
      * (ProducerRecord)} method. This method calls {@link ProducerInterceptor#onAcknowledgement(RecordMetadata, Exception, Headers)}
      * method for each interceptor
      *
-     * @param record The record from client
-     * @param interceptTopicPartition  The topic/partition for the record if an error occurred
-     *        after partition gets assigned; the topic part of interceptTopicPartition is the same as in record.
-     * @param exception The exception thrown during processing of this record.
+     * @param record                  The record from client
+     * @param interceptTopicPartition The topic/partition for the record if an error occurred
+     *                                after partition gets assigned; the topic part of interceptTopicPartition is the same as in record.
+     * @param exception               The exception thrown during processing of this record.
      */
     public void onSendError(ProducerRecord<K, V> record, TopicPartition interceptTopicPartition, Exception exception) {
         for (Plugin<ProducerInterceptor<K, V>> interceptorPlugin : this.interceptorPlugins) {
@@ -128,7 +128,7 @@ public class ProducerInterceptors<K, V> implements Closeable {
                         interceptTopicPartition = extractTopicPartition(record);
                     }
                     interceptorPlugin.get().onAcknowledgement(new RecordMetadata(interceptTopicPartition, -1, -1,
-                                    RecordBatch.NO_TIMESTAMP, -1, -1), exception, headers);
+                            RecordBatch.NO_TIMESTAMP, -1, -1), exception, headers);
                 }
             } catch (Exception e) {
                 // do not propagate interceptor exceptions, just log

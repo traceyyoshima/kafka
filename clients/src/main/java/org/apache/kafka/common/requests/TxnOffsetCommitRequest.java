@@ -54,14 +54,14 @@ public class TxnOffsetCommitRequest extends AbstractRequest {
                        final Map<TopicPartition, CommittedOffset> pendingTxnOffsetCommits,
                        final boolean isTransactionV2Enabled) {
             this(transactionalId,
-                consumerGroupId,
-                producerId,
-                producerEpoch,
-                pendingTxnOffsetCommits,
-                JoinGroupRequest.UNKNOWN_MEMBER_ID,
-                JoinGroupRequest.UNKNOWN_GENERATION_ID,
-                Optional.empty(),
-                isTransactionV2Enabled);
+                    consumerGroupId,
+                    producerId,
+                    producerEpoch,
+                    pendingTxnOffsetCommits,
+                    JoinGroupRequest.UNKNOWN_MEMBER_ID,
+                    JoinGroupRequest.UNKNOWN_GENERATION_ID,
+                    Optional.empty(),
+                    isTransactionV2Enabled);
         }
 
         public Builder(final String transactionalId,
@@ -96,7 +96,7 @@ public class TxnOffsetCommitRequest extends AbstractRequest {
         public TxnOffsetCommitRequest build(short version) {
             if (version < 3 && groupMetadataSet()) {
                 throw new UnsupportedVersionException("Broker doesn't support group metadata commit API on version " + version
-                    + ", minimum supported request version is 3 which requires brokers to be on version 2.5 or above.");
+                        + ", minimum supported request version is 3 which requires brokers to be on version 2.5 or above.");
             }
             if (!isTransactionV2Enabled) {
                 version = (short) Math.min(version, LAST_STABLE_VERSION_BEFORE_TRANSACTION_V2);
@@ -106,8 +106,8 @@ public class TxnOffsetCommitRequest extends AbstractRequest {
 
         private boolean groupMetadataSet() {
             return !data.memberId().equals(JoinGroupRequest.UNKNOWN_MEMBER_ID) ||
-                       data.generationId() != JoinGroupRequest.UNKNOWN_GENERATION_ID ||
-                       data.groupInstanceId() != null;
+                    data.generationId() != JoinGroupRequest.UNKNOWN_GENERATION_ID ||
+                    data.groupInstanceId() != null;
         }
 
         @Override
@@ -127,9 +127,9 @@ public class TxnOffsetCommitRequest extends AbstractRequest {
         for (TxnOffsetCommitRequestTopic topic : topics) {
             for (TxnOffsetCommitRequestPartition partition : topic.partitions()) {
                 offsetMap.put(new TopicPartition(topic.name(), partition.partitionIndex()),
-                              new CommittedOffset(partition.committedOffset(),
-                                                  partition.committedMetadata(),
-                                                  RequestUtils.getLeaderEpoch(partition.committedLeaderEpoch()))
+                        new CommittedOffset(partition.committedOffset(),
+                                partition.committedMetadata(),
+                                RequestUtils.getLeaderEpoch(partition.committedLeaderEpoch()))
                 );
             }
         }
@@ -143,20 +143,20 @@ public class TxnOffsetCommitRequest extends AbstractRequest {
             CommittedOffset offset = entry.getValue();
 
             List<TxnOffsetCommitRequestPartition> partitions =
-                topicPartitionMap.getOrDefault(topicPartition.topic(), new ArrayList<>());
+                    topicPartitionMap.getOrDefault(topicPartition.topic(), new ArrayList<>());
             partitions.add(new TxnOffsetCommitRequestPartition()
-                               .setPartitionIndex(topicPartition.partition())
-                               .setCommittedOffset(offset.offset)
-                               .setCommittedLeaderEpoch(offset.leaderEpoch.orElse(RecordBatch.NO_PARTITION_LEADER_EPOCH))
-                               .setCommittedMetadata(offset.metadata)
+                    .setPartitionIndex(topicPartition.partition())
+                    .setCommittedOffset(offset.offset)
+                    .setCommittedLeaderEpoch(offset.leaderEpoch.orElse(RecordBatch.NO_PARTITION_LEADER_EPOCH))
+                    .setCommittedMetadata(offset.metadata)
             );
             topicPartitionMap.put(topicPartition.topic(), partitions);
         }
         return topicPartitionMap.entrySet().stream()
-                   .map(entry -> new TxnOffsetCommitRequestTopic()
-                                     .setName(entry.getKey())
-                                     .setPartitions(entry.getValue()))
-                   .collect(Collectors.toList());
+                .map(entry -> new TxnOffsetCommitRequestTopic()
+                        .setName(entry.getKey())
+                        .setPartitions(entry.getValue()))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -171,12 +171,12 @@ public class TxnOffsetCommitRequest extends AbstractRequest {
             List<TxnOffsetCommitResponsePartition> responsePartitions = new ArrayList<>();
             for (TxnOffsetCommitRequestPartition requestPartition : entry.partitions()) {
                 responsePartitions.add(new TxnOffsetCommitResponsePartition()
-                                           .setPartitionIndex(requestPartition.partitionIndex())
-                                           .setErrorCode(e.code()));
+                        .setPartitionIndex(requestPartition.partitionIndex())
+                        .setErrorCode(e.code()));
             }
             responseTopicData.add(new TxnOffsetCommitResponseTopic()
-                                      .setName(entry.name())
-                                      .setPartitions(responsePartitions)
+                    .setName(entry.name())
+                    .setPartitions(responsePartitions)
             );
         }
         return responseTopicData;
@@ -185,11 +185,11 @@ public class TxnOffsetCommitRequest extends AbstractRequest {
     @Override
     public TxnOffsetCommitResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         List<TxnOffsetCommitResponseTopic> responseTopicData =
-            getErrorResponseTopics(data.topics(), Errors.forException(e));
+                getErrorResponseTopics(data.topics(), Errors.forException(e));
 
         return new TxnOffsetCommitResponse(new TxnOffsetCommitResponseData()
-                                               .setThrottleTimeMs(throttleTimeMs)
-                                               .setTopics(responseTopicData));
+                .setThrottleTimeMs(throttleTimeMs)
+                .setTopics(responseTopicData));
     }
 
     @Override
@@ -198,19 +198,19 @@ public class TxnOffsetCommitRequest extends AbstractRequest {
     }
 
     public static TxnOffsetCommitResponseData getErrorResponse(
-        TxnOffsetCommitRequestData request,
-        Errors error
+            TxnOffsetCommitRequestData request,
+            Errors error
     ) {
         TxnOffsetCommitResponseData response = new TxnOffsetCommitResponseData();
         request.topics().forEach(topic -> {
             TxnOffsetCommitResponseData.TxnOffsetCommitResponseTopic responseTopic = new TxnOffsetCommitResponseData.TxnOffsetCommitResponseTopic()
-                .setName(topic.name());
+                    .setName(topic.name());
             response.topics().add(responseTopic);
 
             topic.partitions().forEach(partition ->
-                responseTopic.partitions().add(new TxnOffsetCommitResponseData.TxnOffsetCommitResponsePartition()
-                    .setPartitionIndex(partition.partitionIndex())
-                    .setErrorCode(error.code()))
+                    responseTopic.partitions().add(new TxnOffsetCommitResponseData.TxnOffsetCommitResponsePartition()
+                            .setPartitionIndex(partition.partitionIndex())
+                            .setErrorCode(error.code()))
             );
         });
         return response;
@@ -218,7 +218,7 @@ public class TxnOffsetCommitRequest extends AbstractRequest {
 
     public static TxnOffsetCommitRequest parse(Readable readable, short version) {
         return new TxnOffsetCommitRequest(new TxnOffsetCommitRequestData(
-            readable, version), version);
+                readable, version), version);
     }
 
     public static class CommittedOffset {
@@ -248,8 +248,8 @@ public class TxnOffsetCommitRequest extends AbstractRequest {
             CommittedOffset otherOffset = (CommittedOffset) other;
 
             return this.offset == otherOffset.offset
-                       && this.leaderEpoch.equals(otherOffset.leaderEpoch)
-                       && Objects.equals(this.metadata, otherOffset.metadata);
+                    && this.leaderEpoch.equals(otherOffset.leaderEpoch)
+                    && Objects.equals(this.metadata, otherOffset.metadata);
         }
 
         @Override

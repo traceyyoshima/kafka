@@ -37,8 +37,8 @@ public class NetworkPartitionFaultSpec extends TaskSpec {
 
     @JsonCreator
     public NetworkPartitionFaultSpec(@JsonProperty("startMs") long startMs,
-                         @JsonProperty("durationMs") long durationMs,
-                         @JsonProperty("partitions") List<List<String>> partitions) {
+                                     @JsonProperty("durationMs") long durationMs,
+                                     @JsonProperty("partitions") List<List<String>> partitions) {
         super(startMs, durationMs);
         this.partitions = partitions == null ? new ArrayList<>() : partitions;
     }
@@ -65,7 +65,7 @@ public class NetworkPartitionFaultSpec extends TaskSpec {
             for (String nodeName : partition) {
                 if (prevNodes.contains(nodeName)) {
                     throw new RuntimeException("Node " + nodeName +
-                        " appears in more than one partition.");
+                            " appears in more than one partition.");
                 }
                 prevNodes.add(nodeName);
                 partitionSets.add(new HashSet<>(partition));

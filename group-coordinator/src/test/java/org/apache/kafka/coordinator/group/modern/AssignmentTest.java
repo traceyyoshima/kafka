@@ -55,7 +55,7 @@ public class AssignmentTest {
     @Test
     public void testAttributes() {
         Map<Uuid, Set<Integer>> partitions = mkAssignment(
-            mkTopicAssignment(Uuid.randomUuid(), 1, 2, 3)
+                mkTopicAssignment(Uuid.randomUuid(), 1, 2, 3)
         );
         Assignment assignment = new Assignment(partitions);
         assertEquals(partitions, assignment.partitions());
@@ -68,27 +68,27 @@ public class AssignmentTest {
 
         List<ConsumerGroupTargetAssignmentMemberValue.TopicPartition> partitions = new ArrayList<>();
         partitions.add(new ConsumerGroupTargetAssignmentMemberValue.TopicPartition()
-            .setTopicId(topicId1)
-            .setPartitions(Arrays.asList(1, 2, 3)));
+                .setTopicId(topicId1)
+                .setPartitions(Arrays.asList(1, 2, 3)));
         partitions.add(new ConsumerGroupTargetAssignmentMemberValue.TopicPartition()
-            .setTopicId(topicId2)
-            .setPartitions(Arrays.asList(4, 5, 6)));
+                .setTopicId(topicId2)
+                .setPartitions(Arrays.asList(4, 5, 6)));
 
         ConsumerGroupTargetAssignmentMemberValue record = new ConsumerGroupTargetAssignmentMemberValue()
-            .setTopicPartitions(partitions);
+                .setTopicPartitions(partitions);
 
         Assignment assignment = Assignment.fromRecord(record);
 
         assertEquals(mkAssignment(
-            mkTopicAssignment(topicId1, 1, 2, 3),
-            mkTopicAssignment(topicId2, 4, 5, 6)
+                mkTopicAssignment(topicId1, 1, 2, 3),
+                mkTopicAssignment(topicId2, 4, 5, 6)
         ), assignment.partitions());
     }
 
     @Test
     public void testEquals() {
         Map<Uuid, Set<Integer>> partitions = mkAssignment(
-            mkTopicAssignment(Uuid.randomUuid(), 1, 2, 3)
+                mkTopicAssignment(Uuid.randomUuid(), 1, 2, 3)
         );
 
         assertEquals(new Assignment(partitions), new Assignment(partitions));

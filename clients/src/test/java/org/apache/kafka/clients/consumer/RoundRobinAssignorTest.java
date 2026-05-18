@@ -281,11 +281,11 @@ public class RoundRobinAssignorTest {
 
         Map<String, List<TopicPartition>> expectedInstanceAssignment = new HashMap<>();
         expectedInstanceAssignment.put(instance1,
-                                       partitions(tp(topic1, 0), tp(topic1, 3), tp(topic2, 1), tp(topic2, 4)));
+                partitions(tp(topic1, 0), tp(topic1, 3), tp(topic2, 1), tp(topic2, 4)));
         expectedInstanceAssignment.put(instance2,
-                                       partitions(tp(topic1, 1), tp(topic1, 4), tp(topic2, 2)));
+                partitions(tp(topic1, 1), tp(topic1, 4), tp(topic2, 2)));
         expectedInstanceAssignment.put(instance3,
-                                       partitions(tp(topic1, 2), tp(topic2, 0), tp(topic2, 3)));
+                partitions(tp(topic1, 2), tp(topic2, 0), tp(topic2, 3)));
 
         List<AbstractPartitionAssignor.MemberInfo> staticMemberInfos = new ArrayList<>();
         for (Map.Entry<String, String> entry : memberIdToInstanceId.entrySet()) {
@@ -299,7 +299,7 @@ public class RoundRobinAssignorTest {
         }
 
         Map<String, List<TopicPartition>> staticAssignment =
-            checkStaticAssignment(assignor, partitionsPerTopic, consumers);
+                checkStaticAssignment(assignor, partitionsPerTopic, consumers);
         assertEquals(expectedInstanceAssignment, staticAssignment);
 
         memberIdToInstanceId.clear();
@@ -313,7 +313,7 @@ public class RoundRobinAssignorTest {
         consumers.put(consumer5, consumers.get(consumer2));
         consumers.remove(consumer2);
         Map<String, List<TopicPartition>> newStaticAssignment =
-            checkStaticAssignment(assignor, partitionsPerTopic, consumers);
+                checkStaticAssignment(assignor, partitionsPerTopic, consumers);
         assertEquals(staticAssignment, newStaticAssignment);
     }
 

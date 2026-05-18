@@ -58,10 +58,10 @@ class ConsumerGroupCommandTestUtils {
     }
 
     static <T> AutoCloseable buildConsumers(
-        int numberOfConsumers,
-        boolean syncCommit,
-        Supplier<KafkaConsumer<T, T>> consumerSupplier,
-        Consumer<KafkaConsumer<T, T>> setPartitions
+            int numberOfConsumers,
+            boolean syncCommit,
+            Supplier<KafkaConsumer<T, T>> consumerSupplier,
+            Consumer<KafkaConsumer<T, T>> setPartitions
     ) {
         List<KafkaConsumer<T, T>> consumers = new ArrayList<>(numberOfConsumers);
         ExecutorService executor = Executors.newFixedThreadPool(numberOfConsumers);

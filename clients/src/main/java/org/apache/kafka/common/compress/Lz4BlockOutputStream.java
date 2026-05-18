@@ -31,7 +31,7 @@ import java.io.OutputStream;
  * A partial implementation of the v1.5.1 LZ4 Frame format.
  *
  * @see <a href="https://github.com/lz4/lz4/wiki/lz4_Frame_format.md">LZ4 Frame Format</a>
- *
+ * <p>
  * This class is not thread-safe.
  */
 public final class Lz4BlockOutputStream extends OutputStream {
@@ -58,14 +58,14 @@ public final class Lz4BlockOutputStream extends OutputStream {
     /**
      * Create a new {@link OutputStream} that will compress data using the LZ4 algorithm.
      *
-     * @param out The output stream to compress
-     * @param blockSize Default: 4. The block size used during compression. 4=64kb, 5=256kb, 6=1mb, 7=4mb. All other
-     *            values will generate an exception
-     * @param level The compression level to use
-     * @param blockChecksum Default: false. When true, a XXHash32 checksum is computed and appended to the stream for
-     *            every block of data
+     * @param out                             The output stream to compress
+     * @param blockSize                       Default: 4. The block size used during compression. 4=64kb, 5=256kb, 6=1mb, 7=4mb. All other
+     *                                        values will generate an exception
+     * @param level                           The compression level to use
+     * @param blockChecksum                   Default: false. When true, a XXHash32 checksum is computed and appended to the stream for
+     *                                        every block of data
      * @param useBrokenFlagDescriptorChecksum Default: false. When true, writes an incorrect FrameDescriptor checksum
-     *            compatible with older kafka clients.
+     *                                        compatible with older kafka clients.
      * @throws IOException
      */
     public Lz4BlockOutputStream(OutputStream out, int blockSize, int level, boolean blockChecksum, boolean useBrokenFlagDescriptorChecksum) throws IOException {
@@ -92,10 +92,10 @@ public final class Lz4BlockOutputStream extends OutputStream {
     /**
      * Create a new {@link OutputStream} that will compress data using the LZ4 algorithm.
      *
-     * @param out The output stream to compress
-     * @param level The compression level to use
+     * @param out                             The output stream to compress
+     * @param level                           The compression level to use
      * @param useBrokenFlagDescriptorChecksum Default: false. When true, writes an incorrect FrameDescriptor checksum
-     *            compatible with older kafka clients.
+     *                                        compatible with older kafka clients.
      * @throws IOException
      */
 
@@ -298,11 +298,11 @@ public final class Lz4BlockOutputStream extends OutputStream {
             int version = (flg >>> 6) & 3;
 
             return new FLG(reserved,
-                           contentChecksum,
-                           contentSize,
-                           blockChecksum,
-                           blockIndependence,
-                           version);
+                    contentChecksum,
+                    contentSize,
+                    blockChecksum,
+                    blockIndependence,
+                    version);
         }
 
         public byte toByte() {

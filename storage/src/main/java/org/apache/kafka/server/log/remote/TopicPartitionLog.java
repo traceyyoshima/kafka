@@ -28,12 +28,14 @@ public interface TopicPartitionLog {
 
     /**
      * The topic name and partition number of the partition
+     *
      * @return A TopicPartition of the partition
      */
     TopicPartition topicPartition();
 
     /**
      * The log of the topic partition if present
+     *
      * @return The log of the partition or empty
      */
     Optional<UnifiedLog> unifiedLog();

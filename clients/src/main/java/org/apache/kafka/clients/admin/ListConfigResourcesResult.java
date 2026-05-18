@@ -35,7 +35,7 @@ public class ListConfigResourcesResult {
 
     /**
      * Returns a future that yields either an exception, or the full set of config resources.
-     *
+     * <p>
      * In the event of a failure, the future yields nothing but the first exception which
      * occurred.
      */

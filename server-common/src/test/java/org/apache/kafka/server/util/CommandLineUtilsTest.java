@@ -241,16 +241,16 @@ public class CommandLineUtilsTest {
     @Test
     public void testInitializeBootstrapPropertiesWithNoBootstraps() {
         assertEquals("You must specify either --bootstrap-controller or --bootstrap-server.",
-            assertThrows(CommandLineUtils.InitializeBootstrapException.class,
-                () -> CommandLineUtils.initializeBootstrapProperties(createTestProps(),
-                    Optional.empty(), Optional.empty())).getMessage());
+                assertThrows(CommandLineUtils.InitializeBootstrapException.class,
+                        () -> CommandLineUtils.initializeBootstrapProperties(createTestProps(),
+                                Optional.empty(), Optional.empty())).getMessage());
     }
 
     @Test
     public void testInitializeBootstrapPropertiesWithBrokerBootstrap() {
         Properties props = createTestProps();
         CommandLineUtils.initializeBootstrapProperties(props,
-            Optional.of("127.0.0.2:9094"), Optional.empty());
+                Optional.of("127.0.0.2:9094"), Optional.empty());
         assertEquals("127.0.0.2:9094", props.getProperty("bootstrap.servers"));
         assertNull(props.getProperty("bootstrap.controllers"));
     }
@@ -259,7 +259,7 @@ public class CommandLineUtilsTest {
     public void testInitializeBootstrapPropertiesWithControllerBootstrap() {
         Properties props = createTestProps();
         CommandLineUtils.initializeBootstrapProperties(props,
-            Optional.empty(), Optional.of("127.0.0.2:9094"));
+                Optional.empty(), Optional.of("127.0.0.2:9094"));
         assertNull(props.getProperty("bootstrap.servers"));
         assertEquals("127.0.0.2:9094", props.getProperty("bootstrap.controllers"));
     }
@@ -267,9 +267,9 @@ public class CommandLineUtilsTest {
     @Test
     public void testInitializeBootstrapPropertiesWithBothBootstraps() {
         assertEquals("You cannot specify both --bootstrap-controller and --bootstrap-server.",
-            assertThrows(CommandLineUtils.InitializeBootstrapException.class,
-                () -> CommandLineUtils.initializeBootstrapProperties(createTestProps(),
-                    Optional.of("127.0.0.2:9094"), Optional.of("127.0.0.3:9095"))).getMessage());
+                assertThrows(CommandLineUtils.InitializeBootstrapException.class,
+                        () -> CommandLineUtils.initializeBootstrapProperties(createTestProps(),
+                                Optional.of("127.0.0.2:9094"), Optional.of("127.0.0.3:9095"))).getMessage());
     }
 
     @SuppressWarnings("unchecked")

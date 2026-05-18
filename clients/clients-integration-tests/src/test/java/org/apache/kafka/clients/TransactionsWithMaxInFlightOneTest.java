@@ -51,20 +51,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ClusterTestDefaults(
-    types = {Type.CO_KRAFT},
-    serverProperties = {
-        @ClusterConfigProperty(key = ServerLogConfigs.AUTO_CREATE_TOPICS_ENABLE_CONFIG, value = "false"),
-        @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = TransactionLogConfig.TRANSACTIONS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = TransactionLogConfig.TRANSACTIONS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = TransactionLogConfig.TRANSACTIONS_TOPIC_MIN_ISR_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = ServerConfigs.CONTROLLED_SHUTDOWN_ENABLE_CONFIG, value = "true"),
-        @ClusterConfigProperty(key = "log.unclean.leader.election.enable", value = "false"),
-        @ClusterConfigProperty(key = ReplicationConfigs.AUTO_LEADER_REBALANCE_ENABLE_CONFIG, value = "false"),
-        @ClusterConfigProperty(key = GroupCoordinatorConfig.GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, value = "0"),
-        @ClusterConfigProperty(key = TransactionStateManagerConfig.TRANSACTIONS_ABORT_TIMED_OUT_TRANSACTION_CLEANUP_INTERVAL_MS_CONFIG, value = "200")
-    }
+        types = {Type.CO_KRAFT},
+        serverProperties = {
+                @ClusterConfigProperty(key = ServerLogConfigs.AUTO_CREATE_TOPICS_ENABLE_CONFIG, value = "false"),
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1"),
+                @ClusterConfigProperty(key = TransactionLogConfig.TRANSACTIONS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+                @ClusterConfigProperty(key = TransactionLogConfig.TRANSACTIONS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1"),
+                @ClusterConfigProperty(key = TransactionLogConfig.TRANSACTIONS_TOPIC_MIN_ISR_CONFIG, value = "1"),
+                @ClusterConfigProperty(key = ServerConfigs.CONTROLLED_SHUTDOWN_ENABLE_CONFIG, value = "true"),
+                @ClusterConfigProperty(key = "log.unclean.leader.election.enable", value = "false"),
+                @ClusterConfigProperty(key = ReplicationConfigs.AUTO_LEADER_REBALANCE_ENABLE_CONFIG, value = "false"),
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, value = "0"),
+                @ClusterConfigProperty(key = TransactionStateManagerConfig.TRANSACTIONS_ABORT_TIMED_OUT_TRANSACTION_CLEANUP_INTERVAL_MS_CONFIG, value = "200")
+        }
 )
 public class TransactionsWithMaxInFlightOneTest {
     private static final String TOPIC1 = "topic1";
@@ -82,8 +82,8 @@ public class TransactionsWithMaxInFlightOneTest {
         clusterInstance.createTopic(TOPIC2, 4, (short) 1);
 
         try (Producer<byte[], byte[]> producer = clusterInstance.producer(Map.of(
-            ProducerConfig.TRANSACTIONAL_ID_CONFIG, "transactional-producer",
-            ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, 1
+                ProducerConfig.TRANSACTIONAL_ID_CONFIG, "transactional-producer",
+                ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, 1
         ))
         ) {
             producer.initTransactions();
@@ -102,10 +102,10 @@ public class TransactionsWithMaxInFlightOneTest {
             for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
                 ArrayList<ConsumerRecord<byte[], byte[]>> consumerRecords = new ArrayList<>();
                 try (Consumer<byte[], byte[]> consumer = clusterInstance.consumer(Map.of(
-                        ConsumerConfig.GROUP_PROTOCOL_CONFIG, groupProtocol.name(),
-                        ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false",
-                        ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_committed"
-                    )
+                                ConsumerConfig.GROUP_PROTOCOL_CONFIG, groupProtocol.name(),
+                                ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false",
+                                ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_committed"
+                        )
                 )) {
                     consumer.subscribe(List.of(TOPIC1, TOPIC2));
                     TestUtils.waitForCondition(() -> {

@@ -50,9 +50,9 @@ public class ClientRequestQuotaManager extends ClientQuotaManager {
     private final Sensor exemptSensor;
 
     public ClientRequestQuotaManager(
-            ClientQuotaManagerConfig config, 
-            Metrics metrics, Time time, 
-            String threadNamePrefix, 
+            ClientQuotaManagerConfig config,
+            Metrics metrics, Time time,
+            String threadNamePrefix,
             Optional<Plugin<ClientQuotaCallback>> quotaCallbackPlugin
     ) {
         super(config, metrics, QuotaType.REQUEST, time, threadNamePrefix, quotaCallbackPlugin);
@@ -73,6 +73,7 @@ public class ClientRequestQuotaManager extends ClientQuotaManager {
     /**
      * Records that a user/clientId changed request processing time being throttled. If the quota has been violated, return
      * throttle time in milliseconds. Subclasses may override throttle time calculation.
+     *
      * @param request client request
      * @return Number of milliseconds to throttle in case of quota violation. Zero otherwise
      */

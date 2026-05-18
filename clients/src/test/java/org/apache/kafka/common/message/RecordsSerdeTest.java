@@ -34,12 +34,12 @@ public class RecordsSerdeTest {
     @Test
     public void testSerdeRecords() {
         MemoryRecords records = MemoryRecords.withRecords(Compression.NONE,
-            new SimpleRecord("foo".getBytes()),
-            new SimpleRecord("bar".getBytes()));
+                new SimpleRecord("foo".getBytes()),
+                new SimpleRecord("bar".getBytes()));
 
         SimpleRecordsMessageData message = new SimpleRecordsMessageData()
-            .setTopic("foo")
-            .setRecordSet(records);
+                .setTopic("foo")
+                .setRecordSet(records);
 
         testAllRoundTrips(message);
     }
@@ -47,7 +47,7 @@ public class RecordsSerdeTest {
     @Test
     public void testSerdeNullRecords() {
         SimpleRecordsMessageData message = new SimpleRecordsMessageData()
-            .setTopic("foo");
+                .setTopic("foo");
         assertNull(message.recordSet());
 
         testAllRoundTrips(message);
@@ -56,8 +56,8 @@ public class RecordsSerdeTest {
     @Test
     public void testSerdeEmptyRecords() {
         SimpleRecordsMessageData message = new SimpleRecordsMessageData()
-            .setTopic("foo")
-            .setRecordSet(MemoryRecords.EMPTY);
+                .setTopic("foo")
+                .setRecordSet(MemoryRecords.EMPTY);
         testAllRoundTrips(message);
     }
 

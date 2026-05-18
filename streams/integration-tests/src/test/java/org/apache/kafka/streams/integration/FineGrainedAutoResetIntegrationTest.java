@@ -198,15 +198,15 @@ public class FineGrainedAutoResetIntegrationTest {
     }
 
     private void shouldOnlyReadForEarliest(
-        final String topicSuffix,
-        final String topic1,
-        final String topic2,
-        final String topicA,
-        final String topicC,
-        final String topicY,
-        final String topicZ,
-        final String outputTopic,
-        final List<String> expectedReceivedValues) throws Exception {
+            final String topicSuffix,
+            final String topic1,
+            final String topic2,
+            final String topicA,
+            final String topicC,
+            final String topicY,
+            final String topicZ,
+            final String outputTopic,
+            final List<String> expectedReceivedValues) throws Exception {
 
         final StreamsBuilder builder = new StreamsBuilder();
 
@@ -249,10 +249,10 @@ public class FineGrainedAutoResetIntegrationTest {
 
     private void commitInvalidOffsets() {
         final KafkaConsumer<String, String> consumer = new KafkaConsumer<>(TestUtils.consumerConfig(
-            CLUSTER.bootstrapServers(),
-            "commit_invalid_offset_app", // Having a separate application id to avoid waiting for last test poll interval timeout.
-            StringDeserializer.class,
-            StringDeserializer.class));
+                CLUSTER.bootstrapServers(),
+                "commit_invalid_offset_app", // Having a separate application id to avoid waiting for last test poll interval timeout.
+                StringDeserializer.class,
+                StringDeserializer.class));
 
         final Map<TopicPartition, OffsetAndMetadata> invalidOffsets = new HashMap<>();
         invalidOffsets.put(new TopicPartition(TOPIC_1_2, 0), new OffsetAndMetadata(5, null));
@@ -273,11 +273,11 @@ public class FineGrainedAutoResetIntegrationTest {
         props.put(ConsumerConfig.METADATA_MAX_AGE_CONFIG, "1000");
 
         final Properties localConfig = StreamsTestUtils.getStreamsConfig(
-            "testConfigAutoOffsetWithNone",
-            CLUSTER.bootstrapServers(),
-            STRING_SERDE_CLASSNAME,
-            STRING_SERDE_CLASSNAME,
-            props);
+                "testConfigAutoOffsetWithNone",
+                CLUSTER.bootstrapServers(),
+                STRING_SERDE_CLASSNAME,
+                STRING_SERDE_CLASSNAME,
+                props);
 
         final StreamsBuilder builder = new StreamsBuilder();
         final KStream<String, String> exceptionStream = builder.stream(NOOP, Consumed.with(AutoOffsetReset.none()));
@@ -291,8 +291,8 @@ public class FineGrainedAutoResetIntegrationTest {
             streams.start();
 
             waitForCondition(
-                () -> uncaughtExceptionHandler.correctExceptionThrown,
-                "The expected NoOffsetForPartitionException was never thrown"
+                    () -> uncaughtExceptionHandler.correctExceptionThrown,
+                    "The expected NoOffsetForPartitionException was never thrown"
             );
         }
     }
@@ -302,11 +302,11 @@ public class FineGrainedAutoResetIntegrationTest {
         final StreamsBuilder builder = new StreamsBuilder();
 
         builder.<String, String>stream(TOPIC_DURATION_1, Consumed.with(AutoOffsetReset.byDuration(Duration.ofHours(6L).plus(Duration.ofMinutes(40L)))))
-            .to(OUTPUT_TOPIC_3, Produced.with(stringSerde, stringSerde));
+                .to(OUTPUT_TOPIC_3, Produced.with(stringSerde, stringSerde));
         builder.<String, String>stream(TOPIC_DURATION_2, Consumed.with(AutoOffsetReset.byDuration(Duration.ofMillis(mockTime.milliseconds()).minus(Duration.ofDays(1L)))))
-            .to(OUTPUT_TOPIC_4, Produced.with(stringSerde, stringSerde));
+                .to(OUTPUT_TOPIC_4, Produced.with(stringSerde, stringSerde));
         builder.<String, String>stream(TOPIC_DURATION_3, Consumed.with(AutoOffsetReset.byDuration(Duration.ZERO)))
-            .to(OUTPUT_TOPIC_5, Produced.with(stringSerde, stringSerde));
+                .to(OUTPUT_TOPIC_5, Produced.with(stringSerde, stringSerde));
 
         final Properties producerConfig = TestUtils.producerConfig(CLUSTER.bootstrapServers(), StringSerializer.class, StringSerializer.class);
 
@@ -331,20 +331,20 @@ public class FineGrainedAutoResetIntegrationTest {
             streams.start();
 
             final List<KeyValue<String, String>> receivedKeyValuesOne =
-                IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(consumerConfig, OUTPUT_TOPIC_3, expectedValues.size());
+                    IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(consumerConfig, OUTPUT_TOPIC_3, expectedValues.size());
             for (final KeyValue<String, String> receivedKeyValue : receivedKeyValuesOne) {
                 actualValuesOne.add(receivedKeyValue.value);
             }
 
             final List<KeyValue<String, String>> receivedKeyValuesTwo =
-                IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(consumerConfig, OUTPUT_TOPIC_4, allExpectedValues.size());
+                    IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(consumerConfig, OUTPUT_TOPIC_4, allExpectedValues.size());
             for (final KeyValue<String, String> receivedKeyValue : receivedKeyValuesTwo) {
                 actualValuesTwo.add(receivedKeyValue.value);
             }
 
             IntegrationTestUtils.produceValuesSynchronously(TOPIC_DURATION_3, Collections.singletonList("10"), producerConfig, mockTime);
             final List<KeyValue<String, String>> receivedKeyValuesThree =
-                IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(consumerConfig, OUTPUT_TOPIC_5, singleFinalExpectedValues.size());
+                    IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(consumerConfig, OUTPUT_TOPIC_5, singleFinalExpectedValues.size());
             for (final KeyValue<String, String> receivedKeyValue : receivedKeyValuesThree) {
                 actualValuesThree.add(receivedKeyValue.value);
             }
@@ -417,8 +417,8 @@ public class FineGrainedAutoResetIntegrationTest {
             streams.start();
 
             waitForCondition(
-                () -> uncaughtExceptionHandler.correctExceptionThrown,
-                "The expected NoOffsetForPartitionException was never thrown"
+                    () -> uncaughtExceptionHandler.correctExceptionThrown,
+                    "The expected NoOffsetForPartitionException was never thrown"
             );
         }
     }
@@ -426,6 +426,7 @@ public class FineGrainedAutoResetIntegrationTest {
 
     private static final class TestingUncaughtExceptionHandler implements StreamsUncaughtExceptionHandler {
         boolean correctExceptionThrown = false;
+
         @Override
         public StreamThreadExceptionResponse handle(final Throwable throwable) {
             assertThat(throwable.getClass().getSimpleName(), is("StreamsException"));

@@ -34,12 +34,12 @@ import java.util.Optional;
  * @param preserveRecordData If true, store original record headers, key and value in the dlq record as well.
  */
 public record ShareGroupDLQRecordParameter(
-    String groupId,
-    TopicIdPartition topicIdPartition,
-    long firstOffset,
-    long lastOffset,
-    Optional<Short> deliveryCount,
-    Optional<Throwable> cause,
-    boolean preserveRecordData
+        String groupId,
+        TopicIdPartition topicIdPartition,
+        long firstOffset,
+        long lastOffset,
+        Optional<Short> deliveryCount,
+        Optional<Throwable> cause,
+        boolean preserveRecordData
 ) {
 }

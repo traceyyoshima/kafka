@@ -29,11 +29,11 @@ import java.util.Set;
 
 /**
  * Possible error codes:
- *
- *   - {@link Errors#CLUSTER_AUTHORIZATION_FAILED}
- *   - {@link Errors#NOT_CONTROLLER}
- *   - {@link Errors#INVALID_REQUEST}
- *   - {@link Errors#FEATURE_UPDATE_FAILED}
+ * <p>
+ * - {@link Errors#CLUSTER_AUTHORIZATION_FAILED}
+ * - {@link Errors#NOT_CONTROLLER}
+ * - {@link Errors#INVALID_REQUEST}
+ * - {@link Errors#FEATURE_UPDATE_FAILED}
  */
 public class UpdateFeaturesResponse extends AbstractResponse {
 
@@ -88,17 +88,17 @@ public class UpdateFeaturesResponse extends AbstractResponse {
             for (final String feature : updates) {
                 final UpdatableFeatureResult result = new UpdatableFeatureResult();
                 result.setFeature(feature)
-                    .setErrorCode(topLevelError.error().code())
-                    .setErrorMessage(topLevelError.message());
+                        .setErrorCode(topLevelError.error().code())
+                        .setErrorMessage(topLevelError.message());
                 results.add(result);
             }
         }
         final UpdateFeaturesResponseData responseData = new UpdateFeaturesResponseData()
-            .setThrottleTimeMs(throttleTimeMs)
-            .setErrorCode(topLevelError.error().code())
-            .setErrorMessage(topLevelError.message())
-            .setResults(results)
-            .setThrottleTimeMs(throttleTimeMs);
+                .setThrottleTimeMs(throttleTimeMs)
+                .setErrorCode(topLevelError.error().code())
+                .setErrorMessage(topLevelError.message())
+                .setResults(results)
+                .setThrottleTimeMs(throttleTimeMs);
         return new UpdateFeaturesResponse(responseData);
     }
 }

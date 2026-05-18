@@ -30,7 +30,7 @@ public enum GroupType {
     STREAMS("Streams");
 
     private static final Map<String, GroupType> NAME_TO_ENUM = Arrays.stream(values())
-        .collect(Collectors.toMap(type -> type.name.toLowerCase(Locale.ROOT), Function.identity()));
+            .collect(Collectors.toMap(type -> type.name.toLowerCase(Locale.ROOT), Function.identity()));
 
     private final String name;
 

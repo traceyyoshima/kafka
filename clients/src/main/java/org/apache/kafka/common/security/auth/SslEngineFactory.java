@@ -47,8 +47,8 @@ public interface SslEngineFactory extends Configurable, Closeable {
     /**
      * Creates a new <code>SSLEngine</code> object to be used by the server.
      *
-     * @param peerHost               The peer host to use. This is a hint and not used for validation.
-     * @param peerPort               The peer port to use. This is a hint and not used for validation.
+     * @param peerHost The peer host to use. This is a hint and not used for validation.
+     * @param peerPort The peer port to use. This is a hint and not used for validation.
      * @return The new <code>SSLEngine</code>.
      */
     SSLEngine createServerSslEngine(String peerHost, int peerPort);
@@ -65,25 +65,28 @@ public interface SslEngineFactory extends Configurable, Closeable {
      * compared to the previous/last-loaded timestamp and return true.
      * </p>
      *
-     * @param nextConfigs       The new configuration we want to use.
-     * @return                  True only if the underlying <code>SSLEngine</code> object should be rebuilt.
+     * @param nextConfigs The new configuration we want to use.
+     * @return True only if the underlying <code>SSLEngine</code> object should be rebuilt.
      */
     boolean shouldBeRebuilt(Map<String, Object> nextConfigs);
 
     /**
      * Returns the names of configs that may be reconfigured.
+     *
      * @return Names of configuration options that are dynamically reconfigurable.
      */
     Set<String> reconfigurableConfigs();
 
     /**
      * Returns keystore configured for this factory.
+     *
      * @return The keystore for this factory or null if a keystore is not configured.
      */
     KeyStore keystore();
 
     /**
      * Returns truststore configured for this factory.
+     *
      * @return The truststore for this factory or null if a truststore is not configured.
      */
     KeyStore truststore();

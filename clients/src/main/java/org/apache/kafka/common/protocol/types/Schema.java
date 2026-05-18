@@ -38,7 +38,6 @@ public class Schema extends DocumentedType {
      * Construct the schema with a given list of its field values
      *
      * @param fs the fields of this schema
-     *
      * @throws SchemaException If the given list have duplicate fields
      */
     public Schema(Field... fs) {
@@ -50,9 +49,8 @@ public class Schema extends DocumentedType {
      * missing optional fields with defaults at the end of the schema definition.
      *
      * @param tolerateMissingFieldsWithDefaults whether to accept records with missing optional
-     * fields the end of the schema
-     * @param fs the fields of this schema
-     *
+     *                                          fields the end of the schema
+     * @param fs                                the fields of this schema
      * @throws SchemaException If the given list have duplicate fields
      */
     @SuppressWarnings("this-escape")
@@ -84,7 +82,7 @@ public class Schema extends DocumentedType {
                 field.def.type.write(buffer, value);
             } catch (Exception e) {
                 throw new SchemaException("Error writing field '" + field.def.name + "': " +
-                                          (e.getMessage() == null ? e.getClass().getName() : e.getMessage()));
+                        (e.getMessage() == null ? e.getClass().getName() : e.getMessage()));
             }
         }
     }
@@ -118,7 +116,7 @@ public class Schema extends DocumentedType {
                 }
             } catch (Exception e) {
                 throw new SchemaException("Error reading field '" + fields[i].def.name + "': " +
-                                          (e.getMessage() == null ? e.getClass().getName() : e.getMessage()));
+                        (e.getMessage() == null ? e.getClass().getName() : e.getMessage()));
             }
         }
         return new Struct(this, objects);
@@ -231,9 +229,9 @@ public class Schema extends DocumentedType {
     @Override
     public String documentation() {
         return "A struct is named by a string with a capitalized first letter and consists of one or more fields. " +
-            "It represents a composite object encoded as the serialization of each field in the order they are defined." + 
-            "In protocol documentation a struct containing multiple fields is enclosed by " + 
-            leftBracket() + " and " + rightBracket() + ".";
+                "It represents a composite object encoded as the serialization of each field in the order they are defined." +
+                "In protocol documentation a struct containing multiple fields is enclosed by " +
+                leftBracket() + " and " + rightBracket() + ".";
     }
 
     public void walk(Visitor visitor) {
@@ -259,7 +257,10 @@ public class Schema extends DocumentedType {
      * Override one or more of the visit methods with the desired logic.
      */
     public abstract static class Visitor {
-        public void visit(Schema schema) {}
-        public void visit(Type field) {}
+        public void visit(Schema schema) {
+        }
+
+        public void visit(Type field) {
+        }
     }
 }

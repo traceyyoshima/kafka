@@ -67,7 +67,7 @@ public final class BrokerLocalStorage {
      * This ensures segments can be retrieved from the local tiered storage when expected.
      *
      * @param topicPartition The topic-partition to check.
-     * @param offset The offset to wait for.
+     * @param offset         The offset to wait for.
      * @throws AssertionError if the timeout is reached or the earliest-local offset is not equal to the provided
      *                        offset.
      */
@@ -92,7 +92,7 @@ public final class BrokerLocalStorage {
      * This ensures segments can be retrieved from the local tiered storage when expected.
      *
      * @param topicPartition The topic-partition to check.
-     * @param offset The offset to wait for.
+     * @param offset         The offset to wait for.
      * @throws AssertionError if the timeout is reached or the earliest-local offset is lesser than to the provided
      *                        offset.
      */
@@ -132,14 +132,15 @@ public final class BrokerLocalStorage {
 
     /**
      * Check if the given offset is present in the first local segment of the given topic-partition.
-     * @param topicPartition The topic-partition to check.
+     *
+     * @param topicPartition         The topic-partition to check.
      * @param firstLogFileBaseOffset The base offset of the first local segment.
-     * @param offsetToSearch The offset to search.
+     * @param offsetToSearch         The offset to search.
      * @return true if the offset is present in the first local segment, false otherwise.
      */
     private boolean isOffsetPresentInFirstLocalSegment(TopicPartition topicPartition,
                                                        Long firstLogFileBaseOffset,
-                                                       Long offsetToSearch)  {
+                                                       Long offsetToSearch) {
         if (offsetToSearch < firstLogFileBaseOffset) {
             return false;
         }
@@ -150,7 +151,7 @@ public final class BrokerLocalStorage {
                 .filter(dir -> dirContainsTopicPartition(topicPartition, dir))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("[BrokerId=%d] Directory for the topic-partition %s " +
-                "was not found", brokerId, topicPartition)));
+                        "was not found", brokerId, topicPartition)));
         File partitionDir = new File(logDir.getAbsolutePath(), topicPartition.toString());
         File firstSegmentFile = new File(partitionDir.getAbsolutePath(),
                 LogFileUtils.filenamePrefixFromOffset(firstLogFileBaseOffset) + LogFileUtils.LOG_FILE_SUFFIX);

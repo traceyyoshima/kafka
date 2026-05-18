@@ -41,11 +41,11 @@ public class SessionStoreBuilder<K, V> extends AbstractStoreBuilder<K, V, Sessio
     @Override
     public SessionStore<K, V> build() {
         return new MeteredSessionStore<>(
-            maybeWrapCaching(maybeWrapLogging(storeSupplier.get())),
-            storeSupplier.metricsScope(),
-            keySerde,
-            valueSerde,
-            time);
+                maybeWrapCaching(maybeWrapLogging(storeSupplier.get())),
+                storeSupplier.metricsScope(),
+                keySerde,
+                valueSerde,
+                time);
     }
 
     private SessionStore<Bytes, byte[]> maybeWrapCaching(final SessionStore<Bytes, byte[]> inner) {

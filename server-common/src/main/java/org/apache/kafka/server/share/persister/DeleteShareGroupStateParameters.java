@@ -30,9 +30,9 @@ public class DeleteShareGroupStateParameters implements PersisterParameters {
     private final GroupTopicPartitionData<PartitionIdData> groupTopicPartitionData;
 
     public static final DeleteShareGroupStateParameters EMPTY_PARAMS = new DeleteShareGroupStateParameters(new GroupTopicPartitionData.Builder<PartitionIdData>()
-        .setGroupId("")
-        .setTopicsData(List.of())
-        .build()
+            .setGroupId("")
+            .setTopicsData(List.of())
+            .build()
     );
 
     private DeleteShareGroupStateParameters(GroupTopicPartitionData<PartitionIdData> groupTopicPartitionData) {

@@ -71,8 +71,8 @@ public class StreamsRebalanceListenerTest {
         assignmentErrorCode.set(AssignorError.INCOMPLETE_SOURCE_TOPIC_METADATA.code());
 
         final MissingSourceTopicException exception = assertThrows(
-            MissingSourceTopicException.class,
-            () -> streamsRebalanceListener.onPartitionsAssigned(Collections.emptyList())
+                MissingSourceTopicException.class,
+                () -> streamsRebalanceListener.onPartitionsAssigned(Collections.emptyList())
         );
         assertThat(exception.getMessage(), is("One or more source topics were missing during rebalance"));
         verify(taskManager).handleRebalanceComplete();
@@ -100,8 +100,8 @@ public class StreamsRebalanceListenerTest {
         assignmentErrorCode.set(AssignorError.ASSIGNMENT_ERROR.code());
 
         final TaskAssignmentException exception = assertThrows(
-            TaskAssignmentException.class,
-            () -> streamsRebalanceListener.onPartitionsAssigned(Collections.emptyList())
+                TaskAssignmentException.class,
+                () -> streamsRebalanceListener.onPartitionsAssigned(Collections.emptyList())
         );
         assertThat(exception.getMessage(), is("Hit an unexpected exception during task assignment phase of rebalance"));
 
@@ -113,8 +113,8 @@ public class StreamsRebalanceListenerTest {
         assignmentErrorCode.set(Integer.MAX_VALUE);
 
         final TaskAssignmentException exception = assertThrows(
-            TaskAssignmentException.class,
-            () -> streamsRebalanceListener.onPartitionsAssigned(Collections.emptyList())
+                TaskAssignmentException.class,
+                () -> streamsRebalanceListener.onPartitionsAssigned(Collections.emptyList())
         );
         assertThat(exception.getMessage(), is("Hit an unrecognized exception during rebalance"));
     }

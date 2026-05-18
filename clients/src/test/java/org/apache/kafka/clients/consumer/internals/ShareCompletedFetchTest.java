@@ -75,8 +75,8 @@ public class ShareCompletedFetchTest {
         int numRecordsPerBatch = 10;
         int numRecords = 20;        // Records for 10-29, in 2 equal batches
         ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-            .setRecords(newRecords(startingOffset, numRecordsPerBatch, 2))
-            .setAcquiredRecords(acquiredRecords(startingOffset, numRecords));
+                .setRecords(newRecords(startingOffset, numRecordsPerBatch, 2))
+                .setAcquiredRecords(acquiredRecords(startingOffset, numRecords));
 
         Deserializers<String, String> deserializers = newStringDeserializers();
 
@@ -115,8 +115,8 @@ public class ShareCompletedFetchTest {
         long startingOffset = 10L;
         int numRecords = 11;        // Records for 10-20, in a single batch
         ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-            .setRecords(newRecords(startingOffset, numRecords))
-            .setAcquiredRecords(acquiredRecords(startingOffset, numRecords));
+                .setRecords(newRecords(startingOffset, numRecords))
+                .setAcquiredRecords(acquiredRecords(startingOffset, numRecords));
 
         Deserializers<String, String> deserializers = newStringDeserializers();
 
@@ -145,8 +145,8 @@ public class ShareCompletedFetchTest {
         long startingOffset = 10L;
         int numRecords = 10;
         ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-            .setRecords(newRecords(startingOffset, numRecords + 500))
-            .setAcquiredRecords(acquiredRecords(startingOffset + 500, numRecords));
+                .setRecords(newRecords(startingOffset, numRecords + 500))
+                .setAcquiredRecords(acquiredRecords(startingOffset + 500, numRecords));
 
         Deserializers<String, String> deserializers = newStringDeserializers();
 
@@ -175,8 +175,8 @@ public class ShareCompletedFetchTest {
         int numRecords = 10;
         Records rawRecords = newTransactionalRecords(numRecords);
         ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-            .setRecords(rawRecords)
-            .setAcquiredRecords(acquiredRecords(0L, numRecords));
+                .setRecords(rawRecords)
+                .setAcquiredRecords(acquiredRecords(0L, numRecords));
 
         ShareCompletedFetch completedFetch = newShareCompletedFetch(partitionData);
         try (final Deserializers<String, String> deserializers = newStringDeserializers()) {
@@ -194,8 +194,8 @@ public class ShareCompletedFetchTest {
         int startingOffset = 0;
         int numRecords = 10;
         ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-            .setRecords(newRecords(startingOffset, numRecords))
-            .setAcquiredRecords(acquiredRecords(0L, 10));
+                .setRecords(newRecords(startingOffset, numRecords))
+                .setAcquiredRecords(acquiredRecords(0L, 10));
 
         try (final Deserializers<String, String> deserializers = newStringDeserializers()) {
             ShareCompletedFetch completedFetch = newShareCompletedFetch(partitionData);
@@ -211,7 +211,7 @@ public class ShareCompletedFetchTest {
     @Test
     public void testNoRecordsInFetch() {
         ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-            .setPartitionIndex(0);
+                .setPartitionIndex(0);
 
         ShareCompletedFetch completedFetch = newShareCompletedFetch(partitionData);
         try (final Deserializers<String, String> deserializers = newStringDeserializers()) {
@@ -231,7 +231,7 @@ public class ShareCompletedFetchTest {
                 Compression.NONE,
                 TimestampType.CREATE_TIME,
                 0);
-            final UUIDSerializer serializer = new UUIDSerializer()) {
+             final UUIDSerializer serializer = new UUIDSerializer()) {
             builder.append(new SimpleRecord(serializer.serialize(TOPIC_NAME, UUID.randomUUID())));
             builder.append(0L, "key".getBytes(), "value".getBytes());
             Headers headers = new RecordHeaders();
@@ -241,9 +241,9 @@ public class ShareCompletedFetchTest {
             Records records = builder.build();
 
             ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-                .setPartitionIndex(0)
-                .setRecords(records)
-                .setAcquiredRecords(acquiredRecords(0L, 4));
+                    .setPartitionIndex(0)
+                    .setRecords(records)
+                    .setAcquiredRecords(acquiredRecords(0L, 4));
 
             try (final Deserializers<UUID, UUID> deserializers = newUuidDeserializers()) {
                 ShareCompletedFetch completedFetch = newShareCompletedFetch(partitionData);
@@ -316,8 +316,8 @@ public class ShareCompletedFetchTest {
         List<ShareFetchResponseData.AcquiredRecords> acquiredRecords = new ArrayList<>(acquiredRecords(0L, 3));
         acquiredRecords.addAll(acquiredRecords(6L, 3));
         ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-            .setRecords(newRecords(startingOffset, numRecords))
-            .setAcquiredRecords(acquiredRecords);
+                .setRecords(newRecords(startingOffset, numRecords))
+                .setAcquiredRecords(acquiredRecords);
 
         Deserializers<String, String> deserializers = newStringDeserializers();
 
@@ -346,8 +346,8 @@ public class ShareCompletedFetchTest {
 
         // Acquire all records including the control record (offset 10 is the commit marker)
         ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-            .setRecords(rawRecords)
-            .setAcquiredRecords(acquiredRecords(0L, numRecords + 1));
+                .setRecords(rawRecords)
+                .setAcquiredRecords(acquiredRecords(0L, numRecords + 1));
 
         ShareCompletedFetch completedFetch = newShareCompletedFetch(partitionData);
         try (final Deserializers<String, String> deserializers = newStringDeserializers()) {
@@ -374,8 +374,8 @@ public class ShareCompletedFetchTest {
         acquiredRecords.add(acquiredRecords(10L, 5).get(0));
 
         ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-            .setRecords(newRecords(startingOffset,  10))
-            .setAcquiredRecords(acquiredRecords); // Acquire only records 0-4 and 10-14
+                .setRecords(newRecords(startingOffset, 10))
+                .setAcquiredRecords(acquiredRecords); // Acquire only records 0-4 and 10-14
 
         Deserializers<String, String> deserializers = newStringDeserializers();
 
@@ -407,8 +407,8 @@ public class ShareCompletedFetchTest {
 
         // Acquire only non-existent records 15-19 (all should be gaps)
         ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-            .setRecords(newRecords(startingOffset, numRecords))  // Records 0-9
-            .setAcquiredRecords(acquiredRecords(15L, 5));       // Acquire 15-19 (don't exist)
+                .setRecords(newRecords(startingOffset, numRecords))  // Records 0-9
+                .setAcquiredRecords(acquiredRecords(15L, 5));       // Acquire 15-19 (don't exist)
 
         Deserializers<String, String> deserializers = newStringDeserializers();
 
@@ -464,8 +464,8 @@ public class ShareCompletedFetchTest {
 
         // Acquire all offsets 0-6 (includes both control records and data records)
         ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-            .setRecords(records)
-            .setAcquiredRecords(acquiredRecords(0L, 7));
+                .setRecords(records)
+                .setAcquiredRecords(acquiredRecords(0L, 7));
 
         ShareCompletedFetch completedFetch = newShareCompletedFetch(partitionData);
         try (final Deserializers<String, String> deserializers = newStringDeserializers()) {
@@ -497,8 +497,8 @@ public class ShareCompletedFetchTest {
         }
 
         ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-            .setRecords(newRecords(startingOffset, numRecords))
-            .setAcquiredRecords(acquiredRecords);
+                .setRecords(newRecords(startingOffset, numRecords))
+                .setAcquiredRecords(acquiredRecords);
 
         Deserializers<String, String> deserializers = newStringDeserializers();
 
@@ -528,17 +528,17 @@ public class ShareCompletedFetchTest {
         // Offsets 5-9 will be duplicates
         List<ShareFetchResponseData.AcquiredRecords> acquiredRecords = new ArrayList<>();
         acquiredRecords.add(new ShareFetchResponseData.AcquiredRecords()
-            .setFirstOffset(0L)
-            .setLastOffset(9L)
-            .setDeliveryCount((short) 1));
+                .setFirstOffset(0L)
+                .setLastOffset(9L)
+                .setDeliveryCount((short) 1));
         acquiredRecords.add(new ShareFetchResponseData.AcquiredRecords()
-            .setFirstOffset(5L)
-            .setLastOffset(14L)
-            .setDeliveryCount((short) 2));
+                .setFirstOffset(5L)
+                .setLastOffset(14L)
+                .setDeliveryCount((short) 2));
 
         ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-            .setRecords(newRecords(startingOffset, numRecords))
-            .setAcquiredRecords(acquiredRecords);
+                .setRecords(newRecords(startingOffset, numRecords))
+                .setAcquiredRecords(acquiredRecords);
 
         ShareCompletedFetch completedFetch = newShareCompletedFetch(partitionData);
 
@@ -547,27 +547,27 @@ public class ShareCompletedFetchTest {
         // Fetch records and verify that only 15 unique records are returned (0-14)
         ShareInFlightBatch<String, String> batch = completedFetch.fetchRecords(deserializers, 20, true);
         List<ConsumerRecord<String, String>> records = batch.getInFlightRecords();
-        
+
         // Should get 15 unique records: 0-9 from first range (with deliveryCount=1)
         // and 10-14 from second range (with deliveryCount=2)
         assertEquals(15, records.size());
-        
+
         // Verify first occurrence (offset 5 should have deliveryCount=1 from first range)
         ConsumerRecord<String, String> record5 = records.stream()
-            .filter(r -> r.offset() == 5L)
-            .findFirst()
-            .orElse(null);
+                .filter(r -> r.offset() == 5L)
+                .findFirst()
+                .orElse(null);
         assertNotNull(record5);
         assertEquals(Optional.of((short) 1), record5.deliveryCount());
-        
+
         // Verify offset 10 has deliveryCount=2 from second range
         ConsumerRecord<String, String> record10 = records.stream()
-            .filter(r -> r.offset() == 10L)
-            .findFirst()
-            .orElse(null);
+                .filter(r -> r.offset() == 10L)
+                .findFirst()
+                .orElse(null);
         assertNotNull(record10);
         assertEquals(Optional.of((short) 2), record10.deliveryCount());
-        
+
         // Verify all offsets are unique
         Set<Long> offsetSet = new HashSet<>();
         for (ConsumerRecord<String, String> record : records) {
@@ -587,8 +587,8 @@ public class ShareCompletedFetchTest {
         acquiredRecords.add(acquiredRecords(20L, 10).get(0));
 
         ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-            .setRecords(records)
-            .setAcquiredRecords(acquiredRecords);
+                .setRecords(records)
+                .setAcquiredRecords(acquiredRecords);
 
         ShareCompletedFetch completedFetch = newShareCompletedFetch(partitionData);
         Deserializers<String, String> deserializers = newStringDeserializers();
@@ -603,7 +603,7 @@ public class ShareCompletedFetchTest {
         assertEquals(10, acks1.size(), "All records in corrupted batch should be rejected");
         for (long offset = 0; offset < 10; offset++) {
             assertEquals(AcknowledgeType.REJECT, acks1.get(offset),
-                "Record at offset " + offset + " should be REJECT");
+                    "Record at offset " + offset + " should be REJECT");
         }
 
         // No records should be returned
@@ -637,8 +637,8 @@ public class ShareCompletedFetchTest {
         }
 
         ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-            .setRecords(records)
-            .setAcquiredRecords(acquiredRecords);
+                .setRecords(records)
+                .setAcquiredRecords(acquiredRecords);
 
         ShareCompletedFetch completedFetch = newShareCompletedFetch(partitionData);
         Deserializers<String, String> deserializers = newStringDeserializers();
@@ -668,8 +668,8 @@ public class ShareCompletedFetchTest {
         acquiredRecords.add(acquiredRecords(10L, 10).get(0));
 
         ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-            .setRecords(records)
-            .setAcquiredRecords(acquiredRecords);
+                .setRecords(records)
+                .setAcquiredRecords(acquiredRecords);
 
         ShareCompletedFetch completedFetch = newShareCompletedFetch(partitionData);
         Deserializers<String, String> deserializers = newStringDeserializers();
@@ -695,8 +695,8 @@ public class ShareCompletedFetchTest {
         acquiredRecords.add(acquiredRecords(0L, 10).get(0));
 
         ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-            .setRecords(records)
-            .setAcquiredRecords(acquiredRecords);
+                .setRecords(records)
+                .setAcquiredRecords(acquiredRecords);
 
         ShareCompletedFetch completedFetch = newShareCompletedFetch(partitionData);
         Deserializers<String, String> deserializers = newStringDeserializers();
@@ -720,8 +720,8 @@ public class ShareCompletedFetchTest {
         acquiredRecords.add(acquiredRecords(0L, 15).get(0));
 
         ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-            .setRecords(records)
-            .setAcquiredRecords(acquiredRecords);
+                .setRecords(records)
+                .setAcquiredRecords(acquiredRecords);
 
         ShareCompletedFetch completedFetch = newShareCompletedFetch(partitionData);
         Deserializers<String, String> deserializers = newStringDeserializers();
@@ -762,8 +762,8 @@ public class ShareCompletedFetchTest {
         acquiredRecords.add(acquiredRecords(0L, 40).get(0));
 
         ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-            .setRecords(records)
-            .setAcquiredRecords(acquiredRecords);
+                .setRecords(records)
+                .setAcquiredRecords(acquiredRecords);
 
         ShareCompletedFetch completedFetch = newShareCompletedFetch(partitionData);
         Deserializers<String, String> deserializers = newStringDeserializers();
@@ -800,14 +800,14 @@ public class ShareCompletedFetchTest {
         ShareFetchMetricsAggregator shareFetchMetricsAggregator = new ShareFetchMetricsAggregator(shareFetchMetricsManager, partitionSet);
 
         return new ShareCompletedFetch(
-            logContext,
-            BufferSupplier.create(),
-            0,
-            TIP,
-            partitionData,
-            DEFAULT_ACQUISITION_LOCK_TIMEOUT_MS,
-            shareFetchMetricsAggregator,
-            ApiKeys.SHARE_FETCH.latestVersion());
+                logContext,
+                BufferSupplier.create(),
+                0,
+                TIP,
+                partitionData,
+                DEFAULT_ACQUISITION_LOCK_TIMEOUT_MS,
+                shareFetchMetricsAggregator,
+                ApiKeys.SHARE_FETCH.latestVersion());
     }
 
     private static Deserializers<UUID, UUID> newUuidDeserializers() {
@@ -859,9 +859,9 @@ public class ShareCompletedFetchTest {
 
     public static List<ShareFetchResponseData.AcquiredRecords> acquiredRecords(long firstOffset, int count) {
         ShareFetchResponseData.AcquiredRecords acquiredRecords = new ShareFetchResponseData.AcquiredRecords()
-            .setFirstOffset(firstOffset)
-            .setLastOffset(firstOffset + count - 1)
-            .setDeliveryCount((short) 1);
+                .setFirstOffset(firstOffset)
+                .setLastOffset(firstOffset + count - 1)
+                .setDeliveryCount((short) 1);
         return List.of(acquiredRecords);
     }
 
@@ -896,12 +896,12 @@ public class ShareCompletedFetchTest {
                                         int offset,
                                         Time time) {
         MemoryRecords.writeEndTransactionalMarker(buffer,
-            offset,
-            time.milliseconds(),
-            0,
-            PRODUCER_ID,
-            PRODUCER_EPOCH,
-            new EndTransactionMarker(ControlRecordType.COMMIT, 0));
+                offset,
+                time.milliseconds(),
+                0,
+                PRODUCER_ID,
+                PRODUCER_EPOCH,
+                new EndTransactionMarker(ControlRecordType.COMMIT, 0));
     }
 
     private void createBatch(ByteBuffer buffer, long baseOffset, int numRecords, Time time) {

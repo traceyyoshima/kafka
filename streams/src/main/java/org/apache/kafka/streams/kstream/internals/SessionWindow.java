@@ -51,7 +51,7 @@ public final class SessionWindow extends Window {
     public boolean overlap(final Window other) throws IllegalArgumentException {
         if (getClass() != other.getClass()) {
             throw new IllegalArgumentException("Cannot compare windows of different type. Other window has type "
-                + other.getClass() + ".");
+                    + other.getClass() + ".");
         }
         final SessionWindow otherWindow = (SessionWindow) other;
         return !(otherWindow.endMs < startMs || endMs < otherWindow.startMs);

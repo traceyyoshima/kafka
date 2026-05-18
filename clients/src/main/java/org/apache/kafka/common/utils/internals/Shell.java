@@ -37,10 +37,14 @@ public abstract class Shell {
 
     private static final Logger LOG = LoggerFactory.getLogger(Shell.class);
 
-    /** Return an array containing the command name and its parameters */
+    /**
+     * Return an array containing the command name and its parameters
+     */
     protected abstract String[] execString();
 
-    /** Parse the execution result */
+    /**
+     * Parse the execution result
+     */
     protected abstract void parseExecResult(BufferedReader lines) throws IOException;
 
     private final long timeout;
@@ -58,14 +62,18 @@ public abstract class Shell {
         this.timeout = timeout;
     }
 
-    /** get the exit code
+    /**
+     * get the exit code
+     *
      * @return the exit code of the process
      */
     public int exitCode() {
         return exitCode;
     }
 
-    /** get the current sub-process executing the given command
+    /**
+     * get the current sub-process executing the given command
+     *
      * @return process executing the command
      */
     public Process process() {
@@ -77,7 +85,9 @@ public abstract class Shell {
         runCommand();
     }
 
-    /** Run a command */
+    /**
+     * Run a command
+     */
     private void runCommand() throws IOException {
         ProcessBuilder builder = new ProcessBuilder(execString());
         Timer timeoutTimer = null;
@@ -90,9 +100,9 @@ public abstract class Shell {
             timeoutTimer.schedule(new ShellTimeoutTimerTask(this), timeout);
         }
         final BufferedReader errReader = new BufferedReader(
-            new InputStreamReader(process.getErrorStream(), StandardCharsets.UTF_8));
+                new InputStreamReader(process.getErrorStream(), StandardCharsets.UTF_8));
         BufferedReader inReader = new BufferedReader(
-            new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
+                new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
         final StringBuffer errMsg = new StringBuffer();
 
         // read error and input streams as this would free up the buffers
@@ -186,8 +196,8 @@ public abstract class Shell {
          * Create a new instance of the ShellCommandExecutor to execute a command.
          *
          * @param execString The command to execute with arguments
-         * @param timeout Specifies the time in milliseconds, after which the
-         *                command will be killed. -1 means no timeout.
+         * @param timeout    Specifies the time in milliseconds, after which the
+         *                   command will be killed. -1 means no timeout.
          */
 
         public ShellCommandExecutor(String[] execString, long timeout) {
@@ -196,7 +206,9 @@ public abstract class Shell {
         }
 
 
-        /** Execute the shell command. */
+        /**
+         * Execute the shell command.
+         */
         public void execute() throws IOException {
             this.run();
         }
@@ -214,7 +226,9 @@ public abstract class Shell {
             }
         }
 
-        /** Get the output of the shell command.*/
+        /**
+         * Get the output of the shell command.
+         */
         public String output() {
             return (output == null) ? "" : output.toString();
         }
@@ -245,6 +259,7 @@ public abstract class Shell {
      * Static method to execute a shell command.
      * Covers most of the simple cases without requiring the user to implement
      * the <code>Shell</code> interface.
+     *
      * @param cmd shell command to execute.
      * @return the output of the executed command.
      */
@@ -256,7 +271,8 @@ public abstract class Shell {
      * Static method to execute a shell command.
      * Covers most of the simple cases without requiring the user to implement
      * the <code>Shell</code> interface.
-     * @param cmd shell command to execute.
+     *
+     * @param cmd     shell command to execute.
      * @param timeout time in milliseconds after which script should be killed. -1 means no timeout.
      * @return the output of the executed command.
      */

@@ -30,12 +30,12 @@ import com.fasterxml.jackson.databind.JsonNode;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "state")
 @JsonSubTypes(value = {
-    @JsonSubTypes.Type(value = WorkerReceiving.class, name = "RECEIVING"),
-    @JsonSubTypes.Type(value = WorkerStarting.class, name = "STARTING"),
-    @JsonSubTypes.Type(value = WorkerRunning.class, name = "RUNNING"),
-    @JsonSubTypes.Type(value = WorkerStopping.class, name = "STOPPING"),
-    @JsonSubTypes.Type(value = WorkerDone.class, name = "DONE")
-    })
+        @JsonSubTypes.Type(value = WorkerReceiving.class, name = "RECEIVING"),
+        @JsonSubTypes.Type(value = WorkerStarting.class, name = "STARTING"),
+        @JsonSubTypes.Type(value = WorkerRunning.class, name = "RUNNING"),
+        @JsonSubTypes.Type(value = WorkerStopping.class, name = "STOPPING"),
+        @JsonSubTypes.Type(value = WorkerDone.class, name = "DONE")
+})
 public abstract class WorkerState extends Message {
     private final String taskId;
     private final TaskSpec spec;

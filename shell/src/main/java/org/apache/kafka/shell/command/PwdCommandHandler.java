@@ -66,9 +66,9 @@ public final class PwdCommandHandler implements Commands.Handler {
 
         @Override
         public void completeNext(
-            MetadataShellState state,
-            List<String> nextWords,
-            List<Candidate> candidates
+                MetadataShellState state,
+                List<String> nextWords,
+                List<Candidate> candidates
         ) throws Exception {
             // nothing to do
         }
@@ -76,9 +76,9 @@ public final class PwdCommandHandler implements Commands.Handler {
 
     @Override
     public void run(
-        Optional<InteractiveShell> shell,
-        PrintWriter writer,
-        MetadataShellState state
+            Optional<InteractiveShell> shell,
+            PrintWriter writer,
+            MetadataShellState state
     ) throws Exception {
         writer.println(state.workingDirectory());
     }

@@ -37,11 +37,11 @@ public class RequestHeader implements AbstractRequestResponse {
 
     public RequestHeader(ApiKeys requestApiKey, short requestVersion, String clientId, int correlationId) {
         this(new RequestHeaderData().
-                setRequestApiKey(requestApiKey.id).
-                setRequestApiVersion(requestVersion).
-                setClientId(clientId).
-                setCorrelationId(correlationId),
-            requestApiKey.requestHeaderVersion(requestVersion));
+                        setRequestApiKey(requestApiKey.id).
+                        setRequestApiVersion(requestVersion).
+                        setClientId(clientId).
+                        setCorrelationId(correlationId),
+                requestApiKey.requestHeaderVersion(requestVersion));
     }
 
     public RequestHeader(RequestHeaderData data, short headerVersion) {
@@ -80,14 +80,14 @@ public class RequestHeader implements AbstractRequestResponse {
 
     /**
      * Calculates the size of {@link RequestHeader} in bytes.
-     *
+     * <p>
      * This method to calculate size should be only when it is immediately followed by
      * {@link #write(ByteBuffer, ObjectSerializationCache)} method call. In such cases, ObjectSerializationCache
      * helps to avoid the serialization twice. In all other cases, {@link #size()} should be preferred instead.
-     *
+     * <p>
      * Calls to this method leads to calculation of size every time it is invoked. {@link #size()} should be preferred
      * instead.
-     *
+     * <p>
      * Visible for testing.
      */
     int size(ObjectSerializationCache serializationCache) {
@@ -97,7 +97,7 @@ public class RequestHeader implements AbstractRequestResponse {
 
     /**
      * Returns the size of {@link RequestHeader} in bytes.
-     *
+     * <p>
      * Calls to this method are idempotent and inexpensive since it returns the cached value of size after the first
      * invocation.
      */
@@ -176,7 +176,7 @@ public class RequestHeader implements AbstractRequestResponse {
         if (o == null || getClass() != o.getClass()) return false;
         RequestHeader that = (RequestHeader) o;
         return headerVersion == that.headerVersion &&
-            Objects.equals(data, that.data);
+                Objects.equals(data, that.data);
     }
 
     @Override

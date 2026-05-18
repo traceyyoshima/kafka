@@ -24,10 +24,10 @@ import java.util.Random;
 
 /**
  * A PayloadGenerator which generates a uniform random payload.
- *
+ * <p>
  * This generator generates pseudo-random payloads that can be reproduced from run to run.
  * The guarantees are the same as those of java.util.Random.
- *
+ * <p>
  * This payload generator also has the option to append padding bytes at the end of the payload.
  * The padding bytes are always the same, no matter what the position is.  This is useful when
  * simulating a partly-compressible stream of user data.
@@ -49,8 +49,8 @@ public class UniformRandomPayloadGenerator implements PayloadGenerator {
         this.padding = padding;
         if (padding < 0 || padding > size) {
             throw new RuntimeException("Invalid value " + padding + " for " +
-                "padding: the number of padding bytes must not be smaller than " +
-                "0 or greater than the total payload size.");
+                    "padding: the number of padding bytes must not be smaller than " +
+                    "0 or greater than the total payload size.");
         }
         this.padBytes = new byte[padding];
         random.setSeed(seed);

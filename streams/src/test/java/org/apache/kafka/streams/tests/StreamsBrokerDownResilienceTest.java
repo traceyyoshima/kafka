@@ -81,10 +81,10 @@ public class StreamsBrokerDownResilienceTest {
 
         if (!confirmCorrectConfigs(streamsProperties)) {
             System.err.printf("ERROR: Did not have all required configs expected  to contain %s %s %s %s%n",
-                                             StreamsConfig.consumerPrefix(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG),
-                                             StreamsConfig.producerPrefix(ProducerConfig.RETRIES_CONFIG),
-                                             StreamsConfig.producerPrefix(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG),
-                                             StreamsConfig.producerPrefix(ProducerConfig.MAX_BLOCK_MS_CONFIG));
+                    StreamsConfig.consumerPrefix(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG),
+                    StreamsConfig.producerPrefix(ProducerConfig.RETRIES_CONFIG),
+                    StreamsConfig.producerPrefix(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG),
+                    StreamsConfig.producerPrefix(ProducerConfig.MAX_BLOCK_MS_CONFIG));
 
             Exit.exit(1);
         }
@@ -93,24 +93,25 @@ public class StreamsBrokerDownResilienceTest {
         final Serde<String> stringSerde = Serdes.String();
 
         builder.stream(Collections.singletonList(SOURCE_TOPIC_1), Consumed.with(stringSerde, stringSerde))
-            .peek(new ForeachAction<>() {
-                int messagesProcessed = 0;
-                @Override
-                public void apply(final String key, final String value) {
-                    System.out.println("received key " + key + " and value " + value);
-                    messagesProcessed++;
-                    System.out.println("processed " + messagesProcessed + " messages");
-                    System.out.flush();
-                }
-            }).to(SINK_TOPIC);
+                .peek(new ForeachAction<>() {
+                    int messagesProcessed = 0;
+
+                    @Override
+                    public void apply(final String key, final String value) {
+                        System.out.println("received key " + key + " and value " + value);
+                        messagesProcessed++;
+                        System.out.println("processed " + messagesProcessed + " messages");
+                        System.out.flush();
+                    }
+                }).to(SINK_TOPIC);
 
         final KafkaStreams streams = new KafkaStreams(builder.build(), streamsProperties);
 
         streams.setUncaughtExceptionHandler(e -> {
-                System.err.println("FATAL: An unexpected exception " + e);
-                System.err.flush();
-                return StreamsUncaughtExceptionHandler.StreamThreadExceptionResponse.SHUTDOWN_CLIENT;
-            }
+                    System.err.println("FATAL: An unexpected exception " + e);
+                    System.err.flush();
+                    return StreamsUncaughtExceptionHandler.StreamThreadExceptionResponse.SHUTDOWN_CLIENT;
+                }
         );
 
         System.out.println("Start Kafka Streams");
@@ -125,9 +126,9 @@ public class StreamsBrokerDownResilienceTest {
 
     private static boolean confirmCorrectConfigs(final Properties properties) {
         return properties.containsKey(StreamsConfig.consumerPrefix(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG)) &&
-               properties.containsKey(StreamsConfig.producerPrefix(ProducerConfig.RETRIES_CONFIG)) &&
-               properties.containsKey(StreamsConfig.producerPrefix(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG)) &&
-               properties.containsKey(StreamsConfig.producerPrefix(ProducerConfig.MAX_BLOCK_MS_CONFIG));
+                properties.containsKey(StreamsConfig.producerPrefix(ProducerConfig.RETRIES_CONFIG)) &&
+                properties.containsKey(StreamsConfig.producerPrefix(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG)) &&
+                properties.containsKey(StreamsConfig.producerPrefix(ProducerConfig.MAX_BLOCK_MS_CONFIG));
     }
 
     /**

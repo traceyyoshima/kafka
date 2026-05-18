@@ -70,11 +70,11 @@ public class SslFactory implements Reconfigurable, Closeable {
     /**
      * Create an SslFactory.
      *
-     * @param connectionMode                        Whether to use client or server mode.
-     * @param clientAuthConfigOverride              The value to override ssl.client.auth with, or null
-     *                                              if we don't want to override it.
-     * @param keystoreVerifiableUsingTruststore     True if we should require the keystore to be verifiable
-     *                                              using the truststore.
+     * @param connectionMode                    Whether to use client or server mode.
+     * @param clientAuthConfigOverride          The value to override ssl.client.auth with, or null
+     *                                          if we don't want to override it.
+     * @param keystoreVerifiableUsingTruststore True if we should require the keystore to be verifiable
+     *                                          using the truststore.
      */
     public SslFactory(ConnectionMode connectionMode,
                       String clientAuthConfigOverride,
@@ -259,11 +259,11 @@ public class SslFactory implements Reconfigurable, Closeable {
     /**
      * Copy entries from one map into another.
      *
-     * @param destMap   The map to copy entries into.
-     * @param srcMap    The map to copy entries from.
-     * @param keySet    Only entries with these keys will be copied.
-     * @param <K>       The map key type.
-     * @param <V>       The map value type.
+     * @param destMap The map to copy entries into.
+     * @param srcMap  The map to copy entries from.
+     * @param keySet  Only entries with these keys will be copied.
+     * @param <K>     The map key type.
+     * @param <V>     The map value type.
      */
     private static <K, V> void copyMapEntries(Map<K, V> destMap,
                                               Map<K, ? extends V> srcMap,
@@ -276,11 +276,11 @@ public class SslFactory implements Reconfigurable, Closeable {
     /**
      * Copy entry from one map into another.
      *
-     * @param destMap   The map to copy entries into.
-     * @param srcMap    The map to copy entries from.
-     * @param key       The entry with this key will be copied
-     * @param <K>       The map key type.
-     * @param <V>       The map value type.
+     * @param destMap The map to copy entries into.
+     * @param srcMap  The map to copy entries from.
+     * @param key     The entry with this key will be copied
+     * @param <K>     The map key type.
+     * @param <V>     The map value type.
      */
     private static <K, V> void copyMapEntry(Map<K, V> destMap,
                                             Map<K, ? extends V> srcMap,
@@ -305,7 +305,7 @@ public class SslFactory implements Reconfigurable, Closeable {
             List<CertificateEntries> entries = new ArrayList<>();
             while (aliases.hasMoreElements()) {
                 String alias = aliases.nextElement();
-                Certificate cert  = keystore.getCertificate(alias);
+                Certificate cert = keystore.getCertificate(alias);
                 if (cert instanceof X509Certificate)
                     entries.add(new CertificateEntries(alias, (X509Certificate) cert));
             }
@@ -328,7 +328,7 @@ public class SslFactory implements Reconfigurable, Closeable {
         private static void ensureCompatibleDNs(List<CertificateEntries> newEntries, List<CertificateEntries> oldEntries) {
             if (newEntries.size() != oldEntries.size()) {
                 throw new ConfigException(String.format("Keystore entries do not match, existing store contains %d entries, new store contains %d entries",
-                    oldEntries.size(), newEntries.size()));
+                        oldEntries.size(), newEntries.size()));
             }
 
             for (int i = 0; i < newEntries.size(); i++) {
@@ -343,8 +343,8 @@ public class SslFactory implements Reconfigurable, Closeable {
                 // also compare Principal.getName which compares the RFC2253 name. If either matches, allow dynamic update.
                 if (!Objects.equals(newPrincipal, oldPrincipal) && !newPrincipal.getName().equalsIgnoreCase(oldPrincipal.getName())) {
                     throw new ConfigException(String.format("Keystore DistinguishedName does not match: " +
-                        " existing={alias=%s, DN=%s}, new={alias=%s, DN=%s}",
-                        oldEntry.alias, oldEntry.subjectPrincipal, newEntry.alias, newEntry.subjectPrincipal));
+                                    " existing={alias=%s, DN=%s}, new={alias=%s, DN=%s}",
+                            oldEntry.alias, oldEntry.subjectPrincipal, newEntry.alias, newEntry.subjectPrincipal));
                 }
             }
         }
@@ -352,7 +352,7 @@ public class SslFactory implements Reconfigurable, Closeable {
         private static void ensureCompatibleSANs(List<CertificateEntries> newEntries, List<CertificateEntries> oldEntries) {
             if (newEntries.size() != oldEntries.size()) {
                 throw new ConfigException(String.format("Keystore entries do not match, existing store contains %d entries, new store contains %d entries",
-                    oldEntries.size(), newEntries.size()));
+                        oldEntries.size(), newEntries.size()));
             }
 
             for (int i = 0; i < newEntries.size(); i++) {
@@ -361,8 +361,8 @@ public class SslFactory implements Reconfigurable, Closeable {
 
                 if (!newEntry.subjectAltNames.containsAll(oldEntry.subjectAltNames)) {
                     throw new ConfigException(String.format("Keystore SubjectAltNames do not match: " +
-                            " existing={alias=%s, SAN=%s}, new={alias=%s, SAN=%s}",
-                        oldEntry.alias, oldEntry.subjectAltNames, newEntry.alias, newEntry.subjectAltNames));
+                                    " existing={alias=%s, SAN=%s}, new={alias=%s, SAN=%s}",
+                            oldEntry.alias, oldEntry.subjectAltNames, newEntry.alias, newEntry.subjectAltNames));
                 }
             }
         }
@@ -450,6 +450,7 @@ public class SslFactory implements Reconfigurable, Closeable {
         void beginHandshake() throws SSLException {
             sslEngine.beginHandshake();
         }
+
         void handshake(SslEngineValidator peerValidator) throws SSLException {
             SSLEngineResult.HandshakeStatus handshakeStatus = sslEngine.getHandshakeStatus();
             while (true) {
@@ -457,7 +458,8 @@ public class SslFactory implements Reconfigurable, Closeable {
                     case NEED_WRAP:
                         handshakeResult = sslEngine.wrap(EMPTY_BUF, netBuffer);
                         switch (handshakeResult.getStatus()) {
-                            case OK: break;
+                            case OK:
+                                break;
                             case BUFFER_OVERFLOW:
                                 if (netBuffer.position() != 0) // Wait for peer to consume previously wrapped data
                                     return;
@@ -505,7 +507,8 @@ public class SslFactory implements Reconfigurable, Closeable {
             peerValidator.netBuffer.compact();
             SSLEngineResult.HandshakeStatus handshakeStatus = sslEngineResult.getHandshakeStatus();
             switch (sslEngineResult.getStatus()) {
-                case OK: break;
+                case OK:
+                    break;
                 case BUFFER_OVERFLOW:
                     appBuffer = Utils.ensureCapacity(appBuffer, sslEngine.getSession().getApplicationBufferSize());
                     break;

@@ -62,7 +62,7 @@ public class FileLogInputStreamTest {
         @Override
         public String toString() {
             return "magic=" + magic +
-                ", compression=" + compression;
+                    ", compression=" + compression;
         }
     }
 
@@ -72,7 +72,7 @@ public class FileLogInputStreamTest {
         public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
             List<Arguments> arguments = new ArrayList<>();
             for (byte magic : asList(MAGIC_VALUE_V0, MAGIC_VALUE_V1, MAGIC_VALUE_V2))
-                for (CompressionType type: CompressionType.values())
+                for (CompressionType type : CompressionType.values())
                     arguments.add(Arguments.of(new Args(magic, Compression.of(type).build())));
             return arguments.stream();
         }
@@ -152,14 +152,14 @@ public class FileLogInputStreamTest {
 
         try (FileRecords fileRecords = FileRecords.open(tempFile())) {
             SimpleRecord[] firstBatchRecords = new SimpleRecord[]{
-                new SimpleRecord(3241324L, "a".getBytes(), "1".getBytes()),
-                new SimpleRecord(234280L, "b".getBytes(), "2".getBytes())
+                    new SimpleRecord(3241324L, "a".getBytes(), "1".getBytes()),
+                    new SimpleRecord(234280L, "b".getBytes(), "2".getBytes())
             };
 
             SimpleRecord[] secondBatchRecords = new SimpleRecord[]{
-                new SimpleRecord(238423489L, "c".getBytes(), "3".getBytes()),
-                new SimpleRecord(897839L, null, "4".getBytes()),
-                new SimpleRecord(8234020L, "e".getBytes(), null)
+                    new SimpleRecord(238423489L, "c".getBytes(), "3".getBytes()),
+                    new SimpleRecord(897839L, null, "4".getBytes()),
+                    new SimpleRecord(8234020L, "e".getBytes(), null)
             };
 
             fileRecords.append(MemoryRecords.withRecords(magic, 0L, compression, CREATE_TIME, firstBatchRecords));
@@ -195,14 +195,14 @@ public class FileLogInputStreamTest {
             int partitionLeaderEpoch = 9832;
 
             SimpleRecord[] firstBatchRecords = new SimpleRecord[]{
-                new SimpleRecord(3241324L, "a".getBytes(), "1".getBytes()),
-                new SimpleRecord(234280L, "b".getBytes(), "2".getBytes())
+                    new SimpleRecord(3241324L, "a".getBytes(), "1".getBytes()),
+                    new SimpleRecord(234280L, "b".getBytes(), "2".getBytes())
             };
 
             SimpleRecord[] secondBatchRecords = new SimpleRecord[]{
-                new SimpleRecord(238423489L, "c".getBytes(), "3".getBytes()),
-                new SimpleRecord(897839L, null, "4".getBytes()),
-                new SimpleRecord(8234020L, "e".getBytes(), null)
+                    new SimpleRecord(238423489L, "c".getBytes(), "3".getBytes()),
+                    new SimpleRecord(897839L, null, "4".getBytes()),
+                    new SimpleRecord(8234020L, "e".getBytes(), null)
             };
 
             fileRecords.append(MemoryRecords.withIdempotentRecords(magic, 15L, compression, producerId,

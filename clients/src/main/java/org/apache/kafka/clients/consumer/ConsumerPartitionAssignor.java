@@ -64,17 +64,19 @@ public interface ConsumerPartitionAssignor {
 
     /**
      * Perform the group assignment given the member subscriptions and current cluster metadata.
-     * @param metadata Current topic/broker metadata known by consumer
+     *
+     * @param metadata          Current topic/broker metadata known by consumer
      * @param groupSubscription Subscriptions from all members including metadata provided through {@link #subscriptionUserData(Set)}
      * @return A map from the members to their respective assignments. This should have one entry
-     *         for each member in the input subscription map.
+     * for each member in the input subscription map.
      */
     GroupAssignment assign(Cluster metadata, GroupSubscription groupSubscription);
 
     /**
      * Callback which is invoked when a group member receives its assignment from the leader.
+     *
      * @param assignment The local member's assignment as provided by the leader in {@link #assign(Cluster, GroupSubscription)}
-     * @param metadata Additional metadata on the consumer (optional)
+     * @param metadata   Additional metadata on the consumer (optional)
      */
     default void onAssignment(Assignment assignment, ConsumerGroupMetadata metadata) {
     }
@@ -98,6 +100,7 @@ public interface ConsumerPartitionAssignor {
     /**
      * Unique name for this assignor (e.g. "range" or "roundrobin" or "sticky"). Note, this is not required
      * to be the same as the class name specified in {@link ConsumerConfig#PARTITION_ASSIGNMENT_STRATEGY_CONFIG}
+     *
      * @return non-null unique name
      */
     String name();
@@ -116,11 +119,11 @@ public interface ConsumerPartitionAssignor {
         /**
          * Constructs a subscription with full details.
          *
-         * @param topics The list of topics to subscribe to
-         * @param userData Nullable user data to include in the subscription
+         * @param topics          The list of topics to subscribe to
+         * @param userData        Nullable user data to include in the subscription
          * @param ownedPartitions The partitions currently owned by this consumer
-         * @param generationId The generation ID of the consumer group
-         * @param rackId Optional rack ID for rack-aware assignment
+         * @param generationId    The generation ID of the consumer group
+         * @param rackId          Optional rack ID for rack-aware assignment
          */
         public Subscription(List<String> topics, ByteBuffer userData, List<TopicPartition> ownedPartitions, int generationId, Optional<String> rackId) {
             this.topics = topics;
@@ -134,8 +137,8 @@ public interface ConsumerPartitionAssignor {
         /**
          * Constructs a subscription without generation ID and rack ID.
          *
-         * @param topics The list of topics to subscribe to
-         * @param userData Nullable user data to include in the subscription
+         * @param topics          The list of topics to subscribe to
+         * @param userData        Nullable user data to include in the subscription
          * @param ownedPartitions The partitions currently owned by this consumer
          */
         public Subscription(List<String> topics, ByteBuffer userData, List<TopicPartition> ownedPartitions) {
@@ -145,7 +148,7 @@ public interface ConsumerPartitionAssignor {
         /**
          * Constructs a subscription without owned partitions.
          *
-         * @param topics The list of topics to subscribe to
+         * @param topics   The list of topics to subscribe to
          * @param userData Nullable user data to include in the subscription
          */
         public Subscription(List<String> topics, ByteBuffer userData) {
@@ -227,13 +230,13 @@ public interface ConsumerPartitionAssignor {
         @Override
         public String toString() {
             return "Subscription(" +
-                "topics=" + topics +
-                (userData == null ? "" : ", userDataSize=" + userData.remaining()) +
-                ", ownedPartitions=" + ownedPartitions +
-                ", groupInstanceId=" + groupInstanceId.map(String::toString).orElse("null") +
-                ", generationId=" + generationId.orElse(-1) +
-                ", rackId=" + (rackId.orElse("null")) +
-                ")";
+                    "topics=" + topics +
+                    (userData == null ? "" : ", userDataSize=" + userData.remaining()) +
+                    ", ownedPartitions=" + ownedPartitions +
+                    ", groupInstanceId=" + groupInstanceId.map(String::toString).orElse("null") +
+                    ", generationId=" + generationId.orElse(-1) +
+                    ", rackId=" + (rackId.orElse("null")) +
+                    ")";
         }
     }
 
@@ -248,7 +251,7 @@ public interface ConsumerPartitionAssignor {
          * Constructs an assignment with partitions and user data.
          *
          * @param partitions The list of partitions assigned to the consumer
-         * @param userData Nullable user data to include in the assignment
+         * @param userData   Nullable user data to include in the assignment
          */
         public Assignment(List<TopicPartition> partitions, ByteBuffer userData) {
             this.partitions = partitions;
@@ -285,9 +288,9 @@ public interface ConsumerPartitionAssignor {
         @Override
         public String toString() {
             return "Assignment(" +
-                "partitions=" + partitions +
-                (userData == null ? "" : ", userDataSize=" + userData.remaining()) +
-                ')';
+                    "partitions=" + partitions +
+                    (userData == null ? "" : ", userDataSize=" + userData.remaining()) +
+                    ')';
         }
     }
 
@@ -318,8 +321,8 @@ public interface ConsumerPartitionAssignor {
         @Override
         public String toString() {
             return "GroupSubscription(" +
-                "subscriptions=" + subscriptions +
-                ")";
+                    "subscriptions=" + subscriptions +
+                    ")";
         }
     }
 
@@ -350,8 +353,8 @@ public interface ConsumerPartitionAssignor {
         @Override
         public String toString() {
             return "GroupAssignment(" +
-                "assignments=" + assignments +
-                ")";
+                    "assignments=" + assignments +
+                    ")";
         }
     }
 
@@ -362,10 +365,10 @@ public interface ConsumerPartitionAssignor {
      * {@link ConsumerPartitionAssignor#supportedProtocols()}, and it is their responsibility to respect the rules
      * of those protocols in their {@link ConsumerPartitionAssignor#assign(Cluster, GroupSubscription)} implementations.
      * Failures to follow the rules of the supported protocols would lead to runtime error or undefined behavior.
-     *
+     * <p>
      * The {@link RebalanceProtocol#EAGER} rebalance protocol requires a consumer to always revoke all its owned
      * partitions before participating in a rebalance event. It therefore allows a complete reshuffling of the assignment.
-     *
+     * <p>
      * {@link RebalanceProtocol#COOPERATIVE} rebalance protocol allows a consumer to retain its currently owned
      * partitions before participating in a rebalance event. The assignor should not reassign any owned partitions
      * immediately, but instead may indicate consumers the need for partition revocation so that the revoked
@@ -437,7 +440,7 @@ public interface ConsumerPartitionAssignor {
                     String assignorName = ((ConsumerPartitionAssignor) assignor).name();
                     if (assignorNameMap.containsKey(assignorName)) {
                         throw new KafkaException("The assignor name: '" + assignorName + "' is used in more than one assignor: " +
-                            assignorNameMap.get(assignorName) + ", " + assignor.getClass().getName());
+                                assignorNameMap.get(assignorName) + ", " + assignor.getClass().getName());
                     }
                     assignorNameMap.put(assignorName, assignor.getClass().getName());
                     assignors.add((ConsumerPartitionAssignor) assignor);

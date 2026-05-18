@@ -64,20 +64,20 @@ public class LogLoader {
     private final String logPrefix;
 
     /**
-     * @param dir The directory from which log segments need to be loaded
-     * @param topicPartition The topic partition associated with the log being loaded
-     * @param config The configuration settings for the log being loaded
-     * @param scheduler The thread pool scheduler used for background actions
-     * @param time The time instance used for checking the clock
-     * @param logDirFailureChannel The {@link LogDirFailureChannel} instance to asynchronously handle log directory failure
-     * @param hadCleanShutdown Boolean flag to indicate whether the associated log previously had a clean shutdown
-     * @param segments The {@link LogSegments} instance into which segments recovered from disk will be populated
+     * @param dir                      The directory from which log segments need to be loaded
+     * @param topicPartition           The topic partition associated with the log being loaded
+     * @param config                   The configuration settings for the log being loaded
+     * @param scheduler                The thread pool scheduler used for background actions
+     * @param time                     The time instance used for checking the clock
+     * @param logDirFailureChannel     The {@link LogDirFailureChannel} instance to asynchronously handle log directory failure
+     * @param hadCleanShutdown         Boolean flag to indicate whether the associated log previously had a clean shutdown
+     * @param segments                 The {@link LogSegments} instance into which segments recovered from disk will be populated
      * @param logStartOffsetCheckpoint The checkpoint of the log start offset
-     * @param recoveryPointCheckpoint The checkpoint of the offset at which to begin the recovery
-     * @param leaderEpochCache A {@link LeaderEpochFileCache} instance to be updated during recovery
-     * @param producerStateManager The {@link ProducerStateManager} instance to be updated during recovery
-     * @param numRemainingSegments The remaining segments to be recovered in this log keyed by recovery thread name
-     * @param isRemoteLogEnabled Boolean flag to indicate whether the remote storage is enabled or not
+     * @param recoveryPointCheckpoint  The checkpoint of the offset at which to begin the recovery
+     * @param leaderEpochCache         A {@link LeaderEpochFileCache} instance to be updated during recovery
+     * @param producerStateManager     The {@link ProducerStateManager} instance to be updated during recovery
+     * @param numRemainingSegments     The remaining segments to be recovered in this log keyed by recovery thread name
+     * @param isRemoteLogEnabled       Boolean flag to indicate whether the remote storage is enabled or not
      */
     public LogLoader(
             File dir,
@@ -121,7 +121,6 @@ public class LogLoader {
      * {@link KafkaStorageException} because it is only called before all logs are loaded.
      *
      * @return the offsets of the Log successfully loaded from disk
-     *
      * @throws LogSegmentOffsetOverflowException if we encounter a .swap file with messages that
      *                                           overflow index offset
      */
@@ -219,8 +218,8 @@ public class LogLoader {
 
         leaderEpochCache.truncateFromEndAsyncFlush(recoveryOffsets.nextOffset);
         long newLogStartOffset = isRemoteLogEnabled
-            ? logStartOffsetCheckpoint
-            : Math.max(logStartOffsetCheckpoint, segments.firstSegment().get().baseOffset());
+                ? logStartOffsetCheckpoint
+                : Math.max(logStartOffsetCheckpoint, segments.firstSegment().get().baseOffset());
 
         // The earliest leader epoch may not be flushed during a hard failure. Recover it here.
         leaderEpochCache.truncateFromStartAsyncFlush(logStartOffsetCheckpoint);
@@ -321,7 +320,7 @@ public class LogLoader {
      * @param function The function to be executed
      * @return The value returned by the function, if successful
      * @throws IllegalStateException whenever the executed function throws any exception other than
-     *                   LogSegmentOffsetOverflowException, the same exception is raised to the caller
+     *                               LogSegmentOffsetOverflowException, the same exception is raised to the caller
      */
     private <T> T retryOnOffsetOverflow(StorageAction<T, IOException> function) throws IOException {
         while (true) {
@@ -419,7 +418,9 @@ public class LogLoader {
         return bytesTruncated;
     }
 
-    /** return the log end offset if valid */
+    /**
+     * return the log end offset if valid
+     */
     private Optional<Long> deleteSegmentsIfLogStartGreaterThanLogEnd() throws IOException {
         if (segments.nonEmpty()) {
             long logEndOffset = segments.lastSegment().get().readNextOffset();

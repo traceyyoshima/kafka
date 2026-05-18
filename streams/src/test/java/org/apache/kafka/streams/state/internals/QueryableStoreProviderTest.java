@@ -52,22 +52,22 @@ public class QueryableStoreProviderTest {
         }
         globalStateStores = new HashMap<>();
         storeProvider =
-            new QueryableStoreProvider(
-                new GlobalStateStoreProvider(globalStateStores)
-            );
+                new QueryableStoreProvider(
+                        new GlobalStateStoreProvider(globalStateStores)
+                );
         storeProvider.addStoreProviderForThread("thread1", theStoreProvider);
     }
 
     @Test
     public void shouldThrowExceptionIfKVStoreDoesntExist() {
         assertThrows(InvalidStateStoreException.class, () -> storeProvider.store(
-            StoreQueryParameters.fromNameAndType("not-a-store", QueryableStoreTypes.keyValueStore())).get("1"));
+                StoreQueryParameters.fromNameAndType("not-a-store", QueryableStoreTypes.keyValueStore())).get("1"));
     }
 
     @Test
     public void shouldThrowExceptionIfWindowStoreDoesntExist() {
         assertThrows(InvalidStateStoreException.class, () -> storeProvider.store(
-            StoreQueryParameters.fromNameAndType("not-a-store", QueryableStoreTypes.windowStore())).fetch("1", System.currentTimeMillis()));
+                StoreQueryParameters.fromNameAndType("not-a-store", QueryableStoreTypes.windowStore())).fetch("1", System.currentTimeMillis()));
     }
 
     @Test
@@ -83,13 +83,13 @@ public class QueryableStoreProviderTest {
     @Test
     public void shouldThrowExceptionWhenLookingForWindowStoreWithDifferentType() {
         assertThrows(InvalidStateStoreException.class, () -> storeProvider.store(StoreQueryParameters.fromNameAndType(windowStore,
-            QueryableStoreTypes.keyValueStore())).get("1"));
+                QueryableStoreTypes.keyValueStore())).get("1"));
     }
 
     @Test
     public void shouldThrowExceptionWhenLookingForKVStoreWithDifferentType() {
         assertThrows(InvalidStateStoreException.class, () -> storeProvider.store(StoreQueryParameters.fromNameAndType(keyValueStore,
-            QueryableStoreTypes.windowStore())).fetch("1", System.currentTimeMillis()));
+                QueryableStoreTypes.windowStore())).fetch("1", System.currentTimeMillis()));
     }
 
     @Test

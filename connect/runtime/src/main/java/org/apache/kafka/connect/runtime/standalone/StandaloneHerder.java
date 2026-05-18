@@ -211,7 +211,7 @@ public final class StandaloneHerder extends AbstractHerder {
                 }
 
                 requestExecutorService.submit(
-                    () -> putConnectorConfig(connName, config, targetState, allowReplace, callback, configInfos)
+                        () -> putConnectorConfig(connName, config, targetState, allowReplace, callback, configInfos)
                 );
             });
         } catch (Throwable t) {
@@ -363,7 +363,7 @@ public final class StandaloneHerder extends AbstractHerder {
     @Override
     public synchronized HerderRequest restartConnector(long delayMs, final String connName, final Callback<Void> cb) {
         ScheduledFuture<?> future = requestExecutorService.schedule(
-            () -> restartConnector(connName, cb), delayMs, TimeUnit.MILLISECONDS);
+                () -> restartConnector(connName, cb), delayMs, TimeUnit.MILLISECONDS);
 
         return new StandaloneHerderRequest(requestSeqNum.incrementAndGet(), future);
     }
@@ -435,8 +435,9 @@ public final class StandaloneHerder extends AbstractHerder {
     /**
      * This method performs a few checks for external requests to modify (alter or reset) connector offsets and
      * completes the callback exceptionally if any check fails.
+     *
      * @param connName the name of the connector whose offsets are to be modified
-     * @param cb callback to invoke upon completion
+     * @param cb       callback to invoke upon completion
      * @return true if all the checks passed, false otherwise
      */
     private boolean modifyConnectorOffsetsChecks(String connName, Callback<Message> cb) {
@@ -470,8 +471,8 @@ public final class StandaloneHerder extends AbstractHerder {
         Map<String, String> config = configState.connectorConfig(connName);
 
         ConnectorConfig connConfig = worker.isSinkConnector(connName) ?
-            new SinkConnectorConfig(plugins(), config) :
-            new SourceConnectorConfig(plugins(), config, worker.isTopicCreationEnabled());
+                new SinkConnectorConfig(plugins(), config) :
+                new SourceConnectorConfig(plugins(), config, worker.isTopicCreationEnabled());
 
         return worker.connectorTaskConfigs(connName, connConfig);
     }

@@ -229,36 +229,37 @@ public class DefaultAlterPartitionManager implements AlterPartitionManager {
         Errors error = Errors.forCode(data.errorCode());
         switch (error) {
             case STALE_BROKER_EPOCH -> log.warn("Broker had a stale broker epoch ({}), retrying.", sentBrokerEpoch);
-            case CLUSTER_AUTHORIZATION_FAILED -> log.error("Broker is not authorized to send AlterPartition to controller",
-                    Errors.CLUSTER_AUTHORIZATION_FAILED.exception("Broker is not authorized to send AlterPartition to controller"));
+            case CLUSTER_AUTHORIZATION_FAILED ->
+                    log.error("Broker is not authorized to send AlterPartition to controller",
+                            Errors.CLUSTER_AUTHORIZATION_FAILED.exception("Broker is not authorized to send AlterPartition to controller"));
             case NONE -> {
                 // Collect partition-level responses to pass to the callbacks
                 Map<TopicIdPartition, LeaderAndIsr> successResponses = new HashMap<>();
                 Map<TopicIdPartition, Errors> errorResponses = new HashMap<>();
                 data.topics().forEach(topic ->
                         topic.partitions().forEach(partition -> {
-                            TopicIdPartition tp = new TopicIdPartition(topic.topicId(), partition.partitionIndex());
-                            Errors apiError = Errors.forCode(partition.errorCode());
-                            log.debug("Controller successfully handled AlterPartition request for {}: {}", tp, partition);
-                            if (apiError == Errors.NONE) {
-                                Optional<LeaderRecoveryState> leaderRecoveryStateOpt =
-                                        LeaderRecoveryState.optionalOf(partition.leaderRecoveryState());
-                                if (leaderRecoveryStateOpt.isPresent()) {
-                                    successResponses.put(tp, new LeaderAndIsr(
-                                            partition.leaderId(),
-                                            partition.leaderEpoch(),
-                                            partition.isr(),
-                                            leaderRecoveryStateOpt.get(),
-                                            partition.partitionEpoch()
-                                    ));
-                                } else {
-                                    log.error("Controller returned an invalid leader recovery state ({}) for {}: {}", partition.leaderRecoveryState(), tp, partition);
-                                    errorResponses.put(tp, Errors.UNKNOWN_SERVER_ERROR);
+                                    TopicIdPartition tp = new TopicIdPartition(topic.topicId(), partition.partitionIndex());
+                                    Errors apiError = Errors.forCode(partition.errorCode());
+                                    log.debug("Controller successfully handled AlterPartition request for {}: {}", tp, partition);
+                                    if (apiError == Errors.NONE) {
+                                        Optional<LeaderRecoveryState> leaderRecoveryStateOpt =
+                                                LeaderRecoveryState.optionalOf(partition.leaderRecoveryState());
+                                        if (leaderRecoveryStateOpt.isPresent()) {
+                                            successResponses.put(tp, new LeaderAndIsr(
+                                                    partition.leaderId(),
+                                                    partition.leaderEpoch(),
+                                                    partition.isr(),
+                                                    leaderRecoveryStateOpt.get(),
+                                                    partition.partitionEpoch()
+                                            ));
+                                        } else {
+                                            log.error("Controller returned an invalid leader recovery state ({}) for {}: {}", partition.leaderRecoveryState(), tp, partition);
+                                            errorResponses.put(tp, Errors.UNKNOWN_SERVER_ERROR);
+                                        }
+                                    } else {
+                                        errorResponses.put(tp, apiError);
+                                    }
                                 }
-                            } else {
-                                errorResponses.put(tp, apiError);
-                            }
-                        }
                         ));
                 // Iterate across the items we sent rather than what we received to ensure we run the callback even if a
                 // partition was somehow erroneously excluded from the response. Note that these callbacks are run from
@@ -278,7 +279,8 @@ public class DefaultAlterPartitionManager implements AlterPartitionManager {
                     }
                 });
             }
-            default -> log.warn("Controller returned an unexpected top-level error when handling AlterPartition request: {}", error);
+            default ->
+                    log.warn("Controller returned an unexpected top-level error when handling AlterPartition request: {}", error);
         }
 
         return error;

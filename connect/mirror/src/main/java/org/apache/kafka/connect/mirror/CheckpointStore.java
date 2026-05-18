@@ -40,7 +40,7 @@ import static org.apache.kafka.connect.mirror.MirrorCheckpointConfig.CHECKPOINTS
 /**
  * Reads once the Kafka log for checkpoints and populates a map of
  * checkpoints per consumer group.
- *
+ * <p>
  * The Kafka log is closed after the initial load and only the in memory map is
  * used after start.
  */
@@ -70,11 +70,11 @@ public class CheckpointStore implements AutoCloseable {
         this.consumerGroups = null; //ignored by tests
         this.checkpointsPerConsumerGroup = checkpointsPerConsumerGroup;
         isInitialized = true;
-        loadSuccess =  true;
+        loadSuccess = true;
     }
 
     // potentially long running
-    public boolean start()  {
+    public boolean start() {
         checkpointsPerConsumerGroup = readCheckpoints();
         isInitialized = true;
         if (log.isTraceEnabled()) {
@@ -163,13 +163,13 @@ public class CheckpointStore implements AutoCloseable {
             loadSuccess = false;
             if (error instanceof AuthorizationException) {
                 log.warn("Not authorized to access checkpoints topic {} - " +
-                        "this may degrade offset translation as only checkpoints " +
-                        "for offsets which were mirrored after the task started will be emitted",
+                                "this may degrade offset translation as only checkpoints " +
+                                "for offsets which were mirrored after the task started will be emitted",
                         config.checkpointsTopic(), error);
             } else {
                 log.info("Exception encountered loading checkpoints topic {} - " +
-                        "this may degrade offset translation as only checkpoints " +
-                        "for offsets which were mirrored after the task started will be emitted",
+                                "this may degrade offset translation as only checkpoints " +
+                                "for offsets which were mirrored after the task started will be emitted",
                         config.checkpointsTopic(), error);
             }
         }

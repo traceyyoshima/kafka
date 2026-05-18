@@ -56,6 +56,7 @@ public final class RecordMetadata {
 
     /**
      * Indicates whether the record metadata includes the offset.
+     *
      * @return true if the offset is included in the metadata, false otherwise.
      */
     public boolean hasOffset() {
@@ -64,6 +65,7 @@ public final class RecordMetadata {
 
     /**
      * The offset of the record in the topic/partition.
+     *
      * @return the offset of the record, or -1 if {{@link #hasOffset()}} returns false.
      */
     public long offset() {
@@ -72,6 +74,7 @@ public final class RecordMetadata {
 
     /**
      * Indicates whether the record metadata includes the timestamp.
+     *
      * @return true if a valid timestamp exists, false otherwise.
      */
     public boolean hasTimestamp() {

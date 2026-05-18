@@ -48,7 +48,7 @@ import static org.apache.kafka.common.config.SaslConfigs.SASL_OAUTHBEARER_TOKEN_
  *         {@link ClientSecretRequestFormatter} will be created and used.
  *     </li>
  * </ul>
- *
+ * <p>
  * The configuration required by the individual {@code JwtRetriever} classes will likely differ. Please refer to the
  * official Apache Kafka documentation for more information on these, and related configuration.
  */

@@ -78,8 +78,8 @@ public class ClientQuotaControlManager {
     final TimelineHashMap<ClientQuotaEntity, TimelineHashMap<String, Double>> clientQuotaData;
 
     ClientQuotaControlManager(
-        LogContext logContext,
-        SnapshotRegistry snapshotRegistry
+            LogContext logContext,
+            SnapshotRegistry snapshotRegistry
     ) {
         this.log = logContext.logger(ClientQuotaControlManager.class);
         this.snapshotRegistry = snapshotRegistry;
@@ -91,8 +91,8 @@ public class ClientQuotaControlManager {
      * that this method does not change the contents of memory.  It just generates a
      * result, that you can replay later if you wish using replay().
      *
-     * @param quotaAlterations  List of client quota alterations to evaluate
-     * @return                  The result.
+     * @param quotaAlterations List of client quota alterations to evaluate
+     * @return The result.
      */
     ControllerResult<Map<ClientQuotaEntity, ApiError>> alterClientQuotas(
             Collection<ClientQuotaAlteration> quotaAlterations) {
@@ -107,7 +107,7 @@ public class ClientQuotaControlManager {
                 if (alterations.containsKey(op.key())) {
                     outputResults.put(quotaAlteration.entity(), ApiError.fromThrowable(
                             new InvalidRequestException("Duplicate quota key " + op.key() +
-                                " not updating quota for this entity " + quotaAlteration.entity())));
+                                    " not updating quota for this entity " + quotaAlteration.entity())));
                 } else {
                     alterations.put(op.key(), op.value());
                 }
@@ -126,7 +126,7 @@ public class ClientQuotaControlManager {
     /**
      * Apply a quota record to the in-memory state.
      *
-     * @param record    A ClientQuotaRecord instance.
+     * @param record A ClientQuotaRecord instance.
      */
     public void replay(ClientQuotaRecord record) {
         Map<String, String> entityMap = new HashMap<>(2);
@@ -151,10 +151,10 @@ public class ClientQuotaControlManager {
     }
 
     private void alterClientQuotaEntity(
-        ClientQuotaEntity entity,
-        Map<String, Double> newQuotaConfigs,
-        List<ApiMessageAndVersion> outputRecords,
-        Map<ClientQuotaEntity, ApiError> outputResults
+            ClientQuotaEntity entity,
+            Map<String, Double> newQuotaConfigs,
+            List<ApiMessageAndVersion> outputRecords,
+            Map<ClientQuotaEntity, ApiError> outputResults
     ) {
         // Check entity types and sanitize the names
         Map<String, String> validatedEntityMap = new HashMap<>(3);
@@ -175,8 +175,8 @@ public class ClientQuotaControlManager {
         // Don't share objects between different records
         Supplier<List<EntityData>> recordEntitySupplier = () ->
                 validatedEntityMap.entrySet().stream().map(mapEntry -> new EntityData()
-                        .setEntityType(mapEntry.getKey())
-                        .setEntityName(mapEntry.getValue()))
+                                .setEntityType(mapEntry.getKey())
+                                .setEntityName(mapEntry.getValue()))
                         .collect(Collectors.toList());
 
         List<ApiMessageAndVersion> newRecords = new ArrayList<>(newQuotaConfigs.size());
@@ -192,7 +192,7 @@ public class ClientQuotaControlManager {
                             .setEntity(recordEntitySupplier.get())
                             .setKey(key)
                             .setRemove(true),
-                        (short) 0));
+                            (short) 0));
                 }
             } else {
                 ApiError validationError = validateQuotaKeyValue(configKeys, key, newValue);
@@ -207,7 +207,7 @@ public class ClientQuotaControlManager {
                                 .setEntity(recordEntitySupplier.get())
                                 .setKey(key)
                                 .setValue(newValue),
-                            (short) 0));
+                                (short) 0));
                     }
                 }
             }
@@ -228,7 +228,7 @@ public class ClientQuotaControlManager {
         if (hasIp) {
             if (hasUser || hasClientId) {
                 return new ApiError(Errors.INVALID_REQUEST, "Invalid quota entity combination, IP entity should" +
-                    "not be combined with User or ClientId");
+                        "not be combined with User or ClientId");
             } else {
                 if (isValidIpEntity(entity.get(ClientQuotaEntity.IP))) {
                     configKeys = QuotaConfig.ipConfigs().configKeys();
@@ -247,9 +247,9 @@ public class ClientQuotaControlManager {
     }
 
     static ApiError validateQuotaKeyValue(
-        Map<String, ConfigDef.ConfigKey> validKeys,
-        String key,
-        double value
+            Map<String, ConfigDef.ConfigKey> validKeys,
+            String key,
+            double value
     ) {
         // Ensure we have an allowed quota key
         ConfigDef.ConfigKey configKey = validKeys.get(key);
@@ -266,21 +266,21 @@ public class ClientQuotaControlManager {
             case SHORT -> {
                 if (value > Short.MAX_VALUE) {
                     yield new ApiError(Errors.INVALID_REQUEST,
-                        "Proposed value for " + key + " is too large for a SHORT.");
+                            "Proposed value for " + key + " is too large for a SHORT.");
                 }
                 yield getErrorForIntegralQuotaValue(value, key);
             }
             case INT -> {
                 if (value > Integer.MAX_VALUE) {
                     yield new ApiError(Errors.INVALID_REQUEST,
-                        "Proposed value for " + key + " is too large for an INT.");
+                            "Proposed value for " + key + " is too large for an INT.");
                 }
                 yield getErrorForIntegralQuotaValue(value, key);
             }
             case LONG -> {
                 if (value > Long.MAX_VALUE) {
                     yield new ApiError(Errors.INVALID_REQUEST,
-                        "Proposed value for " + key + " is too large for a LONG.");
+                            "Proposed value for " + key + " is too large for a LONG.");
                 }
                 yield getErrorForIntegralQuotaValue(value, key);
             }

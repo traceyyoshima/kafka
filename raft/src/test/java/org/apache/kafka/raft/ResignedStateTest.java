@@ -43,22 +43,22 @@ class ResignedStateTest {
     int localId = 0;
     int epoch = 5;
     Endpoints localEndpoints = Endpoints.fromInetSocketAddresses(
-        Map.of(
-            VoterSetTest.DEFAULT_LISTENER_NAME,
-            InetSocketAddress.createUnresolved("localhost", 1234)
-        )
+            Map.of(
+                    VoterSetTest.DEFAULT_LISTENER_NAME,
+                    InetSocketAddress.createUnresolved("localhost", 1234)
+            )
     );
 
     private ResignedState newResignedState(Set<Integer> voters) {
         return new ResignedState(
-            time,
-            localId,
-            epoch,
-            voters,
-            electionTimeoutMs,
-            List.of(),
-            localEndpoints,
-            logContext
+                time,
+                localId,
+                epoch,
+                voters,
+                electionTimeoutMs,
+                List.of(),
+                localEndpoints,
+                logContext
         );
     }
 
@@ -92,16 +92,16 @@ class ResignedStateTest {
         ResignedState state = newResignedState(Set.of(1, 2, 3));
 
         assertEquals(
-            isLogUpToDate,
-            state.canGrantVote(ReplicaKey.of(1, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, true)
+                isLogUpToDate,
+                state.canGrantVote(ReplicaKey.of(1, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, true)
         );
         assertEquals(
-            isLogUpToDate,
-            state.canGrantVote(ReplicaKey.of(2, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, true)
+                isLogUpToDate,
+                state.canGrantVote(ReplicaKey.of(2, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, true)
         );
         assertEquals(
-            isLogUpToDate,
-            state.canGrantVote(ReplicaKey.of(3, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, true)
+                isLogUpToDate,
+                state.canGrantVote(ReplicaKey.of(3, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, true)
         );
 
         assertFalse(state.canGrantVote(ReplicaKey.of(1, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, false));

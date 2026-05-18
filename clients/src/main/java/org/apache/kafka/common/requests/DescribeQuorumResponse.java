@@ -28,11 +28,11 @@ import java.util.Map;
 
 /**
  * Possible error codes.
- *
+ * <p>
  * Top level errors:
  * - {@link Errors#CLUSTER_AUTHORIZATION_FAILED}
  * - {@link Errors#BROKER_NOT_AVAILABLE}
- *
+ * <p>
  * Partition level errors:
  * - {@link Errors#NOT_LEADER_OR_FOLLOWER}
  * - {@link Errors#UNKNOWN_TOPIC_OR_PARTITION}
@@ -75,29 +75,29 @@ public class DescribeQuorumResponse extends AbstractResponse {
     }
 
     public static DescribeQuorumResponseData singletonErrorResponse(
-        TopicPartition topicPartition,
-        Errors error
+            TopicPartition topicPartition,
+            Errors error
     ) {
         return new DescribeQuorumResponseData()
-            .setTopics(List.of(new DescribeQuorumResponseData.TopicData()
-                .setTopicName(topicPartition.topic())
-                .setPartitions(List.of(new DescribeQuorumResponseData.PartitionData()
-                    .setPartitionIndex(topicPartition.partition())
-                    .setErrorCode(error.code())
-                    .setErrorMessage(error.message())))));
+                .setTopics(List.of(new DescribeQuorumResponseData.TopicData()
+                        .setTopicName(topicPartition.topic())
+                        .setPartitions(List.of(new DescribeQuorumResponseData.PartitionData()
+                                .setPartitionIndex(topicPartition.partition())
+                                .setErrorCode(error.code())
+                                .setErrorMessage(error.message())))));
     }
 
 
     public static DescribeQuorumResponseData singletonResponse(
-        TopicPartition topicPartition,
-        DescribeQuorumResponseData.PartitionData partitionData,
-        DescribeQuorumResponseData.NodeCollection nodes
+            TopicPartition topicPartition,
+            DescribeQuorumResponseData.PartitionData partitionData,
+            DescribeQuorumResponseData.NodeCollection nodes
     ) {
         DescribeQuorumResponseData res = new DescribeQuorumResponseData()
-            .setTopics(List.of(new DescribeQuorumResponseData.TopicData()
-                .setTopicName(topicPartition.topic())
-                .setPartitions(List.of(partitionData
-                    .setPartitionIndex(topicPartition.partition())))));
+                .setTopics(List.of(new DescribeQuorumResponseData.TopicData()
+                        .setTopicName(topicPartition.topic())
+                        .setPartitions(List.of(partitionData
+                                .setPartitionIndex(topicPartition.partition())))));
 
         if (nodes != null)
             res.setNodes(nodes);

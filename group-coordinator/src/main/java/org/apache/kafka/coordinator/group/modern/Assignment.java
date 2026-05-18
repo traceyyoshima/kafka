@@ -40,7 +40,7 @@ public class Assignment implements MemberAssignment {
     private final Map<Uuid, Set<Integer>> partitions;
 
     public Assignment(
-        Map<Uuid, Set<Integer>> partitions
+            Map<Uuid, Set<Integer>> partitions
     ) {
         // Assignments are used as input to assignors, which expect to receive immutable
         // assignment maps, otherwise they will be modified in place.
@@ -80,12 +80,12 @@ public class Assignment implements MemberAssignment {
      * @return A {{@link Assignment}}.
      */
     public static Assignment fromRecord(
-        ConsumerGroupTargetAssignmentMemberValue record
+            ConsumerGroupTargetAssignmentMemberValue record
     ) {
         return new Assignment(
-            record.topicPartitions().stream().collect(Collectors.toMap(
-                ConsumerGroupTargetAssignmentMemberValue.TopicPartition::topicId,
-                topicPartitions -> new HashSet<>(topicPartitions.partitions())))
+                record.topicPartitions().stream().collect(Collectors.toMap(
+                        ConsumerGroupTargetAssignmentMemberValue.TopicPartition::topicId,
+                        topicPartitions -> new HashSet<>(topicPartitions.partitions())))
         );
     }
 
@@ -96,12 +96,12 @@ public class Assignment implements MemberAssignment {
      * @return A {{@link Assignment}}.
      */
     public static Assignment fromRecord(
-        ShareGroupTargetAssignmentMemberValue record
+            ShareGroupTargetAssignmentMemberValue record
     ) {
         return new Assignment(
-            record.topicPartitions().stream().collect(Collectors.toMap(
-                ShareGroupTargetAssignmentMemberValue.TopicPartition::topicId,
-                topicPartitions -> new HashSet<>(topicPartitions.partitions())))
+                record.topicPartitions().stream().collect(Collectors.toMap(
+                        ShareGroupTargetAssignmentMemberValue.TopicPartition::topicId,
+                        topicPartitions -> new HashSet<>(topicPartitions.partitions())))
         );
     }
 }

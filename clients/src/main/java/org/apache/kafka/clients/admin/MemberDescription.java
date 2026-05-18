@@ -37,15 +37,15 @@ public class MemberDescription {
     private final Optional<Boolean> upgraded;
 
     public MemberDescription(
-        String memberId,
-        Optional<String> groupInstanceId,
-        Optional<String> rackId,
-        String clientId,
-        String host,
-        MemberAssignment assignment,
-        Optional<MemberAssignment> targetAssignment,
-        Optional<Integer> memberEpoch,
-        Optional<Boolean> upgraded
+            String memberId,
+            Optional<String> groupInstanceId,
+            Optional<String> rackId,
+            String clientId,
+            String host,
+            MemberAssignment assignment,
+            Optional<MemberAssignment> targetAssignment,
+            Optional<Integer> memberEpoch,
+            Optional<Boolean> upgraded
     ) {
         this.memberId = memberId == null ? "" : memberId;
         this.groupInstanceId = groupInstanceId;
@@ -53,7 +53,7 @@ public class MemberDescription {
         this.clientId = clientId == null ? "" : clientId;
         this.host = host == null ? "" : host;
         this.assignment = assignment == null ?
-            new MemberAssignment(Collections.emptySet()) : assignment;
+                new MemberAssignment(Collections.emptySet()) : assignment;
         this.targetAssignment = targetAssignment;
         this.memberEpoch = memberEpoch;
         this.upgraded = upgraded;
@@ -64,25 +64,25 @@ public class MemberDescription {
      */
     @Deprecated(since = "4.2", forRemoval = true)
     public MemberDescription(
-        String memberId,
-        Optional<String> groupInstanceId,
-        String clientId,
-        String host,
-        MemberAssignment assignment,
-        Optional<MemberAssignment> targetAssignment,
-        Optional<Integer> memberEpoch,
-        Optional<Boolean> upgraded
+            String memberId,
+            Optional<String> groupInstanceId,
+            String clientId,
+            String host,
+            MemberAssignment assignment,
+            Optional<MemberAssignment> targetAssignment,
+            Optional<Integer> memberEpoch,
+            Optional<Boolean> upgraded
     ) {
         this(
-            memberId,
-            groupInstanceId,
-            Optional.empty(),
-            clientId,
-            host,
-            assignment,
-            targetAssignment,
-            memberEpoch,
-            upgraded
+                memberId,
+                groupInstanceId,
+                Optional.empty(),
+                clientId,
+                host,
+                assignment,
+                targetAssignment,
+                memberEpoch,
+                upgraded
         );
     }
 
@@ -91,22 +91,22 @@ public class MemberDescription {
      */
     @Deprecated(since = "4.0", forRemoval = true)
     public MemberDescription(
-        String memberId,
-        Optional<String> groupInstanceId,
-        String clientId,
-        String host,
-        MemberAssignment assignment,
-        Optional<MemberAssignment> targetAssignment
+            String memberId,
+            Optional<String> groupInstanceId,
+            String clientId,
+            String host,
+            MemberAssignment assignment,
+            Optional<MemberAssignment> targetAssignment
     ) {
         this(
-            memberId,
-            groupInstanceId,
-            clientId,
-            host,
-            assignment,
-            targetAssignment,
-            Optional.empty(),
-            Optional.empty()
+                memberId,
+                groupInstanceId,
+                clientId,
+                host,
+                assignment,
+                targetAssignment,
+                Optional.empty(),
+                Optional.empty()
         );
     }
 
@@ -115,19 +115,19 @@ public class MemberDescription {
      */
     @Deprecated(since = "4.0", forRemoval = true)
     public MemberDescription(
-        String memberId,
-        Optional<String> groupInstanceId,
-        String clientId,
-        String host,
-        MemberAssignment assignment
+            String memberId,
+            Optional<String> groupInstanceId,
+            String clientId,
+            String host,
+            MemberAssignment assignment
     ) {
         this(
-            memberId,
-            groupInstanceId,
-            clientId,
-            host,
-            assignment,
-            Optional.empty()
+                memberId,
+                groupInstanceId,
+                clientId,
+                host,
+                assignment,
+                Optional.empty()
         );
     }
 
@@ -148,14 +148,14 @@ public class MemberDescription {
         if (o == null || getClass() != o.getClass()) return false;
         MemberDescription that = (MemberDescription) o;
         return memberId.equals(that.memberId) &&
-            groupInstanceId.equals(that.groupInstanceId) &&
-            rackId.equals(that.rackId) &&
-            clientId.equals(that.clientId) &&
-            host.equals(that.host) &&
-            assignment.equals(that.assignment) &&
-            targetAssignment.equals(that.targetAssignment) &&
-            memberEpoch.equals(that.memberEpoch) &&
-            upgraded.equals(that.upgraded);
+                groupInstanceId.equals(that.groupInstanceId) &&
+                rackId.equals(that.rackId) &&
+                clientId.equals(that.clientId) &&
+                host.equals(that.host) &&
+                assignment.equals(that.assignment) &&
+                targetAssignment.equals(that.targetAssignment) &&
+                memberEpoch.equals(that.memberEpoch) &&
+                upgraded.equals(that.upgraded);
     }
 
     @Override
@@ -238,14 +238,14 @@ public class MemberDescription {
     @Override
     public String toString() {
         return "(memberId=" + memberId +
-            ", groupInstanceId=" + groupInstanceId.orElse("null") +
-            ", rackId=" + rackId.orElse("null") +
-            ", clientId=" + clientId +
-            ", host=" + host +
-            ", assignment=" + assignment +
-            ", targetAssignment=" + targetAssignment +
-            ", memberEpoch=" + memberEpoch.orElse(null) +
-            ", upgraded=" + upgraded.orElse(null) +
-            ")";
+                ", groupInstanceId=" + groupInstanceId.orElse("null") +
+                ", rackId=" + rackId.orElse("null") +
+                ", clientId=" + clientId +
+                ", host=" + host +
+                ", assignment=" + assignment +
+                ", targetAssignment=" + targetAssignment +
+                ", memberEpoch=" + memberEpoch.orElse(null) +
+                ", upgraded=" + upgraded.orElse(null) +
+                ")";
     }
 }

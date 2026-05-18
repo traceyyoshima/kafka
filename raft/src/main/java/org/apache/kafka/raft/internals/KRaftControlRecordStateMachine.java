@@ -40,10 +40,10 @@ import java.util.OptionalLong;
 
 /**
  * The KRaft state machine for tracking control records in the topic partition.
- *
+ * <p>
  * This type keeps track of changes to the finalized kraft.version and the sets of voters between
  * the latest snapshot and the log end offset.
- *
+ * <p>
  * There are two type of actors/threads accessing this type. One is the KRaft driver which indirectly call a lot of
  * the public methods. The other actors/threads are the callers of {@code RaftClient.createSnapshot} which
  * indirectly call {@code voterSetAtOffset} and {@code kraftVersionAtOffset} when freezing a snapshot.
@@ -79,22 +79,22 @@ public final class KRaftControlRecordStateMachine {
     /**
      * Constructs an internal log listener
      *
-     * @param staticVoterSet the set of voter statically configured
-     * @param log the on disk topic partition
-     * @param serde the record decoder for data records
-     * @param bufferSupplier the supplier of byte buffers
+     * @param staticVoterSet    the set of voter statically configured
+     * @param log               the on disk topic partition
+     * @param serde             the record decoder for data records
+     * @param bufferSupplier    the supplier of byte buffers
      * @param maxBatchSizeBytes the maximum size of record batch
-     * @param logContext the log context
+     * @param logContext        the log context
      */
     public KRaftControlRecordStateMachine(
-        VoterSet staticVoterSet,
-        RaftLog log,
-        RecordSerde<?> serde,
-        BufferSupplier bufferSupplier,
-        int maxBatchSizeBytes,
-        LogContext logContext,
-        KafkaRaftMetrics kafkaRaftMetrics,
-        ExternalKRaftMetrics externalKRaftMetrics
+            VoterSet staticVoterSet,
+            RaftLog log,
+            RecordSerde<?> serde,
+            BufferSupplier bufferSupplier,
+            int maxBatchSizeBytes,
+            LogContext logContext,
+            KafkaRaftMetrics kafkaRaftMetrics,
+            ExternalKRaftMetrics externalKRaftMetrics
     ) {
         this.logContext = logContext;
         this.log = log;
@@ -184,7 +184,7 @@ public final class KRaftControlRecordStateMachine {
     public KRaftVersion lastKraftVersion() {
         synchronized (kraftVersionHistory) {
             return kraftVersionHistory.lastEntry().map(LogHistory.Entry::value).
-                orElse(KRaftVersion.KRAFT_VERSION_0);
+                    orElse(KRaftVersion.KRAFT_VERSION_0);
         }
     }
 
@@ -213,7 +213,7 @@ public final class KRaftControlRecordStateMachine {
 
         synchronized (kraftVersionHistory) {
             return kraftVersionHistory.valueAtOrBefore(offset).
-                orElse(KRaftVersion.KRAFT_VERSION_0);
+                    orElse(KRaftVersion.KRAFT_VERSION_0);
         }
     }
 
@@ -221,12 +221,12 @@ public final class KRaftControlRecordStateMachine {
         long fixedNextOffset = nextOffset;
         if (offset >= fixedNextOffset) {
             throw new IllegalArgumentException(
-                String.format(
-                    "Attempting the read a value at an offset (%d) which is greater than or " +
-                    "equal to the largest known offset (%d)",
-                    offset,
-                    fixedNextOffset - 1
-                )
+                    String.format(
+                            "Attempting the read a value at an offset (%d) which is greater than or " +
+                                    "equal to the largest known offset (%d)",
+                            offset,
+                            fixedNextOffset - 1
+                    )
             );
         }
     }
@@ -234,9 +234,9 @@ public final class KRaftControlRecordStateMachine {
     private void maybeLoadLog() {
         while (log.endOffset().offset() > nextOffset) {
             LogFetchInfo info = log.read(
-                nextOffset,
-                Isolation.UNCOMMITTED,
-                Integer.MAX_VALUE
+                    nextOffset,
+                    Isolation.UNCOMMITTED,
+                    Integer.MAX_VALUE
             );
             try (RecordsIterator<?> iterator = new RecordsIterator<>(
                     info.records,
@@ -245,7 +245,7 @@ public final class KRaftControlRecordStateMachine {
                     maxBatchSizeBytes,
                     true, // Validate batch CRC
                     logContext
-                )
+            )
             ) {
                 while (iterator.hasNext()) {
                     Batch<?> batch = iterator.next();
@@ -275,13 +275,13 @@ public final class KRaftControlRecordStateMachine {
                     maxBatchSizeBytes,
                     true, // Validate batch CRC
                     logContext
-                )
+            )
             ) {
                 logger.info(
-                    "Loading snapshot ({}) since log start offset ({}) is greater than the internal listener's next offset ({})",
-                    reader.snapshotId(),
-                    log.startOffset(),
-                    nextOffset
+                        "Loading snapshot ({}) since log start offset ({}) is greater than the internal listener's next offset ({})",
+                        reader.snapshotId(),
+                        log.startOffset(),
+                        nextOffset
                 );
                 OptionalLong currentOffset = OptionalLong.of(reader.lastContainedLogOffset());
                 while (reader.hasNext()) {
@@ -317,13 +317,13 @@ public final class KRaftControlRecordStateMachine {
 
                 case KRAFT_VERSION:
                     KRaftVersion kraftVersion = KRaftVersion.fromFeatureLevel(
-                        ((KRaftVersionRecord) record.message()).kRaftVersion()
+                            ((KRaftVersionRecord) record.message()).kRaftVersion()
                     );
                     logger.info(
-                        "Latest {} is {} at offset {}",
-                        KRaftVersion.FEATURE_NAME,
-                        kraftVersion,
-                        currentOffset
+                            "Latest {} is {} at offset {}",
+                            KRaftVersion.FEATURE_NAME,
+                            kraftVersion,
+                            currentOffset
                     );
                     synchronized (kraftVersionHistory) {
                         kraftVersionHistory.addAt(currentOffset, kraftVersion);

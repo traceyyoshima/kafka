@@ -38,11 +38,11 @@ public final class ValueAndTimestamp<V> {
     /**
      * Create a new {@link ValueAndTimestamp} instance if the provided {@code value} is not {@code null}.
      *
-     * @param value      the value
-     * @param timestamp  the timestamp
-     * @param <V> the type of the value
+     * @param value     the value
+     * @param timestamp the timestamp
+     * @param <V>       the type of the value
      * @return a new {@link ValueAndTimestamp} instance if the provided {@code value} is not {@code null};
-     *         otherwise {@code null} is returned
+     * otherwise {@code null} is returned
      */
     public static <V> ValueAndTimestamp<V> make(final V value,
                                                 final long timestamp) {
@@ -52,13 +52,13 @@ public final class ValueAndTimestamp<V> {
     /**
      * Create a new {@link ValueAndTimestamp} instance. The provided {@code value} may be {@code null}.
      *
-     * @param value      the value
-     * @param timestamp  the timestamp
-     * @param <V> the type of the value
+     * @param value     the value
+     * @param timestamp the timestamp
+     * @param <V>       the type of the value
      * @return a new {@link ValueAndTimestamp} instance
      */
     public static <V> ValueAndTimestamp<V> makeAllowNullable(
-        final V value, final long timestamp) {
+            final V value, final long timestamp) {
         return new ValueAndTimestamp<>(value, timestamp);
     }
 
@@ -67,7 +67,7 @@ public final class ValueAndTimestamp<V> {
      * if the parameter is not {@code null}.
      *
      * @param valueAndTimestamp a {@link ValueAndTimestamp} instance; can be {@code null}
-     * @param <V> the type of the value
+     * @param <V>               the type of the value
      * @return the wrapped {@code value} of {@code valueAndTimestamp} if not {@code null}; otherwise {@code null}
      */
     public static <V> V getValueOrNull(final ValueAndTimestamp<V> valueAndTimestamp) {
@@ -97,7 +97,7 @@ public final class ValueAndTimestamp<V> {
         }
         final ValueAndTimestamp<?> that = (ValueAndTimestamp<?>) o;
         return timestamp == that.timestamp &&
-            Objects.equals(value, that.value);
+                Objects.equals(value, that.value);
     }
 
     @Override

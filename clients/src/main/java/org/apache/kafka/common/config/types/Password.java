@@ -27,6 +27,7 @@ public class Password {
 
     /**
      * Construct a new Password object
+     *
      * @param value The value of a password
      */
     public Password(String value) {

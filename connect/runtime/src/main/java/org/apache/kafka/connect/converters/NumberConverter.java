@@ -50,9 +50,9 @@ abstract class NumberConverter<T extends Number> implements Converter, HeaderCon
     /**
      * Create the converter.
      *
-     * @param typeName the displayable name of the type; may not be null
-     * @param schema the optional schema to be used for all deserialized forms; may not be null
-     * @param serializer the serializer; may not be null
+     * @param typeName     the displayable name of the type; may not be null
+     * @param schema       the optional schema to be used for all deserialized forms; may not be null
+     * @param serializer   the serializer; may not be null
      * @param deserializer the deserializer; may not be null
      */
     protected NumberConverter(String typeName, Schema schema, Serializer<T> serializer, Deserializer<T> deserializer) {
@@ -70,6 +70,7 @@ abstract class NumberConverter<T extends Number> implements Converter, HeaderCon
     public String version() {
         return AppInfoParser.getVersion();
     }
+
     @Override
     public ConfigDef config() {
         return NumberConverterConfig.configDef();

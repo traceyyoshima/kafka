@@ -47,12 +47,12 @@ public class JsonDeserializer implements Deserializer<JsonNode> {
      * for the deserializer
      *
      * @param deserializationFeatures the specified deserialization features
-     * @param jsonNodeFactory the json node factory to use.
+     * @param jsonNodeFactory         the json node factory to use.
      */
     JsonDeserializer(
-        final Set<DeserializationFeature> deserializationFeatures,
-        final JsonNodeFactory jsonNodeFactory,
-        final boolean enableBlackbird
+            final Set<DeserializationFeature> deserializationFeatures,
+            final JsonNodeFactory jsonNodeFactory,
+            final boolean enableBlackbird
     ) {
         objectMapper.enable(JsonReadFeature.ALLOW_LEADING_ZEROS_FOR_NUMBERS.mappedFeature());
         deserializationFeatures.forEach(objectMapper::enable);

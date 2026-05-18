@@ -132,8 +132,8 @@ public class ProducerStateEntry {
     // Return the batch metadata of the cached batch having the exact sequence range, if any.
     private Optional<BatchMetadata> batchWithSequenceRange(int firstSeq, int lastSeq) {
         return batchMetadata.stream()
-            .filter(metadata -> firstSeq == metadata.firstSeq() && lastSeq == metadata.lastSeq())
-            .findFirst();
+                .filter(metadata -> firstSeq == metadata.firstSeq() && lastSeq == metadata.lastSeq())
+                .findFirst();
     }
 
     public Collection<BatchMetadata> batchMetadata() {

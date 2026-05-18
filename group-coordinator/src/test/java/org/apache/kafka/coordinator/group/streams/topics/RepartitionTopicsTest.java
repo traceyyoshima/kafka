@@ -49,46 +49,46 @@ public class RepartitionTopicsTest {
     @Test
     public void shouldSetupRepartitionTopics() {
         final Subtopology subtopology1 = new Subtopology()
-            .setSubtopologyId("subtopology1")
-            .setSourceTopics(List.of(SOURCE_TOPIC_NAME1, SOURCE_TOPIC_NAME2))
-            .setRepartitionSinkTopics(List.of(REPARTITION_TOPIC1.name()));
+                .setSubtopologyId("subtopology1")
+                .setSourceTopics(List.of(SOURCE_TOPIC_NAME1, SOURCE_TOPIC_NAME2))
+                .setRepartitionSinkTopics(List.of(REPARTITION_TOPIC1.name()));
         final Subtopology subtopology2 = new Subtopology()
-            .setSubtopologyId("subtopology2")
-            .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC1));
+                .setSubtopologyId("subtopology2")
+                .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC1));
         final List<Subtopology> subtopologies = List.of(subtopology1, subtopology2);
         final RepartitionTopics repartitionTopics = new RepartitionTopics(
-            LOG,
-            subtopologies,
-            RepartitionTopicsTest::sourceTopicPartitionCounts
+                LOG,
+                subtopologies,
+                RepartitionTopicsTest::sourceTopicPartitionCounts
         );
 
         final Map<String, Integer> setup = repartitionTopics.setup();
 
         assertEquals(
-            Map.of(REPARTITION_TOPIC1.name(), REPARTITION_TOPIC1.partitions()),
-            setup
+                Map.of(REPARTITION_TOPIC1.name(), REPARTITION_TOPIC1.partitions()),
+                setup
         );
     }
 
     @Test
     public void shouldThrowIllegalStateExceptionIfMissingSourceTopics() {
         final Subtopology subtopology1 = new Subtopology()
-            .setSubtopologyId("subtopology1")
-            .setSourceTopics(List.of(SOURCE_TOPIC_NAME1, SOURCE_TOPIC_NAME2))
-            .setRepartitionSinkTopics(List.of(REPARTITION_TOPIC1.name()));
+                .setSubtopologyId("subtopology1")
+                .setSourceTopics(List.of(SOURCE_TOPIC_NAME1, SOURCE_TOPIC_NAME2))
+                .setRepartitionSinkTopics(List.of(REPARTITION_TOPIC1.name()));
         final Subtopology subtopology2 = new Subtopology()
-            .setSubtopologyId("subtopology2")
-            .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC1));
+                .setSubtopologyId("subtopology2")
+                .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC1));
         final Function<String, OptionalInt> topicPartitionCountProvider =
-            s -> Objects.equals(s, SOURCE_TOPIC_NAME1) ? OptionalInt.empty() : sourceTopicPartitionCounts(s);
+                s -> Objects.equals(s, SOURCE_TOPIC_NAME1) ? OptionalInt.empty() : sourceTopicPartitionCounts(s);
         final RepartitionTopics repartitionTopics = new RepartitionTopics(
-            LOG,
-            List.of(subtopology1, subtopology2),
-            topicPartitionCountProvider
+                LOG,
+                List.of(subtopology1, subtopology2),
+                topicPartitionCountProvider
         );
 
         final IllegalStateException exception = assertThrows(IllegalStateException.class,
-            repartitionTopics::setup);
+                repartitionTopics::setup);
 
         assertEquals("Missing source topics: source1", exception.getMessage());
     }
@@ -96,104 +96,104 @@ public class RepartitionTopicsTest {
     @Test
     public void shouldThrowStreamsInvalidTopologyExceptionIfPartitionCountCannotBeComputedForAllRepartitionTopicsDueToLoops() {
         final Subtopology subtopology1 = new Subtopology()
-            .setSubtopologyId("subtopology1")
-            .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC_WITHOUT_PARTITION_COUNT))
-            .setRepartitionSinkTopics(List.of(REPARTITION_TOPIC_WITHOUT_PARTITION_COUNT.name()));
+                .setSubtopologyId("subtopology1")
+                .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC_WITHOUT_PARTITION_COUNT))
+                .setRepartitionSinkTopics(List.of(REPARTITION_TOPIC_WITHOUT_PARTITION_COUNT.name()));
         final RepartitionTopics repartitionTopics = new RepartitionTopics(
-            LOG,
-            List.of(subtopology1),
-            RepartitionTopicsTest::sourceTopicPartitionCounts
+                LOG,
+                List.of(subtopology1),
+                RepartitionTopicsTest::sourceTopicPartitionCounts
         );
 
         final StreamsInvalidTopologyException exception = assertThrows(StreamsInvalidTopologyException.class, repartitionTopics::setup);
 
         assertEquals(
-            "Failed to compute number of partitions for all repartition topics. There may be loops in the topology that cannot be resolved.",
-            exception.getMessage()
+                "Failed to compute number of partitions for all repartition topics. There may be loops in the topology that cannot be resolved.",
+                exception.getMessage()
         );
     }
 
     @Test
     public void shouldThrowStreamsInvalidTopologyExceptionIfPartitionCountCannotBeComputedForAllRepartitionTopicsDueToMissingSinks() {
         final Subtopology subtopology1 = new Subtopology()
-            .setSubtopologyId("subtopology1")
-            .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC_WITHOUT_PARTITION_COUNT));
+                .setSubtopologyId("subtopology1")
+                .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC_WITHOUT_PARTITION_COUNT));
         final RepartitionTopics repartitionTopics = new RepartitionTopics(
-            LOG,
-            List.of(subtopology1),
-            RepartitionTopicsTest::sourceTopicPartitionCounts
+                LOG,
+                List.of(subtopology1),
+                RepartitionTopicsTest::sourceTopicPartitionCounts
         );
 
         final StreamsInvalidTopologyException exception = assertThrows(StreamsInvalidTopologyException.class, repartitionTopics::setup);
 
         assertEquals(
-            "Failed to compute number of partitions for all repartition topics, because a repartition source topic is never used as a sink topic.",
-            exception.getMessage()
+                "Failed to compute number of partitions for all repartition topics, because a repartition source topic is never used as a sink topic.",
+                exception.getMessage()
         );
     }
 
     @Test
     public void shouldSetRepartitionTopicPartitionCountFromUpstreamExternalSourceTopic() {
         final Subtopology subtopology = new Subtopology()
-            .setSubtopologyId("subtopology0")
-            .setSourceTopics(List.of(SOURCE_TOPIC_NAME1))
-            .setRepartitionSinkTopics(List.of(REPARTITION_TOPIC1.name(), REPARTITION_TOPIC_WITHOUT_PARTITION_COUNT.name()))
-            .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC2));
+                .setSubtopologyId("subtopology0")
+                .setSourceTopics(List.of(SOURCE_TOPIC_NAME1))
+                .setRepartitionSinkTopics(List.of(REPARTITION_TOPIC1.name(), REPARTITION_TOPIC_WITHOUT_PARTITION_COUNT.name()))
+                .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC2));
         final Subtopology subtopologyWithoutPartitionCount = new Subtopology()
-            .setSubtopologyId("subtopologyWithoutPartitionCount")
-            .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC1, REPARTITION_TOPIC_WITHOUT_PARTITION_COUNT));
+                .setSubtopologyId("subtopologyWithoutPartitionCount")
+                .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC1, REPARTITION_TOPIC_WITHOUT_PARTITION_COUNT));
         final RepartitionTopics repartitionTopics = new RepartitionTopics(
-            LOG,
-            List.of(subtopology, subtopologyWithoutPartitionCount),
-            RepartitionTopicsTest::sourceTopicPartitionCounts
+                LOG,
+                List.of(subtopology, subtopologyWithoutPartitionCount),
+                RepartitionTopicsTest::sourceTopicPartitionCounts
         );
 
         final Map<String, Integer> setup = repartitionTopics.setup();
 
         assertEquals(Map.of(
-            REPARTITION_TOPIC1.name(), REPARTITION_TOPIC1.partitions(),
-            REPARTITION_TOPIC2.name(), REPARTITION_TOPIC2.partitions(),
-            REPARTITION_TOPIC_WITHOUT_PARTITION_COUNT.name(), sourceTopicPartitionCounts(SOURCE_TOPIC_NAME1).getAsInt()
+                REPARTITION_TOPIC1.name(), REPARTITION_TOPIC1.partitions(),
+                REPARTITION_TOPIC2.name(), REPARTITION_TOPIC2.partitions(),
+                REPARTITION_TOPIC_WITHOUT_PARTITION_COUNT.name(), sourceTopicPartitionCounts(SOURCE_TOPIC_NAME1).getAsInt()
         ), setup);
     }
 
     @Test
     public void shouldSetRepartitionTopicPartitionCountFromUpstreamInternalRepartitionSourceTopic() {
         final Subtopology subtopology = new Subtopology()
-            .setSubtopologyId("subtopology0")
-            .setSourceTopics(List.of(SOURCE_TOPIC_NAME1))
-            .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC1))
-            .setRepartitionSinkTopics(List.of(REPARTITION_TOPIC_WITHOUT_PARTITION_COUNT.name()));
+                .setSubtopologyId("subtopology0")
+                .setSourceTopics(List.of(SOURCE_TOPIC_NAME1))
+                .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC1))
+                .setRepartitionSinkTopics(List.of(REPARTITION_TOPIC_WITHOUT_PARTITION_COUNT.name()));
         final Subtopology subtopologyWithoutPartitionCount = new Subtopology()
-            .setSubtopologyId("subtopologyWithoutPartitionCount")
-            .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC_WITHOUT_PARTITION_COUNT))
-            .setRepartitionSinkTopics(List.of(REPARTITION_TOPIC1.name()));
+                .setSubtopologyId("subtopologyWithoutPartitionCount")
+                .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC_WITHOUT_PARTITION_COUNT))
+                .setRepartitionSinkTopics(List.of(REPARTITION_TOPIC1.name()));
         final RepartitionTopics repartitionTopics = new RepartitionTopics(
-            LOG,
-            List.of(subtopology, subtopologyWithoutPartitionCount),
-            RepartitionTopicsTest::sourceTopicPartitionCounts
+                LOG,
+                List.of(subtopology, subtopologyWithoutPartitionCount),
+                RepartitionTopicsTest::sourceTopicPartitionCounts
         );
 
         final Map<String, Integer> setup = repartitionTopics.setup();
 
         assertEquals(
-            Map.of(
-                REPARTITION_TOPIC1.name(), REPARTITION_TOPIC1.partitions(),
-                REPARTITION_TOPIC_WITHOUT_PARTITION_COUNT.name(), REPARTITION_TOPIC1.partitions()
-            ),
-            setup
+                Map.of(
+                        REPARTITION_TOPIC1.name(), REPARTITION_TOPIC1.partitions(),
+                        REPARTITION_TOPIC_WITHOUT_PARTITION_COUNT.name(), REPARTITION_TOPIC1.partitions()
+                ),
+                setup
         );
     }
 
     @Test
     public void shouldNotSetupRepartitionTopicsWhenTopologyDoesNotContainAnyRepartitionTopics() {
         final Subtopology subtopology = new Subtopology()
-            .setSubtopologyId("subtopology0")
-            .setSourceTopics(List.of(SOURCE_TOPIC_NAME1));
+                .setSubtopologyId("subtopology0")
+                .setSourceTopics(List.of(SOURCE_TOPIC_NAME1));
         final RepartitionTopics repartitionTopics = new RepartitionTopics(
-            LOG,
-            List.of(subtopology),
-            RepartitionTopicsTest::sourceTopicPartitionCounts
+                LOG,
+                List.of(subtopology),
+                RepartitionTopicsTest::sourceTopicPartitionCounts
         );
 
         final Map<String, Integer> setup = repartitionTopics.setup();

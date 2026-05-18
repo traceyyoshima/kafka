@@ -47,62 +47,63 @@ public class ReadOnlyStoreTest {
     public void shouldConnectProcessorAndWriteDataToReadOnlyStore() {
         final Topology topology = new Topology();
         topology.addReadOnlyStateStore(
-            Stores.keyValueStoreBuilder(
-                Stores.inMemoryKeyValueStore("readOnlyStore"),
-                new Serdes.IntegerSerde(),
-                new Serdes.StringSerde()
-            ),
-            "readOnlySource",
-            new IntegerDeserializer(),
-            new StringDeserializer(),
-            "storeTopic",
-            "readOnlyProcessor",
-            () -> new Processor<>() {
-                KeyValueStore<Integer, String> store;
+                Stores.keyValueStoreBuilder(
+                        Stores.inMemoryKeyValueStore("readOnlyStore"),
+                        new Serdes.IntegerSerde(),
+                        new Serdes.StringSerde()
+                ),
+                "readOnlySource",
+                new IntegerDeserializer(),
+                new StringDeserializer(),
+                "storeTopic",
+                "readOnlyProcessor",
+                () -> new Processor<>() {
+                    KeyValueStore<Integer, String> store;
 
-                @Override
-                public void init(final ProcessorContext<Void, Void> context) {
-                    store = context.getStateStore("readOnlyStore");
+                    @Override
+                    public void init(final ProcessorContext<Void, Void> context) {
+                        store = context.getStateStore("readOnlyStore");
+                    }
+
+                    @Override
+                    public void process(final Record<Integer, String> record) {
+                        store.put(record.key(), record.value());
+                    }
                 }
-                @Override
-                public void process(final Record<Integer, String> record) {
-                    store.put(record.key(), record.value());
-                }
-            }
         );
 
         topology.addSource("source", new IntegerDeserializer(), new StringDeserializer(), "inputTopic");
         topology.addProcessor(
-            "processor",
-            () -> new Processor<Integer, String, Integer, String>() {
-                ProcessorContext<Integer, String> context;
-                KeyValueStore<Integer, String> store;
+                "processor",
+                () -> new Processor<Integer, String, Integer, String>() {
+                    ProcessorContext<Integer, String> context;
+                    KeyValueStore<Integer, String> store;
 
-                @Override
-                public void init(final ProcessorContext<Integer, String> context) {
-                    this.context = context;
-                    store = context.getStateStore("readOnlyStore");
-                }
+                    @Override
+                    public void init(final ProcessorContext<Integer, String> context) {
+                        this.context = context;
+                        store = context.getStateStore("readOnlyStore");
+                    }
 
-                @Override
-                public void process(final Record<Integer, String> record) {
-                    context.forward(record.withValue(
-                        record.value() + " -- " + store.get(record.key())
-                    ));
-                }
-            },
-            "source"
+                    @Override
+                    public void process(final Record<Integer, String> record) {
+                        context.forward(record.withValue(
+                                record.value() + " -- " + store.get(record.key())
+                        ));
+                    }
+                },
+                "source"
         );
         topology.connectProcessorAndStateStores("processor", "readOnlyStore");
         topology.addSink("sink", "outputTopic", new IntegerSerializer(), new StringSerializer(), "processor");
 
         try (final TopologyTestDriver driver = new TopologyTestDriver(topology)) {
             final TestInputTopic<Integer, String> readOnlyStoreTopic =
-                driver.createInputTopic("storeTopic", new IntegerSerializer(), new StringSerializer());
+                    driver.createInputTopic("storeTopic", new IntegerSerializer(), new StringSerializer());
             final TestInputTopic<Integer, String> input =
-                driver.createInputTopic("inputTopic", new IntegerSerializer(), new StringSerializer());
+                    driver.createInputTopic("inputTopic", new IntegerSerializer(), new StringSerializer());
             final TestOutputTopic<Integer, String> output =
-                driver.createOutputTopic("outputTopic", new IntegerDeserializer(), new StringDeserializer());
+                    driver.createOutputTopic("outputTopic", new IntegerDeserializer(), new StringDeserializer());
 
             readOnlyStoreTopic.pipeInput(1, "foo");
             readOnlyStoreTopic.pipeInput(2, "bar");

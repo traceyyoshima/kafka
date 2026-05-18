@@ -133,9 +133,9 @@ public class Lz4CompressionTest {
         @Override
         public String toString() {
             return "Payload{" +
-                   "size=" + payload.length +
-                   ", name='" + name + '\'' +
-                   '}';
+                    "size=" + payload.length +
+                    ", name='" + name + '\'' +
+                    '}';
         }
     }
 
@@ -160,11 +160,11 @@ public class Lz4CompressionTest {
         @Override
         public String toString() {
             return "useBrokenFlagDescriptorChecksum=" + useBrokenFlagDescriptorChecksum +
-                ", ignoreFlagDescriptorChecksum=" + ignoreFlagDescriptorChecksum +
-                ", level=" + level +
-                ", blockChecksum=" + blockChecksum +
-                ", close=" + close +
-                ", payload=" + Arrays.toString(payload);
+                    ", ignoreFlagDescriptorChecksum=" + ignoreFlagDescriptorChecksum +
+                    ", level=" + level +
+                    ", blockChecksum=" + blockChecksum +
+                    ", close=" + close +
+                    ", payload=" + Arrays.toString(payload);
         }
     }
 
@@ -382,7 +382,7 @@ public class Lz4CompressionTest {
         if (!args.close || (args.useBrokenFlagDescriptorChecksum && !args.ignoreFlagDescriptorChecksum)) return;
 
         final Lz4BlockInputStream in = makeInputStream(ByteBuffer.wrap(compressedBytes(args)),
-            args.ignoreFlagDescriptorChecksum);
+                args.ignoreFlagDescriptorChecksum);
 
         int n = 100;
         long remaining = args.payload.length;
@@ -436,11 +436,11 @@ public class Lz4CompressionTest {
     private byte[] compressedBytes(Args args) throws IOException {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         Lz4BlockOutputStream lz4 = new Lz4BlockOutputStream(
-            output,
-            Lz4BlockOutputStream.BLOCKSIZE_64KB,
-            args.level,
-            args.blockChecksum,
-            args.useBrokenFlagDescriptorChecksum
+                output,
+                Lz4BlockOutputStream.BLOCKSIZE_64KB,
+                args.level,
+                args.blockChecksum,
+                args.useBrokenFlagDescriptorChecksum
         );
         lz4.write(args.payload, 0, args.payload.length);
         if (args.close) {

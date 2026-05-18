@@ -103,7 +103,7 @@ public final class FutureRecordMetadata implements Future<RecordMetadata> {
         if (nextRecordMetadata != null)
             return nextRecordMetadata.value();
         return new RecordMetadata(result.topicPartition(), this.result.baseOffset(), this.batchIndex,
-                                  timestamp(), this.serializedKeySize, this.serializedValueSize);
+                timestamp(), this.serializedKeySize, this.serializedValueSize);
     }
 
     private long timestamp() {

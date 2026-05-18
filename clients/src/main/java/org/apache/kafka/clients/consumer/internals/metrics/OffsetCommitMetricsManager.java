@@ -43,22 +43,22 @@ public class OffsetCommitMetricsManager extends AbstractConsumerMetricsManager {
         final String metricGroupName = CONSUMER_METRIC_GROUP_PREFIX + COORDINATOR_METRICS_SUFFIX;
         commitSensor = metrics.sensor("commit-latency");
         commitLatencyAvg = metrics.metricName("commit-latency-avg",
-            metricGroupName,
-            "The average time taken for a commit request");
+                metricGroupName,
+                "The average time taken for a commit request");
         commitSensor.add(commitLatencyAvg, new Avg());
         commitLatencyMax = metrics.metricName("commit-latency-max",
-            metricGroupName,
-            "The max time taken for a commit request");
+                metricGroupName,
+                "The max time taken for a commit request");
         commitSensor.add(commitLatencyMax, new Max());
         commitRate = metrics.metricName("commit-rate",
-            metricGroupName,
-            "The number of commit calls per second");
+                metricGroupName,
+                "The number of commit calls per second");
         commitTotal = metrics.metricName("commit-total",
-            metricGroupName,
-            "The total number of commit calls");
+                metricGroupName,
+                "The total number of commit calls");
         commitSensor.add(new Meter(new WindowedCount(),
-            commitRate,
-            commitTotal));
+                commitRate,
+                commitTotal));
     }
 
     public void recordRequestLatency(long responseLatencyMs) {

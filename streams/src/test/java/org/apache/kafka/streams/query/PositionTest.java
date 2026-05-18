@@ -51,11 +51,11 @@ public class PositionTest {
     @Test
     public void shouldCreateFromMap() {
         final Map<String, Map<Integer, Long>> map = mkMap(
-            mkEntry("topic", mkMap(mkEntry(0, 5L))),
-            mkEntry("topic1", mkMap(
-                mkEntry(0, 5L),
-                mkEntry(7, 0L)
-            ))
+                mkEntry("topic", mkMap(mkEntry(0, 5L))),
+                mkEntry("topic1", mkMap(
+                        mkEntry(0, 5L),
+                        mkEntry(7, 0L)
+                ))
         );
 
         final Position position = Position.fromMap(map);
@@ -68,8 +68,8 @@ public class PositionTest {
 
         // so the position is still the original one
         assertThat(position.getPartitionPositions("topic1"), equalTo(mkMap(
-            mkEntry(0, 5L),
-            mkEntry(7, 0L)
+                mkEntry(0, 5L),
+                mkEntry(7, 0L)
         )));
     }
 
@@ -82,17 +82,17 @@ public class PositionTest {
     @Test
     public void shouldMerge() {
         final Position position = Position.fromMap(mkMap(
-            mkEntry("topic", mkMap(mkEntry(0, 5L))),
-            mkEntry("topic1", mkMap(
-                mkEntry(0, 5L),
-                mkEntry(7, 0L)
-            ))
+                mkEntry("topic", mkMap(mkEntry(0, 5L))),
+                mkEntry("topic1", mkMap(
+                        mkEntry(0, 5L),
+                        mkEntry(7, 0L)
+                ))
         ));
 
         final Position position1 = Position.fromMap(mkMap(
-            mkEntry("topic", mkMap(mkEntry(0, 7L))), // update offset
-            mkEntry("topic1", mkMap(mkEntry(8, 1L))), // add partition
-            mkEntry("topic2", mkMap(mkEntry(9, 5L))) // add topic
+                mkEntry("topic", mkMap(mkEntry(0, 7L))), // update offset
+                mkEntry("topic1", mkMap(mkEntry(8, 1L))), // add partition
+                mkEntry("topic2", mkMap(mkEntry(9, 5L))) // add topic
         ));
 
         final Position merged = position.merge(position1);
@@ -100,9 +100,9 @@ public class PositionTest {
         assertThat(merged.getTopics(), equalTo(Set.of("topic", "topic1", "topic2")));
         assertThat(merged.getPartitionPositions("topic"), equalTo(mkMap(mkEntry(0, 7L))));
         assertThat(merged.getPartitionPositions("topic1"), equalTo(mkMap(
-            mkEntry(0, 5L),
-            mkEntry(7, 0L),
-            mkEntry(8, 1L)
+                mkEntry(0, 5L),
+                mkEntry(7, 0L),
+                mkEntry(8, 1L)
         )));
         assertThat(merged.getPartitionPositions("topic2"), equalTo(mkMap(mkEntry(9, 5L))));
     }
@@ -120,11 +120,11 @@ public class PositionTest {
     @Test
     public void shouldCopy() {
         final Position position = Position.fromMap(mkMap(
-            mkEntry("topic", mkMap(mkEntry(0, 5L))),
-            mkEntry("topic1", mkMap(
-                mkEntry(0, 5L),
-                mkEntry(7, 0L)
-            ))
+                mkEntry("topic", mkMap(mkEntry(0, 5L))),
+                mkEntry("topic1", mkMap(
+                        mkEntry(0, 5L),
+                        mkEntry(7, 0L)
+                ))
         ));
 
         final Position copy = position.copy();
@@ -138,17 +138,17 @@ public class PositionTest {
         assertThat(copy.getTopics(), equalTo(Set.of("topic", "topic1")));
         assertThat(copy.getPartitionPositions("topic"), equalTo(mkMap(mkEntry(0, 5L))));
         assertThat(copy.getPartitionPositions("topic1"), equalTo(mkMap(
-            mkEntry(0, 5L),
-            mkEntry(7, 0L)
+                mkEntry(0, 5L),
+                mkEntry(7, 0L)
         )));
 
         // original has changed
         assertThat(position.getTopics(), equalTo(Set.of("topic", "topic1", "topic2")));
         assertThat(position.getPartitionPositions("topic"), equalTo(mkMap(mkEntry(0, 6L))));
         assertThat(position.getPartitionPositions("topic1"), equalTo(mkMap(
-            mkEntry(0, 5L),
-            mkEntry(7, 0L),
-            mkEntry(8, 1L)
+                mkEntry(0, 5L),
+                mkEntry(7, 0L),
+                mkEntry(8, 1L)
         )));
         assertThat(position.getPartitionPositions("topic2"), equalTo(mkMap(mkEntry(2, 4L))));
     }
@@ -156,11 +156,11 @@ public class PositionTest {
     @Test
     public void shouldMergeNull() {
         final Position position = Position.fromMap(mkMap(
-            mkEntry("topic", mkMap(mkEntry(0, 5L))),
-            mkEntry("topic1", mkMap(
-                mkEntry(0, 5L),
-                mkEntry(7, 0L)
-            ))
+                mkEntry("topic", mkMap(mkEntry(0, 5L))),
+                mkEntry("topic1", mkMap(
+                        mkEntry(0, 5L),
+                        mkEntry(7, 0L)
+                ))
         ));
 
         final Position merged = position.merge(null);
@@ -168,8 +168,8 @@ public class PositionTest {
         assertThat(merged.getTopics(), equalTo(Set.of("topic", "topic1")));
         assertThat(merged.getPartitionPositions("topic"), equalTo(mkMap(mkEntry(0, 5L))));
         assertThat(merged.getPartitionPositions("topic1"), equalTo(mkMap(
-            mkEntry(0, 5L),
-            mkEntry(7, 0L)
+                mkEntry(0, 5L),
+                mkEntry(7, 0L)
         )));
     }
 

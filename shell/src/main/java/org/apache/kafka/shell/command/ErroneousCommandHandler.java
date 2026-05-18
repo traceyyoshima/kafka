@@ -36,9 +36,9 @@ public final class ErroneousCommandHandler implements Commands.Handler {
 
     @Override
     public void run(
-        Optional<InteractiveShell> shell,
-        PrintWriter writer,
-        MetadataShellState state
+            Optional<InteractiveShell> shell,
+            PrintWriter writer,
+            MetadataShellState state
     ) {
         writer.println(message);
     }

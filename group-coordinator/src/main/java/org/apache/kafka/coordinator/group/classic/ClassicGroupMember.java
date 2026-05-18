@@ -31,25 +31,25 @@ import java.util.concurrent.CompletableFuture;
 
 /**
  * This class encapsulates a classic group member's metadata.
- *
+ * <p>
  * Member metadata contains the following:
- *
+ * <p>
  * Heartbeat metadata:
  * 1. negotiated heartbeat session timeout
  * 2. timestamp of the latest heartbeat
- *
+ * <p>
  * Protocol metadata:
  * 1. the list of supported protocols (ordered by preference)
  * 2. the metadata associated with each protocol
- *
+ * <p>
  * In addition, it also contains the following state information:
- *
+ * <p>
  * 1. Awaiting rebalance future: when the group is in the prepare-rebalance state,
- *                                 its rebalance future will be kept in the metadata if the
- *                                 member has sent the join group request
+ * its rebalance future will be kept in the metadata if the
+ * member has sent the join group request
  * 2. Awaiting sync future: when the group is in the awaiting-sync state, its sync future
- *                            is kept in metadata until the leader provides the group assignment
- *                            and the group transitions to stable
+ * is kept in metadata until the leader provides the group assignment
+ * and the group transitions to stable
  */
 public class ClassicGroupMember {
 
@@ -119,38 +119,38 @@ public class ClassicGroupMember {
     private boolean isNew = false;
 
     public ClassicGroupMember(
-        String memberId,
-        Optional<String> groupInstanceId,
-        String clientId,
-        String clientHost,
-        int rebalanceTimeoutMs,
-        int sessionTimeoutMs,
-        String protocolType,
-        JoinGroupRequestProtocolCollection supportedProtocols
+            String memberId,
+            Optional<String> groupInstanceId,
+            String clientId,
+            String clientHost,
+            int rebalanceTimeoutMs,
+            int sessionTimeoutMs,
+            String protocolType,
+            JoinGroupRequestProtocolCollection supportedProtocols
     ) {
         this(
-            memberId,
-            groupInstanceId,
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            supportedProtocols,
-            EMPTY_ASSIGNMENT
+                memberId,
+                groupInstanceId,
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                supportedProtocols,
+                EMPTY_ASSIGNMENT
         );
     }
 
     public ClassicGroupMember(
-        String memberId,
-        Optional<String> groupInstanceId,
-        String clientId,
-        String clientHost,
-        int rebalanceTimeoutMs,
-        int sessionTimeoutMs,
-        String protocolType,
-        JoinGroupRequestProtocolCollection supportedProtocols,
-        byte[] assignment
+            String memberId,
+            Optional<String> groupInstanceId,
+            String clientId,
+            String clientHost,
+            int rebalanceTimeoutMs,
+            int sessionTimeoutMs,
+            String protocolType,
+            JoinGroupRequestProtocolCollection supportedProtocols,
+            byte[] assignment
     ) {
         this.memberId = memberId;
         this.groupInstanceId = groupInstanceId;
@@ -195,7 +195,7 @@ public class ClassicGroupMember {
         }
 
         throw new IllegalArgumentException("Member does not support protocol " +
-            protocolName);
+                protocolName);
     }
 
     /**
@@ -219,7 +219,7 @@ public class ClassicGroupMember {
      *
      * @param protocols list of protocols to match.
      * @return true if the given list matches the member's list of supported protocols,
-     *         false otherwise.
+     * false otherwise.
      */
     public boolean matches(JoinGroupRequestProtocolCollection protocols) {
         return protocols.equals(this.supportedProtocols);
@@ -249,7 +249,7 @@ public class ClassicGroupMember {
      * @return a set of protocol names from the given list of supported protocols.
      */
     public static Set<String> plainProtocolSet(
-        JoinGroupRequestProtocolCollection supportedProtocols
+            JoinGroupRequestProtocolCollection supportedProtocols
     ) {
         Set<String> protocolNames = new HashSet<>();
         for (JoinGroupRequestProtocol protocol : supportedProtocols) {
@@ -354,11 +354,11 @@ public class ClassicGroupMember {
      */
     public DescribeGroupsResponseData.DescribedGroupMember describeNoMetadata() {
         return new DescribeGroupsResponseData.DescribedGroupMember()
-            .setMemberId(memberId())
-            .setGroupInstanceId(groupInstanceId().orElse(null))
-            .setClientId(clientId())
-            .setClientHost(clientHost())
-            .setMemberAssignment(assignment());
+                .setMemberId(memberId())
+                .setGroupInstanceId(groupInstanceId().orElse(null))
+                .setClientId(clientId())
+                .setClientHost(clientHost())
+                .setMemberAssignment(assignment());
     }
 
     /**
@@ -420,16 +420,16 @@ public class ClassicGroupMember {
     @Override
     public String toString() {
         return "ClassicGroupMember(" +
-            "memberId='" + memberId + '\'' +
-            ", groupInstanceId='" + groupInstanceId.orElse("") + '\'' +
-            ", clientId='" + clientId + '\'' +
-            ", clientHost='" + clientHost + '\'' +
-            ", rebalanceTimeoutMs=" + rebalanceTimeoutMs +
-            ", sessionTimeoutMs=" + sessionTimeoutMs +
-            ", protocolType='" + protocolType + '\'' +
-            ", supportedProtocols=" + supportedProtocols.stream()
+                "memberId='" + memberId + '\'' +
+                ", groupInstanceId='" + groupInstanceId.orElse("") + '\'' +
+                ", clientId='" + clientId + '\'' +
+                ", clientHost='" + clientHost + '\'' +
+                ", rebalanceTimeoutMs=" + rebalanceTimeoutMs +
+                ", sessionTimeoutMs=" + sessionTimeoutMs +
+                ", protocolType='" + protocolType + '\'' +
+                ", supportedProtocols=" + supportedProtocols.stream()
                 .map(JoinGroupRequestProtocol::name)
                 .toList() +
-            ')';
+                ')';
     }
 }

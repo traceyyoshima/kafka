@@ -24,7 +24,7 @@ import java.util.Map;
 /*
  * This code is duplicated in org.apache.kafka.clients.admin.ScramMechanism.
  * The type field in both files must match and must not change. The type field
- * is used both for passing ScramCredentialUpsertion and for the internal 
+ * is used both for passing ScramCredentialUpsertion and for the internal
  * UserScramCredentialRecord. Do not change the type field.
  */
 public enum ScramMechanism {
@@ -49,11 +49,11 @@ public enum ScramMechanism {
     }
 
     ScramMechanism(
-        byte type,
-        String hashAlgorithm,
-        String macAlgorithm,
-        int minIterations,
-        int maxIterations
+            byte type,
+            String hashAlgorithm,
+            String macAlgorithm,
+            int minIterations,
+            int maxIterations
     ) {
         this.type = type;
         this.mechanismName = "SCRAM-" + hashAlgorithm;

@@ -53,7 +53,7 @@ public class DescribeTopicsOptions extends AbstractOptions<DescribeTopicsOptions
      *       {@code max.request.partition.size.limit}.
      *   </li>
      * </ul>
-     * 
+     *
      * @param partitionSizeLimitPerResponse the maximum number of partitions per response
      */
     public DescribeTopicsOptions partitionSizeLimitPerResponse(int partitionSizeLimitPerResponse) {

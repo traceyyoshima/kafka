@@ -27,6 +27,7 @@ import java.util.Queue;
 
 /**
  * Thread that can be used to check for the readiness and liveness of a standalone herder.
+ *
  * @see <a href="https://cwiki.apache.org/confluence/display/KAFKA/KIP-1017%3A+Health+check+endpoint+for+Kafka+Connect">KIP-1017</a>
  */
 class HealthCheckThread extends Thread {
@@ -91,7 +92,7 @@ class HealthCheckThread extends Thread {
      *
      * @param callback callback to invoke after herder health has been verified or if
      *                 an error occurs that indicates herder is unhealthy; may not be null
-     * @throws  IllegalStateException if invoked after {@link #shutDown()}
+     * @throws IllegalStateException if invoked after {@link #shutDown()}
      */
     public void check(Callback<Void> callback) {
         if (callback == null) {

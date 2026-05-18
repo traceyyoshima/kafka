@@ -75,15 +75,15 @@ public class PropertyFileLoginModule implements LoginModule {
                 CREDENTIAL_PROPERTIES.putIfAbsent(fileName, credentialProperties);
                 if (credentialProperties.isEmpty())
                     log.warn("Credential properties file '{}' is empty; all requests will be permitted",
-                        fileName);
+                            fileName);
             } catch (IOException e) {
                 log.error("Error loading credentials file ", e);
                 throw new ConfigException("Error loading Property Credentials file");
             }
         } else {
             log.trace(
-                "Credential properties file '{}' has already been opened and parsed; will read from cached, in-memory store",
-                fileName);
+                    "Credential properties file '{}' has already been opened and parsed; will read from cached, in-memory store",
+                    fileName);
         }
     }
 
@@ -105,26 +105,26 @@ public class PropertyFileLoginModule implements LoginModule {
 
         if (credentialProperties.isEmpty()) {
             log.trace("Not validating credentials for user '{}' as credential properties file '{}' is empty",
-                username,
-                fileName);
+                    username,
+                    fileName);
             authenticated = true;
         } else if (username == null) {
             log.trace("No credentials were provided or the provided credentials were malformed");
             authenticated = false;
         } else if (password != null && password.equals(credentialProperties.get(username))) {
             log.trace("Credentials provided for user '{}' match those present in the credential properties file '{}'",
-                username,
-                fileName);
+                    username,
+                    fileName);
             authenticated = true;
         } else if (!credentialProperties.containsKey(username)) {
             log.trace("User '{}' is not present in the credential properties file '{}'",
-                username,
-                fileName);
+                    username,
+                    fileName);
             authenticated = false;
         } else {
             log.trace("Credentials provided for user '{}' do not match those present in the credential properties file '{}'",
-                username,
-                fileName);
+                    username,
+                    fileName);
             authenticated = false;
         }
 

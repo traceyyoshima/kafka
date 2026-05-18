@@ -53,10 +53,10 @@ class PeriodicTask {
     private static final long DEFAULT_IMMEDIATE_PERIOD_NS = MILLISECONDS.toNanos(10);
 
     PeriodicTask(
-        String name,
-        Supplier<ControllerResult<Boolean>> op,
-        long periodNs,
-        EnumSet<PeriodicTaskFlag> flags
+            String name,
+            Supplier<ControllerResult<Boolean>> op,
+            long periodNs,
+            EnumSet<PeriodicTaskFlag> flags
     ) {
         this.name = name;
         this.op = op;
@@ -66,11 +66,11 @@ class PeriodicTask {
     }
 
     PeriodicTask(
-        String name,
-        Supplier<ControllerResult<Boolean>> op,
-        long periodNs,
-        EnumSet<PeriodicTaskFlag> flags,
-        long immediatePeriodNs
+            String name,
+            Supplier<ControllerResult<Boolean>> op,
+            long periodNs,
+            EnumSet<PeriodicTaskFlag> flags,
+            long immediatePeriodNs
     ) {
         this.name = name;
         this.op = op;

@@ -76,7 +76,7 @@ public class RawBytesExtractionBenchmark {
         @Setup(Level.Iteration)
         public void setup() {
             this.values = new byte[DATA_SET_SAMPLE_SIZE][];
-            for (int i = 0; i < DATA_SET_SAMPLE_SIZE; i++) { 
+            for (int i = 0; i < DATA_SET_SAMPLE_SIZE; i++) {
                 values[i] = new byte[1 + StateSerdes.TIMESTAMP_SIZE + 8];
                 final ByteBuffer buf = ByteBuffer.wrap(values[i]);
                 buf.put((byte) 0x00); // header size
@@ -105,7 +105,7 @@ public class RawBytesExtractionBenchmark {
         }
     }
 
-    
+
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public void testRawAggregationWithoutHeaders(IterationStateForEmptyHeaders state, Blackhole bh) {
@@ -232,15 +232,15 @@ public class RawBytesExtractionBenchmark {
         //   headersBytes = [] (empty, 0 bytes)
         // Result: [0x00][payload]
         return ByteBuffer
-            .allocate(1 + valueAndTimestamp.length)
-            .put((byte) 0x00)
-            .put(valueAndTimestamp)
-            .array();
+                .allocate(1 + valueAndTimestamp.length)
+                .put((byte) 0x00)
+                .put(valueAndTimestamp)
+                .array();
     }
 
     /**
-     * Prior to KAFKA-20249: AggregationWithHeadersDeserializer - Extract the raw aggregation bytes from 
-     * serialized AggregationWithHeaders, stripping the headers prefix. 
+     * Prior to KAFKA-20249: AggregationWithHeadersDeserializer - Extract the raw aggregation bytes from
+     * serialized AggregationWithHeaders, stripping the headers prefix.
      */
     private static byte[] rawAggregationPre20249(final byte[] aggregationWithHeaders) {
         if (aggregationWithHeaders == null) {
@@ -248,12 +248,12 @@ public class RawBytesExtractionBenchmark {
         }
 
         final ByteBuffer buffer = ByteBuffer.wrap(aggregationWithHeaders);
-        Utils.readHeaders(buffer); 
+        Utils.readHeaders(buffer);
         return Utils.readBytes(buffer, buffer.remaining());
     }
 
     /**
-     * Prior to KAFKA-20249: ValueAndTimestampDeserializer - Extract raw value from serialized 
+     * Prior to KAFKA-20249: ValueAndTimestampDeserializer - Extract raw value from serialized
      * ValueTimestampHeaders.
      */
     private static byte[] rawValuePre20249(final byte[] rawValueTimestampHeaders) {
@@ -270,7 +270,7 @@ public class RawBytesExtractionBenchmark {
     /**
      * Prior to KAFKA-20249: Extract raw timestamped value (timestamp + value) from serialized ValueTimestampHeaders.
      * This strips the headers portion but keeps timestamp and value intact.
-     *
+     * <p>
      * Format conversion:
      * Input:  [headersSize(varint)][headers][timestamp(8)][value]
      * Output: [timestamp(8)][value]
@@ -285,9 +285,9 @@ public class RawBytesExtractionBenchmark {
         // Skip headers, keep timestamp + value
         if (headersSize < 0 || headersSize > buffer.remaining() || buffer.remaining() - headersSize < StateSerdes.TIMESTAMP_SIZE) {
             throw new SerializationException(
-                "Invalid format: headers size " + headersSize + 
-                ", timestamp expected size " + StateSerdes.TIMESTAMP_SIZE + 
-                ", but buffer size " + buffer.remaining()
+                    "Invalid format: headers size " + headersSize +
+                            ", timestamp expected size " + StateSerdes.TIMESTAMP_SIZE +
+                            ", but buffer size " + buffer.remaining()
             );
         }
         buffer.position(buffer.position() + headersSize);

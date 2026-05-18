@@ -27,7 +27,7 @@ import java.util.Map;
 
 /**
  * Possible error codes.
- *
+ * <p>
  * - {@link Errors#GROUP_AUTHORIZATION_FAILED}
  * - {@link Errors#NOT_COORDINATOR}
  * - {@link Errors#COORDINATOR_NOT_AVAILABLE}
@@ -74,7 +74,7 @@ public class StreamsGroupHeartbeatResponse extends AbstractResponse {
 
     public static StreamsGroupHeartbeatResponse parse(Readable readable, short version) {
         return new StreamsGroupHeartbeatResponse(new StreamsGroupHeartbeatResponseData(
-            readable, version));
+                readable, version));
     }
 
     public enum Status {

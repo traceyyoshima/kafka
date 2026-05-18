@@ -41,7 +41,8 @@ public class TestUtils {
 
     /**
      * Assemble a collection of records arbitrarily distributed across all partitions of the specified topic
-     * @param topicName Destination topic
+     *
+     * @param topicName  Destination topic
      * @param numRecords count of records to produce to the topic in total
      * @return A batch of records that can be sent to a producer.
      */
@@ -57,8 +58,9 @@ public class TestUtils {
 
     /**
      * Assemble a collection of records evenly distributed across some partitions of the specified topic
-     * @param topicName Destination topic
-     * @param numRecords count of records to produce to each partition
+     *
+     * @param topicName     Destination topic
+     * @param numRecords    count of records to produce to each partition
      * @param numPartitions number of partitions within the topic to write records to.
      * @return A batch of records that can be sent to a producer.
      */

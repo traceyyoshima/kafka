@@ -27,10 +27,10 @@ public class AbortTransactionSpec {
     private final int coordinatorEpoch;
 
     public AbortTransactionSpec(
-        TopicPartition topicPartition,
-        long producerId,
-        short producerEpoch,
-        int coordinatorEpoch
+            TopicPartition topicPartition,
+            long producerId,
+            short producerEpoch,
+            int coordinatorEpoch
     ) {
         this.topicPartition = topicPartition;
         this.producerId = producerId;
@@ -60,9 +60,9 @@ public class AbortTransactionSpec {
         if (o == null || getClass() != o.getClass()) return false;
         AbortTransactionSpec that = (AbortTransactionSpec) o;
         return producerId == that.producerId &&
-            producerEpoch == that.producerEpoch &&
-            coordinatorEpoch == that.coordinatorEpoch &&
-            Objects.equals(topicPartition, that.topicPartition);
+                producerEpoch == that.producerEpoch &&
+                coordinatorEpoch == that.coordinatorEpoch &&
+                Objects.equals(topicPartition, that.topicPartition);
     }
 
     @Override
@@ -73,11 +73,11 @@ public class AbortTransactionSpec {
     @Override
     public String toString() {
         return "AbortTransactionSpec(" +
-            "topicPartition=" + topicPartition +
-            ", producerId=" + producerId +
-            ", producerEpoch=" + producerEpoch +
-            ", coordinatorEpoch=" + coordinatorEpoch +
-            ')';
+                "topicPartition=" + topicPartition +
+                ", producerId=" + producerId +
+                ", producerEpoch=" + producerEpoch +
+                ", coordinatorEpoch=" + coordinatorEpoch +
+                ')';
     }
 
 }

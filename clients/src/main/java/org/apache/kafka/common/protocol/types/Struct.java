@@ -90,6 +90,7 @@ public class Struct {
 
     /**
      * Check if the struct contains a field.
+     *
      * @param name
      * @return Whether a field exists.
      */
@@ -140,7 +141,7 @@ public class Struct {
     /**
      * Set the field specified by the given name to the value
      *
-     * @param name The name of the field
+     * @param name  The name of the field
      * @param value The value to set
      * @throws SchemaException If the field is not known
      */
@@ -265,7 +266,7 @@ public class Struct {
             if (f.def.type.isArray()) {
                 if (this.get(f) != null) {
                     Object[] arrayObject = (Object[]) this.get(f);
-                    for (Object arrayItem: arrayObject)
+                    for (Object arrayItem : arrayObject)
                         result = prime * result + arrayItem.hashCode();
                 }
             } else {

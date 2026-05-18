@@ -34,8 +34,8 @@ public class CorruptedRecord extends StampedRecord {
     @Override
     public String toString() {
         return "CorruptedRecord(" +
-            "value = " + value +
-            ")";
+                "value = " + value +
+                ")";
     }
 
     @Override

@@ -30,7 +30,7 @@ public class TopicIdPartition {
     /**
      * Create an instance with the provided parameters.
      *
-     * @param topicId the topic id
+     * @param topicId        the topic id
      * @param topicPartition the topic partition
      */
     public TopicIdPartition(Uuid topicId, TopicPartition topicPartition) {
@@ -41,9 +41,9 @@ public class TopicIdPartition {
     /**
      * Create an instance with the provided parameters.
      *
-     * @param topicId the topic id
+     * @param topicId   the topic id
      * @param partition the partition id
-     * @param topic the topic name or null
+     * @param topic     the topic name or null
      */
     public TopicIdPartition(Uuid topicId, int partition, String topic) {
         this.topicId = Objects.requireNonNull(topicId, "topicId can not be null");
@@ -88,7 +88,7 @@ public class TopicIdPartition {
         }
         TopicIdPartition that = (TopicIdPartition) o;
         return topicId.equals(that.topicId) &&
-               topicPartition.equals(that.topicPartition);
+                topicPartition.equals(that.topicPartition);
     }
 
     @Override

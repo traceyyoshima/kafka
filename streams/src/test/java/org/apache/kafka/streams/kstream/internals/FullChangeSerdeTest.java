@@ -79,19 +79,19 @@ public class FullChangeSerdeTest {
     @Test
     public void shouldRoundTripNullChange() {
         assertThat(
-            serde.serializeParts(null, null, new Change<>(null, null)),
-            is(new Change<byte[]>(null, null))
+                serde.serializeParts(null, null, new Change<>(null, null)),
+                is(new Change<byte[]>(null, null))
         );
 
         assertThat(
-            serde.deserializeParts(null, null, new Change<>(null, null)),
-            is(new Change<String>(null, null))
+                serde.deserializeParts(null, null, new Change<>(null, null)),
+                is(new Change<String>(null, null))
         );
 
         final byte[] legacyFormat = mergeChangeArraysIntoSingleLegacyFormattedArray(new Change<>(null, null));
         assertThat(
-            FullChangeSerde.decomposeLegacyFormattedArrayIntoChangeArrays(legacyFormat),
-            is(new Change<byte[]>(null, null))
+                FullChangeSerde.decomposeLegacyFormattedArrayIntoChangeArrays(legacyFormat),
+                is(new Change<byte[]>(null, null))
         );
     }
 
@@ -101,8 +101,8 @@ public class FullChangeSerdeTest {
         final byte[] legacyFormat = mergeChangeArraysIntoSingleLegacyFormattedArray(serialized);
         final Change<byte[]> decomposedLegacyFormat = FullChangeSerde.decomposeLegacyFormattedArrayIntoChangeArrays(legacyFormat);
         assertThat(
-            serde.deserializeParts(null, new RecordHeaders(), decomposedLegacyFormat),
-            is(new Change<>("new", null))
+                serde.deserializeParts(null, new RecordHeaders(), decomposedLegacyFormat),
+                is(new Change<>("new", null))
         );
     }
 
@@ -112,8 +112,8 @@ public class FullChangeSerdeTest {
         final byte[] legacyFormat = mergeChangeArraysIntoSingleLegacyFormattedArray(serialized);
         final Change<byte[]> decomposedLegacyFormat = FullChangeSerde.decomposeLegacyFormattedArrayIntoChangeArrays(legacyFormat);
         assertThat(
-            serde.deserializeParts(null, new RecordHeaders(), decomposedLegacyFormat),
-            is(new Change<>(null, "old"))
+                serde.deserializeParts(null, new RecordHeaders(), decomposedLegacyFormat),
+                is(new Change<>(null, "old"))
         );
     }
 
@@ -123,8 +123,8 @@ public class FullChangeSerdeTest {
         final byte[] legacyFormat = mergeChangeArraysIntoSingleLegacyFormattedArray(serialized);
         final Change<byte[]> decomposedLegacyFormat = FullChangeSerde.decomposeLegacyFormattedArrayIntoChangeArrays(legacyFormat);
         assertThat(
-            serde.deserializeParts(null, new RecordHeaders(), decomposedLegacyFormat),
-            is(new Change<>("new", "old"))
+                serde.deserializeParts(null, new RecordHeaders(), decomposedLegacyFormat),
+                is(new Change<>("new", "old"))
         );
     }
 

@@ -177,15 +177,15 @@ public abstract class AbstractResetIntegrationTest {
 
     private void add10InputElements() {
         final List<KeyValue<Long, String>> records = List.of(KeyValue.pair(0L, "aaa"),
-                                                                   KeyValue.pair(1L, "bbb"),
-                                                                   KeyValue.pair(0L, "ccc"),
-                                                                   KeyValue.pair(1L, "ddd"),
-                                                                   KeyValue.pair(0L, "eee"),
-                                                                   KeyValue.pair(1L, "fff"),
-                                                                   KeyValue.pair(0L, "ggg"),
-                                                                   KeyValue.pair(1L, "hhh"),
-                                                                   KeyValue.pair(0L, "iii"),
-                                                                   KeyValue.pair(1L, "jjj"));
+                KeyValue.pair(1L, "bbb"),
+                KeyValue.pair(0L, "ccc"),
+                KeyValue.pair(1L, "ddd"),
+                KeyValue.pair(0L, "eee"),
+                KeyValue.pair(1L, "fff"),
+                KeyValue.pair(0L, "ggg"),
+                KeyValue.pair(1L, "hhh"),
+                KeyValue.pair(0L, "iii"),
+                KeyValue.pair(1L, "jjj"));
 
         for (final KeyValue<Long, String> record : records) {
             mockTime.sleep(10);
@@ -287,10 +287,10 @@ public abstract class AbstractResetIntegrationTest {
         final KeyValue<Long, String> badMessage = new KeyValue<>(-1L, "badRecord-ShouldBeSkipped");
         if (!useRepartitioned) {
             IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-                INTERMEDIATE_USER_TOPIC,
-                Set.of(badMessage),
-                producerConfig,
-                mockTime.milliseconds());
+                    INTERMEDIATE_USER_TOPIC,
+                    Set.of(badMessage),
+                    producerConfig,
+                    mockTime.milliseconds());
         }
 
         // RESET
@@ -336,10 +336,10 @@ public abstract class AbstractResetIntegrationTest {
 
         // use map to trigger internal re-partitioning before groupByKey
         input.map(KeyValue::new)
-            .groupByKey()
-            .count()
-            .toStream()
-            .to(OUTPUT_TOPIC, Produced.with(Serdes.Long(), Serdes.Long()));
+                .groupByKey()
+                .count()
+                .toStream()
+                .to(OUTPUT_TOPIC, Produced.with(Serdes.Long(), Serdes.Long()));
 
         final KStream<Long, String> stream;
         if (useRepartitioned) {
@@ -349,11 +349,11 @@ public abstract class AbstractResetIntegrationTest {
             stream = builder.stream(INTERMEDIATE_USER_TOPIC);
         }
         stream.groupByKey()
-            .windowedBy(TimeWindows.ofSizeWithNoGrace(ofMillis(35)).advanceBy(ofMillis(10)))
-            .count()
-            .toStream()
-            .map((key, value) -> new KeyValue<>(key.window().start() + key.window().end(), value))
-            .to(outputTopic2, Produced.with(Serdes.Long(), Serdes.Long()));
+                .windowedBy(TimeWindows.ofSizeWithNoGrace(ofMillis(35)).advanceBy(ofMillis(10)))
+                .count()
+                .toStream()
+                .map((key, value) -> new KeyValue<>(key.window().start() + key.window().end(), value))
+                .to(outputTopic2, Produced.with(Serdes.Long(), Serdes.Long()));
 
         return builder.build();
     }
@@ -365,20 +365,20 @@ public abstract class AbstractResetIntegrationTest {
 
         // use map to trigger internal re-partitioning before groupByKey
         input.map((key, value) -> new KeyValue<>(key, key))
-            .to(OUTPUT_TOPIC, Produced.with(Serdes.Long(), Serdes.Long()));
+                .to(OUTPUT_TOPIC, Produced.with(Serdes.Long(), Serdes.Long()));
 
         return builder.build();
     }
 
     protected boolean tryCleanGlobal(final boolean withIntermediateTopics,
-                                   final String resetScenario,
-                                   final String resetScenarioArg,
-                                   final String appID) throws Exception {
+                                     final String resetScenario,
+                                     final String resetScenarioArg,
+                                     final String appID) throws Exception {
         final List<String> parameterList = new ArrayList<>(
-            List.of("--application-id", appID,
-                    "--bootstrap-server", cluster.bootstrapServers(),
-                    "--input-topics", INPUT_TOPIC
-            ));
+                List.of("--application-id", appID,
+                        "--bootstrap-server", cluster.bootstrapServers(),
+                        "--input-topics", INPUT_TOPIC
+                ));
         if (withIntermediateTopics) {
             parameterList.add("--intermediate-topics");
             parameterList.add(INTERMEDIATE_USER_TOPIC);
@@ -413,9 +413,9 @@ public abstract class AbstractResetIntegrationTest {
     }
 
     protected void cleanGlobal(final boolean withIntermediateTopics,
-                             final String resetScenario,
-                             final String resetScenarioArg,
-                             final String appID) throws Exception {
+                               final String resetScenario,
+                               final String resetScenarioArg,
+                               final String appID) throws Exception {
         final boolean cleanResult = tryCleanGlobal(withIntermediateTopics, resetScenario, resetScenarioArg, appID);
         assertTrue(cleanResult);
     }

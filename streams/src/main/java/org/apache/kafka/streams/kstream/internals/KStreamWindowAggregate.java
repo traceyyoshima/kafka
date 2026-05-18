@@ -76,7 +76,7 @@ public class KStreamWindowAggregate<KIn, VIn, VAgg, W extends Window> implements
         if (emitStrategy.type() == StrategyType.ON_WINDOW_CLOSE) {
             if (!(windows instanceof TimeWindows)) {
                 throw new IllegalArgumentException("ON_WINDOW_CLOSE strategy is only supported for "
-                    + "TimeWindows and SlidingWindows for TimeWindowedKStream");
+                        + "TimeWindows and SlidingWindows for TimeWindowedKStream");
             }
         }
     }
@@ -111,13 +111,13 @@ public class KStreamWindowAggregate<KIn, VIn, VAgg, W extends Window> implements
                 if (context().recordMetadata().isPresent()) {
                     final RecordMetadata recordMetadata = context().recordMetadata().get();
                     log.warn(
-                        "Skipping record due to null key. "
-                            + "topic=[{}] partition=[{}] offset=[{}]",
-                        recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
+                            "Skipping record due to null key. "
+                                    + "topic=[{}] partition=[{}] offset=[{}]",
+                            recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
                     );
                 } else {
                     log.warn(
-                        "Skipping record due to null key. Topic, partition, and offset not known."
+                            "Skipping record due to null key. Topic, partition, and offset not known."
                     );
                 }
                 droppedRecordsSensor.record();
@@ -169,7 +169,7 @@ public class KStreamWindowAggregate<KIn, VIn, VAgg, W extends Window> implements
             // Since time window end timestamp is exclusive, we set the inclusive lower bound plus 1;
             // Set lower bound to 0L for the first time emit so that when we fetchAll, we fetch from 0L
             return lastEmitWindowCloseTime == ConsumerRecord.NO_TIMESTAMP ?
-                0L : Math.max(0L, lastEmitWindowCloseTime - windows.size()) + 1;
+                    0L : Math.max(0L, lastEmitWindowCloseTime - windows.size()) + 1;
         }
 
         @Override
@@ -208,7 +208,7 @@ public class KStreamWindowAggregate<KIn, VIn, VAgg, W extends Window> implements
 
             @Override
             public String[] storeNames() {
-                return new String[] {storeName};
+                return new String[]{storeName};
             }
         };
     }
@@ -230,7 +230,7 @@ public class KStreamWindowAggregate<KIn, VIn, VAgg, W extends Window> implements
                     final StateStore store = context.getStateStore(storeName);
                     final String storeType = store == null ? "null" : store.getClass().getName();
                     throw new InvalidStateStoreException("Windowed-KTable state store must implement either "
-                        + "TimestampedWindowStore, or TimestampedWindowStoreWithHeaders. Got: " + storeType);
+                            + "TimestampedWindowStore, or TimestampedWindowStoreWithHeaders. Got: " + storeType);
                 }
             }
         }

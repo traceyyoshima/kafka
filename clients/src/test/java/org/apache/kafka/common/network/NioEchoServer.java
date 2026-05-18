@@ -104,8 +104,8 @@ public final class NioEchoServer extends Thread {
     }
 
     public NioEchoServer(ListenerName listenerName, SecurityProtocol securityProtocol, AbstractConfig config,
-            String serverHost, ChannelBuilder channelBuilder, CredentialCache credentialCache,
-            int failedAuthenticationDelayMs, Time time, DelegationTokenCache tokenCache) throws Exception {
+                         String serverHost, ChannelBuilder channelBuilder, CredentialCache credentialCache,
+                         int failedAuthenticationDelayMs, Time time, DelegationTokenCache tokenCache) throws Exception {
         super("echoserver");
         setDaemon(true);
         ServerSocketChannel serverSocketChannel = null;
@@ -201,14 +201,14 @@ public final class NioEchoServer extends Thread {
                     expected = Double.NaN;
 
                 assertEquals(expected, metricValue(metricName), EPS, "Metric not updated " + metricName +
-                    " expected:<" + expectedValue + "> but was:<" + metricValue(metricName) + ">");
+                        " expected:<" + expectedValue + "> but was:<" + metricValue(metricName) + ">");
             } else if (metricType == MetricType.TOTAL)
                 TestUtils.waitForCondition(() -> Math.abs(metricValue(metricName) - expectedValue) <= EPS,
                         thisMaxWaitMs, () -> "Metric not updated " + metricName + " expected:<" + expectedValue
                                 + "> but was:<" + metricValue(metricName) + ">");
             else
                 TestUtils.waitForCondition(() -> metricValue(metricName) > 0.0, thisMaxWaitMs,
-                    () -> "Metric not updated " + metricName + " expected:<a positive number> but was:<"
+                        () -> "Metric not updated " + metricName + " expected:<a positive number> but was:<"
                                 + metricValue(metricName) + ">");
         }
     }
@@ -382,6 +382,7 @@ public final class NioEchoServer extends Thread {
         public AcceptorThread() {
             setName("acceptor");
         }
+
         @Override
         public void run() {
             java.nio.channels.Selector acceptSelector = null;

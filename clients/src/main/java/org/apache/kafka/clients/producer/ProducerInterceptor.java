@@ -81,15 +81,16 @@ public interface ProducerInterceptor<K, V> extends Configurable, AutoCloseable {
      * This method will generally execute in the background I/O thread, so the implementation should be reasonably fast.
      * Otherwise, sending of messages from other threads could be delayed.
      *
-     * @param metadata The metadata for the record that was sent (i.e. the partition and offset).
-     *                 If an error occurred, metadata will contain only valid topic and maybe
-     *                 partition. If partition is not given in ProducerRecord and an error occurs
-     *                 before partition gets assigned, then partition will be set to {@link RecordMetadata#UNKNOWN_PARTITION}.
-     *                 The metadata may be null if the client passed null record to
-     *                 {@link org.apache.kafka.clients.producer.KafkaProducer#send(ProducerRecord)}.
+     * @param metadata  The metadata for the record that was sent (i.e. the partition and offset).
+     *                  If an error occurred, metadata will contain only valid topic and maybe
+     *                  partition. If partition is not given in ProducerRecord and an error occurs
+     *                  before partition gets assigned, then partition will be set to {@link RecordMetadata#UNKNOWN_PARTITION}.
+     *                  The metadata may be null if the client passed null record to
+     *                  {@link org.apache.kafka.clients.producer.KafkaProducer#send(ProducerRecord)}.
      * @param exception The exception thrown during processing of this record. Null if no error occurred.
      */
-    default void onAcknowledgement(RecordMetadata metadata, Exception exception) {}
+    default void onAcknowledgement(RecordMetadata metadata, Exception exception) {
+    }
 
     /**
      * This method is called when the record sent to the server has been acknowledged, or when sending the record fails before
@@ -103,14 +104,14 @@ public interface ProducerInterceptor<K, V> extends Configurable, AutoCloseable {
      * This method will generally execute in the background I/O thread, so the implementation should be reasonably fast.
      * Otherwise, sending of messages from other threads could be delayed.
      *
-     * @param metadata The metadata for the record that was sent (i.e. the partition and offset).
-     *                 If an error occurred, metadata will contain only valid topic and maybe
-     *                 partition. If partition is not given in ProducerRecord and an error occurs
-     *                 before partition gets assigned, then partition will be set to {@link RecordMetadata#UNKNOWN_PARTITION}.
-     *                 The metadata may be null if the client passed null record to
-     *                 {@link org.apache.kafka.clients.producer.KafkaProducer#send(ProducerRecord)}.
+     * @param metadata  The metadata for the record that was sent (i.e. the partition and offset).
+     *                  If an error occurred, metadata will contain only valid topic and maybe
+     *                  partition. If partition is not given in ProducerRecord and an error occurs
+     *                  before partition gets assigned, then partition will be set to {@link RecordMetadata#UNKNOWN_PARTITION}.
+     *                  The metadata may be null if the client passed null record to
+     *                  {@link org.apache.kafka.clients.producer.KafkaProducer#send(ProducerRecord)}.
      * @param exception The exception thrown during processing of this record. Null if no error occurred.
-     * @param headers The headers for the record that was sent. It is read-only.
+     * @param headers   The headers for the record that was sent. It is read-only.
      */
     default void onAcknowledgement(RecordMetadata metadata, Exception exception, Headers headers) {
         onAcknowledgement(metadata, exception);

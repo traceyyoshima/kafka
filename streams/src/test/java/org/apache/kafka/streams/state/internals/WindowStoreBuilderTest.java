@@ -135,12 +135,12 @@ public class WindowStoreBuilderTest {
     public void shouldDisableCachingWithRetainDuplicates() {
         supplier = Stores.persistentWindowStore("name", Duration.ofMillis(10L), Duration.ofMillis(10L), true);
         final StoreBuilder<WindowStore<String, String>> builder = new WindowStoreBuilder<>(
-            supplier,
-            Serdes.String(),
-            Serdes.String(),
-            new MockTime()
+                supplier,
+                Serdes.String(),
+                Serdes.String(),
+                new MockTime()
         ).withCachingEnabled();
-        
+
         builder.build();
 
         assertFalse(((AbstractStoreBuilder<String, String, WindowStore<String, String>>) builder).enableCaching);
@@ -149,20 +149,20 @@ public class WindowStoreBuilderTest {
     @Test
     public void shouldDisableLogCompactionWithRetainDuplicates() {
         supplier = Stores.persistentWindowStore(
-            "name",
-            Duration.ofMillis(10L),
-            Duration.ofMillis(10L),
-            true);
+                "name",
+                Duration.ofMillis(10L),
+                Duration.ofMillis(10L),
+                true);
         final StoreBuilder<WindowStore<String, String>> builder = new WindowStoreBuilder<>(
-            supplier,
-            Serdes.String(),
-            Serdes.String(),
-            new MockTime()
+                supplier,
+                Serdes.String(),
+                Serdes.String(),
+                new MockTime()
         ).withCachingEnabled();
 
         assertThat(
-            builder.logConfig().get(TopicConfig.CLEANUP_POLICY_CONFIG),
-            equalTo(TopicConfig.CLEANUP_POLICY_DELETE)
+                builder.logConfig().get(TopicConfig.CLEANUP_POLICY_CONFIG),
+                equalTo(TopicConfig.CLEANUP_POLICY_DELETE)
         );
     }
 
@@ -184,7 +184,7 @@ public class WindowStoreBuilderTest {
         when(supplier.metricsScope()).thenReturn(null);
 
         final Exception e = assertThrows(NullPointerException.class,
-            () -> new WindowStoreBuilder<>(supplier, Serdes.String(), Serdes.String(), new MockTime()));
+                () -> new WindowStoreBuilder<>(supplier, Serdes.String(), Serdes.String(), new MockTime()));
         assertThat(e.getMessage(), equalTo("storeSupplier's metricsScope can't be null"));
     }
 }

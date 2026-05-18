@@ -30,33 +30,33 @@ import java.util.Set;
 
 /**
  * The specification for a benchmark that produces messages to a set of topics.
- *
+ * <p>
  * To configure a transactional producer, a #{@link TransactionGenerator} must be passed in.
  * Said generator works in lockstep with the producer by instructing it what action to take next in regards to a transaction.
- *
+ * <p>
  * An example JSON representation which will result in a producer that creates three topics (foo1, foo2, foo3)
  * with three partitions each and produces to them:
  * #{@code
- *   {
- *      "class": "org.apache.kafka.trogdor.workload.ProduceBenchSpec",
- *      "durationMs": 10000000,
- *      "producerNode": "node0",
- *      "bootstrapServers": "localhost:9092",
- *      "targetMessagesPerSec": 10,
- *      "maxMessages": 100,
- *      "activeTopics": {
- *        "foo[1-3]": {
- *          "numPartitions": 3,
- *          "replicationFactor": 1
- *        }
- *      },
- *      "inactiveTopics": {
- *        "foo[4-5]": {
- *          "numPartitions": 3,
- *          "replicationFactor": 1
- *        }
- *      }
- *   }
+ * {
+ * "class": "org.apache.kafka.trogdor.workload.ProduceBenchSpec",
+ * "durationMs": 10000000,
+ * "producerNode": "node0",
+ * "bootstrapServers": "localhost:9092",
+ * "targetMessagesPerSec": 10,
+ * "maxMessages": 100,
+ * "activeTopics": {
+ * "foo[1-3]": {
+ * "numPartitions": 3,
+ * "replicationFactor": 1
+ * }
+ * },
+ * "inactiveTopics": {
+ * "foo[4-5]": {
+ * "numPartitions": 3,
+ * "replicationFactor": 1
+ * }
+ * }
+ * }
  * }
  */
 public final class ProduceBenchSpec extends TaskSpec {
@@ -77,38 +77,38 @@ public final class ProduceBenchSpec extends TaskSpec {
 
     @JsonCreator
     public ProduceBenchSpec(@JsonProperty("startMs") long startMs,
-                         @JsonProperty("durationMs") long durationMs,
-                         @JsonProperty("producerNode") String producerNode,
-                         @JsonProperty("bootstrapServers") String bootstrapServers,
-                         @JsonProperty("targetMessagesPerSec") int targetMessagesPerSec,
-                         @JsonProperty("maxMessages") long maxMessages,
-                         @JsonProperty("keyGenerator") PayloadGenerator keyGenerator,
-                         @JsonProperty("valueGenerator") PayloadGenerator valueGenerator,
-                         @JsonProperty("transactionGenerator") Optional<TransactionGenerator> txGenerator,
-                         @JsonProperty("producerConf") Map<String, String> producerConf,
-                         @JsonProperty("commonClientConf") Map<String, String> commonClientConf,
-                         @JsonProperty("adminClientConf") Map<String, String> adminClientConf,
-                         @JsonProperty("activeTopics") TopicsSpec activeTopics,
-                         @JsonProperty("inactiveTopics") TopicsSpec inactiveTopics,
-                         @JsonProperty("useConfiguredPartitioner") boolean useConfiguredPartitioner, 
-                         @JsonProperty("skipFlush") boolean skipFlush) {
+                            @JsonProperty("durationMs") long durationMs,
+                            @JsonProperty("producerNode") String producerNode,
+                            @JsonProperty("bootstrapServers") String bootstrapServers,
+                            @JsonProperty("targetMessagesPerSec") int targetMessagesPerSec,
+                            @JsonProperty("maxMessages") long maxMessages,
+                            @JsonProperty("keyGenerator") PayloadGenerator keyGenerator,
+                            @JsonProperty("valueGenerator") PayloadGenerator valueGenerator,
+                            @JsonProperty("transactionGenerator") Optional<TransactionGenerator> txGenerator,
+                            @JsonProperty("producerConf") Map<String, String> producerConf,
+                            @JsonProperty("commonClientConf") Map<String, String> commonClientConf,
+                            @JsonProperty("adminClientConf") Map<String, String> adminClientConf,
+                            @JsonProperty("activeTopics") TopicsSpec activeTopics,
+                            @JsonProperty("inactiveTopics") TopicsSpec inactiveTopics,
+                            @JsonProperty("useConfiguredPartitioner") boolean useConfiguredPartitioner,
+                            @JsonProperty("skipFlush") boolean skipFlush) {
         super(startMs, durationMs);
         this.producerNode = (producerNode == null) ? "" : producerNode;
         this.bootstrapServers = (bootstrapServers == null) ? "" : bootstrapServers;
         this.targetMessagesPerSec = targetMessagesPerSec;
         this.maxMessages = maxMessages;
         this.keyGenerator = keyGenerator == null ?
-            new SequentialPayloadGenerator(4, 0) : keyGenerator;
+                new SequentialPayloadGenerator(4, 0) : keyGenerator;
         this.valueGenerator = valueGenerator == null ?
-            new ConstantPayloadGenerator(512, new byte[0]) : valueGenerator;
+                new ConstantPayloadGenerator(512, new byte[0]) : valueGenerator;
         this.transactionGenerator = txGenerator == null ? Optional.empty() : txGenerator;
         this.producerConf = configOrEmptyMap(producerConf);
         this.commonClientConf = configOrEmptyMap(commonClientConf);
         this.adminClientConf = configOrEmptyMap(adminClientConf);
         this.activeTopics = (activeTopics == null) ?
-            TopicsSpec.EMPTY : activeTopics.immutableCopy();
+                TopicsSpec.EMPTY : activeTopics.immutableCopy();
         this.inactiveTopics = (inactiveTopics == null) ?
-            TopicsSpec.EMPTY : inactiveTopics.immutableCopy();
+                TopicsSpec.EMPTY : inactiveTopics.immutableCopy();
         this.useConfiguredPartitioner = useConfiguredPartitioner;
         this.skipFlush = skipFlush;
     }

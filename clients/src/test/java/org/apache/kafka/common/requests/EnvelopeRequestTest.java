@@ -40,7 +40,7 @@ public class EnvelopeRequestTest {
         DefaultKafkaPrincipalBuilder kafkaPrincipalBuilder = new DefaultKafkaPrincipalBuilder(null, null);
 
         EnvelopeRequest.Builder requestBuilder = new EnvelopeRequest.Builder(ByteBuffer.allocate(0),
-            kafkaPrincipalBuilder.serialize(kafkaPrincipal), "client-address".getBytes());
+                kafkaPrincipalBuilder.serialize(kafkaPrincipal), "client-address".getBytes());
         EnvelopeRequest request = requestBuilder.build(EnvelopeRequestData.HIGHEST_SUPPORTED_VERSION);
         assertEquals(kafkaPrincipal, kafkaPrincipalBuilder.deserialize(request.requestPrincipal()));
     }
@@ -51,9 +51,9 @@ public class EnvelopeRequestTest {
             ByteBuffer requestData = ByteBuffer.wrap("foobar".getBytes());
             RequestHeader header = new RequestHeader(ApiKeys.ENVELOPE, version, "clientId", 15);
             EnvelopeRequest request = new EnvelopeRequest.Builder(
-                requestData,
-                "principal".getBytes(),
-                InetAddress.getLocalHost().getAddress()
+                    requestData,
+                    "principal".getBytes(),
+                    InetAddress.getLocalHost().getAddress()
             ).build(version);
 
             Send send = request.toSend(header);

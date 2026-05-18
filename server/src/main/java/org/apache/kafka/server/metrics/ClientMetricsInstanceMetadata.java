@@ -40,11 +40,11 @@ public class ClientMetricsInstanceMetadata {
         attributesMap.put(ClientMetricsConfigs.CLIENT_INSTANCE_ID, clientInstanceId.toString());
         attributesMap.put(ClientMetricsConfigs.CLIENT_ID, requestContext.clientId());
         attributesMap.put(ClientMetricsConfigs.CLIENT_SOFTWARE_NAME, requestContext.clientInformation != null ?
-            requestContext.clientInformation.softwareName() : null);
+                requestContext.clientInformation.softwareName() : null);
         attributesMap.put(ClientMetricsConfigs.CLIENT_SOFTWARE_VERSION, requestContext.clientInformation != null ?
-            requestContext.clientInformation.softwareVersion() : null);
+                requestContext.clientInformation.softwareVersion() : null);
         attributesMap.put(ClientMetricsConfigs.CLIENT_SOURCE_ADDRESS, requestContext.clientAddress != null ?
-            requestContext.clientAddress.getHostAddress() : null);
+                requestContext.clientAddress.getHostAddress() : null);
         attributesMap.put(ClientMetricsConfigs.CLIENT_SOURCE_PORT, requestContext.clientPort.map(String::valueOf).orElse(null));
     }
 
@@ -58,9 +58,9 @@ public class ClientMetricsInstanceMetadata {
 
     private boolean matchPatterns(Map<String, Pattern> matchingPatterns) {
         return matchingPatterns.entrySet().stream()
-            .allMatch(entry -> {
-                String attribute = attributesMap.get(entry.getKey());
-                return attribute != null && entry.getValue().matcher(attribute).matches();
-            });
+                .allMatch(entry -> {
+                    String attribute = attributesMap.get(entry.getKey());
+                    return attribute != null && entry.getValue().matcher(attribute).matches();
+                });
     }
 }

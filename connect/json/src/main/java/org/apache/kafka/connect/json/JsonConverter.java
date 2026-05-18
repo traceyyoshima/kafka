@@ -234,24 +234,24 @@ public class JsonConverter implements Converter, HeaderConverter {
      * Creates a JsonConvert initializing serializer and deserializer.
      *
      * @param enableBlackbird permits to enable/disable the registration of Jackson Blackbird module.
-     * <p>
-     * NOTE: This is visible only for testing
+     *                        <p>
+     *                        NOTE: This is visible only for testing
      */
     public JsonConverter(boolean enableBlackbird) {
         serializer = new JsonSerializer(
-            Set.of(),
-            JSON_NODE_FACTORY,
-            enableBlackbird
+                Set.of(),
+                JSON_NODE_FACTORY,
+                enableBlackbird
         );
 
         deserializer = new JsonDeserializer(
-            Set.of(
-                // this ensures that the JsonDeserializer maintains full precision on
-                // floating point numbers that cannot fit into float64
-                DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS
-            ),
-            JSON_NODE_FACTORY,
-            enableBlackbird
+                Set.of(
+                        // this ensures that the JsonDeserializer maintains full precision on
+                        // floating point numbers that cannot fit into float64
+                        DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS
+                ),
+                JSON_NODE_FACTORY,
+                enableBlackbird
         );
     }
 
@@ -353,7 +353,7 @@ public class JsonConverter implements Converter, HeaderConverter {
                 return new SchemaAndValue(schema, convertToConnect(schema, jsonValue, config));
             } else if (!jsonValue.isObject() || jsonValue.size() != 2 || !jsonValue.has(JsonSchema.ENVELOPE_SCHEMA_FIELD_NAME) || !jsonValue.has(JsonSchema.ENVELOPE_PAYLOAD_FIELD_NAME)) {
                 throw new DataException("JsonConverter with schemas.enable requires \"schema\" and \"payload\" fields and may not contain additional fields." +
-                    " If you are trying to deserialize plain JSON data, set schemas.enable=false in your converter configuration.");
+                        " If you are trying to deserialize plain JSON data, set schemas.enable=false in your converter configuration.");
             }
         } else {
             // The deserialized data should either be an envelope object containing the schema and the payload or the schema
@@ -567,8 +567,9 @@ public class JsonConverter implements Converter, HeaderConverter {
     /**
      * Convert this object, in the {@link org.apache.kafka.connect.data} format, into a JSON object with an envelope
      * object containing schema and payload fields.
+     *
      * @param schema the schema for the data
-     * @param value the value
+     * @param value  the value
      * @return JsonNode-encoded version
      */
     private JsonNode convertToJsonWithEnvelope(Schema schema, Object value) {
@@ -707,7 +708,7 @@ public class JsonConverter implements Converter, HeaderConverter {
                     return schema.defaultValue(); // any logical type conversions should already have been applied
                 if (schema.isOptional())
                     return null;
-                throw new DataException("Invalid null value for required " + schemaType +  " field");
+                throw new DataException("Invalid null value for required " + schemaType + " field");
             }
         } else {
             switch (jsonValue.getNodeType()) {
@@ -761,6 +762,7 @@ public class JsonConverter implements Converter, HeaderConverter {
 
     private interface LogicalTypeConverter {
         JsonNode toJson(Schema schema, Object value, JsonConverterConfig config);
+
         Object toConnect(Schema schema, JsonNode value);
     }
 }

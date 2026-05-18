@@ -130,11 +130,11 @@ public final class BatchFileReader implements Iterator<BatchFileReader.BatchAndT
             }
         }
         return new BatchAndType(Batch.data(
-            input.baseOffset(),
-            input.partitionLeaderEpoch(),
-            input.maxTimestamp(),
-            input.sizeInBytes(),
-            messages), true);
+                input.baseOffset(),
+                input.partitionLeaderEpoch(),
+                input.maxTimestamp(),
+                input.sizeInBytes(),
+                messages), true);
     }
 
     private BatchAndType nextDataBatch(FileChannelRecordBatch input) {
@@ -149,11 +149,11 @@ public final class BatchFileReader implements Iterator<BatchFileReader.BatchAndT
             }
         }
         return new BatchAndType(Batch.data(
-            input.baseOffset(),
-            input.partitionLeaderEpoch(),
-            input.maxTimestamp(),
-            input.sizeInBytes(),
-            messages), false);
+                input.baseOffset(),
+                input.partitionLeaderEpoch(),
+                input.maxTimestamp(),
+                input.sizeInBytes(),
+                messages), false);
     }
 
     @Override

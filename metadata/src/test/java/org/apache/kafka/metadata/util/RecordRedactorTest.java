@@ -51,21 +51,21 @@ public final class RecordRedactorTest {
     public void testTopicRecordToString() {
         assertEquals("TopicRecord(name='foo', topicId=UOovKkohSU6AGdYW33ZUNg)",
                 REDACTOR.toLoggableString(new TopicRecord().
-                    setTopicId(Uuid.fromString("UOovKkohSU6AGdYW33ZUNg")).
-                    setName("foo")));
+                        setTopicId(Uuid.fromString("UOovKkohSU6AGdYW33ZUNg")).
+                        setName("foo")));
     }
 
     @Test
     public void testUserScramCredentialRecordToString() {
         assertEquals("UserScramCredentialRecord(name='bob', mechanism=0, " +
-            "salt=(redacted), storedKey=(redacted), serverKey=(redacted), iterations=128)",
+                        "salt=(redacted), storedKey=(redacted), serverKey=(redacted), iterations=128)",
                 REDACTOR.toLoggableString(new UserScramCredentialRecord().
-                    setName("bob").
-                    setMechanism((byte) 0).
-                    setSalt(new byte[512]).
-                    setServerKey(new byte[128]).
-                    setStoredKey(new byte[128]).
-                    setIterations(128)));
+                        setName("bob").
+                        setMechanism((byte) 0).
+                        setSalt(new byte[512]).
+                        setServerKey(new byte[128]).
+                        setStoredKey(new byte[128]).
+                        setIterations(128)));
     }
 
     @Test
@@ -84,22 +84,22 @@ public final class RecordRedactorTest {
     @Test
     public void testSensitiveConfigRecordToString() {
         assertEquals("ConfigRecord(resourceType=4, resourceName='0', name='quux', " +
-            "value='(redacted)')",
+                        "value='(redacted)')",
                 REDACTOR.toLoggableString(new ConfigRecord().
-                    setResourceType(BROKER.id()).
-                    setResourceName("0").
-                    setName("quux").
-                    setValue("mysecret")));
+                        setResourceType(BROKER.id()).
+                        setResourceName("0").
+                        setName("quux").
+                        setValue("mysecret")));
     }
 
     @Test
     public void testNonSensitiveConfigRecordToString() {
         assertEquals("ConfigRecord(resourceType=4, resourceName='0', name='foobar', " +
-            "value='item1,item2')",
+                        "value='item1,item2')",
                 REDACTOR.toLoggableString(new ConfigRecord().
-                    setResourceType(BROKER.id()).
-                    setResourceName("0").
-                    setName("foobar").
-                    setValue("item1,item2")));
+                        setResourceType(BROKER.id()).
+                        setResourceName("0").
+                        setName("foobar").
+                        setValue("item1,item2")));
     }
 }

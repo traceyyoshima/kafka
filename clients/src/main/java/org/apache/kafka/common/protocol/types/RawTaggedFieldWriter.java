@@ -29,7 +29,7 @@ import java.util.ListIterator;
  */
 public class RawTaggedFieldWriter {
     private static final RawTaggedFieldWriter EMPTY_WRITER =
-        new RawTaggedFieldWriter(new ArrayList<>(0));
+            new RawTaggedFieldWriter(new ArrayList<>(0));
 
     private final List<RawTaggedField> fields;
     private final ListIterator<RawTaggedField> iter;
@@ -60,7 +60,7 @@ public class RawTaggedFieldWriter {
                 if (tag == nextDefinedTag) {
                     // We must not have a raw tag field that duplicates the tag of another field.
                     throw new RuntimeException("Attempted to use tag " + tag + " as an " +
-                        "undefined tag.");
+                            "undefined tag.");
                 }
                 iter.previous();
                 return;
@@ -69,7 +69,7 @@ public class RawTaggedFieldWriter {
                 // The raw tag field list must be sorted by tag, and there must not be
                 // any duplicate tags.
                 throw new RuntimeException("Invalid raw tag field list: tag " + tag +
-                    " comes after tag " + prevTag + ", but is not higher than it.");
+                        " comes after tag " + prevTag + ", but is not higher than it.");
             }
             writable.writeUnsignedVarint(field.tag());
             writable.writeUnsignedVarint(field.data().length);

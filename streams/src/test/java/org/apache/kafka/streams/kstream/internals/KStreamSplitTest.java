@@ -107,7 +107,8 @@ public class KStreamSplitTest {
                         // "foo-bar"
                         .branch(isEven, Branched.as("bar"))
                         // no entry: a Consumer is provided
-                        .branch(isMultipleOfThree, Branched.withConsumer(ks -> { }))
+                        .branch(isMultipleOfThree, Branched.withConsumer(ks -> {
+                        }))
                         // no entry: chain function returns null
                         .branch(isMultipleOfFive, Branched.withFunction(ks -> null))
                         // "foo-4": chain function returns non-null value
@@ -118,7 +119,7 @@ public class KStreamSplitTest {
                         .defaultBranch();
         assertEquals(4, branches.size());
         // direct the branched streams into different topics named with branch name
-        for (final Map.Entry<String, KStream<Integer, String>> branch: branches.entrySet()) {
+        for (final Map.Entry<String, KStream<Integer, String>> branch : branches.entrySet()) {
             branch.getValue().to(branch.getKey());
         }
         builder.build();

@@ -20,8 +20,8 @@ package org.apache.kafka.streams.kstream;
 /**
  * The interface for merging aggregate values for {@link SessionWindows} with the given key.
  *
- * @param <K>   key type
- * @param <V>   aggregate value type
+ * @param <K> key type
+ * @param <V> aggregate value type
  */
 @FunctionalInterface
 public interface Merger<K, V> {
@@ -29,10 +29,10 @@ public interface Merger<K, V> {
     /**
      * Compute a new aggregate from the key and two aggregates.
      *
-     * @param aggKey    the key of the record
-     * @param aggOne    the first aggregate
-     * @param aggTwo    the second aggregate
-     * @return          the new aggregate value
+     * @param aggKey the key of the record
+     * @param aggOne the first aggregate
+     * @param aggTwo the second aggregate
+     * @return the new aggregate value
      */
     V apply(final K aggKey, final V aggOne, final V aggTwo);
 }

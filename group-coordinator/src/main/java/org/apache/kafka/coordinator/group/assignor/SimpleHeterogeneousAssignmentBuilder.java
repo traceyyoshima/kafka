@@ -141,7 +141,7 @@ public class SimpleHeterogeneousAssignmentBuilder {
         // Compute the partition assignments for each topic separately.
         subscribedTopicIds.forEach(topicId -> {
             TopicAssignmentPartialBuilder topicAssignmentBuilder =
-                new TopicAssignmentPartialBuilder(topicId, numGroupMembers, targetPartitionsByTopic.get(topicId), subscribedMembersByTopic.get(topicId));
+                    new TopicAssignmentPartialBuilder(topicId, numGroupMembers, targetPartitionsByTopic.get(topicId), subscribedMembersByTopic.get(topicId));
             topicAssignmentBuilder.build();
         });
 
@@ -162,22 +162,23 @@ public class SimpleHeterogeneousAssignmentBuilder {
     /**
      * Computes the list of target partitions which can be assigned to members. This list includes all partitions
      * for the subscribed topic IDs, with the additional check that they must be assignable.
-     * @param groupSpec                 The assignment spec which includes member metadata.
-     * @param subscribedTopicIds        The set of subscribed topic IDs.
-     * @param subscribedTopicDescriber  The topic and partition metadata describer.
+     *
+     * @param groupSpec                The assignment spec which includes member metadata.
+     * @param subscribedTopicIds       The set of subscribed topic IDs.
+     * @param subscribedTopicDescriber The topic and partition metadata describer.
      * @return The list of target partitions, grouped by topic.
      */
     private static Map<Uuid, List<TopicIdPartition>> computeTargetPartitions(
-        GroupSpec groupSpec,
-        Set<Uuid> subscribedTopicIds,
-        SubscribedTopicDescriber subscribedTopicDescriber
+            GroupSpec groupSpec,
+            Set<Uuid> subscribedTopicIds,
+            SubscribedTopicDescriber subscribedTopicDescriber
     ) {
         Map<Uuid, List<TopicIdPartition>> targetPartitionsByTopic = AssignorHelpers.newHashMap(subscribedTopicIds.size());
         subscribedTopicIds.forEach(topicId -> {
             int numPartitions = subscribedTopicDescriber.numPartitions(topicId);
             if (numPartitions == -1) {
                 throw new PartitionAssignorException(
-                    "Members are subscribed to topic " + topicId + " which doesn't exist in the topic metadata."
+                        "Members are subscribed to topic " + topicId + " which doesn't exist in the topic metadata."
                 );
             }
 
@@ -195,15 +196,16 @@ public class SimpleHeterogeneousAssignmentBuilder {
 
     /**
      * Computes the list of member indices which are subscribed to each topic.
-     * @param groupSpec                 The assignment spec which includes member metadata.
-     * @param subscribedTopicIds        The set of subscribed topic IDs.
-     * @param memberIndices             The map from member IDs to member indices.
+     *
+     * @param groupSpec          The assignment spec which includes member metadata.
+     * @param subscribedTopicIds The set of subscribed topic IDs.
+     * @param memberIndices      The map from member IDs to member indices.
      * @return The list of member indices, grouped by topic.
      */
     private static Map<Uuid, List<Integer>> computeSubscribedMembers(
-        GroupSpec groupSpec,
-        Set<Uuid> subscribedTopicIds,
-        Map<String, Integer> memberIndices
+            GroupSpec groupSpec,
+            Set<Uuid> subscribedTopicIds,
+            Map<String, Integer> memberIndices
     ) {
         int numMembers = memberIndices.size();
         Map<Uuid, List<Integer>> subscribedMembersByTopic = AssignorHelpers.newHashMap(subscribedTopicIds.size());
@@ -211,7 +213,7 @@ public class SimpleHeterogeneousAssignmentBuilder {
             int memberIndex = memberIndices.get(memberId);
             MemberSubscription memberSubscription = groupSpec.memberSubscription(memberId);
             memberSubscription.subscribedTopicIds().forEach(topicId ->
-                subscribedMembersByTopic.computeIfAbsent(topicId, k -> new ArrayList<>(numMembers)).add(memberIndex));
+                    subscribedMembersByTopic.computeIfAbsent(topicId, k -> new ArrayList<>(numMembers)).add(memberIndex));
         });
 
         return subscribedMembersByTopic;
@@ -284,8 +286,8 @@ public class SimpleHeterogeneousAssignmentBuilder {
             double preciseDesiredAssignmentCount = desiredSharing * numTargetPartitions / (double) numSubscribedMembers;
             for (int memberIndex = 0; memberIndex < numSubscribedMembers; memberIndex++) {
                 desiredAssignmentCounts[subscribedMembers.get(memberIndex)] =
-                    (int) Math.ceil(preciseDesiredAssignmentCount * (double) (memberIndex + 1)) -
-                        (int) Math.ceil(preciseDesiredAssignmentCount * (double) memberIndex);
+                        (int) Math.ceil(preciseDesiredAssignmentCount * (double) (memberIndex + 1)) -
+                                (int) Math.ceil(preciseDesiredAssignmentCount * (double) memberIndex);
             }
         }
 
@@ -299,7 +301,7 @@ public class SimpleHeterogeneousAssignmentBuilder {
 
             // Add in any partitions which are currently not in the assignment.
             targetPartitions.forEach(topicPartition ->
-                finalAssignmentByPartition.computeIfAbsent(topicPartition.partitionId(), k -> AssignorHelpers.newHashSet(subscribedMembers.size())));
+                    finalAssignmentByPartition.computeIfAbsent(topicPartition.partitionId(), k -> AssignorHelpers.newHashSet(subscribedMembers.size())));
 
             assignRemainingPartitions();
         }

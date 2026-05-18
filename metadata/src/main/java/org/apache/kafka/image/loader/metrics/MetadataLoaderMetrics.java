@@ -43,13 +43,13 @@ import java.util.function.Consumer;
  */
 public final class MetadataLoaderMetrics implements AutoCloseable {
     private static final MetricName CURRENT_METADATA_VERSION = getMetricName(
-        "MetadataLoader", "CurrentMetadataVersion");
+            "MetadataLoader", "CurrentMetadataVersion");
     private static final MetricName HANDLE_LOAD_SNAPSHOT_COUNT = getMetricName(
-        "MetadataLoader", "HandleLoadSnapshotCount");
+            "MetadataLoader", "HandleLoadSnapshotCount");
     private static final MetricName CURRENT_CONTROLLER_ID = getMetricName(
-        "MetadataLoader", "CurrentControllerId");
+            "MetadataLoader", "CurrentControllerId");
     private static final MetricName AVERAGE_IDLE_RATIO = getMetricName(
-        "MetadataLoader", "AvgIdleRatio");
+            "MetadataLoader", "AvgIdleRatio");
     private static final String FINALIZED_LEVEL_METRIC_NAME = "FinalizedLevel";
     private static final String FEATURE_NAME_TAG = "featureName";
 
@@ -67,16 +67,16 @@ public final class MetadataLoaderMetrics implements AutoCloseable {
     /**
      * Create a new LoaderMetrics object.
      *
-     * @param registry                      The metrics registry, or Optional.empty if this is a
-     *                                      test and we don't have one.
-     * @param batchProcessingTimeNsUpdater  Updates the batch processing time histogram.
-     * @param batchSizesUpdater             Updates the batch sizes histogram.
+     * @param registry                     The metrics registry, or Optional.empty if this is a
+     *                                     test and we don't have one.
+     * @param batchProcessingTimeNsUpdater Updates the batch processing time histogram.
+     * @param batchSizesUpdater            Updates the batch sizes histogram.
      */
     public MetadataLoaderMetrics(
-        Optional<MetricsRegistry> registry,
-        Consumer<Long> batchProcessingTimeNsUpdater,
-        Consumer<Integer> batchSizesUpdater,
-        AtomicReference<MetadataProvenance> lastAppliedProvenance
+            Optional<MetricsRegistry> registry,
+            Consumer<Long> batchProcessingTimeNsUpdater,
+            Consumer<Integer> batchSizesUpdater,
+            AtomicReference<MetadataProvenance> lastAppliedProvenance
     ) {
         this.registry = registry;
         this.batchProcessingTimeNsUpdater = batchProcessingTimeNsUpdater;
@@ -119,27 +119,27 @@ public final class MetadataLoaderMetrics implements AutoCloseable {
 
     private void addFinalizedFeatureLevelMetric(String featureName) {
         registry.ifPresent(r -> r.newGauge(
-            getFeatureNameTagMetricName(
-                "MetadataLoader",
-                FINALIZED_LEVEL_METRIC_NAME,
-                featureName
-            ),
-            new Gauge<Short>() {
-                @Override
-                public Short value() {
-                    return finalizedFeatureLevel(featureName);
+                getFeatureNameTagMetricName(
+                        "MetadataLoader",
+                        FINALIZED_LEVEL_METRIC_NAME,
+                        featureName
+                ),
+                new Gauge<Short>() {
+                    @Override
+                    public Short value() {
+                        return finalizedFeatureLevel(featureName);
+                    }
                 }
-            }
         ));
     }
 
     private void removeFinalizedFeatureLevelMetric(String featureName) {
         registry.ifPresent(r -> r.removeMetric(
-            getFeatureNameTagMetricName(
-                "MetadataLoader",
-                FINALIZED_LEVEL_METRIC_NAME,
-                featureName
-            )
+                getFeatureNameTagMetricName(
+                        "MetadataLoader",
+                        FINALIZED_LEVEL_METRIC_NAME,
+                        featureName
+                )
         ));
     }
 
@@ -200,6 +200,7 @@ public final class MetadataLoaderMetrics implements AutoCloseable {
      * current features image.
      * Note that metadata.version and kraft.version are not included in
      * the features image, so they are not removed.
+     *
      * @param newFinalizedLevels The new finalized feature levels from the features image
      */
     public void maybeRemoveFinalizedFeatureLevelMetrics(Map<String, Short> newFinalizedLevels) {
@@ -207,8 +208,8 @@ public final class MetadataLoaderMetrics implements AutoCloseable {
         while (iter.hasNext()) {
             final var featureName = iter.next();
             if (newFinalizedLevels.containsKey(featureName) ||
-                featureName.equals(MetadataVersion.FEATURE_NAME) ||
-                featureName.equals(KRaftVersion.FEATURE_NAME)) {
+                    featureName.equals(MetadataVersion.FEATURE_NAME) ||
+                    featureName.equals(KRaftVersion.FEATURE_NAME)) {
                 continue;
             }
             removeFinalizedFeatureLevelMetric(featureName);
@@ -218,8 +219,8 @@ public final class MetadataLoaderMetrics implements AutoCloseable {
 
     /**
      * Record the finalized feature level and ensure the metric is registered.
-     * 
-     * @param featureName The name of the feature
+     *
+     * @param featureName  The name of the feature
      * @param featureLevel The finalized level for the feature
      */
     public void recordFinalizedFeatureLevel(String featureName, short featureLevel) {
@@ -229,7 +230,7 @@ public final class MetadataLoaderMetrics implements AutoCloseable {
 
     /**
      * Get the finalized feature level for a feature.
-     * 
+     *
      * @param featureName The name of the feature
      * @return The finalized level for the feature
      */
@@ -240,10 +241,10 @@ public final class MetadataLoaderMetrics implements AutoCloseable {
     @Override
     public void close() {
         registry.ifPresent(r -> List.of(
-            CURRENT_METADATA_VERSION,
-            CURRENT_CONTROLLER_ID,
-            HANDLE_LOAD_SNAPSHOT_COUNT,
-            AVERAGE_IDLE_RATIO
+                CURRENT_METADATA_VERSION,
+                CURRENT_CONTROLLER_ID,
+                HANDLE_LOAD_SNAPSHOT_COUNT,
+                AVERAGE_IDLE_RATIO
         ).forEach(r::removeMetric));
         for (var featureName : finalizedFeatureLevels.keySet()) {
             removeFinalizedFeatureLevelMetric(featureName);
@@ -274,7 +275,7 @@ public final class MetadataLoaderMetrics implements AutoCloseable {
         for (int i = 1; i < words.length; i++) {
             final var word = words[i];
             builder.append(Character.toUpperCase(word.charAt(0)))
-                   .append(word.substring(1).toLowerCase(Locale.ROOT));
+                    .append(word.substring(1).toLowerCase(Locale.ROOT));
         }
         return builder.toString();
     }

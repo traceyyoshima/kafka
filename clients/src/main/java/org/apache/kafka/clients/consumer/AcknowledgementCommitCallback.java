@@ -38,20 +38,19 @@ public interface AcknowledgementCommitCallback {
      * A callback method the user can implement to provide asynchronous handling of acknowledgement completion.
      * This method will be called when the acknowledgement request sent to the server has been completed.
      *
-     * @param offsets A map of the offsets that this callback applies to.
-     *
+     * @param offsets   A map of the offsets that this callback applies to.
      * @param exception The exception thrown during processing of the request, or null if the acknowledgement completed successfully.
-     * <p><ul>
-     * <li> {@link AuthorizationException} if not authorized to the topic or group
-     * <li> {@link InvalidRecordStateException} if the record state is invalid
-     * <li> {@link NotLeaderOrFollowerException} if the leader had changed by the time the acknowledgements were sent
-     * <li> {@link DisconnectException} if the broker disconnected before the request could be completed
-     * <li> {@link WakeupException} if {@link KafkaShareConsumer#wakeup()} is called before or while this function is called
-     * <li> {@link InterruptException} if the calling thread is interrupted before or while this function is called
-     * <li> {@link KafkaException} for any other unrecoverable errors
-     * </ul>
-     * <p>Note that even if the exception is a retriable exception, the acknowledgement could not be completed and the
-     * records need to be fetched again. The callback is called after any retries have been performed.
+     *                  <p><ul>
+     *                  <li> {@link AuthorizationException} if not authorized to the topic or group
+     *                  <li> {@link InvalidRecordStateException} if the record state is invalid
+     *                  <li> {@link NotLeaderOrFollowerException} if the leader had changed by the time the acknowledgements were sent
+     *                  <li> {@link DisconnectException} if the broker disconnected before the request could be completed
+     *                  <li> {@link WakeupException} if {@link KafkaShareConsumer#wakeup()} is called before or while this function is called
+     *                  <li> {@link InterruptException} if the calling thread is interrupted before or while this function is called
+     *                  <li> {@link KafkaException} for any other unrecoverable errors
+     *                  </ul>
+     *                  <p>Note that even if the exception is a retriable exception, the acknowledgement could not be completed and the
+     *                  records need to be fetched again. The callback is called after any retries have been performed.
      */
     void onComplete(Map<TopicIdPartition, Set<Long>> offsets, Exception exception);
 }

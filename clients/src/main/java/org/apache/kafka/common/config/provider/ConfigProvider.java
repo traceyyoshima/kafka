@@ -52,8 +52,8 @@ public interface ConfigProvider extends Configurable, Closeable {
     /**
      * Subscribes to changes for the given keys at the given path (optional operation).
      *
-     * @param path the path where the data resides
-     * @param keys the keys whose values will be retrieved
+     * @param path     the path where the data resides
+     * @param keys     the keys whose values will be retrieved
      * @param callback the callback to invoke upon change
      * @throws UnsupportedOperationException if the subscribe operation is not supported
      */
@@ -64,8 +64,8 @@ public interface ConfigProvider extends Configurable, Closeable {
     /**
      * Unsubscribes to changes for the given keys at the given path (optional operation).
      *
-     * @param path the path where the data resides
-     * @param keys the keys whose values will be retrieved
+     * @param path     the path where the data resides
+     * @param keys     the keys whose values will be retrieved
      * @param callback the callback to be unsubscribed from changes
      * @throws UnsupportedOperationException if the unsubscribe operation is not supported
      */

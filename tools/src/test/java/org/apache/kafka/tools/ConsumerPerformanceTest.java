@@ -64,22 +64,22 @@ public class ConsumerPerformanceTest {
     @Test
     public void testDetailedHeaderMatchBody() {
         testHeaderMatchContent(true, 2,
-            () -> ConsumerPerformance.printConsumerProgress(1, 1024 * 1024, 0, 1, 0, 0, 1, dateFormat, 1L));
+                () -> ConsumerPerformance.printConsumerProgress(1, 1024 * 1024, 0, 1, 0, 0, 1, dateFormat, 1L));
     }
 
     @Test
     public void testNonDetailedHeaderMatchBody() {
         testHeaderMatchContent(false, 2,
-            () -> ConsumerPerformance.printConsumerProgress(1, 1024 * 1024, 0, 1, 0, 0, 1, dateFormat, 1L));
+                () -> ConsumerPerformance.printConsumerProgress(1, 1024 * 1024, 0, 1, 0, 0, 1, dateFormat, 1L));
     }
 
     @Test
     public void testConfigBootStrapServer() {
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--num-records", "10",
-            "--print-metrics"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--num-records", "10",
+                "--print-metrics"
         };
 
         ConsumerPerformance.ConsumerPerfOptions config = new ConsumerPerformance.ConsumerPerfOptions(args);
@@ -92,7 +92,7 @@ public class ConsumerPerformanceTest {
     @Test
     public void testBootstrapServerNotPresent() {
         String[] args = new String[]{
-            "--topic", "test"
+                "--topic", "test"
         };
 
         String err = ToolsTestUtils.captureStandardErr(() ->
@@ -103,8 +103,8 @@ public class ConsumerPerformanceTest {
     @Test
     public void testNumOfRecordsNotPresent() {
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test"
         };
 
         String err = ToolsTestUtils.captureStandardErr(() ->
@@ -115,9 +115,9 @@ public class ConsumerPerformanceTest {
     @Test
     public void testMessagesDeprecated() {
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--messages", "10"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--messages", "10"
         };
 
         ConsumerPerformance.ConsumerPerfOptions config = new ConsumerPerformance.ConsumerPerfOptions(args);
@@ -127,10 +127,10 @@ public class ConsumerPerformanceTest {
     @Test
     public void testNumOfRecordsWithMessagesPresent() {
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--messages", "10",
-            "--num-records", "20"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--messages", "10",
+                "--num-records", "20"
         };
 
         String err = ToolsTestUtils.captureStandardErr(() ->
@@ -141,10 +141,10 @@ public class ConsumerPerformanceTest {
     @Test
     public void testConfigWithUnrecognizedOption() {
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--num-records", "10",
-            "--new-consumer"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--num-records", "10",
+                "--new-consumer"
         };
 
         String err = ToolsTestUtils.captureStandardErr(() -> new ConsumerPerformance.ConsumerPerfOptions(args));
@@ -155,9 +155,9 @@ public class ConsumerPerformanceTest {
     @Test
     public void testConfigWithInclude() {
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--include", "test.*",
-            "--num-records", "10"
+                "--bootstrap-server", "localhost:9092",
+                "--include", "test.*",
+                "--num-records", "10"
         };
 
         ConsumerPerformance.ConsumerPerfOptions config = new ConsumerPerformance.ConsumerPerfOptions(args);
@@ -170,10 +170,10 @@ public class ConsumerPerformanceTest {
     @Test
     public void testConfigWithTopicAndInclude() {
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--include", "test.*",
-            "--num-records", "10"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--include", "test.*",
+                "--num-records", "10"
         };
 
         String err = ToolsTestUtils.captureStandardErr(() -> new ConsumerPerformance.ConsumerPerfOptions(args));
@@ -184,8 +184,8 @@ public class ConsumerPerformanceTest {
     @Test
     public void testConfigWithoutTopicAndInclude() {
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--num-records", "10"
+                "--bootstrap-server", "localhost:9092",
+                "--num-records", "10"
         };
 
         String err = ToolsTestUtils.captureStandardErr(() -> new ConsumerPerformance.ConsumerPerfOptions(args));
@@ -204,12 +204,12 @@ public class ConsumerPerformanceTest {
         }
 
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--num-records", "10",
-            "--command-property", "client.id=consumer-2",
-            "--command-config", tempFile.getAbsolutePath(),
-            "--command-property", "prop=val"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--num-records", "10",
+                "--command-property", "client.id=consumer-2",
+                "--command-config", tempFile.getAbsolutePath(),
+                "--command-property", "prop=val"
         };
 
         ConsumerPerformance.ConsumerPerfOptions config = new ConsumerPerformance.ConsumerPerfOptions(args);
@@ -229,10 +229,10 @@ public class ConsumerPerformanceTest {
         }
 
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--num-records", "10",
-            "--command-config", tempFile.getAbsolutePath()
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--num-records", "10",
+                "--command-config", tempFile.getAbsolutePath()
         };
 
         ConsumerPerformance.ConsumerPerfOptions config = new ConsumerPerformance.ConsumerPerfOptions(args);
@@ -251,10 +251,10 @@ public class ConsumerPerformanceTest {
         }
 
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--num-records", "10",
-            "--consumer.config", tempFile.getAbsolutePath()
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--num-records", "10",
+                "--consumer.config", tempFile.getAbsolutePath()
         };
 
         ConsumerPerformance.ConsumerPerfOptions config = new ConsumerPerformance.ConsumerPerfOptions(args);
@@ -265,11 +265,11 @@ public class ConsumerPerformanceTest {
     @Test
     public void testCommandConfigWithConsumerConfigPresent() {
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--num-records", "10",
-            "--consumer.config", "some-path",
-            "--command-config", "some-path"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--num-records", "10",
+                "--consumer.config", "some-path",
+                "--command-config", "some-path"
         };
 
         String err = ToolsTestUtils.captureStandardErr(() ->
@@ -281,9 +281,9 @@ public class ConsumerPerformanceTest {
     @Test
     public void testDefaultClientId() throws IOException {
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--num-records", "10"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--num-records", "10"
         };
 
         ConsumerPerformance.ConsumerPerfOptions config = new ConsumerPerformance.ConsumerPerfOptions(args);
@@ -294,10 +294,10 @@ public class ConsumerPerformanceTest {
     @Test
     public void testMetricsRetrievedBeforeConsumerClosed() {
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--num-records", "0",
-            "--print-metrics"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--num-records", "0",
+                "--print-metrics"
         };
 
         Function<Properties, Consumer<byte[], byte[]>> consumerCreator = properties -> new MockConsumer<>(AutoOffsetResetStrategy.EARLIEST.name());

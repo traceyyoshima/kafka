@@ -67,7 +67,7 @@ public class WindowStoreFacadeTest {
 
         windowStoreFacade.init(context, store);
         verify(mockedWindowTimestampStore)
-            .init(context, store);
+                .init(context, store);
     }
 
     @Deprecated
@@ -81,7 +81,7 @@ public class WindowStoreFacadeTest {
     public void shouldPutWindowStartTimestampWithUnknownTimestamp() {
         windowStoreFacade.put("key", "value", 21L);
         verify(mockedWindowTimestampStore)
-            .put("key", ValueAndTimestamp.make("value", ConsumerRecord.NO_TIMESTAMP), 21L);
+                .put("key", ValueAndTimestamp.make("value", ConsumerRecord.NO_TIMESTAMP), 21L);
     }
 
     @Test
@@ -125,7 +125,7 @@ public class WindowStoreFacadeTest {
     @Test
     public void shouldReturnIsPersistent() {
         when(mockedWindowTimestampStore.persistent())
-            .thenReturn(true, false);
+                .thenReturn(true, false);
 
         assertThat(windowStoreFacade.persistent(), is(true));
         assertThat(windowStoreFacade.persistent(), is(false));
@@ -135,7 +135,7 @@ public class WindowStoreFacadeTest {
     @Test
     public void shouldReturnIsOpen() {
         when(mockedWindowTimestampStore.isOpen())
-            .thenReturn(true, false);
+                .thenReturn(true, false);
 
         assertThat(windowStoreFacade.isOpen(), is(true));
         assertThat(windowStoreFacade.isOpen(), is(false));
@@ -144,16 +144,15 @@ public class WindowStoreFacadeTest {
 
     @Test
     public void shouldFetchTimeRangeAndConvertValues() {
-        @SuppressWarnings("unchecked")
-        final WindowStoreIterator<ValueAndTimestamp<String>> mockIterator = mock(WindowStoreIterator.class);
+        @SuppressWarnings("unchecked") final WindowStoreIterator<ValueAndTimestamp<String>> mockIterator = mock(WindowStoreIterator.class);
         final long from = 100L;
         final long to = 200L;
 
         when(mockedWindowTimestampStore.fetch("key", Instant.ofEpochMilli(from), Instant.ofEpochMilli(to))).thenReturn(mockIterator);
         when(mockIterator.hasNext()).thenReturn(true, true, false);
         when(mockIterator.next())
-            .thenReturn(KeyValue.pair(100L, ValueAndTimestamp.make("value1", 10L)))
-            .thenReturn(KeyValue.pair(150L, ValueAndTimestamp.make("value2", 20L)));
+                .thenReturn(KeyValue.pair(100L, ValueAndTimestamp.make("value1", 10L)))
+                .thenReturn(KeyValue.pair(150L, ValueAndTimestamp.make("value2", 20L)));
 
         try (final WindowStoreIterator<String> iterator = windowStoreFacade.fetch("key", from, to)) {
             assertThat(iterator.next(), is(KeyValue.pair(100L, "value1")));
@@ -163,8 +162,7 @@ public class WindowStoreFacadeTest {
 
     @Test
     public void shouldFetchAllTimeRangeAndConvertValues() {
-        @SuppressWarnings("unchecked")
-        final KeyValueIterator<Windowed<String>, ValueAndTimestamp<String>> mockIterator = mock(KeyValueIterator.class);
+        @SuppressWarnings("unchecked") final KeyValueIterator<Windowed<String>, ValueAndTimestamp<String>> mockIterator = mock(KeyValueIterator.class);
         final long from = 100L;
         final long to = 200L;
         final Windowed<String> windowedKey = new Windowed<>("key", new TimeWindow(100L, 200L));
@@ -172,7 +170,7 @@ public class WindowStoreFacadeTest {
         when(mockedWindowTimestampStore.fetchAll(Instant.ofEpochMilli(from), Instant.ofEpochMilli(to))).thenReturn(mockIterator);
         when(mockIterator.hasNext()).thenReturn(true, false);
         when(mockIterator.next())
-            .thenReturn(KeyValue.pair(windowedKey, ValueAndTimestamp.make("value", 10L)));
+                .thenReturn(KeyValue.pair(windowedKey, ValueAndTimestamp.make("value", 10L)));
 
         try (final KeyValueIterator<Windowed<String>, String> iterator = windowStoreFacade.fetchAll(from, to)) {
             assertThat(iterator.next(), is(KeyValue.pair(windowedKey, "value")));
@@ -181,8 +179,7 @@ public class WindowStoreFacadeTest {
 
     @Test
     public void shouldFetchKeyRangeTimeRangeAndConvertValues() {
-        @SuppressWarnings("unchecked")
-        final KeyValueIterator<Windowed<String>, ValueAndTimestamp<String>> mockIterator = mock(KeyValueIterator.class);
+        @SuppressWarnings("unchecked") final KeyValueIterator<Windowed<String>, ValueAndTimestamp<String>> mockIterator = mock(KeyValueIterator.class);
         final long from = 100L;
         final long to = 200L;
         final Windowed<String> windowedKey = new Windowed<>("key", new TimeWindow(100L, 200L));
@@ -190,7 +187,7 @@ public class WindowStoreFacadeTest {
         when(mockedWindowTimestampStore.fetch("key", "key", Instant.ofEpochMilli(from), Instant.ofEpochMilli(to))).thenReturn(mockIterator);
         when(mockIterator.hasNext()).thenReturn(true, false);
         when(mockIterator.next())
-            .thenReturn(KeyValue.pair(windowedKey, ValueAndTimestamp.make("value", 10L)));
+                .thenReturn(KeyValue.pair(windowedKey, ValueAndTimestamp.make("value", 10L)));
 
         try (final KeyValueIterator<Windowed<String>, String> iterator = windowStoreFacade.fetch("key", "key", from, to)) {
             assertThat(iterator.next(), is(KeyValue.pair(windowedKey, "value")));
@@ -200,7 +197,7 @@ public class WindowStoreFacadeTest {
     @Test
     public void shouldReturnPosition() {
         when(mockedWindowTimestampStore.getPosition())
-            .thenReturn(Position.emptyPosition());
+                .thenReturn(Position.emptyPosition());
 
         assertThat(windowStoreFacade.getPosition(), is(Position.emptyPosition()));
         verify(mockedWindowTimestampStore).getPosition();
@@ -208,18 +205,19 @@ public class WindowStoreFacadeTest {
 
     @Test
     public void shouldReturnQueryResult() {
-        final Query<Object> query = new Query<>() { };
+        final Query<Object> query = new Query<>() {
+        };
         final QueryConfig queryConfig = new QueryConfig(true);
         final QueryResult<Integer> queryResult = QueryResult.forResult(42);
         when(mockedWindowTimestampStore.<Integer>query(any(), any(), any())).thenReturn(queryResult);
 
         assertThat(
-            windowStoreFacade.query(
-                query,
-                PositionBound.unbounded(),
-                queryConfig
-            ),
-            is(queryResult));
+                windowStoreFacade.query(
+                        query,
+                        PositionBound.unbounded(),
+                        queryConfig
+                ),
+                is(queryResult));
         verify(mockedWindowTimestampStore).query(query, PositionBound.unbounded(), queryConfig);
     }
 }

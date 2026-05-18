@@ -94,9 +94,9 @@ public class ConsumerGroupTest {
     private ConsumerGroup createConsumerGroup(String groupId) {
         SnapshotRegistry snapshotRegistry = new SnapshotRegistry(new LogContext());
         return new ConsumerGroup(
-            new LogContext(),
-            snapshotRegistry,
-            groupId
+                new LogContext(),
+                snapshotRegistry,
+                groupId
         );
     }
 
@@ -117,7 +117,7 @@ public class ConsumerGroupTest {
         assertEquals("member-id", member.memberId());
 
         assertThrows(UnknownMemberIdException.class, () ->
-            consumerGroup.getOrMaybeCreateMember("does-not-exist", false));
+                consumerGroup.getOrMaybeCreateMember("does-not-exist", false));
     }
 
     @Test
@@ -128,8 +128,8 @@ public class ConsumerGroupTest {
         member = consumerGroup.getOrMaybeCreateMember("member", true);
 
         member = new ConsumerGroupMember.Builder(member)
-            .setSubscribedTopicNames(Arrays.asList("foo", "bar"))
-            .build();
+                .setSubscribedTopicNames(Arrays.asList("foo", "bar"))
+                .build();
 
         consumerGroup.updateMember(member);
 
@@ -153,9 +153,9 @@ public class ConsumerGroupTest {
         member = consumerGroup.getOrMaybeCreateMember("member", true);
 
         member = new ConsumerGroupMember.Builder(member)
-            .setSubscribedTopicNames(Arrays.asList("foo", "bar"))
-            .setInstanceId("instance")
-            .build();
+                .setSubscribedTopicNames(Arrays.asList("foo", "bar"))
+                .setInstanceId("instance")
+                .build();
 
         consumerGroup.updateMember(member);
 
@@ -182,9 +182,9 @@ public class ConsumerGroupTest {
         ConsumerGroup consumerGroup = createConsumerGroup("foo");
 
         ConsumerGroupMember member = new ConsumerGroupMember.Builder("member")
-            .setSubscribedTopicNames(Arrays.asList("foo", "bar"))
-            .setInstanceId("instance")
-            .build();
+                .setSubscribedTopicNames(Arrays.asList("foo", "bar"))
+                .setInstanceId("instance")
+                .build();
 
         consumerGroup.updateMember(member);
         assertTrue(consumerGroup.hasMember("member"));
@@ -205,12 +205,12 @@ public class ConsumerGroupTest {
         ConsumerGroupMember member;
 
         member = new ConsumerGroupMember.Builder("member")
-            .setMemberEpoch(10)
-            .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(fooTopicId, 1, 2, 3)), 5))
-            .setPartitionsPendingRevocation(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(barTopicId, 4, 5, 6)), 6))
-            .build();
+                .setMemberEpoch(10)
+                .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
+                        mkTopicAssignment(fooTopicId, 1, 2, 3)), 5))
+                .setPartitionsPendingRevocation(toAssignmentWithEpochs(mkAssignment(
+                        mkTopicAssignment(barTopicId, 4, 5, 6)), 6))
+                .build();
 
         consumerGroup.updateMember(member);
 
@@ -225,12 +225,12 @@ public class ConsumerGroupTest {
         assertEquals(-1, consumerGroup.currentPartitionEpoch(zarTopicId, 9));
 
         member = new ConsumerGroupMember.Builder(member)
-            .setMemberEpoch(11)
-            .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(barTopicId, 1, 2, 3)), 7))
-            .setPartitionsPendingRevocation(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(zarTopicId, 4, 5, 6)), 8))
-            .build();
+                .setMemberEpoch(11)
+                .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
+                        mkTopicAssignment(barTopicId, 1, 2, 3)), 7))
+                .setPartitionsPendingRevocation(toAssignmentWithEpochs(mkAssignment(
+                        mkTopicAssignment(zarTopicId, 4, 5, 6)), 8))
+                .build();
 
         consumerGroup.updateMember(member);
 
@@ -253,22 +253,22 @@ public class ConsumerGroupTest {
         ConsumerGroupMember member;
 
         member = new ConsumerGroupMember.Builder("member")
-            .setMemberEpoch(10)
-            .setAssignedPartitions(Map.of())
-            .setPartitionsPendingRevocation(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(fooTopicId, 1)), 5))
-            .build();
+                .setMemberEpoch(10)
+                .setAssignedPartitions(Map.of())
+                .setPartitionsPendingRevocation(toAssignmentWithEpochs(mkAssignment(
+                        mkTopicAssignment(fooTopicId, 1)), 5))
+                .build();
 
         consumerGroup.updateMember(member);
 
         assertEquals(10, consumerGroup.currentPartitionEpoch(fooTopicId, 1));
 
         member = new ConsumerGroupMember.Builder(member)
-            .setMemberEpoch(11)
-            .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(fooTopicId, 1)), 7))
-            .setPartitionsPendingRevocation(Map.of())
-            .build();
+                .setMemberEpoch(11)
+                .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
+                        mkTopicAssignment(fooTopicId, 1)), 7))
+                .setPartitionsPendingRevocation(Map.of())
+                .build();
 
         consumerGroup.updateMember(member);
 
@@ -281,28 +281,28 @@ public class ConsumerGroupTest {
         ConsumerGroup consumerGroup = createConsumerGroup("foo");
 
         ConsumerGroupMember m1 = new ConsumerGroupMember.Builder("m1")
-            .setMemberEpoch(10)
-            .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(fooTopicId, 1)), 5))
-            .build();
+                .setMemberEpoch(10)
+                .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
+                        mkTopicAssignment(fooTopicId, 1)), 5))
+                .build();
 
         consumerGroup.updateMember(m1);
 
         ConsumerGroupMember m2 = new ConsumerGroupMember.Builder("m2")
-            .setMemberEpoch(11)
-            .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(fooTopicId, 1)), 7))
-            .build();
+                .setMemberEpoch(11)
+                .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
+                        mkTopicAssignment(fooTopicId, 1)), 7))
+                .build();
 
         // m2 can acquire foo-1 because the epoch is larger than m1's epoch.
         // This should not throw IllegalStateException.
         consumerGroup.updateMember(m2);
 
         ConsumerGroupMember m3 = new ConsumerGroupMember.Builder("m3")
-            .setMemberEpoch(10)
-            .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(fooTopicId, 1)), 7))
-            .build();
+                .setMemberEpoch(10)
+                .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
+                        mkTopicAssignment(fooTopicId, 1)), 7))
+                .build();
 
         // m3 should not be able to acquire foo-1 because the epoch is smaller
         // than the current partition epoch (11).
@@ -318,27 +318,27 @@ public class ConsumerGroupTest {
 
         // Removing should be a no-op when there is no epoch set.
         consumerGroup.removePartitionEpochs(
-            toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(fooTopicId, 1)
-            ), 5),
-            5
+                toAssignmentWithEpochs(mkAssignment(
+                        mkTopicAssignment(fooTopicId, 1)
+                ), 5),
+                5
         );
 
         ConsumerGroupMember m1 = new ConsumerGroupMember.Builder("m1")
-            .setMemberEpoch(10)
-            .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(fooTopicId, 1)), 5))
-            .build();
+                .setMemberEpoch(10)
+                .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
+                        mkTopicAssignment(fooTopicId, 1)), 5))
+                .build();
 
         consumerGroup.updateMember(m1);
 
         // Removing with incorrect epoch should do nothing.
         // A debug message is logged, no exception is thrown.
         consumerGroup.removePartitionEpochs(
-            toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(fooTopicId, 1)
-            ), 7),
-            7
+                toAssignmentWithEpochs(mkAssignment(
+                        mkTopicAssignment(fooTopicId, 1)
+                ), 7),
+                7
         );
         assertEquals(10, consumerGroup.currentPartitionEpoch(fooTopicId, 1));
     }
@@ -349,28 +349,28 @@ public class ConsumerGroupTest {
         ConsumerGroup consumerGroup = createConsumerGroup("foo");
 
         consumerGroup.addPartitionEpochs(
-            toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(fooTopicId, 1)
-            ), 10),
-            10
+                toAssignmentWithEpochs(mkAssignment(
+                        mkTopicAssignment(fooTopicId, 1)
+                ), 10),
+                10
         );
 
         // Updating to a larger epoch should succeed.
         consumerGroup.addPartitionEpochs(
-            toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(fooTopicId, 1)
-            ), 11),
-            11
+                toAssignmentWithEpochs(mkAssignment(
+                        mkTopicAssignment(fooTopicId, 1)
+                ), 11),
+                11
         );
         assertEquals(11, consumerGroup.currentPartitionEpoch(fooTopicId, 1));
 
         // Updating to a smaller epoch should fail.
         assertThrows(IllegalStateException.class, () -> {
             consumerGroup.addPartitionEpochs(
-                toAssignmentWithEpochs(mkAssignment(
-                    mkTopicAssignment(fooTopicId, 1)
-                ), 10),
-                10
+                    toAssignmentWithEpochs(mkAssignment(
+                            mkTopicAssignment(fooTopicId, 1)
+                    ), 10),
+                    10
             );
         });
     }
@@ -385,12 +385,12 @@ public class ConsumerGroupTest {
         ConsumerGroupMember member;
 
         member = new ConsumerGroupMember.Builder("member")
-            .setMemberEpoch(10)
-            .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(fooTopicId, 1, 2, 3)), 5))
-            .setPartitionsPendingRevocation(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(barTopicId, 4, 5, 6)), 6))
-            .build();
+                .setMemberEpoch(10)
+                .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
+                        mkTopicAssignment(fooTopicId, 1, 2, 3)), 5))
+                .setPartitionsPendingRevocation(toAssignmentWithEpochs(mkAssignment(
+                        mkTopicAssignment(barTopicId, 4, 5, 6)), 6))
+                .build();
 
         consumerGroup.updateMember(member);
 
@@ -427,27 +427,27 @@ public class ConsumerGroupTest {
 
         ConsumerGroup consumerGroup = createConsumerGroup("foo");
         consumerGroup.updateTargetAssignment(memberId1, new Assignment(mkAssignment(
-            mkTopicAssignment(fooTopicId, 1, 2, 3),
-            mkTopicAssignment(zarTopicId, 7, 8, 9)
+                mkTopicAssignment(fooTopicId, 1, 2, 3),
+                mkTopicAssignment(zarTopicId, 7, 8, 9)
         )));
 
         ConsumerGroupMember member1 = new ConsumerGroupMember.Builder(memberId1)
-            .setMemberEpoch(10)
-            .setState(MemberState.UNRELEASED_PARTITIONS)
-            .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(fooTopicId, 1, 2, 3)), 5))
-            .setPartitionsPendingRevocation(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(barTopicId, 4, 5, 6)), 6))
-            .build();
+                .setMemberEpoch(10)
+                .setState(MemberState.UNRELEASED_PARTITIONS)
+                .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
+                        mkTopicAssignment(fooTopicId, 1, 2, 3)), 5))
+                .setPartitionsPendingRevocation(toAssignmentWithEpochs(mkAssignment(
+                        mkTopicAssignment(barTopicId, 4, 5, 6)), 6))
+                .build();
         consumerGroup.updateMember(member1);
 
         assertFalse(consumerGroup.waitingOnUnreleasedPartition(member1));
 
         ConsumerGroupMember member2 = new ConsumerGroupMember.Builder(memberId2)
-            .setMemberEpoch(10)
-            .setPartitionsPendingRevocation(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(zarTopicId, 7)), 7))
-            .build();
+                .setMemberEpoch(10)
+                .setPartitionsPendingRevocation(toAssignmentWithEpochs(mkAssignment(
+                        mkTopicAssignment(zarTopicId, 7)), 7))
+                .build();
         consumerGroup.updateMember(member2);
 
         assertTrue(consumerGroup.waitingOnUnreleasedPartition(member1));
@@ -459,10 +459,10 @@ public class ConsumerGroupTest {
         assertEquals(ConsumerGroup.ConsumerGroupState.EMPTY, consumerGroup.state());
 
         ConsumerGroupMember member1 = new ConsumerGroupMember.Builder("member1")
-            .setState(MemberState.STABLE)
-            .setMemberEpoch(2)
-            .setPreviousMemberEpoch(0)
-            .build();
+                .setState(MemberState.STABLE)
+                .setMemberEpoch(2)
+                .setPreviousMemberEpoch(0)
+                .build();
 
         consumerGroup.updateMember(member1);
         consumerGroup.setGroupEpoch(2);
@@ -471,10 +471,10 @@ public class ConsumerGroupTest {
         assertEquals(ConsumerGroup.ConsumerGroupState.ASSIGNING, consumerGroup.state());
 
         ConsumerGroupMember member2 = new ConsumerGroupMember.Builder("member2")
-            .setState(MemberState.STABLE)
-            .setMemberEpoch(2)
-            .setPreviousMemberEpoch(0)
-            .build();
+                .setState(MemberState.STABLE)
+                .setMemberEpoch(2)
+                .setPreviousMemberEpoch(0)
+                .build();
 
         consumerGroup.updateMember(member2);
         consumerGroup.setGroupEpoch(3);
@@ -487,10 +487,10 @@ public class ConsumerGroupTest {
         assertEquals(ConsumerGroup.ConsumerGroupState.RECONCILING, consumerGroup.state());
 
         member1 = new ConsumerGroupMember.Builder(member1)
-            .setState(MemberState.STABLE)
-            .setMemberEpoch(3)
-            .setPreviousMemberEpoch(2)
-            .build();
+                .setState(MemberState.STABLE)
+                .setMemberEpoch(3)
+                .setPreviousMemberEpoch(2)
+                .build();
 
         consumerGroup.updateMember(member1);
 
@@ -499,10 +499,10 @@ public class ConsumerGroupTest {
 
         // Member 2 is not stable so the group stays in reconciling state.
         member2 = new ConsumerGroupMember.Builder(member2)
-            .setState(MemberState.UNREVOKED_PARTITIONS)
-            .setMemberEpoch(3)
-            .setPreviousMemberEpoch(2)
-            .build();
+                .setState(MemberState.UNREVOKED_PARTITIONS)
+                .setMemberEpoch(3)
+                .setPreviousMemberEpoch(2)
+                .build();
 
         consumerGroup.updateMember(member2);
 
@@ -510,10 +510,10 @@ public class ConsumerGroupTest {
         assertEquals(ConsumerGroup.ConsumerGroupState.RECONCILING, consumerGroup.state());
 
         member2 = new ConsumerGroupMember.Builder(member2)
-            .setState(MemberState.STABLE)
-            .setMemberEpoch(3)
-            .setPreviousMemberEpoch(2)
-            .build();
+                .setState(MemberState.STABLE)
+                .setMemberEpoch(3)
+                .setPreviousMemberEpoch(2)
+                .build();
 
         consumerGroup.updateMember(member2);
 
@@ -543,26 +543,26 @@ public class ConsumerGroupTest {
         ConsumerGroup consumerGroup = createConsumerGroup("foo");
 
         ConsumerGroupMember member1 = new ConsumerGroupMember.Builder("member1")
-            .setServerAssignorName("range")
-            .build();
+                .setServerAssignorName("range")
+                .build();
         ConsumerGroupMember member2 = new ConsumerGroupMember.Builder("member2")
-            .setServerAssignorName("range")
-            .build();
+                .setServerAssignorName("range")
+                .build();
         ConsumerGroupMember member3 = new ConsumerGroupMember.Builder("member3")
-            .setServerAssignorName("uniform")
-            .build();
+                .setServerAssignorName("uniform")
+                .build();
 
         // The group is empty so the preferred assignor should be empty.
         assertEquals(
-            Optional.empty(),
-            consumerGroup.preferredServerAssignor()
+                Optional.empty(),
+                consumerGroup.preferredServerAssignor()
         );
 
         // Member 1 has got an updated assignor but this is not reflected in the group yet so
         // we pass the updated member. The assignor should be range.
         assertEquals(
-            Optional.of("range"),
-            consumerGroup.computePreferredServerAssignor(null, member1)
+                Optional.of("range"),
+                consumerGroup.computePreferredServerAssignor(null, member1)
         );
 
         // Update the group with member 1.
@@ -570,22 +570,22 @@ public class ConsumerGroupTest {
 
         // Member 1 is in the group so the assignor should be range.
         assertEquals(
-            Optional.of("range"),
-            consumerGroup.preferredServerAssignor()
+                Optional.of("range"),
+                consumerGroup.preferredServerAssignor()
         );
 
         // Member 1 has been removed but this is not reflected in the group yet so
         // we pass the removed member. The assignor should be range.
         assertEquals(
-            Optional.empty(),
-            consumerGroup.computePreferredServerAssignor(member1, null)
+                Optional.empty(),
+                consumerGroup.computePreferredServerAssignor(member1, null)
         );
 
         // Member 2 has got an updated assignor but this is not reflected in the group yet so
         // we pass the updated member. The assignor should be range.
         assertEquals(
-            Optional.of("range"),
-            consumerGroup.computePreferredServerAssignor(null, member2)
+                Optional.of("range"),
+                consumerGroup.computePreferredServerAssignor(null, member2)
         );
 
         // Update the group with member 2.
@@ -593,8 +593,8 @@ public class ConsumerGroupTest {
 
         // Member 1 and 2 are in the group so the assignor should be range.
         assertEquals(
-            Optional.of("range"),
-            consumerGroup.preferredServerAssignor()
+                Optional.of("range"),
+                consumerGroup.preferredServerAssignor()
         );
 
         // Update the group with member 3.
@@ -602,20 +602,20 @@ public class ConsumerGroupTest {
 
         // Member 1, 2 and 3 are in the group so the assignor should be range.
         assertEquals(
-            Optional.of("range"),
-            consumerGroup.preferredServerAssignor()
+                Optional.of("range"),
+                consumerGroup.preferredServerAssignor()
         );
 
         // Members without assignors
         ConsumerGroupMember updatedMember1 = new ConsumerGroupMember.Builder("member1")
-            .setServerAssignorName(null)
-            .build();
+                .setServerAssignorName(null)
+                .build();
         ConsumerGroupMember updatedMember2 = new ConsumerGroupMember.Builder("member2")
-            .setServerAssignorName(null)
-            .build();
+                .setServerAssignorName(null)
+                .build();
         ConsumerGroupMember updatedMember3 = new ConsumerGroupMember.Builder("member3")
-            .setServerAssignorName(null)
-            .build();
+                .setServerAssignorName(null)
+                .build();
 
         // Member 1 has removed it assignor but this is not reflected in the group yet so
         // we pass the updated member. The assignor should be range or uniform.
@@ -628,8 +628,8 @@ public class ConsumerGroupTest {
         // Member 2 has removed it assignor but this is not reflected in the group yet so
         // we pass the updated member. The assignor should be range or uniform.
         assertEquals(
-            Optional.of("uniform"),
-            consumerGroup.computePreferredServerAssignor(member2, updatedMember2)
+                Optional.of("uniform"),
+                consumerGroup.computePreferredServerAssignor(member2, updatedMember2)
         );
 
         // Update the group.
@@ -637,15 +637,15 @@ public class ConsumerGroupTest {
 
         // Only member 3 is left in the group so the assignor should be uniform.
         assertEquals(
-            Optional.of("uniform"),
-            consumerGroup.preferredServerAssignor()
+                Optional.of("uniform"),
+                consumerGroup.preferredServerAssignor()
         );
 
         // Member 3 has removed it assignor but this is not reflected in the group yet so
         // we pass the updated member. The assignor should be empty.
         assertEquals(
-            Optional.empty(),
-            consumerGroup.computePreferredServerAssignor(member3, updatedMember3)
+                Optional.empty(),
+                consumerGroup.computePreferredServerAssignor(member3, updatedMember3)
         );
 
         // Update the group.
@@ -653,75 +653,75 @@ public class ConsumerGroupTest {
 
         // The group is empty so the assignor should be empty as well.
         assertEquals(
-            Optional.empty(),
-            consumerGroup.preferredServerAssignor()
+                Optional.empty(),
+                consumerGroup.preferredServerAssignor()
         );
     }
 
     @Test
     public void testUpdateSubscribedTopicNamesAndSubscriptionType() {
         ConsumerGroupMember member1 = new ConsumerGroupMember.Builder("member1")
-            .setSubscribedTopicNames(List.of("foo"))
-            .build();
+                .setSubscribedTopicNames(List.of("foo"))
+                .build();
         ConsumerGroupMember member2 = new ConsumerGroupMember.Builder("member2")
-            .setSubscribedTopicNames(Arrays.asList("bar", "foo"))
-            .build();
+                .setSubscribedTopicNames(Arrays.asList("bar", "foo"))
+                .build();
         ConsumerGroupMember member3 = new ConsumerGroupMember.Builder("member3")
-            .setSubscribedTopicNames(Arrays.asList("bar", "foo"))
-            .build();
+                .setSubscribedTopicNames(Arrays.asList("bar", "foo"))
+                .build();
 
         ConsumerGroup consumerGroup = createConsumerGroup("group-foo");
 
         // It should be empty by default.
         assertEquals(
-            Map.of(),
-            consumerGroup.subscribedTopicNames()
+                Map.of(),
+                consumerGroup.subscribedTopicNames()
         );
 
         // It should be Homogeneous by default.
         assertEquals(
-            HOMOGENEOUS,
-            consumerGroup.subscriptionType()
+                HOMOGENEOUS,
+                consumerGroup.subscriptionType()
         );
 
         consumerGroup.updateMember(member1);
 
         // It should be Homogeneous since there is just 1 member
         assertEquals(
-            HOMOGENEOUS,
-            consumerGroup.subscriptionType()
+                HOMOGENEOUS,
+                consumerGroup.subscriptionType()
         );
 
         consumerGroup.updateMember(member2);
 
         assertEquals(
-            HETEROGENEOUS,
-            consumerGroup.subscriptionType()
+                HETEROGENEOUS,
+                consumerGroup.subscriptionType()
         );
 
         consumerGroup.updateMember(member3);
 
         assertEquals(
-            HETEROGENEOUS,
-            consumerGroup.subscriptionType()
+                HETEROGENEOUS,
+                consumerGroup.subscriptionType()
         );
 
         consumerGroup.removeMember(member1.memberId());
 
         assertEquals(
-            HOMOGENEOUS,
-            consumerGroup.subscriptionType()
+                HOMOGENEOUS,
+                consumerGroup.subscriptionType()
         );
 
         ConsumerGroupMember member4 = new ConsumerGroupMember.Builder("member2")
-            .setSubscribedTopicNames(Arrays.asList("bar", "foo", "zar"))
-            .build();
+                .setSubscribedTopicNames(Arrays.asList("bar", "foo", "zar"))
+                .build();
 
         consumerGroup.updateMember(member4);
 
         assertEquals(
-            HETEROGENEOUS,
-            consumerGroup.subscriptionType()
+                HETEROGENEOUS,
+                consumerGroup.subscriptionType()
         );
     }
 
@@ -735,65 +735,65 @@ public class ConsumerGroupTest {
 
         // Initial assignment for member1
         Assignment initialAssignment = new Assignment(Map.of(
-            topicId,
-            Set.of(0)
+                topicId,
+                Set.of(0)
         ));
         consumerGroup.updateTargetAssignment(memberId1, initialAssignment);
 
         // Verify that partition 0 is assigned to member1.
         assertEquals(
-            mkMap(
-                mkEntry(topicId, mkMap(mkEntry(0, memberId1)))
-            ),
-            consumerGroup.invertedTargetAssignment()
+                mkMap(
+                        mkEntry(topicId, mkMap(mkEntry(0, memberId1)))
+                ),
+                consumerGroup.invertedTargetAssignment()
         );
 
         // New assignment for member1
         Assignment newAssignment = new Assignment(Map.of(
-            topicId,
-            Set.of(1)
+                topicId,
+                Set.of(1)
         ));
         consumerGroup.updateTargetAssignment(memberId1, newAssignment);
 
         // Verify that partition 0 is no longer assigned and partition 1 is assigned to member1
         assertEquals(
-            mkMap(
-                mkEntry(topicId, mkMap(mkEntry(1, memberId1)))
-            ),
-            consumerGroup.invertedTargetAssignment()
+                mkMap(
+                        mkEntry(topicId, mkMap(mkEntry(1, memberId1)))
+                ),
+                consumerGroup.invertedTargetAssignment()
         );
 
         // New assignment for member2 to add partition 1
         Assignment newAssignment2 = new Assignment(Map.of(
-            topicId,
-            Set.of(1)
+                topicId,
+                Set.of(1)
         ));
         consumerGroup.updateTargetAssignment(memberId2, newAssignment2);
 
         // Verify that partition 1 is assigned to member2
         assertEquals(
-            mkMap(
-                mkEntry(topicId, mkMap(mkEntry(1, memberId2)))
-            ),
-            consumerGroup.invertedTargetAssignment()
+                mkMap(
+                        mkEntry(topicId, mkMap(mkEntry(1, memberId2)))
+                ),
+                consumerGroup.invertedTargetAssignment()
         );
 
         // New assignment for member1 to revoke partition 1 and assign partition 0
         Assignment newAssignment1 = new Assignment(Map.of(
-            topicId,
-            Set.of(0)
+                topicId,
+                Set.of(0)
         ));
         consumerGroup.updateTargetAssignment(memberId1, newAssignment1);
 
         // Verify that partition 1 is still assigned to member2 and partition 0 is assigned to member1
         assertEquals(
-            mkMap(
-                mkEntry(topicId, mkMap(
-                    mkEntry(0, memberId1),
-                    mkEntry(1, memberId2)
-                ))
-            ),
-            consumerGroup.invertedTargetAssignment()
+                mkMap(
+                        mkEntry(topicId, mkMap(
+                                mkEntry(0, memberId1),
+                                mkEntry(1, memberId2)
+                        ))
+                ),
+                consumerGroup.invertedTargetAssignment()
         );
 
         // Test remove target assignment for member1
@@ -801,10 +801,10 @@ public class ConsumerGroupTest {
 
         // Verify that partition 0 is no longer assigned and partition 1 is still assigned to member2
         assertEquals(
-            mkMap(
-                mkEntry(topicId, mkMap(mkEntry(1, memberId2)))
-            ),
-            consumerGroup.invertedTargetAssignment()
+                mkMap(
+                        mkEntry(topicId, mkMap(mkEntry(1, memberId2)))
+                ),
+                consumerGroup.invertedTargetAssignment()
         );
     }
 
@@ -869,18 +869,18 @@ public class ConsumerGroupTest {
 
         // The member does not exist.
         assertThrows(UnknownMemberIdException.class, () ->
-            group.validateOffsetCommit("member-id", null, 0, isTransactional, version));
+                group.validateOffsetCommit("member-id", null, 0, isTransactional, version));
 
         // Create a member.
         group.updateMember(new ConsumerGroupMember.Builder("member-id").build());
 
         // A call from the admin client should fail as the group is not empty.
         assertThrows(UnknownMemberIdException.class, () ->
-            group.validateOffsetCommit("", "", -1, isTransactional, version));
+                group.validateOffsetCommit("", "", -1, isTransactional, version));
 
         // The member epoch is stale.
         assertThrows(StaleMemberEpochException.class, () ->
-            group.validateOffsetCommit("member-id", "", 10, isTransactional, version));
+                group.validateOffsetCommit("member-id", "", 10, isTransactional, version));
 
         // This should succeed.
         group.validateOffsetCommit("member-id", "", 0, isTransactional, version);
@@ -901,31 +901,31 @@ public class ConsumerGroupTest {
 
         // The member does not exist.
         assertThrows(UnknownMemberIdException.class, () ->
-            group.validateOffsetCommit("member-id", null, 0, isTransactional, version));
+                group.validateOffsetCommit("member-id", null, 0, isTransactional, version));
 
         // Create members.
         group.updateMember(
-            new ConsumerGroupMember
-                .Builder("new-protocol-member-id").build()
+                new ConsumerGroupMember
+                        .Builder("new-protocol-member-id").build()
         );
         group.updateMember(
-            new ConsumerGroupMember.Builder("old-protocol-member-id")
-                .setClassicMemberMetadata(new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata())
-                .build()
+                new ConsumerGroupMember.Builder("old-protocol-member-id")
+                        .setClassicMemberMetadata(new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata())
+                        .build()
         );
 
         // A call from the admin client should fail as the group is not empty.
         assertThrows(UnknownMemberIdException.class, () ->
-            group.validateOffsetCommit("", "", -1, isTransactional, version));
+                group.validateOffsetCommit("", "", -1, isTransactional, version));
         assertThrows(UnknownMemberIdException.class, () ->
-            group.validateOffsetCommit("", null, -1, isTransactional, version));
+                group.validateOffsetCommit("", null, -1, isTransactional, version));
 
         // This should succeed.
         if (version >= 9) {
             group.validateOffsetCommit("new-protocol-member-id", "", 0, isTransactional, version);
         } else {
             assertThrows(UnsupportedVersionException.class, () ->
-                group.validateOffsetCommit("new-protocol-member-id", "", 0, isTransactional, version));
+                    group.validateOffsetCommit("new-protocol-member-id", "", 0, isTransactional, version));
         }
     }
 
@@ -937,24 +937,24 @@ public class ConsumerGroupTest {
         ConsumerGroup group = createConsumerGroup("group-foo");
 
         ConsumerGroupMember.Builder memberBuilder = new ConsumerGroupMember.Builder("member-id")
-            .setMemberEpoch(10);
+                .setMemberEpoch(10);
 
         if (assignmentType == PartitionAssignmentType.ASSIGNED) {
             memberBuilder.setAssignedPartitions(mkAssignmentWithEpochs(
-                mkTopicAssignmentWithEpochs(topicId, 7, 0)));
+                    mkTopicAssignmentWithEpochs(topicId, 7, 0)));
         } else {
             memberBuilder.setPartitionsPendingRevocation(mkAssignmentWithEpochs(
-                mkTopicAssignmentWithEpochs(topicId, 7, 0)));
+                    mkTopicAssignmentWithEpochs(topicId, 7, 0)));
         }
         group.updateMember(memberBuilder.build());
 
         // When client epoch (11) > broker epoch (10), throw StaleMemberEpochException.
         if (isTransactional || version >= 9) {
             assertThrows(StaleMemberEpochException.class, () ->
-                group.validateOffsetCommit("member-id", "", 11, isTransactional, version));
+                    group.validateOffsetCommit("member-id", "", 11, isTransactional, version));
         } else {
             assertThrows(UnsupportedVersionException.class, () ->
-                group.validateOffsetCommit("member-id", "", 11, isTransactional, version));
+                    group.validateOffsetCommit("member-id", "", 11, isTransactional, version));
         }
 
         // When client epoch (10) == broker epoch (10), no exception thrown.
@@ -963,7 +963,7 @@ public class ConsumerGroupTest {
             assertDoesNotThrow(() -> validator.validate("foo", topicId, 0));
         } else {
             assertThrows(UnsupportedVersionException.class, () ->
-                group.validateOffsetCommit("member-id", "", 10, isTransactional, version));
+                    group.validateOffsetCommit("member-id", "", 10, isTransactional, version));
         }
 
         // When assignment epoch (7) <= client epoch (7) <= broker epoch (10), no exception thrown.
@@ -972,7 +972,7 @@ public class ConsumerGroupTest {
             assertDoesNotThrow(() -> validator.validate("foo", topicId, 0));
         } else {
             assertThrows(UnsupportedVersionException.class, () ->
-                group.validateOffsetCommit("member-id", "", 7, isTransactional, version));
+                    group.validateOffsetCommit("member-id", "", 7, isTransactional, version));
         }
 
         // When client epoch (6) != broker epoch (10) and client epoch (6) < assignment epoch (7),
@@ -980,14 +980,14 @@ public class ConsumerGroupTest {
         if (isTransactional || version >= 9) {
             var validator = group.validateOffsetCommit("member-id", "", 6, isTransactional, version);
             StaleMemberEpochException ex = assertThrows(StaleMemberEpochException.class, () ->
-                validator.validate("foo", topicId, 0));
+                    validator.validate("foo", topicId, 0));
             assertEquals(
-                "Received member epoch 6 is older than assignment epoch 7 for partition foo-0.",
-                ex.getMessage()
+                    "Received member epoch 6 is older than assignment epoch 7 for partition foo-0.",
+                    ex.getMessage()
             );
         } else {
             assertThrows(UnsupportedVersionException.class, () ->
-                group.validateOffsetCommit("member-id", "", 6, isTransactional, version));
+                    group.validateOffsetCommit("member-id", "", 6, isTransactional, version));
         }
     }
 
@@ -1021,15 +1021,15 @@ public class ConsumerGroupTest {
         ConsumerGroup group = createConsumerGroup("group-foo");
 
         group.updateMember(new ConsumerGroupMember.Builder("member-id")
-            .setMemberEpoch(10)
-            .setClassicMemberMetadata(new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata())
-            .setAssignedPartitions(mkAssignmentWithEpochs(
-                mkTopicAssignmentWithEpochs(topicId, 7, 0)))
-            .build());
+                .setMemberEpoch(10)
+                .setClassicMemberMetadata(new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata())
+                .setAssignedPartitions(mkAssignmentWithEpochs(
+                        mkTopicAssignmentWithEpochs(topicId, 7, 0)))
+                .build());
 
         // When client epoch (11) > broker epoch (10), throw IllegalGenerationException.
         assertThrows(IllegalGenerationException.class, () ->
-            group.validateOffsetCommit("member-id", "", 11, isTransactional, version)
+                group.validateOffsetCommit("member-id", "", 11, isTransactional, version)
         );
 
         // When client epoch (10) == broker epoch (10), no exception thrown and NO_OP validator returned.
@@ -1044,7 +1044,7 @@ public class ConsumerGroupTest {
         // IllegalGenerationException thrown from assignment epoch validator.
         var staleValidator = group.validateOffsetCommit("member-id", "", 6, isTransactional, version);
         assertThrows(IllegalGenerationException.class, () ->
-            staleValidator.validate("foo", topicId, 0));
+                staleValidator.validate("foo", topicId, 0));
     }
 
     @ParameterizedTest
@@ -1056,39 +1056,39 @@ public class ConsumerGroupTest {
         ConsumerGroup group = createConsumerGroup("group-foo");
 
         group.updateMember(new ConsumerGroupMember.Builder("member-id")
-            .setMemberEpoch(10)
-            .setAssignedPartitions(mkAssignmentWithEpochs(
-                mkTopicAssignmentWithEpochs(assignedTopicId, 7, 0)))
-            .setPartitionsPendingRevocation(mkAssignmentWithEpochs(
-                mkTopicAssignmentWithEpochs(assignedTopicId, 7, 1)))
-            .build());
+                .setMemberEpoch(10)
+                .setAssignedPartitions(mkAssignmentWithEpochs(
+                        mkTopicAssignmentWithEpochs(assignedTopicId, 7, 0)))
+                .setPartitionsPendingRevocation(mkAssignmentWithEpochs(
+                        mkTopicAssignmentWithEpochs(assignedTopicId, 7, 1)))
+                .build());
 
         // Commit an unassigned topic
         if (isTransactional || version >= 9) {
             var validator = group.validateOffsetCommit("member-id", "", 7, isTransactional, version);
             StaleMemberEpochException ex = assertThrows(StaleMemberEpochException.class, () ->
-                validator.validate("bar", unassignedTopicId, 0));
+                    validator.validate("bar", unassignedTopicId, 0));
             assertEquals(
-                "Partition bar-0 is not assigned or pending revocation for member.",
-                ex.getMessage()
+                    "Partition bar-0 is not assigned or pending revocation for member.",
+                    ex.getMessage()
             );
         } else {
             assertThrows(UnsupportedVersionException.class, () ->
-                group.validateOffsetCommit("member-id", "", 7, isTransactional, version));
+                    group.validateOffsetCommit("member-id", "", 7, isTransactional, version));
         }
 
         // Commit to an unassigned partition of an existing topic
         if (isTransactional || version >= 9) {
             var validator = group.validateOffsetCommit("member-id", "", 7, isTransactional, version);
             StaleMemberEpochException ex = assertThrows(StaleMemberEpochException.class, () ->
-                validator.validate("foo", assignedTopicId, 2));
+                    validator.validate("foo", assignedTopicId, 2));
             assertEquals(
-                "Partition foo-2 is not assigned or pending revocation for member.",
-                ex.getMessage()
+                    "Partition foo-2 is not assigned or pending revocation for member.",
+                    ex.getMessage()
             );
         } else {
             assertThrows(UnsupportedVersionException.class, () ->
-                group.validateOffsetCommit("member-id", "", 7, isTransactional, version));
+                    group.validateOffsetCommit("member-id", "", 7, isTransactional, version));
         }
     }
 
@@ -1112,9 +1112,9 @@ public class ConsumerGroupTest {
         snapshotRegistry.idempotentCreateSnapshot(0);
         assertEquals(ConsumerGroup.ConsumerGroupState.EMPTY.toString(), group.stateAsString(0));
         group.updateMember(new ConsumerGroupMember.Builder("member1")
-            .setMemberEpoch(1)
-            .setSubscribedTopicNames(List.of("foo"))
-            .build());
+                .setMemberEpoch(1)
+                .setSubscribedTopicNames(List.of("foo"))
+                .build());
         snapshotRegistry.idempotentCreateSnapshot(1);
         assertEquals(ConsumerGroup.ConsumerGroupState.EMPTY.toString(), group.stateAsString(0));
         assertEquals(ConsumerGroup.ConsumerGroupState.STABLE.toString(), group.stateAsString(1));
@@ -1124,9 +1124,9 @@ public class ConsumerGroupTest {
     public void testValidateOffsetFetch() {
         SnapshotRegistry snapshotRegistry = new SnapshotRegistry(new LogContext());
         ConsumerGroup group = new ConsumerGroup(
-            new LogContext(), 
-            snapshotRegistry,
-            "group-foo"
+                new LogContext(),
+                snapshotRegistry,
+                "group-foo"
         );
 
         // Simulate a call from the admin client without member id and member epoch.
@@ -1134,7 +1134,7 @@ public class ConsumerGroupTest {
 
         // The member does not exist.
         assertThrows(UnknownMemberIdException.class, () ->
-            group.validateOffsetFetch("member-id", 0, Long.MAX_VALUE));
+                group.validateOffsetFetch("member-id", 0, Long.MAX_VALUE));
 
         // Create a member.
         snapshotRegistry.idempotentCreateSnapshot(0);
@@ -1142,11 +1142,11 @@ public class ConsumerGroupTest {
 
         // The member does not exist at last committed offset 0.
         assertThrows(UnknownMemberIdException.class, () ->
-            group.validateOffsetFetch("member-id", 0, 0));
+                group.validateOffsetFetch("member-id", 0, 0));
 
         // The member exists but the epoch is stale when the last committed offset is not considered.
         assertThrows(StaleMemberEpochException.class, () ->
-            group.validateOffsetFetch("member-id", 10, Long.MAX_VALUE));
+                group.validateOffsetFetch("member-id", 10, Long.MAX_VALUE));
 
         // This should succeed.
         group.validateOffsetFetch("member-id", 0, Long.MAX_VALUE);
@@ -1160,9 +1160,9 @@ public class ConsumerGroupTest {
         assertDoesNotThrow(consumerGroup::validateDeleteGroup);
 
         ConsumerGroupMember member1 = new ConsumerGroupMember.Builder("member1")
-            .setMemberEpoch(2)
-            .setPreviousMemberEpoch(0)
-            .build();
+                .setMemberEpoch(2)
+                .setPreviousMemberEpoch(0)
+                .build();
         consumerGroup.updateMember(member1);
 
         assertEquals(ConsumerGroup.ConsumerGroupState.RECONCILING, consumerGroup.state());
@@ -1198,11 +1198,11 @@ public class ConsumerGroupTest {
     @Test
     public void testIsSubscribedToTopic() {
         ConsumerGroupMember member1 = new ConsumerGroupMember.Builder("member1")
-            .setSubscribedTopicNames(List.of("foo"))
-            .build();
+                .setSubscribedTopicNames(List.of("foo"))
+                .build();
         ConsumerGroupMember member2 = new ConsumerGroupMember.Builder("member2")
-            .setSubscribedTopicNames(List.of("bar"))
-            .build();
+                .setSubscribedTopicNames(List.of("bar"))
+                .build();
 
         ConsumerGroup consumerGroup = createConsumerGroup("group-foo");
 
@@ -1237,26 +1237,26 @@ public class ConsumerGroupTest {
         snapshotRegistry.idempotentCreateSnapshot(1);
 
         ConsumerGroupDescribeResponseData.DescribedGroup expected = new ConsumerGroupDescribeResponseData.DescribedGroup()
-            .setGroupId("group-id-1")
-            .setGroupState(ConsumerGroup.ConsumerGroupState.STABLE.toString())
-            .setGroupEpoch(1)
-            .setAssignmentEpoch(1)
-            .setAssignorName("assignorName")
-            .setMembers(Arrays.asList(
-                new ConsumerGroupDescribeResponseData.Member()
-                    .setMemberId("member1")
-                    .setMemberEpoch(1)
-                    .setSubscribedTopicNames(List.of("foo"))
-                    .setSubscribedTopicRegex("")
-                    .setMemberType((byte) 1),
-                new ConsumerGroupDescribeResponseData.Member()
-                    .setMemberId("member2")
-                    .setMemberEpoch(1)
-                    .setSubscribedTopicRegex("")
-                    .setMemberType((byte) 1)
-            ));
+                .setGroupId("group-id-1")
+                .setGroupState(ConsumerGroup.ConsumerGroupState.STABLE.toString())
+                .setGroupEpoch(1)
+                .setAssignmentEpoch(1)
+                .setAssignorName("assignorName")
+                .setMembers(Arrays.asList(
+                        new ConsumerGroupDescribeResponseData.Member()
+                                .setMemberId("member1")
+                                .setMemberEpoch(1)
+                                .setSubscribedTopicNames(List.of("foo"))
+                                .setSubscribedTopicRegex("")
+                                .setMemberType((byte) 1),
+                        new ConsumerGroupDescribeResponseData.Member()
+                                .setMemberId("member2")
+                                .setMemberEpoch(1)
+                                .setSubscribedTopicRegex("")
+                                .setMemberType((byte) 1)
+                ));
         ConsumerGroupDescribeResponseData.DescribedGroup actual = group.asDescribedGroup(1, "",
-            new KRaftCoordinatorMetadataImage(new MetadataImageBuilder().build()));
+                new KRaftCoordinatorMetadataImage(new MetadataImageBuilder().build()));
 
         assertEquals(expected, actual);
     }
@@ -1270,9 +1270,9 @@ public class ConsumerGroupTest {
         assertFalse(group.isInStates(Set.of("Empty"), 0));
 
         group.updateMember(new ConsumerGroupMember.Builder("member1")
-            .setMemberEpoch(1)
-            .setSubscribedTopicNames(List.of("foo"))
-            .build());
+                .setMemberEpoch(1)
+                .setSubscribedTopicNames(List.of("foo"))
+                .build());
         snapshotRegistry.idempotentCreateSnapshot(1);
         assertTrue(group.isInStates(Set.of("empty"), 0));
         assertTrue(group.isInStates(Set.of("stable"), 1));
@@ -1284,27 +1284,27 @@ public class ConsumerGroupTest {
         ConsumerGroup consumerGroup = createConsumerGroup("foo");
         List<ConsumerGroupMemberMetadataValue.ClassicProtocol> rangeProtocol = new ArrayList<>();
         rangeProtocol.add(new ConsumerGroupMemberMetadataValue.ClassicProtocol()
-            .setName("range")
-            .setMetadata(new byte[0]));
+                .setName("range")
+                .setMetadata(new byte[0]));
 
         List<ConsumerGroupMemberMetadataValue.ClassicProtocol> roundRobinAndRangeProtocols = new ArrayList<>();
         roundRobinAndRangeProtocols.add(new ConsumerGroupMemberMetadataValue.ClassicProtocol()
-            .setName("roundrobin")
-            .setMetadata(new byte[0]));
+                .setName("roundrobin")
+                .setMetadata(new byte[0]));
         roundRobinAndRangeProtocols.add(new ConsumerGroupMemberMetadataValue.ClassicProtocol()
-            .setName("range")
-            .setMetadata(new byte[0]));
+                .setName("range")
+                .setMetadata(new byte[0]));
 
         ConsumerGroupMember member1 = new ConsumerGroupMember.Builder("member-1")
-            .setClassicMemberMetadata(new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
-                .setSupportedProtocols(rangeProtocol))
-            .build();
+                .setClassicMemberMetadata(new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
+                        .setSupportedProtocols(rangeProtocol))
+                .build();
         consumerGroup.updateMember(member1);
 
         ConsumerGroupMember member2 = new ConsumerGroupMember.Builder("member-2")
-            .setClassicMemberMetadata(new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
-                .setSupportedProtocols(roundRobinAndRangeProtocols))
-            .build();
+                .setClassicMemberMetadata(new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
+                        .setSupportedProtocols(roundRobinAndRangeProtocols))
+                .build();
         consumerGroup.updateMember(member2);
 
         assertEquals(2, consumerGroup.classicMembersSupportedProtocols().get("range"));
@@ -1313,23 +1313,23 @@ public class ConsumerGroupTest {
         assertFalse(consumerGroup.supportsClassicProtocols(ConsumerProtocol.PROTOCOL_TYPE, Set.of("sticky", "roundrobin")));
 
         member2 = new ConsumerGroupMember.Builder(member2)
-            .setClassicMemberMetadata(new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
-                .setSupportedProtocols(rangeProtocol))
-            .build();
+                .setClassicMemberMetadata(new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
+                        .setSupportedProtocols(rangeProtocol))
+                .build();
         consumerGroup.updateMember(member2);
 
         assertEquals(2, consumerGroup.classicMembersSupportedProtocols().get("range"));
         assertFalse(consumerGroup.classicMembersSupportedProtocols().containsKey("roundrobin"));
 
         member1 = new ConsumerGroupMember.Builder(member1)
-            .setClassicMemberMetadata(new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
-                .setSupportedProtocols(roundRobinAndRangeProtocols))
-            .build();
+                .setClassicMemberMetadata(new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
+                        .setSupportedProtocols(roundRobinAndRangeProtocols))
+                .build();
         consumerGroup.updateMember(member1);
         member2 = new ConsumerGroupMember.Builder(member2)
-            .setClassicMemberMetadata(new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
-                .setSupportedProtocols(roundRobinAndRangeProtocols))
-            .build();
+                .setClassicMemberMetadata(new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
+                        .setSupportedProtocols(roundRobinAndRangeProtocols))
+                .build();
         consumerGroup.updateMember(member2);
 
         assertEquals(2, consumerGroup.classicMembersSupportedProtocols().get("range"));
@@ -1342,20 +1342,20 @@ public class ConsumerGroupTest {
         ConsumerGroup consumerGroup = createConsumerGroup("foo");
         List<ConsumerGroupMemberMetadataValue.ClassicProtocol> protocols = new ArrayList<>();
         protocols.add(new ConsumerGroupMemberMetadataValue.ClassicProtocol()
-            .setName("range")
-            .setMetadata(new byte[0]));
+                .setName("range")
+                .setMetadata(new byte[0]));
 
         // The group has member 1 (using the classic protocol).
         ConsumerGroupMember member1 = new ConsumerGroupMember.Builder("member-1")
-            .setClassicMemberMetadata(new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
-                .setSupportedProtocols(protocols))
-            .build();
+                .setClassicMemberMetadata(new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
+                        .setSupportedProtocols(protocols))
+                .build();
         consumerGroup.updateMember(member1);
         assertEquals(1, consumerGroup.numClassicProtocolMembers());
 
         // The group has member 1 (using the classic protocol) and member 2 (using the consumer protocol).
         ConsumerGroupMember member2 = new ConsumerGroupMember.Builder("member-2")
-            .build();
+                .build();
         consumerGroup.updateMember(member2);
         assertEquals(1, consumerGroup.numClassicProtocolMembers());
         assertFalse(consumerGroup.allMembersUseClassicProtocolExcept(member1));
@@ -1364,7 +1364,7 @@ public class ConsumerGroupTest {
         // The group has member 2 (using the consumer protocol) and member 3 (using the consumer protocol).
         consumerGroup.removeMember(member1.memberId());
         ConsumerGroupMember member3 = new ConsumerGroupMember.Builder("member-3")
-            .build();
+                .build();
         consumerGroup.updateMember(member3);
         assertEquals(0, consumerGroup.numClassicProtocolMembers());
         assertFalse(consumerGroup.allMembersUseClassicProtocolExcept(member2));
@@ -1372,36 +1372,36 @@ public class ConsumerGroupTest {
         // The group has member 2 (using the classic protocol).
         consumerGroup.removeMember(member2.memberId());
         member2 = new ConsumerGroupMember.Builder("member-2")
-            .setClassicMemberMetadata(new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
-                .setSupportedProtocols(protocols))
-            .build();
+                .setClassicMemberMetadata(new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
+                        .setSupportedProtocols(protocols))
+                .build();
         consumerGroup.updateMember(member2);
         assertEquals(1, consumerGroup.numClassicProtocolMembers());
     }
 
     @ParameterizedTest
     @CsvSource({
-        "5, 5, 0, 0, false", // remove no consumer protocol members
-        "5, 5, 0, 4, false", // remove 4 out of 5 consumer protocol members
-        "5, 5, 1, 4, false", // remove 4 out of 5 consumer protocol members and 1 classic protocol member
-        "5, 5, 0, 5, true", // remove 5 out of 5 consumer protocol members
-        "5, 5, 1, 5, true", // remove 5 out of 5 consumer protocol members and 1 classic protocol member
-        "5, 5, 5, 5, true", // an empty consumer group is considered to have only classic protocol members
-        "5, 0, 0, 0, true", // a consumer group with only classic protocol members, which should not happen
-        "5, 0, 1, 0, true", // a consumer group with only classic protocol members, which should not happen
+            "5, 5, 0, 0, false", // remove no consumer protocol members
+            "5, 5, 0, 4, false", // remove 4 out of 5 consumer protocol members
+            "5, 5, 1, 4, false", // remove 4 out of 5 consumer protocol members and 1 classic protocol member
+            "5, 5, 0, 5, true", // remove 5 out of 5 consumer protocol members
+            "5, 5, 1, 5, true", // remove 5 out of 5 consumer protocol members and 1 classic protocol member
+            "5, 5, 5, 5, true", // an empty consumer group is considered to have only classic protocol members
+            "5, 0, 0, 0, true", // a consumer group with only classic protocol members, which should not happen
+            "5, 0, 1, 0, true", // a consumer group with only classic protocol members, which should not happen
     })
     public void testAllMembersUseClassicProtocolExcept(
-        int numClassicProtocolMembers,
-        int numConsumerProtocolMembers,
-        int numRemovedClassicProtocolMembers,
-        int numRemovedConsumerProtocolMembers,
-        boolean expectedResult
+            int numClassicProtocolMembers,
+            int numConsumerProtocolMembers,
+            int numRemovedClassicProtocolMembers,
+            int numRemovedConsumerProtocolMembers,
+            boolean expectedResult
     ) {
         ConsumerGroup consumerGroup = createConsumerGroup("foo");
         List<ConsumerGroupMemberMetadataValue.ClassicProtocol> protocols = new ArrayList<>();
         protocols.add(new ConsumerGroupMemberMetadataValue.ClassicProtocol()
-            .setName("range")
-            .setMetadata(new byte[0]));
+                .setName("range")
+                .setMetadata(new byte[0]));
 
         List<ConsumerGroupMember> classicProtocolMembers = new ArrayList<>();
         List<ConsumerGroupMember> consumerProtocolMembers = new ArrayList<>();
@@ -1409,16 +1409,16 @@ public class ConsumerGroupTest {
         // Add classic and consumer protocol members to the group
         for (int i = 0; i < numClassicProtocolMembers; i++) {
             ConsumerGroupMember member = new ConsumerGroupMember.Builder("classic-member-" + i)
-                .setClassicMemberMetadata(new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
-                    .setSupportedProtocols(protocols))
-                .build();
+                    .setClassicMemberMetadata(new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
+                            .setSupportedProtocols(protocols))
+                    .build();
             classicProtocolMembers.add(member);
             consumerGroup.updateMember(member);
         }
 
         for (int i = 0; i < numConsumerProtocolMembers; i++) {
             ConsumerGroupMember member = new ConsumerGroupMember.Builder("consumer-member-" + i)
-                .build();
+                    .build();
             consumerProtocolMembers.add(member);
             consumerGroup.updateMember(member);
         }
@@ -1452,96 +1452,96 @@ public class ConsumerGroupTest {
         String barTopicName = "bar";
 
         CoordinatorMetadataImage metadataImage = new MetadataImageBuilder()
-            .addTopic(fooTopicId, fooTopicName, 1)
-            .addTopic(barTopicId, barTopicName, 1)
-            .addRacks()
-            .buildCoordinatorMetadataImage();
+                .addTopic(fooTopicId, fooTopicName, 1)
+                .addTopic(barTopicId, barTopicName, 1)
+                .addRacks()
+                .buildCoordinatorMetadataImage();
 
         ClassicGroup classicGroup = new ClassicGroup(
-            logContext,
-            groupId,
-            STABLE,
-            time,
-            10,
-            Optional.of(ConsumerProtocol.PROTOCOL_TYPE),
-            Optional.of("range"),
-            Optional.empty(),
-            Optional.of(time.milliseconds())
+                logContext,
+                groupId,
+                STABLE,
+                time,
+                10,
+                Optional.of(ConsumerProtocol.PROTOCOL_TYPE),
+                Optional.of("range"),
+                Optional.empty(),
+                Optional.of(time.milliseconds())
         );
 
         ClassicGroupMember member = new ClassicGroupMember(
-            memberId,
-            Optional.empty(),
-            "client-id",
-            "client-host",
-            5000,
-            500,
-            ConsumerProtocol.PROTOCOL_TYPE,
-            new JoinGroupRequestData.JoinGroupRequestProtocolCollection(List.of(
-                new JoinGroupRequestData.JoinGroupRequestProtocol()
-                    .setName("range")
-                    .setMetadata(Utils.toArray(ConsumerProtocol.serializeSubscription(new ConsumerPartitionAssignor.Subscription(
-                            Arrays.asList(fooTopicName, barTopicName),
-                            null,
-                            Arrays.asList(
-                                new TopicPartition(fooTopicName, 0),
-                                new TopicPartition(barTopicName, 0))))))
-            ).iterator()),
-            Utils.toArray(ConsumerProtocol.serializeAssignment(new ConsumerPartitionAssignor.Assignment(Arrays.asList(
-                new TopicPartition(fooTopicName, 0),
-                new TopicPartition(barTopicName, 0)
-            ))))
+                memberId,
+                Optional.empty(),
+                "client-id",
+                "client-host",
+                5000,
+                500,
+                ConsumerProtocol.PROTOCOL_TYPE,
+                new JoinGroupRequestData.JoinGroupRequestProtocolCollection(List.of(
+                        new JoinGroupRequestData.JoinGroupRequestProtocol()
+                                .setName("range")
+                                .setMetadata(Utils.toArray(ConsumerProtocol.serializeSubscription(new ConsumerPartitionAssignor.Subscription(
+                                        Arrays.asList(fooTopicName, barTopicName),
+                                        null,
+                                        Arrays.asList(
+                                                new TopicPartition(fooTopicName, 0),
+                                                new TopicPartition(barTopicName, 0))))))
+                ).iterator()),
+                Utils.toArray(ConsumerProtocol.serializeAssignment(new ConsumerPartitionAssignor.Assignment(Arrays.asList(
+                        new TopicPartition(fooTopicName, 0),
+                        new TopicPartition(barTopicName, 0)
+                ))))
         );
         classicGroup.add(member);
 
         ConsumerGroup consumerGroup = ConsumerGroup.fromClassicGroup(
-            logContext,
-            new SnapshotRegistry(logContext),
-            classicGroup,
-            new HashMap<>(),
-            metadataImage
+                logContext,
+                new SnapshotRegistry(logContext),
+                classicGroup,
+                new HashMap<>(),
+                metadataImage
         );
 
         ConsumerGroup expectedConsumerGroup = new ConsumerGroup(
-            new LogContext(), 
-            new SnapshotRegistry(logContext),
-            groupId
+                new LogContext(),
+                new SnapshotRegistry(logContext),
+                groupId
         );
         expectedConsumerGroup.setGroupEpoch(10);
         expectedConsumerGroup.setTargetAssignmentMetadata(10, 0L);
         expectedConsumerGroup.updateTargetAssignment(memberId, new Assignment(mkAssignment(
-            mkTopicAssignment(fooTopicId, 0)
+                mkTopicAssignment(fooTopicId, 0)
         )));
         expectedConsumerGroup.setMetadataHash(computeGroupHash(Map.of(
-            fooTopicName, computeTopicHash(fooTopicName, metadataImage),
-            barTopicName, computeTopicHash(barTopicName, metadataImage)
+                fooTopicName, computeTopicHash(fooTopicName, metadataImage),
+                barTopicName, computeTopicHash(barTopicName, metadataImage)
         )));
         expectedConsumerGroup.updateMember(new ConsumerGroupMember.Builder(memberId)
-            .setMemberEpoch(classicGroup.generationId())
-            .setState(MemberState.STABLE)
-            .setPreviousMemberEpoch(classicGroup.generationId())
-            .setInstanceId(null)
-            .setRackId(null)
-            .setRebalanceTimeoutMs(member.rebalanceTimeoutMs())
-            .setClientId(member.clientId())
-            .setClientHost(member.clientHost())
-            .setSubscribedTopicNames(Arrays.asList(fooTopicName, barTopicName))
-            .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(fooTopicId, 0),
-                mkTopicAssignment(barTopicId, 0)), classicGroup.generationId()))
-            .setClassicMemberMetadata(
-                new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
-                    .setSessionTimeoutMs(member.sessionTimeoutMs())
-                    .setSupportedProtocols(List.of(
-                        new ConsumerGroupMemberMetadataValue.ClassicProtocol()
-                            .setName("range")
-                            .setMetadata(Utils.toArray(ConsumerProtocol.serializeSubscription(new ConsumerPartitionAssignor.Subscription(
-                                Arrays.asList(fooTopicName, barTopicName),
-                                null,
-                                Arrays.asList(
-                                    new TopicPartition(fooTopicName, 0),
-                                    new TopicPartition(barTopicName, 0)))))))))
-            .build());
+                .setMemberEpoch(classicGroup.generationId())
+                .setState(MemberState.STABLE)
+                .setPreviousMemberEpoch(classicGroup.generationId())
+                .setInstanceId(null)
+                .setRackId(null)
+                .setRebalanceTimeoutMs(member.rebalanceTimeoutMs())
+                .setClientId(member.clientId())
+                .setClientHost(member.clientHost())
+                .setSubscribedTopicNames(Arrays.asList(fooTopicName, barTopicName))
+                .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
+                        mkTopicAssignment(fooTopicId, 0),
+                        mkTopicAssignment(barTopicId, 0)), classicGroup.generationId()))
+                .setClassicMemberMetadata(
+                        new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
+                                .setSessionTimeoutMs(member.sessionTimeoutMs())
+                                .setSupportedProtocols(List.of(
+                                        new ConsumerGroupMemberMetadataValue.ClassicProtocol()
+                                                .setName("range")
+                                                .setMetadata(Utils.toArray(ConsumerProtocol.serializeSubscription(new ConsumerPartitionAssignor.Subscription(
+                                                        Arrays.asList(fooTopicName, barTopicName),
+                                                        null,
+                                                        Arrays.asList(
+                                                                new TopicPartition(fooTopicName, 0),
+                                                                new TopicPartition(barTopicName, 0)))))))))
+                .build());
 
         assertEquals(expectedConsumerGroup.groupId(), consumerGroup.groupId());
         assertEquals(expectedConsumerGroup.groupEpoch(), consumerGroup.groupEpoch());
@@ -1557,16 +1557,16 @@ public class ConsumerGroupTest {
         ConsumerGroup consumerGroup = createConsumerGroup("foo");
 
         ConsumerGroupMember member1 = new ConsumerGroupMember.Builder("member1")
-            .setSubscribedTopicRegex("regex1")
-            .build();
+                .setSubscribedTopicRegex("regex1")
+                .build();
         ConsumerGroupMember member2 = new ConsumerGroupMember.Builder("member2")
-            .setSubscribedTopicRegex("regex2")
-            .build();
+                .setSubscribedTopicRegex("regex2")
+                .build();
         ConsumerGroupMember member3 = new ConsumerGroupMember.Builder("member3")
-            .setSubscribedTopicRegex("regex1")
-            .build();
+                .setSubscribedTopicRegex("regex1")
+                .build();
         ConsumerGroupMember member4 = new ConsumerGroupMember.Builder("member4")
-            .build();
+                .build();
 
         // Assert the initial state.
         assertEquals(0, consumerGroup.numSubscribedMembers(""));
@@ -1604,8 +1604,8 @@ public class ConsumerGroupTest {
 
         // Update member 3.
         member3 = new ConsumerGroupMember.Builder(member3)
-            .setSubscribedTopicRegex("regex2")
-            .build();
+                .setSubscribedTopicRegex("regex2")
+                .build();
         consumerGroup.updateMember(member3);
         assertEquals(0, consumerGroup.numSubscribedMembers(""));
         assertEquals(1, consumerGroup.numSubscribedMembers("regex1"));
@@ -1639,107 +1639,107 @@ public class ConsumerGroupTest {
         ConsumerGroup consumerGroup = createConsumerGroup("foo");
 
         ConsumerGroupMember member1 = new ConsumerGroupMember.Builder("member1")
-            .setSubscribedTopicNames(Arrays.asList("foo", "bar", "zar"))
-            .build();
+                .setSubscribedTopicNames(Arrays.asList("foo", "bar", "zar"))
+                .build();
         consumerGroup.updateMember(member1);
 
         ConsumerGroupMember member2 = new ConsumerGroupMember.Builder("member2")
-            .setSubscribedTopicNames(Arrays.asList("foo", "bar"))
-            .build();
+                .setSubscribedTopicNames(Arrays.asList("foo", "bar"))
+                .build();
         consumerGroup.updateMember(member2);
 
         // Verify initial state.
         assertEquals(
-            Map.of(
-                "foo", new SubscriptionCount(2, 0),
-                "bar", new SubscriptionCount(2, 0),
-                "zar", new SubscriptionCount(1, 0)
-            ),
-            consumerGroup.subscribedTopicNames()
+                Map.of(
+                        "foo", new SubscriptionCount(2, 0),
+                        "bar", new SubscriptionCount(2, 0),
+                        "zar", new SubscriptionCount(1, 0)
+                ),
+                consumerGroup.subscribedTopicNames()
         );
 
         // Add a regex.
         consumerGroup.updateResolvedRegularExpression(
-            "foo|bar",
-            new ResolvedRegularExpression(
-                Set.of("foo", "bar"),
-                10L,
-                12345L
-            )
+                "foo|bar",
+                new ResolvedRegularExpression(
+                        Set.of("foo", "bar"),
+                        10L,
+                        12345L
+                )
         );
 
         assertEquals(
-            Map.of(
-                "foo", new SubscriptionCount(2, 1),
-                "bar", new SubscriptionCount(2, 1),
-                "zar", new SubscriptionCount(1, 0)
-            ),
-            consumerGroup.subscribedTopicNames()
+                Map.of(
+                        "foo", new SubscriptionCount(2, 1),
+                        "bar", new SubscriptionCount(2, 1),
+                        "zar", new SubscriptionCount(1, 0)
+                ),
+                consumerGroup.subscribedTopicNames()
         );
 
         // Add a regex.
         consumerGroup.updateResolvedRegularExpression(
-            "foobar",
-            new ResolvedRegularExpression(
-                Set.of("foobar"),
-                10L,
-                12345L
-            )
+                "foobar",
+                new ResolvedRegularExpression(
+                        Set.of("foobar"),
+                        10L,
+                        12345L
+                )
         );
 
         assertEquals(
-            Map.of(
-                "foo", new SubscriptionCount(2, 1),
-                "bar", new SubscriptionCount(2, 1),
-                "zar", new SubscriptionCount(1, 0),
-                "foobar", new SubscriptionCount(0, 1)
-            ),
-            consumerGroup.subscribedTopicNames()
+                Map.of(
+                        "foo", new SubscriptionCount(2, 1),
+                        "bar", new SubscriptionCount(2, 1),
+                        "zar", new SubscriptionCount(1, 0),
+                        "foobar", new SubscriptionCount(0, 1)
+                ),
+                consumerGroup.subscribedTopicNames()
         );
 
         // Update a regex.
         consumerGroup.updateResolvedRegularExpression(
-            "foo|bar",
-            new ResolvedRegularExpression(
-                Set.of("foo"),
-                10L,
-                12345L
-            )
+                "foo|bar",
+                new ResolvedRegularExpression(
+                        Set.of("foo"),
+                        10L,
+                        12345L
+                )
         );
 
         assertEquals(
-            Map.of(
-                "foo", new SubscriptionCount(2, 1),
-                "bar", new SubscriptionCount(2, 0),
-                "zar", new SubscriptionCount(1, 0),
-                "foobar", new SubscriptionCount(0, 1)
-            ),
-            consumerGroup.subscribedTopicNames()
+                Map.of(
+                        "foo", new SubscriptionCount(2, 1),
+                        "bar", new SubscriptionCount(2, 0),
+                        "zar", new SubscriptionCount(1, 0),
+                        "foobar", new SubscriptionCount(0, 1)
+                ),
+                consumerGroup.subscribedTopicNames()
         );
 
         // Remove a regex.
         consumerGroup.removeResolvedRegularExpression("foo|bar");
 
         assertEquals(
-            Map.of(
-                "foo", new SubscriptionCount(2, 0),
-                "bar", new SubscriptionCount(2, 0),
-                "zar", new SubscriptionCount(1, 0),
-                "foobar", new SubscriptionCount(0, 1)
-            ),
-            consumerGroup.subscribedTopicNames()
+                Map.of(
+                        "foo", new SubscriptionCount(2, 0),
+                        "bar", new SubscriptionCount(2, 0),
+                        "zar", new SubscriptionCount(1, 0),
+                        "foobar", new SubscriptionCount(0, 1)
+                ),
+                consumerGroup.subscribedTopicNames()
         );
 
         // Remove another regex.
         consumerGroup.removeResolvedRegularExpression("foobar");
 
         assertEquals(
-            Map.of(
-                "foo", new SubscriptionCount(2, 0),
-                "bar", new SubscriptionCount(2, 0),
-                "zar", new SubscriptionCount(1, 0)
-            ),
-            consumerGroup.subscribedTopicNames()
+                Map.of(
+                        "foo", new SubscriptionCount(2, 0),
+                        "bar", new SubscriptionCount(2, 0),
+                        "zar", new SubscriptionCount(1, 0)
+                ),
+                consumerGroup.subscribedTopicNames()
         );
     }
 
@@ -1748,77 +1748,77 @@ public class ConsumerGroupTest {
         ConsumerGroup consumerGroup = createConsumerGroup("foo");
 
         ConsumerGroupMember member1 = new ConsumerGroupMember.Builder("member1")
-            .setSubscribedTopicNames(Arrays.asList("foo", "bar", "zar"))
-            .build();
+                .setSubscribedTopicNames(Arrays.asList("foo", "bar", "zar"))
+                .build();
         consumerGroup.updateMember(member1);
 
         ConsumerGroupMember member2 = new ConsumerGroupMember.Builder("member2")
-            .setSubscribedTopicNames(Arrays.asList("foo", "bar"))
-            .build();
+                .setSubscribedTopicNames(Arrays.asList("foo", "bar"))
+                .build();
         consumerGroup.updateMember(member2);
 
         ConsumerGroupMember member3 = new ConsumerGroupMember.Builder("member3")
-            .setSubscribedTopicRegex("foo*")
-            .build();
+                .setSubscribedTopicRegex("foo*")
+                .build();
         consumerGroup.updateMember(member3);
 
         ConsumerGroupMember member4 = new ConsumerGroupMember.Builder("member4")
-            .setSubscribedTopicRegex("foo*")
-            .build();
+                .setSubscribedTopicRegex("foo*")
+                .build();
         consumerGroup.updateMember(member4);
 
         ConsumerGroupMember member5 = new ConsumerGroupMember.Builder("member5")
-            .setSubscribedTopicRegex("bar*")
-            .build();
+                .setSubscribedTopicRegex("bar*")
+                .build();
         consumerGroup.updateMember(member5);
 
         ConsumerGroupMember member6 = new ConsumerGroupMember.Builder("member6")
-            .setSubscribedTopicRegex("bar*")
-            .build();
+                .setSubscribedTopicRegex("bar*")
+                .build();
         consumerGroup.updateMember(member6);
 
         consumerGroup.updateResolvedRegularExpression(
-            "foo*",
-            new ResolvedRegularExpression(
-                Set.of("foo", "fooo"),
-                10L,
-                12345L
-            )
+                "foo*",
+                new ResolvedRegularExpression(
+                        Set.of("foo", "fooo"),
+                        10L,
+                        12345L
+                )
         );
 
         consumerGroup.updateResolvedRegularExpression(
-            "bar*",
-            new ResolvedRegularExpression(
-                Set.of("bar", "barr"),
-                10L,
-                12345L
-            )
+                "bar*",
+                new ResolvedRegularExpression(
+                        Set.of("bar", "barr"),
+                        10L,
+                        12345L
+                )
         );
 
         // Verify initial state.
         assertEquals(
-            Map.of(
-                "foo", new SubscriptionCount(2, 1),
-                "fooo", new SubscriptionCount(0, 1),
-                "bar", new SubscriptionCount(2, 1),
-                "barr", new SubscriptionCount(0, 1),
-                "zar", new SubscriptionCount(1, 0)
-            ),
-            consumerGroup.subscribedTopicNames()
+                Map.of(
+                        "foo", new SubscriptionCount(2, 1),
+                        "fooo", new SubscriptionCount(0, 1),
+                        "bar", new SubscriptionCount(2, 1),
+                        "barr", new SubscriptionCount(0, 1),
+                        "zar", new SubscriptionCount(1, 0)
+                ),
+                consumerGroup.subscribedTopicNames()
         );
 
         // Compute with removed members and regexes.
         assertEquals(
-            Map.of(
-                "foo", new SubscriptionCount(1, 0),
-                "bar", new SubscriptionCount(1, 1),
-                "barr", new SubscriptionCount(0, 1),
-                "zar", new SubscriptionCount(1, 0)
-            ),
-            consumerGroup.computeSubscribedTopicNamesWithoutDeletedMembers(
-                Set.of(member2, member3, member4, member5),
-                Set.of("foo*")
-            )
+                Map.of(
+                        "foo", new SubscriptionCount(1, 0),
+                        "bar", new SubscriptionCount(1, 1),
+                        "barr", new SubscriptionCount(0, 1),
+                        "zar", new SubscriptionCount(1, 0)
+                ),
+                consumerGroup.computeSubscribedTopicNamesWithoutDeletedMembers(
+                        Set.of(member2, member3, member4, member5),
+                        Set.of("foo*")
+                )
         );
     }
 
@@ -1827,97 +1827,97 @@ public class ConsumerGroupTest {
         ConsumerGroup consumerGroup = createConsumerGroup("foo");
 
         ConsumerGroupMember member1 = new ConsumerGroupMember.Builder("member1")
-            .setSubscribedTopicNames(List.of("foo", "bar", "zar"))
-            .build();
+                .setSubscribedTopicNames(List.of("foo", "bar", "zar"))
+                .build();
         consumerGroup.updateMember(member1);
 
         ConsumerGroupMember member2 = new ConsumerGroupMember.Builder("member2")
-            .setSubscribedTopicNames(List.of("foo", "bar"))
-            .build();
+                .setSubscribedTopicNames(List.of("foo", "bar"))
+                .build();
         consumerGroup.updateMember(member2);
 
         ConsumerGroupMember member3 = new ConsumerGroupMember.Builder("member3")
-            .setSubscribedTopicNames(List.of("foo"))
-            .setSubscribedTopicRegex("foo*")
-            .build();
+                .setSubscribedTopicNames(List.of("foo"))
+                .setSubscribedTopicRegex("foo*")
+                .build();
         consumerGroup.updateMember(member3);
 
         consumerGroup.updateResolvedRegularExpression(
-            "foo*",
-            new ResolvedRegularExpression(
-                Set.of("foo", "fooo"),
-                10L,
-                12345L
-            )
+                "foo*",
+                new ResolvedRegularExpression(
+                        Set.of("foo", "fooo"),
+                        10L,
+                        12345L
+                )
         );
 
         // Verify initial state.
         assertEquals(
-            Map.of(
-                "foo", new SubscriptionCount(3, 1),
-                "fooo", new SubscriptionCount(0, 1),
-                "bar", new SubscriptionCount(2, 0),
-                "zar", new SubscriptionCount(1, 0)
-            ),
-            consumerGroup.subscribedTopicNames()
+                Map.of(
+                        "foo", new SubscriptionCount(3, 1),
+                        "fooo", new SubscriptionCount(0, 1),
+                        "bar", new SubscriptionCount(2, 0),
+                        "zar", new SubscriptionCount(1, 0)
+                ),
+                consumerGroup.subscribedTopicNames()
         );
 
         // Compute subscribed topic names without changing anything.
         assertEquals(
-            Map.of(
-                "foo", new SubscriptionCount(3, 1),
-                "fooo", new SubscriptionCount(0, 1),
-                "bar", new SubscriptionCount(2, 0),
-                "zar", new SubscriptionCount(1, 0)
-            ),
-            consumerGroup.computeSubscribedTopicNames(member3, member3)
+                Map.of(
+                        "foo", new SubscriptionCount(3, 1),
+                        "fooo", new SubscriptionCount(0, 1),
+                        "bar", new SubscriptionCount(2, 0),
+                        "zar", new SubscriptionCount(1, 0)
+                ),
+                consumerGroup.computeSubscribedTopicNames(member3, member3)
         );
 
         // Compute subscribed topic names with removing the regex.
         assertEquals(
-            Map.of(
-                "foo", new SubscriptionCount(3, 0),
-                "bar", new SubscriptionCount(2, 0),
-                "zar", new SubscriptionCount(1, 0)
-            ),
-            consumerGroup.computeSubscribedTopicNames(
-                member3,
-                new ConsumerGroupMember.Builder(member3)
-                    .setSubscribedTopicRegex("")
-                    .build()
-            )
+                Map.of(
+                        "foo", new SubscriptionCount(3, 0),
+                        "bar", new SubscriptionCount(2, 0),
+                        "zar", new SubscriptionCount(1, 0)
+                ),
+                consumerGroup.computeSubscribedTopicNames(
+                        member3,
+                        new ConsumerGroupMember.Builder(member3)
+                                .setSubscribedTopicRegex("")
+                                .build()
+                )
         );
 
         // Compute subscribed topic names with removing the names.
         assertEquals(
-            Map.of(
-                "foo", new SubscriptionCount(2, 1),
-                "fooo", new SubscriptionCount(0, 1),
-                "bar", new SubscriptionCount(2, 0),
-                "zar", new SubscriptionCount(1, 0)
-            ),
-            consumerGroup.computeSubscribedTopicNames(
-                member3,
-                new ConsumerGroupMember.Builder(member3)
-                    .setSubscribedTopicNames(List.of())
-                    .build()
-            )
+                Map.of(
+                        "foo", new SubscriptionCount(2, 1),
+                        "fooo", new SubscriptionCount(0, 1),
+                        "bar", new SubscriptionCount(2, 0),
+                        "zar", new SubscriptionCount(1, 0)
+                ),
+                consumerGroup.computeSubscribedTopicNames(
+                        member3,
+                        new ConsumerGroupMember.Builder(member3)
+                                .setSubscribedTopicNames(List.of())
+                                .build()
+                )
         );
 
         // Compute subscribed topic names with removing both.
         assertEquals(
-            Map.of(
-                "foo", new SubscriptionCount(2, 0),
-                "bar", new SubscriptionCount(2, 0),
-                "zar", new SubscriptionCount(1, 0)
-            ),
-            consumerGroup.computeSubscribedTopicNames(
-                member3,
-                new ConsumerGroupMember.Builder(member3)
-                    .setSubscribedTopicNames(List.of())
-                    .setSubscribedTopicRegex("")
-                    .build()
-            )
+                Map.of(
+                        "foo", new SubscriptionCount(2, 0),
+                        "bar", new SubscriptionCount(2, 0),
+                        "zar", new SubscriptionCount(1, 0)
+                ),
+                consumerGroup.computeSubscribedTopicNames(
+                        member3,
+                        new ConsumerGroupMember.Builder(member3)
+                                .setSubscribedTopicNames(List.of())
+                                .setSubscribedTopicRegex("")
+                                .build()
+                )
         );
     }
 
@@ -1931,81 +1931,81 @@ public class ConsumerGroupTest {
         Uuid topicId3 = Uuid.randomUuid();
 
         ConsumerGroupMember member1 = new ConsumerGroupMember.Builder("member1")
-            .setMemberEpoch(10)
-            .setSubscribedTopicNames(Arrays.asList("foo", "bar", "zar"))
-            .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(mkTopicAssignment(topicId1, 0, 1, 2)), 5))
-            .build();
+                .setMemberEpoch(10)
+                .setSubscribedTopicNames(Arrays.asList("foo", "bar", "zar"))
+                .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(mkTopicAssignment(topicId1, 0, 1, 2)), 5))
+                .build();
         consumerGroup.updateMember(member1);
 
         ConsumerGroupMember member2 = new ConsumerGroupMember.Builder("member2")
-            .setMemberEpoch(10)
-            .setSubscribedTopicNames(Arrays.asList("foo", "bar"))
-            .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(mkTopicAssignment(topicId2, 0, 1, 2)), 6))
-            .build();
+                .setMemberEpoch(10)
+                .setSubscribedTopicNames(Arrays.asList("foo", "bar"))
+                .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(mkTopicAssignment(topicId2, 0, 1, 2)), 6))
+                .build();
         consumerGroup.updateMember(member2);
 
         ConsumerGroupMember member3 = new ConsumerGroupMember.Builder("member3")
-            .setMemberEpoch(10)
-            .setSubscribedTopicRegex("foo*")
-            .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(mkTopicAssignment(topicId3, 0, 1, 2)), 7))
-            .build();
+                .setMemberEpoch(10)
+                .setSubscribedTopicRegex("foo*")
+                .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(mkTopicAssignment(topicId3, 0, 1, 2)), 7))
+                .build();
         consumerGroup.updateMember(member3);
 
         consumerGroup.updateResolvedRegularExpression(
-            "foo*",
-            new ResolvedRegularExpression(
-                Set.of("foo", "fooo"),
-                10L,
-                12345L
-            )
+                "foo*",
+                new ResolvedRegularExpression(
+                        Set.of("foo", "fooo"),
+                        10L,
+                        12345L
+                )
         );
 
         consumerGroup.updateTargetAssignment("member1", new Assignment(mkAssignment(
-            mkTopicAssignment(Uuid.randomUuid(), 0, 1, 2))
+                mkTopicAssignment(Uuid.randomUuid(), 0, 1, 2))
         ));
 
         consumerGroup.updateTargetAssignment("member2", new Assignment(mkAssignment(
-            mkTopicAssignment(Uuid.randomUuid(), 0, 1, 2))
+                mkTopicAssignment(Uuid.randomUuid(), 0, 1, 2))
         ));
 
         consumerGroup.updateTargetAssignment("member3", new Assignment(mkAssignment(
-            mkTopicAssignment(Uuid.randomUuid(), 0, 1, 2))
+                mkTopicAssignment(Uuid.randomUuid(), 0, 1, 2))
         ));
 
         List<CoordinatorRecord> records = new ArrayList<>();
         consumerGroup.createGroupTombstoneRecords(records);
 
         assertUnorderedRecordsEquals(
-            List.of(
                 List.of(
-                    GroupCoordinatorRecordHelpers.newConsumerGroupCurrentAssignmentTombstoneRecord("foo", "member1"),
-                    GroupCoordinatorRecordHelpers.newConsumerGroupCurrentAssignmentTombstoneRecord("foo", "member2"),
-                    GroupCoordinatorRecordHelpers.newConsumerGroupCurrentAssignmentTombstoneRecord("foo", "member3")
+                        List.of(
+                                GroupCoordinatorRecordHelpers.newConsumerGroupCurrentAssignmentTombstoneRecord("foo", "member1"),
+                                GroupCoordinatorRecordHelpers.newConsumerGroupCurrentAssignmentTombstoneRecord("foo", "member2"),
+                                GroupCoordinatorRecordHelpers.newConsumerGroupCurrentAssignmentTombstoneRecord("foo", "member3")
+                        ),
+                        List.of(
+                                GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentTombstoneRecord("foo", "member1"),
+                                GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentTombstoneRecord("foo", "member2"),
+                                GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentTombstoneRecord("foo", "member3")
+                        ),
+                        List.of(
+                                GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentMetadataTombstoneRecord("foo")
+                        ),
+                        List.of(
+                                GroupCoordinatorRecordHelpers.newConsumerGroupMemberSubscriptionTombstoneRecord("foo", "member1"),
+                                GroupCoordinatorRecordHelpers.newConsumerGroupMemberSubscriptionTombstoneRecord("foo", "member2"),
+                                GroupCoordinatorRecordHelpers.newConsumerGroupMemberSubscriptionTombstoneRecord("foo", "member3")
+                        ),
+                        List.of(
+                                GroupCoordinatorRecordHelpers.newConsumerGroupRegularExpressionTombstone("foo", "foo*")
+                        ),
+                        List.of(
+                                GroupCoordinatorRecordHelpers.newConsumerGroupSubscriptionMetadataTombstoneRecord("foo")
+                        ),
+                        List.of(
+                                GroupCoordinatorRecordHelpers.newConsumerGroupEpochTombstoneRecord("foo")
+                        )
                 ),
-                List.of(
-                    GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentTombstoneRecord("foo", "member1"),
-                    GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentTombstoneRecord("foo", "member2"),
-                    GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentTombstoneRecord("foo", "member3")
-                ),
-                List.of(
-                    GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentMetadataTombstoneRecord("foo")
-                ),
-                List.of(
-                    GroupCoordinatorRecordHelpers.newConsumerGroupMemberSubscriptionTombstoneRecord("foo", "member1"),
-                    GroupCoordinatorRecordHelpers.newConsumerGroupMemberSubscriptionTombstoneRecord("foo", "member2"),
-                    GroupCoordinatorRecordHelpers.newConsumerGroupMemberSubscriptionTombstoneRecord("foo", "member3")
-                ),
-                List.of(
-                    GroupCoordinatorRecordHelpers.newConsumerGroupRegularExpressionTombstone("foo", "foo*")
-                ),
-                List.of(
-                    GroupCoordinatorRecordHelpers.newConsumerGroupSubscriptionMetadataTombstoneRecord("foo")
-                ),
-                List.of(
-                    GroupCoordinatorRecordHelpers.newConsumerGroupEpochTombstoneRecord("foo")
-                )
-            ),
-            records
+                records
         );
     }
 
@@ -2019,166 +2019,166 @@ public class ConsumerGroupTest {
         Uuid topicId3 = Uuid.randomUuid();
 
         ConsumerGroupMember member1 = new ConsumerGroupMember.Builder("member1")
-            .setMemberEpoch(10)
-            .setSubscribedTopicNames(Arrays.asList("foo", "bar", "zar"))
-            .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(mkTopicAssignment(topicId1, 0, 1, 2)), 5))
-            .build();
+                .setMemberEpoch(10)
+                .setSubscribedTopicNames(Arrays.asList("foo", "bar", "zar"))
+                .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(mkTopicAssignment(topicId1, 0, 1, 2)), 5))
+                .build();
         consumerGroup.updateMember(member1);
 
         ConsumerGroupMember member2 = new ConsumerGroupMember.Builder("member2")
-            .setMemberEpoch(10)
-            .setSubscribedTopicNames(Arrays.asList("foo", "bar"))
-            .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(mkTopicAssignment(topicId2, 0, 1, 2)), 6))
-            .build();
+                .setMemberEpoch(10)
+                .setSubscribedTopicNames(Arrays.asList("foo", "bar"))
+                .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(mkTopicAssignment(topicId2, 0, 1, 2)), 6))
+                .build();
         consumerGroup.updateMember(member2);
 
         ConsumerGroupMember member3 = new ConsumerGroupMember.Builder("member3")
-            .setMemberEpoch(10)
-            .setSubscribedTopicRegex("foo*")
-            .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(mkTopicAssignment(topicId3, 0, 1, 2)), 7))
-            .build();
+                .setMemberEpoch(10)
+                .setSubscribedTopicRegex("foo*")
+                .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(mkTopicAssignment(topicId3, 0, 1, 2)), 7))
+                .build();
         consumerGroup.updateMember(member3);
 
         consumerGroup.updateResolvedRegularExpression(
-            "foo*",
-            new ResolvedRegularExpression(
-                Set.of("foo", "fooo"),
-                10L,
-                12345L
-            )
+                "foo*",
+                new ResolvedRegularExpression(
+                        Set.of("foo", "fooo"),
+                        10L,
+                        12345L
+                )
         );
 
         consumerGroup.updateTargetAssignment("member1", new Assignment(mkAssignment(
-            mkTopicAssignment(Uuid.randomUuid(), 0, 1, 2))
+                mkTopicAssignment(Uuid.randomUuid(), 0, 1, 2))
         ));
 
         consumerGroup.updateTargetAssignment("member2", new Assignment(mkAssignment(
-            mkTopicAssignment(Uuid.randomUuid(), 0, 1, 2))
+                mkTopicAssignment(Uuid.randomUuid(), 0, 1, 2))
         ));
 
         consumerGroup.updateTargetAssignment("member3", new Assignment(mkAssignment(
-            mkTopicAssignment(Uuid.randomUuid(), 0, 1, 2))
+                mkTopicAssignment(Uuid.randomUuid(), 0, 1, 2))
         ));
 
         List<CoordinatorRecord> records = new ArrayList<>();
         consumerGroup.createGroupTombstoneRecordsWithReplacedMember(records, "member3", "member4");
 
         assertUnorderedRecordsEquals(
-            List.of(
                 List.of(
-                    GroupCoordinatorRecordHelpers.newConsumerGroupCurrentAssignmentTombstoneRecord("foo", "member1"),
-                    GroupCoordinatorRecordHelpers.newConsumerGroupCurrentAssignmentTombstoneRecord("foo", "member2"),
-                    GroupCoordinatorRecordHelpers.newConsumerGroupCurrentAssignmentTombstoneRecord("foo", "member4")
+                        List.of(
+                                GroupCoordinatorRecordHelpers.newConsumerGroupCurrentAssignmentTombstoneRecord("foo", "member1"),
+                                GroupCoordinatorRecordHelpers.newConsumerGroupCurrentAssignmentTombstoneRecord("foo", "member2"),
+                                GroupCoordinatorRecordHelpers.newConsumerGroupCurrentAssignmentTombstoneRecord("foo", "member4")
+                        ),
+                        List.of(
+                                GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentTombstoneRecord("foo", "member1"),
+                                GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentTombstoneRecord("foo", "member2"),
+                                GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentTombstoneRecord("foo", "member4")
+                        ),
+                        List.of(
+                                GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentMetadataTombstoneRecord("foo")
+                        ),
+                        List.of(
+                                GroupCoordinatorRecordHelpers.newConsumerGroupMemberSubscriptionTombstoneRecord("foo", "member1"),
+                                GroupCoordinatorRecordHelpers.newConsumerGroupMemberSubscriptionTombstoneRecord("foo", "member2"),
+                                GroupCoordinatorRecordHelpers.newConsumerGroupMemberSubscriptionTombstoneRecord("foo", "member4")
+                        ),
+                        List.of(
+                                GroupCoordinatorRecordHelpers.newConsumerGroupRegularExpressionTombstone("foo", "foo*")
+                        ),
+                        List.of(
+                                GroupCoordinatorRecordHelpers.newConsumerGroupSubscriptionMetadataTombstoneRecord("foo")
+                        ),
+                        List.of(
+                                GroupCoordinatorRecordHelpers.newConsumerGroupEpochTombstoneRecord("foo")
+                        )
                 ),
-                List.of(
-                    GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentTombstoneRecord("foo", "member1"),
-                    GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentTombstoneRecord("foo", "member2"),
-                    GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentTombstoneRecord("foo", "member4")
-                ),
-                List.of(
-                    GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentMetadataTombstoneRecord("foo")
-                ),
-                List.of(
-                    GroupCoordinatorRecordHelpers.newConsumerGroupMemberSubscriptionTombstoneRecord("foo", "member1"),
-                    GroupCoordinatorRecordHelpers.newConsumerGroupMemberSubscriptionTombstoneRecord("foo", "member2"),
-                    GroupCoordinatorRecordHelpers.newConsumerGroupMemberSubscriptionTombstoneRecord("foo", "member4")
-                ),
-                List.of(
-                    GroupCoordinatorRecordHelpers.newConsumerGroupRegularExpressionTombstone("foo", "foo*")
-                ),
-                List.of(
-                    GroupCoordinatorRecordHelpers.newConsumerGroupSubscriptionMetadataTombstoneRecord("foo")
-                ),
-                List.of(
-                    GroupCoordinatorRecordHelpers.newConsumerGroupEpochTombstoneRecord("foo")
-                )
-            ),
-            records
+                records
         );
     }
 
     @Test
     public void testSubscriptionType() {
         assertEquals(
-            HOMOGENEOUS,
-            ConsumerGroup.subscriptionType(
-                Map.of(),
-                Map.of(),
-                0
-            )
+                HOMOGENEOUS,
+                ConsumerGroup.subscriptionType(
+                        Map.of(),
+                        Map.of(),
+                        0
+                )
         );
 
         assertEquals(
-            HOMOGENEOUS,
-            ConsumerGroup.subscriptionType(
-                Map.of(),
-                Map.of("foo", new SubscriptionCount(5, 0)),
-                5
-            )
+                HOMOGENEOUS,
+                ConsumerGroup.subscriptionType(
+                        Map.of(),
+                        Map.of("foo", new SubscriptionCount(5, 0)),
+                        5
+                )
         );
 
         assertEquals(
-            HETEROGENEOUS,
-            ConsumerGroup.subscriptionType(
-                Map.of(),
-                Map.of(
-                    "foo", new SubscriptionCount(4, 0),
-                    "bar", new SubscriptionCount(1, 0)
-                ),
-                5
-            )
+                HETEROGENEOUS,
+                ConsumerGroup.subscriptionType(
+                        Map.of(),
+                        Map.of(
+                                "foo", new SubscriptionCount(4, 0),
+                                "bar", new SubscriptionCount(1, 0)
+                        ),
+                        5
+                )
         );
 
         assertEquals(
-            HOMOGENEOUS,
-            ConsumerGroup.subscriptionType(
-                Map.of("foo*", 5),
-                Map.of("foo", new SubscriptionCount(0, 1)),
-                5
-            )
+                HOMOGENEOUS,
+                ConsumerGroup.subscriptionType(
+                        Map.of("foo*", 5),
+                        Map.of("foo", new SubscriptionCount(0, 1)),
+                        5
+                )
         );
 
         assertEquals(
-            HOMOGENEOUS,
-            ConsumerGroup.subscriptionType(
-                Map.of("foo*", 5),
-                Map.of(
-                    "foo", new SubscriptionCount(0, 1),
-                    "food", new SubscriptionCount(0, 1)),
-                5
-            )
+                HOMOGENEOUS,
+                ConsumerGroup.subscriptionType(
+                        Map.of("foo*", 5),
+                        Map.of(
+                                "foo", new SubscriptionCount(0, 1),
+                                "food", new SubscriptionCount(0, 1)),
+                        5
+                )
         );
 
         assertEquals(
-            HETEROGENEOUS,
-            ConsumerGroup.subscriptionType(
-                Map.of("foo*", 5),
-                Map.of("foo", new SubscriptionCount(1, 1)),
-                5
-            )
+                HETEROGENEOUS,
+                ConsumerGroup.subscriptionType(
+                        Map.of("foo*", 5),
+                        Map.of("foo", new SubscriptionCount(1, 1)),
+                        5
+                )
         );
 
         assertEquals(
-            HETEROGENEOUS,
-            ConsumerGroup.subscriptionType(
-                Map.of("foo*", 5),
-                Map.of(
-                    "foo", new SubscriptionCount(0, 1),
-                    "bar", new SubscriptionCount(1, 0)
-                ),
-                5
-            )
+                HETEROGENEOUS,
+                ConsumerGroup.subscriptionType(
+                        Map.of("foo*", 5),
+                        Map.of(
+                                "foo", new SubscriptionCount(0, 1),
+                                "bar", new SubscriptionCount(1, 0)
+                        ),
+                        5
+                )
         );
 
         assertEquals(
-            HETEROGENEOUS,
-            ConsumerGroup.subscriptionType(
-                Map.of("foo*", 4, "bar*", 1),
-                Map.of(
-                    "foo", new SubscriptionCount(0, 1),
-                    "bar", new SubscriptionCount(0, 1)),
-                5
-            )
+                HETEROGENEOUS,
+                ConsumerGroup.subscriptionType(
+                        Map.of("foo*", 4, "bar*", 1),
+                        Map.of(
+                                "foo", new SubscriptionCount(0, 1),
+                                "bar", new SubscriptionCount(0, 1)),
+                        5
+                )
         );
     }
 
@@ -2188,84 +2188,84 @@ public class ConsumerGroupTest {
         consumerGroup.setGroupEpoch(10);
 
         consumerGroup.updateMember(new ConsumerGroupMember.Builder("m1")
-            .setSubscribedTopicRegex("foo*")
-            .build());
+                .setSubscribedTopicRegex("foo*")
+                .build());
 
         consumerGroup.updateMember(new ConsumerGroupMember.Builder("m2")
-            .setSubscribedTopicRegex("foo*")
-            .build());
+                .setSubscribedTopicRegex("foo*")
+                .build());
 
         assertEquals(
-            Map.of("foo*", 3),
-            consumerGroup.computeSubscribedRegularExpressions(
-                null,
-                new ConsumerGroupMember.Builder("m3")
-                    .setSubscribedTopicRegex("foo*")
-                    .build()
-            )
+                Map.of("foo*", 3),
+                consumerGroup.computeSubscribedRegularExpressions(
+                        null,
+                        new ConsumerGroupMember.Builder("m3")
+                                .setSubscribedTopicRegex("foo*")
+                                .build()
+                )
         );
 
         assertEquals(
-            Map.of("foo*", 1),
-            consumerGroup.computeSubscribedRegularExpressions(
-                new ConsumerGroupMember.Builder("m2")
-                    .setSubscribedTopicRegex("foo*")
-                    .build(),
-                null
-            )
+                Map.of("foo*", 1),
+                consumerGroup.computeSubscribedRegularExpressions(
+                        new ConsumerGroupMember.Builder("m2")
+                                .setSubscribedTopicRegex("foo*")
+                                .build(),
+                        null
+                )
         );
 
         assertEquals(
-            Map.of("foo*", 2, "bar*", 1),
-            consumerGroup.computeSubscribedRegularExpressions(
-                null,
-                new ConsumerGroupMember.Builder("m4")
-                    .setSubscribedTopicRegex("bar*")
-                    .build()
-            )
+                Map.of("foo*", 2, "bar*", 1),
+                consumerGroup.computeSubscribedRegularExpressions(
+                        null,
+                        new ConsumerGroupMember.Builder("m4")
+                                .setSubscribedTopicRegex("bar*")
+                                .build()
+                )
         );
 
         assertEquals(
-            Map.of("foo*", 1, "bar*", 1),
-            consumerGroup.computeSubscribedRegularExpressions(
-                new ConsumerGroupMember.Builder("m2")
-                    .setSubscribedTopicRegex("foo*")
-                    .build(),
-                new ConsumerGroupMember.Builder("m2")
-                    .setSubscribedTopicRegex("bar*")
-                    .build()
-            )
+                Map.of("foo*", 1, "bar*", 1),
+                consumerGroup.computeSubscribedRegularExpressions(
+                        new ConsumerGroupMember.Builder("m2")
+                                .setSubscribedTopicRegex("foo*")
+                                .build(),
+                        new ConsumerGroupMember.Builder("m2")
+                                .setSubscribedTopicRegex("bar*")
+                                .build()
+                )
         );
     }
 
     @Test
     public void testComputeMetadataHash() {
         CoordinatorMetadataImage metadataImage = new MetadataImageBuilder()
-            .addTopic(Uuid.randomUuid(), "foo", 1)
-            .addTopic(Uuid.randomUuid(), "bar", 1)
-            .addRacks()
-            .buildCoordinatorMetadataImage();
+                .addTopic(Uuid.randomUuid(), "foo", 1)
+                .addTopic(Uuid.randomUuid(), "bar", 1)
+                .addRacks()
+                .buildCoordinatorMetadataImage();
         Map<String, Long> cache = new HashMap<>();
         assertEquals(
-            computeGroupHash(Map.of(
-                "foo", computeTopicHash("foo", metadataImage),
-                "bar", computeTopicHash("bar", metadataImage)
-            )),
-            ModernGroup.computeMetadataHash(
-                Map.of(
-                    "foo", new SubscriptionCount(1, 0),
-                    "bar", new SubscriptionCount(1, 0)
-                ),
-                cache,
-                metadataImage
-            )
+                computeGroupHash(Map.of(
+                        "foo", computeTopicHash("foo", metadataImage),
+                        "bar", computeTopicHash("bar", metadataImage)
+                )),
+                ModernGroup.computeMetadataHash(
+                        Map.of(
+                                "foo", new SubscriptionCount(1, 0),
+                                "bar", new SubscriptionCount(1, 0)
+                        ),
+                        cache,
+                        metadataImage
+                )
         );
         assertEquals(
-            Map.of(
-                "foo", computeTopicHash("foo", metadataImage),
-                "bar", computeTopicHash("bar", metadataImage)
-            ),
-            cache
+                Map.of(
+                        "foo", computeTopicHash("foo", metadataImage),
+                        "bar", computeTopicHash("bar", metadataImage)
+                ),
+                cache
         );
     }
 
@@ -2277,26 +2277,26 @@ public class ConsumerGroupTest {
         cache.put("bar", 4321L);
 
         assertEquals(
-            computeGroupHash(cache),
-            ModernGroup.computeMetadataHash(
-                Map.of(
-                    "foo", new SubscriptionCount(1, 0),
-                    "bar", new SubscriptionCount(1, 0)
-                ),
-                cache,
-                new KRaftCoordinatorMetadataImage(new MetadataImageBuilder()
-                    .addTopic(Uuid.randomUuid(), "foo", 1)
-                    .addTopic(Uuid.randomUuid(), "bar", 1)
-                    .addRacks()
-                    .build())
-            )
+                computeGroupHash(cache),
+                ModernGroup.computeMetadataHash(
+                        Map.of(
+                                "foo", new SubscriptionCount(1, 0),
+                                "bar", new SubscriptionCount(1, 0)
+                        ),
+                        cache,
+                        new KRaftCoordinatorMetadataImage(new MetadataImageBuilder()
+                                .addTopic(Uuid.randomUuid(), "foo", 1)
+                                .addTopic(Uuid.randomUuid(), "bar", 1)
+                                .addRacks()
+                                .build())
+                )
         );
         assertEquals(
-            Map.of(
-                "foo", 1234L,
-                "bar", 4321L
-            ),
-            cache
+                Map.of(
+                        "foo", 1234L,
+                        "bar", 4321L
+                ),
+                cache
         );
     }
 
@@ -2310,32 +2310,32 @@ public class ConsumerGroupTest {
         cache.put("zar", 0L);
 
         assertEquals(
-            computeGroupHash(Map.of(
-                "foo", 1234L,
-                "bar", 4321L
-            )),
-            ModernGroup.computeMetadataHash(
-                Map.of(
-                    "foo", new SubscriptionCount(1, 0),
-                    "bar", new SubscriptionCount(1, 0)
-                ),
-                cache,
-                new KRaftCoordinatorMetadataImage(new MetadataImageBuilder()
-                    .addTopic(Uuid.randomUuid(), "foo", 1)
-                    .addTopic(Uuid.randomUuid(), "bar", 1)
-                    .addRacks()
-                    .build())
-            )
+                computeGroupHash(Map.of(
+                        "foo", 1234L,
+                        "bar", 4321L
+                )),
+                ModernGroup.computeMetadataHash(
+                        Map.of(
+                                "foo", new SubscriptionCount(1, 0),
+                                "bar", new SubscriptionCount(1, 0)
+                        ),
+                        cache,
+                        new KRaftCoordinatorMetadataImage(new MetadataImageBuilder()
+                                .addTopic(Uuid.randomUuid(), "foo", 1)
+                                .addTopic(Uuid.randomUuid(), "bar", 1)
+                                .addRacks()
+                                .build())
+                )
         );
 
         // Although the zar is not in metadata image, it should not be removed from computeMetadataHash function.
         assertEquals(
-            Map.of(
-                "foo", 1234L,
-                "bar", 4321L,
-                "zar", 0L
-            ),
-            cache
+                Map.of(
+                        "foo", 1234L,
+                        "bar", 4321L,
+                        "zar", 0L
+                ),
+                cache
         );
     }
 }

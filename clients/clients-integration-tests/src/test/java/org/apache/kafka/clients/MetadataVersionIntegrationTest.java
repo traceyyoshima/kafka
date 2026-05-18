@@ -30,11 +30,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MetadataVersionIntegrationTest {
     @ClusterTests(value = {
-        @ClusterTest(types = Type.KRAFT, metadataVersion = MetadataVersion.IBP_3_3_IV3),
-        @ClusterTest(types = Type.KRAFT, metadataVersion = MetadataVersion.IBP_3_4_IV0),
-        @ClusterTest(types = Type.KRAFT, metadataVersion = MetadataVersion.IBP_3_5_IV0),
-        @ClusterTest(types = Type.KRAFT, metadataVersion = MetadataVersion.IBP_3_6_IV0),
-        @ClusterTest(types = Type.KRAFT, metadataVersion = MetadataVersion.IBP_3_6_IV1)
+            @ClusterTest(types = Type.KRAFT, metadataVersion = MetadataVersion.IBP_3_3_IV3),
+            @ClusterTest(types = Type.KRAFT, metadataVersion = MetadataVersion.IBP_3_4_IV0),
+            @ClusterTest(types = Type.KRAFT, metadataVersion = MetadataVersion.IBP_3_5_IV0),
+            @ClusterTest(types = Type.KRAFT, metadataVersion = MetadataVersion.IBP_3_6_IV0),
+            @ClusterTest(types = Type.KRAFT, metadataVersion = MetadataVersion.IBP_3_6_IV1)
     })
     public void testBasicMetadataVersionUpgrade(ClusterInstance clusterInstance) throws Exception {
         try (var admin = clusterInstance.admin()) {

@@ -25,10 +25,10 @@ import java.util.Objects;
 /**
  * A data class representing an incoming record for processing in a {@link Processor}
  * or a record to forward to downstream processors via {@link ProcessorContext}.
- *
+ * <p>
  * This class encapsulates all the data attributes of a record: the key and value, but
  * also the timestamp of the record and any record headers.
- *
+ * <p>
  * This class is immutable, though the objects referenced in the attributes of this class
  * may themselves be mutable.
  *
@@ -43,16 +43,16 @@ public class Record<K, V> {
 
     /**
      * The full constructor, specifying all the attributes of the record.
-     *
+     * <p>
      * Note: this constructor makes a copy of the headers argument.
      * See {@link ProcessorContext#forward(Record)} for
      * considerations around mutability of keys, values, and headers.
      *
-     * @param key The key of the record. May be null.
-     * @param value The value of the record. May be null.
+     * @param key       The key of the record. May be null.
+     * @param value     The value of the record. May be null.
      * @param timestamp The timestamp of the record. May not be negative.
-     * @param headers The headers of the record. May be null, which will cause subsequent calls
-     *                to {@link #headers()} to return a non-null, empty, {@link Headers} collection.
+     * @param headers   The headers of the record. May be null, which will cause subsequent calls
+     *                  to {@link #headers()} to return a non-null, empty, {@link Headers} collection.
      * @throws IllegalArgumentException if the timestamp is negative.
      * @see ProcessorContext#forward(Record)
      */
@@ -61,8 +61,8 @@ public class Record<K, V> {
         this.value = value;
         if (timestamp < 0) {
             throw new StreamsException(
-                "Malformed Record",
-                new IllegalArgumentException("Timestamp may not be negative. Got: " + timestamp)
+                    "Malformed Record",
+                    new IllegalArgumentException("Timestamp may not be negative. Got: " + timestamp)
             );
         }
         this.timestamp = timestamp;
@@ -73,10 +73,9 @@ public class Record<K, V> {
      * Convenience constructor in case you do not wish to specify any headers.
      * Subsequent calls to {@link #headers()} will return a non-null, empty, {@link Headers} collection.
      *
-     * @param key The key of the record. May be null.
-     * @param value The value of the record. May be null.
+     * @param key       The key of the record. May be null.
+     * @param value     The value of the record. May be null.
      * @param timestamp The timestamp of the record. May not be negative.
-     *
      * @throws IllegalArgumentException if the timestamp is negative.
      */
     public Record(final K key, final V value, final long timestamp) {
@@ -113,10 +112,10 @@ public class Record<K, V> {
 
     /**
      * A convenient way to produce a new record if you only need to change the key.
-     *
+     * <p>
      * Copies the attributes of this record with the key replaced.
      *
-     * @param key The key of the result record. May be null.
+     * @param key    The key of the result record. May be null.
      * @param <NewK> The type of the new record's key.
      * @return A new Record instance with all the same attributes (except that the key is replaced).
      */
@@ -126,10 +125,10 @@ public class Record<K, V> {
 
     /**
      * A convenient way to produce a new record if you only need to change the value.
-     *
+     * <p>
      * Copies the attributes of this record with the value replaced.
      *
-     * @param value The value of the result record.
+     * @param value  The value of the result record.
      * @param <NewV> The type of the new record's value.
      * @return A new Record instance with all the same attributes (except that the value is replaced).
      */
@@ -139,7 +138,7 @@ public class Record<K, V> {
 
     /**
      * A convenient way to produce a new record if you only need to change the timestamp.
-     *
+     * <p>
      * Copies the attributes of this record with the timestamp replaced.
      *
      * @param timestamp The timestamp of the result record.
@@ -151,10 +150,10 @@ public class Record<K, V> {
 
     /**
      * A convenient way to produce a new record if you only need to change the headers.
-     *
+     * <p>
      * Copies the attributes of this record with the headers replaced.
      * Also makes a copy of the provided headers.
-     *
+     * <p>
      * See {@link ProcessorContext#forward(Record)} for
      * considerations around mutability of keys, values, and headers.
      *
@@ -168,11 +167,11 @@ public class Record<K, V> {
     @Override
     public String toString() {
         return "Record{" +
-            "key=" + key +
-            ", value=" + value +
-            ", timestamp=" + timestamp +
-            ", headers=" + headers +
-            '}';
+                "key=" + key +
+                ", value=" + value +
+                ", timestamp=" + timestamp +
+                ", headers=" + headers +
+                '}';
     }
 
     @Override
@@ -181,9 +180,9 @@ public class Record<K, V> {
         if (o == null || getClass() != o.getClass()) return false;
         final Record<?, ?> record = (Record<?, ?>) o;
         return timestamp == record.timestamp &&
-            Objects.equals(key, record.key) &&
-            Objects.equals(value, record.value) &&
-            Objects.equals(headers, record.headers);
+                Objects.equals(key, record.key) &&
+                Objects.equals(value, record.value) &&
+                Objects.equals(headers, record.headers);
     }
 
     @Override

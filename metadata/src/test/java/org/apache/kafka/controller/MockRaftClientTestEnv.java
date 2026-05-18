@@ -43,7 +43,7 @@ import java.util.function.Consumer;
 
 public class MockRaftClientTestEnv implements AutoCloseable {
     private static final Logger log =
-        LoggerFactory.getLogger(MockRaftClientTestEnv.class);
+            LoggerFactory.getLogger(MockRaftClientTestEnv.class);
 
     private final String clusterId;
 
@@ -71,7 +71,8 @@ public class MockRaftClientTestEnv implements AutoCloseable {
     public static class Builder {
         private final int numNodes;
         private Optional<RawSnapshotReader> snapshotReader = Optional.empty();
-        private Consumer<SharedLogData> sharedLogDataInitializer = __ -> { };
+        private Consumer<SharedLogData> sharedLogDataInitializer = __ -> {
+        };
         private KRaftVersion lastKRaftVersion = KRaftVersion.KRAFT_VERSION_0;
 
         public Builder(int numNodes) {
@@ -98,10 +99,10 @@ public class MockRaftClientTestEnv implements AutoCloseable {
 
         public MockRaftClientTestEnv build() {
             return new MockRaftClientTestEnv(
-                numNodes,
-                snapshotReader,
-                sharedLogDataInitializer,
-                lastKRaftVersion);
+                    numNodes,
+                    snapshotReader,
+                    sharedLogDataInitializer,
+                    lastKRaftVersion);
         }
 
         public MockRaftClientTestEnv buildWithMockListeners() {
@@ -123,10 +124,10 @@ public class MockRaftClientTestEnv implements AutoCloseable {
     }
 
     private MockRaftClientTestEnv(
-        int numNodes,
-        Optional<RawSnapshotReader> snapshotReader,
-        Consumer<SharedLogData> sharedLogDataInitializer,
-        KRaftVersion lastKRaftVersion
+            int numNodes,
+            Optional<RawSnapshotReader> snapshotReader,
+            Consumer<SharedLogData> sharedLogDataInitializer,
+            KRaftVersion lastKRaftVersion
     ) {
         clusterId = Uuid.randomUuid().toString();
         dir = TestUtils.tempDirectory();
@@ -136,11 +137,11 @@ public class MockRaftClientTestEnv implements AutoCloseable {
         try {
             for (int nodeId = 0; nodeId < numNodes; nodeId++) {
                 newRaftClients.add(new MockRaftClient(
-                    new LogContext(String.format("[MockRaftClient %d] ", nodeId)),
-                    nodeId,
-                    shared,
-                    String.format("MockRaftClient-%d_", nodeId),
-                    lastKRaftVersion));
+                        new LogContext(String.format("[MockRaftClient %d] ", nodeId)),
+                        nodeId,
+                        shared,
+                        String.format("MockRaftClient-%d_", nodeId),
+                        lastKRaftVersion));
             }
         } catch (Throwable t) {
             for (MockRaftClient raftClient : newRaftClients) {
@@ -162,7 +163,7 @@ public class MockRaftClientTestEnv implements AutoCloseable {
      * Append some records to the log. This method is meant to be called before the
      * controllers are started, to simulate a pre-existing metadata log.
      *
-     * @param records   The records to be appended. Will be added in a single batch.
+     * @param records The records to be appended. Will be added in a single batch.
      */
     public void appendInitialRecords(List<ApiMessageAndVersion> records) {
         int initialLeaderEpoch = 1;
@@ -185,7 +186,7 @@ public class MockRaftClientTestEnv implements AutoCloseable {
                 if (leader.isLeader(nodeId)) {
                     if (result != null) {
                         throw new RuntimeException("node " + nodeId +
-                            " thinks it's the leader, but so does " + result.leaderId());
+                                " thinks it's the leader, but so does " + result.leaderId());
                     }
                     result = leader;
                 }

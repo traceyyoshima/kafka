@@ -55,12 +55,12 @@ public class GenericReadOnlyKeyValueStoreFacadeTest {
     public void shouldConvertValueWithExtractValueConverter() {
         final Function<ValueAndTimestamp<String>, String> converter = ValueConverters.extractValue();
         final GenericReadOnlyKeyValueStoreFacade<String, ValueAndTimestamp<String>, String> facade =
-            new GenericReadOnlyKeyValueStoreFacade<>(mockedTimestampedStore, converter);
+                new GenericReadOnlyKeyValueStoreFacade<>(mockedTimestampedStore, converter);
 
         when(mockedTimestampedStore.get("key"))
-            .thenReturn(ValueAndTimestamp.make("value", 42L));
+                .thenReturn(ValueAndTimestamp.make("value", 42L));
         when(mockedTimestampedStore.get("unknownKey"))
-            .thenReturn(null);
+                .thenReturn(null);
 
         assertThat(facade.get("key"), is("value"));
         assertNull(facade.get("unknownKey"));
@@ -70,12 +70,12 @@ public class GenericReadOnlyKeyValueStoreFacadeTest {
     public void shouldConvertValueWithHeadersConverter() {
         final Function<ValueTimestampHeaders<String>, String> converter = ValueConverters.extractValueFromHeaders();
         final GenericReadOnlyKeyValueStoreFacade<String, ValueTimestampHeaders<String>, String> facade =
-            new GenericReadOnlyKeyValueStoreFacade<>(mockedHeadersStore, converter);
+                new GenericReadOnlyKeyValueStoreFacade<>(mockedHeadersStore, converter);
 
         when(mockedHeadersStore.get("key"))
-            .thenReturn(ValueTimestampHeaders.make("value", 42L, new RecordHeaders()));
+                .thenReturn(ValueTimestampHeaders.make("value", 42L, new RecordHeaders()));
         when(mockedHeadersStore.get("unknownKey"))
-            .thenReturn(null);
+                .thenReturn(null);
 
         assertThat(facade.get("key"), is("value"));
         assertNull(facade.get("unknownKey"));
@@ -84,14 +84,14 @@ public class GenericReadOnlyKeyValueStoreFacadeTest {
     @Test
     public void shouldConvertValueToValueAndTimestamp() {
         final Function<ValueTimestampHeaders<String>, ValueAndTimestamp<String>> converter =
-            ValueConverters.extractValueAndTimestampFromHeaders();
+                ValueConverters.extractValueAndTimestampFromHeaders();
         final GenericReadOnlyKeyValueStoreFacade<String, ValueTimestampHeaders<String>, ValueAndTimestamp<String>> facade =
-            new GenericReadOnlyKeyValueStoreFacade<>(mockedHeadersStore, converter);
+                new GenericReadOnlyKeyValueStoreFacade<>(mockedHeadersStore, converter);
 
         when(mockedHeadersStore.get("key"))
-            .thenReturn(ValueTimestampHeaders.make("value", 42L, new RecordHeaders()));
+                .thenReturn(ValueTimestampHeaders.make("value", 42L, new RecordHeaders()));
         when(mockedHeadersStore.get("unknownKey"))
-            .thenReturn(null);
+                .thenReturn(null);
 
         final ValueAndTimestamp<String> result = facade.get("key");
         assertThat(result.value(), is("value"));
@@ -103,11 +103,11 @@ public class GenericReadOnlyKeyValueStoreFacadeTest {
     public void shouldConvertIteratorValues() {
         final Function<ValueAndTimestamp<String>, String> converter = ValueConverters.extractValue();
         final GenericReadOnlyKeyValueStoreFacade<String, ValueAndTimestamp<String>, String> facade =
-            new GenericReadOnlyKeyValueStoreFacade<>(mockedTimestampedStore, converter);
+                new GenericReadOnlyKeyValueStoreFacade<>(mockedTimestampedStore, converter);
 
         when(mockedTimestampedIterator.next())
-            .thenReturn(KeyValue.pair("key1", ValueAndTimestamp.make("value1", 21L)))
-            .thenReturn(KeyValue.pair("key2", ValueAndTimestamp.make("value2", 42L)));
+                .thenReturn(KeyValue.pair("key1", ValueAndTimestamp.make("value1", 21L)))
+                .thenReturn(KeyValue.pair("key2", ValueAndTimestamp.make("value2", 42L)));
         when(mockedTimestampedStore.range("key1", "key2")).thenReturn(mockedTimestampedIterator);
 
         final KeyValueIterator<String, String> iterator = facade.range("key1", "key2");
@@ -119,11 +119,11 @@ public class GenericReadOnlyKeyValueStoreFacadeTest {
     public void shouldConvertReverseRangeIteratorValues() {
         final Function<ValueAndTimestamp<String>, String> converter = ValueConverters.extractValue();
         final GenericReadOnlyKeyValueStoreFacade<String, ValueAndTimestamp<String>, String> facade =
-            new GenericReadOnlyKeyValueStoreFacade<>(mockedTimestampedStore, converter);
+                new GenericReadOnlyKeyValueStoreFacade<>(mockedTimestampedStore, converter);
 
         when(mockedTimestampedIterator.next())
-            .thenReturn(KeyValue.pair("key2", ValueAndTimestamp.make("value2", 42L)))
-            .thenReturn(KeyValue.pair("key1", ValueAndTimestamp.make("value1", 21L)));
+                .thenReturn(KeyValue.pair("key2", ValueAndTimestamp.make("value2", 42L)))
+                .thenReturn(KeyValue.pair("key1", ValueAndTimestamp.make("value1", 21L)));
         when(mockedTimestampedStore.reverseRange("key1", "key2")).thenReturn(mockedTimestampedIterator);
 
         final KeyValueIterator<String, String> iterator = facade.reverseRange("key1", "key2");
@@ -135,12 +135,12 @@ public class GenericReadOnlyKeyValueStoreFacadeTest {
     public void shouldConvertPrefixScanIteratorValues() {
         final Function<ValueAndTimestamp<String>, String> converter = ValueConverters.extractValue();
         final GenericReadOnlyKeyValueStoreFacade<String, ValueAndTimestamp<String>, String> facade =
-            new GenericReadOnlyKeyValueStoreFacade<>(mockedTimestampedStore, converter);
+                new GenericReadOnlyKeyValueStoreFacade<>(mockedTimestampedStore, converter);
 
         final StringSerializer stringSerializer = new StringSerializer();
         when(mockedTimestampedIterator.next())
-            .thenReturn(KeyValue.pair("key1", ValueAndTimestamp.make("value1", 21L)))
-            .thenReturn(KeyValue.pair("key2", ValueAndTimestamp.make("value2", 42L)));
+                .thenReturn(KeyValue.pair("key1", ValueAndTimestamp.make("value1", 21L)))
+                .thenReturn(KeyValue.pair("key2", ValueAndTimestamp.make("value2", 42L)));
         when(mockedTimestampedStore.prefixScan("key", stringSerializer)).thenReturn(mockedTimestampedIterator);
 
         final KeyValueIterator<String, String> iterator = facade.prefixScan("key", stringSerializer);
@@ -152,11 +152,11 @@ public class GenericReadOnlyKeyValueStoreFacadeTest {
     public void shouldConvertAllIteratorValues() {
         final Function<ValueAndTimestamp<String>, String> converter = ValueConverters.extractValue();
         final GenericReadOnlyKeyValueStoreFacade<String, ValueAndTimestamp<String>, String> facade =
-            new GenericReadOnlyKeyValueStoreFacade<>(mockedTimestampedStore, converter);
+                new GenericReadOnlyKeyValueStoreFacade<>(mockedTimestampedStore, converter);
 
         when(mockedTimestampedIterator.next())
-            .thenReturn(KeyValue.pair("key1", ValueAndTimestamp.make("value1", 21L)))
-            .thenReturn(KeyValue.pair("key2", ValueAndTimestamp.make("value2", 42L)));
+                .thenReturn(KeyValue.pair("key1", ValueAndTimestamp.make("value1", 21L)))
+                .thenReturn(KeyValue.pair("key2", ValueAndTimestamp.make("value2", 42L)));
         when(mockedTimestampedStore.all()).thenReturn(mockedTimestampedIterator);
 
         final KeyValueIterator<String, String> iterator = facade.all();
@@ -168,11 +168,11 @@ public class GenericReadOnlyKeyValueStoreFacadeTest {
     public void shouldConvertReverseAllIteratorValues() {
         final Function<ValueAndTimestamp<String>, String> converter = ValueConverters.extractValue();
         final GenericReadOnlyKeyValueStoreFacade<String, ValueAndTimestamp<String>, String> facade =
-            new GenericReadOnlyKeyValueStoreFacade<>(mockedTimestampedStore, converter);
+                new GenericReadOnlyKeyValueStoreFacade<>(mockedTimestampedStore, converter);
 
         when(mockedTimestampedIterator.next())
-            .thenReturn(KeyValue.pair("key2", ValueAndTimestamp.make("value2", 42L)))
-            .thenReturn(KeyValue.pair("key1", ValueAndTimestamp.make("value1", 21L)));
+                .thenReturn(KeyValue.pair("key2", ValueAndTimestamp.make("value2", 42L)))
+                .thenReturn(KeyValue.pair("key1", ValueAndTimestamp.make("value1", 21L)));
         when(mockedTimestampedStore.reverseAll()).thenReturn(mockedTimestampedIterator);
 
         final KeyValueIterator<String, String> iterator = facade.reverseAll();
@@ -184,7 +184,7 @@ public class GenericReadOnlyKeyValueStoreFacadeTest {
     public void shouldForwardApproximateNumEntries() {
         final Function<ValueAndTimestamp<String>, String> converter = ValueConverters.extractValue();
         final GenericReadOnlyKeyValueStoreFacade<String, ValueAndTimestamp<String>, String> facade =
-            new GenericReadOnlyKeyValueStoreFacade<>(mockedTimestampedStore, converter);
+                new GenericReadOnlyKeyValueStoreFacade<>(mockedTimestampedStore, converter);
 
         when(mockedTimestampedStore.approximateNumEntries()).thenReturn(42L);
 
@@ -195,11 +195,11 @@ public class GenericReadOnlyKeyValueStoreFacadeTest {
     public void shouldHandleNullValuesInIterator() {
         final Function<ValueAndTimestamp<String>, String> converter = ValueConverters.extractValue();
         final GenericReadOnlyKeyValueStoreFacade<String, ValueAndTimestamp<String>, String> facade =
-            new GenericReadOnlyKeyValueStoreFacade<>(mockedTimestampedStore, converter);
+                new GenericReadOnlyKeyValueStoreFacade<>(mockedTimestampedStore, converter);
 
         when(mockedTimestampedIterator.next())
-            .thenReturn(KeyValue.pair("key1", null))
-            .thenReturn(KeyValue.pair("key2", ValueAndTimestamp.make("value2", 42L)));
+                .thenReturn(KeyValue.pair("key1", null))
+                .thenReturn(KeyValue.pair("key2", ValueAndTimestamp.make("value2", 42L)));
         when(mockedTimestampedStore.all()).thenReturn(mockedTimestampedIterator);
 
         final KeyValueIterator<String, String> iterator = facade.all();

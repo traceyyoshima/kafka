@@ -27,7 +27,7 @@ import java.nio.file.StandardOpenOption;
 
 /**
  * A file lock a la flock/funlock
- *
+ * <p>
  * The given path will be created and opened if it doesn't exist.
  */
 public class FileLock {

@@ -63,7 +63,7 @@ public class NewTopic {
     /**
      * A new topic with the specified replica assignment configuration.
      *
-     * @param name the topic name.
+     * @param name                the topic name.
      * @param replicasAssignments a map from partition id to replica ids (i.e. broker ids). Although not enforced, it is
      *                            generally a good idea for all partitions to have the same number of replicas.
      *                            The first replica will be treated as the preferred leader.
@@ -107,8 +107,8 @@ public class NewTopic {
     /**
      * Set the configuration to use on the new topic.
      *
-     * @param configs               The configuration map.
-     * @return                      This NewTopic object.
+     * @param configs The configuration map.
+     * @return This NewTopic object.
      */
     public NewTopic configs(Map<String, String> configs) {
         this.configs = configs;
@@ -124,23 +124,23 @@ public class NewTopic {
 
     CreatableTopic convertToCreatableTopic() {
         CreatableTopic creatableTopic = new CreatableTopic().
-            setName(name).
-            setNumPartitions(numPartitions.orElse(CreateTopicsRequest.NO_NUM_PARTITIONS)).
-            setReplicationFactor(replicationFactor.orElse(CreateTopicsRequest.NO_REPLICATION_FACTOR));
+                setName(name).
+                setNumPartitions(numPartitions.orElse(CreateTopicsRequest.NO_NUM_PARTITIONS)).
+                setReplicationFactor(replicationFactor.orElse(CreateTopicsRequest.NO_REPLICATION_FACTOR));
         if (replicasAssignments != null) {
             for (Entry<Integer, List<Integer>> entry : replicasAssignments.entrySet()) {
                 creatableTopic.assignments().add(
-                    new CreatableReplicaAssignment().
-                        setPartitionIndex(entry.getKey()).
-                        setBrokerIds(entry.getValue()));
+                        new CreatableReplicaAssignment().
+                                setPartitionIndex(entry.getKey()).
+                                setBrokerIds(entry.getValue()));
             }
         }
         if (configs != null) {
             for (Entry<String, String> entry : configs.entrySet()) {
                 creatableTopic.configs().add(
-                    new CreatableTopicConfig().
-                        setName(entry.getKey()).
-                        setValue(entry.getValue()));
+                        new CreatableTopicConfig().
+                                setName(entry.getKey()).
+                                setValue(entry.getValue()));
             }
         }
         return creatableTopic;
@@ -162,10 +162,10 @@ public class NewTopic {
         if (o == null || getClass() != o.getClass()) return false;
         final NewTopic that = (NewTopic) o;
         return Objects.equals(name, that.name) &&
-            Objects.equals(numPartitions, that.numPartitions) &&
-            Objects.equals(replicationFactor, that.replicationFactor) &&
-            Objects.equals(replicasAssignments, that.replicasAssignments) &&
-            Objects.equals(configs, that.configs);
+                Objects.equals(numPartitions, that.numPartitions) &&
+                Objects.equals(replicationFactor, that.replicationFactor) &&
+                Objects.equals(replicasAssignments, that.replicasAssignments) &&
+                Objects.equals(configs, that.configs);
     }
 
     @Override

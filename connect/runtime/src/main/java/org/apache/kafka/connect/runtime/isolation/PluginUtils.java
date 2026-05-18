@@ -155,7 +155,7 @@ public class PluginUtils {
     private static final Pattern COMMA_WITH_WHITESPACE = Pattern.compile("\\s*,\\s*");
 
     private static final DirectoryStream.Filter<Path> PLUGIN_PATH_FILTER = path ->
-        Files.isDirectory(path) || isArchive(path) || isClassFile(path);
+            Files.isDirectory(path) || isArchive(path) || isClassFile(path);
 
     /**
      * Return whether the class with the given name should be loaded in isolation using a plugin
@@ -171,6 +171,7 @@ public class PluginUtils {
     /**
      * Verify the given class corresponds to a concrete class and not to an abstract class or
      * interface.
+     *
      * @param klass the class object.
      * @return true if the argument is a concrete class, false if it's abstract or interface.
      */

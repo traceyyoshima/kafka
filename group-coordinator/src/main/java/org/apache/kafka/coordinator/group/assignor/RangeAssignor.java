@@ -40,13 +40,13 @@ import java.util.Set;
  *   <li>Each subscribed member receives at least one partition from that topic.</li>
  *   <li>Each member receives the same partition number from every subscribed topic when co-partitioning is possible.</li>
  * </ol>
- *
+ * <p>
  * Co-partitioning is possible when the below conditions are satisfied:
  * <ol>
  *   <li>All the members are subscribed to the same set of topics.</li>
  *   <li>All the topics have the same number of partitions.</li>
  * </ol>
- *
+ * <p>
  * Co-partitioning is useful in performing joins on data streams.
  *
  * <p>For example, suppose there are two members M0 and M1, two topics T1 and T2, and each topic has 3 partitions.
@@ -56,7 +56,7 @@ import java.util.Set;
  * <li><code>   M0: [T1P0, T1P1, T2P0, T2P1]    </code></li>
  * <li><code>   M1: [T1P2, T2P2]                </code></li>
  * </ul>
- *
+ * <p>
  * Since the introduction of static membership, we could leverage <code>member.instance.id</code> to make the
  * assignment behavior more sticky.
  * For the above example, after one rolling bounce, the group coordinator will attempt to assign new member Ids towards
@@ -67,7 +67,7 @@ import java.util.Set;
  * <li><code>   M3 (was M0): [T1P2, T2P2]               (before it was [T1P0, T1P1, T2P0, T2P1])  </code></li>
  * <li><code>   M2 (was M1): [T1P0, T1P1, T2P0, T2P1]   (before it was [T1P2, T2P2])  </code></li>
  * </ul>
- *
+ * <p>
  * The assignment change was caused by the change of <code>member.id</code> relative order, and
  * can be avoided by setting the instance.id.
  * Members will have individual instance Ids <code>I0</code>, <code>I1</code>. As long as
@@ -104,9 +104,9 @@ public class RangeAssignor implements ConsumerGroupPartitionAssignor {
         /**
          * Constructs a new TopicMetadata instance.
          *
-         * @param topicId           The topic Id.
-         * @param numPartitions     The number of partitions.
-         * @param numMembers        The number of subscribed members.
+         * @param topicId       The topic Id.
+         * @param numPartitions The number of partitions.
+         * @param numMembers    The number of subscribed members.
          */
         private TopicMetadata(Uuid topicId, int numPartitions, int numMembers) {
             this.topicId = topicId;
@@ -130,12 +130,12 @@ public class RangeAssignor implements ConsumerGroupPartitionAssignor {
         @Override
         public String toString() {
             return "TopicMetadata(topicId=" + topicId +
-                ", numPartitions=" + numPartitions +
-                ", numMembers=" + numMembers +
-                ", minQuota=" + minQuota +
-                ", extraPartitions=" + extraPartitions +
-                ", nextRange=" + nextRange +
-                ')';
+                    ", numPartitions=" + numPartitions +
+                    ", numMembers=" + numMembers +
+                    ", minQuota=" + minQuota +
+                    ", extraPartitions=" + extraPartitions +
+                    ", nextRange=" + nextRange +
+                    ')';
         }
     }
 
@@ -144,8 +144,8 @@ public class RangeAssignor implements ConsumerGroupPartitionAssignor {
      * Assignment will be co-partitioned when all the topics have an equal number of partitions.
      */
     private GroupAssignment assignHomogeneousGroup(
-        GroupSpec groupSpec,
-        SubscribedTopicDescriber subscribedTopicDescriber
+            GroupSpec groupSpec,
+            SubscribedTopicDescriber subscribedTopicDescriber
     ) throws PartitionAssignorException {
         List<String> memberIds = sortMemberIds(groupSpec);
         int numMembers = groupSpec.memberIds().size();
@@ -159,9 +159,9 @@ public class RangeAssignor implements ConsumerGroupPartitionAssignor {
                 throw new PartitionAssignorException("Member is subscribed to a non-existent topic");
             }
             TopicMetadata m = new TopicMetadata(
-                topicId,
-                numPartitions,
-                numMembers
+                    topicId,
+                    numPartitions,
+                    numMembers
             );
             topics.add(m);
         }
@@ -185,8 +185,8 @@ public class RangeAssignor implements ConsumerGroupPartitionAssignor {
      * Assigns partitions to members of a heterogeneous group. Not all members are subscribed to the same topics.
      */
     private GroupAssignment assignHeterogeneousGroup(
-        GroupSpec groupSpec,
-        SubscribedTopicDescriber subscribedTopicDescriber
+            GroupSpec groupSpec,
+            SubscribedTopicDescriber subscribedTopicDescriber
     ) throws PartitionAssignorException {
         List<String> memberIds = sortMemberIds(groupSpec);
 
@@ -202,9 +202,9 @@ public class RangeAssignor implements ConsumerGroupPartitionAssignor {
                     }
 
                     return new TopicMetadata(
-                        topicId,
-                        numPartitions,
-                        0
+                            topicId,
+                            numPartitions,
+                            0
                     );
                 });
                 topicMetadata.numMembers++;
@@ -229,18 +229,18 @@ public class RangeAssignor implements ConsumerGroupPartitionAssignor {
 
     /**
      * Sorts members based on their instance Ids if available or by member Ids if not.
-     *
+     * <p>
      * Static members are placed first and non-static members follow.
-     *
+     * <p>
      * Prioritizing static members helps them retain their partitions, enhancing stickiness
      * and stability. Non-static members, which do not have guaranteed rejoining Ids, are placed
      * later, allowing for more dynamic and flexible partition assignments.
      *
-     * @param groupSpec     The group specification containing the member information.
+     * @param groupSpec The group specification containing the member information.
      * @return A sorted list of member Ids.
      */
     private List<String> sortMemberIds(
-        GroupSpec groupSpec
+            GroupSpec groupSpec
     ) {
         List<String> sortedMemberIds = new ArrayList<>(groupSpec.memberIds());
 
@@ -264,13 +264,13 @@ public class RangeAssignor implements ConsumerGroupPartitionAssignor {
     /**
      * Assigns a range of partitions to the specified topic based on the provided metadata.
      *
-     * @param topicMetadata         Metadata containing the topic details, including the number of partitions,
-     *                              the next range to assign, minQuota, and extra partitions.
-     * @param memberAssignment      Map from topic Id to the set of assigned partition Ids.
+     * @param topicMetadata    Metadata containing the topic details, including the number of partitions,
+     *                         the next range to assign, minQuota, and extra partitions.
+     * @param memberAssignment Map from topic Id to the set of assigned partition Ids.
      */
     private void addPartitionsToAssignment(
-        TopicMetadata topicMetadata,
-        Map<Uuid, Set<Integer>> memberAssignment
+            TopicMetadata topicMetadata,
+            Map<Uuid, Set<Integer>> memberAssignment
     ) {
         int start = topicMetadata.nextRange;
         int quota = topicMetadata.minQuota;
@@ -294,15 +294,15 @@ public class RangeAssignor implements ConsumerGroupPartitionAssignor {
     /**
      * Assigns partitions to members based on their topic subscriptions and the properties of a range assignor:
      *
-     * @param groupSpec                     The group specification containing the member information.
-     * @param subscribedTopicDescriber      The describer for subscribed topics to get the number of partitions.
+     * @param groupSpec                The group specification containing the member information.
+     * @param subscribedTopicDescriber The describer for subscribed topics to get the number of partitions.
      * @return The group's assignment with the partition assignments for each member.
      * @throws PartitionAssignorException if any member is subscribed to a non-existent topic.
      */
     @Override
     public GroupAssignment assign(
-        GroupSpec groupSpec,
-        SubscribedTopicDescriber subscribedTopicDescriber
+            GroupSpec groupSpec,
+            SubscribedTopicDescriber subscribedTopicDescriber
     ) throws PartitionAssignorException {
         if (groupSpec.memberIds().isEmpty()) {
             return new GroupAssignment(Map.of());

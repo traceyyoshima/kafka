@@ -21,7 +21,7 @@ import java.util.zip.Checksum;
 
 /**
  * Utility methods for `Checksum` instances.
- *
+ * <p>
  * NOTE: This class is intended for INTERNAL usage only within Kafka.
  */
 public final class Checksums {
@@ -66,7 +66,7 @@ public final class Checksums {
             }
         }
     }
-    
+
     public static void updateInt(Checksum checksum, int input) {
         checksum.update((byte) (input >> 24));
         checksum.update((byte) (input >> 16));

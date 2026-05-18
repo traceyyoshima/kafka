@@ -52,10 +52,10 @@ public class ShareHeartbeatRequestManager extends AbstractHeartbeatRequestManage
     private final HeartbeatState heartbeatState;
 
     public static final String SHARE_PROTOCOL_NOT_SUPPORTED_MSG = "The cluster does not support the share group protocol. " +
-        "To use share groups, the cluster must have the share group protocol enabled.";
+            "To use share groups, the cluster must have the share group protocol enabled.";
 
     public static final String SHARE_PROTOCOL_VERSION_NOT_SUPPORTED_MSG = "The cluster does not support the share group protocol " +
-        "using ShareGroupHeartbeat API version 1 or later. This version of the API was introduced in Apache Kafka v4.1.";
+            "using ShareGroupHeartbeat API version 1 or later. This version of the API was introduced in Apache Kafka v4.1.";
 
     public ShareHeartbeatRequestManager(
             final LogContext logContext,
@@ -67,7 +67,7 @@ public class ShareHeartbeatRequestManager extends AbstractHeartbeatRequestManage
             final BackgroundEventHandler backgroundEventHandler,
             final Metrics metrics) {
         super(logContext, time, config, coordinatorRequestManager, backgroundEventHandler,
-            new HeartbeatMetricsManager(metrics, CONSUMER_SHARE_METRIC_GROUP_PREFIX));
+                new HeartbeatMetricsManager(metrics, CONSUMER_SHARE_METRIC_GROUP_PREFIX));
         this.membershipManager = membershipManager;
         this.heartbeatState = new HeartbeatState(subscriptions, membershipManager);
     }
@@ -84,7 +84,7 @@ public class ShareHeartbeatRequestManager extends AbstractHeartbeatRequestManage
             final BackgroundEventHandler backgroundEventHandler,
             final Metrics metrics) {
         super(logContext, timer, config, coordinatorRequestManager, heartbeatRequestState, backgroundEventHandler,
-            new HeartbeatMetricsManager(metrics, CONSUMER_SHARE_METRIC_GROUP_PREFIX));
+                new HeartbeatMetricsManager(metrics, CONSUMER_SHARE_METRIC_GROUP_PREFIX));
         this.membershipManager = membershipManager;
         this.heartbeatState = heartbeatState;
     }
@@ -116,8 +116,8 @@ public class ShareHeartbeatRequestManager extends AbstractHeartbeatRequestManage
             // custom message for it. Note that the case where the protocol is not supported at all should fail
             // on the client side when building the request and checking supporting APIs (handled on onFailure).
             case UNSUPPORTED_VERSION:
-                logger.error("{} failed due to unsupported version: {}", 
-                    heartbeatRequestName(), SHARE_PROTOCOL_NOT_SUPPORTED_MSG);
+                logger.error("{} failed due to unsupported version: {}",
+                        heartbeatRequestName(), SHARE_PROTOCOL_NOT_SUPPORTED_MSG);
                 handleFatalFailure(error.exception(SHARE_PROTOCOL_NOT_SUPPORTED_MSG));
                 errorHandled = true;
                 break;
@@ -142,8 +142,8 @@ public class ShareHeartbeatRequestManager extends AbstractHeartbeatRequestManage
     @Override
     public NetworkClientDelegate.UnsentRequest buildHeartbeatRequest() {
         return new NetworkClientDelegate.UnsentRequest(
-            new ShareGroupHeartbeatRequest.Builder(this.heartbeatState.buildRequestData()),
-            coordinatorRequestManager.coordinator());
+                new ShareGroupHeartbeatRequest.Builder(this.heartbeatState.buildRequestData()),
+                coordinatorRequestManager.coordinator());
     }
 
     /**
@@ -248,7 +248,8 @@ public class ShareHeartbeatRequestManager extends AbstractHeartbeatRequestManage
             private String rackId = null;
             private TreeSet<String> subscribedTopicNames = null;
 
-            SentFields() {}
+            SentFields() {
+            }
 
             void reset() {
                 rackId = null;

@@ -56,18 +56,18 @@ public class GroupSpecImpl implements GroupSpec {
     private final Optional<Map<Uuid, Set<Integer>>> topicPartitionAllowedMap;
 
     public GroupSpecImpl(
-        Map<String, MemberSubscriptionAndAssignmentImpl> members,
-        SubscriptionType subscriptionType,
-        Map<Uuid, Map<Integer, String>> invertedMemberAssignment
+            Map<String, MemberSubscriptionAndAssignmentImpl> members,
+            SubscriptionType subscriptionType,
+            Map<Uuid, Map<Integer, String>> invertedMemberAssignment
     ) {
         this(members, subscriptionType, invertedMemberAssignment, Optional.empty());
     }
 
     public GroupSpecImpl(
-        Map<String, MemberSubscriptionAndAssignmentImpl> members,
-        SubscriptionType subscriptionType,
-        Map<Uuid, Map<Integer, String>> invertedMemberAssignment,
-        Optional<Map<Uuid, Set<Integer>>> topicPartitionAllowedMap
+            Map<String, MemberSubscriptionAndAssignmentImpl> members,
+            SubscriptionType subscriptionType,
+            Map<Uuid, Map<Integer, String>> invertedMemberAssignment,
+            Optional<Map<Uuid, Set<Integer>>> topicPartitionAllowedMap
     ) {
         this.members = Objects.requireNonNull(members);
         this.subscriptionType = Objects.requireNonNull(subscriptionType);
@@ -140,9 +140,9 @@ public class GroupSpecImpl implements GroupSpec {
         if (this == o) return true;
         if (!(o instanceof GroupSpecImpl groupSpec)) return false;
         return Objects.equals(members, groupSpec.members) &&
-            subscriptionType == groupSpec.subscriptionType &&
-            Objects.equals(invertedMemberAssignment, groupSpec.invertedMemberAssignment) &&
-            Objects.equals(topicPartitionAllowedMap, groupSpec.topicPartitionAllowedMap);
+                subscriptionType == groupSpec.subscriptionType &&
+                Objects.equals(invertedMemberAssignment, groupSpec.invertedMemberAssignment) &&
+                Objects.equals(topicPartitionAllowedMap, groupSpec.topicPartitionAllowedMap);
     }
 
     @Override
@@ -153,10 +153,10 @@ public class GroupSpecImpl implements GroupSpec {
     @Override
     public String toString() {
         return "GroupSpecImpl(" +
-            "members=" + members +
-            ", subscriptionType=" + subscriptionType +
-            ", invertedMemberAssignment=" + invertedMemberAssignment +
-            ", topicPartitionAllowedMap=" + topicPartitionAllowedMap +
-            ')';
+                "members=" + members +
+                ", subscriptionType=" + subscriptionType +
+                ", invertedMemberAssignment=" + invertedMemberAssignment +
+                ", topicPartitionAllowedMap=" + topicPartitionAllowedMap +
+                ')';
     }
 }

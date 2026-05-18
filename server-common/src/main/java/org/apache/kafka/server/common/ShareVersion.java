@@ -39,9 +39,9 @@ public enum ShareVersion implements FeatureVersion {
     private final Map<String, Short> dependencies;
 
     ShareVersion(
-        int featureLevel,
-        MetadataVersion bootstrapMetadataVersion,
-        Map<String, Short> dependencies
+            int featureLevel,
+            MetadataVersion bootstrapMetadataVersion,
+            Map<String, Short> dependencies
     ) {
         this.featureLevel = (short) featureLevel;
         this.bootstrapMetadataVersion = bootstrapMetadataVersion;

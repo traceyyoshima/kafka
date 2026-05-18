@@ -40,7 +40,7 @@ public class Resource {
      * Create an instance of this class with the provided parameters.
      *
      * @param resourceType non-null resource type
-     * @param name non-null resource name
+     * @param name         non-null resource name
      */
     public Resource(ResourceType resourceType, String name) {
         Objects.requireNonNull(resourceType);

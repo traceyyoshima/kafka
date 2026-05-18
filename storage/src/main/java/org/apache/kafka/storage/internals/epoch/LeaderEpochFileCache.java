@@ -77,10 +77,11 @@ public final class LeaderEpochFileCache {
     /**
      * Instantiate a new LeaderEpochFileCache with provided epoch entries instead of from the backing checkpoint file.
      * The provided epoch entries are expected to be no less fresh than the checkpoint file.
-     * @param epochEntries the current epoch entries
+     *
+     * @param epochEntries   the current epoch entries
      * @param topicPartition the associated topic partition
-     * @param checkpoint the checkpoint file
-     * @param scheduler the scheduler to use for async I/O operations
+     * @param checkpoint     the checkpoint file
+     * @param scheduler      the scheduler to use for async I/O operations
      */
     private LeaderEpochFileCache(List<EpochEntry> epochEntries,
                                  TopicPartition topicPartition,
@@ -434,6 +435,7 @@ public final class LeaderEpochFileCache {
     /**
      * Returns a new LeaderEpochFileCache which contains same
      * epoch entries with replacing backing checkpoint file.
+     *
      * @param leaderEpochCheckpoint the new checkpoint file
      * @return a new LeaderEpochFileCache instance
      */
@@ -441,9 +443,9 @@ public final class LeaderEpochFileCache {
         lock.readLock().lock();
         try {
             return new LeaderEpochFileCache(epochEntries(),
-                                            topicPartition,
-                                            leaderEpochCheckpoint,
-                                            scheduler);
+                    topicPartition,
+                    leaderEpochCheckpoint,
+                    scheduler);
         } finally {
             lock.readLock().unlock();
         }
@@ -451,6 +453,7 @@ public final class LeaderEpochFileCache {
 
     /**
      * Returns the leader epoch entries within the range of the given start and end offset
+     *
      * @param startOffset The start offset of the epoch entries (inclusive).
      * @param endOffset   The end offset of the epoch entries (exclusive)
      * @return the leader epoch entries

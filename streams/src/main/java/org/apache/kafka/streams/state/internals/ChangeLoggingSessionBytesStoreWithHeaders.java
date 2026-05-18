@@ -29,13 +29,13 @@ import static org.apache.kafka.streams.state.internals.Utils.rawAggregation;
  * The header-aware serialized value format is produced by {@link AggregationWithHeadersSerializer}.
  * <p>
  * Semantics:
- *  - The inner store value format is:
- *        [headersSize(varint)][headersBytes][aggregationBytes]
- *  - The changelog record value logged via {@code logChange(...)} is just the {@code aggregation}
- *    (no headers prefix), and the headers are logged separately.
+ * - The inner store value format is:
+ * [headersSize(varint)][headersBytes][aggregationBytes]
+ * - The changelog record value logged via {@code logChange(...)} is just the {@code aggregation}
+ * (no headers prefix), and the headers are logged separately.
  */
 public class ChangeLoggingSessionBytesStoreWithHeaders
-    extends ChangeLoggingSessionBytesStore {
+        extends ChangeLoggingSessionBytesStore {
 
     ChangeLoggingSessionBytesStoreWithHeaders(final SessionStore<Bytes, byte[]> bytesStore) {
         super(bytesStore);
@@ -45,12 +45,12 @@ public class ChangeLoggingSessionBytesStoreWithHeaders
     public void remove(final Windowed<Bytes> sessionKey) {
         wrapped().remove(sessionKey);
         internalContext.logChange(
-            name(),
-            SessionKeySchema.toBinary(sessionKey),
-            null,
-            internalContext.recordContext().timestamp(),
-            internalContext.recordContext().headers(),
-            wrapped().getPosition()
+                name(),
+                SessionKeySchema.toBinary(sessionKey),
+                null,
+                internalContext.recordContext().timestamp(),
+                internalContext.recordContext().headers(),
+                wrapped().getPosition()
         );
     }
 
@@ -58,14 +58,14 @@ public class ChangeLoggingSessionBytesStoreWithHeaders
     public void put(final Windowed<Bytes> sessionKey, final byte[] aggregationWithHeaders) {
         wrapped().put(sessionKey, aggregationWithHeaders);
         internalContext.logChange(
-            name(),
-            SessionKeySchema.toBinary(sessionKey),
-            rawAggregation(aggregationWithHeaders),
-            internalContext.recordContext().timestamp(),
-            aggregationWithHeaders == null
-                ? internalContext.recordContext().headers()
-                : headers(aggregationWithHeaders),
-            wrapped().getPosition()
+                name(),
+                SessionKeySchema.toBinary(sessionKey),
+                rawAggregation(aggregationWithHeaders),
+                internalContext.recordContext().timestamp(),
+                aggregationWithHeaders == null
+                        ? internalContext.recordContext().headers()
+                        : headers(aggregationWithHeaders),
+                wrapped().getPosition()
         );
     }
 }

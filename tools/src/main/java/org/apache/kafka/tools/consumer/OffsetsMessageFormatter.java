@@ -30,8 +30,8 @@ import java.util.Set;
  */
 public class OffsetsMessageFormatter extends CoordinatorRecordMessageFormatter {
     private static final Set<Short> ALLOWED_RECORDS = Set.of(
-        CoordinatorRecordType.LEGACY_OFFSET_COMMIT.id(),
-        CoordinatorRecordType.OFFSET_COMMIT.id()
+            CoordinatorRecordType.LEGACY_OFFSET_COMMIT.id(),
+            CoordinatorRecordType.OFFSET_COMMIT.id()
     );
 
     public OffsetsMessageFormatter() {

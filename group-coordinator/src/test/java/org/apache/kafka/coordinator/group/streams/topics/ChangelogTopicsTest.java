@@ -43,56 +43,56 @@ public class ChangelogTopicsTest {
     private static final String CHANGELOG_TOPIC_NAME1 = "changelog1";
     private static final TopicConfig TOPIC_CONFIG = new TopicConfig().setKey("config1").setValue("val1");
     private static final TopicInfo REPARTITION_TOPIC_INFO = new TopicInfo()
-        .setName(REPARTITION_TOPIC_NAME)
-        .setTopicConfigs(List.of(TOPIC_CONFIG));
+            .setName(REPARTITION_TOPIC_NAME)
+            .setTopicConfigs(List.of(TOPIC_CONFIG));
     private static final Subtopology SUBTOPOLOGY_NO_SOURCE = new Subtopology()
-        .setSubtopologyId("SUBTOPOLOGY_NO_SOURCE")
-        .setSourceTopics(List.of())
-        .setRepartitionSinkTopics(List.of(SINK_TOPIC_NAME))
-        .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC_INFO))
-        .setStateChangelogTopics(List.of());
+            .setSubtopologyId("SUBTOPOLOGY_NO_SOURCE")
+            .setSourceTopics(List.of())
+            .setRepartitionSinkTopics(List.of(SINK_TOPIC_NAME))
+            .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC_INFO))
+            .setStateChangelogTopics(List.of());
     private static final Subtopology SUBTOPOLOGY_NO_REPARTITION_SOURCE = new Subtopology()
-        .setSubtopologyId("SUBTOPOLOGY_NO_SOURCE")
-        .setSourceTopics(List.of(SOURCE_TOPIC_NAME))
-        .setRepartitionSinkTopics(List.of(SINK_TOPIC_NAME))
-        .setRepartitionSourceTopics(List.of())
-        .setStateChangelogTopics(List.of());
+            .setSubtopologyId("SUBTOPOLOGY_NO_SOURCE")
+            .setSourceTopics(List.of(SOURCE_TOPIC_NAME))
+            .setRepartitionSinkTopics(List.of(SINK_TOPIC_NAME))
+            .setRepartitionSourceTopics(List.of())
+            .setStateChangelogTopics(List.of());
     private static final Subtopology SUBTOPOLOGY_NO_SOURCE_NO_REPARTITION_SOURCE = new Subtopology()
-        .setSubtopologyId("SUBTOPOLOGY_NO_SOURCE")
-        .setSourceTopics(List.of())
-        .setRepartitionSinkTopics(List.of(SINK_TOPIC_NAME))
-        .setRepartitionSourceTopics(List.of())
-        .setStateChangelogTopics(List.of());
+            .setSubtopologyId("SUBTOPOLOGY_NO_SOURCE")
+            .setSourceTopics(List.of())
+            .setRepartitionSinkTopics(List.of(SINK_TOPIC_NAME))
+            .setRepartitionSourceTopics(List.of())
+            .setStateChangelogTopics(List.of());
     private static final Subtopology SUBTOPOLOGY_STATELESS = new Subtopology()
-        .setSubtopologyId("SUBTOPOLOGY_STATELESS")
-        .setSourceTopics(List.of(SOURCE_TOPIC_NAME))
-        .setRepartitionSinkTopics(List.of(SINK_TOPIC_NAME))
-        .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC_INFO))
-        .setStateChangelogTopics(List.of());
+            .setSubtopologyId("SUBTOPOLOGY_STATELESS")
+            .setSourceTopics(List.of(SOURCE_TOPIC_NAME))
+            .setRepartitionSinkTopics(List.of(SINK_TOPIC_NAME))
+            .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC_INFO))
+            .setStateChangelogTopics(List.of());
     private static final TopicInfo SOURCE_CHANGELOG_TOPIC_CONFIG = new TopicInfo()
-        .setName(SOURCE_TOPIC_NAME)
-        .setTopicConfigs(List.of(TOPIC_CONFIG));
+            .setName(SOURCE_TOPIC_NAME)
+            .setTopicConfigs(List.of(TOPIC_CONFIG));
     private static final Subtopology SUBTOPOLOGY_SOURCE_CHANGELOG = new Subtopology()
-        .setSubtopologyId("SUBTOPOLOGY_SOURCE_CHANGELOG")
-        .setSourceTopics(List.of(SOURCE_TOPIC_NAME))
-        .setRepartitionSinkTopics(List.of(SINK_TOPIC_NAME))
-        .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC_INFO))
-        .setStateChangelogTopics(List.of(SOURCE_CHANGELOG_TOPIC_CONFIG));
+            .setSubtopologyId("SUBTOPOLOGY_SOURCE_CHANGELOG")
+            .setSourceTopics(List.of(SOURCE_TOPIC_NAME))
+            .setRepartitionSinkTopics(List.of(SINK_TOPIC_NAME))
+            .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC_INFO))
+            .setStateChangelogTopics(List.of(SOURCE_CHANGELOG_TOPIC_CONFIG));
     private static final TopicInfo CHANGELOG_TOPIC_CONFIG = new TopicInfo()
-        .setName(CHANGELOG_TOPIC_NAME1)
-        .setTopicConfigs(List.of(TOPIC_CONFIG));
+            .setName(CHANGELOG_TOPIC_NAME1)
+            .setTopicConfigs(List.of(TOPIC_CONFIG));
     private static final Subtopology SUBTOPOLOGY_STATEFUL = new Subtopology()
-        .setSubtopologyId("SUBTOPOLOGY_STATEFUL")
-        .setSourceTopics(List.of(SOURCE_TOPIC_NAME))
-        .setRepartitionSinkTopics(List.of(SINK_TOPIC_NAME))
-        .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC_INFO))
-        .setStateChangelogTopics(List.of(CHANGELOG_TOPIC_CONFIG));
+            .setSubtopologyId("SUBTOPOLOGY_STATEFUL")
+            .setSourceTopics(List.of(SOURCE_TOPIC_NAME))
+            .setRepartitionSinkTopics(List.of(SINK_TOPIC_NAME))
+            .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC_INFO))
+            .setStateChangelogTopics(List.of(CHANGELOG_TOPIC_CONFIG));
     private static final Subtopology SUBTOPOLOGY_BOTH = new Subtopology()
-        .setSubtopologyId("SUBTOPOLOGY_BOTH")
-        .setSourceTopics(List.of(SOURCE_TOPIC_NAME))
-        .setRepartitionSinkTopics(List.of(SINK_TOPIC_NAME))
-        .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC_INFO))
-        .setStateChangelogTopics(List.of(SOURCE_CHANGELOG_TOPIC_CONFIG, CHANGELOG_TOPIC_CONFIG));
+            .setSubtopologyId("SUBTOPOLOGY_BOTH")
+            .setSourceTopics(List.of(SOURCE_TOPIC_NAME))
+            .setRepartitionSinkTopics(List.of(SINK_TOPIC_NAME))
+            .setRepartitionSourceTopics(List.of(REPARTITION_TOPIC_INFO))
+            .setStateChangelogTopics(List.of(SOURCE_CHANGELOG_TOPIC_CONFIG, CHANGELOG_TOPIC_CONFIG));
 
     private static OptionalInt topicPartitionProvider(String s) {
         return OptionalInt.of(3);
@@ -103,7 +103,7 @@ public class ChangelogTopicsTest {
         final List<Subtopology> subtopologies = List.of(SUBTOPOLOGY_NO_SOURCE_NO_REPARTITION_SOURCE);
 
         final ChangelogTopics changelogTopics =
-            new ChangelogTopics(LOG, subtopologies, ChangelogTopicsTest::topicPartitionProvider);
+                new ChangelogTopics(LOG, subtopologies, ChangelogTopicsTest::topicPartitionProvider);
         StreamsInvalidTopologyException e = assertThrows(StreamsInvalidTopologyException.class, changelogTopics::setup);
 
         assertTrue(e.getMessage().contains("No source topics found for subtopology"));
@@ -114,7 +114,7 @@ public class ChangelogTopicsTest {
         final List<Subtopology> subtopologies = List.of(SUBTOPOLOGY_NO_SOURCE);
 
         final ChangelogTopics changelogTopics =
-            new ChangelogTopics(LOG, subtopologies, ChangelogTopicsTest::topicPartitionProvider);
+                new ChangelogTopics(LOG, subtopologies, ChangelogTopicsTest::topicPartitionProvider);
         assertDoesNotThrow(changelogTopics::setup);
     }
 
@@ -123,7 +123,7 @@ public class ChangelogTopicsTest {
         final List<Subtopology> subtopologies = List.of(SUBTOPOLOGY_NO_REPARTITION_SOURCE);
 
         final ChangelogTopics changelogTopics =
-            new ChangelogTopics(LOG, subtopologies, ChangelogTopicsTest::topicPartitionProvider);
+                new ChangelogTopics(LOG, subtopologies, ChangelogTopicsTest::topicPartitionProvider);
         assertDoesNotThrow(changelogTopics::setup);
     }
 
@@ -132,7 +132,7 @@ public class ChangelogTopicsTest {
         final List<Subtopology> subtopologies = List.of(SUBTOPOLOGY_STATELESS);
 
         final ChangelogTopics changelogTopics =
-            new ChangelogTopics(LOG, subtopologies, ChangelogTopicsTest::topicPartitionProvider);
+                new ChangelogTopics(LOG, subtopologies, ChangelogTopicsTest::topicPartitionProvider);
         Map<String, Integer> setup = changelogTopics.setup();
 
         assertEquals(Map.of(), setup);
@@ -143,7 +143,7 @@ public class ChangelogTopicsTest {
         final List<Subtopology> subtopologies = List.of(SUBTOPOLOGY_STATEFUL);
 
         final ChangelogTopics changelogTopics =
-            new ChangelogTopics(LOG, subtopologies, ChangelogTopicsTest::topicPartitionProvider);
+                new ChangelogTopics(LOG, subtopologies, ChangelogTopicsTest::topicPartitionProvider);
         Map<String, Integer> setup = changelogTopics.setup();
 
         assertEquals(Map.of(CHANGELOG_TOPIC_CONFIG.name(), 3), setup);
@@ -154,7 +154,7 @@ public class ChangelogTopicsTest {
         final List<Subtopology> subtopologies = List.of(SUBTOPOLOGY_SOURCE_CHANGELOG);
 
         final ChangelogTopics changelogTopics =
-            new ChangelogTopics(LOG, subtopologies, ChangelogTopicsTest::topicPartitionProvider);
+                new ChangelogTopics(LOG, subtopologies, ChangelogTopicsTest::topicPartitionProvider);
         Map<String, Integer> setup = changelogTopics.setup();
 
         assertEquals(Map.of(SOURCE_TOPIC_NAME, 3), setup);
@@ -165,7 +165,7 @@ public class ChangelogTopicsTest {
         final List<Subtopology> subtopologies = List.of(SUBTOPOLOGY_BOTH);
 
         final ChangelogTopics changelogTopics =
-            new ChangelogTopics(LOG, subtopologies, ChangelogTopicsTest::topicPartitionProvider);
+                new ChangelogTopics(LOG, subtopologies, ChangelogTopicsTest::topicPartitionProvider);
         Map<String, Integer> setup = changelogTopics.setup();
 
         assertEquals(Map.of(CHANGELOG_TOPIC_CONFIG.name(), 3, SOURCE_TOPIC_NAME, 3), setup);

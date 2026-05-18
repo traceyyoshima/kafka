@@ -168,7 +168,7 @@ public class ProducerPerformance {
     Stats steadyStateStats;
 
     static byte[] generateRandomPayload(Integer recordSize, List<byte[]> payloadByteList, byte[] payload,
-            SplittableRandom random, boolean payloadMonotonic, long recordValue) {
+                                        SplittableRandom random, boolean payloadMonotonic, long recordValue) {
         if (!payloadByteList.isEmpty()) {
             payload = payloadByteList.get(random.nextInt(payloadByteList.size()));
         } else if (recordSize != null) {
@@ -208,7 +208,7 @@ public class ProducerPerformance {
         if (payloadFilePath != null) {
             Path path = Paths.get(payloadFilePath);
             System.out.println("Reading payloads from: " + path.toAbsolutePath());
-            if (Files.notExists(path) || Files.size(path) == 0)  {
+            if (Files.notExists(path) || Files.size(path) == 0) {
                 throw new IllegalArgumentException("File does not exist or empty file provided.");
             }
 
@@ -227,7 +227,9 @@ public class ProducerPerformance {
         return payloadByteList;
     }
 
-    /** Get the command-line argument parser. */
+    /**
+     * Get the command-line argument parser.
+     */
     static ArgumentParser argParser() {
         ArgumentParser parser = ArgumentParsers
                 .newArgumentParser("kafka-producer-perf-test")
@@ -487,11 +489,11 @@ public class ProducerPerformance {
             double recsPerSec = 1000.0 * windowCount / (double) elapsed;
             double mbPerSec = 1000.0 * this.windowBytes / (double) elapsed / (1024.0 * 1024.0);
             System.out.printf("%d records sent, %.1f records/sec (%.2f MB/sec), %.1f ms avg latency, %.1f ms max latency.%n",
-                              windowCount,
-                              recsPerSec,
-                              mbPerSec,
-                              windowTotalLatency / (double) windowCount,
-                              (double) windowMaxLatency);
+                    windowCount,
+                    recsPerSec,
+                    mbPerSec,
+                    windowTotalLatency / (double) windowCount,
+                    (double) windowMaxLatency);
         }
 
         public void newWindow() {
@@ -508,16 +510,16 @@ public class ProducerPerformance {
             double mbPerSec = 1000.0 * this.bytes / (double) elapsed / (1024.0 * 1024.0);
             int[] percs = percentiles(this.latencies, index, 0.5, 0.95, 0.99, 0.999);
             System.out.printf("%d%s records sent, %f records/sec (%.2f MB/sec), %.2f ms avg latency, %.2f ms max latency, %d ms 50th, %d ms 95th, %d ms 99th, %d ms 99.9th.%n",
-                              count,
-                              this.isSteadyState ? " steady state" : "",
-                              recsPerSec,
-                              mbPerSec,
-                              totalLatency / (double) count,
-                              (double) maxLatency,
-                              percs[0],
-                              percs[1],
-                              percs[2],
-                              percs[3]);
+                    count,
+                    this.isSteadyState ? " steady state" : "",
+                    recsPerSec,
+                    mbPerSec,
+                    totalLatency / (double) count,
+                    (double) maxLatency,
+                    percs[0],
+                    percs[1],
+                    percs[2],
+                    percs[3]);
         }
 
         private static int[] percentiles(int[] latencies, int count, double... percentiles) {

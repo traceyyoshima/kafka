@@ -34,14 +34,15 @@ public interface PartitionMetadataClient extends AutoCloseable {
      * @return A map of topic partitions to the completableFuture of their latest offsets
      */
     Map<TopicPartition, CompletableFuture<OffsetResponse>> listLatestOffsets(
-        Set<TopicPartition> topicPartitions
+            Set<TopicPartition> topicPartitions
     );
 
     /**
      * A record to hold the offset and any associated error.
      */
     record OffsetResponse(
-        long offset,
-        Errors error
-    ) { }
+            long offset,
+            Errors error
+    ) {
+    }
 }

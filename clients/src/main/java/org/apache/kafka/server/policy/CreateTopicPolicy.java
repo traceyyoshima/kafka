@@ -48,19 +48,19 @@ public interface CreateTopicPolicy extends Configurable, AutoCloseable {
 
         /**
          * Create an instance of this class with the provided parameters.
-         *
+         * <p>
          * This constructor is public to make testing of <code>CreateTopicPolicy</code> implementations easier.
          *
-         * @param topic the name of the topic to create.
-         * @param numPartitions the number of partitions to create or null if replicasAssignments is set.
-         * @param replicationFactor the replication factor for the topic or null if replicaAssignments is set.
+         * @param topic               the name of the topic to create.
+         * @param numPartitions       the number of partitions to create or null if replicasAssignments is set.
+         * @param replicationFactor   the replication factor for the topic or null if replicaAssignments is set.
          * @param replicasAssignments replica assignments or null if numPartitions and replicationFactor is set. The
          *                            assignment is a map from partition id to replica (broker) ids.
-         * @param configs topic configs for the topic to be created, not including broker defaults. Broker configs are
-         *                passed via the {@code configure()} method of the policy implementation.
+         * @param configs             topic configs for the topic to be created, not including broker defaults. Broker configs are
+         *                            passed via the {@code configure()} method of the policy implementation.
          */
         public RequestMetadata(String topic, Integer numPartitions, Short replicationFactor,
-                        Map<Integer, List<Integer>> replicasAssignments, Map<String, String> configs) {
+                               Map<Integer, List<Integer>> replicasAssignments, Map<String, String> configs) {
             this.topic = topic;
             this.numPartitions = numPartitions;
             this.replicationFactor = replicationFactor;
@@ -108,7 +108,7 @@ public interface CreateTopicPolicy extends Configurable, AutoCloseable {
         @Override
         public int hashCode() {
             return Objects.hash(topic, numPartitions, replicationFactor,
-                replicasAssignments, configs);
+                    replicasAssignments, configs);
         }
 
         @Override
@@ -117,10 +117,10 @@ public interface CreateTopicPolicy extends Configurable, AutoCloseable {
             if (o == null || getClass() != o.getClass()) return false;
             RequestMetadata other = (RequestMetadata) o;
             return topic.equals(other.topic) &&
-                Objects.equals(numPartitions, other.numPartitions) &&
-                Objects.equals(replicationFactor, other.replicationFactor) &&
-                Objects.equals(replicasAssignments, other.replicasAssignments) &&
-                configs.equals(other.configs);
+                    Objects.equals(numPartitions, other.numPartitions) &&
+                    Objects.equals(replicationFactor, other.replicationFactor) &&
+                    Objects.equals(replicasAssignments, other.replicasAssignments) &&
+                    configs.equals(other.configs);
         }
 
         @Override
@@ -136,7 +136,7 @@ public interface CreateTopicPolicy extends Configurable, AutoCloseable {
     /**
      * Validate the request parameters and throw a <code>PolicyViolationException</code> with a suitable error
      * message if the create topics request parameters for the provided topic do not satisfy this policy.
-     *
+     * <p>
      * Clients will receive the POLICY_VIOLATION error code along with the exception's message. Note that validation
      * failure only affects the relevant topic, other topics in the request will still be processed.
      *

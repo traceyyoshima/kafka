@@ -47,21 +47,21 @@ public class ProducerIdsImageTest {
 
         DELTA1_RECORDS = new ArrayList<>();
         DELTA1_RECORDS.add(new ApiMessageAndVersion(new ProducerIdsRecord().
-            setBrokerId(2).
-            setBrokerEpoch(100).
-            setNextProducerId(456), (short) 0));
+                setBrokerId(2).
+                setBrokerEpoch(100).
+                setNextProducerId(456), (short) 0));
         DELTA1_RECORDS.add(new ApiMessageAndVersion(new ProducerIdsRecord().
-            setBrokerId(3).
-            setBrokerEpoch(100).
-            setNextProducerId(780), (short) 0));
+                setBrokerId(3).
+                setBrokerEpoch(100).
+                setNextProducerId(780), (short) 0));
         DELTA1_RECORDS.add(new ApiMessageAndVersion(new ProducerIdsRecord().
-            setBrokerId(3).
-            setBrokerEpoch(100).
-            setNextProducerId(785), (short) 0));
+                setBrokerId(3).
+                setBrokerEpoch(100).
+                setNextProducerId(785), (short) 0));
         DELTA1_RECORDS.add(new ApiMessageAndVersion(new ProducerIdsRecord().
-            setBrokerId(2).
-            setBrokerEpoch(100).
-            setNextProducerId(800), (short) 0));
+                setBrokerId(2).
+                setBrokerEpoch(100).
+                setNextProducerId(800), (short) 0));
 
         DELTA1 = new ProducerIdsDelta(IMAGE1);
         RecordTestUtils.replayAll(DELTA1, DELTA1_RECORDS);
@@ -104,8 +104,8 @@ public class ProducerIdsImageTest {
     private static void testToImage(ProducerIdsImage image, List<ApiMessageAndVersion> fromRecords) {
         // test from empty image stopping each of the various intermediate images along the way
         new RecordTestUtils.TestThroughAllIntermediateImagesLeadingToFinalImageHelper<>(
-            () -> ProducerIdsImage.EMPTY,
-            ProducerIdsDelta::new
+                () -> ProducerIdsImage.EMPTY,
+                ProducerIdsDelta::new
         ).test(image, fromRecords);
     }
 

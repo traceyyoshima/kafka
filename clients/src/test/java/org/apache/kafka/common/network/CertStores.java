@@ -144,7 +144,7 @@ public class CertStores {
 
         public CertStores build() throws Exception {
             TestSslUtils.CertificateBuilder certBuilder = new TestSslUtils.CertificateBuilder()
-                .sanDnsNames(sanDns.toArray(new String[0]));
+                    .sanDnsNames(sanDns.toArray(new String[0]));
             if (sanIp != null)
                 certBuilder = certBuilder.sanIpAddress(sanIp);
             return new CertStores(isServer, cn, keyAlgorithm, certBuilder, usePem);

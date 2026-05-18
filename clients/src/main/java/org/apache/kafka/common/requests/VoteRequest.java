@@ -62,7 +62,7 @@ public class VoteRequest extends AbstractRequest {
     @Override
     public AbstractResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         return new VoteResponse(new VoteResponseData()
-            .setErrorCode(Errors.forException(e).code()));
+                .setErrorCode(Errors.forException(e).code()));
     }
 
     public static VoteRequest parse(Readable readable, short version) {
@@ -77,18 +77,18 @@ public class VoteRequest extends AbstractRequest {
                                                    long lastEpochEndOffset,
                                                    boolean preVote) {
         return new VoteRequestData()
-                   .setClusterId(clusterId)
-                   .setTopics(List.of(
-                       new VoteRequestData.TopicData()
-                           .setTopicName(topicPartition.topic())
-                           .setPartitions(List.of(
-                               new VoteRequestData.PartitionData()
-                                   .setPartitionIndex(topicPartition.partition())
-                                   .setReplicaEpoch(replicaEpoch)
-                                   .setReplicaId(replicaId)
-                                   .setLastOffsetEpoch(lastEpoch)
-                                   .setLastOffset(lastEpochEndOffset)
-                                   .setPreVote(preVote))
-                           )));
+                .setClusterId(clusterId)
+                .setTopics(List.of(
+                        new VoteRequestData.TopicData()
+                                .setTopicName(topicPartition.topic())
+                                .setPartitions(List.of(
+                                        new VoteRequestData.PartitionData()
+                                                .setPartitionIndex(topicPartition.partition())
+                                                .setReplicaEpoch(replicaEpoch)
+                                                .setReplicaId(replicaId)
+                                                .setLastOffsetEpoch(lastEpoch)
+                                                .setLastOffset(lastEpochEndOffset)
+                                                .setPreVote(preVote))
+                                )));
     }
 }

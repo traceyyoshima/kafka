@@ -116,8 +116,8 @@ public class ConsumerNetworkClient implements Closeable {
      * need to check for disconnects explicitly on the {@link ClientResponse} object;
      * instead, the future will be failed with a {@link DisconnectException}.
      *
-     * @param node The destination of the request
-     * @param requestBuilder A builder for the request payload
+     * @param node             The destination of the request
+     * @param requestBuilder   A builder for the request payload
      * @param requestTimeoutMs Maximum time in milliseconds to await a response before disconnecting the socket and
      *                         cancelling the request. The request may be cancelled sooner if the socket disconnects
      *                         for any reason.
@@ -129,7 +129,7 @@ public class ConsumerNetworkClient implements Closeable {
         long now = time.milliseconds();
         RequestFutureCompletionHandler completionHandler = new RequestFutureCompletionHandler();
         ClientRequest clientRequest = client.newClientRequest(node.idString(), requestBuilder, now, true,
-            requestTimeoutMs, completionHandler);
+                requestTimeoutMs, completionHandler);
         unsent.put(node, clientRequest);
 
         // wakeup the client in case it is blocking in poll so that we can send the queued request
@@ -195,8 +195,9 @@ public class ConsumerNetworkClient implements Closeable {
 
     /**
      * Block indefinitely until the given request future has finished.
+     *
      * @param future The request future to await.
-     * @throws WakeupException if {@link #wakeup()} is called from another thread
+     * @throws WakeupException    if {@link #wakeup()} is called from another thread
      * @throws InterruptException if the calling thread is interrupted
      */
     public void poll(RequestFuture<?> future) {
@@ -206,10 +207,11 @@ public class ConsumerNetworkClient implements Closeable {
 
     /**
      * Block until the provided request future request has finished or the timeout has expired.
+     *
      * @param future The request future to wait for
-     * @param timer Timer bounding how long this method can block
+     * @param timer  Timer bounding how long this method can block
      * @return true if the future is done, false otherwise
-     * @throws WakeupException if {@link #wakeup()} is called from another thread
+     * @throws WakeupException    if {@link #wakeup()} is called from another thread
      * @throws InterruptException if the calling thread is interrupted
      */
     public boolean poll(RequestFuture<?> future, Timer timer) {
@@ -219,12 +221,11 @@ public class ConsumerNetworkClient implements Closeable {
     /**
      * Block until the provided request future request has finished or the timeout has expired.
      *
-     * @param future The request future to wait for
-     * @param timer Timer bounding how long this method can block
+     * @param future        The request future to wait for
+     * @param timer         Timer bounding how long this method can block
      * @param disableWakeup true if we should not check for wakeups, false otherwise
-     *
      * @return true if the future is done, false otherwise
-     * @throws WakeupException if {@link #wakeup()} is called from another thread and `disableWakeup` is false
+     * @throws WakeupException    if {@link #wakeup()} is called from another thread and `disableWakeup` is false
      * @throws InterruptException if the calling thread is interrupted
      */
     public boolean poll(RequestFuture<?> future, Timer timer, boolean disableWakeup) {
@@ -236,8 +237,9 @@ public class ConsumerNetworkClient implements Closeable {
 
     /**
      * Poll for any network IO.
+     *
      * @param timer Timer bounding how long this method can block
-     * @throws WakeupException if {@link #wakeup()} is called from another thread
+     * @throws WakeupException    if {@link #wakeup()} is called from another thread
      * @throws InterruptException if the calling thread is interrupted
      */
     public void poll(Timer timer) {
@@ -246,7 +248,8 @@ public class ConsumerNetworkClient implements Closeable {
 
     /**
      * Poll for any network IO.
-     * @param timer Timer bounding how long this method can block
+     *
+     * @param timer         Timer bounding how long this method can block
      * @param pollCondition Nullable blocking condition
      */
     public void poll(Timer timer, PollCondition pollCondition) {
@@ -255,7 +258,8 @@ public class ConsumerNetworkClient implements Closeable {
 
     /**
      * Poll for any network IO.
-     * @param timer Timer bounding how long this method can block
+     *
+     * @param timer         Timer bounding how long this method can block
      * @param pollCondition Nullable blocking condition
      * @param disableWakeup If TRUE disable triggering wake-ups
      */
@@ -346,7 +350,8 @@ public class ConsumerNetworkClient implements Closeable {
 
     /**
      * Block until all pending requests from the given node have finished.
-     * @param node The node to await requests from
+     *
+     * @param node  The node to await requests from
      * @param timer Timer bounding how long this method can block
      * @return true If all requests finished, false if the timeout expired first
      */
@@ -360,6 +365,7 @@ public class ConsumerNetworkClient implements Closeable {
     /**
      * Get the count of pending requests to the given node. This includes both request that
      * have been transmitted (i.e. in-flight requests) and those which are awaiting transmission.
+     *
      * @param node The node in question
      * @return The number of pending requests
      */
@@ -375,6 +381,7 @@ public class ConsumerNetworkClient implements Closeable {
     /**
      * Check whether there is pending request to the given node. This includes both request that
      * have been transmitted (i.e. in-flight requests) and those which are awaiting transmission.
+     *
      * @param node The node in question
      * @return A boolean indicating whether there is pending request
      */
@@ -392,6 +399,7 @@ public class ConsumerNetworkClient implements Closeable {
     /**
      * Get the total count of pending requests from all nodes. This includes both requests that
      * have been transmitted (i.e. in-flight requests) and those which are awaiting transmission.
+     *
      * @return The total count of pending requests
      */
     public int pendingRequestCount() {
@@ -406,6 +414,7 @@ public class ConsumerNetworkClient implements Closeable {
     /**
      * Check whether there is pending request. This includes both requests that
      * have been transmitted (i.e. in-flight requests) and those which are awaiting transmission.
+     *
      * @return A boolean indicating whether there is pending request
      */
     public boolean hasPendingRequests() {
@@ -421,7 +430,7 @@ public class ConsumerNetworkClient implements Closeable {
 
     private void firePendingCompletedRequests() {
         boolean completedRequestsFired = false;
-        for (;;) {
+        for (; ; ) {
             RequestFutureCompletionHandler completionHandler = pendingCompletion.poll();
             if (completionHandler == null)
                 break;
@@ -582,6 +591,7 @@ public class ConsumerNetworkClient implements Closeable {
      * Initiate a connection if currently possible. This is only really useful for resetting the failed
      * status of a socket. If there is an actual request to send, then {@link #send(Node, AbstractRequest.Builder)}
      * should be used.
+     *
      * @param node The node to connect to
      */
     public void tryConnect(Node node) {
@@ -641,6 +651,7 @@ public class ConsumerNetworkClient implements Closeable {
     public interface PollCondition {
         /**
          * Return whether the caller is still awaiting an IO event.
+         *
          * @return true if so, false otherwise.
          */
         boolean shouldBlock();

@@ -95,14 +95,14 @@ public class ChangeLoggingKeyValueBytesStoreTest {
 
     private InternalMockProcessorContext mockContext() {
         return new InternalMockProcessorContext<>(
-            TestUtils.tempDirectory(),
-            Serdes.String(),
-            Serdes.Long(),
-            new StreamsMetricsImpl(new Metrics(), "mock", new MockTime()),
-            streamsConfig,
-            () -> collector,
-            new ThreadCache(new LogContext("testCache "), 0, new MockStreamsMetrics(new Metrics())),
-            Time.SYSTEM
+                TestUtils.tempDirectory(),
+                Serdes.String(),
+                Serdes.Long(),
+                new StreamsMetricsImpl(new Metrics(), "mock", new MockTime()),
+                streamsConfig,
+                () -> collector,
+                new ThreadCache(new LogContext("testCache "), 0, new MockStreamsMetrics(new Metrics())),
+                Time.SYSTEM
         );
     }
 
@@ -132,7 +132,7 @@ public class ChangeLoggingKeyValueBytesStoreTest {
     @Test
     public void shouldWriteAllKeyValueToInnerStoreOnPutAll() {
         store.putAll(Arrays.asList(KeyValue.pair(hi, there),
-                                   KeyValue.pair(hello, world)));
+                KeyValue.pair(hello, world)));
         assertThat(inner.get(hi), equalTo(there));
         assertThat(inner.get(hello), equalTo(world));
 

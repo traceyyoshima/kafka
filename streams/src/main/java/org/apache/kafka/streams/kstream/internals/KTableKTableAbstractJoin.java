@@ -22,7 +22,7 @@ import org.apache.kafka.streams.state.StoreBuilder;
 import java.util.Set;
 
 public abstract class KTableKTableAbstractJoin<K, V1, V2, VOut> implements
-    KTableProcessorSupplier<K, V1, K, VOut> {
+        KTableProcessorSupplier<K, V1, K, VOut> {
 
     private final KTableImpl<K, ?, V1> table1;
     private final KTableImpl<K, ?, V2> table2;

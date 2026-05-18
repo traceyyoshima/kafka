@@ -38,8 +38,8 @@ class MetadataRecordSerdeTest {
     @Test
     public void testSerde() {
         TopicRecord topicRecord = new TopicRecord()
-            .setName("foo")
-            .setTopicId(Uuid.randomUuid());
+                .setName("foo")
+                .setTopicId(Uuid.randomUuid());
 
         MetadataRecordSerde serde = new MetadataRecordSerde();
 

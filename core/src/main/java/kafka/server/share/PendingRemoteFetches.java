@@ -66,27 +66,27 @@ public class PendingRemoteFetches {
     @Override
     public String toString() {
         return "PendingRemoteFetches(" +
-            "remoteFetches=" + remoteFetches +
-            ", fetchOffsetMetadataMap=" + fetchOffsetMetadataMap +
-            ")";
+                "remoteFetches=" + remoteFetches +
+                ", fetchOffsetMetadataMap=" + fetchOffsetMetadataMap +
+                ")";
     }
 
     public record RemoteFetch(
-        TopicIdPartition topicIdPartition,
-        LogReadResult logReadResult,
-        Future<Void> remoteFetchTask,
-        CompletableFuture<RemoteLogReadResult> remoteFetchResult,
-        RemoteStorageFetchInfo remoteFetchInfo
+            TopicIdPartition topicIdPartition,
+            LogReadResult logReadResult,
+            Future<Void> remoteFetchTask,
+            CompletableFuture<RemoteLogReadResult> remoteFetchResult,
+            RemoteStorageFetchInfo remoteFetchInfo
     ) {
         @Override
         public String toString() {
             return "RemoteFetch(" +
-                "topicIdPartition=" + topicIdPartition +
-                ", logReadResult=" + logReadResult +
-                ", remoteFetchTask=" + remoteFetchTask +
-                ", remoteFetchResult=" + remoteFetchResult +
-                ", remoteFetchInfo=" + remoteFetchInfo +
-                ")";
+                    "topicIdPartition=" + topicIdPartition +
+                    ", logReadResult=" + logReadResult +
+                    ", remoteFetchTask=" + remoteFetchTask +
+                    ", remoteFetchResult=" + remoteFetchResult +
+                    ", remoteFetchInfo=" + remoteFetchInfo +
+                    ")";
         }
     }
 }

@@ -66,11 +66,8 @@ public interface KStream<K, V> {
      * This is a stateless record-by-record operation (cf. {@link #processValues(FixedKeyProcessorSupplier, String...)}
      * for stateful record processing or if you need access to the record's timestamp, headers, or other metadata).
      *
-     * @param predicate
-     *        a filter {@link Predicate} that is applied to each record
-     *
+     * @param predicate a filter {@link Predicate} that is applied to each record
      * @return A {@code KStream} that contains only those records that satisfy the given predicate.
-     *
      * @see #filterNot(Predicate)
      */
     KStream<K, V> filter(final Predicate<? super K, ? super V> predicate);
@@ -89,11 +86,8 @@ public interface KStream<K, V> {
      * This is a stateless record-by-record operation (cf. {@link #processValues(FixedKeyProcessorSupplier, String...)}
      * for stateful record processing or if you need access to the record's timestamp, headers, or other metadata).
      *
-     * @param predicate
-     *        a filter {@link Predicate} that is applied to each record
-     *
+     * @param predicate a filter {@link Predicate} that is applied to each record
      * @return A {@code KStream} that contains only those records that do <em>not</em> satisfy the given predicate.
-     *
      * @see #filter(Predicate)
      */
     KStream<K, V> filterNot(final Predicate<? super K, ? super V> predicate);
@@ -127,13 +121,9 @@ public interface KStream<K, V> {
      * Setting a new key might result in an internal data redistribution if a key-based operator (like an aggregation
      * or join) is applied to the result {@code KStream}.
      *
-     * @param mapper
-     *        a {@link KeyValueMapper} that computes a new key for each input record
-     *
+     * @param mapper a {@link KeyValueMapper} that computes a new key for each input record
      * @param <KOut> the new key type of the result {@code KStream}
-     *
      * @return A {@code KStream} that contains records with new key (possibly of a different type) and unmodified value.
-     *
      * @see #map(KeyValueMapper)
      * @see #mapValues(ValueMapper)
      * @see #flatMap(KeyValueMapper)
@@ -168,18 +158,14 @@ public interface KStream<K, V> {
      *     }
      * });
      * }</pre>
-     *
+     * <p>
      * Setting a new value preserves data co-location with respect to the key.
      * Thus, <em>no</em> internal data redistribution is required if a key-based operator (like an aggregation
      * or join) is applied to the result {@code KStream} (cf. {@link #map(KeyValueMapper)}).
      *
-     * @param mapper
-     *        a {@link ValueMapper} that computes a new value for each input record
-     *
+     * @param mapper a {@link ValueMapper} that computes a new value for each input record
      * @param <VOut> the value type of the result stream
-     *
      * @return A {@code KStream} that contains records with unmodified key and new values (possibly of a different type).
-     *
      * @see #selectKey(KeyValueMapper)
      * @see #map(KeyValueMapper)
      * @see #flatMap(KeyValueMapper)
@@ -234,14 +220,10 @@ public interface KStream<K, V> {
      * <p>Mapping records might result in an internal data redistribution if a key-based operator (like an
      * aggregation or join) is applied to the result {@code KStream} (cf. {@link #mapValues(ValueMapper)}).
      *
-     * @param mapper
-     *        a {@link KeyValueMapper} that computes a new {@link KeyValue} pair for each input record
-     *
+     * @param mapper a {@link KeyValueMapper} that computes a new {@link KeyValue} pair for each input record
      * @param <KOut> the key type of the result stream
      * @param <VOut> the value type of the result stream
-     *
      * @return A {@code KStream} that contains records with new key and new value (possibly of different types).
-     *
      * @see #selectKey(KeyValueMapper)
      * @see #flatMap(KeyValueMapper)
      * @see #mapValues(ValueMapper)
@@ -289,15 +271,11 @@ public interface KStream<K, V> {
      * <p>Flat-mapping records might result in an internal data redistribution if a key-based operator (like an
      * aggregation or join) is applied to the result {@code KStream}. (cf. {@link #flatMapValues(ValueMapper)})
      *
-     * @param mapper
-     *        a {@link KeyValueMapper KeyValueMapper&lt;K, V, Iterable&lt;KeyValue&lt;K', V'&gt;&gt;&gt;} that
-     *        computes zero of more new {@link KeyValue} pairs for each input record
-     *
+     * @param mapper a {@link KeyValueMapper KeyValueMapper&lt;K, V, Iterable&lt;KeyValue&lt;K', V'&gt;&gt;&gt;} that
+     *               computes zero of more new {@link KeyValue} pairs for each input record
      * @param <KOut> the key type of the result stream
      * @param <VOut> the value type of the result stream
-     *
      * @return A {@code KStream} that contains more or fewer records with new keys and values (possibly of different types).
-     *
      * @see #selectKey(KeyValueMapper)
      * @see #map(KeyValueMapper)
      * @see #mapValues(ValueMapper)
@@ -339,14 +317,10 @@ public interface KStream<K, V> {
      * Thus, <em>no</em> internal data redistribution is required if a key-based operator (like an aggregation or join)
      * is applied to the result {@code KStream} (cf. {@link #flatMap(KeyValueMapper)}).
      *
-     * @param mapper
-     *        a {@link ValueMapper ValueMapper&lt;V, Iterable&lt;V&gt;&gt;} that computes zero or more new values
-     *        for each input record
-     *
+     * @param mapper a {@link ValueMapper ValueMapper&lt;V, Iterable&lt;V&gt;&gt;} that computes zero or more new values
+     *               for each input record
      * @param <VOut> the value type of the result stream
-     *
      * @return A {@code KStream} that contains more or fewer records with unmodified keys but new values (possibly of a different type).
-     *
      * @see #selectKey(KeyValueMapper)
      * @see #map(KeyValueMapper)
      * @see #flatMap(KeyValueMapper)
@@ -398,8 +372,7 @@ public interface KStream<K, V> {
      * <p>Note that this operation may execute multiple times for a single record in failure cases,
      * and it is <em>not</em> guarded by "exactly-once processing guarantees".
      *
-     * @param action
-     *        an action to perform on each record
+     * @param action an action to perform on each record
      */
     void foreach(final ForeachAction<? super K, ? super V> action);
 
@@ -421,9 +394,7 @@ public interface KStream<K, V> {
      * <p>Note that this operation may execute multiple times for a single record in failure cases,
      * and it is <em>not</em> guarded by "exactly-once processing guarantees".
      *
-     * @param action
-     *        an action to perform on each record
-     *
+     * @param action an action to perform on each record
      * @return An unmodified {@code KStream}.
      */
     KStream<K, V> peek(final ForeachAction<? super K, ? super V> action);
@@ -452,7 +423,7 @@ public interface KStream<K, V> {
      * KStream<...> stream2 = stream.mapValue(...);
      * KStream<...> stream3 = stream.flatMap(...);
      * }</pre>
-     *
+     * <p>
      * Multicasting can be achieved with broadcasting into multiple filter operations:
      * <pre>{@code
      * // Multicasting: every record of `stream` is sent to all three filters, and thus, may be part of
@@ -463,7 +434,6 @@ public interface KStream<K, V> {
      * }</pre>
      *
      * @return A {@link BranchedKStream} that provides methods for routing the records to different branches.
-     *
      * @see #merge(KStream)
      */
     BranchedKStream<K, V> split();
@@ -483,11 +453,8 @@ public interface KStream<K, V> {
      * Relative order is preserved within each input stream though (i.e., records within one input
      * stream are processed in order).
      *
-     * @param otherStream
-     *        a stream which is to be merged into this stream
-     *
+     * @param otherStream a stream which is to be merged into this stream
      * @return A merged stream containing all records from this and the provided {@code KStream}
-     *
      * @see #split()
      */
     KStream<K, V> merge(final KStream<K, V> otherStream);
@@ -533,9 +500,7 @@ public interface KStream<K, V> {
      *
      * <p>To explicitly set key/value serdes or the partitioning strategy, use {@link #to(String, Produced)}.
      *
-     * @param topic
-     *        the output topic name
-     *
+     * @param topic the output topic name
      * @see #to(TopicNameExtractor)
      */
     void to(final String topic);
@@ -553,9 +518,7 @@ public interface KStream<K, V> {
      *
      * <p>To explicitly set key/value serdes or the partitioning strategy, use {@link #to(TopicNameExtractor, Produced)}.
      *
-     * @param topicExtractor
-     *        the extractor to determine the name of the Kafka topic to write to for each record
-     *
+     * @param topicExtractor the extractor to determine the name of the Kafka topic to write to for each record
      * @see #to(String)
      */
     void to(final TopicNameExtractor<K, V> topicExtractor);
@@ -608,7 +571,7 @@ public interface KStream<K, V> {
      */
     KTable<K, V> toTable(final Named named);
 
-     /**
+    /**
      * See {@link #toTable()}.
      */
     KTable<K, V> toTable(final Materialized<K, V, KeyValueStore<Bytes, byte[]>> materialized);
@@ -666,10 +629,8 @@ public interface KStream<K, V> {
      * <p>Because a new key is selected, an internal repartitioning topic will be created in Kafka.
      * See {@link #groupByKey()} for more details about auto-repartitioning.
      *
-     * @param keySelector
-     *        a {@link KeyValueMapper} that computes a new key for grouping
-     *
-     * @param <KOut> the new key type of the result {@link KGroupedStream}
+     * @param keySelector a {@link KeyValueMapper} that computes a new key for grouping
+     * @param <KOut>      the new key type of the result {@link KGroupedStream}
      */
     <KOut> KGroupedStream<KOut, V> groupBy(final KeyValueMapper<? super K, ? super V, KOut> keySelector);
 
@@ -720,7 +681,7 @@ public interface KStream<K, V> {
      * <td></td>
      * </tr>
      * </table>
-     *
+     * <p>
      * Both {@code KStreams} (or to be more precise, their underlying source topics) need to have the same number of
      * partitions.
      * If this is not the case (and if not auto-repartitioning happens, see further below), you would need to call
@@ -759,19 +720,13 @@ public interface KStream<K, V> {
      * customize the used state store, use {@link #join(KStream, ValueJoiner, JoinWindows, StreamJoined)}.
      * For more control over the repartitioning, use {@link #repartition(Repartitioned)} on eiter input before {@code join()}.
      *
-     * @param rightStream
-     *        the {@code KStream} to be joined with this stream
-     * @param joiner
-     *        a {@link ValueJoiner} that computes the join result for a pair of matching records
-     * @param windows
-     *        the specification of the {@link JoinWindows}
-     *
-     * @param <VRight> the value type of the right stream
-     * @param <VOut> the value type of the result stream
-     *
+     * @param rightStream the {@code KStream} to be joined with this stream
+     * @param joiner      a {@link ValueJoiner} that computes the join result for a pair of matching records
+     * @param windows     the specification of the {@link JoinWindows}
+     * @param <VRight>    the value type of the right stream
+     * @param <VOut>      the value type of the result stream
      * @return A {@code KStream} that contains join-records, one for each matched record-pair, with the corresponding
-     *         key and a value computed by the given {@link ValueJoiner}.
-     *
+     * key and a value computed by the given {@link ValueJoiner}.
      * @see #leftJoin(KStream, ValueJoiner, JoinWindows)
      * @see #outerJoin(KStream, ValueJoiner, JoinWindows)
      */
@@ -865,14 +820,13 @@ public interface KStream<K, V> {
      * <td></td>
      * </tr>
      * </table>
-     *
+     * <p>
      * For more details, about co-partitioning requirements, (auto-)repartitioning, and more see
      * {@link #join(KStream, ValueJoiner, JoinWindows)}.
      *
      * @return A {@code KStream} that contains join-records, one for each matched record-pair plus one for each
-     *         non-matching record of this {@code KStream}, with the corresponding key and a value computed by the
-     *         given {@link ValueJoiner}.
-     *
+     * non-matching record of this {@code KStream}, with the corresponding key and a value computed by the
+     * given {@link ValueJoiner}.
      * @see #join(KStream, ValueJoiner, JoinWindows)
      * @see #outerJoin(KStream, ValueJoiner, JoinWindows)
      */
@@ -964,14 +918,13 @@ public interface KStream<K, V> {
      * <td>&lt;K3:ValueJoiner(null,c)&gt;</td>
      * </tr>
      * </table>
-     *
+     * <p>
      * For more details, about co-partitioning requirements, (auto-)repartitioning, and more see
      * {@link #join(KStream, ValueJoiner, JoinWindows)}.
      *
      * @return A {@code KStream} that contains join-records, one for each matched record-pair plus one for each
-     *         non-matching record of either input {@code KStream}, with the corresponding key and a value computed
-     *         by the given {@link ValueJoiner}.
-     *
+     * non-matching record of either input {@code KStream}, with the corresponding key and a value computed
+     * by the given {@link ValueJoiner}.
      * @see #join(KStream, ValueJoiner, JoinWindows)
      * @see #leftJoin(KStream, ValueJoiner, JoinWindows)
      */
@@ -1052,7 +1005,7 @@ public interface KStream<K, V> {
      * <td>&lt;K1:ValueJoiner(C,b)&gt;</td>
      * </tr>
      * </table>
-     *
+     * <p>
      * By default, {@code KStream} records are processed by performing a lookup for matching records in the
      * <em>current</em> (i.e., processing time) internal {@link KTable} state.
      * This default implementation does not handle out-of-order records in either input of the join well.
@@ -1089,17 +1042,12 @@ public interface KStream<K, V> {
      * use {@link #join(KTable, ValueJoiner, Joined)}.
      * For more control over the repartitioning, use {@link #repartition(Repartitioned)} before {@code join()}.
      *
-     * @param table
-     *        the {@link KTable} to be joined with this stream
-     * @param joiner
-     *        a {@link ValueJoiner} that computes the join result for a pair of matching records
-     *
+     * @param table        the {@link KTable} to be joined with this stream
+     * @param joiner       a {@link ValueJoiner} that computes the join result for a pair of matching records
      * @param <TableValue> the value type of the table
-     * @param <VOut> the value type of the result stream
-     *
+     * @param <VOut>       the value type of the result stream
      * @return A {@code KStream} that contains join-records, one for each matched stream record, with the corresponding
-     *         key and a value computed by the given {@link ValueJoiner}.
-     *
+     * key and a value computed by the given {@link ValueJoiner}.
      * @see #leftJoin(KTable, ValueJoiner)
      */
     <TableValue, VOut> KStream<K, VOut> join(final KTable<K, TableValue> table,
@@ -1216,7 +1164,7 @@ public interface KStream<K, V> {
      * <td>&lt;K1:ValueJoiner(C,b)&gt;</td>
      * </tr>
      * </table>
-     *
+     * <p>
      * By default, {@code KStream} records are processed by performing a lookup for matching records in the
      * <em>current</em> (i.e., processing time) internal {@link KTable} state.
      * This default implementation does not handle out-of-order records in either input of the join well.
@@ -1227,8 +1175,7 @@ public interface KStream<K, V> {
      * {@link #join(KStream, ValueJoiner, JoinWindows)}.
      *
      * @return A {@code KStream} that contains join-records, one for each matched stream record plus one for each
-     *         non-matching stream record, with the corresponding key and a value computed by the given {@link ValueJoiner}.
-     *
+     * non-matching stream record, with the corresponding key and a value computed by the given {@link ValueJoiner}.
      * @see #join(KTable, ValueJoiner)
      */
     <VTable, VOut> KStream<K, VOut> leftJoin(final KTable<K, VTable> table,
@@ -1315,27 +1262,21 @@ public interface KStream<K, V> {
      * <td>&lt;K1:ValueJoiner((GK1,C),b)&gt;</td>
      * </tr>
      * </table>
-     *
+     * <p>
      * In contrast to {@link #join(KTable, ValueJoiner)}, there is no co-partitioning requirement between this
      * {@code KStream} and the {@link GlobalKTable}.
      * Also note that there are no ordering guarantees between the updates on the left and the right side of this join,
      * since updates to the {@link GlobalKTable} are in no way synchronized.
      * Therefore, the result of the join is inherently non-deterministic.
      *
-     * @param globalTable
-     *        the {@link GlobalKTable} to be joined with this stream
-     * @param keySelector
-     *        a {@link KeyValueMapper} that computes the join key for stream input records
-     * @param joiner
-     *        a {@link ValueJoiner} that computes the join result for a pair of matching records
-     *
-     * @param <GlobalKey> the key type of the global table
+     * @param globalTable   the {@link GlobalKTable} to be joined with this stream
+     * @param keySelector   a {@link KeyValueMapper} that computes the join key for stream input records
+     * @param joiner        a {@link ValueJoiner} that computes the join result for a pair of matching records
+     * @param <GlobalKey>   the key type of the global table
      * @param <GlobalValue> the value type of the global table
-     * @param <VOut> the value type of the result stream
-     *
+     * @param <VOut>        the value type of the result stream
      * @return A {@code KStream} that contains join-records, one for each matched stream record, with the corresponding
-     *         key and a value computed by the given {@link ValueJoiner}.
-     *
+     * key and a value computed by the given {@link ValueJoiner}.
      * @see #leftJoin(GlobalKTable, KeyValueMapper, ValueJoiner)
      */
     <GlobalKey, GlobalValue, VOut> KStream<K, VOut> join(final GlobalKTable<GlobalKey, GlobalValue> globalTable,
@@ -1428,27 +1369,21 @@ public interface KStream<K, V> {
      * <td>&lt;K1:ValueJoiner((GK1,C),b)&gt;</td>
      * </tr>
      * </table>
-     *
+     * <p>
      * In contrast to {@link #leftJoin(KTable, ValueJoiner)}, there is no co-partitioning requirement between this
      * {@code KStream} and the {@link GlobalKTable}.
      * Also note that there are no ordering guarantees between the updates on the left and the right side of this join,
      * since updates to the {@link GlobalKTable} are in no way synchronized.
      * Therefore, the result of the join is inherently non-deterministic.
      *
-     * @param globalTable
-     *        the {@link GlobalKTable} to be joined with this stream
-     * @param keySelector
-     *        a {@link KeyValueMapper} that computes the join key for stream input records
-     * @param joiner
-     *        a {@link ValueJoiner} that computes the join result for a pair of matching records
-     *
-     * @param <GlobalKey> the key type of the global table
+     * @param globalTable   the {@link GlobalKTable} to be joined with this stream
+     * @param keySelector   a {@link KeyValueMapper} that computes the join key for stream input records
+     * @param joiner        a {@link ValueJoiner} that computes the join result for a pair of matching records
+     * @param <GlobalKey>   the key type of the global table
      * @param <GlobalValue> the value type of the global table
-     * @param <VOut> the value type of the result stream
-     *
+     * @param <VOut>        the value type of the result stream
      * @return A {@code KStream} that contains join-records, one for each matched stream record plus one for each
-     *         non-matching stream record, with the corresponding key and a value computed by the given {@link ValueJoiner}.
-     *
+     * non-matching stream record, with the corresponding key and a value computed by the given {@link ValueJoiner}.
      * @see #join(GlobalKTable, KeyValueMapper, ValueJoiner)
      */
     <GlobalKey, GlobalValue, VOut> KStream<K, VOut> leftJoin(final GlobalKTable<GlobalKey, GlobalValue> globalTable,
@@ -1500,7 +1435,7 @@ public interface KStream<K, V> {
      *   <li>{@link StreamsBuilder#addStateStore(StoreBuilder) state stores} for processing (i.e., read/write access)</li>
      *   <li>{@link StreamsBuilder#addGlobalStore(StoreBuilder, String, Consumed, ProcessorSupplier) read-only state stores}</li>
      * </ul>
-     *
+     * <p>
      * If the {@code processorSupplier} provides state stores via {@link ConnectedStoreProvider#stores()}, the
      * corresponding {@link StoreBuilder StoreBuilders} will be added to the topology and connected to this processor
      * automatically, without the need to provide the store names as parameter to this method.
@@ -1530,7 +1465,7 @@ public interface KStream<K, V> {
      *     }
      * }
      * }</pre>
-     *
+     * <p>
      * Furthermore, the provided {@link ProcessorContext} gives access to topology, runtime, and
      * {@link RecordMetadata record metadata}, and allows to schedule {@link Punctuator punctuations} and to
      * <em>request</em> offset commits.
@@ -1542,14 +1477,12 @@ public interface KStream<K, V> {
      * data redistribution if a key-based operator (like an aggregation or join) is applied to the result
      * {@code KStream} (cf. {@link #processValues(FixedKeyProcessorSupplier, String...)}).
      *
-     * @param processorSupplier
-     *        the supplier used to obtain {@link Processor} instances
-     * @param stateStoreNames
-     *        the names of state stores that the processor should be able to access
+     * @param processorSupplier the supplier used to obtain {@link Processor} instances
+     * @param stateStoreNames   the names of state stores that the processor should be able to access
      */
     <KOut, VOut> KStream<KOut, VOut> process(
-        final ProcessorSupplier<? super K, ? super V, ? extends KOut, ? extends VOut> processorSupplier,
-        final String... stateStoreNames
+            final ProcessorSupplier<? super K, ? super V, ? extends KOut, ? extends VOut> processorSupplier,
+            final String... stateStoreNames
     );
 
     /**
@@ -1558,9 +1491,9 @@ public interface KStream<K, V> {
      * <p>Takes an additional {@link Named} parameter that is used to name the processor in the topology.
      */
     <KOut, VOut> KStream<KOut, VOut> process(
-        final ProcessorSupplier<? super K, ? super V, ? extends KOut, ? extends VOut> processorSupplier,
-        final Named named,
-        final String... stateStoreNames
+            final ProcessorSupplier<? super K, ? super V, ? extends KOut, ? extends VOut> processorSupplier,
+            final Named named,
+            final String... stateStoreNames
     );
 
     /**
@@ -1578,8 +1511,8 @@ public interface KStream<K, V> {
      * to a {@link Processor}: for example, forwarding result records from a {@link Punctuator} is not possible.
      */
     <VOut> KStream<K, VOut> processValues(
-        final FixedKeyProcessorSupplier<? super K, ? super V, ? extends VOut> processorSupplier,
-        final String... stateStoreNames
+            final FixedKeyProcessorSupplier<? super K, ? super V, ? extends VOut> processorSupplier,
+            final String... stateStoreNames
     );
 
     /**
@@ -1588,8 +1521,8 @@ public interface KStream<K, V> {
      * <p>Takes an additional {@link Named} parameter that is used to name the processor in the topology.
      */
     <VOut> KStream<K, VOut> processValues(
-        final FixedKeyProcessorSupplier<? super K, ? super V, ? extends VOut> processorSupplier,
-        final Named named,
-        final String... stateStoreNames
+            final FixedKeyProcessorSupplier<? super K, ? super V, ? extends VOut> processorSupplier,
+            final Named named,
+            final String... stateStoreNames
     );
 }

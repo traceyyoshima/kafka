@@ -39,7 +39,7 @@ public interface MetadataErrorNotifiableEvent {
      *         queue is drained. Before processing each event via
      *         {@link ApplicationEventProcessor#process(ApplicationEvent)}, if a metadata error occurred, this method
      *         will be invoked on the event if it implements this interface.
-     *         <p/>
+     * <p/>
      *         <em>Note</em>: for an event on which this method is invoked, it will <em>not</em> be passed to the
      *         {@link ApplicationEventProcessor#process(ApplicationEvent)} method.
      *     </li>

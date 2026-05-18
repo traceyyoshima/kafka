@@ -48,18 +48,18 @@ public class NullableStructMessageTest {
     @Test
     public void testRoundTrip() {
         NullableStructMessageData message = new NullableStructMessageData()
-            .setNullableStruct(new NullableStructMessageData.MyStruct()
-                .setMyInt(1)
-                .setMyString("1"))
-            .setNullableStruct2(new NullableStructMessageData.MyStruct2()
-                .setMyInt(2)
-                .setMyString("2"))
-            .setNullableStruct3(new NullableStructMessageData.MyStruct3()
-                .setMyInt(3)
-                .setMyString("3"))
-            .setNullableStruct4(new NullableStructMessageData.MyStruct4()
-                .setMyInt(4)
-                .setMyString("4"));
+                .setNullableStruct(new NullableStructMessageData.MyStruct()
+                        .setMyInt(1)
+                        .setMyString("1"))
+                .setNullableStruct2(new NullableStructMessageData.MyStruct2()
+                        .setMyInt(2)
+                        .setMyString("2"))
+                .setNullableStruct3(new NullableStructMessageData.MyStruct3()
+                        .setMyInt(3)
+                        .setMyString("3"))
+                .setNullableStruct4(new NullableStructMessageData.MyStruct4()
+                        .setMyInt(4)
+                        .setMyString("4"));
 
         NullableStructMessageData newMessage = roundTrip(message, (short) 2);
         assertEquals(message, newMessage);
@@ -68,10 +68,10 @@ public class NullableStructMessageTest {
     @Test
     public void testNullForAllFields() {
         NullableStructMessageData message = new NullableStructMessageData()
-            .setNullableStruct(null)
-            .setNullableStruct2(null)
-            .setNullableStruct3(null)
-            .setNullableStruct4(null);
+                .setNullableStruct(null)
+                .setNullableStruct2(null)
+                .setNullableStruct3(null)
+                .setNullableStruct4(null);
 
         message = roundTrip(message, (short) 2);
         assertNull(message.nullableStruct);
@@ -83,7 +83,7 @@ public class NullableStructMessageTest {
     @Test
     public void testNullableStruct2CanNotBeNullInVersion0() {
         NullableStructMessageData message = new NullableStructMessageData()
-            .setNullableStruct2(null);
+                .setNullableStruct2(null);
 
         assertThrows(NullPointerException.class, () -> roundTrip(message, (short) 0));
     }
@@ -91,10 +91,10 @@ public class NullableStructMessageTest {
     @Test
     public void testToStringWithNullStructs() {
         NullableStructMessageData message = new NullableStructMessageData()
-            .setNullableStruct(null)
-            .setNullableStruct2(null)
-            .setNullableStruct3(null)
-            .setNullableStruct4(null);
+                .setNullableStruct(null)
+                .setNullableStruct2(null)
+                .setNullableStruct3(null)
+                .setNullableStruct4(null);
 
         message.toString();
     }
@@ -106,12 +106,12 @@ public class NullableStructMessageTest {
     @Test
     public void testTaggedStructSize() {
         NullableStructMessageData message = new NullableStructMessageData()
-            .setNullableStruct(null)
-            .setNullableStruct2(null)
-            .setNullableStruct3(null)
-            .setNullableStruct4(new NullableStructMessageData.MyStruct4()
-                .setMyInt(4)
-                .setMyString(new String(new char[121])));
+                .setNullableStruct(null)
+                .setNullableStruct2(null)
+                .setNullableStruct3(null)
+                .setNullableStruct4(new NullableStructMessageData.MyStruct4()
+                        .setMyInt(4)
+                        .setMyString(new String(new char[121])));
 
         // We want the struct to be 127 bytes long, so that the varint encoding of its size is one
         // short of overflowing into a two-byte representation. An extra byte is added to the

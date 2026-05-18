@@ -59,23 +59,23 @@ public class StreamsUpgradeToCooperativeRebalanceTest {
         final String sinkTopic = streamsProperties.getProperty("sink.topic", "sink");
         final String taskDelimiter = streamsProperties.getProperty("task.delimiter", "#");
         final int reportInterval = Integer.parseInt(streamsProperties.getProperty("report.interval", "100"));
-        final String upgradePhase = streamsProperties.getProperty("upgrade.phase",  "");
+        final String upgradePhase = streamsProperties.getProperty("upgrade.phase", "");
 
         final StreamsBuilder builder = new StreamsBuilder();
 
         builder.<String, String>stream(sourceTopic)
-            .peek(new ForeachAction<String, String>() {
-                int recordCounter = 0;
+                .peek(new ForeachAction<String, String>() {
+                          int recordCounter = 0;
 
-                @Override
-                public void apply(final String key, final String value) {
-                    if (recordCounter++ % reportInterval == 0) {
-                        System.out.printf("%sProcessed %d records so far%n", upgradePhase, recordCounter);
-                        System.out.flush();
-                    }
-                }
-            }
-            ).to(sinkTopic);
+                          @Override
+                          public void apply(final String key, final String value) {
+                              if (recordCounter++ % reportInterval == 0) {
+                                  System.out.printf("%sProcessed %d records so far%n", upgradePhase, recordCounter);
+                                  System.out.flush();
+                              }
+                          }
+                      }
+                ).to(sinkTopic);
 
         final KafkaStreams streams = new KafkaStreams(builder.build(), config);
 
@@ -123,6 +123,7 @@ public class StreamsUpgradeToCooperativeRebalanceTest {
             builder.setLength(builder.length() - 1);
         }
     }
+
     private static void getTasks(final Set<TaskMetadata> taskMetadata,
                                  final List<String> taskList) {
         for (final TaskMetadata task : taskMetadata) {

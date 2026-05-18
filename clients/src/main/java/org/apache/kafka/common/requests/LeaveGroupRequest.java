@@ -55,17 +55,17 @@ public class LeaveGroupRequest extends AbstractRequest {
             // Starting from version 3, all the leave group request will be in batch.
             if (version >= 3) {
                 data = new LeaveGroupRequestData()
-                           .setGroupId(groupId)
-                           .setMembers(members);
+                        .setGroupId(groupId)
+                        .setMembers(members);
             } else {
                 if (members.size() != 1) {
                     throw new UnsupportedVersionException("Version " + version + " leave group request only " +
-                                                              "supports single member instance than " + members.size() + " members");
+                            "supports single member instance than " + members.size() + " members");
                 }
 
                 data = new LeaveGroupRequestData()
-                           .setGroupId(groupId)
-                           .setMemberId(members.get(0).memberId());
+                        .setGroupId(groupId)
+                        .setMemberId(members.get(0).memberId());
             }
             return new LeaveGroupRequest(data, version);
         }
@@ -73,11 +73,12 @@ public class LeaveGroupRequest extends AbstractRequest {
         @Override
         public String toString() {
             return "(type=LeaveGroupRequest" +
-                       ", groupId=" + groupId +
-                       ", members=" + MessageUtil.deepToString(members.iterator()) +
-                       ")";
+                    ", groupId=" + groupId +
+                    ", members=" + MessageUtil.deepToString(members.iterator()) +
+                    ")";
         }
     }
+
     private final LeaveGroupRequestData data;
 
     private LeaveGroupRequest(LeaveGroupRequestData data, short version) {
@@ -95,23 +96,23 @@ public class LeaveGroupRequest extends AbstractRequest {
             return data;
         } else {
             return new LeaveGroupRequestData()
-                .setGroupId(data.groupId())
-                .setMembers(List.of(
-                    new MemberIdentity().setMemberId(data.memberId())));
+                    .setGroupId(data.groupId())
+                    .setMembers(List.of(
+                            new MemberIdentity().setMemberId(data.memberId())));
         }
     }
 
     public List<MemberIdentity> members() {
         // Before version 3, leave group request is still in single mode
         return version() <= 2 ? List.of(
-            new MemberIdentity()
+                new MemberIdentity()
                 .setMemberId(data.memberId())) : data.members();
     }
 
     @Override
     public AbstractResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         LeaveGroupResponseData responseData = new LeaveGroupResponseData()
-                                                  .setErrorCode(Errors.forException(e).code());
+                .setErrorCode(Errors.forException(e).code());
 
         if (version() >= 1) {
             responseData.setThrottleTimeMs(throttleTimeMs);

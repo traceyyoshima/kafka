@@ -25,9 +25,9 @@ public final class VersionConditional {
     /**
      * Create a version conditional.
      *
-     * @param containingVersions    The versions for which the conditional is true.
-     * @param possibleVersions      The range of possible versions.
-     * @return                      The version conditional.
+     * @param containingVersions The versions for which the conditional is true.
+     * @param possibleVersions   The range of possible versions.
+     * @return The version conditional.
      */
     static VersionConditional forVersions(Versions containingVersions,
                                           Versions possibleVersions) {
@@ -71,7 +71,7 @@ public final class VersionConditional {
      * If this is set, VersionConditional#generate will throw an exception if
      * the 'ifMember' clause is never used.  This is useful as a sanity check
      * in some cases where it doesn't make sense for the condition to always be
-     * false.  For example, when generating a Message#write function, 
+     * false.  For example, when generating a Message#write function,
      * we might check that the version we're writing is supported.  It wouldn't
      * make sense for this check to always be false, since that would mean that
      * no versions at all were supported.
@@ -172,7 +172,7 @@ public final class VersionConditional {
     private void generateAlwaysFalseCheck(Versions ifNotVersions, CodeBuffer buffer) {
         if (!allowMembershipCheckAlwaysFalse) {
             throw new RuntimeException("Version ranges " + containingVersions +
-                " and " + possibleVersions + " have no versions in common.");
+                    " and " + possibleVersions + " have no versions in common.");
         }
         if (ifNotMember != null) {
             if (alwaysEmitBlockScope) {
@@ -207,7 +207,7 @@ public final class VersionConditional {
                 generateAlwaysFalseCheck(ifNotVersions, buffer);
             }
         } else if (possibleVersions.highest() >= containingVersions.lowest() &&
-                    (possibleVersions.lowest() <= containingVersions.highest())) {
+                (possibleVersions.lowest() <= containingVersions.highest())) {
             if (possibleVersions.highest() > containingVersions.highest()) {
                 generateUpperRangeCheck(ifVersions, ifNotVersions, buffer);
             } else {

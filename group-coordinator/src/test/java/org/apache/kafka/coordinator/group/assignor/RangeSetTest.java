@@ -157,12 +157,12 @@ public class RangeSetTest {
         RangeSet overflowRangeSet1 = new RangeSet(0x3FFFFFFD, 0x3FFFFFFF);
         RangeSet overflowRangeSet2 = new RangeSet(0x7FFFFFFD, 0x7FFFFFFF);
         assertEquals(
-            Set.of(0x3FFFFFFD, 0x3FFFFFFE).hashCode(),
-            overflowRangeSet1.hashCode() // == 0x0_FFFFFFF6 / 2
+                Set.of(0x3FFFFFFD, 0x3FFFFFFE).hashCode(),
+                overflowRangeSet1.hashCode() // == 0x0_FFFFFFF6 / 2
         );
         assertEquals(
-            Set.of(0x7FFFFFFD, 0x7FFFFFFE).hashCode(),
-            overflowRangeSet2.hashCode() // == 0x1_FFFFFFF6 / 2
+                Set.of(0x7FFFFFFD, 0x7FFFFFFE).hashCode(),
+                overflowRangeSet2.hashCode() // == 0x1_FFFFFFF6 / 2
         );
     }
 }

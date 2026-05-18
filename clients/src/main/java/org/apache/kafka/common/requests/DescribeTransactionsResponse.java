@@ -50,7 +50,7 @@ public class DescribeTransactionsResponse extends AbstractResponse {
 
     public static DescribeTransactionsResponse parse(Readable readable, short version) {
         return new DescribeTransactionsResponse(new DescribeTransactionsResponseData(
-            readable, version));
+                readable, version));
     }
 
     @Override

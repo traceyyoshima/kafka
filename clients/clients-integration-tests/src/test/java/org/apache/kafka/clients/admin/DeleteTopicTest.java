@@ -54,13 +54,13 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 
 @ClusterTestDefaults(types = {Type.KRAFT},
-    brokers = 3,
-    serverProperties = {
-        @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = "log.initial.task.delay.ms", value = "100"),
-        @ClusterConfigProperty(key = "log.segment.delete.delay.ms", value = "1000")
-    })
+        brokers = 3,
+        serverProperties = {
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1"),
+                @ClusterConfigProperty(key = "log.initial.task.delay.ms", value = "100"),
+                @ClusterConfigProperty(key = "log.segment.delete.delay.ms", value = "1000")
+        })
 public class DeleteTopicTest {
     private static final String DEFAULT_TOPIC = "topic";
     private final Map<Integer, List<Integer>> expectedReplicaAssignment = Map.of(0, List.of(0, 1, 2));
@@ -87,10 +87,10 @@ public class DeleteTopicTest {
             admin.deleteTopics(List.of(DEFAULT_TOPIC)).all().get();
 
             TestUtils.waitForCondition(() -> cluster.brokers().values()
-                    .stream()
-                    .filter(broker -> broker.config().brokerId() != follower.config().brokerId())
-                    .allMatch(b -> b.logManager().getLog(topicPartition, false).isEmpty()),
-                "Online replicas have not deleted log.");
+                            .stream()
+                            .filter(broker -> broker.config().brokerId() != follower.config().brokerId())
+                            .allMatch(b -> b.logManager().getLog(topicPartition, false).isEmpty()),
+                    "Online replicas have not deleted log.");
 
             follower.startup();
             cluster.waitTopicDeletion(DEFAULT_TOPIC);
@@ -114,7 +114,7 @@ public class DeleteTopicTest {
             try (Admin otherAdmin = Admin.create(properties)) {
                 waitUtilTopicGone(otherAdmin);
                 assertThrows(ExecutionException.class, () -> otherAdmin.alterPartitionReassignments(
-                    Map.of(topicPartition, Optional.of(new NewPartitionReassignment(List.of(1, 2, 3))))
+                        Map.of(topicPartition, Optional.of(new NewPartitionReassignment(List.of(1, 2, 3))))
                 ).all().get());
             }
 
@@ -163,7 +163,7 @@ public class DeleteTopicTest {
             // wait until the broker is in shutting down state
             int followerBrokerId = follower.config().brokerId();
             TestUtils.waitForCondition(() -> follower.brokerState().equals(BrokerState.SHUTTING_DOWN),
-                "Follower " + followerBrokerId + " was not shutdown");
+                    "Follower " + followerBrokerId + " was not shutdown");
             Map<String, NewPartitions> newPartitionSet = Map.of(DEFAULT_TOPIC, NewPartitions.increaseTo(3));
             admin.createPartitions(newPartitionSet);
             cluster.waitTopicCreation(DEFAULT_TOPIC, 3);
@@ -226,9 +226,9 @@ public class DeleteTopicTest {
     }
 
     @ClusterTest(serverProperties = {
-        @ClusterConfigProperty(key = "log.cleaner.enable", value = "true"),
-        @ClusterConfigProperty(key = "log.cleanup.policy", value = "compact"),
-        @ClusterConfigProperty(key = "log.cleaner.dedupe.buffer.size", value = "1048577")
+            @ClusterConfigProperty(key = "log.cleaner.enable", value = "true"),
+            @ClusterConfigProperty(key = "log.cleanup.policy", value = "compact"),
+            @ClusterConfigProperty(key = "log.cleaner.dedupe.buffer.size", value = "1048577")
     })
     public void testDeleteTopicWithCleaner(ClusterInstance cluster) throws Exception {
         try (Admin admin = cluster.admin()) {
@@ -237,7 +237,7 @@ public class DeleteTopicTest {
             // for simplicity, we are validating cleaner offsets on a single broker
             KafkaBroker server = cluster.brokers().values().stream().findFirst().orElseThrow();
             TestUtils.waitForCondition(() -> server.logManager().getLog(topicPartition, false).isPresent(),
-                "Replicas for topic test not created.");
+                    "Replicas for topic test not created.");
             UnifiedLog log = server.logManager().getLog(topicPartition, false).get();
             writeDups(100, 3, log);
             // force roll the segment so that cleaner can work on it
@@ -270,7 +270,7 @@ public class DeleteTopicTest {
     }
 
     @ClusterTest(controllers = 1,
-        serverProperties = {@ClusterConfigProperty(key = ServerConfigs.DELETE_TOPIC_ENABLE_CONFIG, value = "false")})
+            serverProperties = {@ClusterConfigProperty(key = ServerConfigs.DELETE_TOPIC_ENABLE_CONFIG, value = "false")})
     public void testDisableDeleteTopic(ClusterInstance cluster) throws Exception {
         try (Admin admin = cluster.admin()) {
             admin.createTopics(List.of(new NewTopic(DEFAULT_TOPIC, expectedReplicaAssignment))).all().get();
@@ -293,7 +293,7 @@ public class DeleteTopicTest {
     private int waitUtilLeaderIsKnown(Map<Integer, KafkaBroker> idToBroker,
                                       TopicPartition topicPartition) throws InterruptedException {
         TestUtils.waitForCondition(() -> isLeaderKnown(idToBroker, topicPartition).get().isPresent(), 15000,
-            "Partition " + topicPartition + " not made yet" + " after 15 seconds");
+                "Partition " + topicPartition + " not made yet" + " after 15 seconds");
         return isLeaderKnown(idToBroker, topicPartition).get().get();
     }
 
@@ -301,32 +301,32 @@ public class DeleteTopicTest {
                                        TopicPartition topicPartition,
                                        String failMessage) throws InterruptedException {
         TestUtils.waitForCondition(() -> clusters.values().stream().allMatch(broker ->
-                broker.logManager().getLog(topicPartition, false).isPresent()),
-            failMessage);
+                        broker.logManager().getLog(topicPartition, false).isPresent()),
+                failMessage);
     }
 
     private void waitForReplicaDeleted(Map<Integer, KafkaBroker> clusters,
                                        TopicPartition newTopicPartition,
                                        String failMessage) throws InterruptedException {
         TestUtils.waitForCondition(() -> clusters.values().stream().allMatch(broker ->
-                broker.logManager().getLog(newTopicPartition, false).isEmpty()),
-            failMessage);
+                        broker.logManager().getLog(newTopicPartition, false).isEmpty()),
+                failMessage);
     }
 
     private Supplier<Optional<Integer>> isLeaderKnown(Map<Integer, KafkaBroker> idToBroker, TopicPartition topicPartition) {
         return () -> idToBroker.values()
-            .stream()
-            .filter(broker -> broker.replicaManager().onlinePartition(topicPartition)
-                .exists(tp -> tp.leaderIdIfLocal().isDefined()))
-            .map(broker -> broker.config().brokerId())
-            .findFirst();
+                .stream()
+                .filter(broker -> broker.replicaManager().onlinePartition(topicPartition)
+                        .exists(tp -> tp.leaderIdIfLocal().isDefined()))
+                .map(broker -> broker.config().brokerId())
+                .findFirst();
     }
 
     private KafkaBroker findFollower(Collection<KafkaBroker> idToBroker, int leaderId) {
         return idToBroker.stream()
-            .filter(broker -> broker.config().brokerId() != leaderId)
-            .findFirst()
-            .orElseGet(() -> fail("Can't find any follower"));
+                .filter(broker -> broker.config().brokerId() != leaderId)
+                .findFirst()
+                .orElseGet(() -> fail("Can't find any follower"));
     }
 
     private void waitUtilTopicGone(Admin admin) throws Exception {
@@ -355,21 +355,21 @@ public class DeleteTopicTest {
             for (int key = 0; key < numKeys; key++) {
                 int count = counter;
                 log.appendAsLeader(
-                    MemoryRecords.withRecords(
-                        Compression.NONE,
-                        new SimpleRecord(
-                            String.valueOf(key).getBytes(),
-                            String.valueOf(counter).getBytes()
-                        )
-                    ),
-                    0,
-                    AppendOrigin.CLIENT,
-                    RequestLocal.noCaching(),
-                    VerificationGuard.SENTINEL,
-                    (short) 0
+                        MemoryRecords.withRecords(
+                                Compression.NONE,
+                                new SimpleRecord(
+                                        String.valueOf(key).getBytes(),
+                                        String.valueOf(counter).getBytes()
+                                )
+                        ),
+                        0,
+                        AppendOrigin.CLIENT,
+                        RequestLocal.noCaching(),
+                        VerificationGuard.SENTINEL,
+                        (short) 0
                 );
                 counter++;
-                result.add(new int[] {key, count});
+                result.add(new int[]{key, count});
             }
         }
         return result;

@@ -58,8 +58,8 @@ public final class CdCommandHandler implements Commands.Handler {
         @Override
         public void addArguments(ArgumentParser parser) {
             parser.addArgument("target").
-                nargs("?").
-                help("The directory to change to.");
+                    nargs("?").
+                    help("The directory to change to.");
         }
 
         @Override
@@ -69,9 +69,9 @@ public final class CdCommandHandler implements Commands.Handler {
 
         @Override
         public void completeNext(
-            MetadataShellState state,
-            List<String> nextWords,
-            List<Candidate> candidates
+                MetadataShellState state,
+                List<String> nextWords,
+                List<Candidate> candidates
         ) throws Exception {
             if (nextWords.size() == 1) {
                 CommandUtils.completePath(state, nextWords.get(0), candidates);
@@ -87,9 +87,9 @@ public final class CdCommandHandler implements Commands.Handler {
 
     @Override
     public void run(
-        Optional<InteractiveShell> shell,
-        PrintWriter writer,
-        MetadataShellState state
+            Optional<InteractiveShell> shell,
+            PrintWriter writer,
+            MetadataShellState state
     ) throws Exception {
         String effectiveTarget = target.orElse("/");
         new GlobVisitor(effectiveTarget, entryOption -> {

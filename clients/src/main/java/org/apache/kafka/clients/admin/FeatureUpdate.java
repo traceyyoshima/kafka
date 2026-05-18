@@ -55,14 +55,14 @@ public class FeatureUpdate {
     }
 
     /**
-     * @param maxVersionLevel   The new maximum version level for the finalized feature.
-     *                          a value of zero is special and indicates that the update is intended to
-     *                          delete the finalized feature, and should be accompanied by setting
-     *                          the upgradeType to safe or unsafe.
+     * @param maxVersionLevel The new maximum version level for the finalized feature.
+     *                        a value of zero is special and indicates that the update is intended to
+     *                        delete the finalized feature, and should be accompanied by setting
+     *                        the upgradeType to safe or unsafe.
      * @param upgradeType     Indicate what kind of upgrade should be performed in this operation.
-     *                          - UPGRADE: upgrading the feature level
-     *                          - SAFE_DOWNGRADE: only downgrades which do not result in metadata loss are permitted
-     *                          - UNSAFE_DOWNGRADE: any downgrade, including those which may result in metadata loss, are permitted
+     *                        - UPGRADE: upgrading the feature level
+     *                        - SAFE_DOWNGRADE: only downgrades which do not result in metadata loss are permitted
+     *                        - UNSAFE_DOWNGRADE: any downgrade, including those which may result in metadata loss, are permitted
      */
     public FeatureUpdate(final short maxVersionLevel, final UpgradeType upgradeType) {
         if (maxVersionLevel == 0 && upgradeType.equals(UpgradeType.UPGRADE)) {

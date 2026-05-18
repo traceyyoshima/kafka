@@ -27,7 +27,7 @@ import java.util.Set;
 
 /**
  * The result of the {@link Admin#removeMembersFromConsumerGroup(String, RemoveMembersFromConsumerGroupOptions)} call.
- *
+ * <p>
  * The API of this class is evolving, see {@link Admin} for details.
  */
 public class RemoveMembersFromConsumerGroupResult {
@@ -53,7 +53,7 @@ public class RemoveMembersFromConsumerGroupResult {
                 result.completeExceptionally(throwable);
             } else {
                 if (removeAll()) {
-                    for (Map.Entry<MemberIdentity, Errors> entry: memberErrors.entrySet()) {
+                    for (Map.Entry<MemberIdentity, Errors> entry : memberErrors.entrySet()) {
                         Exception exception = entry.getValue().exception();
                         if (exception != null) {
                             Throwable ex = new KafkaException("Encounter exception when trying to remove: "
@@ -101,7 +101,7 @@ public class RemoveMembersFromConsumerGroupResult {
                                                MemberIdentity member,
                                                KafkaFutureImpl<Void> result) {
         Throwable exception = KafkaAdminClient.getSubLevelError(memberErrors, member,
-            "Member \"" + member + "\" was not included in the removal response");
+                "Member \"" + member + "\" was not included in the removal response");
         if (exception != null) {
             result.completeExceptionally(exception);
             return true;

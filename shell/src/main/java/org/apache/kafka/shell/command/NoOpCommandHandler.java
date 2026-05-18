@@ -29,9 +29,9 @@ import java.util.Optional;
 public final class NoOpCommandHandler implements Commands.Handler {
     @Override
     public void run(
-        Optional<InteractiveShell> shell,
-        PrintWriter writer,
-        MetadataShellState state
+            Optional<InteractiveShell> shell,
+            PrintWriter writer,
+            MetadataShellState state
     ) {
     }
 

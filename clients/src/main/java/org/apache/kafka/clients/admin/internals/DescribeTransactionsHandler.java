@@ -49,22 +49,22 @@ public class DescribeTransactionsHandler extends AdminApiHandler.Batched<Coordin
     private final AdminApiLookupStrategy<CoordinatorKey> lookupStrategy;
 
     public DescribeTransactionsHandler(
-        LogContext logContext
+            LogContext logContext
     ) {
         this.log = logContext.logger(DescribeTransactionsHandler.class);
         this.lookupStrategy = new CoordinatorStrategy(CoordinatorType.TRANSACTION, logContext);
     }
 
     public static AdminApiFuture.SimpleAdminApiFuture<CoordinatorKey, TransactionDescription> newFuture(
-        Collection<String> transactionalIds
+            Collection<String> transactionalIds
     ) {
         return AdminApiFuture.forKeys(buildKeySet(transactionalIds));
     }
 
     private static Set<CoordinatorKey> buildKeySet(Collection<String> transactionalIds) {
         return transactionalIds.stream()
-            .map(CoordinatorKey::byTransactionalId)
-            .collect(Collectors.toSet());
+                .map(CoordinatorKey::byTransactionalId)
+                .collect(Collectors.toSet());
     }
 
     @Override
@@ -79,14 +79,14 @@ public class DescribeTransactionsHandler extends AdminApiHandler.Batched<Coordin
 
     @Override
     public DescribeTransactionsRequest.Builder buildBatchedRequest(
-        int brokerId,
-        Set<CoordinatorKey> keys
+            int brokerId,
+            Set<CoordinatorKey> keys
     ) {
         DescribeTransactionsRequestData request = new DescribeTransactionsRequestData();
         List<String> transactionalIds = keys.stream().map(key -> {
             if (key.type != FindCoordinatorRequest.CoordinatorType.TRANSACTION) {
                 throw new IllegalArgumentException("Invalid group coordinator key " + key +
-                    " when building `DescribeTransaction` request");
+                        " when building `DescribeTransaction` request");
             }
             return key.idValue;
         }).collect(Collectors.toList());
@@ -96,9 +96,9 @@ public class DescribeTransactionsHandler extends AdminApiHandler.Batched<Coordin
 
     @Override
     public ApiResult<CoordinatorKey, TransactionDescription> handleResponse(
-        Node broker,
-        Set<CoordinatorKey> keys,
-        AbstractResponse abstractResponse
+            Node broker,
+            Set<CoordinatorKey> keys,
+            AbstractResponse abstractResponse
     ) {
         DescribeTransactionsResponse response = (DescribeTransactionsResponse) abstractResponse;
         Map<CoordinatorKey, TransactionDescription> completed = new HashMap<>();
@@ -107,10 +107,10 @@ public class DescribeTransactionsHandler extends AdminApiHandler.Batched<Coordin
 
         for (DescribeTransactionsResponseData.TransactionState transactionState : response.data().transactionStates()) {
             CoordinatorKey transactionalIdKey = CoordinatorKey.byTransactionalId(
-                transactionState.transactionalId());
+                    transactionState.transactionalId());
             if (!keys.contains(transactionalIdKey)) {
                 log.warn("Response included transactionalId `{}`, which was not requested",
-                    transactionState.transactionalId());
+                        transactionState.transactionalId());
                 continue;
             }
 
@@ -121,17 +121,17 @@ public class DescribeTransactionsHandler extends AdminApiHandler.Batched<Coordin
             }
 
             OptionalLong transactionStartTimeMs = transactionState.transactionStartTimeMs() < 0 ?
-                OptionalLong.empty() :
-                OptionalLong.of(transactionState.transactionStartTimeMs());
+                    OptionalLong.empty() :
+                    OptionalLong.of(transactionState.transactionStartTimeMs());
 
             completed.put(transactionalIdKey, new TransactionDescription(
-                broker.id(),
-                TransactionState.parse(transactionState.transactionState()),
-                transactionState.producerId(),
-                transactionState.producerEpoch(),
-                transactionState.transactionTimeoutMs(),
-                transactionStartTimeMs,
-                collectTopicPartitions(transactionState)
+                    broker.id(),
+                    TransactionState.parse(transactionState.transactionState()),
+                    transactionState.producerId(),
+                    transactionState.producerEpoch(),
+                    transactionState.transactionTimeoutMs(),
+                    transactionStartTimeMs,
+                    collectTopicPartitions(transactionState)
             ));
         }
 
@@ -139,7 +139,7 @@ public class DescribeTransactionsHandler extends AdminApiHandler.Batched<Coordin
     }
 
     private Set<TopicPartition> collectTopicPartitions(
-        DescribeTransactionsResponseData.TransactionState transactionState
+            DescribeTransactionsResponseData.TransactionState transactionState
     ) {
         Set<TopicPartition> res = new HashSet<>();
         for (DescribeTransactionsResponseData.TopicData topicData : transactionState.topics()) {
@@ -152,29 +152,29 @@ public class DescribeTransactionsHandler extends AdminApiHandler.Batched<Coordin
     }
 
     private void handleError(
-        CoordinatorKey transactionalIdKey,
-        Errors error,
-        Map<CoordinatorKey, Throwable> failed,
-        List<CoordinatorKey> unmapped
+            CoordinatorKey transactionalIdKey,
+            Errors error,
+            Map<CoordinatorKey, Throwable> failed,
+            List<CoordinatorKey> unmapped
     ) {
         switch (error) {
             case TRANSACTIONAL_ID_AUTHORIZATION_FAILED:
                 failed.put(transactionalIdKey, new TransactionalIdAuthorizationException(
-                    "DescribeTransactions request for transactionalId `" + transactionalIdKey.idValue + "` " +
-                        "failed due to authorization failure"));
+                        "DescribeTransactions request for transactionalId `" + transactionalIdKey.idValue + "` " +
+                                "failed due to authorization failure"));
                 break;
 
             case TRANSACTIONAL_ID_NOT_FOUND:
                 failed.put(transactionalIdKey, new TransactionalIdNotFoundException(
-                    "DescribeTransactions request for transactionalId `" + transactionalIdKey.idValue + "` " +
-                        "failed because the ID could not be found"));
+                        "DescribeTransactions request for transactionalId `" + transactionalIdKey.idValue + "` " +
+                                "failed because the ID could not be found"));
                 break;
 
             case COORDINATOR_LOAD_IN_PROGRESS:
                 // If the coordinator is in the middle of loading, then we just need to retry
                 log.debug("DescribeTransactions request for transactionalId `{}` failed because the " +
-                        "coordinator is still in the process of loading state. Will retry",
-                    transactionalIdKey.idValue);
+                                "coordinator is still in the process of loading state. Will retry",
+                        transactionalIdKey.idValue);
                 break;
 
             case NOT_COORDINATOR:
@@ -188,7 +188,7 @@ public class DescribeTransactionsHandler extends AdminApiHandler.Batched<Coordin
 
             default:
                 failed.put(transactionalIdKey, error.exception("DescribeTransactions request for " +
-                    "transactionalId `" + transactionalIdKey.idValue + "` failed due to unexpected error"));
+                        "transactionalId `" + transactionalIdKey.idValue + "` failed due to unexpected error"));
         }
     }
 

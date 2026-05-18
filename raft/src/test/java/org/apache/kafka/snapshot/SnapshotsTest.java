@@ -39,8 +39,8 @@ public final class SnapshotsTest {
     @Test
     public void testValidSnapshotFilename() {
         OffsetAndEpoch snapshotId = new OffsetAndEpoch(
-            TestUtils.RANDOM.nextInt(Integer.MAX_VALUE),
-            TestUtils.RANDOM.nextInt(Integer.MAX_VALUE)
+                TestUtils.RANDOM.nextInt(Integer.MAX_VALUE),
+                TestUtils.RANDOM.nextInt(Integer.MAX_VALUE)
         );
         Path path = Snapshots.snapshotPath(TestUtils.tempDirectory().toPath(), snapshotId);
         SnapshotPath snapshotPath = Snapshots.parse(path).get();
@@ -54,8 +54,8 @@ public final class SnapshotsTest {
     @Test
     public void testValidPartialSnapshotFilename() throws IOException {
         OffsetAndEpoch snapshotId = new OffsetAndEpoch(
-            TestUtils.RANDOM.nextInt(Integer.MAX_VALUE),
-            TestUtils.RANDOM.nextInt(Integer.MAX_VALUE)
+                TestUtils.RANDOM.nextInt(Integer.MAX_VALUE),
+                TestUtils.RANDOM.nextInt(Integer.MAX_VALUE)
         );
 
         Path path = Snapshots.createTempFile(TestUtils.tempDirectory().toPath(), snapshotId);
@@ -72,8 +72,8 @@ public final class SnapshotsTest {
     @Test
     public void testValidDeletedSnapshotFilename() {
         OffsetAndEpoch snapshotId = new OffsetAndEpoch(
-            TestUtils.RANDOM.nextInt(Integer.MAX_VALUE),
-            TestUtils.RANDOM.nextInt(Integer.MAX_VALUE)
+                TestUtils.RANDOM.nextInt(Integer.MAX_VALUE),
+                TestUtils.RANDOM.nextInt(Integer.MAX_VALUE)
         );
         Path path = Snapshots.snapshotPath(TestUtils.tempDirectory().toPath(), snapshotId);
         Path deletedPath = Snapshots.deleteRenamePath(path, snapshotId);
@@ -104,8 +104,8 @@ public final class SnapshotsTest {
     public void testDeleteSnapshot(boolean renameBeforeDeleting) throws IOException {
 
         OffsetAndEpoch snapshotId = new OffsetAndEpoch(
-            TestUtils.RANDOM.nextInt(Integer.MAX_VALUE),
-            TestUtils.RANDOM.nextInt(Integer.MAX_VALUE)
+                TestUtils.RANDOM.nextInt(Integer.MAX_VALUE),
+                TestUtils.RANDOM.nextInt(Integer.MAX_VALUE)
         );
 
         Path logDirPath = TestUtils.tempDirectory().toPath();

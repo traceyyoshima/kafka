@@ -92,9 +92,9 @@ public class Topology {
         }
 
         return new AutoOffsetResetInternal(
-            resetPolicy == AutoOffsetReset.EARLIEST
-                ? org.apache.kafka.streams.AutoOffsetReset.earliest()
-                : org.apache.kafka.streams.AutoOffsetReset.latest()
+                resetPolicy == AutoOffsetReset.EARLIEST
+                        ? org.apache.kafka.streams.AutoOffsetReset.earliest()
+                        : org.apache.kafka.streams.AutoOffsetReset.latest()
         );
     }
 
@@ -110,30 +110,23 @@ public class Topology {
      *   <li>{@link org.apache.kafka.clients.consumer.ConsumerConfig#AUTO_OFFSET_RESET_CONFIG auto.offset.reset}</li>
      *   <li>{@link StreamsConfig#DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_CONFIG timestamp extractor}</li>
      * </ul>
-     *
+     * <p>
      * If you want to specify a source specific {@link org.apache.kafka.streams.AutoOffsetReset auto.offset.reset
      * strategy}, {@link TimestampExtractor}, or key/value {@link Deserializer}, use the corresponding overloaded
      * {@code addSource(...)} method.
      *
-     * @param name
-     *        the unique name of the source used to reference this node when adding
-     *        {@link #addProcessor(String, ProcessorSupplier, String...) processor} or
-     *        {@link #addSink(String, String, String...) sink} children
-     * @param topics
-     *        the name of one or more Kafka topics that this source is to consume
-     *
+     * @param name   the unique name of the source used to reference this node when adding
+     *               {@link #addProcessor(String, ProcessorSupplier, String...) processor} or
+     *               {@link #addSink(String, String, String...) sink} children
+     * @param topics the name of one or more Kafka topics that this source is to consume
      * @return itself
-     *
-     * @throws TopologyException
-     *         if the provided source name is not unique,
-     *         no topics are specified, or
-     *         a topic has already been registered by another source,
-     *         {@link #addReadOnlyStateStore(StoreBuilder, String, Deserializer, Deserializer, String, String, ProcessorSupplier) read-only state store}, or
-     *         {@link #addGlobalStore(StoreBuilder, String, Deserializer, Deserializer, String, String, ProcessorSupplier) global state store}
-     * @throws NullPointerException
-     *         if {@code name} or {@code topics} is {@code null}, or
-     *         {@code topics} contains a {@code null} topic
-     *
+     * @throws TopologyException    if the provided source name is not unique,
+     *                              no topics are specified, or
+     *                              a topic has already been registered by another source,
+     *                              {@link #addReadOnlyStateStore(StoreBuilder, String, Deserializer, Deserializer, String, String, ProcessorSupplier) read-only state store}, or
+     *                              {@link #addGlobalStore(StoreBuilder, String, Deserializer, Deserializer, String, String, ProcessorSupplier) global state store}
+     * @throws NullPointerException if {@code name} or {@code topics} is {@code null}, or
+     *                              {@code topics} contains a {@code null} topic
      * @see #addSource(String, Pattern)
      */
     public synchronized Topology addSource(final String name,
@@ -171,12 +164,12 @@ public class Topology {
                                            final String name,
                                            final String... topics) {
         internalTopologyBuilder.addSource(
-            offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
-            name,
-            null,
-            null,
-            null,
-            topics
+                offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
+                name,
+                null,
+                null,
+                null,
+                topics
         );
         return this;
     }
@@ -199,12 +192,12 @@ public class Topology {
                                            final String name,
                                            final Pattern topicPattern) {
         internalTopologyBuilder.addSource(
-            offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
-            name,
-            null,
-            null,
-            null,
-            topicPattern
+                offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
+                name,
+                null,
+                null,
+                null,
+                topicPattern
         );
         return this;
     }
@@ -249,12 +242,12 @@ public class Topology {
                                            final String name,
                                            final String... topics) {
         internalTopologyBuilder.addSource(
-            offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
-            name,
-            timestampExtractor,
-            null,
-            null,
-            topics
+                offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
+                name,
+                timestampExtractor,
+                null,
+                null,
+                topics
         );
         return this;
     }
@@ -279,12 +272,12 @@ public class Topology {
                                            final String name,
                                            final Pattern topicPattern) {
         internalTopologyBuilder.addSource(
-            offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
-            name,
-            timestampExtractor,
-            null,
-            null,
-            topicPattern
+                offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
+                name,
+                timestampExtractor,
+                null,
+                null,
+                topicPattern
         );
         return this;
     }
@@ -333,12 +326,12 @@ public class Topology {
                                                   final Deserializer<V> valueDeserializer,
                                                   final String... topics) {
         internalTopologyBuilder.addSource(
-            offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
-            name,
-            null,
-            keyDeserializer,
-            valueDeserializer,
-            topics
+                offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
+                name,
+                null,
+                keyDeserializer,
+                valueDeserializer,
+                topics
         );
         return this;
     }
@@ -365,12 +358,12 @@ public class Topology {
                                                   final Deserializer<V> valueDeserializer,
                                                   final Pattern topicPattern) {
         internalTopologyBuilder.addSource(
-            offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
-            name,
-            null,
-            keyDeserializer,
-            valueDeserializer,
-            topicPattern
+                offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
+                name,
+                null,
+                keyDeserializer,
+                valueDeserializer,
+                topicPattern
         );
         return this;
     }
@@ -399,12 +392,12 @@ public class Topology {
                                                   final Deserializer<V> valueDeserializer,
                                                   final String... topics) {
         internalTopologyBuilder.addSource(
-            offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
-            name,
-            timestampExtractor,
-            keyDeserializer,
-            valueDeserializer,
-            topics
+                offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
+                name,
+                timestampExtractor,
+                keyDeserializer,
+                valueDeserializer,
+                topics
         );
         return this;
     }
@@ -433,12 +426,12 @@ public class Topology {
                                                   final Deserializer<V> valueDeserializer,
                                                   final Pattern topicPattern) {
         internalTopologyBuilder.addSource(
-            offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
-            name,
-            timestampExtractor,
-            keyDeserializer,
-            valueDeserializer,
-            topicPattern
+                offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
+                name,
+                timestampExtractor,
+                keyDeserializer,
+                valueDeserializer,
+                topicPattern
         );
         return this;
     }
@@ -454,29 +447,21 @@ public class Topology {
      *   <li>{@link StreamsConfig#DEFAULT_KEY_SERDE_CLASS_CONFIG key serializer}</li>
      *   <li>{@link StreamsConfig#DEFAULT_VALUE_SERDE_CLASS_CONFIG value serializer}</li>
      * </ul>
-     *
+     * <p>
      * Furthermore, the producer's configured partitioner is used to write into the topic.
      * If you want to specify a sink specific key or value {@link Serializer}, or use a different
      * {@link StreamPartitioner partitioner}, use the corresponding overloaded {@code addSink(...)} method.
      *
-     * @param name
-     *        the unique name of the sink
-     * @param topic
-     *        the name of the Kafka topic to which this sink should write its records
-     * @param parentNames
-     *        the name of one or more {@link #addProcessor(String, ProcessorSupplier, String...) processors} or
-     *        {@link #addSource(String, String...) sources}, whose output records this sink should consume and write
-     *        to the specified output topic
-     *
+     * @param name        the unique name of the sink
+     * @param topic       the name of the Kafka topic to which this sink should write its records
+     * @param parentNames the name of one or more {@link #addProcessor(String, ProcessorSupplier, String...) processors} or
+     *                    {@link #addSource(String, String...) sources}, whose output records this sink should consume and write
+     *                    to the specified output topic
      * @return itself
-     *
-     * @throws TopologyException
-     *         if the provided sink name is not unique, or
-     *         if a parent processor/source name is unknown or specifies a sink
-     * @throws NullPointerException
-     *         if {@code name}, {@code topic}, or {@code parentNames} is {@code null}, or
-     *         {@code parentNames} contains a {@code null} parent name
-     *
+     * @throws TopologyException    if the provided sink name is not unique, or
+     *                              if a parent processor/source name is unknown or specifies a sink
+     * @throws NullPointerException if {@code name}, {@code topic}, or {@code parentNames} is {@code null}, or
+     *                              {@code parentNames} contains a {@code null} parent name
      * @see #addSink(String, TopicNameExtractor, String...)
      */
     public synchronized Topology addSink(final String name,
@@ -589,7 +574,7 @@ public class Topology {
      *   <li>{@link #addStateStore(StoreBuilder, String...) state stores} for processing (i.e., read/write access)</li>
      *   <li>{@link #addReadOnlyStateStore(StoreBuilder, String, TimestampExtractor, Deserializer, Deserializer, String, String, ProcessorSupplier) read-only state stores}</li>
      * </ul>
-     *
+     * <p>
      * It a (read-only) state store is not directly added to a processing, it can also be
      * {@link #connectProcessorAndStateStores(String, String...) connected} later.
      * If the {@code supplier} provides state stores via {@link ConnectedStoreProvider#stores()}, the corresponding
@@ -621,29 +606,21 @@ public class Topology {
      *     }
      * }
      * }</pre>
-     *
+     * <p>
      * Furthermore, the provided {@link ProcessorContext} gives access to topology, runtime, and
      * {@link RecordMetadata record metadata}, and allows to schedule {@link Punctuator punctuations} and to
      * <em>request</em> offset commits.
      *
-     * @param name
-     *        the unique name of the processor used to reference this node when adding other processor or
-     *        {@link #addSink(String, String, String...) sink} children
-     * @param processorSupplier
-     *        the supplier used to obtain {@link Processor} instances
-     * @param parentNames
-     *        the name of one or more processors or {@link #addSource(String, String...) sources},
-     *        whose output records this processor should receive and process
-     *
+     * @param name              the unique name of the processor used to reference this node when adding other processor or
+     *                          {@link #addSink(String, String, String...) sink} children
+     * @param processorSupplier the supplier used to obtain {@link Processor} instances
+     * @param parentNames       the name of one or more processors or {@link #addSource(String, String...) sources},
+     *                          whose output records this processor should receive and process
      * @return itself
-     *
-     * @throws TopologyException
-     *         if the provided processor name is not unique, or
-     *         if a parent processor/source name is unknown or specifies a sink
-     * @throws NullPointerException
-     *         if {@code name}, {@code processorSupplier}, or {@code parentNames} is {@code null}, or
-     *         {@code parentNames} contains a {@code null} parent name
-     *
+     * @throws TopologyException    if the provided processor name is not unique, or
+     *                              if a parent processor/source name is unknown or specifies a sink
+     * @throws NullPointerException if {@code name}, {@code processorSupplier}, or {@code parentNames} is {@code null}, or
+     *                              {@code parentNames} contains a {@code null} parent name
      * @see org.apache.kafka.streams.processor.api.ContextualProcessor ContextualProcessor
      */
     public synchronized <KIn, VIn, KOut, VOut> Topology addProcessor(final String name,
@@ -695,20 +672,14 @@ public class Topology {
      * <p>You can verify the created {@code ProcessorTopology} and added state stores, and retrieve all generated
      * internal topic names, via {@link Topology#describe()}.
      *
-     * @param storeBuilder
-     *        the {@link StoreBuilder} used to obtain {@link StateStore state store} instances (one per shard)
-     * @param processorNames
-     *        the names of the {@link #addProcessor(String, ProcessorSupplier, String...) processors} that should be
-     *        able to access the provided state store
-     *
+     * @param storeBuilder   the {@link StoreBuilder} used to obtain {@link StateStore state store} instances (one per shard)
+     * @param processorNames the names of the {@link #addProcessor(String, ProcessorSupplier, String...) processors} that should be
+     *                       able to access the provided state store
      * @return itself
-     *
-     * @throws TopologyException
-     *         if the {@link StoreBuilder#name() state store} was already added, or
-     *         if a processor name is unknown or specifies a source or sink
-     * @throws NullPointerException
-     *         if {@code storeBuilder} or {@code parentNames} is {@code null}, or
-     *         {@code parentNames} contains a {@code null} parent name
+     * @throws TopologyException    if the {@link StoreBuilder#name() state store} was already added, or
+     *                              if a processor name is unknown or specifies a source or sink
+     * @throws NullPointerException if {@code storeBuilder} or {@code parentNames} is {@code null}, or
+     *                              {@code parentNames} contains a {@code null} parent name
      */
     public synchronized <S extends StateStore> Topology addStateStore(final StoreBuilder<S> storeBuilder,
                                                                       final String... processorNames) {
@@ -750,54 +721,43 @@ public class Topology {
      * topic will be created in Kafka though, but the source topic is used for recovery.
      * Thus, the source topic should be configured with log compaction.
      *
-     * @param storeBuilder
-     *        the {@link StoreBuilder} used to obtain {@link StateStore state store} instances (one per shard)
-     * @param sourceName
-     *        the unique name of the internally added {@link #addSource(String, String...) source}
-     * @param keyDeserializer
-     *        the {@link Deserializer} for record keys
-     *        (can be {@code null} to use the default key deserializer from {@link StreamsConfig})
-     * @param valueDeserializer
-     *        the {@link Deserializer} for record values
-     *        (can be {@code null} to use the default value deserializer from {@link StreamsConfig})
-     * @param topic
-     *        the source topic to read the data from
-     * @param processorName
-     *        the unique name of the internally added
-     *        {@link #addProcessor(String, ProcessorSupplier, String...) processor} which maintains the state store
-     * @param stateUpdateSupplier
-     *        the supplier used to obtain {@link Processor} instances, which maintain the state store
-     *
+     * @param storeBuilder        the {@link StoreBuilder} used to obtain {@link StateStore state store} instances (one per shard)
+     * @param sourceName          the unique name of the internally added {@link #addSource(String, String...) source}
+     * @param keyDeserializer     the {@link Deserializer} for record keys
+     *                            (can be {@code null} to use the default key deserializer from {@link StreamsConfig})
+     * @param valueDeserializer   the {@link Deserializer} for record values
+     *                            (can be {@code null} to use the default value deserializer from {@link StreamsConfig})
+     * @param topic               the source topic to read the data from
+     * @param processorName       the unique name of the internally added
+     *                            {@link #addProcessor(String, ProcessorSupplier, String...) processor} which maintains the state store
+     * @param stateUpdateSupplier the supplier used to obtain {@link Processor} instances, which maintain the state store
      * @return itself
-     *
-     * @throws TopologyException
-     *         if the {@link StoreBuilder#name() state store} was already added, or
-     *         if the source or processor names are not unique, or
-     *         if the source topic has already been registered by another
-     *         {@link #addSink(String, String, String...) source}, read-only state store, or
-     *         {@link #addGlobalStore(StoreBuilder, String, Deserializer, Deserializer, String, String, ProcessorSupplier) global state store}
-     * @throws NullPointerException
-     *         if {@code storeBuilder}, {@code sourceName}, {@code topic}, {@code processorName}, or
-     *         {@code stateUpdateSupplier} is {@code null}
+     * @throws TopologyException    if the {@link StoreBuilder#name() state store} was already added, or
+     *                              if the source or processor names are not unique, or
+     *                              if the source topic has already been registered by another
+     *                              {@link #addSink(String, String, String...) source}, read-only state store, or
+     *                              {@link #addGlobalStore(StoreBuilder, String, Deserializer, Deserializer, String, String, ProcessorSupplier) global state store}
+     * @throws NullPointerException if {@code storeBuilder}, {@code sourceName}, {@code topic}, {@code processorName}, or
+     *                              {@code stateUpdateSupplier} is {@code null}
      */
     public synchronized <K, V, S extends StateStore> Topology addReadOnlyStateStore(
-        final StoreBuilder<S> storeBuilder,
-        final String sourceName,
-        final Deserializer<K> keyDeserializer,
-        final Deserializer<V> valueDeserializer,
-        final String topic,
-        final String processorName,
-        final ProcessorSupplier<K, V, Void, Void> stateUpdateSupplier
+            final StoreBuilder<S> storeBuilder,
+            final String sourceName,
+            final Deserializer<K> keyDeserializer,
+            final Deserializer<V> valueDeserializer,
+            final String topic,
+            final String processorName,
+            final ProcessorSupplier<K, V, Void, Void> stateUpdateSupplier
     ) {
         return addReadOnlyStateStore(
-            storeBuilder,
-            sourceName,
-            null,
-            keyDeserializer,
-            valueDeserializer,
-            topic,
-            processorName,
-            stateUpdateSupplier
+                storeBuilder,
+                sourceName,
+                null,
+                keyDeserializer,
+                valueDeserializer,
+                topic,
+                processorName,
+                stateUpdateSupplier
         );
     }
 
@@ -805,22 +765,22 @@ public class Topology {
      * See {@link #addReadOnlyStateStore(StoreBuilder, String, Deserializer, Deserializer, String, String, ProcessorSupplier)}.
      */
     public synchronized <K, V, S extends StateStore> Topology addReadOnlyStateStore(
-        final StoreBuilder<S> storeBuilder,
-        final String sourceName,
-        final TimestampExtractor timestampExtractor,
-        final Deserializer<K> keyDeserializer,
-        final Deserializer<V> valueDeserializer,
-        final String topic,
-        final String processorName,
-        final ProcessorSupplier<K, V, Void, Void> stateUpdateSupplier
+            final StoreBuilder<S> storeBuilder,
+            final String sourceName,
+            final TimestampExtractor timestampExtractor,
+            final Deserializer<K> keyDeserializer,
+            final Deserializer<V> valueDeserializer,
+            final String topic,
+            final String processorName,
+            final ProcessorSupplier<K, V, Void, Void> stateUpdateSupplier
     ) {
         internalTopologyBuilder.addSource(
-            new AutoOffsetResetInternal(org.apache.kafka.streams.AutoOffsetReset.earliest()),
-            sourceName,
-            timestampExtractor,
-            keyDeserializer,
-            valueDeserializer,
-            topic
+                new AutoOffsetResetInternal(org.apache.kafka.streams.AutoOffsetReset.earliest()),
+                sourceName,
+                timestampExtractor,
+                keyDeserializer,
+                valueDeserializer,
+                topic
         );
         internalTopologyBuilder.addProcessor(processorName, stateUpdateSupplier, sourceName);
         internalTopologyBuilder.addStateStore(storeBuilder, processorName);
@@ -865,57 +825,46 @@ public class Topology {
      * topic will be created in Kafka though, but the source topic is used for recovery.
      * Thus, the source topic should be configured with log compaction.
      *
-     * @param storeBuilder
-     *        the {@link StoreBuilder} used to obtain the {@link StateStore state store} (one per {@link KafkaStreams} instance)
-     * @param sourceName
-     *        the unique name of the internally added source
-     * @param keyDeserializer
-     *        the {@link Deserializer} for record keys
-     *        (can be {@code null} to use the default key deserializer from {@link StreamsConfig})
-     * @param valueDeserializer
-     *        the {@link Deserializer} for record values
-     *        (can be {@code null} to use the default value deserializer from {@link StreamsConfig})
-     * @param topic
-     *        the source topic to read the data from
-     * @param processorName
-     *        the unique name of the internally added processor which maintains the state store
-     * @param stateUpdateSupplier
-     *        the supplier used to obtain {@link Processor} instances, which maintain the state store
-     *
+     * @param storeBuilder        the {@link StoreBuilder} used to obtain the {@link StateStore state store} (one per {@link KafkaStreams} instance)
+     * @param sourceName          the unique name of the internally added source
+     * @param keyDeserializer     the {@link Deserializer} for record keys
+     *                            (can be {@code null} to use the default key deserializer from {@link StreamsConfig})
+     * @param valueDeserializer   the {@link Deserializer} for record values
+     *                            (can be {@code null} to use the default value deserializer from {@link StreamsConfig})
+     * @param topic               the source topic to read the data from
+     * @param processorName       the unique name of the internally added processor which maintains the state store
+     * @param stateUpdateSupplier the supplier used to obtain {@link Processor} instances, which maintain the state store
      * @return itself
-     *
-     * @throws TopologyException
-     *         if the {@link StoreBuilder#name() state store} was already added, or
-     *         if the source or processor names are not unique, or
-     *         if the source topic has already been registered by another
-     *         {@link #addSink(String, String, String...) source},
-     *         {@link #addReadOnlyStateStore(StoreBuilder, String, Deserializer, Deserializer, String, String, ProcessorSupplier) read-only state store}, or
-     *         global state store
-     * @throws NullPointerException
-     *         if {@code storeBuilder}, {@code sourceName}, {@code topic}, {@code processorName}, or
-     *         {@code stateUpdateSupplier} is {@code null}
+     * @throws TopologyException    if the {@link StoreBuilder#name() state store} was already added, or
+     *                              if the source or processor names are not unique, or
+     *                              if the source topic has already been registered by another
+     *                              {@link #addSink(String, String, String...) source},
+     *                              {@link #addReadOnlyStateStore(StoreBuilder, String, Deserializer, Deserializer, String, String, ProcessorSupplier) read-only state store}, or
+     *                              global state store
+     * @throws NullPointerException if {@code storeBuilder}, {@code sourceName}, {@code topic}, {@code processorName}, or
+     *                              {@code stateUpdateSupplier} is {@code null}
      */
     public synchronized <K, V, S extends StateStore> Topology addGlobalStore(
-        final StoreBuilder<S> storeBuilder,
-        final String sourceName,
-        final Deserializer<K> keyDeserializer,
-        final Deserializer<V> valueDeserializer,
-        final String topic,
-        final String processorName,
-        final ProcessorSupplier<K, V, Void, Void> stateUpdateSupplier
+            final StoreBuilder<S> storeBuilder,
+            final String sourceName,
+            final Deserializer<K> keyDeserializer,
+            final Deserializer<V> valueDeserializer,
+            final String topic,
+            final String processorName,
+            final ProcessorSupplier<K, V, Void, Void> stateUpdateSupplier
     ) {
         Objects.requireNonNull(storeBuilder, "storeBuilder cannot be null");
         Objects.requireNonNull(stateUpdateSupplier, "stateUpdateSupplier cannot be null");
 
         internalTopologyBuilder.addGlobalStore(
-            sourceName,
-            null,
-            keyDeserializer,
-            valueDeserializer,
-            topic,
-            processorName,
-            new StoreDelegatingProcessorSupplier<>(stateUpdateSupplier, Set.of(storeBuilder)),
-            true
+                sourceName,
+                null,
+                keyDeserializer,
+                valueDeserializer,
+                topic,
+                processorName,
+                new StoreDelegatingProcessorSupplier<>(stateUpdateSupplier, Set.of(storeBuilder)),
+                true
         );
         return this;
     }
@@ -924,24 +873,24 @@ public class Topology {
      * See {@link #addGlobalStore(StoreBuilder, String, Deserializer, Deserializer, String, String, ProcessorSupplier)}.
      */
     public synchronized <K, V, S extends StateStore> Topology addGlobalStore(
-        final StoreBuilder<S> storeBuilder,
-        final String sourceName,
-        final TimestampExtractor timestampExtractor,
-        final Deserializer<K> keyDeserializer,
-        final Deserializer<V> valueDeserializer,
-        final String topic,
-        final String processorName,
-        final ProcessorSupplier<K, V, Void, Void> stateUpdateSupplier
+            final StoreBuilder<S> storeBuilder,
+            final String sourceName,
+            final TimestampExtractor timestampExtractor,
+            final Deserializer<K> keyDeserializer,
+            final Deserializer<V> valueDeserializer,
+            final String topic,
+            final String processorName,
+            final ProcessorSupplier<K, V, Void, Void> stateUpdateSupplier
     ) {
         internalTopologyBuilder.addGlobalStore(
-            sourceName,
-            timestampExtractor,
-            keyDeserializer,
-            valueDeserializer,
-            topic,
-            processorName,
-            new StoreDelegatingProcessorSupplier<>(stateUpdateSupplier, Set.of(storeBuilder)),
-            true
+                sourceName,
+                timestampExtractor,
+                keyDeserializer,
+                valueDeserializer,
+                topic,
+                processorName,
+                new StoreDelegatingProcessorSupplier<>(stateUpdateSupplier, Set.of(storeBuilder)),
+                true
         );
         return this;
     }
@@ -953,19 +902,13 @@ public class Topology {
      * {@link #addStateStore(StoreBuilder, String...)}, or
      * {@link #addReadOnlyStateStore(StoreBuilder, String, Deserializer, Deserializer, String, String, ProcessorSupplier)}.
      *
-     * @param processorName
-     *        the name of the processor
-     * @param stateStoreNames
-     *        the names of state stores that the processor should be able to access
-     *
+     * @param processorName   the name of the processor
+     * @param stateStoreNames the names of state stores that the processor should be able to access
      * @return itself
-     *
-     * @throws TopologyException
-     *         if the processor name or a state store name is unknown, or
-     *         if the processor name specifies a source or sink
-     * @throws NullPointerException
-     *         if {@code processorName} or {@code stateStoreNames} is {@code null}, or if {@code stateStoreNames}
-     *         contains a {@code null} state store name
+     * @throws TopologyException    if the processor name or a state store name is unknown, or
+     *                              if the processor name specifies a source or sink
+     * @throws NullPointerException if {@code processorName} or {@code stateStoreNames} is {@code null}, or if {@code stateStoreNames}
+     *                              contains a {@code null} state store name
      */
     public synchronized Topology connectProcessorAndStateStores(final String processorName,
                                                                 final String... stateStoreNames) {

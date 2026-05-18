@@ -28,7 +28,7 @@ public class NamedTopologyStoreQueryParameters<T> extends StoreQueryParameters<T
 
     private NamedTopologyStoreQueryParameters(final String topologyName,
                                               final String storeName,
-                                              final QueryableStoreType<T>  queryableStoreType,
+                                              final QueryableStoreType<T> queryableStoreType,
                                               final Integer partition,
                                               final boolean staleStores) {
         super(storeName, queryableStoreType, partition, staleStores);

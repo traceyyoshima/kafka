@@ -37,51 +37,51 @@ public class StoreQueryUtilsTest {
     @Test
     public void shouldReturnErrorOnNullContext() {
         @SuppressWarnings("unchecked") final KeyQuery<String, Integer> query =
-            Mockito.mock(KeyQuery.class);
+                Mockito.mock(KeyQuery.class);
         @SuppressWarnings("unchecked") final KeyValueStore<String, Integer> store =
-            Mockito.mock(KeyValueStore.class);
+                Mockito.mock(KeyValueStore.class);
         final Position position = Position.emptyPosition().withComponent("topic", 0, 1);
         final QueryResult<Integer> queryResult = StoreQueryUtils.handleBasicQueries(
-            query,
-            PositionBound.at(position),
-            new QueryConfig(false),
-            store,
-            position,
-            null
+                query,
+                PositionBound.at(position),
+                new QueryConfig(false),
+                store,
+                position,
+                null
         );
         assertThat(queryResult.isFailure(), is(true));
         assertThat(queryResult.getFailureReason(), is(FailureReason.NOT_UP_TO_BOUND));
         assertThat(
-            queryResult.getFailureMessage(),
-            is("The store is not initialized yet, so it is not yet up to the bound"
-                   + " PositionBound{position=Position{position={topic={0=1}}}}")
+                queryResult.getFailureMessage(),
+                is("The store is not initialized yet, so it is not yet up to the bound"
+                        + " PositionBound{position=Position{position={topic={0=1}}}}")
         );
     }
 
     @Test
     public void shouldReturnErrorOnBoundViolation() {
         @SuppressWarnings("unchecked") final KeyQuery<String, Integer> query =
-            Mockito.mock(KeyQuery.class);
+                Mockito.mock(KeyQuery.class);
         @SuppressWarnings("unchecked") final KeyValueStore<String, Integer> store =
-            Mockito.mock(KeyValueStore.class);
+                Mockito.mock(KeyValueStore.class);
         final StateStoreContext context = Mockito.mock(StateStoreContext.class);
         Mockito.when(context.taskId()).thenReturn(new TaskId(0, 0));
         final QueryResult<Integer> queryResult = StoreQueryUtils.handleBasicQueries(
-            query,
-            PositionBound.at(Position.emptyPosition().withComponent("topic", 0, 1)),
-            new QueryConfig(false),
-            store,
-            Position.emptyPosition().withComponent("topic", 0, 0),
-            context
+                query,
+                PositionBound.at(Position.emptyPosition().withComponent("topic", 0, 1)),
+                new QueryConfig(false),
+                store,
+                Position.emptyPosition().withComponent("topic", 0, 0),
+                context
         );
 
         assertThat(queryResult.isFailure(), is(true));
         assertThat(queryResult.getFailureReason(), is(FailureReason.NOT_UP_TO_BOUND));
         assertThat(
-            queryResult.getFailureMessage(),
-            is("For store partition 0, the current position Position{position={topic={0=0}}}"
-                   + " is not yet up to the bound"
-                   + " PositionBound{position=Position{position={topic={0=1}}}}")
+                queryResult.getFailureMessage(),
+                is("For store partition 0, the current position Position{position={topic={0=0}}}"
+                        + " is not yet up to the bound"
+                        + " PositionBound{position=Position{position={topic={0=1}}}}")
         );
     }
 }

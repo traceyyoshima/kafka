@@ -41,7 +41,7 @@ import javax.security.sasl.RealmCallback;
  * configured for the client should be supported by this callback handler. See
  * <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/security/sasl/sasl-refguide.html">Java SASL API</a>
  * for the list of SASL callback handlers required for each SASL mechanism.
- *
+ * <p>
  * For adding custom SASL extensions, a {@link SaslExtensions} may be added to the subject's public credentials
  */
 public class SaslClientCallbackHandler implements AuthenticateCallbackHandler {
@@ -50,7 +50,7 @@ public class SaslClientCallbackHandler implements AuthenticateCallbackHandler {
 
     @Override
     public void configure(Map<String, ?> configs, String saslMechanism, List<AppConfigurationEntry> jaasConfigEntries) {
-        this.mechanism  = saslMechanism;
+        this.mechanism = saslMechanism;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class SaslClientCallbackHandler implements AuthenticateCallbackHandler {
                     ((PasswordCallback) callback).setPassword(password);
                 } else {
                     String errorMessage = "Could not login: the client is being asked for a password, but the Kafka" +
-                             " client code does not currently support obtaining a password from the user.";
+                            " client code does not currently support obtaining a password from the user.";
                     throw new UnsupportedCallbackException(callback, errorMessage);
                 }
             } else if (callback instanceof RealmCallback) {
@@ -94,7 +94,7 @@ public class SaslClientCallbackHandler implements AuthenticateCallbackHandler {
                     SaslExtensions extensions = subject.getPublicCredentials(SaslExtensions.class).iterator().next();
                     ((SaslExtensionsCallback) callback).extensions(extensions);
                 }
-            }  else {
+            } else {
                 throw new UnsupportedCallbackException(callback, "Unrecognized SASL ClientCallback");
             }
         }

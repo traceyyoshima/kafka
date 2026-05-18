@@ -29,9 +29,11 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
-/** FakeLocalMetadataStore is used for MM2's integration test.
+/**
+ * FakeLocalMetadataStore is used for MM2's integration test.
  * The class store metadata of all topics/ACLs created or altered cross clusters using MM2 integration test.
- * */
+ *
+ */
 public class FakeLocalMetadataStore {
     private static final Logger log = LoggerFactory.getLogger(FakeLocalMetadataStore.class);
 
@@ -40,6 +42,7 @@ public class FakeLocalMetadataStore {
 
     /**
      * Add topic to allTopics.
+     *
      * @param newTopic {@link NewTopic}
      */
     public static void addTopicToLocalMetadataStore(NewTopic newTopic) {
@@ -50,7 +53,8 @@ public class FakeLocalMetadataStore {
 
     /**
      * update partition count for given topic
-     * @param topic topic name
+     *
+     * @param topic             topic name
      * @param newPartitionCount new partition count.
      */
     public static void updatePartitionCount(String topic, int newPartitionCount) {
@@ -61,7 +65,8 @@ public class FakeLocalMetadataStore {
 
     /**
      * update topic configuration.
-     * @param topic topic name
+     *
+     * @param topic     topic name
      * @param newConfig topic config
      */
     public static void updateTopicConfig(String topic, Config newConfig) {
@@ -81,6 +86,7 @@ public class FakeLocalMetadataStore {
 
     /**
      * check if allTopics contains topic name.
+     *
      * @param topic name of topic
      * @return true if topic name is a key in allTopics
      */
@@ -90,6 +96,7 @@ public class FakeLocalMetadataStore {
 
     /**
      * get topic config stored in allTopics.
+     *
      * @param topic name of topic
      * @return topic configurations.
      */
@@ -99,6 +106,7 @@ public class FakeLocalMetadataStore {
 
     /**
      * get list of {@link AclBinding} stored for kafka principle in allACLs.
+     *
      * @param aclPrinciple name of kafka user
      * @return {@link List<AclBinding>}
      */
@@ -108,7 +116,8 @@ public class FakeLocalMetadataStore {
 
     /**
      * add acls to allACLs
-     * @param principal kafka user name
+     *
+     * @param principal  kafka user name
      * @param aclBinding {@link AclBinding}
      */
     public static void addACLs(String principal, AclBinding aclBinding) {

@@ -51,12 +51,12 @@ public class MockRecordCollector implements RecordCollector {
                             final String processorNodeId,
                             final InternalProcessorContext<Void, Void> context) {
         collected.add(new ProducerRecord<>(
-            topic,
-            partition,
-            timestamp,
-            key,
-            value,
-            headers)
+                topic,
+                partition,
+                timestamp,
+                key,
+                value,
+                headers)
         );
     }
 
@@ -72,12 +72,12 @@ public class MockRecordCollector implements RecordCollector {
                             final InternalProcessorContext<Void, Void> context,
                             final StreamPartitioner<? super K, ? super V> partitioner) {
         collected.add(new ProducerRecord<>(
-            topic,
-            0, // partition id
-            timestamp,
-            key,
-            value,
-            headers)
+                topic,
+                0, // partition id
+                timestamp,
+                key,
+                value,
+                headers)
         );
     }
 
@@ -99,7 +99,8 @@ public class MockRecordCollector implements RecordCollector {
     }
 
     @Override
-    public void initialize() {}
+    public void initialize() {
+    }
 
     @Override
     public void flush() {
@@ -107,10 +108,12 @@ public class MockRecordCollector implements RecordCollector {
     }
 
     @Override
-    public void closeClean() {}
+    public void closeClean() {
+    }
 
     @Override
-    public void closeDirty() {}
+    public void closeDirty() {
+    }
 
     @Override
     public Map<TopicPartition, Long> offsets() {

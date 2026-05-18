@@ -32,8 +32,8 @@ public class AlterConfigPolicyTest {
     @Test
     public void testRequestMetadataEquals() {
         RequestMetadata requestMetadata = new RequestMetadata(
-            new ConfigResource(Type.BROKER, "0"),
-            Collections.singletonMap("foo", "bar")
+                new ConfigResource(Type.BROKER, "0"),
+                Collections.singletonMap("foo", "bar")
         );
 
         assertEquals(requestMetadata, requestMetadata);
@@ -41,12 +41,12 @@ public class AlterConfigPolicyTest {
         assertNotEquals(null, requestMetadata);
         assertNotEquals(new Object(), requestMetadata);
         assertNotEquals(requestMetadata, new RequestMetadata(
-            new ConfigResource(Type.BROKER, "1"),
-            Collections.singletonMap("foo", "bar")
+                new ConfigResource(Type.BROKER, "1"),
+                Collections.singletonMap("foo", "bar")
         ));
         assertNotEquals(requestMetadata, new RequestMetadata(
-            new ConfigResource(Type.BROKER, "0"),
-            Collections.emptyMap()
+                new ConfigResource(Type.BROKER, "0"),
+                Collections.emptyMap()
         ));
     }
 }

@@ -40,9 +40,9 @@ public class ListTopicsOptions extends AbstractOptions<ListTopicsOptions> {
     /**
      * Set whether we should list internal topics.
      *
-     * @param listInternal  Whether we should list internal topics.  null means to use
-     *                      the default.
-     * @return              This ListTopicsOptions object.
+     * @param listInternal Whether we should list internal topics.  null means to use
+     *                     the default.
+     * @return This ListTopicsOptions object.
      */
     public ListTopicsOptions listInternal(boolean listInternal) {
         this.listInternal = listInternal;
@@ -59,8 +59,8 @@ public class ListTopicsOptions extends AbstractOptions<ListTopicsOptions> {
     @Override
     public String toString() {
         return "ListTopicsOptions(" +
-            "listInternal=" + listInternal +
-            ')';
+                "listInternal=" + listInternal +
+                ')';
     }
 
     @Override

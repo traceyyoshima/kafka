@@ -42,8 +42,8 @@ public class FenceProducersResult {
      */
     public Map<String, KafkaFuture<Void>> fencedProducers() {
         return futures.entrySet().stream().collect(Collectors.toMap(
-            e -> e.getKey().idValue,
-            e -> e.getValue().thenApply(p -> null)
+                e -> e.getKey().idValue,
+                e -> e.getValue().thenApply(p -> null)
         ));
     }
 
@@ -73,7 +73,7 @@ public class FenceProducersResult {
         KafkaFuture<ProducerIdAndEpoch> future = futures.get(key);
         if (future == null) {
             throw new IllegalArgumentException("TransactionalId " +
-                "`" + transactionalId + "` was not included in the request");
+                    "`" + transactionalId + "` was not included in the request");
         }
         return future.thenApply(followup);
     }

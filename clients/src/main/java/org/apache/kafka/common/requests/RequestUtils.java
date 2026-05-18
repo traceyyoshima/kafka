@@ -37,11 +37,12 @@ import java.util.function.Predicate;
 
 public final class RequestUtils {
 
-    private RequestUtils() {}
+    private RequestUtils() {
+    }
 
     public static Optional<Integer> getLeaderEpoch(int leaderEpoch) {
         return leaderEpoch == RecordBatch.NO_PARTITION_LEADER_EPOCH ?
-            Optional.empty() : Optional.of(leaderEpoch);
+                Optional.empty() : Optional.of(leaderEpoch);
     }
 
     public static boolean hasTransactionalRecords(ProduceRequest request) {
@@ -50,7 +51,8 @@ public final class RequestUtils {
 
     /**
      * find a flag from all records of a produce request.
-     * @param request produce request
+     *
+     * @param request   produce request
      * @param predicate used to predicate the record
      * @return true if there is any matched flag in the produce request. Otherwise, false
      */
@@ -67,10 +69,10 @@ public final class RequestUtils {
     }
 
     public static ByteBuffer serialize(
-        Message header,
-        short headerVersion,
-        Message apiMessage,
-        short apiVersion
+            Message header,
+            short headerVersion,
+            Message apiMessage,
+            short apiVersion
     ) {
         ObjectSerializationCache cache = new ObjectSerializationCache();
 
@@ -87,11 +89,11 @@ public final class RequestUtils {
 
     public static boolean isFatalException(Throwable e) {
         return e instanceof AuthenticationException ||
-            e instanceof AuthorizationException ||
-            e instanceof MismatchedEndpointTypeException ||
-            e instanceof SecurityDisabledException ||
-            e instanceof UnsupportedVersionException ||
-            e instanceof UnsupportedEndpointTypeException ||
-            e instanceof UnsupportedForMessageFormatException;
+                e instanceof AuthorizationException ||
+                e instanceof MismatchedEndpointTypeException ||
+                e instanceof SecurityDisabledException ||
+                e instanceof UnsupportedVersionException ||
+                e instanceof UnsupportedEndpointTypeException ||
+                e instanceof UnsupportedForMessageFormatException;
     }
 }

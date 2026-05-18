@@ -62,16 +62,16 @@ public class StreamThreadTotalBlockedTimeTest {
     public void setup() {
         blockedTime = new StreamThreadTotalBlockedTime(consumer, restoreConsumer, producerBlocked);
         when(consumer.metrics()).thenAnswer(a -> new MetricsBuilder()
-            .addMetric("io-time-ns-total", IO_TIME_TOTAL)
-            .addMetric("io-wait-time-ns-total", IO_WAIT_TIME_TOTAL)
-            .addMetric("committed-time-ns-total", COMMITTED_TIME_TOTAL)
-            .addMetric("commit-sync-time-ns-total", COMMIT_SYNC_TIME_TOTAL)
-            .build()
+                .addMetric("io-time-ns-total", IO_TIME_TOTAL)
+                .addMetric("io-wait-time-ns-total", IO_WAIT_TIME_TOTAL)
+                .addMetric("committed-time-ns-total", COMMITTED_TIME_TOTAL)
+                .addMetric("commit-sync-time-ns-total", COMMIT_SYNC_TIME_TOTAL)
+                .build()
         );
         when(restoreConsumer.metrics()).thenAnswer(a -> new MetricsBuilder()
-            .addMetric("io-time-ns-total", RESTORE_IOTIME_TOTAL)
-            .addMetric("io-wait-time-ns-total", RESTORE_IO_WAITTIME_TOTAL)
-            .build()
+                .addMetric("io-time-ns-total", RESTORE_IOTIME_TOTAL)
+                .addMetric("io-wait-time-ns-total", RESTORE_IO_WAITTIME_TOTAL)
+                .build()
         );
         when(producerBlocked.get()).thenReturn(PRODUCER_BLOCKED_TIME);
     }
@@ -79,10 +79,10 @@ public class StreamThreadTotalBlockedTimeTest {
     @Test
     public void shouldComputeTotalBlockedTime() {
         assertThat(
-            blockedTime.compute(),
-            equalTo(IO_TIME_TOTAL + IO_WAIT_TIME_TOTAL + COMMITTED_TIME_TOTAL
-                + COMMIT_SYNC_TIME_TOTAL + RESTORE_IOTIME_TOTAL + RESTORE_IO_WAITTIME_TOTAL
-                + PRODUCER_BLOCKED_TIME)
+                blockedTime.compute(),
+                equalTo(IO_TIME_TOTAL + IO_WAIT_TIME_TOTAL + COMMITTED_TIME_TOTAL
+                        + COMMIT_SYNC_TIME_TOTAL + RESTORE_IOTIME_TOTAL + RESTORE_IO_WAITTIME_TOTAL
+                        + PRODUCER_BLOCKED_TIME)
         );
     }
 
@@ -92,18 +92,18 @@ public class StreamThreadTotalBlockedTimeTest {
         private MetricsBuilder addMetric(final String name, final double value) {
             final MetricName metricName = new MetricName(name, "", "", Collections.emptyMap());
             metrics.put(
-                metricName,
-                new Metric() {
-                    @Override
-                    public MetricName metricName() {
-                        return metricName;
-                    }
+                    metricName,
+                    new Metric() {
+                        @Override
+                        public MetricName metricName() {
+                            return metricName;
+                        }
 
-                    @Override
-                    public Object metricValue() {
-                        return value;
+                        @Override
+                        public Object metricValue() {
+                            return value;
+                        }
                     }
-                }
             );
             return this;
         }

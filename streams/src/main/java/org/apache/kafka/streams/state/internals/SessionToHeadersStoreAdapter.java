@@ -68,14 +68,14 @@ public class SessionToHeadersStoreAdapter implements SessionStore<Bytes, byte[]>
                                                                   final long earliestSessionEndTime,
                                                                   final long latestSessionStartTime) {
         return new SessionToHeadersIteratorAdapter(
-            store.findSessions(key, earliestSessionEndTime, latestSessionStartTime));
+                store.findSessions(key, earliestSessionEndTime, latestSessionStartTime));
     }
 
     @Override
     public KeyValueIterator<Windowed<Bytes>, byte[]> findSessions(final long earliestSessionEndTime,
                                                                   final long latestSessionEndTime) {
         return new SessionToHeadersIteratorAdapter(
-            store.findSessions(earliestSessionEndTime, latestSessionEndTime));
+                store.findSessions(earliestSessionEndTime, latestSessionEndTime));
     }
 
     @Override
@@ -83,7 +83,7 @@ public class SessionToHeadersStoreAdapter implements SessionStore<Bytes, byte[]>
                                                                           final long earliestSessionEndTime,
                                                                           final long latestSessionStartTime) {
         return new SessionToHeadersIteratorAdapter(
-            store.backwardFindSessions(key, earliestSessionEndTime, latestSessionStartTime));
+                store.backwardFindSessions(key, earliestSessionEndTime, latestSessionStartTime));
     }
 
     @Override
@@ -92,7 +92,7 @@ public class SessionToHeadersStoreAdapter implements SessionStore<Bytes, byte[]>
                                                                   final long earliestSessionEndTime,
                                                                   final long latestSessionStartTime) {
         return new SessionToHeadersIteratorAdapter(
-            store.findSessions(keyFrom, keyTo, earliestSessionEndTime, latestSessionStartTime));
+                store.findSessions(keyFrom, keyTo, earliestSessionEndTime, latestSessionStartTime));
     }
 
     @Override
@@ -101,7 +101,7 @@ public class SessionToHeadersStoreAdapter implements SessionStore<Bytes, byte[]>
                                                                           final long earliestSessionEndTime,
                                                                           final long latestSessionStartTime) {
         return new SessionToHeadersIteratorAdapter(
-            store.backwardFindSessions(keyFrom, keyTo, earliestSessionEndTime, latestSessionStartTime));
+                store.backwardFindSessions(keyFrom, keyTo, earliestSessionEndTime, latestSessionStartTime));
     }
 
     @Override
@@ -202,7 +202,7 @@ public class SessionToHeadersStoreAdapter implements SessionStore<Bytes, byte[]>
         }
         if (config.isCollectExecutionInfo()) {
             result.addExecutionInfo(
-                "Handled in " + getClass() + " in " + (System.nanoTime() - start) + "ns");
+                    "Handled in " + getClass() + " in " + (System.nanoTime() - start) + "ns");
         }
         return result;
     }

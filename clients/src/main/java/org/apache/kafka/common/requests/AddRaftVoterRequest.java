@@ -60,14 +60,14 @@ public class AddRaftVoterRequest extends AbstractRequest {
     public AbstractResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         Errors error = Errors.forException(e);
         return new AddRaftVoterResponse(new AddRaftVoterResponseData().
-            setErrorCode(error.code()).
-            setErrorMessage(error.message()).
-            setThrottleTimeMs(throttleTimeMs));
+                setErrorCode(error.code()).
+                setErrorMessage(error.message()).
+                setThrottleTimeMs(throttleTimeMs));
     }
 
     public static AddRaftVoterRequest parse(Readable readable, short version) {
         return new AddRaftVoterRequest(
-            new AddRaftVoterRequestData(readable, version),
-            version);
+                new AddRaftVoterRequestData(readable, version),
+                version);
     }
 }

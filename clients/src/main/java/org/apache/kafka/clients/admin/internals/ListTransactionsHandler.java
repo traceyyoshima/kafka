@@ -42,8 +42,8 @@ public class ListTransactionsHandler extends AdminApiHandler.Batched<AllBrokersS
     private final AllBrokersStrategy lookupStrategy;
 
     public ListTransactionsHandler(
-        ListTransactionsOptions options,
-        LogContext logContext
+            ListTransactionsOptions options,
+            LogContext logContext
     ) {
         this.options = options;
         this.log = logContext.logger(ListTransactionsHandler.class);
@@ -66,14 +66,14 @@ public class ListTransactionsHandler extends AdminApiHandler.Batched<AllBrokersS
 
     @Override
     public ListTransactionsRequest.Builder buildBatchedRequest(
-        int brokerId,
-        Set<AllBrokersStrategy.BrokerKey> keys
+            int brokerId,
+            Set<AllBrokersStrategy.BrokerKey> keys
     ) {
         ListTransactionsRequestData request = new ListTransactionsRequestData();
         request.setProducerIdFilters(new ArrayList<>(options.filteredProducerIds()));
         request.setStateFilters(options.filteredStates().stream()
-            .map(TransactionState::toString)
-            .collect(Collectors.toList()));
+                .map(TransactionState::toString)
+                .collect(Collectors.toList()));
         request.setDurationFilter(options.filteredDuration());
         if (options.filteredTransactionalIdPattern() != null && !options.filteredTransactionalIdPattern().isEmpty()) {
             request.setTransactionalIdPattern(options.filteredTransactionalIdPattern());
@@ -83,9 +83,9 @@ public class ListTransactionsHandler extends AdminApiHandler.Batched<AllBrokersS
 
     @Override
     public ApiResult<AllBrokersStrategy.BrokerKey, Collection<TransactionListing>> handleResponse(
-        Node broker,
-        Set<AllBrokersStrategy.BrokerKey> keys,
-        AbstractResponse abstractResponse
+            Node broker,
+            Set<AllBrokersStrategy.BrokerKey> keys,
+            AbstractResponse abstractResponse
     ) {
         int brokerId = broker.id();
         AllBrokersStrategy.BrokerKey key = requireSingleton(keys, brokerId);
@@ -95,32 +95,32 @@ public class ListTransactionsHandler extends AdminApiHandler.Batched<AllBrokersS
 
         if (error == Errors.COORDINATOR_LOAD_IN_PROGRESS) {
             log.debug("The `ListTransactions` request sent to broker {} failed because the " +
-                "coordinator is still loading state. Will try again after backing off", brokerId);
+                    "coordinator is still loading state. Will try again after backing off", brokerId);
             return ApiResult.empty();
         } else if (error == Errors.COORDINATOR_NOT_AVAILABLE) {
             log.debug("The `ListTransactions` request sent to broker {} failed because the " +
-                "coordinator is shutting down", brokerId);
+                    "coordinator is shutting down", brokerId);
             return ApiResult.failed(key, new CoordinatorNotAvailableException("ListTransactions " +
-                "request sent to broker " + brokerId + " failed because the coordinator is shutting down"));
+                    "request sent to broker " + brokerId + " failed because the coordinator is shutting down"));
         } else if (error != Errors.NONE) {
             log.error("The `ListTransactions` request sent to broker {} failed because of an " +
-                "unexpected error {}", brokerId, error);
+                    "unexpected error {}", brokerId, error);
             return ApiResult.failed(key, error.exception("ListTransactions request " +
-                "sent to broker " + brokerId + " failed with an unexpected exception"));
+                    "sent to broker " + brokerId + " failed with an unexpected exception"));
         } else {
             List<TransactionListing> listings = response.data().transactionStates().stream()
-                .map(transactionState -> new TransactionListing(
-                    transactionState.transactionalId(),
-                    transactionState.producerId(),
-                    TransactionState.parse(transactionState.transactionState())))
-                .collect(Collectors.toList());
+                    .map(transactionState -> new TransactionListing(
+                            transactionState.transactionalId(),
+                            transactionState.producerId(),
+                            TransactionState.parse(transactionState.transactionState())))
+                    .collect(Collectors.toList());
             return ApiResult.completed(key, listings);
         }
     }
 
     private AllBrokersStrategy.BrokerKey requireSingleton(
-        Set<AllBrokersStrategy.BrokerKey> keys,
-        int brokerId
+            Set<AllBrokersStrategy.BrokerKey> keys,
+            int brokerId
     ) {
         if (keys.size() != 1) {
             throw new IllegalArgumentException("Unexpected key set: " + keys);

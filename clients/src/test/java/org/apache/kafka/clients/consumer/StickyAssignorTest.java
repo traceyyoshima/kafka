@@ -64,19 +64,19 @@ public class StickyAssignorTest extends AbstractStickyAssignorTest {
     @Override
     public Subscription buildSubscriptionV0(List<String> topics, List<TopicPartition> partitions, int generationId, int consumerIndex) {
         return new Subscription(topics, serializeTopicPartitionAssignment(new MemberData(partitions, Optional.of(generationId))),
-            Collections.emptyList(), DEFAULT_GENERATION, consumerRackId(consumerIndex));
+                Collections.emptyList(), DEFAULT_GENERATION, consumerRackId(consumerIndex));
     }
 
     @Override
     public Subscription buildSubscriptionV1(List<String> topics, List<TopicPartition> partitions, int generationId, int consumerIndex) {
         return new Subscription(topics, serializeTopicPartitionAssignment(new MemberData(partitions, Optional.of(generationId))),
-            partitions, DEFAULT_GENERATION, Optional.empty());
+                partitions, DEFAULT_GENERATION, Optional.empty());
     }
 
     @Override
     public Subscription buildSubscriptionV2Above(List<String> topics, List<TopicPartition> partitions, int generationId, int consumerIndex) {
         return new Subscription(topics, serializeTopicPartitionAssignment(new MemberData(partitions, Optional.of(generationId))),
-            partitions, generationId, Optional.empty());
+                partitions, generationId, Optional.empty());
     }
 
     @Override
@@ -263,7 +263,7 @@ public class StickyAssignorTest extends AbstractStickyAssignorTest {
         TopicPartition t3p3 = new TopicPartition(topic3, 3);
 
         List<TopicPartition> c1partitions0 = isAllSubscriptionsEqual ? partitions(tp0, tp1, tp2, t2p2, t2p3, t3p0) :
-            partitions(tp0, tp1, tp2, tp3);
+                partitions(tp0, tp1, tp2, tp3);
         List<TopicPartition> c2partitions0 = partitions(tp0, tp1, t2p0, t2p1, t2p2, t2p3);
         List<TopicPartition> c3partitions0 = partitions(tp2, tp3, t3p0, t3p1, t3p2, t3p3);
         subscriptions.put(consumer1, buildSubscriptionV2Above(consumer1SubscribedTopics, c1partitions0, 1, 0));

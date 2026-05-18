@@ -16,6 +16,7 @@
  */
 
 package org.apache.kafka.trogdor.workload;
+
 import org.apache.kafka.common.utils.Time;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -23,21 +24,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * This throughput generator configures constant throughput.
- *
+ * <p>
  * The lower the window size, the smoother the traffic will be. Using a 100ms window offers no noticeable spikes in
  * traffic while still being long enough to avoid too much overhead.
- *
+ * <p>
  * Here is an example spec:
- *
+ * <p>
  * {
- *    "type": "constant",
- *    "messagesPerWindow": 50,
- *    "windowSizeMs": 100
+ * "type": "constant",
+ * "messagesPerWindow": 50,
+ * "windowSizeMs": 100
  * }
- *
+ * <p>
  * This will produce a workload that runs 500 messages per second, with a maximum resolution of 50 messages per 100
  * millisecond.
- *
+ * <p>
  * If `messagesPerWindow` is less than or equal to 0, `throttle` will not throttle at all and will return immediately.
  */
 

@@ -33,7 +33,7 @@ public class RenewDelegationTokenRequest extends AbstractRequest {
 
     public static RenewDelegationTokenRequest parse(Readable readable, short version) {
         return new RenewDelegationTokenRequest(new RenewDelegationTokenRequestData(
-            readable, version), version);
+                readable, version), version);
     }
 
     @Override
@@ -45,8 +45,8 @@ public class RenewDelegationTokenRequest extends AbstractRequest {
     public AbstractResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         return new RenewDelegationTokenResponse(
                 new RenewDelegationTokenResponseData()
-                    .setThrottleTimeMs(throttleTimeMs)
-                    .setErrorCode(Errors.forException(e).code()));
+                        .setThrottleTimeMs(throttleTimeMs)
+                        .setErrorCode(Errors.forException(e).code()));
     }
 
     public static class Builder extends AbstractRequest.Builder<RenewDelegationTokenRequest> {

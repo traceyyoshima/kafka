@@ -54,7 +54,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *     <li>{@link Gauge}</li>
  *     <li>{@link Measurable}</li>
  * </ol>
- *
+ * <p>
  * {@link Gauge Gauges} can have any value, but we only collect metrics with number values.
  * {@link Measurable Measurables} are divided into simple types with single values
  * ({@link Avg}, {@link CumulativeCount}, {@link Min}, {@link Max}, {@link Rate},
@@ -62,12 +62,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * {@link Meter}, and {@link Percentiles}).
  *
  * <p>
- *
+ * <p>
  * We can safely assume that a {@link CumulativeCount count} always increases in steady state. It
  * should be a bug if a count metric decreases.
  *
  * <p>
- *
+ * <p>
  * Total and Sum are treated as a monotonically increasing counter. The javadocs for Total metric type
  * say "An un-windowed cumulative total maintained over all time.". The standalone Total metrics in
  * the codebase seem to be cumulative metrics that will always increase. The Total metric underlying
@@ -77,41 +77,41 @@ import java.util.concurrent.ConcurrentHashMap;
  * For now, Total is converted to CUMULATIVE_DOUBLE unless we find a valid counter-example.
  *
  * <p>
- *
+ * <p>
  * The Sum as it is a sample sum which is not a cumulative metric. It is converted to GAUGE_DOUBLE.
  *
  * <p>
- *
+ * <p>
  * The compound metrics are virtual metrics. They are composed of simple types or anonymous measurable types
  * which are reported. A compound metric is never reported as-is.
  *
  * <p>
- *
+ * <p>
  * A Meter metric is always created with and reported as 2 metrics: a rate and a count. For eg:
  * org.apache.kafka.common.network.Selector has Meter metric for "connection-close" but it has to be
  * created with a "connection-close-rate" metric of type rate and a "connection-close-total"
  * metric of type total.
  *
  * <p>
- *
+ * <p>
  * Frequencies is created with an array of Frequency objects. When a Frequencies metric is registered, each
  * member Frequency object is converted into an anonymous Measurable and registered. So, a Frequencies metric
  * is reported with a set of measurables with name = Frequency.name(). As there is no way to figure out the
  * compound type, each component measurables is converted to a GAUGE_DOUBLE.
  *
  * <p>
- *
+ * <p>
  * Percentiles work the same way as Frequencies. The only difference is that it is composed of Percentile
  * types instead. So, we should treat the component measurable as GAUGE_DOUBLE.
  *
  * <p>
- *
+ * <p>
  * Some metrics are defined as either anonymous inner classes or lambdas implementing the Measurable
  * interface. As we do not have any information on how to treat them, we should fallback to treating
  * them as GAUGE_DOUBLE.
  *
  * <p>
- *
+ * <p>
  * OpenTelemetry mapping for measurables:
  * Avg / Rate / Min / Max / Total / Sum -> Gauge
  * Count -> Sum
@@ -230,12 +230,12 @@ public class KafkaMetricsCollector implements MetricsCollector {
             InstantAndValue<Double> instantAndValue = ledger.delta(metricKey, timestamp, value);
 
             metricsEmitter.emitMetric(
-                SinglePointMetric.deltaSum(metricKey, instantAndValue.getValue(), true, timestamp,
-                    instantAndValue.getIntervalStart(), excludeLabels)
+                    SinglePointMetric.deltaSum(metricKey, instantAndValue.getValue(), true, timestamp,
+                            instantAndValue.getIntervalStart(), excludeLabels)
             );
         } else {
             metricsEmitter.emitMetric(
-                SinglePointMetric.sum(metricKey, value, true, timestamp, ledger.instantAdded(metricKey), excludeLabels)
+                    SinglePointMetric.sum(metricKey, value, true, timestamp, ledger.instantAdded(metricKey), excludeLabels)
             );
         }
     }
@@ -246,7 +246,7 @@ public class KafkaMetricsCollector implements MetricsCollector {
         }
 
         metricsEmitter.emitMetric(
-            SinglePointMetric.gauge(metricKey, value, timestamp, excludeLabels)
+                SinglePointMetric.gauge(metricKey, value, timestamp, excludeLabels)
         );
     }
 
@@ -278,7 +278,7 @@ public class KafkaMetricsCollector implements MetricsCollector {
             metricMap.put(metricKey, metric);
             if (doubleDeltas.contains(metricKey)) {
                 log.warn("Registering a new metric {} which already has a last value tracked. " +
-                    "Removing metric from delta register.", metric.metricName(), new Exception());
+                        "Removing metric from delta register.", metric.metricName(), new Exception());
 
                 /*
                  This scenario shouldn't occur while registering a metric since it should
@@ -308,8 +308,8 @@ public class KafkaMetricsCollector implements MetricsCollector {
             Optional<InstantAndValue<Double>> lastValue = doubleDeltas.getAndSet(metricKey, now, value);
 
             return lastValue
-                .map(last -> new InstantAndValue<>(last.getIntervalStart(), value - last.getValue()))
-                .orElse(new InstantAndValue<>(instantAdded(metricKey), value));
+                    .map(last -> new InstantAndValue<>(last.getIntervalStart(), value - last.getValue()))
+                    .orElse(new InstantAndValue<>(instantAdded(metricKey), value));
         }
 
         private void metricsStateReset() {

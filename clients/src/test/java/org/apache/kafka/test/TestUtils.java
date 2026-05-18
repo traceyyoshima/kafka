@@ -131,7 +131,8 @@ public class TestUtils {
 
     /**
      * Test utility function to get MetadataSnapshot with configured nodes and partitions.
-     * @param nodes number of nodes in the cluster
+     *
+     * @param nodes                number of nodes in the cluster
      * @param topicPartitionCounts map of topic -> # of partitions
      * @return a MetadataSnapshot with number of nodes, partitions as per the input.
      */
@@ -169,8 +170,7 @@ public class TestUtils {
      * @param isDaemon   The daemon status to check. Only threads with the specified
      *                   daemon status (either true for daemon threads or false for non-daemon threads)
      *                   will be considered.
-     *
-     * @throws AssertionError If any thread with the specified name prefix and daemon status are found after the timeout. 
+     * @throws AssertionError If any thread with the specified name prefix and daemon status are found after the timeout.
      */
     public static void assertNoLeakedThreadsWithNameAndDaemonStatus(String threadName, boolean isDaemon) throws InterruptedException {
         waitForCondition(() -> Thread.getAllStackTraces().keySet().stream()
@@ -179,6 +179,7 @@ public class TestUtils {
 
     /**
      * Test utility function to get MetadataSnapshot of cluster with configured, and 0 partitions.
+     *
      * @param nodes number of nodes in the cluster.
      * @return a MetadataSnapshot of cluster with number of nodes in the input.
      */
@@ -224,6 +225,7 @@ public class TestUtils {
     /**
      * Create an empty file in the default temporary-file directory, using the given prefix and suffix
      * to generate its name.
+     *
      * @throws IOException
      */
     public static File tempFile(final String prefix, final String suffix) throws IOException {
@@ -296,7 +298,7 @@ public class TestUtils {
         prefix = prefix == null ? "kafka-" : prefix;
         try {
             file = parent == null ?
-                Files.createTempDirectory(prefix).toFile() : Files.createTempDirectory(parent, prefix).toFile();
+                    Files.createTempDirectory(prefix).toFile() : Files.createTempDirectory(parent, prefix).toFile();
         } catch (final IOException ex) {
             throw new RuntimeException("Failed to create a temp dir", ex);
         }
@@ -375,10 +377,10 @@ public class TestUtils {
                                             final Class<?> keyDeserializer,
                                             final Class<?> valueDeserializer) {
         return consumerConfig(bootstrapServers,
-            groupId,
-            keyDeserializer,
-            valueDeserializer,
-            new Properties());
+                groupId,
+                keyDeserializer,
+                valueDeserializer,
+                new Properties());
     }
 
     /**
@@ -386,10 +388,10 @@ public class TestUtils {
      */
     public static Properties consumerConfig(final String bootstrapServers, final Class<?> keyDeserializer, final Class<?> valueDeserializer) {
         return consumerConfig(bootstrapServers,
-            UUID.randomUUID().toString(),
-            keyDeserializer,
-            valueDeserializer,
-            new Properties());
+                UUID.randomUUID().toString(),
+                keyDeserializer,
+                valueDeserializer,
+                new Properties());
     }
 
     /**
@@ -434,16 +436,16 @@ public class TestUtils {
      * machines.
      */
     public static void waitForCondition(
-        final TestCondition testCondition,
-        final long maxWaitMs,
-        final long pollIntervalMs,
-        Supplier<String> conditionDetailsSupplier
+            final TestCondition testCondition,
+            final long maxWaitMs,
+            final long pollIntervalMs,
+            Supplier<String> conditionDetailsSupplier
     ) throws InterruptedException {
         retryOnExceptionWithTimeout(maxWaitMs, pollIntervalMs, () -> {
             String conditionDetailsSupplied = conditionDetailsSupplier != null ? conditionDetailsSupplier.get() : null;
             String conditionDetails = conditionDetailsSupplied != null ? conditionDetailsSupplied : "";
             assertTrue(testCondition.conditionMet(),
-                "Condition not met within timeout " + maxWaitMs + ". " + conditionDetails);
+                    "Condition not met within timeout " + maxWaitMs + ". " + conditionDetails);
         });
     }
 
@@ -453,7 +455,7 @@ public class TestUtils {
      * last exception or assertion failure will be thrown thus providing context for the failure.
      *
      * @param timeoutMs the total time in milliseconds to wait for {@code runnable} to complete successfully.
-     * @param runnable the code to attempt to execute successfully.
+     * @param runnable  the code to attempt to execute successfully.
      * @throws InterruptedException if the current thread is interrupted while waiting for {@code runnable} to complete successfully.
      */
     public static void retryOnExceptionWithTimeout(final long timeoutMs,
@@ -478,9 +480,9 @@ public class TestUtils {
      * {@link AssertionError}s, or for the given timeout to expire. If the timeout expires then the
      * last exception or assertion failure will be thrown thus providing context for the failure.
      *
-     * @param timeoutMs the total time in milliseconds to wait for {@code runnable} to complete successfully.
+     * @param timeoutMs      the total time in milliseconds to wait for {@code runnable} to complete successfully.
      * @param pollIntervalMs the interval in milliseconds to wait between invoking {@code runnable}.
-     * @param runnable the code to attempt to execute successfully.
+     * @param runnable       the code to attempt to execute successfully.
      * @throws InterruptedException if the current thread is interrupted while waiting for {@code runnable} to complete successfully.
      */
     public static void retryOnExceptionWithTimeout(final long timeoutMs,
@@ -509,6 +511,7 @@ public class TestUtils {
 
     /**
      * Checks if a cluster id is valid.
+     *
      * @param clusterId
      */
     public static void isValidClusterId(String clusterId) {
@@ -584,9 +587,9 @@ public class TestUtils {
      * Assert that a future raises an expected exception cause type.
      * This method will wait for the future to complete or timeout(15000 milliseconds).
      *
-     * @param <T> Exception cause type parameter
+     * @param <T>                 Exception cause type parameter
      * @param exceptionCauseClass Class of the expected exception cause
-     * @param future The future to await
+     * @param future              The future to await
      * @return The caught exception cause
      */
     public static <T extends Throwable> T assertFutureThrows(Class<T> exceptionCauseClass, Future<?> future) {
@@ -598,9 +601,9 @@ public class TestUtils {
             // Enable strict type checking.
             // This ensures we're testing for the exact exception type, not its subclasses.
             assertEquals(
-                exceptionCauseClass, 
-                cause.getClass(), 
-                "Expected " + exceptionCauseClass.getSimpleName() + ", but got " + cause.getClass().getSimpleName()
+                    exceptionCauseClass,
+                    cause.getClass(),
+                    "Expected " + exceptionCauseClass.getSimpleName() + ", but got " + cause.getClass().getSimpleName()
             );
             return exceptionCauseClass.cast(cause);
         } catch (TimeoutException e) {
@@ -612,9 +615,9 @@ public class TestUtils {
     }
 
     public static <T extends Throwable> void assertFutureThrows(
-        Class<T> expectedCauseClassApiException,
-        Future<?> future,
-        String expectedMessage
+            Class<T> expectedCauseClassApiException,
+            Future<?> future,
+            String expectedMessage
     ) {
         T receivedException = assertFutureThrows(expectedCauseClassApiException, future);
         assertEquals(expectedMessage, receivedException.getMessage());
@@ -642,7 +645,7 @@ public class TestUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T fieldValue(Object o, Class<?> clazz, String fieldName)  {
+    public static <T> T fieldValue(Object o, Class<?> clazz, String fieldName) {
         try {
             Field field = clazz.getDeclaredField(fieldName);
             field.setAccessible(true);
@@ -743,12 +746,12 @@ public class TestUtils {
             boolean zkMigrationEnabled
     ) {
         return new ApiVersionsResponse.Builder().
-            setThrottleTimeMs(throttleTimeMs).
-            setApiVersions(apiVersions).
-            setSupportedFeatures(latestSupportedFeatures).
-            setFinalizedFeatures(Collections.emptyMap()).
-            setFinalizedFeaturesEpoch(ApiVersionsResponse.UNKNOWN_FINALIZED_FEATURES_EPOCH).
-            setZkMigrationEnabled(zkMigrationEnabled).
-            build();
+                setThrottleTimeMs(throttleTimeMs).
+                setApiVersions(apiVersions).
+                setSupportedFeatures(latestSupportedFeatures).
+                setFinalizedFeatures(Collections.emptyMap()).
+                setFinalizedFeaturesEpoch(ApiVersionsResponse.UNKNOWN_FINALIZED_FEATURES_EPOCH).
+                setZkMigrationEnabled(zkMigrationEnabled).
+                build();
     }
 }

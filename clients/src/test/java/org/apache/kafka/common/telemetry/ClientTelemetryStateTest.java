@@ -82,7 +82,7 @@ public class ClientTelemetryStateTest {
     @Test
     public void testValidateTransitionForTerminatingPushInProgress() {
         testValidateTransition(ClientTelemetryState.TERMINATING_PUSH_IN_PROGRESS,
-            Collections.singletonList(ClientTelemetryState.TERMINATED));
+                Collections.singletonList(ClientTelemetryState.TERMINATED));
     }
 
     @Test

@@ -36,20 +36,20 @@ public class PCollectionsImmutableMap<K, V> implements ImmutableMap<K, V> {
     private final HashPMap<K, V> underlying;
 
     /**
-     * @return a wrapped hash-based persistent map that is empty
      * @param <K> the key type
      * @param <V> the value type
+     * @return a wrapped hash-based persistent map that is empty
      */
     public static <K, V> PCollectionsImmutableMap<K, V> empty() {
         return new PCollectionsImmutableMap<>(HashTreePMap.empty());
     }
 
     /**
-     * @param key the key
+     * @param key   the key
      * @param value the value
+     * @param <K>   the key type
+     * @param <V>   the value type
      * @return a wrapped hash-based persistent map that has a single mapping
-     * @param <K> the key type
-     * @param <V> the value type
      */
     public static <K, V> PCollectionsImmutableMap<K, V> singleton(K key, V value) {
         return new PCollectionsImmutableMap<>(HashTreePMap.singleton(key, value));
@@ -213,8 +213,8 @@ public class PCollectionsImmutableMap<K, V> implements ImmutableMap<K, V> {
     @Override
     public String toString() {
         return "PCollectionsImmutableMap{" +
-            "underlying=" + underlying() +
-            '}';
+                "underlying=" + underlying() +
+                '}';
     }
 
     // package-private for testing

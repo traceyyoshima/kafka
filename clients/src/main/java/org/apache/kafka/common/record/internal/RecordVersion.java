@@ -18,9 +18,9 @@ package org.apache.kafka.common.record.internal;
 
 /**
  * Defines the record format versions supported by Kafka.
- *
+ * <p>
  * For historical reasons, the record format version is also known as `magic` and `message format version`. Note that
- * the version actually applies to the {@link RecordBatch} (instead of the {@link Record}). 
+ * the version actually applies to the {@link RecordBatch} (instead of the {@link Record}).
  */
 public enum RecordVersion {
     V0(0), V1(1), V2(2);

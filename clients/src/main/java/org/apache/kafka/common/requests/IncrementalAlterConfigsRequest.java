@@ -44,18 +44,18 @@ public class IncrementalAlterConfigsRequest extends AbstractRequest {
                        final boolean validateOnly) {
             super(ApiKeys.INCREMENTAL_ALTER_CONFIGS);
             this.data = new IncrementalAlterConfigsRequestData()
-                            .setValidateOnly(validateOnly);
+                    .setValidateOnly(validateOnly);
             for (ConfigResource resource : resources) {
                 IncrementalAlterConfigsRequestData.AlterableConfigCollection alterableConfigSet =
-                    new IncrementalAlterConfigsRequestData.AlterableConfigCollection();
+                        new IncrementalAlterConfigsRequestData.AlterableConfigCollection();
                 for (AlterConfigOp configEntry : configs.get(resource))
                     alterableConfigSet.add(new IncrementalAlterConfigsRequestData.AlterableConfig()
-                                               .setName(configEntry.configEntry().name())
-                                               .setValue(configEntry.configEntry().value())
-                                               .setConfigOperation(configEntry.opType().id()));
+                            .setName(configEntry.configEntry().name())
+                            .setValue(configEntry.configEntry().value())
+                            .setConfigOperation(configEntry.opType().id()));
                 IncrementalAlterConfigsRequestData.AlterConfigsResource alterConfigsResource = new IncrementalAlterConfigsRequestData.AlterConfigsResource();
                 alterConfigsResource.setResourceType(resource.type().id())
-                    .setResourceName(resource.name()).setConfigs(alterableConfigSet);
+                        .setResourceName(resource.name()).setConfigs(alterableConfigSet);
                 data.resources().add(alterConfigsResource);
             }
         }
@@ -85,7 +85,7 @@ public class IncrementalAlterConfigsRequest extends AbstractRequest {
 
     public static IncrementalAlterConfigsRequest parse(Readable readable, short version) {
         return new IncrementalAlterConfigsRequest(new IncrementalAlterConfigsRequestData(
-            readable, version), version);
+                readable, version), version);
     }
 
     @Override

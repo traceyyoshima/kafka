@@ -77,7 +77,6 @@ public class CleanedTransactionMetadata {
      * Return true if the control batch can be discarded.
      *
      * @param controlBatch The control batch that been traversed
-     *
      * @return True if the control batch can be discarded
      */
     public boolean onControlBatchRead(RecordBatch controlBatch) {
@@ -134,7 +133,6 @@ public class CleanedTransactionMetadata {
      * an aborted transaction, return true to indicate that it is safe to discard.
      *
      * @param batch The batch to read when updating the transactional state
-     *
      * @return Whether the batch is part of an aborted transaction or not
      */
     public boolean onBatchRead(RecordBatch batch) {

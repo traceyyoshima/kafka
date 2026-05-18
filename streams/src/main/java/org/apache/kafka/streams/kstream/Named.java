@@ -40,9 +40,8 @@ public class Named implements NamedOperation<Named> {
     /**
      * Create a Named instance with provided name.
      *
-     * @param name  the processor name to be used. If {@code null} a default processor name will be generated.
-     * @return      A new {@link Named} instance configured with name
-     *
+     * @param name the processor name to be used. If {@code null} a default processor name will be generated.
+     * @return A new {@link Named} instance configured with name
      * @throws TopologyException if an invalid name is specified; valid characters are ASCII alphanumerics, '.', '_' and '-'.
      */
     public static Named as(final String name) {

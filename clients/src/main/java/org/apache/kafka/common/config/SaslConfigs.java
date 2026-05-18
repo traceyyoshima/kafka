@@ -28,7 +28,9 @@ public class SaslConfigs {
     /*
      * NOTE: DO NOT CHANGE EITHER CONFIG NAMES AS THESE ARE PART OF THE PUBLIC API AND CHANGE WILL BREAK USER CODE.
      */
-    /** SASL mechanism configuration - standard mechanism names are listed <a href="http://www.iana.org/assignments/sasl-mechanisms/sasl-mechanisms.xhtml">here</a>. */
+    /**
+     * SASL mechanism configuration - standard mechanism names are listed <a href="http://www.iana.org/assignments/sasl-mechanisms/sasl-mechanisms.xhtml">here</a>.
+     */
     public static final String SASL_MECHANISM = "sasl.mechanism";
     public static final String SASL_MECHANISM_DOC = "SASL mechanism used for client connections. This may be any mechanism for which a security provider is available. GSSAPI is the default mechanism.";
     public static final String GSSAPI_MECHANISM = "GSSAPI";
@@ -36,14 +38,14 @@ public class SaslConfigs {
 
     public static final String SASL_JAAS_CONFIG = "sasl.jaas.config";
     public static final String SASL_JAAS_CONFIG_DOC = "JAAS login context parameters for SASL connections in the format used by JAAS configuration files. "
-        + "JAAS configuration file format is described <a href=\"https://docs.oracle.com/javase/8/docs/technotes/guides/security/jgss/tutorials/LoginConfigFile.html\">here</a>. "
-        + "The format for the value is: <code>loginModuleClass controlFlag (optionName=optionValue)*;</code>. For brokers, "
-        + "the config must be prefixed with listener prefix and SASL mechanism name in lower-case. For example, "
-        + "listener.name.sasl_ssl.scram-sha-256.sasl.jaas.config=com.example.ScramLoginModule required;";
+            + "JAAS configuration file format is described <a href=\"https://docs.oracle.com/javase/8/docs/technotes/guides/security/jgss/tutorials/LoginConfigFile.html\">here</a>. "
+            + "The format for the value is: <code>loginModuleClass controlFlag (optionName=optionValue)*;</code>. For brokers, "
+            + "the config must be prefixed with listener prefix and SASL mechanism name in lower-case. For example, "
+            + "listener.name.sasl_ssl.scram-sha-256.sasl.jaas.config=com.example.ScramLoginModule required;";
 
     public static final String SASL_CLIENT_CALLBACK_HANDLER_CLASS = "sasl.client.callback.handler.class";
     public static final String SASL_CLIENT_CALLBACK_HANDLER_CLASS_DOC = "The fully qualified name of a SASL client callback handler class "
-        + "that implements the AuthenticateCallbackHandler interface.";
+            + "that implements the AuthenticateCallbackHandler interface.";
 
     public static final String SASL_LOGIN_CALLBACK_HANDLER_CLASS = "sasl.login.callback.handler.class";
     public static final String SASL_LOGIN_CALLBACK_HANDLER_CLASS_DOC = "The fully qualified name of a SASL login callback handler class "
@@ -53,12 +55,12 @@ public class SaslConfigs {
 
     public static final String SASL_LOGIN_CLASS = "sasl.login.class";
     public static final String SASL_LOGIN_CLASS_DOC = "The fully qualified name of a class that implements the Login interface. "
-        + "For brokers, login config must be prefixed with listener prefix and SASL mechanism name in lower-case. For example, "
-        + "listener.name.sasl_ssl.scram-sha-256.sasl.login.class=com.example.CustomScramLogin";
+            + "For brokers, login config must be prefixed with listener prefix and SASL mechanism name in lower-case. For example, "
+            + "listener.name.sasl_ssl.scram-sha-256.sasl.login.class=com.example.CustomScramLogin";
 
     public static final String SASL_KERBEROS_SERVICE_NAME = "sasl.kerberos.service.name";
     public static final String SASL_KERBEROS_SERVICE_NAME_DOC = "The Kerberos principal name that Kafka runs as. "
-        + "This can be defined either in Kafka's JAAS config or in Kafka's config.";
+            + "This can be defined either in Kafka's JAAS config or in Kafka's config.";
 
     public static final String SASL_KERBEROS_KINIT_CMD = "sasl.kerberos.kinit.cmd";
     public static final String SASL_KERBEROS_KINIT_CMD_DOC = "Kerberos kinit command path.";
@@ -66,7 +68,7 @@ public class SaslConfigs {
 
     public static final String SASL_KERBEROS_TICKET_RENEW_WINDOW_FACTOR = "sasl.kerberos.ticket.renew.window.factor";
     public static final String SASL_KERBEROS_TICKET_RENEW_WINDOW_FACTOR_DOC = "Login thread will sleep until the specified window factor of time from last refresh"
-        + " to ticket's expiry has been reached, at which time it will try to renew the ticket.";
+            + " to ticket's expiry has been reached, at which time it will try to renew the ticket.";
     public static final double DEFAULT_KERBEROS_TICKET_RENEW_WINDOW_FACTOR = 0.80;
 
     public static final String SASL_KERBEROS_TICKET_RENEW_JITTER = "sasl.kerberos.ticket.renew.jitter";
@@ -135,169 +137,169 @@ public class SaslConfigs {
     public static final String SASL_OAUTHBEARER_JWT_RETRIEVER_CLASS = "sasl.oauthbearer.jwt.retriever.class";
     public static final String DEFAULT_SASL_OAUTHBEARER_JWT_RETRIEVER_CLASS = "org.apache.kafka.common.security.oauthbearer.DefaultJwtRetriever";
     public static final String SASL_OAUTHBEARER_JWT_RETRIEVER_CLASS_DOC = "<p>The fully-qualified class name of a <code>JwtRetriever</code> implementation used to"
-        + " request tokens from the identity provider.</p>"
-        + "<p>The default configuration value represents a class that maintains backward compatibility with previous versions of"
-        + " Apache Kafka. The default implementation uses the configuration to determine which concrete implementation to create."
-        + "<p>Other implementations that are provided include:</p>"
-        + "<ul>"
-        + "<li><code>org.apache.kafka.common.security.oauthbearer.ClientCredentialsJwtRetriever</code></li>"
-        + "<li><code>org.apache.kafka.common.security.oauthbearer.DefaultJwtRetriever</code></li>"
-        + "<li><code>org.apache.kafka.common.security.oauthbearer.FileJwtRetriever</code></li>"
-        + "<li><code>org.apache.kafka.common.security.oauthbearer.JwtBearerJwtRetriever</code></li>"
-        + "</ul>";
+            + " request tokens from the identity provider.</p>"
+            + "<p>The default configuration value represents a class that maintains backward compatibility with previous versions of"
+            + " Apache Kafka. The default implementation uses the configuration to determine which concrete implementation to create."
+            + "<p>Other implementations that are provided include:</p>"
+            + "<ul>"
+            + "<li><code>org.apache.kafka.common.security.oauthbearer.ClientCredentialsJwtRetriever</code></li>"
+            + "<li><code>org.apache.kafka.common.security.oauthbearer.DefaultJwtRetriever</code></li>"
+            + "<li><code>org.apache.kafka.common.security.oauthbearer.FileJwtRetriever</code></li>"
+            + "<li><code>org.apache.kafka.common.security.oauthbearer.JwtBearerJwtRetriever</code></li>"
+            + "</ul>";
 
     public static final String SASL_OAUTHBEARER_JWT_VALIDATOR_CLASS = "sasl.oauthbearer.jwt.validator.class";
     public static final String DEFAULT_SASL_OAUTHBEARER_JWT_VALIDATOR_CLASS = "org.apache.kafka.common.security.oauthbearer.DefaultJwtValidator";
     public static final String SASL_OAUTHBEARER_JWT_VALIDATOR_CLASS_DOC = "<p>The fully-qualified class name of a <code>JwtValidator</code> implementation used to"
-        + " validate the JWT from the identity provider.</p>"
-        + "<p>The default validator (<code>org.apache.kafka.common.security.oauthbearer.DefaultJwtValidator</code>) maintains backward compatibility with previous"
-        + " versions of Apache Kafka. The default validator uses configuration to determine which concrete implementation to create."
-        + "<p>The built-in <code>JwtValidator</code> implementations are:</p>"
-        + "<ul>"
-        + "<li><code>org.apache.kafka.common.security.oauthbearer.BrokerJwtValidator</code></li>"
-        + "<li><code>org.apache.kafka.common.security.oauthbearer.ClientJwtValidator</code></li>"
-        + "<li><code>org.apache.kafka.common.security.oauthbearer.DefaultJwtValidator</code></li>"
-        + "</ul>";
+            + " validate the JWT from the identity provider.</p>"
+            + "<p>The default validator (<code>org.apache.kafka.common.security.oauthbearer.DefaultJwtValidator</code>) maintains backward compatibility with previous"
+            + " versions of Apache Kafka. The default validator uses configuration to determine which concrete implementation to create."
+            + "<p>The built-in <code>JwtValidator</code> implementations are:</p>"
+            + "<ul>"
+            + "<li><code>org.apache.kafka.common.security.oauthbearer.BrokerJwtValidator</code></li>"
+            + "<li><code>org.apache.kafka.common.security.oauthbearer.ClientJwtValidator</code></li>"
+            + "<li><code>org.apache.kafka.common.security.oauthbearer.DefaultJwtValidator</code></li>"
+            + "</ul>";
 
     public static final String SASL_OAUTHBEARER_SCOPE = "sasl.oauthbearer.scope";
     public static final String SASL_OAUTHBEARER_SCOPE_DOC = "<p>This is the level of access a client application is granted to a resource or API which is"
-        + " included in the token request. If provided, it should match one or more scopes configured in the identity provider.</p>"
-        + "<p>"
-        + "The scope was previously stored as part of the <code>sasl.jaas.config</code> configuration with the key <code>scope</code>."
-        + " For backward compatibility, the <code>scope</code> JAAS option can still be used, but it is deprecated and will be removed in a future version."
-        + "</p>"
-        + "<p>Order of precedence:</p>"
-        + "<ul>"
-        + "<li><code>sasl.oauthbearer.scope</code> from configuration</li>"
-        + "<li><code>scope</code> from JAAS</li>"
-        + "</ul>";
+            + " included in the token request. If provided, it should match one or more scopes configured in the identity provider.</p>"
+            + "<p>"
+            + "The scope was previously stored as part of the <code>sasl.jaas.config</code> configuration with the key <code>scope</code>."
+            + " For backward compatibility, the <code>scope</code> JAAS option can still be used, but it is deprecated and will be removed in a future version."
+            + "</p>"
+            + "<p>Order of precedence:</p>"
+            + "<ul>"
+            + "<li><code>sasl.oauthbearer.scope</code> from configuration</li>"
+            + "<li><code>scope</code> from JAAS</li>"
+            + "</ul>";
 
     public static final String SASL_OAUTHBEARER_CLIENT_CREDENTIALS_CLIENT_ID = "sasl.oauthbearer.client.credentials.client.id";
     public static final String SASL_OAUTHBEARER_CLIENT_CREDENTIALS_CLIENT_ID_DOC = "<p>The ID (defined in/by the OAuth identity provider) to identify the client" +
-        " requesting the token.</p>"
-        + "<p>"
-        + "The client ID was previously stored as part of the <code>sasl.jaas.config</code> configuration with the key <code>clientId</code>."
-        + " For backward compatibility, the <code>clientId</code> JAAS option can still be used, but it is deprecated and will be removed in a future version."
-        + "</p>"
-        + "<p>Order of precedence:</p>"
-        + "<ul>"
-        + "<li><code>sasl.oauthbearer.client.credentials.client.id</code> from configuration</li>"
-        + "<li><code>clientId</code> from JAAS</li>"
-        + "</ul>";
+            " requesting the token.</p>"
+            + "<p>"
+            + "The client ID was previously stored as part of the <code>sasl.jaas.config</code> configuration with the key <code>clientId</code>."
+            + " For backward compatibility, the <code>clientId</code> JAAS option can still be used, but it is deprecated and will be removed in a future version."
+            + "</p>"
+            + "<p>Order of precedence:</p>"
+            + "<ul>"
+            + "<li><code>sasl.oauthbearer.client.credentials.client.id</code> from configuration</li>"
+            + "<li><code>clientId</code> from JAAS</li>"
+            + "</ul>";
 
     public static final String SASL_OAUTHBEARER_CLIENT_CREDENTIALS_CLIENT_SECRET = "sasl.oauthbearer.client.credentials.client.secret";
     public static final String SASL_OAUTHBEARER_CLIENT_CREDENTIALS_CLIENT_SECRET_DOC = "<p>The secret (defined by either the user or preassigned, depending on the"
-        + " identity provider) of the client requesting the token.</p>"
-        + "<p>"
-        + "The client secret was previously stored as part of the <code>sasl.jaas.config</code> configuration with the key <code>clientSecret</code>."
-        + " For backward compatibility, the <code>clientSecret</code> JAAS option can still be used, but it is deprecated and will be removed in a future version."
-        + "</p>"
-        + "<p>Order of precedence:</p>"
-        + "<ul>"
-        + "<li><code>sasl.oauthbearer.client.credentials.client.secret</code> from configuration</li>"
-        + "<li><code>clientSecret</code> from JAAS</li>"
-        + "</ul>";
+            + " identity provider) of the client requesting the token.</p>"
+            + "<p>"
+            + "The client secret was previously stored as part of the <code>sasl.jaas.config</code> configuration with the key <code>clientSecret</code>."
+            + " For backward compatibility, the <code>clientSecret</code> JAAS option can still be used, but it is deprecated and will be removed in a future version."
+            + "</p>"
+            + "<p>Order of precedence:</p>"
+            + "<ul>"
+            + "<li><code>sasl.oauthbearer.client.credentials.client.secret</code> from configuration</li>"
+            + "<li><code>clientSecret</code> from JAAS</li>"
+            + "</ul>";
 
     private static final String ASSERTION_FILE_MUTUAL_EXCLUSION_NOTICE = "<p><em>Note</em>: If a value for <code>sasl.oauthbearer.assertion.file</code> is provided,"
-        + " this configuration will be ignored.</p>";
+            + " this configuration will be ignored.</p>";
 
     public static final String SASL_OAUTHBEARER_ASSERTION_ALGORITHM = "sasl.oauthbearer.assertion.algorithm";
     public static final String DEFAULT_SASL_OAUTHBEARER_ASSERTION_ALGORITHM = "RS256";
     public static final String SASL_OAUTHBEARER_ASSERTION_ALGORITHM_DOC = "<p>The algorithm the Apache Kafka client should use to sign the assertion sent"
-        + " to the identity provider. It is also used as the value of the OAuth <code>alg</code> (Algorithm) header in the JWT assertion.</p>"
-        + ASSERTION_FILE_MUTUAL_EXCLUSION_NOTICE;
+            + " to the identity provider. It is also used as the value of the OAuth <code>alg</code> (Algorithm) header in the JWT assertion.</p>"
+            + ASSERTION_FILE_MUTUAL_EXCLUSION_NOTICE;
 
     public static final String SASL_OAUTHBEARER_ASSERTION_CLAIM_AUD = "sasl.oauthbearer.assertion.claim.aud";
     public static final String SASL_OAUTHBEARER_ASSERTION_CLAIM_AUD_DOC = "<p>The JWT <code>aud</code> (Audience) claim which will be included in the "
-        + " client JWT assertion created locally.</p>"
-        + ASSERTION_FILE_MUTUAL_EXCLUSION_NOTICE;
+            + " client JWT assertion created locally.</p>"
+            + ASSERTION_FILE_MUTUAL_EXCLUSION_NOTICE;
 
     public static final String SASL_OAUTHBEARER_ASSERTION_CLAIM_EXP_SECONDS = "sasl.oauthbearer.assertion.claim.exp.seconds";
     public static final int DEFAULT_SASL_OAUTHBEARER_ASSERTION_CLAIM_EXP_SECONDS = 300;
     public static final String SASL_OAUTHBEARER_ASSERTION_CLAIM_EXP_SECONDS_DOC = "<p>The number of seconds <em>in the future</em> for which the JWT is valid."
-        + " The value is used to determine the JWT <code>exp</code> (Expiration) claim based on the current system time when the JWT is created.</p>"
-        + "<p>The formula to generate the <code>exp</code> claim is very simple:</p>"
-        + "<pre>"
-        + "Let:\n\n"
-        + "  x = the current timestamp in seconds, on client\n"
-        + "  y = the value of this configuration\n"
-        + "\n"
-        + "Then:\n\n"
-        + "  exp = x + y\n"
-        + "</pre>"
-        + ASSERTION_FILE_MUTUAL_EXCLUSION_NOTICE;
+            + " The value is used to determine the JWT <code>exp</code> (Expiration) claim based on the current system time when the JWT is created.</p>"
+            + "<p>The formula to generate the <code>exp</code> claim is very simple:</p>"
+            + "<pre>"
+            + "Let:\n\n"
+            + "  x = the current timestamp in seconds, on client\n"
+            + "  y = the value of this configuration\n"
+            + "\n"
+            + "Then:\n\n"
+            + "  exp = x + y\n"
+            + "</pre>"
+            + ASSERTION_FILE_MUTUAL_EXCLUSION_NOTICE;
 
     public static final String SASL_OAUTHBEARER_ASSERTION_CLAIM_ISS = "sasl.oauthbearer.assertion.claim.iss";
     public static final String SASL_OAUTHBEARER_ASSERTION_CLAIM_ISS_DOC = "<p>The value to be used as the <code>iss</code> (Issuer) claim which will be included in the"
-        + " client JWT assertion created locally.</p>"
-        + ASSERTION_FILE_MUTUAL_EXCLUSION_NOTICE;
+            + " client JWT assertion created locally.</p>"
+            + ASSERTION_FILE_MUTUAL_EXCLUSION_NOTICE;
 
     public static final String SASL_OAUTHBEARER_ASSERTION_CLAIM_JTI_INCLUDE = "sasl.oauthbearer.assertion.claim.jti.include";
     public static final boolean DEFAULT_SASL_OAUTHBEARER_ASSERTION_CLAIM_JTI_INCLUDE = false;
     public static final String SASL_OAUTHBEARER_ASSERTION_CLAIM_JTI_INCLUDE_DOC = "<p>Flag that determines if the JWT assertion should generate a unique ID for the"
-        + " JWT and include it in the <code>jti</code> (JWT ID) claim.</p>"
-        + ASSERTION_FILE_MUTUAL_EXCLUSION_NOTICE;
+            + " JWT and include it in the <code>jti</code> (JWT ID) claim.</p>"
+            + ASSERTION_FILE_MUTUAL_EXCLUSION_NOTICE;
 
     public static final String SASL_OAUTHBEARER_ASSERTION_CLAIM_NBF_SECONDS = "sasl.oauthbearer.assertion.claim.nbf.seconds";
     public static final int DEFAULT_SASL_OAUTHBEARER_ASSERTION_CLAIM_NBF_SECONDS = 60;
     public static final String SASL_OAUTHBEARER_ASSERTION_CLAIM_NBF_SECONDS_DOC = "<p>The number of seconds <em>in the past</em> from which the JWT is valid."
-        + " The value is used to determine the JWT <code>nbf</code> (Not Before) claim based on the current system time when the JWT is created.</p>"
-        + "<p>The formula to generate the <code>nbf</code> claim is very simple:</p>"
-        + "<pre>"
-        + "Let:\n\n"
-        + "  x = the current timestamp in seconds, on client\n"
-        + "  y = the value of this configuration\n"
-        + "\n"
-        + "Then:\n\n"
-        + "  nbf = x - y\n"
-        + "</pre>"
-        + ASSERTION_FILE_MUTUAL_EXCLUSION_NOTICE;
+            + " The value is used to determine the JWT <code>nbf</code> (Not Before) claim based on the current system time when the JWT is created.</p>"
+            + "<p>The formula to generate the <code>nbf</code> claim is very simple:</p>"
+            + "<pre>"
+            + "Let:\n\n"
+            + "  x = the current timestamp in seconds, on client\n"
+            + "  y = the value of this configuration\n"
+            + "\n"
+            + "Then:\n\n"
+            + "  nbf = x - y\n"
+            + "</pre>"
+            + ASSERTION_FILE_MUTUAL_EXCLUSION_NOTICE;
 
     public static final String SASL_OAUTHBEARER_ASSERTION_CLAIM_SUB = "sasl.oauthbearer.assertion.claim.sub";
     public static final String SASL_OAUTHBEARER_ASSERTION_CLAIM_SUB_DOC = "<p>The value to be used as the <code>sub</code> (Subject) claim which will be included in the"
-        + " client JWT assertion created locally.</p>"
-        + ASSERTION_FILE_MUTUAL_EXCLUSION_NOTICE;
+            + " client JWT assertion created locally.</p>"
+            + ASSERTION_FILE_MUTUAL_EXCLUSION_NOTICE;
 
     public static final String SASL_OAUTHBEARER_ASSERTION_FILE = "sasl.oauthbearer.assertion.file";
     public static final String SASL_OAUTHBEARER_ASSERTION_FILE_DOC = "<p>File that contains a <em>pre-generated</em> JWT assertion.</p>"
-        + "<p>The underlying implementation caches the file contents to avoid the performance hit of loading the file on each access. The caching mechanism will detect when"
-        + "the file changes to allow for the file to be reloaded on modifications. This allows for &quot;live&quot; assertion rotation without restarting the Kafka client.</p>"
-        + "<p>The file contains the assertion in the serialized, three part JWT format:</p>"
-        + "<ol>"
-        + "<li>The <em>header</em> section is a base 64-encoded JWT header that contains values like <code>alg</code> (Algorithm),"
-        + " <code>typ</code> (Type, always the literal value <code>JWT</code>), etc.</li>"
-        + "<li>The <em>payload</em> section includes the base 64-encoded set of JWT claims, such as <code>aud</code> (Audience), <code>iss</code> (Issuer),"
-        + " <code>sub</code> (Subject), etc.</li>"
-        + "<li>The <em>signature</em> section is the concatenated <em>header</em> and <em>payload</em> sections that was signed using a private key</li>"
-        + "</ol>"
-        + "<p>See <a href=\"https://datatracker.ietf.org/doc/html/rfc7519\">RFC 7519</a> and <a href=\"https://datatracker.ietf.org/doc/html/rfc7515\">RFC 7515</a>"
-        + " for more details on the JWT and JWS formats.</p>"
-        + "<p><em>Note</em>: If a value for <code>sasl.oauthbearer.assertion.file</code> is provided, all other"
-        + " <code>sasl.oauthbearer.assertion.</code>* configurations are ignored.</p>";
+            + "<p>The underlying implementation caches the file contents to avoid the performance hit of loading the file on each access. The caching mechanism will detect when"
+            + "the file changes to allow for the file to be reloaded on modifications. This allows for &quot;live&quot; assertion rotation without restarting the Kafka client.</p>"
+            + "<p>The file contains the assertion in the serialized, three part JWT format:</p>"
+            + "<ol>"
+            + "<li>The <em>header</em> section is a base 64-encoded JWT header that contains values like <code>alg</code> (Algorithm),"
+            + " <code>typ</code> (Type, always the literal value <code>JWT</code>), etc.</li>"
+            + "<li>The <em>payload</em> section includes the base 64-encoded set of JWT claims, such as <code>aud</code> (Audience), <code>iss</code> (Issuer),"
+            + " <code>sub</code> (Subject), etc.</li>"
+            + "<li>The <em>signature</em> section is the concatenated <em>header</em> and <em>payload</em> sections that was signed using a private key</li>"
+            + "</ol>"
+            + "<p>See <a href=\"https://datatracker.ietf.org/doc/html/rfc7519\">RFC 7519</a> and <a href=\"https://datatracker.ietf.org/doc/html/rfc7515\">RFC 7515</a>"
+            + " for more details on the JWT and JWS formats.</p>"
+            + "<p><em>Note</em>: If a value for <code>sasl.oauthbearer.assertion.file</code> is provided, all other"
+            + " <code>sasl.oauthbearer.assertion.</code>* configurations are ignored.</p>";
 
     public static final String SASL_OAUTHBEARER_ASSERTION_PRIVATE_KEY_FILE = "sasl.oauthbearer.assertion.private.key.file";
-    public static final String SASL_OAUTHBEARER_ASSERTION_PRIVATE_KEY_FILE_DOC =  "<p>File that contains a private key in the standard PEM format which is used to"
-        + " sign the JWT assertion sent to the identity provider.</p>"
-        + "<p>The underlying implementation caches the file contents to avoid the performance hit of loading the file on each access. The caching mechanism will detect when"
-        + " the file changes to allow for the file to be reloaded on modifications. This allows for &quot;live&quot; private key rotation without restarting the Kafka client.</p>"
-        + ASSERTION_FILE_MUTUAL_EXCLUSION_NOTICE;
+    public static final String SASL_OAUTHBEARER_ASSERTION_PRIVATE_KEY_FILE_DOC = "<p>File that contains a private key in the standard PEM format which is used to"
+            + " sign the JWT assertion sent to the identity provider.</p>"
+            + "<p>The underlying implementation caches the file contents to avoid the performance hit of loading the file on each access. The caching mechanism will detect when"
+            + " the file changes to allow for the file to be reloaded on modifications. This allows for &quot;live&quot; private key rotation without restarting the Kafka client.</p>"
+            + ASSERTION_FILE_MUTUAL_EXCLUSION_NOTICE;
 
     public static final String SASL_OAUTHBEARER_ASSERTION_PRIVATE_KEY_PASSPHRASE = "sasl.oauthbearer.assertion.private.key.passphrase";
     public static final String SASL_OAUTHBEARER_ASSERTION_PRIVATE_KEY_PASSPHRASE_DOC = "<p>The optional passphrase to decrypt the private key file specified by"
-        + " <code>sasl.oauthbearer.assertion.private.key.file</code>.</p>"
-        + "<p><em>Note</em>: If the file referred to by <code>sasl.oauthbearer.assertion.private.key.file</code> is modified on the file system at runtime and it was"
-        + " created with a <em>different</em> passphrase than it was previously, the client will not be able to access the private key file because the passphrase is now"
-        + " out of date. For that reason, when using private key passphrases, either use the same passphrase each time, or&mdash;for improved security&mdash;restart"
-        + " the Kafka client using the new passphrase configuration.</p>"
-        + ASSERTION_FILE_MUTUAL_EXCLUSION_NOTICE;
+            + " <code>sasl.oauthbearer.assertion.private.key.file</code>.</p>"
+            + "<p><em>Note</em>: If the file referred to by <code>sasl.oauthbearer.assertion.private.key.file</code> is modified on the file system at runtime and it was"
+            + " created with a <em>different</em> passphrase than it was previously, the client will not be able to access the private key file because the passphrase is now"
+            + " out of date. For that reason, when using private key passphrases, either use the same passphrase each time, or&mdash;for improved security&mdash;restart"
+            + " the Kafka client using the new passphrase configuration.</p>"
+            + ASSERTION_FILE_MUTUAL_EXCLUSION_NOTICE;
 
     public static final String SASL_OAUTHBEARER_ASSERTION_TEMPLATE_FILE = "sasl.oauthbearer.assertion.template.file";
     public static final String SASL_OAUTHBEARER_ASSERTION_TEMPLATE_FILE_DOC = "<p>This optional configuration specifies the file containing the JWT headers and/or"
-        + " payload claims to be used when creating the JWT assertion.</p>"
-        + "<p>Not all identity providers require the same set of claims; some may require a given claim while others may prohibit it."
-        + " In order to provide the most flexibility, this configuration allows the user to provide the static header values and claims"
-        + " that are to be included in the JWT.</p>"
-        + ASSERTION_FILE_MUTUAL_EXCLUSION_NOTICE;
+            + " payload claims to be used when creating the JWT assertion.</p>"
+            + "<p>Not all identity providers require the same set of claims; some may require a given claim while others may prohibit it."
+            + " In order to provide the most flexibility, this configuration allows the user to provide the static header values and claims"
+            + " that are to be included in the JWT.</p>"
+            + ASSERTION_FILE_MUTUAL_EXCLUSION_NOTICE;
 
     public static final String SASL_OAUTHBEARER_SCOPE_CLAIM_NAME = "sasl.oauthbearer.scope.claim.name";
     public static final String DEFAULT_SASL_OAUTHBEARER_SCOPE_CLAIM_NAME = "scope";
@@ -332,20 +334,20 @@ public class SaslConfigs {
             + " cache that contains the keys to verify the signature of the JWT.";
 
     private static final String JWKS_EXPONENTIAL_BACKOFF_NOTE = " JWKS retrieval uses an exponential backoff algorithm with an initial wait based on the"
-        + " sasl.oauthbearer.jwks.endpoint.retry.backoff.ms setting and will double in wait length between attempts up to a maximum wait length specified by the"
-        + " sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms setting.";
+            + " sasl.oauthbearer.jwks.endpoint.retry.backoff.ms setting and will double in wait length between attempts up to a maximum wait length specified by the"
+            + " sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms setting.";
 
     public static final String SASL_OAUTHBEARER_JWKS_ENDPOINT_RETRY_BACKOFF_MAX_MS = "sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms";
     public static final long DEFAULT_SASL_OAUTHBEARER_JWKS_ENDPOINT_RETRY_BACKOFF_MAX_MS = 10000;
     public static final String SASL_OAUTHBEARER_JWKS_ENDPOINT_RETRY_BACKOFF_MAX_MS_DOC = "The (optional) value in milliseconds for the maximum wait between attempts to retrieve the JWKS (JSON Web Key Set)"
-        + " from the external authentication provider."
-        + JWKS_EXPONENTIAL_BACKOFF_NOTE;
+            + " from the external authentication provider."
+            + JWKS_EXPONENTIAL_BACKOFF_NOTE;
 
     public static final String SASL_OAUTHBEARER_JWKS_ENDPOINT_RETRY_BACKOFF_MS = "sasl.oauthbearer.jwks.endpoint.retry.backoff.ms";
     public static final long DEFAULT_SASL_OAUTHBEARER_JWKS_ENDPOINT_RETRY_BACKOFF_MS = 100;
     public static final String SASL_OAUTHBEARER_JWKS_ENDPOINT_RETRY_BACKOFF_MS_DOC = "The (optional) value in milliseconds for the initial wait between JWKS (JSON Web Key Set) retrieval attempts from the external"
-        + " authentication provider."
-        + JWKS_EXPONENTIAL_BACKOFF_NOTE;
+            + " authentication provider."
+            + JWKS_EXPONENTIAL_BACKOFF_NOTE;
 
     public static final String SASL_OAUTHBEARER_CLOCK_SKEW_SECONDS = "sasl.oauthbearer.clock.skew.seconds";
     public static final int DEFAULT_SASL_OAUTHBEARER_CLOCK_SKEW_SECONDS = 30;
@@ -366,6 +368,7 @@ public class SaslConfigs {
     public static final boolean DEFAULT_SASL_OAUTHBEARER_HEADER_URLENCODE = false;
     public static final String SASL_OAUTHBEARER_HEADER_URLENCODE_DOC = "The (optional) setting to enable the OAuth client to URL-encode the client_id and client_secret in the authorization header"
             + " in accordance with RFC6749, see <a href=\"https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1\">here</a> for more details. The default value is set to 'false' for backward compatibility";
+
     public static void addClientSaslSupport(ConfigDef config) {
         config.define(SaslConfigs.SASL_KERBEROS_SERVICE_NAME, ConfigDef.Type.STRING, null, ConfigDef.Importance.MEDIUM, SaslConfigs.SASL_KERBEROS_SERVICE_NAME_DOC)
                 .define(SaslConfigs.SASL_KERBEROS_KINIT_CMD, ConfigDef.Type.STRING, SaslConfigs.DEFAULT_KERBEROS_KINIT_CMD, ConfigDef.Importance.LOW, SaslConfigs.SASL_KERBEROS_KINIT_CMD_DOC)

@@ -21,7 +21,7 @@ import org.apache.kafka.common.errors.TimeoutException;
 /**
  * This exception is thrown if the producer cannot allocate memory for a record within max.block.ms due to the buffer
  * being too full.
- *
+ * <p>
  * In earlier versions a TimeoutException was thrown instead of this. To keep existing catch-clauses working
  * this class extends TimeoutException.
  *

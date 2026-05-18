@@ -185,12 +185,12 @@ public class ProducerPerformanceTest {
         doReturn(null).when(producerMock).send(any(), any());
         doReturn(producerMock).when(producerPerformanceSpy).createKafkaProducer(any(Properties.class));
 
-        String[] args = new String[] {
-            "--topic", "Hello-Kafka", 
-            "--num-records", "5", 
-            "--throughput", "100", 
-            "--record-size", "100", 
-            "--bootstrap-server", "localhost:9000"};
+        String[] args = new String[]{
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--bootstrap-server", "localhost:9000"};
         producerPerformanceSpy.start(args);
         verify(producerMock, times(5)).send(any(), any());
         verify(producerMock, times(1)).close();
@@ -201,13 +201,13 @@ public class ProducerPerformanceTest {
         doReturn(null).when(producerMock).send(any(), any());
         doReturn(producerMock).when(producerPerformanceSpy).createKafkaProducer(any(Properties.class));
 
-        String[] args = new String[] {
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "100",
-            "--record-size", "100",
-            "--transactional-id", "foobar",
-            "--bootstrap-server", "localhost:9000"};
+        String[] args = new String[]{
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--transactional-id", "foobar",
+                "--bootstrap-server", "localhost:9000"};
         producerPerformanceSpy.start(args);
         verify(producerMock, times(1)).beginTransaction();
         verify(producerMock, times(1)).commitTransaction();
@@ -222,12 +222,12 @@ public class ProducerPerformanceTest {
             return null;
         }).when(producerMock).send(any(), any());
 
-        String[] args = new String[] {
-            "--topic", "Hello-Kafka",
-            "--num-records", "10",
-            "--throughput", "1",
-            "--record-size", "100",
-            "--bootstrap-server", "localhost:9000"};
+        String[] args = new String[]{
+                "--topic", "Hello-Kafka",
+                "--num-records", "10",
+                "--throughput", "1",
+                "--record-size", "100",
+                "--bootstrap-server", "localhost:9000"};
         producerPerformanceSpy.start(args);
 
         verify(producerMock, times(10)).send(any(), any());
@@ -243,12 +243,12 @@ public class ProducerPerformanceTest {
             return null;
         }).when(producerMock).send(any(), any());
 
-        String[] args = new String[] {
-            "--topic", "Hello-Kafka",
-            "--num-records", "10",
-            "--throughput", "1",
-            "--record-size", "100",
-            "--bootstrap-server", "localhost:9000"};
+        String[] args = new String[]{
+                "--topic", "Hello-Kafka",
+                "--num-records", "10",
+                "--throughput", "1",
+                "--record-size", "100",
+                "--bootstrap-server", "localhost:9000"};
         producerPerformanceSpy.start(args);
 
         verify(producerMock, times(10)).send(any(), any());
@@ -259,24 +259,24 @@ public class ProducerPerformanceTest {
 
     @Test
     public void testMutuallyExclusiveGroup() {
-        String[] args1 = new String[] {
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "100",
-            "--record-size", "100",
-            "--payload-monotonic",
-            "--bootstrap-server", "localhost:9000"};
+        String[] args1 = new String[]{
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--payload-monotonic",
+                "--bootstrap-server", "localhost:9000"};
         ArgumentParser parser1 = ProducerPerformance.argParser();
-        ArgumentParserException thrown = assertThrows(ArgumentParserException.class, () ->  parser1.parseArgs(args1));
+        ArgumentParserException thrown = assertThrows(ArgumentParserException.class, () -> parser1.parseArgs(args1));
         assertEquals("argument --payload-monotonic: not allowed with argument --record-size", thrown.getMessage());
 
-        String[] args2 = new String[] {
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "100",
-            "--payload-file",  "abc.txt",
-            "--payload-monotonic",
-            "--bootstrap-server", "localhost:9000"};
+        String[] args2 = new String[]{
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--payload-file", "abc.txt",
+                "--payload-monotonic",
+                "--bootstrap-server", "localhost:9000"};
         ArgumentParser parser2 = ProducerPerformance.argParser();
         thrown = assertThrows(ArgumentParserException.class, () -> parser2.parseArgs(args2));
         assertEquals("argument --payload-monotonic: not allowed with argument --payload-file", thrown.getMessage());
@@ -284,13 +284,13 @@ public class ProducerPerformanceTest {
 
     @Test
     public void testUnexpectedArg() {
-        String[] args = new String[] {
-            "--test", "test", 
-            "--topic", "Hello-Kafka", 
-            "--num-records", "5", 
-            "--throughput", "100", 
-            "--record-size", "100",
-            "--bootstrap-server", "localhost:9000"};
+        String[] args = new String[]{
+                "--test", "test",
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--bootstrap-server", "localhost:9000"};
         ArgumentParser parser = ProducerPerformance.argParser();
         ArgumentParserException thrown = assertThrows(ArgumentParserException.class, () -> parser.parseArgs(args));
         assertEquals("unrecognized arguments: '--test'", thrown.getMessage());
@@ -298,12 +298,12 @@ public class ProducerPerformanceTest {
 
     @Test
     public void testFractionalThroughput() {
-        String[] args = new String[] {
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "1.25",
-            "--record-size", "100",
-            "--bootstrap-server", "localhost:9000"};
+        String[] args = new String[]{
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "1.25",
+                "--record-size", "100",
+                "--bootstrap-server", "localhost:9000"};
         ArgumentParser parser = ProducerPerformance.argParser();
         assertDoesNotThrow(() -> parser.parseArgs(args));
     }
@@ -360,7 +360,7 @@ public class ProducerPerformanceTest {
     }
 
     @Test
-    public void testClientIdOverride()  throws Exception {
+    public void testClientIdOverride() throws Exception {
         List<String> producerProps = List.of("client.id=producer-1");
 
         Properties prop = ProducerPerformance.readProps(producerProps, null);
@@ -409,14 +409,14 @@ public class ProducerPerformanceTest {
     public void testConfigPostProcessor() throws IOException, ArgumentParserException {
         ArgumentParser parser = ProducerPerformance.argParser();
         String[] args = new String[]{
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "100",
-            "--record-size", "100",
-            "--print-metrics",
-            "--bootstrap-server", "localhost:9000",
-            "--transactional-id", "foobar",
-            "--transaction-duration-ms", "5000",
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--print-metrics",
+                "--bootstrap-server", "localhost:9000",
+                "--transactional-id", "foobar",
+                "--transaction-duration-ms", "5000",
         };
         ProducerPerformance.ConfigPostProcessor configs = new ProducerPerformance.ConfigPostProcessor(parser, args);
         assertEquals("localhost:9000", configs.bootstrapServer);
@@ -437,104 +437,104 @@ public class ProducerPerformanceTest {
     public void testInvalidConfigPostProcessor() {
         ArgumentParser parser = ProducerPerformance.argParser();
         String[] invalidProducerProps = new String[]{
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "100",
-            "--record-size", "100"};
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "100"};
         assertEquals("At least one of --bootstrap-server, --command-property, --producer-props, --producer.config or --command-config must be specified.",
-            assertThrows(ArgumentParserException.class,
-                () -> new ProducerPerformance.ConfigPostProcessor(parser, invalidProducerProps)).getMessage());
+                assertThrows(ArgumentParserException.class,
+                        () -> new ProducerPerformance.ConfigPostProcessor(parser, invalidProducerProps)).getMessage());
 
         String[] invalidTransactionDurationMs = new String[]{
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "100",
-            "--record-size", "100",
-            "--bootstrap-server", "localhost:9000",
-            "--transaction-duration-ms", "0"};
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--bootstrap-server", "localhost:9000",
+                "--transaction-duration-ms", "0"};
         assertEquals("--transaction-duration-ms should be greater than zero.",
-            assertThrows(ArgumentParserException.class,
-                () -> new ProducerPerformance.ConfigPostProcessor(parser, invalidTransactionDurationMs)).getMessage());
+                assertThrows(ArgumentParserException.class,
+                        () -> new ProducerPerformance.ConfigPostProcessor(parser, invalidTransactionDurationMs)).getMessage());
 
         String[] invalidNumRecords = new String[]{
-            "--topic", "Hello-Kafka",
-            "--num-records", "-5",
-            "--throughput", "100",
-            "--record-size", "100",
-            "--bootstrap-server", "localhost:9000"};
+                "--topic", "Hello-Kafka",
+                "--num-records", "-5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--bootstrap-server", "localhost:9000"};
         assertEquals("--num-records should be greater than zero.",
-            assertThrows(ArgumentParserException.class,
-                () -> new ProducerPerformance.ConfigPostProcessor(parser, invalidNumRecords)).getMessage());
+                assertThrows(ArgumentParserException.class,
+                        () -> new ProducerPerformance.ConfigPostProcessor(parser, invalidNumRecords)).getMessage());
 
         String[] invalidRecordSize = new String[]{
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "100",
-            "--record-size", "-100",
-            "--bootstrap-server", "localhost:9000"};
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "-100",
+                "--bootstrap-server", "localhost:9000"};
         assertEquals("--record-size should be greater than zero.",
-            assertThrows(ArgumentParserException.class,
-                () -> new ProducerPerformance.ConfigPostProcessor(parser, invalidRecordSize)).getMessage());
+                assertThrows(ArgumentParserException.class,
+                        () -> new ProducerPerformance.ConfigPostProcessor(parser, invalidRecordSize)).getMessage());
 
         String[] invalidReportingInterval = new String[]{
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "100",
-            "--record-size", "100",
-            "--reporting-interval", "0",
-            "--bootstrap-server", "localhost:9000"};
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--reporting-interval", "0",
+                "--bootstrap-server", "localhost:9000"};
         assertEquals("--reporting-interval should be greater than zero.",
-            assertThrows(ArgumentParserException.class,
-                () -> new ProducerPerformance.ConfigPostProcessor(parser, invalidReportingInterval)).getMessage());
+                assertThrows(ArgumentParserException.class,
+                        () -> new ProducerPerformance.ConfigPostProcessor(parser, invalidReportingInterval)).getMessage());
     }
 
     @Test
     public void testBootstrapServer() throws IOException, ArgumentParserException {
         ArgumentParser parser = ProducerPerformance.argParser();
         String[] args = new String[]{
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "100",
-            "--record-size", "100",
-            "--bootstrap-server", "localhost:9000"};
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--bootstrap-server", "localhost:9000"};
         ProducerPerformance.ConfigPostProcessor configs = new ProducerPerformance.ConfigPostProcessor(parser, args);
         assertEquals("localhost:9000", configs.producerProps.get(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG));
 
         args = new String[]{
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "100",
-            "--record-size", "100",
-            "--command-property", "bootstrap.servers=localhost:9001"};
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--command-property", "bootstrap.servers=localhost:9001"};
         configs = new ProducerPerformance.ConfigPostProcessor(parser, args);
         assertEquals("localhost:9001", configs.producerProps.get(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG));
 
         args = new String[]{
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "100",
-            "--record-size", "100",
-            "--bootstrap-server", "localhost:9000",
-            "--command-property", "bootstrap.servers=localhost:9001"};
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--bootstrap-server", "localhost:9000",
+                "--command-property", "bootstrap.servers=localhost:9001"};
         configs = new ProducerPerformance.ConfigPostProcessor(parser, args);
         assertEquals("localhost:9000", configs.producerProps.get(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG));
 
         args = new String[]{
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "100",
-            "--record-size", "100",
-            "--producer-props", "bootstrap.servers=localhost:9001"};
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--producer-props", "bootstrap.servers=localhost:9001"};
         configs = new ProducerPerformance.ConfigPostProcessor(parser, args);
         assertEquals("localhost:9001", configs.producerProps.get(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG));
 
         args = new String[]{
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "100",
-            "--record-size", "100",
-            "--bootstrap-server", "localhost:9000",
-            "--producer-props", "bootstrap.servers=localhost:9001"};
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--bootstrap-server", "localhost:9000",
+                "--producer-props", "bootstrap.servers=localhost:9001"};
         configs = new ProducerPerformance.ConfigPostProcessor(parser, args);
         assertEquals("localhost:9000", configs.producerProps.get(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG));
     }
@@ -543,11 +543,11 @@ public class ProducerPerformanceTest {
     public void testNoTransactionRelatedConfigs() throws IOException, ArgumentParserException {
         ArgumentParser parser = ProducerPerformance.argParser();
         String[] args = new String[]{
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "100",
-            "--record-size", "100",
-            "--bootstrap-server", "localhost:9000"};
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--bootstrap-server", "localhost:9000"};
         ProducerPerformance.ConfigPostProcessor configs = new ProducerPerformance.ConfigPostProcessor(parser, args);
         assertFalse(configs.transactionsEnabled);
         assertNull(configs.transactionDurationMs);
@@ -558,12 +558,12 @@ public class ProducerPerformanceTest {
     public void testEnableTransactionByProducerProperty() throws IOException, ArgumentParserException {
         ArgumentParser parser = ProducerPerformance.argParser();
         String[] args = new String[]{
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "100",
-            "--record-size", "100",
-            "--bootstrap-server", "localhost:9000",
-            "--command-property", "transactional.id=foobar"};
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--bootstrap-server", "localhost:9000",
+                "--command-property", "transactional.id=foobar"};
         ProducerPerformance.ConfigPostProcessor configs = new ProducerPerformance.ConfigPostProcessor(parser, args);
         assertTrue(configs.transactionsEnabled);
         assertEquals(ProducerPerformance.DEFAULT_TRANSACTION_DURATION_MS, configs.transactionDurationMs);
@@ -575,39 +575,39 @@ public class ProducerPerformanceTest {
         File producerConfigFile = createTempFile("transactional.id=foobar");
         ArgumentParser parser = ProducerPerformance.argParser();
         String[] args = new String[]{
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "100",
-            "--record-size", "100",
-            "--bootstrap-server", "localhost:9000",
-            "--command-config", producerConfigFile.getAbsolutePath()};
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--bootstrap-server", "localhost:9000",
+                "--command-config", producerConfigFile.getAbsolutePath()};
         ProducerPerformance.ConfigPostProcessor configs = new ProducerPerformance.ConfigPostProcessor(parser, args);
         assertTrue(configs.transactionsEnabled);
         assertEquals(ProducerPerformance.DEFAULT_TRANSACTION_DURATION_MS, configs.transactionDurationMs);
         assertEquals("foobar", configs.producerProps.get(ProducerConfig.TRANSACTIONAL_ID_CONFIG));
 
         args = new String[]{
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "100",
-            "--record-size", "100",
-            "--bootstrap-server", "localhost:9000",
-            "--command-config", producerConfigFile.getAbsolutePath(),
-            "--command-property", "transactional.id=hello_kafka"};
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--bootstrap-server", "localhost:9000",
+                "--command-config", producerConfigFile.getAbsolutePath(),
+                "--command-property", "transactional.id=hello_kafka"};
         configs = new ProducerPerformance.ConfigPostProcessor(parser, args);
         assertTrue(configs.transactionsEnabled);
         assertEquals(ProducerPerformance.DEFAULT_TRANSACTION_DURATION_MS, configs.transactionDurationMs);
         assertEquals("hello_kafka", configs.producerProps.get(ProducerConfig.TRANSACTIONAL_ID_CONFIG));
 
         args = new String[]{
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "100",
-            "--record-size", "100",
-            "--transactional-id", "kafka_hello",
-            "--bootstrap-server", "localhost:9000",
-            "--command-config", producerConfigFile.getAbsolutePath(),
-            "--command-property", "transactional.id=hello_kafka"};
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--transactional-id", "kafka_hello",
+                "--bootstrap-server", "localhost:9000",
+                "--command-config", producerConfigFile.getAbsolutePath(),
+                "--command-property", "transactional.id=hello_kafka"};
         configs = new ProducerPerformance.ConfigPostProcessor(parser, args);
         assertTrue(configs.transactionsEnabled);
         assertEquals(ProducerPerformance.DEFAULT_TRANSACTION_DURATION_MS, configs.transactionDurationMs);
@@ -621,39 +621,39 @@ public class ProducerPerformanceTest {
         File producerConfigFile = createTempFile("transactional.id=foobar");
         ArgumentParser parser = ProducerPerformance.argParser();
         String[] args = new String[]{
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "100",
-            "--record-size", "100",
-            "--bootstrap-server", "localhost:9000",
-            "--producer.config", producerConfigFile.getAbsolutePath()};
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--bootstrap-server", "localhost:9000",
+                "--producer.config", producerConfigFile.getAbsolutePath()};
         ProducerPerformance.ConfigPostProcessor configs = new ProducerPerformance.ConfigPostProcessor(parser, args);
         assertTrue(configs.transactionsEnabled);
         assertEquals(ProducerPerformance.DEFAULT_TRANSACTION_DURATION_MS, configs.transactionDurationMs);
         assertEquals("foobar", configs.producerProps.get(ProducerConfig.TRANSACTIONAL_ID_CONFIG));
 
         args = new String[]{
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "100",
-            "--record-size", "100",
-            "--bootstrap-server", "localhost:9000",
-            "--producer.config", producerConfigFile.getAbsolutePath(),
-            "--producer-props", "transactional.id=hello_kafka"};
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--bootstrap-server", "localhost:9000",
+                "--producer.config", producerConfigFile.getAbsolutePath(),
+                "--producer-props", "transactional.id=hello_kafka"};
         configs = new ProducerPerformance.ConfigPostProcessor(parser, args);
         assertTrue(configs.transactionsEnabled);
         assertEquals(ProducerPerformance.DEFAULT_TRANSACTION_DURATION_MS, configs.transactionDurationMs);
         assertEquals("hello_kafka", configs.producerProps.get(ProducerConfig.TRANSACTIONAL_ID_CONFIG));
 
         args = new String[]{
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "100",
-            "--record-size", "100",
-            "--transactional-id", "kafka_hello",
-            "--bootstrap-server", "localhost:9000",
-            "--producer.config", producerConfigFile.getAbsolutePath(),
-            "--producer-props", "transactional.id=hello_kafka"};
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--transactional-id", "kafka_hello",
+                "--bootstrap-server", "localhost:9000",
+                "--producer.config", producerConfigFile.getAbsolutePath(),
+                "--producer-props", "transactional.id=hello_kafka"};
         configs = new ProducerPerformance.ConfigPostProcessor(parser, args);
         assertTrue(configs.transactionsEnabled);
         assertEquals(ProducerPerformance.DEFAULT_TRANSACTION_DURATION_MS, configs.transactionDurationMs);
@@ -666,22 +666,22 @@ public class ProducerPerformanceTest {
     public void testEnsureDeprecatedAndModernArgumentsNotBothSpecified() throws IOException {
         File producerConfigFile = createTempFile("bootstrap.servers=localhost:9000");
         String[] args = new String[]{
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "100",
-            "--record-size", "100",
-            "--producer.config", producerConfigFile.getAbsolutePath(),
-            "--command-config", producerConfigFile.getAbsolutePath()};
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--producer.config", producerConfigFile.getAbsolutePath(),
+                "--command-config", producerConfigFile.getAbsolutePath()};
         ArgumentParser parser = ProducerPerformance.argParser();
         assertThrows(ArgumentParserException.class, () -> new ProducerPerformance.ConfigPostProcessor(parser, args));
 
         String[] args2 = new String[]{
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "100",
-            "--record-size", "100",
-            "--producer-props", "bootstrap.servers=localhost:9090",
-            "--command-property", "bootstrap.servers=localhost:9090"};
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--producer-props", "bootstrap.servers=localhost:9090",
+                "--command-property", "bootstrap.servers=localhost:9090"};
         assertThrows(ArgumentParserException.class, () -> new ProducerPerformance.ConfigPostProcessor(parser, args2));
 
         Utils.delete(producerConfigFile);
@@ -691,12 +691,12 @@ public class ProducerPerformanceTest {
     public void testEnableTransactionByTransactionDurationMs() throws IOException, ArgumentParserException {
         ArgumentParser parser = ProducerPerformance.argParser();
         String[] args = new String[]{
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "100",
-            "--record-size", "100",
-            "--transaction-duration-ms", "5000",
-            "--bootstrap-server", "localhost:9000"};
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--transaction-duration-ms", "5000",
+                "--bootstrap-server", "localhost:9000"};
         ProducerPerformance.ConfigPostProcessor configs = new ProducerPerformance.ConfigPostProcessor(parser, args);
         assertTrue(configs.transactionsEnabled);
         assertEquals(5000, configs.transactionDurationMs);
@@ -706,13 +706,13 @@ public class ProducerPerformanceTest {
 
     @Test
     public void testWarmupRecordsFractionalValue() {
-        String[] args = new String[] {
-            "--topic", "Hello-Kafka",
-            "--num-records", "10",
-            "--warmup-records", "1.5",
-            "--throughput", "100",
-            "--record-size", "100",
-            "--bootstrap-server", "localhost:9000"};
+        String[] args = new String[]{
+                "--topic", "Hello-Kafka",
+                "--num-records", "10",
+                "--warmup-records", "1.5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--bootstrap-server", "localhost:9000"};
         ArgumentParser parser = ProducerPerformance.argParser();
         ArgumentParserException thrown = assertThrows(ArgumentParserException.class, () -> parser.parseArgs(args));
         thrown.printStackTrace();
@@ -720,13 +720,13 @@ public class ProducerPerformanceTest {
 
     @Test
     public void testWarmupRecordsString() {
-        String[] args = new String[] {
-            "--topic", "Hello-Kafka",
-            "--num-records", "10",
-            "--warmup-records", "foo",
-            "--throughput", "100",
-            "--record-size", "100",
-            "--bootstrap-server", "localhost:9000"};
+        String[] args = new String[]{
+                "--topic", "Hello-Kafka",
+                "--num-records", "10",
+                "--warmup-records", "foo",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--bootstrap-server", "localhost:9000"};
         ArgumentParser parser = ProducerPerformance.argParser();
         ArgumentParserException thrown = assertThrows(ArgumentParserException.class, () -> parser.parseArgs(args));
         thrown.printStackTrace();
@@ -740,13 +740,13 @@ public class ProducerPerformanceTest {
             return null;
         }).when(producerMock).send(any(), any());
 
-        String[] args = new String[] {
-            "--topic", "Hello-Kafka",
-            "--num-records", "10",
-            "--warmup-records", "2",
-            "--throughput", "1",
-            "--record-size", "100",
-            "--bootstrap-server", "localhost:9000"};
+        String[] args = new String[]{
+                "--topic", "Hello-Kafka",
+                "--num-records", "10",
+                "--warmup-records", "2",
+                "--throughput", "1",
+                "--record-size", "100",
+                "--bootstrap-server", "localhost:9000"};
         producerPerformanceSpy.start(args);
 
         verify(producerMock, times(10)).send(any(), any());
@@ -763,13 +763,13 @@ public class ProducerPerformanceTest {
             return null;
         }).when(producerMock).send(any(), any());
 
-        String[] args = new String[] {
-            "--topic", "Hello-Kafka",
-            "--num-records", "10",
-            "--warmup-records", "-1",
-            "--throughput", "1",
-            "--record-size", "100",
-            "--bootstrap-server", "localhost:9000"};
+        String[] args = new String[]{
+                "--topic", "Hello-Kafka",
+                "--num-records", "10",
+                "--warmup-records", "-1",
+                "--throughput", "1",
+                "--record-size", "100",
+                "--bootstrap-server", "localhost:9000"};
         producerPerformanceSpy.start(args);
 
         verify(producerMock, times(10)).send(any(), any());
@@ -782,12 +782,12 @@ public class ProducerPerformanceTest {
     public void testMultipleProducerProperty(String configKey) throws IOException, ArgumentParserException {
         ArgumentParser parser = ProducerPerformance.argParser();
         String[] args = new String[]{
-            "--topic", "Hello-Kafka",
-            "--num-records", "5",
-            "--throughput", "100",
-            "--record-size", "100",
-            "--bootstrap-server", "localhost:9000",
-            configKey, "linger.ms=10", "batch.size=32768"};
+                "--topic", "Hello-Kafka",
+                "--num-records", "5",
+                "--throughput", "100",
+                "--record-size", "100",
+                "--bootstrap-server", "localhost:9000",
+                configKey, "linger.ms=10", "batch.size=32768"};
         ProducerPerformance.ConfigPostProcessor configs = new ProducerPerformance.ConfigPostProcessor(parser, args);
         assertEquals("10", configs.producerProps.get(ProducerConfig.LINGER_MS_CONFIG));
         assertEquals("32768", configs.producerProps.get(ProducerConfig.BATCH_SIZE_CONFIG));

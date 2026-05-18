@@ -47,7 +47,7 @@ public class TranslatedValueMapViewTest {
     public void testContains() {
         Map<String, Integer> underlying = createTestMap();
         TranslatedValueMapView<String, String, Integer> view =
-            new TranslatedValueMapView<>(underlying, v -> v.toString());
+                new TranslatedValueMapView<>(underlying, v -> v.toString());
         assertTrue(view.containsKey("foo"));
         assertTrue(view.containsKey("bar"));
         assertTrue(view.containsKey("baz"));
@@ -60,7 +60,7 @@ public class TranslatedValueMapViewTest {
     public void testIsEmptyAndSize() {
         Map<String, Integer> underlying = new HashMap<>();
         TranslatedValueMapView<String, String, Integer> view =
-            new TranslatedValueMapView<>(underlying, v -> v.toString());
+                new TranslatedValueMapView<>(underlying, v -> v.toString());
         assertTrue(view.isEmpty());
         assertEquals(0, view.size());
         underlying.put("quux", 101);
@@ -72,7 +72,7 @@ public class TranslatedValueMapViewTest {
     public void testGet() {
         Map<String, Integer> underlying = createTestMap();
         TranslatedValueMapView<String, String, Integer> view =
-            new TranslatedValueMapView<>(underlying, v -> v.toString());
+                new TranslatedValueMapView<>(underlying, v -> v.toString());
         assertEquals("2", view.get("foo"));
         assertEquals("3", view.get("bar"));
         assertEquals("5", view.get("baz"));
@@ -85,7 +85,7 @@ public class TranslatedValueMapViewTest {
     public void testEntrySet() {
         Map<String, Integer> underlying = createTestMap();
         TranslatedValueMapView<String, String, Integer> view =
-            new TranslatedValueMapView<>(underlying, v -> v.toString());
+                new TranslatedValueMapView<>(underlying, v -> v.toString());
         assertEquals(3, view.entrySet().size());
         assertFalse(view.entrySet().isEmpty());
         assertTrue(view.entrySet().contains(new SimpleImmutableEntry<>("foo", "2")));
@@ -96,7 +96,7 @@ public class TranslatedValueMapViewTest {
     public void testEntrySetIterator() {
         Map<String, Integer> underlying = createTestMap();
         TranslatedValueMapView<String, String, Integer> view =
-            new TranslatedValueMapView<>(underlying, v -> v.toString());
+                new TranslatedValueMapView<>(underlying, v -> v.toString());
         Iterator<Entry<String, String>> iterator = view.entrySet().iterator();
         assertTrue(iterator.hasNext());
         assertEquals(new SimpleImmutableEntry<>("bar", "3"), iterator.next());

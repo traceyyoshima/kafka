@@ -64,6 +64,7 @@ public class Node {
     /**
      * Check whether this node is empty, which may be the case if noNode() is used as a placeholder
      * in a response payload with an error.
+     *
      * @return true if it is, false otherwise
      */
     public boolean isEmpty() {
@@ -147,10 +148,10 @@ public class Node {
             return false;
         Node other = (Node) obj;
         return id == other.id &&
-            port == other.port &&
-            Objects.equals(host, other.host) &&
-            Objects.equals(rack, other.rack) &&
-            Objects.equals(isFenced, other.isFenced);
+                port == other.port &&
+                Objects.equals(host, other.host) &&
+                Objects.equals(rack, other.rack) &&
+                Objects.equals(isFenced, other.isFenced);
     }
 
     @Override

@@ -30,17 +30,17 @@ import java.util.Set;
 public interface ImmutableSet<E> extends Set<E> {
 
     /**
-     * @return a wrapped hash-based persistent set that is empty
      * @param <E> the element type
+     * @return a wrapped hash-based persistent set that is empty
      */
     static <E> ImmutableSet<E> empty() {
         return PCollectionsImmutableSet.empty();
     }
 
     /**
-     * @param e the element
-     * @return a wrapped hash-based persistent set that has a single element
+     * @param e   the element
      * @param <E> the element type
+     * @return a wrapped hash-based persistent set that has a single element
      */
     static <E> ImmutableSet<E> singleton(E e) {
         return PCollectionsImmutableSet.singleton(e);

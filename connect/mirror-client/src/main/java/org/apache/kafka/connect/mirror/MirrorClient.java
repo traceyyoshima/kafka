@@ -65,7 +65,7 @@ public class MirrorClient implements AutoCloseable {
 
     // for testing
     MirrorClient(Admin adminClient, ReplicationPolicy replicationPolicy,
-            Map<String, Object> consumerConfig) {
+                 Map<String, Object> consumerConfig) {
         this.adminClient = adminClient;
         this.replicationPolicy = replicationPolicy;
         this.consumerConfig = consumerConfig;
@@ -98,11 +98,11 @@ public class MirrorClient implements AutoCloseable {
      */
     public int replicationHops(String upstreamClusterAlias) throws InterruptedException {
         return heartbeatTopics().stream()
-            .map(x -> countHopsForTopic(x, upstreamClusterAlias))
-            .filter(x -> x != -1)
-            .mapToInt(x -> x)
-            .min()
-            .orElse(-1);
+                .map(x -> countHopsForTopic(x, upstreamClusterAlias))
+                .filter(x -> x != -1)
+                .mapToInt(x -> x)
+                .min()
+                .orElse(-1);
     }
 
     /**
@@ -110,8 +110,8 @@ public class MirrorClient implements AutoCloseable {
      */
     public Set<String> heartbeatTopics() throws InterruptedException {
         return listTopics().stream()
-            .filter(this::isHeartbeatTopic)
-            .collect(Collectors.toSet());
+                .filter(this::isHeartbeatTopic)
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -119,8 +119,8 @@ public class MirrorClient implements AutoCloseable {
      */
     public Set<String> checkpointTopics() throws InterruptedException {
         return listTopics().stream()
-            .filter(this::isCheckpointTopic)
-            .collect(Collectors.toSet());
+                .filter(this::isCheckpointTopic)
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -128,9 +128,9 @@ public class MirrorClient implements AutoCloseable {
      */
     public Set<String> upstreamClusters() throws InterruptedException {
         return listTopics().stream()
-            .filter(this::isHeartbeatTopic)
-            .flatMap(x -> allSources(x).stream())
-            .collect(Collectors.toSet());
+                .filter(this::isHeartbeatTopic)
+                .flatMap(x -> allSources(x).stream())
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -138,8 +138,8 @@ public class MirrorClient implements AutoCloseable {
      */
     public Set<String> remoteTopics() throws InterruptedException {
         return listTopics().stream()
-            .filter(this::isRemoteTopic)
-            .collect(Collectors.toSet());
+                .filter(this::isRemoteTopic)
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -147,21 +147,22 @@ public class MirrorClient implements AutoCloseable {
      */
     public Set<String> remoteTopics(String source) throws InterruptedException {
         return listTopics().stream()
-            .filter(this::isRemoteTopic)
-            .filter(x -> source.equals(replicationPolicy.topicSource(x)))
-            .collect(Collectors.toSet());
+                .filter(this::isRemoteTopic)
+                .filter(x -> source.equals(replicationPolicy.topicSource(x)))
+                .collect(Collectors.toSet());
     }
 
     /**
      * Translates remote consumer groups' offsets into corresponding local offsets. Topics are automatically
      * renamed according to the ReplicationPolicy.
+     *
      * @param consumerGroupPattern The regex pattern specifying the consumer groups to translate offsets for
-     * @param remoteClusterAlias The alias of remote cluster
-     * @param timeout The maximum time to block when consuming from the checkpoints topic
+     * @param remoteClusterAlias   The alias of remote cluster
+     * @param timeout              The maximum time to block when consuming from the checkpoints topic
      * @throws IllegalArgumentException If any of the arguments are null
      */
     public Map<String, Map<TopicPartition, OffsetAndMetadata>> remoteConsumerOffsets(Pattern consumerGroupPattern,
-             String remoteClusterAlias, Duration timeout) {
+                                                                                     String remoteClusterAlias, Duration timeout) {
         if (consumerGroupPattern == null) {
             throw new IllegalArgumentException("`consumerGroupPattern` must not be null");
         }
@@ -204,12 +205,13 @@ public class MirrorClient implements AutoCloseable {
     /**
      * Translates a remote consumer group's offsets into corresponding local offsets. Topics are automatically
      * renamed according to the ReplicationPolicy.
-     * @param consumerGroupId The group ID of remote consumer group
+     *
+     * @param consumerGroupId    The group ID of remote consumer group
      * @param remoteClusterAlias The alias of remote cluster
-     * @param timeout The maximum time to block when consuming from the checkpoints topic
+     * @param timeout            The maximum time to block when consuming from the checkpoints topic
      */
     public Map<TopicPartition, OffsetAndMetadata> remoteConsumerOffsets(String consumerGroupId,
-            String remoteClusterAlias, Duration timeout) {
+                                                                        String remoteClusterAlias, Duration timeout) {
         Pattern consumerGroupPattern = Pattern.compile(Pattern.quote(consumerGroupId));
         Map<String, Map<TopicPartition, OffsetAndMetadata>> offsets = remoteConsumerOffsets(consumerGroupPattern, remoteClusterAlias, timeout);
         return offsets.getOrDefault(consumerGroupId, new HashMap<>());
@@ -255,7 +257,7 @@ public class MirrorClient implements AutoCloseable {
 
     boolean isRemoteTopic(String topic) {
         return !replicationPolicy.isInternalTopic(topic)
-            && replicationPolicy.topicSource(topic) != null;
+                && replicationPolicy.topicSource(topic) != null;
     }
 
     Set<String> allSources(String topic) {

@@ -22,9 +22,9 @@ import java.util.concurrent.BlockingQueue;
  * An {@code EventProcessor} is the means by which events are <em>processed</em>, the meaning of which is left
  * intentionally loose. This is in large part to keep the {@code EventProcessor} focused on what it means to process
  * the events, and <em>not</em> linking itself too closely with the rest of the surrounding application.
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * The {@code EventProcessor} is envisaged as a stateless service that acts as a conduit, receiving an event and
  * dispatching to another block of code to process. The semantic meaning of each event is different, so the
  * {@code EventProcessor} will need to interact with other parts of the system that maintain state. The

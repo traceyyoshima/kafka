@@ -30,9 +30,10 @@ import java.util.Map;
 import static org.apache.kafka.connect.mirror.Heartbeat.SOURCE_CLUSTER_ALIAS_KEY;
 import static org.apache.kafka.connect.mirror.Heartbeat.TARGET_CLUSTER_ALIAS_KEY;
 
-/** Emits heartbeats to Kafka.
+/**
+ * Emits heartbeats to Kafka.
  *
- *  @see MirrorHeartbeatConfig for supported config properties.
+ * @see MirrorHeartbeatConfig for supported config properties.
  */
 public class MirrorHeartbeatConnector extends SourceConnector {
     private MirrorHeartbeatConfig config;

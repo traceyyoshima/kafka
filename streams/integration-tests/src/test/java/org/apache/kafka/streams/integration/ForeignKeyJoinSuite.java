@@ -29,25 +29,25 @@ import org.junit.platform.suite.api.Suite;
 
 /**
  * This suite runs all the tests related to the KTable-KTable foreign key join feature.
- *
+ * <p>
  * It can be used from an IDE to selectively just run these tests when developing code related to KTable-KTable
  * foreign key join.
- *
+ * <p>
  * If desired, it can also be added to a Gradle build task, although this isn't strictly necessary, since all
  * these tests are already included in the `:streams:test` task.
  */
 @Suite
 @SelectClasses({
-    BytesTest.class,
-    ByteUtilsTest.class,
-    KTableKTableForeignKeyInnerJoinMultiIntegrationTest.class,
-    KTableKTableForeignKeyJoinIntegrationTest.class,
-    KTableKTableForeignKeyJoinMaterializationIntegrationTest.class,
-    KTableKTableForeignKeyJoinScenarioTest.class,
-    CombinedKeySchemaTest.class,
-    SubscriptionWrapperSerdeTest.class,
-    SubscriptionResponseWrapperSerdeTest.class,
-    ResponseJoinProcessorSupplierTest.class
+        BytesTest.class,
+        ByteUtilsTest.class,
+        KTableKTableForeignKeyInnerJoinMultiIntegrationTest.class,
+        KTableKTableForeignKeyJoinIntegrationTest.class,
+        KTableKTableForeignKeyJoinMaterializationIntegrationTest.class,
+        KTableKTableForeignKeyJoinScenarioTest.class,
+        CombinedKeySchemaTest.class,
+        SubscriptionWrapperSerdeTest.class,
+        SubscriptionResponseWrapperSerdeTest.class,
+        ResponseJoinProcessorSupplierTest.class
 })
 public class ForeignKeyJoinSuite {
 }

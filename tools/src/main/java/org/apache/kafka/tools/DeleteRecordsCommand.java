@@ -78,7 +78,7 @@ public class DeleteRecordsCommand {
 
     static Map<TopicPartition, List<Long>> parseOffsetJsonStringWithoutDedup(String jsonData) throws JsonProcessingException {
         JsonValue js = Json.parseFull(jsonData)
-            .orElseThrow(() -> new AdminOperationException("The input string is not a valid JSON"));
+                .orElseThrow(() -> new AdminOperationException("The input string is not a valid JSON"));
 
         Optional<JsonValue> version = js.asJsonObject().get("version");
 
@@ -88,7 +88,7 @@ public class DeleteRecordsCommand {
     private static Map<TopicPartition, List<Long>> parseJsonData(int version, JsonValue js) throws JsonMappingException {
         if (version == 1) {
             JsonValue partitions = js.asJsonObject().get("partitions")
-                .orElseThrow(() -> new AdminOperationException("Missing partitions field"));
+                    .orElseThrow(() -> new AdminOperationException("Missing partitions field"));
 
             Map<TopicPartition, List<Long>> res = new HashMap<>();
 
@@ -122,15 +122,15 @@ public class DeleteRecordsCommand {
         Map<TopicPartition, List<Long>> offsetSeq = parseOffsetJsonStringWithoutDedup(offsetJsonString);
 
         Set<TopicPartition> duplicatePartitions = offsetSeq.entrySet().stream()
-            .filter(e -> e.getValue().size() > 1)
-            .map(Map.Entry::getKey)
-            .collect(Collectors.toSet());
+                .filter(e -> e.getValue().size() > 1)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toSet());
 
         if (!duplicatePartitions.isEmpty()) {
             StringJoiner duplicates = new StringJoiner(",");
             duplicatePartitions.forEach(tp -> duplicates.add(tp.toString()));
             throw new AdminCommandFailedException(
-                String.format("Offset json file contains duplicate topic partitions: %s", duplicates)
+                    String.format("Offset json file contains duplicate topic partitions: %s", duplicates)
             );
         }
 
@@ -154,8 +154,8 @@ public class DeleteRecordsCommand {
 
     private static Admin createAdminClient(DeleteRecordsCommandOptions opts) throws IOException {
         Properties props = opts.options.has(opts.commandConfigOpt)
-            ? Utils.loadProps(opts.options.valueOf(opts.commandConfigOpt))
-            : new Properties();
+                ? Utils.loadProps(opts.options.valueOf(opts.commandConfigOpt))
+                : new Properties();
         props.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, opts.options.valueOf(opts.bootstrapServerOpt));
         return Admin.create(props);
     }
@@ -169,21 +169,21 @@ public class DeleteRecordsCommand {
             super(args);
 
             bootstrapServerOpt = parser.accepts("bootstrap-server", "REQUIRED: The server to connect to.")
-                .withRequiredArg()
-                .describedAs("server(s) to use for bootstrapping")
-                .ofType(String.class);
+                    .withRequiredArg()
+                    .describedAs("server(s) to use for bootstrapping")
+                    .ofType(String.class);
 
             offsetJsonFileOpt = parser.accepts("offset-json-file", "REQUIRED: The JSON file with offset per partition. " +
-                    "The format to use is:\n" +
-                    "{\"partitions\":\n  [{\"topic\": \"foo\", \"partition\": 1, \"offset\": 1}],\n \"version\":1\n}")
-                .withRequiredArg()
-                .describedAs("Offset json file path")
-                .ofType(String.class);
+                            "The format to use is:\n" +
+                            "{\"partitions\":\n  [{\"topic\": \"foo\", \"partition\": 1, \"offset\": 1}],\n \"version\":1\n}")
+                    .withRequiredArg()
+                    .describedAs("Offset json file path")
+                    .ofType(String.class);
 
             commandConfigOpt = parser.accepts("command-config", "A property file containing configs to be passed to Admin Client.")
-                .withRequiredArg()
-                .describedAs("command config property file path")
-                .ofType(String.class);
+                    .withRequiredArg()
+                    .describedAs("command config property file path")
+                    .ofType(String.class);
 
             options = parser.parse(args);
 

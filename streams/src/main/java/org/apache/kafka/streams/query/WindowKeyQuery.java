@@ -59,9 +59,9 @@ public class WindowKeyQuery<K, V> implements Query<WindowStoreIterator<V>> {
     @Override
     public String toString() {
         return "WindowKeyQuery{" +
-            "key=" + key +
-            ", timeFrom=" + timeFrom +
-            ", timeTo=" + timeTo +
-            '}';
+                "key=" + key +
+                ", timeFrom=" + timeFrom +
+                ", timeTo=" + timeTo +
+                '}';
     }
 }

@@ -30,17 +30,17 @@ import java.util.function.Predicate;
 /**
  * Default implementation of SupportedConfigChecker that checks if a configuration name
  * is supported for a given resource type based on the actual config definitions.
- *
+ * <p>
  * This class maintains a predicate per resource type:
  * - TOPIC: Configurations defined in LogConfig
  * - BROKER: All config names are accepted. Broker configs include listener-specific
- *   prefixed configs (e.g., listener.name.&lt;name&gt;.ssl.keystore.location) whose names
- *   are user-defined at runtime and cannot be pre-enumerated. They also include
- *   plugin-defined configs (e.g., custom authorizer or quota callback configs) with
- *   arbitrary names. For these reasons BROKER configs are not filtered by name.
+ * prefixed configs (e.g., listener.name.&lt;name&gt;.ssl.keystore.location) whose names
+ * are user-defined at runtime and cannot be pre-enumerated. They also include
+ * plugin-defined configs (e.g., custom authorizer or quota callback configs) with
+ * arbitrary names. For these reasons BROKER configs are not filtered by name.
  * - CLIENT_METRICS: Configurations defined in ClientMetricsConfigs
  * - GROUP: Configurations defined in GroupConfig
- *
+ * <p>
  * Config names for resource types not in this map are considered unsupported.
  */
 public final class DefaultSupportedConfigChecker implements SupportedConfigChecker {
@@ -61,10 +61,10 @@ public final class DefaultSupportedConfigChecker implements SupportedConfigCheck
 
     public DefaultSupportedConfigChecker() {
         this.validConfigsByType = Map.of(
-            ConfigResource.Type.TOPIC, new SetContainsPredicate(LogConfig.configNames()),
-            ConfigResource.Type.BROKER, ignore -> true,
-            ConfigResource.Type.CLIENT_METRICS, new SetContainsPredicate(ClientMetricsConfigs.configNames()),
-            ConfigResource.Type.GROUP, new SetContainsPredicate(GroupConfig.configNames())
+                ConfigResource.Type.TOPIC, new SetContainsPredicate(LogConfig.configNames()),
+                ConfigResource.Type.BROKER, ignore -> true,
+                ConfigResource.Type.CLIENT_METRICS, new SetContainsPredicate(ClientMetricsConfigs.configNames()),
+                ConfigResource.Type.GROUP, new SetContainsPredicate(GroupConfig.configNames())
         );
     }
 

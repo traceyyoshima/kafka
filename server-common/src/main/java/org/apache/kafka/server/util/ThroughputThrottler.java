@@ -32,7 +32,7 @@ package org.apache.kafka.server.util;
  *      }
  *     }
  * </pre>
- *
+ * <p>
  * Note that this can be used to throttle message throughput or data throughput.
  */
 public class ThroughputThrottler {
@@ -57,7 +57,7 @@ public class ThroughputThrottler {
         this.targetThroughput = targetThroughput;
         this.sleepTimeNs = targetThroughput > 0 ?
                 (long) (NS_PER_SEC / targetThroughput) :
-                           Long.MAX_VALUE;
+                Long.MAX_VALUE;
     }
 
     /**

@@ -139,6 +139,7 @@ public class WorkerConnector implements Runnable {
 
     /**
      * Fail the connector.
+     *
      * @param cause the cause of the failure; if null, the connector will not be failed
      */
     public void fail(Throwable cause) {
@@ -308,7 +309,7 @@ public class WorkerConnector implements Runnable {
                 stateChangeCallback.onCompletion(
                         new ConnectException(
                                 "Could not begin changing connector state to " + preEmptedState.name()
-                                    + " as the connector has been scheduled for shutdown"),
+                                        + " as the connector has been scheduled for shutdown"),
                         null);
             }
             if (state == State.STARTED)
@@ -367,9 +368,9 @@ public class WorkerConnector implements Runnable {
             preEmptedStateChangeCallback.onCompletion(
                     new ConnectException(
                             "Could not begin changing connector state to " + preEmptedState.name()
-                                + " before another request to change state was made;"
-                                + " the new request (which is to change the state to " + targetState.name()
-                                + ") has pre-empted this one"),
+                                    + " before another request to change state was made;"
+                                    + " the new request (which is to change the state to " + targetState.name()
+                                    + ") has pre-empted this one"),
                     null
             );
         }
@@ -443,8 +444,8 @@ public class WorkerConnector implements Runnable {
     @Override
     public String toString() {
         return "WorkerConnector{" +
-                       "id=" + connName +
-                       '}';
+                "id=" + connName +
+                '}';
     }
 
     class ConnectorMetricsGroup implements ConnectorStatus.Listener, AutoCloseable {
@@ -457,10 +458,10 @@ public class WorkerConnector implements Runnable {
         private final ConnectorStatus.Listener delegate;
 
         public ConnectorMetricsGroup(
-            ConnectMetrics connectMetrics,
-            AbstractStatus.State initialState,
-            String connectorVersion,
-            ConnectorStatus.Listener delegate
+                ConnectMetrics connectMetrics,
+                AbstractStatus.State initialState,
+                String connectorVersion,
+                ConnectorStatus.Listener delegate
         ) {
             Objects.requireNonNull(connectMetrics);
             Objects.requireNonNull(connector);

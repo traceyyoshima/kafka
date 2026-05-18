@@ -69,10 +69,10 @@ public class TopicIdsTest {
         Uuid bazUuid = Uuid.randomUuid();
         Uuid quxUuid = Uuid.randomUuid();
         CoordinatorMetadataImage metadataImage = new KRaftCoordinatorMetadataImage(new MetadataImageBuilder()
-            .addTopic(fooUuid, "foo", 3)
-            .addTopic(barUuid, "bar", 3)
-            .addTopic(bazUuid, "qux", 3)
-            .build());
+                .addTopic(fooUuid, "foo", 3)
+                .addTopic(barUuid, "bar", 3)
+                .addTopic(bazUuid, "qux", 3)
+                .build());
 
         Set<Uuid> topicIds = new TopicIds(Set.of("foo", "bar", "baz"), metadataImage);
 
@@ -89,11 +89,11 @@ public class TopicIdsTest {
         Uuid bazUuid = Uuid.randomUuid();
         Uuid quxUuid = Uuid.randomUuid();
         CoordinatorMetadataImage metadataImage = new KRaftCoordinatorMetadataImage(new MetadataImageBuilder()
-            .addTopic(fooUuid, "foo", 3)
-            .addTopic(barUuid, "bar", 3)
-            .addTopic(bazUuid, "baz", 3)
-            .addTopic(quxUuid, "qux", 3)
-            .build());
+                .addTopic(fooUuid, "foo", 3)
+                .addTopic(barUuid, "bar", 3)
+                .addTopic(bazUuid, "baz", 3)
+                .addTopic(quxUuid, "qux", 3)
+                .build());
 
         Set<Uuid> topicIds = new TopicIds(Set.of("foo", "bar", "baz", "qux"), metadataImage);
 
@@ -112,10 +112,10 @@ public class TopicIdsTest {
         Uuid bazUuid = Uuid.randomUuid();
         Uuid quxUuid = Uuid.randomUuid();
         CoordinatorMetadataImage metadataImage = new KRaftCoordinatorMetadataImage(new MetadataImageBuilder()
-            .addTopic(fooUuid, "foo", 3)
-            .addTopic(barUuid, "bar", 3)
-            .addTopic(bazUuid, "baz", 3)
-            .build());
+                .addTopic(fooUuid, "foo", 3)
+                .addTopic(barUuid, "bar", 3)
+                .addTopic(bazUuid, "baz", 3)
+                .build());
 
         Set<Uuid> topicIds = new TopicIds(Set.of("foo", "bar", "baz", "qux"), metadataImage);
 
@@ -133,11 +133,11 @@ public class TopicIdsTest {
         Uuid bazUuid = Uuid.randomUuid();
         Uuid quxUuid = Uuid.randomUuid();
         CoordinatorMetadataImage metadataImage = new KRaftCoordinatorMetadataImage(new MetadataImageBuilder()
-            .addTopic(fooUuid, "foo", 3)
-            .addTopic(barUuid, "bar", 3)
-            .addTopic(bazUuid, "baz", 3)
-            .addTopic(quxUuid, "qux", 3)
-            .build());
+                .addTopic(fooUuid, "foo", 3)
+                .addTopic(barUuid, "bar", 3)
+                .addTopic(bazUuid, "baz", 3)
+                .addTopic(quxUuid, "qux", 3)
+                .build());
 
         Set<Uuid> topicIds = new TopicIds(Set.of("foo", "bar", "baz", "qux"), metadataImage);
         Set<Uuid> expectedIds = Set.of(fooUuid, barUuid, bazUuid, quxUuid);
@@ -155,11 +155,11 @@ public class TopicIdsTest {
         Uuid bazUuid = Uuid.randomUuid();
         Uuid qux = Uuid.randomUuid();
         CoordinatorMetadataImage metadataImage = new KRaftCoordinatorMetadataImage(new MetadataImageBuilder()
-            .addTopic(fooUuid, "foo", 3)
-            .addTopic(barUuid, "bar", 3)
-            .addTopic(bazUuid, "baz", 3)
-            .addTopic(qux, "qux", 3)
-            .build());
+                .addTopic(fooUuid, "foo", 3)
+                .addTopic(barUuid, "bar", 3)
+                .addTopic(bazUuid, "baz", 3)
+                .addTopic(qux, "qux", 3)
+                .build());
 
         Set<Uuid> topicIds = new TopicIds(Set.of("foo", "bar", "baz", "quux"), metadataImage);
         Set<Uuid> expectedIds = Set.of(fooUuid, barUuid, bazUuid);
@@ -172,8 +172,8 @@ public class TopicIdsTest {
     public void testEquals() {
         Uuid topicId = Uuid.randomUuid();
         KRaftCoordinatorMetadataImage metadataImage = new KRaftCoordinatorMetadataImage(new MetadataImageBuilder()
-            .addTopic(topicId, "topicId", 3)
-            .build());
+                .addTopic(topicId, "topicId", 3)
+                .build());
 
         TopicIds topicIds1 = new TopicIds(Set.of("topic"), metadataImage);
         TopicIds topicIds2 = new TopicIds(Set.of("topic"), metadataImage);

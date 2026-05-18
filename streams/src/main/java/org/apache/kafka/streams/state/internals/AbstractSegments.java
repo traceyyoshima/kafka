@@ -143,13 +143,13 @@ public abstract class AbstractSegments<S extends Segment> implements Segments<S>
         final NavigableMap<Long, S> segmentsInRange;
         if (forward) {
             segmentsInRange = segments.subMap(
-                segmentId(timeFrom), true,
-                segmentId(timeTo), true
+                    segmentId(timeFrom), true,
+                    segmentId(timeTo), true
             );
         } else {
             segmentsInRange = segments.subMap(
-                segmentId(timeFrom), true,
-                segmentId(timeTo), true
+                    segmentId(timeFrom), true,
+                    segmentId(timeTo), true
             ).descendingMap();
         }
         for (final S segment : segmentsInRange.values()) {
@@ -212,7 +212,7 @@ public abstract class AbstractSegments<S extends Segment> implements Segments<S>
     protected void cleanupExpiredSegments(final long streamTime) {
         final long minLiveSegment = segmentId(streamTime - retentionPeriod);
         final Iterator<Map.Entry<Long, S>> toRemove =
-            segments.headMap(minLiveSegment, false).entrySet().iterator();
+                segments.headMap(minLiveSegment, false).entrySet().iterator();
 
         while (toRemove.hasNext()) {
             final Map.Entry<Long, S> next = toRemove.next();
@@ -268,9 +268,9 @@ public abstract class AbstractSegments<S extends Segment> implements Segments<S>
         final File oldName = new File(parent, segmentName);
         if (!oldName.renameTo(newName)) {
             throw new ProcessorStateException("Unable to rename old style segment from: "
-                + oldName
-                + " to new name: "
-                + newName);
+                    + oldName
+                    + " to new name: "
+                    + newName);
         }
     }
 

@@ -26,7 +26,7 @@ import java.util.OptionalLong;
 
 /**
  * A type for storing the historical value of the set of voters.
- *
+ * <p>
  * This type can be used to keep track, in-memory, of the sets for voters stored in the latest snapshot
  * and the log segments. This is useful when generating a new snapshot at a given offset or when
  * evaluating the latest set of voters.
@@ -43,7 +43,7 @@ public final class VoterSetHistory {
 
     /**
      * Add a new value at a given offset.
-     *
+     * <p>
      * The provided {@code offset} must be greater than or equal to 0 and must be greater than the
      * offset of all previous calls to this method.
      *
@@ -61,9 +61,9 @@ public final class VoterSetHistory {
             VoterSet lastVoterSet = lastEntry.get().value();
             if (!lastVoterSet.hasOverlappingMajority(voters)) {
                 logger.info(
-                    "Last voter set ({}) doesn't have an overlapping majority with the new voter set ({})",
-                    lastVoterSet,
-                    voters
+                        "Last voter set ({}) doesn't have an overlapping majority with the new voter set ({})",
+                        lastVoterSet,
+                        voters
                 );
             }
         }
@@ -73,7 +73,7 @@ public final class VoterSetHistory {
 
     /**
      * Computes the value of the voter set at a given offset.
-     *
+     * <p>
      * This function will only return values provided through {@code addAt} and it would never
      * include the {@code staticVoterSet} provided through the constructor.
      *
@@ -89,8 +89,8 @@ public final class VoterSetHistory {
      */
     public VoterSet lastValue() {
         return votersHistory.lastEntry()
-            .map(LogHistory.Entry::value)
-            .orElse(staticVoterSet);
+                .map(LogHistory.Entry::value)
+                .orElse(staticVoterSet);
     }
 
     /**
@@ -102,7 +102,7 @@ public final class VoterSetHistory {
 
     /**
      * Returns the offset of the last voter set stored in the partition history.
-     *
+     * <p>
      * Returns {@code OptionalLong.empty} if the last voter set is from the static voters
      * configuration.
      *
@@ -110,8 +110,8 @@ public final class VoterSetHistory {
      */
     public OptionalLong lastVoterSetOffset() {
         return votersHistory.lastEntry()
-            .map(voterSetEntry -> OptionalLong.of(voterSetEntry.offset()))
-            .orElseGet(OptionalLong::empty);
+                .map(voterSetEntry -> OptionalLong.of(voterSetEntry.offset()))
+                .orElseGet(OptionalLong::empty);
     }
 
     /**
@@ -126,7 +126,7 @@ public final class VoterSetHistory {
     /**
      * Removes all entries but the last entry that has an offset that is less than or equal to
      * {@code startOffset}.
-     *
+     * <p>
      * This operation does not remove the entry with the largest offset that is less than or equal
      * to {@code startOffset}. This is needed so that calls to {@code valueAtOrBefore} and
      * {@code lastEntry} always return a non-empty value if a value was previously added to this

@@ -37,7 +37,7 @@ public class OAuthBearerTokenCallback implements Callback {
 
     /**
      * Return the (potentially null) token
-     * 
+     *
      * @return the (potentially null) token
      */
     public OAuthBearerToken token() {
@@ -48,7 +48,7 @@ public class OAuthBearerTokenCallback implements Callback {
      * Return the optional (but always non-empty if not null) error code as per
      * <a href="https://tools.ietf.org/html/rfc6749#section-5.2">RFC 6749: The OAuth
      * 2.0 Authorization Framework</a>.
-     * 
+     *
      * @return the optional (but always non-empty if not null) error code
      */
     public String errorCode() {
@@ -59,7 +59,7 @@ public class OAuthBearerTokenCallback implements Callback {
      * Return the (potentially null) error description as per
      * <a href="https://tools.ietf.org/html/rfc6749#section-5.2">RFC 6749: The OAuth
      * 2.0 Authorization Framework</a>.
-     * 
+     *
      * @return the (potentially null) error description
      */
     public String errorDescription() {
@@ -70,7 +70,7 @@ public class OAuthBearerTokenCallback implements Callback {
      * Return the (potentially null) error URI as per
      * <a href="https://tools.ietf.org/html/rfc6749#section-5.2">RFC 6749: The OAuth
      * 2.0 Authorization Framework</a>.
-     * 
+     *
      * @return the (potentially null) error URI
      */
     public String errorUri() {
@@ -79,9 +79,8 @@ public class OAuthBearerTokenCallback implements Callback {
 
     /**
      * Set the token. All error-related values are cleared.
-     * 
-     * @param token
-     *            the optional token to set
+     *
+     * @param token the optional token to set
      */
     public void token(OAuthBearerToken token) {
         this.token = token;
@@ -94,13 +93,10 @@ public class OAuthBearerTokenCallback implements Callback {
      * Set the error values as per
      * <a href="https://tools.ietf.org/html/rfc6749#section-5.2">RFC 6749: The OAuth
      * 2.0 Authorization Framework</a>. Any token is cleared.
-     * 
-     * @param errorCode
-     *            the mandatory error code to set
-     * @param errorDescription
-     *            the optional error description to set
-     * @param errorUri
-     *            the optional error URI to set
+     *
+     * @param errorCode        the mandatory error code to set
+     * @param errorDescription the optional error description to set
+     * @param errorUri         the optional error URI to set
      */
     public void error(String errorCode, String errorDescription, String errorUri) {
         if (Objects.requireNonNull(errorCode).isEmpty())

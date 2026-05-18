@@ -86,8 +86,8 @@ public final class Snapshots {
             return Files.createTempFile(dir, prefix, PARTIAL_SUFFIX);
         } catch (IOException e) {
             throw new UncheckedIOException(
-                String.format("Error creating temporary file, logDir = %s, snapshotId = %s.",
-                     dir.toAbsolutePath(), snapshotId), e);
+                    String.format("Error creating temporary file, logDir = %s, snapshotId = %s.",
+                            dir.toAbsolutePath(), snapshotId), e);
         }
     }
 
@@ -111,7 +111,7 @@ public final class Snapshots {
 
         long endOffset = Long.parseLong(name.substring(0, OFFSET_WIDTH));
         int epoch = Integer.parseInt(
-            name.substring(OFFSET_WIDTH + 1, OFFSET_WIDTH + EPOCH_WIDTH + 1)
+                name.substring(OFFSET_WIDTH + 1, OFFSET_WIDTH + EPOCH_WIDTH + 1)
         );
 
         return Optional.of(new SnapshotPath(path, new OffsetAndEpoch(endOffset, epoch), partial, deleted));
@@ -150,12 +150,12 @@ public final class Snapshots {
             return deletedPath;
         } catch (IOException e) {
             throw new UncheckedIOException(
-                String.format(
-                    "Error renaming snapshot file from %s to %s.",
-                    immutablePath,
-                    deletedPath
-                ),
-                e
+                    String.format(
+                            "Error renaming snapshot file from %s to %s.",
+                            immutablePath,
+                            deletedPath
+                    ),
+                    e
             );
         }
     }
@@ -163,14 +163,14 @@ public final class Snapshots {
     public static long lastContainedLogTimestamp(RawSnapshotReader reader, LogContext logContext) {
         try (var bufferSupplier = new BufferSupplier.GrowableBufferSupplier();
              RecordsSnapshotReader<ByteBuffer> recordsSnapshotReader =
-                RecordsSnapshotReader.of(
-                    reader,
-                    IdentitySerde.INSTANCE,
-                    bufferSupplier,
-                    KafkaRaftClient.MAX_BATCH_SIZE_BYTES,
-                    true,
-                    logContext
-                )
+                     RecordsSnapshotReader.of(
+                             reader,
+                             IdentitySerde.INSTANCE,
+                             bufferSupplier,
+                             KafkaRaftClient.MAX_BATCH_SIZE_BYTES,
+                             true,
+                             logContext
+                     )
         ) {
             return recordsSnapshotReader.lastContainedLogTimestamp();
         }

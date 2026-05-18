@@ -47,8 +47,8 @@ public class ControllerExceptionsTest {
     @Test
     public void testWrappedTimeoutExceptionIsTimeoutException() {
         assertTrue(isTimeoutException(
-            new ExecutionException("execution exception",
-                new TimeoutException())));
+                new ExecutionException("execution exception",
+                        new TimeoutException())));
     }
 
     @Test
@@ -74,25 +74,25 @@ public class ControllerExceptionsTest {
     @Test
     public void testNewPreMigrationExceptionWithNoController() {
         assertExceptionsMatch(new NotControllerException("No controller appears to be active."),
-            newPreMigrationException(OptionalInt.empty()));
+                newPreMigrationException(OptionalInt.empty()));
     }
 
     @Test
     public void testNewPreMigrationExceptionWithActiveController() {
         assertExceptionsMatch(new NotControllerException("The controller is in pre-migration mode."),
-            newPreMigrationException(OptionalInt.of(1)));
+                newPreMigrationException(OptionalInt.of(1)));
     }
 
     @Test
     public void testNewWrongControllerExceptionWithNoController() {
         assertExceptionsMatch(new NotControllerException("No controller appears to be active."),
-            newWrongControllerException(OptionalInt.empty()));
+                newWrongControllerException(OptionalInt.empty()));
     }
 
     @Test
     public void testNewWrongControllerExceptionWithActiveController() {
         assertExceptionsMatch(new NotControllerException("The active controller appears to be node 1."),
-            newWrongControllerException(OptionalInt.of(1)));
+                newWrongControllerException(OptionalInt.of(1)));
     }
 
     static void assertExceptionsMatch(Throwable a, Throwable b) {

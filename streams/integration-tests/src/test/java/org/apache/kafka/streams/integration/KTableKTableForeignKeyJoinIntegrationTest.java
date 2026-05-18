@@ -193,19 +193,19 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
             right.pipeInput("rhs3", "rhsValue3", baseTimestamp + 2); // this unreferenced FK won't show up in any results
 
             assertThat(
-                outputTopic.readKeyValuesToList(),
-                is(emptyList())
+                    outputTopic.readKeyValuesToList(),
+                    is(emptyList())
             );
             if (rejoin) {
                 assertThat(
-                    rejoinOutputTopic.readKeyValuesToList(),
-                    is(emptyList())
+                        rejoinOutputTopic.readKeyValuesToList(),
+                        is(emptyList())
                 );
             }
             if (materialized) {
                 assertThat(
-                    asMap(store),
-                    is(emptyMap())
+                        asMap(store),
+                        is(emptyMap())
                 );
             }
 
@@ -214,26 +214,26 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
 
             {
                 final List<KeyValue<String, String>> expected = Arrays.asList(
-                    KeyValue.pair("lhs1", "(lhsValue1|rhs1,rhsValue1)"),
-                    KeyValue.pair("lhs2", "(lhsValue2|rhs2,rhsValue2)")
+                        KeyValue.pair("lhs1", "(lhsValue1|rhs1,rhsValue1)"),
+                        KeyValue.pair("lhs2", "(lhsValue2|rhs2,rhsValue2)")
                 );
                 assertThat(
-                    outputTopic.readKeyValuesToList(),
-                    is(expected)
+                        outputTopic.readKeyValuesToList(),
+                        is(expected)
                 );
                 if (rejoin) {
                     assertThat(
-                        rejoinOutputTopic.readKeyValuesToList(),
-                        is(asList(
-                            KeyValue.pair("lhs1", "rejoin((lhsValue1|rhs1,rhsValue1),lhsValue1|rhs1)"),
-                            KeyValue.pair("lhs2", "rejoin((lhsValue2|rhs2,rhsValue2),lhsValue2|rhs2)")
-                        ))
+                            rejoinOutputTopic.readKeyValuesToList(),
+                            is(asList(
+                                    KeyValue.pair("lhs1", "rejoin((lhsValue1|rhs1,rhsValue1),lhsValue1|rhs1)"),
+                                    KeyValue.pair("lhs2", "rejoin((lhsValue2|rhs2,rhsValue2),lhsValue2|rhs2)")
+                            ))
                     );
                 }
                 if (materialized) {
                     assertThat(
-                        asMap(store),
-                        is(expected.stream().collect(Collectors.toMap(kv -> kv.key, kv -> kv.value)))
+                            asMap(store),
+                            is(expected.stream().collect(Collectors.toMap(kv -> kv.key, kv -> kv.value)))
                     );
                 }
             }
@@ -242,27 +242,27 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
             left.pipeInput("lhs3", "lhsValue3|rhs1", baseTimestamp + 5);
             {
                 assertThat(
-                    outputTopic.readKeyValuesToList(),
-                    is(List.of(
-                        new KeyValue<>("lhs3", "(lhsValue3|rhs1,rhsValue1)")
-                    ))
+                        outputTopic.readKeyValuesToList(),
+                        is(List.of(
+                                new KeyValue<>("lhs3", "(lhsValue3|rhs1,rhsValue1)")
+                        ))
                 );
                 if (rejoin) {
                     assertThat(
-                        rejoinOutputTopic.readKeyValuesToList(),
-                        is(List.of(
-                            new KeyValue<>("lhs3", "rejoin((lhsValue3|rhs1,rhsValue1),lhsValue3|rhs1)")
-                        ))
+                            rejoinOutputTopic.readKeyValuesToList(),
+                            is(List.of(
+                                    new KeyValue<>("lhs3", "rejoin((lhsValue3|rhs1,rhsValue1),lhsValue3|rhs1)")
+                            ))
                     );
                 }
                 if (materialized) {
                     assertThat(
-                        asMap(store),
-                        is(mkMap(
-                            mkEntry("lhs1", "(lhsValue1|rhs1,rhsValue1)"),
-                            mkEntry("lhs2", "(lhsValue2|rhs2,rhsValue2)"),
-                            mkEntry("lhs3", "(lhsValue3|rhs1,rhsValue1)")
-                        ))
+                            asMap(store),
+                            is(mkMap(
+                                    mkEntry("lhs1", "(lhsValue1|rhs1,rhsValue1)"),
+                                    mkEntry("lhs2", "(lhsValue2|rhs2,rhsValue2)"),
+                                    mkEntry("lhs3", "(lhsValue3|rhs1,rhsValue1)")
+                            ))
                     );
                 }
             }
@@ -271,25 +271,25 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
 
             left.pipeInput("lhs1", null, baseTimestamp + 6);
             assertThat(
-                outputTopic.readKeyValuesToList(),
-                is(List.of(
-                    new KeyValue<>("lhs1", null)
-                ))
+                    outputTopic.readKeyValuesToList(),
+                    is(List.of(
+                            new KeyValue<>("lhs1", null)
+                    ))
             );
             if (rejoin) {
                 assertThat(
-                    rejoinOutputTopic.readKeyValuesToList(),
-                    hasItem(
-                        KeyValue.pair("lhs1", null))
+                        rejoinOutputTopic.readKeyValuesToList(),
+                        hasItem(
+                                KeyValue.pair("lhs1", null))
                 );
             }
             if (materialized) {
                 assertThat(
-                    asMap(store),
-                    is(mkMap(
-                        mkEntry("lhs2", "(lhsValue2|rhs2,rhsValue2)"),
-                        mkEntry("lhs3", "(lhsValue3|rhs1,rhsValue1)")
-                    ))
+                        asMap(store),
+                        is(mkMap(
+                                mkEntry("lhs2", "(lhsValue2|rhs2,rhsValue2)"),
+                                mkEntry("lhs3", "(lhsValue3|rhs1,rhsValue1)")
+                        ))
                 );
             }
         }
@@ -318,19 +318,19 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
             right.pipeInput("rhs2", "rhsValue2", baseTimestamp + 1);
 
             assertThat(
-                outputTopic.readKeyValuesToList(),
-                is(emptyList())
+                    outputTopic.readKeyValuesToList(),
+                    is(emptyList())
             );
             if (rejoin) {
                 assertThat(
-                    rejoinOutputTopic.readKeyValuesToList(),
-                    is(emptyList())
+                        rejoinOutputTopic.readKeyValuesToList(),
+                        is(emptyList())
                 );
             }
             if (materialized) {
                 assertThat(
-                    asMap(store),
-                    is(emptyMap())
+                        asMap(store),
+                        is(emptyMap())
                 );
             }
 
@@ -338,11 +338,11 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
 
             {
                 final List<KeyValue<String, String>> expected = asList(
-                    KeyValue.pair("lhs1", "(lhsValue1|rhs1,rhsValue1)")
+                        KeyValue.pair("lhs1", "(lhsValue1|rhs1,rhsValue1)")
                 );
                 assertThat(
-                    outputTopic.readKeyValuesToList(),
-                    is(expected)
+                        outputTopic.readKeyValuesToList(),
+                        is(expected)
                 );
             }
 
@@ -350,10 +350,10 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
             left.pipeInput("lhs1", "lhsValue1|rhs2", baseTimestamp + 5);
             {
                 assertThat(
-                    outputTopic.readKeyValuesToList(),
-                    is(List.of(
-                        new KeyValue<>("lhs1", "(lhsValue1|rhs2,rhsValue2)")
-                    ))
+                        outputTopic.readKeyValuesToList(),
+                        is(List.of(
+                                new KeyValue<>("lhs1", "(lhsValue1|rhs2,rhsValue2)")
+                        ))
                 );
             }
 
@@ -361,10 +361,10 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
 
             left.pipeInput("lhs1", "lhsValue1|rhs1", baseTimestamp + 6);
             assertThat(
-                outputTopic.readKeyValuesToList(),
-                is(List.of(
-                    new KeyValue<>("lhs1", "(lhsValue1|rhs1,rhsValue1)")
-                ))
+                    outputTopic.readKeyValuesToList(),
+                    is(List.of(
+                            new KeyValue<>("lhs1", "(lhsValue1|rhs1,rhsValue1)")
+                    ))
             );
         }
     }
@@ -392,77 +392,77 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
             left.pipeInput("lhs3", "lhsValue3|rhs1", baseTimestamp + 2);
 
             assertThat(
-                outputTopic.readKeyValuesToMap(),
-                is(leftJoin
-                    ? mkMap(mkEntry("lhs1", "(lhsValue1|rhs1,null)"),
-                    mkEntry("lhs2", "(lhsValue2|rhs2,null)"),
-                    mkEntry("lhs3", "(lhsValue3|rhs1,null)"))
-                    : emptyMap()
-                )
+                    outputTopic.readKeyValuesToMap(),
+                    is(leftJoin
+                            ? mkMap(mkEntry("lhs1", "(lhsValue1|rhs1,null)"),
+                            mkEntry("lhs2", "(lhsValue2|rhs2,null)"),
+                            mkEntry("lhs3", "(lhsValue3|rhs1,null)"))
+                            : emptyMap()
+                    )
             );
             if (materialized) {
                 assertThat(
-                    asMap(store),
-                    is(leftJoin
-                        ? mkMap(mkEntry("lhs1", "(lhsValue1|rhs1,null)"),
-                        mkEntry("lhs2", "(lhsValue2|rhs2,null)"),
-                        mkEntry("lhs3", "(lhsValue3|rhs1,null)"))
-                        : emptyMap()
-                    )
+                        asMap(store),
+                        is(leftJoin
+                                ? mkMap(mkEntry("lhs1", "(lhsValue1|rhs1,null)"),
+                                mkEntry("lhs2", "(lhsValue2|rhs2,null)"),
+                                mkEntry("lhs3", "(lhsValue3|rhs1,null)"))
+                                : emptyMap()
+                        )
                 );
             }
 
             right.pipeInput("rhs1", "rhsValue1", baseTimestamp + 3);
 
             assertThat(
-                outputTopic.readKeyValuesToMap(),
-                is(mkMap(mkEntry("lhs1", "(lhsValue1|rhs1,rhsValue1)"),
-                    mkEntry("lhs3", "(lhsValue3|rhs1,rhsValue1)"))
-                )
+                    outputTopic.readKeyValuesToMap(),
+                    is(mkMap(mkEntry("lhs1", "(lhsValue1|rhs1,rhsValue1)"),
+                            mkEntry("lhs3", "(lhsValue3|rhs1,rhsValue1)"))
+                    )
             );
             if (materialized) {
                 assertThat(
-                    asMap(store),
-                    is(leftJoin
-                        ? mkMap(mkEntry("lhs1", "(lhsValue1|rhs1,rhsValue1)"),
-                        mkEntry("lhs2", "(lhsValue2|rhs2,null)"),
-                        mkEntry("lhs3", "(lhsValue3|rhs1,rhsValue1)"))
+                        asMap(store),
+                        is(leftJoin
+                                ? mkMap(mkEntry("lhs1", "(lhsValue1|rhs1,rhsValue1)"),
+                                mkEntry("lhs2", "(lhsValue2|rhs2,null)"),
+                                mkEntry("lhs3", "(lhsValue3|rhs1,rhsValue1)"))
 
-                        : mkMap(mkEntry("lhs1", "(lhsValue1|rhs1,rhsValue1)"),
-                        mkEntry("lhs3", "(lhsValue3|rhs1,rhsValue1)"))
-                    )
+                                : mkMap(mkEntry("lhs1", "(lhsValue1|rhs1,rhsValue1)"),
+                                mkEntry("lhs3", "(lhsValue3|rhs1,rhsValue1)"))
+                        )
                 );
             }
 
             right.pipeInput("rhs2", "rhsValue2", baseTimestamp + 4);
 
             assertThat(
-                outputTopic.readKeyValuesToMap(),
-                is(mkMap(mkEntry("lhs2", "(lhsValue2|rhs2,rhsValue2)")))
+                    outputTopic.readKeyValuesToMap(),
+                    is(mkMap(mkEntry("lhs2", "(lhsValue2|rhs2,rhsValue2)")))
             );
             if (materialized) {
                 assertThat(
-                    asMap(store),
-                    is(mkMap(mkEntry("lhs1", "(lhsValue1|rhs1,rhsValue1)"),
-                        mkEntry("lhs2", "(lhsValue2|rhs2,rhsValue2)"),
-                        mkEntry("lhs3", "(lhsValue3|rhs1,rhsValue1)"))
-                    )
+                        asMap(store),
+                        is(mkMap(mkEntry("lhs1", "(lhsValue1|rhs1,rhsValue1)"),
+                                mkEntry("lhs2", "(lhsValue2|rhs2,rhsValue2)"),
+                                mkEntry("lhs3", "(lhsValue3|rhs1,rhsValue1)"))
+                        )
                 );
             }
 
             right.pipeInput("rhs3", "rhsValue3", baseTimestamp + 5); // this unreferenced FK won't show up in any results
 
             assertThat(
-                outputTopic.readKeyValuesToMap(),
-                is(emptyMap())
+                    outputTopic.readKeyValuesToMap(),
+                    is(emptyMap())
             );
             if (materialized) {
                 assertThat(
-                    asMap(store),
-                    is(mkMap(mkEntry("lhs1", "(lhsValue1|rhs1,rhsValue1)"),
-                        mkEntry("lhs2", "(lhsValue2|rhs2,rhsValue2)"),
-                        mkEntry("lhs3", "(lhsValue3|rhs1,rhsValue1)"))
-                    )
+                        asMap(store),
+                        is(mkMap(mkEntry("lhs1", "(lhsValue1|rhs1,rhsValue1)"),
+                                mkEntry("lhs2", "(lhsValue2|rhs2,rhsValue2)"),
+                                mkEntry("lhs3", "(lhsValue3|rhs1,rhsValue1)"))
+                        )
                 );
             }
 
@@ -470,21 +470,21 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
             right.pipeInput("rhs1", null, baseTimestamp + 6);
 
             assertThat(
-                outputTopic.readKeyValuesToMap(),
-                is(mkMap(mkEntry("lhs1", leftJoin ? "(lhsValue1|rhs1,null)" : null),
-                    mkEntry("lhs3", leftJoin ? "(lhsValue3|rhs1,null)" : null))
-                )
+                    outputTopic.readKeyValuesToMap(),
+                    is(mkMap(mkEntry("lhs1", leftJoin ? "(lhsValue1|rhs1,null)" : null),
+                            mkEntry("lhs3", leftJoin ? "(lhsValue3|rhs1,null)" : null))
+                    )
             );
             if (materialized) {
                 assertThat(
-                    asMap(store),
-                    is(leftJoin
-                        ? mkMap(mkEntry("lhs1", "(lhsValue1|rhs1,null)"),
-                        mkEntry("lhs2", "(lhsValue2|rhs2,rhsValue2)"),
-                        mkEntry("lhs3", "(lhsValue3|rhs1,null)"))
+                        asMap(store),
+                        is(leftJoin
+                                ? mkMap(mkEntry("lhs1", "(lhsValue1|rhs1,null)"),
+                                mkEntry("lhs2", "(lhsValue2|rhs2,rhsValue2)"),
+                                mkEntry("lhs3", "(lhsValue3|rhs1,null)"))
 
-                        : mkMap(mkEntry("lhs2", "(lhsValue2|rhs2,rhsValue2)"))
-                    )
+                                : mkMap(mkEntry("lhs2", "(lhsValue2|rhs2,rhsValue2)"))
+                        )
                 );
             }
         }
@@ -510,15 +510,15 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
 
             {
                 final Map<String, String> expected =
-                    leftJoin ? mkMap(mkEntry("lhs1", "(lhsValue1|rhs1,null)")) : emptyMap();
+                        leftJoin ? mkMap(mkEntry("lhs1", "(lhsValue1|rhs1,null)")) : emptyMap();
                 assertThat(
-                    outputTopic.readKeyValuesToMap(),
-                    is(expected)
+                        outputTopic.readKeyValuesToMap(),
+                        is(expected)
                 );
                 if (materialized) {
                     assertThat(
-                        asMap(store),
-                        is(expected)
+                            asMap(store),
+                            is(expected)
                     );
                 }
             }
@@ -529,13 +529,13 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
             left.pipeInput("lhs1", null, baseTimestamp + 1);
             {
                 assertThat(
-                    outputTopic.readKeyValuesToMap(),
-                    is(mkMap(mkEntry("lhs1", null)))
+                        outputTopic.readKeyValuesToMap(),
+                        is(mkMap(mkEntry("lhs1", null)))
                 );
                 if (materialized) {
                     assertThat(
-                        asMap(store),
-                        is(emptyMap())
+                            asMap(store),
+                            is(emptyMap())
                     );
                 }
             }
@@ -544,13 +544,13 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
             left.pipeInput("lhs1", null, baseTimestamp + 2);
             {
                 assertThat(
-                    outputTopic.readKeyValuesToMap(),
-                    is(emptyMap())
+                        outputTopic.readKeyValuesToMap(),
+                        is(emptyMap())
                 );
                 if (materialized) {
                     assertThat(
-                        asMap(store),
-                        is(emptyMap())
+                            asMap(store),
+                            is(emptyMap())
                     );
                 }
             }
@@ -577,13 +577,13 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
             left.pipeInput("lhs1", null, baseTimestamp);
             {
                 assertThat(
-                    outputTopic.readKeyValuesToMap(),
-                    is(emptyMap())
+                        outputTopic.readKeyValuesToMap(),
+                        is(emptyMap())
                 );
                 if (materialized) {
                     assertThat(
-                        asMap(store),
-                        is(emptyMap())
+                            asMap(store),
+                            is(emptyMap())
                     );
                 }
             }
@@ -611,13 +611,13 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
             // no output for a new inner join on a non-existent FK
             // the left join of course emits the half-joined output
             assertThat(
-                outputTopic.readKeyValuesToMap(),
-                is(leftJoin ? mkMap(mkEntry("lhs1", "(lhsValue1|rhs1,null)")) : emptyMap())
+                    outputTopic.readKeyValuesToMap(),
+                    is(leftJoin ? mkMap(mkEntry("lhs1", "(lhsValue1|rhs1,null)")) : emptyMap())
             );
             if (materialized) {
                 assertThat(
-                    asMap(store),
-                    is(leftJoin ? mkMap(mkEntry("lhs1", "(lhsValue1|rhs1,null)")) : emptyMap())
+                        asMap(store),
+                        is(leftJoin ? mkMap(mkEntry("lhs1", "(lhsValue1|rhs1,null)")) : emptyMap())
                 );
             }
             // "moving" our subscription to another non-existent FK results in an unnecessary tombstone for inner join,
@@ -626,25 +626,25 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
             // The left join emits a _necessary_ update (since the lhs record has actually changed)
             left.pipeInput("lhs1", "lhsValue1|rhs2", baseTimestamp + 1);
             assertThat(
-                outputTopic.readKeyValuesToMap(),
-                is(mkMap(mkEntry("lhs1", leftJoin ? "(lhsValue1|rhs2,null)" : null)))
+                    outputTopic.readKeyValuesToMap(),
+                    is(mkMap(mkEntry("lhs1", leftJoin ? "(lhsValue1|rhs2,null)" : null)))
             );
             if (materialized) {
                 assertThat(
-                    asMap(store),
-                    is(leftJoin ? mkMap(mkEntry("lhs1", "(lhsValue1|rhs2,null)")) : emptyMap())
+                        asMap(store),
+                        is(leftJoin ? mkMap(mkEntry("lhs1", "(lhsValue1|rhs2,null)")) : emptyMap())
                 );
             }
             // of course, moving it again to yet another non-existent FK has the same effect
             left.pipeInput("lhs1", "lhsValue1|rhs3", baseTimestamp + 2);
             assertThat(
-                outputTopic.readKeyValuesToMap(),
-                is(mkMap(mkEntry("lhs1", leftJoin ? "(lhsValue1|rhs3,null)" : null)))
+                    outputTopic.readKeyValuesToMap(),
+                    is(mkMap(mkEntry("lhs1", leftJoin ? "(lhsValue1|rhs3,null)" : null)))
             );
             if (materialized) {
                 assertThat(
-                    asMap(store),
-                    is(leftJoin ? mkMap(mkEntry("lhs1", "(lhsValue1|rhs3,null)")) : emptyMap())
+                        asMap(store),
+                        is(leftJoin ? mkMap(mkEntry("lhs1", "(lhsValue1|rhs3,null)")) : emptyMap())
                 );
             }
 
@@ -653,30 +653,30 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
             // result in no changes whatsoever.
             right.pipeInput("rhs1", "rhsValue1", baseTimestamp + 3);
             assertThat(
-                outputTopic.readKeyValuesToMap(),
-                is(emptyMap())
+                    outputTopic.readKeyValuesToMap(),
+                    is(emptyMap())
             );
             if (materialized) {
                 assertThat(
-                    asMap(store),
-                    is(leftJoin ? mkMap(mkEntry("lhs1", "(lhsValue1|rhs3,null)")) : emptyMap())
+                        asMap(store),
+                        is(leftJoin ? mkMap(mkEntry("lhs1", "(lhsValue1|rhs3,null)")) : emptyMap())
                 );
             }
 
             // now, we change to a FK that exists, and see the join completes
             left.pipeInput("lhs1", "lhsValue1|rhs1", baseTimestamp + 4);
             assertThat(
-                outputTopic.readKeyValuesToMap(),
-                is(mkMap(
-                    mkEntry("lhs1", "(lhsValue1|rhs1,rhsValue1)")
-                ))
+                    outputTopic.readKeyValuesToMap(),
+                    is(mkMap(
+                            mkEntry("lhs1", "(lhsValue1|rhs1,rhsValue1)")
+                    ))
             );
             if (materialized) {
                 assertThat(
-                    asMap(store),
-                    is(mkMap(
-                        mkEntry("lhs1", "(lhsValue1|rhs1,rhsValue1)")
-                    ))
+                        asMap(store),
+                        is(mkMap(
+                                mkEntry("lhs1", "(lhsValue1|rhs1,rhsValue1)")
+                        ))
                 );
             }
 
@@ -684,15 +684,15 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
             // left join updates appropriately.
             left.pipeInput("lhs1", "lhsValue1|rhs2", baseTimestamp + 5);
             assertThat(
-                outputTopic.readKeyValuesToMap(),
-                is(mkMap(
-                    mkEntry("lhs1", leftJoin ? "(lhsValue1|rhs2,null)" : null)
-                ))
+                    outputTopic.readKeyValuesToMap(),
+                    is(mkMap(
+                            mkEntry("lhs1", leftJoin ? "(lhsValue1|rhs2,null)" : null)
+                    ))
             );
             if (materialized) {
                 assertThat(
-                    asMap(store),
-                    is(leftJoin ? mkMap(mkEntry("lhs1", "(lhsValue1|rhs2,null)")) : emptyMap())
+                        asMap(store),
+                        is(leftJoin ? mkMap(mkEntry("lhs1", "(lhsValue1|rhs2,null)")) : emptyMap())
                 );
             }
         }
@@ -721,29 +721,29 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
             right.pipeInput("rhs2", "rhsValue2", baseTimestamp + 1);
 
             assertThat(
-                outputTopic.readKeyValuesToMap(),
-                is(emptyMap())
+                    outputTopic.readKeyValuesToMap(),
+                    is(emptyMap())
             );
             if (materialized) {
                 assertThat(
-                    asMap(store),
-                    is(emptyMap())
+                        asMap(store),
+                        is(emptyMap())
                 );
             }
 
             left.pipeInput("lhs1", "lhsValue1|rhs1", baseTimestamp + 2);
             {
                 final Map<String, String> expected = mkMap(
-                    mkEntry("lhs1", "(lhsValue1|rhs1,rhsValue1)")
+                        mkEntry("lhs1", "(lhsValue1|rhs1,rhsValue1)")
                 );
                 assertThat(
-                    outputTopic.readKeyValuesToMap(),
-                    is(expected)
+                        outputTopic.readKeyValuesToMap(),
+                        is(expected)
                 );
                 if (materialized) {
                     assertThat(
-                        asMap(store),
-                        is(expected)
+                            asMap(store),
+                            is(expected)
                     );
                 }
             }
@@ -752,16 +752,16 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
             left.pipeInput("lhs1", "lhsValue1|rhs2", baseTimestamp + 3);
             {
                 final Map<String, String> expected = mkMap(
-                    mkEntry("lhs1", "(lhsValue1|rhs2,rhsValue2)")
+                        mkEntry("lhs1", "(lhsValue1|rhs2,rhsValue2)")
                 );
                 assertThat(
-                    outputTopic.readKeyValuesToMap(),
-                    is(expected)
+                        outputTopic.readKeyValuesToMap(),
+                        is(expected)
                 );
                 if (materialized) {
                     assertThat(
-                        asMap(store),
-                        is(expected)
+                            asMap(store),
+                            is(expected)
                     );
                 }
             }
@@ -770,15 +770,15 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
             right.pipeInput("rhs1", "rhsValue1Delta", baseTimestamp + 4);
             {
                 assertThat(
-                    outputTopic.readKeyValuesToMap(),
-                    is(emptyMap())
+                        outputTopic.readKeyValuesToMap(),
+                        is(emptyMap())
                 );
                 if (materialized) {
                     assertThat(
-                        asMap(store),
-                        is(mkMap(
-                            mkEntry("lhs1", "(lhsValue1|rhs2,rhsValue2)")
-                        ))
+                            asMap(store),
+                            is(mkMap(
+                                    mkEntry("lhs1", "(lhsValue1|rhs2,rhsValue2)")
+                            ))
                     );
                 }
             }
@@ -803,7 +803,7 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
             left.pipeInput("lhs1", "lhsValue1|rhs1", baseTimestamp);
             {
                 final Map<String, String> expected = mkMap(
-                    mkEntry("lhs1", "(lhsValue1|rhs1,null)")
+                        mkEntry("lhs1", "(lhsValue1|rhs1,null)")
                 );
                 assertThat(outputTopic.readKeyValuesToMap(), is(expected));
                 if (materialized) {
@@ -838,14 +838,14 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
             final TestOutputTopic<String, String> outputTopic = driver.createOutputTopic(OUTPUT, new StringDeserializer(), new StringDeserializer());
             final KeyValueStore<String, ValueAndTimestamp<String>> store = driver.getTimestampedKeyValueStore("store");
             final String subscriptionStoreName = driver.getAllStateStores().entrySet().stream()
-                .filter(e -> e.getKey().contains("SUBSCRIPTION-STATE-STORE"))
-                .findAny().orElseThrow(() -> new RuntimeException("couldn't find store")).getKey();
+                    .filter(e -> e.getKey().contains("SUBSCRIPTION-STATE-STORE"))
+                    .findAny().orElseThrow(() -> new RuntimeException("couldn't find store")).getKey();
             final KeyValueStore<Bytes, ValueAndTimestamp<String>> subscriptionStore = driver.getTimestampedKeyValueStore(subscriptionStoreName);
             final Bytes key = subscriptionStoreKey("lhs1", "rhs1");
             left.pipeInput("lhs1", "lhsValue1|rhs1", baseTimestamp);
             {
                 final Map<String, String> expected = mkMap(
-                    mkEntry("lhs1", "(lhsValue1|rhs1,null)")
+                        mkEntry("lhs1", "(lhsValue1|rhs1,null)")
                 );
                 assertThat(outputTopic.readKeyValuesToMap(), is(expected));
                 if (materialized) {
@@ -856,7 +856,7 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
             left.pipeInput("lhs1", "lhsValue1|returnNull", baseTimestamp);
             {
                 final Map<String, String> expected = mkMap(
-                    mkEntry("lhs1", "(lhsValue1|returnNull,null)")
+                        mkEntry("lhs1", "(lhsValue1|returnNull,null)")
                 );
                 assertThat(outputTopic.readKeyValuesToMap(), is(expected));
                 if (materialized) {
@@ -899,16 +899,16 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
                                           final boolean leftVersioned,
                                           final boolean rightVersioned) {
         return getTopology(
-            streamsConfig,
-            queryableStoreName,
-            leftJoin,
-            rejoin,
-            leftVersioned,
-            rightVersioned,
-            value -> {
-                final String[] tokens = value.split("\\|");
-                return tokens.length == 2 ? tokens[1] : null;
-            }
+                streamsConfig,
+                queryableStoreName,
+                leftJoin,
+                rejoin,
+                leftVersioned,
+                rightVersioned,
+                value -> {
+                    final String[] tokens = value.split("\\|");
+                    return tokens.length == 2 ? tokens[1] : null;
+                }
         );
     }
 
@@ -925,32 +925,32 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
         final KTable<String, String> left;
         if (leftVersioned) {
             left = builder.table(
-                LEFT_TABLE,
-                Consumed.with(serdeScope.decorateSerde(Serdes.String(), streamsConfig, true),
-                    serdeScope.decorateSerde(Serdes.String(), streamsConfig, false)),
-                Materialized.as(Stores.persistentVersionedKeyValueStore("left", Duration.ofMinutes(5)))
+                    LEFT_TABLE,
+                    Consumed.with(serdeScope.decorateSerde(Serdes.String(), streamsConfig, true),
+                            serdeScope.decorateSerde(Serdes.String(), streamsConfig, false)),
+                    Materialized.as(Stores.persistentVersionedKeyValueStore("left", Duration.ofMinutes(5)))
             );
         } else {
             left = builder.table(
-                LEFT_TABLE,
-                Consumed.with(serdeScope.decorateSerde(Serdes.String(), streamsConfig, true),
-                    serdeScope.decorateSerde(Serdes.String(), streamsConfig, false))
+                    LEFT_TABLE,
+                    Consumed.with(serdeScope.decorateSerde(Serdes.String(), streamsConfig, true),
+                            serdeScope.decorateSerde(Serdes.String(), streamsConfig, false))
             );
         }
 
         final KTable<String, String> right;
         if (rightVersioned) {
             right = builder.table(
-                RIGHT_TABLE,
-                Consumed.with(serdeScope.decorateSerde(Serdes.String(), streamsConfig, true),
-                    serdeScope.decorateSerde(Serdes.String(), streamsConfig, false)),
-                Materialized.as(Stores.persistentVersionedKeyValueStore("right", Duration.ofMinutes(5)))
+                    RIGHT_TABLE,
+                    Consumed.with(serdeScope.decorateSerde(Serdes.String(), streamsConfig, true),
+                            serdeScope.decorateSerde(Serdes.String(), streamsConfig, false)),
+                    Materialized.as(Stores.persistentVersionedKeyValueStore("right", Duration.ofMinutes(5)))
             );
         } else {
             right = builder.table(
-                RIGHT_TABLE,
-                Consumed.with(serdeScope.decorateSerde(Serdes.String(), streamsConfig, true),
-                    serdeScope.decorateSerde(Serdes.String(), streamsConfig, false))
+                    RIGHT_TABLE,
+                    Consumed.with(serdeScope.decorateSerde(Serdes.String(), streamsConfig, true),
+                            serdeScope.decorateSerde(Serdes.String(), streamsConfig, false))
             );
         }
 
@@ -959,51 +959,51 @@ public class KTableKTableForeignKeyJoinIntegrationTest {
 
         // the cache suppresses some of the unnecessary tombstones we want to make assertions about
         final Materialized<String, String, KeyValueStore<Bytes, byte[]>> mainMaterialized =
-            queryableStoreName == null ?
-                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>with(
-                    null,
-                    serdeScope.decorateSerde(Serdes.String(), streamsConfig, false)
-                ).withCachingDisabled() :
-                Materialized.<String, String>as(Stores.inMemoryKeyValueStore(queryableStoreName))
-                    .withValueSerde(serdeScope.decorateSerde(Serdes.String(), streamsConfig, false))
-                    .withCachingDisabled();
+                queryableStoreName == null ?
+                        Materialized.<String, String, KeyValueStore<Bytes, byte[]>>with(
+                                null,
+                                serdeScope.decorateSerde(Serdes.String(), streamsConfig, false)
+                        ).withCachingDisabled() :
+                        Materialized.<String, String>as(Stores.inMemoryKeyValueStore(queryableStoreName))
+                        .withValueSerde(serdeScope.decorateSerde(Serdes.String(), streamsConfig, false))
+                        .withCachingDisabled();
 
         final Materialized<String, String, KeyValueStore<Bytes, byte[]>> rejoinMaterialized =
-            !rejoin ? null :
-                queryableStoreName == null ?
-                    Materialized.with(null, serdeScope.decorateSerde(Serdes.String(), streamsConfig, false)) :
-                    // not actually going to query this store, but we need to force materialization here
-                    // to really test this configuration
-                    Materialized.<String, String>as(Stores.inMemoryKeyValueStore(queryableStoreName + "-rejoin"))
-                        .withValueSerde(serdeScope.decorateSerde(Serdes.String(), streamsConfig, false))
-                        // the cache suppresses some of the unnecessary tombstones we want to make assertions about
-                        .withCachingDisabled();
+                !rejoin ? null :
+                        queryableStoreName == null ?
+                                Materialized.with(null, serdeScope.decorateSerde(Serdes.String(), streamsConfig, false)) :
+                        // not actually going to query this store, but we need to force materialization here
+                        // to really test this configuration
+                                Materialized.<String, String>as(Stores.inMemoryKeyValueStore(queryableStoreName + "-rejoin"))
+                                .withValueSerde(serdeScope.decorateSerde(Serdes.String(), streamsConfig, false))
+                                        // the cache suppresses some of the unnecessary tombstones we want to make assertions about
+                                .withCachingDisabled();
 
         if (leftJoin) {
             final KTable<String, String> fkJoin =
-                left.leftJoin(right, extractor, joiner, mainMaterialized);
+                    left.leftJoin(right, extractor, joiner, mainMaterialized);
 
             fkJoin.toStream()
-                .to(OUTPUT);
+                    .to(OUTPUT);
 
             // also make sure the FK join is set up right for downstream operations that require materialization
             if (rejoin) {
                 fkJoin.leftJoin(left, rejoiner, rejoinMaterialized)
-                    .toStream()
-                    .to(REJOIN_OUTPUT);
+                        .toStream()
+                        .to(REJOIN_OUTPUT);
             }
         } else {
             final KTable<String, String> fkJoin = left.join(right, extractor, joiner, mainMaterialized);
 
             fkJoin
-                .toStream()
-                .to(OUTPUT);
+                    .toStream()
+                    .to(OUTPUT);
 
             // also make sure the FK join is set up right for downstream operations that require materialization
             if (rejoin) {
                 fkJoin.join(left, rejoiner, rejoinMaterialized)
-                    .toStream()
-                    .to(REJOIN_OUTPUT);
+                        .toStream()
+                        .to(REJOIN_OUTPUT);
             }
         }
 

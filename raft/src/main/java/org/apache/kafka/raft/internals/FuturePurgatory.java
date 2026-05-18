@@ -22,19 +22,19 @@ import java.util.concurrent.CompletableFuture;
  * Simple purgatory interface which supports waiting with expiration for a given threshold
  * to be reached. The threshold is specified through {@link #await(Comparable, long)}.
  * The returned future can be completed in the following ways:
- *
+ * <p>
  * 1) The future is completed successfully if the threshold value is reached
- *    in a call to {@link #maybeComplete(Comparable, long)}.
+ * in a call to {@link #maybeComplete(Comparable, long)}.
  * 2) The future is completed successfully if {@link #completeAll(long)} is called.
  * 3) The future is completed exceptionally if {@link #completeAllExceptionally(Throwable)}
- *    is called.
+ * is called.
  * 4) If none of the above happens before the expiration of the timeout passed to
- *    {@link #await(Comparable, long)}, then the future will be completed exceptionally
- *    with a {@link org.apache.kafka.common.errors.TimeoutException}.
- *
+ * {@link #await(Comparable, long)}, then the future will be completed exceptionally
+ * with a {@link org.apache.kafka.common.errors.TimeoutException}.
+ * <p>
  * It is also possible for the future to be completed externally, but this should
  * generally be avoided.
- *
+ * <p>
  * Note that the future objects should be organized in order so that completing awaiting
  * futures would stop early and not traverse all awaiting futures.
  *
@@ -50,8 +50,7 @@ public interface FuturePurgatory<T extends Comparable<T>> {
      * @param maxWaitTimeMs the maximum time to wait for completion. If this
      *                      timeout is reached, then the future will be completed exceptionally
      *                      with a {@link org.apache.kafka.common.errors.TimeoutException}
-     *
-     * @return              the future tracking the expected completion
+     * @return the future tracking the expected completion
      */
     CompletableFuture<Long> await(T threshold, long maxWaitTimeMs);
 
@@ -77,8 +76,8 @@ public interface FuturePurgatory<T extends Comparable<T>> {
      * Complete all awaiting futures exceptionally. The completion callbacks will be
      * triggered with the passed in exception.
      *
-     * @param exception     the current time in milliseconds that will be passed to
-     *                      {@link CompletableFuture#completeExceptionally(Throwable)}
+     * @param exception the current time in milliseconds that will be passed to
+     *                  {@link CompletableFuture#completeExceptionally(Throwable)}
      */
     void completeAllExceptionally(Throwable exception);
 

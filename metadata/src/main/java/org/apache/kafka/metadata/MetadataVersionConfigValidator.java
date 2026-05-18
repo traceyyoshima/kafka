@@ -32,9 +32,9 @@ public class MetadataVersionConfigValidator implements MetadataPublisher {
     private final FaultHandler faultHandler;
 
     public MetadataVersionConfigValidator(
-        int id,
-        Supplier<Boolean> hasMultiLogDirs,
-        FaultHandler faultHandler
+            int id,
+            Supplier<Boolean> hasMultiLogDirs,
+            FaultHandler faultHandler
     ) {
         this.name = "MetadataVersionPublisher(id=" + id + ")";
         this.hasMultiLogDirs = hasMultiLogDirs;
@@ -48,9 +48,9 @@ public class MetadataVersionConfigValidator implements MetadataPublisher {
 
     @Override
     public void onMetadataUpdate(
-        MetadataDelta delta,
-        MetadataImage newImage,
-        LoaderManifest manifest
+            MetadataDelta delta,
+            MetadataImage newImage,
+            LoaderManifest manifest
     ) {
         if (delta.featuresDelta() != null) {
             if (delta.metadataVersionChanged().isPresent()) {
@@ -67,13 +67,13 @@ public class MetadataVersionConfigValidator implements MetadataPublisher {
     private void onMetadataVersionChanged(MetadataVersion metadataVersion) {
         if (this.hasMultiLogDirs.get() && !metadataVersion.isDirectoryAssignmentSupported()) {
             String errorMsg = String.format(
-                "Multiple log directories (aka JBOD) are not supported in the current MetadataVersion %s. Need %s or higher",
-                metadataVersion, MetadataVersion.IBP_3_7_IV2
+                    "Multiple log directories (aka JBOD) are not supported in the current MetadataVersion %s. Need %s or higher",
+                    metadataVersion, MetadataVersion.IBP_3_7_IV2
             );
 
             this.faultHandler.handleFault(
-                "Broker configuration does not support the cluster MetadataVersion",
-                new IllegalArgumentException(errorMsg)
+                    "Broker configuration does not support the cluster MetadataVersion",
+                    new IllegalArgumentException(errorMsg)
             );
         }
     }

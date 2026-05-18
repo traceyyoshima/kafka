@@ -178,7 +178,7 @@ public class RecordHeadersTest {
         Iterator<Header> headersIterator = headers.headers("key").iterator();
         headersIterator.next();
         assertThrows(UnsupportedOperationException.class,
-            headersIterator::remove);
+                headersIterator::remove);
     }
 
     @Test
@@ -189,25 +189,25 @@ public class RecordHeadersTest {
         headers.setReadOnly();
 
         assertThrows(IllegalStateException.class,
-            () -> headers.add(new RecordHeader("key", "value".getBytes())),
-            "IllegalStateException expected as headers are closed.");
+                () -> headers.add(new RecordHeader("key", "value".getBytes())),
+                "IllegalStateException expected as headers are closed.");
 
         assertThrows(IllegalStateException.class,
-            () -> headers.remove("key"),
-            "IllegalStateException expected as headers are closed.");
+                () -> headers.remove("key"),
+                "IllegalStateException expected as headers are closed.");
 
         Iterator<Header> headerIterator = headers.iterator();
         headerIterator.next();
 
         assertThrows(IllegalStateException.class,
-            headerIterator::remove,
-            "IllegalStateException expected as headers are closed.");
+                headerIterator::remove,
+                "IllegalStateException expected as headers are closed.");
 
         headerIteratorBeforeClose.next();
 
         assertThrows(IllegalStateException.class,
-            headerIterator::remove,
-            "IllegalStateException expected as headers are closed.");
+                headerIterator::remove,
+                "IllegalStateException expected as headers are closed.");
     }
 
     @Test
@@ -277,16 +277,16 @@ public class RecordHeadersTest {
         CountDownLatch startLatch = new CountDownLatch(1);
 
         var futures = IntStream.range(0, threadCount)
-            .mapToObj(i -> CompletableFuture.runAsync(() -> {
-                try {
-                    startLatch.await();
-                    header.key();
-                    header.value();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    throw new RuntimeException(e);
-                }
-            })).collect(Collectors.toUnmodifiableList());
+                .mapToObj(i -> CompletableFuture.runAsync(() -> {
+                    try {
+                        startLatch.await();
+                        header.key();
+                        header.value();
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        throw new RuntimeException(e);
+                    }
+                })).collect(Collectors.toUnmodifiableList());
 
         startLatch.countDown();
         futures.forEach(CompletableFuture::join);
@@ -295,8 +295,8 @@ public class RecordHeadersTest {
     @RepeatedTest(100)
     public void testRecordHeaderIsReadThreadSafe() throws Exception {
         RecordHeader header = new RecordHeader(
-            ByteBuffer.wrap("key".getBytes(StandardCharsets.UTF_8)),
-            ByteBuffer.wrap("value".getBytes(StandardCharsets.UTF_8))
+                ByteBuffer.wrap("key".getBytes(StandardCharsets.UTF_8)),
+                ByteBuffer.wrap("value".getBytes(StandardCharsets.UTF_8))
         );
         assertRecordHeaderReadThreadSafe(header);
     }
@@ -304,8 +304,8 @@ public class RecordHeadersTest {
     @RepeatedTest(100)
     public void testRecordHeaderWithNullValueIsReadThreadSafe() throws Exception {
         RecordHeader header = new RecordHeader(
-            ByteBuffer.wrap("key".getBytes(StandardCharsets.UTF_8)),
-            null
+                ByteBuffer.wrap("key".getBytes(StandardCharsets.UTF_8)),
+                null
         );
         assertRecordHeaderReadThreadSafe(header);
     }

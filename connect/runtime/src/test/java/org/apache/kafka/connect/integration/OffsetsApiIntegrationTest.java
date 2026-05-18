@@ -930,17 +930,18 @@ public class OffsetsApiIntegrationTest {
     /**
      * Modify (i.e., alter or reset) the offsets for a sink connector, with retry logic to
      * handle cases where laggy task shutdown may have left a consumer in the group.
+     *
      * @param offsetsToAlter the offsets to alter for the sink connector, or null if
      *                       the connector's offsets should be reset instead
      * @return the response from the REST API, if the request was successful
      * @throws InterruptedException if the thread is interrupted while waiting for a
-     * request to modify the connector's offsets to succeed
+     *                              request to modify the connector's offsets to succeed
      * @see <a href="https://issues.apache.org/jira/browse/KAFKA-15826">KAFKA-15826</a>
      */
     private String modifySinkConnectorOffsetsWithRetry(ConnectorOffsets offsetsToAlter) throws InterruptedException {
         // Some retry logic is necessary to account for KAFKA-15826,
         // where laggy sink task startup/shutdown can leave consumers running
-        String modifyVerb = offsetsToAlter != null ?  "alter" : "reset";
+        String modifyVerb = offsetsToAlter != null ? "alter" : "reset";
         String conditionDetails = "Failed to " + modifyVerb + " sink connector offsets in time";
         AtomicReference<String> responseReference = new AtomicReference<>();
         waitForCondition(
@@ -986,12 +987,12 @@ public class OffsetsApiIntegrationTest {
      *     <li>The expected offset for each partition in the topic is the same</li>
      * </ol>
      *
-     * @param connectorName the name of the sink connector whose offsets are to be verified
-     * @param expectedTopic the name of the Kafka topic that the sink connector is consuming from
+     * @param connectorName      the name of the sink connector whose offsets are to be verified
+     * @param expectedTopic      the name of the Kafka topic that the sink connector is consuming from
      * @param expectedPartitions the number of partitions that exist for the Kafka topic
-     * @param expectedOffset the expected consumer group offset for each partition
-     * @param conditionDetails the condition that we're waiting to achieve (for example: Sink connector should process
-     *                         10 records)
+     * @param expectedOffset     the expected consumer group offset for each partition
+     * @param conditionDetails   the condition that we're waiting to achieve (for example: Sink connector should process
+     *                           10 records)
      * @throws InterruptedException if the thread is interrupted while waiting for the actual offsets to match the expected offsets
      */
     private void verifyExpectedSinkConnectorOffsets(String connectorName, String expectedTopic, int expectedPartitions,
@@ -1012,7 +1013,7 @@ public class OffsetsApiIntegrationTest {
                     if (offsets.offsets().size() != expectedPartitions) {
                         return false;
                     }
-                    for (ConnectorOffset offset: offsets.offsets()) {
+                    for (ConnectorOffset offset : offsets.offsets()) {
                         assertEquals(expectedTopic, offset.partition().get(SinkUtils.KAFKA_TOPIC_KEY));
                         if ((Integer) offset.offset().get(SinkUtils.KAFKA_OFFSET_KEY) != expectedOffset) {
                             return false;
@@ -1043,9 +1044,9 @@ public class OffsetsApiIntegrationTest {
      * or the {@link #OFFSET_READ_TIMEOUT_MS timeout} is reached. Note that this assumes that the source connector is a
      * {@link TestableSourceConnector}
      *
-     * @param connectorName the name of the source connector whose offsets are to be verified
-     * @param numTasks the number of tasks for the source connector
-     * @param expectedOffset the expected offset for each source partition
+     * @param connectorName    the name of the source connector whose offsets are to be verified
+     * @param numTasks         the number of tasks for the source connector
+     * @param expectedOffset   the expected offset for each source partition
      * @param conditionDetails the condition that we're waiting to achieve (for example: Source connector should process
      *                         10 records)
      * @throws InterruptedException if the thread is interrupted while waiting for the actual offsets to match the expected offsets

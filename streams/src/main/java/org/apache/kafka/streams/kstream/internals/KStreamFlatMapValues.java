@@ -36,7 +36,7 @@ class KStreamFlatMapValues<KIn, VIn, VOut> implements FixedKeyProcessorSupplier<
     }
 
     private class KStreamFlatMapValuesProcessor extends
-        ContextualFixedKeyProcessor<KIn, VIn, VOut> {
+            ContextualFixedKeyProcessor<KIn, VIn, VOut> {
         @Override
         public void process(final FixedKeyRecord<KIn, VIn> record) {
             final Iterable<? extends VOut> newValues = mapper.apply(record.key(), record.value());

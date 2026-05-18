@@ -33,12 +33,12 @@ public class ResourcePattern {
     private final String name;
     private final PatternType patternType;
 
-   /**
+    /**
      * Create a pattern using the supplied parameters.
      *
      * @param resourceType non-null, specific, resource type
-     * @param name non-null resource name, which can be the {@link #WILDCARD_RESOURCE}.
-     * @param patternType non-null, specific, resource pattern type, which controls how the pattern will match resource names.
+     * @param name         non-null resource name, which can be the {@link #WILDCARD_RESOURCE}.
+     * @param patternType  non-null, specific, resource pattern type, which controls how the pattern will match resource names.
      */
     public ResourcePattern(ResourceType resourceType, String name, PatternType patternType) {
         this.resourceType = Objects.requireNonNull(resourceType, "resourceType");
@@ -103,8 +103,8 @@ public class ResourcePattern {
 
         final ResourcePattern resource = (ResourcePattern) o;
         return resourceType == resource.resourceType &&
-            Objects.equals(name, resource.name) &&
-            patternType == resource.patternType;
+                Objects.equals(name, resource.name) &&
+                patternType == resource.patternType;
     }
 
     @Override

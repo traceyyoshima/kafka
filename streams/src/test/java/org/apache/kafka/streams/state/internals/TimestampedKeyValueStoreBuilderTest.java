@@ -54,10 +54,10 @@ public class TimestampedKeyValueStoreBuilderTest {
         when(supplier.metricsScope()).thenReturn("metricScope");
 
         builder = new TimestampedKeyValueStoreBuilder<>(
-            supplier,
-            Serdes.String(),
-            Serdes.String(),
-            new MockTime()
+                supplier,
+                Serdes.String(),
+                Serdes.String(),
+                new MockTime()
         );
     }
 
@@ -103,8 +103,8 @@ public class TimestampedKeyValueStoreBuilderTest {
     public void shouldHaveChangeLoggingStoreWhenLoggingEnabled() {
         setUp();
         final TimestampedKeyValueStore<String, String> store = builder
-            .withLoggingEnabled(Collections.emptyMap())
-            .build();
+                .withLoggingEnabled(Collections.emptyMap())
+                .build();
         final StateStore wrapped = ((WrappedStateStore) store).wrapped();
         assertThat(store, instanceOf(MeteredTimestampedKeyValueStore.class));
         assertThat(wrapped, instanceOf(ChangeLoggingTimestampedKeyValueBytesStore.class));
@@ -115,9 +115,9 @@ public class TimestampedKeyValueStoreBuilderTest {
     public void shouldHaveCachingAndChangeLoggingWhenBothEnabled() {
         setUp();
         final TimestampedKeyValueStore<String, String> store = builder
-            .withLoggingEnabled(Collections.emptyMap())
-            .withCachingEnabled()
-            .build();
+                .withLoggingEnabled(Collections.emptyMap())
+                .withCachingEnabled()
+                .build();
         final WrappedStateStore caching = (WrappedStateStore) ((WrappedStateStore) store).wrapped();
         final WrappedStateStore changeLogging = (WrappedStateStore) caching.wrapped();
         assertThat(store, instanceOf(MeteredTimestampedKeyValueStore.class));
@@ -132,9 +132,9 @@ public class TimestampedKeyValueStoreBuilderTest {
         when(supplier.get()).thenReturn(new RocksDBTimestampedStore("name", "metrics-scope"));
 
         final TimestampedKeyValueStore<String, String> store = builder
-            .withLoggingDisabled()
-            .withCachingDisabled()
-            .build();
+                .withLoggingDisabled()
+                .withCachingDisabled()
+                .build();
         assertThat(((WrappedStateStore) store).wrapped(), instanceOf(RocksDBTimestampedStore.class));
     }
 
@@ -144,9 +144,9 @@ public class TimestampedKeyValueStoreBuilderTest {
         when(supplier.get()).thenReturn(new RocksDBStore("name", "metrics-scope"));
 
         final TimestampedKeyValueStore<String, String> store = builder
-            .withLoggingDisabled()
-            .withCachingDisabled()
-            .build();
+                .withLoggingDisabled()
+                .withCachingDisabled()
+                .build();
         assertThat(((WrappedStateStore) store).wrapped(), instanceOf(KeyValueToTimestampedKeyValueByteStoreAdapter.class));
     }
 
@@ -183,7 +183,7 @@ public class TimestampedKeyValueStoreBuilderTest {
         when(supplier.metricsScope()).thenReturn(null);
 
         final Exception e = assertThrows(NullPointerException.class,
-            () -> new TimestampedKeyValueStoreBuilder<>(supplier, Serdes.String(), Serdes.String(), new MockTime()));
+                () -> new TimestampedKeyValueStoreBuilder<>(supplier, Serdes.String(), Serdes.String(), new MockTime()));
         assertThat(e.getMessage(), equalTo("storeSupplier's metricsScope can't be null"));
     }
 

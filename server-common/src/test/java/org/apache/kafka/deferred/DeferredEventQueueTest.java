@@ -94,8 +94,8 @@ public class DeferredEventQueueTest {
         assertTrue(event2.future.isDone());
         assertTrue(event3.future.isDone());
         assertEquals(RuntimeException.class, assertThrows(ExecutionException.class,
-            () -> event2.future.get()).getCause().getClass());
+                () -> event2.future.get()).getCause().getClass());
         assertEquals(RuntimeException.class, assertThrows(ExecutionException.class,
-            () -> event3.future.get()).getCause().getClass());
+                () -> event3.future.get()).getCause().getClass());
     }
 }

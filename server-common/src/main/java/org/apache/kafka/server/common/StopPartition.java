@@ -53,9 +53,9 @@ public class StopPartition {
         if (o == null || getClass() != o.getClass()) return false;
         StopPartition that = (StopPartition) o;
         return deleteLocalLog == that.deleteLocalLog &&
-               deleteRemoteLog == that.deleteRemoteLog &&
-               stopRemoteLogMetadataManager == that.stopRemoteLogMetadataManager &&
-               Objects.equals(topicPartition, that.topicPartition);
+                deleteRemoteLog == that.deleteRemoteLog &&
+                stopRemoteLogMetadataManager == that.stopRemoteLogMetadataManager &&
+                Objects.equals(topicPartition, that.topicPartition);
     }
 
     @Override

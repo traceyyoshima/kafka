@@ -88,10 +88,11 @@ class RecordsBatchReaderTest {
                 serde,
                 BufferSupplier.NO_CACHING,
                 MAX_BATCH_BYTES,
-                ignore -> { },
+                ignore -> {
+                },
                 true,
                 new LogContext()
-            )
+        )
         ) {
             assertTrue(reader.hasNext());
             assertEquals(List.of(expectedRecord), reader.next().controlRecords());
@@ -100,9 +101,9 @@ class RecordsBatchReaderTest {
     }
 
     private void testBatchReader(
-        long baseOffset,
-        Records records,
-        List<TestBatch<String>> expectedBatches
+            long baseOffset,
+            Records records,
+            List<TestBatch<String>> expectedBatches
     ) {
         BufferSupplier bufferSupplier = Mockito.mock(BufferSupplier.class);
         Set<ByteBuffer> allocatedBuffers = Collections.newSetFromMap(new IdentityHashMap<>());
@@ -124,14 +125,14 @@ class RecordsBatchReaderTest {
         CloseListener<BatchReader<String>> closeListener = Mockito.mock(CloseListener.class);
 
         RecordsBatchReader<String> reader = RecordsBatchReader.of(
-            baseOffset,
-            records,
-            serde,
-            bufferSupplier,
-            MAX_BATCH_BYTES,
-            closeListener,
-            true,
-            new LogContext()
+                baseOffset,
+                records,
+                serde,
+                bufferSupplier,
+                MAX_BATCH_BYTES,
+                closeListener,
+                true,
+                new LogContext()
         );
         try (reader) {
             for (TestBatch<String> batch : expectedBatches) {

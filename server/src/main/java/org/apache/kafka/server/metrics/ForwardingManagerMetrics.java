@@ -56,9 +56,9 @@ public final class ForwardingManagerMetrics implements AutoCloseable {
         this.remoteTimeMsHist = new LatencyHistogram(metrics, REMOTE_TIME_MS_NAME, METRIC_GROUP_NAME, timeoutMs);
 
         this.queueLengthName = metrics.metricName(
-            "QueueLength",
-            METRIC_GROUP_NAME,
-            "The current number of RPCs that are waiting in the broker's forwarding manager queue, waiting to be sent to the controller."
+                "QueueLength",
+                METRIC_GROUP_NAME,
+                "The current number of RPCs that are waiting in the broker's forwarding manager queue, waiting to be sent to the controller."
         );
         metrics.addMetric(queueLengthName, (Gauge<Integer>) (config, now) -> queueLength.get());
     }
@@ -106,11 +106,11 @@ public final class ForwardingManagerMetrics implements AutoCloseable {
             this.latencyP999Name = metrics.metricName(name + ".p999", group);
 
             sensor.add(new Percentiles(
-                SIZE_IN_BYTES,
-                maxLatency,
-                BucketSizing.CONSTANT,
-                new Percentile(latencyP99Name, 99),
-                new Percentile(latencyP999Name, 99.9)
+                    SIZE_IN_BYTES,
+                    maxLatency,
+                    BucketSizing.CONSTANT,
+                    new Percentile(latencyP99Name, 99),
+                    new Percentile(latencyP999Name, 99.9)
             ));
         }
 

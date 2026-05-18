@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Objects;
 
 public class TimestampedWindowStoreBuilder<K, V>
-    extends AbstractStoreBuilder<K, ValueAndTimestamp<V>, TimestampedWindowStore<K, V>> {
+        extends AbstractStoreBuilder<K, ValueAndTimestamp<V>, TimestampedWindowStore<K, V>> {
 
     private static final Logger LOG = LoggerFactory.getLogger(TimestampedWindowStoreBuilder.class);
 
@@ -71,12 +71,12 @@ public class TimestampedWindowStoreBuilder<K, V>
         }
 
         return new MeteredTimestampedWindowStore<>(
-            maybeWrapCaching(maybeWrapLogging(store)),
-            storeSupplier.windowSize(),
-            storeSupplier.metricsScope(),
-            time,
-            keySerde,
-            valueSerde);
+                maybeWrapCaching(maybeWrapLogging(store)),
+                storeSupplier.windowSize(),
+                storeSupplier.metricsScope(),
+                time,
+                keySerde,
+                valueSerde);
     }
 
     private WindowStore<Bytes, byte[]> maybeWrapCaching(final WindowStore<Bytes, byte[]> inner) {
@@ -87,16 +87,16 @@ public class TimestampedWindowStoreBuilder<K, V>
         final boolean isTimeOrdered = isTimeOrderedStore(inner);
         if (isTimeOrdered) {
             return new TimeOrderedCachingWindowStore(
-                inner,
-                storeSupplier.windowSize(),
-                storeSupplier.segmentIntervalMs()
+                    inner,
+                    storeSupplier.windowSize(),
+                    storeSupplier.segmentIntervalMs()
             );
         }
 
         return new CachingWindowStore(
-            inner,
-            storeSupplier.windowSize(),
-            storeSupplier.segmentIntervalMs()
+                inner,
+                storeSupplier.windowSize(),
+                storeSupplier.segmentIntervalMs()
         );
     }
 
@@ -123,8 +123,8 @@ public class TimestampedWindowStoreBuilder<K, V>
 
 
     private static final class InMemoryTimestampedWindowStoreMarker
-        extends WrappedStateStore<WindowStore<Bytes, byte[]>, Bytes, byte[]>
-        implements WindowStore<Bytes, byte[]>, TimestampedBytesStore {
+            extends WrappedStateStore<WindowStore<Bytes, byte[]>, Bytes, byte[]>
+            implements WindowStore<Bytes, byte[]>, TimestampedBytesStore {
 
         private InMemoryTimestampedWindowStoreMarker(final WindowStore<Bytes, byte[]> wrapped) {
             super(wrapped);
@@ -200,8 +200,8 @@ public class TimestampedWindowStoreBuilder<K, V>
 
         @Override
         public <R> QueryResult<R> query(final Query<R> query,
-            final PositionBound positionBound,
-            final QueryConfig config) {
+                                        final PositionBound positionBound,
+                                        final QueryConfig config) {
 
             final long start = config.isCollectExecutionInfo() ? System.nanoTime() : -1L;
             final QueryResult<R> result = wrapped().query(query, positionBound, config);

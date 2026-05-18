@@ -72,18 +72,18 @@ public class OffsetControlManagerTest {
         OffsetControlManager offsetControl = new OffsetControlManager.Builder().build();
         offsetControl.activate(1000L);
         assertEquals("Can't activate already active OffsetControlManager.",
-            assertThrows(RuntimeException.class,
-                () -> offsetControl.activate(2000L)).
-                    getMessage());
+                assertThrows(RuntimeException.class,
+                        () -> offsetControl.activate(2000L)).
+                        getMessage());
     }
 
     @Test
     public void testActivateFailsIfNewNextWriteOffsetIsNegative() {
         OffsetControlManager offsetControl = new OffsetControlManager.Builder().build();
         assertEquals("Invalid negative newNextWriteOffset -2.",
-            assertThrows(RuntimeException.class,
-                () -> offsetControl.activate(-2)).
-                    getMessage());
+                assertThrows(RuntimeException.class,
+                        () -> offsetControl.activate(-2)).
+                        getMessage());
     }
 
     @Test
@@ -99,20 +99,20 @@ public class OffsetControlManagerTest {
     public void testDeactivateFailsIfNotActive() {
         OffsetControlManager offsetControl = new OffsetControlManager.Builder().build();
         assertEquals("Can't deactivate inactive OffsetControlManager.",
-            assertThrows(RuntimeException.class, offsetControl::deactivate).getMessage());
+                assertThrows(RuntimeException.class, offsetControl::deactivate).getMessage());
     }
 
     private static Batch<ApiMessageAndVersion> newFakeBatch(
-        long lastOffset,
-        int epoch,
-        long appendTimestamp
+            long lastOffset,
+            int epoch,
+            long appendTimestamp
     ) {
         return Batch.data(
-            lastOffset,
-            epoch,
-            appendTimestamp,
-            100,
-            List.of(new ApiMessageAndVersion(new NoOpRecord(), (short) 0)));
+                lastOffset,
+                epoch,
+                appendTimestamp,
+                100,
+                List.of(new ApiMessageAndVersion(new NoOpRecord(), (short) 0)));
     }
 
     @Test
@@ -165,7 +165,7 @@ public class OffsetControlManagerTest {
 
         offsetControl.endLoadSnapshot(3456L);
         assertEquals(List.of("snapshot[-1]", "reset", "snapshot[4000]"),
-            snapshotRegistry.operations());
+                snapshotRegistry.operations());
         assertNull(offsetControl.currentSnapshotId());
         assertNull(offsetControl.currentSnapshotName());
         assertEquals(List.of(4000L), offsetControl.snapshotRegistry().epochsList());
@@ -184,9 +184,9 @@ public class OffsetControlManagerTest {
         OffsetControlManager offsetControl = new OffsetControlManager.Builder().build();
         offsetControl.beginLoadSnapshot(new OffsetAndEpoch(4000L, 300));
         assertEquals("BeginTransactionRecord cannot appear within a snapshot.",
-            assertThrows(RuntimeException.class,
-                () -> offsetControl.replay(new BeginTransactionRecord(), 1000L)).
-                    getMessage());
+                assertThrows(RuntimeException.class,
+                        () -> offsetControl.replay(new BeginTransactionRecord(), 1000L)).
+                        getMessage());
     }
 
     @Test
@@ -194,9 +194,9 @@ public class OffsetControlManagerTest {
         OffsetControlManager offsetControl = new OffsetControlManager.Builder().build();
         offsetControl.beginLoadSnapshot(new OffsetAndEpoch(4000L, 300));
         assertEquals("EndTransactionRecord cannot appear within a snapshot.",
-            assertThrows(RuntimeException.class,
-                () -> offsetControl.replay(new EndTransactionRecord(), 1000L)).
-                    getMessage());
+                assertThrows(RuntimeException.class,
+                        () -> offsetControl.replay(new EndTransactionRecord(), 1000L)).
+                        getMessage());
     }
 
     @Test
@@ -204,18 +204,18 @@ public class OffsetControlManagerTest {
         OffsetControlManager offsetControl = new OffsetControlManager.Builder().build();
         offsetControl.beginLoadSnapshot(new OffsetAndEpoch(4000L, 300));
         assertEquals("AbortTransactionRecord cannot appear within a snapshot.",
-            assertThrows(RuntimeException.class,
-                () -> offsetControl.replay(new AbortTransactionRecord(), 1000L)).
-                    getMessage());
+                assertThrows(RuntimeException.class,
+                        () -> offsetControl.replay(new AbortTransactionRecord(), 1000L)).
+                        getMessage());
     }
 
     @Test
     public void testEndLoadSnapshotFailsWhenNotInSnapshot() {
         OffsetControlManager offsetControl = new OffsetControlManager.Builder().build();
         assertEquals("Can't end loading snapshot, because there is no current snapshot.",
-            assertThrows(RuntimeException.class,
-                () -> offsetControl.endLoadSnapshot(1000L)).
-                    getMessage());
+                assertThrows(RuntimeException.class,
+                        () -> offsetControl.endLoadSnapshot(1000L)).
+                        getMessage());
     }
 
     @ParameterizedTest
@@ -223,8 +223,8 @@ public class OffsetControlManagerTest {
     public void testReplayTransaction(boolean aborted) {
         TrackingSnapshotRegistry snapshotRegistry = new TrackingSnapshotRegistry(new LogContext());
         OffsetControlManager offsetControl = new OffsetControlManager.Builder().
-            setSnapshotRegistry(snapshotRegistry).
-            build();
+                setSnapshotRegistry(snapshotRegistry).
+                build();
 
         offsetControl.replay(new BeginTransactionRecord(), 1500L);
         assertEquals(1500L, offsetControl.transactionStartOffset());
@@ -239,11 +239,11 @@ public class OffsetControlManagerTest {
         if (aborted) {
             offsetControl.replay(new AbortTransactionRecord(), 1600L);
             assertEquals(List.of("snapshot[-1]", "snapshot[1499]", "revert[1499]"),
-                snapshotRegistry.operations());
+                    snapshotRegistry.operations());
         } else {
             offsetControl.replay(new EndTransactionRecord(), 1600L);
             assertEquals(List.of("snapshot[-1]", "snapshot[1499]"),
-                snapshotRegistry.operations());
+                    snapshotRegistry.operations());
         }
         assertEquals(-1L, offsetControl.transactionStartOffset());
         assertEquals(1499L, offsetControl.lastStableOffset());
@@ -257,8 +257,8 @@ public class OffsetControlManagerTest {
     public void testLoadSnapshotClearsTransactionalState() {
         TrackingSnapshotRegistry snapshotRegistry = new TrackingSnapshotRegistry(new LogContext());
         OffsetControlManager offsetControl = new OffsetControlManager.Builder().
-            setSnapshotRegistry(snapshotRegistry).
-            build();
+                setSnapshotRegistry(snapshotRegistry).
+                build();
         offsetControl.replay(new BeginTransactionRecord(), 1500L);
         offsetControl.beginLoadSnapshot(new OffsetAndEpoch(4000L, 300));
         assertEquals(-1L, offsetControl.transactionStartOffset());

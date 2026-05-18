@@ -70,71 +70,72 @@ public class GroupCoordinatorRecordHelpers {
 
     private static final short GROUP_METADATA_VALUE_VERSION = 3;
 
-    private GroupCoordinatorRecordHelpers() {}
+    private GroupCoordinatorRecordHelpers() {
+    }
 
     /**
      * Creates a ConsumerGroupMemberMetadata record.
      *
-     * @param groupId   The consumer group id.
-     * @param member    The consumer group member.
+     * @param groupId The consumer group id.
+     * @param member  The consumer group member.
      * @return The record.
      */
     public static CoordinatorRecord newConsumerGroupMemberSubscriptionRecord(
-        String groupId,
-        ConsumerGroupMember member
+            String groupId,
+            ConsumerGroupMember member
     ) {
         List<String> topicNames = new ArrayList<>(member.subscribedTopicNames());
         Collections.sort(topicNames);
         return CoordinatorRecord.record(
-            new ConsumerGroupMemberMetadataKey()
-                .setGroupId(groupId)
-                .setMemberId(member.memberId()),
-            new ApiMessageAndVersion(
-                new ConsumerGroupMemberMetadataValue()
-                    .setRackId(member.rackId())
-                    .setInstanceId(member.instanceId())
-                    .setClientId(member.clientId())
-                    .setClientHost(member.clientHost())
-                    .setSubscribedTopicNames(topicNames)
-                    .setSubscribedTopicRegex(member.subscribedTopicRegex())
-                    .setServerAssignor(member.serverAssignorName().orElse(null))
-                    .setRebalanceTimeoutMs(member.rebalanceTimeoutMs())
-                    .setClassicMemberMetadata(member.classicMemberMetadata().orElse(null)),
-                (short) 0
-            )
+                new ConsumerGroupMemberMetadataKey()
+                        .setGroupId(groupId)
+                        .setMemberId(member.memberId()),
+                new ApiMessageAndVersion(
+                        new ConsumerGroupMemberMetadataValue()
+                                .setRackId(member.rackId())
+                                .setInstanceId(member.instanceId())
+                                .setClientId(member.clientId())
+                                .setClientHost(member.clientHost())
+                                .setSubscribedTopicNames(topicNames)
+                                .setSubscribedTopicRegex(member.subscribedTopicRegex())
+                                .setServerAssignor(member.serverAssignorName().orElse(null))
+                                .setRebalanceTimeoutMs(member.rebalanceTimeoutMs())
+                                .setClassicMemberMetadata(member.classicMemberMetadata().orElse(null)),
+                        (short) 0
+                )
         );
     }
 
     /**
      * Creates a ConsumerGroupMemberMetadata tombstone.
      *
-     * @param groupId   The consumer group id.
-     * @param memberId  The consumer group member id.
+     * @param groupId  The consumer group id.
+     * @param memberId The consumer group member id.
      * @return The record.
      */
     public static CoordinatorRecord newConsumerGroupMemberSubscriptionTombstoneRecord(
-        String groupId,
-        String memberId
+            String groupId,
+            String memberId
     ) {
         return CoordinatorRecord.tombstone(
-            new ConsumerGroupMemberMetadataKey()
-                .setGroupId(groupId)
-                .setMemberId(memberId)
+                new ConsumerGroupMemberMetadataKey()
+                        .setGroupId(groupId)
+                        .setMemberId(memberId)
         );
     }
 
     /**
      * Creates a ConsumerGroupPartitionMetadata tombstone.
      *
-     * @param groupId   The consumer group id.
+     * @param groupId The consumer group id.
      * @return The record.
      */
     public static CoordinatorRecord newConsumerGroupSubscriptionMetadataTombstoneRecord(
-        String groupId
+            String groupId
     ) {
         return CoordinatorRecord.tombstone(
-            new ConsumerGroupPartitionMetadataKey()
-                .setGroupId(groupId)
+                new ConsumerGroupPartitionMetadataKey()
+                        .setGroupId(groupId)
         );
     }
 
@@ -147,88 +148,88 @@ public class GroupCoordinatorRecordHelpers {
      * @return The record.
      */
     public static CoordinatorRecord newConsumerGroupEpochRecord(
-        String groupId,
-        int newGroupEpoch,
-        long metadataHash
+            String groupId,
+            int newGroupEpoch,
+            long metadataHash
     ) {
         return CoordinatorRecord.record(
-            new ConsumerGroupMetadataKey()
-                .setGroupId(groupId),
-            new ApiMessageAndVersion(
-                new ConsumerGroupMetadataValue()
-                    .setEpoch(newGroupEpoch)
-                    .setMetadataHash(metadataHash),
-                (short) 0
-            )
+                new ConsumerGroupMetadataKey()
+                        .setGroupId(groupId),
+                new ApiMessageAndVersion(
+                        new ConsumerGroupMetadataValue()
+                                .setEpoch(newGroupEpoch)
+                                .setMetadataHash(metadataHash),
+                        (short) 0
+                )
         );
     }
 
     /**
      * Creates a ConsumerGroupMetadata tombstone.
      *
-     * @param groupId   The consumer group id.
+     * @param groupId The consumer group id.
      * @return The record.
      */
     public static CoordinatorRecord newConsumerGroupEpochTombstoneRecord(
-        String groupId
+            String groupId
     ) {
         return CoordinatorRecord.tombstone(
-            new ConsumerGroupMetadataKey()
-                .setGroupId(groupId)
+                new ConsumerGroupMetadataKey()
+                        .setGroupId(groupId)
         );
     }
 
     /**
      * Creates a ConsumerGroupTargetAssignmentMember record.
      *
-     * @param groupId       The consumer group id.
-     * @param memberId      The consumer group member id.
-     * @param partitions    The target partitions of the member.
+     * @param groupId    The consumer group id.
+     * @param memberId   The consumer group member id.
+     * @param partitions The target partitions of the member.
      * @return The record.
      */
     public static CoordinatorRecord newConsumerGroupTargetAssignmentRecord(
-        String groupId,
-        String memberId,
-        Map<Uuid, Set<Integer>> partitions
+            String groupId,
+            String memberId,
+            Map<Uuid, Set<Integer>> partitions
     ) {
         List<ConsumerGroupTargetAssignmentMemberValue.TopicPartition> topicPartitions =
-            new ArrayList<>(partitions.size());
+                new ArrayList<>(partitions.size());
 
         for (Map.Entry<Uuid, Set<Integer>> entry : partitions.entrySet()) {
             topicPartitions.add(
-                new ConsumerGroupTargetAssignmentMemberValue.TopicPartition()
-                    .setTopicId(entry.getKey())
-                    .setPartitions(new ArrayList<>(entry.getValue()))
+                    new ConsumerGroupTargetAssignmentMemberValue.TopicPartition()
+                            .setTopicId(entry.getKey())
+                            .setPartitions(new ArrayList<>(entry.getValue()))
             );
         }
 
         return CoordinatorRecord.record(
-            new ConsumerGroupTargetAssignmentMemberKey()
-                .setGroupId(groupId)
-                .setMemberId(memberId),
-            new ApiMessageAndVersion(
-                new ConsumerGroupTargetAssignmentMemberValue()
-                    .setTopicPartitions(topicPartitions),
-                (short) 0
-            )
+                new ConsumerGroupTargetAssignmentMemberKey()
+                        .setGroupId(groupId)
+                        .setMemberId(memberId),
+                new ApiMessageAndVersion(
+                        new ConsumerGroupTargetAssignmentMemberValue()
+                                .setTopicPartitions(topicPartitions),
+                        (short) 0
+                )
         );
     }
 
     /**
      * Creates a ConsumerGroupTargetAssignmentMember tombstone.
      *
-     * @param groupId       The consumer group id.
-     * @param memberId      The consumer group member id.
+     * @param groupId  The consumer group id.
+     * @param memberId The consumer group member id.
      * @return The record.
      */
     public static CoordinatorRecord newConsumerGroupTargetAssignmentTombstoneRecord(
-        String groupId,
-        String memberId
+            String groupId,
+            String memberId
     ) {
         return CoordinatorRecord.tombstone(
-            new ConsumerGroupTargetAssignmentMemberKey()
-                .setGroupId(groupId)
-                .setMemberId(memberId)
+                new ConsumerGroupTargetAssignmentMemberKey()
+                        .setGroupId(groupId)
+                        .setMemberId(memberId)
         );
     }
 
@@ -241,140 +242,140 @@ public class GroupCoordinatorRecordHelpers {
      * @return The record.
      */
     public static CoordinatorRecord newConsumerGroupTargetAssignmentMetadataRecord(
-        String groupId,
-        int assignmentEpoch,
-        long assignmentTimestamp
+            String groupId,
+            int assignmentEpoch,
+            long assignmentTimestamp
     ) {
         return CoordinatorRecord.record(
-            new ConsumerGroupTargetAssignmentMetadataKey()
-                .setGroupId(groupId),
-            new ApiMessageAndVersion(
-                new ConsumerGroupTargetAssignmentMetadataValue()
-                    .setAssignmentEpoch(assignmentEpoch)
-                    .setAssignmentTimestamp(assignmentTimestamp),
-                (short) 0
-            )
+                new ConsumerGroupTargetAssignmentMetadataKey()
+                        .setGroupId(groupId),
+                new ApiMessageAndVersion(
+                        new ConsumerGroupTargetAssignmentMetadataValue()
+                                .setAssignmentEpoch(assignmentEpoch)
+                                .setAssignmentTimestamp(assignmentTimestamp),
+                        (short) 0
+                )
         );
     }
 
     /**
      * Creates a ConsumerGroupTargetAssignmentMetadata tombstone.
      *
-     * @param groupId   The consumer group id.
+     * @param groupId The consumer group id.
      * @return The record.
      */
     public static CoordinatorRecord newConsumerGroupTargetAssignmentMetadataTombstoneRecord(
-        String groupId
+            String groupId
     ) {
         return CoordinatorRecord.tombstone(
-            new ConsumerGroupTargetAssignmentMetadataKey()
-                .setGroupId(groupId)
+                new ConsumerGroupTargetAssignmentMetadataKey()
+                        .setGroupId(groupId)
         );
     }
 
     /**
      * Creates a ConsumerGroupCurrentMemberAssignment record.
      *
-     * @param groupId   The consumer group id.
-     * @param member    The consumer group member.
+     * @param groupId The consumer group id.
+     * @param member  The consumer group member.
      * @return The record.
      */
     public static CoordinatorRecord newConsumerGroupCurrentAssignmentRecord(
-        String groupId,
-        ConsumerGroupMember member
+            String groupId,
+            ConsumerGroupMember member
     ) {
         return CoordinatorRecord.record(
-            new ConsumerGroupCurrentMemberAssignmentKey()
-                .setGroupId(groupId)
-                .setMemberId(member.memberId()),
-            new ApiMessageAndVersion(
-                new ConsumerGroupCurrentMemberAssignmentValue()
-                    .setMemberEpoch(member.memberEpoch())
-                    .setPreviousMemberEpoch(member.previousMemberEpoch())
-                    .setState(member.state().value())
-                    .setAssignedPartitions(toTopicPartitions(member.assignedPartitions()))
-                    .setPartitionsPendingRevocation(toTopicPartitions(member.partitionsPendingRevocation())),
-                (short) 0
-            )
+                new ConsumerGroupCurrentMemberAssignmentKey()
+                        .setGroupId(groupId)
+                        .setMemberId(member.memberId()),
+                new ApiMessageAndVersion(
+                        new ConsumerGroupCurrentMemberAssignmentValue()
+                                .setMemberEpoch(member.memberEpoch())
+                                .setPreviousMemberEpoch(member.previousMemberEpoch())
+                                .setState(member.state().value())
+                                .setAssignedPartitions(toTopicPartitions(member.assignedPartitions()))
+                                .setPartitionsPendingRevocation(toTopicPartitions(member.partitionsPendingRevocation())),
+                        (short) 0
+                )
         );
     }
 
     /**
      * Creates a ConsumerGroupCurrentMemberAssignment tombstone.
      *
-     * @param groupId   The consumer group id.
-     * @param memberId  The consumer group member id.
+     * @param groupId  The consumer group id.
+     * @param memberId The consumer group member id.
      * @return The record.
      */
     public static CoordinatorRecord newConsumerGroupCurrentAssignmentTombstoneRecord(
-        String groupId,
-        String memberId
+            String groupId,
+            String memberId
     ) {
         return CoordinatorRecord.tombstone(
-            new ConsumerGroupCurrentMemberAssignmentKey()
-                .setGroupId(groupId)
-                .setMemberId(memberId)
+                new ConsumerGroupCurrentMemberAssignmentKey()
+                        .setGroupId(groupId)
+                        .setMemberId(memberId)
         );
     }
 
     /**
      * Creates a ConsumerGroupRegularExpression record.
      *
-     * @param groupId                       The consumer group id.
-     * @param regex                         The regular expression.
-     * @param resolvedRegularExpression     The metadata associated with the regular expression.
+     * @param groupId                   The consumer group id.
+     * @param regex                     The regular expression.
+     * @param resolvedRegularExpression The metadata associated with the regular expression.
      * @return The record.
      */
     public static CoordinatorRecord newConsumerGroupRegularExpressionRecord(
-        String groupId,
-        String regex,
-        ResolvedRegularExpression resolvedRegularExpression
+            String groupId,
+            String regex,
+            ResolvedRegularExpression resolvedRegularExpression
     ) {
         List<String> topics = new ArrayList<>(resolvedRegularExpression.topics());
         Collections.sort(topics);
 
         return CoordinatorRecord.record(
-            new ConsumerGroupRegularExpressionKey()
-                .setGroupId(groupId)
-                .setRegularExpression(regex),
-            new ApiMessageAndVersion(
-                new ConsumerGroupRegularExpressionValue()
-                    .setTopics(topics)
-                    .setVersion(resolvedRegularExpression.version())
-                    .setTimestamp(resolvedRegularExpression.timestamp()),
-                (short) 0
-            )
+                new ConsumerGroupRegularExpressionKey()
+                        .setGroupId(groupId)
+                        .setRegularExpression(regex),
+                new ApiMessageAndVersion(
+                        new ConsumerGroupRegularExpressionValue()
+                                .setTopics(topics)
+                                .setVersion(resolvedRegularExpression.version())
+                                .setTimestamp(resolvedRegularExpression.timestamp()),
+                        (short) 0
+                )
         );
     }
 
     /**
      * Creates a ConsumerGroupRegularExpression tombstone.
      *
-     * @param groupId   The consumer group id.
-     * @param regex     The regular expression.
+     * @param groupId The consumer group id.
+     * @param regex   The regular expression.
      * @return The record.
      */
     public static CoordinatorRecord newConsumerGroupRegularExpressionTombstone(
-        String groupId,
-        String regex
+            String groupId,
+            String regex
     ) {
         return CoordinatorRecord.tombstone(
-            new ConsumerGroupRegularExpressionKey()
-                .setGroupId(groupId)
-                .setRegularExpression(regex)
+                new ConsumerGroupRegularExpressionKey()
+                        .setGroupId(groupId)
+                        .setRegularExpression(regex)
         );
     }
 
     /**
      * Creates a GroupMetadata record.
      *
-     * @param group              The classic group.
-     * @param assignment         The classic group assignment.
+     * @param group      The classic group.
+     * @param assignment The classic group assignment.
      * @return The record.
      */
     public static CoordinatorRecord newGroupMetadataRecord(
-        ClassicGroup group,
-        Map<String, byte[]> assignment
+            ClassicGroup group,
+            Map<String, byte[]> assignment
     ) {
         List<GroupMetadataValue.MemberMetadata> members = new ArrayList<>(group.allMembers().size());
         group.allMembers().forEach(member -> {
@@ -386,75 +387,75 @@ public class GroupCoordinatorRecordHelpers {
             byte[] memberAssignment = assignment.get(member.memberId());
             if (memberAssignment == null) {
                 throw new IllegalStateException("Attempted to write member " + member.memberId() +
-                    " of group " + group.groupId() + " with no assignment.");
+                        " of group " + group.groupId() + " with no assignment.");
             }
 
             members.add(
-                new GroupMetadataValue.MemberMetadata()
-                    .setMemberId(member.memberId())
-                    .setClientId(member.clientId())
-                    .setClientHost(member.clientHost())
-                    .setRebalanceTimeout(member.rebalanceTimeoutMs())
-                    .setSessionTimeout(member.sessionTimeoutMs())
-                    .setGroupInstanceId(member.groupInstanceId().orElse(null))
-                    .setSubscription(subscription)
-                    .setAssignment(memberAssignment)
+                    new GroupMetadataValue.MemberMetadata()
+                            .setMemberId(member.memberId())
+                            .setClientId(member.clientId())
+                            .setClientHost(member.clientHost())
+                            .setRebalanceTimeout(member.rebalanceTimeoutMs())
+                            .setSessionTimeout(member.sessionTimeoutMs())
+                            .setGroupInstanceId(member.groupInstanceId().orElse(null))
+                            .setSubscription(subscription)
+                            .setAssignment(memberAssignment)
             );
         });
 
         return CoordinatorRecord.record(
-            new GroupMetadataKey()
-                .setGroup(group.groupId()),
-            new ApiMessageAndVersion(
-                new GroupMetadataValue()
-                    .setProtocol(group.protocolName().orElse(null))
-                    .setProtocolType(group.protocolType().orElse(""))
-                    .setGeneration(group.generationId())
-                    .setLeader(group.leaderOrNull())
-                    .setCurrentStateTimestamp(group.currentStateTimestampOrDefault())
-                    .setMembers(members),
-                GROUP_METADATA_VALUE_VERSION
-            )
+                new GroupMetadataKey()
+                        .setGroup(group.groupId()),
+                new ApiMessageAndVersion(
+                        new GroupMetadataValue()
+                                .setProtocol(group.protocolName().orElse(null))
+                                .setProtocolType(group.protocolType().orElse(""))
+                                .setGeneration(group.generationId())
+                                .setLeader(group.leaderOrNull())
+                                .setCurrentStateTimestamp(group.currentStateTimestampOrDefault())
+                                .setMembers(members),
+                        GROUP_METADATA_VALUE_VERSION
+                )
         );
     }
 
     /**
      * Creates a GroupMetadata tombstone.
      *
-     * @param groupId  The group id.
+     * @param groupId The group id.
      * @return The record.
      */
     public static CoordinatorRecord newGroupMetadataTombstoneRecord(
-        String groupId
+            String groupId
     ) {
         return CoordinatorRecord.tombstone(
-            new GroupMetadataKey()
-                .setGroup(groupId)
+                new GroupMetadataKey()
+                        .setGroup(groupId)
         );
     }
 
     /**
      * Creates an empty GroupMetadata record.
      *
-     * @param group              The classic group.
+     * @param group The classic group.
      * @return The record.
      */
     public static CoordinatorRecord newEmptyGroupMetadataRecord(
-        ClassicGroup group
+            ClassicGroup group
     ) {
         return CoordinatorRecord.record(
-            new GroupMetadataKey()
-                .setGroup(group.groupId()),
-            new ApiMessageAndVersion(
-                new GroupMetadataValue()
-                    .setProtocol(null)
-                    .setProtocolType("")
-                    .setGeneration(0)
-                    .setLeader(null)
-                    .setCurrentStateTimestamp(group.currentStateTimestampOrDefault())
-                    .setMembers(List.of()),
-                GROUP_METADATA_VALUE_VERSION
-            )
+                new GroupMetadataKey()
+                        .setGroup(group.groupId()),
+                new ApiMessageAndVersion(
+                        new GroupMetadataValue()
+                                .setProtocol(null)
+                                .setProtocolType("")
+                                .setGeneration(0)
+                                .setLeader(null)
+                                .setCurrentStateTimestamp(group.currentStateTimestampOrDefault())
+                                .setMembers(List.of()),
+                        GROUP_METADATA_VALUE_VERSION
+                )
         );
     }
 
@@ -468,29 +469,29 @@ public class GroupCoordinatorRecordHelpers {
      * @return The record.
      */
     public static CoordinatorRecord newOffsetCommitRecord(
-        String groupId,
-        String topic,
-        int partitionId,
-        OffsetAndMetadata offsetAndMetadata
+            String groupId,
+            String topic,
+            int partitionId,
+            OffsetAndMetadata offsetAndMetadata
     ) {
         short version = offsetCommitValueVersion(offsetAndMetadata.expireTimestampMs.isPresent());
 
         return CoordinatorRecord.record(
-            new OffsetCommitKey()
-                .setGroup(groupId)
-                .setTopic(topic)
-                .setPartition(partitionId),
-            new ApiMessageAndVersion(
-                new OffsetCommitValue()
-                    .setOffset(offsetAndMetadata.committedOffset)
-                    .setLeaderEpoch(offsetAndMetadata.leaderEpoch.orElse(RecordBatch.NO_PARTITION_LEADER_EPOCH))
-                    .setMetadata(offsetAndMetadata.metadata)
-                    .setCommitTimestamp(offsetAndMetadata.commitTimestampMs)
-                    // Version 1 has a non-empty expireTimestamp field
-                    .setExpireTimestamp(offsetAndMetadata.expireTimestampMs.orElse(OffsetCommitRequest.DEFAULT_TIMESTAMP))
-                    .setTopicId(offsetAndMetadata.topicId),
-                version
-            )
+                new OffsetCommitKey()
+                        .setGroup(groupId)
+                        .setTopic(topic)
+                        .setPartition(partitionId),
+                new ApiMessageAndVersion(
+                        new OffsetCommitValue()
+                                .setOffset(offsetAndMetadata.committedOffset)
+                                .setLeaderEpoch(offsetAndMetadata.leaderEpoch.orElse(RecordBatch.NO_PARTITION_LEADER_EPOCH))
+                                .setMetadata(offsetAndMetadata.metadata)
+                                .setCommitTimestamp(offsetAndMetadata.commitTimestampMs)
+                                // Version 1 has a non-empty expireTimestamp field
+                                .setExpireTimestamp(offsetAndMetadata.expireTimestampMs.orElse(OffsetCommitRequest.DEFAULT_TIMESTAMP))
+                                .setTopicId(offsetAndMetadata.topicId),
+                        version
+                )
         );
     }
 
@@ -498,74 +499,74 @@ public class GroupCoordinatorRecordHelpers {
         if (expireTimestampMs) {
             return 1;
         } else {
-            return  4;
+            return 4;
         }
     }
 
     /**
      * Creates an OffsetCommit tombstone record.
      *
-     * @param groupId           The group id.
-     * @param topic             The topic name.
-     * @param partitionId       The partition id.
+     * @param groupId     The group id.
+     * @param topic       The topic name.
+     * @param partitionId The partition id.
      * @return The record.
      */
     public static CoordinatorRecord newOffsetCommitTombstoneRecord(
-        String groupId,
-        String topic,
-        int partitionId
+            String groupId,
+            String topic,
+            int partitionId
     ) {
         return CoordinatorRecord.tombstone(
-            new OffsetCommitKey()
-                .setGroup(groupId)
-                .setTopic(topic)
-                .setPartition(partitionId)
+                new OffsetCommitKey()
+                        .setGroup(groupId)
+                        .setTopic(topic)
+                        .setPartition(partitionId)
         );
     }
 
     /**
      * Creates a ShareGroupMemberMetadata record.
      *
-     * @param groupId   The consumer group id.
-     * @param member    The consumer group member.
+     * @param groupId The consumer group id.
+     * @param member  The consumer group member.
      * @return The record.
      */
     public static CoordinatorRecord newShareGroupMemberSubscriptionRecord(
-        String groupId,
-        ShareGroupMember member
+            String groupId,
+            ShareGroupMember member
     ) {
         List<String> topicNames = new ArrayList<>(member.subscribedTopicNames());
         Collections.sort(topicNames);
         return CoordinatorRecord.record(
-            new ShareGroupMemberMetadataKey()
-                .setGroupId(groupId)
-                .setMemberId(member.memberId()),
-            new ApiMessageAndVersion(
-                new ShareGroupMemberMetadataValue()
-                    .setRackId(member.rackId())
-                    .setClientId(member.clientId())
-                    .setClientHost(member.clientHost())
-                    .setSubscribedTopicNames(topicNames),
-                (short) 0
-            )
+                new ShareGroupMemberMetadataKey()
+                        .setGroupId(groupId)
+                        .setMemberId(member.memberId()),
+                new ApiMessageAndVersion(
+                        new ShareGroupMemberMetadataValue()
+                                .setRackId(member.rackId())
+                                .setClientId(member.clientId())
+                                .setClientHost(member.clientHost())
+                                .setSubscribedTopicNames(topicNames),
+                        (short) 0
+                )
         );
     }
 
     /**
      * Creates a ShareGroupMemberMetadata tombstone.
      *
-     * @param groupId   The share group id.
-     * @param memberId  The share group member id.
+     * @param groupId  The share group id.
+     * @param memberId The share group member id.
      * @return The record.
      */
     public static CoordinatorRecord newShareGroupMemberSubscriptionTombstoneRecord(
-        String groupId,
-        String memberId
+            String groupId,
+            String memberId
     ) {
         return CoordinatorRecord.tombstone(
-            new ShareGroupMemberMetadataKey()
-                .setGroupId(groupId)
-                .setMemberId(memberId)
+                new ShareGroupMemberMetadataKey()
+                        .setGroupId(groupId)
+                        .setMemberId(memberId)
         );
     }
 
@@ -578,88 +579,88 @@ public class GroupCoordinatorRecordHelpers {
      * @return The record.
      */
     public static CoordinatorRecord newShareGroupEpochRecord(
-        String groupId,
-        int newGroupEpoch,
-        long metadataHash
+            String groupId,
+            int newGroupEpoch,
+            long metadataHash
     ) {
         return CoordinatorRecord.record(
-            new ShareGroupMetadataKey()
-                .setGroupId(groupId),
-            new ApiMessageAndVersion(
-                new ShareGroupMetadataValue()
-                    .setEpoch(newGroupEpoch)
-                    .setMetadataHash(metadataHash),
-                (short) 0
-            )
+                new ShareGroupMetadataKey()
+                        .setGroupId(groupId),
+                new ApiMessageAndVersion(
+                        new ShareGroupMetadataValue()
+                                .setEpoch(newGroupEpoch)
+                                .setMetadataHash(metadataHash),
+                        (short) 0
+                )
         );
     }
 
     /**
      * Creates a ShareGroupMetadata tombstone.
      *
-     * @param groupId   The group id.
+     * @param groupId The group id.
      * @return The record.
      */
     public static CoordinatorRecord newShareGroupEpochTombstoneRecord(
-        String groupId
+            String groupId
     ) {
         return CoordinatorRecord.tombstone(
-            new ShareGroupMetadataKey()
-                .setGroupId(groupId)
+                new ShareGroupMetadataKey()
+                        .setGroupId(groupId)
         );
     }
 
     /**
      * Creates a ShareGroupTargetAssignmentMember record.
      *
-     * @param groupId       The group id.
-     * @param memberId      The group member id.
-     * @param partitions    The target partitions of the member.
+     * @param groupId    The group id.
+     * @param memberId   The group member id.
+     * @param partitions The target partitions of the member.
      * @return The record.
      */
     public static CoordinatorRecord newShareGroupTargetAssignmentRecord(
-        String groupId,
-        String memberId,
-        Map<Uuid, Set<Integer>> partitions
+            String groupId,
+            String memberId,
+            Map<Uuid, Set<Integer>> partitions
     ) {
         List<ShareGroupTargetAssignmentMemberValue.TopicPartition> topicPartitions =
-            new ArrayList<>(partitions.size());
+                new ArrayList<>(partitions.size());
 
         for (Map.Entry<Uuid, Set<Integer>> entry : partitions.entrySet()) {
             topicPartitions.add(
-                new ShareGroupTargetAssignmentMemberValue.TopicPartition()
-                    .setTopicId(entry.getKey())
-                    .setPartitions(new ArrayList<>(entry.getValue()))
+                    new ShareGroupTargetAssignmentMemberValue.TopicPartition()
+                            .setTopicId(entry.getKey())
+                            .setPartitions(new ArrayList<>(entry.getValue()))
             );
         }
 
         return CoordinatorRecord.record(
-            new ShareGroupTargetAssignmentMemberKey()
-                .setGroupId(groupId)
-                .setMemberId(memberId),
-            new ApiMessageAndVersion(
-                new ShareGroupTargetAssignmentMemberValue()
-                    .setTopicPartitions(topicPartitions),
-                (short) 0
-            )
+                new ShareGroupTargetAssignmentMemberKey()
+                        .setGroupId(groupId)
+                        .setMemberId(memberId),
+                new ApiMessageAndVersion(
+                        new ShareGroupTargetAssignmentMemberValue()
+                                .setTopicPartitions(topicPartitions),
+                        (short) 0
+                )
         );
     }
 
     /**
      * Creates a ShareGroupTargetAssignmentMember tombstone.
      *
-     * @param groupId       The group id.
-     * @param memberId      The group member id.
+     * @param groupId  The group id.
+     * @param memberId The group member id.
      * @return The record.
      */
     public static CoordinatorRecord newShareGroupTargetAssignmentTombstoneRecord(
-        String groupId,
-        String memberId
+            String groupId,
+            String memberId
     ) {
         return CoordinatorRecord.tombstone(
-            new ShareGroupTargetAssignmentMemberKey()
-                .setGroupId(groupId)
-                .setMemberId(memberId)
+                new ShareGroupTargetAssignmentMemberKey()
+                        .setGroupId(groupId)
+                        .setMemberId(memberId)
         );
     }
 
@@ -672,169 +673,169 @@ public class GroupCoordinatorRecordHelpers {
      * @return The record.
      */
     public static CoordinatorRecord newShareGroupTargetAssignmentMetadataRecord(
-        String groupId,
-        int assignmentEpoch,
-        long assignmentTimestamp
+            String groupId,
+            int assignmentEpoch,
+            long assignmentTimestamp
     ) {
         return CoordinatorRecord.record(
-            new ShareGroupTargetAssignmentMetadataKey()
-                .setGroupId(groupId),
-            new ApiMessageAndVersion(
-                new ShareGroupTargetAssignmentMetadataValue()
-                    .setAssignmentEpoch(assignmentEpoch)
-                    .setAssignmentTimestamp(assignmentTimestamp),
-                (short) 0
-            )
+                new ShareGroupTargetAssignmentMetadataKey()
+                        .setGroupId(groupId),
+                new ApiMessageAndVersion(
+                        new ShareGroupTargetAssignmentMetadataValue()
+                                .setAssignmentEpoch(assignmentEpoch)
+                                .setAssignmentTimestamp(assignmentTimestamp),
+                        (short) 0
+                )
         );
     }
 
     /**
      * Creates a ShareGroupTargetAssignmentMetadata tombstone.
      *
-     * @param groupId   The group id.
+     * @param groupId The group id.
      * @return The record.
      */
     public static CoordinatorRecord newShareGroupTargetAssignmentMetadataTombstoneRecord(
-        String groupId
+            String groupId
     ) {
         return CoordinatorRecord.tombstone(
-            new ShareGroupTargetAssignmentMetadataKey()
-                .setGroupId(groupId)
+                new ShareGroupTargetAssignmentMetadataKey()
+                        .setGroupId(groupId)
         );
     }
 
     /**
      * Creates a ShareGroupCurrentMemberAssignment record.
      *
-     * @param groupId   The group id.
-     * @param member    The group member.
+     * @param groupId The group id.
+     * @param member  The group member.
      * @return The record.
      */
     public static CoordinatorRecord newShareGroupCurrentAssignmentRecord(
-        String groupId,
-        ShareGroupMember member
+            String groupId,
+            ShareGroupMember member
     ) {
         return CoordinatorRecord.record(
-            new ShareGroupCurrentMemberAssignmentKey()
-                .setGroupId(groupId)
-                .setMemberId(member.memberId()),
-            new ApiMessageAndVersion(
-                new ShareGroupCurrentMemberAssignmentValue()
-                    .setMemberEpoch(member.memberEpoch())
-                    .setPreviousMemberEpoch(member.previousMemberEpoch())
-                    .setState(member.state().value())
-                    .setAssignedPartitions(toShareGroupTopicPartitions(member.assignedPartitions())),
-                (short) 0
-            )
+                new ShareGroupCurrentMemberAssignmentKey()
+                        .setGroupId(groupId)
+                        .setMemberId(member.memberId()),
+                new ApiMessageAndVersion(
+                        new ShareGroupCurrentMemberAssignmentValue()
+                                .setMemberEpoch(member.memberEpoch())
+                                .setPreviousMemberEpoch(member.previousMemberEpoch())
+                                .setState(member.state().value())
+                                .setAssignedPartitions(toShareGroupTopicPartitions(member.assignedPartitions())),
+                        (short) 0
+                )
         );
     }
 
     /**
      * Creates a ConsumerGroupCurrentMemberAssignment tombstone.
      *
-     * @param groupId   The consumer group id.
-     * @param memberId  The consumer group member id.
+     * @param groupId  The consumer group id.
+     * @param memberId The consumer group member id.
      * @return The record.
      */
     public static CoordinatorRecord newShareGroupCurrentAssignmentTombstoneRecord(
-        String groupId,
-        String memberId
+            String groupId,
+            String memberId
     ) {
         return CoordinatorRecord.tombstone(
-            new ShareGroupCurrentMemberAssignmentKey()
-                .setGroupId(groupId)
-                .setMemberId(memberId)
+                new ShareGroupCurrentMemberAssignmentKey()
+                        .setGroupId(groupId)
+                        .setMemberId(memberId)
         );
     }
 
     /**
      * Creates a ShareGroupStatePartitionMetadata tombstone.
      *
-     * @param groupId   The share group id.
+     * @param groupId The share group id.
      * @return The record.
      */
     public static CoordinatorRecord newShareGroupStatePartitionMetadataTombstoneRecord(
-        String groupId
+            String groupId
     ) {
         return CoordinatorRecord.tombstone(
-            new ShareGroupStatePartitionMetadataKey()
-                .setGroupId(groupId)
+                new ShareGroupStatePartitionMetadataKey()
+                        .setGroupId(groupId)
         );
     }
 
     /**
      * Creates a ShareGroupStatePartitionMetadata record.
      *
-     * @param groupId   The share group id.
-     * @param initializedTopics  Topics which have been initialized.
-     * @param deletingTopics  Topics which are being deleted.
+     * @param groupId           The share group id.
+     * @param initializedTopics Topics which have been initialized.
+     * @param deletingTopics    Topics which are being deleted.
      * @return The record.
      */
     public static CoordinatorRecord newShareGroupStatePartitionMetadataRecord(
-        String groupId,
-        Map<Uuid, InitMapValue> initializingTopics,
-        Map<Uuid, InitMapValue> initializedTopics,
-        Map<Uuid, String> deletingTopics
+            String groupId,
+            Map<Uuid, InitMapValue> initializingTopics,
+            Map<Uuid, InitMapValue> initializedTopics,
+            Map<Uuid, String> deletingTopics
     ) {
         List<ShareGroupStatePartitionMetadataValue.TopicPartitionsInfo> initializingTopicPartitionInfo = initializingTopics.entrySet().stream()
-            .map(entry -> new ShareGroupStatePartitionMetadataValue.TopicPartitionsInfo()
-                .setTopicId(entry.getKey())
-                .setTopicName(entry.getValue().name())
-                .setPartitions(entry.getValue().partitions().stream().toList()))
-            .toList();
+                .map(entry -> new ShareGroupStatePartitionMetadataValue.TopicPartitionsInfo()
+                        .setTopicId(entry.getKey())
+                        .setTopicName(entry.getValue().name())
+                        .setPartitions(entry.getValue().partitions().stream().toList()))
+                .toList();
 
         List<ShareGroupStatePartitionMetadataValue.TopicPartitionsInfo> initializedTopicPartitionInfo = initializedTopics.entrySet().stream()
-            .map(entry -> new ShareGroupStatePartitionMetadataValue.TopicPartitionsInfo()
-                .setTopicId(entry.getKey())
-                .setTopicName(entry.getValue().name())
-                .setPartitions(entry.getValue().partitions().stream().toList()))
-            .toList();
+                .map(entry -> new ShareGroupStatePartitionMetadataValue.TopicPartitionsInfo()
+                        .setTopicId(entry.getKey())
+                        .setTopicName(entry.getValue().name())
+                        .setPartitions(entry.getValue().partitions().stream().toList()))
+                .toList();
 
         List<ShareGroupStatePartitionMetadataValue.TopicInfo> deletingTopicsInfo = deletingTopics.entrySet().stream()
-            .map(entry -> new ShareGroupStatePartitionMetadataValue.TopicInfo()
-                .setTopicId(entry.getKey())
-                .setTopicName(entry.getValue()))
-            .toList();
+                .map(entry -> new ShareGroupStatePartitionMetadataValue.TopicInfo()
+                        .setTopicId(entry.getKey())
+                        .setTopicName(entry.getValue()))
+                .toList();
 
         return CoordinatorRecord.record(
-            new ShareGroupStatePartitionMetadataKey()
-                .setGroupId(groupId),
-            new ApiMessageAndVersion(
-                new ShareGroupStatePartitionMetadataValue()
-                    .setInitializingTopics(initializingTopicPartitionInfo)
-                    .setInitializedTopics(initializedTopicPartitionInfo)
-                    .setDeletingTopics(deletingTopicsInfo),
-                (short) 0
-            )
+                new ShareGroupStatePartitionMetadataKey()
+                        .setGroupId(groupId),
+                new ApiMessageAndVersion(
+                        new ShareGroupStatePartitionMetadataValue()
+                                .setInitializingTopics(initializingTopicPartitionInfo)
+                                .setInitializedTopics(initializedTopicPartitionInfo)
+                                .setDeletingTopics(deletingTopicsInfo),
+                        (short) 0
+                )
         );
     }
 
     private static List<ConsumerGroupCurrentMemberAssignmentValue.TopicPartitions> toTopicPartitions(
-        Map<Uuid, Map<Integer, Integer>> assignment
+            Map<Uuid, Map<Integer, Integer>> assignment
     ) {
         List<ConsumerGroupCurrentMemberAssignmentValue.TopicPartitions> topics = new ArrayList<>(assignment.size());
         assignment.forEach((topicId, partitionEpochs) -> {
-            List<Integer> partitionList = new ArrayList<>(partitionEpochs.keySet());
-            List<Integer> epochList = partitionList.stream()
-                .map(partitionEpochs::get)
-                .toList();
-            topics.add(new ConsumerGroupCurrentMemberAssignmentValue.TopicPartitions()
-                .setTopicId(topicId)
-                .setPartitions(partitionList)
-                .setAssignmentEpochs(epochList));
-            }
+                    List<Integer> partitionList = new ArrayList<>(partitionEpochs.keySet());
+                    List<Integer> epochList = partitionList.stream()
+                            .map(partitionEpochs::get)
+                            .toList();
+                    topics.add(new ConsumerGroupCurrentMemberAssignmentValue.TopicPartitions()
+                            .setTopicId(topicId)
+                            .setPartitions(partitionList)
+                            .setAssignmentEpochs(epochList));
+                }
         );
         return topics;
     }
 
     private static List<ShareGroupCurrentMemberAssignmentValue.TopicPartitions> toShareGroupTopicPartitions(
-        Map<Uuid, Set<Integer>> topicPartitions
+            Map<Uuid, Set<Integer>> topicPartitions
     ) {
         List<ShareGroupCurrentMemberAssignmentValue.TopicPartitions> topics = new ArrayList<>(topicPartitions.size());
         topicPartitions.forEach((topicId, partitions) ->
-            topics.add(new ShareGroupCurrentMemberAssignmentValue.TopicPartitions()
-                .setTopicId(topicId)
-                .setPartitions(new ArrayList<>(partitions)))
+                topics.add(new ShareGroupCurrentMemberAssignmentValue.TopicPartitions()
+                        .setTopicId(topicId)
+                        .setPartitions(new ArrayList<>(partitions)))
         );
         return topics;
     }

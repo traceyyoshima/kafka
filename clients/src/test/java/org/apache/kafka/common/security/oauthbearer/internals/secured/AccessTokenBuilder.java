@@ -112,10 +112,10 @@ public class AccessTokenBuilder {
             return this;
         } else {
             throw new IllegalArgumentException(String.format("%s parameter must be a %s or a %s containing %s",
-                scopeClaimName,
-                String.class.getName(),
-                Collection.class.getName(),
-                String.class.getName()));
+                    scopeClaimName,
+                    String.class.getName(),
+                    Collection.class.getName(),
+                    String.class.getName()));
         }
     }
 
@@ -170,10 +170,10 @@ public class AccessTokenBuilder {
             ((Collection<String>) scope).forEach(child::add);
         } else {
             throw new IllegalArgumentException(String.format("%s claim must be a %s or a %s containing %s",
-                scopeClaimName,
-                String.class.getName(),
-                Collection.class.getName(),
-                String.class.getName()));
+                    scopeClaimName,
+                    String.class.getName(),
+                    Collection.class.getName(),
+                    String.class.getName()));
         }
 
         if (issuedAtSeconds != null)

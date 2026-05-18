@@ -27,8 +27,8 @@ import java.util.Optional;
  * Interactive query for retrieving a set of records with the same specified key and different timestamps within the specified time range.
  * No ordering is guaranteed for the results, but the results can be sorted by timestamp (in ascending or descending order) by calling the corresponding defined methods.
  *
- *  @param <K> The type of the key.
- *  @param <V> The type of the result returned by this query.
+ * @param <K> The type of the key.
+ * @param <V> The type of the result returned by this query.
  */
 @Evolving
 public final class MultiVersionedKeyQuery<K, V> implements Query<VersionedRecordIterator<V>> {
@@ -45,21 +45,21 @@ public final class MultiVersionedKeyQuery<K, V> implements Query<VersionedRecord
         this.order = order;
     }
 
-  /**
-   * Creates a query that will retrieve the set of records identified by {@code key} if any exists
-   * (or {@code null} otherwise).
-   *
-   * <p>
-   * While the query by default returns the all the record versions of the specified {@code key}, setting
-   * the {@code fromTimestamp} (by calling the {@link #fromTime(Instant)} method), and the {@code toTimestamp}
-   * (by calling the {@link #toTime(Instant)} method) makes the query to return the record versions associated
-   * to the specified time range.
-   *
-   * @param key The specified key by the query
-   * @param <K> The type of the key
-   * @param <V> The type of the value that will be retrieved
-   * @throws NullPointerException if {@code key} is null
-   */
+    /**
+     * Creates a query that will retrieve the set of records identified by {@code key} if any exists
+     * (or {@code null} otherwise).
+     *
+     * <p>
+     * While the query by default returns the all the record versions of the specified {@code key}, setting
+     * the {@code fromTimestamp} (by calling the {@link #fromTime(Instant)} method), and the {@code toTimestamp}
+     * (by calling the {@link #toTime(Instant)} method) makes the query to return the record versions associated
+     * to the specified time range.
+     *
+     * @param key The specified key by the query
+     * @param <K> The type of the key
+     * @param <V> The type of the value that will be retrieved
+     * @throws NullPointerException if {@code key} is null
+     */
     public static <K, V> MultiVersionedKeyQuery<K, V> withKey(final K key) {
         Objects.requireNonNull(key, "key cannot be null.");
         return new MultiVersionedKeyQuery<>(key, Optional.empty(), Optional.empty(), ResultOrder.ANY);
@@ -73,7 +73,7 @@ public final class MultiVersionedKeyQuery<K, V> implements Query<VersionedRecord
      * or even partially). The key query in fact returns all the records that have NOT become tombstone at or after {@code fromTime}.
      *
      * @param fromTime The starting time point
-     * If {@code fromTime} is null, it will be considered as negative infinity, ie, no lower bound
+     *                 If {@code fromTime} is null, it will be considered as negative infinity, ie, no lower bound
      */
     public MultiVersionedKeyQuery<K, V> fromTime(final Instant fromTime) {
         return new MultiVersionedKeyQuery<>(key, Optional.ofNullable(fromTime), toTime, order);
@@ -84,7 +84,7 @@ public final class MultiVersionedKeyQuery<K, V> implements Query<VersionedRecord
      * The key query returns all the records that have timestamp &lt;= toTime.
      *
      * @param toTime The ending time point
-     * If @param toTime is null, will be considered as positive infinity, ie, no upper bound
+     *               If @param toTime is null, will be considered as positive infinity, ie, no upper bound
      */
     public MultiVersionedKeyQuery<K, V> toTime(final Instant toTime) {
         return new MultiVersionedKeyQuery<>(key, fromTime, Optional.ofNullable(toTime), order);
@@ -106,6 +106,7 @@ public final class MultiVersionedKeyQuery<K, V> implements Query<VersionedRecord
 
     /**
      * The key that was specified for this query.
+     *
      * @return The specified {@code key} of the query.
      */
     public K key() {
@@ -114,6 +115,7 @@ public final class MultiVersionedKeyQuery<K, V> implements Query<VersionedRecord
 
     /**
      * The starting time point of the query, if specified
+     *
      * @return The specified {@code fromTime} of the query.
      */
     public Optional<Instant> fromTime() {
@@ -122,6 +124,7 @@ public final class MultiVersionedKeyQuery<K, V> implements Query<VersionedRecord
 
     /**
      * The ending time point of the query, if specified
+     *
      * @return The specified {@code toTime} of the query.
      */
     public Optional<Instant> toTime() {
@@ -130,6 +133,7 @@ public final class MultiVersionedKeyQuery<K, V> implements Query<VersionedRecord
 
     /**
      * The order of the returned records by timestamp.
+     *
      * @return the order of returned records based on timestamp (can be unordered, or in ascending, or in descending order of timestamps).
      */
     public ResultOrder resultOrder() {

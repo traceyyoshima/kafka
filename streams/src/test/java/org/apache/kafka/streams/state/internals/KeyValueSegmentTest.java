@@ -49,19 +49,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class KeyValueSegmentTest {
 
     private final RocksDBMetricsRecorder metricsRecorder =
-        new RocksDBMetricsRecorder("metrics-scope", "store-name");
+            new RocksDBMetricsRecorder("metrics-scope", "store-name");
 
     @BeforeEach
     public void setUp() {
         metricsRecorder.init(
-            new StreamsMetricsImpl(new Metrics(), "test-client", new MockTime()),
-            new TaskId(0, 0)
+                new StreamsMetricsImpl(new Metrics(), "test-client", new MockTime()),
+                new TaskId(0, 0)
         );
     }
 
     @Test
     public void shouldDeleteStateDirectoryOnDestroy() throws Exception {
-        final KeyValueSegment segment = new KeyValueSegment("segment", "window", 0L, Position.emptyPosition(),  metricsRecorder);
+        final KeyValueSegment segment = new KeyValueSegment("segment", "window", 0L, Position.emptyPosition(), metricsRecorder);
         final String directoryPath = TestUtils.tempDirectory().getAbsolutePath();
         final File directory = new File(directoryPath);
 
@@ -81,7 +81,7 @@ public class KeyValueSegmentTest {
     public void shouldBeEqualIfIdIsEqual() {
         final KeyValueSegment segment = new KeyValueSegment("anyName", "anyName", 0L, Position.emptyPosition(), metricsRecorder);
         final KeyValueSegment segmentSameId =
-            new KeyValueSegment("someOtherName", "someOtherName", 0L, Position.emptyPosition(), metricsRecorder);
+                new KeyValueSegment("someOtherName", "someOtherName", 0L, Position.emptyPosition(), metricsRecorder);
         final KeyValueSegment segmentDifferentId = new KeyValueSegment("anyName", "anyName", 1L, Position.emptyPosition(), metricsRecorder);
 
         assertThat(segment, equalTo(segment));
@@ -97,7 +97,7 @@ public class KeyValueSegmentTest {
     public void shouldHashOnSegmentIdOnly() {
         final KeyValueSegment segment = new KeyValueSegment("anyName", "anyName", 0L, Position.emptyPosition(), metricsRecorder);
         final KeyValueSegment segmentSameId =
-            new KeyValueSegment("someOtherName", "someOtherName", 0L, Position.emptyPosition(), metricsRecorder);
+                new KeyValueSegment("someOtherName", "someOtherName", 0L, Position.emptyPosition(), metricsRecorder);
         final KeyValueSegment segmentDifferentId = new KeyValueSegment("anyName", "anyName", 1L, Position.emptyPosition(), metricsRecorder);
 
         final Set<KeyValueSegment> set = new HashSet<>();

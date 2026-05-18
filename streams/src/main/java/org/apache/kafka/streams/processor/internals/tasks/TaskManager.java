@@ -54,16 +54,16 @@ public interface TaskManager {
      * is called, the requested tasks may already be locked by some {@link TaskExecutor}s,
      * and in that case the task manager need to first unassign these tasks from the
      * executors.
-     *
+     * <p>
      * This function is needed when we need to 1) commit these tasks, 2) remove these tasks.
-     *
+     * <p>
      * This method does not block, instead a future is returned.
      */
     KafkaFuture<Void> lockTasks(final Set<TaskId> taskIds);
 
     /**
      * Lock all the managed active tasks from the task manager. Similar to {@link #lockTasks(Set)}.
-     *
+     * <p>
      * This method does not block, instead a future is returned.
      */
     KafkaFuture<Void> lockAllTasks();
@@ -87,7 +87,7 @@ public interface TaskManager {
 
     /**
      * Remove an active task from the task manager.
-     *
+     * <p>
      * The task to remove must be locked.
      *
      * @param taskId ID of the task to remove
@@ -104,7 +104,7 @@ public interface TaskManager {
 
     /**
      * Called whenever an existing task has thrown an uncaught exception.
-     *
+     * <p>
      * Setting an uncaught exception for a task prevents it from being reassigned until the
      * corresponding exception has been handled in the polling thread.
      *
@@ -114,7 +114,7 @@ public interface TaskManager {
     /**
      * Returns and clears all uncaught exceptions that were fell through to the processing
      * threads and need to be handled in the polling thread.
-     *
+     * <p>
      * Called by the polling thread to handle processing exceptions, e.g. to abort
      * transactions or shut down the application.
      *

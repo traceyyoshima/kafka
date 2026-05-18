@@ -166,7 +166,7 @@ public class StandardAuthorizer implements ClusterMetadataAuthorizer, Monitorabl
     public void close() throws IOException {
         // Complete the initialLoadFuture, if it hasn't been completed already.
         initialLoadFuture.completeExceptionally(new TimeoutException("The authorizer was " +
-            "closed before the initial load could complete."));
+                "closed before the initial load could complete."));
     }
 
     @Override
@@ -184,7 +184,7 @@ public class StandardAuthorizer implements ClusterMetadataAuthorizer, Monitorabl
     }
 
     // VisibleForTesting
-    Set<String> superUsers()  {
+    Set<String> superUsers() {
         return new HashSet<>(data.superUsers());
     }
 

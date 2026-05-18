@@ -72,9 +72,9 @@ public class ElectLeadersResponse extends AbstractResponse {
         Map<Errors, Integer> counts = new EnumMap<>(Errors.class);
         updateErrorCounts(counts, Errors.forCode(data.errorCode()));
         data.replicaElectionResults().forEach(result ->
-            result.partitionResult().forEach(partitionResult ->
-                updateErrorCounts(counts, Errors.forCode(partitionResult.errorCode()))
-            )
+                result.partitionResult().forEach(partitionResult ->
+                        updateErrorCounts(counts, Errors.forCode(partitionResult.errorCode()))
+                )
         );
         return counts;
     }

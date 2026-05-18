@@ -440,31 +440,31 @@ public final class MetadataDelta {
             newDelegationTokens = delegationTokenDelta.apply();
         }
         return new MetadataImage(
-            provenance,
-            newFeatures,
-            newCluster,
-            newTopics,
-            newConfigs,
-            newClientQuotas,
-            newProducerIds,
-            newAcls,
-            newScram,
-            newDelegationTokens
+                provenance,
+                newFeatures,
+                newCluster,
+                newTopics,
+                newConfigs,
+                newClientQuotas,
+                newProducerIds,
+                newAcls,
+                newScram,
+                newDelegationTokens
         );
     }
 
     @Override
     public String toString() {
         return "MetadataDelta(" +
-            "featuresDelta=" + featuresDelta +
-            ", clusterDelta=" + clusterDelta +
-            ", topicsDelta=" + topicsDelta +
-            ", configsDelta=" + configsDelta +
-            ", clientQuotasDelta=" + clientQuotasDelta +
-            ", producerIdsDelta=" + producerIdsDelta +
-            ", aclsDelta=" + aclsDelta +
-            ", scramDelta=" + scramDelta +
-            ", delegationTokenDelta=" + delegationTokenDelta +
-            ')';
+                "featuresDelta=" + featuresDelta +
+                ", clusterDelta=" + clusterDelta +
+                ", topicsDelta=" + topicsDelta +
+                ", configsDelta=" + configsDelta +
+                ", clientQuotasDelta=" + clientQuotasDelta +
+                ", producerIdsDelta=" + producerIdsDelta +
+                ", aclsDelta=" + aclsDelta +
+                ", scramDelta=" + scramDelta +
+                ", delegationTokenDelta=" + delegationTokenDelta +
+                ')';
     }
 }

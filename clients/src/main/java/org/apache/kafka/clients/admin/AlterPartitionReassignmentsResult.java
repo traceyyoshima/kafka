@@ -34,9 +34,9 @@ public class AlterPartitionReassignmentsResult {
 
     /**
      * Return a map from partitions to futures which can be used to check the status of the reassignment.
-     *
+     * <p>
      * Possible error codes:
-     *
+     * <p>
      * INVALID_REPLICA_ASSIGNMENT (39) -  if the specified replica assignment was not valid -- for example, if it included negative numbers, repeated numbers, or specified a broker ID that the controller was not aware of.
      * NO_REASSIGNMENT_IN_PROGRESS (85) - if the request wants to cancel reassignments but none exist
      * UNKNOWN (-1)

@@ -115,9 +115,9 @@ public class MockApiProcessor<KIn, VIn, KOut, VOut> implements Processor<KIn, VI
         for (int i = 0; i < expected.length; i++) {
             final Record<KIn, VIn> record = processed.get(i);
             assertThat(
-                "output[" + i + "]:",
-                new KeyValueTimestamp<>(record.key(), record.value(), record.timestamp()),
-                is(expected[i])
+                    "output[" + i + "]:",
+                    new KeyValueTimestamp<>(record.key(), record.value(), record.timestamp()),
+                    is(expected[i])
             );
         }
 
@@ -161,9 +161,9 @@ public class MockApiProcessor<KIn, VIn, KOut, VOut> implements Processor<KIn, VI
 
     public ArrayList<KeyValueTimestamp<KIn, VIn>> processed() {
         return processed
-            .stream()
-            .map(r -> new KeyValueTimestamp<>(r.key(), r.value(), r.timestamp()))
-            .collect(Collectors.toCollection(ArrayList::new));
+                .stream()
+                .map(r -> new KeyValueTimestamp<>(r.key(), r.value(), r.timestamp()))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public Map<KIn, ValueAndTimestamp<VIn>> lastValueAndTimestampPerKey() {

@@ -27,9 +27,9 @@ public class ResolvedRegularExpressionTest {
     @Test
     public void testConstructor() {
         ResolvedRegularExpression resolvedRegularExpression = new ResolvedRegularExpression(
-            Set.of("foo", "bar"),
-            10L,
-            12345L
+                Set.of("foo", "bar"),
+                10L,
+                12345L
         );
 
         assertEquals(Set.of("foo", "bar"), resolvedRegularExpression.topics());
@@ -40,29 +40,29 @@ public class ResolvedRegularExpressionTest {
     @Test
     public void testEquals() {
         assertEquals(
-            new ResolvedRegularExpression(
-                Set.of("foo", "bar"),
-                10L,
-                12345L
-            ),
-            new ResolvedRegularExpression(
-                Set.of("foo", "bar"),
-                10L,
-                12345L
-            )
+                new ResolvedRegularExpression(
+                        Set.of("foo", "bar"),
+                        10L,
+                        12345L
+                ),
+                new ResolvedRegularExpression(
+                        Set.of("foo", "bar"),
+                        10L,
+                        12345L
+                )
         );
 
         assertNotEquals(
-            new ResolvedRegularExpression(
-                Set.of("foo", "bar"),
-                10L,
-                12345L
-            ),
-            new ResolvedRegularExpression(
-                Set.of("foo"),
-                10L,
-                12345L
-            )
+                new ResolvedRegularExpression(
+                        Set.of("foo", "bar"),
+                        10L,
+                        12345L
+                ),
+                new ResolvedRegularExpression(
+                        Set.of("foo"),
+                        10L,
+                        12345L
+                )
         );
     }
 }

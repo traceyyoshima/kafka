@@ -20,7 +20,7 @@ import org.apache.kafka.common.KafkaFuture;
 
 /**
  * The result of the {@link Admin#describeFeatures(DescribeFeaturesOptions)} call.
- *
+ * <p>
  * The API of this class is evolving, see {@link Admin} for details.
  */
 public class DescribeFeaturesResult {

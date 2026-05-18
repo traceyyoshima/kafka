@@ -46,12 +46,12 @@ public class JsonSerializer implements Serializer<JsonNode> {
      * for the serializer
      *
      * @param serializationFeatures the specified serialization features
-     * @param jsonNodeFactory the json node factory to use.
+     * @param jsonNodeFactory       the json node factory to use.
      */
     JsonSerializer(
-        final Set<SerializationFeature> serializationFeatures,
-        final JsonNodeFactory jsonNodeFactory,
-        final boolean enableBlackbird
+            final Set<SerializationFeature> serializationFeatures,
+            final JsonNodeFactory jsonNodeFactory,
+            final boolean enableBlackbird
     ) {
         serializationFeatures.forEach(objectMapper::enable);
         objectMapper.setNodeFactory(jsonNodeFactory);

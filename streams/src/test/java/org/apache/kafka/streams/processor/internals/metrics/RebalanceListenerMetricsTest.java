@@ -42,7 +42,7 @@ public class RebalanceListenerMetricsTest {
     @Test
     public void shouldGetTasksRevokedSensor() {
         when(streamsMetrics.threadLevelSensor(THREAD_ID, "tasks-revoked" + LATENCY_SUFFIX, RecordingLevel.INFO))
-            .thenReturn(expectedSensor);
+                .thenReturn(expectedSensor);
         when(streamsMetrics.threadLevelTagMap(THREAD_ID)).thenReturn(tagMap);
 
         try (MockedStatic<StreamsMetricsImpl> streamsMetricsStatic = mockStatic(StreamsMetricsImpl.class)) {
@@ -53,12 +53,12 @@ public class RebalanceListenerMetricsTest {
             verify(streamsMetrics).threadLevelTagMap(THREAD_ID);
 
             streamsMetricsStatic.verify(() -> StreamsMetricsImpl.addAvgAndMaxToSensor(
-                expectedSensor,
-                THREAD_LEVEL_GROUP,
-                tagMap,
-                "tasks-revoked" + LATENCY_SUFFIX,
-                "The average time taken for tasks-revoked rebalance listener callback",
-                "The max time taken for tasks-revoked rebalance listener callback"
+                    expectedSensor,
+                    THREAD_LEVEL_GROUP,
+                    tagMap,
+                    "tasks-revoked" + LATENCY_SUFFIX,
+                    "The average time taken for tasks-revoked rebalance listener callback",
+                    "The max time taken for tasks-revoked rebalance listener callback"
             ));
         }
     }
@@ -66,7 +66,7 @@ public class RebalanceListenerMetricsTest {
     @Test
     public void shouldGetTasksAssignedSensor() {
         when(streamsMetrics.threadLevelSensor(THREAD_ID, "tasks-assigned" + LATENCY_SUFFIX, RecordingLevel.INFO))
-            .thenReturn(expectedSensor);
+                .thenReturn(expectedSensor);
         when(streamsMetrics.threadLevelTagMap(THREAD_ID)).thenReturn(tagMap);
 
         try (MockedStatic<StreamsMetricsImpl> streamsMetricsStatic = mockStatic(StreamsMetricsImpl.class)) {
@@ -77,12 +77,12 @@ public class RebalanceListenerMetricsTest {
             verify(streamsMetrics).threadLevelTagMap(THREAD_ID);
 
             streamsMetricsStatic.verify(() -> StreamsMetricsImpl.addAvgAndMaxToSensor(
-                expectedSensor,
-                THREAD_LEVEL_GROUP,
-                tagMap,
-                "tasks-assigned" + LATENCY_SUFFIX,
-                "The average time taken for tasks-assigned rebalance listener callback",
-                "The max time taken for tasks-assigned rebalance listener callback"
+                    expectedSensor,
+                    THREAD_LEVEL_GROUP,
+                    tagMap,
+                    "tasks-assigned" + LATENCY_SUFFIX,
+                    "The average time taken for tasks-assigned rebalance listener callback",
+                    "The max time taken for tasks-assigned rebalance listener callback"
             ));
         }
     }
@@ -90,7 +90,7 @@ public class RebalanceListenerMetricsTest {
     @Test
     public void shouldGetTasksLostSensor() {
         when(streamsMetrics.threadLevelSensor(THREAD_ID, "tasks-lost" + LATENCY_SUFFIX, RecordingLevel.INFO))
-            .thenReturn(expectedSensor);
+                .thenReturn(expectedSensor);
         when(streamsMetrics.threadLevelTagMap(THREAD_ID)).thenReturn(tagMap);
 
         try (MockedStatic<StreamsMetricsImpl> streamsMetricsStatic = mockStatic(StreamsMetricsImpl.class)) {
@@ -101,12 +101,12 @@ public class RebalanceListenerMetricsTest {
             verify(streamsMetrics).threadLevelTagMap(THREAD_ID);
 
             streamsMetricsStatic.verify(() -> StreamsMetricsImpl.addAvgAndMaxToSensor(
-                expectedSensor,
-                THREAD_LEVEL_GROUP,
-                tagMap,
-                "tasks-lost" + LATENCY_SUFFIX,
-                "The average time taken for tasks-lost rebalance listener callback",
-                "The max time taken for tasks-lost rebalance listener callback"
+                    expectedSensor,
+                    THREAD_LEVEL_GROUP,
+                    tagMap,
+                    "tasks-lost" + LATENCY_SUFFIX,
+                    "The average time taken for tasks-lost rebalance listener callback",
+                    "The max time taken for tasks-lost rebalance listener callback"
             ));
         }
     }

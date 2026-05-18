@@ -24,4 +24,5 @@ import java.util.Set;
 public record ResultWithPartitions<R>(
         R result,
         Set<TopicPartition> partitionsWithError
-) { }
+) {
+}

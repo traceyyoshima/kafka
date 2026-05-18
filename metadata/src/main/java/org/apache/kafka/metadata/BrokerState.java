@@ -22,22 +22,22 @@ import java.util.Map;
 
 /**
  * The broker state.
- *
+ * <p>
  * The numeric values used here are part of Kafka's public API.  They appear in metrics,
  * and are also sent over the wire in some cases.
- *
+ * <p>
  * The expected state transitions are:
- *
+ * <p>
  * NOT_RUNNING
- *     ↓
+ * ↓
  * STARTING
- *     ↓
+ * ↓
  * RECOVERY
- *     ↓
+ * ↓
  * RUNNING
- *     ↓
+ * ↓
  * PENDING_CONTROLLED_SHUTDOWN
- *     ↓
+ * ↓
  * SHUTTING_DOWN
  */
 public enum BrokerState {

@@ -60,8 +60,8 @@ public final class FileRawSnapshotReader implements RawSnapshotReader, AutoClose
             fileRecords.close();
         } catch (IOException e) {
             throw new UncheckedIOException(
-                String.format("Unable to close snapshot reader %s at %s", snapshotId, fileRecords),
-                e
+                    String.format("Unable to close snapshot reader %s at %s", snapshotId, fileRecords),
+                    e
             );
         }
     }
@@ -69,7 +69,7 @@ public final class FileRawSnapshotReader implements RawSnapshotReader, AutoClose
     /**
      * Opens a snapshot for reading.
      *
-     * @param logDir the directory for the topic partition
+     * @param logDir     the directory for the topic partition
      * @param snapshotId the end offset and epoch for the snapshotId
      */
     public static FileRawSnapshotReader open(Path logDir, OffsetAndEpoch snapshotId) {
@@ -77,15 +77,15 @@ public final class FileRawSnapshotReader implements RawSnapshotReader, AutoClose
         Path filePath = Snapshots.snapshotPath(logDir, snapshotId);
         try {
             fileRecords = FileRecords.open(
-                filePath.toFile(),
-                false, // mutable
-                true, // fileAlreadyExists
-                0, // initFileSize
-                false // preallocate
+                    filePath.toFile(),
+                    false, // mutable
+                    true, // fileAlreadyExists
+                    0, // initFileSize
+                    false // preallocate
             );
         } catch (IOException e) {
             throw new UncheckedIOException(
-                String.format("Unable to Opens a snapshot file %s", filePath.toAbsolutePath()), e
+                    String.format("Unable to Opens a snapshot file %s", filePath.toAbsolutePath()), e
             );
         }
 

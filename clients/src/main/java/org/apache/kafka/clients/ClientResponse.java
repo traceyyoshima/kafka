@@ -39,15 +39,15 @@ public class ClientResponse {
     private final AbstractResponse responseBody;
 
     /**
-     * @param requestHeader The header of the corresponding request
-     * @param callback The callback to be invoked
-     * @param destination The node the corresponding request was sent to
-     * @param createdTimeMs The unix timestamp when the corresponding request was created
-     * @param receivedTimeMs The unix timestamp when this response was received
-     * @param disconnected Whether the client disconnected before fully reading a response
+     * @param requestHeader   The header of the corresponding request
+     * @param callback        The callback to be invoked
+     * @param destination     The node the corresponding request was sent to
+     * @param createdTimeMs   The unix timestamp when the corresponding request was created
+     * @param receivedTimeMs  The unix timestamp when this response was received
+     * @param disconnected    Whether the client disconnected before fully reading a response
      * @param versionMismatch Whether there was a version mismatch that prevented sending the request.
-     * @param responseBody The response contents (or null) if we disconnected, no response was expected,
-     *                     or if there was a version mismatch.
+     * @param responseBody    The response contents (or null) if we disconnected, no response was expected,
+     *                        or if there was a version mismatch.
      */
     public ClientResponse(RequestHeader requestHeader,
                           RequestCompletionHandler callback,
@@ -59,30 +59,30 @@ public class ClientResponse {
                           AuthenticationException authenticationException,
                           AbstractResponse responseBody) {
         this(requestHeader,
-             callback,
-             destination,
-             createdTimeMs,
-             receivedTimeMs,
-             disconnected,
-             false,
-             versionMismatch,
-             authenticationException,
-             responseBody);
+                callback,
+                destination,
+                createdTimeMs,
+                receivedTimeMs,
+                disconnected,
+                false,
+                versionMismatch,
+                authenticationException,
+                responseBody);
     }
 
     /**
-     * @param requestHeader The header of the corresponding request
-     * @param callback The callback to be invoked
-     * @param destination The node the corresponding request was sent to
-     * @param createdTimeMs The unix timestamp when the corresponding request was created
-     * @param receivedTimeMs The unix timestamp when this response was received
-     * @param disconnected Whether the client disconnected before fully reading a response
-     * @param timedOut Whether the client was disconnected because of a timeout; when setting this
-     *                 to <code>true</code>, <code>disconnected</code> must be <code>true</code>
-     *                 or an {@link IllegalStateException} will be thrown
+     * @param requestHeader   The header of the corresponding request
+     * @param callback        The callback to be invoked
+     * @param destination     The node the corresponding request was sent to
+     * @param createdTimeMs   The unix timestamp when the corresponding request was created
+     * @param receivedTimeMs  The unix timestamp when this response was received
+     * @param disconnected    Whether the client disconnected before fully reading a response
+     * @param timedOut        Whether the client was disconnected because of a timeout; when setting this
+     *                        to <code>true</code>, <code>disconnected</code> must be <code>true</code>
+     *                        or an {@link IllegalStateException} will be thrown
      * @param versionMismatch Whether there was a version mismatch that prevented sending the request.
-     * @param responseBody The response contents (or null) if we disconnected, no response was expected,
-     *                     or if there was a version mismatch.
+     * @param responseBody    The response contents (or null) if we disconnected, no response was expected,
+     *                        or if there was a version mismatch.
      */
     public ClientResponse(RequestHeader requestHeader,
                           RequestCompletionHandler callback,
@@ -157,17 +157,17 @@ public class ClientResponse {
     @Override
     public String toString() {
         return "ClientResponse(receivedTimeMs=" + receivedTimeMs +
-               ", latencyMs=" +
-               latencyMs +
-               ", disconnected=" +
-               disconnected +
-               ", timedOut=" +
-               timedOut +
-               ", requestHeader=" +
-               requestHeader +
-               ", responseBody=" +
-               responseBody +
-               ")";
+                ", latencyMs=" +
+                latencyMs +
+                ", disconnected=" +
+                disconnected +
+                ", timedOut=" +
+                timedOut +
+                ", requestHeader=" +
+                requestHeader +
+                ", responseBody=" +
+                responseBody +
+                ")";
     }
 
 }

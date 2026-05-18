@@ -186,8 +186,9 @@ public final class TieredStorageTestContext implements AutoCloseable {
      * Send the given records trying to honor the batch size. This is attempted
      * with a large producer linger and the use of an explicit flush every time
      * the number of a "group" of records reaches the batch size.
+     *
      * @param recordsToProduce the records to produce
-     * @param batchSize the batch size
+     * @param batchSize        the batch size
      */
     public void produce(List<ProducerRecord<String, String>> recordsToProduce, Integer batchSize) {
         int counter = 1;

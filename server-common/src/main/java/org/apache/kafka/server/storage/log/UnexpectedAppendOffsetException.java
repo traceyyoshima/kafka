@@ -24,6 +24,7 @@ public class UnexpectedAppendOffsetException extends RuntimeException {
     /**
      * Indicates the follower or the future replica received records from the leader (or current
      * replica) with first offset less than expected next offset.
+     *
      * @param firstOffset The first offset of the records to append
      * @param lastOffset  The last offset of the records to append
      */

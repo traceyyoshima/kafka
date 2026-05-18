@@ -91,8 +91,8 @@ public class EagerBufferConfigImpl extends BufferConfigInternal<Suppressed.Eager
         }
         final EagerBufferConfigImpl that = (EagerBufferConfigImpl) o;
         return maxRecords == that.maxRecords &&
-            maxBytes == that.maxBytes &&
-            Objects.equals(logConfig(), that.logConfig());
+                maxBytes == that.maxBytes &&
+                Objects.equals(logConfig(), that.logConfig());
     }
 
     @Override

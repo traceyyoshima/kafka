@@ -110,10 +110,10 @@ public class Plugins {
             }
         } else {
             String message = String.format(
-                "One or more plugins are missing ServiceLoader manifests may not be usable with %s=%s: %s%n" +
-                        "Read the documentation at %s for instructions on migrating your plugins " +
-                        "to take advantage of the performance improvements of %s mode.",
-                            WorkerConfig.PLUGIN_DISCOVERY_CONFIG,
+                    "One or more plugins are missing ServiceLoader manifests may not be usable with %s=%s: %s%n" +
+                            "Read the documentation at %s for instructions on migrating your plugins " +
+                            "to take advantage of the performance improvements of %s mode.",
+                    WorkerConfig.PLUGIN_DISCOVERY_CONFIG,
                     PluginDiscoveryMode.SERVICE_LOAD,
                     missingPlugins.stream()
                             .map(pluginDesc -> pluginDesc.location() + "\t" + pluginDesc.className() + "\t" + pluginDesc.type() + "\t" + pluginDesc.version())
@@ -157,10 +157,10 @@ public class Plugins {
             return (Class<? extends U>) klass;
         }
         throw new ConnectException(
-            "Failed to find any class that implements " + pluginClass.getSimpleName()
-                + " for the config "
-                + propertyName + ", available classes are: "
-                + pluginNames(plugins)
+                "Failed to find any class that implements " + pluginClass.getSimpleName()
+                        + " for the config "
+                        + propertyName + ", available classes are: "
+                        + pluginNames(plugins)
         );
     }
 
@@ -224,10 +224,11 @@ public class Plugins {
      * }
      * }</pre>
      * After the completion of the try block, the previous context classloader will be restored.
-     * @see Thread#getContextClassLoader()
-     * @see LoaderSwap
+     *
      * @param loader ClassLoader to use as the thread context classloader
      * @return A {@link LoaderSwap} handle which restores the prior classloader on {@link LoaderSwap#close()}.
+     * @see Thread#getContextClassLoader()
+     * @see LoaderSwap
      */
     public LoaderSwap withClassLoader(ClassLoader loader) {
         ClassLoader savedLoader = compareAndSwapLoaders(loader);
@@ -241,10 +242,11 @@ public class Plugins {
 
     /**
      * Wrap a {@link Runnable} such that it is performed with the specified thread context classloader
-     * @see Thread#getContextClassLoader()
+     *
      * @param classLoader {@link ClassLoader} to use as the thread context classloader
-     * @param operation {@link Runnable} which is sensitive to the thread context classloader
+     * @param operation   {@link Runnable} which is sensitive to the thread context classloader
      * @return A wrapper {@link Runnable} which will execute the wrapped operation
+     * @see Thread#getContextClassLoader()
      */
     public Runnable withClassLoader(ClassLoader classLoader, Runnable operation) {
         return () -> {
@@ -430,9 +432,9 @@ public class Plugins {
     /**
      * If the given configuration defines a {@link Converter} using the named configuration property, return a new configured instance.
      *
-     * @param config             the configuration containing the {@link Converter}'s configuration; may not be null
-     * @param classPropertyName  the name of the property that contains the name of the {@link Converter} class; may not be null
-     * @param classLoaderUsage   which classloader should be used
+     * @param config            the configuration containing the {@link Converter}'s configuration; may not be null
+     * @param classPropertyName the name of the property that contains the name of the {@link Converter} class; may not be null
+     * @param classLoaderUsage  which classloader should be used
      * @return the instantiated and configured {@link Converter}; null if the configuration did not define the specified property
      * @throws ConnectException if the {@link Converter} implementation class could not be found
      */
@@ -447,7 +449,7 @@ public class Plugins {
      * @param classPropertyName   the name of the property that contains the name of the {@link Converter} class; may not be null
      * @param versionPropertyName the name of the property that contains the version of the {@link Converter} class; may not be null
      * @return the instantiated and configured {@link Converter}; null if the configuration did not define the specified property
-     * @throws ConnectException if the {@link Converter} implementation class could not be found,
+     * @throws ConnectException                if the {@link Converter} implementation class could not be found,
      * @throws VersionedPluginLoadingException if the version requested is not found
      */
     public Converter newConverter(AbstractConfig config, String classPropertyName, String versionPropertyName) {
@@ -479,7 +481,6 @@ public class Plugins {
     }
 
 
-
     /**
      * Load an internal converter, used by the worker for (de)serializing data in internal topics.
      *
@@ -509,9 +510,9 @@ public class Plugins {
      * If the given configuration defines a {@link HeaderConverter} using the named configuration property, return a new configured
      * instance.
      *
-     * @param config             the configuration containing the {@link HeaderConverter}'s configuration; may not be null
-     * @param classPropertyName  the name of the property that contains the name of the {@link HeaderConverter} class; may not be null
-     * @param classLoaderUsage   the name of the property that contains the version of the {@link HeaderConverter} class; may not be null
+     * @param config            the configuration containing the {@link HeaderConverter}'s configuration; may not be null
+     * @param classPropertyName the name of the property that contains the name of the {@link HeaderConverter} class; may not be null
+     * @param classLoaderUsage  the name of the property that contains the version of the {@link HeaderConverter} class; may not be null
      * @return the instantiated and configured {@link HeaderConverter}; null if the configuration did not define the specified property
      * @throws ConnectException if the {@link HeaderConverter} implementation class could not be found
      */
@@ -523,9 +524,9 @@ public class Plugins {
      * If the given configuration defines a {@link HeaderConverter} using the named configuration property, return a new configured
      * instance. If the version is specified, it will always use the plugins classloader.
      *
-     * @param config                the configuration containing the {@link HeaderConverter}'s configuration; may not be null
-     * @param classPropertyName     the name of the property that contains the name of the {@link HeaderConverter} class; may not be null
-     * @param versionPropertyName   the config for the version for the header converter
+     * @param config              the configuration containing the {@link HeaderConverter}'s configuration; may not be null
+     * @param classPropertyName   the name of the property that contains the name of the {@link HeaderConverter} class; may not be null
+     * @param versionPropertyName the config for the version for the header converter
      * @return the instantiated and configured {@link HeaderConverter}; null if the configuration did not define the specified property
      * @throws ConnectException if the {@link HeaderConverter} implementation class could not be found
      */
@@ -636,9 +637,9 @@ public class Plugins {
      * If the given class names are available in the classloader, return a list of new configured
      * instances. If the instances implement {@link Configurable}, they are configured with provided {@param config}
      *
-     * @param klassNames         the list of class names of plugins that needs to instantiated and configured
-     * @param config             the configuration containing the {@link org.apache.kafka.connect.runtime.Worker}'s configuration; may not be {@code null}
-     * @param pluginKlass        the type of the plugin class that is being instantiated
+     * @param klassNames  the list of class names of plugins that needs to instantiated and configured
+     * @param config      the configuration containing the {@link org.apache.kafka.connect.runtime.Worker}'s configuration; may not be {@code null}
+     * @param pluginKlass the type of the plugin class that is being instantiated
      * @return the instantiated and configured list of plugins of type <T>; empty list if the {@param klassNames} is {@code null} or empty
      * @throws ConnectException if the implementation class could not be found
      */
@@ -659,7 +660,7 @@ public class Plugins {
             klass = pluginClass(delegatingLoader, klassName, pluginKlass);
         } catch (ClassNotFoundException e) {
             String msg = String.format("Failed to find any class that implements %s and which "
-                                       + "name matches %s", pluginKlass, klassName);
+                    + "name matches %s", pluginKlass, klassName);
             throw new ConnectException(msg);
         }
         try (LoaderSwap loaderSwap = withClassLoader(klass.getClassLoader())) {

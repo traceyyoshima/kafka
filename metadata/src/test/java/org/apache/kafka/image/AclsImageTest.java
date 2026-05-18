@@ -58,7 +58,7 @@ public class AclsImageTest {
 
         DELTA1_RECORDS = new ArrayList<>();
         DELTA1_RECORDS.add(new ApiMessageAndVersion(new RemoveAccessControlEntryRecord().
-            setId(Uuid.fromString("QZDDv-R7SyaPgetDPGd0Mw")), (short) 0));
+                setId(Uuid.fromString("QZDDv-R7SyaPgetDPGd0Mw")), (short) 0));
         DELTA1_RECORDS.add(new ApiMessageAndVersion(TEST_ACLS.get(4).toRecord(), (short) 0));
 
         DELTA1 = new AclsDelta(IMAGE1);
@@ -108,8 +108,8 @@ public class AclsImageTest {
     private static void testToImage(AclsImage image, List<ApiMessageAndVersion> fromRecords) {
         // test from empty image stopping each of the various intermediate images along the way
         new RecordTestUtils.TestThroughAllIntermediateImagesLeadingToFinalImageHelper<>(
-            () -> AclsImage.EMPTY,
-            AclsDelta::new
+                () -> AclsImage.EMPTY,
+                AclsDelta::new
         ).test(image, fromRecords);
     }
 

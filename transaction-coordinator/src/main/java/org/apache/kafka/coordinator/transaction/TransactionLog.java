@@ -36,9 +36,9 @@ import java.util.stream.Collectors;
  * Messages stored for the transaction topic represent the producer id and transactional status of the corresponding
  * transactional id, which have versions for both the key and value fields. Key and value
  * versions are used to evolve the message formats:
- *
+ * <p>
  * key version 0:               [transactionalId]
- *    -> value version 0:       [producer_id, producer_epoch, expire_timestamp, status, [topic, [partition] ], timestamp]
+ * -> value version 0:       [producer_id, producer_epoch, expire_timestamp, status, [topic, [partition] ], timestamp]
  */
 public class TransactionLog {
 
@@ -80,20 +80,20 @@ public class TransactionLog {
                     .collect(Collectors.groupingBy(TopicPartition::topic))
                     .entrySet().stream()
                     .map(entry ->
-                        new TransactionLogValue.PartitionsSchema().setTopic(entry.getKey())
-                            .setPartitionIds(entry.getValue().stream().map(TopicPartition::partition).toList())).toList();
+                            new TransactionLogValue.PartitionsSchema().setTopic(entry.getKey())
+                                    .setPartitionIds(entry.getValue().stream().map(TopicPartition::partition).toList())).toList();
         }
 
         short logValueVersion = transactionVersionLevel.transactionLogValueVersion();
         TransactionLogValue value = new TransactionLogValue()
-                        .setProducerId(txnMetadata.producerId())
-                        .setProducerEpoch(txnMetadata.producerEpoch())
-                        .setTransactionTimeoutMs(txnMetadata.txnTimeoutMs())
-                        .setTransactionStatus(txnMetadata.txnState().id())
-                        .setTransactionLastUpdateTimestampMs(txnMetadata.txnLastUpdateTimestamp())
-                        .setTransactionStartTimestampMs(txnMetadata.txnStartTimestamp())
-                        .setTransactionPartitions(transactionPartitions)
-                        .setClientTransactionVersion(txnMetadata.clientTransactionVersion().featureLevel());
+                .setProducerId(txnMetadata.producerId())
+                .setProducerEpoch(txnMetadata.producerEpoch())
+                .setTransactionTimeoutMs(txnMetadata.txnTimeoutMs())
+                .setTransactionStatus(txnMetadata.txnState().id())
+                .setTransactionLastUpdateTimestampMs(txnMetadata.txnLastUpdateTimestamp())
+                .setTransactionStartTimestampMs(txnMetadata.txnStartTimestamp())
+                .setTransactionPartitions(transactionPartitions)
+                .setClientTransactionVersion(txnMetadata.clientTransactionVersion().featureLevel());
 
         if (logValueVersion >= 1) {
             value.setPreviousProducerId(txnMetadata.prevProducerId());
@@ -119,27 +119,31 @@ public class TransactionLog {
     }
 
 
+    public sealed interface ReadResult permits TxnRecord, TxnTombstone, UnknownKeyVersion, UnknownValueVersion {
+    }
 
-    public sealed interface ReadResult permits TxnRecord, TxnTombstone, UnknownKeyVersion, UnknownValueVersion { }
+    public record TxnRecord(String transactionId, TransactionMetadata metadata) implements ReadResult {
+    }
 
-    public record TxnRecord(String transactionId, TransactionMetadata metadata) implements ReadResult { }
+    public record TxnTombstone(String transactionId) implements ReadResult {
+    }
 
-    public record TxnTombstone(String transactionId) implements ReadResult { }
+    public record UnknownKeyVersion(short version) implements ReadResult {
+    }
 
-    public record UnknownKeyVersion(short version) implements ReadResult { }
-
-    public record UnknownValueVersion(short version) implements ReadResult { }
+    public record UnknownValueVersion(short version) implements ReadResult {
+    }
 
     /**
      * Decodes the transaction log messages' key and value, returning a structured result.
      *
      * @return a {@link ReadResult} which is one of:
-     *         <ul>
-     *           <li>{@link TxnRecord} - contains the transactional id and metadata if successfully decoded</li>
-     *           <li>{@link TxnTombstone} - if the value is null (tombstone record)</li>
-     *           <li>{@link UnknownKeyVersion} - if the key version is not recognized</li>
-     *           <li>{@link UnknownValueVersion} - if the value version is not recognized</li>
-     *         </ul>
+     * <ul>
+     *   <li>{@link TxnRecord} - contains the transactional id and metadata if successfully decoded</li>
+     *   <li>{@link TxnTombstone} - if the value is null (tombstone record)</li>
+     *   <li>{@link UnknownKeyVersion} - if the key version is not recognized</li>
+     *   <li>{@link UnknownValueVersion} - if the value version is not recognized</li>
+     * </ul>
      */
     public static ReadResult read(ByteBuffer keyBuffer, ByteBuffer valueBuffer) {
         short keyVersion = keyBuffer.getShort();
@@ -155,7 +159,7 @@ public class TransactionLog {
         } else {
             short valueVersion = valueBuffer.getShort();
             if (valueVersion >= TransactionLogValue.LOWEST_SUPPORTED_VERSION
-                && valueVersion <= TransactionLogValue.HIGHEST_SUPPORTED_VERSION) {
+                    && valueVersion <= TransactionLogValue.HIGHEST_SUPPORTED_VERSION) {
 
                 TransactionLogValue value = new TransactionLogValue(new ByteBufferAccessor(valueBuffer), valueVersion);
                 TransactionState state = TransactionState.fromId(value.transactionStatus());
@@ -170,18 +174,18 @@ public class TransactionLog {
                 }
 
                 return new TxnRecord(transactionalId, new TransactionMetadata(
-                    transactionalId,
-                    value.producerId(),
-                    value.previousProducerId(),
-                    value.nextProducerId(),
-                    value.producerEpoch(),
-                    RecordBatch.NO_PRODUCER_EPOCH,
-                    value.transactionTimeoutMs(),
-                    state,
-                    tps,
-                    value.transactionStartTimestampMs(),
-                    value.transactionLastUpdateTimestampMs(),
-                    TransactionVersion.fromFeatureLevel(value.clientTransactionVersion()))
+                        transactionalId,
+                        value.producerId(),
+                        value.previousProducerId(),
+                        value.nextProducerId(),
+                        value.producerEpoch(),
+                        RecordBatch.NO_PRODUCER_EPOCH,
+                        value.transactionTimeoutMs(),
+                        state,
+                        tps,
+                        value.transactionStartTimestampMs(),
+                        value.transactionLastUpdateTimestampMs(),
+                        TransactionVersion.fromFeatureLevel(value.clientTransactionVersion()))
                 );
             } else {
                 return new UnknownValueVersion(valueVersion);

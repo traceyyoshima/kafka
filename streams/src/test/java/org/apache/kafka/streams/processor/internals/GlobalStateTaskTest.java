@@ -68,14 +68,15 @@ public class GlobalStateTaskTest {
     private final TopicPartition t1 = new TopicPartition(topic1, 1);
     private final TopicPartition t2 = new TopicPartition(topic2, 1);
     private final MockSourceNode<String, String> sourceOne = new MockSourceNode<>(
-        new StringDeserializer(),
-        new StringDeserializer());
-    private final MockSourceNode<Integer, Integer>  sourceTwo = new MockSourceNode<>(
-        new IntegerDeserializer(),
-        new IntegerDeserializer());
+            new StringDeserializer(),
+            new StringDeserializer());
+    private final MockSourceNode<Integer, Integer> sourceTwo = new MockSourceNode<>(
+            new IntegerDeserializer(),
+            new IntegerDeserializer());
     private final MockSourceNode<String, String> sourceForward = new MockSourceNode<>(new StringDeserializer(), new StringDeserializer()) {
 
         private InternalProcessorContext<String, String> ctx;
+
         @Override
         public void init(final InternalProcessorContext<String, String> context) {
             this.ctx = context;
@@ -113,23 +114,23 @@ public class GlobalStateTaskTest {
         storeToTopic.put("t1-store", topic1);
         storeToTopic.put("t2-store", topic2);
         topology = ProcessorTopologyFactories.with(
-            asList(sourceOne, sourceTwo, processorOne, processorTwo),
-            sourceByTopics,
-            Collections.emptyList(),
-            storeToTopic);
+                asList(sourceOne, sourceTwo, processorOne, processorTwo),
+                sourceByTopics,
+                Collections.emptyList(),
+                storeToTopic);
 
         offsets.put(t1, 50L);
         offsets.put(t2, 100L);
         stateMgr = new GlobalStateManagerStub(storeNames, offsets, testDirectory);
         globalStateTask = new GlobalStateUpdateTask(
-            logContext,
-            topology,
-            context,
-            stateMgr,
-            new LogAndFailExceptionHandler(),
-            null,
-            time,
-            flushInterval
+                logContext,
+                topology,
+                context,
+                stateMgr,
+                new LogAndFailExceptionHandler(),
+                null,
+                time,
+                flushInterval
         );
     }
 
@@ -177,8 +178,8 @@ public class GlobalStateTaskTest {
                                   final byte[] recordValue,
                                   final boolean failExpected) {
         final ConsumerRecord<byte[], byte[]> record = new ConsumerRecord<>(
-            topic2, 1, 1, 0L, TimestampType.CREATE_TIME,
-            0, 0, key, recordValue, new RecordHeaders(), Optional.empty()
+                topic2, 1, 1, 0L, TimestampType.CREATE_TIME,
+                0, 0, key, recordValue, new RecordHeaders(), Optional.empty()
         );
         globalStateTask.initialize();
         try {
@@ -212,14 +213,14 @@ public class GlobalStateTaskTest {
     @Test
     public void shouldNotThrowStreamsExceptionWhenKeyDeserializationFailsWithSkipHandler() {
         final GlobalStateUpdateTask globalStateTask2 = new GlobalStateUpdateTask(
-            logContext,
-            topology,
-            context,
-            stateMgr,
-            new LogAndContinueExceptionHandler(),
-            null,
-            time,
-            flushInterval
+                logContext,
+                topology,
+                context,
+                stateMgr,
+                new LogAndContinueExceptionHandler(),
+                null,
+                time,
+                flushInterval
         );
         final byte[] key = new LongSerializer().serialize(topic2, 1L);
         final byte[] recordValue = new IntegerSerializer().serialize(topic2, 10);
@@ -230,14 +231,14 @@ public class GlobalStateTaskTest {
     @Test
     public void shouldNotThrowStreamsExceptionWhenValueDeserializationFails() {
         final GlobalStateUpdateTask globalStateTask2 = new GlobalStateUpdateTask(
-            logContext,
-            topology,
-            context,
-            stateMgr,
-            new LogAndContinueExceptionHandler(),
-            null,
-            time,
-            flushInterval
+                logContext,
+                topology,
+                context,
+                stateMgr,
+                new LogAndContinueExceptionHandler(),
+                null,
+                time,
+                flushInterval
         );
         final byte[] key = new IntegerSerializer().serialize(topic2, 1);
         final byte[] recordValue = new LongSerializer().serialize(topic2, 10L);
@@ -384,7 +385,8 @@ public class GlobalStateTaskTest {
     private Processor<String, String, Void, Void> createThrowingProcessor() {
         return new Processor<>() {
             @Override
-            public void init(final ProcessorContext<Void, Void> context) {}
+            public void init(final ProcessorContext<Void, Void> context) {
+            }
 
             @Override
             public void process(final Record<String, String> record) {
@@ -426,6 +428,7 @@ public class GlobalStateTaskTest {
             public void configure(final Map<String, ?> configs) {
 
             }
+
             @Override
             public Response handleError(final ErrorHandlerContext context, final Record<?, ?> record, final Exception exception) {
                 handlerInvoked.set(true);

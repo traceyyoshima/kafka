@@ -99,9 +99,9 @@ public class DelegationTokenManager {
 
     public List<DelegationToken> getTokens(Predicate<TokenInformation> filterToken) {
         return tokenCache.tokens().stream()
-            .filter(filterToken)
-            .map(this::getDelegationToken)
-            .toList();
+                .filter(filterToken)
+                .map(this::getDelegationToken)
+                .toList();
     }
 
     public boolean isEnabled() {
@@ -109,11 +109,11 @@ public class DelegationTokenManager {
     }
 
     public static boolean filterToken(
-        KafkaPrincipal requesterPrincipal,
-        Optional<List<KafkaPrincipal>> owners,
-        TokenInformation token,
-        Function<String, Boolean> authorizeToken,
-        Function<KafkaPrincipal, Boolean> authorizeRequester
+            KafkaPrincipal requesterPrincipal,
+            Optional<List<KafkaPrincipal>> owners,
+            TokenInformation token,
+            Function<String, Boolean> authorizeToken,
+            Function<KafkaPrincipal, Boolean> authorizeRequester
     ) {
         if (owners.isPresent() && owners.get().stream().noneMatch(token::ownerOrRenewer)) {
             //exclude tokens which are not requested

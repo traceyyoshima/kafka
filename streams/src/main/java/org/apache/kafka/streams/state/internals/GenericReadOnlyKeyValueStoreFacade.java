@@ -26,8 +26,8 @@ import java.util.function.Function;
  * Generic facade that wraps a {@link ReadOnlyKeyValueStore} and converts values
  * using a provided converter function.
  *
- * @param <K> key type
- * @param <InV> input value type (from inner store)
+ * @param <K>    key type
+ * @param <InV>  input value type (from inner store)
  * @param <OutV> output value type (exposed by this facade)
  */
 public class GenericReadOnlyKeyValueStoreFacade<K, InV, OutV> implements ReadOnlyKeyValueStore<K, OutV> {
@@ -57,7 +57,7 @@ public class GenericReadOnlyKeyValueStoreFacade<K, InV, OutV> implements ReadOnl
 
     @Override
     public <PS extends Serializer<P>, P> KeyValueIterator<K, OutV> prefixScan(final P prefix,
-                                                                               final PS prefixKeySerializer) {
+                                                                              final PS prefixKeySerializer) {
         return new GenericKeyValueIteratorFacade<>(inner.prefixScan(prefix, prefixKeySerializer), valueConverter);
     }
 

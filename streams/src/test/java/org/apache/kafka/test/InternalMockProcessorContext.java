@@ -69,8 +69,8 @@ import static org.apache.kafka.streams.StreamsConfig.InternalConfig.IQ_CONSISTEN
 import static org.apache.kafka.streams.processor.internals.StateRestoreCallbackAdapter.adapt;
 
 public class InternalMockProcessorContext<KOut, VOut>
-    extends AbstractProcessorContext<KOut, VOut>
-    implements RecordCollector.Supplier {
+        extends AbstractProcessorContext<KOut, VOut>
+        implements RecordCollector.Supplier {
 
     private StateManager stateManager = new StateManagerStub();
     private final File stateDir;
@@ -89,44 +89,44 @@ public class InternalMockProcessorContext<KOut, VOut>
 
     public InternalMockProcessorContext() {
         this(null,
-            null,
-            null,
-            new StreamsMetricsImpl(new Metrics(), "mock", new MockTime()),
-            new StreamsConfig(StreamsTestUtils.getStreamsConfig()),
-            null,
-            null,
-            Time.SYSTEM
+                null,
+                null,
+                new StreamsMetricsImpl(new Metrics(), "mock", new MockTime()),
+                new StreamsConfig(StreamsTestUtils.getStreamsConfig()),
+                null,
+                null,
+                Time.SYSTEM
         );
     }
 
     public InternalMockProcessorContext(final File stateDir,
                                         final StreamsConfig config) {
         this(
-            stateDir,
-            null,
-            null,
-            new StreamsMetricsImpl(
-                new Metrics(),
-                "mock",
-                new MockTime()
-            ),
-            config,
-            null,
-            null,
-            Time.SYSTEM
+                stateDir,
+                null,
+                null,
+                new StreamsMetricsImpl(
+                        new Metrics(),
+                        "mock",
+                        new MockTime()
+                ),
+                config,
+                null,
+                null,
+                Time.SYSTEM
         );
     }
 
     public InternalMockProcessorContext(final StreamsMetricsImpl streamsMetrics) {
         this(
-            null,
-            null,
-            null,
-            streamsMetrics,
-            new StreamsConfig(StreamsTestUtils.getStreamsConfig()),
-            null,
-            null,
-            Time.SYSTEM
+                null,
+                null,
+                null,
+                streamsMetrics,
+                new StreamsConfig(StreamsTestUtils.getStreamsConfig()),
+                null,
+                null,
+                Time.SYSTEM
         );
     }
 
@@ -134,18 +134,18 @@ public class InternalMockProcessorContext<KOut, VOut>
                                         final StreamsConfig config,
                                         final RecordCollector collector) {
         this(
-            stateDir,
-            null,
-            null,
-            new StreamsMetricsImpl(
-                new Metrics(),
-                "mock",
-                new MockTime()
-            ),
-            config,
-            () -> collector,
-            null,
-            Time.SYSTEM
+                stateDir,
+                null,
+                null,
+                new StreamsMetricsImpl(
+                        new Metrics(),
+                        "mock",
+                        new MockTime()
+                ),
+                config,
+                () -> collector,
+                null,
+                Time.SYSTEM
         );
     }
 
@@ -154,14 +154,14 @@ public class InternalMockProcessorContext<KOut, VOut>
                                         final Serde<?> valueSerde,
                                         final StreamsConfig config) {
         this(
-            stateDir,
-            keySerde,
-            valueSerde,
-            new StreamsMetricsImpl(new Metrics(), "mock", new MockTime()),
-            config,
-            null,
-            null,
-            Time.SYSTEM
+                stateDir,
+                keySerde,
+                valueSerde,
+                new StreamsMetricsImpl(new Metrics(), "mock", new MockTime()),
+                config,
+                null,
+                null,
+                Time.SYSTEM
         );
     }
 
@@ -174,14 +174,14 @@ public class InternalMockProcessorContext<KOut, VOut>
                                         final RecordCollector collector,
                                         final Metrics metrics) {
         this(
-            null,
-            serdes.keySerde(),
-            serdes.valueSerde(),
-            new StreamsMetricsImpl(metrics, "mock", new MockTime()),
-            new StreamsConfig(StreamsTestUtils.getStreamsConfig()),
-            () -> collector,
-            null,
-            Time.SYSTEM
+                null,
+                serdes.keySerde(),
+                serdes.valueSerde(),
+                new StreamsMetricsImpl(metrics, "mock", new MockTime()),
+                new StreamsConfig(StreamsTestUtils.getStreamsConfig()),
+                () -> collector,
+                null,
+                Time.SYSTEM
         );
     }
 
@@ -191,14 +191,14 @@ public class InternalMockProcessorContext<KOut, VOut>
                                         final RecordCollector collector,
                                         final ThreadCache cache) {
         this(
-            stateDir,
-            keySerde,
-            valueSerde,
-            new StreamsMetricsImpl(new Metrics(), "mock", new MockTime()),
-            new StreamsConfig(StreamsTestUtils.getStreamsConfig()),
-            () -> collector,
-            cache,
-            Time.SYSTEM
+                stateDir,
+                keySerde,
+                valueSerde,
+                new StreamsMetricsImpl(new Metrics(), "mock", new MockTime()),
+                new StreamsConfig(StreamsTestUtils.getStreamsConfig()),
+                () -> collector,
+                cache,
+                Time.SYSTEM
         );
     }
 
@@ -242,10 +242,10 @@ public class InternalMockProcessorContext<KOut, VOut>
                                         final Time time,
                                         final TaskId taskId) {
         super(
-            taskId,
-            config,
-            metrics,
-            cache
+                taskId,
+                config,
+                metrics,
+                cache
         );
         super.setCurrentNode(new ProcessorNode<>("TESTING_NODE"));
         this.stateDir = stateDir;
@@ -307,7 +307,8 @@ public class InternalMockProcessorContext<KOut, VOut>
 
     // state mgr will be overridden by the state dir and store maps
     @Override
-    public void initialize() {}
+    public void initialize() {
+    }
 
     @Override
     public File stateDir() {
@@ -348,7 +349,8 @@ public class InternalMockProcessorContext<KOut, VOut>
     }
 
     @Override
-    public void commit() {}
+    public void commit() {
+    }
 
     @Override
     public <K extends KOut, V extends VOut> void forward(final Record<K, V> record) {
@@ -392,7 +394,7 @@ public class InternalMockProcessorContext<KOut, VOut>
                     final Record<Object, Object> record = new Record<>(key, value, toInternal.timestamp(), headers());
                     ((ProcessorNode<Object, Object, ?, ?>) childNode).process(record);
                     toInternal.update(to); // need to reset because MockProcessorContext is shared over multiple
-                                           // Processors and toInternal might have been modified
+                    // Processors and toInternal might have been modified
                 }
             }
         } finally {
@@ -405,11 +407,11 @@ public class InternalMockProcessorContext<KOut, VOut>
     public void setTime(final long timestamp) {
         if (recordContext != null) {
             recordContext = new ProcessorRecordContext(
-                timestamp,
-                recordContext.offset(),
-                recordContext.partition(),
-                recordContext.topic(),
-                recordContext.headers()
+                    timestamp,
+                    recordContext.offset(),
+                    recordContext.partition(),
+                    recordContext.topic(),
+                    recordContext.headers()
             );
         }
         this.timestamp = timestamp;
@@ -443,23 +445,23 @@ public class InternalMockProcessorContext<KOut, VOut>
         }
 
         recordCollector().send(
-            storeName + "-changelog",
-            key,
-            value,
-            headers,
-            taskId().partition(),
-            timestamp,
-            BYTES_KEY_SERIALIZER,
-            BYTEARRAY_VALUE_SERIALIZER,
-            null,
-            null);
+                storeName + "-changelog",
+                key,
+                value,
+                headers,
+                taskId().partition(),
+                timestamp,
+                BYTES_KEY_SERIALIZER,
+                BYTEARRAY_VALUE_SERIALIZER,
+                null,
+                null);
     }
 
     private void addVectorClockToHeaders(Headers headers, Position position) {
         headers.add(ChangelogRecordDeserializationHelper.CHANGELOG_VERSION_HEADER_RECORD_CONSISTENCY);
         headers.add(new RecordHeader(
-            ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY,
-            PositionSerde.serialize(position).array()));
+                ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY,
+                PositionSerde.serialize(position).array()));
     }
 
     @Override
@@ -510,8 +512,8 @@ public class InternalMockProcessorContext<KOut, VOut>
     public <K extends KOut, V extends VOut> void forward(final FixedKeyRecord<K, V> record,
                                                          final String childName) {
         forward(
-            new Record<>(record.key(), record.value(), record.timestamp(), record.headers()),
-            childName
+                new Record<>(record.key(), record.value(), record.timestamp(), record.headers()),
+                childName
         );
     }
 }

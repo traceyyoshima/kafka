@@ -80,24 +80,24 @@ public class ProcessingExceptionHandlerIntegrationTest {
     @Test
     public void shouldFailWhenProcessingExceptionOccursIfExceptionHandlerReturnsFail() {
         final List<KeyValue<String, String>> events = Arrays.asList(
-            new KeyValue<>("ID123-1", "ID123-A1"),
-            new KeyValue<>("ID123-2-ERR", "ID123-A2"),
-            new KeyValue<>("ID123-3", "ID123-A3"),
-            new KeyValue<>("ID123-4", "ID123-A4")
+                new KeyValue<>("ID123-1", "ID123-A1"),
+                new KeyValue<>("ID123-2-ERR", "ID123-A2"),
+                new KeyValue<>("ID123-3", "ID123-A3"),
+                new KeyValue<>("ID123-4", "ID123-A4")
         );
 
         final List<KeyValueTimestamp<String, String>> expectedProcessedRecords = Collections.singletonList(
-            new KeyValueTimestamp<>("ID123-1", "ID123-A1", TIMESTAMP.toEpochMilli())
+                new KeyValueTimestamp<>("ID123-1", "ID123-A1", TIMESTAMP.toEpochMilli())
         );
 
         final MockProcessorSupplier<String, String, Void, Void> processor = new MockProcessorSupplier<>();
         final StreamsBuilder builder = new StreamsBuilder();
         builder
-            .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
-            .map(KeyValue::new)
-            .mapValues(value -> value)
-            .process(runtimeErrorProcessorSupplierMock())
-            .process(processor);
+                .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
+                .map(KeyValue::new)
+                .mapValues(value -> value)
+                .process(runtimeErrorProcessorSupplierMock())
+                .process(processor);
 
         final Properties properties = new Properties();
         properties.put(StreamsConfig.PROCESSING_EXCEPTION_HANDLER_CLASS_CONFIG, FailProcessingExceptionHandlerMockTest.class);
@@ -106,11 +106,11 @@ public class ProcessingExceptionHandlerIntegrationTest {
             final TestInputTopic<String, String> inputTopic = driver.createInputTopic("TOPIC_NAME", new StringSerializer(), new StringSerializer());
 
             final StreamsException exception = assertThrows(StreamsException.class,
-                () -> inputTopic.pipeKeyValueList(events, TIMESTAMP, Duration.ZERO));
+                    () -> inputTopic.pipeKeyValueList(events, TIMESTAMP, Duration.ZERO));
 
             assertTrue(exception.getMessage().contains("Exception caught in process. "
-                + "taskId=0_0, processor=KSTREAM-PROCESSOR-0000000003, topic=TOPIC_NAME, "
-                + "partition=0, offset=1"));
+                    + "taskId=0_0, processor=KSTREAM-PROCESSOR-0000000003, topic=TOPIC_NAME, "
+                    + "partition=0, offset=1"));
             assertEquals(1, processor.theCapturedProcessor().processed().size());
             assertIterableEquals(expectedProcessedRecords, processor.theCapturedProcessor().processed());
 
@@ -125,27 +125,27 @@ public class ProcessingExceptionHandlerIntegrationTest {
     @Test
     public void shouldFailWhenProcessingExceptionOccursFromFlushingCacheIfExceptionHandlerReturnsFail() {
         final List<KeyValue<String, String>> events = Arrays.asList(
-            new KeyValue<>("ID123-1", "ID123-A1"),
-            new KeyValue<>("ID123-1", "ID123-A2"),
-            new KeyValue<>("ID123-1", "ID123-A3"),
-            new KeyValue<>("ID123-1", "ID123-A4")
+                new KeyValue<>("ID123-1", "ID123-A1"),
+                new KeyValue<>("ID123-1", "ID123-A2"),
+                new KeyValue<>("ID123-1", "ID123-A3"),
+                new KeyValue<>("ID123-1", "ID123-A4")
         );
 
         final List<KeyValueTimestamp<String, String>> expectedProcessedRecords = Arrays.asList(
-            new KeyValueTimestamp<>("ID123-1", "1", TIMESTAMP.toEpochMilli()),
-            new KeyValueTimestamp<>("ID123-1", "2", TIMESTAMP.toEpochMilli())
+                new KeyValueTimestamp<>("ID123-1", "1", TIMESTAMP.toEpochMilli()),
+                new KeyValueTimestamp<>("ID123-1", "2", TIMESTAMP.toEpochMilli())
         );
 
         final MockProcessorSupplier<String, String, Void, Void> processor = new MockProcessorSupplier<>();
         final StreamsBuilder builder = new StreamsBuilder();
         builder
-            .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
-            .groupByKey()
-            .count()
-            .toStream()
-            .mapValues(value -> value.toString())
-            .process(runtimeErrorProcessorSupplierMock())
-            .process(processor);
+                .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
+                .groupByKey()
+                .count()
+                .toStream()
+                .mapValues(value -> value.toString())
+                .process(runtimeErrorProcessorSupplierMock())
+                .process(processor);
 
         final Properties properties = new Properties();
         properties.put(StreamsConfig.PROCESSING_EXCEPTION_HANDLER_CLASS_CONFIG, LogAndFailProcessingExceptionHandler.class);
@@ -154,7 +154,7 @@ public class ProcessingExceptionHandlerIntegrationTest {
             final TestInputTopic<String, String> inputTopic = driver.createInputTopic("TOPIC_NAME", new StringSerializer(), new StringSerializer());
 
             final StreamsException exception = assertThrows(StreamsException.class,
-                () -> inputTopic.pipeKeyValueList(events, TIMESTAMP, Duration.ZERO));
+                    () -> inputTopic.pipeKeyValueList(events, TIMESTAMP, Duration.ZERO));
 
             assertTrue(exception.getMessage().contains("Failed to flush cache of store KSTREAM-AGGREGATE-STATE-STORE-0000000001"));
             assertEquals(expectedProcessedRecords.size(), processor.theCapturedProcessor().processed().size());
@@ -171,29 +171,29 @@ public class ProcessingExceptionHandlerIntegrationTest {
     @Test
     public void shouldContinueWhenProcessingExceptionOccursIfExceptionHandlerReturnsContinue() {
         final List<KeyValue<String, String>> events = Arrays.asList(
-            new KeyValue<>("ID123-1", "ID123-A1"),
-            new KeyValue<>("ID123-2-ERR", "ID123-A2"),
-            new KeyValue<>("ID123-3", "ID123-A3"),
-            new KeyValue<>("ID123-4", "ID123-A4"),
-            new KeyValue<>("ID123-5-ERR", "ID123-A5"),
-            new KeyValue<>("ID123-6", "ID123-A6")
+                new KeyValue<>("ID123-1", "ID123-A1"),
+                new KeyValue<>("ID123-2-ERR", "ID123-A2"),
+                new KeyValue<>("ID123-3", "ID123-A3"),
+                new KeyValue<>("ID123-4", "ID123-A4"),
+                new KeyValue<>("ID123-5-ERR", "ID123-A5"),
+                new KeyValue<>("ID123-6", "ID123-A6")
         );
 
         final List<KeyValueTimestamp<String, String>> expectedProcessedRecords = Arrays.asList(
-            new KeyValueTimestamp<>("ID123-1", "ID123-A1", TIMESTAMP.toEpochMilli()),
-            new KeyValueTimestamp<>("ID123-3", "ID123-A3", TIMESTAMP.toEpochMilli()),
-            new KeyValueTimestamp<>("ID123-4", "ID123-A4", TIMESTAMP.toEpochMilli()),
-            new KeyValueTimestamp<>("ID123-6", "ID123-A6", TIMESTAMP.toEpochMilli())
+                new KeyValueTimestamp<>("ID123-1", "ID123-A1", TIMESTAMP.toEpochMilli()),
+                new KeyValueTimestamp<>("ID123-3", "ID123-A3", TIMESTAMP.toEpochMilli()),
+                new KeyValueTimestamp<>("ID123-4", "ID123-A4", TIMESTAMP.toEpochMilli()),
+                new KeyValueTimestamp<>("ID123-6", "ID123-A6", TIMESTAMP.toEpochMilli())
         );
 
         final MockProcessorSupplier<String, String, Void, Void> processor = new MockProcessorSupplier<>();
         final StreamsBuilder builder = new StreamsBuilder();
         builder
-            .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
-            .map(KeyValue::new)
-            .mapValues(value -> value)
-            .process(runtimeErrorProcessorSupplierMock())
-            .process(processor);
+                .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
+                .map(KeyValue::new)
+                .mapValues(value -> value)
+                .process(runtimeErrorProcessorSupplierMock())
+                .process(processor);
 
         final Properties properties = new Properties();
         properties.put(StreamsConfig.PROCESSING_EXCEPTION_HANDLER_CLASS_CONFIG, ContinueProcessingExceptionHandlerMockTest.class);
@@ -216,28 +216,28 @@ public class ProcessingExceptionHandlerIntegrationTest {
     @Test
     public void shouldContinueWhenProcessingExceptionOccursFromFlushingCacheIfExceptionHandlerReturnsContinue() {
         final List<KeyValue<String, String>> events = Arrays.asList(
-            new KeyValue<>("ID123-1", "ID123-A1"),
-            new KeyValue<>("ID123-1", "ID123-A2"),
-            new KeyValue<>("ID123-1", "ID123-A3"),
-            new KeyValue<>("ID123-1", "ID123-A4")
+                new KeyValue<>("ID123-1", "ID123-A1"),
+                new KeyValue<>("ID123-1", "ID123-A2"),
+                new KeyValue<>("ID123-1", "ID123-A3"),
+                new KeyValue<>("ID123-1", "ID123-A4")
         );
 
         final List<KeyValueTimestamp<String, String>> expectedProcessedRecords = Arrays.asList(
-            new KeyValueTimestamp<>("ID123-1", "1", TIMESTAMP.toEpochMilli()),
-            new KeyValueTimestamp<>("ID123-1", "2", TIMESTAMP.toEpochMilli()),
-            new KeyValueTimestamp<>("ID123-1", "4", TIMESTAMP.toEpochMilli())
+                new KeyValueTimestamp<>("ID123-1", "1", TIMESTAMP.toEpochMilli()),
+                new KeyValueTimestamp<>("ID123-1", "2", TIMESTAMP.toEpochMilli()),
+                new KeyValueTimestamp<>("ID123-1", "4", TIMESTAMP.toEpochMilli())
         );
 
         final MockProcessorSupplier<String, String, Void, Void> processor = new MockProcessorSupplier<>();
         final StreamsBuilder builder = new StreamsBuilder();
         builder
-            .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
-            .groupByKey()
-            .count()
-            .toStream()
-            .mapValues(value -> value.toString())
-            .process(runtimeErrorProcessorSupplierMock())
-            .process(processor);
+                .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
+                .groupByKey()
+                .count()
+                .toStream()
+                .mapValues(value -> value.toString())
+                .process(runtimeErrorProcessorSupplierMock())
+                .process(processor);
 
         final Properties properties = new Properties();
         properties.put(StreamsConfig.PROCESSING_EXCEPTION_HANDLER_CLASS_CONFIG, LogAndContinueProcessingExceptionHandler.class);
@@ -266,15 +266,15 @@ public class ProcessingExceptionHandlerIntegrationTest {
         final StreamsBuilder builder = new StreamsBuilder();
         final AtomicBoolean isExecuted = new AtomicBoolean(false);
         builder
-            .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
-            .map(KeyValue::new)
-            .mapValues(value -> value)
-            .process(runtimeErrorProcessorSupplierMock())
-            .map((k, v) -> {
-                isExecuted.set(true);
-                return KeyValue.pair(k, v);
-            })
-            .process(processor);
+                .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
+                .map(KeyValue::new)
+                .mapValues(value -> value)
+                .process(runtimeErrorProcessorSupplierMock())
+                .map((k, v) -> {
+                    isExecuted.set(true);
+                    return KeyValue.pair(k, v);
+                })
+                .process(processor);
 
         final Properties properties = new Properties();
         properties.put(StreamsConfig.PROCESSING_EXCEPTION_HANDLER_CLASS_CONFIG, FailProcessingExceptionHandlerMockTest.class);
@@ -287,8 +287,8 @@ public class ProcessingExceptionHandlerIntegrationTest {
             isExecuted.set(false);
             final StreamsException e = assertThrows(StreamsException.class, () -> inputTopic.pipeInput(eventError.key, eventError.value, TIMESTAMP));
             assertTrue(e.getMessage().contains("Exception caught in process. "
-                + "taskId=0_0, processor=KSTREAM-PROCESSOR-0000000003, topic=TOPIC_NAME, "
-                + "partition=0, offset=1"));
+                    + "taskId=0_0, processor=KSTREAM-PROCESSOR-0000000003, topic=TOPIC_NAME, "
+                    + "partition=0, offset=1"));
             assertFalse(isExecuted.get());
         }
     }
@@ -302,15 +302,15 @@ public class ProcessingExceptionHandlerIntegrationTest {
         final StreamsBuilder builder = new StreamsBuilder();
         final AtomicBoolean isExecuted = new AtomicBoolean(false);
         builder
-            .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
-            .map(KeyValue::new)
-            .mapValues(value -> value)
-            .process(runtimeErrorProcessorSupplierMock())
-            .map((k, v) -> {
-                isExecuted.set(true);
-                return KeyValue.pair(k, v);
-            })
-            .process(processor);
+                .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
+                .map(KeyValue::new)
+                .mapValues(value -> value)
+                .process(runtimeErrorProcessorSupplierMock())
+                .map((k, v) -> {
+                    isExecuted.set(true);
+                    return KeyValue.pair(k, v);
+                })
+                .process(processor);
 
         final Properties properties = new Properties();
         properties.put(StreamsConfig.PROCESSING_EXCEPTION_HANDLER_CLASS_CONFIG, ContinueProcessingExceptionHandlerMockTest.class);
@@ -335,15 +335,15 @@ public class ProcessingExceptionHandlerIntegrationTest {
         final StreamsBuilder builder = new StreamsBuilder();
         final AtomicBoolean isExecuted = new AtomicBoolean(false);
         builder
-            .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
-            .map(KeyValue::new)
-            .mapValues(value -> value)
-            .process(runtimeErrorProcessorSupplierMock())
-            .map((k, v) -> {
-                isExecuted.set(true);
-                return KeyValue.pair(k, v);
-            })
-            .process(processor);
+                .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
+                .map(KeyValue::new)
+                .mapValues(value -> value)
+                .process(runtimeErrorProcessorSupplierMock())
+                .map((k, v) -> {
+                    isExecuted.set(true);
+                    return KeyValue.pair(k, v);
+                })
+                .process(processor);
 
         final Properties properties = new Properties();
         properties.put(StreamsConfig.PROCESSING_EXCEPTION_HANDLER_CLASS_CONFIG, ContinueProcessingExceptionHandlerMockTest.class);
@@ -371,15 +371,15 @@ public class ProcessingExceptionHandlerIntegrationTest {
         final StreamsBuilder builder = new StreamsBuilder();
         final AtomicBoolean isExecuted = new AtomicBoolean(false);
         builder
-            .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
-            .map(KeyValue::new)
-            .mapValues(value -> value)
-            .process(runtimeErrorProcessorSupplierMock())
-            .map((k, v) -> {
-                isExecuted.set(true);
-                return KeyValue.pair(k, v);
-            })
-            .process(processor);
+                .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
+                .map(KeyValue::new)
+                .mapValues(value -> value)
+                .process(runtimeErrorProcessorSupplierMock())
+                .map((k, v) -> {
+                    isExecuted.set(true);
+                    return KeyValue.pair(k, v);
+                })
+                .process(processor);
 
         final Properties properties = new Properties();
         properties.put(StreamsConfig.PROCESSING_EXCEPTION_HANDLER_CLASS_CONFIG, ContinueProcessingExceptionHandlerMockTest.class);
@@ -402,99 +402,99 @@ public class ProcessingExceptionHandlerIntegrationTest {
         final List<ProducerRecord<String, String>> statelessTopologyEvent = List.of(new ProducerRecord<>("TOPIC_NAME", "ID123-1", "ID123-A1"));
         final StreamsBuilder statelessTopologyBuilder = new StreamsBuilder();
         statelessTopologyBuilder
-            .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
-            .selectKey((key, value) -> "newKey")
-            .mapValues(value -> {
-                throw new RuntimeException("Error");
-            });
+                .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
+                .selectKey((key, value) -> "newKey")
+                .mapValues(value -> {
+                    throw new RuntimeException("Error");
+                });
 
         // Validate source raw key and source raw value for processing exception in aggregator with caching enabled
         final List<ProducerRecord<String, String>> cacheAggregateExceptionInAggregatorEvent = List.of(new ProducerRecord<>("TOPIC_NAME", "INITIAL-KEY123-1", "ID123-A1"));
         final StreamsBuilder cacheAggregateExceptionInAggregatorTopologyBuilder = new StreamsBuilder();
         cacheAggregateExceptionInAggregatorTopologyBuilder
-            .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
-            .groupBy((key, value) -> "ID123-1", Grouped.with(Serdes.String(), Serdes.String()))
-            .aggregate(() -> "initialValue",
-                (key, value, aggregate) -> {
-                    throw new RuntimeException("Error");
-                },
-                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("aggregate")
-                    .withKeySerde(Serdes.String())
-                    .withValueSerde(Serdes.String())
-                    .withCachingEnabled());
+                .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
+                .groupBy((key, value) -> "ID123-1", Grouped.with(Serdes.String(), Serdes.String()))
+                .aggregate(() -> "initialValue",
+                        (key, value, aggregate) -> {
+                            throw new RuntimeException("Error");
+                        },
+                        Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("aggregate")
+                                .withKeySerde(Serdes.String())
+                                .withValueSerde(Serdes.String())
+                                .withCachingEnabled());
 
         // Validate source raw key and source raw value for processing exception after aggregation with caching enabled
         final List<ProducerRecord<String, String>> cacheAggregateExceptionAfterAggregationEvent = List.of(new ProducerRecord<>("TOPIC_NAME", "INITIAL-KEY123-1", "ID123-A1"));
         final StreamsBuilder cacheAggregateExceptionAfterAggregationTopologyBuilder = new StreamsBuilder();
         cacheAggregateExceptionAfterAggregationTopologyBuilder
-            .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
-            .groupBy((key, value) -> "ID123-1", Grouped.with(Serdes.String(), Serdes.String()))
-            .aggregate(() -> "initialValue",
-                (key, value, aggregate) -> value,
-                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("aggregate")
-                    .withKeySerde(Serdes.String())
-                    .withValueSerde(Serdes.String())
-                    .withCachingEnabled())
-            .mapValues(value -> {
-                throw new RuntimeException("Error");
-            });
+                .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
+                .groupBy((key, value) -> "ID123-1", Grouped.with(Serdes.String(), Serdes.String()))
+                .aggregate(() -> "initialValue",
+                        (key, value, aggregate) -> value,
+                        Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("aggregate")
+                                .withKeySerde(Serdes.String())
+                                .withValueSerde(Serdes.String())
+                                .withCachingEnabled())
+                .mapValues(value -> {
+                    throw new RuntimeException("Error");
+                });
 
         // Validate source raw key and source raw value for processing exception after aggregation with caching disabled
         final List<ProducerRecord<String, String>> noCacheAggregateExceptionAfterAggregationEvents = List.of(new ProducerRecord<>("TOPIC_NAME", "INITIAL-KEY123-1", "ID123-A1"));
         final StreamsBuilder noCacheAggregateExceptionAfterAggregationTopologyBuilder = new StreamsBuilder();
         noCacheAggregateExceptionAfterAggregationTopologyBuilder
-            .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
-            .groupBy((key, value) -> "ID123-1", Grouped.with(Serdes.String(), Serdes.String()))
-            .aggregate(() -> "initialValue",
-                (key, value, aggregate) -> value,
-                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("aggregate")
-                    .withKeySerde(Serdes.String())
-                    .withValueSerde(Serdes.String())
-                    .withCachingDisabled())
-            .mapValues(value -> {
-                throw new RuntimeException("Error");
-            });
+                .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
+                .groupBy((key, value) -> "ID123-1", Grouped.with(Serdes.String(), Serdes.String()))
+                .aggregate(() -> "initialValue",
+                        (key, value, aggregate) -> value,
+                        Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("aggregate")
+                                .withKeySerde(Serdes.String())
+                                .withValueSerde(Serdes.String())
+                                .withCachingDisabled())
+                .mapValues(value -> {
+                    throw new RuntimeException("Error");
+                });
 
         // Validate source raw key and source raw value for processing exception after table creation with caching enabled
         final List<ProducerRecord<String, String>> cacheTableEvents = List.of(new ProducerRecord<>("TOPIC_NAME", "ID123-1", "ID123-A1"));
         final StreamsBuilder cacheTableTopologyBuilder = new StreamsBuilder();
         cacheTableTopologyBuilder
-            .table("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()),
-                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("table")
-                .withKeySerde(Serdes.String())
-                .withValueSerde(Serdes.String())
-                .withCachingEnabled())
-            .mapValues(value -> {
-                throw new RuntimeException("Error");
-            });
+                .table("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()),
+                        Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("table")
+                                .withKeySerde(Serdes.String())
+                                .withValueSerde(Serdes.String())
+                                .withCachingEnabled())
+                .mapValues(value -> {
+                    throw new RuntimeException("Error");
+                });
 
         // Validate source raw key and source raw value for processing exception in join
         final List<ProducerRecord<String, String>> joinEvents = List.of(
-            new ProducerRecord<>("TOPIC_NAME_2", "INITIAL-KEY123-1", "ID123-A1"),
-            new ProducerRecord<>("TOPIC_NAME", "INITIAL-KEY123-2", "ID123-A1")
+                new ProducerRecord<>("TOPIC_NAME_2", "INITIAL-KEY123-1", "ID123-A1"),
+                new ProducerRecord<>("TOPIC_NAME", "INITIAL-KEY123-2", "ID123-A1")
         );
         final StreamsBuilder joinTopologyBuilder = new StreamsBuilder();
         joinTopologyBuilder
-            .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
-            .selectKey((key, value) -> "ID123-1")
-            .leftJoin(joinTopologyBuilder.stream("TOPIC_NAME_2", Consumed.with(Serdes.String(), Serdes.String()))
-                    .selectKey((key, value) -> "ID123-1"),
-                (key, left, right) -> {
-                    throw new RuntimeException("Error");
-                },
-                JoinWindows.ofTimeDifferenceAndGrace(Duration.ofMinutes(5), Duration.ofMinutes(1)),
-                StreamJoined.with(
-                        Serdes.String(), Serdes.String(), Serdes.String())
-                    .withName("join-rekey")
-                    .withStoreName("join-store"));
+                .stream("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()))
+                .selectKey((key, value) -> "ID123-1")
+                .leftJoin(joinTopologyBuilder.stream("TOPIC_NAME_2", Consumed.with(Serdes.String(), Serdes.String()))
+                                .selectKey((key, value) -> "ID123-1"),
+                        (key, left, right) -> {
+                            throw new RuntimeException("Error");
+                        },
+                        JoinWindows.ofTimeDifferenceAndGrace(Duration.ofMinutes(5), Duration.ofMinutes(1)),
+                        StreamJoined.with(
+                                        Serdes.String(), Serdes.String(), Serdes.String())
+                                .withName("join-rekey")
+                                .withStoreName("join-store"));
 
         return Stream.of(
-            Arguments.of(statelessTopologyEvent, statelessTopologyBuilder.build()),
-            Arguments.of(cacheAggregateExceptionInAggregatorEvent, cacheAggregateExceptionInAggregatorTopologyBuilder.build()),
-            Arguments.of(cacheAggregateExceptionAfterAggregationEvent, noCacheAggregateExceptionAfterAggregationTopologyBuilder.build()),
-            Arguments.of(noCacheAggregateExceptionAfterAggregationEvents, cacheAggregateExceptionInAggregatorTopologyBuilder.build()),
-            Arguments.of(cacheTableEvents, cacheTableTopologyBuilder.build()),
-            Arguments.of(joinEvents, joinTopologyBuilder.build())
+                Arguments.of(statelessTopologyEvent, statelessTopologyBuilder.build()),
+                Arguments.of(cacheAggregateExceptionInAggregatorEvent, cacheAggregateExceptionInAggregatorTopologyBuilder.build()),
+                Arguments.of(cacheAggregateExceptionAfterAggregationEvent, noCacheAggregateExceptionAfterAggregationTopologyBuilder.build()),
+                Arguments.of(noCacheAggregateExceptionAfterAggregationEvents, cacheAggregateExceptionInAggregatorTopologyBuilder.build()),
+                Arguments.of(cacheTableEvents, cacheTableTopologyBuilder.build()),
+                Arguments.of(joinEvents, joinTopologyBuilder.build())
         );
     }
 
@@ -560,9 +560,9 @@ public class ProcessingExceptionHandlerIntegrationTest {
         assertEquals("TOPIC_NAME", context.topic());
         assertEquals("KSTREAM-PROCESSOR-0000000003", context.processorNodeId());
         assertTrue(Arrays.equals("ID123-2-ERR".getBytes(), context.sourceRawKey())
-            || Arrays.equals("ID123-5-ERR".getBytes(), context.sourceRawKey()));
+                || Arrays.equals("ID123-5-ERR".getBytes(), context.sourceRawKey()));
         assertTrue(Arrays.equals("ID123-A2".getBytes(), context.sourceRawValue())
-            || Arrays.equals("ID123-A5".getBytes(), context.sourceRawValue()));
+                || Arrays.equals("ID123-A5".getBytes(), context.sourceRawValue()));
         assertEquals(TIMESTAMP.toEpochMilli(), context.timestamp());
         assertTrue(exception.getMessage().contains("Exception should be handled by processing exception handler"));
     }
@@ -588,13 +588,13 @@ public class ProcessingExceptionHandlerIntegrationTest {
      */
     private MetricName droppedRecordsTotalMetric() {
         return new MetricName(
-            "dropped-records-total",
-            "stream-task-metrics",
-            "The total number of dropped records",
-            mkMap(
-                mkEntry("thread-id", threadId),
-                mkEntry("task-id", "0_0")
-            )
+                "dropped-records-total",
+                "stream-task-metrics",
+                "The total number of dropped records",
+                mkMap(
+                        mkEntry("thread-id", threadId),
+                        mkEntry("task-id", "0_0")
+                )
         );
     }
 
@@ -605,13 +605,13 @@ public class ProcessingExceptionHandlerIntegrationTest {
      */
     private MetricName droppedRecordsRateMetric() {
         return new MetricName(
-            "dropped-records-rate",
-            "stream-task-metrics",
-            "The average number of dropped records per second",
-            mkMap(
-                mkEntry("thread-id", threadId),
-                mkEntry("task-id", "0_0")
-            )
+                "dropped-records-rate",
+                "stream-task-metrics",
+                "The average number of dropped records per second",
+                mkMap(
+                        mkEntry("thread-id", threadId),
+                        mkEntry("task-id", "0_0")
+                )
         );
     }
 

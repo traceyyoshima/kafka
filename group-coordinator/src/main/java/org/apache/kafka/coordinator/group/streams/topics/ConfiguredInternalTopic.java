@@ -52,16 +52,16 @@ public record ConfiguredInternalTopic(String name,
 
     public StreamsGroupDescribeResponseData.TopicInfo asStreamsGroupDescribeTopicInfo() {
         return new StreamsGroupDescribeResponseData.TopicInfo()
-            .setName(name)
-            .setPartitions(numberOfPartitions)
-            .setReplicationFactor(replicationFactor.orElse((short) 0))
-            .setTopicConfigs(
-                topicConfigs.entrySet().stream().map(
-                    y -> new StreamsGroupDescribeResponseData.KeyValue()
-                        .setKey(y.getKey())
-                        .setValue(y.getValue())
-                ).toList()
-            );
+                .setName(name)
+                .setPartitions(numberOfPartitions)
+                .setReplicationFactor(replicationFactor.orElse((short) 0))
+                .setTopicConfigs(
+                        topicConfigs.entrySet().stream().map(
+                                y -> new StreamsGroupDescribeResponseData.KeyValue()
+                                        .setKey(y.getKey())
+                                        .setValue(y.getValue())
+                        ).toList()
+                );
     }
 
 }

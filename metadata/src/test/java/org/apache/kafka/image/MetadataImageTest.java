@@ -43,16 +43,16 @@ public class MetadataImageTest {
 
     static {
         IMAGE1 = new MetadataImage(
-            new MetadataProvenance(100, 4, 2000, true),
-            FeaturesImageTest.IMAGE1,
-            ClusterImageTest.IMAGE1,
-            TopicsImageTest.IMAGE1,
-            ConfigurationsImageTest.IMAGE1,
-            ClientQuotasImageTest.IMAGE1,
-            ProducerIdsImageTest.IMAGE1,
-            AclsImageTest.IMAGE1,
-            ScramImageTest.IMAGE1,
-            DelegationTokenImageTest.IMAGE1);
+                new MetadataProvenance(100, 4, 2000, true),
+                FeaturesImageTest.IMAGE1,
+                ClusterImageTest.IMAGE1,
+                TopicsImageTest.IMAGE1,
+                ConfigurationsImageTest.IMAGE1,
+                ClientQuotasImageTest.IMAGE1,
+                ProducerIdsImageTest.IMAGE1,
+                AclsImageTest.IMAGE1,
+                ScramImageTest.IMAGE1,
+                DelegationTokenImageTest.IMAGE1);
 
         DELTA1 = new MetadataDelta.Builder().
                 setImage(IMAGE1).
@@ -68,16 +68,16 @@ public class MetadataImageTest {
         RecordTestUtils.replayAll(DELTA1, DelegationTokenImageTest.DELTA1_RECORDS);
 
         IMAGE2 = new MetadataImage(
-            new MetadataProvenance(200, 5, 4000, true),
-            FeaturesImageTest.IMAGE2,
-            ClusterImageTest.IMAGE2,
-            TopicsImageTest.IMAGE2,
-            ConfigurationsImageTest.IMAGE2,
-            ClientQuotasImageTest.IMAGE2,
-            ProducerIdsImageTest.IMAGE2,
-            AclsImageTest.IMAGE2,
-            ScramImageTest.IMAGE2,
-            DelegationTokenImageTest.IMAGE2);
+                new MetadataProvenance(200, 5, 4000, true),
+                FeaturesImageTest.IMAGE2,
+                ClusterImageTest.IMAGE2,
+                TopicsImageTest.IMAGE2,
+                ConfigurationsImageTest.IMAGE2,
+                ClientQuotasImageTest.IMAGE2,
+                ProducerIdsImageTest.IMAGE2,
+                AclsImageTest.IMAGE2,
+                ScramImageTest.IMAGE2,
+                DelegationTokenImageTest.IMAGE2);
     }
 
     @Test
@@ -87,16 +87,16 @@ public class MetadataImageTest {
         ImageWriterOptions options = new ImageWriterOptions.Builder(metadataVersion).build();
         // A metadata version is required for writing, so the expected image is not actually empty
         var expectedImage = new MetadataImage(
-            MetadataProvenance.EMPTY,
-            new FeaturesImage(Map.of(), metadataVersion),
-            ClusterImage.EMPTY,
-            TopicsImage.EMPTY,
-            ConfigurationsImage.EMPTY,
-            ClientQuotasImage.EMPTY,
-            ProducerIdsImage.EMPTY,
-            AclsImage.EMPTY,
-            ScramImage.EMPTY,
-            DelegationTokenImage.EMPTY);
+                MetadataProvenance.EMPTY,
+                new FeaturesImage(Map.of(), metadataVersion),
+                ClusterImage.EMPTY,
+                TopicsImage.EMPTY,
+                ConfigurationsImage.EMPTY,
+                ClientQuotasImage.EMPTY,
+                ProducerIdsImage.EMPTY,
+                AclsImage.EMPTY,
+                ScramImage.EMPTY,
+                DelegationTokenImage.EMPTY);
         testToImage(expectedImage, getImageRecords(image, options));
     }
 
@@ -139,8 +139,8 @@ public class MetadataImageTest {
     private static void testToImage(MetadataImage image, List<ApiMessageAndVersion> fromRecords) {
         // test from empty image stopping each of the various intermediate images along the way
         new RecordTestUtils.TestThroughAllIntermediateImagesLeadingToFinalImageHelper<>(
-            () -> MetadataImage.EMPTY,
-            img -> new MetadataDelta.Builder().setImage(img).build()
+                () -> MetadataImage.EMPTY,
+                img -> new MetadataDelta.Builder().setImage(img).build()
         ) {
             @Override
             public MetadataImage createImageByApplyingDelta(MetadataDelta delta) {

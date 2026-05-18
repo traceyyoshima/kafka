@@ -62,7 +62,7 @@ public class EndQuorumEpochRequest extends AbstractRequest {
     @Override
     public EndQuorumEpochResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         return new EndQuorumEpochResponse(new EndQuorumEpochResponseData()
-            .setErrorCode(Errors.forException(e).code()));
+                .setErrorCode(Errors.forException(e).code()));
     }
 
     public static EndQuorumEpochRequest parse(Readable readable, short version) {
@@ -82,29 +82,29 @@ public class EndQuorumEpochRequest extends AbstractRequest {
                                                              int leaderId,
                                                              List<Integer> preferredSuccessors) {
         return new EndQuorumEpochRequestData()
-                   .setClusterId(clusterId)
-                   .setTopics(List.of(
-                       new EndQuorumEpochRequestData.TopicData()
-                           .setTopicName(topicPartition.topic())
-                           .setPartitions(List.of(
-                               new EndQuorumEpochRequestData.PartitionData()
-                                   .setPartitionIndex(topicPartition.partition())
-                                   .setLeaderEpoch(leaderEpoch)
-                                   .setLeaderId(leaderId)
-                                   .setPreferredSuccessors(preferredSuccessors))))
-                   );
+                .setClusterId(clusterId)
+                .setTopics(List.of(
+                        new EndQuorumEpochRequestData.TopicData()
+                                .setTopicName(topicPartition.topic())
+                                .setPartitions(List.of(
+                                        new EndQuorumEpochRequestData.PartitionData()
+                                                .setPartitionIndex(topicPartition.partition())
+                                                .setLeaderEpoch(leaderEpoch)
+                                                .setLeaderId(leaderId)
+                                                .setPreferredSuccessors(preferredSuccessors))))
+                );
     }
 
     public static List<EndQuorumEpochRequestData.ReplicaInfo> preferredCandidates(EndQuorumEpochRequestData.PartitionData partition) {
         if (partition.preferredCandidates().isEmpty()) {
             return partition
-                .preferredSuccessors()
-                .stream()
-                .map(id -> new EndQuorumEpochRequestData.ReplicaInfo()
-                    .setCandidateId(id)
-                    .setCandidateDirectoryId(Uuid.ZERO_UUID)
-                )
-                .collect(Collectors.toList());
+                    .preferredSuccessors()
+                    .stream()
+                    .map(id -> new EndQuorumEpochRequestData.ReplicaInfo()
+                            .setCandidateId(id)
+                            .setCandidateDirectoryId(Uuid.ZERO_UUID)
+                    )
+                    .collect(Collectors.toList());
         } else {
             return partition.preferredCandidates();
         }

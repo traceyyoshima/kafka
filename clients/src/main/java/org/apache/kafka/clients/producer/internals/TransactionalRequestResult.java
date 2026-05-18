@@ -52,7 +52,7 @@ public final class TransactionalRequestResult {
             boolean success = latch.await(timeout, unit);
             if (!success) {
                 throw new TimeoutException("Timeout expired after " + unit.toMillis(timeout) +
-                    "ms while awaiting " + operation + ". " + expectedTimeoutReason);
+                        "ms while awaiting " + operation + ". " + expectedTimeoutReason);
             }
 
             isAcked = true;

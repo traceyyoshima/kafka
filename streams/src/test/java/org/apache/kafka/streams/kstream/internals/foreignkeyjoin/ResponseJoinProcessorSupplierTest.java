@@ -49,7 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 public class ResponseJoinProcessorSupplierTest {
     private static final StringSerializer STRING_SERIALIZER = new StringSerializer();
     private static final ValueJoiner<String, String, String> JOINER =
-        (value1, value2) -> "(" + value1 + "," + value2 + ")";
+            (value1, value2) -> "(" + value1 + "," + value2 + ")";
 
     private static class TestKTableValueGetterSupplier<K, V> implements KTableValueGetterSupplier<K, V> {
         private final Map<K, V> map = new HashMap<>();
@@ -86,16 +86,16 @@ public class ResponseJoinProcessorSupplierTest {
     @Test
     public void shouldNotForwardWhenHashDoesNotMatch() {
         final TestKTableValueGetterSupplier<String, String> valueGetterSupplier =
-            new TestKTableValueGetterSupplier<>();
+                new TestKTableValueGetterSupplier<>();
         final boolean leftJoin = false;
         final ResponseJoinProcessorSupplier<String, String, String, String> processorSupplier =
-            new ResponseJoinProcessorSupplier<>(
-                valueGetterSupplier,
-                STRING_SERIALIZER,
-                () -> "value-hash-dummy-topic",
-                JOINER,
-                leftJoin
-            );
+                new ResponseJoinProcessorSupplier<>(
+                        valueGetterSupplier,
+                        STRING_SERIALIZER,
+                        () -> "value-hash-dummy-topic",
+                        JOINER,
+                        leftJoin
+                );
         final Processor<String, SubscriptionResponseWrapper<String>, String, String> processor = processorSupplier.get();
         final MockInternalProcessorContext<String, String> context = new MockInternalProcessorContext<>();
         processor.init(context);
@@ -115,16 +115,16 @@ public class ResponseJoinProcessorSupplierTest {
     @Test
     public void shouldIgnoreUpdateWhenLeftHasBecomeNull() {
         final TestKTableValueGetterSupplier<String, String> valueGetterSupplier =
-            new TestKTableValueGetterSupplier<>();
+                new TestKTableValueGetterSupplier<>();
         final boolean leftJoin = false;
         final ResponseJoinProcessorSupplier<String, String, String, String> processorSupplier =
-            new ResponseJoinProcessorSupplier<>(
-                valueGetterSupplier,
-                STRING_SERIALIZER,
-                () -> "value-hash-dummy-topic",
-                JOINER,
-                leftJoin
-            );
+                new ResponseJoinProcessorSupplier<>(
+                        valueGetterSupplier,
+                        STRING_SERIALIZER,
+                        () -> "value-hash-dummy-topic",
+                        JOINER,
+                        leftJoin
+                );
         final Processor<String, SubscriptionResponseWrapper<String>, String, String> processor = processorSupplier.get();
         final MockInternalProcessorContext<String, String> context = new MockInternalProcessorContext<>();
         processor.init(context);
@@ -144,16 +144,16 @@ public class ResponseJoinProcessorSupplierTest {
     @Test
     public void shouldForwardWhenHashMatches() {
         final TestKTableValueGetterSupplier<String, String> valueGetterSupplier =
-            new TestKTableValueGetterSupplier<>();
+                new TestKTableValueGetterSupplier<>();
         final boolean leftJoin = false;
         final ResponseJoinProcessorSupplier<String, String, String, String> processorSupplier =
-            new ResponseJoinProcessorSupplier<>(
-                valueGetterSupplier,
-                STRING_SERIALIZER,
-                () -> "value-hash-dummy-topic",
-                JOINER,
-                leftJoin
-            );
+                new ResponseJoinProcessorSupplier<>(
+                        valueGetterSupplier,
+                        STRING_SERIALIZER,
+                        () -> "value-hash-dummy-topic",
+                        JOINER,
+                        leftJoin
+                );
         final Processor<String, SubscriptionResponseWrapper<String>, String, String> processor = processorSupplier.get();
         final MockInternalProcessorContext<String, String> context = new MockInternalProcessorContext<>();
         processor.init(context);
@@ -173,16 +173,16 @@ public class ResponseJoinProcessorSupplierTest {
     @Test
     public void shouldEmitTombstoneForInnerJoinWhenRightIsNull() {
         final TestKTableValueGetterSupplier<String, String> valueGetterSupplier =
-            new TestKTableValueGetterSupplier<>();
+                new TestKTableValueGetterSupplier<>();
         final boolean leftJoin = false;
         final ResponseJoinProcessorSupplier<String, String, String, String> processorSupplier =
-            new ResponseJoinProcessorSupplier<>(
-                valueGetterSupplier,
-                STRING_SERIALIZER,
-                () -> "value-hash-dummy-topic",
-                JOINER,
-                leftJoin
-            );
+                new ResponseJoinProcessorSupplier<>(
+                        valueGetterSupplier,
+                        STRING_SERIALIZER,
+                        () -> "value-hash-dummy-topic",
+                        JOINER,
+                        leftJoin
+                );
         final Processor<String, SubscriptionResponseWrapper<String>, String, String> processor = processorSupplier.get();
         final MockInternalProcessorContext<String, String> context = new MockInternalProcessorContext<>();
         processor.init(context);
@@ -202,16 +202,16 @@ public class ResponseJoinProcessorSupplierTest {
     @Test
     public void shouldEmitResultForLeftJoinWhenRightIsNull() {
         final TestKTableValueGetterSupplier<String, String> valueGetterSupplier =
-            new TestKTableValueGetterSupplier<>();
+                new TestKTableValueGetterSupplier<>();
         final boolean leftJoin = true;
         final ResponseJoinProcessorSupplier<String, String, String, String> processorSupplier =
-            new ResponseJoinProcessorSupplier<>(
-                valueGetterSupplier,
-                STRING_SERIALIZER,
-                () -> "value-hash-dummy-topic",
-                JOINER,
-                leftJoin
-            );
+                new ResponseJoinProcessorSupplier<>(
+                        valueGetterSupplier,
+                        STRING_SERIALIZER,
+                        () -> "value-hash-dummy-topic",
+                        JOINER,
+                        leftJoin
+                );
         final Processor<String, SubscriptionResponseWrapper<String>, String, String> processor = processorSupplier.get();
         final MockInternalProcessorContext<String, String> context = new MockInternalProcessorContext<>();
         processor.init(context);
@@ -231,16 +231,16 @@ public class ResponseJoinProcessorSupplierTest {
     @Test
     public void shouldEmitTombstoneForLeftJoinWhenRightIsNullAndLeftIsNull() {
         final TestKTableValueGetterSupplier<String, String> valueGetterSupplier =
-            new TestKTableValueGetterSupplier<>();
+                new TestKTableValueGetterSupplier<>();
         final boolean leftJoin = true;
         final ResponseJoinProcessorSupplier<String, String, String, String> processorSupplier =
-            new ResponseJoinProcessorSupplier<>(
-                valueGetterSupplier,
-                STRING_SERIALIZER,
-                () -> "value-hash-dummy-topic",
-                JOINER,
-                leftJoin
-            );
+                new ResponseJoinProcessorSupplier<>(
+                        valueGetterSupplier,
+                        STRING_SERIALIZER,
+                        () -> "value-hash-dummy-topic",
+                        JOINER,
+                        leftJoin
+                );
         final Processor<String, SubscriptionResponseWrapper<String>, String, String> processor = processorSupplier.get();
         final MockInternalProcessorContext<String, String> context = new MockInternalProcessorContext<>();
         processor.init(context);
@@ -259,13 +259,13 @@ public class ResponseJoinProcessorSupplierTest {
 
     static Object getDroppedRecordsTotalMetric(final InternalProcessorContext<String, ?> context) {
         final MetricName dropTotalMetric = new MetricName(
-            "dropped-records-total",
-            "stream-task-metrics",
-            "The total number of dropped records",
-            mkMap(
-                mkEntry("thread-id", Thread.currentThread().getName()),
-                mkEntry("task-id", "0_0")
-            )
+                "dropped-records-total",
+                "stream-task-metrics",
+                "The total number of dropped records",
+                mkMap(
+                        mkEntry("thread-id", Thread.currentThread().getName()),
+                        mkEntry("task-id", "0_0")
+                )
         );
 
         return context.metrics().metrics().get(dropTotalMetric).metricValue();
@@ -273,13 +273,13 @@ public class ResponseJoinProcessorSupplierTest {
 
     static Object getDroppedRecordsRateMetric(final InternalProcessorContext<String, ?> context) {
         final MetricName dropRateMetric = new MetricName(
-            "dropped-records-rate",
-            "stream-task-metrics",
-            "The average number of dropped records per second",
-            mkMap(
-                mkEntry("thread-id", Thread.currentThread().getName()),
-                mkEntry("task-id", "0_0")
-            )
+                "dropped-records-rate",
+                "stream-task-metrics",
+                "The average number of dropped records per second",
+                mkMap(
+                        mkEntry("thread-id", Thread.currentThread().getName()),
+                        mkEntry("task-id", "0_0")
+                )
         );
 
         return context.metrics().metrics().get(dropRateMetric).metricValue();

@@ -35,10 +35,10 @@ public class LastValueTracker<T> {
      * Return the last instant/value for the given MetricKey, or Optional.empty if there isn't one.
      *
      * @param metricKey the key for which to calculate a getAndSet.
-     * @param now the timestamp for the new value.
-     * @param value the current value.
+     * @param now       the timestamp for the new value.
+     * @param value     the current value.
      * @return the timestamp of the previous entry and its value. If there
-     *     isn't a previous entry, then this method returns {@link Optional#empty()}
+     * isn't a previous entry, then this method returns {@link Optional#empty()}
      */
     public Optional<InstantAndValue<T>> getAndSet(MetricKey metricKey, Instant now, T value) {
         InstantAndValue<T> instantAndValue = new InstantAndValue<>(now, value);

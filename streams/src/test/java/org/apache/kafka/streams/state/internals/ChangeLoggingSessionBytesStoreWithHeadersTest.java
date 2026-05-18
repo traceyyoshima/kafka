@@ -61,7 +61,7 @@ public class ChangeLoggingSessionBytesStoreWithHeadersTest {
     private final Windowed<Bytes> key1 = new Windowed<>(bytesKey, new SessionWindow(0, 0));
 
     private final AggregationWithHeadersSerializer<byte[]> serializer =
-        new AggregationWithHeadersSerializer<>(Serdes.ByteArray().serializer());
+            new AggregationWithHeadersSerializer<>(Serdes.ByteArray().serializer());
 
     @BeforeEach
     public void setUp() {
@@ -79,7 +79,7 @@ public class ChangeLoggingSessionBytesStoreWithHeadersTest {
     public void shouldDelegateInit() {
         final SessionStore<Bytes, byte[]> innerMock = mock(SessionStore.class);
         final ChangeLoggingSessionBytesStoreWithHeaders outer =
-            new ChangeLoggingSessionBytesStoreWithHeaders(innerMock);
+                new ChangeLoggingSessionBytesStoreWithHeaders(innerMock);
 
         outer.init(context, outer);
         verify(innerMock).init(context, outer);
@@ -100,12 +100,12 @@ public class ChangeLoggingSessionBytesStoreWithHeadersTest {
 
         verify(inner).put(key1, serializedValue);
         verify(context).logChange(
-            store.name(),
-            binaryKey,
-            value1,
-            0L,
-            headers,
-            Position.emptyPosition()
+                store.name(),
+                binaryKey,
+                value1,
+                0L,
+                headers,
+                Position.emptyPosition()
         );
     }
 
@@ -124,12 +124,12 @@ public class ChangeLoggingSessionBytesStoreWithHeadersTest {
 
         verify(inner).put(key1, serializedValue);
         verify(context).logChange(
-            store.name(),
-            binaryKey,
-            value1,
-            0L,
-            headers,
-            POSITION
+                store.name(),
+                binaryKey,
+                value1,
+                0L,
+                headers,
+                POSITION
         );
     }
 
@@ -146,12 +146,12 @@ public class ChangeLoggingSessionBytesStoreWithHeadersTest {
 
         verify(inner).put(key1, null);
         verify(context).logChange(
-            store.name(),
-            binaryKey,
-            null,
-            42L,
-            contextHeaders,
-            Position.emptyPosition()
+                store.name(),
+                binaryKey,
+                null,
+                42L,
+                contextHeaders,
+                Position.emptyPosition()
         );
     }
 
@@ -169,12 +169,12 @@ public class ChangeLoggingSessionBytesStoreWithHeadersTest {
 
         verify(inner).put(key1, serializedValue);
         verify(context).logChange(
-            store.name(),
-            binaryKey,
-            value1,
-            0L,
-            emptyHeaders,
-            Position.emptyPosition()
+                store.name(),
+                binaryKey,
+                value1,
+                0L,
+                emptyHeaders,
+                Position.emptyPosition()
         );
     }
 
@@ -191,12 +191,12 @@ public class ChangeLoggingSessionBytesStoreWithHeadersTest {
 
         verify(inner).remove(key1);
         verify(context).logChange(
-            store.name(),
-            binaryKey,
-            null,
-            42L,
-            contextHeaders,
-            Position.emptyPosition()
+                store.name(),
+                binaryKey,
+                null,
+                42L,
+                contextHeaders,
+                Position.emptyPosition()
         );
     }
 
@@ -217,12 +217,12 @@ public class ChangeLoggingSessionBytesStoreWithHeadersTest {
 
         verify(inner).put(key1, serializedValue);
         verify(context).logChange(
-            store.name(),
-            binaryKey,
-            value1,
-            0L,
-            headers,
-            Position.emptyPosition()
+                store.name(),
+                binaryKey,
+                value1,
+                0L,
+                headers,
+                Position.emptyPosition()
         );
     }
 }

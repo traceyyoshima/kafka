@@ -44,7 +44,7 @@ public interface SessionStore<K, AGG> extends StateStore, ReadOnlySessionStore<K
      * This function would be used to retrieve all closed and immutable windows.
      *
      * @param earliestSessionEndTime earliest session end time to search from, inclusive
-     * @param latestSessionEndTime latest session end time to search to, inclusive
+     * @param latestSessionEndTime   latest session end time to search to, inclusive
      */
     default KeyValueIterator<Windowed<K>, AGG> findSessions(final long earliestSessionEndTime,
                                                             final long latestSessionEndTime) {
@@ -57,11 +57,11 @@ public interface SessionStore<K, AGG> extends StateStore, ReadOnlySessionStore<K
                                                             final Instant earliestSessionEndTime,
                                                             final Instant latestSessionStartTime) {
         return findSessions(
-            key,
-            ApiUtils.validateMillisecondInstant(earliestSessionEndTime,
-                prepareMillisCheckFailMsgPrefix(earliestSessionEndTime, "earliestSessionEndTime")),
-            ApiUtils.validateMillisecondInstant(latestSessionStartTime,
-                prepareMillisCheckFailMsgPrefix(latestSessionStartTime, "latestSessionStartTime")));
+                key,
+                ApiUtils.validateMillisecondInstant(earliestSessionEndTime,
+                        prepareMillisCheckFailMsgPrefix(earliestSessionEndTime, "earliestSessionEndTime")),
+                ApiUtils.validateMillisecondInstant(latestSessionStartTime,
+                        prepareMillisCheckFailMsgPrefix(latestSessionStartTime, "latestSessionStartTime")));
     }
 
     @Override
@@ -69,11 +69,11 @@ public interface SessionStore<K, AGG> extends StateStore, ReadOnlySessionStore<K
                                                                     final Instant earliestSessionEndTime,
                                                                     final Instant latestSessionStartTime) {
         return backwardFindSessions(
-            key,
-            ApiUtils.validateMillisecondInstant(earliestSessionEndTime,
-                prepareMillisCheckFailMsgPrefix(earliestSessionEndTime, "earliestSessionEndTime")),
-            ApiUtils.validateMillisecondInstant(latestSessionStartTime,
-                prepareMillisCheckFailMsgPrefix(latestSessionStartTime, "latestSessionStartTime")));
+                key,
+                ApiUtils.validateMillisecondInstant(earliestSessionEndTime,
+                        prepareMillisCheckFailMsgPrefix(earliestSessionEndTime, "earliestSessionEndTime")),
+                ApiUtils.validateMillisecondInstant(latestSessionStartTime,
+                        prepareMillisCheckFailMsgPrefix(latestSessionStartTime, "latestSessionStartTime")));
     }
 
     default KeyValueIterator<Windowed<K>, AGG> findSessions(final K keyFrom,
@@ -81,12 +81,12 @@ public interface SessionStore<K, AGG> extends StateStore, ReadOnlySessionStore<K
                                                             final Instant earliestSessionEndTime,
                                                             final Instant latestSessionStartTime) {
         return findSessions(
-            keyFrom,
-            keyTo,
-            ApiUtils.validateMillisecondInstant(earliestSessionEndTime,
-                prepareMillisCheckFailMsgPrefix(earliestSessionEndTime, "earliestSessionEndTime")),
-            ApiUtils.validateMillisecondInstant(latestSessionStartTime,
-                prepareMillisCheckFailMsgPrefix(latestSessionStartTime, "latestSessionStartTime")));
+                keyFrom,
+                keyTo,
+                ApiUtils.validateMillisecondInstant(earliestSessionEndTime,
+                        prepareMillisCheckFailMsgPrefix(earliestSessionEndTime, "earliestSessionEndTime")),
+                ApiUtils.validateMillisecondInstant(latestSessionStartTime,
+                        prepareMillisCheckFailMsgPrefix(latestSessionStartTime, "latestSessionStartTime")));
     }
 
     default KeyValueIterator<Windowed<K>, AGG> backwardFindSessions(final K keyFrom,
@@ -94,22 +94,22 @@ public interface SessionStore<K, AGG> extends StateStore, ReadOnlySessionStore<K
                                                                     final Instant earliestSessionEndTime,
                                                                     final Instant latestSessionStartTime) {
         return backwardFindSessions(
-            keyFrom,
-            keyTo,
-            ApiUtils.validateMillisecondInstant(earliestSessionEndTime,
-                prepareMillisCheckFailMsgPrefix(earliestSessionEndTime, "earliestSessionEndTime")),
-            ApiUtils.validateMillisecondInstant(latestSessionStartTime,
-                prepareMillisCheckFailMsgPrefix(latestSessionStartTime, "latestSessionStartTime")));
+                keyFrom,
+                keyTo,
+                ApiUtils.validateMillisecondInstant(earliestSessionEndTime,
+                        prepareMillisCheckFailMsgPrefix(earliestSessionEndTime, "earliestSessionEndTime")),
+                ApiUtils.validateMillisecondInstant(latestSessionStartTime,
+                        prepareMillisCheckFailMsgPrefix(latestSessionStartTime, "latestSessionStartTime")));
     }
 
     default AGG fetchSession(final K key,
                              final Instant sessionStartTime,
                              final Instant sessionEndTime) {
         return fetchSession(key,
-            ApiUtils.validateMillisecondInstant(sessionStartTime,
-                prepareMillisCheckFailMsgPrefix(sessionStartTime, "sessionStartTime")),
-            ApiUtils.validateMillisecondInstant(sessionEndTime,
-                prepareMillisCheckFailMsgPrefix(sessionEndTime, "sessionEndTime")));
+                ApiUtils.validateMillisecondInstant(sessionStartTime,
+                        prepareMillisCheckFailMsgPrefix(sessionStartTime, "sessionStartTime")),
+                ApiUtils.validateMillisecondInstant(sessionEndTime,
+                        prepareMillisCheckFailMsgPrefix(sessionEndTime, "sessionEndTime")));
     }
 
     /**

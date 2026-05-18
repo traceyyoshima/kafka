@@ -134,11 +134,11 @@ public class OAuthCompatibilityTool {
 
         Map<String, ?> configs = configHandler.getConfigs();
         List<AppConfigurationEntry> jaasConfigEntries = List.of(
-            new AppConfigurationEntry(
-                OAuthBearerLoginModule.class.getName(),
-                AppConfigurationEntry.LoginModuleControlFlag.REQUIRED,
-                configHandler.getJaasOptions()
-            )
+                new AppConfigurationEntry(
+                        OAuthBearerLoginModule.class.getName(),
+                        AppConfigurationEntry.LoginModuleControlFlag.REQUIRED,
+                        configHandler.getJaasOptions()
+                )
         );
 
         try {
@@ -186,39 +186,39 @@ public class OAuthCompatibilityTool {
 
     private static JwtRetriever createRetriever(Map<String, ?> configs, List<AppConfigurationEntry> jaasConfigEntries) {
         return getConfiguredInstance(
-            configs,
-            OAUTHBEARER_MECHANISM,
-            jaasConfigEntries,
-            SaslConfigs.SASL_OAUTHBEARER_JWT_RETRIEVER_CLASS,
-            JwtRetriever.class
+                configs,
+                OAUTHBEARER_MECHANISM,
+                jaasConfigEntries,
+                SaslConfigs.SASL_OAUTHBEARER_JWT_RETRIEVER_CLASS,
+                JwtRetriever.class
         );
     }
 
     private static JwtValidator createValidator(Map<String, ?> configs, List<AppConfigurationEntry> jaasConfigEntries) {
         return getConfiguredInstance(
-            configs,
-            OAUTHBEARER_MECHANISM,
-            jaasConfigEntries,
-            SaslConfigs.SASL_OAUTHBEARER_JWT_VALIDATOR_CLASS,
-            JwtValidator.class
+                configs,
+                OAUTHBEARER_MECHANISM,
+                jaasConfigEntries,
+                SaslConfigs.SASL_OAUTHBEARER_JWT_VALIDATOR_CLASS,
+                JwtValidator.class
         );
     }
 
     private static class ArgsHandler {
 
         private static final String DESCRIPTION = String.format(
-            "This tool is used to verify OAuth/OIDC provider compatibility.%n%n" +
-            "Run the following script to determine the configuration options:%n%n" +
-                "    ./bin/kafka-run-class.sh %s --help",
-            OAuthCompatibilityTool.class.getName());
+                "This tool is used to verify OAuth/OIDC provider compatibility.%n%n" +
+                        "Run the following script to determine the configuration options:%n%n" +
+                        "    ./bin/kafka-run-class.sh %s --help",
+                OAuthCompatibilityTool.class.getName());
 
         private final ArgumentParser parser;
 
         private ArgsHandler() {
             this.parser = ArgumentParsers
-                .newArgumentParser("oauth-compatibility-tool")
-                .defaultHelp(true)
-                .description(DESCRIPTION);
+                    .newArgumentParser("oauth-compatibility-tool")
+                    .defaultHelp(true)
+                    .description(DESCRIPTION);
         }
 
         private Namespace parseArgs(String[] args) throws ArgumentParserException {
@@ -229,7 +229,7 @@ public class OAuthCompatibilityTool {
             addArgument(SASL_LOGIN_RETRY_BACKOFF_MS, SASL_LOGIN_RETRY_BACKOFF_MS_DOC, Long.class);
             addArgument(SASL_OAUTHBEARER_CLOCK_SKEW_SECONDS, SASL_OAUTHBEARER_CLOCK_SKEW_SECONDS_DOC, Integer.class);
             addArgument(SASL_OAUTHBEARER_EXPECTED_AUDIENCE, SASL_OAUTHBEARER_EXPECTED_AUDIENCE_DOC)
-                .action(Arguments.append());
+                    .action(Arguments.append());
             addArgument(SASL_OAUTHBEARER_EXPECTED_ISSUER, SASL_OAUTHBEARER_EXPECTED_ISSUER_DOC);
             addArgument(SASL_OAUTHBEARER_JWKS_ENDPOINT_REFRESH_MS, SASL_OAUTHBEARER_JWKS_ENDPOINT_REFRESH_MS_DOC, Long.class);
             addArgument(SASL_OAUTHBEARER_JWKS_ENDPOINT_RETRY_BACKOFF_MAX_MS, SASL_OAUTHBEARER_JWKS_ENDPOINT_RETRY_BACKOFF_MAX_MS_DOC, Long.class);
@@ -241,9 +241,9 @@ public class OAuthCompatibilityTool {
 
             // SSL
             addArgument(SSL_CIPHER_SUITES_CONFIG, SSL_CIPHER_SUITES_DOC)
-                .action(Arguments.append());
+                    .action(Arguments.append());
             addArgument(SSL_ENABLED_PROTOCOLS_CONFIG, SSL_ENABLED_PROTOCOLS_DOC)
-                .action(Arguments.append());
+                    .action(Arguments.append());
             addArgument(SSL_ENDPOINT_IDENTIFICATION_ALGORITHM_CONFIG, SSL_ENDPOINT_IDENTIFICATION_ALGORITHM_DOC);
             addArgument(SSL_ENGINE_FACTORY_CLASS_CONFIG, SSL_ENGINE_FACTORY_CLASS_DOC);
             addArgument(SSL_KEYMANAGER_ALGORITHM_CONFIG, SSL_KEYMANAGER_ALGORITHM_DOC);
@@ -284,10 +284,10 @@ public class OAuthCompatibilityTool {
             String name = "--" + option;
 
             return parser.addArgument(name)
-                .type(clazz)
-                .metavar(option)
-                .dest(option)
-                .help(help);
+                    .type(clazz)
+                    .metavar(option)
+                    .dest(option)
+                    .help(help);
         }
 
     }

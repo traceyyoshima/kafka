@@ -48,9 +48,9 @@ import java.util.regex.Pattern;
  *   .
  *   &lt;topic_name_n&gt; &lt;partition_n&gt; &lt;offset_n&gt;
  * </pre>
- *   The first line contains a number designating the format version (currently 0), the get line contains
- *   a number giving the total number of offsets. Each successive line gives a topic/partition/offset triple
- *   separated by spaces.
+ * The first line contains a number designating the format version (currently 0), the get line contains
+ * a number giving the total number of offsets. Each successive line gives a topic/partition/offset triple
+ * separated by spaces.
  */
 public class OffsetCheckpoint {
     private static final Logger LOG = LoggerFactory.getLogger(OffsetCheckpoint.class);
@@ -144,7 +144,7 @@ public class OffsetCheckpoint {
     /**
      * Reads the offsets from the local checkpoint file, skipping any negative offsets it finds.
      *
-     * @throws IOException if any file operation fails with an IO exception
+     * @throws IOException              if any file operation fails with an IO exception
      * @throws IllegalArgumentException if the offset checkpoint version is unknown
      */
     public Map<TopicPartition, Long> read() throws IOException {
@@ -160,7 +160,7 @@ public class OffsetCheckpoint {
                             final String[] pieces = WHITESPACE_MINIMUM_ONCE.split(line);
                             if (pieces.length != 3) {
                                 throw new IOException(
-                                    String.format("Malformed line in offset checkpoint file: '%s'.", line));
+                                        String.format("Malformed line in offset checkpoint file: '%s'.", line));
                             }
 
                             final String topic = pieces[0];
@@ -178,7 +178,7 @@ public class OffsetCheckpoint {
                         }
                         if (offsets.size() != expectedSize) {
                             throw new IOException(
-                                String.format("Expected %d entries but found only %d", expectedSize, offsets.size()));
+                                    String.format("Expected %d entries but found only %d", expectedSize, offsets.size()));
                         }
                         return offsets;
 

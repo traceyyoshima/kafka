@@ -46,7 +46,7 @@ public interface ErrantRecordReporter {
      * @param record the problematic record; may not be null
      * @param error  the error capturing the problem with the record; may not be null
      * @return a future that can be used to block until the record and error are reported
-     *         to the DLQ
+     * to the DLQ
      * @throws ConnectException if the error reporter and DLQ fails to write a reported record
      * @since 2.6
      */

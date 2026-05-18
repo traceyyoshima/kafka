@@ -35,10 +35,9 @@ public interface MetadataNodeRedactionCriteria {
     /**
      * Returns true if a configuration should be redacted.
      *
-     * @param type      The configuration type.
-     * @param key       The configuration key.
-     *
-     * @return          True if the configuration should be redacted.
+     * @param type The configuration type.
+     * @param key  The configuration key.
+     * @return True if the configuration should be redacted.
      */
     boolean shouldRedactConfig(ConfigResource.Type type, String key);
 

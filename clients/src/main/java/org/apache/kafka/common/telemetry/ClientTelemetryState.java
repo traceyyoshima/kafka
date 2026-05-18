@@ -74,7 +74,7 @@ public enum ClientTelemetryState {
          However, it's still possible that client doesn't get very far before terminating.
         */
         VALID_NEXT_STATES.put(
-            SUBSCRIPTION_NEEDED, Arrays.asList(SUBSCRIPTION_IN_PROGRESS, TERMINATED));
+                SUBSCRIPTION_NEEDED, Arrays.asList(SUBSCRIPTION_IN_PROGRESS, TERMINATED));
 
         /*
          If client is finished waiting for subscription, then client is ready to push the telemetry.
@@ -84,7 +84,7 @@ public enum ClientTelemetryState {
          However, it's still possible that client doesn't get very far before terminating.
         */
         VALID_NEXT_STATES.put(SUBSCRIPTION_IN_PROGRESS, Arrays.asList(PUSH_NEEDED,
-            SUBSCRIPTION_NEEDED, TERMINATING_PUSH_NEEDED, TERMINATED));
+                SUBSCRIPTION_NEEDED, TERMINATING_PUSH_NEEDED, TERMINATED));
 
         /*
          If client transitions out of this state, then client should proceed to push the metrics.
@@ -94,7 +94,7 @@ public enum ClientTelemetryState {
          However, it's still possible that client doesn't get very far before terminating.
         */
         VALID_NEXT_STATES.put(PUSH_NEEDED, Arrays.asList(PUSH_IN_PROGRESS, SUBSCRIPTION_NEEDED,
-            TERMINATING_PUSH_NEEDED, TERMINATED));
+                TERMINATING_PUSH_NEEDED, TERMINATED));
 
         /*
          A successful push should transition client to push needed which sends the next telemetry
@@ -105,8 +105,8 @@ public enum ClientTelemetryState {
          However, it's still possible that client doesn't get very far before terminating.
         */
         VALID_NEXT_STATES.put(
-            PUSH_IN_PROGRESS, Arrays.asList(PUSH_NEEDED, SUBSCRIPTION_NEEDED, TERMINATING_PUSH_NEEDED,
-                TERMINATED));
+                PUSH_IN_PROGRESS, Arrays.asList(PUSH_NEEDED, SUBSCRIPTION_NEEDED, TERMINATING_PUSH_NEEDED,
+                        TERMINATED));
 
         /*
          If client is moving out of this state, then try to send last metrics push.
@@ -114,7 +114,7 @@ public enum ClientTelemetryState {
          However, it's still possible that client doesn't get very far before terminating.
         */
         VALID_NEXT_STATES.put(
-            TERMINATING_PUSH_NEEDED, Arrays.asList(TERMINATING_PUSH_IN_PROGRESS, TERMINATED));
+                TERMINATING_PUSH_NEEDED, Arrays.asList(TERMINATING_PUSH_IN_PROGRESS, TERMINATED));
 
         /*
          Client should only be transited to terminated state.
@@ -149,16 +149,16 @@ public enum ClientTelemetryState {
         String validStatesClause;
         if (allowableStates != null && !allowableStates.isEmpty()) {
             validStatesClause = String.format("the valid telemetry state transitions from %s are: %s",
-                this,
-                allowableStates.stream().map(ClientTelemetryState::toString).collect(Collectors.joining(", ")));
+                    this,
+                    allowableStates.stream().map(ClientTelemetryState::toString).collect(Collectors.joining(", ")));
         } else {
             validStatesClause = String.format("there are no valid telemetry state transitions from %s", this);
         }
 
         String message = String.format("Invalid telemetry state transition from %s to %s; %s",
-            this,
-            newState,
-            validStatesClause);
+                this,
+                newState,
+                validStatesClause);
 
         throw new IllegalStateException(message);
     }

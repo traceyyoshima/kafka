@@ -71,11 +71,11 @@ public class ChangeLoggingTimestampedKeyValueBytesStoreTest {
 
     private InternalMockProcessorContext<String, Long> mockContext() {
         return new InternalMockProcessorContext<>(
-            TestUtils.tempDirectory(),
-            Serdes.String(),
-            Serdes.Long(),
-            collector,
-            new ThreadCache(new LogContext("testCache "), 0, new MockStreamsMetrics(new Metrics()))
+                TestUtils.tempDirectory(),
+                Serdes.String(),
+                Serdes.Long(),
+                collector,
+                new ThreadCache(new LogContext("testCache "), 0, new MockStreamsMetrics(new Metrics()))
         );
     }
 
@@ -108,7 +108,7 @@ public class ChangeLoggingTimestampedKeyValueBytesStoreTest {
     @Test
     public void shouldWriteAllKeyValueToInnerStoreOnPutAll() {
         store.putAll(Arrays.asList(KeyValue.pair(hi, rawThere),
-                                   KeyValue.pair(hello, rawWorld)));
+                KeyValue.pair(hello, rawWorld)));
         assertThat(root.get(hi), equalTo(rawThere));
         assertThat(root.get(hello), equalTo(rawWorld));
     }
@@ -116,7 +116,7 @@ public class ChangeLoggingTimestampedKeyValueBytesStoreTest {
     @Test
     public void shouldLogChangesOnPutAll() {
         store.putAll(Arrays.asList(KeyValue.pair(hi, rawThere),
-                                   KeyValue.pair(hello, rawWorld)));
+                KeyValue.pair(hello, rawWorld)));
 
         assertThat(collector.collected().size(), equalTo(2));
         assertThat(collector.collected().get(0).key(), equalTo(hi));

@@ -78,9 +78,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ClusterTestDefaults(
         brokers = 2,
         serverProperties = {
-            // trim the retry count and backoff interval to reduce test execution time
-            @ClusterConfigProperty(key = ReplicationConfigs.UNCLEAN_LEADER_ELECTION_INTERVAL_MS_CONFIG, value = "10"),
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1")
+                // trim the retry count and backoff interval to reduce test execution time
+                @ClusterConfigProperty(key = ReplicationConfigs.UNCLEAN_LEADER_ELECTION_INTERVAL_MS_CONFIG, value = "10"),
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1")
         }
 )
 public class UncleanLeaderElectionTest {
@@ -117,23 +117,23 @@ public class UncleanLeaderElectionTest {
 
     private void disableEligibleLeaderReplicas() throws Exception {
         admin.updateFeatures(
-                    Map.of(EligibleLeaderReplicasVersion.FEATURE_NAME, new FeatureUpdate((short) 0, FeatureUpdate.UpgradeType.SAFE_DOWNGRADE))
+                Map.of(EligibleLeaderReplicasVersion.FEATURE_NAME, new FeatureUpdate((short) 0, FeatureUpdate.UpgradeType.SAFE_DOWNGRADE))
         ).all().get();
     }
 
     @ClusterTest(
-         serverProperties = {
-             @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "true")
-         }
+            serverProperties = {
+                    @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "true")
+            }
     )
     public void testUncleanLeaderElectionEnabledClassic() throws Exception {
         testUncleanLeaderElectionEnabled(GroupProtocol.CLASSIC);
     }
 
     @ClusterTest(
-        serverProperties = {
-            @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "true")
-        }
+            serverProperties = {
+                    @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "true")
+            }
     )
     public void testUncleanLeaderElectionEnabledConsumer() throws Exception {
         testUncleanLeaderElectionEnabled(GroupProtocol.CONSUMER);
@@ -192,18 +192,18 @@ public class UncleanLeaderElectionTest {
     }
 
     @ClusterTest(
-        serverProperties = {
-            @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "true")
-        }
+            serverProperties = {
+                    @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "true")
+            }
     )
     public void testUncleanLeaderElectionDisabledByTopicOverrideClassic() throws Exception {
         testUncleanLeaderElectionDisabledByTopicOverride(GroupProtocol.CLASSIC);
     }
 
     @ClusterTest(
-        serverProperties = {
-            @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "true")
-        }
+            serverProperties = {
+                    @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "true")
+            }
     )
     public void testUncleanLeaderElectionDisabledByTopicOverrideConsumer() throws Exception {
         testUncleanLeaderElectionDisabledByTopicOverride(GroupProtocol.CONSUMER);

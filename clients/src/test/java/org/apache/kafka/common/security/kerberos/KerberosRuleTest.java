@@ -35,14 +35,14 @@ public class KerberosRuleTest {
 
         // negative test cases
         assertThrows(
-            BadFormatString.class,
-            () -> KerberosRule.replaceParameters("$0", new String[]{}),
-            "An out-of-bounds parameter number should trigger an exception!");
+                BadFormatString.class,
+                () -> KerberosRule.replaceParameters("$0", new String[]{}),
+                "An out-of-bounds parameter number should trigger an exception!");
 
         assertThrows(
-            BadFormatString.class,
-            () -> KerberosRule.replaceParameters("hello $a", new String[]{"does not matter"}),
-            "A malformed parameter name should trigger an exception!");
+                BadFormatString.class,
+                () -> KerberosRule.replaceParameters("hello $a", new String[]{"does not matter"}),
+                "A malformed parameter name should trigger an exception!");
     }
 
 }

@@ -33,27 +33,27 @@ public record MetadataImage(MetadataProvenance provenance, FeaturesImage feature
                             ProducerIdsImage producerIds, AclsImage acls, ScramImage scram,
                             DelegationTokenImage delegationTokens) {
     public static final MetadataImage EMPTY = new MetadataImage(
-        MetadataProvenance.EMPTY,
-        FeaturesImage.EMPTY,
-        ClusterImage.EMPTY,
-        TopicsImage.EMPTY,
-        ConfigurationsImage.EMPTY,
-        ClientQuotasImage.EMPTY,
-        ProducerIdsImage.EMPTY,
-        AclsImage.EMPTY,
-        ScramImage.EMPTY,
-        DelegationTokenImage.EMPTY);
+            MetadataProvenance.EMPTY,
+            FeaturesImage.EMPTY,
+            ClusterImage.EMPTY,
+            TopicsImage.EMPTY,
+            ConfigurationsImage.EMPTY,
+            ClientQuotasImage.EMPTY,
+            ProducerIdsImage.EMPTY,
+            AclsImage.EMPTY,
+            ScramImage.EMPTY,
+            DelegationTokenImage.EMPTY);
 
     public boolean isEmpty() {
         return features.isEmpty() &&
-            cluster.isEmpty() &&
-            topics.isEmpty() &&
-            configs.isEmpty() &&
-            clientQuotas.isEmpty() &&
-            producerIds.isEmpty() &&
-            acls.isEmpty() &&
-            scram.isEmpty() &&
-            delegationTokens.isEmpty();
+                cluster.isEmpty() &&
+                topics.isEmpty() &&
+                configs.isEmpty() &&
+                clientQuotas.isEmpty() &&
+                producerIds.isEmpty() &&
+                acls.isEmpty() &&
+                scram.isEmpty() &&
+                delegationTokens.isEmpty();
     }
 
     public OffsetAndEpoch highestOffsetAndEpoch() {

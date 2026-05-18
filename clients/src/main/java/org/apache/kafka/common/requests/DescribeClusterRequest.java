@@ -60,8 +60,8 @@ public class DescribeClusterRequest extends AbstractRequest {
     public AbstractResponse getErrorResponse(final int throttleTimeMs, final Throwable e) {
         ApiError apiError = ApiError.fromThrowable(e);
         return new DescribeClusterResponse(new DescribeClusterResponseData()
-            .setErrorCode(apiError.error().code())
-            .setErrorMessage(apiError.message()));
+                .setErrorCode(apiError.error().code())
+                .setErrorMessage(apiError.message()));
     }
 
     @Override

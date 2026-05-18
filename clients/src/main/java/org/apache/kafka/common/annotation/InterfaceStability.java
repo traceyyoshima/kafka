@@ -30,24 +30,27 @@ public class InterfaceStability {
      * in a major release (i.e. 0.m) for APIs that have been deprecated for at least one major/minor release cycle.
      * In cases where the impact of breaking compatibility is significant, there is also a minimum deprecation period
      * of one year.
-     *
+     * <p>
      * This is the default stability level for public APIs that are not annotated.
      */
     @Documented
     @Retention(RetentionPolicy.RUNTIME)
-    public @interface Stable { }
+    public @interface Stable {
+    }
 
     /**
      * Compatibility may be broken at minor release (i.e. m.x).
      */
     @Documented
     @Retention(RetentionPolicy.RUNTIME)
-    public @interface Evolving { }
+    public @interface Evolving {
+    }
 
     /**
      * No guarantee is provided as to reliability or stability across any level of release granularity.
      */
     @Documented
     @Retention(RetentionPolicy.RUNTIME)
-    public @interface Unstable { }
+    public @interface Unstable {
+    }
 }

@@ -40,36 +40,36 @@ import static org.apache.kafka.controller.metrics.BrokerRegistrationState.getBro
  * These are the metrics which are managed by the ControllerServer class. They generally pertain to
  * aspects of the metadata, like how many topics or partitions we have.
  * All of these except MetadataErrorCount are managed by ControllerMetadataMetricsPublisher.
- *
+ * <p>
  * IMPORTANT: Metrics which are managed by the QuorumController class itself should go in
  * {@link org.apache.kafka.controller.metrics.QuorumControllerMetrics}, not here.
  */
 public final class ControllerMetadataMetrics implements AutoCloseable {
     private static final MetricName FENCED_BROKER_COUNT = getMetricName(
-        "KafkaController", "FencedBrokerCount");
+            "KafkaController", "FencedBrokerCount");
     private static final MetricName ACTIVE_BROKER_COUNT = getMetricName(
-        "KafkaController", "ActiveBrokerCount");
+            "KafkaController", "ActiveBrokerCount");
     private static final MetricName CONTROLLED_SHUTDOWN_BROKER_COUNT = getMetricName(
-        "KafkaController", "ControlledShutdownBrokerCount"
+            "KafkaController", "ControlledShutdownBrokerCount"
     );
     private static final String BROKER_REGISTRATION_STATE_METRIC_NAME = "BrokerRegistrationState";
     private static final String BROKER_ID_TAG = "broker";
     private static final MetricName GLOBAL_TOPIC_COUNT = getMetricName(
-        "KafkaController", "GlobalTopicCount");
+            "KafkaController", "GlobalTopicCount");
     private static final MetricName GLOBAL_PARTITION_COUNT = getMetricName(
-        "KafkaController", "GlobalPartitionCount");
+            "KafkaController", "GlobalPartitionCount");
     private static final MetricName OFFLINE_PARTITION_COUNT = getMetricName(
-        "KafkaController", "OfflinePartitionsCount");
+            "KafkaController", "OfflinePartitionsCount");
     private static final MetricName PREFERRED_REPLICA_IMBALANCE_COUNT = getMetricName(
-        "KafkaController", "PreferredReplicaImbalanceCount");
+            "KafkaController", "PreferredReplicaImbalanceCount");
     private static final MetricName METADATA_ERROR_COUNT = getMetricName(
-        "KafkaController", "MetadataErrorCount");
+            "KafkaController", "MetadataErrorCount");
     private static final MetricName UNCLEAN_LEADER_ELECTIONS_PER_SEC = getMetricName(
-        "ControllerStats", "UncleanLeaderElectionsPerSec");
+            "ControllerStats", "UncleanLeaderElectionsPerSec");
     private static final MetricName ELECTION_FROM_ELIGIBLE_LEADER_REPLICAS_PER_SEC = getMetricName(
-        "ControllerStats", "ElectionFromEligibleLeaderReplicasPerSec");
+            "ControllerStats", "ElectionFromEligibleLeaderReplicasPerSec");
     private static final MetricName IGNORED_STATIC_VOTERS = getMetricName(
-        "KafkaController", "IgnoredStaticVoters");
+            "KafkaController", "IgnoredStaticVoters");
 
     private final Optional<MetricsRegistry> registry;
     private final AtomicInteger fencedBrokerCount = new AtomicInteger(0);
@@ -155,27 +155,27 @@ public final class ControllerMetadataMetrics implements AutoCloseable {
 
     public void addBrokerRegistrationStateMetric(int brokerId) {
         registry.ifPresent(r -> r.newGauge(
-            getBrokerIdTagMetricName(
-                "KafkaController",
-                BROKER_REGISTRATION_STATE_METRIC_NAME,
-                brokerId
-            ),
-            new Gauge<Integer>() {
-                @Override
-                public Integer value() {
-                    return brokerRegistrationState(brokerId);
+                getBrokerIdTagMetricName(
+                        "KafkaController",
+                        BROKER_REGISTRATION_STATE_METRIC_NAME,
+                        brokerId
+                ),
+                new Gauge<Integer>() {
+                    @Override
+                    public Integer value() {
+                        return brokerRegistrationState(brokerId);
+                    }
                 }
-            }
         ));
     }
 
     public void removeBrokerRegistrationStateMetric(int brokerId) {
         registry.ifPresent(r -> r.removeMetric(
-            getBrokerIdTagMetricName(
-                "KafkaController",
-                BROKER_REGISTRATION_STATE_METRIC_NAME,
-                brokerId
-            )
+                getBrokerIdTagMetricName(
+                        "KafkaController",
+                        BROKER_REGISTRATION_STATE_METRIC_NAME,
+                        brokerId
+                )
         ));
     }
 
@@ -232,11 +232,11 @@ public final class ControllerMetadataMetrics implements AutoCloseable {
 
     public int brokerRegistrationState(int brokerId) {
         return this.brokerRegistrationStates.getOrDefault(
-            brokerId,
-            BrokerRegistrationState.UNREGISTERED.state()
+                brokerId,
+                BrokerRegistrationState.UNREGISTERED.state()
         );
     }
-    
+
     public void setGlobalTopicCount(int topicCount) {
         this.globalTopicCount.set(topicCount);
     }
@@ -292,7 +292,7 @@ public final class ControllerMetadataMetrics implements AutoCloseable {
     public int metadataErrorCount() {
         return this.metadataErrorCount.get();
     }
-    
+
     public void updateUncleanLeaderElection(int count) {
         this.uncleanLeaderElectionMeter.ifPresent(m -> m.mark(count));
     }
@@ -312,17 +312,17 @@ public final class ControllerMetadataMetrics implements AutoCloseable {
     @Override
     public void close() {
         registry.ifPresent(r -> List.of(
-            FENCED_BROKER_COUNT,
-            ACTIVE_BROKER_COUNT,
-            CONTROLLED_SHUTDOWN_BROKER_COUNT,
-            GLOBAL_TOPIC_COUNT,
-            GLOBAL_PARTITION_COUNT,
-            OFFLINE_PARTITION_COUNT,
-            PREFERRED_REPLICA_IMBALANCE_COUNT,
-            METADATA_ERROR_COUNT,
-            UNCLEAN_LEADER_ELECTIONS_PER_SEC,
-            ELECTION_FROM_ELIGIBLE_LEADER_REPLICAS_PER_SEC,
-            IGNORED_STATIC_VOTERS
+                FENCED_BROKER_COUNT,
+                ACTIVE_BROKER_COUNT,
+                CONTROLLED_SHUTDOWN_BROKER_COUNT,
+                GLOBAL_TOPIC_COUNT,
+                GLOBAL_PARTITION_COUNT,
+                OFFLINE_PARTITION_COUNT,
+                PREFERRED_REPLICA_IMBALANCE_COUNT,
+                METADATA_ERROR_COUNT,
+                UNCLEAN_LEADER_ELECTIONS_PER_SEC,
+                ELECTION_FROM_ELIGIBLE_LEADER_REPLICAS_PER_SEC,
+                IGNORED_STATIC_VOTERS
         ).forEach(r::removeMetric));
         for (int brokerId : brokerRegistrationStates.keySet()) {
             removeBrokerRegistrationStateMetric(brokerId);

@@ -84,14 +84,14 @@ public class StreamJoinedStoreFactory<K, V1, V2> extends AbstractConfigurableSto
     public StoreBuilder<?> builder() {
         final WindowBytesStoreSupplier supplier = storeSupplier == null
                 ? dslStoreSuppliers().windowStore(new DslWindowParams(
-                        this.name,
-                        Duration.ofMillis(retentionPeriod()),
-                        Duration.ofMillis(windows.size()),
-                        true,
-                        EmitStrategy.onWindowUpdate(),
-                        false,
-                        dslStoreFormat()
-                ))
+                this.name,
+                Duration.ofMillis(retentionPeriod()),
+                Duration.ofMillis(windows.size()),
+                true,
+                EmitStrategy.onWindowUpdate(),
+                false,
+                dslStoreFormat()
+        ))
                 : storeSupplier;
 
         final StoreBuilder<? extends WindowStore<K, ?>> builder = Stores.timestampedWindowStoreWithHeadersBuilder(

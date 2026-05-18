@@ -29,8 +29,8 @@ import org.apache.kafka.streams.state.WindowStore;
 import org.apache.kafka.streams.state.WindowStoreIterator;
 
 public class RocksDBWindowStore
-    extends WrappedStateStore<SegmentedBytesStore, Object, Object>
-    implements WindowStore<Bytes, byte[]> {
+        extends WrappedStateStore<SegmentedBytesStore, Object, Object>
+        implements WindowStore<Bytes, byte[]> {
 
     private final boolean retainDuplicates;
     private final long windowSize;
@@ -127,12 +127,12 @@ public class RocksDBWindowStore
                                     final QueryConfig config) {
 
         return StoreQueryUtils.handleBasicQueries(
-            query,
-            positionBound,
-            config,
-            this,
-            getPosition(),
-            stateStoreContext
+                query,
+                positionBound,
+                config,
+                this,
+                getPosition(),
+                stateStoreContext
         );
     }
 

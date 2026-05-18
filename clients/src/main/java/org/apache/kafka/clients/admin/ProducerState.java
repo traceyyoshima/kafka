@@ -29,12 +29,12 @@ public class ProducerState {
     private final OptionalLong currentTransactionStartOffset;
 
     public ProducerState(
-        long producerId,
-        int producerEpoch,
-        int lastSequence,
-        long lastTimestamp,
-        OptionalInt coordinatorEpoch,
-        OptionalLong currentTransactionStartOffset
+            long producerId,
+            int producerEpoch,
+            int lastSequence,
+            long lastTimestamp,
+            OptionalInt coordinatorEpoch,
+            OptionalLong currentTransactionStartOffset
     ) {
         this.producerId = producerId;
         this.producerEpoch = producerEpoch;
@@ -74,28 +74,28 @@ public class ProducerState {
         if (o == null || getClass() != o.getClass()) return false;
         ProducerState that = (ProducerState) o;
         return producerId == that.producerId &&
-            producerEpoch == that.producerEpoch &&
-            lastSequence == that.lastSequence &&
-            lastTimestamp == that.lastTimestamp &&
-            Objects.equals(coordinatorEpoch, that.coordinatorEpoch) &&
-            Objects.equals(currentTransactionStartOffset, that.currentTransactionStartOffset);
+                producerEpoch == that.producerEpoch &&
+                lastSequence == that.lastSequence &&
+                lastTimestamp == that.lastTimestamp &&
+                Objects.equals(coordinatorEpoch, that.coordinatorEpoch) &&
+                Objects.equals(currentTransactionStartOffset, that.currentTransactionStartOffset);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(producerId, producerEpoch, lastSequence, lastTimestamp,
-            coordinatorEpoch, currentTransactionStartOffset);
+                coordinatorEpoch, currentTransactionStartOffset);
     }
 
     @Override
     public String toString() {
         return "ProducerState(" +
-            "producerId=" + producerId +
-            ", producerEpoch=" + producerEpoch +
-            ", lastSequence=" + lastSequence +
-            ", lastTimestamp=" + lastTimestamp +
-            ", coordinatorEpoch=" + coordinatorEpoch +
-            ", currentTransactionStartOffset=" + currentTransactionStartOffset +
-            ')';
+                "producerId=" + producerId +
+                ", producerEpoch=" + producerEpoch +
+                ", lastSequence=" + lastSequence +
+                ", lastTimestamp=" + lastTimestamp +
+                ", coordinatorEpoch=" + coordinatorEpoch +
+                ", currentTransactionStartOffset=" + currentTransactionStartOffset +
+                ')';
     }
 }

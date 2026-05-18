@@ -108,81 +108,81 @@ public class ClientCompatibilityTest {
 
     public static void main(String[] args) throws Exception {
         ArgumentParser parser = ArgumentParsers
-            .newArgumentParser("client-compatibility-test")
-            .defaultHelp(true)
-            .description("This tool is used to verify client compatibility guarantees.");
+                .newArgumentParser("client-compatibility-test")
+                .defaultHelp(true)
+                .description("This tool is used to verify client compatibility guarantees.");
         parser.addArgument("--topic")
-            .action(store())
-            .required(true)
-            .type(String.class)
-            .dest("topic")
-            .metavar("TOPIC")
-            .help("the compatibility test will produce messages to this topic");
+                .action(store())
+                .required(true)
+                .type(String.class)
+                .dest("topic")
+                .metavar("TOPIC")
+                .help("the compatibility test will produce messages to this topic");
         parser.addArgument("--bootstrap-server")
-            .action(store())
-            .required(true)
-            .type(String.class)
-            .dest("bootstrapServer")
-            .metavar("BOOTSTRAP_SERVER")
-            .help("The server(s) to use for bootstrapping");
+                .action(store())
+                .required(true)
+                .type(String.class)
+                .dest("bootstrapServer")
+                .metavar("BOOTSTRAP_SERVER")
+                .help("The server(s) to use for bootstrapping");
         parser.addArgument("--offsets-for-times-supported")
-            .action(store())
-            .required(true)
-            .type(Boolean.class)
-            .dest("offsetsForTimesSupported")
-            .metavar("OFFSETS_FOR_TIMES_SUPPORTED")
-            .help("True if KafkaConsumer#offsetsForTimes is supported by the current broker version");
+                .action(store())
+                .required(true)
+                .type(Boolean.class)
+                .dest("offsetsForTimesSupported")
+                .metavar("OFFSETS_FOR_TIMES_SUPPORTED")
+                .help("True if KafkaConsumer#offsetsForTimes is supported by the current broker version");
         parser.addArgument("--cluster-id-supported")
-            .action(store())
-            .required(true)
-            .type(Boolean.class)
-            .dest("clusterIdSupported")
-            .metavar("CLUSTER_ID_SUPPORTED")
-            .help("True if cluster IDs are supported.  False if cluster ID always appears as null.");
+                .action(store())
+                .required(true)
+                .type(Boolean.class)
+                .dest("clusterIdSupported")
+                .metavar("CLUSTER_ID_SUPPORTED")
+                .help("True if cluster IDs are supported.  False if cluster ID always appears as null.");
         parser.addArgument("--expect-record-too-large-exception")
-            .action(store())
-            .required(true)
-            .type(Boolean.class)
-            .dest("expectRecordTooLargeException")
-            .metavar("EXPECT_RECORD_TOO_LARGE_EXCEPTION")
-            .help("True if we should expect a RecordTooLargeException when trying to read from a topic " +
-                  "that contains a message that is bigger than " + ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG +
-                  ".  This is pre-KIP-74 behavior.");
+                .action(store())
+                .required(true)
+                .type(Boolean.class)
+                .dest("expectRecordTooLargeException")
+                .metavar("EXPECT_RECORD_TOO_LARGE_EXCEPTION")
+                .help("True if we should expect a RecordTooLargeException when trying to read from a topic " +
+                        "that contains a message that is bigger than " + ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG +
+                        ".  This is pre-KIP-74 behavior.");
         parser.addArgument("--num-cluster-nodes")
-            .action(store())
-            .required(true)
-            .type(Integer.class)
-            .dest("numClusterNodes")
-            .metavar("NUM_CLUSTER_NODES")
-            .help("The number of cluster nodes we should expect to see from the AdminClient.");
+                .action(store())
+                .required(true)
+                .type(Integer.class)
+                .dest("numClusterNodes")
+                .metavar("NUM_CLUSTER_NODES")
+                .help("The number of cluster nodes we should expect to see from the AdminClient.");
         parser.addArgument("--create-topics-supported")
-            .action(store())
-            .required(true)
-            .type(Boolean.class)
-            .dest("createTopicsSupported")
-            .metavar("CREATE_TOPICS_SUPPORTED")
-            .help("Whether we should be able to create topics via the AdminClient.");
+                .action(store())
+                .required(true)
+                .type(Boolean.class)
+                .dest("createTopicsSupported")
+                .metavar("CREATE_TOPICS_SUPPORTED")
+                .help("Whether we should be able to create topics via the AdminClient.");
         parser.addArgument("--describe-acls-supported")
-            .action(store())
-            .required(true)
-            .type(Boolean.class)
-            .dest("describeAclsSupported")
-            .metavar("DESCRIBE_ACLS_SUPPORTED")
-            .help("Whether describeAcls is supported in the AdminClient.");
+                .action(store())
+                .required(true)
+                .type(Boolean.class)
+                .dest("describeAclsSupported")
+                .metavar("DESCRIBE_ACLS_SUPPORTED")
+                .help("Whether describeAcls is supported in the AdminClient.");
         parser.addArgument("--describe-configs-supported")
-            .action(store())
-            .required(true)
-            .type(Boolean.class)
-            .dest("describeConfigsSupported")
-            .metavar("DESCRIBE_CONFIGS_SUPPORTED")
-            .help("Whether describeConfigs is supported in the AdminClient.");
+                .action(store())
+                .required(true)
+                .type(Boolean.class)
+                .dest("describeConfigsSupported")
+                .metavar("DESCRIBE_CONFIGS_SUPPORTED")
+                .help("Whether describeConfigs is supported in the AdminClient.");
         parser.addArgument("--idempotent-producer-supported")
-            .action(store())
-            .required(true)
-            .type(Boolean.class)
-            .dest("idempotentProducerSupported")
-            .metavar("IDEMPOTENT_PRODUCER_SUPPORTED")
-            .help("Whether the producer supports idempotency.");
+                .action(store())
+                .required(true)
+                .type(Boolean.class)
+                .dest("idempotentProducerSupported")
+                .metavar("IDEMPOTENT_PRODUCER_SUPPORTED")
+                .help("Whether the producer supports idempotency.");
 
         Namespace res = null;
         try {
@@ -279,25 +279,25 @@ public class ClientCompatibilityTest {
                     break;
                 } else if (nodes.size() > testConfig.numClusterNodes) {
                     throw new KafkaException("Expected to see " + testConfig.numClusterNodes +
-                        " nodes, but saw " + nodes.size());
+                            " nodes, but saw " + nodes.size());
                 }
                 Thread.sleep(1);
                 log.info("Saw only {} cluster nodes.  Waiting to see {}.",
-                    nodes.size(), testConfig.numClusterNodes);
+                        nodes.size(), testConfig.numClusterNodes);
             }
 
             testDescribeConfigsMethod(client);
 
             tryFeature("createTopics", testConfig.createTopicsSupported,
-                () -> {
-                    try {
-                        client.createTopics(Set.of(
-                            new NewTopic("newtopic", 1, (short) 1))).all().get();
-                    } catch (ExecutionException e) {
-                        throw e.getCause();
-                    }
-                },
-                () ->  createTopicsResultTest(client, Set.of("newtopic"))
+                    () -> {
+                        try {
+                            client.createTopics(Set.of(
+                                    new NewTopic("newtopic", 1, (short) 1))).all().get();
+                        } catch (ExecutionException e) {
+                            throw e.getCause();
+                        }
+                    },
+                    () -> createTopicsResultTest(client, Set.of("newtopic"))
             );
 
             while (true) {
@@ -313,39 +313,39 @@ public class ClientCompatibilityTest {
             }
 
             tryFeature("describeAclsSupported", testConfig.describeAclsSupported,
-                () -> {
-                    try {
-                        client.describeAcls(AclBindingFilter.ANY).values().get();
-                    } catch (ExecutionException e) {
-                        if (e.getCause() instanceof SecurityDisabledException)
-                            return;
-                        throw e.getCause();
-                    }
-                });
+                    () -> {
+                        try {
+                            client.describeAcls(AclBindingFilter.ANY).values().get();
+                        } catch (ExecutionException e) {
+                            if (e.getCause() instanceof SecurityDisabledException)
+                                return;
+                            throw e.getCause();
+                        }
+                    });
         }
     }
 
     private void testDescribeConfigsMethod(final Admin client) throws Throwable {
         tryFeature("describeConfigsSupported", testConfig.describeConfigsSupported,
-            () -> {
-                try {
-                    Collection<Node> nodes = client.describeCluster().nodes().get();
+                () -> {
+                    try {
+                        Collection<Node> nodes = client.describeCluster().nodes().get();
 
-                    final ConfigResource configResource = new ConfigResource(
-                        ConfigResource.Type.BROKER,
-                        nodes.iterator().next().idString()
-                    );
+                        final ConfigResource configResource = new ConfigResource(
+                                ConfigResource.Type.BROKER,
+                                nodes.iterator().next().idString()
+                        );
 
-                    Map<ConfigResource, Config> brokerConfig =
-                        client.describeConfigs(Set.of(configResource)).all().get();
+                        Map<ConfigResource, Config> brokerConfig =
+                                client.describeConfigs(Set.of(configResource)).all().get();
 
-                    if (brokerConfig.get(configResource).entries().isEmpty()) {
-                        throw new KafkaException("Expected to see config entries, but got zero entries");
+                        if (brokerConfig.get(configResource).entries().isEmpty()) {
+                            throw new KafkaException("Expected to see config entries, but got zero entries");
+                        }
+                    } catch (ExecutionException e) {
+                        throw e.getCause();
                     }
-                } catch (ExecutionException e) {
-                    throw e.getCause();
-                }
-            });
+                });
     }
 
     private void createTopicsResultTest(Admin client, Collection<String> topics)
@@ -414,7 +414,7 @@ public class ClientCompatibilityTest {
         consumerProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, testConfig.bootstrapServer);
         consumerProps.put(ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG, 512);
         ClientCompatibilityTestDeserializer deserializer =
-            new ClientCompatibilityTestDeserializer(testConfig.expectClusterId);
+                new ClientCompatibilityTestDeserializer(testConfig.expectClusterId);
         try (final KafkaConsumer<byte[], byte[]> consumer = new KafkaConsumer<>(consumerProps, deserializer, deserializer)) {
             final List<PartitionInfo> partitionInfos = consumer.partitionsFor(testConfig.topic);
             if (partitionInfos.isEmpty())
@@ -428,8 +428,8 @@ public class ClientCompatibilityTest {
             }
             final OffsetsForTime offsetsForTime = new OffsetsForTime();
             tryFeature("offsetsForTimes", testConfig.offsetsForTimesSupported,
-                () -> offsetsForTime.result = consumer.offsetsForTimes(timestampsToSearch),
-                () -> log.info("offsetsForTime = {}", offsetsForTime.result));
+                    () -> offsetsForTime.result = consumer.offsetsForTimes(timestampsToSearch),
+                    () -> log.info("offsetsForTime = {}", offsetsForTime.result));
             // Whether or not offsetsForTimes works, beginningOffsets and endOffsets
             // should work.
             consumer.beginningOffsets(timestampsToSearch.keySet());
@@ -497,14 +497,14 @@ public class ClientCompatibilityTest {
                     compareArrays(message2, next);
                 } catch (RuntimeException e) {
                     System.out.println("The second message in this topic was not ours. Please use a new " +
-                        "topic when running this program.");
+                            "topic when running this program.");
                     Exit.exit(1);
                 }
             } catch (RecordTooLargeException e) {
                 log.debug("Got RecordTooLargeException", e);
                 if (!testConfig.expectRecordTooLargeException)
                     throw new RuntimeException("Got an unexpected RecordTooLargeException when reading a record " +
-                        "bigger than " + ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG);
+                            "bigger than " + ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG);
             }
             log.debug("Closing consumer.");
         }
@@ -520,7 +520,8 @@ public class ClientCompatibilityTest {
     }
 
     private void tryFeature(String featureName, boolean supported, Invoker invoker) throws Throwable {
-        tryFeature(featureName, supported, invoker, () -> { });
+        tryFeature(featureName, supported, invoker, () -> {
+        });
     }
 
     private void tryFeature(String featureName, boolean supported, Invoker invoker, ResultTester resultTester)

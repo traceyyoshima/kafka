@@ -71,7 +71,7 @@ public class SkimpyOffsetMap implements OffsetMap {
     /**
      * Create an instance of SkimpyOffsetMap.
      *
-     * @param memory The amount of memory this map can use
+     * @param memory        The amount of memory this map can use
      * @param hashAlgorithm The hash algorithm instance to use: MD2, MD5, SHA-1, SHA-256, SHA-384, SHA-512
      */
     public SkimpyOffsetMap(int memory, String hashAlgorithm) throws NoSuchAlgorithmException {
@@ -94,6 +94,7 @@ public class SkimpyOffsetMap implements OffsetMap {
 
     /**
      * Get the offset associated with this key.
+     *
      * @param key The key
      * @return The offset associated with this key or -1 if the key is not found
      */
@@ -120,14 +121,15 @@ public class SkimpyOffsetMap implements OffsetMap {
 
     /**
      * Associate this offset to the given key.
-     * @param key The key
+     *
+     * @param key    The key
      * @param offset The offset
      */
     @Override
     public void put(ByteBuffer key, long offset) throws DigestException {
         if (entries >= slots)
             throw new IllegalArgumentException("Attempted to add a new entry to a full offset map, "
-                + "entries: " + entries + ", slots: " + slots);
+                    + "entries: " + entries + ", slots: " + slots);
 
         hashInto(key, hash1);
 
@@ -191,14 +193,15 @@ public class SkimpyOffsetMap implements OffsetMap {
      */
     private boolean isEmpty(int position) {
         return bytes.getLong(position) == 0
-            && bytes.getLong(position + 8) == 0
-            && bytes.getLong(position + 16) == 0;
+                && bytes.getLong(position + 8) == 0
+                && bytes.getLong(position + 16) == 0;
     }
 
     /**
      * Calculate the ith probe position. We first try reading successive integers from the hash itself
      * then if all of those fail we degrade to linear probing.
-     * @param hash The hash of the key to find the position for
+     *
+     * @param hash    The hash of the key to find the position for
      * @param attempt The ith probe
      * @return The byte offset in the buffer at which the ith probing for the given hash would reside
      */
@@ -210,7 +213,8 @@ public class SkimpyOffsetMap implements OffsetMap {
 
     /**
      * The offset at which we have stored the given key
-     * @param key The key to hash
+     *
+     * @param key    The key to hash
      * @param buffer The buffer to store the hash into
      */
     private void hashInto(ByteBuffer key, byte[] buffer) throws DigestException {

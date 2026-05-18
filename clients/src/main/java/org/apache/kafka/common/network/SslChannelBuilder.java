@@ -101,7 +101,7 @@ public class SslChannelBuilder implements ChannelBuilder, ListenerReconfigurable
             transportLayer = buildTransportLayer(sslFactory, id, key, metadataRegistry);
             final SslTransportLayer finalTransportLayer = transportLayer;
             Supplier<Authenticator> authenticatorCreator = () ->
-                new SslAuthenticator(configs, finalTransportLayer, listenerName, sslPrincipalMapper);
+                    new SslAuthenticator(configs, finalTransportLayer, listenerName, sslPrincipalMapper);
             return new KafkaChannel(id, transportLayer, authenticatorCreator, maxReceiveSize,
                     memoryPool != null ? memoryPool : MemoryPool.NONE, metadataRegistry);
         } catch (Exception e) {
@@ -120,7 +120,7 @@ public class SslChannelBuilder implements ChannelBuilder, ListenerReconfigurable
     protected SslTransportLayer buildTransportLayer(SslFactory sslFactory, String id, SelectionKey key, ChannelMetadataRegistry metadataRegistry) throws IOException {
         SocketChannel socketChannel = (SocketChannel) key.channel();
         return SslTransportLayer.create(id, key, sslFactory.createSslEngine(socketChannel.socket()),
-            metadataRegistry);
+                metadataRegistry);
     }
 
     /**
@@ -137,14 +137,17 @@ public class SslChannelBuilder implements ChannelBuilder, ListenerReconfigurable
             this.principalBuilder = ChannelBuilders.createPrincipalBuilder(configs, null, sslPrincipalMapper);
             this.listenerName = listenerName;
         }
+
         /**
          * No-Op for plaintext authenticator
          */
         @Override
-        public void authenticate() {}
+        public void authenticate() {
+        }
 
         /**
          * Constructs Principal using configured principalBuilder.
+         *
          * @return the built principal
          */
         @Override
@@ -173,6 +176,7 @@ public class SslChannelBuilder implements ChannelBuilder, ListenerReconfigurable
 
         /**
          * SslAuthenticator doesn't implement any additional authentication mechanism.
+         *
          * @return true
          */
         @Override

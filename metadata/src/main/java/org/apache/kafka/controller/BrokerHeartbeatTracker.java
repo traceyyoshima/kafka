@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * The BrokerHeartbeatTracker stores the last time each broker sent a heartbeat to us.
  * This class will be present only on the active controller.
- *
+ * <p>
  * UNLIKE MOST OF THE KAFKA CONTROLLER, THIS CLASS CAN BE ACCESSED FROM MULTIPLE THREADS.
  * Everything in here must be thread-safe. It is intended to be accessed directly from the
  * request handler thread pool. This ensures that the heartbeats always get through, even
@@ -63,7 +63,7 @@ class BrokerHeartbeatTracker {
     /**
      * Update the contact time for the given broker ID and epoch to be the current time.
      *
-     * @param idAndEpoch    The broker ID and epoch.
+     * @param idAndEpoch The broker ID and epoch.
      */
     void updateContactTime(BrokerIdAndEpoch idAndEpoch) {
         updateContactTime(idAndEpoch, time.nanoseconds());
@@ -72,8 +72,8 @@ class BrokerHeartbeatTracker {
     /**
      * Update the contact time for the given broker ID and epoch to be the given time.
      *
-     * @param idAndEpoch    The broker ID and epoch.
-     * @param timeNs        The monotonic time in nanoseconds.
+     * @param idAndEpoch The broker ID and epoch.
+     * @param timeNs     The monotonic time in nanoseconds.
      */
     void updateContactTime(BrokerIdAndEpoch idAndEpoch, long timeNs) {
         contactTimes.put(idAndEpoch, timeNs);
@@ -82,8 +82,8 @@ class BrokerHeartbeatTracker {
     /**
      * Get the contact time for the given broker ID and epoch.
      *
-     * @param idAndEpoch    The broker ID and epoch.
-     * @return              The contact time, or Optional.empty if none is known.
+     * @param idAndEpoch The broker ID and epoch.
+     * @return The contact time, or Optional.empty if none is known.
      */
     OptionalLong contactTime(BrokerIdAndEpoch idAndEpoch) {
         Long value = contactTimes.get(idAndEpoch);
@@ -94,7 +94,7 @@ class BrokerHeartbeatTracker {
     /**
      * Remove either one or zero expired brokers from the map.
      *
-     * @return      The expired broker that was removed, or Optional.empty if there was none.
+     * @return The expired broker that was removed, or Optional.empty if there was none.
      */
     Optional<BrokerIdAndEpoch> maybeRemoveExpired() {
         return maybeRemoveExpired(time.nanoseconds());
@@ -104,12 +104,11 @@ class BrokerHeartbeatTracker {
      * Remove either one or zero expired brokers from the map.
      *
      * @param nowNs The current time in monotonic nanoseconds.
-     *
-     * @return      The expired broker that was removed, or Optional.empty if there was none.
+     * @return The expired broker that was removed, or Optional.empty if there was none.
      */
     Optional<BrokerIdAndEpoch> maybeRemoveExpired(long nowNs) {
         Iterator<Entry<BrokerIdAndEpoch, Long>> iterator =
-            contactTimes.entrySet().iterator();
+                contactTimes.entrySet().iterator();
         while (iterator.hasNext()) {
             Entry<BrokerIdAndEpoch, Long> entry = iterator.next();
             if (isExpired(entry.getValue(), nowNs)) {
@@ -124,9 +123,9 @@ class BrokerHeartbeatTracker {
      * Return true if the given time is outside the expiration window.
      * If the timestamp has undergone 64-bit rollover, we will not expire anything.
      *
-     * @param timeNs    The provided time in monotonic nanoseconds.
-     * @param nowNs     The current time in monotonic nanoseconds.
-     * @return          True if the timestamp is expired.
+     * @param timeNs The provided time in monotonic nanoseconds.
+     * @param nowNs  The current time in monotonic nanoseconds.
+     * @return True if the timestamp is expired.
      */
     boolean isExpired(long timeNs, long nowNs) {
         return (nowNs > timeNs) && (timeNs + sessionTimeoutNs < nowNs);
@@ -135,8 +134,8 @@ class BrokerHeartbeatTracker {
     /**
      * Return true if the given broker has a session whose time has not yet expired.
      *
-     * @param idAndEpoch    The broker id and epoch.
-     * @return              True only if the broker session was found and is still valid.
+     * @param idAndEpoch The broker id and epoch.
+     * @return True only if the broker session was found and is still valid.
      */
     boolean hasValidSession(BrokerIdAndEpoch idAndEpoch) {
         Long timeNs = contactTimes.get(idAndEpoch);

@@ -34,26 +34,26 @@ public class UpdateFeaturesResponseTest {
     @Test
     public void testErrorCounts() {
         UpdateFeaturesResponseData.UpdatableFeatureResultCollection results =
-            new UpdateFeaturesResponseData.UpdatableFeatureResultCollection();
+                new UpdateFeaturesResponseData.UpdatableFeatureResultCollection();
 
         results.add(new UpdateFeaturesResponseData.UpdatableFeatureResult()
-            .setFeature("foo")
-            .setErrorCode(Errors.UNKNOWN_SERVER_ERROR.code())
+                .setFeature("foo")
+                .setErrorCode(Errors.UNKNOWN_SERVER_ERROR.code())
         );
 
         results.add(new UpdateFeaturesResponseData.UpdatableFeatureResult()
-            .setFeature("bar")
-            .setErrorCode(Errors.UNKNOWN_SERVER_ERROR.code())
+                .setFeature("bar")
+                .setErrorCode(Errors.UNKNOWN_SERVER_ERROR.code())
         );
 
         results.add(new UpdateFeaturesResponseData.UpdatableFeatureResult()
-            .setFeature("baz")
-            .setErrorCode(Errors.FEATURE_UPDATE_FAILED.code())
+                .setFeature("baz")
+                .setErrorCode(Errors.FEATURE_UPDATE_FAILED.code())
         );
 
         UpdateFeaturesResponse response = new UpdateFeaturesResponse(new UpdateFeaturesResponseData()
-            .setErrorCode(Errors.INVALID_REQUEST.code())
-            .setResults(results)
+                .setErrorCode(Errors.INVALID_REQUEST.code())
+                .setResults(results)
         );
 
         Map<Errors, Integer> errorCounts = response.errorCounts();
@@ -67,7 +67,7 @@ public class UpdateFeaturesResponseTest {
     @ApiKeyVersionsSource(apiKey = ApiKeys.UPDATE_FEATURES)
     public void testSerialization(short version) {
         UpdateFeaturesResponse noErrorResponse = UpdateFeaturesResponse.parse(UpdateFeaturesResponse.createWithErrors(ApiError.NONE,
-            Set.of("feature-1", "feature-2"), 0).serialize(version), version);
+                Set.of("feature-1", "feature-2"), 0).serialize(version), version);
 
         // Versions 1 and below still contain feature level results when the error is NONE.
         int expectedSize = version <= 1 ? 2 : 0;
@@ -76,7 +76,7 @@ public class UpdateFeaturesResponseTest {
 
         ApiError error = new ApiError(Errors.INVALID_UPDATE_VERSION);
         UpdateFeaturesResponse errorResponse = UpdateFeaturesResponse.parse(UpdateFeaturesResponse.createWithErrors(error,
-            Set.of("feature-1", "feature-2"), 0).serialize(version), version);
+                Set.of("feature-1", "feature-2"), 0).serialize(version), version);
         assertEquals(error, errorResponse.topLevelError());
         assertEquals(0, errorResponse.data().results().size());
     }

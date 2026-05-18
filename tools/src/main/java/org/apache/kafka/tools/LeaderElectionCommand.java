@@ -85,15 +85,15 @@ public class LeaderElectionCommand {
         commandOptions.validate();
         ElectionType electionType = commandOptions.getElectionType();
         Optional<Set<TopicPartition>> jsonFileTopicPartitions =
-            Optional.ofNullable(commandOptions.getPathToJsonFile())
-                .map(LeaderElectionCommand::parseReplicaElectionData);
+                Optional.ofNullable(commandOptions.getPathToJsonFile())
+                        .map(LeaderElectionCommand::parseReplicaElectionData);
 
         Optional<String> topicOption = Optional.ofNullable(commandOptions.getTopic());
         Optional<Integer> partitionOption = Optional.ofNullable(commandOptions.getPartition());
         final Optional<Set<TopicPartition>> singleTopicPartition =
-            (topicOption.isPresent() && partitionOption.isPresent()) ?
-                Optional.of(Set.of(new TopicPartition(topicOption.get(), partitionOption.get()))) :
-                Optional.empty();
+                (topicOption.isPresent() && partitionOption.isPresent()) ?
+                        Optional.of(Set.of(new TopicPartition(topicOption.get(), partitionOption.get()))) :
+                        Optional.empty();
 
         /* Note: No need to look at --all-topic-partitions as we want this to be null if it is use.
          * The validate function should be checking that this option is required if the --topic and --path-to-json-file
@@ -163,22 +163,22 @@ public class LeaderElectionCommand {
 
         if (!succeeded.isEmpty()) {
             String partitionsAsString = succeeded.stream()
-                .map(TopicPartition::toString)
-                .collect(Collectors.joining(", "));
+                    .map(TopicPartition::toString)
+                    .collect(Collectors.joining(", "));
             System.out.println(String.format("Successfully completed leader election (%s) for partitions %s",
-                electionType, partitionsAsString));
+                    electionType, partitionsAsString));
         }
 
         if (!noop.isEmpty()) {
             String partitionsAsString = noop.stream()
-                .map(TopicPartition::toString)
-                .collect(Collectors.joining(", "));
+                    .map(TopicPartition::toString)
+                    .collect(Collectors.joining(", "));
             System.out.println(String.format("Valid replica already elected for partitions %s", partitionsAsString));
         }
 
         if (!failed.isEmpty()) {
             AdminCommandFailedException rootException =
-                new AdminCommandFailedException(String.format("%s replica(s) could not be elected", failed.size()));
+                    new AdminCommandFailedException(String.format("%s replica(s) could not be elected", failed.size()));
             failed.forEach((key, value) -> {
                 System.out.println(
                         String.format(
@@ -212,14 +212,14 @@ public class LeaderElectionCommand {
 
     private static Set<TopicPartition> topicPartitions(JsonValue js) throws JsonMappingException {
         return js.asJsonObject().get("partitions")
-            .map(partitionsList -> {
-                try {
-                    return toTopicPartition(partitionsList);
-                } catch (JsonMappingException e) {
-                    throw new RuntimeException(e);
-                }
-            })
-            .orElseThrow(() -> new AdminOperationException("Replica election data is missing \"partitions\" field"));
+                .map(partitionsList -> {
+                    try {
+                        return toTopicPartition(partitionsList);
+                    } catch (JsonMappingException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .orElseThrow(() -> new AdminOperationException("Replica election data is missing \"partitions\" field"));
     }
 
     private static Set<TopicPartition> toTopicPartition(JsonValue partitionsList) throws JsonMappingException {
@@ -233,13 +233,13 @@ public class LeaderElectionCommand {
             partitions.add(new TopicPartition(topic, partition));
         }
 
-        Set<TopicPartition> duplicatePartitions  = partitions.stream()
-            .filter(i -> Collections.frequency(partitions, i) > 1)
-            .collect(Collectors.toSet());
+        Set<TopicPartition> duplicatePartitions = partitions.stream()
+                .filter(i -> Collections.frequency(partitions, i) > 1)
+                .collect(Collectors.toSet());
 
         if (duplicatePartitions.size() > 0) {
             throw new AdminOperationException(String.format(
-                "Replica election data contains duplicate partitions: %s", String.join(",", duplicatePartitions.toString()))
+                    "Replica election data contains duplicate partitions: %s", String.join(",", duplicatePartitions.toString()))
             );
         }
         return new HashSet<>(partitions);
@@ -255,64 +255,65 @@ public class LeaderElectionCommand {
         private final ArgumentAcceptingOptionSpec<Integer> partition;
         private final OptionSpecBuilder allTopicPartitions;
         private final ArgumentAcceptingOptionSpec<ElectionType> electionType;
+
         public LeaderElectionCommandOptions(String[] args) {
             super(args);
             bootstrapServer = parser
-                .accepts(
-                    "bootstrap-server",
-                    "A hostname and port for the broker to connect to, in the form host:port. Multiple comma separated URLs can be given. REQUIRED.")
-                .withRequiredArg()
-                .describedAs("host:port")
-                .ofType(String.class);
+                    .accepts(
+                            "bootstrap-server",
+                            "A hostname and port for the broker to connect to, in the form host:port. Multiple comma separated URLs can be given. REQUIRED.")
+                    .withRequiredArg()
+                    .describedAs("host:port")
+                    .ofType(String.class);
             adminClientConfig = parser
-                .accepts(
-                    "admin.config",
-                    "(DEPRECATED) Configuration properties files to pass to the admin client. " +
-                    "This option will be removed in a future version. Use --command-config instead.")
-                .withRequiredArg()
-                .describedAs("config file")
-                .ofType(String.class);
+                    .accepts(
+                            "admin.config",
+                            "(DEPRECATED) Configuration properties files to pass to the admin client. " +
+                                    "This option will be removed in a future version. Use --command-config instead.")
+                    .withRequiredArg()
+                    .describedAs("config file")
+                    .ofType(String.class);
             commandConfig = parser
-                .accepts(
-                    "command-config",
-                    "Config properties file to pass to the admin client.")
-                .withRequiredArg()
-                .describedAs("Config file")
-                .ofType(String.class);
+                    .accepts(
+                            "command-config",
+                            "Config properties file to pass to the admin client.")
+                    .withRequiredArg()
+                    .describedAs("Config file")
+                    .ofType(String.class);
             pathToJsonFile = parser
-                .accepts(
-                    "path-to-json-file",
-                    "The JSON file with the list  of partition for which leader elections should be performed. This is an example format. \n{\"partitions\":\n\t[{\"topic\": \"foo\", \"partition\": 1},\n\t {\"topic\": \"foobar\", \"partition\": 2}]\n}\nNot allowed if --all-topic-partitions or --topic flags are specified.")
-                .withRequiredArg()
-                .describedAs("Path to JSON file")
-                .ofType(String.class);
+                    .accepts(
+                            "path-to-json-file",
+                            "The JSON file with the list  of partition for which leader elections should be performed. This is an example format. \n{\"partitions\":\n\t[{\"topic\": \"foo\", \"partition\": 1},\n\t {\"topic\": \"foobar\", \"partition\": 2}]\n}\nNot allowed if --all-topic-partitions or --topic flags are specified.")
+                    .withRequiredArg()
+                    .describedAs("Path to JSON file")
+                    .ofType(String.class);
             topic = parser
-                .accepts(
-                    "topic",
-                    "Name of topic for which to perform an election. Not allowed if --path-to-json-file or --all-topic-partitions is specified.")
-                .withRequiredArg()
-                .describedAs("topic name")
-                .ofType(String.class);
+                    .accepts(
+                            "topic",
+                            "Name of topic for which to perform an election. Not allowed if --path-to-json-file or --all-topic-partitions is specified.")
+                    .withRequiredArg()
+                    .describedAs("topic name")
+                    .ofType(String.class);
 
             partition = parser
-                .accepts(
-                    "partition",
-                    "Partition id for which to perform an election. REQUIRED if --topic is specified.")
-                .withRequiredArg()
-                .describedAs("partition id")
-                .ofType(Integer.class);
+                    .accepts(
+                            "partition",
+                            "Partition id for which to perform an election. REQUIRED if --topic is specified.")
+                    .withRequiredArg()
+                    .describedAs("partition id")
+                    .ofType(Integer.class);
 
             allTopicPartitions = parser
-                .accepts(
-                    "all-topic-partitions",
-                    "Perform election on all of the eligible topic partitions based on the type of election (see the --election-type flag). Not allowed if --topic or --path-to-json-file is specified.");
+                    .accepts(
+                            "all-topic-partitions",
+                            "Perform election on all of the eligible topic partitions based on the type of election (see the --election-type flag). Not allowed if --topic or --path-to-json-file is specified.");
             electionType = parser
-                .accepts(
-                    "election-type",
-                    "Type of election to attempt. Possible values are \"preferred\" for preferred leader election or \"unclean\" for unclean leader election. If preferred election is selection, the election is only performed if the current leader is not the preferred leader for the topic partition. If unclean election is selected, the election is only performed if there are no leader for the topic partition. REQUIRED.")
-                .withRequiredArg()
-                .describedAs("election type")
-                .withValuesConvertedBy(new ElectionTypeConverter());
+                    .accepts(
+                            "election-type",
+                            "Type of election to attempt. Possible values are \"preferred\" for preferred leader election or \"unclean\" for unclean leader election. If preferred election is selection, the election is only performed if the current leader is not the preferred leader for the topic partition. If unclean election is selected, the election is only performed if there are no leader for the topic partition. REQUIRED.")
+                    .withRequiredArg()
+                    .describedAs("election type")
+                    .withValuesConvertedBy(new ElectionTypeConverter());
 
             options = parser.parse(args);
         }
@@ -367,39 +368,39 @@ public class LeaderElectionCommand {
 
             // One and only one is required: --topic, --all-topic-partitions or --path-to-json-file
             List<AbstractOptionSpec<?>> mutuallyExclusiveOptions = List.of(
-                topic,
-                allTopicPartitions,
-                pathToJsonFile
+                    topic,
+                    allTopicPartitions,
+                    pathToJsonFile
             );
 
             long mutuallyExclusiveOptionsCount = mutuallyExclusiveOptions.stream()
-                .filter(abstractOptionSpec -> options.has(abstractOptionSpec))
-                .count();
+                    .filter(abstractOptionSpec -> options.has(abstractOptionSpec))
+                    .count();
             // 1 is the only correct configuration, don't throw an exception
             if (mutuallyExclusiveOptionsCount != 1) {
                 throw new AdminCommandFailedException(
-                    "One and only one of the following options is required: " +
-                        mutuallyExclusiveOptions.stream().map(opt -> opt.options().get(0)).collect(Collectors.joining(", "))
+                        "One and only one of the following options is required: " +
+                                mutuallyExclusiveOptions.stream().map(opt -> opt.options().get(0)).collect(Collectors.joining(", "))
                 );
             }
             // --partition if and only if --topic is used
             if (options.has(topic) && !options.has(partition)) {
                 throw new AdminCommandFailedException(String.format("Missing required option(s): %s",
-                    partition.options().get(0)));
+                        partition.options().get(0)));
             }
 
             if (!options.has(topic) && options.has(partition)) {
                 throw new AdminCommandFailedException(String.format("Option %s is only allowed if %s is used",
-                    partition.options().get(0),
-                    topic.options().get(0)
+                        partition.options().get(0),
+                        topic.options().get(0)
                 ));
             }
         }
 
         public void maybePrintHelpOrVersion() {
             CommandLineUtils.maybePrintHelpOrVersion(
-                this,
-                "This tool attempts to elect a new leader for a set of topic partitions. The type of elections supported are preferred replicas and unclean replicas."
+                    this,
+                    "This tool attempts to elect a new leader for a set of topic partitions. The type of elections supported are preferred replicas and unclean replicas."
             );
         }
 
