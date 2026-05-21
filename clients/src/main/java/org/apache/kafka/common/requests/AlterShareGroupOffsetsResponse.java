@@ -42,7 +42,7 @@ public class AlterShareGroupOffsetsResponse extends AbstractResponse {
         Map<Errors, Integer> counts = new EnumMap<>(Errors.class);
         updateErrorCounts(counts, Errors.forCode(data.errorCode()));
         data.responses().forEach(topic -> topic.partitions().forEach(partitionResponse ->
-            updateErrorCounts(counts, Errors.forCode(partitionResponse.errorCode()))
+                updateErrorCounts(counts, Errors.forCode(partitionResponse.errorCode()))
         ));
         return counts;
     }
@@ -64,7 +64,7 @@ public class AlterShareGroupOffsetsResponse extends AbstractResponse {
 
     public static AlterShareGroupOffsetsResponse parse(Readable readable, short version) {
         return new AlterShareGroupOffsetsResponse(
-            new AlterShareGroupOffsetsResponseData(readable, version)
+                new AlterShareGroupOffsetsResponseData(readable, version)
         );
     }
 
@@ -101,7 +101,7 @@ public class AlterShareGroupOffsetsResponse extends AbstractResponse {
             data.responses().forEach(topic -> {
                 AlterShareGroupOffsetsResponseTopic newTopic = getOrCreateTopic(topic.topicName(), topicIdsToNames.get(topic.topicName()));
                 topic.partitions().forEach(partition -> newTopic.partitions().add(
-                    new AlterShareGroupOffsetsResponseData.AlterShareGroupOffsetsResponsePartition()
+                        new AlterShareGroupOffsetsResponseData.AlterShareGroupOffsetsResponsePartition()
                         .setPartitionIndex(partition.partitionIndex())
                         .setErrorCode(partition.errorCode())
                         .setErrorMessage(partition.errorMessage())));

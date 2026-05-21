@@ -60,8 +60,8 @@ public class OffsetFetchResponse extends AbstractResponse {
     // We only need to track the partition errors returned in version 1. This
     // is used to identify group level errors when the response is normalized.
     private static final List<Errors> PARTITION_ERRORS = Arrays.asList(
-        Errors.UNKNOWN_TOPIC_OR_PARTITION,
-        Errors.TOPIC_AUTHORIZATION_FAILED
+            Errors.UNKNOWN_TOPIC_OR_PARTITION,
+            Errors.TOPIC_AUTHORIZATION_FAILED
     );
 
     private final short version;
@@ -88,7 +88,7 @@ public class OffsetFetchResponse extends AbstractResponse {
             } else {
                 if (groups.size() != 1) {
                     throw new UnsupportedVersionException(
-                        "Version " + version + " of OffsetFetchResponse only supports one group."
+                            "Version " + version + " of OffsetFetchResponse only supports one group."
                     );
                 }
 
@@ -138,10 +138,10 @@ public class OffsetFetchResponse extends AbstractResponse {
                 return new OffsetFetchResponseGroup()
                     .setGroupId(groupId)
                     .setTopics(data.topics().stream().map(topic ->
-                        new OffsetFetchResponseData.OffsetFetchResponseTopics()
+                            new OffsetFetchResponseData.OffsetFetchResponseTopics()
                             .setName(topic.name())
                             .setPartitions(topic.partitions().stream().map(partition ->
-                                new OffsetFetchResponseData.OffsetFetchResponsePartitions()
+                                    new OffsetFetchResponseData.OffsetFetchResponsePartitions()
                                     .setPartitionIndex(partition.partitionIndex())
                                     .setErrorCode(partition.errorCode())
                                     .setCommittedOffset(partition.committedOffset())
@@ -153,8 +153,8 @@ public class OffsetFetchResponse extends AbstractResponse {
         } else {
             if (groups == null) {
                 groups = data.groups().stream().collect(Collectors.toMap(
-                    OffsetFetchResponseData.OffsetFetchResponseGroup::groupId,
-                    Function.identity()
+                        OffsetFetchResponseData.OffsetFetchResponseGroup::groupId,
+                        Function.identity()
                 ));
             }
             var group = groups.get(groupId);
@@ -195,16 +195,16 @@ public class OffsetFetchResponse extends AbstractResponse {
                 updateErrorCounts(counts, Errors.forCode(data.errorCode()));
             }
             data.topics().forEach(topic ->
-                topic.partitions().forEach(partition ->
-                    updateErrorCounts(counts, Errors.forCode(partition.errorCode()))
+                    topic.partitions().forEach(partition ->
+                            updateErrorCounts(counts, Errors.forCode(partition.errorCode()))
                 )
             );
         } else {
             data.groups().forEach(group -> {
                 updateErrorCounts(counts, Errors.forCode(group.errorCode()));
                 group.topics().forEach(topic ->
-                    topic.partitions().forEach(partition ->
-                        updateErrorCounts(counts, Errors.forCode(partition.errorCode()))
+                        topic.partitions().forEach(partition ->
+                                updateErrorCounts(counts, Errors.forCode(partition.errorCode()))
                     )
                 );
             });
@@ -239,10 +239,10 @@ public class OffsetFetchResponse extends AbstractResponse {
             return new OffsetFetchResponseData.OffsetFetchResponseGroup()
                 .setGroupId(group.groupId())
                 .setTopics(group.topics().stream().map(topic ->
-                    new OffsetFetchResponseData.OffsetFetchResponseTopics()
+                        new OffsetFetchResponseData.OffsetFetchResponseTopics()
                         .setName(topic.name())
                         .setPartitions(topic.partitionIndexes().stream().map(partition ->
-                            new OffsetFetchResponseData.OffsetFetchResponsePartitions()
+                                new OffsetFetchResponseData.OffsetFetchResponsePartitions()
                                 .setPartitionIndex(partition)
                                 .setErrorCode(error.code())
                                 .setCommittedOffset(INVALID_OFFSET)

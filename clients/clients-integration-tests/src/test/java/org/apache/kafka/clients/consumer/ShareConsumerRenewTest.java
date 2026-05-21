@@ -44,19 +44,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Timeout(1200)
 @ClusterTestDefaults(
-    types = {Type.KRAFT},
-    serverProperties = {
-        @ClusterConfigProperty(key = "auto.create.topics.enable", value = "false"),
-        @ClusterConfigProperty(key = "group.share.max.partition.max.record.locks", value = "10000"),
-        @ClusterConfigProperty(key = "group.share.partition.max.record.locks", value = "10000"),
-        @ClusterConfigProperty(key = "group.share.record.lock.duration.ms", value = "15000"),
-        @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "1"),
-        @ClusterConfigProperty(key = "share.coordinator.state.topic.min.isr", value = "1"),
-        @ClusterConfigProperty(key = "share.coordinator.state.topic.num.partitions", value = "3"),
-        @ClusterConfigProperty(key = "share.coordinator.state.topic.replication.factor", value = "1"),
-        @ClusterConfigProperty(key = "transaction.state.log.min.isr", value = "1"),
-        @ClusterConfigProperty(key = "transaction.state.log.replication.factor", value = "1")
-    }
+        types = {Type.KRAFT},
+        serverProperties = {
+            @ClusterConfigProperty(key = "auto.create.topics.enable", value = "false"),
+            @ClusterConfigProperty(key = "group.share.max.partition.max.record.locks", value = "10000"),
+            @ClusterConfigProperty(key = "group.share.partition.max.record.locks", value = "10000"),
+            @ClusterConfigProperty(key = "group.share.record.lock.duration.ms", value = "15000"),
+            @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "1"),
+            @ClusterConfigProperty(key = "share.coordinator.state.topic.min.isr", value = "1"),
+            @ClusterConfigProperty(key = "share.coordinator.state.topic.num.partitions", value = "3"),
+            @ClusterConfigProperty(key = "share.coordinator.state.topic.replication.factor", value = "1"),
+            @ClusterConfigProperty(key = "transaction.state.log.min.isr", value = "1"),
+            @ClusterConfigProperty(key = "transaction.state.log.replication.factor", value = "1")
+        }
 )
 public class ShareConsumerRenewTest extends ShareConsumerTestBase {
 
@@ -69,12 +69,12 @@ public class ShareConsumerRenewTest extends ShareConsumerTestBase {
         alterShareAutoOffsetReset("group1", "earliest");
         try (Producer<byte[], byte[]> producer = createProducer();
              ShareConsumer<byte[], byte[]> shareConsumer = createShareConsumer(
-                 "group1",
-                 Map.of(ConsumerConfig.SHARE_ACKNOWLEDGEMENT_MODE_CONFIG, EXPLICIT))
+                     "group1",
+                     Map.of(ConsumerConfig.SHARE_ACKNOWLEDGEMENT_MODE_CONFIG, EXPLICIT))
         ) {
             AtomicInteger acknowledgementsCommitted = new AtomicInteger(0);
             shareConsumer.setAcknowledgementCommitCallback((offsetsByTopicPartition, exception) ->
-                offsetsByTopicPartition.forEach((tip, offsets) -> acknowledgementsCommitted.addAndGet(offsets.size())));
+                    offsetsByTopicPartition.forEach((tip, offsets) -> acknowledgementsCommitted.addAndGet(offsets.size())));
 
             for (int i = 0; i < 10; i++) {
                 ProducerRecord<byte[], byte[]> record = new ProducerRecord<>(tp.topic(), tp.partition(), null, "key".getBytes(), ("Message " + i).getBytes());
@@ -114,12 +114,12 @@ public class ShareConsumerRenewTest extends ShareConsumerTestBase {
         alterShareAutoOffsetReset("group1", "earliest");
         try (Producer<byte[], byte[]> producer = createProducer();
              ShareConsumer<byte[], byte[]> shareConsumer = createShareConsumer(
-                 "group1",
-                 Map.of(ConsumerConfig.SHARE_ACKNOWLEDGEMENT_MODE_CONFIG, EXPLICIT))
+                     "group1",
+                     Map.of(ConsumerConfig.SHARE_ACKNOWLEDGEMENT_MODE_CONFIG, EXPLICIT))
         ) {
             AtomicInteger acknowledgementsCommitted = new AtomicInteger(0);
             shareConsumer.setAcknowledgementCommitCallback((offsetsByTopicPartition, exception) ->
-                offsetsByTopicPartition.forEach((tip, offsets) -> acknowledgementsCommitted.addAndGet(offsets.size())));
+                    offsetsByTopicPartition.forEach((tip, offsets) -> acknowledgementsCommitted.addAndGet(offsets.size())));
 
             for (int i = 0; i < 10; i++) {
                 ProducerRecord<byte[], byte[]> record = new ProducerRecord<>(tp.topic(), tp.partition(), null, "key".getBytes(), ("Message " + i).getBytes());
@@ -166,12 +166,12 @@ public class ShareConsumerRenewTest extends ShareConsumerTestBase {
         alterShareAutoOffsetReset("group1", "earliest");
         try (Producer<byte[], byte[]> producer = createProducer();
              ShareConsumer<byte[], byte[]> shareConsumer = createShareConsumer(
-                 "group1",
-                 Map.of(ConsumerConfig.SHARE_ACKNOWLEDGEMENT_MODE_CONFIG, EXPLICIT))
+                     "group1",
+                     Map.of(ConsumerConfig.SHARE_ACKNOWLEDGEMENT_MODE_CONFIG, EXPLICIT))
         ) {
             AtomicInteger acknowledgementsCommitted = new AtomicInteger(0);
             shareConsumer.setAcknowledgementCommitCallback((offsetsByTopicPartition, exception) ->
-                offsetsByTopicPartition.forEach((tip, offsets) -> acknowledgementsCommitted.addAndGet(offsets.size())));
+                    offsetsByTopicPartition.forEach((tip, offsets) -> acknowledgementsCommitted.addAndGet(offsets.size())));
 
             ProducerRecord<byte[], byte[]> record = new ProducerRecord<>(tp.topic(), tp.partition(), null, "key".getBytes(), "Message ".getBytes());
             producer.send(record);
@@ -196,8 +196,8 @@ public class ShareConsumerRenewTest extends ShareConsumerTestBase {
         alterShareRenewAcknowledgeEnable("group1", false);
         try (Producer<byte[], byte[]> producer = createProducer();
              ShareConsumer<byte[], byte[]> shareConsumer = createShareConsumer(
-                 "group1",
-                 Map.of(ConsumerConfig.SHARE_ACKNOWLEDGEMENT_MODE_CONFIG, EXPLICIT))
+                     "group1",
+                     Map.of(ConsumerConfig.SHARE_ACKNOWLEDGEMENT_MODE_CONFIG, EXPLICIT))
         ) {
             ProducerRecord<byte[], byte[]> record = new ProducerRecord<>(tp.topic(), tp.partition(), null, "key".getBytes(), "Message".getBytes());
             producer.send(record);
@@ -220,22 +220,22 @@ public class ShareConsumerRenewTest extends ShareConsumerTestBase {
     }
 
     @ClusterTest(
-        brokers = 1,
-        serverProperties = {
-            @ClusterConfigProperty(key = "group.share.record.lock.duration.ms", value = "12000"),
-            @ClusterConfigProperty(key = "group.share.min.record.lock.duration.ms", value = "12000"),
-        }
+            brokers = 1,
+            serverProperties = {
+                @ClusterConfigProperty(key = "group.share.record.lock.duration.ms", value = "12000"),
+                @ClusterConfigProperty(key = "group.share.min.record.lock.duration.ms", value = "12000"),
+            }
     )
     public void testRenewAcknowledgementNoResultInPoll() {
         alterShareAutoOffsetReset("group1", "earliest");
         try (Producer<byte[], byte[]> producer = createProducer();
              ShareConsumer<byte[], byte[]> shareConsumer = createShareConsumer(
-                 "group1",
-                 Map.of(ConsumerConfig.SHARE_ACKNOWLEDGEMENT_MODE_CONFIG, EXPLICIT))
+                     "group1",
+                     Map.of(ConsumerConfig.SHARE_ACKNOWLEDGEMENT_MODE_CONFIG, EXPLICIT))
         ) {
             AtomicInteger acknowledgementsCommitted = new AtomicInteger(0);
             shareConsumer.setAcknowledgementCommitCallback((offsetsByTopicPartition, exception) ->
-                offsetsByTopicPartition.forEach((tip, offsets) -> acknowledgementsCommitted.addAndGet(offsets.size())));
+                    offsetsByTopicPartition.forEach((tip, offsets) -> acknowledgementsCommitted.addAndGet(offsets.size())));
 
             for (int i = 0; i < 10; i++) {
                 ProducerRecord<byte[], byte[]> record = new ProducerRecord<>(tp.topic(), tp.partition(), null, "key".getBytes(), ("Message " + i).getBytes());

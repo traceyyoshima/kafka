@@ -80,13 +80,13 @@ public class OffsetAndMetadata {
         Uuid topicId
     ) {
         this(
-            -1L,
-            committedOffset,
-            leaderEpoch,
-            metadata,
-            commitTimestampMs,
-            expireTimestampMs,
-            topicId
+                -1L,
+                committedOffset,
+                leaderEpoch,
+                metadata,
+                commitTimestampMs,
+                expireTimestampMs,
+                topicId
         );
     }
 
@@ -111,13 +111,13 @@ public class OffsetAndMetadata {
     @Override
     public String toString() {
         return "OffsetAndMetadata(offset=" + committedOffset +
-            ", leaderEpoch=" + leaderEpoch +
-            ", metadata=" + metadata +
-            ", commitTimestampMs=" + commitTimestampMs +
-            ", expireTimestampMs=" + expireTimestampMs +
-            ", topicId=" + topicId +
-            ", recordOffset=" + recordOffset +
-            ')';
+                ", leaderEpoch=" + leaderEpoch +
+                ", metadata=" + metadata +
+                ", commitTimestampMs=" + commitTimestampMs +
+                ", expireTimestampMs=" + expireTimestampMs +
+                ", topicId=" + topicId +
+                ", recordOffset=" + recordOffset +
+                ')';
     }
 
     @Override
@@ -156,13 +156,13 @@ public class OffsetAndMetadata {
         OffsetCommitValue record
     ) {
         return new OffsetAndMetadata(
-            recordOffset,
-            record.offset(),
-            ofSentinel(record.leaderEpoch()),
-            record.metadata(),
-            record.commitTimestamp(),
-            ofSentinel(record.expireTimestamp()),
-            record.topicId()
+                recordOffset,
+                record.offset(),
+                ofSentinel(record.leaderEpoch()),
+                record.metadata(),
+                record.commitTimestamp(),
+                ofSentinel(record.expireTimestamp()),
+                record.topicId()
         );
     }
 
@@ -176,13 +176,13 @@ public class OffsetAndMetadata {
         OptionalLong expireTimestampMs
     ) {
         return new OffsetAndMetadata(
-            partition.committedOffset(),
-            ofSentinel(partition.committedLeaderEpoch()),
-            partition.committedMetadata() == null ?
+                partition.committedOffset(),
+                ofSentinel(partition.committedLeaderEpoch()),
+                partition.committedMetadata() == null ?
                 OffsetAndMetadata.NO_METADATA : partition.committedMetadata(),
-            currentTimeMs,
-            expireTimestampMs,
-            topicId
+                currentTimeMs,
+                expireTimestampMs,
+                topicId
         );
     }
 
@@ -195,13 +195,13 @@ public class OffsetAndMetadata {
         long currentTimeMs
     ) {
         return new OffsetAndMetadata(
-            partition.committedOffset(),
-            ofSentinel(partition.committedLeaderEpoch()),
-            partition.committedMetadata() == null ?
+                partition.committedOffset(),
+                ofSentinel(partition.committedLeaderEpoch()),
+                partition.committedMetadata() == null ?
                 OffsetAndMetadata.NO_METADATA : partition.committedMetadata(),
-            currentTimeMs,
-            OptionalLong.empty(),
-            topicId
+                currentTimeMs,
+                OptionalLong.empty(),
+                topicId
         );
     }
 }

@@ -100,7 +100,7 @@ public class TopicAdminTest {
             assertTrue(admin.createOrFindTopics(newTopic).isEmpty());
         }
     }
-    
+
     @Test
     public void returnEmptyWithClusterAuthorizationFailureOnCreate() {
         final NewTopic newTopic = TopicAdmin.defineTopic("myTopic").partitions(1).compacted().build();
@@ -534,7 +534,7 @@ public class TopicAdminTest {
 
             TopicAdmin admin = new TopicAdmin(env.adminClient());
             ConnectException exception = assertThrows(ConnectException.class, () ->
-                admin.retryEndOffsets(tps, Duration.ofMillis(100), 1)
+                    admin.retryEndOffsets(tps, Duration.ofMillis(100), 1)
             );
 
             Throwable cause = exception.getCause();
@@ -604,7 +604,7 @@ public class TopicAdminTest {
         Long offset = null; // response should use error
         Cluster cluster = createCluster(1, topicName, 1);
         try (AdminClientUnitTestEnv env = new AdminClientUnitTestEnv(
-            new MockTime(), cluster, AdminClientConfig.RETRIES_CONFIG, "0"
+                new MockTime(), cluster, AdminClientConfig.RETRIES_CONFIG, "0"
         )) {
             env.kafkaClient().setNodeApiVersions(NodeApiVersions.create());
             env.kafkaClient().prepareResponse(prepareMetadataResponse(cluster, Errors.NONE));
@@ -731,7 +731,7 @@ public class TopicAdminTest {
         for (String topic : cluster.topics()) {
             List<MetadataResponseData.MetadataResponsePartition> pms = new ArrayList<>();
             for (PartitionInfo pInfo : cluster.availablePartitionsForTopic(topic)) {
-                MetadataResponseData.MetadataResponsePartition pm  = new MetadataResponseData.MetadataResponsePartition()
+                MetadataResponseData.MetadataResponsePartition pm = new MetadataResponseData.MetadataResponsePartition()
                         .setErrorCode(partitionError.code())
                         .setPartitionIndex(pInfo.partition())
                         .setLeaderId(pInfo.leader().id())
@@ -887,7 +887,7 @@ public class TopicAdminTest {
     }
 
     protected TopicDescription topicDescription(MockAdminClient admin, String topicName)
-            throws ExecutionException, InterruptedException {
+        throws ExecutionException, InterruptedException {
         DescribeTopicsResult result = admin.describeTopics(Set.of(topicName));
         Map<String, KafkaFuture<TopicDescription>> byName = result.topicNameValues();
         return byName.get(topicName).get();
@@ -924,7 +924,7 @@ public class TopicAdminTest {
             .setClusterAuthorizedOperations(MetadataResponse.AUTHORIZED_OPERATIONS_OMITTED);
 
         cluster.nodes().forEach(broker ->
-            data.brokers().add(new DescribeClusterResponseData.DescribeClusterBroker()
+                data.brokers().add(new DescribeClusterResponseData.DescribeClusterBroker()
                 .setHost(broker.host())
                 .setPort(broker.port())
                 .setBrokerId(broker.id())

@@ -37,36 +37,36 @@ public class StringExpanderTest {
     @Test
     public void testExpansions() {
         Set<String> expected1 = Set.of(
-            "foo1",
-            "foo2",
-            "foo3"
+                "foo1",
+                "foo2",
+                "foo3"
         );
         assertEquals(expected1, StringExpander.expand("foo[1-3]"));
 
         Set<String> expected2 = Set.of(
-            "foo bar baz 0"
+                "foo bar baz 0"
         );
         assertEquals(expected2, StringExpander.expand("foo bar baz [0-0]"));
 
         Set<String> expected3 = Set.of(
-            "[[ wow50 ]]",
-            "[[ wow51 ]]",
-            "[[ wow52 ]]"
+                "[[ wow50 ]]",
+                "[[ wow51 ]]",
+                "[[ wow52 ]]"
         );
         assertEquals(expected3, StringExpander.expand("[[ wow[50-52] ]]"));
 
         Set<String> expected4 = Set.of(
-            "foo1bar",
-            "foo2bar",
-            "foo3bar"
+                "foo1bar",
+                "foo2bar",
+                "foo3bar"
         );
         assertEquals(expected4, StringExpander.expand("foo[1-3]bar"));
 
         // should expand latest range first
         Set<String> expected5 = Set.of(
-            "start[1-3]middle1epilogue",
-            "start[1-3]middle2epilogue",
-            "start[1-3]middle3epilogue"
+                "start[1-3]middle1epilogue",
+                "start[1-3]middle2epilogue",
+                "start[1-3]middle3epilogue"
         );
         assertEquals(expected5, StringExpander.expand("start[1-3]middle[1-3]epilogue"));
     }

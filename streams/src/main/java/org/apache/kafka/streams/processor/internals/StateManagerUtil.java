@@ -166,7 +166,7 @@ final class StateManagerUtil {
         // With transactional state stores, uncommitted data is never written to the base store,
         // so wiping is only needed when stores have been marked as corrupted (e.g. InvalidOffsetException).
         final boolean wipeStateStore = !closeClean && eosEnabled
-            && (!transactionalStateStoresEnabled || stateMgr.hasCorruptedStores());
+                && (!transactionalStateStoresEnabled || stateMgr.hasCorruptedStores());
 
         final TaskId id = stateMgr.taskId();
         log.trace("Closing state manager for {} task {}", taskType, id);
@@ -197,7 +197,7 @@ final class StateManagerUtil {
             }
         } catch (final IOException e) {
             final ProcessorStateException exception = new ProcessorStateException(
-                String.format("%sFatal error while trying to close the state manager for task %s", logPrefix, id), e
+                    String.format("%sFatal error while trying to close the state manager for task %s", logPrefix, id), e
             );
             firstException.compareAndSet(null, exception);
         }

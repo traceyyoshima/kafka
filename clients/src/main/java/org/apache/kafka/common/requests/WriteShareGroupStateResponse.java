@@ -46,8 +46,8 @@ public class WriteShareGroupStateResponse extends AbstractResponse {
     public Map<Errors, Integer> errorCounts() {
         Map<Errors, Integer> counts = new HashMap<>();
         data.results().forEach(
-            result -> result.partitions().forEach(
-                partitionResult -> updateErrorCounts(counts, Errors.forCode(partitionResult.errorCode()))
+                result -> result.partitions().forEach(
+                    partitionResult -> updateErrorCounts(counts, Errors.forCode(partitionResult.errorCode()))
             )
         );
         return counts;
@@ -65,17 +65,17 @@ public class WriteShareGroupStateResponse extends AbstractResponse {
 
     public static WriteShareGroupStateResponse parse(Readable readable, short version) {
         return new WriteShareGroupStateResponse(
-            new WriteShareGroupStateResponseData(readable, version)
+                new WriteShareGroupStateResponseData(readable, version)
         );
     }
 
     public static WriteShareGroupStateResponseData toResponseData(Uuid topicId, int partitionId) {
         return new WriteShareGroupStateResponseData()
             .setResults(List.of(
-                new WriteShareGroupStateResponseData.WriteStateResult()
+                    new WriteShareGroupStateResponseData.WriteStateResult()
                     .setTopicId(topicId)
                     .setPartitions(List.of(
-                        new WriteShareGroupStateResponseData.PartitionResult()
+                            new WriteShareGroupStateResponseData.PartitionResult()
                             .setPartition(partitionId)))));
     }
 
@@ -113,7 +113,7 @@ public class WriteShareGroupStateResponse extends AbstractResponse {
         request.topics().forEach(topicData -> {
             List<WriteShareGroupStateResponseData.PartitionResult> partitionResults = new ArrayList<>();
             topicData.partitions().forEach(partitionData -> partitionResults.add(
-                toErrorResponsePartitionResult(partitionData.partition(), error, error.message()))
+                    toErrorResponsePartitionResult(partitionData.partition(), error, error.message()))
             );
             writeStateResults.add(toResponseWriteStateResult(topicData.topicId(), partitionResults));
         });

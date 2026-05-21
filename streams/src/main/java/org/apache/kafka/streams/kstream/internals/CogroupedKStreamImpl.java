@@ -86,9 +86,9 @@ public class CogroupedKStreamImpl<K, VOut> extends AbstractStream<K, VOut> imple
         Objects.requireNonNull(named, "named can't be null");
         Objects.requireNonNull(materialized, "materialized can't be null");
         return doAggregate(
-            initializer,
-            new NamedInternal(named),
-            new MaterializedInternal<>(materialized, builder, AGGREGATE_NAME));
+                initializer,
+                new NamedInternal(named),
+                new MaterializedInternal<>(materialized, builder, AGGREGATE_NAME));
     }
 
     @Override
@@ -100,51 +100,51 @@ public class CogroupedKStreamImpl<K, VOut> extends AbstractStream<K, VOut> imple
     public <W extends Window> TimeWindowedCogroupedKStream<K, VOut> windowedBy(final Windows<W> windows) {
         Objects.requireNonNull(windows, "windows can't be null");
         return new TimeWindowedCogroupedKStreamImpl<>(
-            windows,
-            builder,
-            subTopologySourceNodes,
-            name,
-            aggregateBuilder,
-            graphNode,
-            groupPatterns);
+                windows,
+                builder,
+                subTopologySourceNodes,
+                name,
+                aggregateBuilder,
+                graphNode,
+                groupPatterns);
     }
 
     @Override
     public TimeWindowedCogroupedKStream<K, VOut> windowedBy(final SlidingWindows slidingWindows) {
         Objects.requireNonNull(slidingWindows, "slidingWindows can't be null");
         return new SlidingWindowedCogroupedKStreamImpl<>(
-            slidingWindows,
-            builder,
-            subTopologySourceNodes,
-            name,
-            aggregateBuilder,
-            graphNode,
-            groupPatterns);
+                slidingWindows,
+                builder,
+                subTopologySourceNodes,
+                name,
+                aggregateBuilder,
+                graphNode,
+                groupPatterns);
     }
 
     @Override
     public SessionWindowedCogroupedKStream<K, VOut> windowedBy(final SessionWindows sessionWindows) {
         Objects.requireNonNull(sessionWindows, "sessionWindows can't be null");
         return new SessionWindowedCogroupedKStreamImpl<>(sessionWindows,
-            builder,
-            subTopologySourceNodes,
-            name,
-            aggregateBuilder,
-            graphNode,
-            groupPatterns);
+                builder,
+                subTopologySourceNodes,
+                name,
+                aggregateBuilder,
+                graphNode,
+                groupPatterns);
     }
 
     private KTable<K, VOut> doAggregate(final Initializer<VOut> initializer,
                                         final NamedInternal named,
                                         final MaterializedInternal<K, VOut, KeyValueStore<Bytes, byte[]>> materializedInternal) {
         return aggregateBuilder.build(
-            groupPatterns,
-            initializer,
-            named,
-            new KeyValueStoreMaterializer<>(materializedInternal),
-            materializedInternal.keySerde(),
-            materializedInternal.valueSerde(),
-            materializedInternal.queryableStoreName(),
-            materializedInternal.storeSupplier() instanceof VersionedBytesStoreSupplier);
+                groupPatterns,
+                initializer,
+                named,
+                new KeyValueStoreMaterializer<>(materializedInternal),
+                materializedInternal.keySerde(),
+                materializedInternal.valueSerde(),
+                materializedInternal.queryableStoreName(),
+                materializedInternal.storeSupplier() instanceof VersionedBytesStoreSupplier);
     }
 }

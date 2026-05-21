@@ -78,16 +78,16 @@ public class RocksDBVersionedStoreTest {
     @BeforeEach
     public void before() {
         context = new InternalMockProcessorContext<>(
-            TestUtils.tempDirectory(),
-            Serdes.String(),
-            Serdes.String(),
-            new StreamsConfig(StreamsTestUtils.getStreamsConfig())
+                TestUtils.tempDirectory(),
+                Serdes.String(),
+                Serdes.String(),
+                new StreamsConfig(StreamsTestUtils.getStreamsConfig())
         );
         context.setTime(BASE_TIMESTAMP);
 
         expectedMetricsTags = mkMap(
-            mkEntry("thread-id", Thread.currentThread().getName()),
-            mkEntry("task-id", context.taskId().toString())
+                mkEntry("thread-id", Thread.currentThread().getName()),
+                mkEntry("task-id", context.taskId().toString())
         );
 
         store = new RocksDBVersionedStore(STORE_NAME, METRICS_SCOPE, HISTORY_RETENTION, SEGMENT_INTERVAL);
@@ -505,15 +505,14 @@ public class RocksDBVersionedStoreTest {
         putToStore("k", "v3", SEGMENT_INTERVAL - 10, PUT_RETURN_CODE_VALID_TO_UNDEFINED);
         putToStore("k", "v4", SEGMENT_INTERVAL - 5, PUT_RETURN_CODE_VALID_TO_UNDEFINED);
 
-
         // return null for the query with a time range prior to inserting values
         verifyTimestampedGetNullFromStore("k", SEGMENT_INTERVAL - 40, SEGMENT_INTERVAL - 35);
 
         // return values for the query with query time range in which values are still valid and there are multiple tombstones
         verifyTimestampedGetValueFromStore("k", SEGMENT_INTERVAL - 30, SEGMENT_INTERVAL - 5, ResultOrder.ANY,
-                                            Arrays.asList("v4", "v3", "v2", "v1"),
-                                            Arrays.asList(SEGMENT_INTERVAL - 5, SEGMENT_INTERVAL - 10, SEGMENT_INTERVAL - 25, SEGMENT_INTERVAL - 30),
-                                            Arrays.asList(PUT_RETURN_CODE_VALID_TO_UNDEFINED, SEGMENT_INTERVAL - 5, SEGMENT_INTERVAL - 20, SEGMENT_INTERVAL - 25));
+                Arrays.asList("v4", "v3", "v2", "v1"),
+                Arrays.asList(SEGMENT_INTERVAL - 5, SEGMENT_INTERVAL - 10, SEGMENT_INTERVAL - 25, SEGMENT_INTERVAL - 30),
+                Arrays.asList(PUT_RETURN_CODE_VALID_TO_UNDEFINED, SEGMENT_INTERVAL - 5, SEGMENT_INTERVAL - 20, SEGMENT_INTERVAL - 25));
 
         // return values for the query with time range (MIN, MAX)
         verifyTimestampedGetValueFromStore("k", Long.MIN_VALUE, Long.MAX_VALUE, ResultOrder.ANY,
@@ -523,27 +522,27 @@ public class RocksDBVersionedStoreTest {
 
         // return the latest record (retrieve only from the latestValueStore)
         verifyTimestampedGetValueFromStore("k", SEGMENT_INTERVAL - 4, SEGMENT_INTERVAL, ResultOrder.ANY,
-                                            Collections.singletonList("v4"),
-                                            Collections.singletonList(SEGMENT_INTERVAL - 5),
-                                            Collections.singletonList(PUT_RETURN_CODE_VALID_TO_UNDEFINED));
+                Collections.singletonList("v4"),
+                Collections.singletonList(SEGMENT_INTERVAL - 5),
+                Collections.singletonList(PUT_RETURN_CODE_VALID_TO_UNDEFINED));
 
         // return one value for the query with time fromTimeStamp = toTimestamp
         verifyTimestampedGetValueFromStore("k", SEGMENT_INTERVAL - 5, SEGMENT_INTERVAL - 5, ResultOrder.ANY,
-                                            Collections.singletonList("v4"),
-                                            Collections.singletonList(SEGMENT_INTERVAL - 5),
-                                            Collections.singletonList(PUT_RETURN_CODE_VALID_TO_UNDEFINED));
+                Collections.singletonList("v4"),
+                Collections.singletonList(SEGMENT_INTERVAL - 5),
+                Collections.singletonList(PUT_RETURN_CODE_VALID_TO_UNDEFINED));
 
         // return one values for the query with time fromTimeStamp = toTimestamp
         verifyTimestampedGetValueFromStore("k", SEGMENT_INTERVAL - 4, SEGMENT_INTERVAL - 4, ResultOrder.ANY,
-                                            Collections.singletonList("v4"),
-                                            Collections.singletonList(SEGMENT_INTERVAL - 5),
-                                            Collections.singletonList(PUT_RETURN_CODE_VALID_TO_UNDEFINED));
+                Collections.singletonList("v4"),
+                Collections.singletonList(SEGMENT_INTERVAL - 5),
+                Collections.singletonList(PUT_RETURN_CODE_VALID_TO_UNDEFINED));
 
         // return values before insertion of any tombstone
         verifyTimestampedGetValueFromStore("k", SEGMENT_INTERVAL - 31, SEGMENT_INTERVAL - 21, ResultOrder.ANY,
-                                            Arrays.asList("v2", "v1"),
-                                            Arrays.asList(SEGMENT_INTERVAL - 25, SEGMENT_INTERVAL - 30),
-                                            Arrays.asList(SEGMENT_INTERVAL - 20, SEGMENT_INTERVAL - 25));
+                Arrays.asList("v2", "v1"),
+                Arrays.asList(SEGMENT_INTERVAL - 25, SEGMENT_INTERVAL - 30),
+                Arrays.asList(SEGMENT_INTERVAL - 20, SEGMENT_INTERVAL - 25));
 
         // return values for the query with time range that covers both tombstones
         verifyTimestampedGetValueFromStore("k", SEGMENT_INTERVAL - 24, SEGMENT_INTERVAL - 11, ResultOrder.ANY,
@@ -559,20 +558,18 @@ public class RocksDBVersionedStoreTest {
 
         // return all the records that are valid during the query time range but inserted beforehand
         verifyTimestampedGetValueFromStore("k", SEGMENT_INTERVAL - 26, SEGMENT_INTERVAL - 5, ResultOrder.ANY,
-                                            Arrays.asList("v4", "v3", "v2", "v1"),
-                                            Arrays.asList(SEGMENT_INTERVAL - 5, SEGMENT_INTERVAL - 10, SEGMENT_INTERVAL - 25, SEGMENT_INTERVAL - 30),
-                                            Arrays.asList(PUT_RETURN_CODE_VALID_TO_UNDEFINED, SEGMENT_INTERVAL - 5, SEGMENT_INTERVAL - 20, SEGMENT_INTERVAL - 25));
+                Arrays.asList("v4", "v3", "v2", "v1"),
+                Arrays.asList(SEGMENT_INTERVAL - 5, SEGMENT_INTERVAL - 10, SEGMENT_INTERVAL - 25, SEGMENT_INTERVAL - 30),
+                Arrays.asList(PUT_RETURN_CODE_VALID_TO_UNDEFINED, SEGMENT_INTERVAL - 5, SEGMENT_INTERVAL - 20, SEGMENT_INTERVAL - 25));
 
         // return the valid record that has been inserted at the end of query time range (validFrom = query upper time bound)
         verifyTimestampedGetValueFromStore("k", SEGMENT_INTERVAL - 15, SEGMENT_INTERVAL - 10, ResultOrder.ANY,
-                                            Collections.singletonList("v3"),
-                                            Collections.singletonList(SEGMENT_INTERVAL - 10),
-                                            Collections.singletonList(SEGMENT_INTERVAL - 5));
+                Collections.singletonList("v3"),
+                Collections.singletonList(SEGMENT_INTERVAL - 10),
+                Collections.singletonList(SEGMENT_INTERVAL - 5));
 
         // return null in the time range where no value is valid
         verifyTimestampedGetNullFromStore("k", SEGMENT_INTERVAL - 19, SEGMENT_INTERVAL - 16);
-
-
 
         // insert data to create non-empty (third) segment
         putToStore("k", "v5", 3 * SEGMENT_INTERVAL - 30, PUT_RETURN_CODE_VALID_TO_UNDEFINED);
@@ -581,9 +578,9 @@ public class RocksDBVersionedStoreTest {
         // presence of non-empty earlier segment does not affect results of getting from later segment
         verifyTimestampedGetNullFromStore("k", SEGMENT_INTERVAL - 40, SEGMENT_INTERVAL - 35);
         verifyTimestampedGetValueFromStore("k", SEGMENT_INTERVAL - 30, SEGMENT_INTERVAL - 26, ResultOrder.ANY,
-                                            Collections.singletonList("v1"),
-                                            Collections.singletonList(SEGMENT_INTERVAL - 30),
-                                            Collections.singletonList(SEGMENT_INTERVAL - 25));
+                Collections.singletonList("v1"),
+                Collections.singletonList(SEGMENT_INTERVAL - 30),
+                Collections.singletonList(SEGMENT_INTERVAL - 25));
         verifyTimestampedGetNullFromStore("k", SEGMENT_INTERVAL - 19, SEGMENT_INTERVAL - 16);
     }
 
@@ -598,9 +595,9 @@ public class RocksDBVersionedStoreTest {
 
         // return values in ascending order
         verifyTimestampedGetValueFromStore("k", SEGMENT_INTERVAL - 30, SEGMENT_INTERVAL - 5, ResultOrder.ASCENDING,
-                                            Arrays.asList("v1", "v2", "v3", "v4"),
-                                            Arrays.asList(SEGMENT_INTERVAL - 30, SEGMENT_INTERVAL - 25, SEGMENT_INTERVAL - 10, SEGMENT_INTERVAL - 5),
-                                            Arrays.asList(SEGMENT_INTERVAL - 25, SEGMENT_INTERVAL - 10, SEGMENT_INTERVAL - 5, PUT_RETURN_CODE_VALID_TO_UNDEFINED));
+                Arrays.asList("v1", "v2", "v3", "v4"),
+                Arrays.asList(SEGMENT_INTERVAL - 30, SEGMENT_INTERVAL - 25, SEGMENT_INTERVAL - 10, SEGMENT_INTERVAL - 5),
+                Arrays.asList(SEGMENT_INTERVAL - 25, SEGMENT_INTERVAL - 10, SEGMENT_INTERVAL - 5, PUT_RETURN_CODE_VALID_TO_UNDEFINED));
     }
 
     @Test
@@ -627,18 +624,17 @@ public class RocksDBVersionedStoreTest {
 
         // old record has not yet expired
         verifyTimestampedGetValueFromStore("k", 0, SEGMENT_INTERVAL - 11, ResultOrder.ANY,
-                                            Collections.singletonList("v_old"),
-                                            Collections.singletonList(0L),
-                                            Collections.singletonList(SEGMENT_INTERVAL - 10));
+                Collections.singletonList("v_old"),
+                Collections.singletonList(0L),
+                Collections.singletonList(SEGMENT_INTERVAL - 10));
 
         putToStore("ko", "vo", HISTORY_RETENTION + SEGMENT_INTERVAL - 11, PUT_RETURN_CODE_VALID_TO_UNDEFINED);
 
         // old record still has not yet expired
         verifyTimestampedGetValueFromStore("k", 0, SEGMENT_INTERVAL - 11, ResultOrder.ANY,
-                                            Collections.singletonList("v_old"),
-                                            Collections.singletonList(0L),
-                                            Collections.singletonList(SEGMENT_INTERVAL - 10));
-
+                Collections.singletonList("v_old"),
+                Collections.singletonList(0L),
+                Collections.singletonList(SEGMENT_INTERVAL - 10));
 
         putToStore("ko", "vo2", HISTORY_RETENTION + SEGMENT_INTERVAL - 10, PUT_RETURN_CODE_VALID_TO_UNDEFINED);
 
@@ -654,9 +650,9 @@ public class RocksDBVersionedStoreTest {
 
         // expired get on key where latest satisfies timestamp bound still returns data
         verifyTimestampedGetValueFromStore("k", 0, 10, ResultOrder.ANY,
-                                            Collections.singletonList("v"),
-                                            Collections.singletonList(1L),
-                                            Collections.singletonList(PUT_RETURN_CODE_VALID_TO_UNDEFINED));
+                Collections.singletonList("v"),
+                Collections.singletonList(1L),
+                Collections.singletonList(PUT_RETURN_CODE_VALID_TO_UNDEFINED));
         // same expired get on key where latest value does not satisfy timestamp bound does not return data
         verifyTimestampedGetNullFromStore("ko", 0, 10);
     }
@@ -839,8 +835,6 @@ public class RocksDBVersionedStoreTest {
         final OffsetCheckpoint positionCheckpoint = new OffsetCheckpoint(new File(context.stateDir(), store.name() + ".position"));
         StoreQueryUtils.checkpointPosition(positionCheckpoint, position);
 
-
-
         store.close();
         store = new RocksDBVersionedStore(STORE_NAME, METRICS_SCOPE, HISTORY_RETENTION, SEGMENT_INTERVAL);
         // store.init migrates the position from the legacy checkpoint file into the store.
@@ -851,9 +845,9 @@ public class RocksDBVersionedStoreTest {
 
     private void putToStore(final String key, final String value, final long timestamp, final long expectedValidTo) {
         final long validTo = store.put(
-            new Bytes(STRING_SERIALIZER.serialize(null, key)),
-            STRING_SERIALIZER.serialize(null, value),
-            timestamp
+                new Bytes(STRING_SERIALIZER.serialize(null, key)),
+                STRING_SERIALIZER.serialize(null, value),
+                timestamp
         );
         assertThat(validTo, equalTo(expectedValidTo));
     }
@@ -941,7 +935,7 @@ public class RocksDBVersionedStoreTest {
 
     private void verifyExpiredRecordSensor(final int expectedValue) {
         final Metric metric = context.metrics().metrics().get(
-            new MetricName(DROPPED_RECORDS_METRIC, TASK_LEVEL_GROUP, "", expectedMetricsTags)
+                new MetricName(DROPPED_RECORDS_METRIC, TASK_LEVEL_GROUP, "", expectedMetricsTags)
         );
         assertEquals((Double) metric.metricValue(), expectedValue, 0.001);
     }
@@ -964,17 +958,17 @@ public class RocksDBVersionedStoreTest {
             final byte[] rawKey = STRING_SERIALIZER.serialize(null, d.key);
             final byte[] rawValue = STRING_SERIALIZER.serialize(null, d.value);
             records.add(new ConsumerRecord<>(
-                "",
-                0,
-                0L,
-                d.timestamp,
-                TimestampType.CREATE_TIME,
-                rawKey.length,
-                rawValue == null ? 0 : rawValue.length,
-                rawKey,
-                rawValue,
-                new RecordHeaders(),
-                Optional.empty()
+                    "",
+                    0,
+                    0L,
+                    d.timestamp,
+                    TimestampType.CREATE_TIME,
+                    rawKey.length,
+                    rawValue == null ? 0 : rawValue.length,
+                    rawKey,
+                    rawValue,
+                    new RecordHeaders(),
+                    Optional.empty()
             ));
         }
 

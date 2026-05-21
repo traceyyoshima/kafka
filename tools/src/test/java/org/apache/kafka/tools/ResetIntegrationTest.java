@@ -105,9 +105,9 @@ public class ResetIntegrationTest extends AbstractResetIntegrationTest {
     public void shouldNotAllowToResetWhileStreamsIsRunning(final TestInfo testInfo) throws Exception {
         final String appID = safeUniqueTestName(testInfo);
         final String[] parameters = new String[] {
-            "--application-id", appID,
-            "--bootstrap-server", cluster.bootstrapServers(),
-            "--input-topics", NON_EXISTING_TOPIC
+                "--application-id", appID,
+                "--bootstrap-server", cluster.bootstrapServers(),
+                "--input-topics", NON_EXISTING_TOPIC
         };
         final Properties cleanUpConfig = new Properties();
         cleanUpConfig.put(ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG, 100);
@@ -129,9 +129,9 @@ public class ResetIntegrationTest extends AbstractResetIntegrationTest {
     public void shouldNotAllowToResetWhenInputTopicAbsent(final TestInfo testInfo) {
         final String appID = safeUniqueTestName(testInfo);
         final String[] parameters = new String[] {
-            "--application-id", appID,
-            "--bootstrap-server", cluster.bootstrapServers(),
-            "--input-topics", NON_EXISTING_TOPIC
+                "--application-id", appID,
+                "--bootstrap-server", cluster.bootstrapServers(),
+                "--input-topics", NON_EXISTING_TOPIC
         };
         final Properties cleanUpConfig = new Properties();
         cleanUpConfig.put(ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG, 100);
@@ -145,9 +145,9 @@ public class ResetIntegrationTest extends AbstractResetIntegrationTest {
     public void shouldDefaultToClassicGroupProtocol(final TestInfo testInfo) {
         final String appID = safeUniqueTestName(testInfo);
         final String[] parameters = new String[] {
-            "--application-id", appID,
-            "--bootstrap-server", cluster.bootstrapServers(),
-            "--input-topics", INPUT_TOPIC
+                "--application-id", appID,
+                "--bootstrap-server", cluster.bootstrapServers(),
+                "--input-topics", INPUT_TOPIC
         };
         final Properties cleanUpConfig = new Properties();
 
@@ -162,9 +162,9 @@ public class ResetIntegrationTest extends AbstractResetIntegrationTest {
     public void shouldAllowGroupProtocolClassic(final TestInfo testInfo) {
         final String appID = safeUniqueTestName(testInfo);
         final String[] parameters = new String[] {
-            "--application-id", appID,
-            "--bootstrap-server", cluster.bootstrapServers(),
-            "--input-topics", INPUT_TOPIC
+                "--application-id", appID,
+                "--bootstrap-server", cluster.bootstrapServers(),
+                "--input-topics", INPUT_TOPIC
         };
         final Properties cleanUpConfig = new Properties();
 
@@ -180,9 +180,9 @@ public class ResetIntegrationTest extends AbstractResetIntegrationTest {
     public void shouldOverwriteGroupProtocolOtherThanClassic(final TestInfo testInfo) {
         final String appID = safeUniqueTestName(testInfo);
         final String[] parameters = new String[] {
-            "--application-id", appID,
-            "--bootstrap-server", cluster.bootstrapServers(),
-            "--input-topics", INPUT_TOPIC
+                "--application-id", appID,
+                "--bootstrap-server", cluster.bootstrapServers(),
+                "--input-topics", INPUT_TOPIC
         };
         final Properties cleanUpConfig = new Properties();
 
@@ -198,9 +198,9 @@ public class ResetIntegrationTest extends AbstractResetIntegrationTest {
     public void shouldNotAllowToResetWhenIntermediateTopicAbsent(final TestInfo testInfo) {
         final String appID = safeUniqueTestName(testInfo);
         final String[] parameters = new String[] {
-            "--application-id", appID,
-            "--bootstrap-server", cluster.bootstrapServers(),
-            "--intermediate-topics", NON_EXISTING_TOPIC
+                "--application-id", appID,
+                "--bootstrap-server", cluster.bootstrapServers(),
+                "--intermediate-topics", NON_EXISTING_TOPIC
         };
         final Properties cleanUpConfig = new Properties();
         cleanUpConfig.put(ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG, 100);
@@ -214,9 +214,9 @@ public class ResetIntegrationTest extends AbstractResetIntegrationTest {
     public void shouldNotAllowToResetWhenSpecifiedInternalTopicDoesNotExist(final TestInfo testInfo) {
         final String appID = safeUniqueTestName(testInfo);
         final String[] parameters = new String[] {
-            "--application-id", appID,
-            "--bootstrap-server", cluster.bootstrapServers(),
-            "--internal-topics", NON_EXISTING_TOPIC
+                "--application-id", appID,
+                "--bootstrap-server", cluster.bootstrapServers(),
+                "--internal-topics", NON_EXISTING_TOPIC
         };
         final Properties cleanUpConfig = new Properties();
         cleanUpConfig.put(ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG, 100);
@@ -230,9 +230,9 @@ public class ResetIntegrationTest extends AbstractResetIntegrationTest {
     public void shouldNotAllowToResetWhenSpecifiedInternalTopicIsNotInternal(final TestInfo testInfo) {
         final String appID = safeUniqueTestName(testInfo);
         final String[] parameters = new String[] {
-            "--application-id", appID,
-            "--bootstrap-server", cluster.bootstrapServers(),
-            "--internal-topics", INPUT_TOPIC
+                "--application-id", appID,
+                "--bootstrap-server", cluster.bootstrapServers(),
+                "--internal-topics", INPUT_TOPIC
         };
         final Properties cleanUpConfig = new Properties();
         cleanUpConfig.put(ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG, 100);
@@ -248,10 +248,10 @@ public class ResetIntegrationTest extends AbstractResetIntegrationTest {
 
         final String appID = safeUniqueTestName(testInfo);
         final String[] parameters = new String[] {
-            "--application-id", appID,
-            "--bootstrap-server", cluster.bootstrapServers(),
-            "--internal-topics", INPUT_TOPIC,
-            "--config-file", configFile.getAbsolutePath()
+                "--application-id", appID,
+                "--bootstrap-server", cluster.bootstrapServers(),
+                "--internal-topics", INPUT_TOPIC,
+                "--config-file", configFile.getAbsolutePath()
         };
 
         try (final MockedStatic<Admin> mockedAdmin = Mockito.mockStatic(Admin.class, Mockito.CALLS_REAL_METHODS)) {
@@ -271,10 +271,10 @@ public class ResetIntegrationTest extends AbstractResetIntegrationTest {
 
         final String appID = safeUniqueTestName(testInfo);
         final String[] parameters = new String[] {
-            "--application-id", appID,
-            "--bootstrap-server", cluster.bootstrapServers(),
-            "--internal-topics", INPUT_TOPIC,
-            "--command-config", configFile.getAbsolutePath()
+                "--application-id", appID,
+                "--bootstrap-server", cluster.bootstrapServers(),
+                "--internal-topics", INPUT_TOPIC,
+                "--command-config", configFile.getAbsolutePath()
         };
 
         try (final MockedStatic<Admin> mockedAdmin = Mockito.mockStatic(Admin.class, Mockito.CALLS_REAL_METHODS)) {
@@ -293,11 +293,11 @@ public class ResetIntegrationTest extends AbstractResetIntegrationTest {
 
         final String appID = safeUniqueTestName(testInfo);
         final String[] parameters = new String[] {
-            "--application-id", appID,
-            "--bootstrap-server", cluster.bootstrapServers(),
-            "--internal-topics", INPUT_TOPIC,
-            "--config-file", configFile.getAbsolutePath(),
-            "--command-config", configFile.getAbsolutePath()
+                "--application-id", appID,
+                "--bootstrap-server", cluster.bootstrapServers(),
+                "--internal-topics", INPUT_TOPIC,
+                "--config-file", configFile.getAbsolutePath(),
+                "--command-config", configFile.getAbsolutePath()
         };
 
         try (final MockedStatic<Admin> mockedAdmin = Mockito.mockStatic(Admin.class, Mockito.CALLS_REAL_METHODS)) {
@@ -307,7 +307,7 @@ public class ResetIntegrationTest extends AbstractResetIntegrationTest {
             String output = ToolsTestUtils.captureStandardErr(() -> new StreamsResetter().execute(parameters));
 
             assertTrue(output.contains(String.format("Option \"%s\" can't be used with option \"%s\"",
-                "[config-file]", "[command-config]")));
+                    "[config-file]", "[command-config]")));
         } finally {
             Exit.resetExitProcedure();
         }
@@ -414,7 +414,6 @@ public class ResetIntegrationTest extends AbstractResetIntegrationTest {
 
         streams = new KafkaStreams(setupTopologyWithoutIntermediateUserTopic(), streamsConfig);
         streams.cleanUp();
-
 
         final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         final Calendar calendar = Calendar.getInstance();

@@ -31,52 +31,52 @@ public class AssignmentsManagerDeadlineFunctionTest {
     @Test
     public void applyAfterDispatchInterval() {
         assertEquals(OptionalLong.of(BACKOFF.initialInterval()),
-            new AssignmentsManagerDeadlineFunction(BACKOFF, 0, 0, false, 12).
+                new AssignmentsManagerDeadlineFunction(BACKOFF, 0, 0, false, 12).
                 apply(OptionalLong.empty()));
     }
 
     @Test
     public void applyAfterDispatchIntervalWithExistingEarlierDeadline() {
         assertEquals(OptionalLong.of(BACKOFF.initialInterval() / 2),
-            new AssignmentsManagerDeadlineFunction(BACKOFF, 0, 0, false, 12).
+                new AssignmentsManagerDeadlineFunction(BACKOFF, 0, 0, false, 12).
                 apply(OptionalLong.of(BACKOFF.initialInterval() / 2)));
     }
 
     @Test
     public void applyBackoffInterval() {
         assertEquals(OptionalLong.of(BACKOFF.initialInterval() * 2),
-            new AssignmentsManagerDeadlineFunction(BACKOFF, 0, 1, false, 12).
+                new AssignmentsManagerDeadlineFunction(BACKOFF, 0, 1, false, 12).
                 apply(OptionalLong.empty()));
     }
 
     @Test
     public void applyBackoffIntervalWithExistingEarlierDeadline() {
         assertEquals(OptionalLong.of(BACKOFF.initialInterval() / 2),
-            new AssignmentsManagerDeadlineFunction(BACKOFF, 0, 1, false, 12).
+                new AssignmentsManagerDeadlineFunction(BACKOFF, 0, 1, false, 12).
                 apply(OptionalLong.of(BACKOFF.initialInterval() / 2)));
     }
 
     @Test
     public void scheduleImmediatelyWhenOverloaded() {
         assertEquals(OptionalLong.of(0),
-            new AssignmentsManagerDeadlineFunction(BACKOFF, 0, 0, false,
-                MAX_ASSIGNMENTS_PER_REQUEST + 1).
+                new AssignmentsManagerDeadlineFunction(BACKOFF, 0, 0, false,
+                    MAX_ASSIGNMENTS_PER_REQUEST + 1).
                     apply(OptionalLong.of(BACKOFF.initialInterval() / 2)));
     }
 
     @Test
     public void doNotScheduleImmediatelyWhenOverloadedIfThereAreInFlightRequests() {
         assertEquals(OptionalLong.of(BACKOFF.initialInterval()),
-            new AssignmentsManagerDeadlineFunction(BACKOFF, 0, 0, true,
-                MAX_ASSIGNMENTS_PER_REQUEST + 1).
+                new AssignmentsManagerDeadlineFunction(BACKOFF, 0, 0, true,
+                    MAX_ASSIGNMENTS_PER_REQUEST + 1).
                     apply(OptionalLong.empty()));
     }
 
     @Test
     public void doNotScheduleImmediatelyWhenOverloadedIfThereArePreviousGlobalFailures() {
         assertEquals(OptionalLong.of(BACKOFF.initialInterval() * 2),
-            new AssignmentsManagerDeadlineFunction(BACKOFF, 0, 1, false,
-                MAX_ASSIGNMENTS_PER_REQUEST + 1).
+                new AssignmentsManagerDeadlineFunction(BACKOFF, 0, 1, false,
+                    MAX_ASSIGNMENTS_PER_REQUEST + 1).
                     apply(OptionalLong.empty()));
     }
 }

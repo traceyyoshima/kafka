@@ -305,8 +305,8 @@ public class AbstractRocksDBSegmentedBytesStore<S extends Segment> implements Se
 
         // register and possibly restore the state from the logs
         stateStoreContext.register(
-            root,
-            (RecordBatchingStateRestoreCallback) this::restoreAllInternal,
+                root,
+                (RecordBatchingStateRestoreCallback) this::restoreAllInternal,
                 segments::writePosition
         );
 
@@ -387,9 +387,9 @@ public class AbstractRocksDBSegmentedBytesStore<S extends Segment> implements Se
             final S segment = segments.getOrCreateSegmentIfLive(segmentId, internalProcessorContext, observedStreamTime);
             if (segment != null) {
                 ChangelogRecordDeserializationHelper.applyChecksAndUpdatePosition(
-                    record,
-                    consistencyEnabled,
-                    position
+                        record,
+                        consistencyEnabled,
+                        position
                 );
                 WriteBatch batch = null;
                 try {

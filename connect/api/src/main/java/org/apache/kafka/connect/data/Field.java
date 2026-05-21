@@ -42,7 +42,6 @@ public class Field {
         return name;
     }
 
-
     /**
      * Get the index of this field within the struct.
      * @return the index of this field

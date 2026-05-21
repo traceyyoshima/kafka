@@ -36,7 +36,7 @@ public class TimerTaskListTest {
         }
 
         @Override
-        public void run() { }
+        public void run() {}
     }
 
     private static int size(TimerTaskList list) {

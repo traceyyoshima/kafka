@@ -97,9 +97,9 @@ public class ConnectorPluginsResource {
     ) throws Throwable {
         String includedConnType = connectorConfig.get(ConnectorConfig.CONNECTOR_CLASS_CONFIG);
         if (includedConnType != null
-            && !normalizedPluginName(includedConnType).endsWith(normalizedPluginName(pluginName))) {
+                && !normalizedPluginName(includedConnType).endsWith(normalizedPluginName(pluginName))) {
             throw new BadRequestException(
-                "Included connector type " + includedConnType + " does not match request type "
+                    "Included connector type " + includedConnType + " does not match request type "
                     + pluginName
             );
         }

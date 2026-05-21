@@ -350,7 +350,7 @@ public class ShareCompletedFetch {
                                                                                     Headers headers) {
         return new RecordDeserializationException(origin, partition, record.offset(), record.timestamp(), timestampType, record.key(), record.value(), headers,
                 "Error deserializing " + origin.name() + " for partition " + partition + " at offset " + record.offset()
-                        + ". The record has been released.", e);
+                + ". The record has been released.", e);
     }
 
     /**

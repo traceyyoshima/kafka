@@ -112,10 +112,10 @@ public abstract class SampledStat implements MeasurableStat {
     @Override
     public String toString() {
         return "SampledStat(" +
-            "initialValue=" + initialValue +
-            ", current=" + current +
-            ", samples=" + samples +
-            ')';
+                "initialValue=" + initialValue +
+                ", current=" + current +
+                ", samples=" + samples +
+                ')';
     }
 
     protected abstract void update(Sample sample, MetricConfig config, double value, long timeMs);
@@ -176,13 +176,13 @@ public abstract class SampledStat implements MeasurableStat {
         @Override
         public String toString() {
             return "Sample(" +
-                "value=" + value +
-                ", eventCount=" + eventCount +
-                ", startTimeMs=" + startTimeMs +
-                ", lastEventMs=" + lastEventMs +
-                ", initialValue=" + initialValue +
-                ", timeWindowMs=" + timeWindowMs +
-                ')';
+                    "value=" + value +
+                    ", eventCount=" + eventCount +
+                    ", startTimeMs=" + startTimeMs +
+                    ", lastEventMs=" + lastEventMs +
+                    ", initialValue=" + initialValue +
+                    ", timeWindowMs=" + timeWindowMs +
+                    ')';
         }
     }
 

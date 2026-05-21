@@ -56,7 +56,7 @@ public class KafkaStreamsWrapper extends KafkaStreams {
             }
         } else {
             throw new IllegalStateException("Can only set StateListener in CREATED state. " +
-                "Current state is: " + state);
+                    "Current state is: " + state);
         }
     }
 }

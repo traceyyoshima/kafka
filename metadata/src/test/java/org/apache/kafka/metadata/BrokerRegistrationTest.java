@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Timeout(value = 40)
 public class BrokerRegistrationTest {
     private static final List<BrokerRegistration> REGISTRATIONS = List.of(
-        new BrokerRegistration.Builder().
+            new BrokerRegistration.Builder().
             setId(0).
             setEpoch(0).
             setIncarnationId(Uuid.fromString("pc1GhUlBS92cGGaKXl6ipw")).
@@ -55,7 +55,7 @@ public class BrokerRegistrationTest {
             setRack(Optional.empty()).
             setFenced(false).
             setInControlledShutdown(false).build(),
-        new BrokerRegistration.Builder().
+            new BrokerRegistration.Builder().
             setId(1).
             setEpoch(0).
             setIncarnationId(Uuid.fromString("3MfdxWlNSn2UDYsmDP1pYg")).
@@ -64,18 +64,18 @@ public class BrokerRegistrationTest {
             setRack(Optional.empty()).
             setFenced(true).
             setInControlledShutdown(false).build(),
-        new BrokerRegistration.Builder().
+            new BrokerRegistration.Builder().
             setId(2).
             setEpoch(0).
             setIncarnationId(Uuid.fromString("eY7oaG1RREie5Kk9uy1l6g")).
             setListeners(List.of(new Endpoint("INTERNAL", SecurityProtocol.PLAINTEXT, "localhost", 9092))).
             setSupportedFeatures(Stream.of(new SimpleEntry<>("foo", VersionRange.of((short) 2, (short) 3)),
-                new SimpleEntry<>("bar", VersionRange.of((short) 1, (short) 4))).collect(
+                    new SimpleEntry<>("bar", VersionRange.of((short) 1, (short) 4))).collect(
                         Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue))).
             setRack(Optional.of("myrack")).
             setFenced(false).
             setInControlledShutdown(true).build(),
-        new BrokerRegistration.Builder().
+            new BrokerRegistration.Builder().
             setId(3).
             setEpoch(0).
             setIncarnationId(Uuid.fromString("1t8VyWx2TCSTpUWuqj-FOw")).
@@ -89,7 +89,7 @@ public class BrokerRegistrationTest {
             setDirectories(List.of(Uuid.fromString("r4HpEsMuST6nQ4rznIEJVA"))).
             setCordonedDirectories(List.of(Uuid.fromString("r4HpEsMuST6nQ4rznIEJVA"))).
             build(),
-        new BrokerRegistration.Builder().
+            new BrokerRegistration.Builder().
             setId(4).
             setEpoch(0).
             setIncarnationId(Uuid.fromString("Xkq84F5bTsSEwHqceVxcOQ")).
@@ -131,33 +131,33 @@ public class BrokerRegistrationTest {
     @Test
     public void testToString() {
         assertEquals("BrokerRegistration(id=1, epoch=0, " +
-            "incarnationId=3MfdxWlNSn2UDYsmDP1pYg, listeners=[Endpoint(" +
-            "listenerName='INTERNAL', securityProtocol=PLAINTEXT, " +
-            "host='localhost', port=9091)], supportedFeatures={foo: 1-2}, " +
-            "rack=Optional.empty, fenced=true, inControlledShutdown=false, isMigratingZkBroker=false, " +
-            "directories=[], cordonedDirectories=null)",
-            REGISTRATIONS.get(1).toString());
+                "incarnationId=3MfdxWlNSn2UDYsmDP1pYg, listeners=[Endpoint(" +
+                "listenerName='INTERNAL', securityProtocol=PLAINTEXT, " +
+                "host='localhost', port=9091)], supportedFeatures={foo: 1-2}, " +
+                "rack=Optional.empty, fenced=true, inControlledShutdown=false, isMigratingZkBroker=false, " +
+                "directories=[], cordonedDirectories=null)",
+                REGISTRATIONS.get(1).toString());
         assertEquals("BrokerRegistration(id=2, epoch=0, " +
-            "incarnationId=eY7oaG1RREie5Kk9uy1l6g, listeners=[Endpoint(" +
-            "listenerName='INTERNAL', securityProtocol=PLAINTEXT, " +
-            "host='localhost', port=9092)], supportedFeatures={bar: 1-4, foo: 2-3}, " +
-            "rack=Optional[myrack], fenced=false, inControlledShutdown=true, isMigratingZkBroker=false, " +
-            "directories=[], cordonedDirectories=null)",
-            REGISTRATIONS.get(2).toString());
+                "incarnationId=eY7oaG1RREie5Kk9uy1l6g, listeners=[Endpoint(" +
+                "listenerName='INTERNAL', securityProtocol=PLAINTEXT, " +
+                "host='localhost', port=9092)], supportedFeatures={bar: 1-4, foo: 2-3}, " +
+                "rack=Optional[myrack], fenced=false, inControlledShutdown=true, isMigratingZkBroker=false, " +
+                "directories=[], cordonedDirectories=null)",
+                REGISTRATIONS.get(2).toString());
         assertEquals("BrokerRegistration(id=3, epoch=0, " +
-            "incarnationId=1t8VyWx2TCSTpUWuqj-FOw, listeners=[Endpoint(" +
-            "listenerName='INTERNAL', securityProtocol=PLAINTEXT, " +
-            "host='localhost', port=9093)], supportedFeatures={metadata.version: 7}, " +
-            "rack=Optional.empty, fenced=false, inControlledShutdown=true, isMigratingZkBroker=true, " +
-            "directories=[r4HpEsMuST6nQ4rznIEJVA], cordonedDirectories=[r4HpEsMuST6nQ4rznIEJVA])",
-            REGISTRATIONS.get(3).toString());
+                "incarnationId=1t8VyWx2TCSTpUWuqj-FOw, listeners=[Endpoint(" +
+                "listenerName='INTERNAL', securityProtocol=PLAINTEXT, " +
+                "host='localhost', port=9093)], supportedFeatures={metadata.version: 7}, " +
+                "rack=Optional.empty, fenced=false, inControlledShutdown=true, isMigratingZkBroker=true, " +
+                "directories=[r4HpEsMuST6nQ4rznIEJVA], cordonedDirectories=[r4HpEsMuST6nQ4rznIEJVA])",
+                REGISTRATIONS.get(3).toString());
         assertEquals("BrokerRegistration(id=4, epoch=0, " +
-            "incarnationId=Xkq84F5bTsSEwHqceVxcOQ, listeners=[Endpoint(" +
-            "listenerName='INTERNAL', securityProtocol=PLAINTEXT, " +
-            "host='localhost', port=9094)], supportedFeatures={foo: 1-2}, " +
-            "rack=Optional.empty, fenced=true, inControlledShutdown=false, isMigratingZkBroker=false, " +
-            "directories=[r4HpEsMuST6nQ4rznIEJVA], cordonedDirectories=null)",
-            REGISTRATIONS.get(4).toString());
+                "incarnationId=Xkq84F5bTsSEwHqceVxcOQ, listeners=[Endpoint(" +
+                "listenerName='INTERNAL', securityProtocol=PLAINTEXT, " +
+                "host='localhost', port=9094)], supportedFeatures={foo: 1-2}, " +
+                "rack=Optional.empty, fenced=true, inControlledShutdown=false, isMigratingZkBroker=false, " +
+                "directories=[r4HpEsMuST6nQ4rznIEJVA], cordonedDirectories=null)",
+                REGISTRATIONS.get(4).toString());
     }
 
     @Test
@@ -174,7 +174,7 @@ public class BrokerRegistrationTest {
         ApiMessageAndVersion messageAndVersion = registration.
             toRecord(options);
         BrokerRegistration registration2 = BrokerRegistration.fromRecord(
-            (RegisterBrokerRecord) messageAndVersion.message());
+                (RegisterBrokerRecord) messageAndVersion.message());
         assertEquals(registration, registration2);
         ApiMessageAndVersion messageAndVersion2 = registration2.
             toRecord(options);
@@ -185,13 +185,13 @@ public class BrokerRegistrationTest {
     public void testToNode() {
         assertEquals(Optional.empty(), REGISTRATIONS.get(0).node("NONEXISTENT"));
         assertEquals(Optional.of(new Node(0, "localhost", 9090, null)),
-            REGISTRATIONS.get(0).node("INTERNAL"));
+                REGISTRATIONS.get(0).node("INTERNAL"));
         assertEquals(Optional.of(new Node(1, "localhost", 9091, null, true)),
-            REGISTRATIONS.get(1).node("INTERNAL"));
+                REGISTRATIONS.get(1).node("INTERNAL"));
         assertEquals(Optional.of(new Node(2, "localhost", 9092, "myrack")),
-            REGISTRATIONS.get(2).node("INTERNAL"));
+                REGISTRATIONS.get(2).node("INTERNAL"));
         assertEquals(Optional.of(new Node(3, "localhost", 9093, null)),
-            REGISTRATIONS.get(3).node("INTERNAL"));
+                REGISTRATIONS.get(3).node("INTERNAL"));
     }
 
     @Test
@@ -206,12 +206,12 @@ public class BrokerRegistrationTest {
                 setFenced(false).
                 setInControlledShutdown(false).
                 setDirectories(List.of(
-                    Uuid.fromString("3MWIBL9NR4eXhtdfBVA7Bw"),
-                    Uuid.fromString("SZQIVeLMQGiNi68StNSNZA"),
-                    Uuid.fromString("LWZsWPBrQruOMMrnEBj7bw"),
-                    Uuid.fromString("OpIJIaO6RKaOGvHlNmOEhA"),
-                    Uuid.fromString("JhYia5HRTLihf2FFJVxopQ"),
-                    Uuid.fromString("VNetSHnySxSbvjwKrBzpkw"))
+                        Uuid.fromString("3MWIBL9NR4eXhtdfBVA7Bw"),
+                        Uuid.fromString("SZQIVeLMQGiNi68StNSNZA"),
+                        Uuid.fromString("LWZsWPBrQruOMMrnEBj7bw"),
+                        Uuid.fromString("OpIJIaO6RKaOGvHlNmOEhA"),
+                        Uuid.fromString("JhYia5HRTLihf2FFJVxopQ"),
+                        Uuid.fromString("VNetSHnySxSbvjwKrBzpkw"))
                 ).
                 build();
         assertEquals(List.of(
@@ -236,9 +236,9 @@ public class BrokerRegistrationTest {
                 setFenced(false).
                 setInControlledShutdown(false).
                 setDirectories(List.of(
-                    Uuid.fromString("dir1G6EtuR1OTdAzFw1AFQ"),
-                    Uuid.fromString("dir2gwpjTvKC7sMfcLNd8g"),
-                    Uuid.fromString("dir3Ir8mQ0mMxfv93RITDA")
+                        Uuid.fromString("dir1G6EtuR1OTdAzFw1AFQ"),
+                        Uuid.fromString("dir2gwpjTvKC7sMfcLNd8g"),
+                        Uuid.fromString("dir3Ir8mQ0mMxfv93RITDA")
                 )).
                 build();
         assertTrue(registration.hasOnlineDir(Uuid.fromString("dir1G6EtuR1OTdAzFw1AFQ")));

@@ -43,7 +43,7 @@ public class ConfigEntry {
      */
     public ConfigEntry(String name, String value) {
         this(name, value, ConfigSource.UNKNOWN, false, false,
-            Collections.emptyList(), ConfigType.UNKNOWN, null);
+                Collections.emptyList(), ConfigType.UNKNOWN, null);
     }
 
     /**
@@ -124,7 +124,7 @@ public class ConfigEntry {
      * The list is empty if synonyms were not requested using {@link DescribeConfigsOptions#includeSynonyms(boolean)}
      */
     public List<ConfigSynonym> synonyms() {
-        return  synonyms;
+        return synonyms;
     }
 
     /**

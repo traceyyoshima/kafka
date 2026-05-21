@@ -41,9 +41,9 @@ public class JaasModule {
         }
 
         return new JaasModule(
-            name,
-            debug,
-            entries
+                name,
+                debug,
+                entries
         );
     }
 
@@ -54,9 +54,9 @@ public class JaasModule {
         entries.put("unsecuredLoginStringClaim_sub", username);
 
         return new JaasModule(
-            name,
-            debug,
-            entries
+                name,
+                debug,
+                entries
         );
     }
 
@@ -69,9 +69,9 @@ public class JaasModule {
         validUsers.forEach((user, pass) -> entries.put("user_" + user, pass));
 
         return new JaasModule(
-            name,
-            debug,
-            entries
+                name,
+                debug,
+                entries
         );
     }
 
@@ -88,9 +88,9 @@ public class JaasModule {
         entries.putAll(tokenProps);
 
         return new JaasModule(
-            name,
-            debug,
-            entries
+                name,
+                debug,
+                entries
         );
     }
 

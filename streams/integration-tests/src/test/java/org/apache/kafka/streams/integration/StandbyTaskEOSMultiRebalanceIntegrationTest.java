@@ -181,7 +181,6 @@ public class StandbyTaskEOSMultiRebalanceIntegrationTest {
         );
         LOG.info("Second stream have some data in the state store");
 
-
         LOG.info("Produce the second bulk");
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
                 inputTopic,
@@ -280,7 +279,6 @@ public class StandbyTaskEOSMultiRebalanceIntegrationTest {
                 .to(outputTopic);
         return new KafkaStreams(builder.build(), props(stateDirPath));
     }
-
 
     private Properties props(final String stateDirPath) {
         final Properties streamsConfiguration = new Properties();

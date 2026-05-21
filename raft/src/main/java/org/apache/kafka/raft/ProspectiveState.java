@@ -102,13 +102,13 @@ public class ProspectiveState implements NomineeState {
     @Override
     public boolean canGrantVote(ReplicaKey replicaKey, boolean isLogUpToDate, boolean isPreVote) {
         return unattachedOrProspectiveCanGrantVote(
-            leaderId,
-            votedKey,
-            epoch,
-            replicaKey,
-            isLogUpToDate,
-            isPreVote,
-            log
+                leaderId,
+                votedKey,
+                epoch,
+                replicaKey,
+                isLogUpToDate,
+                isPreVote,
+                log
         );
     }
 
@@ -153,14 +153,14 @@ public class ProspectiveState implements NomineeState {
     @Override
     public String toString() {
         return String.format(
-            "ProspectiveState(epoch=%d, leaderId=%s, votedKey=%s, epochElection=%s, " +
-            "electionTimeoutMs=%s, highWatermark=%s)",
-            epoch,
-            leaderId,
-            votedKey,
-            epochElection,
-            electionTimeoutMs,
-            highWatermark
+                "ProspectiveState(epoch=%d, leaderId=%s, votedKey=%s, epochElection=%s, " +
+                "electionTimeoutMs=%s, highWatermark=%s)",
+                epoch,
+                leaderId,
+                votedKey,
+                epochElection,
+                electionTimeoutMs,
+                highWatermark
         );
     }
 

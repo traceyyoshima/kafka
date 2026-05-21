@@ -98,7 +98,6 @@ public final class DeleteRecordsHandler extends Batched<TopicPartition, DeletedR
         return new DeleteRecordsRequest.Builder(data);
     }
 
-
     @Override
     public ApiResult<TopicPartition, DeletedRecords> handleResponse(
         Node broker,
@@ -132,7 +131,7 @@ public final class DeleteRecordsHandler extends Batched<TopicPartition, DeletedR
             ) {
                 ApiException sanityCheckException = new ApiException(
                         "The response from broker " + broker.id() +
-                                " did not contain a result for topic partition " + topicPartition);
+                        " did not contain a result for topic partition " + topicPartition);
                 log.error(
                         "DeleteRecords request for topic partition {} failed sanity check",
                         topicPartition,
@@ -153,27 +152,27 @@ public final class DeleteRecordsHandler extends Batched<TopicPartition, DeletedR
     ) {
         if (error.exception() instanceof InvalidMetadataException) {
             log.debug(
-                "DeleteRecords lookup request for topic partition {} will be retried due to invalid leader metadata {}",
-                 topicPartition,
-                 error);
+                    "DeleteRecords lookup request for topic partition {} will be retried due to invalid leader metadata {}",
+                    topicPartition,
+                    error);
             unmapped.add(topicPartition);
         } else if (error.exception() instanceof RetriableException) {
             log.debug(
-                "DeleteRecords fulfillment request for topic partition {} will be retried due to {}",
-                topicPartition,
-                error);
+                    "DeleteRecords fulfillment request for topic partition {} will be retried due to {}",
+                    topicPartition,
+                    error);
             retriable.add(topicPartition);
         } else if (error.exception() instanceof TopicAuthorizationException) {
             log.error(
-                "DeleteRecords request for topic partition {} failed due to an error {}",
-                topicPartition,
-                error);
+                    "DeleteRecords request for topic partition {} failed due to an error {}",
+                    topicPartition,
+                    error);
             failed.put(topicPartition, error.exception());
         } else {
             log.error(
-                "DeleteRecords request for topic partition {} failed due to an unexpected error {}",
-                topicPartition,
-                error);
+                    "DeleteRecords request for topic partition {} failed due to an unexpected error {}",
+                    topicPartition,
+                    error);
             failed.put(topicPartition, error.exception());
         }
     }

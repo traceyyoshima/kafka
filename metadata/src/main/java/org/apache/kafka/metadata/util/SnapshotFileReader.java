@@ -65,7 +65,7 @@ public final class SnapshotFileReader implements AutoCloseable {
         this.snapshotPath = snapshotPath;
         this.listener = listener;
         this.queue = new KafkaEventQueue(Time.SYSTEM,
-            new LogContext("[snapshotReaderQueue] "), "snapshotReaderQueue_", new ShutdownEvent());
+                new LogContext("[snapshotReaderQueue] "), "snapshotReaderQueue_", new ShutdownEvent());
         this.caughtUpFuture = new CompletableFuture<>();
     }
 
@@ -135,13 +135,13 @@ public final class SnapshotFileReader implements AutoCloseable {
                         LeaderChangeMessage message = new LeaderChangeMessage();
                         message.read(new ByteBufferAccessor(record.value()), (short) 0);
                         listener.handleLeaderChange(new LeaderAndEpoch(
-                            OptionalInt.of(message.leaderId()),
-                            batch.partitionLeaderEpoch()
+                                OptionalInt.of(message.leaderId()),
+                                batch.partitionLeaderEpoch()
                         ));
                         break;
                     default:
                         log.error("Ignoring control record with type {} at offset {}",
-                            type, record.offset());
+                                type, record.offset());
                 }
             } catch (Throwable e) {
                 log.error("unable to read control record at offset {}", record.offset(), e);
@@ -161,17 +161,17 @@ public final class SnapshotFileReader implements AutoCloseable {
             }
         }
         listener.handleCommit(
-            MemoryBatchReader.of(
-                List.of(
-                    Batch.data(
-                        batch.baseOffset(),
-                        batch.partitionLeaderEpoch(),
-                        batch.maxTimestamp(),
-                        batch.sizeInBytes(),
-                        messages
+                MemoryBatchReader.of(
+                    List.of(
+                        Batch.data(
+                            batch.baseOffset(),
+                            batch.partitionLeaderEpoch(),
+                            batch.maxTimestamp(),
+                            batch.sizeInBytes(),
+                            messages
                     )
                 ),
-                reader -> { }
+                    reader -> {}
             )
         );
     }

@@ -44,29 +44,29 @@ import java.util.function.Consumer;
  */
 public class QuorumControllerMetrics implements AutoCloseable {
     private static final MetricName ACTIVE_CONTROLLER_COUNT = getMetricName(
-        "KafkaController", "ActiveControllerCount");
+            "KafkaController", "ActiveControllerCount");
     private static final MetricName EVENT_QUEUE_TIME_MS = getMetricName(
-        "ControllerEventManager", "EventQueueTimeMs");
+            "ControllerEventManager", "EventQueueTimeMs");
     private static final MetricName EVENT_QUEUE_PROCESSING_TIME_MS = getMetricName(
-        "ControllerEventManager", "EventQueueProcessingTimeMs");
+            "ControllerEventManager", "EventQueueProcessingTimeMs");
     private static final MetricName AVERAGE_IDLE_RATIO = getMetricName(
-        "ControllerEventManager", "AvgIdleRatio");
+            "ControllerEventManager", "AvgIdleRatio");
     private static final MetricName LAST_APPLIED_RECORD_OFFSET = getMetricName(
-        "KafkaController", "LastAppliedRecordOffset");
+            "KafkaController", "LastAppliedRecordOffset");
     private static final MetricName LAST_COMMITTED_RECORD_OFFSET = getMetricName(
-        "KafkaController", "LastCommittedRecordOffset");
+            "KafkaController", "LastCommittedRecordOffset");
     private static final MetricName LAST_APPLIED_RECORD_TIMESTAMP = getMetricName(
-        "KafkaController", "LastAppliedRecordTimestamp");
+            "KafkaController", "LastAppliedRecordTimestamp");
     private static final MetricName LAST_APPLIED_RECORD_LAG_MS = getMetricName(
-        "KafkaController", "LastAppliedRecordLagMs");
+            "KafkaController", "LastAppliedRecordLagMs");
     private static final MetricName TIMED_OUT_BROKER_HEARTBEAT_COUNT = getMetricName(
-        "KafkaController", "TimedOutBrokerHeartbeatCount");
+            "KafkaController", "TimedOutBrokerHeartbeatCount");
     private static final MetricName EVENT_QUEUE_OPERATIONS_STARTED_COUNT = getMetricName(
-        "KafkaController", "EventQueueOperationsStartedCount");
+            "KafkaController", "EventQueueOperationsStartedCount");
     private static final MetricName EVENT_QUEUE_OPERATIONS_TIMED_OUT_COUNT = getMetricName(
-        "KafkaController", "EventQueueOperationsTimedOutCount");
+            "KafkaController", "EventQueueOperationsTimedOutCount");
     private static final MetricName NEW_ACTIVE_CONTROLLERS_COUNT = getMetricName(
-        "KafkaController", "NewActiveControllersCount");
+            "KafkaController", "NewActiveControllersCount");
 
     private static final String TIME_SINCE_LAST_HEARTBEAT_RECEIVED_METRIC_NAME = "TimeSinceLastHeartbeatReceivedMs";
     private static final String BROKER_ID_TAG = "broker";
@@ -93,7 +93,7 @@ public class QuorumControllerMetrics implements AutoCloseable {
             Histogram histogram = registry.get().newHistogram(name, biased);
             return histogram::update;
         } else {
-            return __ -> { };
+            return __ -> {};
         }
     }
 
@@ -182,26 +182,26 @@ public class QuorumControllerMetrics implements AutoCloseable {
     public void addTimeSinceLastHeartbeatMetric(int brokerId) {
         brokerContactTimesMs.put(brokerId, time.milliseconds());
         registry.ifPresent(r -> r.newGauge(
-            getBrokerIdTagMetricName(
-                "KafkaController",
-                TIME_SINCE_LAST_HEARTBEAT_RECEIVED_METRIC_NAME,
-                brokerId
+                getBrokerIdTagMetricName(
+                    "KafkaController",
+                    TIME_SINCE_LAST_HEARTBEAT_RECEIVED_METRIC_NAME,
+                    brokerId
             ),
-            new Gauge<Integer>() {
-                @Override
-                public Integer value() {
-                    return timeSinceLastHeartbeatMs(brokerId);
+                new Gauge<Integer>() {
+                    @Override
+                    public Integer value() {
+                        return timeSinceLastHeartbeatMs(brokerId);
+                    }
                 }
-            }
         ));
     }
 
     public void removeTimeSinceLastHeartbeatMetric(int brokerId) {
         registry.ifPresent(r -> r.removeMetric(
-            getBrokerIdTagMetricName(
-                "KafkaController",
-                TIME_SINCE_LAST_HEARTBEAT_RECEIVED_METRIC_NAME,
-                brokerId
+                getBrokerIdTagMetricName(
+                    "KafkaController",
+                    TIME_SINCE_LAST_HEARTBEAT_RECEIVED_METRIC_NAME,
+                    brokerId
             )
         ));
         brokerContactTimesMs.remove(brokerId);
@@ -301,18 +301,18 @@ public class QuorumControllerMetrics implements AutoCloseable {
     @Override
     public void close() {
         registry.ifPresent(r -> List.of(
-            ACTIVE_CONTROLLER_COUNT,
-            EVENT_QUEUE_TIME_MS,
-            EVENT_QUEUE_PROCESSING_TIME_MS,
-            LAST_APPLIED_RECORD_OFFSET,
-            LAST_COMMITTED_RECORD_OFFSET,
-            LAST_APPLIED_RECORD_TIMESTAMP,
-            LAST_APPLIED_RECORD_LAG_MS,
-            TIMED_OUT_BROKER_HEARTBEAT_COUNT,
-            EVENT_QUEUE_OPERATIONS_STARTED_COUNT,
-            EVENT_QUEUE_OPERATIONS_TIMED_OUT_COUNT,
-            NEW_ACTIVE_CONTROLLERS_COUNT,
-            AVERAGE_IDLE_RATIO
+                ACTIVE_CONTROLLER_COUNT,
+                EVENT_QUEUE_TIME_MS,
+                EVENT_QUEUE_PROCESSING_TIME_MS,
+                LAST_APPLIED_RECORD_OFFSET,
+                LAST_COMMITTED_RECORD_OFFSET,
+                LAST_APPLIED_RECORD_TIMESTAMP,
+                LAST_APPLIED_RECORD_LAG_MS,
+                TIMED_OUT_BROKER_HEARTBEAT_COUNT,
+                EVENT_QUEUE_OPERATIONS_STARTED_COUNT,
+                EVENT_QUEUE_OPERATIONS_TIMED_OUT_COUNT,
+                NEW_ACTIVE_CONTROLLERS_COUNT,
+                AVERAGE_IDLE_RATIO
         ).forEach(r::removeMetric));
         removeTimeSinceLastHeartbeatMetrics();
     }

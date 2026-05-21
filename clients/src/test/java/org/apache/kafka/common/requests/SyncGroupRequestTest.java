@@ -28,7 +28,7 @@ public class SyncGroupRequestTest {
     @Test
     public void testRequestVersionCompatibilityFailBuild() {
         assertThrows(UnsupportedVersionException.class, () -> new SyncGroupRequest.Builder(
-            new SyncGroupRequestData()
+                new SyncGroupRequestData()
                 .setGroupId("groupId")
                 .setMemberId("consumerId")
                 .setGroupInstanceId("groupInstanceId")

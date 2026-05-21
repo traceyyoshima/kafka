@@ -72,7 +72,7 @@ public final class InMemoryTimeOrderedKeyValueChangeBuffer<K, V, T> implements T
     private static final byte[] V_2_CHANGELOG_HEADER_VALUE = {(byte) 2};
     private static final byte[] V_3_CHANGELOG_HEADER_VALUE = {(byte) 3};
     static final RecordHeaders CHANGELOG_HEADERS =
-        new RecordHeaders(new Header[] {new RecordHeader("v", V_3_CHANGELOG_HEADER_VALUE)});
+            new RecordHeaders(new Header[] {new RecordHeader("v", V_3_CHANGELOG_HEADER_VALUE)});
     private static final String METRIC_SCOPE = "in-memory-suppression";
 
     private final Map<Bytes, BufferKey> index = new HashMap<>();
@@ -184,7 +184,6 @@ public final class InMemoryTimeOrderedKeyValueChangeBuffer<K, V, T> implements T
         return storeName;
     }
 
-
     @Override
     public boolean persistent() {
         return false;
@@ -196,6 +195,7 @@ public final class InMemoryTimeOrderedKeyValueChangeBuffer<K, V, T> implements T
         keySerde = keySerde == null ? (Serde<K>) getter.keySerde() : keySerde;
         valueSerde = valueSerde == null ? FullChangeSerde.wrap((Serde<V>) getter.valueSerde()) : valueSerde;
     }
+
     @Override
     public void init(final StateStoreContext stateStoreContext, final StateStore root) {
         this.context = ProcessorContextUtils.asInternalProcessorContext(stateStoreContext);
@@ -204,16 +204,16 @@ public final class InMemoryTimeOrderedKeyValueChangeBuffer<K, V, T> implements T
         streamsMetrics = context.metrics();
 
         bufferSizeSensor = StateStoreMetrics.suppressionBufferSizeSensor(
-            taskId,
-            METRIC_SCOPE,
-            storeName,
-            streamsMetrics
+                taskId,
+                METRIC_SCOPE,
+                storeName,
+                streamsMetrics
         );
         bufferCountSensor = StateStoreMetrics.suppressionBufferCountSensor(
-            taskId,
-            METRIC_SCOPE,
-            storeName,
-            streamsMetrics
+                taskId,
+                METRIC_SCOPE,
+                storeName,
+                streamsMetrics
         );
 
         this.context.register(root, (RecordBatchingStateRestoreCallback) this::restoreBatch);
@@ -272,40 +272,40 @@ public final class InMemoryTimeOrderedKeyValueChangeBuffer<K, V, T> implements T
         buffer.putLong(bufferKey.time());
         final byte[] array = buffer.array();
         ((RecordCollector.Supplier) context).recordCollector().send(
-            changelogTopic,
-            key,
-            array,
-            CHANGELOG_HEADERS,
-            partition,
-            null,
-            KEY_SERIALIZER,
-            VALUE_SERIALIZER,
-            null,
-            null);
+                changelogTopic,
+                key,
+                array,
+                CHANGELOG_HEADERS,
+                partition,
+                null,
+                KEY_SERIALIZER,
+                VALUE_SERIALIZER,
+                null,
+                null);
     }
 
     private void logTombstone(final Bytes key) {
         ((RecordCollector.Supplier) context).recordCollector().send(
-            changelogTopic,
-            key,
-            null,
-            null,
-            partition,
-            null,
-            KEY_SERIALIZER,
-            VALUE_SERIALIZER,
-            null,
-            null);
+                changelogTopic,
+                key,
+                null,
+                null,
+                partition,
+                null,
+                KEY_SERIALIZER,
+                VALUE_SERIALIZER,
+                null,
+                null);
     }
 
     private void restoreBatch(final Collection<ConsumerRecord<byte[], byte[]>> batch) {
         for (final ConsumerRecord<byte[], byte[]> record : batch) {
             if (record.partition() != partition) {
                 throw new IllegalStateException(
-                    String.format(
-                        "record partition [%d] is being restored by the wrong suppress partition [%d]",
-                        record.partition(),
-                        partition
+                        String.format(
+                            "record partition [%d] is being restored by the wrong suppress partition [%d]",
+                            record.partition(),
+                            partition
                     )
                 );
             }
@@ -378,7 +378,6 @@ public final class InMemoryTimeOrderedKeyValueChangeBuffer<K, V, T> implements T
         updateBufferMetrics();
     }
 
-
     @Override
     public void evictWhile(final Supplier<Boolean> predicate,
                            final Consumer<Eviction<K, Change<V>>> callback) {
@@ -395,16 +394,16 @@ public final class InMemoryTimeOrderedKeyValueChangeBuffer<K, V, T> implements T
             while (next != null && predicate.get()) {
                 if (next.getKey().time() != minTimestamp) {
                     throw new IllegalStateException(
-                        "minTimestamp [" + minTimestamp + "] did not match the actual min timestamp [" +
+                            "minTimestamp [" + minTimestamp + "] did not match the actual min timestamp [" +
                             next.getKey().time() + "]"
                     );
                 }
                 final K key = keySerde.deserializer().deserialize(changelogTopic, context.headers(), next.getKey().key().get());
                 final BufferValue bufferValue = next.getValue();
                 final Change<V> value = valueSerde.deserializeParts(
-                    changelogTopic,
-                    context.headers(),
-                    new Change<>(bufferValue.newValue(), bufferValue.oldValue())
+                        changelogTopic,
+                        context.headers(),
+                        new Change<>(bufferValue.newValue(), bufferValue.oldValue())
                 );
                 callback.accept(new Eviction<K, Change<V>>(key, value, bufferValue.context()));
 
@@ -441,9 +440,9 @@ public final class InMemoryTimeOrderedKeyValueChangeBuffer<K, V, T> implements T
             final byte[] serializedValue = internalPriorValueForBuffered(serializedKey);
 
             final V deserializedValue = valueSerde.innerSerde().deserializer().deserialize(
-                changelogTopic,
-                context.headers(),
-                serializedValue
+                    changelogTopic,
+                    context.headers(),
+                    serializedValue
             );
 
             // it's unfortunately not possible to know this, unless we materialize the suppressed result, since our only
@@ -484,9 +483,9 @@ public final class InMemoryTimeOrderedKeyValueChangeBuffer<K, V, T> implements T
         }
 
         cleanPut(
-            time,
-            serializedKey,
-            new BufferValue(serializedPriorValue, serialChange.oldValue, serialChange.newValue, recordContext)
+                time,
+                serializedKey,
+                new BufferValue(serializedPriorValue, serialChange.oldValue, serialChange.newValue, recordContext)
         );
         if (loggingEnabled) {
             dirtyKeys.add(serializedKey);
@@ -515,7 +514,7 @@ public final class InMemoryTimeOrderedKeyValueChangeBuffer<K, V, T> implements T
         } else {
             final BufferValue removedValue = sortedMap.put(previousKey, value);
             memBufferSize =
-                memBufferSize
+                    memBufferSize
                     + computeRecordSize(key, value)
                     - (removedValue == null ? 0 : computeRecordSize(key, removedValue));
         }
@@ -554,15 +553,15 @@ public final class InMemoryTimeOrderedKeyValueChangeBuffer<K, V, T> implements T
     @Override
     public String toString() {
         return "InMemoryTimeOrderedKeyValueChangeBuffer{" +
-            "storeName='" + storeName + '\'' +
-            ", changelogTopic='" + changelogTopic + '\'' +
-            ", open=" + open +
-            ", loggingEnabled=" + loggingEnabled +
-            ", minTimestamp=" + minTimestamp +
-            ", memBufferSize=" + memBufferSize +
-            ", \n\tdirtyKeys=" + dirtyKeys +
-            ", \n\tindex=" + index +
-            ", \n\tsortedMap=" + sortedMap +
-            '}';
+                "storeName='" + storeName + '\'' +
+                ", changelogTopic='" + changelogTopic + '\'' +
+                ", open=" + open +
+                ", loggingEnabled=" + loggingEnabled +
+                ", minTimestamp=" + minTimestamp +
+                ", memBufferSize=" + memBufferSize +
+                ", \n\tdirtyKeys=" + dirtyKeys +
+                ", \n\tindex=" + index +
+                ", \n\tsortedMap=" + sortedMap +
+                '}';
     }
 }

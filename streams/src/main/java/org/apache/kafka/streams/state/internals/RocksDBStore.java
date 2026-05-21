@@ -139,7 +139,6 @@ public class RocksDBStore implements KeyValueStore<Bytes, byte[]>, BatchWritingS
     // managed elsewhere (by the caller of those methods).
     private final boolean autoManagedIterators;
 
-
     protected StateStoreContext context;
     protected Position position;
     private TaskId taskId;
@@ -178,14 +177,14 @@ public class RocksDBStore implements KeyValueStore<Bytes, byte[]>, BatchWritingS
         // since it is only for values that are already flushed
         this.context = stateStoreContext;
         stateStoreContext.register(
-            root,
-            (RecordBatchingStateRestoreCallback) this::restoreBatch,
+                root,
+                (RecordBatchingStateRestoreCallback) this::restoreBatch,
                 this::writePosition
         );
         consistencyEnabled = StreamsConfig.InternalConfig.getBoolean(
-            stateStoreContext.appConfigs(),
-            IQ_CONSISTENCY_OFFSET_VECTOR_ENABLED,
-            false);
+                stateStoreContext.appConfigs(),
+                IQ_CONSISTENCY_OFFSET_VECTOR_ENABLED,
+                false);
     }
 
     @SuppressWarnings("unchecked")
@@ -522,12 +521,12 @@ public class RocksDBStore implements KeyValueStore<Bytes, byte[]>, BatchWritingS
         final QueryConfig config) {
 
         return StoreQueryUtils.handleBasicQueries(
-            query,
-            positionBound,
-            config,
-            this,
-            position,
-            context
+                query,
+                positionBound,
+                config,
+                this,
+                position,
+                context
         );
     }
 
@@ -903,14 +902,23 @@ public class RocksDBStore implements KeyValueStore<Bytes, byte[]>, BatchWritingS
 
     interface DBAccessor {
         byte[] get(final ColumnFamilyHandle columnFamily, final byte[] key) throws RocksDBException;
+
         byte[] get(final ColumnFamilyHandle columnFamily, final ReadOptions readOptions, final byte[] key) throws RocksDBException;
+
         RocksIterator newIterator(final ColumnFamilyHandle columnFamily);
+
         void put(final ColumnFamilyHandle columnFamily, final byte[] key, final byte[] value) throws RocksDBException;
+
         void delete(final ColumnFamilyHandle columnFamily, final byte[] key) throws RocksDBException;
+
         void deleteRange(final ColumnFamilyHandle columnFamily, final byte[] from, final byte[] to) throws RocksDBException;
+
         long approximateNumEntries(final ColumnFamilyHandle columnFamily) throws RocksDBException;
+
         void flush(final ColumnFamilyHandle... columnFamilies) throws RocksDBException;
+
         void reset();
+
         void close();
 
         default ManagedKeyValueIterator<Bytes, byte[]> all(final ColumnFamilyHandle cf, final String storeName, final boolean forward) {
@@ -1009,7 +1017,6 @@ public class RocksDBStore implements KeyValueStore<Bytes, byte[]>, BatchWritingS
             // nothing to close
         }
     }
-
 
     interface ColumnFamilyAccessor {
 
@@ -1175,9 +1182,9 @@ public class RocksDBStore implements KeyValueStore<Bytes, byte[]>, BatchWritingS
             try (final WriteBatch batch = new WriteBatch()) {
                 for (final ConsumerRecord<byte[], byte[]> record : records) {
                     ChangelogRecordDeserializationHelper.applyChecksAndUpdatePosition(
-                        record,
-                        consistencyEnabled,
-                        position
+                            record,
+                            consistencyEnabled,
+                            position
                     );
                     // If version headers are not present or version is V0
                     cfAccessor.addToBatch(record.key(), record.value(), batch);

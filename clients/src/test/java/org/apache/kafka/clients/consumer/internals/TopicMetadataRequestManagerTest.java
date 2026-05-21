@@ -75,9 +75,9 @@ public class TopicMetadataRequestManagerTest {
         props.put(VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         this.topicMetadataRequestManager = spy(new TopicMetadataRequestManager(
-            new LogContext(),
-            time,
-            new ConsumerConfig(props)));
+                new LogContext(),
+                time,
+                new ConsumerConfig(props)));
     }
 
     @Test
@@ -105,9 +105,9 @@ public class TopicMetadataRequestManagerTest {
         this.time.sleep(100);
         NetworkClientDelegate.PollResult res = this.topicMetadataRequestManager.poll(this.time.milliseconds());
         res.unsentRequests.get(0).future().complete(buildTopicMetadataClientResponse(
-            res.unsentRequests.get(0),
-            topic,
-            error));
+                res.unsentRequests.get(0),
+                topic,
+                error));
         List<TopicMetadataRequestManager.TopicMetadataRequestState> inflights = this.topicMetadataRequestManager.inflightRequests();
 
         if (shouldRetry) {
@@ -143,7 +143,7 @@ public class TopicMetadataRequestManagerTest {
         // Request topic metadata with 1000ms expiration
         long now = this.time.milliseconds();
         CompletableFuture<Map<String, List<PartitionInfo>>> future =
-            this.topicMetadataRequestManager.requestTopicMetadata(topic, now + 1000L);
+                this.topicMetadataRequestManager.requestTopicMetadata(topic, now + 1000L);
         assertEquals(1, this.topicMetadataRequestManager.inflightRequests().size());
 
         // Poll the request manager to get the list of requests to send
@@ -151,9 +151,9 @@ public class TopicMetadataRequestManagerTest {
         NetworkClientDelegate.PollResult res = this.topicMetadataRequestManager.poll(this.time.milliseconds());
         assertEquals(1, res.unsentRequests.size());
         res.unsentRequests.get(0).future().complete(buildTopicMetadataClientResponse(
-            res.unsentRequests.get(0),
-            topic,
-            Errors.REQUEST_TIMED_OUT));
+                res.unsentRequests.get(0),
+                topic,
+                Errors.REQUEST_TIMED_OUT));
 
         // Sleep for long enough to exceed the backoff delay but still within the expiration
         // - fail the request again with a RetriableException
@@ -161,9 +161,9 @@ public class TopicMetadataRequestManagerTest {
         res = this.topicMetadataRequestManager.poll(this.time.milliseconds());
         assertEquals(1, res.unsentRequests.size());
         res.unsentRequests.get(0).future().complete(buildTopicMetadataClientResponse(
-            res.unsentRequests.get(0),
-            topic,
-            Errors.REQUEST_TIMED_OUT));
+                res.unsentRequests.get(0),
+                topic,
+                Errors.REQUEST_TIMED_OUT));
 
         // Sleep for long enough to expire the request which should fail
         this.time.sleep(1000);
@@ -215,9 +215,9 @@ public class TopicMetadataRequestManagerTest {
         assertEquals(1, res2.unsentRequests.size());
 
         res2.unsentRequests.get(0).future().complete(buildTopicMetadataClientResponse(
-            res2.unsentRequests.get(0),
-            topic,
-            Errors.NONE));
+                res2.unsentRequests.get(0),
+                topic,
+                Errors.NONE));
         assertTrue(topicMetadataRequestManager.inflightRequests().isEmpty());
     }
 
@@ -257,23 +257,23 @@ public class TopicMetadataRequestManagerTest {
         Cluster cluster = mockCluster(3, 0);
         List<MetadataResponse.TopicMetadata> topics = new ArrayList<>();
         topics.add(new MetadataResponse.TopicMetadata(error, "topic1", false,
-            Collections.emptyList()));
+                Collections.emptyList()));
         topics.add(new MetadataResponse.TopicMetadata(error, "topic2", false,
-            Collections.emptyList()));
+                Collections.emptyList()));
         final MetadataResponse metadataResponse = RequestTestUtils.metadataResponse(cluster.nodes(),
-            cluster.clusterResource().clusterId(),
-            cluster.controller().id(),
-            topics);
+                cluster.clusterResource().clusterId(),
+                cluster.controller().id(),
+                topics);
         return new ClientResponse(
-            new RequestHeader(ApiKeys.METADATA, metadataRequest.version(), "mockClientId", 1),
-            request.handler(),
-            "-1",
-            time.milliseconds(),
-            time.milliseconds(),
-            false,
-            null,
-            null,
-            metadataResponse);
+                new RequestHeader(ApiKeys.METADATA, metadataRequest.version(), "mockClientId", 1),
+                request.handler(),
+                "-1",
+                time.milliseconds(),
+                time.milliseconds(),
+                false,
+                null,
+                null,
+                metadataResponse);
     }
 
     private static Cluster mockCluster(final int numNodes, final int controllerIndex) {
@@ -281,18 +281,17 @@ public class TopicMetadataRequestManagerTest {
         for (int i = 0; i < numNodes; i++)
             nodes.put(i, new Node(i, "localhost", 8121 + i));
         return new Cluster("mockClusterId", nodes.values(),
-            Collections.emptySet(), Collections.emptySet(),
-            Collections.emptySet(), nodes.get(controllerIndex));
+                Collections.emptySet(), Collections.emptySet(),
+                Collections.emptySet(), nodes.get(controllerIndex));
     }
-
 
     private static Collection<Arguments> exceptionProvider() {
         return Arrays.asList(
-            Arguments.of(Errors.UNKNOWN_TOPIC_OR_PARTITION, false),
-            Arguments.of(Errors.INVALID_TOPIC_EXCEPTION, false),
-            Arguments.of(Errors.UNKNOWN_SERVER_ERROR, false),
-            Arguments.of(Errors.NETWORK_EXCEPTION, true),
-            Arguments.of(Errors.NONE, false));
+                Arguments.of(Errors.UNKNOWN_TOPIC_OR_PARTITION, false),
+                Arguments.of(Errors.INVALID_TOPIC_EXCEPTION, false),
+                Arguments.of(Errors.UNKNOWN_SERVER_ERROR, false),
+                Arguments.of(Errors.NETWORK_EXCEPTION, true),
+                Arguments.of(Errors.NONE, false));
     }
 
     private static Collection<Arguments> hardFailureExceptionProvider() {

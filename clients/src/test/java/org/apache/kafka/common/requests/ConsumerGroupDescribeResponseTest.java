@@ -35,7 +35,7 @@ public class ConsumerGroupDescribeResponseTest {
         ConsumerGroupDescribeResponseData data = new ConsumerGroupDescribeResponseData();
         for (int i = 0; i < errorCount; i++) {
             data.groups().add(
-                new ConsumerGroupDescribeResponseData.DescribedGroup()
+                    new ConsumerGroupDescribeResponseData.DescribedGroup()
                     .setErrorCode(e.code())
             );
         }

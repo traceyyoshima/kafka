@@ -31,7 +31,6 @@ public class ConnectorHealth {
     private final Map<Integer, TaskState> tasks;
     private final ConnectorType type;
 
-
     public ConnectorHealth(String name,
                            ConnectorState connectorState,
                            Map<Integer, TaskState> tasks,
@@ -92,9 +91,9 @@ public class ConnectorHealth {
             return false;
         ConnectorHealth that = (ConnectorHealth) o;
         return name.equals(that.name)
-            && connectorState.equals(that.connectorState)
-            && tasks.equals(that.tasks)
-            && type == that.type;
+                && connectorState.equals(that.connectorState)
+                && tasks.equals(that.tasks)
+                && type == that.type;
     }
 
     @Override
@@ -105,10 +104,10 @@ public class ConnectorHealth {
     @Override
     public String toString() {
         return "ConnectorHealth{"
-            + "name='" + name + '\''
-            + ", connectorState=" + connectorState
-            + ", tasks=" + tasks
-            + ", type=" + type
-            + '}';
+                + "name='" + name + '\''
+                + ", connectorState=" + connectorState
+                + ", tasks=" + tasks
+                + ", type=" + type
+                + '}';
     }
 }

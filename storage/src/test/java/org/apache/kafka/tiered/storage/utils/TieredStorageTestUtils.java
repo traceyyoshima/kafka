@@ -66,13 +66,13 @@ public class TieredStorageTestUtils {
     private static final Integer RLMM_INIT_RETRY_INTERVAL_MS = 300;
 
     public static TopicDescription describeTopic(TieredStorageTestContext context, String topic)
-            throws ExecutionException, InterruptedException {
+        throws ExecutionException, InterruptedException {
         return describeTopics(context, List.of(topic)).get(topic);
     }
 
     public static Map<String, TopicDescription> describeTopics(TieredStorageTestContext context,
-                                                                List<String> topics)
-            throws ExecutionException, InterruptedException {
+                                                               List<String> topics)
+        throws ExecutionException, InterruptedException {
         return context.admin()
                 .describeTopics(topics)
                 .allTopicNames()

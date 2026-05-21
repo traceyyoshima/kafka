@@ -70,11 +70,11 @@ public class GlobalProcessorContextImplTest {
         when(streamsConfig.getString(StreamsConfig.APPLICATION_ID_CONFIG)).thenReturn("dummy-id");
 
         globalContext = new GlobalProcessorContextImpl(
-            streamsConfig,
-            stateManager,
-            null,
-            null,
-            Time.SYSTEM);
+                streamsConfig,
+                stateManager,
+                null,
+                null,
+                Time.SYSTEM);
 
         final ProcessorNode<Object, Object, Object, Object> processorNode = new ProcessorNode<>("testNode");
 
@@ -123,7 +123,7 @@ public class GlobalProcessorContextImplTest {
         try {
             store.init(null, null);
             fail("Should have thrown UnsupportedOperationException.");
-        } catch (final UnsupportedOperationException expected) { }
+        } catch (final UnsupportedOperationException expected) {}
     }
 
     @Test
@@ -133,7 +133,7 @@ public class GlobalProcessorContextImplTest {
         try {
             store.init(null, null);
             fail("Should have thrown UnsupportedOperationException.");
-        } catch (final UnsupportedOperationException expected) { }
+        } catch (final UnsupportedOperationException expected) {}
     }
 
     @Test
@@ -143,7 +143,7 @@ public class GlobalProcessorContextImplTest {
         try {
             store.init(null, null);
             fail("Should have thrown UnsupportedOperationException.");
-        } catch (final UnsupportedOperationException expected) { }
+        } catch (final UnsupportedOperationException expected) {}
     }
 
     @Test
@@ -153,7 +153,7 @@ public class GlobalProcessorContextImplTest {
         try {
             store.init(null, null);
             fail("Should have thrown UnsupportedOperationException.");
-        } catch (final UnsupportedOperationException expected) { }
+        } catch (final UnsupportedOperationException expected) {}
     }
 
     @Test
@@ -163,7 +163,7 @@ public class GlobalProcessorContextImplTest {
         try {
             store.init(null, null);
             fail("Should have thrown UnsupportedOperationException.");
-        } catch (final UnsupportedOperationException expected) { }
+        } catch (final UnsupportedOperationException expected) {}
     }
 
     @Test
@@ -173,7 +173,7 @@ public class GlobalProcessorContextImplTest {
         try {
             store.close();
             fail("Should have thrown UnsupportedOperationException.");
-        } catch (final UnsupportedOperationException expected) { }
+        } catch (final UnsupportedOperationException expected) {}
     }
 
     @Test
@@ -183,7 +183,7 @@ public class GlobalProcessorContextImplTest {
         try {
             store.close();
             fail("Should have thrown UnsupportedOperationException.");
-        } catch (final UnsupportedOperationException expected) { }
+        } catch (final UnsupportedOperationException expected) {}
     }
 
     @Test
@@ -193,7 +193,7 @@ public class GlobalProcessorContextImplTest {
         try {
             store.close();
             fail("Should have thrown UnsupportedOperationException.");
-        } catch (final UnsupportedOperationException expected) { }
+        } catch (final UnsupportedOperationException expected) {}
     }
 
     @Test
@@ -203,7 +203,7 @@ public class GlobalProcessorContextImplTest {
         try {
             store.close();
             fail("Should have thrown UnsupportedOperationException.");
-        } catch (final UnsupportedOperationException expected) { }
+        } catch (final UnsupportedOperationException expected) {}
     }
 
     @Test
@@ -213,7 +213,7 @@ public class GlobalProcessorContextImplTest {
         try {
             store.close();
             fail("Should have thrown UnsupportedOperationException.");
-        } catch (final UnsupportedOperationException expected) { }
+        } catch (final UnsupportedOperationException expected) {}
     }
 
     @Test

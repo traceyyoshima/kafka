@@ -69,7 +69,7 @@ public class ConsumerHeartbeatRequestManager extends AbstractHeartbeatRequestMan
             final BackgroundEventHandler backgroundEventHandler,
             final Metrics metrics) {
         super(logContext, time, config, coordinatorRequestManager, backgroundEventHandler,
-            new HeartbeatMetricsManager(metrics));
+                new HeartbeatMetricsManager(metrics));
         this.membershipManager = membershipManager;
         this.heartbeatState = new HeartbeatState(subscriptions, membershipManager, maxPollIntervalMs);
     }
@@ -86,7 +86,7 @@ public class ConsumerHeartbeatRequestManager extends AbstractHeartbeatRequestMan
             final BackgroundEventHandler backgroundEventHandler,
             final Metrics metrics) {
         super(logContext, timer, config, coordinatorRequestManager, heartbeatRequestState, backgroundEventHandler,
-            new HeartbeatMetricsManager(metrics));
+                new HeartbeatMetricsManager(metrics));
         this.membershipManager = membershipManager;
         this.heartbeatState = heartbeatState;
     }
@@ -127,14 +127,14 @@ public class ConsumerHeartbeatRequestManager extends AbstractHeartbeatRequestMan
             // on the client side when building the request and checking supporting APIs (handled on onFailure).
             case UNSUPPORTED_VERSION:
                 logger.error("{} failed due to unsupported version response on broker side: {}",
-                    heartbeatRequestName(), CONSUMER_PROTOCOL_NOT_SUPPORTED_MSG);
+                        heartbeatRequestName(), CONSUMER_PROTOCOL_NOT_SUPPORTED_MSG);
                 handleFatalFailure(error.exception(CONSUMER_PROTOCOL_NOT_SUPPORTED_MSG));
                 errorHandled = true;
                 break;
 
             case UNRELEASED_INSTANCE_ID:
                 logger.error("{} failed due to unreleased instance id {}: {}",
-                    heartbeatRequestName(), membershipManager.groupInstanceId().orElse("null"), errorMessage);
+                        heartbeatRequestName(), membershipManager.groupInstanceId().orElse("null"), errorMessage);
                 handleFatalFailure(error.exception(errorMessage));
                 errorHandled = true;
                 break;
@@ -143,7 +143,7 @@ public class ConsumerHeartbeatRequestManager extends AbstractHeartbeatRequestMan
                 logger.error("{} failed due to fenced instance id {}: {}. " +
                         "This is expected in the case that the member was removed from the group " +
                         "by an admin client, and another member joined using the same group instance id.",
-                    heartbeatRequestName(), membershipManager.groupInstanceId().orElse("null"), errorMessage);
+                        heartbeatRequestName(), membershipManager.groupInstanceId().orElse("null"), errorMessage);
                 handleFatalFailure(error.exception(errorMessage));
                 errorHandled = true;
                 break;
@@ -168,8 +168,8 @@ public class ConsumerHeartbeatRequestManager extends AbstractHeartbeatRequestMan
     @Override
     public NetworkClientDelegate.UnsentRequest buildHeartbeatRequest() {
         return new NetworkClientDelegate.UnsentRequest(
-            new ConsumerGroupHeartbeatRequest.Builder(this.heartbeatState.buildRequestData()),
-            coordinatorRequestManager.coordinator());
+                new ConsumerGroupHeartbeatRequest.Builder(this.heartbeatState.buildRequestData()),
+                coordinatorRequestManager.coordinator());
     }
 
     /**
@@ -218,8 +218,8 @@ public class ConsumerHeartbeatRequestManager extends AbstractHeartbeatRequestMan
         // we should skip the leaving heartbeat when leaveGroupOperation is REMAIN_IN_GROUP
         if (membershipManager.groupInstanceId().isEmpty() && REMAIN_IN_GROUP == membershipManager.leaveGroupOperation()) {
             logger.debug("Dynamic member {} closed with REMAIN_IN_GROUP. No leave heartbeat will be sent, " +
-                "the member will be removed by the coordinator after session timeout.",
-                membershipManager.memberId());
+                    "the member will be removed by the coordinator after session timeout.",
+                    membershipManager.memberId());
             return false;
         }
         return membershipManager().state() == MemberState.LEAVING;
@@ -245,7 +245,6 @@ public class ConsumerHeartbeatRequestManager extends AbstractHeartbeatRequestMan
             this.rebalanceTimeoutMs = rebalanceTimeoutMs;
             this.sentFields = new SentFields();
         }
-
 
         public void reset() {
             sentFields.reset();

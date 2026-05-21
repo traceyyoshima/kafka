@@ -113,21 +113,21 @@ public class StreamsProducer {
                 transactionInitialized = true;
             } catch (final TimeoutException timeoutException) {
                 log.warn(
-                    "Timeout exception caught trying to initialize transactions. " +
+                        "Timeout exception caught trying to initialize transactions. " +
                         "The broker is either slow or in bad state (like not having enough replicas) in " +
                         "responding to the request, or the connection to broker was interrupted sending " +
                         "the request or receiving the response. " +
                         "Will retry initializing the task in the next loop. " +
                         "Consider overwriting {} to a larger value to avoid timeout errors",
-                    ProducerConfig.MAX_BLOCK_MS_CONFIG
+                        ProducerConfig.MAX_BLOCK_MS_CONFIG
                 );
 
                 // re-throw to trigger `task.timeout.ms`
                 throw timeoutException;
             } catch (final KafkaException exception) {
                 throw new StreamsException(
-                    formatException("Error encountered trying to initialize transactions"),
-                    exception
+                        formatException("Error encountered trying to initialize transactions"),
+                        exception
                 );
             }
         }
@@ -157,9 +157,9 @@ public class StreamsProducer {
         }
         if (found.size() > 1) {
             final String err = String.format(
-                "found %d values for metric %s. total blocked time computation may be incorrect",
-                found.size(),
-                name
+                    "found %d values for metric %s. total blocked time computation may be incorrect",
+                    found.size(),
+                    name
             );
             log.error(err);
             throw new IllegalStateException(err);
@@ -169,13 +169,13 @@ public class StreamsProducer {
 
     private double totalBlockedTime(final Producer<?, ?> producer) {
         return getMetricValue(producer.metrics(), "bufferpool-wait-time-ns-total")
-            + getMetricValue(producer.metrics(), "flush-time-ns-total")
-            + getMetricValue(producer.metrics(), "txn-init-time-ns-total")
-            + getMetricValue(producer.metrics(), "txn-begin-time-ns-total")
-            + getMetricValue(producer.metrics(), "txn-send-offsets-time-ns-total")
-            + getMetricValue(producer.metrics(), "txn-commit-time-ns-total")
-            + getMetricValue(producer.metrics(), "txn-abort-time-ns-total")
-            + getMetricValue(producer.metrics(), "metadata-wait-time-ns-total");
+                + getMetricValue(producer.metrics(), "flush-time-ns-total")
+                + getMetricValue(producer.metrics(), "txn-init-time-ns-total")
+                + getMetricValue(producer.metrics(), "txn-begin-time-ns-total")
+                + getMetricValue(producer.metrics(), "txn-send-offsets-time-ns-total")
+                + getMetricValue(producer.metrics(), "txn-commit-time-ns-total")
+                + getMetricValue(producer.metrics(), "txn-abort-time-ns-total")
+                + getMetricValue(producer.metrics(), "metadata-wait-time-ns-total");
     }
 
     public double totalBlockedTime() {
@@ -189,13 +189,13 @@ public class StreamsProducer {
                 transactionInFlight = true;
             } catch (final ProducerFencedException | InvalidProducerEpochException | InvalidPidMappingException error) {
                 throw new TaskMigratedException(
-                    formatException("Producer got fenced trying to begin a new transaction"),
-                    error
+                        formatException("Producer got fenced trying to begin a new transaction"),
+                        error
                 );
             } catch (final KafkaException error) {
                 throw new StreamsException(
-                    formatException("Error encountered trying to begin a new transaction"),
-                    error
+                        formatException("Error encountered trying to begin a new transaction"),
+                        error
                 );
             }
         }
@@ -216,13 +216,13 @@ public class StreamsProducer {
                 // in this case we should throw its wrapped inner cause so that it can be
                 // captured and re-wrapped as TaskMigratedException
                 throw new TaskMigratedException(
-                    formatException("Producer got fenced trying to send a record"),
-                    uncaughtException.getCause()
+                        formatException("Producer got fenced trying to send a record"),
+                        uncaughtException.getCause()
                 );
             } else {
                 throw new StreamsException(
-                    formatException(String.format("Error encountered trying to send record to topic %s", record.topic())),
-                    uncaughtException
+                        formatException(String.format("Error encountered trying to send record to topic %s", record.topic())),
+                        uncaughtException
                 );
             }
         }
@@ -230,9 +230,9 @@ public class StreamsProducer {
 
     private static boolean isRecoverable(final KafkaException uncaughtException) {
         return uncaughtException.getCause() instanceof ProducerFencedException ||
-            uncaughtException.getCause() instanceof InvalidPidMappingException ||
-            uncaughtException.getCause() instanceof InvalidProducerEpochException ||
-            uncaughtException.getCause() instanceof UnknownProducerIdException;
+                uncaughtException.getCause() instanceof InvalidPidMappingException ||
+                uncaughtException.getCause() instanceof InvalidProducerEpochException ||
+                uncaughtException.getCause() instanceof UnknownProducerIdException;
     }
 
     /**
@@ -240,7 +240,7 @@ public class StreamsProducer {
      * @throws TaskMigratedException
      */
     public void commitTransaction(final Map<TopicPartition, OffsetAndMetadata> offsets,
-                                     final ConsumerGroupMetadata consumerGroupMetadata) {
+                                  final ConsumerGroupMetadata consumerGroupMetadata) {
         if (!eosEnabled()) {
             throw new IllegalStateException(formatException("Exactly-once is not enabled"));
         }
@@ -249,16 +249,16 @@ public class StreamsProducer {
             producer.sendOffsetsToTransaction(offsets, consumerGroupMetadata);
         } catch (final ProducerFencedException | InvalidProducerEpochException | CommitFailedException | InvalidPidMappingException error) {
             throw new TaskMigratedException(
-                formatException("Producer got fenced trying to add offsets to a transaction"),
-                error
+                    formatException("Producer got fenced trying to add offsets to a transaction"),
+                    error
             );
         } catch (final TimeoutException timeoutException) {
             // re-throw to trigger `task.timeout.ms`
             throw timeoutException;
         } catch (final KafkaException error) {
             throw new StreamsException(
-                formatException("Error encountered trying to add offsets to a transaction"),
-                error
+                    formatException("Error encountered trying to add offsets to a transaction"),
+                    error
             );
         }
 
@@ -267,16 +267,16 @@ public class StreamsProducer {
             transactionInFlight = false;
         } catch (final ProducerFencedException | InvalidProducerEpochException | CommitFailedException | InvalidPidMappingException error) {
             throw new TaskMigratedException(
-                formatException("Producer got fenced trying to commit a transaction"),
-                error
+                    formatException("Producer got fenced trying to commit a transaction"),
+                    error
             );
         } catch (final TimeoutException timeoutException) {
             // re-throw to trigger `task.timeout.ms`
             throw timeoutException;
         } catch (final KafkaException error) {
             throw new StreamsException(
-                formatException("Error encountered trying to commit a transaction"),
-                error
+                    formatException("Error encountered trying to commit a transaction"),
+                    error
             );
         }
     }
@@ -295,9 +295,9 @@ public class StreamsProducer {
                 // no need to re-throw because we abort a TX only if we close a task dirty,
                 // and thus `task.timeout.ms` does not apply
                 log.warn(
-                    "Aborting transaction failed due to timeout." +
+                        "Aborting transaction failed due to timeout." +
                         " Will rely on broker to eventually abort the transaction after the transaction timeout passed.",
-                    logAndSwallow
+                        logAndSwallow
                 );
             } catch (final ProducerFencedException | InvalidProducerEpochException | InvalidPidMappingException error) {
                 // The producer is aborting the txn when there's still an ongoing one,
@@ -311,8 +311,8 @@ public class StreamsProducer {
                 log.debug("Encountered {} while aborting the transaction; this is expected and hence swallowed", error.getMessage());
             } catch (final KafkaException error) {
                 throw new StreamsException(
-                    formatException("Error encounter trying to abort a transaction"),
-                    error
+                        formatException("Error encounter trying to abort a transaction"),
+                        error
                 );
             }
             transactionInFlight = false;

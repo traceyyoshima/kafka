@@ -177,10 +177,10 @@ public class Utils {
         CoordinatorMetadataImage image
     ) {
         ConsumerProtocolAssignment.TopicPartitionCollection collection =
-            new ConsumerProtocolAssignment.TopicPartitionCollection();
+                new ConsumerProtocolAssignment.TopicPartitionCollection();
         assignment.forEach((topicId, partitions) -> {
             image.topicMetadata(topicId).ifPresent(topicMetadata ->
-                collection.add(new ConsumerProtocolAssignment.TopicPartition()
+                    collection.add(new ConsumerProtocolAssignment.TopicPartition()
                     .setTopic(topicMetadata.name())
                     .setPartitions(new ArrayList<>(partitions))));
         });
@@ -223,7 +223,7 @@ public class Utils {
         for (ConsumerProtocolSubscription.TopicPartition tp : topicPartitionCollection) {
             metadataImage.topicMetadata(tp.topic()).ifPresent(topicMetadata -> {
                 res.add(
-                    new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                        new ConsumerGroupHeartbeatRequestData.TopicPartitions()
                         .setTopicId(topicMetadata.id())
                         .setPartitions(tp.partitions())
                 );
@@ -265,7 +265,7 @@ public class Utils {
                 if (epochs != null) {
                     log.error("[GroupId {}] Size of assignment epochs {} is not equal to partitions {} for topic {}. " +
                             "Using default epoch {} for all partitions.",
-                        groupId, epochs.size(), partitions.size(), tp.topicId(), adjustedDefaultEpoch);
+                            groupId, epochs.size(), partitions.size(), tp.topicId(), adjustedDefaultEpoch);
                 }
                 for (Integer partition : partitions) {
                     partitionEpochs.put(partition, adjustedDefaultEpoch);
@@ -427,8 +427,8 @@ public class Utils {
             Pattern.compile(regex);
         } catch (PatternSyntaxException ex) {
             throw new InvalidRegularExpression(
-                String.format("SubscribedTopicRegex `%s` is not a valid regular expression: %s.",
-                    regex, ex.getDescription()));
+                    String.format("SubscribedTopicRegex `%s` is not a valid regular expression: %s.",
+                        regex, ex.getDescription()));
         }
     }
 

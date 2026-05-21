@@ -42,10 +42,10 @@ public class MockCoordinatorShard implements CoordinatorShard<String> {
             String record
         ) {
             this(
-                offset,
-                RecordBatch.NO_PRODUCER_ID,
-                RecordBatch.NO_PRODUCER_EPOCH,
-                record
+                    offset,
+                    RecordBatch.NO_PRODUCER_ID,
+                    RecordBatch.NO_PRODUCER_EPOCH,
+                    record
             );
         }
     }
@@ -83,10 +83,10 @@ public class MockCoordinatorShard implements CoordinatorShard<String> {
         String record
     ) throws RuntimeException {
         RecordAndMetadata recordAndMetadata = new RecordAndMetadata(
-            offset,
-            producerId,
-            producerEpoch,
-            record
+                offset,
+                producerId,
+                producerEpoch,
+                record
         );
 
         if (producerId == RecordBatch.NO_PRODUCER_ID) {

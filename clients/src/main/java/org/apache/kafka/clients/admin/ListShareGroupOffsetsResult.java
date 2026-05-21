@@ -44,19 +44,19 @@ public class ListShareGroupOffsetsResult {
      */
     public KafkaFuture<Map<String, Map<TopicPartition, SharePartitionOffsetInfo>>> all() {
         return KafkaFuture.allOf(futures.values().toArray(new KafkaFuture<?>[0])).thenApply(
-            nil -> {
-                Map<String, Map<TopicPartition, SharePartitionOffsetInfo>> offsets = new HashMap<>(futures.size());
-                futures.forEach((groupId, future) -> {
-                    try {
-                        offsets.put(groupId, future.get());
-                    } catch (InterruptedException | ExecutionException e) {
-                        // This should be unreachable, since the KafkaFuture#allOf already ensured
-                        // that all the futures completed successfully.
-                        throw new RuntimeException(e);
-                    }
+                nil -> {
+                    Map<String, Map<TopicPartition, SharePartitionOffsetInfo>> offsets = new HashMap<>(futures.size());
+                    futures.forEach((groupId, future) -> {
+                        try {
+                            offsets.put(groupId, future.get());
+                        } catch (InterruptedException | ExecutionException e) {
+                            // This should be unreachable, since the KafkaFuture#allOf already ensured
+                            // that all the futures completed successfully.
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    return offsets;
                 });
-                return offsets;
-            });
     }
 
     /**

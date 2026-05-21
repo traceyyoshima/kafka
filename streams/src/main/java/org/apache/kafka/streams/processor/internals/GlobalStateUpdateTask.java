@@ -85,15 +85,15 @@ public class GlobalStateUpdateTask implements GlobalStateMaintainer {
             final String sourceTopic = storeNameToTopic.get(storeName);
             final SourceNode<?, ?> source = topology.source(sourceTopic);
             deserializers.put(
-                sourceTopic,
-                new RecordDeserializer(
-                    source,
-                    deserializationExceptionHandler,
-                    logContext,
-                    droppedRecordsSensor(
-                        Thread.currentThread().getName(),
-                        processorContext.taskId().toString(),
-                        processorContext.metrics()
+                    sourceTopic,
+                    new RecordDeserializer(
+                        source,
+                        deserializationExceptionHandler,
+                        logContext,
+                        droppedRecordsSensor(
+                            Thread.currentThread().getName(),
+                            processorContext.taskId().toString(),
+                            processorContext.metrics()
                     )
                 )
             );
@@ -113,19 +113,19 @@ public class GlobalStateUpdateTask implements GlobalStateMaintainer {
 
         if (deserialized != null) {
             final ProcessorRecordContext recordContext =
-                new ProcessorRecordContext(
-                    deserialized.timestamp(),
-                    deserialized.offset(),
-                    deserialized.partition(),
-                    deserialized.topic(),
-                    deserialized.headers());
+                    new ProcessorRecordContext(
+                        deserialized.timestamp(),
+                        deserialized.offset(),
+                        deserialized.partition(),
+                        deserialized.topic(),
+                        deserialized.headers());
             processorContext.setRecordContext(recordContext);
             processorContext.setCurrentNode(sourceNodeAndDeserializer.sourceNode());
             final Record<Object, Object> toProcess = new Record<>(
-                deserialized.key(),
-                deserialized.value(),
-                processorContext.recordContext().timestamp(),
-                processorContext.recordContext().headers()
+                    deserialized.key(),
+                    deserialized.value(),
+                    processorContext.recordContext().timestamp(),
+                    processorContext.recordContext().headers()
             );
             ((SourceNode<Object, Object>) sourceNodeAndDeserializer.sourceNode()).process(toProcess);
         }

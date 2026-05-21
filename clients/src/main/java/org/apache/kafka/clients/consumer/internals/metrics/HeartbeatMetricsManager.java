@@ -51,16 +51,16 @@ public class HeartbeatMetricsManager extends AbstractConsumerMetricsManager {
         final String metricGroupName = metricGroupPrefix + COORDINATOR_METRICS_SUFFIX;
         heartbeatSensor = metrics.sensor("heartbeat-latency");
         heartbeatResponseTimeMax = metrics.metricName("heartbeat-response-time-max",
-            metricGroupName,
-            "The max time taken to receive a response to a heartbeat request");
+                metricGroupName,
+                "The max time taken to receive a response to a heartbeat request");
         heartbeatSensor.add(heartbeatResponseTimeMax, new Max());
 
         // windowed meters
         heartbeatRate = metrics.metricName("heartbeat-rate", metricGroupName, "The number of heartbeats per second");
         heartbeatTotal = metrics.metricName("heartbeat-total", metricGroupName, "The total number of heartbeats");
         heartbeatSensor.add(new Meter(new WindowedCount(),
-            heartbeatRate,
-            heartbeatTotal));
+                heartbeatRate,
+                heartbeatTotal));
 
         Measurable lastHeartbeat = (config, now) -> {
             final long lastHeartbeatSend = lastHeartbeatMs;
@@ -71,8 +71,8 @@ public class HeartbeatMetricsManager extends AbstractConsumerMetricsManager {
                 return TimeUnit.SECONDS.convert(now - lastHeartbeatSend, TimeUnit.MILLISECONDS);
         };
         lastHeartbeatSecondsAgo = metrics.metricName("last-heartbeat-seconds-ago",
-            metricGroupName,
-            "The number of seconds since the last coordinator heartbeat was sent");
+                metricGroupName,
+                "The number of seconds since the last coordinator heartbeat was sent");
         metrics.addMetric(lastHeartbeatSecondsAgo, lastHeartbeat);
     }
 

@@ -165,7 +165,6 @@ public class SslPrincipalMapper {
                 }
                 int backRefIndex = Integer.parseInt(backRefNum);
 
-
                 // if we have a replacement value like $123, and we have less than 123 capturing groups, then
                 // we want to truncate the 3 and use capturing group 12; if we have less than 12 capturing groups,
                 // then we want to truncate the 2 and use capturing group 1; if we don't have a capturing group then

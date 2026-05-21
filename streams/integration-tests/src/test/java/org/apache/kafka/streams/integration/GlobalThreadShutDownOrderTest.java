@@ -96,7 +96,6 @@ public class GlobalThreadShutDownOrderTest {
         CLUSTER.stop();
     }
 
-
     private final MockTime mockTime = CLUSTER.time;
     private final String globalStore = "globalStore";
     private StreamsBuilder builder;
@@ -123,29 +122,29 @@ public class GlobalThreadShutDownOrderTest {
         final Consumed<String, Long> stringLongConsumed = Consumed.with(Serdes.String(), Serdes.Long());
 
         final KeyValueStoreBuilder<String, Long> storeBuilder = new KeyValueStoreBuilder<>(
-            Stores.persistentKeyValueStore(globalStore),
-            Serdes.String(),
-            Serdes.Long(),
-            mockTime);
+                Stores.persistentKeyValueStore(globalStore),
+                Serdes.String(),
+                Serdes.Long(),
+                mockTime);
 
         final ProcessorSupplier<String, Long, Void, Void> processorSupplier;
         processorSupplier = () -> new ContextualProcessor<String, Long, Void, Void>() {
             @Override
             public void process(final Record<String, Long> record) {
                 final KeyValueStore<String, Long> stateStore =
-                    context().getStateStore(storeBuilder.name());
+                        context().getStateStore(storeBuilder.name());
                 stateStore.put(
-                    record.key(),
-                    record.value()
+                        record.key(),
+                        record.value()
                 );
             }
         };
 
         builder.addGlobalStore(
-            storeBuilder,
-            globalStoreTopic,
-            Consumed.with(Serdes.String(), Serdes.Long()),
-            processorSupplier
+                storeBuilder,
+                globalStoreTopic,
+                Consumed.with(Serdes.String(), Serdes.Long()),
+                processorSupplier
         );
 
         builder
@@ -171,9 +170,9 @@ public class GlobalThreadShutDownOrderTest {
         kafkaStreams.start();
 
         TestUtils.waitForCondition(
-            () -> firstRecordProcessed,
-            30000,
-            "Has not processed record within 30 seconds");
+                () -> firstRecordProcessed,
+                30000,
+                "Has not processed record within 30 seconds");
 
         kafkaStreams.close(Duration.ofSeconds(30));
 
@@ -182,7 +181,6 @@ public class GlobalThreadShutDownOrderTest {
         assertEquals(1, closeCounter.get());
     }
 
-
     private void createTopics() throws Exception {
         streamTopic = "stream-topic";
         globalStoreTopic = "global-store-topic";
@@ -190,23 +188,21 @@ public class GlobalThreadShutDownOrderTest {
         CLUSTER.createTopic(globalStoreTopic);
     }
 
-
     private void populateTopics(final String topicName) throws Exception {
         IntegrationTestUtils.produceKeyValuesSynchronously(
-            topicName,
-            Arrays.asList(
-                new KeyValue<>("A", 1L),
-                new KeyValue<>("B", 2L),
-                new KeyValue<>("C", 3L),
-                new KeyValue<>("D", 4L)),
-            TestUtils.producerConfig(
-                CLUSTER.bootstrapServers(),
-                StringSerializer.class,
-                LongSerializer.class,
-                new Properties()),
-            mockTime);
+                topicName,
+                Arrays.asList(
+                    new KeyValue<>("A", 1L),
+                    new KeyValue<>("B", 2L),
+                    new KeyValue<>("C", 3L),
+                    new KeyValue<>("D", 4L)),
+                TestUtils.producerConfig(
+                    CLUSTER.bootstrapServers(),
+                    StringSerializer.class,
+                    LongSerializer.class,
+                    new Properties()),
+                mockTime);
     }
-
 
     private class GlobalStoreProcessor implements Processor<String, Long, Void, Void> {
 
@@ -226,7 +222,6 @@ public class GlobalThreadShutDownOrderTest {
         public void process(final Record<String, Long> record) {
             firstRecordProcessed = true;
         }
-
 
         @Override
         public void close() {

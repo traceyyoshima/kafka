@@ -188,15 +188,15 @@ public class ClassicGroup implements Group {
         Time time
     ) {
         this(
-            logContext,
-            groupId,
-            initialState,
-            time,
-            0,
-            Optional.empty(),
-            Optional.empty(),
-            Optional.empty(),
-            Optional.of(time.milliseconds())
+                logContext,
+                groupId,
+                initialState,
+                time,
+                0,
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.of(time.milliseconds())
         );
     }
 
@@ -414,7 +414,7 @@ public class ClassicGroup implements Group {
      */
     public boolean usesConsumerGroupProtocol() {
         return protocolType.map(type ->
-            type.equals(ConsumerProtocol.PROTOCOL_TYPE)
+                type.equals(ConsumerProtocol.PROTOCOL_TYPE)
         ).orElse(false);
     }
 
@@ -437,8 +437,8 @@ public class ClassicGroup implements Group {
         member.groupInstanceId().ifPresent(instanceId -> {
             if (staticMembers.containsKey(instanceId)) {
                 throw new IllegalStateException("Static member with groupInstanceId=" +
-                    instanceId + " cannot be added to group " + groupId + " since" +
-                    " it is already a member.");
+                        instanceId + " cannot be added to group " + groupId + " since" +
+                        " it is already a member.");
             }
             staticMembers.put(instanceId, member.memberId());
         });
@@ -517,9 +517,9 @@ public class ClassicGroup implements Group {
                         log.info("Group leader [memberId: {}, groupInstanceId: {}] " +
                                 "failed to join before the rebalance timeout. Member {} " +
                                 "was elected as the new leader.",
-                            currentLeader.memberId(),
-                            currentLeader.groupInstanceId().orElse("None"),
-                            member
+                                currentLeader.memberId(),
+                                currentLeader.groupInstanceId().orElse("None"),
+                                member
                         );
                         return true;
                     }
@@ -528,8 +528,8 @@ public class ClassicGroup implements Group {
                         "failed to join before the rebalance timeout and the " +
                         "group couldn't proceed to the next generation because " +
                         "no member joined.",
-                    currentLeader.memberId(),
-                    currentLeader.groupInstanceId().orElse("None")
+                        currentLeader.memberId(),
+                        currentLeader.groupInstanceId().orElse("None")
                 );
                 return false;
             }
@@ -576,15 +576,15 @@ public class ClassicGroup implements Group {
         completeSyncFuture(removedMember, syncGroupResponse);
 
         ClassicGroupMember newMember = new ClassicGroupMember(
-            newMemberId,
-            removedMember.groupInstanceId(),
-            removedMember.clientId(),
-            removedMember.clientHost(),
-            removedMember.rebalanceTimeoutMs(),
-            removedMember.sessionTimeoutMs(),
-            removedMember.protocolType(),
-            removedMember.supportedProtocols(),
-            removedMember.assignment()
+                newMemberId,
+                removedMember.groupInstanceId(),
+                removedMember.clientId(),
+                removedMember.clientHost(),
+                removedMember.rebalanceTimeoutMs(),
+                removedMember.sessionTimeoutMs(),
+                removedMember.protocolType(),
+                removedMember.supportedProtocols(),
+                removedMember.assignment()
         );
 
         members.put(newMemberId, newMember);
@@ -617,7 +617,7 @@ public class ClassicGroup implements Group {
     public boolean addPendingMember(String memberId) {
         if (hasMember(memberId)) {
             throw new IllegalStateException("Attempt to add pending member " + memberId +
-                " which is already a stable member of the group.");
+                    " which is already a stable member of the group.");
         }
         return pendingJoinMembers.add(memberId);
     }
@@ -639,7 +639,7 @@ public class ClassicGroup implements Group {
     public boolean addPendingSyncMember(String memberId) {
         if (!hasMember(memberId)) {
             throw new IllegalStateException("Attempt to add pending sync member " + memberId +
-                " which is already a stable member of the group.");
+                    " which is already a stable member of the group.");
         }
 
         return pendingSyncMembers.add(memberId);
@@ -654,7 +654,7 @@ public class ClassicGroup implements Group {
     public boolean removePendingSyncMember(String memberId) {
         if (!hasMember(memberId)) {
             throw new IllegalStateException("Attempt to add pending member " + memberId +
-                " which is already a stable member of the group.");
+                    " which is already a stable member of the group.");
         }
         return pendingSyncMembers.remove(memberId);
     }
@@ -807,7 +807,7 @@ public class ClassicGroup implements Group {
             } else if (!existingMemberId.equals(memberId)) {
                 log.info("Request memberId={} for static member with groupInstanceId={} " +
                          "is fenced by existing memberId={} during operation {}",
-                    memberId, groupInstanceId, existingMemberId, operation);
+                        memberId, groupInstanceId, existingMemberId, operation);
                 throw Errors.FENCED_INSTANCE_ID.exception();
             }
         }
@@ -959,7 +959,7 @@ public class ClassicGroup implements Group {
                 // - If there is no current state timestamp (old group metadata schema) and retention period has passed
                 //   since the last commit timestamp, expire the offset
                 return Optional.of(new OffsetExpirationConditionImpl(
-                    offsetAndMetadata -> currentStateTimestamp.orElse(offsetAndMetadata.commitTimestampMs))
+                        offsetAndMetadata -> currentStateTimestamp.orElse(offsetAndMetadata.commitTimestampMs))
                 );
             } else if (usesConsumerGroupProtocol() && subscribedTopics.isPresent() && isInState(STABLE)) {
                 // Consumers exist in the group and group is Stable =>
@@ -1078,8 +1078,8 @@ public class ClassicGroup implements Group {
      */
     public boolean supportsProtocols(ClassicGroupMember member) {
         return supportsProtocols(
-            member.protocolType(),
-            ClassicGroupMember.plainProtocolSet(member.supportedProtocols())
+                member.protocolType(),
+                ClassicGroupMember.plainProtocolSet(member.supportedProtocols())
         );
     }
 
@@ -1097,8 +1097,8 @@ public class ClassicGroup implements Group {
         JoinGroupRequestProtocolCollection memberProtocols
     ) {
         return supportsProtocols(
-            memberProtocolType,
-            ClassicGroupMember.plainProtocolSet(memberProtocols)
+                memberProtocolType,
+                ClassicGroupMember.plainProtocolSet(memberProtocols)
         );
     }
 
@@ -1116,7 +1116,7 @@ public class ClassicGroup implements Group {
             return !memberProtocolType.isEmpty() && !memberProtocols.isEmpty();
         } else {
             return protocolType.map(type -> type.equals(memberProtocolType)).orElse(false) &&
-                memberProtocols.stream()
+                    memberProtocols.stream()
                     .anyMatch(name -> supportedProtocols.getOrDefault(name, 0) == members.size());
         }
     }
@@ -1174,7 +1174,7 @@ public class ClassicGroup implements Group {
                     ByteBuffer buffer = ByteBuffer.wrap(member.metadata(protocolName.get()));
                     ConsumerProtocol.deserializeVersion(buffer);
                     allSubscribedTopics.addAll(new HashSet<>(
-                        ConsumerProtocol.deserializeConsumerProtocolSubscription(buffer, (short) 0).topics()
+                            ConsumerProtocol.deserializeConsumerProtocolSubscription(buffer, (short) 0).topics()
                     ));
                 });
                 return Optional.of(allSubscribedTopics);
@@ -1246,8 +1246,8 @@ public class ClassicGroup implements Group {
         Errors error
     ) {
         members.forEach((memberId, member) -> completeJoinFuture(
-            member,
-            new JoinGroupResponseData()
+                member,
+                new JoinGroupResponseData()
                 .setMemberId(memberId)
                 .setErrorCode(error.code())
         ));
@@ -1281,8 +1281,8 @@ public class ClassicGroup implements Group {
         Errors error
     ) {
         members.forEach((__, member) -> completeSyncFuture(
-            member,
-            new SyncGroupResponseData()
+                member,
+                new SyncGroupResponseData()
                 .setErrorCode(error.code())
         ));
     }
@@ -1312,11 +1312,11 @@ public class ClassicGroup implements Group {
     public List<JoinGroupResponseMember> currentClassicGroupMembers() {
         if (isInState(DEAD) || isInState(PREPARING_REBALANCE)) {
             throw new IllegalStateException("Cannot obtain classic member metadata for group " +
-                groupId + " in state " + state);
+                    groupId + " in state " + state);
         }
 
         return members.values().stream().map(member ->
-            new JoinGroupResponseMember()
+                new JoinGroupResponseMember()
                 .setMemberId(member.memberId())
                 .setGroupInstanceId(member.groupInstanceId().orElse(null))
                 .setMetadata(member.metadata(protocolName.orElse(null))))
@@ -1339,7 +1339,7 @@ public class ClassicGroup implements Group {
      */
     public Map<String, byte[]> groupAssignment() {
         return allMembers().stream().collect(Collectors.toMap(
-            ClassicGroupMember::memberId, ClassicGroupMember::assignment
+                ClassicGroupMember::memberId, ClassicGroupMember::assignment
         ));
     }
 
@@ -1364,31 +1364,31 @@ public class ClassicGroup implements Group {
         CoordinatorMetadataImage image
     ) {
         ClassicGroup classicGroup = new ClassicGroup(
-            logContext,
-            consumerGroup.groupId(),
-            ClassicGroupState.STABLE,
-            time,
-            consumerGroup.groupEpoch(),
-            Optional.of(ConsumerProtocol.PROTOCOL_TYPE),
-            Optional.empty(),
-            Optional.empty(),
-            Optional.of(time.milliseconds())
+                logContext,
+                consumerGroup.groupId(),
+                ClassicGroupState.STABLE,
+                time,
+                consumerGroup.groupEpoch(),
+                Optional.of(ConsumerProtocol.PROTOCOL_TYPE),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.of(time.milliseconds())
         );
 
         consumerGroup.members().forEach((memberId, member) -> {
             if (!leavingMembers.contains(member) &&
-                (joiningMember == null || joiningMember.instanceId() == null || !joiningMember.instanceId().equals(member.instanceId()))) {
+                    (joiningMember == null || joiningMember.instanceId() == null || !joiningMember.instanceId().equals(member.instanceId()))) {
                 classicGroup.add(
-                    new ClassicGroupMember(
-                        memberId,
-                        Optional.ofNullable(member.instanceId()),
-                        member.clientId(),
-                        member.clientHost(),
-                        member.rebalanceTimeoutMs(),
-                        member.classicProtocolSessionTimeout().get(),
-                        ConsumerProtocol.PROTOCOL_TYPE,
-                        member.supportedJoinGroupRequestProtocols(),
-                        null
+                        new ClassicGroupMember(
+                            memberId,
+                            Optional.ofNullable(member.instanceId()),
+                            member.clientId(),
+                            member.clientHost(),
+                            member.rebalanceTimeoutMs(),
+                            member.classicProtocolSessionTimeout().get(),
+                            ConsumerProtocol.PROTOCOL_TYPE,
+                            member.supportedJoinGroupRequestProtocols(),
+                            null
                     )
                 );
             }
@@ -1396,16 +1396,16 @@ public class ClassicGroup implements Group {
 
         if (joiningMember != null) {
             classicGroup.add(
-                new ClassicGroupMember(
-                    joiningMember.memberId(),
-                    Optional.ofNullable(joiningMember.instanceId()),
-                    joiningMember.clientId(),
-                    joiningMember.clientHost(),
-                    joiningMember.rebalanceTimeoutMs(),
-                    joiningMember.classicProtocolSessionTimeout().get(),
-                    ConsumerProtocol.PROTOCOL_TYPE,
-                    joiningMember.supportedJoinGroupRequestProtocols(),
-                    null
+                    new ClassicGroupMember(
+                        joiningMember.memberId(),
+                        Optional.ofNullable(joiningMember.instanceId()),
+                        joiningMember.clientId(),
+                        joiningMember.clientHost(),
+                        joiningMember.rebalanceTimeoutMs(),
+                        joiningMember.classicProtocolSessionTimeout().get(),
+                        ConsumerProtocol.PROTOCOL_TYPE,
+                        joiningMember.supportedJoinGroupRequestProtocols(),
+                        null
                 )
             );
         }
@@ -1428,12 +1428,12 @@ public class ClassicGroup implements Group {
                 memberId = replacedMember.memberId();
             }
             byte[] assignment = Utils.toArray(ConsumerProtocol.serializeAssignment(
-                toConsumerProtocolAssignment(
-                    consumerGroup.targetAssignment(memberId).partitions(),
-                    image
+                    toConsumerProtocolAssignment(
+                        consumerGroup.targetAssignment(memberId).partitions(),
+                        image
                 ),
-                ConsumerProtocol.deserializeVersion(
-                    ByteBuffer.wrap(classicGroupMember.metadata(classicGroup.protocolName().orElse("")))
+                    ConsumerProtocol.deserializeVersion(
+                        ByteBuffer.wrap(classicGroupMember.metadata(classicGroup.protocolName().orElse("")))
                 )
             ));
 
@@ -1453,7 +1453,7 @@ public class ClassicGroup implements Group {
     ) {
         Map<String, byte[]> assignments = new HashMap<>();
         allMembers().forEach(classicGroupMember ->
-            assignments.put(classicGroupMember.memberId(), classicGroupMember.assignment())
+                assignments.put(classicGroupMember.memberId(), classicGroupMember.assignment())
         );
 
         records.add(GroupCoordinatorRecordHelpers.newGroupMetadataRecord(this, assignments));
@@ -1467,8 +1467,8 @@ public class ClassicGroup implements Group {
     private void assertValidTransition(ClassicGroupState targetState) {
         if (!targetState.validPreviousStates().contains(state)) {
             throw new IllegalStateException("Group " + groupId + " should be in one of " +
-                targetState.validPreviousStates() + " states before moving to " + targetState +
-                " state. Instead it is in " + state + " state.");
+                    targetState.validPreviousStates() + " states before moving to " + targetState +
+                    " state. Instead it is in " + state + " state.");
         }
     }
 
@@ -1482,10 +1482,10 @@ public class ClassicGroup implements Group {
     @Override
     public String toString() {
         return "ClassicGroupMetadata(" +
-            "groupId=" + groupId + ", " +
-            "generation=" + generationId + ", " +
-            "protocolType=" + protocolType + ", " +
-            "currentState=" + currentState() + ", " +
-            "members=" + members + ")";
+                "groupId=" + groupId + ", " +
+                "generation=" + generationId + ", " +
+                "protocolType=" + protocolType + ", " +
+                "currentState=" + currentState() + ", " +
+                "members=" + members + ")";
     }
 }

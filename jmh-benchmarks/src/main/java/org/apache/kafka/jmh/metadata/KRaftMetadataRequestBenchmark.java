@@ -155,7 +155,7 @@ public class KRaftMetadataRequestBenchmark {
             Uuid topicId = Uuid.randomUuid();
             buildupMetadataDelta.replay(new TopicRecord().setName("topic-" + topicNum).setTopicId(topicId));
             IntStream.range(0, partitionCount).forEach(partitionId ->
-                buildupMetadataDelta.replay(new PartitionRecord().
+                    buildupMetadataDelta.replay(new PartitionRecord().
                     setPartitionId(partitionId).
                     setTopicId(topicId).
                     setReplicas(List.of(0, 1, 3)).
@@ -178,7 +178,7 @@ public class KRaftMetadataRequestBenchmark {
     }
 
     private KafkaApis createKafkaApis() {
-        Properties kafkaProps =  new Properties();
+        Properties kafkaProps = new Properties();
         kafkaProps.put(KRaftConfigs.NODE_ID_CONFIG, brokerId + "");
         kafkaProps.put(KRaftConfigs.PROCESS_ROLES_CONFIG, "broker");
         kafkaProps.put(QuorumConfig.QUORUM_VOTERS_CONFIG, "9000@foo:8092");

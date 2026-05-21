@@ -509,35 +509,35 @@ public class LogManager {
 
     // Visible for testing
     public UnifiedLog loadLog(File logDir,
-                               boolean hadCleanShutdown,
-                               Map<TopicPartition, Long> recoveryPoints,
-                               Map<TopicPartition, Long> logStartOffsets,
-                               LogConfig defaultConfig,
-                               Map<String, LogConfig> topicConfigOverrides,
-                               ConcurrentMap<String, Integer> numRemainingSegments,
-                               Function<UnifiedLog, Boolean> isStray) throws IOException {
+                              boolean hadCleanShutdown,
+                              Map<TopicPartition, Long> recoveryPoints,
+                              Map<TopicPartition, Long> logStartOffsets,
+                              LogConfig defaultConfig,
+                              Map<String, LogConfig> topicConfigOverrides,
+                              ConcurrentMap<String, Integer> numRemainingSegments,
+                              Function<UnifiedLog, Boolean> isStray) throws IOException {
         TopicPartition topicPartition = UnifiedLog.parseTopicPartitionName(logDir);
         LogConfig config = topicConfigOverrides.getOrDefault(topicPartition.topic(), defaultConfig);
         long logRecoveryPoint = recoveryPoints.getOrDefault(topicPartition, 0L);
         long logStartOffset = logStartOffsets.getOrDefault(topicPartition, 0L);
 
         UnifiedLog log = UnifiedLog.create(
-            logDir,
-            config,
-            logStartOffset,
-            logRecoveryPoint,
-            scheduler,
-            brokerTopicStats,
-            time,
-            maxTransactionTimeoutMs,
-            producerStateManagerConfig,
-            producerIdExpirationCheckIntervalMs,
-            logDirFailureChannel,
-            hadCleanShutdown,
-            Optional.empty(),
-            numRemainingSegments,
-            remoteStorageSystemEnable,
-            LogOffsetsListener.NO_OP_OFFSETS_LISTENER);
+                logDir,
+                config,
+                logStartOffset,
+                logRecoveryPoint,
+                scheduler,
+                brokerTopicStats,
+                time,
+                maxTransactionTimeoutMs,
+                producerStateManagerConfig,
+                producerIdExpirationCheckIntervalMs,
+                logDirFailureChannel,
+                hadCleanShutdown,
+                Optional.empty(),
+                numRemainingSegments,
+                remoteStorageSystemEnable,
+                LogOffsetsListener.NO_OP_OFFSETS_LISTENER);
 
         if (logDir.getName().endsWith(UnifiedLog.DELETE_DIR_SUFFIX)) {
             addLogToBeDeleted(log);
@@ -640,7 +640,7 @@ public class LogManager {
                     recoveryPoints.putAll(recoveryPointCheckpoints.get(dir).read());
                 } catch (Exception e) {
                     LOG.warn("Error occurred while reading recovery-point-offset-checkpoint file of directory " +
-                                    "{}, resetting the recovery checkpoint to 0", logDirAbsolutePath, e);
+                            "{}, resetting the recovery checkpoint to 0", logDirAbsolutePath, e);
                 }
 
                 final Map<TopicPartition, Long> logStartOffsets = new HashMap<>();
@@ -648,7 +648,7 @@ public class LogManager {
                     logStartOffsets.putAll(logStartOffsetCheckpoints.get(dir).read());
                 } catch (Exception e) {
                     LOG.warn("Error occurred while reading log-start-offset-checkpoint file of directory " +
-                                    "{}, resetting to the base offset of the first segment", logDirAbsolutePath, e);
+                            "{}, resetting to the base offset of the first segment", logDirAbsolutePath, e);
                 }
                 List<File> logsToLoad = Arrays.stream(Optional.ofNullable(dir.listFiles()).orElse(new File[]{}))
                         .filter(logDir -> {
@@ -722,7 +722,7 @@ public class LogManager {
             }
 
             offlineDirs.forEach(entry ->
-                logDirFailureChannel.maybeAddOfflineLogDir(entry.getKey(), "Error while loading log dir " + entry.getKey(), entry.getValue())
+                    logDirFailureChannel.maybeAddOfflineLogDir(entry.getKey(), "Error while loading log dir " + entry.getKey(), entry.getValue())
             );
         } catch (ExecutionException e) {
             LOG.error("There was an error in one of the threads during logs loading", e.getCause());
@@ -1022,7 +1022,7 @@ public class LogManager {
     public void checkpointLogStartOffsets() {
         Map<String, Map<TopicPartition, UnifiedLog>> logsByDirCached = logsByDir();
         liveLogDirs.forEach(logDir ->
-            checkpointLogStartOffsetsInDir(logDir, logsInDir(logsByDirCached, logDir))
+                checkpointLogStartOffsetsInDir(logDir, logsInDir(logsByDirCached, logDir))
         );
     }
 
@@ -1185,7 +1185,7 @@ public class LogManager {
         partitionsInitializing.keySet().stream()
                 .filter(tp -> tp.topic().equals(topic))
                 .forEach(topicPartition ->
-                    partitionsInitializing.replace(topicPartition, false, true));
+                        partitionsInitializing.replace(topicPartition, false, true));
     }
 
     /**
@@ -1275,11 +1275,11 @@ public class LogManager {
 
             // Ensure topic IDs are consistent
             topicId.ifPresent(id ->
-                log.topicId().ifPresent(logTopicId -> {
-                    if (!id.equals(logTopicId))
-                        throw new InconsistentTopicIdException("Tried to assign topic ID " + id + " to log for topic partition " + topicPartition + "," +
+                    log.topicId().ifPresent(logTopicId -> {
+                        if (!id.equals(logTopicId))
+                            throw new InconsistentTopicIdException("Tried to assign topic ID " + id + " to log for topic partition " + topicPartition + "," +
                                 "but log already contained topic ID " + logTopicId);
-                })
+                    })
             );
             return log;
         }
@@ -1537,7 +1537,7 @@ public class LogManager {
         currentLogs.put(topicPartition, destLog);
         if (cleaner != null) {
             sourceLog.ifPresent(srcLog ->
-                cleaner.alterCheckpointDir(topicPartition, srcLog.parentDirFile(), destLog.parentDirFile())
+                    cleaner.alterCheckpointDir(topicPartition, srcLog.parentDirFile(), destLog.parentDirFile())
             );
             resumeCleaning(topicPartition);
         }
@@ -1772,10 +1772,10 @@ public class LogManager {
         // When changing this code please measure the changes with org.apache.kafka.jmh.server.CheckpointBench
         Map<String, Map<TopicPartition, UnifiedLog>> byDir = new HashMap<>();
         currentLogs.forEach((tp, log) ->
-            byDir.computeIfAbsent(log.parentDir(), k -> new HashMap<>()).put(tp, log)
+                byDir.computeIfAbsent(log.parentDir(), k -> new HashMap<>()).put(tp, log)
         );
         futureLogs.forEach((tp, log) ->
-            byDir.computeIfAbsent(log.parentDir(), k -> new HashMap<>()).put(tp, log)
+                byDir.computeIfAbsent(log.parentDir(), k -> new HashMap<>()).put(tp, log)
         );
         return byDir;
     }

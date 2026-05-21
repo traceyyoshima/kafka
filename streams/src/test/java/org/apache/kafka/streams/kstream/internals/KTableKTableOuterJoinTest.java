@@ -60,7 +60,6 @@ public class KTableKTableOuterJoinTest {
     private final Consumed<Integer, String> consumed = Consumed.with(Serdes.Integer(), Serdes.String());
     private final Properties props = StreamsTestUtils.getStreamsConfig(Serdes.Integer(), Serdes.String());
 
-
     @ParameterizedTest
     @ValueSource(booleans = {false, true})
     public void testJoin(final boolean withHeaders) {
@@ -432,8 +431,8 @@ public class KTableKTableOuterJoinTest {
             join.process(new Record<>(null, new Change<>("new", "old"), 0));
 
             assertThat(
-                appender.getMessages(),
-                hasItem("Skipping record due to null key. topic=[left] partition=[-1] offset=[-2]")
+                    appender.getMessages(),
+                    hasItem("Skipping record due to null key. topic=[left] partition=[-1] offset=[-2]")
             );
         }
     }

@@ -206,13 +206,13 @@ public class TransactionManager {
             this.priority = priority;
         }
     }
-    
+
     private enum TransactionOperation {
         SEND("send"),
         BEGIN_TRANSACTION("beginTransaction"),
         PREPARE_TRANSACTION("prepareTransaction"),
         SEND_OFFSETS_TO_TRANSACTION("sendOffsetsToTransaction");
-        
+
         final String displayName;
 
         TransactionOperation(String displayName) {
@@ -366,8 +366,8 @@ public class TransactionManager {
         maybeFailWithError();
         transitionTo(State.PREPARED_TRANSACTION);
         this.preparedTxnState = new ProducerIdAndEpoch(
-            this.producerIdAndEpoch.producerId,
-            this.producerIdAndEpoch.epoch
+                this.producerIdAndEpoch.producerId,
+                this.producerIdAndEpoch.epoch
         );
     }
 
@@ -396,12 +396,12 @@ public class TransactionManager {
             enqueueRequest(addPartitionsToTransactionHandler());
 
         EndTxnRequest.Builder builder = new EndTxnRequest.Builder(
-            new EndTxnRequestData()
+                new EndTxnRequestData()
                 .setTransactionalId(transactionalId)
                 .setProducerId(producerIdAndEpoch.producerId)
                 .setProducerEpoch(producerIdAndEpoch.epoch)
                 .setCommitted(transactionResult.id),
-            isTransactionV2Enabled
+                isTransactionV2Enabled
         );
 
         // Maybe update the transaction version here before we enqueue the EndTxn request so there are no races with
@@ -430,7 +430,7 @@ public class TransactionManager {
 
         if (currentState != State.IN_TRANSACTION) {
             throw new IllegalStateException("Cannot send offsets if a transaction is not in progress " +
-                "(currentState= " + currentState + ")");
+                    "(currentState= " + currentState + ")");
         }
 
         // In transaction V2, the client will skip sending AddOffsetsToTxn before sending txnOffsetCommit.
@@ -462,10 +462,10 @@ public class TransactionManager {
         if (isTransactional()) {
             if (!hasProducerId()) {
                 throw new IllegalStateException("Cannot add partition " + topicPartition +
-                    " to transaction before completing a call to initTransactions");
+                        " to transaction before completing a call to initTransactions");
             } else if (currentState != State.IN_TRANSACTION) {
                 throw new IllegalStateException("Cannot add partition " + topicPartition +
-                    " to transaction while in state  " + currentState);
+                        " to transaction while in state  " + currentState);
             } else if (isTransactionV2Enabled()) {
                 txnPartitionMap.getOrCreate(topicPartition);
                 partitionsInTransaction.add(topicPartition);
@@ -812,7 +812,7 @@ public class TransactionManager {
 
         if (hasFatalError()) {
             log.debug("Ignoring batch {} with producer id {}, epoch {}, and sequence number {} " +
-                            "since the producer is already in fatal error state", batch, batch.producerId(),
+                    "since the producer is already in fatal error state", batch, batch.producerId(),
                     batch.producerEpoch(), batch.baseSequence(), exception);
             return;
         }
@@ -861,7 +861,7 @@ public class TransactionManager {
     synchronized void markSequenceUnresolved(ProducerBatch batch) {
         int nextSequence = batch.lastSequence() + 1;
         partitionsWithUnresolvedSequences.compute(batch.topicPartition,
-            (k, v) -> v == null ? nextSequence : Math.max(v, nextSequence));
+                (k, v) -> v == null ? nextSequence : Math.max(v, nextSequence));
         log.debug("Marking partition {} unresolved with next sequence number {}", batch.topicPartition,
                 partitionsWithUnresolvedSequences.get(batch.topicPartition));
     }
@@ -869,7 +869,7 @@ public class TransactionManager {
     // Attempts to resolve unresolved sequences. If all in-flight requests are complete and some partitions are still
     // unresolved, either bump the epoch if possible, or transition to a fatal error
     synchronized void maybeResolveSequences() {
-        for (Iterator<TopicPartition> iter = partitionsWithUnresolvedSequences.keySet().iterator(); iter.hasNext(); ) {
+        for (Iterator<TopicPartition> iter = partitionsWithUnresolvedSequences.keySet().iterator(); iter.hasNext();) {
             TopicPartition topicPartition = iter.next();
             if (!hasInflightBatches(topicPartition)) {
                 // The partition has been fully drained. At this point, the last ack'd sequence should be one less than
@@ -892,7 +892,7 @@ public class TransactionManager {
                     } else {
                         // For the idempotent producer, bump the epoch
                         log.info("No inflight batches remaining for {}, last ack'd sequence for partition is {}, next sequence is {}. " +
-                                        "Going to bump epoch and reset sequence numbers.", topicPartition,
+                                "Going to bump epoch and reset sequence numbers.", topicPartition,
                                 lastAckedSequence(topicPartition).orElse(TxnPartitionEntry.NO_LAST_ACKED_SEQUENCE_NUMBER), sequenceNumber(topicPartition));
                         requestIdempotentEpochBumpForPartition(topicPartition);
                     }
@@ -1138,7 +1138,7 @@ public class TransactionManager {
 
     private void transitionTo(State target, RuntimeException error) {
         if (!currentState.isTransitionValid(currentState, target)) {
-            String idString = transactionalId == null ?  "" : "TransactionalId " + transactionalId + ": ";
+            String idString = transactionalId == null ? "" : "TransactionalId " + transactionalId + ": ";
             String message = idString + "Invalid transition attempted from state "
                     + currentState.name() + " to state " + target.name();
 
@@ -1232,10 +1232,10 @@ public class TransactionManager {
         pendingPartitionsInTransaction.addAll(newPartitionsInTransaction);
         newPartitionsInTransaction.clear();
         AddPartitionsToTxnRequest.Builder builder =
-            AddPartitionsToTxnRequest.Builder.forClient(transactionalId,
-                producerIdAndEpoch.producerId,
-                producerIdAndEpoch.epoch,
-                new ArrayList<>(pendingPartitionsInTransaction));
+                AddPartitionsToTxnRequest.Builder.forClient(transactionalId,
+                    producerIdAndEpoch.producerId,
+                    producerIdAndEpoch.epoch,
+                    new ArrayList<>(pendingPartitionsInTransaction));
         return new AddPartitionsToTxnHandler(builder);
     }
 
@@ -1259,7 +1259,7 @@ public class TransactionManager {
             .setGroupInstanceId(groupMetadata.groupInstanceId().orElse(null))
             .setTopics(TxnOffsetCommitRequest.getTopics(pendingTxnOffsetCommits));
         final TxnOffsetCommitRequest.Builder builder =
-            TxnOffsetCommitRequest.Builder.forTopicNames(data, isTransactionV2Enabled());
+                TxnOffsetCommitRequest.Builder.forTopicNames(data, isTransactionV2Enabled());
         if (result == null) {
             // In this case, transaction V2 is in use.
             return new TxnOffsetCommitHandler(builder);
@@ -1273,8 +1273,8 @@ public class TransactionManager {
                 pendingTransition = null;
             } else {
                 throw new IllegalStateException("Cannot attempt operation `" + operation + "` "
-                    + "because the previous call to `" + pendingTransition.operation + "` "
-                    + "timed out and must be retried");
+                        + "because the previous call to `" + pendingTransition.operation + "` "
+                        + "timed out and must be retried");
             }
         }
     }
@@ -1291,8 +1291,8 @@ public class TransactionManager {
                 pendingTransition = null;
             } else if (nextState != pendingTransition.state) {
                 throw new IllegalStateException("Cannot attempt operation `" + operation + "` "
-                    + "because the previous call to `" + pendingTransition.operation + "` "
-                    + "timed out and must be retried");
+                        + "because the previous call to `" + pendingTransition.operation + "` "
+                        + "timed out and must be retried");
             } else {
                 return pendingTransition.result;
             }
@@ -1520,14 +1520,14 @@ public class TransactionManager {
                 // If this is a transaction with keepPreparedTxn=true, transition directly
                 // to PREPARED_TRANSACTION state IFF there is an ongoing transaction.
                 if (builder.data.keepPreparedTxn() &&
-                    initProducerIdResponse.data().ongoingTxnProducerId() != RecordBatch.NO_PRODUCER_ID
+                        initProducerIdResponse.data().ongoingTxnProducerId() != RecordBatch.NO_PRODUCER_ID
                 ) {
                     transitionTo(State.PREPARED_TRANSACTION);
                     // Update the preparedTxnState with the ongoing pid and epoch from the response.
                     // This will be used to complete the transaction later.
                     TransactionManager.this.preparedTxnState = new ProducerIdAndEpoch(
-                        initProducerIdResponse.data().ongoingTxnProducerId(),
-                        initProducerIdResponse.data().ongoingTxnProducerEpoch()
+                            initProducerIdResponse.data().ongoingTxnProducerId(),
+                            initProducerIdResponse.data().ongoingTxnProducerEpoch()
                     );
                 } else {
                     transitionTo(State.READY);
@@ -1779,8 +1779,8 @@ public class TransactionManager {
                 // occurring at the end of beginCompletingTransaction. The next transaction started should be TV2.
                 if (endTxnResponse.data().producerId() != -1) {
                     ProducerIdAndEpoch producerIdAndEpoch = new ProducerIdAndEpoch(
-                        endTxnResponse.data().producerId(),
-                        endTxnResponse.data().producerEpoch()
+                            endTxnResponse.data().producerId(),
+                            endTxnResponse.data().producerEpoch()
                     );
                     setProducerIdAndEpoch(producerIdAndEpoch);
                     resetSequenceNumbers();
@@ -1948,7 +1948,7 @@ public class TransactionManager {
                     // ILLEGAL_GENERATION. All four indicate a consumer group
                     // metadata mismatch and must abort the transaction.
                     abortableError(new CommitFailedException("Transaction offset Commit failed " +
-                        "due to consumer group metadata mismatch: " + error.exception().getMessage()));
+                            "due to consumer group metadata mismatch: " + error.exception().getMessage()));
                     break;
                 } else if (error == Errors.INVALID_PRODUCER_EPOCH
                         || error == Errors.PRODUCER_FENCED) {

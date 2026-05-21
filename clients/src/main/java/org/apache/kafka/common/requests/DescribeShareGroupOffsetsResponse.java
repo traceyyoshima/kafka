@@ -81,8 +81,8 @@ public class DescribeShareGroupOffsetsResponse extends AbstractResponse {
         groupLevelErrors.values().forEach(exception -> updateErrorCounts(counts, Errors.forException(exception)));
         for (DescribeShareGroupOffsetsResponseGroup group : data.groups()) {
             group.topics().forEach(topic ->
-                topic.partitions().forEach(partition ->
-                    updateErrorCounts(counts, Errors.forCode(partition.errorCode()))));
+                    topic.partitions().forEach(partition ->
+                            updateErrorCounts(counts, Errors.forCode(partition.errorCode()))));
         }
         return counts;
     }

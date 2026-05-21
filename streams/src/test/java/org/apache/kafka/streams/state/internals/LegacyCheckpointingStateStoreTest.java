@@ -108,7 +108,7 @@ public class LegacyCheckpointingStateStoreTest {
     @Test
     public void shouldWrapPersistentNonOffsetManagingStore() {
         final StateStore result = LegacyCheckpointingStateStore.maybeWrapStore(
-            persistentStore, false, Set.of(partition), stateDirectory, taskId, LOG_PREFIX);
+                persistentStore, false, Set.of(partition), stateDirectory, taskId, LOG_PREFIX);
 
         assertThat(result, instanceOf(LegacyCheckpointingStateStore.class));
     }
@@ -118,7 +118,7 @@ public class LegacyCheckpointingStateStoreTest {
         final MockKeyValueStore nonPersistentStore = new MockKeyValueStore(STORE_NAME, false);
 
         final StateStore result = LegacyCheckpointingStateStore.maybeWrapStore(
-            nonPersistentStore, false, Set.of(partition), stateDirectory, taskId, LOG_PREFIX);
+                nonPersistentStore, false, Set.of(partition), stateDirectory, taskId, LOG_PREFIX);
 
         assertThat(result, not(instanceOf(LegacyCheckpointingStateStore.class)));
     }
@@ -134,7 +134,7 @@ public class LegacyCheckpointingStateStoreTest {
         };
 
         final StateStore result = LegacyCheckpointingStateStore.maybeWrapStore(
-            offsetManagingStore, false, Set.of(partition), stateDirectory, taskId, LOG_PREFIX);
+                offsetManagingStore, false, Set.of(partition), stateDirectory, taskId, LOG_PREFIX);
 
         assertThat(result, not(instanceOf(LegacyCheckpointingStateStore.class)));
     }
@@ -189,8 +189,8 @@ public class LegacyCheckpointingStateStoreTest {
     public void shouldReturnPerStoreCheckpointFileForTask() {
         final File result = LegacyCheckpointingStateStore.checkpointFileFor(stateDirectory, taskId, persistentStore);
         final File expected = new File(
-            stateDirectory.getOrCreateDirectoryForTask(taskId),
-            CHECKPOINT_FILE_NAME + "_" + STORE_NAME
+                stateDirectory.getOrCreateDirectoryForTask(taskId),
+                CHECKPOINT_FILE_NAME + "_" + STORE_NAME
         );
 
         assertEquals(expected, result);
@@ -200,8 +200,8 @@ public class LegacyCheckpointingStateStoreTest {
     public void shouldReturnLegacyPerTaskCheckpointFile() {
         final File result = LegacyCheckpointingStateStore.checkpointFileFor(stateDirectory, taskId, null);
         final File expected = new File(
-            stateDirectory.getOrCreateDirectoryForTask(taskId),
-            CHECKPOINT_FILE_NAME
+                stateDirectory.getOrCreateDirectoryForTask(taskId),
+                CHECKPOINT_FILE_NAME
         );
 
         assertEquals(expected, result);
@@ -235,7 +235,7 @@ public class LegacyCheckpointingStateStoreTest {
     @Test
     public void shouldReturnFalseFromCheckpointNeededWhenOldSnapshotIsNull() {
         assertFalse(LegacyCheckpointingStateStore.checkpointNeeded(
-            null, Collections.singletonMap(partition, 100L)));
+                null, Collections.singletonMap(partition, 100L)));
     }
 
     @Test
@@ -243,7 +243,7 @@ public class LegacyCheckpointingStateStoreTest {
         // delta == threshold → NOT greater than → no checkpoint needed
         final Map<TopicPartition, Long> oldOffsets = Collections.emptyMap();
         final Map<TopicPartition, Long> newOffsets = Collections.singletonMap(
-            partition, OFFSET_DELTA_THRESHOLD_FOR_CHECKPOINT);
+                partition, OFFSET_DELTA_THRESHOLD_FOR_CHECKPOINT);
 
         assertFalse(LegacyCheckpointingStateStore.checkpointNeeded(oldOffsets, newOffsets));
     }
@@ -252,7 +252,7 @@ public class LegacyCheckpointingStateStoreTest {
     public void shouldReturnFalseFromCheckpointNeededWhenDeltaBelowThreshold() {
         final Map<TopicPartition, Long> oldOffsets = Collections.emptyMap();
         final Map<TopicPartition, Long> newOffsets = Collections.singletonMap(
-            partition, OFFSET_DELTA_THRESHOLD_FOR_CHECKPOINT / 2);
+                partition, OFFSET_DELTA_THRESHOLD_FOR_CHECKPOINT / 2);
 
         assertFalse(LegacyCheckpointingStateStore.checkpointNeeded(oldOffsets, newOffsets));
     }
@@ -261,7 +261,7 @@ public class LegacyCheckpointingStateStoreTest {
     public void shouldReturnTrueFromCheckpointNeededWhenDeltaExceedsThreshold() {
         final Map<TopicPartition, Long> oldOffsets = Collections.emptyMap();
         final Map<TopicPartition, Long> newOffsets = Collections.singletonMap(
-            partition, OFFSET_DELTA_THRESHOLD_FOR_CHECKPOINT + 1L);
+                partition, OFFSET_DELTA_THRESHOLD_FOR_CHECKPOINT + 1L);
 
         assertTrue(LegacyCheckpointingStateStore.checkpointNeeded(oldOffsets, newOffsets));
     }
@@ -385,8 +385,8 @@ public class LegacyCheckpointingStateStoreTest {
     public void shouldPreserveExistingOffsetsWhenCommittingSubsetOfPartitions() {
         final TopicPartition partitionTwo = new TopicPartition(CHANGELOG_TOPIC, 1);
         final LegacyCheckpointingStateStore<MockKeyValueStore, Object, Object> store =
-            new LegacyCheckpointingStateStore<>(
-                persistentStore, false, Set.of(partition, partitionTwo), stateDirectory, taskId, LOG_PREFIX);
+                new LegacyCheckpointingStateStore<>(
+                    persistentStore, false, Set.of(partition, partitionTwo), stateDirectory, taskId, LOG_PREFIX);
 
         store.commit(Collections.singletonMap(partition, 100L));
         store.commit(Collections.singletonMap(partitionTwo, 200L));
@@ -491,19 +491,19 @@ public class LegacyCheckpointingStateStoreTest {
         Utils.delete(stateDirectory.getOrCreateDirectoryForTask(taskId));
 
         try (final LogCaptureAppender appender =
-                 LogCaptureAppender.createAndRegister(LegacyCheckpointingStateStore.class)) {
+                LogCaptureAppender.createAndRegister(LegacyCheckpointingStateStore.class)) {
             store.checkpoint(); // should log a warning, not throw
 
             assertThat(appender.getMessages(),
-                hasItem(containsString("Failed to write offset checkpoint file")));
+                    hasItem(containsString("Failed to write offset checkpoint file")));
         }
     }
 
     @Test
     public void shouldNotWriteCheckpointWhenChangelogPartitionsIsEmpty() throws IOException {
         final LegacyCheckpointingStateStore<MockKeyValueStore, Object, Object> store =
-            new LegacyCheckpointingStateStore<>(
-                persistentStore, false, Collections.emptySet(), stateDirectory, taskId, LOG_PREFIX);
+                new LegacyCheckpointingStateStore<>(
+                    persistentStore, false, Collections.emptySet(), stateDirectory, taskId, LOG_PREFIX);
 
         store.commit(Collections.singletonMap(partition, 100L));
         store.checkpoint();
@@ -515,8 +515,8 @@ public class LegacyCheckpointingStateStoreTest {
     public void shouldNotWriteCheckpointForNonPersistentStore() throws IOException {
         final MockKeyValueStore nonPersistentStore = new MockKeyValueStore(STORE_NAME, false);
         final LegacyCheckpointingStateStore<MockKeyValueStore, Object, Object> store =
-            new LegacyCheckpointingStateStore<>(
-                nonPersistentStore, false, Set.of(partition), stateDirectory, taskId, LOG_PREFIX);
+                new LegacyCheckpointingStateStore<>(
+                    nonPersistentStore, false, Set.of(partition), stateDirectory, taskId, LOG_PREFIX);
 
         store.commit(Collections.singletonMap(partition, 100L));
         store.checkpoint();
@@ -582,7 +582,7 @@ public class LegacyCheckpointingStateStoreTest {
 
         final LegacyCheckpointingStateStore<MockKeyValueStore, Object, Object> store = createStore(false);
         LegacyCheckpointingStateStore.migrateLegacyOffsets(
-            LOG_PREFIX, stateDirectory, taskId, Collections.singletonMap(partition, store));
+                LOG_PREFIX, stateDirectory, taskId, Collections.singletonMap(partition, store));
 
         assertFalse(legacyFile.exists());
         assertEquals(100L, store.committedOffset(partition));
@@ -596,10 +596,10 @@ public class LegacyCheckpointingStateStoreTest {
         assertTrue(legacyGlobalFile.exists());
 
         final LegacyCheckpointingStateStore<MockKeyValueStore, Object, Object> store =
-            new LegacyCheckpointingStateStore<>(
-                persistentStore, false, Set.of(partition), stateDirectory, null, LOG_PREFIX);
+                new LegacyCheckpointingStateStore<>(
+                    persistentStore, false, Set.of(partition), stateDirectory, null, LOG_PREFIX);
         LegacyCheckpointingStateStore.migrateLegacyOffsets(
-            LOG_PREFIX, stateDirectory, null, Collections.singletonMap(partition, store));
+                LOG_PREFIX, stateDirectory, null, Collections.singletonMap(partition, store));
 
         assertFalse(legacyGlobalFile.exists());
         assertEquals(200L, store.committedOffset(partition));
@@ -613,7 +613,7 @@ public class LegacyCheckpointingStateStoreTest {
         final LegacyCheckpointingStateStore<MockKeyValueStore, Object, Object> store = createStore(false);
         // Should not throw
         LegacyCheckpointingStateStore.migrateLegacyOffsets(
-            LOG_PREFIX, stateDirectory, taskId, Collections.singletonMap(partition, store));
+                LOG_PREFIX, stateDirectory, taskId, Collections.singletonMap(partition, store));
 
         assertNull(store.committedOffset(partition));
     }
@@ -626,12 +626,12 @@ public class LegacyCheckpointingStateStoreTest {
 
         // Use a raw MockKeyValueStore (managesOffsets() == false, not wrapped in LCSS)
         try (final LogCaptureAppender appender =
-                 LogCaptureAppender.createAndRegister(LegacyCheckpointingStateStore.class)) {
+                LogCaptureAppender.createAndRegister(LegacyCheckpointingStateStore.class)) {
             LegacyCheckpointingStateStore.migrateLegacyOffsets(
-                LOG_PREFIX, stateDirectory, taskId, Collections.singletonMap(partition, persistentStore));
+                    LOG_PREFIX, stateDirectory, taskId, Collections.singletonMap(partition, persistentStore));
 
             assertThat(appender.getMessages(),
-                hasItem(containsString("does not manage its own offsets")));
+                    hasItem(containsString("does not manage its own offsets")));
         }
     }
 
@@ -648,8 +648,8 @@ public class LegacyCheckpointingStateStoreTest {
         };
 
         assertThrows(ProcessorStateException.class, () ->
-            LegacyCheckpointingStateStore.migrateLegacyOffsets(
-                LOG_PREFIX, stateDirectory, taskId, Collections.singletonMap(partition, throwingStore)));
+                LegacyCheckpointingStateStore.migrateLegacyOffsets(
+                    LOG_PREFIX, stateDirectory, taskId, Collections.singletonMap(partition, throwingStore)));
     }
 
     // =====================================================================
@@ -661,7 +661,7 @@ public class LegacyCheckpointingStateStoreTest {
         final Map<TopicPartition, Long> offsets = Collections.singletonMap(partition, 100L);
 
         LegacyCheckpointingStateStore.maybeDowngradeOffsets(
-            LOG_PREFIX, UpgradeFromValues.UPGRADE_FROM_42, stateDirectory, taskId, offsets);
+                LOG_PREFIX, UpgradeFromValues.UPGRADE_FROM_42, stateDirectory, taskId, offsets);
 
         final File legacyFile = LegacyCheckpointingStateStore.checkpointFileFor(stateDirectory, taskId, null);
         assertTrue(legacyFile.exists());
@@ -672,7 +672,7 @@ public class LegacyCheckpointingStateStoreTest {
     @Test
     public void shouldBeNoOpWhenUpgradeFromIsNull() {
         LegacyCheckpointingStateStore.maybeDowngradeOffsets(
-            LOG_PREFIX, null, stateDirectory, taskId, Collections.singletonMap(partition, 100L));
+                LOG_PREFIX, null, stateDirectory, taskId, Collections.singletonMap(partition, 100L));
 
         final File legacyFile = LegacyCheckpointingStateStore.checkpointFileFor(stateDirectory, taskId, null);
         assertFalse(legacyFile.exists());
@@ -686,7 +686,7 @@ public class LegacyCheckpointingStateStoreTest {
         offsets.put(otherPartition, null);
 
         LegacyCheckpointingStateStore.maybeDowngradeOffsets(
-            LOG_PREFIX, UpgradeFromValues.UPGRADE_FROM_42, stateDirectory, taskId, offsets);
+                LOG_PREFIX, UpgradeFromValues.UPGRADE_FROM_42, stateDirectory, taskId, offsets);
 
         final File legacyFile = LegacyCheckpointingStateStore.checkpointFileFor(stateDirectory, taskId, null);
         final Map<TopicPartition, Long> written = new OffsetCheckpoint(legacyFile).read();
@@ -703,7 +703,7 @@ public class LegacyCheckpointingStateStoreTest {
         final Map<TopicPartition, Long> offsets = Collections.singletonMap(partition, 200L);
 
         LegacyCheckpointingStateStore.maybeDowngradeOffsets(
-            LOG_PREFIX, UpgradeFromValues.UPGRADE_FROM_40, stateDirectory, null, offsets);
+                LOG_PREFIX, UpgradeFromValues.UPGRADE_FROM_40, stateDirectory, null, offsets);
 
         final File legacyGlobalFile = LegacyCheckpointingStateStore.checkpointFileFor(stateDirectory, null, null);
         assertTrue(legacyGlobalFile.exists());
@@ -721,14 +721,14 @@ public class LegacyCheckpointingStateStoreTest {
             }
 
             LegacyCheckpointingStateStore.maybeDowngradeOffsets(
-                LOG_PREFIX, version, stateDirectory, taskId, Collections.singletonMap(partition, 100L));
+                    LOG_PREFIX, version, stateDirectory, taskId, Collections.singletonMap(partition, 100L));
 
             if (version.ordinal() <= UpgradeFromValues.UPGRADE_FROM_42.ordinal()) {
                 assertTrue(legacyFile.exists(),
-                    "Expected downgrade checkpoint for " + version);
+                        "Expected downgrade checkpoint for " + version);
             } else {
                 assertFalse(legacyFile.exists(),
-                    "Expected no downgrade checkpoint for " + version);
+                        "Expected no downgrade checkpoint for " + version);
             }
         }
     }
@@ -739,7 +739,7 @@ public class LegacyCheckpointingStateStoreTest {
 
     private LegacyCheckpointingStateStore<MockKeyValueStore, Object, Object> createStore(final boolean eosEnabled) {
         return new LegacyCheckpointingStateStore<>(
-            persistentStore, eosEnabled, Set.of(partition), stateDirectory, taskId, LOG_PREFIX);
+                persistentStore, eosEnabled, Set.of(partition), stateDirectory, taskId, LOG_PREFIX);
     }
 
     private File storeCheckpointFile() {

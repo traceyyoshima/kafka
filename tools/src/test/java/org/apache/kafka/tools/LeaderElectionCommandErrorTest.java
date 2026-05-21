@@ -36,9 +36,9 @@ public class LeaderElectionCommandErrorTest {
     @Test
     public void testTopicWithoutPartition() {
         String[] args = {
-            "--bootstrap-server", "nohost:9092",
-            "--election-type", "unclean",
-            "--topic", "some-topic"
+                "--bootstrap-server", "nohost:9092",
+                "--election-type", "unclean",
+                "--topic", "some-topic"
         };
         assertEquals(1, LeaderElectionCommand.mainNoExit(args));
         String out = ToolsTestUtils.captureStandardErr(() -> LeaderElectionCommand.mainNoExit(args));
@@ -49,10 +49,10 @@ public class LeaderElectionCommandErrorTest {
     @Test
     public void testPartitionWithoutTopic() {
         String[] args = {
-            "--bootstrap-server", "nohost:9092",
-            "--election-type", "unclean",
-            "--all-topic-partitions",
-            "--partition", "0"
+                "--bootstrap-server", "nohost:9092",
+                "--election-type", "unclean",
+                "--all-topic-partitions",
+                "--partition", "0"
         };
         assertEquals(1, LeaderElectionCommand.mainNoExit(args));
         String out = ToolsTestUtils.captureStandardErr(() -> LeaderElectionCommand.mainNoExit(args));
@@ -62,9 +62,9 @@ public class LeaderElectionCommandErrorTest {
     @Test
     public void testMissingElectionType() {
         String[] args = {
-            "--bootstrap-server", "nohost:9092",
-            "--topic", "some-topic",
-            "--partition", "0"
+                "--bootstrap-server", "nohost:9092",
+                "--topic", "some-topic",
+                "--partition", "0"
         };
         assertEquals(1, LeaderElectionCommand.mainNoExit(args));
         String out = ToolsTestUtils.captureStandardErr(() -> LeaderElectionCommand.mainNoExit(args));
@@ -75,8 +75,8 @@ public class LeaderElectionCommandErrorTest {
     @Test
     public void testMissingTopicPartitionSelection() {
         String[] args = {
-            "--bootstrap-server", "nohost:9092",
-            "--election-type", "preferred"
+                "--bootstrap-server", "nohost:9092",
+                "--election-type", "preferred"
         };
         assertEquals(1, LeaderElectionCommand.mainNoExit(args));
         String out = ToolsTestUtils.captureStandardErr(() -> LeaderElectionCommand.mainNoExit(args));
@@ -91,10 +91,10 @@ public class LeaderElectionCommandErrorTest {
         // Use RFC 5737 TEST-NET-1 (192.0.2.0/24) - a non-routable address reserved for
         // documentation and testing. This address guarantees a connection timeout.
         Throwable e = assertThrows(AdminCommandFailedException.class, () -> LeaderElectionCommand.run(
-            Duration.ofSeconds(1),
-            "--bootstrap-server", "192.0.2.1:9092",
-            "--election-type", "unclean",
-            "--all-topic-partitions"
+                Duration.ofSeconds(1),
+                "--bootstrap-server", "192.0.2.1:9092",
+                "--election-type", "unclean",
+                "--all-topic-partitions"
         ));
         assertInstanceOf(TimeoutException.class, e.getCause());
     }

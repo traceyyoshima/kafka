@@ -105,14 +105,14 @@ public class TaskExecutor {
             // TODO consolidate TimeoutException retries with general error handling
             task.maybeInitTaskTimeoutOrThrow(now, timeoutException);
             log.error(
-                String.format(
-                    "Could not complete processing records for %s due to the following exception; will move to next task and retry later",
-                    task.id()),
-                timeoutException
+                    String.format(
+                        "Could not complete processing records for %s due to the following exception; will move to next task and retry later",
+                        task.id()),
+                    timeoutException
             );
         } catch (final TaskMigratedException e) {
             log.info("Failed to process stream task {} since it got migrated to another thread already. " +
-                "Will trigger a new rebalance and close all tasks as zombies together.", task.id());
+                    "Will trigger a new rebalance and close all tasks as zombies together.", task.id());
             throw e;
         } catch (final StreamsException e) {
             log.error(String.format("Failed to process stream task %s due to the following error:", task.id()), e);
@@ -185,13 +185,13 @@ public class TaskExecutor {
                     updateTaskCommitMetadata(allOffsets);
                 } catch (final TimeoutException timeoutException) {
                     log.error(
-                        String.format("Committing task(s) %s failed.",
-                                      offsetsPerTask
+                            String.format("Committing task(s) %s failed.",
+                                offsetsPerTask
                                           .keySet()
                                           .stream()
                                           .map(t -> t.id().toString())
                                           .collect(Collectors.joining(", "))),
-                        timeoutException
+                            timeoutException
                     );
                     offsetsPerTask
                         .keySet()
@@ -209,16 +209,16 @@ public class TaskExecutor {
                     updateTaskCommitMetadata(allOffsets);
                 } catch (final CommitFailedException error) {
                     throw new TaskMigratedException("Consumer committing offsets failed, " +
-                                                        "indicating the corresponding thread is no longer part of the group", error);
+                            "indicating the corresponding thread is no longer part of the group", error);
                 } catch (final TimeoutException timeoutException) {
                     log.error(
-                        String.format("Committing task(s) %s failed.",
-                                      offsetsPerTask
+                            String.format("Committing task(s) %s failed.",
+                                offsetsPerTask
                                           .keySet()
                                           .stream()
                                           .map(t -> t.id().toString())
                                           .collect(Collectors.joining(", "))),
-                        timeoutException
+                            timeoutException
                     );
                     throw timeoutException;
                 } catch (final KafkaException error) {
@@ -246,8 +246,8 @@ public class TaskExecutor {
     private void commitSuccessfullyProcessedTasks() {
         if (!executionMetadata.successfullyProcessed().isEmpty()) {
             log.info("Streams encountered an error when processing tasks." +
-                " Will commit all previously successfully processed tasks {}",
-                executionMetadata.successfullyProcessed().stream().map(Task::id));
+                    " Will commit all previously successfully processed tasks {}",
+                    executionMetadata.successfullyProcessed().stream().map(Task::id));
             commitTasksAndMaybeUpdateCommittableOffsets(executionMetadata.successfullyProcessed(), new HashMap<>());
         }
         executionMetadata.clearSuccessfullyProcessed();
@@ -271,7 +271,7 @@ public class TaskExecutor {
                 }
             } catch (final TaskMigratedException e) {
                 log.info("Failed to punctuate stream task {} since it got migrated to another thread already. " +
-                    "Will trigger a new rebalance and close all tasks as zombies together.", task.id());
+                        "Will trigger a new rebalance and close all tasks as zombies together.", task.id());
                 throw e;
             } catch (final StreamsException e) {
                 log.error("Failed to punctuate stream task {} due to the following error:", task.id(), e);

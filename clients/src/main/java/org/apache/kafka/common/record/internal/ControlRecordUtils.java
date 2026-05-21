@@ -93,11 +93,11 @@ public class ControlRecordUtils {
     private static void validateControlRecordType(ControlRecordType expected, ControlRecordType actual) {
         if (actual != expected) {
             throw new IllegalArgumentException(
-                String.format(
-                    "Expected %s control record type(%d), but found %s",
-                    expected,
-                    expected.type(),
-                    actual
+                    String.format(
+                        "Expected %s control record type(%d), but found %s",
+                        expected,
+                        expected.type(),
+                        actual
                 )
             );
         }

@@ -73,7 +73,6 @@ public interface ShareCoordinator {
      */
     CompletableFuture<WriteShareGroupStateResponseData> writeState(RequestContext context, WriteShareGroupStateRequestData request);
 
-
     /**
      * Handle read share state call
      * @param context - represents the incoming read request context

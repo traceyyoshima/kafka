@@ -68,15 +68,15 @@ public final class MetaPropertiesVersionTest {
     @Test
     public void testFromInvalidNumber() {
         assertEquals("Unknown meta.properties version number 2",
-            assertThrows(RuntimeException.class,
-                () -> MetaPropertiesVersion.fromNumber(2)).getMessage());
+                assertThrows(RuntimeException.class,
+                    () -> MetaPropertiesVersion.fromNumber(2)).getMessage());
     }
 
     @Test
     public void testFromInvalidString() {
         assertEquals("Invalid meta.properties version string 'orange'",
-            assertThrows(RuntimeException.class,
-                () -> MetaPropertiesVersion.fromNumberString("orange")).getMessage());
+                assertThrows(RuntimeException.class,
+                    () -> MetaPropertiesVersion.fromNumberString("orange")).getMessage());
     }
 
     @Test

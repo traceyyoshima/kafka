@@ -46,18 +46,18 @@ public class DescribeShareGroupsResult {
      */
     public KafkaFuture<Map<String, ShareGroupDescription>> all() {
         return KafkaFuture.allOf(futures.values().toArray(new KafkaFuture<?>[0])).thenApply(
-            nil -> {
-                Map<String, ShareGroupDescription> descriptions = new HashMap<>(futures.size());
-                futures.forEach((key, future) -> {
-                    try {
-                        descriptions.put(key, future.get());
-                    } catch (InterruptedException | ExecutionException e) {
-                        // This should be unreachable, since the KafkaFuture#allOf already ensured
-                        // that all of the futures completed successfully.
-                        throw new RuntimeException(e);
-                    }
+                nil -> {
+                    Map<String, ShareGroupDescription> descriptions = new HashMap<>(futures.size());
+                    futures.forEach((key, future) -> {
+                        try {
+                            descriptions.put(key, future.get());
+                        } catch (InterruptedException | ExecutionException e) {
+                            // This should be unreachable, since the KafkaFuture#allOf already ensured
+                            // that all of the futures completed successfully.
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    return descriptions;
                 });
-                return descriptions;
-            });
     }
 }

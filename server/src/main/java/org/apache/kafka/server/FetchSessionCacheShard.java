@@ -77,9 +77,9 @@ public class FetchSessionCacheShard {
      * if one exists with the same name. It's safe for concurrent use because Meter is thread-safe.
      */
     private final Meter evictionsMeter = FetchSession.FetchSessionCache.METRICS_GROUP.newMeter(
-        FetchSession.INCREMENTAL_FETCH_SESSIONS_EVICTIONS_PER_SEC,
-        FetchSession.EVICTIONS,
-        TimeUnit.SECONDS
+            FetchSession.INCREMENTAL_FETCH_SESSIONS_EVICTIONS_PER_SEC,
+            FetchSession.EVICTIONS,
+            TimeUnit.SECONDS
     );
 
     private final int maxEntries;
@@ -172,7 +172,7 @@ public class FetchSessionCacheShard {
         if ((sessions.size() < maxEntries) || tryEvict(privileged, new EvictableKey(privileged, size, 0), now)) {
             ImplicitLinkedHashCollection<FetchSession.CachedPartition> partitionMap = createPartitions.get();
             FetchSession session = new FetchSession(newSessionId(), privileged, partitionMap, usesTopicIds,
-                now, now, FetchMetadata.nextEpoch(INITIAL_EPOCH));
+                    now, now, FetchMetadata.nextEpoch(INITIAL_EPOCH));
             logger.debug("Created fetch session {}", session);
             sessions.put(session.id(), session);
             touch(session, now);

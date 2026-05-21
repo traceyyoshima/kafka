@@ -76,7 +76,7 @@ public class KStreamWindowAggregate<KIn, VIn, VAgg, W extends Window> implements
         if (emitStrategy.type() == StrategyType.ON_WINDOW_CLOSE) {
             if (!(windows instanceof TimeWindows)) {
                 throw new IllegalArgumentException("ON_WINDOW_CLOSE strategy is only supported for "
-                    + "TimeWindows and SlidingWindows for TimeWindowedKStream");
+                        + "TimeWindows and SlidingWindows for TimeWindowedKStream");
             }
         }
     }
@@ -111,13 +111,13 @@ public class KStreamWindowAggregate<KIn, VIn, VAgg, W extends Window> implements
                 if (context().recordMetadata().isPresent()) {
                     final RecordMetadata recordMetadata = context().recordMetadata().get();
                     log.warn(
-                        "Skipping record due to null key. "
+                            "Skipping record due to null key. "
                             + "topic=[{}] partition=[{}] offset=[{}]",
-                        recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
+                            recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
                     );
                 } else {
                     log.warn(
-                        "Skipping record due to null key. Topic, partition, and offset not known."
+                            "Skipping record due to null key. Topic, partition, and offset not known."
                     );
                 }
                 droppedRecordsSensor.record();
@@ -230,7 +230,7 @@ public class KStreamWindowAggregate<KIn, VIn, VAgg, W extends Window> implements
                     final StateStore store = context.getStateStore(storeName);
                     final String storeType = store == null ? "null" : store.getClass().getName();
                     throw new InvalidStateStoreException("Windowed-KTable state store must implement either "
-                        + "TimestampedWindowStore, or TimestampedWindowStoreWithHeaders. Got: " + storeType);
+                            + "TimestampedWindowStore, or TimestampedWindowStoreWithHeaders. Got: " + storeType);
                 }
             }
         }

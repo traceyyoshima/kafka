@@ -84,10 +84,10 @@ public class EndQuorumEpochRequest extends AbstractRequest {
         return new EndQuorumEpochRequestData()
                    .setClusterId(clusterId)
                    .setTopics(List.of(
-                       new EndQuorumEpochRequestData.TopicData()
+                           new EndQuorumEpochRequestData.TopicData()
                            .setTopicName(topicPartition.topic())
                            .setPartitions(List.of(
-                               new EndQuorumEpochRequestData.PartitionData()
+                                   new EndQuorumEpochRequestData.PartitionData()
                                    .setPartitionIndex(topicPartition.partition())
                                    .setLeaderEpoch(leaderEpoch)
                                    .setLeaderId(leaderId)

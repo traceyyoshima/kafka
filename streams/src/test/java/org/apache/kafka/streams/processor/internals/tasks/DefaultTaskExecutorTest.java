@@ -145,7 +145,6 @@ public class DefaultTaskExecutorTest {
         verify(task, timeout(VERIFICATION_TIMEOUT).atLeastOnce()).recordProcessBatchTime(anyLong());
     }
 
-
     @Test
     public void shouldClearTaskTimeoutOnProcessed() {
         when(taskExecutionMetadata.canProcessTask(any(), anyLong())).thenReturn(true);

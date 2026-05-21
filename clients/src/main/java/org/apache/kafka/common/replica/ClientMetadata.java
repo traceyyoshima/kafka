@@ -51,7 +51,6 @@ public interface ClientMetadata {
      */
     String listenerName();
 
-
     class DefaultClientMetadata implements ClientMetadata {
         private final String rackId;
         private final String clientId;

@@ -75,6 +75,6 @@ public class DescribeDelegationTokenRequest extends AbstractRequest {
 
     public static DescribeDelegationTokenRequest parse(Readable readable, short version) {
         return new DescribeDelegationTokenRequest(new DescribeDelegationTokenRequestData(
-            readable, version), version);
+                readable, version), version);
     }
 }

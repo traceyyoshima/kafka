@@ -66,7 +66,6 @@ public class SharePartitionKey {
         return getInstance(groupId, topicIdPartition.topicId(), topicIdPartition.partition());
     }
 
-
     /**
      * Returns a SharePartitionKey from input string of format - groupId:topicId:partition.
      * The key is parsed from the right: partition is the last segment, topicId is
@@ -156,8 +155,8 @@ public class SharePartitionKey {
     @Override
     public String toString() {
         return "SharePartitionKey{" +
-            "groupId=" + groupId +
-            ", topicIdPartition=" + topicIdPartition +
-            '}';
+                "groupId=" + groupId +
+                ", topicIdPartition=" + topicIdPartition +
+                '}';
     }
 }

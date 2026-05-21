@@ -38,7 +38,7 @@ import java.util.Objects;
  * header-aware store stack (change-logging, caching, metering).
  */
 public class SessionStoreWithHeadersBuilder<K, V>
-    extends AbstractStoreBuilder<K, AggregationWithHeaders<V>, SessionStoreWithHeaders<K, V>> {
+        extends AbstractStoreBuilder<K, AggregationWithHeaders<V>, SessionStoreWithHeaders<K, V>> {
 
     private final SessionBytesStoreSupplier storeSupplier;
 
@@ -47,10 +47,10 @@ public class SessionStoreWithHeadersBuilder<K, V>
                                           final Serde<V> valueSerde,
                                           final Time time) {
         super(
-            Objects.requireNonNull(storeSupplier, "storeSupplier cannot be null").name(),
-            keySerde,
-            valueSerde == null ? null : new AggregationWithHeadersSerde<>(valueSerde),
-            time
+                Objects.requireNonNull(storeSupplier, "storeSupplier cannot be null").name(),
+                keySerde,
+                valueSerde == null ? null : new AggregationWithHeadersSerde<>(valueSerde),
+                time
         );
         Objects.requireNonNull(storeSupplier.metricsScope(), "storeSupplier's metricsScope can't be null");
         this.storeSupplier = storeSupplier;
@@ -68,11 +68,11 @@ public class SessionStoreWithHeadersBuilder<K, V>
             }
         }
         return new MeteredSessionStoreWithHeaders<>(
-            maybeWrapCaching(maybeWrapLogging(sessionStore)),
-            storeSupplier.metricsScope(),
-            keySerde,
-            valueSerde,
-            time
+                maybeWrapCaching(maybeWrapLogging(sessionStore)),
+                storeSupplier.metricsScope(),
+                keySerde,
+                valueSerde,
+                time
         );
     }
 
@@ -95,8 +95,8 @@ public class SessionStoreWithHeadersBuilder<K, V>
     }
 
     private static final class InMemorySessionStoreWithHeadersMarker
-        extends WrappedStateStore<SessionStore<Bytes, byte[]>, Bytes, byte[]>
-        implements SessionStore<Bytes, byte[]>, HeadersBytesStore {
+            extends WrappedStateStore<SessionStore<Bytes, byte[]>, Bytes, byte[]>
+            implements SessionStore<Bytes, byte[]>, HeadersBytesStore {
         private InMemorySessionStoreWithHeadersMarker(final SessionStore<Bytes, byte[]> wrapped) {
             super(wrapped);
             if (wrapped.persistent()) {

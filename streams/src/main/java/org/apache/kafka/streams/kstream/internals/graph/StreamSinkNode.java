@@ -41,13 +41,12 @@ public class StreamSinkNode<K, V> extends GraphNode {
         this.producedInternal = producedInternal;
     }
 
-
     @Override
     public String toString() {
         return "StreamSinkNode{" +
-               "topicNameExtractor=" + topicNameExtractor +
-               ", producedInternal=" + producedInternal +
-               "} " + super.toString();
+                "topicNameExtractor=" + topicNameExtractor +
+                ", producedInternal=" + producedInternal +
+                "} " + super.toString();
     }
 
     @Override

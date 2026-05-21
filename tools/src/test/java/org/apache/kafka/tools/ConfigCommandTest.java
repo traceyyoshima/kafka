@@ -93,22 +93,22 @@ public class ConfigCommandTest {
     @Test
     public void shouldExitWithNonZeroStatusAlterUserQuotaWithoutEntityName() {
         assertNonZeroStatusExit(toArray(BROKER_BOOTSTRAP, List.of(
-            "--entity-type", "users",
-            "--alter", "--add-config", "consumer_byte_rate=20000")));
+                "--entity-type", "users",
+                "--alter", "--add-config", "consumer_byte_rate=20000")));
     }
 
     @Test
     public void shouldExitWithNonZeroStatusOnBrokerCommandError() {
         assertNonZeroStatusExit("--bootstrap-server", "invalid host",
-            "--entity-type", "brokers",
-            "--entity-name", "1",
-            "--describe");
+                "--entity-type", "brokers",
+                "--entity-name", "1",
+                "--describe");
     }
 
     @Test
     public void shouldExitWithNonZeroStatusIfBothBootstrapServerAndBootstrapControllerGiven() {
         assertNonZeroStatusExit(toArray(BROKER_BOOTSTRAP, CONTROLLER_BOOTSTRAP, List.of(
-            "--describe", "--broker-defaults")));
+                "--describe", "--broker-defaults")));
     }
 
     public static void assertNonZeroStatusExit(String... args) {
@@ -207,71 +207,71 @@ public class ConfigCommandTest {
 
         // Should parse correctly
         ConfigCommand.ConfigCommandOptions createOpts = new ConfigCommand.ConfigCommandOptions(toArray(connectOpts1, connectOpts2,
-            "--entity-name", "1",
-            "--entity-type", entityType,
-            "--describe"));
+                "--entity-name", "1",
+                "--entity-type", entityType,
+                "--describe"));
         createOpts.checkArgs();
 
         createOpts = new ConfigCommand.ConfigCommandOptions(toArray(connectOpts1, connectOpts2,
-            shortFlag, "1",
-            "--describe"));
+                shortFlag, "1",
+                "--describe"));
         createOpts.checkArgs();
 
         // For --alter and added config
         createOpts = new ConfigCommand.ConfigCommandOptions(toArray(connectOpts1, connectOpts2,
-            "--entity-name", "1",
-            "--entity-type", entityType,
-            "--alter",
-            "--add-config", "a=b,c=d"));
+                "--entity-name", "1",
+                "--entity-type", entityType,
+                "--alter",
+                "--add-config", "a=b,c=d"));
         createOpts.checkArgs();
 
         createOpts = new ConfigCommand.ConfigCommandOptions(toArray(connectOpts1, connectOpts2,
-            "--entity-name", "1",
-            "--entity-type", entityType,
-            "--alter",
-            "--add-config-file", "/tmp/new.properties"));
+                "--entity-name", "1",
+                "--entity-type", entityType,
+                "--alter",
+                "--add-config-file", "/tmp/new.properties"));
         createOpts.checkArgs();
 
         createOpts = new ConfigCommand.ConfigCommandOptions(toArray(connectOpts1, connectOpts2,
-            shortFlag, "1",
-            "--alter",
-            "--add-config", "a=b,c=d"));
+                shortFlag, "1",
+                "--alter",
+                "--add-config", "a=b,c=d"));
         createOpts.checkArgs();
 
         createOpts = new ConfigCommand.ConfigCommandOptions(toArray(connectOpts1, connectOpts2,
-            shortFlag, "1",
-            "--alter",
-            "--add-config-file", "/tmp/new.properties"));
+                shortFlag, "1",
+                "--alter",
+                "--add-config-file", "/tmp/new.properties"));
         createOpts.checkArgs();
 
         // For alter and deleted config
         createOpts = new ConfigCommand.ConfigCommandOptions(toArray(connectOpts1, connectOpts2,
-            "--entity-name", "1",
-            "--entity-type", entityType,
-            "--alter",
-            "--delete-config", "a,b,c"));
+                "--entity-name", "1",
+                "--entity-type", entityType,
+                "--alter",
+                "--delete-config", "a,b,c"));
         createOpts.checkArgs();
 
         createOpts = new ConfigCommand.ConfigCommandOptions(toArray(connectOpts1, connectOpts2,
-            shortFlag, "1",
-            "--alter",
-            "--delete-config", "a,b,c"));
+                shortFlag, "1",
+                "--alter",
+                "--delete-config", "a,b,c"));
         createOpts.checkArgs();
 
         // For alter and both added, deleted config
         createOpts = new ConfigCommand.ConfigCommandOptions(toArray(connectOpts1, connectOpts2,
-            "--entity-name", "1",
-            "--entity-type", entityType,
-            "--alter",
-            "--add-config", "a=b,c=d",
-            "--delete-config", "a"));
+                "--entity-name", "1",
+                "--entity-type", entityType,
+                "--alter",
+                "--add-config", "a=b,c=d",
+                "--delete-config", "a"));
         createOpts.checkArgs();
 
         createOpts = new ConfigCommand.ConfigCommandOptions(toArray(connectOpts1, connectOpts2,
-            shortFlag, "1",
-            "--alter",
-            "--add-config", "a=b,c=d",
-            "--delete-config", "a"));
+                shortFlag, "1",
+                "--alter",
+                "--add-config", "a=b,c=d",
+                "--delete-config", "a"));
         createOpts.checkArgs();
 
         Properties addedProps = ConfigCommand.parseConfigsToBeAdded(createOpts);
@@ -284,16 +284,16 @@ public class ConfigCommandTest {
         assertEquals("a", deletedProps.get(0));
 
         createOpts = new ConfigCommand.ConfigCommandOptions(toArray(connectOpts1, connectOpts2,
-            "--entity-name", "1",
-            "--entity-type", entityType,
-            "--alter",
-            "--add-config", "a=b,c=,d=e,f="));
+                "--entity-name", "1",
+                "--entity-type", entityType,
+                "--alter",
+                "--add-config", "a=b,c=,d=e,f="));
         createOpts.checkArgs();
 
         createOpts = new ConfigCommand.ConfigCommandOptions(toArray(connectOpts1, connectOpts2,
-            shortFlag, "1",
-            "--alter",
-            "--add-config", "a._-c=b,c=,d=e,a$b=c,f="));
+                shortFlag, "1",
+                "--alter",
+                "--add-config", "a._-c=b,c=,d=e,a$b=c,f="));
         createOpts.checkArgs();
 
         Properties addedProps2 = ConfigCommand.parseConfigsToBeAdded(createOpts);
@@ -305,31 +305,31 @@ public class ConfigCommandTest {
         assertTrue(addedProps2.getProperty("f").isEmpty());
 
         ConfigCommand.ConfigCommandOptions inValidCreateOpts = new ConfigCommand.ConfigCommandOptions(toArray(connectOpts1, connectOpts2,
-            shortFlag, "1",
-            "--alter",
-            "--add-config", "a;c=b"));
+                shortFlag, "1",
+                "--alter",
+                "--add-config", "a;c=b"));
 
         assertThrows(IllegalArgumentException.class,
-            () -> ConfigCommand.parseConfigsToBeAdded(inValidCreateOpts));
+                () -> ConfigCommand.parseConfigsToBeAdded(inValidCreateOpts));
 
         ConfigCommand.ConfigCommandOptions inValidCreateOpts2 = new ConfigCommand.ConfigCommandOptions(toArray(connectOpts1, connectOpts2,
-            shortFlag, "1",
-            "--alter",
-            "--add-config", "a,=b"));
+                shortFlag, "1",
+                "--alter",
+                "--add-config", "a,=b"));
 
         assertThrows(IllegalArgumentException.class,
-            () -> ConfigCommand.parseConfigsToBeAdded(inValidCreateOpts2));
+                () -> ConfigCommand.parseConfigsToBeAdded(inValidCreateOpts2));
     }
 
     @Test
     public void shouldFailIfAddAndAddFile() {
         // Should not parse correctly
         ConfigCommand.ConfigCommandOptions createOpts = new ConfigCommand.ConfigCommandOptions(toArray("--bootstrap-server", "localhost:9092",
-            "--entity-name", "1",
-            "--entity-type", "brokers",
-            "--alter",
-            "--add-config", "a=b,c=d",
-            "--add-config-file", "/tmp/new.properties"
+                "--entity-name", "1",
+                "--entity-type", "brokers",
+                "--alter",
+                "--add-config", "a=b,c=d",
+                "--add-config-file", "/tmp/new.properties"
         ));
         assertThrows(IllegalArgumentException.class, createOpts::checkArgs);
     }
@@ -337,58 +337,58 @@ public class ConfigCommandTest {
     @Test
     public void testEntityDefaultForType() {
         ConfigCommand.ConfigCommandOptions createOpts = new ConfigCommand.ConfigCommandOptions(toArray("--bootstrap-server", "localhost:9092",
-            "--entity-default",
-            "--entity-type", "topics",
-            "--describe"
+                "--entity-default",
+                "--entity-type", "topics",
+                "--describe"
         ));
         assertThrows(IllegalArgumentException.class, createOpts::checkArgs);
 
         createOpts = new ConfigCommand.ConfigCommandOptions(toArray("--bootstrap-server", "localhost:9092",
-            "--entity-default",
-            "--entity-type", "clients",
-            "--describe"
+                "--entity-default",
+                "--entity-type", "clients",
+                "--describe"
         ));
         createOpts.checkArgs();
 
         createOpts = new ConfigCommand.ConfigCommandOptions(toArray("--bootstrap-server", "localhost:9092",
-            "--entity-default",
-            "--entity-type", "users",
-            "--describe"
+                "--entity-default",
+                "--entity-type", "users",
+                "--describe"
         ));
         createOpts.checkArgs();
 
         createOpts = new ConfigCommand.ConfigCommandOptions(toArray("--bootstrap-server", "localhost:9092",
-            "--entity-default",
-            "--entity-type", "brokers",
-            "--describe"
+                "--entity-default",
+                "--entity-type", "brokers",
+                "--describe"
         ));
         createOpts.checkArgs();
 
         createOpts = new ConfigCommand.ConfigCommandOptions(toArray("--bootstrap-server", "localhost:9092",
-            "--entity-default",
-            "--entity-type", "broker-loggers",
-            "--describe"
+                "--entity-default",
+                "--entity-type", "broker-loggers",
+                "--describe"
         ));
         assertThrows(IllegalArgumentException.class, createOpts::checkArgs);
 
         createOpts = new ConfigCommand.ConfigCommandOptions(toArray("--bootstrap-server", "localhost:9092",
-            "--entity-default",
-            "--entity-type", "ips",
-            "--describe"
+                "--entity-default",
+                "--entity-type", "ips",
+                "--describe"
         ));
         createOpts.checkArgs();
 
         createOpts = new ConfigCommand.ConfigCommandOptions(toArray("--bootstrap-server", "localhost:9092",
-            "--entity-default",
-            "--entity-type", "client-metrics",
-            "--describe"
+                "--entity-default",
+                "--entity-type", "client-metrics",
+                "--describe"
         ));
         assertThrows(IllegalArgumentException.class, createOpts::checkArgs);
 
         createOpts = new ConfigCommand.ConfigCommandOptions(toArray("--bootstrap-server", "localhost:9092",
-            "--entity-default",
-            "--entity-type", "groups",
-            "--describe"
+                "--entity-default",
+                "--entity-type", "groups",
+                "--describe"
         ));
         assertThrows(IllegalArgumentException.class, createOpts::checkArgs);
     }
@@ -396,10 +396,10 @@ public class ConfigCommandTest {
     @Test
     public void testParseConfigsToBeAddedForAddConfigFile() throws IOException {
         String fileContents =
-            "a=b\n" +
-            "c = d\n" +
-            "json = {\"key\": \"val\"}\n" +
-            "nested = [[1, 2], [3, 4]]";
+                "a=b\n" +
+                "c = d\n" +
+                "json = {\"key\": \"val\"}\n" +
+                "nested = [[1, 2], [3, 4]]";
 
         File file = TestUtils.tempFile(fileContents);
 
@@ -409,7 +409,7 @@ public class ConfigCommandTest {
                 "--entity-name", "1",
                 "--entity-type", "brokers",
                 "--alter"),
-            addConfigFileArgs));
+                addConfigFileArgs));
         createOpts.checkArgs();
 
         Properties addedProps = ConfigCommand.parseConfigsToBeAdded(createOpts);
@@ -436,16 +436,16 @@ public class ConfigCommandTest {
         testExpectedEntityTypeNames(List.of(ConfigType.CLIENT_METRICS.value()), List.of("A"), connectOpts, "--entity-type", "client-metrics", "--entity-name", "A");
         testExpectedEntityTypeNames(List.of(ConfigType.GROUP.value()), List.of("A"), connectOpts, "--entity-type", "groups", "--entity-name", "A");
         testExpectedEntityTypeNames(List.of(ConfigType.USER.value(), ConfigType.CLIENT.value()), List.of("A", ""), connectOpts,
-            "--entity-type", "users", "--entity-type", "clients", "--entity-name", "A", "--entity-default");
+                "--entity-type", "users", "--entity-type", "clients", "--entity-name", "A", "--entity-default");
         testExpectedEntityTypeNames(List.of(ConfigType.USER.value(), ConfigType.CLIENT.value()), List.of("", "B"), connectOpts,
-            "--entity-default", "--entity-name", "B", "--entity-type", "users", "--entity-type", "clients");
+                "--entity-default", "--entity-name", "B", "--entity-type", "users", "--entity-type", "clients");
         testExpectedEntityTypeNames(List.of(ConfigType.TOPIC.value()), List.of("A"), connectOpts, "--topic", "A");
         testExpectedEntityTypeNames(List.of(ConfigType.IP.value()), List.of("1.2.3.4"), connectOpts, "--ip", "1.2.3.4");
         testExpectedEntityTypeNames(List.of(ConfigType.GROUP.value()), List.of("A"), connectOpts, "--group", "A");
         testExpectedEntityTypeNames(List.of(ConfigType.CLIENT.value(), ConfigType.USER.value()), List.of("B", "A"), connectOpts, "--client", "B", "--user", "A");
         testExpectedEntityTypeNames(List.of(ConfigType.CLIENT.value(), ConfigType.USER.value()), List.of("B", ""), connectOpts, "--client", "B", "--user-defaults");
         testExpectedEntityTypeNames(List.of(ConfigType.CLIENT.value(), ConfigType.USER.value()), List.of("A"), connectOpts,
-            "--entity-type", "clients", "--entity-type", "users", "--entity-name", "A");
+                "--entity-type", "clients", "--entity-type", "users", "--entity-name", "A");
         testExpectedEntityTypeNames(List.of(ConfigType.TOPIC.value()), List.of(), connectOpts, "--entity-type", "topics");
         testExpectedEntityTypeNames(List.of(ConfigType.IP.value()), List.of(), connectOpts, "--entity-type", "ips");
         testExpectedEntityTypeNames(List.of(ConfigType.GROUP.value()), List.of(), connectOpts, "--entity-type", "groups");
@@ -459,42 +459,42 @@ public class ConfigCommandTest {
     @Test
     public void shouldFailIfUnrecognisedEntityType() {
         ConfigCommand.ConfigCommandOptions createOpts = new ConfigCommand.ConfigCommandOptions(new String[]{"--bootstrap-server", "localhost:9092",
-            "--entity-name", "client", "--entity-type", "not-recognised", "--alter", "--add-config", "a=b,c=d"});
+                "--entity-name", "client", "--entity-type", "not-recognised", "--alter", "--add-config", "a=b,c=d"});
         assertThrows(IllegalArgumentException.class, () -> ConfigCommand.alterConfig(new DummyAdminClient(new Node(1, "localhost", 9092)), createOpts));
     }
 
     @Test
     public void shouldFailIfBrokerEntityTypeIsNotAnInteger() {
         ConfigCommand.ConfigCommandOptions createOpts = new ConfigCommand.ConfigCommandOptions(new String[]{"--bootstrap-server", "localhost:9092",
-            "--entity-name", "A", "--entity-type", "brokers", "--alter", "--add-config", "a=b,c=d"});
+                "--entity-name", "A", "--entity-type", "brokers", "--alter", "--add-config", "a=b,c=d"});
         assertThrows(IllegalArgumentException.class, () -> ConfigCommand.alterConfig(new DummyAdminClient(new Node(1, "localhost", 9092)), createOpts));
     }
 
     @Test
     public void shouldFailIfShortBrokerEntityTypeIsNotAnInteger() {
         ConfigCommand.ConfigCommandOptions createOpts = new ConfigCommand.ConfigCommandOptions(new String[]{"--bootstrap-server", "localhost:9092",
-            "--broker", "A", "--alter", "--add-config", "a=b,c=d"});
+                "--broker", "A", "--alter", "--add-config", "a=b,c=d"});
         assertThrows(IllegalArgumentException.class, () -> ConfigCommand.alterConfig(new DummyAdminClient(new Node(1, "localhost", 9092)), createOpts));
     }
 
     @Test
     public void shouldFailIfMixedEntityTypeFlags() {
         ConfigCommand.ConfigCommandOptions createOpts = new ConfigCommand.ConfigCommandOptions(new String[]{"--bootstrap-server", "localhost:9092",
-            "--entity-name", "A", "--entity-type", "users", "--client", "B", "--describe"});
+                "--entity-name", "A", "--entity-type", "users", "--client", "B", "--describe"});
         assertThrows(IllegalArgumentException.class, createOpts::checkArgs);
     }
 
     @Test
     public void shouldFailIfInvalidHost() {
         ConfigCommand.ConfigCommandOptions createOpts = new ConfigCommand.ConfigCommandOptions(new String[]{"--bootstrap-server", "localhost:9092",
-            "--entity-name", "A,B", "--entity-type", "ips", "--describe"});
+                "--entity-name", "A,B", "--entity-type", "ips", "--describe"});
         assertThrows(IllegalArgumentException.class, createOpts::checkArgs);
     }
 
     @Test
     public void shouldFailIfUnresolvableHost() {
         ConfigCommand.ConfigCommandOptions createOpts = new ConfigCommand.ConfigCommandOptions(new String[]{"--bootstrap-server", "localhost:9092",
-            "--entity-name", "RFC2606.invalid", "--entity-type", "ips", "--describe"});
+                "--entity-name", "RFC2606.invalid", "--entity-type", "ips", "--describe"});
         assertThrows(IllegalArgumentException.class, createOpts::checkArgs);
     }
 
@@ -516,7 +516,7 @@ public class ConfigCommandTest {
     private void verifyAlterCommandFails(String expectedErrorMessage, List<String> alterOpts) {
         Admin mockAdminClient = mock(Admin.class);
         ConfigCommand.ConfigCommandOptions opts = new ConfigCommand.ConfigCommandOptions(toArray(List.of("--bootstrap-server", "localhost:9092",
-            "--alter"), alterOpts));
+                "--alter"), alterOpts));
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> ConfigCommand.alterConfig(mockAdminClient, opts));
         assertTrue(e.getMessage().contains(expectedErrorMessage), "Unexpected exception: " + e);
     }
@@ -535,7 +535,7 @@ public class ConfigCommandTest {
 
     private void verifyDescribeQuotas(List<String> describeArgs, ClientQuotaFilter expectedFilter) throws Exception {
         ConfigCommand.ConfigCommandOptions describeOpts = new ConfigCommand.ConfigCommandOptions(toArray(List.of("--bootstrap-server", "localhost:9092",
-            "--describe"), describeArgs));
+                "--describe"), describeArgs));
         KafkaFutureImpl<Map<ClientQuotaEntity, Map<String, Double>>> describeFuture = new KafkaFutureImpl<>();
         describeFuture.complete(Map.of());
         DescribeClientQuotasResult describeResult = mock(DescribeClientQuotasResult.class);
@@ -573,7 +573,7 @@ public class ConfigCommandTest {
     public void verifyAlterQuotas(List<String> alterOpts, ClientQuotaEntity expectedAlterEntity,
                                   Map<String, Double> expectedProps, Set<ClientQuotaAlteration.Op> expectedAlterOps) throws Exception {
         ConfigCommand.ConfigCommandOptions createOpts = new ConfigCommand.ConfigCommandOptions(toArray(List.of("--bootstrap-server", "localhost:9092",
-            "--alter"), alterOpts));
+                "--alter"), alterOpts));
 
         AtomicBoolean describedConfigs = new AtomicBoolean();
         KafkaFutureImpl<Map<ClientQuotaEntity, Map<String, Double>>> describeFuture = new KafkaFutureImpl<>();
@@ -627,7 +627,6 @@ public class ConfigCommandTest {
         Entry<List<String>, Map<String, String>> singleIpArgsAndEntity = argsAndExpectedEntity(Optional.of("1.2.3.4"), ClientQuotaEntity.IP);
         Entry<List<String>, Map<String, String>> defaultIpArgsAndEntity = argsAndExpectedEntity(Optional.of(""), ClientQuotaEntity.IP);
 
-
         List<String> deleteArgs = List.of("--delete-config", "connection_creation_rate");
         Set<ClientQuotaAlteration.Op> deleteAlterationOps = Set.of(new ClientQuotaAlteration.Op("connection_creation_rate", null));
         Map<String, Double> propsToDelete = Map.of("connection_creation_rate", 50.0);
@@ -636,46 +635,46 @@ public class ConfigCommandTest {
         Set<ClientQuotaAlteration.Op> addAlterationOps = Set.of(new ClientQuotaAlteration.Op("connection_creation_rate", 100.0));
 
         verifyAlterQuotas(
-            concat(singleIpArgsAndEntity.getKey(), deleteArgs),
-            new ClientQuotaEntity(singleIpArgsAndEntity.getValue()),
-            propsToDelete,
-            deleteAlterationOps);
+                concat(singleIpArgsAndEntity.getKey(), deleteArgs),
+                new ClientQuotaEntity(singleIpArgsAndEntity.getValue()),
+                propsToDelete,
+                deleteAlterationOps);
         verifyAlterQuotas(
-            concat(singleIpArgsAndEntity.getKey(), addArgs),
-            new ClientQuotaEntity(singleIpArgsAndEntity.getValue()),
-            Map.of(),
-            addAlterationOps);
+                concat(singleIpArgsAndEntity.getKey(), addArgs),
+                new ClientQuotaEntity(singleIpArgsAndEntity.getValue()),
+                Map.of(),
+                addAlterationOps);
         verifyAlterQuotas(
-            concat(defaultIpArgsAndEntity.getKey(), deleteArgs),
-            new ClientQuotaEntity(defaultIpArgsAndEntity.getValue()),
-            propsToDelete,
-            deleteAlterationOps);
+                concat(defaultIpArgsAndEntity.getKey(), deleteArgs),
+                new ClientQuotaEntity(defaultIpArgsAndEntity.getValue()),
+                propsToDelete,
+                deleteAlterationOps);
         verifyAlterQuotas(
-            concat(defaultIpArgsAndEntity.getKey(), addArgs),
-            new ClientQuotaEntity(defaultIpArgsAndEntity.getValue()),
-            Map.of(),
-            addAlterationOps);
+                concat(defaultIpArgsAndEntity.getKey(), addArgs),
+                new ClientQuotaEntity(defaultIpArgsAndEntity.getValue()),
+                Map.of(),
+                addAlterationOps);
     }
 
     private void verifyAlterUserClientQuotas(String user, String client) throws Exception {
         List<String> alterArgs = List.of("--add-config", "consumer_byte_rate=20000,producer_byte_rate=10000",
-            "--delete-config", "request_percentage");
+                "--delete-config", "request_percentage");
         Map<String, Double> propsToDelete = Map.of("request_percentage", 50.0);
 
         Set<ClientQuotaAlteration.Op> alterationOps = Set.of(
-            new ClientQuotaAlteration.Op("consumer_byte_rate", 20000d),
-            new ClientQuotaAlteration.Op("producer_byte_rate", 10000d),
-            new ClientQuotaAlteration.Op("request_percentage", null)
+                new ClientQuotaAlteration.Op("consumer_byte_rate", 20000d),
+                new ClientQuotaAlteration.Op("producer_byte_rate", 10000d),
+                new ClientQuotaAlteration.Op("request_percentage", null)
         );
 
         Entry<List<String>, Map<String, String>> userArgsAndEntity = argsAndExpectedEntity(Optional.ofNullable(user), ClientQuotaEntity.USER);
         Entry<List<String>, Map<String, String>> clientArgsAndEntry = argsAndExpectedEntity(Optional.ofNullable(client), ClientQuotaEntity.CLIENT_ID);
 
         verifyAlterQuotas(
-            concat(alterArgs, userArgsAndEntity.getKey(), clientArgsAndEntry.getKey()),
-            new ClientQuotaEntity(concat(userArgsAndEntity.getValue(), clientArgsAndEntry.getValue())),
-            propsToDelete,
-            alterationOps);
+                concat(alterArgs, userArgsAndEntity.getKey(), clientArgsAndEntry.getKey()),
+                new ClientQuotaEntity(concat(userArgsAndEntity.getValue(), clientArgsAndEntry.getValue())),
+                propsToDelete,
+                alterationOps);
     }
 
     @Test
@@ -701,9 +700,9 @@ public class ConfigCommandTest {
         // for both user and client entities
         String invalidProp = "some_config";
         verifyAlterCommandFails(invalidProp, concat(userEntityOpts,
-            List.of("-add-config", "consumer_byte_rate=20000,producer_byte_rate=10000,some_config=10")));
+                List.of("-add-config", "consumer_byte_rate=20000,producer_byte_rate=10000,some_config=10")));
         verifyAlterCommandFails(invalidProp, concat(userEntityOpts,
-            List.of("--add-config", "consumer_byte_rate=20000,producer_byte_rate=10000,some_config=10")));
+                List.of("--add-config", "consumer_byte_rate=20000,producer_byte_rate=10000,some_config=10")));
         verifyAlterCommandFails(invalidProp, concat(clientEntityOpts, List.of("--add-config", "some_config=10")));
         verifyAlterCommandFails(invalidProp, concat(userEntityOpts, List.of("--delete-config", "consumer_byte_rate,some_config")));
         verifyAlterCommandFails(invalidProp, concat(userEntityOpts, List.of("--delete-config", "SCRAM-SHA-256,some_config")));
@@ -794,12 +793,12 @@ public class ConfigCommandTest {
 
         String resourceName = "my-topic";
         ConfigCommand.ConfigCommandOptions alterOpts = new ConfigCommand.ConfigCommandOptions(toArray("--bootstrap-server", "localhost:9092",
-            "--entity-name", resourceName,
-            "--entity-type", "topics",
-            "--alter",
-            file ? "--add-config-file" : "--add-config",
-            file ? filePath : addedConfigs.entrySet().stream().map(e -> e.getKey() + "=" + e.getValue()).collect(Collectors.joining(",")),
-            "--delete-config", "unclean.leader.election.enable"));
+                "--entity-name", resourceName,
+                "--entity-type", "topics",
+                "--alter",
+                file ? "--add-config-file" : "--add-config",
+                file ? filePath : addedConfigs.entrySet().stream().map(e -> e.getKey() + "=" + e.getValue()).collect(Collectors.joining(",")),
+                "--delete-config", "unclean.leader.election.enable"));
         AtomicBoolean alteredConfigs = new AtomicBoolean();
 
         KafkaFutureImpl<Void> alterFuture = new KafkaFutureImpl<>();
@@ -818,9 +817,9 @@ public class ConfigCommandTest {
                 assertEquals(3, alterConfigOps.size());
 
                 Set<AlterConfigOp> expectedConfigOps = Set.of(
-                    new AlterConfigOp(newConfigEntry("delete.retention.ms", "1000000"), AlterConfigOp.OpType.SET),
-                    new AlterConfigOp(newConfigEntry("min.insync.replicas", "2"), AlterConfigOp.OpType.SET),
-                    new AlterConfigOp(newConfigEntry("unclean.leader.election.enable", ""), AlterConfigOp.OpType.DELETE)
+                        new AlterConfigOp(newConfigEntry("delete.retention.ms", "1000000"), AlterConfigOp.OpType.SET),
+                        new AlterConfigOp(newConfigEntry("min.insync.replicas", "2"), AlterConfigOp.OpType.SET),
+                        new AlterConfigOp(newConfigEntry("unclean.leader.election.enable", ""), AlterConfigOp.OpType.DELETE)
                 );
                 assertEquals(expectedConfigOps.size(), alterConfigOps.size());
                 expectedConfigOps.forEach(expectedOp -> {
@@ -853,10 +852,10 @@ public class ConfigCommandTest {
     public void shouldDescribeConfigSynonyms() throws Exception {
         String resourceName = "my-topic";
         ConfigCommand.ConfigCommandOptions describeOpts = new ConfigCommand.ConfigCommandOptions(toArray("--bootstrap-server", "localhost:9092",
-            "--entity-name", resourceName,
-            "--entity-type", "topics",
-            "--describe",
-            "--all"));
+                "--entity-name", resourceName,
+                "--entity-type", "topics",
+                "--describe",
+                "--all"));
 
         ConfigResource resource = new ConfigResource(ConfigResource.Type.TOPIC, resourceName);
         KafkaFutureImpl<Config> future = new KafkaFutureImpl<>();
@@ -881,17 +880,17 @@ public class ConfigCommandTest {
     public void shouldAddBrokerLoggerConfig() throws Exception {
         Node node = new Node(1, "localhost", 9092);
         verifyAlterBrokerLoggerConfig(node, "1", "1", List.of(
-            newBrokerLoggerConfigEntry("kafka.log.LogCleaner", "INFO"),
-            newBrokerLoggerConfigEntry("kafka.server.ReplicaManager", "INFO"),
-            newBrokerLoggerConfigEntry("kafka.server.KafkaApi", "INFO")
+                newBrokerLoggerConfigEntry("kafka.log.LogCleaner", "INFO"),
+                newBrokerLoggerConfigEntry("kafka.server.ReplicaManager", "INFO"),
+                newBrokerLoggerConfigEntry("kafka.server.KafkaApi", "INFO")
         ));
     }
 
     @Test
     public void testNoSpecifiedEntityOptionWithDescribeBrokersInBootstrapServerIsAllowed() {
         String[] optsList = new String[]{"--bootstrap-server", "localhost:9092",
-            "--entity-type", ConfigType.BROKER.value(),
-            "--describe"
+                "--entity-type", ConfigType.BROKER.value(),
+                "--describe"
         };
 
         new ConfigCommand.ConfigCommandOptions(optsList).checkArgs();
@@ -900,10 +899,10 @@ public class ConfigCommandTest {
     @Test
     public void testDescribeAllBrokerConfig() {
         String[] optsList = new String[]{"--bootstrap-server", "localhost:9092",
-            "--entity-type", ConfigType.BROKER.value(),
-            "--entity-name", "1",
-            "--describe",
-            "--all"};
+                "--entity-type", ConfigType.BROKER.value(),
+                "--entity-name", "1",
+                "--describe",
+                "--all"};
 
         new ConfigCommand.ConfigCommandOptions(optsList).checkArgs();
     }
@@ -911,10 +910,10 @@ public class ConfigCommandTest {
     @Test
     public void testDescribeAllTopicConfig() {
         String[] optsList = new String[]{"--bootstrap-server", "localhost:9092",
-            "--entity-type", ConfigType.TOPIC.value(),
-            "--entity-name", "foo",
-            "--describe",
-            "--all"};
+                "--entity-type", ConfigType.TOPIC.value(),
+                "--entity-name", "foo",
+                "--describe",
+                "--all"};
 
         new ConfigCommand.ConfigCommandOptions(optsList).checkArgs();
     }
@@ -922,9 +921,9 @@ public class ConfigCommandTest {
     @Test
     public void testEntityDefaultOptionWithDescribeBrokerLoggerIsNotAllowed() {
         String[] optsList = new String[]{"--bootstrap-server", "localhost:9092",
-            "--entity-type", ConfigCommand.BROKER_LOGGER_CONFIG_TYPE,
-            "--entity-default",
-            "--describe"
+                "--entity-type", ConfigCommand.BROKER_LOGGER_CONFIG_TYPE,
+                "--entity-default",
+                "--describe"
         };
 
         assertThrows(IllegalArgumentException.class, () -> new ConfigCommand.ConfigCommandOptions(optsList).checkArgs());
@@ -933,10 +932,10 @@ public class ConfigCommandTest {
     @Test
     public void testEntityDefaultOptionWithAlterBrokerLoggerIsNotAllowed() {
         String[] optsList = new String[]{"--bootstrap-server", "localhost:9092",
-            "--entity-type", ConfigCommand.BROKER_LOGGER_CONFIG_TYPE,
-            "--entity-default",
-            "--alter",
-            "--add-config", "kafka.log.LogCleaner=DEBUG"
+                "--entity-type", ConfigCommand.BROKER_LOGGER_CONFIG_TYPE,
+                "--entity-default",
+                "--alter",
+                "--add-config", "kafka.log.LogCleaner=DEBUG"
         };
 
         assertThrows(IllegalArgumentException.class, () -> new ConfigCommand.ConfigCommandOptions(optsList).checkArgs());
@@ -974,9 +973,9 @@ public class ConfigCommandTest {
 
     public void verifyAlterBrokerConfig(Node node, List<String> resourceOpts) throws Exception {
         String[] optsList = toArray(List.of("--bootstrap-server", "localhost:9092",
-            "--entity-type", "brokers",
-            "--alter",
-            "--add-config", "message.max.bytes=10,leader.replication.throttled.rate=10"), resourceOpts);
+                "--entity-type", "brokers",
+                "--alter",
+                "--add-config", "message.max.bytes=10,leader.replication.throttled.rate=10"), resourceOpts);
         ConfigCommand.ConfigCommandOptions alterOpts = new ConfigCommand.ConfigCommandOptions(optsList);
         Map<String, String> brokerConfigs = new HashMap<>();
         brokerConfigs.put("num.io.threads", "5");
@@ -1010,8 +1009,8 @@ public class ConfigCommandTest {
     @Test
     public void shouldDescribeConfigBrokerWithoutEntityName() throws Exception {
         ConfigCommand.ConfigCommandOptions describeOpts = new ConfigCommand.ConfigCommandOptions(toArray("--bootstrap-server", "localhost:9092",
-            "--entity-type", "brokers",
-            "--describe"));
+                "--entity-type", "brokers",
+                "--describe"));
 
         String brokerDefaultEntityName = "";
         ConfigResource resourceCustom = new ConfigResource(ConfigResource.Type.BROKER, "1");
@@ -1024,8 +1023,8 @@ public class ConfigCommandTest {
         DescribeConfigsResult describeResult = mock(DescribeConfigsResult.class);
         // make sure it will be called 2 times: (1) for broker "1" (2) for default broker ""
         when(describeResult.values()).thenReturn(Map.of(
-            resourceCustom, customFuture,
-            resourceDefault, defaultFuture
+                resourceCustom, customFuture,
+                resourceDefault, defaultFuture
         ));
 
         Node node = new Node(1, "localhost", 9092);
@@ -1044,11 +1043,11 @@ public class ConfigCommandTest {
     private void verifyAlterBrokerLoggerConfig(Node node, String resourceName, String entityName,
                                                List<ConfigEntry> describeConfigEntries) throws Exception {
         String[] optsList = toArray("--bootstrap-server", "localhost:9092",
-            "--entity-type", ConfigCommand.BROKER_LOGGER_CONFIG_TYPE,
-            "--alter",
-            "--entity-name", entityName,
-            "--add-config", "kafka.log.LogCleaner=DEBUG",
-            "--delete-config", "kafka.server.ReplicaManager,kafka.server.KafkaApi");
+                "--entity-type", ConfigCommand.BROKER_LOGGER_CONFIG_TYPE,
+                "--alter",
+                "--entity-name", entityName,
+                "--add-config", "kafka.log.LogCleaner=DEBUG",
+                "--delete-config", "kafka.server.ReplicaManager,kafka.server.KafkaApi");
         ConfigCommand.ConfigCommandOptions alterOpts = new ConfigCommand.ConfigCommandOptions(optsList);
         AtomicBoolean alteredConfigs = new AtomicBoolean();
 
@@ -1083,9 +1082,9 @@ public class ConfigCommandTest {
                 assertEquals(3, alterConfigOps.size());
 
                 List<AlterConfigOp> expectedConfigOps = List.of(
-                    new AlterConfigOp(new ConfigEntry("kafka.server.ReplicaManager", ""), AlterConfigOp.OpType.DELETE),
-                    new AlterConfigOp(new ConfigEntry("kafka.server.KafkaApi", ""), AlterConfigOp.OpType.DELETE),
-                    new AlterConfigOp(new ConfigEntry("kafka.log.LogCleaner", "DEBUG"), AlterConfigOp.OpType.SET)
+                        new AlterConfigOp(new ConfigEntry("kafka.server.ReplicaManager", ""), AlterConfigOp.OpType.DELETE),
+                        new AlterConfigOp(new ConfigEntry("kafka.server.KafkaApi", ""), AlterConfigOp.OpType.DELETE),
+                        new AlterConfigOp(new ConfigEntry("kafka.log.LogCleaner", "DEBUG"), AlterConfigOp.OpType.SET)
                 );
                 assertEquals(expectedConfigOps.size(), alterConfigOps.size());
                 Iterator<AlterConfigOp> alterConfigOpsIter = alterConfigOps.iterator();
@@ -1104,30 +1103,30 @@ public class ConfigCommandTest {
     @Test
     public void shouldNotUpdateBrokerConfigIfMalformedEntityName() {
         ConfigCommand.ConfigCommandOptions createOpts = new ConfigCommand.ConfigCommandOptions(toArray("--bootstrap-server", "localhost:9092",
-            "--entity-name", "1,2,3", //Don't support multiple brokers currently
+                "--entity-name", "1,2,3", //Don't support multiple brokers currently
             "--entity-type", "brokers",
-            "--alter",
-            "--add-config", "leader.replication.throttled.rate=10"));
+                "--alter",
+                "--add-config", "leader.replication.throttled.rate=10"));
         assertThrows(IllegalArgumentException.class, () -> ConfigCommand.alterConfig(new DummyAdminClient(new Node(1, "localhost", 9092)), createOpts));
     }
 
     @Test
     public void shouldNotUpdateBrokerConfigIfMalformedConfig() {
         ConfigCommand.ConfigCommandOptions createOpts = new ConfigCommand.ConfigCommandOptions(toArray("--bootstrap-server", "localhost:9092",
-            "--entity-name", "1",
-            "--entity-type", "brokers",
-            "--alter",
-            "--add-config", "a=="));
+                "--entity-name", "1",
+                "--entity-type", "brokers",
+                "--alter",
+                "--add-config", "a=="));
         assertThrows(IllegalArgumentException.class, () -> ConfigCommand.alterConfig(new DummyAdminClient(new Node(1, "localhost", 9092)), createOpts));
     }
 
     @Test
     public void shouldNotUpdateBrokerConfigIfMalformedBracketConfig() {
         ConfigCommand.ConfigCommandOptions createOpts = new ConfigCommand.ConfigCommandOptions(toArray("--bootstrap-server", "localhost:9092",
-            "--entity-name", "1",
-            "--entity-type", "brokers",
-            "--alter",
-            "--add-config", "a=[b,c,d=e"));
+                "--entity-name", "1",
+                "--entity-type", "brokers",
+                "--alter",
+                "--add-config", "a=[b,c,d=e"));
         assertThrows(IllegalArgumentException.class, () -> ConfigCommand.alterConfig(new DummyAdminClient(new Node(1, "localhost", 9092)), createOpts));
     }
 
@@ -1135,10 +1134,10 @@ public class ConfigCommandTest {
     public void shouldAllowDeletingNonExistingConfig() throws Exception {
         String resourceName = "my-topic";
         ConfigCommand.ConfigCommandOptions createOpts = new ConfigCommand.ConfigCommandOptions(toArray("--bootstrap-server", "localhost:9092",
-            "--entity-name", resourceName,
-            "--entity-type", "topics",
-            "--alter",
-            "--delete-config", "missing_config1, missing_config2"));
+                "--entity-name", resourceName,
+                "--entity-type", "topics",
+                "--alter",
+                "--delete-config", "missing_config1, missing_config2"));
 
         KafkaFutureImpl<Void> alterFuture = new KafkaFutureImpl<>();
         alterFuture.complete(null);
@@ -1169,9 +1168,9 @@ public class ConfigCommandTest {
 
     private void verifyAlterClientMetricsConfig(Node node, String resourceName, List<String> resourceOpts) throws Exception {
         List<String> optsList = concat(List.of("--bootstrap-server", "localhost:9092",
-            "--alter",
-            "--delete-config", "interval.ms",
-            "--add-config", "metrics=org.apache.kafka.consumer.," +
+                "--alter",
+                "--delete-config", "interval.ms",
+                "--add-config", "metrics=org.apache.kafka.consumer.," +
                 "match=[client_software_name=kafka.python,client_software_version=1\\.2\\..*]"), resourceOpts);
         ConfigCommand.ConfigCommandOptions alterOpts = new ConfigCommand.ConfigCommandOptions(toArray(optsList));
 
@@ -1191,9 +1190,9 @@ public class ConfigCommandTest {
                 assertEquals(3, alterConfigOps.size());
 
                 List<AlterConfigOp> expectedConfigOps = List.of(
-                    new AlterConfigOp(new ConfigEntry("interval.ms", ""), AlterConfigOp.OpType.DELETE),
-                    new AlterConfigOp(new ConfigEntry("match", "client_software_name=kafka.python,client_software_version=1\\.2\\..*"), AlterConfigOp.OpType.SET),
-                    new AlterConfigOp(new ConfigEntry("metrics", "org.apache.kafka.consumer."), AlterConfigOp.OpType.SET)
+                        new AlterConfigOp(new ConfigEntry("interval.ms", ""), AlterConfigOp.OpType.DELETE),
+                        new AlterConfigOp(new ConfigEntry("match", "client_software_name=kafka.python,client_software_version=1\\.2\\..*"), AlterConfigOp.OpType.SET),
+                        new AlterConfigOp(new ConfigEntry("metrics", "org.apache.kafka.consumer."), AlterConfigOp.OpType.SET)
                 );
                 assertEquals(expectedConfigOps.size(), alterConfigOps.size());
                 Iterator<AlterConfigOp> alterConfigOpsIter = alterConfigOps.iterator();
@@ -1210,8 +1209,8 @@ public class ConfigCommandTest {
     @Test
     public void shouldDescribeClientMetricsConfigWithoutEntityName() throws Exception {
         ConfigCommand.ConfigCommandOptions describeOpts = new ConfigCommand.ConfigCommandOptions(toArray("--bootstrap-server", "localhost:9092",
-            "--entity-type", "client-metrics",
-            "--describe"));
+                "--entity-type", "client-metrics",
+                "--describe"));
 
         ConfigResource resourceCustom = new ConfigResource(ConfigResource.Type.CLIENT_METRICS, "1");
         ConfigEntry configEntry = new ConfigEntry("metrics", "*");
@@ -1233,7 +1232,7 @@ public class ConfigCommandTest {
             }
         };
         mockAdminClient.incrementalAlterConfigs(Map.of(resourceCustom,
-            List.of(new AlterConfigOp(configEntry, AlterConfigOp.OpType.SET))), new AlterConfigsOptions());
+                List.of(new AlterConfigOp(configEntry, AlterConfigOp.OpType.SET))), new AlterConfigsOptions());
         ConfigCommand.describeConfig(mockAdminClient, describeOpts);
         verify(describeResult).values();
     }
@@ -1241,9 +1240,9 @@ public class ConfigCommandTest {
     @Test
     public void shouldNotAlterClientMetricsConfigWithoutEntityName() {
         ConfigCommand.ConfigCommandOptions alterOpts = new ConfigCommand.ConfigCommandOptions(toArray("--bootstrap-server", "localhost:9092",
-            "--entity-type", "client-metrics",
-            "--alter",
-            "--add-config", "interval.ms=1000"));
+                "--entity-type", "client-metrics",
+                "--alter",
+                "--add-config", "interval.ms=1000"));
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, alterOpts::checkArgs);
         assertEquals("An entity name must be specified with --alter of client-metrics", exception.getMessage());
@@ -1260,9 +1259,9 @@ public class ConfigCommandTest {
 
     private void verifyAlterGroupConfig(Node node, String resourceName, List<String> resourceOpts) throws Exception {
         List<String> optsList = concat(List.of("--bootstrap-server", "localhost:9092",
-            "--alter",
-            "--delete-config", "consumer.session.timeout.ms",
-            "--add-config", "consumer.heartbeat.interval.ms=6000"), resourceOpts);
+                "--alter",
+                "--delete-config", "consumer.session.timeout.ms",
+                "--add-config", "consumer.heartbeat.interval.ms=6000"), resourceOpts);
         ConfigCommand.ConfigCommandOptions alterOpts = new ConfigCommand.ConfigCommandOptions(toArray(optsList));
 
         KafkaFutureImpl<Void> alterFuture = new KafkaFutureImpl<>();
@@ -1281,8 +1280,8 @@ public class ConfigCommandTest {
                 assertEquals(2, alterConfigOps.size());
 
                 List<AlterConfigOp> expectedConfigOps = List.of(
-                    new AlterConfigOp(new ConfigEntry("consumer.session.timeout.ms", ""), AlterConfigOp.OpType.DELETE),
-                    new AlterConfigOp(new ConfigEntry("consumer.heartbeat.interval.ms", "6000"), AlterConfigOp.OpType.SET)
+                        new AlterConfigOp(new ConfigEntry("consumer.session.timeout.ms", ""), AlterConfigOp.OpType.DELETE),
+                        new AlterConfigOp(new ConfigEntry("consumer.heartbeat.interval.ms", "6000"), AlterConfigOp.OpType.SET)
                 );
                 assertEquals(expectedConfigOps.size(), alterConfigOps.size());
                 Iterator<AlterConfigOp> alterConfigOpsIter = alterConfigOps.iterator();
@@ -1299,8 +1298,8 @@ public class ConfigCommandTest {
     @Test
     public void shouldDescribeGroupConfigWithoutEntityName() throws Exception {
         ConfigCommand.ConfigCommandOptions describeOpts = new ConfigCommand.ConfigCommandOptions(toArray("--bootstrap-server", "localhost:9092",
-            "--entity-type", "groups",
-            "--describe"));
+                "--entity-type", "groups",
+                "--describe"));
 
         verifyDescribeGroupConfig(describeOpts, "group");
     }
@@ -1326,7 +1325,7 @@ public class ConfigCommandTest {
             }
         };
         mockAdminClient.incrementalAlterConfigs(Map.of(resourceCustom,
-            List.of(new AlterConfigOp(configEntry, AlterConfigOp.OpType.SET))), new AlterConfigsOptions());
+                List.of(new AlterConfigOp(configEntry, AlterConfigOp.OpType.SET))), new AlterConfigsOptions());
         ConfigCommand.describeConfig(mockAdminClient, describeOpts);
         verify(describeResult).values();
     }
@@ -1334,9 +1333,9 @@ public class ConfigCommandTest {
     @Test
     public void shouldNotAlterGroupConfigWithoutEntityName() {
         ConfigCommand.ConfigCommandOptions alterOpts = new ConfigCommand.ConfigCommandOptions(toArray("--bootstrap-server", "localhost:9092",
-            "--entity-type", "groups",
-            "--alter",
-            "--add-config", "consumer.heartbeat.interval.ms=6000"));
+                "--entity-type", "groups",
+                "--alter",
+                "--add-config", "consumer.heartbeat.interval.ms=6000"));
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, alterOpts::checkArgs);
         assertEquals("An entity name must be specified with --alter of groups", exception.getMessage());
@@ -1345,8 +1344,8 @@ public class ConfigCommandTest {
     @Test
     public void testDescribeGroupConfigOldBroker() throws Exception {
         ConfigCommand.ConfigCommandOptions describeOpts = new ConfigCommand.ConfigCommandOptions(toArray("--bootstrap-server", "localhost:9092",
-            "--entity-type", "groups",
-            "--describe"));
+                "--entity-type", "groups",
+                "--describe"));
 
         KafkaFutureImpl<Collection<ConfigResource>> future = new KafkaFutureImpl<>();
         ListConfigResourcesResult listConfigResourcesResult = mock(ListConfigResourcesResult.class);
@@ -1372,8 +1371,8 @@ public class ConfigCommandTest {
     @Test
     public void testDescribeGroupConfigOldBrokerNotAuthorized() throws Exception {
         ConfigCommand.ConfigCommandOptions describeOpts = new ConfigCommand.ConfigCommandOptions(toArray("--bootstrap-server", "localhost:9092",
-            "--entity-type", "groups",
-            "--describe"));
+                "--entity-type", "groups",
+                "--describe"));
 
         KafkaFutureImpl<Collection<ConfigResource>> future = new KafkaFutureImpl<>();
         ListConfigResourcesResult listConfigResourcesResult = mock(ListConfigResourcesResult.class);
@@ -1399,8 +1398,8 @@ public class ConfigCommandTest {
     @Test
     public void testDescribeGroupConfigOldBrokerUnexpectedException() {
         ConfigCommand.ConfigCommandOptions describeOpts = new ConfigCommand.ConfigCommandOptions(toArray("--bootstrap-server", "localhost:9092",
-            "--entity-type", "groups",
-            "--describe"));
+                "--entity-type", "groups",
+                "--describe"));
 
         KafkaFutureImpl<Collection<ConfigResource>> future = new KafkaFutureImpl<>();
         ListConfigResourcesResult listConfigResourcesResult = mock(ListConfigResourcesResult.class);

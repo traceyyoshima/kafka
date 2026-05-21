@@ -36,12 +36,12 @@ public class AdminBootstrapAddressesTest {
     @Test
     public void testNoBootstrapSet() {
         Map<String, Object> map = Map.of(
-            AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "",
-            AdminClientConfig.BOOTSTRAP_CONTROLLERS_CONFIG, ""
+                AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "",
+                AdminClientConfig.BOOTSTRAP_CONTROLLERS_CONFIG, ""
         );
         AdminClientConfig config = new AdminClientConfig(map);
         assertEquals("You must set either bootstrap.servers or bootstrap.controllers",
-            assertThrows(ConfigException.class, () -> AdminBootstrapAddresses.fromConfig(config)).
+                assertThrows(ConfigException.class, () -> AdminBootstrapAddresses.fromConfig(config)).
                 getMessage());
     }
 
@@ -70,9 +70,9 @@ public class AdminBootstrapAddressesTest {
         AdminBootstrapAddresses addresses = AdminBootstrapAddresses.fromConfig(config);
         assertEquals(usingBootstrapControllers, addresses.usingBootstrapControllers());
         assertEquals(Arrays.asList(
-            new InetSocketAddress("localhost", 9092),
-            new InetSocketAddress("localhost", 9093),
-            new InetSocketAddress("localhost", 9094)),
+                new InetSocketAddress("localhost", 9092),
+                new InetSocketAddress("localhost", 9093),
+                new InetSocketAddress("localhost", 9094)),
                 addresses.addresses());
     }
 }

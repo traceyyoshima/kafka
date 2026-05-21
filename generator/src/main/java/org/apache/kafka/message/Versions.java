@@ -50,8 +50,8 @@ public final class Versions {
         }
         if (trimmedInput.endsWith("+")) {
             return new Versions(Short.parseShort(
-            trimmedInput.substring(0, trimmedInput.length() - 1)),
-                Short.MAX_VALUE);
+                    trimmedInput.substring(0, trimmedInput.length() - 1)),
+                    Short.MAX_VALUE);
         } else {
             int dashIndex = trimmedInput.indexOf("-");
             if (dashIndex < 0) {
@@ -59,8 +59,8 @@ public final class Versions {
                 return new Versions(version, version);
             }
             return new Versions(
-                Short.parseShort(trimmedInput.substring(0, dashIndex)),
-                Short.parseShort(trimmedInput.substring(dashIndex + 1)));
+                    Short.parseShort(trimmedInput.substring(0, dashIndex)),
+                    Short.parseShort(trimmedInput.substring(dashIndex + 1)));
         }
     }
 
@@ -78,7 +78,7 @@ public final class Versions {
     public Versions(short lowest, short highest) {
         if ((lowest < 0) || (highest < 0)) {
             throw new RuntimeException("Invalid version range " +
-                lowest + " to " + highest);
+                    lowest + " to " + highest);
         }
         this.lowest = lowest;
         this.highest = highest;
@@ -194,6 +194,6 @@ public final class Versions {
         }
         Versions otherVersions = (Versions) other;
         return lowest == otherVersions.lowest &&
-               highest == otherVersions.highest;
+                highest == otherVersions.highest;
     }
 }

@@ -49,8 +49,8 @@ public class UniformRandomPayloadGenerator implements PayloadGenerator {
         this.padding = padding;
         if (padding < 0 || padding > size) {
             throw new RuntimeException("Invalid value " + padding + " for " +
-                "padding: the number of padding bytes must not be smaller than " +
-                "0 or greater than the total payload size.");
+                    "padding: the number of padding bytes must not be smaller than " +
+                    "0 or greater than the total payload size.");
         }
         this.padBytes = new byte[padding];
         random.setSeed(seed);

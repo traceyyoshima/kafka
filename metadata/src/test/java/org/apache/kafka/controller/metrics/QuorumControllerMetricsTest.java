@@ -43,19 +43,19 @@ public class QuorumControllerMetricsTest {
                     9000)) {
                 metrics.addTimeSinceLastHeartbeatMetric(1);
                 Set<String> expected = Set.of(
-                    "kafka.controller:type=ControllerEventManager,name=EventQueueProcessingTimeMs",
-                    "kafka.controller:type=ControllerEventManager,name=EventQueueTimeMs",
-                    "kafka.controller:type=ControllerEventManager,name=AvgIdleRatio",
-                    "kafka.controller:type=KafkaController,name=ActiveControllerCount",
-                    "kafka.controller:type=KafkaController,name=EventQueueOperationsStartedCount",
-                    "kafka.controller:type=KafkaController,name=EventQueueOperationsTimedOutCount",
-                    "kafka.controller:type=KafkaController,name=LastAppliedRecordLagMs",
-                    "kafka.controller:type=KafkaController,name=LastAppliedRecordOffset",
-                    "kafka.controller:type=KafkaController,name=LastAppliedRecordTimestamp",
-                    "kafka.controller:type=KafkaController,name=LastCommittedRecordOffset",
-                    "kafka.controller:type=KafkaController,name=NewActiveControllersCount",
-                    "kafka.controller:type=KafkaController,name=TimedOutBrokerHeartbeatCount",
-                    "kafka.controller:type=KafkaController,name=TimeSinceLastHeartbeatReceivedMs,broker=1"
+                        "kafka.controller:type=ControllerEventManager,name=EventQueueProcessingTimeMs",
+                        "kafka.controller:type=ControllerEventManager,name=EventQueueTimeMs",
+                        "kafka.controller:type=ControllerEventManager,name=AvgIdleRatio",
+                        "kafka.controller:type=KafkaController,name=ActiveControllerCount",
+                        "kafka.controller:type=KafkaController,name=EventQueueOperationsStartedCount",
+                        "kafka.controller:type=KafkaController,name=EventQueueOperationsTimedOutCount",
+                        "kafka.controller:type=KafkaController,name=LastAppliedRecordLagMs",
+                        "kafka.controller:type=KafkaController,name=LastAppliedRecordOffset",
+                        "kafka.controller:type=KafkaController,name=LastAppliedRecordTimestamp",
+                        "kafka.controller:type=KafkaController,name=LastCommittedRecordOffset",
+                        "kafka.controller:type=KafkaController,name=NewActiveControllersCount",
+                        "kafka.controller:type=KafkaController,name=TimedOutBrokerHeartbeatCount",
+                        "kafka.controller:type=KafkaController,name=TimeSinceLastHeartbeatReceivedMs,broker=1"
                 );
                 ControllerMetricsTestUtils.assertMetricsForTypeEqual(registry, "kafka.controller", expected);
             }

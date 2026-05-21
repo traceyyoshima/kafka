@@ -133,7 +133,6 @@ public class SendBuilderTest {
         assertEquals(15, readBuffer.getInt());
     }
 
-
     private String getString(ByteBuffer buffer, int size) {
         byte[] readData = new byte[size];
         buffer.get(readData);
@@ -155,10 +154,10 @@ public class SendBuilderTest {
 
     private MemoryRecords createRecords(ByteBuffer buffer, String value) {
         MemoryRecordsBuilder recordsBuilder = MemoryRecords.builder(
-            buffer,
-            Compression.NONE,
-            TimestampType.CREATE_TIME,
-            0L
+                buffer,
+                Compression.NONE,
+                TimestampType.CREATE_TIME,
+                0L
         );
         recordsBuilder.append(new SimpleRecord(Utils.utf8(value)));
         return recordsBuilder.build();

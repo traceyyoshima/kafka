@@ -158,7 +158,7 @@ public class ConsumerRecordsTest {
         int emptyPartitionIndex = 2;
         TopicPartition topicPartition = new TopicPartition(topic, 0);
         ConsumerRecord<Integer, String> newRecord = new ConsumerRecord<>(topic, 0, 0, 0L, TimestampType.CREATE_TIME,
-            0, 0, 0, "0", new RecordHeaders(), Optional.empty());
+                0, 0, 0, "0", new RecordHeaders(), Optional.empty());
         ConsumerRecords<Integer, String> records = buildTopicTestRecords(recordSize, partitionSize, emptyPartitionIndex, Collections.singleton(topic));
         ConsumerRecords<Integer, String> emptyRecords = ConsumerRecords.empty();
 
@@ -192,8 +192,8 @@ public class ConsumerRecordsTest {
                 if (i != emptyPartitionIndex) {
                     for (int j = 0; j < recordSize; j++) {
                         records.add(
-                            new ConsumerRecord<>(topic, i, j, 0L, TimestampType.CREATE_TIME,
-                                0, 0, j, String.valueOf(j), new RecordHeaders(), Optional.empty())
+                                new ConsumerRecord<>(topic, i, j, 0L, TimestampType.CREATE_TIME,
+                                    0, 0, j, String.valueOf(j), new RecordHeaders(), Optional.empty())
                         );
                     }
                 }

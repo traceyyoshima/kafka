@@ -87,27 +87,27 @@ public class MemoryLRUCache implements KeyValueStore<Bytes, byte[]> {
     @Override
     public void init(final StateStoreContext stateStoreContext, final StateStore root) {
         final boolean consistencyEnabled = StreamsConfig.InternalConfig.getBoolean(
-            stateStoreContext.appConfigs(),
-            IQ_CONSISTENCY_OFFSET_VECTOR_ENABLED,
-            false
+                stateStoreContext.appConfigs(),
+                IQ_CONSISTENCY_OFFSET_VECTOR_ENABLED,
+                false
         );
         // register the store
         stateStoreContext.register(
-            root,
-            (RecordBatchingStateRestoreCallback) records -> {
+                root,
+                (RecordBatchingStateRestoreCallback) records -> {
                 restoring = true;
                 synchronized (position) {
                     for (final ConsumerRecord<byte[], byte[]> record : records) {
                         put(Bytes.wrap(record.key()), record.value());
                         ChangelogRecordDeserializationHelper.applyChecksAndUpdatePosition(
-                            record,
-                            consistencyEnabled,
-                            position
+                                record,
+                                consistencyEnabled,
+                                position
                         );
                     }
                 }
                 restoring = false;
-            }
+                }
         );
         this.context = stateStoreContext;
     }

@@ -97,11 +97,11 @@ public class TopicBasedRemoteLogMetadataManagerRestartTest {
 
             // Check for the stored entries from the earlier run.
             TestUtils.waitForCondition(() ->
-                            TestUtils.sameElementsWithoutOrder(Set.of(leaderSegmentMetadata).iterator(),
+                    TestUtils.sameElementsWithoutOrder(Set.of(leaderSegmentMetadata).iterator(),
                                     topicBasedRemoteLogMetadataManager.listRemoteLogSegments(leaderTopicIdPartition)),
                     "Remote log segment metadata not available");
             TestUtils.waitForCondition(() ->
-                            TestUtils.sameElementsWithoutOrder(Set.of(followerSegmentMetadata).iterator(),
+                    TestUtils.sameElementsWithoutOrder(Set.of(followerSegmentMetadata).iterator(),
                                     topicBasedRemoteLogMetadataManager.listRemoteLogSegments(followerTopicIdPartition)),
                     "Remote log segment metadata not available");
             // Add one more segment

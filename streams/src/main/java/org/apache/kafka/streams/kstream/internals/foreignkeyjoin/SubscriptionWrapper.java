@@ -52,6 +52,7 @@ public class SubscriptionWrapper<KLeft> {
         PROPAGATE_ONLY_IF_FK_VAL_AVAILABLE((byte) 0x03);
 
         private final byte value;
+
         Instruction(final byte value) {
             this.value = value;
         }
@@ -111,12 +112,12 @@ public class SubscriptionWrapper<KLeft> {
     @Override
     public String toString() {
         return "SubscriptionWrapper{" +
-            "version=" + version +
-            ", primaryKey=" + primaryKey +
-            ", instruction=" + instruction +
-            ", hash=" + Arrays.toString(hash) +
-            ", primaryPartition=" + primaryPartition +
-            '}';
+                "version=" + version +
+                ", primaryKey=" + primaryKey +
+                ", instruction=" + instruction +
+                ", hash=" + Arrays.toString(hash) +
+                ", primaryPartition=" + primaryPartition +
+                '}';
     }
 
     @Override
@@ -129,8 +130,8 @@ public class SubscriptionWrapper<KLeft> {
         }
         final SubscriptionWrapper<?> that = (SubscriptionWrapper<?>) o;
         return version == that.version && Arrays.equals(hash, that.hash)
-            && instruction == that.instruction && Objects.equals(primaryKey, that.primaryKey)
-            && Objects.equals(primaryPartition, that.primaryPartition);
+                && instruction == that.instruction && Objects.equals(primaryKey, that.primaryKey)
+                && Objects.equals(primaryPartition, that.primaryPartition);
     }
 
     @Override

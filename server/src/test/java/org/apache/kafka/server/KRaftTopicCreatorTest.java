@@ -122,10 +122,10 @@ public class KRaftTopicCreatorTest {
 
         @SuppressWarnings("unchecked")
         ArgumentCaptor<AbstractRequest.Builder<? extends AbstractRequest>> argumentCaptor =
-            (ArgumentCaptor<AbstractRequest.Builder<? extends AbstractRequest>>) (ArgumentCaptor<?>) ArgumentCaptor.forClass(AbstractRequest.Builder.class);
+                (ArgumentCaptor<AbstractRequest.Builder<? extends AbstractRequest>>) (ArgumentCaptor<?>) ArgumentCaptor.forClass(AbstractRequest.Builder.class);
         verify(brokerToController).sendRequest(
-            argumentCaptor.capture(),
-            any(ControllerRequestCompletionHandler.class));
+                argumentCaptor.capture(),
+                any(ControllerRequestCompletionHandler.class));
 
         EnvelopeRequest capturedRequest = (EnvelopeRequest) argumentCaptor.getValue()
             .build(ApiKeys.ENVELOPE.latestVersion());
@@ -139,7 +139,7 @@ public class KRaftTopicCreatorTest {
         CreateTopicsRequest.Builder createTopicsRequest = createCreateTopicsRequestBuilder(topicName);
 
         assertThrows(IllegalArgumentException.class,
-            () -> kraftTopicCreator.createTopicWithPrincipal(requestContext, createTopicsRequest));
+                () -> kraftTopicCreator.createTopicWithPrincipal(requestContext, createTopicsRequest));
     }
 
     @Test
@@ -151,14 +151,14 @@ public class KRaftTopicCreatorTest {
 
         @SuppressWarnings("unchecked")
         ArgumentCaptor<AbstractRequest.Builder<? extends AbstractRequest>> argumentCaptor =
-            (ArgumentCaptor<AbstractRequest.Builder<? extends AbstractRequest>>) (ArgumentCaptor<?>) ArgumentCaptor.forClass(AbstractRequest.Builder.class);
+                (ArgumentCaptor<AbstractRequest.Builder<? extends AbstractRequest>>) (ArgumentCaptor<?>) ArgumentCaptor.forClass(AbstractRequest.Builder.class);
         verify(brokerToController).sendRequest(
-            argumentCaptor.capture(),
-            any(ControllerRequestCompletionHandler.class));
+                argumentCaptor.capture(),
+                any(ControllerRequestCompletionHandler.class));
 
         AbstractRequest.Builder<?> capturedRequest = argumentCaptor.getValue();
         assertInstanceOf(CreateTopicsRequest.Builder.class, capturedRequest,
-            "Should send CreateTopicsRequest.Builder when no request context provided");
+                "Should send CreateTopicsRequest.Builder when no request context provided");
     }
 
     @Test
@@ -168,17 +168,17 @@ public class KRaftTopicCreatorTest {
         CreateTopicsRequest.Builder createTopicsRequest = createCreateTopicsRequestBuilder(topicName);
 
         CompletableFuture<CreateTopicsResponse> responseFuture =
-            kraftTopicCreator.createTopicWithPrincipal(requestContext, createTopicsRequest);
+                kraftTopicCreator.createTopicWithPrincipal(requestContext, createTopicsRequest);
 
         ArgumentCaptor<ControllerRequestCompletionHandler> argumentCaptor =
-            ArgumentCaptor.forClass(ControllerRequestCompletionHandler.class);
+                ArgumentCaptor.forClass(ControllerRequestCompletionHandler.class);
         verify(brokerToController).sendRequest(
-            any(),
-            argumentCaptor.capture());
+                any(),
+                argumentCaptor.capture());
 
         CreateTopicsResponseData createTopicsResponseData = new CreateTopicsResponseData();
         CreateTopicsResponseData.CreatableTopicResult topicResult =
-            new CreateTopicsResponseData.CreatableTopicResult()
+                new CreateTopicsResponseData.CreatableTopicResult()
                 .setName(topicName)
                 .setErrorCode(Errors.NONE.code())
                 .setNumPartitions(1)
@@ -191,20 +191,20 @@ public class KRaftTopicCreatorTest {
         String clientId = requestContext.clientId();
 
         ResponseHeader responseHeader = new ResponseHeader(
-            correlationId,
-            ApiKeys.CREATE_TOPICS.responseHeaderVersion(requestVersion)
+                correlationId,
+                ApiKeys.CREATE_TOPICS.responseHeaderVersion(requestVersion)
         );
         ByteBuffer serializedResponse = RequestUtils.serialize(
-            responseHeader.data(),
-            responseHeader.headerVersion(),
-            createTopicsResponse.data(),
-            requestVersion
+                responseHeader.data(),
+                responseHeader.headerVersion(),
+                createTopicsResponse.data(),
+                requestVersion
         );
 
         EnvelopeResponse envelopeResponse = new EnvelopeResponse(serializedResponse, Errors.NONE);
         RequestHeader requestHeader = new RequestHeader(ApiKeys.ENVELOPE, (short) 0, clientId, correlationId);
         ClientResponse clientResponse = new ClientResponse(
-            requestHeader, null, null, 0, 0, false, null, null, envelopeResponse
+                requestHeader, null, null, 0, 0, false, null, null, envelopeResponse
         );
 
         argumentCaptor.getValue().onComplete(clientResponse);
@@ -222,20 +222,20 @@ public class KRaftTopicCreatorTest {
         CreateTopicsRequest.Builder createTopicsRequest = createCreateTopicsRequestBuilder(topicName);
 
         CompletableFuture<CreateTopicsResponse> responseFuture =
-            kraftTopicCreator.createTopicWithPrincipal(requestContext, createTopicsRequest);
+                kraftTopicCreator.createTopicWithPrincipal(requestContext, createTopicsRequest);
 
         ArgumentCaptor<ControllerRequestCompletionHandler> argumentCaptor =
-            ArgumentCaptor.forClass(ControllerRequestCompletionHandler.class);
+                ArgumentCaptor.forClass(ControllerRequestCompletionHandler.class);
         verify(brokerToController).sendRequest(
-            any(),
-            argumentCaptor.capture());
+                any(),
+                argumentCaptor.capture());
 
         EnvelopeResponse envelopeResponse = new EnvelopeResponse(ByteBuffer.allocate(0), Errors.UNSUPPORTED_VERSION);
         RequestHeader requestHeader = new RequestHeader(
-            ApiKeys.ENVELOPE, (short) 0, requestContext.clientId(), requestContext.correlationId()
+                ApiKeys.ENVELOPE, (short) 0, requestContext.clientId(), requestContext.correlationId()
         );
         ClientResponse clientResponse = new ClientResponse(
-            requestHeader, null, null, 0, 0, false, null, null, envelopeResponse
+                requestHeader, null, null, 0, 0, false, null, null, envelopeResponse
         );
 
         argumentCaptor.getValue().onComplete(clientResponse);
@@ -251,21 +251,21 @@ public class KRaftTopicCreatorTest {
         CreateTopicsRequest.Builder createTopicsRequest = createCreateTopicsRequestBuilder(topicName);
 
         CompletableFuture<CreateTopicsResponse> responseFuture =
-            kraftTopicCreator.createTopicWithPrincipal(requestContext, createTopicsRequest);
+                kraftTopicCreator.createTopicWithPrincipal(requestContext, createTopicsRequest);
 
         ArgumentCaptor<ControllerRequestCompletionHandler> argumentCaptor =
-            ArgumentCaptor.forClass(ControllerRequestCompletionHandler.class);
+                ArgumentCaptor.forClass(ControllerRequestCompletionHandler.class);
         verify(brokerToController).sendRequest(
-            any(),
-            argumentCaptor.capture());
+                any(),
+                argumentCaptor.capture());
 
         ByteBuffer malformedData = ByteBuffer.wrap("invalid response data".getBytes());
         EnvelopeResponse envelopeResponse = new EnvelopeResponse(malformedData, Errors.NONE);
         RequestHeader requestHeader = new RequestHeader(
-            ApiKeys.ENVELOPE, (short) 0, requestContext.clientId(), requestContext.correlationId()
+                ApiKeys.ENVELOPE, (short) 0, requestContext.clientId(), requestContext.correlationId()
         );
         ClientResponse clientResponse = new ClientResponse(
-            requestHeader, null, null, 0, 0, false, null, null, envelopeResponse
+                requestHeader, null, null, 0, 0, false, null, null, envelopeResponse
         );
 
         argumentCaptor.getValue().onComplete(clientResponse);
@@ -281,38 +281,38 @@ public class KRaftTopicCreatorTest {
         RequestContext requestContext = initializeRequestContextWithUserPrincipal();
 
         CreateTopicsRequestData.CreatableTopicCollection topicsCollection =
-            new CreateTopicsRequestData.CreatableTopicCollection();
+                new CreateTopicsRequestData.CreatableTopicCollection();
         topicsCollection.add(
-            new CreateTopicsRequestData.CreatableTopic()
+                new CreateTopicsRequestData.CreatableTopic()
                 .setName(topicName1)
                 .setNumPartitions(1)
                 .setReplicationFactor((short) 1)
         );
         topicsCollection.add(
-            new CreateTopicsRequestData.CreatableTopic()
+                new CreateTopicsRequestData.CreatableTopic()
                 .setName(topicName2)
                 .setNumPartitions(1)
                 .setReplicationFactor((short) 1)
         );
         CreateTopicsRequest.Builder createTopicsRequest = new CreateTopicsRequest.Builder(
-            new CreateTopicsRequestData()
+                new CreateTopicsRequestData()
                 .setTopics(topicsCollection)
                 .setTimeoutMs(REQUEST_TIMEOUT)
         );
 
         CompletableFuture<CreateTopicsResponse> responseFuture =
-            kraftTopicCreator.createTopicWithPrincipal(requestContext, createTopicsRequest);
+                kraftTopicCreator.createTopicWithPrincipal(requestContext, createTopicsRequest);
 
         ArgumentCaptor<ControllerRequestCompletionHandler> argumentCaptor =
-            ArgumentCaptor.forClass(ControllerRequestCompletionHandler.class);
+                ArgumentCaptor.forClass(ControllerRequestCompletionHandler.class);
         verify(brokerToController).sendRequest(
-            any(),
-            argumentCaptor.capture());
+                any(),
+                argumentCaptor.capture());
 
         CreateTopicsResponseData createTopicsResponseData = new CreateTopicsResponseData();
 
         CreateTopicsResponseData.CreatableTopicResult successResult =
-            new CreateTopicsResponseData.CreatableTopicResult()
+                new CreateTopicsResponseData.CreatableTopicResult()
                 .setName(topicName1)
                 .setErrorCode(Errors.NONE.code())
                 .setNumPartitions(1)
@@ -320,7 +320,7 @@ public class KRaftTopicCreatorTest {
         createTopicsResponseData.topics().add(successResult);
 
         CreateTopicsResponseData.CreatableTopicResult errorResult =
-            new CreateTopicsResponseData.CreatableTopicResult()
+                new CreateTopicsResponseData.CreatableTopicResult()
                 .setName(topicName2)
                 .setErrorCode(Errors.TOPIC_ALREADY_EXISTS.code())
                 .setErrorMessage("Topic already exists");
@@ -332,20 +332,20 @@ public class KRaftTopicCreatorTest {
         String clientId = requestContext.clientId();
 
         ResponseHeader responseHeader = new ResponseHeader(
-            correlationId,
-            ApiKeys.CREATE_TOPICS.responseHeaderVersion(requestVersion)
+                correlationId,
+                ApiKeys.CREATE_TOPICS.responseHeaderVersion(requestVersion)
         );
         ByteBuffer serializedResponse = RequestUtils.serialize(
-            responseHeader.data(),
-            responseHeader.headerVersion(),
-            createTopicsResponse.data(),
-            requestVersion
+                responseHeader.data(),
+                responseHeader.headerVersion(),
+                createTopicsResponse.data(),
+                requestVersion
         );
 
         EnvelopeResponse envelopeResponse = new EnvelopeResponse(serializedResponse, Errors.NONE);
         RequestHeader requestHeader = new RequestHeader(ApiKeys.ENVELOPE, (short) 0, clientId, correlationId);
         ClientResponse clientResponse = new ClientResponse(
-            requestHeader, null, null, 0, 0, false, null, null, envelopeResponse
+                requestHeader, null, null, 0, 0, false, null, null, envelopeResponse
         );
 
         argumentCaptor.getValue().onComplete(clientResponse);
@@ -354,8 +354,8 @@ public class KRaftTopicCreatorTest {
         assertEquals(2, result.data().topics().size());
         Map<String, CreateTopicsResponseData.CreatableTopicResult> results = result.data().topics().stream()
             .collect(Collectors.toMap(
-                CreateTopicsResponseData.CreatableTopicResult::name,
-                t -> t
+                    CreateTopicsResponseData.CreatableTopicResult::name,
+                    t -> t
             ));
         assertEquals(Errors.NONE.code(), results.get(topicName1).errorCode());
         assertEquals(Errors.TOPIC_ALREADY_EXISTS.code(), results.get(topicName2).errorCode());
@@ -369,13 +369,13 @@ public class KRaftTopicCreatorTest {
         CreateTopicsRequest.Builder createTopicsRequest = createCreateTopicsRequestBuilder(topicName);
 
         CompletableFuture<CreateTopicsResponse> responseFuture =
-            kraftTopicCreator.createTopicWithPrincipal(requestContext, createTopicsRequest);
+                kraftTopicCreator.createTopicWithPrincipal(requestContext, createTopicsRequest);
 
         ArgumentCaptor<ControllerRequestCompletionHandler> argumentCaptor =
-            ArgumentCaptor.forClass(ControllerRequestCompletionHandler.class);
+                ArgumentCaptor.forClass(ControllerRequestCompletionHandler.class);
         verify(brokerToController).sendRequest(
-            any(),
-            argumentCaptor.capture());
+                any(),
+                argumentCaptor.capture());
 
         argumentCaptor.getValue().onTimeout();
 
@@ -391,20 +391,20 @@ public class KRaftTopicCreatorTest {
         CreateTopicsRequest.Builder createTopicsRequest = createCreateTopicsRequestBuilder(topicName);
 
         CompletableFuture<CreateTopicsResponse> responseFuture =
-            kraftTopicCreator.createTopicWithPrincipal(requestContext, createTopicsRequest);
+                kraftTopicCreator.createTopicWithPrincipal(requestContext, createTopicsRequest);
 
         ArgumentCaptor<ControllerRequestCompletionHandler> argumentCaptor =
-            ArgumentCaptor.forClass(ControllerRequestCompletionHandler.class);
+                ArgumentCaptor.forClass(ControllerRequestCompletionHandler.class);
         verify(brokerToController).sendRequest(
-            any(),
-            argumentCaptor.capture());
+                any(),
+                argumentCaptor.capture());
 
         RequestHeader requestHeader = new RequestHeader(
-            ApiKeys.ENVELOPE, (short) 0, requestContext.clientId(), requestContext.correlationId()
+                ApiKeys.ENVELOPE, (short) 0, requestContext.clientId(), requestContext.correlationId()
         );
         AuthenticationException authException = new AuthenticationException("Authentication failed");
         ClientResponse clientResponse = new ClientResponse(
-            requestHeader, null, null, 0, 0, false, null, authException, null
+                requestHeader, null, null, 0, 0, false, null, authException, null
         );
 
         argumentCaptor.getValue().onComplete(clientResponse);
@@ -421,20 +421,20 @@ public class KRaftTopicCreatorTest {
         CreateTopicsRequest.Builder createTopicsRequest = createCreateTopicsRequestBuilder(topicName);
 
         CompletableFuture<CreateTopicsResponse> responseFuture =
-            kraftTopicCreator.createTopicWithPrincipal(requestContext, createTopicsRequest);
+                kraftTopicCreator.createTopicWithPrincipal(requestContext, createTopicsRequest);
 
         ArgumentCaptor<ControllerRequestCompletionHandler> argumentCaptor =
-            ArgumentCaptor.forClass(ControllerRequestCompletionHandler.class);
+                ArgumentCaptor.forClass(ControllerRequestCompletionHandler.class);
         verify(brokerToController).sendRequest(
-            any(),
-            argumentCaptor.capture());
+                any(),
+                argumentCaptor.capture());
 
         RequestHeader requestHeader = new RequestHeader(
-            ApiKeys.ENVELOPE, (short) 0, requestContext.clientId(), requestContext.correlationId()
+                ApiKeys.ENVELOPE, (short) 0, requestContext.clientId(), requestContext.correlationId()
         );
         UnsupportedVersionException versionMismatch = new UnsupportedVersionException("Version mismatch");
         ClientResponse clientResponse = new ClientResponse(
-            requestHeader, null, null, 0, 0, false, versionMismatch, null, null
+                requestHeader, null, null, 0, 0, false, versionMismatch, null, null
         );
 
         argumentCaptor.getValue().onComplete(clientResponse);
@@ -450,17 +450,17 @@ public class KRaftTopicCreatorTest {
         CreateTopicsRequest.Builder createTopicsRequest = createCreateTopicsRequestBuilder(topicName);
 
         CompletableFuture<CreateTopicsResponse> responseFuture =
-            kraftTopicCreator.createTopicWithoutPrincipal(createTopicsRequest);
+                kraftTopicCreator.createTopicWithoutPrincipal(createTopicsRequest);
 
         ArgumentCaptor<ControllerRequestCompletionHandler> argumentCaptor =
-            ArgumentCaptor.forClass(ControllerRequestCompletionHandler.class);
+                ArgumentCaptor.forClass(ControllerRequestCompletionHandler.class);
         verify(brokerToController).sendRequest(
-            any(),
-            argumentCaptor.capture());
+                any(),
+                argumentCaptor.capture());
 
         CreateTopicsResponseData createTopicsResponseData = new CreateTopicsResponseData();
         CreateTopicsResponseData.CreatableTopicResult topicResult =
-            new CreateTopicsResponseData.CreatableTopicResult()
+                new CreateTopicsResponseData.CreatableTopicResult()
                 .setName(topicName)
                 .setErrorCode(Errors.NONE.code())
                 .setNumPartitions(1)
@@ -470,7 +470,7 @@ public class KRaftTopicCreatorTest {
         CreateTopicsResponse createTopicsResponse = new CreateTopicsResponse(createTopicsResponseData);
         RequestHeader requestHeader = new RequestHeader(ApiKeys.CREATE_TOPICS, (short) 0, "client", 1);
         ClientResponse clientResponse = new ClientResponse(
-            requestHeader, null, null, 0, 0, false, null, null, createTopicsResponse
+                requestHeader, null, null, 0, 0, false, null, null, createTopicsResponse
         );
 
         argumentCaptor.getValue().onComplete(clientResponse);
@@ -486,21 +486,21 @@ public class KRaftTopicCreatorTest {
         CreateTopicsRequest.Builder createTopicsRequest = createCreateTopicsRequestBuilder(topicName);
 
         CompletableFuture<CreateTopicsResponse> responseFuture =
-            kraftTopicCreator.createTopicWithoutPrincipal(createTopicsRequest);
+                kraftTopicCreator.createTopicWithoutPrincipal(createTopicsRequest);
 
         ArgumentCaptor<ControllerRequestCompletionHandler> argumentCaptor =
-            ArgumentCaptor.forClass(ControllerRequestCompletionHandler.class);
+                ArgumentCaptor.forClass(ControllerRequestCompletionHandler.class);
         verify(brokerToController).sendRequest(
-            any(),
-            argumentCaptor.capture());
+                any(),
+                argumentCaptor.capture());
 
         MetadataResponse unexpectedResponse = new MetadataResponse(
-            new MetadataResponseData(),
-            ApiKeys.METADATA.latestVersion()
+                new MetadataResponseData(),
+                ApiKeys.METADATA.latestVersion()
         );
         RequestHeader requestHeader = new RequestHeader(ApiKeys.CREATE_TOPICS, (short) 0, "client", 1);
         ClientResponse clientResponse = new ClientResponse(
-            requestHeader, null, null, 0, 0, false, null, null, unexpectedResponse
+                requestHeader, null, null, 0, 0, false, null, null, unexpectedResponse
         );
 
         argumentCaptor.getValue().onComplete(clientResponse);
@@ -532,22 +532,22 @@ public class KRaftTopicCreatorTest {
     ) {
         try {
             RequestHeader requestHeader = new RequestHeader(
-                ApiKeys.METADATA,
-                ApiKeys.METADATA.latestVersion(),
-                "clientId",
-                0
+                    ApiKeys.METADATA,
+                    ApiKeys.METADATA.latestVersion(),
+                    "clientId",
+                    0
             );
             return new RequestContext(
-                requestHeader,
-                "1",
-                InetAddress.getLocalHost(),
-                Optional.empty(),
-                kafkaPrincipal,
-                ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
-                SecurityProtocol.PLAINTEXT,
-                ClientInformation.EMPTY,
-                false,
-                principalSerde
+                    requestHeader,
+                    "1",
+                    InetAddress.getLocalHost(),
+                    Optional.empty(),
+                    kafkaPrincipal,
+                    ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
+                    SecurityProtocol.PLAINTEXT,
+                    ClientInformation.EMPTY,
+                    false,
+                    principalSerde
             );
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -556,15 +556,15 @@ public class KRaftTopicCreatorTest {
 
     private CreateTopicsRequest.Builder createCreateTopicsRequestBuilder(String topicName) {
         CreateTopicsRequestData.CreatableTopicCollection topicsCollection =
-            new CreateTopicsRequestData.CreatableTopicCollection();
+                new CreateTopicsRequestData.CreatableTopicCollection();
         topicsCollection.add(
-            new CreateTopicsRequestData.CreatableTopic()
+                new CreateTopicsRequestData.CreatableTopic()
                 .setName(topicName)
                 .setNumPartitions(1)
                 .setReplicationFactor((short) 1)
         );
         return new CreateTopicsRequest.Builder(
-            new CreateTopicsRequestData()
+                new CreateTopicsRequestData()
                 .setTopics(topicsCollection)
                 .setTimeoutMs(REQUEST_TIMEOUT)
         );

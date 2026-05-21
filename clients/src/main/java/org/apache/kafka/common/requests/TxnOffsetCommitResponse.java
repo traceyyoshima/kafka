@@ -102,7 +102,7 @@ public class TxnOffsetCommitResponse extends AbstractResponse {
         ) {
             final TxnOffsetCommitResponseTopic topicResponse = getOrCreate(topicId, topicName);
             partitions.forEach(partition ->
-                topicResponse.partitions().add(new TxnOffsetCommitResponsePartition()
+                    topicResponse.partitions().add(new TxnOffsetCommitResponsePartition()
                     .setPartitionIndex(partitionIndex.apply(partition))
                     .setErrorCode(error.code()))
             );
@@ -228,7 +228,7 @@ public class TxnOffsetCommitResponse extends AbstractResponse {
             String topicName = topicPartition.topic();
 
             TxnOffsetCommitResponseTopic topic = responseTopicDataMap.getOrDefault(
-                topicName, new TxnOffsetCommitResponseTopic().setName(topicName));
+                    topicName, new TxnOffsetCommitResponseTopic().setName(topicName));
 
             topic.partitions().add(new TxnOffsetCommitResponsePartition()
                                        .setErrorCode(entry.getValue().code())

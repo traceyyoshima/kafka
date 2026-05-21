@@ -49,13 +49,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TimestampedSegmentTest {
 
     private final RocksDBMetricsRecorder metricsRecorder =
-        new RocksDBMetricsRecorder("metrics-scope", "store-name");
+            new RocksDBMetricsRecorder("metrics-scope", "store-name");
 
     @BeforeEach
     public void setUp() {
         metricsRecorder.init(
-            new StreamsMetricsImpl(new Metrics(), "test-client", new MockTime()),
-            new TaskId(0, 0)
+                new StreamsMetricsImpl(new Metrics(), "test-client", new MockTime()),
+                new TaskId(0, 0)
         );
     }
 
@@ -81,9 +81,9 @@ public class TimestampedSegmentTest {
     public void shouldBeEqualIfIdIsEqual() {
         final TimestampedSegment segment = new TimestampedSegment("anyName", "anyName", 0L, Position.emptyPosition(), metricsRecorder);
         final TimestampedSegment segmentSameId =
-            new TimestampedSegment("someOtherName", "someOtherName", 0L, Position.emptyPosition(), metricsRecorder);
+                new TimestampedSegment("someOtherName", "someOtherName", 0L, Position.emptyPosition(), metricsRecorder);
         final TimestampedSegment segmentDifferentId =
-            new TimestampedSegment("anyName", "anyName", 1L, Position.emptyPosition(), metricsRecorder);
+                new TimestampedSegment("anyName", "anyName", 1L, Position.emptyPosition(), metricsRecorder);
 
         assertThat(segment, equalTo(segment));
         assertThat(segment, equalTo(segmentSameId));
@@ -100,9 +100,9 @@ public class TimestampedSegmentTest {
     public void shouldHashOnSegmentIdOnly() {
         final TimestampedSegment segment = new TimestampedSegment("anyName", "anyName", 0L, Position.emptyPosition(), metricsRecorder);
         final TimestampedSegment segmentSameId =
-            new TimestampedSegment("someOtherName", "someOtherName", 0L, Position.emptyPosition(), metricsRecorder);
+                new TimestampedSegment("someOtherName", "someOtherName", 0L, Position.emptyPosition(), metricsRecorder);
         final TimestampedSegment segmentDifferentId =
-            new TimestampedSegment("anyName", "anyName", 1L, Position.emptyPosition(), metricsRecorder);
+                new TimestampedSegment("anyName", "anyName", 1L, Position.emptyPosition(), metricsRecorder);
 
         final Set<TimestampedSegment> set = new HashSet<>();
         assertTrue(set.add(segment));

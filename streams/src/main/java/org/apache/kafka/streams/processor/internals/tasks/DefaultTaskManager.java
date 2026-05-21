@@ -104,9 +104,9 @@ public final class DefaultTaskManager implements TaskManager {
             // the most naive scheduling algorithm for now: give the next unlocked, unassigned, and  processable task
             for (final StreamTask task : tasks.activeInitializedTasks()) {
                 if (!assignedTasks.containsKey(task.id()) &&
-                    !lockedTasks.contains(task.id()) &&
-                    canProgress(task, time.milliseconds()) &&
-                    !hasUncaughtException(task.id())
+                        !lockedTasks.contains(task.id()) &&
+                        canProgress(task, time.milliseconds()) &&
+                        !hasUncaughtException(task.id())
                 ) {
 
                     assignedTasks.put(task.id(), executor);
@@ -128,9 +128,9 @@ public final class DefaultTaskManager implements TaskManager {
         final boolean interrupted = returnWithTasksLocked(() -> {
             for (final StreamTask task : tasks.activeInitializedTasks()) {
                 if (!assignedTasks.containsKey(task.id()) &&
-                    !lockedTasks.contains(task.id()) &&
-                    canProgress(task, time.milliseconds()) &&
-                    !hasUncaughtException(task.id())
+                        !lockedTasks.contains(task.id()) &&
+                        canProgress(task, time.milliseconds()) &&
+                        !hasUncaughtException(task.id())
                 ) {
                     log.debug("Await unblocked: returning early from await since a processable task {} was found", task.id());
                     return false;
@@ -243,7 +243,7 @@ public final class DefaultTaskManager implements TaskManager {
     @Override
     public KafkaFuture<Void> lockAllTasks() {
         return returnWithTasksLocked(() ->
-            lockTasks(tasks.activeInitializedTasks().stream().map(Task::id).collect(Collectors.toSet()))
+                lockTasks(tasks.activeInitializedTasks().stream().map(Task::id).collect(Collectors.toSet()))
         );
     }
 
@@ -321,9 +321,9 @@ public final class DefaultTaskManager implements TaskManager {
         });
 
         log.info("Set an uncaught exception of type {} for task {}, with error message: {}",
-            exception.getClass().getName(),
-            taskId,
-            exception.getMessage());
+                exception.getClass().getName(),
+                taskId,
+                exception.getMessage());
     }
 
     public Map<TaskId, RuntimeException> drainUncaughtExceptions() {
@@ -364,7 +364,7 @@ public final class DefaultTaskManager implements TaskManager {
 
     private boolean canProgress(final StreamTask task, final long nowMs) {
         return
-            taskExecutionMetadata.canProcessTask(task, nowMs) && task.isProcessable(nowMs) ||
+                taskExecutionMetadata.canProcessTask(task, nowMs) && task.isProcessable(nowMs) ||
                 taskExecutionMetadata.canPunctuateTask(task) && (task.canPunctuateStreamTime() || task.canPunctuateSystemTime());
     }
 

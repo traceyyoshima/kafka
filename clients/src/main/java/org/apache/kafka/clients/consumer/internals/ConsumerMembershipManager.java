@@ -154,18 +154,18 @@ public class ConsumerMembershipManager extends AbstractMembershipManager<Consume
                                      Metrics metrics,
                                      boolean autoCommitEnabled) {
         this(groupId,
-            groupInstanceId,
-            rackId,
-            rebalanceTimeoutMs,
-            serverAssignor,
-            subscriptions,
-            commitRequestManager,
-            metadata,
-            logContext,
-            backgroundEventHandler,
-            time,
-            new ConsumerRebalanceMetricsManager(metrics, subscriptions),
-            autoCommitEnabled);
+                groupInstanceId,
+                rackId,
+                rebalanceTimeoutMs,
+                serverAssignor,
+                subscriptions,
+                commitRequestManager,
+                metadata,
+                logContext,
+                backgroundEventHandler,
+                time,
+                new ConsumerRebalanceMetricsManager(metrics, subscriptions),
+                autoCommitEnabled);
     }
 
     // Visible for testing
@@ -183,12 +183,12 @@ public class ConsumerMembershipManager extends AbstractMembershipManager<Consume
                               RebalanceMetricsManager metricsManager,
                               boolean autoCommitEnabled) {
         super(groupId,
-            subscriptions,
-            metadata,
-            logContext.logger(ConsumerMembershipManager.class),
-            time,
-            metricsManager,
-            autoCommitEnabled);
+                subscriptions,
+                metadata,
+                logContext.logger(ConsumerMembershipManager.class),
+                time,
+                metricsManager,
+                autoCommitEnabled);
         this.groupInstanceId = groupInstanceId;
         this.rackId = rackId;
         this.rebalanceTimeoutMs = rebalanceTimeoutMs;
@@ -261,7 +261,7 @@ public class ConsumerMembershipManager extends AbstractMembershipManager<Consume
 
             Map<Uuid, SortedSet<Integer>> newAssignment = new HashMap<>();
             assignment.topicPartitions().forEach(topicPartition ->
-                newAssignment.put(topicPartition.topicId(), new TreeSet<>(topicPartition.partitions())));
+                    newAssignment.put(topicPartition.topicId(), new TreeSet<>(topicPartition.partitions())));
             processAssignmentReceived(newAssignment);
         }
     }
@@ -427,11 +427,11 @@ public class ConsumerMembershipManager extends AbstractMembershipManager<Consume
 
         // Default operation: both static and dynamic consumers will send a leave heartbeat
         boolean hasLeaveOperation = DEFAULT == leaveGroupOperation ||
-            // Leave operation: both static and dynamic consumers will send a leave heartbeat
-            LEAVE_GROUP == leaveGroupOperation ||
-            // Remain in group: static consumers will send a leave heartbeat with -2 epoch to reflect that a member using the given
-            // instance id decided to leave the group and would be back within the session timeout.
-            groupInstanceId().isPresent();
+                // Leave operation: both static and dynamic consumers will send a leave heartbeat
+                LEAVE_GROUP == leaveGroupOperation ||
+                // Remain in group: static consumers will send a leave heartbeat with -2 epoch to reflect that a member using the given
+                // instance id decided to leave the group and would be back within the session timeout.
+                groupInstanceId().isPresent();
 
         return isLeavingState && hasLeaveOperation;
     }

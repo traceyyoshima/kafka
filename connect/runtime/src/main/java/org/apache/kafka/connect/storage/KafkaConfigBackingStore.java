@@ -271,9 +271,11 @@ public final class KafkaConfigBackingStore extends KafkaTopicBasedBackingStore i
             .build();
 
     public static final String LOGGER_CLUSTER_PREFIX = "logger-cluster-";
+
     public static String LOGGER_CLUSTER_KEY(String namespace) {
         return LOGGER_CLUSTER_PREFIX + namespace;
     }
+
     public static final Schema LOGGER_LEVEL_V0 = SchemaBuilder.struct()
             .field("level", Schema.STRING_SCHEMA)
             .build();
@@ -381,8 +383,8 @@ public final class KafkaConfigBackingStore extends KafkaTopicBasedBackingStore i
         } catch (UnsupportedVersionException e) {
             throw new ConnectException(
                     "Enabling exactly-once support for source connectors requires a Kafka broker version that allows "
-                            + "admin clients to read consumer offsets. Please either disable the worker's exactly-once "
-                            + "support for source connectors, or use a newer Kafka broker version.",
+                    + "admin clients to read consumer offsets. Please either disable the worker's exactly-once "
+                    + "support for source connectors, or use a newer Kafka broker version.",
                     e
             );
         }
@@ -1065,8 +1067,8 @@ public final class KafkaConfigBackingStore extends KafkaTopicBasedBackingStore i
                 processConnectorRemoval(connectorName);
                 log.debug(
                         "Ignoring task configs for connector {}; it appears that the connector was deleted previously "
-                            + "and that log compaction has since removed any trace of its previous configurations "
-                            + "from the config topic",
+                        + "and that log compaction has since removed any trace of its previous configurations "
+                        + "from the config topic",
                         connectorName
                 );
                 return;

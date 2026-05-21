@@ -42,7 +42,7 @@ public class WordCountProcessorTest {
 
         // Create, initialize, and register the state store.
         final KeyValueStore<String, Integer> store =
-            Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore("Counts"), Serdes.String(), Serdes.Integer())
+                Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore("Counts"), Serdes.String(), Serdes.Integer())
                 .withLoggingDisabled() // Changelog is not supported by MockProcessorContext.
                 // Caching is disabled by default, but FYI: caching is also not supported by MockProcessorContext.
                 .build();
@@ -63,9 +63,9 @@ public class WordCountProcessorTest {
 
         // finally, we can verify the output.
         final List<MockProcessorContext.CapturedForward<String, String>> expected = Arrays.asList(
-            new MockProcessorContext.CapturedForward<>(new Record<>("alpha", "2", 0L)),
-            new MockProcessorContext.CapturedForward<>(new Record<>("beta", "1", 0L)),
-            new MockProcessorContext.CapturedForward<>(new Record<>("gamma", "1", 0L))
+                new MockProcessorContext.CapturedForward<>(new Record<>("alpha", "2", 0L)),
+                new MockProcessorContext.CapturedForward<>(new Record<>("beta", "1", 0L)),
+                new MockProcessorContext.CapturedForward<>(new Record<>("gamma", "1", 0L))
         );
         assertThat(context.forwarded(), is(expected));
     }

@@ -100,11 +100,11 @@ class StreamsCoordinatorRecordHelpersTest {
             .build();
 
         CoordinatorRecord expectedRecord = CoordinatorRecord.record(
-            new StreamsGroupMemberMetadataKey()
+                new StreamsGroupMemberMetadataKey()
                 .setGroupId(GROUP_ID)
                 .setMemberId(MEMBER_ID),
-            new ApiMessageAndVersion(
-                new StreamsGroupMemberMetadataValue()
+                new ApiMessageAndVersion(
+                    new StreamsGroupMemberMetadataValue()
                     .setRackId(RACK_1)
                     .setInstanceId(INSTANCE_ID)
                     .setClientId(CLIENT_ID)
@@ -114,10 +114,10 @@ class StreamsCoordinatorRecordHelpersTest {
                     .setProcessId(PROCESS_ID)
                     .setUserEndpoint(new StreamsGroupMemberMetadataValue.Endpoint().setHost(USER_ENDPOINT).setPort(USER_ENDPOINT_PORT))
                     .setClientTags(List.of(
-                        new StreamsGroupMemberMetadataValue.KeyValue().setKey(TAG_1).setValue(VALUE_1),
-                        new StreamsGroupMemberMetadataValue.KeyValue().setKey(TAG_2).setValue(VALUE_2)
+                            new StreamsGroupMemberMetadataValue.KeyValue().setKey(TAG_1).setValue(VALUE_1),
+                            new StreamsGroupMemberMetadataValue.KeyValue().setKey(TAG_2).setValue(VALUE_2)
                     )),
-                (short) 0
+                    (short) 0
             )
         );
 
@@ -139,11 +139,11 @@ class StreamsCoordinatorRecordHelpersTest {
             .build();
 
         CoordinatorRecord expectedRecord = CoordinatorRecord.record(
-            new StreamsGroupMemberMetadataKey()
+                new StreamsGroupMemberMetadataKey()
                 .setGroupId(GROUP_ID)
                 .setMemberId(MEMBER_ID),
-            new ApiMessageAndVersion(
-                new StreamsGroupMemberMetadataValue()
+                new ApiMessageAndVersion(
+                    new StreamsGroupMemberMetadataValue()
                     .setRackId(null)
                     .setInstanceId(INSTANCE_ID)
                     .setClientId(CLIENT_ID)
@@ -153,10 +153,10 @@ class StreamsCoordinatorRecordHelpersTest {
                     .setProcessId(PROCESS_ID)
                     .setUserEndpoint(new StreamsGroupMemberMetadataValue.Endpoint().setHost(USER_ENDPOINT).setPort(USER_ENDPOINT_PORT))
                     .setClientTags(List.of(
-                        new StreamsGroupMemberMetadataValue.KeyValue().setKey(TAG_1).setValue(VALUE_1),
-                        new StreamsGroupMemberMetadataValue.KeyValue().setKey(TAG_2).setValue(VALUE_2)
+                            new StreamsGroupMemberMetadataValue.KeyValue().setKey(TAG_1).setValue(VALUE_1),
+                            new StreamsGroupMemberMetadataValue.KeyValue().setKey(TAG_2).setValue(VALUE_2)
                     )),
-                (short) 0
+                    (short) 0
             )
         );
 
@@ -178,11 +178,11 @@ class StreamsCoordinatorRecordHelpersTest {
             .build();
 
         CoordinatorRecord expectedRecord = CoordinatorRecord.record(
-            new StreamsGroupMemberMetadataKey()
+                new StreamsGroupMemberMetadataKey()
                 .setGroupId(GROUP_ID)
                 .setMemberId(MEMBER_ID),
-            new ApiMessageAndVersion(
-                new StreamsGroupMemberMetadataValue()
+                new ApiMessageAndVersion(
+                    new StreamsGroupMemberMetadataValue()
                     .setRackId(RACK_1)
                     .setInstanceId(null)
                     .setClientId(CLIENT_ID)
@@ -192,10 +192,10 @@ class StreamsCoordinatorRecordHelpersTest {
                     .setProcessId(PROCESS_ID)
                     .setUserEndpoint(new StreamsGroupMemberMetadataValue.Endpoint().setHost(USER_ENDPOINT).setPort(USER_ENDPOINT_PORT))
                     .setClientTags(List.of(
-                        new StreamsGroupMemberMetadataValue.KeyValue().setKey(TAG_1).setValue(VALUE_1),
-                        new StreamsGroupMemberMetadataValue.KeyValue().setKey(TAG_2).setValue(VALUE_2)
+                            new StreamsGroupMemberMetadataValue.KeyValue().setKey(TAG_1).setValue(VALUE_1),
+                            new StreamsGroupMemberMetadataValue.KeyValue().setKey(TAG_2).setValue(VALUE_2)
                     )),
-                (short) 0
+                    (short) 0
             )
         );
 
@@ -217,11 +217,11 @@ class StreamsCoordinatorRecordHelpersTest {
             .build();
 
         CoordinatorRecord expectedRecord = CoordinatorRecord.record(
-            new StreamsGroupMemberMetadataKey()
+                new StreamsGroupMemberMetadataKey()
                 .setGroupId(GROUP_ID)
                 .setMemberId(MEMBER_ID),
-            new ApiMessageAndVersion(
-                new StreamsGroupMemberMetadataValue()
+                new ApiMessageAndVersion(
+                    new StreamsGroupMemberMetadataValue()
                     .setRackId(RACK_1)
                     .setInstanceId(INSTANCE_ID)
                     .setClientId(CLIENT_ID)
@@ -231,10 +231,10 @@ class StreamsCoordinatorRecordHelpersTest {
                     .setProcessId(PROCESS_ID)
                     .setUserEndpoint(null)
                     .setClientTags(List.of(
-                        new StreamsGroupMemberMetadataValue.KeyValue().setKey(TAG_1).setValue(VALUE_1),
-                        new StreamsGroupMemberMetadataValue.KeyValue().setKey(TAG_2).setValue(VALUE_2)
+                            new StreamsGroupMemberMetadataValue.KeyValue().setKey(TAG_1).setValue(VALUE_1),
+                            new StreamsGroupMemberMetadataValue.KeyValue().setKey(TAG_2).setValue(VALUE_2)
                     )),
-                (short) 0
+                    (short) 0
             )
         );
 
@@ -244,7 +244,7 @@ class StreamsCoordinatorRecordHelpersTest {
     @Test
     public void testNewStreamsGroupMemberTombstoneRecord() {
         CoordinatorRecord expectedRecord = CoordinatorRecord.tombstone(
-            new StreamsGroupMemberMetadataKey()
+                new StreamsGroupMemberMetadataKey()
                 .setGroupId(GROUP_ID)
                 .setMemberId(MEMBER_ID)
         );
@@ -255,38 +255,38 @@ class StreamsCoordinatorRecordHelpersTest {
     @Test
     public void testNewStreamsGroupMetadataRecordWithNullAssignmentConfig() {
         assertThrows(NullPointerException.class, () ->
-            StreamsCoordinatorRecordHelpers.newStreamsGroupMetadataRecord(GROUP_ID, 42, 43, 44, null));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupMetadataRecord(GROUP_ID, 42, 43, 44, null));
     }
 
     @Test
     public void testNewStreamsGroupMetadataRecord() {
         List<StreamsGroupMetadataValue.LastAssignmentConfig> expectedAssignmentConfigs = List.of(
-            new StreamsGroupMetadataValue.LastAssignmentConfig()
+                new StreamsGroupMetadataValue.LastAssignmentConfig()
                 .setKey("num.standby.replicas")
                 .setValue("2")
         );
         CoordinatorRecord expectedRecord = CoordinatorRecord.record(
-            new StreamsGroupMetadataKey()
+                new StreamsGroupMetadataKey()
                 .setGroupId(GROUP_ID),
-            new ApiMessageAndVersion(
-                new StreamsGroupMetadataValue()
+                new ApiMessageAndVersion(
+                    new StreamsGroupMetadataValue()
                     .setEpoch(42)
                     .setMetadataHash(43)
                     .setValidatedTopologyEpoch(44)
                     .setLastAssignmentConfigs(expectedAssignmentConfigs),
-                (short) 0
+                    (short) 0
             )
         );
 
         assertEquals(expectedRecord, StreamsCoordinatorRecordHelpers.newStreamsGroupMetadataRecord(GROUP_ID, 42, 43, 44, Map.of(
-            "num.standby.replicas", "2"
+                "num.standby.replicas", "2"
         )));
     }
 
     @Test
     public void testNewStreamsGroupEpochTombstoneRecord() {
         CoordinatorRecord expectedRecord = CoordinatorRecord.tombstone(
-            new StreamsGroupMetadataKey()
+                new StreamsGroupMetadataKey()
                 .setGroupId(GROUP_ID)
         );
 
@@ -300,33 +300,33 @@ class StreamsCoordinatorRecordHelpersTest {
         Map<String, Set<Integer>> warmupTasks = Map.of(SUBTOPOLOGY_3, Set.of(7, 8, 9));
 
         CoordinatorRecord expectedRecord = CoordinatorRecord.record(
-            new StreamsGroupTargetAssignmentMemberKey()
+                new StreamsGroupTargetAssignmentMemberKey()
                 .setGroupId(GROUP_ID)
                 .setMemberId(MEMBER_ID),
-            new ApiMessageAndVersion(
-                new StreamsGroupTargetAssignmentMemberValue()
+                new ApiMessageAndVersion(
+                    new StreamsGroupTargetAssignmentMemberValue()
                     .setActiveTasks(List.of(
-                        new StreamsGroupTargetAssignmentMemberValue.TaskIds()
+                            new StreamsGroupTargetAssignmentMemberValue.TaskIds()
                             .setSubtopologyId(SUBTOPOLOGY_1)
                             .setPartitions(List.of(1, 2, 3))
                     ))
                     .setStandbyTasks(List.of(
-                        new StreamsGroupTargetAssignmentMemberValue.TaskIds()
+                            new StreamsGroupTargetAssignmentMemberValue.TaskIds()
                             .setSubtopologyId(SUBTOPOLOGY_2)
                             .setPartitions(List.of(4, 5, 6))
                     ))
                     .setWarmupTasks(List.of(
-                        new StreamsGroupTargetAssignmentMemberValue.TaskIds()
+                            new StreamsGroupTargetAssignmentMemberValue.TaskIds()
                             .setSubtopologyId(SUBTOPOLOGY_3)
                             .setPartitions(List.of(7, 8, 9))
                     )),
-                (short) 0
+                    (short) 0
             )
         );
 
         assertEquals(expectedRecord,
-            StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentRecord(GROUP_ID, MEMBER_ID,
-                new TasksTuple(activeTasks, standbyTasks, warmupTasks)));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentRecord(GROUP_ID, MEMBER_ID,
+                    new TasksTuple(activeTasks, standbyTasks, warmupTasks)));
     }
 
     @ParameterizedTest
@@ -348,42 +348,42 @@ class StreamsCoordinatorRecordHelpersTest {
         }
 
         CoordinatorRecord expectedRecord = CoordinatorRecord.record(
-            new StreamsGroupTargetAssignmentMemberKey()
+                new StreamsGroupTargetAssignmentMemberKey()
                 .setGroupId(GROUP_ID)
                 .setMemberId(MEMBER_ID),
-            new ApiMessageAndVersion(
-                targetAssignmentMemberValue,
-                (short) 0
+                new ApiMessageAndVersion(
+                    targetAssignmentMemberValue,
+                    (short) 0
             )
         );
 
         assertEquals(expectedRecord,
-            StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentRecord(GROUP_ID, MEMBER_ID,
-                mkTasksTuple(taskRole, mkTasks(SUBTOPOLOGY_1, 1, 2, 3))));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentRecord(GROUP_ID, MEMBER_ID,
+                    mkTasksTuple(taskRole, mkTasks(SUBTOPOLOGY_1, 1, 2, 3))));
     }
 
     @Test
     public void testNewStreamsGroupTargetAssignmentTombstoneRecord() {
         CoordinatorRecord expectedRecord = CoordinatorRecord.tombstone(
-            new StreamsGroupTargetAssignmentMemberKey()
+                new StreamsGroupTargetAssignmentMemberKey()
                 .setGroupId(GROUP_ID)
                 .setMemberId(MEMBER_ID)
         );
 
         assertEquals(expectedRecord,
-            StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentTombstoneRecord(GROUP_ID, MEMBER_ID));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentTombstoneRecord(GROUP_ID, MEMBER_ID));
     }
 
     @Test
     public void testNewStreamsGroupTargetAssignmentMetadataRecord() {
         CoordinatorRecord expectedRecord = CoordinatorRecord.record(
-            new StreamsGroupTargetAssignmentMetadataKey()
+                new StreamsGroupTargetAssignmentMetadataKey()
                 .setGroupId(GROUP_ID),
-            new ApiMessageAndVersion(
-                new StreamsGroupTargetAssignmentMetadataValue()
+                new ApiMessageAndVersion(
+                    new StreamsGroupTargetAssignmentMetadataValue()
                     .setAssignmentEpoch(42)
                     .setAssignmentTimestamp(12345L),
-                (short) 0
+                    (short) 0
             )
         );
 
@@ -393,7 +393,7 @@ class StreamsCoordinatorRecordHelpersTest {
     @Test
     public void testNewStreamsGroupTargetAssignmentMetadataTombstoneRecord() {
         CoordinatorRecord expectedRecord = CoordinatorRecord.tombstone(
-            new StreamsGroupTargetAssignmentMetadataKey()
+                new StreamsGroupTargetAssignmentMetadataKey()
                 .setGroupId(GROUP_ID)
         );
 
@@ -416,63 +416,63 @@ class StreamsCoordinatorRecordHelpersTest {
             .setUserEndpoint(new Endpoint().setHost(USER_ENDPOINT).setPort(USER_ENDPOINT_PORT))
             .setClientTags(Map.of(TAG_1, VALUE_1, TAG_2, VALUE_2))
             .setAssignedTasks(new TasksTupleWithEpochs(
-                mkTasksWithEpochsPerSubtopology(
-                    mkTasksWithEpochs(SUBTOPOLOGY_1, Map.of(1, 10, 2, 11, 3, 12))
+                    mkTasksWithEpochsPerSubtopology(
+                        mkTasksWithEpochs(SUBTOPOLOGY_1, Map.of(1, 10, 2, 11, 3, 12))
                 ),
-                mkTasksPerSubtopology(mkTasks(SUBTOPOLOGY_2, 4, 5, 6)),
-                mkTasksPerSubtopology(mkTasks(SUBTOPOLOGY_3, 7, 8, 9))
+                    mkTasksPerSubtopology(mkTasks(SUBTOPOLOGY_2, 4, 5, 6)),
+                    mkTasksPerSubtopology(mkTasks(SUBTOPOLOGY_3, 7, 8, 9))
             ))
             .setTasksPendingRevocation(new TasksTupleWithEpochs(
-                mkTasksWithEpochsPerSubtopology(
-                    mkTasksWithEpochs(SUBTOPOLOGY_1, Map.of(1, 5, 2, 6, 3, 7))
+                    mkTasksWithEpochsPerSubtopology(
+                        mkTasksWithEpochs(SUBTOPOLOGY_1, Map.of(1, 5, 2, 6, 3, 7))
                 ),
-                mkTasksPerSubtopology(mkTasks(SUBTOPOLOGY_2, 4, 5, 6)),
-                mkTasksPerSubtopology(mkTasks(SUBTOPOLOGY_3, 7, 8, 9))
+                    mkTasksPerSubtopology(mkTasks(SUBTOPOLOGY_2, 4, 5, 6)),
+                    mkTasksPerSubtopology(mkTasks(SUBTOPOLOGY_3, 7, 8, 9))
             ))
             .build();
 
         CoordinatorRecord expectedRecord = CoordinatorRecord.record(
-            new StreamsGroupCurrentMemberAssignmentKey()
+                new StreamsGroupCurrentMemberAssignmentKey()
                 .setGroupId(GROUP_ID)
                 .setMemberId(MEMBER_ID),
-            new ApiMessageAndVersion(
-                new StreamsGroupCurrentMemberAssignmentValue()
+                new ApiMessageAndVersion(
+                    new StreamsGroupCurrentMemberAssignmentValue()
                     .setMemberEpoch(1)
                     .setPreviousMemberEpoch(0)
                     .setState(MemberState.STABLE.value())
                     .setActiveTasks(List.of(
-                        new StreamsGroupCurrentMemberAssignmentValue.TaskIds()
+                            new StreamsGroupCurrentMemberAssignmentValue.TaskIds()
                             .setSubtopologyId(SUBTOPOLOGY_1)
                             .setPartitions(List.of(1, 2, 3))
                             .setAssignmentEpochs(List.of(10, 11, 12))
                     ))
                     .setStandbyTasks(List.of(
-                        new StreamsGroupCurrentMemberAssignmentValue.TaskIds()
+                            new StreamsGroupCurrentMemberAssignmentValue.TaskIds()
                             .setSubtopologyId(SUBTOPOLOGY_2)
                             .setPartitions(List.of(4, 5, 6))
                     ))
                     .setWarmupTasks(List.of(
-                        new StreamsGroupCurrentMemberAssignmentValue.TaskIds()
+                            new StreamsGroupCurrentMemberAssignmentValue.TaskIds()
                             .setSubtopologyId(SUBTOPOLOGY_3)
                             .setPartitions(List.of(7, 8, 9))
                     ))
                     .setActiveTasksPendingRevocation(List.of(
-                        new StreamsGroupCurrentMemberAssignmentValue.TaskIds()
+                            new StreamsGroupCurrentMemberAssignmentValue.TaskIds()
                             .setSubtopologyId(SUBTOPOLOGY_1)
                             .setPartitions(List.of(1, 2, 3))
                             .setAssignmentEpochs(List.of(5, 6, 7))
                     ))
                     .setStandbyTasksPendingRevocation(List.of(
-                        new StreamsGroupCurrentMemberAssignmentValue.TaskIds()
+                            new StreamsGroupCurrentMemberAssignmentValue.TaskIds()
                             .setSubtopologyId(SUBTOPOLOGY_2)
                             .setPartitions(List.of(4, 5, 6))
                     ))
                     .setWarmupTasksPendingRevocation(List.of(
-                        new StreamsGroupCurrentMemberAssignmentValue.TaskIds()
+                            new StreamsGroupCurrentMemberAssignmentValue.TaskIds()
                             .setSubtopologyId(SUBTOPOLOGY_3)
                             .setPartitions(List.of(7, 8, 9))
                     )),
-                (short) 0
+                    (short) 0
             )
         );
 
@@ -499,11 +499,11 @@ class StreamsCoordinatorRecordHelpersTest {
             .build();
 
         CoordinatorRecord expectedRecord = CoordinatorRecord.record(
-            new StreamsGroupCurrentMemberAssignmentKey()
+                new StreamsGroupCurrentMemberAssignmentKey()
                 .setGroupId(GROUP_ID)
                 .setMemberId(MEMBER_ID),
-            new ApiMessageAndVersion(
-                new StreamsGroupCurrentMemberAssignmentValue()
+                new ApiMessageAndVersion(
+                    new StreamsGroupCurrentMemberAssignmentValue()
                     .setMemberEpoch(1)
                     .setPreviousMemberEpoch(0)
                     .setState(MemberState.STABLE.value())
@@ -513,7 +513,7 @@ class StreamsCoordinatorRecordHelpersTest {
                     .setActiveTasksPendingRevocation(List.of())
                     .setStandbyTasksPendingRevocation(List.of())
                     .setWarmupTasksPendingRevocation(List.of()),
-                (short) 0
+                    (short) 0
             )
         );
 
@@ -523,59 +523,59 @@ class StreamsCoordinatorRecordHelpersTest {
     @Test
     public void testNewStreamsGroupCurrentAssignmentTombstoneRecord() {
         CoordinatorRecord expectedRecord = CoordinatorRecord.tombstone(
-            new StreamsGroupCurrentMemberAssignmentKey()
+                new StreamsGroupCurrentMemberAssignmentKey()
                 .setGroupId(GROUP_ID)
                 .setMemberId(MEMBER_ID)
         );
 
         assertEquals(expectedRecord,
-            StreamsCoordinatorRecordHelpers.newStreamsGroupCurrentAssignmentTombstoneRecord(GROUP_ID, MEMBER_ID));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupCurrentAssignmentTombstoneRecord(GROUP_ID, MEMBER_ID));
     }
 
     @Test
     public void testNewStreamsGroupTopologyRecord() {
         StreamsGroupHeartbeatRequestData.Topology topology =
-            new StreamsGroupHeartbeatRequestData.Topology()
+                new StreamsGroupHeartbeatRequestData.Topology()
                 .setEpoch(42)
                 .setSubtopologies(
-                    List.of(new StreamsGroupHeartbeatRequestData.Subtopology()
+                        List.of(new StreamsGroupHeartbeatRequestData.Subtopology()
                             .setSubtopologyId(SUBTOPOLOGY_1)
                             .setRepartitionSinkTopics(List.of(TOPIC_FOO))
                             .setSourceTopics(List.of(TOPIC_BAR))
                             .setSourceTopicRegex(List.of(TOPIC_REGEX))
                             .setRepartitionSourceTopics(
-                                List.of(
-                                    new StreamsGroupHeartbeatRequestData.TopicInfo()
+                                    List.of(
+                                        new StreamsGroupHeartbeatRequestData.TopicInfo()
                                         .setName(TOPIC_REPARTITION)
                                         .setPartitions(4)
                                         .setReplicationFactor((short) 3)
                                         .setTopicConfigs(List.of(
-                                            new StreamsGroupHeartbeatRequestData.KeyValue()
+                                                new StreamsGroupHeartbeatRequestData.KeyValue()
                                                 .setKey(CONFIG_NAME_1)
                                                 .setValue(CONFIG_VALUE_1)
                                         ))
                                 )
                             )
                             .setStateChangelogTopics(
-                                List.of(
-                                    new StreamsGroupHeartbeatRequestData.TopicInfo()
+                                    List.of(
+                                        new StreamsGroupHeartbeatRequestData.TopicInfo()
                                         .setName(TOPIC_CHANGELOG)
                                         .setReplicationFactor((short) 2)
                                         .setTopicConfigs(List.of(
-                                            new StreamsGroupHeartbeatRequestData.KeyValue()
+                                                new StreamsGroupHeartbeatRequestData.KeyValue()
                                                 .setKey(CONFIG_NAME_2)
                                                 .setValue(CONFIG_VALUE_2)
                                         ))
                                 )
                             )
                             .setCopartitionGroups(List.of(
-                                new StreamsGroupHeartbeatRequestData.CopartitionGroup()
+                                    new StreamsGroupHeartbeatRequestData.CopartitionGroup()
                                     .setSourceTopics(List.of((short) 0))
                                     .setRepartitionSourceTopics(List.of((short) 0)),
-                                new StreamsGroupHeartbeatRequestData.CopartitionGroup()
+                                    new StreamsGroupHeartbeatRequestData.CopartitionGroup()
                                     .setSourceTopicRegex(List.of((short) 0))
                             )),
-                        new StreamsGroupHeartbeatRequestData.Subtopology()
+                            new StreamsGroupHeartbeatRequestData.Subtopology()
                             .setSubtopologyId(SUBTOPOLOGY_1)
                             .setRepartitionSinkTopics(List.of())
                             .setSourceTopics(List.of(TOPIC_BAR))
@@ -587,47 +587,47 @@ class StreamsCoordinatorRecordHelpersTest {
                 );
 
         StreamsGroupTopologyValue expectedTopology =
-            new StreamsGroupTopologyValue()
+                new StreamsGroupTopologyValue()
                 .setEpoch(42)
                 .setSubtopologies(
-                    List.of(new StreamsGroupTopologyValue.Subtopology()
+                        List.of(new StreamsGroupTopologyValue.Subtopology()
                             .setSubtopologyId(SUBTOPOLOGY_1)
                             .setRepartitionSinkTopics(List.of(TOPIC_FOO))
                             .setSourceTopics(List.of(TOPIC_BAR))
                             .setSourceTopicRegex(List.of(TOPIC_REGEX))
                             .setRepartitionSourceTopics(
-                                List.of(
-                                    new StreamsGroupTopologyValue.TopicInfo()
+                                    List.of(
+                                        new StreamsGroupTopologyValue.TopicInfo()
                                         .setName(TOPIC_REPARTITION)
                                         .setPartitions(4)
                                         .setReplicationFactor((short) 3)
                                         .setTopicConfigs(List.of(
-                                            new StreamsGroupTopologyValue.TopicConfig()
+                                                new StreamsGroupTopologyValue.TopicConfig()
                                                 .setKey(CONFIG_NAME_1)
                                                 .setValue(CONFIG_VALUE_1)
                                         ))
                                 )
                             )
                             .setStateChangelogTopics(
-                                List.of(
-                                    new StreamsGroupTopologyValue.TopicInfo()
+                                    List.of(
+                                        new StreamsGroupTopologyValue.TopicInfo()
                                         .setName(TOPIC_CHANGELOG)
                                         .setReplicationFactor((short) 2)
                                         .setTopicConfigs(List.of(
-                                            new StreamsGroupTopologyValue.TopicConfig()
+                                                new StreamsGroupTopologyValue.TopicConfig()
                                                 .setKey(CONFIG_NAME_2)
                                                 .setValue(CONFIG_VALUE_2)
                                         ))
                                 )
                             )
                             .setCopartitionGroups(List.of(
-                                new StreamsGroupTopologyValue.CopartitionGroup()
+                                    new StreamsGroupTopologyValue.CopartitionGroup()
                                     .setSourceTopics(List.of((short) 0))
                                     .setRepartitionSourceTopics(List.of((short) 0)),
-                                new StreamsGroupTopologyValue.CopartitionGroup()
+                                    new StreamsGroupTopologyValue.CopartitionGroup()
                                     .setSourceTopicRegex(List.of((short) 0))
                             )),
-                        new StreamsGroupTopologyValue.Subtopology()
+                            new StreamsGroupTopologyValue.Subtopology()
                             .setSubtopologyId(SUBTOPOLOGY_1)
                             .setRepartitionSinkTopics(List.of())
                             .setSourceTopics(List.of(TOPIC_BAR))
@@ -639,11 +639,11 @@ class StreamsCoordinatorRecordHelpersTest {
                 );
 
         CoordinatorRecord expectedRecord = CoordinatorRecord.record(
-            new StreamsGroupTopologyKey()
+                new StreamsGroupTopologyKey()
                 .setGroupId(GROUP_ID),
-            new ApiMessageAndVersion(
-                expectedTopology,
-                (short) 0));
+                new ApiMessageAndVersion(
+                    expectedTopology,
+                    (short) 0));
 
         assertEquals(expectedRecord, StreamsCoordinatorRecordHelpers.newStreamsGroupTopologyRecord(GROUP_ID, topology));
     }
@@ -651,7 +651,7 @@ class StreamsCoordinatorRecordHelpersTest {
     @Test
     public void testNewStreamsGroupTopologyRecordTombstone() {
         CoordinatorRecord expectedRecord = CoordinatorRecord.tombstone(
-            new StreamsGroupTopologyKey()
+                new StreamsGroupTopologyKey()
                 .setGroupId(GROUP_ID)
         );
 
@@ -661,161 +661,161 @@ class StreamsCoordinatorRecordHelpersTest {
     @Test
     public void testNewStreamsGroupMemberRecordNullGroupId() {
         NullPointerException exception = assertThrows(NullPointerException.class, () ->
-            StreamsCoordinatorRecordHelpers.newStreamsGroupMemberRecord(null, mock(StreamsGroupMember.class)));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupMemberRecord(null, mock(StreamsGroupMember.class)));
         assertEquals("groupId should not be null here", exception.getMessage());
     }
 
     @Test
     public void testNewStreamsGroupMemberRecordNullMember() {
         NullPointerException exception = assertThrows(NullPointerException.class, () ->
-            StreamsCoordinatorRecordHelpers.newStreamsGroupMemberRecord("groupId", null));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupMemberRecord("groupId", null));
         assertEquals("member should not be null here", exception.getMessage());
     }
 
     @Test
     public void testNewStreamsGroupMemberTombstoneRecordNullGroupId() {
         NullPointerException exception = assertThrows(NullPointerException.class, () ->
-            StreamsCoordinatorRecordHelpers.newStreamsGroupMemberTombstoneRecord(null, "memberId"));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupMemberTombstoneRecord(null, "memberId"));
         assertEquals("groupId should not be null here", exception.getMessage());
     }
 
     @Test
     public void testNewStreamsGroupMemberTombstoneRecordNullMemberId() {
         NullPointerException exception = assertThrows(NullPointerException.class, () ->
-            StreamsCoordinatorRecordHelpers.newStreamsGroupMemberTombstoneRecord("groupId", null));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupMemberTombstoneRecord("groupId", null));
         assertEquals("memberId should not be null here", exception.getMessage());
     }
 
     @Test
     public void testNewStreamsGroupMetadataRecordNullGroupId() {
         NullPointerException exception = assertThrows(NullPointerException.class, () ->
-            StreamsCoordinatorRecordHelpers.newStreamsGroupMetadataRecord(null, 1, 1, 1, Map.of()));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupMetadataRecord(null, 1, 1, 1, Map.of()));
         assertEquals("groupId should not be null here", exception.getMessage());
     }
 
     @Test
     public void testNewStreamsGroupEpochTombstoneRecordNullGroupId() {
         NullPointerException exception = assertThrows(NullPointerException.class, () ->
-            StreamsCoordinatorRecordHelpers.newStreamsGroupEpochTombstoneRecord(null));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupEpochTombstoneRecord(null));
         assertEquals("groupId should not be null here", exception.getMessage());
     }
 
     @Test
     public void testNewStreamsGroupTargetAssignmentRecordNullGroupId() {
         NullPointerException exception = assertThrows(NullPointerException.class, () ->
-            StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentRecord(null, "memberId", mock(TasksTuple.class)));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentRecord(null, "memberId", mock(TasksTuple.class)));
         assertEquals("groupId should not be null here", exception.getMessage());
     }
 
     @Test
     public void testNewStreamsGroupTargetAssignmentRecordNullMemberId() {
         NullPointerException exception = assertThrows(NullPointerException.class, () ->
-            StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentRecord("groupId", null, mock(TasksTuple.class)));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentRecord("groupId", null, mock(TasksTuple.class)));
         assertEquals("memberId should not be null here", exception.getMessage());
     }
 
     @Test
     public void testNewStreamsGroupTargetAssignmentRecordNullAssignment() {
         NullPointerException exception = assertThrows(NullPointerException.class, () ->
-            StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentRecord("groupId", "memberId", null));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentRecord("groupId", "memberId", null));
         assertEquals("assignment should not be null here", exception.getMessage());
     }
 
     @Test
     public void testNewStreamsGroupTargetAssignmentTombstoneRecordNullGroupId() {
         NullPointerException exception = assertThrows(NullPointerException.class, () ->
-            StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentTombstoneRecord(null, "memberId"));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentTombstoneRecord(null, "memberId"));
         assertEquals("groupId should not be null here", exception.getMessage());
     }
 
     @Test
     public void testNewStreamsGroupTargetAssignmentTombstoneRecordNullMemberId() {
         NullPointerException exception = assertThrows(NullPointerException.class, () ->
-            StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentTombstoneRecord("groupId", null));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentTombstoneRecord("groupId", null));
         assertEquals("memberId should not be null here", exception.getMessage());
     }
 
     @Test
     public void testNewStreamsGroupTargetAssignmentMetadataRecordNullGroupId() {
         NullPointerException exception = assertThrows(NullPointerException.class, () ->
-            StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentMetadataRecord(null, 1, 12345L));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentMetadataRecord(null, 1, 12345L));
         assertEquals("groupId should not be null here", exception.getMessage());
     }
 
     @Test
     public void testNewStreamsGroupTargetAssignmentMetadataTombstoneRecordNullGroupId() {
         NullPointerException exception = assertThrows(NullPointerException.class, () ->
-            StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentMetadataTombstoneRecord(null));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentMetadataTombstoneRecord(null));
         assertEquals("groupId should not be null here", exception.getMessage());
     }
 
     @Test
     public void testNewStreamsGroupCurrentAssignmentRecordNullGroupId() {
         NullPointerException exception = assertThrows(NullPointerException.class, () ->
-            StreamsCoordinatorRecordHelpers.newStreamsGroupCurrentAssignmentRecord(null, mock(StreamsGroupMember.class)));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupCurrentAssignmentRecord(null, mock(StreamsGroupMember.class)));
         assertEquals("groupId should not be null here", exception.getMessage());
     }
 
     @Test
     public void testNewStreamsGroupCurrentAssignmentRecordNullMember() {
         NullPointerException exception = assertThrows(NullPointerException.class, () ->
-            StreamsCoordinatorRecordHelpers.newStreamsGroupCurrentAssignmentRecord("groupId", null));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupCurrentAssignmentRecord("groupId", null));
         assertEquals("member should not be null here", exception.getMessage());
     }
 
     @Test
     public void testNewStreamsGroupCurrentAssignmentTombstoneRecordNullGroupId() {
         NullPointerException exception = assertThrows(NullPointerException.class, () ->
-            StreamsCoordinatorRecordHelpers.newStreamsGroupCurrentAssignmentTombstoneRecord(null, "memberId"));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupCurrentAssignmentTombstoneRecord(null, "memberId"));
         assertEquals("groupId should not be null here", exception.getMessage());
     }
 
     @Test
     public void testNewStreamsGroupCurrentAssignmentTombstoneRecordNullMemberId() {
         NullPointerException exception = assertThrows(NullPointerException.class, () ->
-            StreamsCoordinatorRecordHelpers.newStreamsGroupCurrentAssignmentTombstoneRecord("groupId", null));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupCurrentAssignmentTombstoneRecord("groupId", null));
         assertEquals("memberId should not be null here", exception.getMessage());
     }
 
     @Test
     public void testNewStreamsGroupTopologyRecordWithValueNullGroupId() {
         NullPointerException exception = assertThrows(NullPointerException.class, () ->
-            StreamsCoordinatorRecordHelpers.newStreamsGroupTopologyRecord(null, mock(StreamsGroupTopologyValue.class)));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupTopologyRecord(null, mock(StreamsGroupTopologyValue.class)));
         assertEquals("groupId should not be null here", exception.getMessage());
     }
 
     @Test
     public void testNewStreamsGroupTopologyRecordWithTopologyNullGroupId() {
         NullPointerException exception = assertThrows(NullPointerException.class, () ->
-            StreamsCoordinatorRecordHelpers.newStreamsGroupTopologyRecord(null, mock(StreamsGroupHeartbeatRequestData.Topology.class)));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupTopologyRecord(null, mock(StreamsGroupHeartbeatRequestData.Topology.class)));
         assertEquals("groupId should not be null here", exception.getMessage());
     }
 
     @Test
     public void testNewStreamsGroupTopologyRecordNullTopology() {
         NullPointerException exception = assertThrows(NullPointerException.class, () ->
-            StreamsCoordinatorRecordHelpers.newStreamsGroupTopologyRecord("groupId", (StreamsGroupHeartbeatRequestData.Topology) null));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupTopologyRecord("groupId", (StreamsGroupHeartbeatRequestData.Topology) null));
         assertEquals("topology should not be null here", exception.getMessage());
     }
 
     @Test
     public void testNewStreamsGroupTopologyRecordNullValue() {
         NullPointerException exception = assertThrows(NullPointerException.class, () ->
-            StreamsCoordinatorRecordHelpers.newStreamsGroupTopologyRecord("groupId", (StreamsGroupTopologyValue) null));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupTopologyRecord("groupId", (StreamsGroupTopologyValue) null));
         assertEquals("value should not be null here", exception.getMessage());
     }
 
     @Test
     public void testNewStreamsGroupTopologyRecordTombstoneNullGroupId() {
         NullPointerException exception = assertThrows(NullPointerException.class, () ->
-            StreamsCoordinatorRecordHelpers.newStreamsGroupTopologyRecordTombstone(null));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupTopologyRecordTombstone(null));
         assertEquals("groupId should not be null here", exception.getMessage());
     }
 
     @Test
     public void testConvertToStreamsGroupTopologyRecordNullTopology() {
         NullPointerException exception = assertThrows(NullPointerException.class, () ->
-            StreamsCoordinatorRecordHelpers.convertToStreamsGroupTopologyRecord(null));
+                StreamsCoordinatorRecordHelpers.convertToStreamsGroupTopologyRecord(null));
         assertEquals("topology should not be null here", exception.getMessage());
     }
 }

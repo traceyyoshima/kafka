@@ -63,7 +63,6 @@ public class InsertHeader<R extends ConnectRecord<R>> implements Transformation<
         return AppInfoParser.getVersion();
     }
 
-
     @Override
     public ConfigDef config() {
         return CONFIG_DEF;

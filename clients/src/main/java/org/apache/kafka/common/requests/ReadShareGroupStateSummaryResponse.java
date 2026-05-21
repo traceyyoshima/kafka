@@ -46,8 +46,8 @@ public class ReadShareGroupStateSummaryResponse extends AbstractResponse {
     public Map<Errors, Integer> errorCounts() {
         Map<Errors, Integer> counts = new HashMap<>();
         data.results().forEach(
-            result -> result.partitions().forEach(
-                partitionResult -> updateErrorCounts(counts, Errors.forCode(partitionResult.errorCode()))
+                result -> result.partitions().forEach(
+                    partitionResult -> updateErrorCounts(counts, Errors.forCode(partitionResult.errorCode()))
             )
         );
         return counts;
@@ -65,7 +65,7 @@ public class ReadShareGroupStateSummaryResponse extends AbstractResponse {
 
     public static ReadShareGroupStateSummaryResponse parse(Readable readable, short version) {
         return new ReadShareGroupStateSummaryResponse(
-            new ReadShareGroupStateSummaryResponseData(readable, version)
+                new ReadShareGroupStateSummaryResponseData(readable, version)
         );
     }
 
@@ -76,7 +76,7 @@ public class ReadShareGroupStateSummaryResponse extends AbstractResponse {
         String errorMessage
     ) {
         return new ReadShareGroupStateSummaryResponseData().setResults(
-            List.of(new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
+                List.of(new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
                 .setTopicId(topicId)
                 .setPartitions(List.of(new ReadShareGroupStateSummaryResponseData.PartitionResult()
                     .setPartition(partitionId)
@@ -105,10 +105,10 @@ public class ReadShareGroupStateSummaryResponse extends AbstractResponse {
     ) {
         return new ReadShareGroupStateSummaryResponseData()
             .setResults(List.of(
-                new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
+                    new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
                     .setTopicId(topicId)
                     .setPartitions(List.of(
-                        new ReadShareGroupStateSummaryResponseData.PartitionResult()
+                            new ReadShareGroupStateSummaryResponseData.PartitionResult()
                             .setPartition(partition)
                             .setStartOffset(startOffset)
                             .setDeliveryCompleteCount(deliveryCompleteCount)
@@ -132,7 +132,7 @@ public class ReadShareGroupStateSummaryResponse extends AbstractResponse {
         request.topics().forEach(topicData -> {
             List<ReadShareGroupStateSummaryResponseData.PartitionResult> partitionResults = new ArrayList<>();
             topicData.partitions().forEach(partitionData -> partitionResults.add(
-                toErrorResponsePartitionResult(partitionData.partition(), error, error.message()))
+                    toErrorResponsePartitionResult(partitionData.partition(), error, error.message()))
             );
             readStateSummaryResults.add(toResponseReadStateSummaryResult(topicData.topicId(), partitionResults));
         });

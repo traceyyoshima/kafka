@@ -59,7 +59,7 @@ public class ReadShareGroupStateSummaryRequest extends AbstractRequest {
     public ReadShareGroupStateSummaryResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         List<ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult> results = new ArrayList<>();
         data.topics().forEach(
-            topicResult -> results.add(new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
+                topicResult -> results.add(new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
                 .setTopicId(topicResult.topicId())
                 .setPartitions(topicResult.partitions().stream()
                     .map(partitionData -> new ReadShareGroupStateSummaryResponseData.PartitionResult()
@@ -78,8 +78,8 @@ public class ReadShareGroupStateSummaryRequest extends AbstractRequest {
 
     public static ReadShareGroupStateSummaryRequest parse(Readable readable, short version) {
         return new ReadShareGroupStateSummaryRequest(
-            new ReadShareGroupStateSummaryRequestData(readable, version),
-            version
+                new ReadShareGroupStateSummaryRequestData(readable, version),
+                version
         );
     }
 }

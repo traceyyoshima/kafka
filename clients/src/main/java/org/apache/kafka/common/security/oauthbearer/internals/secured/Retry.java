@@ -91,7 +91,7 @@ public class Retry<R> {
                     break;
 
                 String message = String.format("Attempt %d to make call resulted in an error; sleeping %d ms before retrying",
-                    currAttempt, waitMs);
+                        currAttempt, waitMs);
                 log.warn(message, e);
 
                 time.sleep(waitMs);

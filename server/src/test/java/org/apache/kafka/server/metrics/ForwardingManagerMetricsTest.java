@@ -34,11 +34,11 @@ class ForwardingManagerMetricsTest {
     void testMetricsNames() {
         String expectedGroup = "ForwardingManager";
         Set<MetricName> expectedMetrics = Set.of(
-            new MetricName("QueueTimeMs.p99", expectedGroup, "", Map.of()),
-            new MetricName("QueueTimeMs.p999", expectedGroup, "", Map.of()),
-            new MetricName("QueueLength", expectedGroup, "", Map.of()),
-            new MetricName("RemoteTimeMs.p99", expectedGroup, "", Map.of()),
-            new MetricName("RemoteTimeMs.p999", expectedGroup, "", Map.of())
+                new MetricName("QueueTimeMs.p99", expectedGroup, "", Map.of()),
+                new MetricName("QueueTimeMs.p999", expectedGroup, "", Map.of()),
+                new MetricName("QueueLength", expectedGroup, "", Map.of()),
+                new MetricName("RemoteTimeMs.p99", expectedGroup, "", Map.of()),
+                new MetricName("RemoteTimeMs.p999", expectedGroup, "", Map.of())
         );
 
         try (Metrics metrics = new Metrics()) {
@@ -54,7 +54,7 @@ class ForwardingManagerMetricsTest {
 
                 assertEquals(expectedMetrics.size(), metricsMap.size());
                 metricsMap.keySet().forEach(name ->
-                    assertTrue(expectedMetrics.contains(name), "Metric " + name + " not found in expected set")
+                        assertTrue(expectedMetrics.contains(name), "Metric " + name + " not found in expected set")
                 );
             } finally {
                 metricsMap = metrics.metrics().entrySet().stream()

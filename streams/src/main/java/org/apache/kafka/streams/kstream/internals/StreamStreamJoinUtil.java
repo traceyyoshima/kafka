@@ -43,13 +43,13 @@ public final class StreamStreamJoinUtil {
             if (context.recordMetadata().isPresent()) {
                 final RecordMetadata recordMetadata = context.recordMetadata().get();
                 logger.warn(
-                    "Skipping record due to null key or value. "
+                        "Skipping record due to null key or value. "
                         + "topic=[{}] partition=[{}] offset=[{}]",
-                    recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
+                        recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
                 );
             } else {
                 logger.warn(
-                    "Skipping record due to null key or value. Topic, partition, and offset not known."
+                        "Skipping record due to null key or value. Topic, partition, and offset not known."
                 );
             }
             droppedRecordsSensor.record();

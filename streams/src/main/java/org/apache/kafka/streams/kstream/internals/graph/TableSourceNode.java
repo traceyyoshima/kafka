@@ -52,7 +52,6 @@ public class TableSourceNode<K, V> extends SourceGraphNode<K, V> {
         this.processorParameters = processorParameters;
     }
 
-
     public void reuseSourceTopicForChangeLog(final boolean shouldReuseSourceTopicForChangelog) {
         this.shouldReuseSourceTopicForChangelog = shouldReuseSourceTopicForChangelog;
     }
@@ -60,10 +59,10 @@ public class TableSourceNode<K, V> extends SourceGraphNode<K, V> {
     @Override
     public String toString() {
         return "TableSourceNode{" +
-               ", processorParameters=" + processorParameters +
-               ", sourceName='" + sourceName + '\'' +
-               ", isGlobalKTable=" + isGlobalKTable +
-               "} " + super.toString();
+                ", processorParameters=" + processorParameters +
+                ", sourceName='" + sourceName + '\'' +
+                ", isGlobalKTable=" + isGlobalKTable +
+                "} " + super.toString();
     }
 
     public static <K, V> TableSourceNodeBuilder<K, V> tableSourceNodeBuilder() {
@@ -86,14 +85,14 @@ public class TableSourceNode<K, V> extends SourceGraphNode<K, V> {
 
         if (isGlobalKTable) {
             topologyBuilder.addGlobalStore(
-                sourceName,
-                consumedInternal().timestampExtractor(),
-                consumedInternal().keyDeserializer(),
-                consumedInternal().valueDeserializer(),
-                topicName,
-                processorParameters.processorName(),
-                (ProcessorSupplier<K, V, Void, Void>) processorParameters.processorSupplier(),
-                false
+                    sourceName,
+                    consumedInternal().timestampExtractor(),
+                    consumedInternal().keyDeserializer(),
+                    consumedInternal().valueDeserializer(),
+                    topicName,
+                    processorParameters.processorName(),
+                    (ProcessorSupplier<K, V, Void, Void>) processorParameters.processorSupplier(),
+                    false
             );
         } else {
             topologyBuilder.addSource(consumedInternal().offsetResetPolicy(),

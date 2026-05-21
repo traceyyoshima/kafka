@@ -44,19 +44,19 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @Timeout(1200)
 @ClusterTestDefaults(
-    types = {Type.KRAFT},
-    serverProperties = {
-        @ClusterConfigProperty(key = "auto.create.topics.enable", value = "false"),
-        @ClusterConfigProperty(key = "group.share.max.partition.max.record.locks", value = "10000"),
-        @ClusterConfigProperty(key = "group.share.partition.max.record.locks", value = "10000"),
-        @ClusterConfigProperty(key = "group.share.record.lock.duration.ms", value = "15000"),
-        @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "1"),
-        @ClusterConfigProperty(key = "share.coordinator.state.topic.min.isr", value = "1"),
-        @ClusterConfigProperty(key = "share.coordinator.state.topic.num.partitions", value = "3"),
-        @ClusterConfigProperty(key = "share.coordinator.state.topic.replication.factor", value = "1"),
-        @ClusterConfigProperty(key = "transaction.state.log.min.isr", value = "1"),
-        @ClusterConfigProperty(key = "transaction.state.log.replication.factor", value = "1")
-    }
+        types = {Type.KRAFT},
+        serverProperties = {
+            @ClusterConfigProperty(key = "auto.create.topics.enable", value = "false"),
+            @ClusterConfigProperty(key = "group.share.max.partition.max.record.locks", value = "10000"),
+            @ClusterConfigProperty(key = "group.share.partition.max.record.locks", value = "10000"),
+            @ClusterConfigProperty(key = "group.share.record.lock.duration.ms", value = "15000"),
+            @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "1"),
+            @ClusterConfigProperty(key = "share.coordinator.state.topic.min.isr", value = "1"),
+            @ClusterConfigProperty(key = "share.coordinator.state.topic.num.partitions", value = "3"),
+            @ClusterConfigProperty(key = "share.coordinator.state.topic.replication.factor", value = "1"),
+            @ClusterConfigProperty(key = "transaction.state.log.min.isr", value = "1"),
+            @ClusterConfigProperty(key = "transaction.state.log.replication.factor", value = "1")
+        }
 )
 public class ShareConsumerLagTest extends ShareConsumerTestBase {
 
@@ -204,13 +204,13 @@ public class ShareConsumerLagTest extends ShareConsumerTestBase {
     }
 
     @ClusterTest(
-        brokers = 3,
-        serverProperties = {
-            @ClusterConfigProperty(key = "offsets.topic.num.partitions", value = "1"),
-            @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "3"),
-            @ClusterConfigProperty(key = "share.coordinator.state.topic.num.partitions", value = "1"),
-            @ClusterConfigProperty(key = "share.coordinator.state.topic.replication.factor", value = "3")
-        }
+            brokers = 3,
+            serverProperties = {
+                @ClusterConfigProperty(key = "offsets.topic.num.partitions", value = "1"),
+                @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "3"),
+                @ClusterConfigProperty(key = "share.coordinator.state.topic.num.partitions", value = "1"),
+                @ClusterConfigProperty(key = "share.coordinator.state.topic.replication.factor", value = "3")
+            }
     )
     public void testSharePartitionLagOnGroupCoordinatorMovement() {
         String groupId = "group1";
@@ -254,8 +254,8 @@ public class ShareConsumerLagTest extends ShareConsumerTestBase {
                 List<Integer> newTopicPartitionLeader = topicPartitionLeader(adminClient, tp.topic(), tp.partition());
 
                 return newShareCoordNodeId.size() == 1 && !Objects.equals(newShareCoordNodeId.get(0), curGroupCoordNodeId.get(0)) &&
-                    newGroupCoordNodeId.size() == 1 && !Objects.equals(newGroupCoordNodeId.get(0), curGroupCoordNodeId.get(0)) &&
-                    newTopicPartitionLeader.size() == 1 && !Objects.equals(newTopicPartitionLeader.get(0), curGroupCoordNodeId.get(0));
+                        newGroupCoordNodeId.size() == 1 && !Objects.equals(newGroupCoordNodeId.get(0), curGroupCoordNodeId.get(0)) &&
+                        newTopicPartitionLeader.size() == 1 && !Objects.equals(newTopicPartitionLeader.get(0), curGroupCoordNodeId.get(0));
             }, DEFAULT_MAX_WAIT_MS, DEFAULT_POLL_INTERVAL_MS, () -> "Failed to elect new leaders after broker shutdown");
             // After group coordinator shutdown, check that lag is still 1
             verifySharePartitionLag(adminClient, groupId, tp, 1L);
@@ -265,13 +265,13 @@ public class ShareConsumerLagTest extends ShareConsumerTestBase {
     }
 
     @ClusterTest(
-        brokers = 3,
-        serverProperties = {
-            @ClusterConfigProperty(key = "offsets.topic.num.partitions", value = "1"),
-            @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "3"),
-            @ClusterConfigProperty(key = "share.coordinator.state.topic.num.partitions", value = "1"),
-            @ClusterConfigProperty(key = "share.coordinator.state.topic.replication.factor", value = "3")
-        }
+            brokers = 3,
+            serverProperties = {
+                @ClusterConfigProperty(key = "offsets.topic.num.partitions", value = "1"),
+                @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "3"),
+                @ClusterConfigProperty(key = "share.coordinator.state.topic.num.partitions", value = "1"),
+                @ClusterConfigProperty(key = "share.coordinator.state.topic.replication.factor", value = "3")
+            }
     )
     public void testSharePartitionLagOnShareCoordinatorMovement() {
         String groupId = "group1";
@@ -315,8 +315,8 @@ public class ShareConsumerLagTest extends ShareConsumerTestBase {
                 List<Integer> newTopicPartitionLeader = topicPartitionLeader(adminClient, tp.topic(), tp.partition());
 
                 return newShareCoordNodeId.size() == 1 && !Objects.equals(newShareCoordNodeId.get(0), curShareCoordNodeId.get(0)) &&
-                    newGroupCoordNodeId.size() == 1 && !Objects.equals(newGroupCoordNodeId.get(0), curShareCoordNodeId.get(0)) &&
-                    newTopicPartitionLeader.size() == 1 && !Objects.equals(newTopicPartitionLeader.get(0), curShareCoordNodeId.get(0));
+                        newGroupCoordNodeId.size() == 1 && !Objects.equals(newGroupCoordNodeId.get(0), curShareCoordNodeId.get(0)) &&
+                        newTopicPartitionLeader.size() == 1 && !Objects.equals(newTopicPartitionLeader.get(0), curShareCoordNodeId.get(0));
             }, DEFAULT_MAX_WAIT_MS, DEFAULT_POLL_INTERVAL_MS, () -> "Failed to elect new leaders after broker shutdown");
             // After share coordinator shutdown and new leader's election, check that lag is still 1
             verifySharePartitionLag(adminClient, groupId, tp, 1L);

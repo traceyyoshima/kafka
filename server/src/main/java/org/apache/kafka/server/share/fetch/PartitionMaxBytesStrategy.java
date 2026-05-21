@@ -58,7 +58,6 @@ public interface PartitionMaxBytesStrategy {
         };
     }
 
-
     private static LinkedHashMap<TopicIdPartition, Integer> uniformPartitionMaxBytes(int requestMaxBytes, Set<TopicIdPartition> partitions, int acquiredPartitionsSize) {
         checkValidArguments(requestMaxBytes, partitions, acquiredPartitionsSize);
         if (requestMaxBytes >= acquiredPartitionsSize) {
@@ -98,7 +97,7 @@ public interface PartitionMaxBytesStrategy {
         if (remainingBytes != 0) {
             int randomPartitionIndex = RANDOM.nextInt(partitionMaxBytes.keySet().size());
             allotBytesByPartitionIndex(uniformPartitionBytes + remainingBytes, partitions,
-                partitionMaxBytes, Set.of(randomPartitionIndex));
+                    partitionMaxBytes, Set.of(randomPartitionIndex));
         }
         return partitionMaxBytes;
     }

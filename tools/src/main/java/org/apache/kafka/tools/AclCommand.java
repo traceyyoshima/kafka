@@ -174,7 +174,7 @@ public class AclCommand {
 
     private static void printResourceAcls(Map<ResourcePattern, Set<AccessControlEntry>> resourceToAcls) {
         resourceToAcls.forEach((resource, acls) ->
-            System.out.println("Current ACLs for resource `" + resource + "`:" + NL +
+                System.out.println("Current ACLs for resource `" + resource + "`:" + NL +
                     acls.stream().map(acl -> "\t" + acl).collect(Collectors.joining(NL)) + NL)
         );
     }
@@ -318,9 +318,9 @@ public class AclCommand {
     }
 
     static Set<AccessControlEntry> getAcls(Set<KafkaPrincipal> principals,
-                                                   AclPermissionType permissionType,
-                                                   Set<AclOperation> operations,
-                                                   Set<String> hosts) {
+                                           AclPermissionType permissionType,
+                                           Set<AclOperation> operations,
+                                           Set<String> hosts) {
         Set<AccessControlEntry> acls = new HashSet<>();
         for (KafkaPrincipal principal : principals) {
             for (AclOperation operation : operations) {
@@ -436,12 +436,12 @@ public class AclCommand {
         public AclCommandOptions(String[] args) {
             super(args);
             bootstrapServerOpt = parser.accepts("bootstrap-server", "A list of host/port pairs to use for establishing the connection to the Kafka cluster." +
-                            " This list should be in the form host1:port1,host2:port2,... This config is required for acl management using admin client API.")
+                    " This list should be in the form host1:port1,host2:port2,... This config is required for acl management using admin client API.")
                     .withRequiredArg()
                     .describedAs("server to connect to")
                     .ofType(String.class);
             bootstrapControllerOpt = parser.accepts("bootstrap-controller", "A list of host/port pairs to use for establishing the connection to the Kafka cluster." +
-                            " This list should be in the form host1:port1,host2:port2,... This config is required for acl management using admin client API.")
+                    " This list should be in the form host1:port1,host2:port2,... This config is required for acl management using admin client API.")
                     .withRequiredArg()
                     .describedAs("controller to connect to")
                     .ofType(String.class);
@@ -450,18 +450,18 @@ public class AclCommand {
                     .describedAs("command-config")
                     .ofType(String.class);
             topicOpt = parser.accepts("topic", "topic to which ACLs should be added or removed. " +
-                            "A value of '*' indicates ACL should apply to all topics.")
+                    "A value of '*' indicates ACL should apply to all topics.")
                     .withRequiredArg()
                     .describedAs("topic")
                     .ofType(String.class);
             clusterOpt = parser.accepts("cluster", "Add/Remove cluster ACLs.");
             groupOpt = parser.accepts("group", "Consumer Group to which the ACLs should be added or removed. " +
-                            "A value of '*' indicates the ACLs should apply to all groups.")
+                    "A value of '*' indicates the ACLs should apply to all groups.")
                     .withRequiredArg()
                     .describedAs("group")
                     .ofType(String.class);
             transactionalIdOpt = parser.accepts("transactional-id", "The transactionalId to which ACLs should " +
-                            "be added or removed. A value of '*' indicates the ACLs should apply to all transactionalIds.")
+                    "be added or removed. A value of '*' indicates the ACLs should apply to all transactionalIds.")
                     .withRequiredArg()
                     .describedAs("transactional-id")
                     .ofType(String.class);
@@ -469,16 +469,16 @@ public class AclCommand {
                     "used in combination with the --producer option. Note that idempotence is enabled automatically if " +
                     "the producer is authorized to a particular transactional-id.");
             delegationTokenOpt = parser.accepts("delegation-token", "Delegation token to which ACLs should be added or removed. " +
-                            "A value of '*' indicates ACL should apply to all tokens.")
+                    "A value of '*' indicates ACL should apply to all tokens.")
                     .withRequiredArg()
                     .describedAs("delegation-token")
                     .ofType(String.class);
             resourcePatternType = parser.accepts("resource-pattern-type", "The type of the resource pattern or pattern filter. " +
-                            "When adding acls, this should be a specific pattern type, e.g. 'literal' or 'prefixed'. " +
-                            "When listing or removing acls, a specific pattern type can be used to list or remove acls from specific resource patterns, " +
-                            "or use the filter values of 'any' or 'match', where 'any' will match any pattern type, but will match the resource name exactly, " +
-                            "where as 'match' will perform pattern matching to list or remove all acls that affect the supplied resource(s). " +
-                            "WARNING: 'match', when used in combination with the '--remove' switch, should be used with care.")
+                    "When adding acls, this should be a specific pattern type, e.g. 'literal' or 'prefixed'. " +
+                    "When listing or removing acls, a specific pattern type can be used to list or remove acls from specific resource patterns, " +
+                    "or use the filter values of 'any' or 'match', where 'any' will match any pattern type, but will match the resource name exactly, " +
+                    "where as 'match' will perform pattern matching to list or remove all acls that affect the supplied resource(s). " +
+                    "WARNING: 'match', when used in combination with the '--remove' switch, should be used with care.")
                     .withRequiredArg()
                     .ofType(String.class)
                     .withValuesConvertedBy(new PatternTypeConverter())
@@ -487,38 +487,38 @@ public class AclCommand {
             removeOpt = parser.accepts("remove", "Indicates you are trying to remove ACLs.");
             listOpt = parser.accepts("list", "List ACLs for the specified resource, use --topic <topic> or --group <group> or --cluster to specify a resource.");
             operationsOpt = parser.accepts("operation", "Operation that is being allowed or denied. Valid operation names are: " + NL +
-                            AclEntry.ACL_OPERATIONS.stream().map(o -> "\t" + SecurityUtils.operationName(o)).collect(Collectors.joining(NL)) + NL)
+                    AclEntry.ACL_OPERATIONS.stream().map(o -> "\t" + SecurityUtils.operationName(o)).collect(Collectors.joining(NL)) + NL)
                     .withRequiredArg()
                     .ofType(String.class)
                     .defaultsTo(SecurityUtils.operationName(AclOperation.ALL));
             allowPrincipalsOpt = parser.accepts("allow-principal", "principal is in principalType:name format." +
-                            " Note that principalType must be supported by the Authorizer being used." +
-                            " For example, User:'*' is the wild card indicating all users.")
+                    " Note that principalType must be supported by the Authorizer being used." +
+                    " For example, User:'*' is the wild card indicating all users.")
                     .withRequiredArg()
                     .describedAs("allow-principal")
                     .ofType(String.class);
             denyPrincipalsOpt = parser.accepts("deny-principal", "principal is in principalType:name format. " +
-                            "By default anyone not added through --allow-principal is denied access. " +
-                            "You only need to use this option as negation to already allowed set. " +
-                            "Note that principalType must be supported by the Authorizer being used. " +
-                            "For example if you wanted to allow access to all users in the system but not test-user you can define an ACL that " +
-                            "allows access to User:'*' and specify --deny-principal=User:test@EXAMPLE.COM. " +
-                            "AND PLEASE REMEMBER DENY RULES TAKES PRECEDENCE OVER ALLOW RULES.")
+                    "By default anyone not added through --allow-principal is denied access. " +
+                    "You only need to use this option as negation to already allowed set. " +
+                    "Note that principalType must be supported by the Authorizer being used. " +
+                    "For example if you wanted to allow access to all users in the system but not test-user you can define an ACL that " +
+                    "allows access to User:'*' and specify --deny-principal=User:test@EXAMPLE.COM. " +
+                    "AND PLEASE REMEMBER DENY RULES TAKES PRECEDENCE OVER ALLOW RULES.")
                     .withRequiredArg()
                     .describedAs("deny-principal")
                     .ofType(String.class);
             listPrincipalsOpt = parser.accepts("principal", "List ACLs for the specified principal. principal is in principalType:name format." +
-                            " Note that principalType must be supported by the Authorizer being used. Multiple --principal option can be passed.")
+                    " Note that principalType must be supported by the Authorizer being used. Multiple --principal option can be passed.")
                     .withOptionalArg()
                     .describedAs("principal")
                     .ofType(String.class);
             allowHostsOpt = parser.accepts("allow-host", "Host from which principals listed in --allow-principal will have access. " +
-                            "If you have specified --allow-principal then the default for this option will be set to '*' which allows access from all hosts.")
+                    "If you have specified --allow-principal then the default for this option will be set to '*' which allows access from all hosts.")
                     .withRequiredArg()
                     .describedAs("allow-host")
                     .ofType(String.class);
             denyHostsOpt = parser.accepts("deny-host", "Host from which principals listed in --deny-principal will be denied access. " +
-                            "If you have specified --deny-principal then the default for this option will be set to '*' which denies access from all hosts.")
+                    "If you have specified --deny-principal then the default for this option will be set to '*' which denies access from all hosts.")
                     .withRequiredArg()
                     .describedAs("deny-host")
                     .ofType(String.class);
@@ -528,7 +528,7 @@ public class AclCommand {
                     "This will generate ACLs that allows READ,DESCRIBE on topic and READ on group.");
             forceOpt = parser.accepts("force", "Assume Yes to all queries and do not prompt.");
             userPrincipalOpt = parser.accepts("user-principal", "Specifies a user principal as a resource in relation with the operation. For instance " +
-                            "one could grant CreateTokens or DescribeTokens permission on a given user principal.")
+                    "one could grant CreateTokens or DescribeTokens permission on a given user principal.")
                     .withRequiredArg()
                     .describedAs("user-principal")
                     .ofType(String.class);

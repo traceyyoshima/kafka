@@ -120,7 +120,7 @@ public final class LsCommandHandler implements Commands.Handler {
                         List<String> children = new ArrayList<>(node.childNames());
                         children.sort(String::compareTo);
                         targetDirectories.add(
-                            new TargetDirectory(info.lastPathComponent(), children));
+                                new TargetDirectory(info.lastPathComponent(), children));
                     } else {
                         targetFiles.add(info.lastPathComponent());
                     }
@@ -131,7 +131,7 @@ public final class LsCommandHandler implements Commands.Handler {
         }
         OptionalInt screenWidth = shell.map(interactiveShell -> OptionalInt.of(interactiveShell.screenWidth())).orElseGet(OptionalInt::empty);
         log.trace("LS : targetFiles = {}, targetDirectories = {}, screenWidth = {}",
-            targetFiles, targetDirectories, screenWidth);
+                targetFiles, targetDirectories, screenWidth);
         printTargets(writer, screenWidth, targetFiles, targetDirectories);
     }
 
@@ -152,7 +152,7 @@ public final class LsCommandHandler implements Commands.Handler {
                 firstIntro = false;
             }
             log.trace("LS : targetDirectory name = {}, children = {}",
-                targetDirectory.name, targetDirectory.children);
+                    targetDirectory.name, targetDirectory.children);
             printEntries(writer, intro, screenWidth, targetDirectory.children);
         }
     }
@@ -201,7 +201,7 @@ public final class LsCommandHandler implements Commands.Handler {
         ColumnSchema[] schemas = new ColumnSchema[maxColumns];
         for (int numColumns = 1; numColumns <= maxColumns; numColumns++) {
             schemas[numColumns - 1] = new ColumnSchema(numColumns,
-                (entries.size() + numColumns - 1) / numColumns);
+                    (entries.size() + numColumns - 1) / numColumns);
         }
         for (int i = 0; i < entries.size(); i++) {
             String entry = entries.get(i);
@@ -238,7 +238,7 @@ public final class LsCommandHandler implements Commands.Handler {
         void process(int entryIndex, String output) {
             int columnIndex = entryIndex / entriesPerColumn;
             columnWidths[columnIndex] = Math.max(
-                columnWidths[columnIndex], output.length() + 2);
+                    columnWidths[columnIndex], output.length() + 2);
         }
 
         int totalWidth() {

@@ -60,11 +60,11 @@ public class WorkerConfig extends AbstractConfig {
 
     public static final String BOOTSTRAP_SERVERS_CONFIG = "bootstrap.servers";
     public static final String BOOTSTRAP_SERVERS_DOC =
-                "A list of host/port pairs used to establish the initial connection to the Kafka cluster. "
-                        + "Clients use this list to bootstrap and discover the full set of Kafka brokers. "
-                        + "While the order of servers in the list does not matter, we recommend including more than one server to ensure resilience if any servers are down. "
-                        + "This list does not need to contain the entire set of brokers, as Kafka clients automatically manage and update connections to the cluster efficiently. "
-                        + "This list must be in the form <code>host1:port1,host2:port2,...</code>.";
+            "A list of host/port pairs used to establish the initial connection to the Kafka cluster. "
+            + "Clients use this list to bootstrap and discover the full set of Kafka brokers. "
+            + "While the order of servers in the list does not matter, we recommend including more than one server to ensure resilience if any servers are down. "
+            + "This list does not need to contain the entire set of brokers, as Kafka clients automatically manage and update connections to the cluster efficiently. "
+            + "This list must be in the form <code>host1:port1,host2:port2,...</code>.";
 
     public static final String CLIENT_DNS_LOOKUP_CONFIG = CommonClientConfigs.CLIENT_DNS_LOOKUP_CONFIG;
     public static final String CLIENT_DNS_LOOKUP_DOC = CommonClientConfigs.CLIENT_DNS_LOOKUP_DOC;
@@ -74,9 +74,9 @@ public class WorkerConfig extends AbstractConfig {
     public static final String KEY_CONVERTER_CLASS_CONFIG = "key.converter";
     public static final String KEY_CONVERTER_CLASS_DOC =
             "Converter class used to convert between Kafka Connect format and the serialized form that is written to Kafka." +
-                    " This controls the format of the keys in messages written to or read from Kafka, and since this is" +
-                    " independent of connectors it allows any connector to work with any serialization format." +
-                    " Examples of common formats include JSON and Avro.";
+            " This controls the format of the keys in messages written to or read from Kafka, and since this is" +
+            " independent of connectors it allows any connector to work with any serialization format." +
+            " Examples of common formats include JSON and Avro.";
 
     public static final String KEY_CONVERTER_VERSION = "key.converter." + PLUGIN_VERSION_SUFFIX;
     public static final String KEY_CONVERTER_VERSION_DEFAULT = null;
@@ -85,9 +85,9 @@ public class WorkerConfig extends AbstractConfig {
     public static final String VALUE_CONVERTER_CLASS_CONFIG = "value.converter";
     public static final String VALUE_CONVERTER_CLASS_DOC =
             "Converter class used to convert between Kafka Connect format and the serialized form that is written to Kafka." +
-                    " This controls the format of the values in messages written to or read from Kafka, and since this is" +
-                    " independent of connectors it allows any connector to work with any serialization format." +
-                    " Examples of common formats include JSON and Avro.";
+            " This controls the format of the values in messages written to or read from Kafka, and since this is" +
+            " independent of connectors it allows any connector to work with any serialization format." +
+            " Examples of common formats include JSON and Avro.";
 
     public static final String VALUE_CONVERTER_VERSION = "value.converter." + PLUGIN_VERSION_SUFFIX;
     public static final String VALUE_CONVERTER_VERSION_DEFAULT = null;
@@ -96,10 +96,10 @@ public class WorkerConfig extends AbstractConfig {
     public static final String HEADER_CONVERTER_CLASS_CONFIG = "header.converter";
     public static final String HEADER_CONVERTER_CLASS_DOC =
             "HeaderConverter class used to convert between Kafka Connect format and the serialized form that is written to Kafka." +
-                    " This controls the format of the header values in messages written to or read from Kafka, and since this is" +
-                    " independent of connectors it allows any connector to work with any serialization format." +
-                    " Examples of common formats include JSON and Avro. By default, the SimpleHeaderConverter is used to serialize" +
-                    " header values to strings and deserialize them by inferring the schemas.";
+            " This controls the format of the header values in messages written to or read from Kafka, and since this is" +
+            " independent of connectors it allows any connector to work with any serialization format." +
+            " Examples of common formats include JSON and Avro. By default, the SimpleHeaderConverter is used to serialize" +
+            " header values to strings and deserialize them by inferring the schemas.";
     public static final String HEADER_CONVERTER_CLASS_DEFAULT = SimpleHeaderConverter.class.getName();
 
     public static final String HEADER_CONVERTER_VERSION = "header.converter." + PLUGIN_VERSION_SUFFIX;
@@ -110,7 +110,7 @@ public class WorkerConfig extends AbstractConfig {
             = "task.shutdown.graceful.timeout.ms";
     private static final String TASK_SHUTDOWN_GRACEFUL_TIMEOUT_MS_DOC =
             "Amount of time to wait for tasks to shutdown gracefully. This is the total amount of time,"
-                    + " not per task. All task have shutdown triggered, then they are waited on sequentially.";
+            + " not per task. All task have shutdown triggered, then they are waited on sequentially.";
     private static final String TASK_SHUTDOWN_GRACEFUL_TIMEOUT_MS_DEFAULT = "5000";
 
     public static final String OFFSET_COMMIT_INTERVAL_MS_CONFIG = "offset.flush.interval.ms";
@@ -121,9 +121,9 @@ public class WorkerConfig extends AbstractConfig {
     public static final String OFFSET_COMMIT_TIMEOUT_MS_CONFIG = "offset.flush.timeout.ms";
     private static final String OFFSET_COMMIT_TIMEOUT_MS_DOC
             = "Maximum number of milliseconds to wait for records to flush and partition offset data to be"
-            + " committed to offset storage before cancelling the process and restoring the offset "
-            + "data to be committed in a future attempt. This property has no effect for source connectors "
-            + "running with exactly-once support.";
+                    + " committed to offset storage before cancelling the process and restoring the offset "
+                    + "data to be committed in a future attempt. This property has no effect for source connectors "
+                    + "running with exactly-once support.";
     public static final long OFFSET_COMMIT_TIMEOUT_MS_DEFAULT = 5000L;
 
     public static final String PLUGIN_PATH_CONFIG = "plugin.path";
@@ -158,13 +158,12 @@ public class WorkerConfig extends AbstractConfig {
 
     public static final String CONNECTOR_CLIENT_POLICY_CLASS_CONFIG = "connector.client.config.override.policy";
     public static final String CONNECTOR_CLIENT_POLICY_CLASS_DOC =
-        "Class name or alias of implementation of <code>ConnectorClientConfigOverridePolicy</code>. Defines what client configurations can be "
-        + "overridden by the connector. The default policy is <code>All</code>, meaning connector configurations can override all client properties. "
-        + "The other possible policies in the framework include <code>Allowlist</code> to specify allowed configurations via "
-        + "<code>" + AllowlistConnectorClientConfigOverridePolicy.ALLOWLIST_CONFIG + "</code>, <code>None</code> to disallow connectors from overriding "
-        + "client properties, and <code>Principal</code> (now deprecated) to allow connectors to override only client principals.";
+            "Class name or alias of implementation of <code>ConnectorClientConfigOverridePolicy</code>. Defines what client configurations can be "
+            + "overridden by the connector. The default policy is <code>All</code>, meaning connector configurations can override all client properties. "
+            + "The other possible policies in the framework include <code>Allowlist</code> to specify allowed configurations via "
+            + "<code>" + AllowlistConnectorClientConfigOverridePolicy.ALLOWLIST_CONFIG + "</code>, <code>None</code> to disallow connectors from overriding "
+            + "client properties, and <code>Principal</code> (now deprecated) to allow connectors to override only client principals.";
     public static final String CONNECTOR_CLIENT_POLICY_CLASS_DEFAULT = "All";
-
 
     public static final String METRICS_SAMPLE_WINDOW_MS_CONFIG = CommonClientConfigs.METRICS_SAMPLE_WINDOW_MS_CONFIG;
     public static final String METRICS_NUM_SAMPLES_CONFIG = CommonClientConfigs.METRICS_NUM_SAMPLES_CONFIG;
@@ -343,12 +342,12 @@ public class WorkerConfig extends AbstractConfig {
         String transformedPluginPath = Objects.toString(originals().get(PLUGIN_PATH_CONFIG), null);
         if (!Objects.equals(rawPluginPath, transformedPluginPath)) {
             log.warn(
-                "Variables cannot be used in the 'plugin.path' property, since the property is "
-                + "used by plugin scanning before the config providers that replace the "
-                + "variables are initialized. The raw value '{}' was used for plugin scanning, as "
-                + "opposed to the transformed value '{}', and this may cause unexpected results.",
-                rawPluginPath,
-                transformedPluginPath
+                    "Variables cannot be used in the 'plugin.path' property, since the property is "
+                    + "used by plugin scanning before the config providers that replace the "
+                    + "variables are initialized. The raw value '{}' was used for plugin scanning, as "
+                    + "opposed to the transformed value '{}', and this may cause unexpected results.",
+                    rawPluginPath,
+                    transformedPluginPath
             );
         }
     }

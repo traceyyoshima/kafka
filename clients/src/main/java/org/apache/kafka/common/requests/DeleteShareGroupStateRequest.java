@@ -59,7 +59,7 @@ public class DeleteShareGroupStateRequest extends AbstractRequest {
     public DeleteShareGroupStateResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         List<DeleteShareGroupStateResponseData.DeleteStateResult> results = new ArrayList<>();
         data.topics().forEach(
-            topicResult -> results.add(new DeleteShareGroupStateResponseData.DeleteStateResult()
+                topicResult -> results.add(new DeleteShareGroupStateResponseData.DeleteStateResult()
                 .setTopicId(topicResult.topicId())
                 .setPartitions(topicResult.partitions().stream()
                     .map(partitionData -> new DeleteShareGroupStateResponseData.PartitionResult()
@@ -77,8 +77,8 @@ public class DeleteShareGroupStateRequest extends AbstractRequest {
 
     public static DeleteShareGroupStateRequest parse(Readable readable, short version) {
         return new DeleteShareGroupStateRequest(
-            new DeleteShareGroupStateRequestData(readable, version),
-            version
+                new DeleteShareGroupStateRequestData(readable, version),
+                version
         );
     }
 }

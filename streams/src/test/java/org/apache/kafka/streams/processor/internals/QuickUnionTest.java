@@ -31,7 +31,7 @@ public class QuickUnionTest {
         final QuickUnion<Long> qu = new QuickUnion<>();
 
         final long[] ids = {
-            1L, 2L, 3L, 4L, 5L
+                1L, 2L, 3L, 4L, 5L
         };
 
         for (final long id : ids) {
@@ -68,7 +68,7 @@ public class QuickUnionTest {
         final QuickUnion<Long> qu = new QuickUnion<>();
 
         final long[] ids = {
-            1L, 2L, 3L, 4L, 5L
+                1L, 2L, 3L, 4L, 5L
         };
 
         for (final long id : ids) {

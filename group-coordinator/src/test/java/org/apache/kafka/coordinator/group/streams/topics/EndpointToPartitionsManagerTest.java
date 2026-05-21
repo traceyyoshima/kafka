@@ -87,10 +87,10 @@ class EndpointToPartitionsManagerTest {
             .build();
 
         when(streamsGroupMember.assignedTasks()).thenReturn(
-            new TasksTupleWithEpochs(
-                mkTasksPerSubtopologyWithCommonEpoch(0, mkEntry("0", Set.of(0, 1, 2))),
-                mkTasksPerSubtopology(mkEntry("1", Set.of(0, 1, 2))),
-                Map.of()
+                new TasksTupleWithEpochs(
+                    mkTasksPerSubtopologyWithCommonEpoch(0, mkEntry("0", Set.of(0, 1, 2))),
+                    mkTasksPerSubtopology(mkEntry("1", Set.of(0, 1, 2))),
+                    Map.of()
             )
         );
         when(streamsGroup.configuredTopology()).thenReturn(Optional.of(configuredTopology));
@@ -134,10 +134,10 @@ class EndpointToPartitionsManagerTest {
         configuredSubtopologyOne = new ConfiguredSubtopology(Math.max(topicAPartitions, topicBPartitions), Set.of("Topic-A", "Topic-B"), new HashMap<>(), new HashSet<>(), new HashMap<>());
 
         when(streamsGroupMember.assignedTasks()).thenReturn(
-            new TasksTupleWithEpochs(
-                mkTasksPerSubtopologyWithCommonEpoch(0, mkEntry("0", Set.of(0, 1, 2, 3, 4))),
-                Map.of(),
-                Map.of()
+                new TasksTupleWithEpochs(
+                    mkTasksPerSubtopologyWithCommonEpoch(0, mkEntry("0", Set.of(0, 1, 2, 3, 4))),
+                    Map.of(),
+                    Map.of()
             )
         );
         when(streamsGroup.configuredTopology()).thenReturn(Optional.of(configuredTopology));
@@ -156,7 +156,7 @@ class EndpointToPartitionsManagerTest {
         StreamsGroupHeartbeatResponseData.TopicPartition topicAPartition = result.activePartitions().get(0);
         assertEquals("Topic-A", topicAPartition.topic());
         assertEquals(topicAExpectedPartitions, topicAPartition.partitions().stream().sorted().toList());
-        
+
         StreamsGroupHeartbeatResponseData.TopicPartition topicBPartition = result.activePartitions().get(1);
         assertEquals("Topic-B", topicBPartition.topic());
         assertEquals(topicBExpectedPartitions, topicBPartition.partitions().stream().sorted().toList());

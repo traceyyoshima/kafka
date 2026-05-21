@@ -142,7 +142,7 @@ public abstract class TopicCommand {
             Collection<Integer> duplicateBrokers = ToolsUtils.duplicates(brokerList);
             if (!duplicateBrokers.isEmpty()) {
                 throw new AdminCommandFailedException("Partition replica lists may not contain duplicate entries: " +
-                    duplicateBrokers.stream()
+                        duplicateBrokers.stream()
                         .map(Object::toString)
                         .collect(Collectors.joining(","))
                 );
@@ -285,7 +285,7 @@ public abstract class TopicCommand {
                 .filter(config -> !config.isDefault())
                 .map(ce -> ce.name() + "=" + ce.value())
                 .collect(Collectors.joining(","));
-            System.out.print("Topic: " +  topic);
+            System.out.print("Topic: " + topic);
             if (!topicId.equals(Uuid.ZERO_UUID))
                 System.out.print("\tTopicId: " + topicId);
             System.out.print("\tPartitionCount: " + numPartitions);
@@ -383,9 +383,9 @@ public abstract class TopicCommand {
             this.opts = opts;
             this.liveBrokers = liveBrokers;
             this.describeConfigs = !opts.reportUnavailablePartitions() &&
-                !opts.reportUnderReplicatedPartitions() &&
-                !opts.reportUnderMinIsrPartitions() &&
-                !opts.reportAtMinIsrPartitions();
+                    !opts.reportUnderReplicatedPartitions() &&
+                    !opts.reportUnderMinIsrPartitions() &&
+                    !opts.reportAtMinIsrPartitions();
             this.describePartitions = !opts.reportOverriddenConfigs();
         }
 
@@ -407,10 +407,10 @@ public abstract class TopicCommand {
 
         private boolean shouldPrintTopicPartition(PartitionDescription partitionDesc) {
             return describeConfigs ||
-                shouldPrintUnderReplicatedPartitions(partitionDesc) ||
-                shouldPrintUnavailablePartitions(partitionDesc) ||
-                shouldPrintUnderMinIsrPartitions(partitionDesc) ||
-                shouldPrintAtMinIsrPartitions(partitionDesc);
+                    shouldPrintUnderReplicatedPartitions(partitionDesc) ||
+                    shouldPrintUnavailablePartitions(partitionDesc) ||
+                    shouldPrintUnderMinIsrPartitions(partitionDesc) ||
+                    shouldPrintAtMinIsrPartitions(partitionDesc);
         }
 
         void maybePrintPartitionDescription(PartitionDescription desc) {
@@ -437,7 +437,7 @@ public abstract class TopicCommand {
             CommandTopicPartition topic = new CommandTopicPartition(opts);
             if (Topic.hasCollisionChars(topic.name)) {
                 System.out.println("WARNING: Due to limitations in metric names, topics with a period ('.') or underscore ('_') could " +
-                    "collide. To avoid issues it is best to use either, but not both.");
+                        "collide. To avoid issues it is best to use either, but not both.");
             }
             createTopic(topic);
         }
@@ -457,7 +457,7 @@ public abstract class TopicCommand {
 
                 newTopic.configs(topic.configsToAdd);
                 CreateTopicsResult createResult = adminClient.createTopics(Set.of(newTopic),
-                    new CreateTopicsOptions().retryOnQuotaViolation(false));
+                        new CreateTopicsOptions().retryOnQuotaViolation(false));
                 createResult.all().get();
                 System.out.println("Created topic " + topic.name + ".");
             } catch (ExecutionException e) {
@@ -550,14 +550,14 @@ public abstract class TopicCommand {
 
             if (!topicIds.isEmpty()) {
                 Map<Uuid, org.apache.kafka.clients.admin.TopicDescription> descTopics =
-                    adminClient.describeTopics(TopicCollection.ofTopicIds(topicIds)).allTopicIds().get();
+                        adminClient.describeTopics(TopicCollection.ofTopicIds(topicIds)).allTopicIds().get();
                 topicDescriptions = new ArrayList<>(descTopics.values());
             }
 
             if (!topics.isEmpty()) {
                 Map<String, org.apache.kafka.clients.admin.TopicDescription> descTopics =
-                    adminClient.describeTopics(TopicCollection.ofTopicNames(topics),
-                        new DescribeTopicsOptions()
+                        adminClient.describeTopics(TopicCollection.ofTopicNames(topics),
+                            new DescribeTopicsOptions()
                             .partitionSizeLimitPerResponse(opts.partitionSizeLimitPerResponse().orElse(2000))).allTopicNames().get();
                 topicDescriptions = new ArrayList<>(descTopics.values());
             }
@@ -566,7 +566,7 @@ public abstract class TopicCommand {
                 .map(org.apache.kafka.clients.admin.TopicDescription::name)
                 .toList();
             Map<ConfigResource, KafkaFuture<Config>> allConfigs = adminClient.describeConfigs(
-                topicNames.stream()
+                    topicNames.stream()
                     .map(name -> new ConfigResource(ConfigResource.Type.TOPIC, name))
                     .collect(Collectors.toList())
             ).values();
@@ -596,9 +596,9 @@ public abstract class TopicCommand {
             if (describeOptions.describePartitions) {
                 for (TopicPartitionInfo partition : sortedPartitions) {
                     PartitionReassignment reassignment =
-                        reassignments.get(new TopicPartition(td.name(), partition.partition()));
+                            reassignments.get(new TopicPartition(td.name(), partition.partition()));
                     PartitionDescription partitionDesc = new PartitionDescription(topicName,
-                        partition, config, reassignment);
+                            partition, config, reassignment);
                     describeOptions.maybePrintPartitionDescription(partitionDesc);
                 }
             }
@@ -613,9 +613,9 @@ public abstract class TopicCommand {
                 if (!opts.reportOverriddenConfigs() || hasNonDefault) {
                     TopicPartitionInfo firstPartition = sortedPartitions.get(0);
                     PartitionReassignment reassignment =
-                        reassignments.get(new TopicPartition(td.name(), firstPartition.partition()));
+                            reassignments.get(new TopicPartition(td.name(), firstPartition.partition()));
                     TopicDescription topicDesc = new TopicDescription(topicName, topicId,
-                        td.partitions().size(), getReplicationFactor(firstPartition, reassignment), config);
+                            td.partitions().size(), getReplicationFactor(firstPartition, reassignment), config);
                     topicDesc.printDescription();
                 }
             }
@@ -625,7 +625,7 @@ public abstract class TopicCommand {
             List<String> topics = getTopics(opts.topic(), opts.excludeInternalTopics());
             ensureTopicExists(topics, opts.topic(), !opts.ifExists());
             adminClient.deleteTopics(List.copyOf(topics),
-                new DeleteTopicsOptions().retryOnQuotaViolation(false)
+                    new DeleteTopicsOptions().retryOnQuotaViolation(false)
             ).all().get();
         }
 
@@ -733,7 +733,7 @@ public abstract class TopicCommand {
                     KAFKA_CONFIGS_CLI_SUPPORTS_ALTERING_TOPIC_CONFIGS);
             describeOpt = parser.accepts("describe", "List details for the given topics.");
             topicOpt = parser.accepts("topic", "The topic to create, alter, describe or delete. It also accepts a regular " +
-                            "expression, except for --create option.")
+                    "expression, except for --create option.")
                 .withRequiredArg()
                 .describedAs("topic")
                 .ofType(String.class);
@@ -745,10 +745,10 @@ public abstract class TopicCommand {
 
             String logConfigNames = LogConfig.nonInternalConfigNames().stream().map(config -> "\t" + config).collect(Collectors.joining(nl));
             configOpt = parser.accepts("config",  "A topic configuration override for the topic being created." +
-                            " The following is a list of valid configurations: " + nl + logConfigNames + nl +
-                            "See the Kafka documentation for full details on the topic configs." +
-                            " It is supported only in combination with --create." +
-                            KAFKA_CONFIGS_CLI_SUPPORTS_ALTERING_TOPIC_CONFIGS)
+                    " The following is a list of valid configurations: " + nl + logConfigNames + nl +
+                    "See the Kafka documentation for full details on the topic configs." +
+                    " It is supported only in combination with --create." +
+                    KAFKA_CONFIGS_CLI_SUPPORTS_ALTERING_TOPIC_CONFIGS)
                 .withRequiredArg()
                 .describedAs("name=value")
                 .ofType(String.class);
@@ -772,23 +772,23 @@ public abstract class TopicCommand {
                             "broker_id_for_part2_replica1 : broker_id_for_part2_replica2 , ...")
                 .ofType(String.class);
             reportUnderReplicatedPartitionsOpt = parser.accepts("under-replicated-partitions",
-                "If set when describing topics, only show under-replicated partitions.");
+                    "If set when describing topics, only show under-replicated partitions.");
             reportUnavailablePartitionsOpt = parser.accepts("unavailable-partitions",
-                "If set when describing topics, only show partitions whose leader is not available.");
+                    "If set when describing topics, only show partitions whose leader is not available.");
             reportUnderMinIsrPartitionsOpt = parser.accepts("under-min-isr-partitions",
-                "If set when describing topics, only show partitions whose isr count is less than the configured minimum.");
+                    "If set when describing topics, only show partitions whose isr count is less than the configured minimum.");
             reportAtMinIsrPartitionsOpt = parser.accepts("at-min-isr-partitions",
-                "If set when describing topics, only show partitions whose isr count is equal to the configured minimum.");
+                    "If set when describing topics, only show partitions whose isr count is equal to the configured minimum.");
             topicsWithOverridesOpt = parser.accepts("topics-with-overrides",
-                "If set when describing topics, only show topics that have overridden configs.");
+                    "If set when describing topics, only show topics that have overridden configs.");
             ifExistsOpt = parser.accepts("if-exists",
-                "If set when altering or deleting or describing topics, the action will only execute if the topic exists.");
+                    "If set when altering or deleting or describing topics, the action will only execute if the topic exists.");
             ifNotExistsOpt = parser.accepts("if-not-exists",
-                "If set when creating topics, the create request will not fail if the topic already exists, but the request will still be sent.");
+                    "If set when creating topics, the create request will not fail if the topic already exists, but the request will still be sent.");
             excludeInternalTopicOpt = parser.accepts("exclude-internal",
-                "Exclude internal topics when listing or describing topics. By default, the internal topics are included.");
+                    "Exclude internal topics when listing or describing topics. By default, the internal topics are included.");
             partitionSizeLimitPerResponseOpt = parser.accepts("partition-size-limit-per-response",
-                "The maximum partition size to be included in one DescribeTopicPartitions response.")
+                    "The maximum partition size to be included in one DescribeTopicPartitions response.")
                     .withRequiredArg()
                     .describedAs("maximum number of partitions per response")
                     .ofType(java.lang.Integer.class);
@@ -949,17 +949,17 @@ public abstract class TopicCommand {
             }
 
             CommandLineUtils.checkInvalidArgs(parser, options, reportUnderReplicatedPartitionsOpt,
-                invalidOptions(Set.of(topicsWithOverridesOpt), List.of(describeOpt, reportUnderReplicatedPartitionsOpt)));
+                    invalidOptions(Set.of(topicsWithOverridesOpt), List.of(describeOpt, reportUnderReplicatedPartitionsOpt)));
             CommandLineUtils.checkInvalidArgs(parser, options, reportUnderMinIsrPartitionsOpt,
-                invalidOptions(Set.of(topicsWithOverridesOpt), List.of(describeOpt, reportUnderMinIsrPartitionsOpt)));
+                    invalidOptions(Set.of(topicsWithOverridesOpt), List.of(describeOpt, reportUnderMinIsrPartitionsOpt)));
             CommandLineUtils.checkInvalidArgs(parser, options, reportAtMinIsrPartitionsOpt,
-                invalidOptions(Set.of(topicsWithOverridesOpt), List.of(describeOpt, reportAtMinIsrPartitionsOpt)));
+                    invalidOptions(Set.of(topicsWithOverridesOpt), List.of(describeOpt, reportAtMinIsrPartitionsOpt)));
             CommandLineUtils.checkInvalidArgs(parser, options, reportUnavailablePartitionsOpt,
-                invalidOptions(Set.of(topicsWithOverridesOpt), List.of(describeOpt, reportUnavailablePartitionsOpt)));
+                    invalidOptions(Set.of(topicsWithOverridesOpt), List.of(describeOpt, reportUnavailablePartitionsOpt)));
             CommandLineUtils.checkInvalidArgs(parser, options, topicsWithOverridesOpt,
-                invalidOptions(new HashSet<>(allReplicationReportOpts), List.of(describeOpt)));
+                    invalidOptions(new HashSet<>(allReplicationReportOpts), List.of(describeOpt)));
             CommandLineUtils.checkInvalidArgs(parser, options, ifExistsOpt,
-                invalidOptions(List.of(alterOpt, deleteOpt, describeOpt)));
+                    invalidOptions(List.of(alterOpt, deleteOpt, describeOpt)));
             CommandLineUtils.checkInvalidArgs(parser, options, ifNotExistsOpt, invalidOptions(List.of(createOpt)));
             CommandLineUtils.checkInvalidArgs(parser, options, excludeInternalTopicOpt, invalidOptions(List.of(listOpt, describeOpt)));
         }

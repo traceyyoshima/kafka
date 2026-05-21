@@ -195,7 +195,7 @@ public class MirrorCheckpointConnector extends SourceConnector {
     }
 
     private void refreshConsumerGroups()
-            throws InterruptedException, ExecutionException {
+        throws InterruptedException, ExecutionException {
         // If loadInitialConsumerGroups fails for any reason(e.g., timeout), knownConsumerGroups may be null.
         // We still want this method to recover gracefully in such cases.
         Set<String> knownConsumerGroups = this.knownConsumerGroups == null ? Set.of() : this.knownConsumerGroups;
@@ -215,7 +215,7 @@ public class MirrorCheckpointConnector extends SourceConnector {
     }
 
     private void loadInitialConsumerGroups()
-            throws InterruptedException, ExecutionException {
+        throws InterruptedException, ExecutionException {
         String connectorName = config.connectorName();
         knownConsumerGroups = findConsumerGroups();
         log.info("Started {} with {} consumer groups.", connectorName, knownConsumerGroups.size());
@@ -223,7 +223,7 @@ public class MirrorCheckpointConnector extends SourceConnector {
     }
 
     Set<String> findConsumerGroups()
-            throws InterruptedException, ExecutionException {
+        throws InterruptedException, ExecutionException {
         List<String> filteredGroups = listConsumerGroups().stream()
                 .map(GroupListing::groupId)
                 .filter(this::shouldReplicateByGroupFilter)
@@ -248,12 +248,12 @@ public class MirrorCheckpointConnector extends SourceConnector {
         }
 
         log.debug("Ignoring the following groups which do not have any offsets for topics that are accepted by " +
-                        "the topic filter: {}", irrelevantGroups);
+                "the topic filter: {}", irrelevantGroups);
         return checkpointGroups;
     }
 
     Collection<GroupListing> listConsumerGroups()
-            throws InterruptedException, ExecutionException {
+        throws InterruptedException, ExecutionException {
         return adminCall(
                 () -> sourceAdminClient.listGroups(ListGroupsOptions.forConsumerGroups()).valid().get(),
                 () -> "list consumer groups on " + config.sourceClusterAlias() + " cluster"
@@ -269,7 +269,7 @@ public class MirrorCheckpointConnector extends SourceConnector {
     }
 
     Map<String, Map<TopicPartition, OffsetAndMetadata>> listConsumerGroupOffsets(List<String> groups)
-            throws InterruptedException, ExecutionException {
+        throws InterruptedException, ExecutionException {
         ListConsumerGroupOffsetsSpec groupOffsetsSpec = new ListConsumerGroupOffsetsSpec();
         Map<String, ListConsumerGroupOffsetsSpec> groupSpecs = groups.stream()
                 .collect(Collectors.toMap(group -> group, group -> groupOffsetsSpec));

@@ -73,6 +73,7 @@ public final class TopicDelta {
     public Map<Integer, Integer> partitionToElrElectionCount() {
         return partitionToElrElectionCount;
     }
+
     public Map<Integer, Integer> partitionToUncleanLeaderElectionCount() {
         return partitionToUncleanLeaderElectionCount;
     }
@@ -96,7 +97,7 @@ public final class TopicDelta {
             prevPartition = image.partitions().get(partitionId);
             if (prevPartition == null) {
                 throw new RuntimeException("Unable to find partition " +
-                    record.topicId() + ":" + partitionId);
+                        record.topicId() + ":" + partitionId);
             }
         }
         updateElectionStats(partitionId, prevPartition, record.leader(), record.leaderRecoveryState());
@@ -126,7 +127,7 @@ public final class TopicDelta {
     void maybeClearElr(int partitionId, PartitionRegistration partition) {
         if (partition.elr.length != 0 || partition.lastKnownElr.length != 0) {
             partitionChanges.put(partitionId, partition.merge(
-                new PartitionChangeRecord().
+                    new PartitionChangeRecord().
                     setPartitionId(partitionId).
                     setTopicId(image.id()).
                     setEligibleLeaderReplicas(List.of()).
@@ -202,8 +203,8 @@ public final class TopicDelta {
                 PartitionRegistration prevPartition = image.partitions().get(entry.getKey());
                 if (prevPartition == null || prevPartition.partitionEpoch != entry.getValue().partitionEpoch) {
                     followers.put(
-                        new TopicPartition(name(), entry.getKey()),
-                        new LocalReplicaChanges.PartitionInfo(id(), entry.getValue())
+                            new TopicPartition(name(), entry.getKey()),
+                            new LocalReplicaChanges.PartitionInfo(id(), entry.getValue())
                     );
                     topicIds.putIfAbsent(name(), id());
                 }
@@ -213,8 +214,8 @@ public final class TopicDelta {
                 PartitionRegistration prevPartition = image.partitions().get(entry.getKey());
                 if (prevPartition == null || prevPartition.directory(brokerId) != entry.getValue().directory(brokerId)) {
                     directoryIds.put(
-                        new TopicIdPartition(id(), new TopicPartition(name(), entry.getKey())),
-                        entry.getValue().directory(brokerId)
+                            new TopicIdPartition(id(), new TopicPartition(name(), entry.getKey())),
+                            entry.getValue().directory(brokerId)
                     );
                 }
             } catch (IllegalArgumentException e) {
@@ -228,7 +229,7 @@ public final class TopicDelta {
     @Override
     public String toString() {
         return "TopicDelta(" +
-            "partitionChanges=" + partitionChanges +
-            ')';
+                "partitionChanges=" + partitionChanges +
+                ')';
     }
 }

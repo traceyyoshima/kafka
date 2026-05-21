@@ -63,20 +63,20 @@ public class MaskFieldTest {
         .build();
 
     private static final Map<String, Object> VALUES = Map.ofEntries(
-        Map.entry("magic", 42),
-        Map.entry("bool", true),
-        Map.entry("byte", (byte) 42),
-        Map.entry("short", (short) 42),
-        Map.entry("int", 42),
-        Map.entry("long", 42L),
-        Map.entry("float", 42f),
-        Map.entry("double", 42d),
-        Map.entry("string", "55.121.20.20"),
-        Map.entry("date", new Date()),
-        Map.entry("bigint", new BigInteger("42")),
-        Map.entry("bigdec", new BigDecimal("42.0")),
-        Map.entry("list", List.of(42)),
-        Map.entry("map", Map.of("key", "value"))
+            Map.entry("magic", 42),
+            Map.entry("bool", true),
+            Map.entry("byte", (byte) 42),
+            Map.entry("short", (short) 42),
+            Map.entry("int", 42),
+            Map.entry("long", 42L),
+            Map.entry("float", 42f),
+            Map.entry("double", 42d),
+            Map.entry("string", "55.121.20.20"),
+            Map.entry("date", new Date()),
+            Map.entry("bigint", new BigInteger("42")),
+            Map.entry("bigdec", new BigDecimal("42.0")),
+            Map.entry("list", List.of(42)),
+            Map.entry("map", Map.of("key", "value"))
     );
 
     private static final Struct VALUES_WITH_SCHEMA = new Struct(SCHEMA)

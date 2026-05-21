@@ -37,15 +37,15 @@ public class SubscriptionWrapperSerde<KLeft> extends WrappingNullableSerde<Subsc
     public SubscriptionWrapperSerde(final Supplier<String> primaryKeySerializationPseudoTopicSupplier,
                                     final Serde<KLeft> primaryKeySerde) {
         super(
-            new SubscriptionWrapperSerializer<>(primaryKeySerializationPseudoTopicSupplier,
-                                                primaryKeySerde == null ? null : primaryKeySerde.serializer()),
-            new SubscriptionWrapperDeserializer<>(primaryKeySerializationPseudoTopicSupplier,
-                                                  primaryKeySerde == null ? null : primaryKeySerde.deserializer())
+                new SubscriptionWrapperSerializer<>(primaryKeySerializationPseudoTopicSupplier,
+                    primaryKeySerde == null ? null : primaryKeySerde.serializer()),
+                new SubscriptionWrapperDeserializer<>(primaryKeySerializationPseudoTopicSupplier,
+                    primaryKeySerde == null ? null : primaryKeySerde.deserializer())
         );
     }
 
     private static class SubscriptionWrapperSerializer<KLeft>
-        implements Serializer<SubscriptionWrapper<KLeft>>, WrappingNullableSerializer<SubscriptionWrapper<KLeft>, KLeft, Void> {
+            implements Serializer<SubscriptionWrapper<KLeft>>, WrappingNullableSerializer<SubscriptionWrapper<KLeft>, KLeft, Void> {
 
         private final Supplier<String> primaryKeySerializationPseudoTopicSupplier;
         private String primaryKeySerializationPseudoTopic = null;
@@ -122,10 +122,10 @@ public class SubscriptionWrapperSerde<KLeft> extends WrappingNullableSerde<Subsc
                 primaryKeySerializationPseudoTopic = primaryKeySerializationPseudoTopicSupplier.get();
             }
 
-            return  primaryKeySerializer.serialize(
-                primaryKeySerializationPseudoTopic,
-                headers,
-                data.primaryKey()
+            return primaryKeySerializer.serialize(
+                    primaryKeySerializationPseudoTopic,
+                    headers,
+                    data.primaryKey()
             );
         }
 
@@ -164,7 +164,7 @@ public class SubscriptionWrapperSerde<KLeft> extends WrappingNullableSerde<Subsc
     }
 
     private static class SubscriptionWrapperDeserializer<KLeft>
-        implements Deserializer<SubscriptionWrapper<KLeft>>, WrappingNullableDeserializer<SubscriptionWrapper<KLeft>, KLeft, Void> {
+            implements Deserializer<SubscriptionWrapper<KLeft>>, WrappingNullableDeserializer<SubscriptionWrapper<KLeft>, KLeft, Void> {
 
         private final Supplier<String> primaryKeySerializationPseudoTopicSupplier;
         private String primaryKeySerializationPseudoTopic = null;
@@ -218,9 +218,9 @@ public class SubscriptionWrapperSerde<KLeft> extends WrappingNullableSerde<Subsc
             }
 
             final KLeft primaryKey = primaryKeyDeserializer.deserialize(
-                primaryKeySerializationPseudoTopic,
-                headers,
-                primaryKeyRaw
+                    primaryKeySerializationPseudoTopic,
+                    headers,
+                    primaryKeyRaw
             );
             final Integer primaryPartition;
             if (version > 0) {

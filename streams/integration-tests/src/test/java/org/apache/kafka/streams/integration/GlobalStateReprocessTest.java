@@ -85,14 +85,12 @@ public class GlobalStateReprocessTest {
         CLUSTER.stop();
     }
 
-
     private final MockTime mockTime = CLUSTER.time;
     private final String globalStore = "globalStore";
     private StreamsBuilder builder;
     private Properties streamsConfiguration;
     private KafkaStreams kafkaStreams;
     private String globalStoreTopic;
-
 
     @BeforeEach
     public void before(final TestInfo testInfo) throws Exception {
@@ -109,29 +107,29 @@ public class GlobalStateReprocessTest {
         streamsConfiguration.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 100L);
 
         final KeyValueStoreBuilder<String, Long> storeBuilder = new KeyValueStoreBuilder<>(
-            Stores.persistentKeyValueStore(globalStore),
-            Serdes.String(),
-            Serdes.Long(),
-            mockTime);
+                Stores.persistentKeyValueStore(globalStore),
+                Serdes.String(),
+                Serdes.Long(),
+                mockTime);
 
         final ProcessorSupplier<String, Long, Void, Void> processorSupplier;
         processorSupplier = () -> new ContextualProcessor<String, Long, Void, Void>() {
             @Override
             public void process(final Record<String, Long> record) {
                 final KeyValueStore<String, Long> stateStore =
-                    context().getStateStore(storeBuilder.name());
+                        context().getStateStore(storeBuilder.name());
                 stateStore.put(
-                    record.key() + "- this is the right value.",
-                    record.value()
+                        record.key() + "- this is the right value.",
+                        record.value()
                 );
             }
         };
 
         builder.addGlobalStore(
-            storeBuilder,
-            globalStoreTopic,
-            Consumed.with(Serdes.String(), Serdes.Long()),
-            processorSupplier
+                storeBuilder,
+                globalStoreTopic,
+                Consumed.with(Serdes.String(), Serdes.Long()),
+                processorSupplier
         );
     }
 
@@ -151,12 +149,11 @@ public class GlobalStateReprocessTest {
         kafkaStreams.start();
 
         TestUtils.waitForCondition(
-            () -> !storeContents(kafkaStreams).isEmpty(),
-            30000,
-            "Has not processed record within 30 seconds");
+                () -> !storeContents(kafkaStreams).isEmpty(),
+                30000,
+                "Has not processed record within 30 seconds");
 
         assertThat(storeContents(kafkaStreams).get(0), containsString("- this is the right value."));
-
 
         kafkaStreams.close();
         kafkaStreams.cleanUp();
@@ -165,9 +162,9 @@ public class GlobalStateReprocessTest {
         kafkaStreams.start();
 
         TestUtils.waitForCondition(
-            () -> !storeContents(kafkaStreams).isEmpty(),
-            30000,
-            "Has not processed record within 30 seconds");
+                () -> !storeContents(kafkaStreams).isEmpty(),
+                30000,
+                "Has not processed record within 30 seconds");
 
         assertThat(storeContents(kafkaStreams).get(0), containsString("- this is the right value."));
     }
@@ -179,20 +176,20 @@ public class GlobalStateReprocessTest {
 
     private void populateTopics(final String topicName) throws Exception {
         IntegrationTestUtils.produceKeyValuesSynchronously(
-            topicName,
-            Collections.singletonList(new KeyValue<>("A", 1L)),
-            TestUtils.producerConfig(
-                CLUSTER.bootstrapServers(),
-                StringSerializer.class,
-                LongSerializer.class,
-                new Properties()),
-            mockTime);
+                topicName,
+                Collections.singletonList(new KeyValue<>("A", 1L)),
+                TestUtils.producerConfig(
+                    CLUSTER.bootstrapServers(),
+                    StringSerializer.class,
+                    LongSerializer.class,
+                    new Properties()),
+                mockTime);
     }
 
     private List<String> storeContents(final KafkaStreams streams) {
         final ArrayList<String> keySet = new ArrayList<>();
         final ReadOnlyKeyValueStore<String, Long> keyValueStore =
-            streams.store(StoreQueryParameters.fromNameAndType(globalStore, QueryableStoreTypes.keyValueStore()));
+                streams.store(StoreQueryParameters.fromNameAndType(globalStore, QueryableStoreTypes.keyValueStore()));
         final KeyValueIterator<String, Long> range = keyValueStore.reverseAll();
         while (range.hasNext()) {
             keySet.add(range.next().key);

@@ -55,7 +55,7 @@ public class GroupConfigManagerTest {
     @Test
     public void testUpdateConfigWithInvalidGroupId() {
         assertThrows(InvalidRequestException.class,
-            () -> configManager.updateGroupConfig("", new Properties()));
+                () -> configManager.updateGroupConfig("", new Properties()));
     }
 
     @Test
@@ -67,7 +67,7 @@ public class GroupConfigManagerTest {
     @Test
     public void testUpdateConfigWithNullGroupId() {
         assertThrows(InvalidRequestException.class,
-            () -> configManager.updateGroupConfig(null, new Properties()));
+                () -> configManager.updateGroupConfig(null, new Properties()));
     }
 
     @Test

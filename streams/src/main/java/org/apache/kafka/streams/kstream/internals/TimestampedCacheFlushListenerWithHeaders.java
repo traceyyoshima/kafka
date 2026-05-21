@@ -47,7 +47,7 @@ class TimestampedCacheFlushListenerWithHeaders<KOut, VOut> implements CacheFlush
             final Headers headers = record.headers() != null ? record.headers() : new RecordHeaders();
 
             context.forward(
-                record
+                    record
                     .withValue(new Change<>(newValue, oldValue, record.value().isLatest))
                     .withTimestamp(timestamp)
                     .withHeaders(headers)

@@ -59,7 +59,6 @@ public class SchemaBuilder implements Schema {
     private static final String VERSION_FIELD = "version";
     private static final String DOC_FIELD = "doc";
 
-
     private final Type type;
     private Boolean optional = null;
     private Object defaultValue = null;
@@ -302,7 +301,6 @@ public class SchemaBuilder implements Schema {
         return new SchemaBuilder(Type.BYTES);
     }
 
-
     // Structs
 
     /**
@@ -349,8 +347,6 @@ public class SchemaBuilder implements Schema {
             throw new DataException("Cannot look up fields on non-struct type");
         return fields.get(fieldName);
     }
-
-
 
     // Maps & Arrays
 
@@ -411,7 +407,6 @@ public class SchemaBuilder implements Schema {
     public Schema valueSchema() {
         return valueSchema;
     }
-
 
     /**
      * Build the Schema using the current settings

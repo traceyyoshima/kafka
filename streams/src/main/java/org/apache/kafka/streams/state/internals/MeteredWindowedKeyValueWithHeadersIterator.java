@@ -48,14 +48,14 @@ final class MeteredWindowedKeyValueWithHeadersIterator<K, VInner, VOuter> extend
         final Set<MeteredIterator> openIterators
     ) {
         super(
-            iter,
-            operationSensor,
-            iteratorSensor,
-            null, // should not be used in super-class
+                iter,
+                operationSensor,
+                iteratorSensor,
+                null, // should not be used in super-class
             null, // should not be used in super-class
             time,
-            numOpenIterators,
-            openIterators
+                numOpenIterators,
+                openIterators
         );
 
         this.deserializeValue = deserializeValue;
@@ -69,8 +69,8 @@ final class MeteredWindowedKeyValueWithHeadersIterator<K, VInner, VOuter> extend
         final KeyValue<Windowed<Bytes>, byte[]> next = iter.next();
         final VInner valueTimestampHeaders = deserializeValue.apply(next.value);
         return KeyValue.pair(
-            windowedKey(next.key, headersExtractor.apply(valueTimestampHeaders)),
-            valueConverter.apply(valueTimestampHeaders)
+                windowedKey(next.key, headersExtractor.apply(valueTimestampHeaders)),
+                valueConverter.apply(valueTimestampHeaders)
         );
     }
 

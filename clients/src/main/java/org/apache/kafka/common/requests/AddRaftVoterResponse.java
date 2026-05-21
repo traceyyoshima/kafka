@@ -58,6 +58,6 @@ public class AddRaftVoterResponse extends AbstractResponse {
 
     public static AddRaftVoterResponse parse(Readable readable, short version) {
         return new AddRaftVoterResponse(
-            new AddRaftVoterResponseData(readable, version));
+                new AddRaftVoterResponseData(readable, version));
     }
 }

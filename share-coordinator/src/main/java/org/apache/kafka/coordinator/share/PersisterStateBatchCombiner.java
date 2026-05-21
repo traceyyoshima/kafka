@@ -187,8 +187,8 @@ public class PersisterStateBatchCombiner {
                 prev.lastOffset() + 1 == candidate.firstOffset() && compareBatchDeliveryInfo(prev, candidate) == 0) {  // contiguous
                 updateBatchContainers(nonOverlapping);
                 return new MergeCandidatePair(
-                    prev,
-                    candidate
+                        prev,
+                        candidate
                 );
             }
             nonOverlapping.add(prev);
@@ -241,13 +241,13 @@ public class PersisterStateBatchCombiner {
 
     private void handleSameStateMerge(PersisterStateBatch prev, PersisterStateBatch candidate) {
         sortedBatches.add(new PersisterStateBatch(
-            prev.firstOffset(),
-            // cover cases
-            // prev:      ------   --------       ---------
-            // candidate:   ---       ----------           -----
-            Math.max(candidate.lastOffset(), prev.lastOffset()),
-            prev.deliveryState(),
-            prev.deliveryCount()
+                prev.firstOffset(),
+                // cover cases
+                // prev:      ------   --------       ---------
+                // candidate:   ---       ----------           -----
+                Math.max(candidate.lastOffset(), prev.lastOffset()),
+                prev.deliveryState(),
+                prev.deliveryCount()
         ));
     }
 
@@ -274,10 +274,10 @@ public class PersisterStateBatchCombiner {
             if (compareBatchDeliveryInfo(candidate, prev) < 0) {
                 sortedBatches.add(prev);
                 sortedBatches.add(new PersisterStateBatch(
-                    prev.lastOffset() + 1,
-                    candidate.lastOffset(),
-                    candidate.deliveryState(),
-                    candidate.deliveryCount()
+                        prev.lastOffset() + 1,
+                        candidate.lastOffset(),
+                        candidate.deliveryState(),
+                        candidate.deliveryCount()
                 ));
             } else {
                 // candidate priority is >= prev
@@ -303,19 +303,19 @@ public class PersisterStateBatchCombiner {
             sortedBatches.add(prev);
         } else {
             sortedBatches.add(new PersisterStateBatch(
-                prev.firstOffset(),
-                candidate.firstOffset() - 1,
-                prev.deliveryState(),
-                prev.deliveryCount()
+                    prev.firstOffset(),
+                    candidate.firstOffset() - 1,
+                    prev.deliveryState(),
+                    prev.deliveryCount()
             ));
 
             sortedBatches.add(candidate);
 
             sortedBatches.add(new PersisterStateBatch(
-                candidate.lastOffset() + 1,
-                prev.lastOffset(),
-                prev.deliveryState(),
-                prev.deliveryCount()
+                    candidate.lastOffset() + 1,
+                    prev.lastOffset(),
+                    prev.deliveryState(),
+                    prev.deliveryCount()
             ));
         }
     }
@@ -327,10 +327,10 @@ public class PersisterStateBatchCombiner {
             sortedBatches.add(prev);
         } else {
             sortedBatches.add(new PersisterStateBatch(
-                prev.firstOffset(),
-                candidate.firstOffset() - 1,
-                prev.deliveryState(),
-                prev.deliveryCount()
+                    prev.firstOffset(),
+                    candidate.firstOffset() - 1,
+                    prev.deliveryState(),
+                    prev.deliveryCount()
             ));
 
             sortedBatches.add(candidate);
@@ -344,18 +344,18 @@ public class PersisterStateBatchCombiner {
             sortedBatches.add(prev);
 
             sortedBatches.add(new PersisterStateBatch(
-                prev.lastOffset() + 1,
-                candidate.lastOffset(),
-                candidate.deliveryState(),
-                candidate.deliveryCount()
+                    prev.lastOffset() + 1,
+                    candidate.lastOffset(),
+                    candidate.deliveryState(),
+                    candidate.deliveryCount()
             ));
         } else {
             // candidate has higher priority
             sortedBatches.add(new PersisterStateBatch(
-                prev.firstOffset(),
-                candidate.firstOffset() - 1,
-                prev.deliveryState(),
-                prev.deliveryCount()
+                    prev.firstOffset(),
+                    candidate.firstOffset() - 1,
+                    prev.deliveryState(),
+                    prev.deliveryCount()
             ));
 
             sortedBatches.add(candidate);

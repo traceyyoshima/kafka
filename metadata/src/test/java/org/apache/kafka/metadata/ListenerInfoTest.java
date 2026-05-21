@@ -39,30 +39,30 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @Timeout(value = 40)
 public class ListenerInfoTest {
     private static final Endpoint INTERNAL = new Endpoint("INTERNAL",
-        SecurityProtocol.PLAINTEXT,
-        null,
-        0);
+            SecurityProtocol.PLAINTEXT,
+            null,
+            0);
 
     private static final Endpoint EXTERNAL = new Endpoint("EXTERNAL",
-        SecurityProtocol.SASL_SSL,
-        "example.com",
-        9092);
+            SecurityProtocol.SASL_SSL,
+            "example.com",
+            9092);
 
     private static final Endpoint SSL = new Endpoint("SSL",
-        SecurityProtocol.SSL,
-        "",
-        9093);
+            SecurityProtocol.SSL,
+            "",
+            9093);
 
     private static final Endpoint SASL_PLAINTEXT = new Endpoint("SASL_PLAINTEXT",
-        SecurityProtocol.SASL_PLAINTEXT,
-        "example2.com",
-        9094);
+            SecurityProtocol.SASL_PLAINTEXT,
+            "example2.com",
+            9094);
 
     private static final List<Endpoint> ALL = List.of(
-        INTERNAL,
-        EXTERNAL,
-        SSL,
-        SASL_PLAINTEXT);
+            INTERNAL,
+            EXTERNAL,
+            SSL,
+            SASL_PLAINTEXT);
 
     @Test
     public void testNullHostname() {
@@ -95,7 +95,7 @@ public class ListenerInfoTest {
         }
         ListenerInfo listenerInfo = ListenerInfo.create(endpoints);
         assertEquals(ALL.get(startIndex).listener(),
-            listenerInfo.firstListener().listener());
+                listenerInfo.firstListener().listener());
     }
 
     @ParameterizedTest
@@ -103,7 +103,7 @@ public class ListenerInfoTest {
     public void testCreateWithExplicitFirstListener(int startIndex) {
         ListenerInfo listenerInfo = ListenerInfo.create(Optional.of(ALL.get(startIndex).listener()), ALL);
         assertEquals(ALL.get(startIndex).listener(),
-            listenerInfo.firstListener().listener());
+                listenerInfo.firstListener().listener());
     }
 
     @Test
@@ -112,21 +112,21 @@ public class ListenerInfoTest {
             withWildcardHostnamesResolved().
             withEphemeralPortsCorrected(__ -> 9094);
         ListenerInfo newListenerInfo = ListenerInfo.fromControllerRegistrationRequest(
-            listenerInfo.toControllerRegistrationRequest());
+                listenerInfo.toControllerRegistrationRequest());
         assertEquals(listenerInfo, newListenerInfo);
     }
 
     @Test
     public void testToControllerRegistrationRequestFailsOnNullHost() {
         assertThrows(RuntimeException.class,
-            () -> ListenerInfo.create(List.of(INTERNAL)).
+                () -> ListenerInfo.create(List.of(INTERNAL)).
                 toControllerRegistrationRequest());
     }
 
     @Test
     public void testToControllerRegistrationRequestFailsOnZeroPort() {
         assertThrows(RuntimeException.class,
-            () -> ListenerInfo.create(List.of(INTERNAL)).
+                () -> ListenerInfo.create(List.of(INTERNAL)).
                 withWildcardHostnamesResolved().
                 toControllerRegistrationRequest());
     }
@@ -137,21 +137,21 @@ public class ListenerInfoTest {
             withWildcardHostnamesResolved().
             withEphemeralPortsCorrected(__ -> 9094);
         ListenerInfo newListenerInfo = ListenerInfo.fromControllerRegistrationRecord(
-            listenerInfo.toControllerRegistrationRecord());
+                listenerInfo.toControllerRegistrationRecord());
         assertEquals(listenerInfo, newListenerInfo);
     }
 
     @Test
     public void testToControllerRegistrationRecordFailsOnNullHost() {
         assertThrows(RuntimeException.class,
-            () -> ListenerInfo.create(List.of(INTERNAL)).
+                () -> ListenerInfo.create(List.of(INTERNAL)).
                 toControllerRegistrationRecord());
     }
 
     @Test
     public void testToControllerRegistrationRecordFailsOnZeroPort() {
         assertThrows(RuntimeException.class,
-            () -> ListenerInfo.create(List.of(INTERNAL)).
+                () -> ListenerInfo.create(List.of(INTERNAL)).
                 withWildcardHostnamesResolved().
                 toControllerRegistrationRecord());
     }
@@ -162,21 +162,21 @@ public class ListenerInfoTest {
             withWildcardHostnamesResolved().
             withEphemeralPortsCorrected(__ -> 9094);
         ListenerInfo newListenerInfo = ListenerInfo.fromBrokerRegistrationRequest(
-            listenerInfo.toBrokerRegistrationRequest());
+                listenerInfo.toBrokerRegistrationRequest());
         assertEquals(listenerInfo, newListenerInfo);
     }
 
     @Test
     public void testToBrokerRegistrationRequestFailsOnNullHost() {
         assertThrows(RuntimeException.class,
-            () -> ListenerInfo.create(List.of(INTERNAL)).
+                () -> ListenerInfo.create(List.of(INTERNAL)).
                 toBrokerRegistrationRequest());
     }
 
     @Test
     public void testToBrokerRegistrationRequestFailsOnZeroPort() {
         assertThrows(RuntimeException.class,
-            () -> ListenerInfo.create(List.of(INTERNAL)).
+                () -> ListenerInfo.create(List.of(INTERNAL)).
                 withWildcardHostnamesResolved().
                 toBrokerRegistrationRequest());
     }
@@ -194,14 +194,14 @@ public class ListenerInfoTest {
     @Test
     public void testToBrokerRegistrationRecordFailsOnNullHost() {
         assertThrows(RuntimeException.class,
-            () -> ListenerInfo.create(List.of(INTERNAL)).
+                () -> ListenerInfo.create(List.of(INTERNAL)).
                 toBrokerRegistrationRecord());
     }
 
     @Test
     public void testToBrokerRegistrationRecordFailsOnZeroPort() {
         assertThrows(RuntimeException.class,
-            () -> ListenerInfo.create(List.of(INTERNAL)).
+                () -> ListenerInfo.create(List.of(INTERNAL)).
                 withWildcardHostnamesResolved().
                 toBrokerRegistrationRecord());
     }
@@ -210,7 +210,7 @@ public class ListenerInfoTest {
     public void testToString() {
         ListenerInfo listenerInfo = ListenerInfo.create(List.of(EXTERNAL, SASL_PLAINTEXT));
         assertEquals("ListenerInfo(Endpoint(listenerName='EXTERNAL', securityProtocol=SASL_SSL, host='example.com', port=9092), " +
-            "Endpoint(listenerName='SASL_PLAINTEXT', securityProtocol=SASL_PLAINTEXT, host='example2.com', port=9094))",
-            listenerInfo.toString());
+                "Endpoint(listenerName='SASL_PLAINTEXT', securityProtocol=SASL_PLAINTEXT, host='example2.com', port=9094))",
+                listenerInfo.toString());
     }
 }

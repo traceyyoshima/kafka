@@ -83,12 +83,12 @@ public class TransactionDescription {
         if (o == null || getClass() != o.getClass()) return false;
         TransactionDescription that = (TransactionDescription) o;
         return coordinatorId == that.coordinatorId &&
-            producerId == that.producerId &&
-            producerEpoch == that.producerEpoch &&
-            transactionTimeoutMs == that.transactionTimeoutMs &&
-            state == that.state &&
-            Objects.equals(transactionStartTimeMs, that.transactionStartTimeMs) &&
-            Objects.equals(topicPartitions, that.topicPartitions);
+                producerId == that.producerId &&
+                producerEpoch == that.producerEpoch &&
+                transactionTimeoutMs == that.transactionTimeoutMs &&
+                state == that.state &&
+                Objects.equals(transactionStartTimeMs, that.transactionStartTimeMs) &&
+                Objects.equals(topicPartitions, that.topicPartitions);
     }
 
     @Override
@@ -99,13 +99,13 @@ public class TransactionDescription {
     @Override
     public String toString() {
         return "TransactionDescription(" +
-            "coordinatorId=" + coordinatorId +
-            ", state=" + state +
-            ", producerId=" + producerId +
-            ", producerEpoch=" + producerEpoch +
-            ", transactionTimeoutMs=" + transactionTimeoutMs +
-            ", transactionStartTimeMs=" + transactionStartTimeMs +
-            ", topicPartitions=" + topicPartitions +
-            ')';
+                "coordinatorId=" + coordinatorId +
+                ", state=" + state +
+                ", producerId=" + producerId +
+                ", producerEpoch=" + producerEpoch +
+                ", transactionTimeoutMs=" + transactionTimeoutMs +
+                ", transactionStartTimeMs=" + transactionStartTimeMs +
+                ", topicPartitions=" + topicPartitions +
+                ')';
     }
 }

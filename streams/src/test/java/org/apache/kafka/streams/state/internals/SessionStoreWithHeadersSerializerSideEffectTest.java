@@ -110,8 +110,8 @@ public class SessionStoreWithHeadersSerializerSideEffectTest {
         public void process(final Record<String, String> record) {
             final long timestamp = record.timestamp();
             final Windowed<String> sessionKey = new Windowed<>(
-                record.key(),
-                new SessionWindow(timestamp, timestamp)
+                    record.key(),
+                    new SessionWindow(timestamp, timestamp)
             );
 
             if ("remove".equals(record.value())) {
@@ -120,8 +120,8 @@ public class SessionStoreWithHeadersSerializerSideEffectTest {
                 store.put(sessionKey, null);
             } else {
                 store.put(
-                    sessionKey,
-                    AggregationWithHeaders.make(record.value(), record.headers())
+                        sessionKey,
+                        AggregationWithHeaders.make(record.value(), record.headers())
                 );
             }
 
@@ -135,12 +135,12 @@ public class SessionStoreWithHeadersSerializerSideEffectTest {
 
         // Create a session store with headers using our custom serializer
         builder.addStateStore(
-            Stores.sessionStoreWithHeadersBuilder(
-                Stores.inMemorySessionStore(
-                    STORE_NAME,
-                    Duration.ofMillis(10000L)
+                Stores.sessionStoreWithHeadersBuilder(
+                    Stores.inMemorySessionStore(
+                        STORE_NAME,
+                        Duration.ofMillis(10000L)
                 ),
-                new HeaderAddingSerde(),  // Custom key serializer that adds headers
+                    new HeaderAddingSerde(),  // Custom key serializer that adds headers
                 Serdes.String()
             )
         );
@@ -157,25 +157,25 @@ public class SessionStoreWithHeadersSerializerSideEffectTest {
 
         try (TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
             final TestInputTopic<String, String> inputTopic = driver.createInputTopic(
-                INPUT_TOPIC,
-                Serdes.String().serializer(),
-                Serdes.String().serializer()
+                    INPUT_TOPIC,
+                    Serdes.String().serializer(),
+                    Serdes.String().serializer()
             );
 
             final String changelogTopic = "test-session-app-" + STORE_NAME + "-changelog";
             final TestOutputTopic<String, String> changelogOutputTopic =
-                driver.createOutputTopic(
-                    changelogTopic,
-                    Serdes.String().deserializer(),
-                    Serdes.String().deserializer()
+                    driver.createOutputTopic(
+                        changelogTopic,
+                        Serdes.String().deserializer(),
+                        Serdes.String().deserializer()
                 );
 
             // Create output topic reader (using regular StringSerde, not HeaderAddingSerde)
             final TestOutputTopic<String, String> outputTopic =
-                driver.createOutputTopic(
-                    OUTPUT_TOPIC,
-                    Serdes.String().deserializer(),
-                    Serdes.String().deserializer()
+                    driver.createOutputTopic(
+                        OUTPUT_TOPIC,
+                        Serdes.String().deserializer(),
+                        Serdes.String().deserializer()
                 );
 
             inputTopic.pipeInput("key1", "value1", 1000L);

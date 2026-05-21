@@ -105,10 +105,10 @@ public class AdminApiDriver<K, V> {
         this.future = future;
         this.deadlineMs = deadlineMs;
         this.retryBackoff = new ExponentialBackoff(
-            retryBackoffMs,
-            CommonClientConfigs.RETRY_BACKOFF_EXP_BASE,
-            retryBackoffMaxMs,
-            CommonClientConfigs.RETRY_BACKOFF_JITTER);
+                retryBackoffMs,
+                CommonClientConfigs.RETRY_BACKOFF_EXP_BASE,
+                retryBackoffMaxMs,
+                CommonClientConfigs.RETRY_BACKOFF_JITTER);
         this.log = logContext.logger(AdminApiDriver.class);
 
         // For any lookup keys for which we do not have cached information, we will need to look up
@@ -234,17 +234,17 @@ public class AdminApiDriver<K, V> {
 
         if (spec.scope instanceof FulfillmentScope) {
             AdminApiHandler.ApiResult<K, V> result = handler.handleResponse(
-                node,
-                spec.keys,
-                response
+                    node,
+                    spec.keys,
+                    response
             );
             complete(result.completedKeys);
             completeExceptionally(result.failedKeys);
             retryLookup(result.unmappedKeys);
         } else {
             AdminApiLookupStrategy.LookupResult<K> result = handler.lookupStrategy().handleResponse(
-                spec.keys,
-                response
+                    spec.keys,
+                    response
             );
 
             result.completedKeys.forEach(lookupMap::remove);
@@ -264,7 +264,7 @@ public class AdminApiDriver<K, V> {
         clearInflightRequest(currentTimeMs, spec);
         if (t instanceof DisconnectException) {
             log.debug("Node disconnected before response could be received for request {}. " +
-                "Will attempt retry", spec.request);
+                    "Will attempt retry", spec.request);
 
             // After a disconnect, we want the driver to attempt to lookup the key
             // again. This gives us a chance to find a new coordinator or partition
@@ -284,16 +284,16 @@ public class AdminApiDriver<K, V> {
             if (spec.scope instanceof FulfillmentScope) {
                 int brokerId = ((FulfillmentScope) spec.scope).destinationBrokerId;
                 Map<K, Throwable> unrecoverableFailures =
-                    handler.handleUnsupportedVersionException(
-                        brokerId,
-                        (UnsupportedVersionException) t,
-                        spec.keys);
+                        handler.handleUnsupportedVersionException(
+                            brokerId,
+                            (UnsupportedVersionException) t,
+                            spec.keys);
                 completeExceptionally(unrecoverableFailures);
             } else {
                 Map<K, Throwable> unrecoverableLookupFailures =
-                    handler.lookupStrategy().handleUnsupportedVersionException(
-                        (UnsupportedVersionException) t,
-                        spec.keys);
+                        handler.lookupStrategy().handleUnsupportedVersionException(
+                            (UnsupportedVersionException) t,
+                            spec.keys);
                 completeLookupExceptionally(unrecoverableLookupFailures);
                 Set<K> keysToUnmap = spec.keys.stream()
                     .filter(k -> !unrecoverableLookupFailures.containsKey(k))
@@ -302,8 +302,8 @@ public class AdminApiDriver<K, V> {
             }
         } else {
             Map<K, Throwable> errors = spec.keys.stream().collect(Collectors.toMap(
-                Function.identity(),
-                key -> t
+                    Function.identity(),
+                    key -> t
             ));
             if (spec.scope instanceof FulfillmentScope) {
                 completeExceptionally(errors);
@@ -355,13 +355,13 @@ public class AdminApiDriver<K, V> {
             // and we don't want to issue more than one fulfillment request per broker at a time
             AdminApiHandler.RequestAndKeys<K> newRequest = newRequests.iterator().next();
             RequestSpec<K> spec = new RequestSpec<>(
-                handler.apiName() + "(api=" + newRequest.request.apiKey() + ")",
-                scope,
-                newRequest.keys,
-                newRequest.request,
-                requestState.nextAllowedRetryMs,
-                deadlineMs,
-                requestState.tries
+                    handler.apiName() + "(api=" + newRequest.request.apiKey() + ")",
+                    scope,
+                    newRequest.keys,
+                    newRequest.request,
+                    requestState.nextAllowedRetryMs,
+                    deadlineMs,
+                    requestState.tries
             );
 
             requestState.setInflight(spec);
@@ -371,17 +371,17 @@ public class AdminApiDriver<K, V> {
 
     private void collectLookupRequests(List<RequestSpec<K>> requests) {
         collectRequests(
-            requests,
-            lookupMap,
-            (keys, scope) -> Collections.singletonList(new AdminApiHandler.RequestAndKeys<>(handler.lookupStrategy().buildRequest(keys), keys))
+                requests,
+                lookupMap,
+                (keys, scope) -> Collections.singletonList(new AdminApiHandler.RequestAndKeys<>(handler.lookupStrategy().buildRequest(keys), keys))
         );
     }
 
     private void collectFulfillmentRequests(List<RequestSpec<K>> requests) {
         collectRequests(
-            requests,
-            fulfillmentMap,
-            (keys, scope) -> handler.buildRequest(scope.destinationBrokerId, keys)
+                requests,
+                fulfillmentMap,
+                (keys, scope) -> handler.buildRequest(scope.destinationBrokerId, keys)
         );
     }
 
@@ -420,14 +420,14 @@ public class AdminApiDriver<K, V> {
         @Override
         public String toString() {
             return "RequestSpec(" +
-                "name=" + name +
-                ", scope=" + scope +
-                ", keys=" + keys +
-                ", request=" + request +
-                ", nextAllowedTryMs=" + nextAllowedTryMs +
-                ", deadlineMs=" + deadlineMs +
-                ", tries=" + tries +
-                ')';
+                    "name=" + name +
+                    ", scope=" + scope +
+                    ", keys=" + keys +
+                    ", request=" + request +
+                    ", nextAllowedTryMs=" + nextAllowedTryMs +
+                    ", deadlineMs=" + deadlineMs +
+                    ", tries=" + tries +
+                    ')';
         }
     }
 

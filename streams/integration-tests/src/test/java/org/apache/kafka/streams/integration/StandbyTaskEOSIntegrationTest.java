@@ -127,17 +127,17 @@ public class StandbyTaskEOSIntegrationTest {
     @Test
     public void shouldSurviveWithOneTaskAsStandby() throws Exception {
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-            inputTopic,
-            Collections.singletonList(
-                new KeyValue<>(0, 0)
+                inputTopic,
+                Collections.singletonList(
+                    new KeyValue<>(0, 0)
             ),
-            TestUtils.producerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerSerializer.class,
-                IntegerSerializer.class,
-                new Properties()
+                TestUtils.producerConfig(
+                    CLUSTER.bootstrapServers(),
+                    IntegerSerializer.class,
+                    IntegerSerializer.class,
+                    new Properties()
             ),
-            10L
+                10L
         );
 
         final String stateDirPath = TestUtils.tempDirectory(appId).getPath();
@@ -168,7 +168,7 @@ public class StandbyTaskEOSIntegrationTest {
         final Properties props = props(stateDirPath);
 
         final StateDirectory stateDirectory = new StateDirectory(
-            new StreamsConfig(props), new MockTime(), true, false);
+                new StreamsConfig(props), new MockTime(), true, false);
 
         new OffsetCheckpoint(new File(stateDirectory.getOrCreateDirectoryForTask(taskId), ".checkpoint"))
             .write(Collections.singletonMap(new TopicPartition("unknown-topic", 0), 5L));
@@ -192,17 +192,17 @@ public class StandbyTaskEOSIntegrationTest {
         final String base = TestUtils.tempDirectory(appId).getPath();
 
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-            inputTopic,
-            Collections.singletonList(
-                new KeyValue<>(KEY_0, 0)
+                inputTopic,
+                Collections.singletonList(
+                    new KeyValue<>(KEY_0, 0)
             ),
-            TestUtils.producerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerSerializer.class,
-                IntegerSerializer.class,
-                new Properties()
+                TestUtils.producerConfig(
+                    CLUSTER.bootstrapServers(),
+                    IntegerSerializer.class,
+                    IntegerSerializer.class,
+                    new Properties()
             ),
-            10L + time
+                10L + time
         );
 
         streamInstanceOne = buildWithDeduplicationTopology(base + "-1");
@@ -211,66 +211,66 @@ public class StandbyTaskEOSIntegrationTest {
         // start first instance and wait for processing
         startApplicationAndWaitUntilRunning(streamInstanceOne);
         IntegrationTestUtils.waitUntilMinRecordsReceived(
-            TestUtils.consumerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerDeserializer.class,
-                IntegerDeserializer.class
+                TestUtils.consumerConfig(
+                    CLUSTER.bootstrapServers(),
+                    IntegerDeserializer.class,
+                    IntegerDeserializer.class
             ),
-            outputTopic,
-            1
+                outputTopic,
+                1
         );
 
         // start second instance and wait for standby replication
         startApplicationAndWaitUntilRunning(streamInstanceTwo);
         waitForCondition(
-            () -> streamInstanceTwo.store(
-                StoreQueryParameters.fromNameAndType(
-                    storeName,
-                    QueryableStoreTypes.<Integer, Integer>keyValueStore()
+                () -> streamInstanceTwo.store(
+                    StoreQueryParameters.fromNameAndType(
+                        storeName,
+                        QueryableStoreTypes.<Integer, Integer>keyValueStore()
                 ).enableStaleStores()
             ).get(KEY_0) != null,
-            REBALANCE_TIMEOUT,
-            "Could not get key from standby store"
+                REBALANCE_TIMEOUT,
+                "Could not get key from standby store"
         );
         // sanity check that first instance is still active
         waitForCondition(
-            () -> streamInstanceOne.store(
-                StoreQueryParameters.fromNameAndType(
-                    storeName,
-                    QueryableStoreTypes.<Integer, Integer>keyValueStore()
+                () -> streamInstanceOne.store(
+                    StoreQueryParameters.fromNameAndType(
+                        storeName,
+                        QueryableStoreTypes.<Integer, Integer>keyValueStore()
                 )
             ).get(KEY_0) != null,
-            "Could not get key from main store"
+                "Could not get key from main store"
         );
 
         // inject poison pill and wait for crash of first instance and recovery on second instance
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-            inputTopic,
-            Collections.singletonList(
-                new KeyValue<>(KEY_1, 0)
+                inputTopic,
+                Collections.singletonList(
+                    new KeyValue<>(KEY_1, 0)
             ),
-            TestUtils.producerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerSerializer.class,
-                IntegerSerializer.class,
-                new Properties()
+                TestUtils.producerConfig(
+                    CLUSTER.bootstrapServers(),
+                    IntegerSerializer.class,
+                    IntegerSerializer.class,
+                    new Properties()
             ),
-            10L + time
+                10L + time
         );
         waitForCondition(
-            () -> streamInstanceOne.state() == KafkaStreams.State.ERROR,
-            "Stream instance 1 did not go into error state"
+                () -> streamInstanceOne.state() == KafkaStreams.State.ERROR,
+                "Stream instance 1 did not go into error state"
         );
         streamInstanceOne.close();
 
         IntegrationTestUtils.waitUntilMinRecordsReceived(
-            TestUtils.consumerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerDeserializer.class,
-                IntegerDeserializer.class
+                TestUtils.consumerConfig(
+                    CLUSTER.bootstrapServers(),
+                    IntegerDeserializer.class,
+                    IntegerDeserializer.class
             ),
-            outputTopic,
-            2
+                outputTopic,
+                2
         );
 
         streamInstanceOneRecovery = buildWithDeduplicationTopology(base + "-1");
@@ -279,44 +279,44 @@ public class StandbyTaskEOSIntegrationTest {
         // (could actually also be active, but it does not matter as long as we enable "state stores"
         startApplicationAndWaitUntilRunning(streamInstanceOneRecovery);
         waitForCondition(
-            () -> streamInstanceOneRecovery.store(
-                StoreQueryParameters.fromNameAndType(
-                    storeName,
-                    QueryableStoreTypes.<Integer, Integer>keyValueStore()
+                () -> streamInstanceOneRecovery.store(
+                    StoreQueryParameters.fromNameAndType(
+                        storeName,
+                        QueryableStoreTypes.<Integer, Integer>keyValueStore()
                 ).enableStaleStores()
             ).get(KEY_0) != null,
-            "Could not get key from recovered standby store"
+                "Could not get key from recovered standby store"
         );
 
         streamInstanceTwo.close();
         waitForCondition(
-            () -> streamInstanceOneRecovery.store(
-                StoreQueryParameters.fromNameAndType(
-                    storeName,
-                    QueryableStoreTypes.<Integer, Integer>keyValueStore()
+                () -> streamInstanceOneRecovery.store(
+                    StoreQueryParameters.fromNameAndType(
+                        storeName,
+                        QueryableStoreTypes.<Integer, Integer>keyValueStore()
                 )
             ).get(KEY_0) != null,
-            REBALANCE_TIMEOUT,
-            "Could not get key from recovered main store"
+                REBALANCE_TIMEOUT,
+                "Could not get key from recovered main store"
         );
 
         // re-inject poison pill and wait for crash of first instance
         skipRecord.set(false);
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-            inputTopic,
-            Collections.singletonList(
-                new KeyValue<>(KEY_1, 0)
+                inputTopic,
+                Collections.singletonList(
+                    new KeyValue<>(KEY_1, 0)
             ),
-            TestUtils.producerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerSerializer.class,
-                IntegerSerializer.class,
-                new Properties()
+                TestUtils.producerConfig(
+                    CLUSTER.bootstrapServers(),
+                    IntegerSerializer.class,
+                    IntegerSerializer.class,
+                    new Properties()
             ),
-            10L + time
+                10L + time
         );
         waitForCondition(
-            () -> streamInstanceOneRecovery.state() == KafkaStreams.State.ERROR,
+                () -> streamInstanceOneRecovery.state() == KafkaStreams.State.ERROR,
                 () -> "Stream instance 1 did not go into error state. Is in " + streamInstanceOneRecovery.state() + " state."
         );
     }
@@ -325,56 +325,55 @@ public class StandbyTaskEOSIntegrationTest {
         final StreamsBuilder builder = new StreamsBuilder();
 
         builder.addStateStore(Stores.keyValueStoreBuilder(
-            Stores.persistentKeyValueStore(storeName),
-            Serdes.Integer(),
-            Serdes.Integer())
+                Stores.persistentKeyValueStore(storeName),
+                Serdes.Integer(),
+                Serdes.Integer())
         );
         builder.<Integer, Integer>stream(inputTopic)
             .process(
-                () -> new Processor<Integer, Integer, Integer, Integer>() {
-                    private ProcessorContext<Integer, Integer> context;
-                    private KeyValueStore<Integer, Integer> store;
+                    () -> new Processor<Integer, Integer, Integer, Integer>() {
+                        private ProcessorContext<Integer, Integer> context;
+                        private KeyValueStore<Integer, Integer> store;
 
-                    @Override
-                    public void init(final ProcessorContext<Integer, Integer> context) {
-                        this.context = context;
-                        store = context.getStateStore(storeName);
-                    }
+                        @Override
+                        public void init(final ProcessorContext<Integer, Integer> context) {
+                            this.context = context;
+                            store = context.getStateStore(storeName);
+                        }
 
-                    @Override
-                    public void process(final Record<Integer, Integer> record) {
-                        final int key = record.key();
-                        final int value = record.value();
+                        @Override
+                        public void process(final Record<Integer, Integer> record) {
+                            final int key = record.key();
+                            final int value = record.value();
 
-                        if (skipRecord.get()) {
-                            // we only forward so we can verify the skipping by reading the output topic
-                            // the goal is skipping is to not modify the state store
+                            if (skipRecord.get()) {
+                                // we only forward so we can verify the skipping by reading the output topic
+                                // the goal is skipping is to not modify the state store
+                                context.forward(record);
+                                return;
+                            }
+
+                            if (store.get(key) != null) {
+                                return;
+                            }
+
+                            store.put(key, value);
+
+                            if (key == KEY_1) {
+                                // after error injection, we need to avoid a consecutive error after rebalancing
+                                skipRecord.set(true);
+                                throw new RuntimeException("Injected test error");
+                            }
+
                             context.forward(record);
-                            return;
                         }
-
-                        if (store.get(key) != null) {
-                            return;
-                        }
-
-                        store.put(key, value);
-
-                        if (key == KEY_1) {
-                            // after error injection, we need to avoid a consecutive error after rebalancing
-                            skipRecord.set(true);
-                            throw new RuntimeException("Injected test error");
-                        }
-
-                        context.forward(record);
-                    }
-                },
-                storeName
+                    },
+                    storeName
             )
             .to(outputTopic);
 
         return new KafkaStreams(builder.build(), props(stateDirPath));
     }
-
 
     private Properties props(final String stateDirPath) {
         final Properties streamsConfiguration = new Properties();

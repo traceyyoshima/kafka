@@ -63,31 +63,31 @@ public record LogReadResult(
         OptionalLong lastStableOffset,
         Errors error) {
         this(info, divergingEpoch, highWatermark, leaderLogStartOffset, leaderLogEndOffset, followerLogStartOffset,
-            fetchTimeMs, lastStableOffset, OptionalInt.empty(), error);
+                fetchTimeMs, lastStableOffset, OptionalInt.empty(), error);
     }
 
     public LogReadResult(Errors error) {
         this(new FetchDataInfo(LogOffsetMetadata.UNKNOWN_OFFSET_METADATA, MemoryRecords.EMPTY),
-            Optional.empty(),
-            UnifiedLog.UNKNOWN_OFFSET,
-            UnifiedLog.UNKNOWN_OFFSET,
-            UnifiedLog.UNKNOWN_OFFSET,
-            UnifiedLog.UNKNOWN_OFFSET,
-            -1L,
-            OptionalLong.empty(),
-            error);
+                Optional.empty(),
+                UnifiedLog.UNKNOWN_OFFSET,
+                UnifiedLog.UNKNOWN_OFFSET,
+                UnifiedLog.UNKNOWN_OFFSET,
+                UnifiedLog.UNKNOWN_OFFSET,
+                -1L,
+                OptionalLong.empty(),
+                error);
     }
 
     public FetchPartitionData toFetchPartitionData(boolean isReassignmentFetch) {
         return new FetchPartitionData(
-            this.error(),
-            this.highWatermark,
-            this.leaderLogStartOffset,
-            this.info.records,
-            this.divergingEpoch,
-            this.lastStableOffset,
-            this.info.abortedTransactions,
-            this.preferredReadReplica,
-            isReassignmentFetch);
+                this.error(),
+                this.highWatermark,
+                this.leaderLogStartOffset,
+                this.info.records,
+                this.divergingEpoch,
+                this.lastStableOffset,
+                this.info.abortedTransactions,
+                this.preferredReadReplica,
+                isReassignmentFetch);
     }
 }

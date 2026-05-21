@@ -236,12 +236,10 @@ public class WorkerTest {
     private String mockFileProviderTestId;
     private Map<String, String> connectorProps;
 
-
     private MockedConstruction<WorkerSourceTask> sourceTaskMockedConstruction;
     private MockedConstruction<ExactlyOnceWorkerSourceTask> eosSourceTaskMockedConstruction;
     private MockedConstruction<WorkerSinkTask> sinkTaskMockedConstruction;
     private MockitoSession mockitoSession;
-
 
     public void setup(boolean enableTopicCreation) {
         // Use strict mode to detect unused mocks
@@ -264,9 +262,9 @@ public class WorkerTest {
 
         defaultProducerConfigs.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         defaultProducerConfigs.put(
-            ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.ByteArraySerializer");
+                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.ByteArraySerializer");
         defaultProducerConfigs.put(
-            ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.ByteArraySerializer");
+                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.ByteArraySerializer");
         defaultProducerConfigs.put(ProducerConfig.MAX_BLOCK_MS_CONFIG, Long.toString(Long.MAX_VALUE));
         // By default, producers that are instantiated and used by Connect have idempotency disabled even after idempotency became
         // default for Kafka producers. This is chosen to avoid breaking changes when Connect contacts Kafka brokers that do not support
@@ -341,7 +339,6 @@ public class WorkerTest {
         assertEquals(TargetState.STARTED, onFirstStart.get(1000, TimeUnit.MILLISECONDS));
         assertEquals(Set.of(CONNECTOR_ID), worker.connectorNames());
 
-
         FutureCallback<TargetState> onSecondStart = new FutureCallback<>();
         worker.startConnector(CONNECTOR_ID, connectorProps, ctx, connectorStatusListener, TargetState.STARTED, onSecondStart);
         Exception exc = assertThrows(ExecutionException.class, () -> onSecondStart.get(0, TimeUnit.MILLISECONDS));
@@ -358,7 +355,6 @@ public class WorkerTest {
         // Nothing should be left, so this should effectively be a nop
         worker.stop();
         assertStatistics(worker, 0, 0);
-
 
         verifyKafkaClusterId();
         verifyVersionedConnectorIsolation(connectorClass, null, sourceConnector);
@@ -378,7 +374,7 @@ public class WorkerTest {
         when(plugins.newConfigProvider(any(AbstractConfig.class),
                                        eq("config.providers.file"),
                                        any(ClassLoaderUsage.class)))
-               .thenReturn(mockFileConfigProvider);
+                .thenReturn(mockFileConfigProvider);
     }
 
     @ParameterizedTest
@@ -542,7 +538,6 @@ public class WorkerTest {
 
         // Use doReturn().when() syntax due to when().thenReturn() not being able to return wildcard generic types
         doReturn(TestSourceTask.class).when(sinkConnector).taskClass();
-
 
         connectorProps.put(SinkConnectorConfig.TOPICS_CONFIG, "foo,bar");
         connectorProps.put(ConnectorConfig.CONNECTOR_CLASS_CONFIG, connectorClass);
@@ -802,7 +797,6 @@ public class WorkerTest {
         mockVersionedTaskHeaderConverterFromConnector(taskHeaderConverter);
         mockExecutorFakeSubmit(WorkerTask.class);
 
-
         // Each time we check the task metrics, the worker will call the herder
         when(herder.taskStatus(TASK_ID)).thenReturn(
                 new ConnectorStateInfo.TaskState(0, "RUNNING", "worker", "msg", null),
@@ -813,13 +807,13 @@ public class WorkerTest {
         );
 
         worker = new Worker(WORKER_ID,
-            new MockTime(),
-            plugins,
-            config,
-            offsetBackingStore,
-            executorService,
-            noneConnectorClientConfigOverridePolicy,
-            null);
+                new MockTime(),
+                plugins,
+                config,
+                offsetBackingStore,
+                executorService,
+                noneConnectorClientConfigOverridePolicy,
+                null);
 
         worker.herder = herder;
 
@@ -828,12 +822,12 @@ public class WorkerTest {
         assertStartupStatistics(worker, 0, 0, 0, 0);
         assertEquals(Set.of(), worker.taskIds());
         worker.startSourceTask(
-            TASK_ID,
-            ClusterConfigState.EMPTY,
-            anyConnectorConfigMap(),
-            origProps,
+                TASK_ID,
+                ClusterConfigState.EMPTY,
+                anyConnectorConfigMap(),
+                origProps,
                 taskStatusListener,
-            TargetState.STARTED);
+                TargetState.STARTED);
 
         assertStatusMetrics(1L, "connector-running-task-count");
         assertStatusMetrics(1L, "connector-paused-task-count");
@@ -880,15 +874,15 @@ public class WorkerTest {
         mockFileConfigProvider();
 
         worker = new Worker(WORKER_ID,
-            new MockTime(),
-            plugins,
-            config,
-            offsetBackingStore,
-            noneConnectorClientConfigOverridePolicy);
+                new MockTime(),
+                plugins,
+                config,
+                offsetBackingStore,
+                noneConnectorClientConfigOverridePolicy);
         worker.herder = herder;
 
         Worker.ConnectorStatusMetricsGroup metricGroup = new Worker.ConnectorStatusMetricsGroup(
-            worker.metrics(), tasks, herder
+                worker.metrics(), tasks, herder
         );
         assertEquals(2L, (long) metricGroup.taskCounter("c1").metricValue(0L));
         assertEquals(1L, (long) metricGroup.taskCounter("c2").metricValue(0L));
@@ -2926,8 +2920,8 @@ public class WorkerTest {
         assertTrue(
                 message.startsWith(expectedPrefix),
                 "Warning/exception message '"
-                                + message + "' did not start with the expected prefix '"
-                                + expectedPrefix + "'"
+                + message + "' did not start with the expected prefix '"
+                + expectedPrefix + "'"
         );
     }
 
@@ -2980,7 +2974,6 @@ public class WorkerTest {
         when(herder.statusBackingStore()).thenReturn(statusBackingStore);
     }
 
-
     private void verifyStorage() {
         verify(offsetBackingStore).start();
         verify(herder).statusBackingStore();
@@ -2992,10 +2985,10 @@ public class WorkerTest {
         jsonConverter.configure(Map.of(SCHEMAS_ENABLE_CONFIG, false), false);
 
         when(plugins.newInternalConverter(eq(true), anyString(), anyMap()))
-                       .thenReturn(jsonConverter);
+                .thenReturn(jsonConverter);
 
         when(plugins.newInternalConverter(eq(false), anyString(), anyMap()))
-                       .thenReturn(jsonConverter);
+                .thenReturn(jsonConverter);
     }
 
     private void verifyConverters() {
@@ -3005,7 +2998,7 @@ public class WorkerTest {
 
     private void mockTaskConverter(ClassLoaderUsage classLoaderUsage, String converterClassConfig, Converter returning) {
         when(plugins.newConverter(any(AbstractConfig.class), eq(converterClassConfig), eq(classLoaderUsage)))
-                       .thenReturn(returning);
+                .thenReturn(returning);
     }
 
     private void mockVersionedTaskConverterFromConnector(String converterClassConfig, String converterVersionConfig, Converter returning) {
@@ -3026,7 +3019,7 @@ public class WorkerTest {
 
     private void mockTaskHeaderConverter(ClassLoaderUsage classLoaderUsage, HeaderConverter returning) {
         when(plugins.newHeaderConverter(any(AbstractConfig.class), eq(WorkerConfig.HEADER_CONVERTER_CLASS_CONFIG), eq(classLoaderUsage)))
-               .thenReturn(returning);
+                .thenReturn(returning);
     }
 
     private void verifyTaskHeaderConverter() {
@@ -3035,7 +3028,7 @@ public class WorkerTest {
 
     private void mockVersionedTaskHeaderConverterFromConnector(HeaderConverter returning) {
         when(plugins.newHeaderConverter(any(ConnectorConfig.class), eq(ConnectorConfig.HEADER_CONVERTER_CLASS_CONFIG), eq(ConnectorConfig.HEADER_CONVERTER_VERSION_CONFIG)))
-               .thenReturn(returning);
+                .thenReturn(returning);
     }
 
     private void verifyVersionedTaskHeaderConverterFromConnector() {

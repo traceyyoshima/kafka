@@ -75,6 +75,7 @@ public class JoinGracePeriodDurabilityIntegrationTest {
 
     public static final EmbeddedKafkaCluster CLUSTER = new EmbeddedKafkaCluster(3);
     private static final long NOW = Instant.now().toEpochMilli();
+
     @BeforeAll
     public static void startCluster() throws IOException {
         CLUSTER.start();
@@ -107,10 +108,10 @@ public class JoinGracePeriodDurabilityIntegrationTest {
         final StreamsBuilder builder = new StreamsBuilder();
         final KStream<String, String> stream = builder.stream(streamInput, Consumed.with(STRING_SERDE, STRING_SERDE));
         final KTable<String, String> table = builder.table(tableInput, Consumed.with(STRING_SERDE, STRING_SERDE), Materialized.as(
-            Stores.persistentVersionedKeyValueStore(storeName, Duration.ofMillis(1000))));
+                Stores.persistentVersionedKeyValueStore(storeName, Duration.ofMillis(1000))));
         final KStream<String, String> joinedStream = stream.join(table,
-            MockValueJoiner.TOSTRING_JOINER,
-            Joined.with(Serdes.String(), Serdes.String(), Serdes.String(), "Grace", Duration.ofMillis(5))
+                MockValueJoiner.TOSTRING_JOINER,
+                Joined.with(Serdes.String(), Serdes.String(), Serdes.String(), "Grace", Duration.ofMillis(5))
         );
 
         final AtomicInteger eventCount = new AtomicInteger(0);
@@ -119,12 +120,12 @@ public class JoinGracePeriodDurabilityIntegrationTest {
         joinedStream.to(output);
 
         final Properties streamsConfig = mkObjectProperties(mkMap(
-            mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, appId),
-            mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
-            mkEntry(StreamsConfig.POLL_MS_CONFIG, Long.toString(COMMIT_INTERVAL)),
-            mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
-            mkEntry(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.StringSerde.class),
-            mkEntry(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.StringSerde.class)
+                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, appId),
+                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
+                mkEntry(StreamsConfig.POLL_MS_CONFIG, Long.toString(COMMIT_INTERVAL)),
+                mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
+                mkEntry(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.StringSerde.class),
+                mkEntry(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.StringSerde.class)
         ));
 
         streamsConfig.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, COMMIT_INTERVAL);
@@ -132,38 +133,38 @@ public class JoinGracePeriodDurabilityIntegrationTest {
         KafkaStreams driver = startStream(streamsConfig, builder, true, withHeaders);
         try {
             produceSynchronouslyToPartitionZero(
-                tableInput,
-                asList(
-                    new KeyValueTimestamp<>("k1", "v1", scaledTime(0L)),
-                    new KeyValueTimestamp<>("k2", "v2", scaledTime(0L)),
-                    new KeyValueTimestamp<>("k3", "v3", scaledTime(0L)),
-                    new KeyValueTimestamp<>("k4", "v4", scaledTime(0L)),
-                    new KeyValueTimestamp<>("k5", "v5", scaledTime(0L)),
-                    new KeyValueTimestamp<>("k6", "v6", scaledTime(0L))
+                    tableInput,
+                    asList(
+                        new KeyValueTimestamp<>("k1", "v1", scaledTime(0L)),
+                        new KeyValueTimestamp<>("k2", "v2", scaledTime(0L)),
+                        new KeyValueTimestamp<>("k3", "v3", scaledTime(0L)),
+                        new KeyValueTimestamp<>("k4", "v4", scaledTime(0L)),
+                        new KeyValueTimestamp<>("k5", "v5", scaledTime(0L)),
+                        new KeyValueTimestamp<>("k6", "v6", scaledTime(0L))
                 )
             );
             produceSynchronouslyToPartitionZero(
-                streamInput,
-                asList(
-                    new KeyValueTimestamp<>("k1", "v1", scaledTime(1L)),
-                    new KeyValueTimestamp<>("k2", "v2", scaledTime(2L)),
-                    new KeyValueTimestamp<>("k3", "v3", scaledTime(7L))
+                    streamInput,
+                    asList(
+                        new KeyValueTimestamp<>("k1", "v1", scaledTime(1L)),
+                        new KeyValueTimestamp<>("k2", "v2", scaledTime(2L)),
+                        new KeyValueTimestamp<>("k3", "v3", scaledTime(7L))
                 )
             );
             verifyOutput(
-                output,
-                asList(
-                    new KeyValueTimestamp<>("k1", "v1+v1", scaledTime(1L)),
-                    new KeyValueTimestamp<>("k2", "v2+v2", scaledTime(2L))
+                    output,
+                    asList(
+                        new KeyValueTimestamp<>("k1", "v1+v1", scaledTime(1L)),
+                        new KeyValueTimestamp<>("k2", "v2+v2", scaledTime(2L))
                 )
             );
             assertThat(eventCount.get(), is(2));
 
             produceSynchronouslyToPartitionZero(
-                streamInput,
-                asList(
-                    new KeyValueTimestamp<>("k4", "v4", scaledTime(4L)),
-                    new KeyValueTimestamp<>("k5", "v5", scaledTime(5L))
+                    streamInput,
+                    asList(
+                        new KeyValueTimestamp<>("k4", "v4", scaledTime(4L)),
+                        new KeyValueTimestamp<>("k5", "v5", scaledTime(5L))
                 )
             );
 
@@ -175,20 +176,19 @@ public class JoinGracePeriodDurabilityIntegrationTest {
             assertThat(driver.state(), is(KafkaStreams.State.NOT_RUNNING));
             driver = startStream(streamsConfig, builder, false, withHeaders);
 
-
             // flush those recovered buffered events out.
             produceSynchronouslyToPartitionZero(
-                streamInput,
-                Collections.singletonList(
-                    new KeyValueTimestamp<>("k6", "v6", scaledTime(20L))
+                    streamInput,
+                    Collections.singletonList(
+                        new KeyValueTimestamp<>("k6", "v6", scaledTime(20L))
                 )
             );
             verifyOutput(
-                output,
-                asList(
-                    new KeyValueTimestamp<>("k4", "v4+v4", scaledTime(4L)),
-                    new KeyValueTimestamp<>("k5", "v5+v5", scaledTime(5L)),
-                    new KeyValueTimestamp<>("k3", "v3+v3", scaledTime(7L))
+                    output,
+                    asList(
+                        new KeyValueTimestamp<>("k4", "v4+v4", scaledTime(4L)),
+                        new KeyValueTimestamp<>("k5", "v5+v5", scaledTime(5L)),
+                        new KeyValueTimestamp<>("k3", "v3+v3", scaledTime(7L))
                     )
             );
             assertThat("There should only be 5 output events.", eventCount.get(), is(5));
@@ -201,11 +201,11 @@ public class JoinGracePeriodDurabilityIntegrationTest {
 
     private void verifyOutput(final String topic, final List<KeyValueTimestamp<String, String>> keyValueTimestamps) {
         final Properties properties = mkProperties(
-            mkMap(
-                mkEntry(ConsumerConfig.GROUP_ID_CONFIG, "test-group"),
-                mkEntry(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
-                mkEntry(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ((Deserializer<String>) STRING_DESERIALIZER).getClass().getName()),
-                mkEntry(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ((Deserializer<String>) STRING_DESERIALIZER).getClass().getName())
+                mkMap(
+                    mkEntry(ConsumerConfig.GROUP_ID_CONFIG, "test-group"),
+                    mkEntry(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
+                    mkEntry(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ((Deserializer<String>) STRING_DESERIALIZER).getClass().getName()),
+                    mkEntry(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ((Deserializer<String>) STRING_DESERIALIZER).getClass().getName())
             )
         );
         IntegrationTestUtils.verifyKeyValueTimestamps(properties, topic, keyValueTimestamps);
@@ -221,10 +221,10 @@ public class JoinGracePeriodDurabilityIntegrationTest {
 
     private static void produceSynchronouslyToPartitionZero(final String topic, final List<KeyValueTimestamp<String, String>> toProduce) {
         final Properties producerConfig = mkProperties(mkMap(
-            mkEntry(ProducerConfig.CLIENT_ID_CONFIG, "anything"),
-            mkEntry(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, ((Serializer<String>) STRING_SERIALIZER).getClass().getName()),
-            mkEntry(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ((Serializer<String>) STRING_SERIALIZER).getClass().getName()),
-            mkEntry(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers())
+                mkEntry(ProducerConfig.CLIENT_ID_CONFIG, "anything"),
+                mkEntry(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, ((Serializer<String>) STRING_SERIALIZER).getClass().getName()),
+                mkEntry(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ((Serializer<String>) STRING_SERIALIZER).getClass().getName()),
+                mkEntry(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers())
         ));
         IntegrationTestUtils.produceSynchronously(producerConfig, false, topic, Optional.of(0), toProduce);
     }

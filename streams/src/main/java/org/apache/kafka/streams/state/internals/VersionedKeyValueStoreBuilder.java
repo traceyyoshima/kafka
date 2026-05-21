@@ -28,7 +28,7 @@ import org.apache.kafka.streams.state.VersionedKeyValueStore;
 import java.util.Objects;
 
 public class VersionedKeyValueStoreBuilder<K, V>
-    extends AbstractStoreBuilder<K, V, VersionedKeyValueStore<K, V>> {
+        extends AbstractStoreBuilder<K, V, VersionedKeyValueStore<K, V>> {
 
     private final VersionedBytesStoreSupplier storeSupplier;
 
@@ -37,10 +37,10 @@ public class VersionedKeyValueStoreBuilder<K, V>
                                          final Serde<V> valueSerde,
                                          final Time time) {
         super(
-            storeSupplier.name(),
-            keySerde,
-            valueSerde,
-            time);
+                storeSupplier.name(),
+                keySerde,
+                valueSerde,
+                time);
         Objects.requireNonNull(storeSupplier, "storeSupplier can't be null");
         Objects.requireNonNull(storeSupplier.metricsScope(), "storeSupplier's metricsScope can't be null");
         this.storeSupplier = storeSupplier;
@@ -54,11 +54,11 @@ public class VersionedKeyValueStoreBuilder<K, V>
         }
 
         return new MeteredVersionedKeyValueStore<>(
-            maybeWrapLogging((VersionedBytesStore) store), // no caching layer for versioned stores
+                maybeWrapLogging((VersionedBytesStore) store), // no caching layer for versioned stores
             storeSupplier.metricsScope(),
-            time,
-            keySerde,
-            valueSerde);
+                time,
+                keySerde,
+                valueSerde);
     }
 
     @Override

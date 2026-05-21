@@ -164,18 +164,19 @@ public class AbstractProcessorContextTest {
     @Test
     public void appConfigsShouldReturnParsedValues() {
         assertThat(
-            context.appConfigs().get(StreamsConfig.ROCKSDB_CONFIG_SETTER_CLASS_CONFIG),
-            equalTo(RocksDBConfigSetter.class)
+                context.appConfigs().get(StreamsConfig.ROCKSDB_CONFIG_SETTER_CLASS_CONFIG),
+                equalTo(RocksDBConfigSetter.class)
         );
     }
 
     @Test
     public void appConfigsShouldReturnUnrecognizedValues() {
         assertThat(
-            context.appConfigs().get("user.supplied.config"),
-            equalTo("user-supplied-value")
+                context.appConfigs().get("user.supplied.config"),
+                equalTo("user-supplied-value")
         );
     }
+
     @Test
     public void shouldThrowErrorIfSerdeDefaultNotSet() {
         final Properties config = getStreamsConfig();
@@ -188,6 +189,7 @@ public class AbstractProcessorContextTest {
 
     private static class TestProcessorContext extends AbstractProcessorContext<Object, Object> {
         static Properties config;
+
         static {
             config = getStreamsConfig();
             // Value must be a string to test className -> class conversion
@@ -284,8 +286,8 @@ public class AbstractProcessorContextTest {
         @Override
         public <K, V> void forward(final FixedKeyRecord<K, V> record, final String childName) {
             forward(
-                new Record<>(record.key(), record.value(), record.timestamp(), record.headers()),
-                childName
+                    new Record<>(record.key(), record.value(), record.timestamp(), record.headers()),
+                    childName
             );
         }
     }

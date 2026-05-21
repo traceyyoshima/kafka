@@ -52,7 +52,7 @@ public class DescribeProducersResponse extends AbstractResponse {
 
     public static DescribeProducersResponse parse(Readable readable, short version) {
         return new DescribeProducersResponse(new DescribeProducersResponseData(
-            readable, version));
+                readable, version));
     }
 
     @Override

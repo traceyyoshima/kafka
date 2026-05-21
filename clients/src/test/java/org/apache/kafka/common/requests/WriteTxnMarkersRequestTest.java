@@ -46,9 +46,9 @@ public class WriteTxnMarkersRequestTest {
     @BeforeEach
     public void setUp() {
         markers = Collections.singletonList(
-             new WriteTxnMarkersRequest.TxnMarkerEntry(
-                 PRODUCER_ID, PRODUCER_EPOCH, COORDINATOR_EPOCH,
-                 RESULT, Collections.singletonList(TOPIC_PARTITION), (short) 0)
+                new WriteTxnMarkersRequest.TxnMarkerEntry(
+                     PRODUCER_ID, PRODUCER_EPOCH, COORDINATOR_EPOCH,
+                     RESULT, Collections.singletonList(TOPIC_PARTITION), (short) 0)
         );
     }
 
@@ -59,9 +59,9 @@ public class WriteTxnMarkersRequestTest {
 
         // Test constructor with transactionVersion = 2
         List<WriteTxnMarkersRequest.TxnMarkerEntry> markersWithVersion = Collections.singletonList(
-            new WriteTxnMarkersRequest.TxnMarkerEntry(
-                PRODUCER_ID, PRODUCER_EPOCH, COORDINATOR_EPOCH,
-                RESULT, Collections.singletonList(TOPIC_PARTITION), (short) 2)
+                new WriteTxnMarkersRequest.TxnMarkerEntry(
+                    PRODUCER_ID, PRODUCER_EPOCH, COORDINATOR_EPOCH,
+                    RESULT, Collections.singletonList(TOPIC_PARTITION), (short) 2)
         );
 
         // Build with request version 1.
@@ -101,10 +101,10 @@ public class WriteTxnMarkersRequestTest {
         for (short version : ApiKeys.WRITE_TXN_MARKERS.allVersions()) {
             WriteTxnMarkersRequest request = builder.build(version);
             WriteTxnMarkersResponse errorResponse =
-                request.getErrorResponse(throttleTimeMs, Errors.UNKNOWN_PRODUCER_ID.exception());
+                    request.getErrorResponse(throttleTimeMs, Errors.UNKNOWN_PRODUCER_ID.exception());
 
             assertEquals(Collections.singletonMap(
-                TOPIC_PARTITION, Errors.UNKNOWN_PRODUCER_ID), errorResponse.errorsByProducerId().get(PRODUCER_ID));
+                    TOPIC_PARTITION, Errors.UNKNOWN_PRODUCER_ID), errorResponse.errorsByProducerId().get(PRODUCER_ID));
             assertEquals(Collections.singletonMap(Errors.UNKNOWN_PRODUCER_ID, 1), errorResponse.errorCounts());
             // Write txn marker has no throttle time defined in response.
             assertEquals(0, errorResponse.throttleTimeMs());
@@ -115,9 +115,9 @@ public class WriteTxnMarkersRequestTest {
     public void testTransactionVersion() {
         // Test that TransactionVersion is set correctly and serialization handles it properly.
         List<WriteTxnMarkersRequest.TxnMarkerEntry> markersWithVersion = Collections.singletonList(
-            new WriteTxnMarkersRequest.TxnMarkerEntry(
-                PRODUCER_ID, PRODUCER_EPOCH, COORDINATOR_EPOCH,
-                RESULT, Collections.singletonList(TOPIC_PARTITION), (short) 2)
+                new WriteTxnMarkersRequest.TxnMarkerEntry(
+                    PRODUCER_ID, PRODUCER_EPOCH, COORDINATOR_EPOCH,
+                    RESULT, Collections.singletonList(TOPIC_PARTITION), (short) 2)
         );
         WriteTxnMarkersRequest.Builder builder = new WriteTxnMarkersRequest.Builder(markersWithVersion);
 
@@ -136,7 +136,7 @@ public class WriteTxnMarkersRequestTest {
         // Use the already serialized request and parse it back to verify the field is present.
         serializedV2.buffer().rewind();
         RequestAndSize requestAndSizeV2 = AbstractRequest.parseRequest(
-            ApiKeys.WRITE_TXN_MARKERS, (short) 2, serializedV2);
+                ApiKeys.WRITE_TXN_MARKERS, (short) 2, serializedV2);
         WriteTxnMarkersRequest parsedRequestV2 = (WriteTxnMarkersRequest) requestAndSizeV2.request;
         assertNotNull(parsedRequestV2);
         assertEquals(1, parsedRequestV2.markers().size());
@@ -163,7 +163,7 @@ public class WriteTxnMarkersRequestTest {
         // Use the already serialized request and parse it back to verify the field is not present.
         serializedV1.buffer().rewind();
         RequestAndSize requestAndSizeV1 = AbstractRequest.parseRequest(
-            ApiKeys.WRITE_TXN_MARKERS, (short) 1, serializedV1);
+                ApiKeys.WRITE_TXN_MARKERS, (short) 1, serializedV1);
         WriteTxnMarkersRequest parsedRequestV1 = (WriteTxnMarkersRequest) requestAndSizeV1.request;
         assertNotNull(parsedRequestV1);
         assertEquals(1, parsedRequestV1.markers().size());
@@ -184,12 +184,12 @@ public class WriteTxnMarkersRequestTest {
         long producerId2 = 200L;
 
         List<WriteTxnMarkersRequest.TxnMarkerEntry> markersWithDifferentVersions = List.of(
+                new WriteTxnMarkersRequest.TxnMarkerEntry(
+                    producerId1, PRODUCER_EPOCH, COORDINATOR_EPOCH,
+                    RESULT, Collections.singletonList(topicPartition1), (short) 1), // tv1
             new WriteTxnMarkersRequest.TxnMarkerEntry(
-                producerId1, PRODUCER_EPOCH, COORDINATOR_EPOCH,
-                RESULT, Collections.singletonList(topicPartition1), (short) 1), // tv1
-            new WriteTxnMarkersRequest.TxnMarkerEntry(
-                producerId2, PRODUCER_EPOCH, COORDINATOR_EPOCH,
-                RESULT, Collections.singletonList(topicPartition2), (short) 2)  // tv2
+                    producerId2, PRODUCER_EPOCH, COORDINATOR_EPOCH,
+                    RESULT, Collections.singletonList(topicPartition2), (short) 2)  // tv2
         );
 
         WriteTxnMarkersRequest.Builder builder = new WriteTxnMarkersRequest.Builder(markersWithDifferentVersions);

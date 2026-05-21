@@ -48,27 +48,27 @@ public class UnattachedStateTest {
         Optional<ReplicaKey> votedKey
     ) {
         return new UnattachedState(
-            time,
-            epoch,
-            leaderId,
-            votedKey,
-            voters,
-            Optional.empty(),
-            electionTimeoutMs,
-            logContext
+                time,
+                epoch,
+                leaderId,
+                votedKey,
+                voters,
+                Optional.empty(),
+                electionTimeoutMs,
+                logContext
         );
     }
 
     @ParameterizedTest
-    @CsvSource({ "true,false", "false,true", "false,false" })
+    @CsvSource({"true,false", "false,true", "false,false"})
     public void testElectionStateAndElectionTimeout(boolean hasVotedKey, boolean hasLeaderId) {
         OptionalInt leader = hasLeaderId ? OptionalInt.of(3) : OptionalInt.empty();
         Optional<ReplicaKey> votedKey = hasVotedKey ? Optional.of(this.votedKey) : Optional.empty();
         UnattachedState state = newUnattachedState(leader, votedKey);
 
         assertEquals(
-            new ElectionState(epoch, leader, votedKey, voters),
-            state.election()
+                new ElectionState(epoch, leader, votedKey, voters),
+                state.election()
         );
         assertEquals(electionTimeoutMs, state.remainingElectionTimeMs(time.milliseconds()));
         assertFalse(state.hasElectionTimeoutExpired(time.milliseconds()));
@@ -88,39 +88,39 @@ public class UnattachedStateTest {
         UnattachedState state = newUnattachedState(OptionalInt.empty(), Optional.empty());
 
         assertEquals(
-            isLogUpToDate,
-            state.canGrantVote(voter1Key, isLogUpToDate, true)
+                isLogUpToDate,
+                state.canGrantVote(voter1Key, isLogUpToDate, true)
         );
         assertEquals(
-            isLogUpToDate,
-            state.canGrantVote(voter1Key, isLogUpToDate, false)
-        );
-
-        assertEquals(
-            isLogUpToDate,
-            state.canGrantVote(ReplicaKey.of(2, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, true)
-        );
-        assertEquals(
-            isLogUpToDate,
-            state.canGrantVote(ReplicaKey.of(2, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, false)
+                isLogUpToDate,
+                state.canGrantVote(voter1Key, isLogUpToDate, false)
         );
 
         assertEquals(
-            isLogUpToDate,
-            state.canGrantVote(ReplicaKey.of(3, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, true)
+                isLogUpToDate,
+                state.canGrantVote(ReplicaKey.of(2, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, true)
         );
         assertEquals(
-            isLogUpToDate,
-            state.canGrantVote(ReplicaKey.of(3, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, false)
+                isLogUpToDate,
+                state.canGrantVote(ReplicaKey.of(2, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, false)
         );
 
         assertEquals(
-            isLogUpToDate,
-            state.canGrantVote(ReplicaKey.of(10, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, true)
+                isLogUpToDate,
+                state.canGrantVote(ReplicaKey.of(3, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, true)
         );
         assertEquals(
-            isLogUpToDate,
-            state.canGrantVote(ReplicaKey.of(10, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, false)
+                isLogUpToDate,
+                state.canGrantVote(ReplicaKey.of(3, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, false)
+        );
+
+        assertEquals(
+                isLogUpToDate,
+                state.canGrantVote(ReplicaKey.of(10, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, true)
+        );
+        assertEquals(
+                isLogUpToDate,
+                state.canGrantVote(ReplicaKey.of(10, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, false)
         );
     }
 
@@ -132,8 +132,8 @@ public class UnattachedStateTest {
         // Same voterKey
         // Local can reject PreVote for a replica that local has already granted a standard vote to if their log is behind
         assertEquals(
-            isLogUpToDate,
-            state.canGrantVote(votedKey, isLogUpToDate, true)
+                isLogUpToDate,
+                state.canGrantVote(votedKey, isLogUpToDate, true)
         );
         assertTrue(state.canGrantVote(votedKey, isLogUpToDate, false));
 
@@ -141,34 +141,34 @@ public class UnattachedStateTest {
         // Local can grant PreVote for a replica that local has already granted a standard vote to if their log is up-to-date,
         // even if the directoryId is different
         assertEquals(
-            isLogUpToDate,
-            state.canGrantVote(ReplicaKey.of(votedKey.id(), Uuid.randomUuid()), isLogUpToDate, true)
+                isLogUpToDate,
+                state.canGrantVote(ReplicaKey.of(votedKey.id(), Uuid.randomUuid()), isLogUpToDate, true)
         );
         assertFalse(state.canGrantVote(ReplicaKey.of(votedKey.id(), Uuid.randomUuid()), isLogUpToDate, false));
 
         // Missing directoryId
         assertEquals(
-            isLogUpToDate,
-            state.canGrantVote(ReplicaKey.of(votedKey.id(), ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, true)
+                isLogUpToDate,
+                state.canGrantVote(ReplicaKey.of(votedKey.id(), ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, true)
         );
         assertFalse(state.canGrantVote(ReplicaKey.of(votedKey.id(), ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, false));
 
         // Different voterId
         assertEquals(
-            isLogUpToDate,
-            state.canGrantVote(ReplicaKey.of(2, votedKey.directoryId().get()), isLogUpToDate, true)
+                isLogUpToDate,
+                state.canGrantVote(ReplicaKey.of(2, votedKey.directoryId().get()), isLogUpToDate, true)
         );
         assertEquals(
-            isLogUpToDate,
-            state.canGrantVote(ReplicaKey.of(2, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, true)
+                isLogUpToDate,
+                state.canGrantVote(ReplicaKey.of(2, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, true)
         );
         assertFalse(state.canGrantVote(ReplicaKey.of(2, votedKey.directoryId().get()), isLogUpToDate, false));
         assertFalse(state.canGrantVote(ReplicaKey.of(2, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, false));
 
         // Observer
         assertEquals(
-            isLogUpToDate,
-            state.canGrantVote(ReplicaKey.of(10, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, true)
+                isLogUpToDate,
+                state.canGrantVote(ReplicaKey.of(10, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, true)
         );
         assertFalse(state.canGrantVote(ReplicaKey.of(10, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, false));
     }
@@ -185,20 +185,20 @@ public class UnattachedStateTest {
         // Check that the replica can grant PreVotes if the log is up-to-date, even if the last leader is known
         // This is because nodes in Unattached have not successfully fetched from the leader yet
         assertEquals(
-            isLogUpToDate,
-            state.canGrantVote(voter1Key, isLogUpToDate, true)
+                isLogUpToDate,
+                state.canGrantVote(voter1Key, isLogUpToDate, true)
         );
         assertEquals(
-            isLogUpToDate,
-            state.canGrantVote(ReplicaKey.of(2, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, true)
+                isLogUpToDate,
+                state.canGrantVote(ReplicaKey.of(2, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, true)
         );
         assertEquals(
-            isLogUpToDate,
-            state.canGrantVote(ReplicaKey.of(leaderId, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, true)
+                isLogUpToDate,
+                state.canGrantVote(ReplicaKey.of(leaderId, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, true)
         );
         assertEquals(
-            isLogUpToDate,
-            state.canGrantVote(ReplicaKey.of(10, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, true)
+                isLogUpToDate,
+                state.canGrantVote(ReplicaKey.of(10, ReplicaKey.NO_DIRECTORY_ID), isLogUpToDate, true)
         );
 
         // Check that the replica rejects all standard votes request if the leader is known

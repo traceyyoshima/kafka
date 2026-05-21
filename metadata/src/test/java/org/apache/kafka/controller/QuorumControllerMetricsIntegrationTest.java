@@ -73,11 +73,11 @@ public class QuorumControllerMetricsIntegrationTest {
     public void testClosingQuorumControllerClosesMetrics() throws Throwable {
         MockControllerMetrics metrics = new MockControllerMetrics();
         try (
-            MockRaftClientTestEnv clientEnv = new MockRaftClientTestEnv.Builder(1).
+                MockRaftClientTestEnv clientEnv = new MockRaftClientTestEnv.Builder(1).
                 build();
-            QuorumControllerTestEnv controlEnv = new QuorumControllerTestEnv.Builder(clientEnv).
+                QuorumControllerTestEnv controlEnv = new QuorumControllerTestEnv.Builder(clientEnv).
                 setControllerBuilderInitializer(controllerBuilder ->
-                    controllerBuilder.setMetrics(metrics)
+                        controllerBuilder.setMetrics(metrics)
                 ).
                 build()
         ) {
@@ -96,9 +96,9 @@ public class QuorumControllerMetricsIntegrationTest {
         boolean forceFailoverUsingLogLayer
     ) throws Throwable {
         try (
-            MockRaftClientTestEnv clientEnv = new MockRaftClientTestEnv.Builder(3).
+                MockRaftClientTestEnv clientEnv = new MockRaftClientTestEnv.Builder(3).
                 build();
-            QuorumControllerTestEnv controlEnv = new QuorumControllerTestEnv.Builder(clientEnv).
+                QuorumControllerTestEnv controlEnv = new QuorumControllerTestEnv.Builder(clientEnv).
                 build()
         ) {
             registerBrokersAndUnfence(controlEnv.activeController(), 1); // wait for a controller to become active.
@@ -111,7 +111,7 @@ public class QuorumControllerMetricsIntegrationTest {
                 clientEnv.activeRaftClient().get().throwOnNextAppend();
 
                 TestUtils.retryOnExceptionWithTimeout(30_000, () ->
-                    createTopics(controlEnv.activeController(), "test_", 1, 1)
+                        createTopics(controlEnv.activeController(), "test_", 1, 1)
                 );
             } else {
                 // Directly call QuorumController.renounce.
@@ -132,9 +132,9 @@ public class QuorumControllerMetricsIntegrationTest {
     @Test
     public void testTimeoutMetrics() throws Throwable {
         try (
-            MockRaftClientTestEnv clientEnv = new MockRaftClientTestEnv.Builder(3).
+                MockRaftClientTestEnv clientEnv = new MockRaftClientTestEnv.Builder(3).
                 build();
-            QuorumControllerTestEnv controlEnv = new QuorumControllerTestEnv.Builder(clientEnv).
+                QuorumControllerTestEnv controlEnv = new QuorumControllerTestEnv.Builder(clientEnv).
                 build()
         ) {
             QuorumController active = controlEnv.activeController();
@@ -146,19 +146,19 @@ public class QuorumControllerMetricsIntegrationTest {
             // rather than processed.
             CountDownLatch latch = pause(active);
             ControllerRequestContext expiredTimeoutContext = new ControllerRequestContext(
-                new RequestHeaderData(),
-                KafkaPrincipal.ANONYMOUS,
-                OptionalLong.of(active.time().nanoseconds()));
+                    new RequestHeaderData(),
+                    KafkaPrincipal.ANONYMOUS,
+                    OptionalLong.of(active.time().nanoseconds()));
             CompletableFuture<BrokerHeartbeatReply> replyFuture =
-                active.processBrokerHeartbeat(expiredTimeoutContext,
-                    new BrokerHeartbeatRequestData()
+                    active.processBrokerHeartbeat(expiredTimeoutContext,
+                        new BrokerHeartbeatRequestData()
                         .setWantFence(false)
                         .setBrokerEpoch(brokerEpochs.get(0))
                         .setBrokerId(0)
                         .setCurrentMetadataOffset(100000));
             latch.countDown(); // Unpause the controller.
             assertEquals(TimeoutException.class,
-                assertThrows(ExecutionException.class, replyFuture::get).
+                    assertThrows(ExecutionException.class, replyFuture::get).
                     getCause().getClass());
             assertEquals(1L, active.controllerMetrics().timedOutHeartbeats());
             assertEquals(1L, active.controllerMetrics().operationsTimedOut());
@@ -166,8 +166,8 @@ public class QuorumControllerMetricsIntegrationTest {
             // Inject a new timed out operation.
             CountDownLatch latch2 = pause(active);
             active.appendControlEventWithDeadline("fakeTimeoutOperation",
-                () -> { },
-                active.time().nanoseconds());
+                    () -> {},
+                    active.time().nanoseconds());
             latch2.countDown();
             TestUtils.retryOnExceptionWithTimeout(30_000, () -> {
                 // The fake timeout increments operationsTimedOut but not timedOutHeartbeats.
@@ -191,9 +191,9 @@ public class QuorumControllerMetricsIntegrationTest {
     @Test
     public void testEventQueueOperationsStartedMetric() throws Throwable {
         try (
-            MockRaftClientTestEnv clientEnv = new MockRaftClientTestEnv.Builder(3).
+                MockRaftClientTestEnv clientEnv = new MockRaftClientTestEnv.Builder(3).
                                                 build();
-            QuorumControllerTestEnv controlEnv = new QuorumControllerTestEnv.Builder(clientEnv).
+                QuorumControllerTestEnv controlEnv = new QuorumControllerTestEnv.Builder(clientEnv).
                                                      build()
         ) {
             QuorumController active = controlEnv.activeController();
@@ -206,7 +206,7 @@ public class QuorumControllerMetricsIntegrationTest {
                 long expectedOperationsStarted = active.controllerMetrics().operationsStarted() + 1;
                 CompletableFuture<Long> actualOperationsStarted = new CompletableFuture<>();
                 active.appendControlEvent("checkOperationsStarted", () ->
-                    actualOperationsStarted.complete(active.controllerMetrics().operationsStarted())
+                        actualOperationsStarted.complete(active.controllerMetrics().operationsStarted())
                 );
                 assertEquals(expectedOperationsStarted, actualOperationsStarted.get());
             });

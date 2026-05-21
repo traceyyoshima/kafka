@@ -311,8 +311,8 @@ public class KafkaStatusBackingStore extends KafkaTopicBasedBackingStore impleme
                 if (exception instanceof RetriableException) {
                     synchronized (KafkaStatusBackingStore.this) {
                         if (entry.isDeleted()
-                            || status.generation() != generation
-                            || (safeWrite && !entry.canWriteSafely(status, sequence)))
+                                || status.generation() != generation
+                                || (safeWrite && !entry.canWriteSafely(status, sequence)))
                             return;
                     }
 

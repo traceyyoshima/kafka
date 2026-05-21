@@ -87,7 +87,6 @@ public class DescribeQuorumResponse extends AbstractResponse {
                     .setErrorMessage(error.message())))));
     }
 
-
     public static DescribeQuorumResponseData singletonResponse(
         TopicPartition topicPartition,
         DescribeQuorumResponseData.PartitionData partitionData,

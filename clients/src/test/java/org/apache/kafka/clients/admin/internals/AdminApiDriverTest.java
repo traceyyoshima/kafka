@@ -65,19 +65,19 @@ class AdminApiDriverTest {
     @Test
     public void testCoalescedLookup() {
         TestContext ctx = TestContext.dynamicMapped(map(
-            "foo", "c1",
-            "bar", "c1"
+                "foo", "c1",
+                "bar", "c1"
         ));
 
         Map<Set<String>, LookupResult<String>> lookupRequests = map(
-            Set.of("foo", "bar"), mapped("foo", 1, "bar", 2)
+                Set.of("foo", "bar"), mapped("foo", 1, "bar", 2)
         );
 
         ctx.poll(lookupRequests, emptyMap());
 
         Map<Set<String>, ApiResult<String, Long>> fulfillmentResults = map(
-            Set.of("foo"), completed("foo", 15L),
-            Set.of("bar"), completed("bar", 30L)
+                Set.of("foo"), completed("foo", 15L),
+                Set.of("bar"), completed("bar", 30L)
         );
 
         ctx.poll(emptyMap(), fulfillmentResults);
@@ -88,19 +88,19 @@ class AdminApiDriverTest {
     @Test
     public void testCoalescedFulfillment() {
         TestContext ctx = TestContext.dynamicMapped(map(
-            "foo", "c1",
-            "bar", "c2"
+                "foo", "c1",
+                "bar", "c2"
         ));
 
         Map<Set<String>, LookupResult<String>> lookupRequests = map(
-            Set.of("foo"), mapped("foo", 1),
-            Set.of("bar"), mapped("bar", 1)
+                Set.of("foo"), mapped("foo", 1),
+                Set.of("bar"), mapped("bar", 1)
         );
 
         ctx.poll(lookupRequests, emptyMap());
 
         Map<Set<String>, ApiResult<String, Long>> fulfillmentResults = map(
-            Set.of("foo", "bar"), completed("foo", 15L, "bar", 30L)
+                Set.of("foo", "bar"), completed("foo", 15L, "bar", 30L)
         );
 
         ctx.poll(emptyMap(), fulfillmentResults);
@@ -113,23 +113,23 @@ class AdminApiDriverTest {
         // Ensure that both generic failures and unhandled UnsupportedVersionExceptions (which could be specifically
         // handled in both the lookup and the fulfillment stages) result in the expected lookup failures.
         Exception[] keyLookupExceptions = new Exception[] {
-            new UnknownServerException(), new UnsupportedVersionException("")
+                new UnknownServerException(), new UnsupportedVersionException("")
         };
         for (Exception keyLookupException : keyLookupExceptions) {
             TestContext ctx = TestContext.dynamicMapped(map(
-                "foo", "c1",
-                "bar", "c2"
+                    "foo", "c1",
+                    "bar", "c2"
             ));
 
             Map<Set<String>, LookupResult<String>> lookupRequests = map(
-                Set.of("foo"), failedLookup("foo", keyLookupException),
-                Set.of("bar"), mapped("bar", 1)
+                    Set.of("foo"), failedLookup("foo", keyLookupException),
+                    Set.of("bar"), mapped("bar", 1)
             );
 
             ctx.poll(lookupRequests, emptyMap());
 
             Map<Set<String>, ApiResult<String, Long>> fulfillmentResults = map(
-                Set.of("bar"), completed("bar", 30L)
+                    Set.of("bar"), completed("bar", 30L)
             );
 
             ctx.poll(emptyMap(), fulfillmentResults);
@@ -141,29 +141,29 @@ class AdminApiDriverTest {
     @Test
     public void testKeyLookupRetry() {
         TestContext ctx = TestContext.dynamicMapped(map(
-            "foo", "c1",
-            "bar", "c2"
+                "foo", "c1",
+                "bar", "c2"
         ));
 
         Map<Set<String>, LookupResult<String>> lookupRequests = map(
-            Set.of("foo"), emptyLookup(),
-            Set.of("bar"), mapped("bar", 1)
+                Set.of("foo"), emptyLookup(),
+                Set.of("bar"), mapped("bar", 1)
         );
 
         ctx.poll(lookupRequests, emptyMap());
 
         Map<Set<String>, LookupResult<String>> fooRetry = map(
-            Set.of("foo"), mapped("foo", 1)
+                Set.of("foo"), mapped("foo", 1)
         );
 
         Map<Set<String>, ApiResult<String, Long>> barFulfillment = map(
-            Set.of("bar"), completed("bar", 30L)
+                Set.of("bar"), completed("bar", 30L)
         );
 
         ctx.poll(fooRetry, barFulfillment);
 
         Map<Set<String>, ApiResult<String, Long>> fooFulfillment = map(
-            Set.of("foo"), completed("foo", 15L)
+                Set.of("foo"), completed("foo", 15L)
         );
 
         ctx.poll(emptyMap(), fooFulfillment);
@@ -174,14 +174,14 @@ class AdminApiDriverTest {
     @Test
     public void testStaticMapping() {
         TestContext ctx = TestContext.staticMapped(map(
-            "foo", 0,
-            "bar", 1,
-            "baz", 1
+                "foo", 0,
+                "bar", 1,
+                "baz", 1
         ));
 
         Map<Set<String>, ApiResult<String, Long>> fulfillmentResults = map(
-            Set.of("foo"), completed("foo", 15L),
-            Set.of("bar", "baz"), completed("bar", 30L, "baz", 45L)
+                Set.of("foo"), completed("foo", 15L),
+                Set.of("bar", "baz"), completed("bar", 30L, "baz", 45L)
         );
 
         ctx.poll(emptyMap(), fulfillmentResults);
@@ -192,14 +192,14 @@ class AdminApiDriverTest {
     @Test
     public void testFulfillmentFailure() {
         TestContext ctx = TestContext.staticMapped(map(
-            "foo", 0,
-            "bar", 1,
-            "baz", 1
+                "foo", 0,
+                "bar", 1,
+                "baz", 1
         ));
 
         Map<Set<String>, ApiResult<String, Long>> fulfillmentResults = map(
-            Set.of("foo"), failed("foo", new UnknownServerException()),
-            Set.of("bar", "baz"), completed("bar", 30L, "baz", 45L)
+                Set.of("foo"), failed("foo", new UnknownServerException()),
+                Set.of("bar", "baz"), completed("bar", 30L, "baz", 45L)
         );
 
         ctx.poll(emptyMap(), fulfillmentResults);
@@ -210,20 +210,20 @@ class AdminApiDriverTest {
     @Test
     public void testFulfillmentRetry() {
         TestContext ctx = TestContext.staticMapped(map(
-            "foo", 0,
-            "bar", 1,
-            "baz", 1
+                "foo", 0,
+                "bar", 1,
+                "baz", 1
         ));
 
         Map<Set<String>, ApiResult<String, Long>> fulfillmentResults = map(
-            Set.of("foo"), completed("foo", 15L),
-            Set.of("bar", "baz"), completed("bar", 30L)
+                Set.of("foo"), completed("foo", 15L),
+                Set.of("bar", "baz"), completed("bar", 30L)
         );
 
         ctx.poll(emptyMap(), fulfillmentResults);
 
         Map<Set<String>, ApiResult<String, Long>> bazRetry = map(
-            Set.of("baz"), completed("baz", 45L)
+                Set.of("baz"), completed("baz", 45L)
         );
 
         ctx.poll(emptyMap(), bazRetry);
@@ -234,32 +234,32 @@ class AdminApiDriverTest {
     @Test
     public void testFulfillmentUnmapping() {
         TestContext ctx = TestContext.dynamicMapped(map(
-            "foo", "c1",
-            "bar", "c2"
+                "foo", "c1",
+                "bar", "c2"
         ));
 
         Map<Set<String>, LookupResult<String>> lookupRequests = map(
-            Set.of("foo"), mapped("foo", 0),
-            Set.of("bar"), mapped("bar", 1)
+                Set.of("foo"), mapped("foo", 0),
+                Set.of("bar"), mapped("bar", 1)
         );
 
         ctx.poll(lookupRequests, emptyMap());
 
         Map<Set<String>, ApiResult<String, Long>> fulfillmentResults = map(
-            Set.of("foo"), completed("foo", 15L),
-            Set.of("bar"), unmapped("bar")
+                Set.of("foo"), completed("foo", 15L),
+                Set.of("bar"), unmapped("bar")
         );
 
         ctx.poll(emptyMap(), fulfillmentResults);
 
         Map<Set<String>, LookupResult<String>> barLookupRetry = map(
-            Set.of("bar"), mapped("bar", 1)
+                Set.of("bar"), mapped("bar", 1)
         );
 
         ctx.poll(barLookupRetry, emptyMap());
 
         Map<Set<String>, ApiResult<String, Long>> barFulfillRetry = map(
-            Set.of("bar"), completed("bar", 30L)
+                Set.of("bar"), completed("bar", 30L)
         );
 
         ctx.poll(emptyMap(), barFulfillRetry);
@@ -270,14 +270,14 @@ class AdminApiDriverTest {
     @Test
     public void testFulfillmentFailureUnsupportedVersion() {
         TestContext ctx = TestContext.staticMapped(map(
-            "foo", 0,
-            "bar", 1,
-            "baz", 1
+                "foo", 0,
+                "bar", 1,
+                "baz", 1
         ));
 
         Map<Set<String>, ApiResult<String, Long>> fulfillmentResults = map(
-            Set.of("foo"), failed("foo", new UnsupportedVersionException("")),
-            Set.of("bar", "baz"), completed("bar", 30L, "baz", 45L)
+                Set.of("foo"), failed("foo", new UnsupportedVersionException("")),
+                Set.of("bar", "baz"), completed("bar", 30L, "baz", 45L)
         );
 
         ctx.poll(emptyMap(), fulfillmentResults);
@@ -287,9 +287,9 @@ class AdminApiDriverTest {
     @Test
     public void testFulfillmentRetriableUnsupportedVersion() {
         TestContext ctx = TestContext.staticMapped(map(
-            "foo", 0,
-            "bar", 1,
-            "baz", 2
+                "foo", 0,
+                "bar", 1,
+                "baz", 2
         ));
 
         ctx.handler.addRetriableUnsupportedVersionKey("foo");
@@ -307,15 +307,15 @@ class AdminApiDriverTest {
                 ctx.driver.onFailure(ctx.time.milliseconds(), requestSpec, new UnsupportedVersionException(""));
             } else {
                 ctx.driver.onResponse(
-                    ctx.time.milliseconds(),
-                    requestSpec,
-                    new MetadataResponse(new MetadataResponseData(), ApiKeys.METADATA.latestVersion()),
-                    Node.noNode());
+                        ctx.time.milliseconds(),
+                        requestSpec,
+                        new MetadataResponse(new MetadataResponseData(), ApiKeys.METADATA.latestVersion()),
+                        Node.noNode());
             }
         });
         // Verify retry for "foo" but not for "bar" or "baz"
         ctx.poll(emptyMap(), map(
-            Set.of("foo"), failed("foo", new UnsupportedVersionException(""))
+                Set.of("foo"), failed("foo", new UnsupportedVersionException(""))
         ));
         ctx.poll(emptyMap(), emptyMap());
     }
@@ -323,31 +323,31 @@ class AdminApiDriverTest {
     @Test
     public void testRecoalescedLookup() {
         TestContext ctx = TestContext.dynamicMapped(map(
-            "foo", "c1",
-            "bar", "c1"
+                "foo", "c1",
+                "bar", "c1"
         ));
 
         Map<Set<String>, LookupResult<String>> lookupRequests = map(
-            Set.of("foo", "bar"), mapped("foo", 1, "bar", 2)
+                Set.of("foo", "bar"), mapped("foo", 1, "bar", 2)
         );
 
         ctx.poll(lookupRequests, emptyMap());
 
         Map<Set<String>, ApiResult<String, Long>> fulfillment = map(
-            Set.of("foo"), unmapped("foo"),
-            Set.of("bar"), unmapped("bar")
+                Set.of("foo"), unmapped("foo"),
+                Set.of("bar"), unmapped("bar")
         );
 
         ctx.poll(emptyMap(), fulfillment);
 
         Map<Set<String>, LookupResult<String>> retryLookupRequests = map(
-            Set.of("foo", "bar"), mapped("foo", 3, "bar", 3)
+                Set.of("foo", "bar"), mapped("foo", 3, "bar", 3)
         );
 
         ctx.poll(retryLookupRequests, emptyMap());
 
         Map<Set<String>, ApiResult<String, Long>> retryFulfillment = map(
-            Set.of("foo", "bar"), completed("foo", 15L, "bar", 30L)
+                Set.of("foo", "bar"), completed("foo", 15L, "bar", 30L)
         );
 
         ctx.poll(emptyMap(), retryFulfillment);
@@ -358,13 +358,13 @@ class AdminApiDriverTest {
     @Test
     public void testRetryLookupAfterDisconnect() {
         TestContext ctx = TestContext.dynamicMapped(map(
-            "foo", "c1"
+                "foo", "c1"
         ));
 
         int initialLeaderId = 1;
 
         Map<Set<String>, LookupResult<String>> initialLookup = map(
-            Set.of("foo"), mapped("foo", initialLeaderId)
+                Set.of("foo"), mapped("foo", initialLeaderId)
         );
 
         ctx.poll(initialLookup, emptyMap());
@@ -402,12 +402,12 @@ class AdminApiDriverTest {
                 groupIds.stream().map(CoordinatorKey::byGroupId).collect(Collectors.toSet()));
 
         AdminApiDriver<CoordinatorKey, Void> driver = new AdminApiDriver<>(
-            handler,
-            future,
-            time.milliseconds() + API_TIMEOUT_MS,
-            RETRY_BACKOFF_MS,
-            RETRY_BACKOFF_MAX_MS,
-            new LogContext()
+                handler,
+                future,
+                time.milliseconds() + API_TIMEOUT_MS,
+                RETRY_BACKOFF_MS,
+                RETRY_BACKOFF_MAX_MS,
+                new LogContext()
         );
 
         assertTrue(((CoordinatorStrategy) handler.lookupStrategy()).batch);
@@ -432,26 +432,26 @@ class AdminApiDriverTest {
     @Test
     public void testCoalescedStaticAndDynamicFulfillment() {
         Map<String, String> dynamicMapping = map(
-            "foo", "c1"
+                "foo", "c1"
         );
 
         Map<String, Integer> staticMapping = map(
-            "bar", 1
+                "bar", 1
         );
 
         TestContext ctx = new TestContext(
-            staticMapping,
-            dynamicMapping
+                staticMapping,
+                dynamicMapping
         );
 
         // Initially we expect a lookup for the dynamic key and a
         // fulfillment request for the static key
         LookupResult<String> lookupResult = mapped("foo", 1);
         ctx.lookupStrategy().expectLookup(
-            Set.of("foo"), lookupResult
+                Set.of("foo"), lookupResult
         );
         ctx.handler.expectRequest(
-            Set.of("bar"), completed("bar", 10L)
+                Set.of("bar"), completed("bar", 10L)
         );
 
         List<RequestSpec<String>> requestSpecs = ctx.driver.poll();
@@ -472,7 +472,7 @@ class AdminApiDriverTest {
         // should contain the single dynamic key for broker 0.
         ctx.handler.reset();
         ctx.handler.expectRequest(
-            Set.of("foo", "bar"), completed("foo", 15L, "bar", 30L)
+                Set.of("foo", "bar"), completed("foo", 15L, "bar", 30L)
         );
 
         List<RequestSpec<String>> coalescedSpecs = ctx.driver.poll();
@@ -485,15 +485,15 @@ class AdminApiDriverTest {
         ctx.driver.onFailure(ctx.time.milliseconds(), coalescedSpec, new DisconnectException());
 
         Map<Set<String>, LookupResult<String>> fooLookupRetry = map(
-            Set.of("foo"), mapped("foo", 3)
+                Set.of("foo"), mapped("foo", 3)
         );
         Map<Set<String>, ApiResult<String, Long>> barFulfillmentRetry = map(
-            Set.of("bar"), completed("bar", 30L)
+                Set.of("bar"), completed("bar", 30L)
         );
         ctx.poll(fooLookupRetry, barFulfillmentRetry);
 
         Map<Set<String>, ApiResult<String, Long>> fooFulfillmentRetry = map(
-            Set.of("foo"), completed("foo", 15L)
+                Set.of("foo"), completed("foo", 15L)
         );
         ctx.poll(emptyMap(), fooFulfillmentRetry);
         ctx.poll(emptyMap(), emptyMap());
@@ -502,7 +502,7 @@ class AdminApiDriverTest {
     @Test
     public void testLookupRetryBookkeeping() {
         TestContext ctx = TestContext.dynamicMapped(map(
-            "foo", "c1"
+                "foo", "c1"
         ));
 
         LookupResult<String> emptyLookup = emptyLookup();
@@ -615,7 +615,7 @@ class AdminApiDriverTest {
             if (o == null || getClass() != o.getClass()) return false;
             MockRequestScope that = (MockRequestScope) o;
             return Objects.equals(destinationBrokerId, that.destinationBrokerId) &&
-                Objects.equals(id, that.id);
+                    Objects.equals(id, that.id);
         }
 
         @Override
@@ -650,20 +650,20 @@ class AdminApiDriverTest {
             this.future = AdminApiFuture.forKeys(lookupStrategy.lookupScopes.keySet());
 
             this.driver = new AdminApiDriver<>(
-                handler,
-                future,
-                time.milliseconds() + API_TIMEOUT_MS,
-                RETRY_BACKOFF_MS,
-                RETRY_BACKOFF_MAX_MS,
-                new LogContext()
+                    handler,
+                    future,
+                    time.milliseconds() + API_TIMEOUT_MS,
+                    RETRY_BACKOFF_MS,
+                    RETRY_BACKOFF_MAX_MS,
+                    new LogContext()
             );
 
             staticKeys.forEach((key, brokerId) ->
-                assertMappedKey(this, key, brokerId)
+                    assertMappedKey(this, key, brokerId)
             );
 
             dynamicKeys.keySet().forEach(key ->
-                assertUnmappedKey(this, key)
+                    assertUnmappedKey(this, key)
             );
         }
 
@@ -680,20 +680,20 @@ class AdminApiDriverTest {
             LookupResult<String> result
         ) {
             requestSpec.keys.forEach(key ->
-                assertUnmappedKey(this, key)
+                    assertUnmappedKey(this, key)
             );
 
             // The response is just a placeholder. The result is all we are interested in
             MetadataResponse response = new MetadataResponse(new MetadataResponseData(),
-                ApiKeys.METADATA.latestVersion());
+                    ApiKeys.METADATA.latestVersion());
             driver.onResponse(time.milliseconds(), requestSpec, response, Node.noNode());
 
             result.mappedKeys.forEach((key, brokerId) ->
-                assertMappedKey(this, key, brokerId)
+                    assertMappedKey(this, key, brokerId)
             );
 
             result.failedKeys.forEach((key, exception) ->
-                assertFailedKey(this, key, exception)
+                    assertFailedKey(this, key, exception)
             );
         }
 
@@ -706,25 +706,25 @@ class AdminApiDriverTest {
                 new AssertionError("Fulfillment requests must specify a target brokerId"));
 
             requestSpec.keys.forEach(key ->
-                assertMappedKey(this, key, brokerId)
+                    assertMappedKey(this, key, brokerId)
             );
 
             // The response is just a placeholder. The result is all we are interested in
             MetadataResponse response = new MetadataResponse(new MetadataResponseData(),
-                ApiKeys.METADATA.latestVersion());
+                    ApiKeys.METADATA.latestVersion());
 
             driver.onResponse(time.milliseconds(), requestSpec, response, node);
 
             result.unmappedKeys.forEach(key ->
-                assertUnmappedKey(this, key)
+                    assertUnmappedKey(this, key)
             );
 
             result.failedKeys.forEach((key, exception) ->
-                assertFailedKey(this, key, exception)
+                    assertFailedKey(this, key, exception)
             );
 
             result.completedKeys.forEach((key, value) ->
-                assertCompletedKey(this, key, value)
+                    assertCompletedKey(this, key, value)
             );
         }
 
@@ -747,7 +747,7 @@ class AdminApiDriverTest {
 
             List<RequestSpec<String>> requestSpecs = driver.poll();
             assertEquals(expectedLookups.size() + expectedRequests.size(), requestSpecs.size(),
-                "Driver generated an unexpected number of requests");
+                    "Driver generated an unexpected number of requests");
 
             for (RequestSpec<String> requestSpec : requestSpecs) {
                 Set<String> keys = requestSpec.keys;

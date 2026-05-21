@@ -83,11 +83,11 @@ public class QuorumInfo {
         if (o == null || getClass() != o.getClass()) return false;
         QuorumInfo that = (QuorumInfo) o;
         return leaderId == that.leaderId
-            && leaderEpoch == that.leaderEpoch
-            && highWatermark == that.highWatermark
-            && Objects.equals(voters, that.voters)
-            && Objects.equals(observers, that.observers)
-            && Objects.equals(nodes, that.nodes);
+                && leaderEpoch == that.leaderEpoch
+                && highWatermark == that.highWatermark
+                && Objects.equals(voters, that.voters)
+                && Objects.equals(observers, that.observers)
+                && Objects.equals(nodes, that.nodes);
     }
 
     @Override
@@ -98,13 +98,13 @@ public class QuorumInfo {
     @Override
     public String toString() {
         return "QuorumInfo(" +
-            "leaderId=" + leaderId +
-            ", leaderEpoch=" + leaderEpoch +
-            ", highWatermark=" + highWatermark +
-            ", voters=" + voters +
-            ", observers=" + observers +
-            ", nodes=" + nodes +
-            ')';
+                "leaderId=" + leaderId +
+                ", leaderEpoch=" + leaderEpoch +
+                ", highWatermark=" + highWatermark +
+                ", voters=" + voters +
+                ", observers=" + observers +
+                ", nodes=" + nodes +
+                ')';
     }
 
     public static class ReplicaState {
@@ -179,10 +179,10 @@ public class QuorumInfo {
             if (o == null || getClass() != o.getClass()) return false;
             ReplicaState that = (ReplicaState) o;
             return replicaId == that.replicaId
-                && Objects.equals(replicaDirectoryId, that.replicaDirectoryId)
-                && logEndOffset == that.logEndOffset
-                && lastFetchTimestamp.equals(that.lastFetchTimestamp)
-                && lastCaughtUpTimestamp.equals(that.lastCaughtUpTimestamp);
+                    && Objects.equals(replicaDirectoryId, that.replicaDirectoryId)
+                    && logEndOffset == that.logEndOffset
+                    && lastFetchTimestamp.equals(that.lastFetchTimestamp)
+                    && lastCaughtUpTimestamp.equals(that.lastCaughtUpTimestamp);
         }
 
         @Override
@@ -193,12 +193,12 @@ public class QuorumInfo {
         @Override
         public String toString() {
             return "ReplicaState(" +
-                "replicaId=" + replicaId +
-                ", replicaDirectoryId=" + replicaDirectoryId +
-                ", logEndOffset=" + logEndOffset +
-                ", lastFetchTimestamp=" + lastFetchTimestamp +
-                ", lastCaughtUpTimestamp=" + lastCaughtUpTimestamp +
-                ')';
+                    "replicaId=" + replicaId +
+                    ", replicaDirectoryId=" + replicaDirectoryId +
+                    ", logEndOffset=" + logEndOffset +
+                    ", lastFetchTimestamp=" + lastFetchTimestamp +
+                    ", lastCaughtUpTimestamp=" + lastCaughtUpTimestamp +
+                    ')';
         }
     }
 
@@ -235,9 +235,9 @@ public class QuorumInfo {
         @Override
         public String toString() {
             return "Node{" +
-                "nodeId=" + nodeId +
-                ", endpoints=" + endpoints +
-                '}';
+                    "nodeId=" + nodeId +
+                    ", endpoints=" + endpoints +
+                    '}';
         }
     }
 }

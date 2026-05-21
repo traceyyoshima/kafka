@@ -46,8 +46,8 @@ public class PreboundSocketFactoryManager implements AutoCloseable {
                 int recvBufferSize
         ) throws IOException {
             ServerSocketChannel socketChannel = getSocketForListenerAndMarkAsUsed(
-                nodeId,
-                listenerName);
+                    nodeId,
+                    listenerName);
 
             if (socketChannel != null) {
                 if (socketChannel.isOpen()) {
@@ -67,10 +67,10 @@ public class PreboundSocketFactoryManager implements AutoCloseable {
                 return socketChannel;
             }
             return ServerSocketFactory.INSTANCE.openServerSocket(
-                listenerName,
-                socketAddress,
-                listenBacklogSize,
-                recvBufferSize);
+                    listenerName,
+                    socketAddress,
+                    listenBacklogSize,
+                    recvBufferSize);
         }
     }
 
@@ -145,17 +145,17 @@ public class PreboundSocketFactoryManager implements AutoCloseable {
         String listener
     ) throws IOException {
         Map<String, ServerSocketChannel> socketsForNode =
-            sockets.computeIfAbsent(nodeId, __ -> new HashMap<>());
+                sockets.computeIfAbsent(nodeId, __ -> new HashMap<>());
         ServerSocketChannel socketChannel = socketsForNode.get(listener);
         if (socketChannel == null) {
             if (closed) {
                 throw new RuntimeException("Cannot open new socket: manager is closed.");
             }
             socketChannel = ServerSocketFactory.INSTANCE.openServerSocket(
-                listener,
-                new InetSocketAddress(0),
-                -1,
-                -1);
+                    listener,
+                    new InetSocketAddress(0),
+                    -1,
+                    -1);
             socketsForNode.put(listener, socketChannel);
         }
         InetSocketAddress socketAddress = (InetSocketAddress) socketChannel.getLocalAddress();
@@ -173,7 +173,7 @@ public class PreboundSocketFactoryManager implements AutoCloseable {
         // SocketServer.)
         for (Entry<Integer, Map<String, ServerSocketChannel>> socketsEntry : sockets.entrySet()) {
             Set<String> usedListeners = usedSockets.getOrDefault(
-                socketsEntry.getKey(), Set.of());
+                    socketsEntry.getKey(), Set.of());
             for (Entry<String, ServerSocketChannel> entry : socketsEntry.getValue().entrySet()) {
                 if (!usedListeners.contains(entry.getKey())) {
                     Utils.closeQuietly(entry.getValue(), "serverSocketChannel");

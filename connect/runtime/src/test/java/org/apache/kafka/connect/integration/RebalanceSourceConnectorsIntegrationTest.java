@@ -71,7 +71,6 @@ public class RebalanceSourceConnectorsIntegrationTest {
     private static final String TOPIC_NAME = "sequential-topic";
 
     private EmbeddedConnectCluster connect;
-    
 
     @BeforeEach
     public void setup(TestInfo testInfo) {
@@ -166,7 +165,7 @@ public class RebalanceSourceConnectorsIntegrationTest {
         // Wait for the connector *and tasks* to be restarted
         assertTrue(restartLatch.await(CONNECTOR_SETUP_DURATION_MS, TimeUnit.MILLISECONDS),
                 "Failed to alter connector configuration and see connector and tasks restart "
-                        + "within " + CONNECTOR_SETUP_DURATION_MS + "ms");
+                + "within " + CONNECTOR_SETUP_DURATION_MS + "ms");
 
         // And wait for the Connect to show the connectors and tasks are running
         connect.assertions().assertConnectorAndAtLeastNumTasksAreRunning(CONNECTOR_NAME, NUM_TASKS,
@@ -318,8 +317,8 @@ public class RebalanceSourceConnectorsIntegrationTest {
                 connectors.computeIfAbsent(info.connector().workerId(), k -> new ArrayList<>())
                         .add(connector);
                 info.tasks().forEach(
-                    t -> tasks.computeIfAbsent(t.workerId(), k -> new ArrayList<>())
-                           .add(connector + "-" + t.id()));
+                        t -> tasks.computeIfAbsent(t.workerId(), k -> new ArrayList<>())
+                            .add(connector + "-" + t.id()));
             }
 
             int maxConnectors = connectors.values().stream().mapToInt(Collection::size).max().orElse(0);

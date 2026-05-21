@@ -42,15 +42,14 @@ public class LogicalKeyValueSegmentsTest extends AbstractSegmentsTest<LogicalKey
     private static final String METRICS_SCOPE = "metrics-scope";
     private static final String DB_FILE_DIR = "rocksdb";
 
-
     @Override
     public LogicalKeyValueSegments getSegments() {
         return new LogicalKeyValueSegments(
-            STORE_NAME,
-            DB_FILE_DIR,
-            RETENTION_PERIOD,
-            SEGMENT_INTERVAL,
-            new RocksDBMetricsRecorder(METRICS_SCOPE, STORE_NAME)
+                STORE_NAME,
+                DB_FILE_DIR,
+                RETENTION_PERIOD,
+                SEGMENT_INTERVAL,
+                new RocksDBMetricsRecorder(METRICS_SCOPE, STORE_NAME)
         );
     }
 

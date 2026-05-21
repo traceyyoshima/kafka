@@ -54,7 +54,7 @@ public class StreamsGroupDescribeResponse extends AbstractResponse {
     public Map<Errors, Integer> errorCounts() {
         Map<Errors, Integer> counts = new EnumMap<>(Errors.class);
         data.groups().forEach(
-            group -> updateErrorCounts(counts, Errors.forCode(group.errorCode()))
+                group -> updateErrorCounts(counts, Errors.forCode(group.errorCode()))
         );
         return counts;
     }
@@ -71,7 +71,7 @@ public class StreamsGroupDescribeResponse extends AbstractResponse {
 
     public static StreamsGroupDescribeResponse parse(Readable readable, short version) {
         return new StreamsGroupDescribeResponse(
-            new StreamsGroupDescribeResponseData(readable, version)
+                new StreamsGroupDescribeResponseData(readable, version)
         );
     }
 }

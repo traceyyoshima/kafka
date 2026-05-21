@@ -255,7 +255,7 @@ public class MirrorClient implements AutoCloseable {
 
     boolean isRemoteTopic(String topic) {
         return !replicationPolicy.isInternalTopic(topic)
-            && replicationPolicy.topicSource(topic) != null;
+                && replicationPolicy.topicSource(topic) != null;
     }
 
     Set<String> allSources(String topic) {

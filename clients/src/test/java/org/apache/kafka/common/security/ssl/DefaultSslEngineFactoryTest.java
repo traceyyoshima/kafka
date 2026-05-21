@@ -130,7 +130,7 @@ public class DefaultSslEngineFactoryTest {
             + "REH2YTlftQ==\n"
             + "-----END CERTIFICATE-----";
 
-    private static final String KEY =  "Bag Attributes\n"
+    private static final String KEY = "Bag Attributes\n"
             + "    friendlyName: server\n"
             + "    localKeyID: 54 69 6D 65 20 31 36 30 31 32 38 33 37 36 35 34 32 33\n"
             + "Key Attributes: <No Attributes>\n"
@@ -163,7 +163,7 @@ public class DefaultSslEngineFactoryTest {
             + "tDGh1HlOIRm1jD9KQNVZ/Q==\n"
             + "-----END PRIVATE KEY-----";
 
-    private static final String ENCRYPTED_KEY =  "-----BEGIN ENCRYPTED PRIVATE KEY-----\n"
+    private static final String ENCRYPTED_KEY = "-----BEGIN ENCRYPTED PRIVATE KEY-----\n"
             + "MIIE6jAcBgoqhkiG9w0BDAEDMA4ECGyAEWAXlaXzAgIIAASCBMgt7QD1Bbz7MAHI\n"
             + "Ni0eTrwNiuAPluHirLXzsV57d1O9i4EXVp5nzRy6753cjXbGXARbBeaJD+/+jbZp\n"
             + "CBZTHMG8rTCfbsg5kMqxT6XuuqWlKLKc4gaq+QNgHHleKqnpwZQmOQ+awKWEK/Ow\n"
@@ -277,7 +277,7 @@ public class DefaultSslEngineFactoryTest {
         assertEquals(List.of("kafka"), aliases);
         assertNotNull(keyStore.getCertificate("kafka"), "Certificate not loaded");
         assertNotNull(keyStore.getKey("kafka", keyPassword == null ? null : keyPassword.value().toCharArray()),
-            "Private key not loaded");
+                "Private key not loaded");
         assertEquals(KeyStore.getDefaultType(), keyStore.getType());
     }
 

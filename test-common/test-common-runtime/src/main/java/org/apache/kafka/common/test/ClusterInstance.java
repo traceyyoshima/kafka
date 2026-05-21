@@ -206,10 +206,10 @@ public interface ClusterInstance {
             props.putIfAbsent(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_PLAINTEXT.name);
             props.putIfAbsent(SaslConfigs.SASL_MECHANISM, "PLAIN");
             props.putIfAbsent(
-                SaslConfigs.SASL_JAAS_CONFIG,
-                String.format(
-                    "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"%s\" password=\"%s\";",
-                    JaasUtils.KAFKA_PLAIN_ADMIN, JaasUtils.KAFKA_PLAIN_ADMIN_PASSWORD
+                    SaslConfigs.SASL_JAAS_CONFIG,
+                    String.format(
+                        "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"%s\" password=\"%s\";",
+                        JaasUtils.KAFKA_PLAIN_ADMIN, JaasUtils.KAFKA_PLAIN_ADMIN_PASSWORD
                 )
             );
         }
@@ -265,8 +265,8 @@ public interface ClusterInstance {
         Collection<KafkaBroker> brokers = aliveBrokers().values();
         // wait for metadata
         TestUtils.waitForCondition(
-            () -> brokers.stream().allMatch(
-                broker -> broker.metadataCache().numPartitions(topic).isEmpty()),
+                () -> brokers.stream().allMatch(
+                    broker -> broker.metadataCache().numPartitions(topic).isEmpty()),
                 60000L, topic + " metadata not propagated after 60000 ms");
 
         ensureConsistentMetadata(brokers, controllers().values());
@@ -306,9 +306,9 @@ public interface ClusterInstance {
         // Ensure that the topic directories are hard-deleted
         TestUtils.waitForCondition(() -> brokers.stream().allMatch(broker ->
                 broker.config().logDirs().stream().allMatch(logDir ->
-                    Arrays.stream(Objects.requireNonNull(new File(logDir).list())).noneMatch(partitionDirectoryName ->
+                        Arrays.stream(Objects.requireNonNull(new File(logDir).list())).noneMatch(partitionDirectoryName ->
                         partitionDirectoryName.startsWith(topicPartition.topic() + "-" + topicPartition.partition()) &&
-                            partitionDirectoryName.endsWith(UnifiedLog.DELETE_DIR_SUFFIX)))
+                                partitionDirectoryName.endsWith(UnifiedLog.DELETE_DIR_SUFFIX)))
         ), "Failed to hard-delete the delete directory");
     }
 
@@ -354,7 +354,7 @@ public interface ClusterInstance {
         // wait for metadata
         Collection<KafkaBroker> brokers = aliveBrokers().values();
         TestUtils.waitForCondition(
-            () -> brokers.stream().allMatch(broker -> broker.metadataCache().numPartitions(topic).filter(p -> p == partitions).isPresent()),
+                () -> brokers.stream().allMatch(broker -> broker.metadataCache().numPartitions(topic).filter(p -> p == partitions).isPresent()),
                 60000L, topic + " metadata not propagated after 60000 ms");
 
         ensureConsistentMetadata(brokers, controllers().values());
@@ -368,8 +368,8 @@ public interface ClusterInstance {
         for (ControllerServer controller : controllers) {
             long controllerOffset = controller.raftManager().raftLog().endOffset().offset() - 1;
             TestUtils.waitForCondition(
-                () -> brokers.stream().allMatch(broker -> ((BrokerServer) broker).sharedServer().loader().lastAppliedOffset() >= controllerOffset),
-                60000L, "Timeout waiting for controller metadata propagating to brokers");
+                    () -> brokers.stream().allMatch(broker -> ((BrokerServer) broker).sharedServer().loader().lastAppliedOffset() >= controllerOffset),
+                    60000L, "Timeout waiting for controller metadata propagating to brokers");
         }
     }
 

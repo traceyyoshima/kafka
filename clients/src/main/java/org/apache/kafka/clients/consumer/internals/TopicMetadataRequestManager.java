@@ -165,7 +165,7 @@ public class TopicMetadataRequestManager implements RequestManager {
                                          final long retryBackoffMs,
                                          final long retryBackoffMaxMs) {
             super(logContext, TopicMetadataRequestState.class.getSimpleName(), retryBackoffMs,
-                retryBackoffMaxMs, deadlineTimer(time, deadlineMs));
+                    retryBackoffMaxMs, deadlineTimer(time, deadlineMs));
             future = new CompletableFuture<>();
             this.topic = topic;
             this.allTopics = false;
@@ -198,8 +198,8 @@ public class TopicMetadataRequestManager implements RequestManager {
         private NetworkClientDelegate.UnsentRequest createUnsentRequest(
                 final MetadataRequest.Builder request) {
             NetworkClientDelegate.UnsentRequest unsent = new NetworkClientDelegate.UnsentRequest(
-                request,
-                Optional.empty());
+                    request,
+                    Optional.empty());
 
             return unsent.whenComplete((response, exception) -> {
                 if (response == null) {
@@ -266,7 +266,7 @@ public class TopicMetadataRequestManager implements RequestManager {
                         throw error.exception();
                     else
                         throw new KafkaException("Unexpected error fetching metadata for topic " + topic,
-                            error.exception());
+                                error.exception());
                 }
             }
 

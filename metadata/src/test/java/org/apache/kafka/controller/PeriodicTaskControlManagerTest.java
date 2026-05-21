@@ -51,16 +51,16 @@ public class PeriodicTaskControlManagerTest {
         ) {
             this.numCalls = new AtomicInteger();
             this.task = new PeriodicTask(name,
-                () -> {
-                    numCalls.addAndGet(1);
-                    if (shouldFail.getAndSet(false)) {
-                        throw new NullPointerException("uh oh");
-                    }
-                    return ControllerResult.of(List.of(),
-                        continuation.getAndSet(false));
-                },
-                periodNs,
-                EnumSet.noneOf(PeriodicTaskFlag.class));
+                    () -> {
+                        numCalls.addAndGet(1);
+                        if (shouldFail.getAndSet(false)) {
+                            throw new NullPointerException("uh oh");
+                        }
+                        return ControllerResult.of(List.of(),
+                            continuation.getAndSet(false));
+                    },
+                    periodNs,
+                    EnumSet.noneOf(PeriodicTaskFlag.class));
         }
     }
 

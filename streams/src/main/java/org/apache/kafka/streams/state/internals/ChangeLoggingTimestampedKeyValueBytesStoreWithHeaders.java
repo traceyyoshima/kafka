@@ -38,7 +38,7 @@ import static org.apache.kafka.streams.state.internals.Utils.timestamp;
  *    (no timestamp, no headers), and the timestamp is logged separately.
  */
 public class ChangeLoggingTimestampedKeyValueBytesStoreWithHeaders
-    extends ChangeLoggingKeyValueBytesStore {
+        extends ChangeLoggingKeyValueBytesStore {
 
     ChangeLoggingTimestampedKeyValueBytesStoreWithHeaders(final KeyValueStore<Bytes, byte[]> inner) {
         super(inner);
@@ -49,12 +49,12 @@ public class ChangeLoggingTimestampedKeyValueBytesStoreWithHeaders
                     final byte[] valueTimestampHeaders) {
         wrapped().put(key, valueTimestampHeaders);
         log(
-            key,
-            rawPlainValue(valueTimestampHeaders),
-            valueTimestampHeaders == null
+                key,
+                rawPlainValue(valueTimestampHeaders),
+                valueTimestampHeaders == null
                 ? internalContext.recordContext().timestamp()
                 : timestamp(valueTimestampHeaders),
-            valueTimestampHeaders == null
+                valueTimestampHeaders == null
                 ? internalContext.recordContext().headers()
                 : headers(valueTimestampHeaders)
         );
@@ -67,12 +67,12 @@ public class ChangeLoggingTimestampedKeyValueBytesStoreWithHeaders
         if (previous == null) {
             // then it was absent
             log(
-                key,
-                rawPlainValue(valueTimestampHeaders),
-                valueTimestampHeaders == null
+                    key,
+                    rawPlainValue(valueTimestampHeaders),
+                    valueTimestampHeaders == null
                     ? internalContext.recordContext().timestamp()
                     : timestamp(valueTimestampHeaders),
-                valueTimestampHeaders == null
+                    valueTimestampHeaders == null
                     ? internalContext.recordContext().headers()
                     : headers(valueTimestampHeaders)
             );
@@ -86,12 +86,12 @@ public class ChangeLoggingTimestampedKeyValueBytesStoreWithHeaders
         for (final KeyValue<Bytes, byte[]> entry : entries) {
             final byte[] valueTimestampHeaders = entry.value;
             log(
-                entry.key,
-                rawPlainValue(valueTimestampHeaders),
-                valueTimestampHeaders == null
+                    entry.key,
+                    rawPlainValue(valueTimestampHeaders),
+                    valueTimestampHeaders == null
                     ? internalContext.recordContext().timestamp()
                     : timestamp(valueTimestampHeaders),
-                valueTimestampHeaders == null
+                    valueTimestampHeaders == null
                     ? internalContext.recordContext().headers()
                     : headers(valueTimestampHeaders)
             );

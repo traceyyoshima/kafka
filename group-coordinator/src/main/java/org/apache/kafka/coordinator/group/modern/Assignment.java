@@ -83,9 +83,9 @@ public class Assignment implements MemberAssignment {
         ConsumerGroupTargetAssignmentMemberValue record
     ) {
         return new Assignment(
-            record.topicPartitions().stream().collect(Collectors.toMap(
-                ConsumerGroupTargetAssignmentMemberValue.TopicPartition::topicId,
-                topicPartitions -> new HashSet<>(topicPartitions.partitions())))
+                record.topicPartitions().stream().collect(Collectors.toMap(
+                    ConsumerGroupTargetAssignmentMemberValue.TopicPartition::topicId,
+                    topicPartitions -> new HashSet<>(topicPartitions.partitions())))
         );
     }
 
@@ -99,9 +99,9 @@ public class Assignment implements MemberAssignment {
         ShareGroupTargetAssignmentMemberValue record
     ) {
         return new Assignment(
-            record.topicPartitions().stream().collect(Collectors.toMap(
-                ShareGroupTargetAssignmentMemberValue.TopicPartition::topicId,
-                topicPartitions -> new HashSet<>(topicPartitions.partitions())))
+                record.topicPartitions().stream().collect(Collectors.toMap(
+                    ShareGroupTargetAssignmentMemberValue.TopicPartition::topicId,
+                    topicPartitions -> new HashSet<>(topicPartitions.partitions())))
         );
     }
 }

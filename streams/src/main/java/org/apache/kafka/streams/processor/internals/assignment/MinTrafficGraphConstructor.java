@@ -83,11 +83,11 @@ public class MinTrafficGraphConstructor<T> implements RackAwareGraphConstructor<
 
                 final int flow = hasAssignedTask.test(clientStates.get(processId), taskId) ? 1 : 0;
                 final int cost = costFunction.getCost(taskId, processId, flow == 1, trafficCost,
-                    nonOverlapCost, isStandby);
+                        nonOverlapCost, isStandby);
                 if (flow == 1) {
                     if (!hasReplica && taskClientMap.containsKey(taskId)) {
                         throw new IllegalArgumentException("Task " + taskId + " assigned to multiple clients "
-                            + processId + ", " + taskClientMap.get(taskId));
+                                + processId + ", " + taskClientMap.get(taskId));
                     }
                     taskClientMap.put(taskId, processId);
                 }
@@ -135,7 +135,7 @@ public class MinTrafficGraphConstructor<T> implements RackAwareGraphConstructor<
         for (int taskNodeId = 0; taskNodeId < taskIdList.size(); taskNodeId++) {
             final TaskId taskId = taskIdList.get(taskNodeId);
             final KeyValue<Boolean, Integer> movedAndAssigned = assignTaskToClient(graph, taskId, taskNodeId, -1,
-                clientStates, clientList, taskIdList, taskClientMap, assignTask, unAssignTask);
+                    clientStates, clientList, taskIdList, taskClientMap, assignTask, unAssignTask);
             taskMoved |= movedAndAssigned.key;
             tasksAssigned += movedAndAssigned.value;
         }

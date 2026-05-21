@@ -239,19 +239,19 @@ public class JsonConverter implements Converter, HeaderConverter {
      */
     public JsonConverter(boolean enableBlackbird) {
         serializer = new JsonSerializer(
-            Set.of(),
-            JSON_NODE_FACTORY,
-            enableBlackbird
+                Set.of(),
+                JSON_NODE_FACTORY,
+                enableBlackbird
         );
 
         deserializer = new JsonDeserializer(
-            Set.of(
-                // this ensures that the JsonDeserializer maintains full precision on
-                // floating point numbers that cannot fit into float64
-                DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS
+                Set.of(
+                    // this ensures that the JsonDeserializer maintains full precision on
+                    // floating point numbers that cannot fit into float64
+                    DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS
             ),
-            JSON_NODE_FACTORY,
-            enableBlackbird
+                JSON_NODE_FACTORY,
+                enableBlackbird
         );
     }
 
@@ -353,7 +353,7 @@ public class JsonConverter implements Converter, HeaderConverter {
                 return new SchemaAndValue(schema, convertToConnect(schema, jsonValue, config));
             } else if (!jsonValue.isObject() || jsonValue.size() != 2 || !jsonValue.has(JsonSchema.ENVELOPE_SCHEMA_FIELD_NAME) || !jsonValue.has(JsonSchema.ENVELOPE_PAYLOAD_FIELD_NAME)) {
                 throw new DataException("JsonConverter with schemas.enable requires \"schema\" and \"payload\" fields and may not contain additional fields." +
-                    " If you are trying to deserialize plain JSON data, set schemas.enable=false in your converter configuration.");
+                        " If you are trying to deserialize plain JSON data, set schemas.enable=false in your converter configuration.");
             }
         } else {
             // The deserialized data should either be an envelope object containing the schema and the payload or the schema
@@ -451,7 +451,6 @@ public class JsonConverter implements Converter, HeaderConverter {
         return jsonSchema;
     }
 
-
     public Schema asConnectSchema(JsonNode jsonSchema) {
         if (jsonSchema.isNull())
             return null;
@@ -524,7 +523,6 @@ public class JsonConverter implements Converter, HeaderConverter {
                 throw new DataException("Unknown schema type: " + schemaTypeNode.textValue());
         }
 
-
         JsonNode schemaOptionalNode = jsonSchema.get(JsonSchema.SCHEMA_OPTIONAL_FIELD_NAME);
         if (schemaOptionalNode != null && schemaOptionalNode.isBoolean() && schemaOptionalNode.booleanValue())
             builder.optional();
@@ -562,7 +560,6 @@ public class JsonConverter implements Converter, HeaderConverter {
         toConnectSchemaCache.put(jsonSchema, result);
         return result;
     }
-
 
     /**
      * Convert this object, in the {@link org.apache.kafka.connect.data} format, into a JSON object with an envelope
@@ -697,7 +694,6 @@ public class JsonConverter implements Converter, HeaderConverter {
         }
     }
 
-
     private static Object convertToConnect(Schema schema, JsonNode jsonValue, JsonConverterConfig config) {
         final Schema.Type schemaType;
         if (schema != null) {
@@ -707,7 +703,7 @@ public class JsonConverter implements Converter, HeaderConverter {
                     return schema.defaultValue(); // any logical type conversions should already have been applied
                 if (schema.isOptional())
                     return null;
-                throw new DataException("Invalid null value for required " + schemaType +  " field");
+                throw new DataException("Invalid null value for required " + schemaType + " field");
             }
         } else {
             switch (jsonValue.getNodeType()) {
@@ -761,6 +757,7 @@ public class JsonConverter implements Converter, HeaderConverter {
 
     private interface LogicalTypeConverter {
         JsonNode toJson(Schema schema, Object value, JsonConverterConfig config);
+
         Object toConnect(Schema schema, JsonNode value);
     }
 }

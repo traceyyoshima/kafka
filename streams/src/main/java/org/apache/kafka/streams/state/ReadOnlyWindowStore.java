@@ -162,7 +162,6 @@ public interface ReadOnlyWindowStore<K, V> {
         throw new UnsupportedOperationException();
     }
 
-
     /**
      * Gets all the key-value pairs in the existing windows.
      *

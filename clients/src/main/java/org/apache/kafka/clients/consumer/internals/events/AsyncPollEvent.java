@@ -140,11 +140,11 @@ public class AsyncPollEvent extends ApplicationEvent implements MetadataErrorNot
     @Override
     protected String toStringBase() {
         return super.toStringBase() +
-            ", deadlineMs=" + deadlineMs +
-            ", pollTimeMs=" + pollTimeMs +
-            ", error=" + error +
-            ", isComplete=" + isComplete +
-            ", isValidatePositionsComplete=" + isValidatePositionsComplete +
-            ", isReconciliationCheckComplete=" + isReconciliationCheckComplete();
+                ", deadlineMs=" + deadlineMs +
+                ", pollTimeMs=" + pollTimeMs +
+                ", error=" + error +
+                ", isComplete=" + isComplete +
+                ", isValidatePositionsComplete=" + isValidatePositionsComplete +
+                ", isReconciliationCheckComplete=" + isReconciliationCheckComplete();
     }
 }

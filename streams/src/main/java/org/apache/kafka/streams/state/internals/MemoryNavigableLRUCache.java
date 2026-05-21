@@ -95,8 +95,8 @@ public class MemoryNavigableLRUCache extends MemoryLRUCache {
         final TreeMap<Bytes, byte[]> treeMap = toTreeMap();
 
         return new DelegatingPeekingKeyValueIterator<>(
-            name(),
-            new MemoryNavigableLRUCache.CacheIterator(treeMap.subMap(from, true, to, false).keySet().iterator(), treeMap)
+                name(),
+                new MemoryNavigableLRUCache.CacheIterator(treeMap.subMap(from, true, to, false).keySet().iterator(), treeMap)
         );
     }
 
@@ -122,15 +122,14 @@ public class MemoryNavigableLRUCache extends MemoryLRUCache {
         final QueryConfig config) {
 
         return StoreQueryUtils.handleBasicQueries(
-            query,
-            positionBound,
-            config,
-            this,
-            getPosition(),
-            context
+                query,
+                positionBound,
+                config,
+                this,
+                getPosition(),
+                context
         );
     }
-
 
     private static class CacheIterator implements KeyValueIterator<Bytes, byte[]> {
         private final Iterator<Bytes> keys;

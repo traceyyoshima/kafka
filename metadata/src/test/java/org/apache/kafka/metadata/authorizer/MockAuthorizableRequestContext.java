@@ -82,13 +82,13 @@ public class MockAuthorizableRequestContext implements AuthorizableRequestContex
 
         public MockAuthorizableRequestContext build() {
             return new MockAuthorizableRequestContext(listenerName,
-                securityProtocol,
-                principal,
-                clientAddress,
-                requestType,
-                requestVersion,
-                clientId,
-                correlationId);
+                    securityProtocol,
+                    principal,
+                    clientAddress,
+                    requestType,
+                    requestVersion,
+                    clientId,
+                    correlationId);
         }
     }
 

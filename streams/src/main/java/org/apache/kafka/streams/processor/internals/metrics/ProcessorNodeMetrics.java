@@ -47,7 +47,7 @@ public class ProcessorNodeMetrics {
     private static final String SUPPRESSION_EMIT_DESCRIPTION = "emitted records from the suppression buffer";
     private static final String SUPPRESSION_EMIT_TOTAL_DESCRIPTION = TOTAL_DESCRIPTION + SUPPRESSION_EMIT_DESCRIPTION;
     private static final String SUPPRESSION_EMIT_RATE_DESCRIPTION =
-        RATE_DESCRIPTION_PREFIX + SUPPRESSION_EMIT_DESCRIPTION + RATE_DESCRIPTION_SUFFIX;
+            RATE_DESCRIPTION_PREFIX + SUPPRESSION_EMIT_DESCRIPTION + RATE_DESCRIPTION_SUFFIX;
 
     private static final String IDEMPOTENT_UPDATE_SKIP = "idempotent-update-skip";
     private static final String IDEMPOTENT_UPDATE_SKIP_DESCRIPTION = "skipped idempotent updates";
@@ -59,13 +59,13 @@ public class ProcessorNodeMetrics {
     private static final String PROCESS_DESCRIPTION = "calls to process";
     private static final String PROCESS_TOTAL_DESCRIPTION = TOTAL_DESCRIPTION + PROCESS_DESCRIPTION;
     private static final String PROCESS_RATE_DESCRIPTION =
-        RATE_DESCRIPTION_PREFIX + PROCESS_DESCRIPTION + RATE_DESCRIPTION_SUFFIX;
+            RATE_DESCRIPTION_PREFIX + PROCESS_DESCRIPTION + RATE_DESCRIPTION_SUFFIX;
 
     private static final String EMITTED_RECORDS = "window-aggregate-final-emit";
     private static final String EMITTED_RECORDS_DESCRIPTION = "emit final records";
     private static final String EMITTED_RECORDS_TOTAL_DESCRIPTION = TOTAL_DESCRIPTION + EMITTED_RECORDS_DESCRIPTION;
     private static final String EMITTED_RECORDS_RATE_DESCRIPTION =
-        RATE_DESCRIPTION_PREFIX + EMITTED_RECORDS_DESCRIPTION + RATE_DESCRIPTION_SUFFIX;
+            RATE_DESCRIPTION_PREFIX + EMITTED_RECORDS_DESCRIPTION + RATE_DESCRIPTION_SUFFIX;
 
     private static final String EMIT_FINAL_LATENCY = EMITTED_RECORDS + LATENCY_SUFFIX;
     private static final String EMIT_FINAL_DESCRIPTION = "calls to emit final";
@@ -77,14 +77,14 @@ public class ProcessorNodeMetrics {
                                                final String processorNodeId,
                                                final StreamsMetricsImpl streamsMetrics) {
         return throughputSensor(
-            threadId,
-            taskId,
-            processorNodeId,
-            SUPPRESSION_EMIT,
-            SUPPRESSION_EMIT_RATE_DESCRIPTION,
-            SUPPRESSION_EMIT_TOTAL_DESCRIPTION,
-            RecordingLevel.DEBUG,
-            streamsMetrics
+                threadId,
+                taskId,
+                processorNodeId,
+                SUPPRESSION_EMIT,
+                SUPPRESSION_EMIT_RATE_DESCRIPTION,
+                SUPPRESSION_EMIT_TOTAL_DESCRIPTION,
+                RecordingLevel.DEBUG,
+                streamsMetrics
         );
     }
 
@@ -93,14 +93,14 @@ public class ProcessorNodeMetrics {
             final String processorNodeId,
             final StreamsMetricsImpl streamsMetrics) {
         return throughputSensor(
-            threadId,
-            taskId,
-            processorNodeId,
-            IDEMPOTENT_UPDATE_SKIP,
-            IDEMPOTENT_UPDATE_SKIP_RATE_DESCRIPTION,
-            IDEMPOTENT_UPDATE_SKIP_TOTAL_DESCRIPTION,
-            RecordingLevel.DEBUG,
-            streamsMetrics
+                threadId,
+                taskId,
+                processorNodeId,
+                IDEMPOTENT_UPDATE_SKIP,
+                IDEMPOTENT_UPDATE_SKIP_RATE_DESCRIPTION,
+                IDEMPOTENT_UPDATE_SKIP_TOTAL_DESCRIPTION,
+                RecordingLevel.DEBUG,
+                streamsMetrics
         );
     }
 
@@ -110,23 +110,23 @@ public class ProcessorNodeMetrics {
                                                final StreamsMetricsImpl streamsMetrics) {
         final Sensor parentSensor = streamsMetrics.taskLevelSensor(threadId, taskId, PROCESS, RecordingLevel.DEBUG);
         addInvocationRateAndCountToSensor(
-            parentSensor,
-            TASK_LEVEL_GROUP,
-            streamsMetrics.taskLevelTagMap(threadId, taskId),
-            PROCESS,
-            PROCESS_RATE_DESCRIPTION,
-            PROCESS_TOTAL_DESCRIPTION
+                parentSensor,
+                TASK_LEVEL_GROUP,
+                streamsMetrics.taskLevelTagMap(threadId, taskId),
+                PROCESS,
+                PROCESS_RATE_DESCRIPTION,
+                PROCESS_TOTAL_DESCRIPTION
         );
         return throughputSensor(
-            threadId,
-            taskId,
-            processorNodeId,
-            PROCESS,
-            PROCESS_RATE_DESCRIPTION,
-            PROCESS_TOTAL_DESCRIPTION,
-            RecordingLevel.DEBUG,
-            streamsMetrics,
-            parentSensor
+                threadId,
+                taskId,
+                processorNodeId,
+                PROCESS,
+                PROCESS_RATE_DESCRIPTION,
+                PROCESS_TOTAL_DESCRIPTION,
+                RecordingLevel.DEBUG,
+                streamsMetrics,
+                parentSensor
         );
     }
 
@@ -138,13 +138,13 @@ public class ProcessorNodeMetrics {
         final Sensor sensor = streamsMetrics.nodeLevelSensor(threadId, taskId, processorNodeId, sensorSuffix, RecordingLevel.INFO);
         final Map<String, String> tagMap = streamsMetrics.nodeLevelTagMap(threadId, taskId, processorNodeId);
         addAvgAndMinAndMaxToSensor(
-            sensor,
-            PROCESSOR_NODE_LEVEL_GROUP,
-            tagMap,
-            RECORD_E2E_LATENCY,
-            RECORD_E2E_LATENCY_AVG_DESCRIPTION,
-            RECORD_E2E_LATENCY_MIN_DESCRIPTION,
-            RECORD_E2E_LATENCY_MAX_DESCRIPTION
+                sensor,
+                PROCESSOR_NODE_LEVEL_GROUP,
+                tagMap,
+                RECORD_E2E_LATENCY,
+                RECORD_E2E_LATENCY_AVG_DESCRIPTION,
+                RECORD_E2E_LATENCY_MIN_DESCRIPTION,
+                RECORD_E2E_LATENCY_MAX_DESCRIPTION
         );
         return sensor;
     }
@@ -157,12 +157,12 @@ public class ProcessorNodeMetrics {
         final Sensor sensor = streamsMetrics.nodeLevelSensor(threadId, taskId, processorNodeId, sensorSuffix, RecordingLevel.DEBUG);
         final Map<String, String> tagMap = streamsMetrics.nodeLevelTagMap(threadId, taskId, processorNodeId);
         addAvgAndMaxToSensor(
-            sensor,
-            PROCESSOR_NODE_LEVEL_GROUP,
-            tagMap,
-            EMIT_FINAL_LATENCY,
-            EMIT_FINAL_AVG_LATENCY_DESCRIPTION,
-            EMIT_FINAL_MAX_LATENCY_DESCRIPTION
+                sensor,
+                PROCESSOR_NODE_LEVEL_GROUP,
+                tagMap,
+                EMIT_FINAL_LATENCY,
+                EMIT_FINAL_AVG_LATENCY_DESCRIPTION,
+                EMIT_FINAL_MAX_LATENCY_DESCRIPTION
         );
         return sensor;
     }
@@ -175,12 +175,12 @@ public class ProcessorNodeMetrics {
         final Sensor sensor = streamsMetrics.nodeLevelSensor(threadId, taskId, processorNodeId, sensorSuffix, RecordingLevel.DEBUG);
         final Map<String, String> tagMap = streamsMetrics.nodeLevelTagMap(threadId, taskId, processorNodeId);
         addRateOfSumAndSumMetricsToSensor(
-            sensor,
-            PROCESSOR_NODE_LEVEL_GROUP,
-            tagMap,
-            EMITTED_RECORDS,
-            EMITTED_RECORDS_RATE_DESCRIPTION,
-            EMITTED_RECORDS_TOTAL_DESCRIPTION
+                sensor,
+                PROCESSOR_NODE_LEVEL_GROUP,
+                tagMap,
+                EMITTED_RECORDS,
+                EMITTED_RECORDS_RATE_DESCRIPTION,
+                EMITTED_RECORDS_TOTAL_DESCRIPTION
         );
         return sensor;
     }
@@ -196,15 +196,15 @@ public class ProcessorNodeMetrics {
                                            final Sensor... parentSensors) {
         // use operation name as sensor suffix and metric name prefix
         final Sensor sensor =
-            streamsMetrics.nodeLevelSensor(threadId, taskId, processorNodeId, operationName, recordingLevel, parentSensors);
+                streamsMetrics.nodeLevelSensor(threadId, taskId, processorNodeId, operationName, recordingLevel, parentSensors);
         final Map<String, String> tagMap = streamsMetrics.nodeLevelTagMap(threadId, taskId, processorNodeId);
         addInvocationRateAndCountToSensor(
-            sensor,
-            PROCESSOR_NODE_LEVEL_GROUP,
-            tagMap,
-            operationName,
-            descriptionOfRate,
-            descriptionOfCount
+                sensor,
+                PROCESSOR_NODE_LEVEL_GROUP,
+                tagMap,
+                operationName,
+                descriptionOfRate,
+                descriptionOfCount
         );
         return sensor;
     }

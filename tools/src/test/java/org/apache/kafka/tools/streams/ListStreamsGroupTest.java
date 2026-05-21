@@ -75,7 +75,6 @@ public class ListStreamsGroupTest {
         cluster.start();
         cluster.createTopic(INPUT_TOPIC, 2, 1);
 
-
         // start kafka streams
         Properties streamsProp = new Properties();
         streamsProp.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
@@ -122,11 +121,11 @@ public class ListStreamsGroupTest {
     public void testListStreamsGroupWithStates() throws Exception {
         try (StreamsGroupCommand.StreamsGroupService service = getStreamsGroupService(new String[]{"--bootstrap-server", cluster.bootstrapServers(), "--list", "--state"})) {
             Set<GroupListing> expectedListing = Set.of(
-                new GroupListing(
-                    APP_ID,
-                    Optional.of(GroupType.STREAMS),
-                    "streams",
-                    Optional.of(GroupState.STABLE))
+                    new GroupListing(
+                        APP_ID,
+                        Optional.of(GroupType.STREAMS),
+                        "streams",
+                        Optional.of(GroupState.STABLE))
             );
 
             final AtomicReference<Set<GroupListing>> foundListing = new AtomicReference<>();
@@ -142,11 +141,11 @@ public class ListStreamsGroupTest {
     public void testListStreamsGroupWithSpecifiedStates() throws Exception {
         try (StreamsGroupCommand.StreamsGroupService service = getStreamsGroupService(new String[]{"--bootstrap-server", cluster.bootstrapServers(), "--list", "--state", "stable"})) {
             Set<GroupListing> expectedListing = Set.of(
-                new GroupListing(
-                    APP_ID,
-                    Optional.of(GroupType.STREAMS),
-                    "streams",
-                    Optional.of(GroupState.STABLE))
+                    new GroupListing(
+                        APP_ID,
+                        Optional.of(GroupType.STREAMS),
+                        "streams",
+                        Optional.of(GroupState.STABLE))
             );
 
             final AtomicReference<Set<GroupListing>> foundListing = new AtomicReference<>();
@@ -172,28 +171,28 @@ public class ListStreamsGroupTest {
     @Test
     public void testListStreamsGroupOutput() throws Exception {
         validateListOutput(
-            List.of("--bootstrap-server", cluster.bootstrapServers(), "--list"),
-            List.of(),
-            Set.of(List.of(APP_ID))
+                List.of("--bootstrap-server", cluster.bootstrapServers(), "--list"),
+                List.of(),
+                Set.of(List.of(APP_ID))
         );
 
         validateListOutput(
-            List.of("--bootstrap-server", cluster.bootstrapServers(), "--list", "--state"),
-            List.of("GROUP", "STATE"),
-            Set.of(List.of(APP_ID, "Stable"))
+                List.of("--bootstrap-server", cluster.bootstrapServers(), "--list", "--state"),
+                List.of("GROUP", "STATE"),
+                Set.of(List.of(APP_ID, "Stable"))
         );
 
         validateListOutput(
-            List.of("--bootstrap-server", cluster.bootstrapServers(), "--list", "--state", "Stable"),
-            List.of("GROUP", "STATE"),
-            Set.of(List.of(APP_ID, "Stable"))
+                List.of("--bootstrap-server", cluster.bootstrapServers(), "--list", "--state", "Stable"),
+                List.of("GROUP", "STATE"),
+                Set.of(List.of(APP_ID, "Stable"))
         );
 
         // Check case-insensitivity in state filter.
         validateListOutput(
-            List.of("--bootstrap-server", cluster.bootstrapServers(), "--list", "--state", "stable"),
-            List.of("GROUP", "STATE"),
-            Set.of(List.of(APP_ID, "Stable"))
+                List.of("--bootstrap-server", cluster.bootstrapServers(), "--list", "--state", "stable"),
+                List.of("GROUP", "STATE"),
+                Set.of(List.of(APP_ID, "Stable"))
         );
     }
 
@@ -210,8 +209,8 @@ public class ListStreamsGroupTest {
     private StreamsGroupCommand.StreamsGroupService getStreamsGroupService(String[] args) {
         StreamsGroupCommandOptions opts = StreamsGroupCommandOptions.fromArgs(args);
         return new StreamsGroupCommand.StreamsGroupService(
-            opts,
-            Map.of(AdminClientConfig.RETRIES_CONFIG, Integer.toString(Integer.MAX_VALUE))
+                opts,
+                Map.of(AdminClientConfig.RETRIES_CONFIG, Integer.toString(Integer.MAX_VALUE))
         );
     }
 

@@ -42,12 +42,12 @@ public class ListSerializer<Inner> implements Serializer<List<Inner>> {
     final Logger log = LoggerFactory.getLogger(ListSerializer.class);
 
     private static final List<Class<? extends Serializer<?>>> FIXED_LENGTH_SERIALIZERS = Arrays.asList(
-        ShortSerializer.class,
-        IntegerSerializer.class,
-        FloatSerializer.class,
-        LongSerializer.class,
-        DoubleSerializer.class,
-        UUIDSerializer.class);
+            ShortSerializer.class,
+            IntegerSerializer.class,
+            FloatSerializer.class,
+            LongSerializer.class,
+            DoubleSerializer.class,
+            UUIDSerializer.class);
 
     private Serializer<Inner> inner;
     private SerializationStrategy serStrategy;

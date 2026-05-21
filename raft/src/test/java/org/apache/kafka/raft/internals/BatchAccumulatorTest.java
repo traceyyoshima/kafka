@@ -58,15 +58,15 @@ class BatchAccumulatorTest {
         int maxBatchSize
     ) {
         return new BatchAccumulator<>(
-            leaderEpoch,
-            baseOffset,
-            lingerMs,
-            maxBatchSize,
-            maxNumberOfBatches,
-            memoryPool,
-            time,
-            Compression.NONE,
-            serde
+                leaderEpoch,
+                baseOffset,
+                lingerMs,
+                maxBatchSize,
+                maxNumberOfBatches,
+                memoryPool,
+                time,
+                Compression.NONE,
+                serde
         );
     }
 
@@ -82,10 +82,10 @@ class BatchAccumulatorTest {
             .thenReturn(buffer);
 
         BatchAccumulator<String> acc = buildAccumulator(
-            leaderEpoch,
-            baseOffset,
-            lingerMs,
-            maxBatchSize
+                leaderEpoch,
+                baseOffset,
+                lingerMs,
+                maxBatchSize
         );
 
         acc.appendLeaderChangeMessage(new LeaderChangeMessage(), time.milliseconds());
@@ -110,10 +110,10 @@ class BatchAccumulatorTest {
             .thenReturn(ByteBuffer.allocate(maxBatchSize));
 
         BatchAccumulator<String> acc = buildAccumulator(
-            leaderEpoch,
-            baseOffset,
-            lingerMs,
-            maxBatchSize
+                leaderEpoch,
+                baseOffset,
+                lingerMs,
+                maxBatchSize
         );
 
         List<String> records = List.of("a", "b", "c", "d", "e", "f", "g", "h", "i");
@@ -156,10 +156,10 @@ class BatchAccumulatorTest {
             .thenReturn(ByteBuffer.allocate(256));
 
         BatchAccumulator<String> acc = buildAccumulator(
-            leaderEpoch,
-            baseOffset,
-            lingerMs,
-            maxBatchSize
+                leaderEpoch,
+                baseOffset,
+                lingerMs,
+                maxBatchSize
         );
 
         List<String> records = List.of("a", "b", "c", "d", "e", "f", "g", "h", "i");
@@ -203,10 +203,10 @@ class BatchAccumulatorTest {
         int maxBatchSize = 512;
 
         BatchAccumulator<String> acc = buildAccumulator(
-            leaderEpoch,
-            baseOffset,
-            lingerMs,
-            maxBatchSize
+                leaderEpoch,
+                baseOffset,
+                lingerMs,
+                maxBatchSize
         );
 
         assertTrue(acc.isEmpty());
@@ -225,10 +225,10 @@ class BatchAccumulatorTest {
             .thenReturn(ByteBuffer.allocate(maxBatchSize));
 
         BatchAccumulator<String> acc = buildAccumulator(
-            leaderEpoch,
-            baseOffset,
-            lingerMs,
-            maxBatchSize
+                leaderEpoch,
+                baseOffset,
+                lingerMs,
+                maxBatchSize
         );
 
         time.sleep(15);
@@ -258,10 +258,10 @@ class BatchAccumulatorTest {
             .thenReturn(buffer);
 
         BatchAccumulator<String> acc = buildAccumulator(
-            leaderEpoch,
-            baseOffset,
-            lingerMs,
-            maxBatchSize
+                leaderEpoch,
+                baseOffset,
+                lingerMs,
+                maxBatchSize
         );
 
         assertEquals(baseOffset, acc.append(leaderEpoch, List.of("a"), false));
@@ -287,10 +287,10 @@ class BatchAccumulatorTest {
             .thenReturn(buffer);
 
         BatchAccumulator<String> acc = buildAccumulator(
-            leaderEpoch,
-            baseOffset,
-            lingerMs,
-            maxBatchSize
+                leaderEpoch,
+                baseOffset,
+                lingerMs,
+                maxBatchSize
         );
 
         assertEquals(baseOffset, acc.append(leaderEpoch, List.of("a"), false));
@@ -309,10 +309,10 @@ class BatchAccumulatorTest {
             .thenReturn(ByteBuffer.allocate(maxBatchSize));
 
         BatchAccumulator<String> acc = buildAccumulator(
-            leaderEpoch,
-            baseOffset,
-            lingerMs,
-            maxBatchSize
+                leaderEpoch,
+                baseOffset,
+                lingerMs,
+                maxBatchSize
         );
 
         List<String> records = List.of("a", "b", "c", "d", "e", "f", "g", "h", "i");
@@ -349,10 +349,10 @@ class BatchAccumulatorTest {
             .thenReturn(ByteBuffer.allocate(maxBatchSize));
 
         BatchAccumulator<String> acc = buildAccumulator(
-            leaderEpoch,
-            baseOffset,
-            lingerMs,
-            maxBatchSize
+                leaderEpoch,
+                baseOffset,
+                lingerMs,
+                maxBatchSize
         );
 
         // Append enough records so that multiple batches get created
@@ -373,10 +373,10 @@ class BatchAccumulatorTest {
         int maxBatchSize = 256;
 
         BatchAccumulator<String> acc = buildAccumulator(
-            leaderEpoch,
-            baseOffset,
-            lingerMs,
-            maxBatchSize
+                leaderEpoch,
+                baseOffset,
+                lingerMs,
+                maxBatchSize
         );
 
         acc.close();
@@ -393,15 +393,15 @@ class BatchAccumulatorTest {
 
         StringSerde serde = Mockito.spy(new StringSerde());
         BatchAccumulator<String> acc = new BatchAccumulator<>(
-            leaderEpoch,
-            baseOffset,
-            lingerMs,
-            maxBatchSize,
-            maxNumberOfBatches,
-            memoryPool,
-            time,
-            Compression.NONE,
-            serde
+                leaderEpoch,
+                baseOffset,
+                lingerMs,
+                maxBatchSize,
+                maxNumberOfBatches,
+                memoryPool,
+                time,
+                Compression.NONE,
+                serde
         );
 
         CountDownLatch acquireLockLatch = new CountDownLatch(1);
@@ -420,9 +420,9 @@ class BatchAccumulatorTest {
             writable.writeByteArray(Utils.utf8("b"));
             return null;
         }).when(serde).write(
-            Mockito.eq("b"),
-            Mockito.any(ObjectSerializationCache.class),
-            Mockito.any(Writable.class)
+                Mockito.eq("b"),
+                Mockito.any(ObjectSerializationCache.class),
+                Mockito.any(Writable.class)
         );
 
         Thread appendThread = new Thread(() -> acc.append(leaderEpoch, List.of("b"), false));
@@ -442,8 +442,8 @@ class BatchAccumulatorTest {
         assertEquals(1, drained.size());
         assertEquals(Long.MAX_VALUE - time.milliseconds(), acc.timeUntilDrain(time.milliseconds()));
         drained.forEach(completedBatch ->
-            completedBatch.data.batches().forEach(recordBatch ->
-                assertEquals(leaderEpoch, recordBatch.partitionLeaderEpoch()))
+                completedBatch.data.batches().forEach(recordBatch ->
+                        assertEquals(leaderEpoch, recordBatch.partitionLeaderEpoch()))
         );
 
         acc.close();
@@ -453,11 +453,11 @@ class BatchAccumulatorTest {
         int serdeSize = serde.recordSize(record, new ObjectSerializationCache());
 
         int recordSizeInBytes = DefaultRecord.sizeOfBodyInBytes(
-            numberOfRecords,
-            0,
-            -1,
-            serdeSize,
-            DefaultRecord.EMPTY_HEADERS
+                numberOfRecords,
+                0,
+                -1,
+                serdeSize,
+                DefaultRecord.EMPTY_HEADERS
         );
 
         return ByteUtils.sizeOfVarint(recordSizeInBytes) + recordSizeInBytes;
@@ -492,15 +492,15 @@ class BatchAccumulatorTest {
                     )
                 ) {
                     builder.appendSnapshotHeaderMessage(
-                        now,
-                        new SnapshotHeaderRecord()
+                            now,
+                            new SnapshotHeaderRecord()
                             .setVersion(ControlRecordUtils.SNAPSHOT_HEADER_CURRENT_VERSION)
                             .setLastContainedLogTimestamp(now)
                     );
 
                     builder.appendKRaftVersionMessage(
-                        now,
-                        new KRaftVersionRecord()
+                            now,
+                            new KRaftVersionRecord()
                             .setVersion(ControlRecordUtils.KRAFT_VERSION_CURRENT_VERSION)
                             .setKRaftVersion((short) 0)
                     );
@@ -543,8 +543,8 @@ class BatchAccumulatorTest {
                 )
             ) {
                 builder.appendSnapshotHeaderMessage(
-                    now,
-                    new SnapshotHeaderRecord()
+                        now,
+                        new SnapshotHeaderRecord()
                         .setVersion(ControlRecordUtils.SNAPSHOT_HEADER_CURRENT_VERSION)
                         .setLastContainedLogTimestamp(now)
                 );
@@ -586,8 +586,8 @@ class BatchAccumulatorTest {
                 )
             ) {
                 builder.appendSnapshotHeaderMessage(
-                    now,
-                    new SnapshotHeaderRecord()
+                        now,
+                        new SnapshotHeaderRecord()
                         .setVersion(ControlRecordUtils.SNAPSHOT_HEADER_CURRENT_VERSION)
                         .setLastContainedLogTimestamp(now)
                 );
@@ -655,10 +655,10 @@ class BatchAccumulatorTest {
             .thenReturn(ByteBuffer.allocate(maxBatchSize));
 
         BatchAccumulator<String> acc = buildAccumulator(
-            leaderEpoch,
-            baseOffset,
-            lingerMs,
-            maxBatchSize
+                leaderEpoch,
+                baseOffset,
+                lingerMs,
+                maxBatchSize
         );
 
         List<String> records = List.of("a", "b", "c", "d", "e", "f", "g");
@@ -691,10 +691,10 @@ class BatchAccumulatorTest {
             .thenReturn(buffer);
 
         BatchAccumulator<String> acc = buildAccumulator(
-            leaderEpoch,
-            baseOffset,
-            lingerMs,
-            maxBatchSize
+                leaderEpoch,
+                baseOffset,
+                lingerMs,
+                maxBatchSize
         );
 
         List<String> records = List.of("a", "b", "c", "d", "e", "f", "g");
@@ -718,15 +718,15 @@ class BatchAccumulatorTest {
 
         StringSerde serde = Mockito.spy(new StringSerde());
         BatchAccumulator<String> acc = new BatchAccumulator<>(
-            leaderEpoch,
-            baseOffset,
-            lingerMs,
-            maxBatchSize,
-            maxNumberOfBatches,
-            memoryPool,
-            time,
-            Compression.NONE,
-            serde
+                leaderEpoch,
+                baseOffset,
+                lingerMs,
+                maxBatchSize,
+                maxNumberOfBatches,
+                memoryPool,
+                time,
+                Compression.NONE,
+                serde
         );
 
         List<String> records = List.of("a", "b", "c", "d", "e", "f", "g");
@@ -746,19 +746,19 @@ class BatchAccumulatorTest {
         ByteBuffer buffer
     ) {
         return new MemoryRecordsBuilder(
-            buffer,
-            RecordBatch.CURRENT_MAGIC_VALUE,
-            compression,
-            TimestampType.CREATE_TIME,
-            baseOffset,
-            now,
-            RecordBatch.NO_PRODUCER_ID,
-            RecordBatch.NO_PRODUCER_EPOCH,
-            RecordBatch.NO_SEQUENCE,
-            false, // isTransactional
+                buffer,
+                RecordBatch.CURRENT_MAGIC_VALUE,
+                compression,
+                TimestampType.CREATE_TIME,
+                baseOffset,
+                now,
+                RecordBatch.NO_PRODUCER_ID,
+                RecordBatch.NO_PRODUCER_EPOCH,
+                RecordBatch.NO_SEQUENCE,
+                false, // isTransactional
             true,  // isControlBatch
             epoch,
-            buffer.capacity()
+                buffer.capacity()
         );
     }
 }

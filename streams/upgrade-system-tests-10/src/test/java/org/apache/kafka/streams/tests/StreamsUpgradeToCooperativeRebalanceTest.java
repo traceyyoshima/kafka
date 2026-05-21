@@ -74,8 +74,7 @@ public class StreamsUpgradeToCooperativeRebalanceTest {
                         System.out.flush();
                     }
                 }
-            }
-            ).to(sinkTopic);
+            }).to(sinkTopic);
 
         final KafkaStreams streams = new KafkaStreams(builder.build(), config);
 
@@ -105,7 +104,6 @@ public class StreamsUpgradeToCooperativeRebalanceTest {
             }
         });
 
-
         streams.start();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -123,6 +121,7 @@ public class StreamsUpgradeToCooperativeRebalanceTest {
             builder.setLength(builder.length() - 1);
         }
     }
+
     private static void getTasks(final Set<TaskMetadata> taskMetadata,
                                  final List<String> taskList) {
         for (final TaskMetadata task : taskMetadata) {

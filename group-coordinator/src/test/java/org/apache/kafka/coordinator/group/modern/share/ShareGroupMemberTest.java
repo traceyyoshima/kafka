@@ -49,7 +49,7 @@ public class ShareGroupMemberTest {
             .setClientHost("hostname")
             .setSubscribedTopicNames(Arrays.asList("foo", "bar"))
             .setAssignedPartitions(mkAssignment(
-                mkTopicAssignment(topicId1, 1, 2, 3)))
+                    mkTopicAssignment(topicId1, 1, 2, 3)))
             .build();
 
         assertEquals("member-id", member.memberId());
@@ -75,7 +75,7 @@ public class ShareGroupMemberTest {
             .setClientHost("hostname")
             .setSubscribedTopicNames(Arrays.asList("foo", "bar"))
             .setAssignedPartitions(mkAssignment(
-                mkTopicAssignment(topicId1, 1, 2, 3)))
+                    mkTopicAssignment(topicId1, 1, 2, 3)))
             .build();
 
         ShareGroupMember member2 = new ShareGroupMember.Builder("member-id")
@@ -86,7 +86,7 @@ public class ShareGroupMemberTest {
             .setClientHost("hostname")
             .setSubscribedTopicNames(Arrays.asList("foo", "bar"))
             .setAssignedPartitions(mkAssignment(
-                mkTopicAssignment(topicId1, 1, 2, 3)))
+                    mkTopicAssignment(topicId1, 1, 2, 3)))
             .build();
 
         assertEquals(member1, member2);
@@ -104,7 +104,7 @@ public class ShareGroupMemberTest {
             .setClientHost("hostname")
             .setSubscribedTopicNames(Arrays.asList("foo", "bar"))
             .setAssignedPartitions(mkAssignment(
-                mkTopicAssignment(topicId1, 1, 2, 3)))
+                    mkTopicAssignment(topicId1, 1, 2, 3)))
             .build();
 
         // This is a no-op.
@@ -167,7 +167,7 @@ public class ShareGroupMemberTest {
             .updateWith(record)
             .setMemberEpoch(epoch)
             .setAssignedPartitions(mkAssignment(
-                mkTopicAssignment(topicId1, 0, 1, 2)))
+                    mkTopicAssignment(topicId1, 0, 1, 2)))
             .build();
 
         ShareGroupDescribeResponseData.Member actual = member.asShareGroupDescribeMember(new KRaftCoordinatorMetadataImage(metadataImage));
@@ -179,7 +179,7 @@ public class ShareGroupMemberTest {
             .setClientHost("host-id")
             .setSubscribedTopicNames(subscribedTopicNames)
             .setAssignment(
-                new ShareGroupDescribeResponseData.Assignment()
+                    new ShareGroupDescribeResponseData.Assignment()
                     .setTopicPartitions(List.of(new ShareGroupDescribeResponseData.TopicPartitions()
                         .setTopicId(topicId1)
                         .setTopicName("topic1")

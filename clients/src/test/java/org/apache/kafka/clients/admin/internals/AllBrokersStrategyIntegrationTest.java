@@ -55,12 +55,12 @@ public class AllBrokersStrategyIntegrationTest {
         AllBrokersStrategy.AllBrokersFuture<Integer> result
     ) {
         return new AdminApiDriver<>(
-            new MockApiHandler(),
-            result,
-            time.milliseconds() + TIMEOUT_MS,
-            RETRY_BACKOFF_MS,
-            RETRY_BACKOFF_MS,
-            logContext
+                new MockApiHandler(),
+                result,
+                time.milliseconds() + TIMEOUT_MS,
+                RETRY_BACKOFF_MS,
+                RETRY_BACKOFF_MS,
+                logContext
         );
     }
 

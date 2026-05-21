@@ -299,7 +299,7 @@ public class RoundRobinAssignorTest {
         }
 
         Map<String, List<TopicPartition>> staticAssignment =
-            checkStaticAssignment(assignor, partitionsPerTopic, consumers);
+                checkStaticAssignment(assignor, partitionsPerTopic, consumers);
         assertEquals(expectedInstanceAssignment, staticAssignment);
 
         memberIdToInstanceId.clear();
@@ -313,7 +313,7 @@ public class RoundRobinAssignorTest {
         consumers.put(consumer5, consumers.get(consumer2));
         consumers.remove(consumer2);
         Map<String, List<TopicPartition>> newStaticAssignment =
-            checkStaticAssignment(assignor, partitionsPerTopic, consumers);
+                checkStaticAssignment(assignor, partitionsPerTopic, consumers);
         assertEquals(staticAssignment, newStaticAssignment);
     }
 

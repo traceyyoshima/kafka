@@ -94,8 +94,8 @@ public class MirrorConnectorsWithCustomForwardingAdminIntegrationTest extends Mi
         superUserClientConfig.put("security.protocol", "SASL_PLAINTEXT");
         superUserClientConfig.put("sasl.jaas.config",
                 "org.apache.kafka.common.security.plain.PlainLoginModule required "
-                        + "username=\"super\" "
-                        + "password=\"super_pwd\";");
+                + "username=\"super\" "
+                + "password=\"super_pwd\";");
         return superUserClientConfig;
     }
 
@@ -108,8 +108,8 @@ public class MirrorConnectorsWithCustomForwardingAdminIntegrationTest extends Mi
         connectUserClientConfig.put("security.protocol", "SASL_PLAINTEXT");
         connectUserClientConfig.put("sasl.jaas.config",
                 "org.apache.kafka.common.security.plain.PlainLoginModule required "
-                        + "username=\"connector\" "
-                        + "password=\"connector_pwd\";");
+                + "username=\"connector\" "
+                + "password=\"connector_pwd\";");
         return connectUserClientConfig;
     }
 
@@ -120,8 +120,8 @@ public class MirrorConnectorsWithCustomForwardingAdminIntegrationTest extends Mi
         try (final Admin adminClient = cluster.createAdminClient()) {
             Set<String> topicsToBeDeleted = adminClient.listTopics().names().get();
             List<AclBindingFilter> aclBindingFilters = topicsToBeDeleted.stream().map(topic -> new AclBindingFilter(
-                            new ResourcePatternFilter(ResourceType.TOPIC, topic, PatternType.ANY),
-                            AccessControlEntryFilter.ANY
+                    new ResourcePatternFilter(ResourceType.TOPIC, topic, PatternType.ANY),
+                    AccessControlEntryFilter.ANY
                     )
             ).collect(Collectors.toList());
             adminClient.deleteAcls(aclBindingFilters);
@@ -150,8 +150,8 @@ public class MirrorConnectorsWithCustomForwardingAdminIntegrationTest extends Mi
         backupWorkerProps.putAll(superUserConfig());
 
         Map<String, String> additionalConfig = new HashMap<>(superUserConfig()) {{
-                put(FORWARDING_ADMIN_CLASS, FakeForwardingAdminWithLocalMetadata.class.getName());
-            }};
+            put(FORWARDING_ADMIN_CLASS, FakeForwardingAdminWithLocalMetadata.class.getName());
+        }};
 
         superUserConfig().forEach((property, value) -> {
             additionalConfig.put(CONNECTOR_CLIENT_CONSUMER_OVERRIDES_PREFIX + property, value);
@@ -283,7 +283,7 @@ public class MirrorConnectorsWithCustomForwardingAdminIntegrationTest extends Mi
 
         // make sure the topic config is synced into the other cluster
         assertEquals(TopicConfig.CLEANUP_POLICY_COMPACT, getTopicConfig(backup.kafka(), "primary.test-topic-1", TopicConfig.CLEANUP_POLICY_CONFIG),
-            "topic config was synced");
+                "topic config was synced");
 
         // expect to use FakeForwardingAdminWithLocalMetadata to create remote topics into local store
         waitForTopicToPersistInFakeLocalMetadataStore("backup.test-topic-1");
@@ -345,13 +345,13 @@ public class MirrorConnectorsWithCustomForwardingAdminIntegrationTest extends Mi
 
     void waitForTopicToPersistInFakeLocalMetadataStore(String topicName) throws InterruptedException {
         waitForCondition(() -> FakeLocalMetadataStore.containsTopic(topicName), FAKE_LOCAL_METADATA_STORE_SYNC_DURATION_MS,
-            "Topic: " + topicName + " didn't get created in the FakeLocalMetadataStore"
+                "Topic: " + topicName + " didn't get created in the FakeLocalMetadataStore"
         );
     }
 
     void waitForTopicConfigPersistInFakeLocalMetaDataStore(String topicName, String configName, String expectedConfigValue) throws InterruptedException {
         waitForCondition(() -> FakeLocalMetadataStore.topicConfig(topicName).getOrDefault(configName, "").equals(expectedConfigValue), FAKE_LOCAL_METADATA_STORE_SYNC_DURATION_MS,
-            "Topic: " + topicName + "'s configs don't have " + configName + ":" + expectedConfigValue
+                "Topic: " + topicName + "'s configs don't have " + configName + ":" + expectedConfigValue
         );
     }
 }

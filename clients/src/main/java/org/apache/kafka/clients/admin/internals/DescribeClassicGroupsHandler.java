@@ -91,7 +91,7 @@ public class DescribeClassicGroupsHandler extends AdminApiHandler.Batched<Coordi
         List<String> groupIds = keys.stream().map(key -> {
             if (key.type != FindCoordinatorRequest.CoordinatorType.GROUP) {
                 throw new IllegalArgumentException("Invalid group coordinator key " + key +
-                    " when building `DescribeGroups` request");
+                        " when building `DescribeGroups` request");
             }
             return key.idValue;
         }).collect(Collectors.toList());
@@ -132,26 +132,26 @@ public class DescribeClassicGroupsHandler extends AdminApiHandler.Batched<Coordi
                     partitions = new HashSet<>(assignment.partitions());
                 }
                 memberDescriptions.add(new MemberDescription(
-                    groupMember.memberId(),
-                    Optional.ofNullable(groupMember.groupInstanceId()),
-                    Optional.empty(),
-                    groupMember.clientId(),
-                    groupMember.clientHost(),
-                    new MemberAssignment(partitions),
-                    Optional.empty(),
-                    Optional.empty(),
-                    Optional.empty()));
+                        groupMember.memberId(),
+                        Optional.ofNullable(groupMember.groupInstanceId()),
+                        Optional.empty(),
+                        groupMember.clientId(),
+                        groupMember.clientHost(),
+                        new MemberAssignment(partitions),
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty()));
             });
 
             final ClassicGroupDescription classicGroupDescription =
-                new ClassicGroupDescription(
-                    groupIdKey.idValue,
-                    protocolType,
-                    describedGroup.protocolData(),
-                    memberDescriptions,
-                    ClassicGroupState.parse(describedGroup.groupState()),
-                    coordinator,
-                    authorizedOperations);
+                    new ClassicGroupDescription(
+                        groupIdKey.idValue,
+                        protocolType,
+                        describedGroup.protocolData(),
+                        memberDescriptions,
+                        ClassicGroupState.parse(describedGroup.groupState()),
+                        coordinator,
+                        authorizedOperations);
             completed.put(groupIdKey, classicGroupDescription);
         }
 
@@ -173,7 +173,7 @@ public class DescribeClassicGroupsHandler extends AdminApiHandler.Batched<Coordi
             case COORDINATOR_LOAD_IN_PROGRESS:
                 // If the coordinator is in the middle of loading, then we just need to retry
                 log.debug("`DescribeGroups` request for group id {} failed because the coordinator " +
-                    "is still in the process of loading state. Will retry.", groupId.idValue);
+                        "is still in the process of loading state. Will retry.", groupId.idValue);
                 break;
 
             case COORDINATOR_NOT_AVAILABLE:
@@ -181,7 +181,7 @@ public class DescribeClassicGroupsHandler extends AdminApiHandler.Batched<Coordi
                 // If the coordinator is unavailable or there was a coordinator change, then we unmap
                 // the key so that we retry the `FindCoordinator` request
                 log.debug("`DescribeGroups` request for group id {} returned error {}. " +
-                    "Will attempt to find the coordinator again and retry.", groupId.idValue, error);
+                        "Will attempt to find the coordinator again and retry.", groupId.idValue, error);
                 groupsToUnmap.add(groupId);
                 break;
 

@@ -38,8 +38,8 @@ public class SupportedVersionRange extends BaseVersionRange {
 
     public static SupportedVersionRange fromMap(Map<String, Short> versionRangeMap) {
         return new SupportedVersionRange(
-            BaseVersionRange.valueOrThrow(MIN_VERSION_KEY_LABEL, versionRangeMap),
-            BaseVersionRange.valueOrThrow(MAX_VERSION_KEY_LABEL, versionRangeMap));
+                BaseVersionRange.valueOrThrow(MIN_VERSION_KEY_LABEL, versionRangeMap),
+                BaseVersionRange.valueOrThrow(MAX_VERSION_KEY_LABEL, versionRangeMap));
     }
 
     /**

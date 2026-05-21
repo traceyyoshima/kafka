@@ -163,11 +163,11 @@ public final class Coordinator {
 
         Platform platform = Platform.Config.parse(nodeName, configPath);
         JsonRestServer restServer = new JsonRestServer(
-            Node.Util.getTrogdorCoordinatorPort(platform.curNode()));
+                Node.Util.getTrogdorCoordinatorPort(platform.curNode()));
         CoordinatorRestResource resource = new CoordinatorRestResource();
         System.out.println("Starting coordinator process.");
         final Coordinator coordinator = new Coordinator(platform, Scheduler.SYSTEM,
-            restServer, resource, ThreadLocalRandom.current().nextLong(0, Long.MAX_VALUE / 2));
+                restServer, resource, ThreadLocalRandom.current().nextLong(0, Long.MAX_VALUE / 2));
         restServer.start(resource);
         Exit.addShutdownHook("coordinator-shutdown-hook", () -> {
             System.out.println("Running coordinator shutdown hook.");

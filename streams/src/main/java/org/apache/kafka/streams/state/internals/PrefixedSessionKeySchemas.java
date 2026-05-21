@@ -126,8 +126,8 @@ public class PrefixedSessionKeySchemas {
                     }
 
                     if ((binaryKeyFrom == null || windowedKey.key().compareTo(binaryKeyFrom) >= 0)
-                        && (binaryKeyTo == null || windowedKey.key().compareTo(binaryKeyTo) <= 0)
-                        && endTime >= earliestWindowEndTime && startTime <= latestWindowStartTime) {
+                            && (binaryKeyTo == null || windowedKey.key().compareTo(binaryKeyTo) <= 0)
+                            && endTime >= earliestWindowEndTime && startTime <= latestWindowStartTime) {
                         return true;
                     }
                     iterator.next();
@@ -287,9 +287,9 @@ public class PrefixedSessionKeySchemas {
                     final long startTime = windowedKey.window().start();
 
                     if ((binaryKeyFrom == null || windowedKey.key().compareTo(binaryKeyFrom) >= 0)
-                        && (binaryKeyTo == null || windowedKey.key().compareTo(binaryKeyTo) <= 0)
-                        && endTime >= from
-                        && startTime <= to) {
+                            && (binaryKeyTo == null || windowedKey.key().compareTo(binaryKeyTo) <= 0)
+                            && endTime >= from
+                            && startTime <= to) {
                         return true;
                     }
                     iterator.next();

@@ -37,15 +37,15 @@ public class GroupedTableOperationRepartitionNode<K, V> extends BaseRepartitionN
                                                  final String repartitionTopic,
                                                  final ProcessorParameters<K, V, K, V> processorParameters) {
         super(
-            nodeName,
-            sourceName,
-            processorParameters,
-            keySerde,
-            valueSerde,
-            sinkName,
-            repartitionTopic,
-            null,
-            InternalTopicProperties.empty()
+                nodeName,
+                sourceName,
+                processorParameters,
+                keySerde,
+                valueSerde,
+                sinkName,
+                repartitionTopic,
+                null,
+                InternalTopicProperties.empty()
         );
     }
 
@@ -81,21 +81,21 @@ public class GroupedTableOperationRepartitionNode<K, V> extends BaseRepartitionN
         topologyBuilder.addInternalTopic(repartitionTopic, internalTopicProperties);
 
         topologyBuilder.addSink(
-            sinkName,
-            repartitionTopic,
-            keySerializer(),
-            valueSerializer(),
-            null,
-            parentNodeNames()
+                sinkName,
+                repartitionTopic,
+                keySerializer(),
+                valueSerializer(),
+                null,
+                parentNodeNames()
         );
 
         topologyBuilder.addSource(
-            null,
-            sourceName,
-            new FailOnInvalidTimestamp(),
-            keyDeserializer(),
-            valueDeserializer(),
-            repartitionTopic
+                null,
+                sourceName,
+                new FailOnInvalidTimestamp(),
+                keyDeserializer(),
+                valueDeserializer(),
+                repartitionTopic
         );
     }
 
@@ -107,13 +107,13 @@ public class GroupedTableOperationRepartitionNode<K, V> extends BaseRepartitionN
         @Override
         public GroupedTableOperationRepartitionNode<K, V> build() {
             return new GroupedTableOperationRepartitionNode<>(
-                nodeName,
-                keySerde,
-                valueSerde,
-                sinkName,
-                sourceName,
-                repartitionTopic,
-                processorParameters
+                    nodeName,
+                    keySerde,
+                    valueSerde,
+                    sinkName,
+                    sourceName,
+                    repartitionTopic,
+                    processorParameters
             );
         }
     }

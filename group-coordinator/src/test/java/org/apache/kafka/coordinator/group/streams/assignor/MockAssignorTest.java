@@ -47,11 +47,11 @@ public class MockAssignorTest {
     public void testZeroMembers() {
 
         TaskAssignorException ex = assertThrows(TaskAssignorException.class, () -> assignor.assign(
-            new GroupSpecImpl(
-                Map.of(),
-                new HashMap<>()
+                new GroupSpecImpl(
+                    Map.of(),
+                    new HashMap<>()
             ),
-            new TopologyDescriberImpl(5, List.of("test-subtopology"))
+                new TopologyDescriberImpl(5, List.of("test-subtopology"))
         ));
 
         assertEquals("No member available to assign task 0 of subtopology test-subtopology", ex.getMessage());
@@ -61,35 +61,35 @@ public class MockAssignorTest {
     public void testDoubleAssignment() {
 
         final AssignmentMemberSpec memberSpec1 = new AssignmentMemberSpec(
-            Optional.empty(),
-            Optional.empty(),
-            Map.of("test-subtopology", Set.of(0)),
-            Map.of(),
-            Map.of(),
-            "test-process",
-            Map.of(),
-            Map.of(),
-            Map.of()
+                Optional.empty(),
+                Optional.empty(),
+                Map.of("test-subtopology", Set.of(0)),
+                Map.of(),
+                Map.of(),
+                "test-process",
+                Map.of(),
+                Map.of(),
+                Map.of()
         );
 
         final AssignmentMemberSpec memberSpec2 = new AssignmentMemberSpec(
-            Optional.empty(),
-            Optional.empty(),
-            Map.of("test-subtopology", Set.of(0)),
-            Map.of(),
-            Map.of(),
-            "test-process",
-            Map.of(),
-            Map.of(),
-            Map.of()
+                Optional.empty(),
+                Optional.empty(),
+                Map.of("test-subtopology", Set.of(0)),
+                Map.of(),
+                Map.of(),
+                "test-process",
+                Map.of(),
+                Map.of(),
+                Map.of()
         );
 
         TaskAssignorException ex = assertThrows(TaskAssignorException.class, () -> assignor.assign(
-            new GroupSpecImpl(
-                Map.of("member1", memberSpec1, "member2", memberSpec2),
-                new HashMap<>()
+                new GroupSpecImpl(
+                    Map.of("member1", memberSpec1, "member2", memberSpec2),
+                    new HashMap<>()
             ),
-            new TopologyDescriberImpl(5, List.of("test-subtopology"))
+                new TopologyDescriberImpl(5, List.of("test-subtopology"))
         ));
 
         assertEquals("Task 0 of subtopology test-subtopology is assigned to multiple members", ex.getMessage());
@@ -99,91 +99,89 @@ public class MockAssignorTest {
     public void testBasicScenario() {
 
         final GroupAssignment result = assignor.assign(
-            new GroupSpecImpl(
-                Map.of(),
-                new HashMap<>()
+                new GroupSpecImpl(
+                    Map.of(),
+                    new HashMap<>()
             ),
-            new TopologyDescriberImpl(5, List.of())
+                new TopologyDescriberImpl(5, List.of())
         );
 
         assertEquals(0, result.members().size());
     }
 
-
     @Test
     public void testSingleMember() {
 
         final AssignmentMemberSpec memberSpec = new AssignmentMemberSpec(
-            Optional.empty(),
-            Optional.empty(),
-            Map.of(),
-            Map.of(),
-            Map.of(),
-            "test-process",
-            Map.of(),
-            Map.of(),
-            Map.of()
+                Optional.empty(),
+                Optional.empty(),
+                Map.of(),
+                Map.of(),
+                Map.of(),
+                "test-process",
+                Map.of(),
+                Map.of(),
+                Map.of()
         );
 
         final GroupAssignment result = assignor.assign(
-            new GroupSpecImpl(
-                Map.of("test_member", memberSpec),
-                new HashMap<>()
+                new GroupSpecImpl(
+                    Map.of("test_member", memberSpec),
+                    new HashMap<>()
             ),
-            new TopologyDescriberImpl(4, List.of("test-subtopology"))
+                new TopologyDescriberImpl(4, List.of("test-subtopology"))
         );
 
         assertEquals(1, result.members().size());
         final MemberAssignment testMember = result.members().get("test_member");
         assertNotNull(testMember);
         assertEquals(mkMap(
-            mkEntry("test-subtopology", Set.of(0, 1, 2, 3))
+                mkEntry("test-subtopology", Set.of(0, 1, 2, 3))
         ), testMember.activeTasks());
     }
-
 
     @Test
     public void testTwoMembersTwoSubtopologies() {
 
         final AssignmentMemberSpec memberSpec1 = new AssignmentMemberSpec(
-            Optional.empty(),
-            Optional.empty(),
-            Map.of(),
-            Map.of(),
-            Map.of(),
-            "test-process",
-            Map.of(),
-            Map.of(),
-            Map.of()
+                Optional.empty(),
+                Optional.empty(),
+                Map.of(),
+                Map.of(),
+                Map.of(),
+                "test-process",
+                Map.of(),
+                Map.of(),
+                Map.of()
         );
 
         final AssignmentMemberSpec memberSpec2 = new AssignmentMemberSpec(
-            Optional.empty(),
-            Optional.empty(),
-            Map.of(),
-            Map.of(),
-            Map.of(),
-            "test-process",
-            Map.of(),
-            Map.of(),
-            Map.of()
+                Optional.empty(),
+                Optional.empty(),
+                Map.of(),
+                Map.of(),
+                Map.of(),
+                "test-process",
+                Map.of(),
+                Map.of(),
+                Map.of()
         );
 
         final GroupAssignment result = assignor.assign(
-            new GroupSpecImpl(
-                mkMap(mkEntry("test_member1", memberSpec1), mkEntry("test_member2", memberSpec2)),
-                new HashMap<>()
+                new GroupSpecImpl(
+                    mkMap(mkEntry("test_member1", memberSpec1), mkEntry("test_member2", memberSpec2)),
+                    new HashMap<>()
             ),
-            new TopologyDescriberImpl(4, List.of("test-subtopology1", "test-subtopology2"))
+                new TopologyDescriberImpl(4, List.of("test-subtopology1", "test-subtopology2"))
         );
 
         final Map<String, Set<Integer>> expected1 = mkMap(
-            mkEntry("test-subtopology1", Set.of(1, 3)),
-            mkEntry("test-subtopology2", Set.of(1, 3))
+                mkEntry("test-subtopology1", Set.of(1, 3)),
+                mkEntry("test-subtopology2", Set.of(1, 3))
         );
         final Map<String, Set<Integer>> expected2 = mkMap(
-            mkEntry("test-subtopology1", Set.of(0, 2)),
-            mkEntry("test-subtopology2", Set.of(0, 2))
+                mkEntry("test-subtopology1", Set.of(0, 2)),
+                mkEntry("test-subtopology2", Set.of(0, 2))
         );
 
         assertEquals(2, result.members().size());
@@ -199,40 +197,40 @@ public class MockAssignorTest {
     public void testTwoMembersTwoSubtopologiesStickiness() {
 
         final AssignmentMemberSpec memberSpec1 = new AssignmentMemberSpec(
-            Optional.empty(),
-            Optional.empty(),
-            mkMap(
-                mkEntry("test-subtopology1", new HashSet<>(List.of(0, 2, 3))),
-                mkEntry("test-subtopology2", new HashSet<>(List.of(0)))
+                Optional.empty(),
+                Optional.empty(),
+                mkMap(
+                    mkEntry("test-subtopology1", new HashSet<>(List.of(0, 2, 3))),
+                    mkEntry("test-subtopology2", new HashSet<>(List.of(0)))
             ),
-            Map.of(),
-            Map.of(),
-            "test-process",
-            Map.of(),
-            Map.of(),
-            Map.of()
+                Map.of(),
+                Map.of(),
+                "test-process",
+                Map.of(),
+                Map.of(),
+                Map.of()
         );
 
         final AssignmentMemberSpec memberSpec2 = new AssignmentMemberSpec(
-            Optional.empty(),
-            Optional.empty(),
-            mkMap(
-                mkEntry("test-subtopology1", new HashSet<>(List.of(1))),
-                mkEntry("test-subtopology2", new HashSet<>(List.of(3)))
+                Optional.empty(),
+                Optional.empty(),
+                mkMap(
+                    mkEntry("test-subtopology1", new HashSet<>(List.of(1))),
+                    mkEntry("test-subtopology2", new HashSet<>(List.of(3)))
             ),
-            Map.of(),
-            Map.of(),
-            "test-process",
-            Map.of(),
-            Map.of(),
-            Map.of()
+                Map.of(),
+                Map.of(),
+                "test-process",
+                Map.of(),
+                Map.of(),
+                Map.of()
         );
         final GroupAssignment result = assignor.assign(
-            new GroupSpecImpl(
-                mkMap(mkEntry("test_member1", memberSpec1), mkEntry("test_member2", memberSpec2)),
-                new HashMap<>()
+                new GroupSpecImpl(
+                    mkMap(mkEntry("test_member1", memberSpec1), mkEntry("test_member2", memberSpec2)),
+                    new HashMap<>()
             ),
-            new TopologyDescriberImpl(4, List.of("test-subtopology1", "test-subtopology2"))
+                new TopologyDescriberImpl(4, List.of("test-subtopology1", "test-subtopology2"))
         );
 
         assertEquals(2, result.members().size());
@@ -241,12 +239,12 @@ public class MockAssignorTest {
         assertNotNull(testMember1);
         assertNotNull(testMember2);
         assertEquals(mkMap(
-            mkEntry("test-subtopology1", Set.of(0, 2, 3)),
-            mkEntry("test-subtopology2", Set.of(0))
+                mkEntry("test-subtopology1", Set.of(0, 2, 3)),
+                mkEntry("test-subtopology2", Set.of(0))
         ), testMember1.activeTasks());
         assertEquals(mkMap(
-            mkEntry("test-subtopology1", Set.of(1)),
-            mkEntry("test-subtopology2", Set.of(1, 2, 3))
+                mkEntry("test-subtopology1", Set.of(1)),
+                mkEntry("test-subtopology2", Set.of(1, 2, 3))
         ), testMember2.activeTasks());
     }
 

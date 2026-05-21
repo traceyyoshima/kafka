@@ -83,7 +83,7 @@ public class ClusterToolTest {
         List<Integer> brokerIds = clusterInstance.brokerIds().stream().toList();
         clusterInstance.shutdownBroker(brokerIds.get(0));
 
-        List<String> ports = Arrays.stream(clusterInstance.bootstrapServers().split(",")).map(b ->  b.split(":")[1]).toList();
+        List<String> ports = Arrays.stream(clusterInstance.bootstrapServers().split(",")).map(b -> b.split(":")[1]).toList();
         String format = "%-10s %-9s %-10s %-10s %-10s %-15s%n%-10s %-9s %-10s %-10s %-10s %-15s%n%-10s %-9s %-10s %-10s %-10s %-6s";
         String expected = String.format(format,
                 "ID", "HOST", "PORT", "RACK", "STATE", "ENDPOINT_TYPE",
@@ -136,10 +136,10 @@ public class ClusterToolTest {
 
         try (final MockedStatic<Admin> mockedAdmin = Mockito.mockStatic(Admin.class, Mockito.CALLS_REAL_METHODS)) {
             String output = ToolsTestUtils.captureStandardOut(() ->
-                assertDoesNotThrow(() -> ClusterTool.execute(
-                    "cluster-id",
-                    "--bootstrap-server", clusterInstance.bootstrapServers(),
-                    "--config", configFile.getAbsolutePath()
+                    assertDoesNotThrow(() -> ClusterTool.execute(
+                        "cluster-id",
+                        "--bootstrap-server", clusterInstance.bootstrapServers(),
+                        "--config", configFile.getAbsolutePath()
                 ))
             );
             assertTrue(output.contains("Option --config has been deprecated and will be removed in a future version. Use --command-config instead."));
@@ -157,10 +157,10 @@ public class ClusterToolTest {
 
         try (final MockedStatic<Admin> mockedAdmin = Mockito.mockStatic(Admin.class, Mockito.CALLS_REAL_METHODS)) {
             String output = ToolsTestUtils.captureStandardOut(() ->
-                assertDoesNotThrow(() -> ClusterTool.execute(
-                    "cluster-id",
-                    "--bootstrap-server", clusterInstance.bootstrapServers(),
-                    "--command-config", configFile.getAbsolutePath()
+                    assertDoesNotThrow(() -> ClusterTool.execute(
+                        "cluster-id",
+                        "--bootstrap-server", clusterInstance.bootstrapServers(),
+                        "--command-config", configFile.getAbsolutePath()
                 ))
             );
             assertTrue(output.contains("Cluster ID: " + clusterInstance.clusterId()));
@@ -177,11 +177,11 @@ public class ClusterToolTest {
         File configFile = TestUtils.tempFile("client.id=my-client");
 
         ArgumentParserException ex = assertThrows(ArgumentParserException.class, () ->
-            ClusterTool.execute(
-                "cluster-id",
-                "--bootstrap-server", clusterInstance.bootstrapServers(),
-                "--config", configFile.getAbsolutePath(),
-                "--command-config", configFile.getAbsolutePath()
+                ClusterTool.execute(
+                    "cluster-id",
+                    "--bootstrap-server", clusterInstance.bootstrapServers(),
+                    "--config", configFile.getAbsolutePath(),
+                    "--command-config", configFile.getAbsolutePath()
             )
         );
         assertEquals("--config and --command-config cannot be specified together.", ex.getMessage());

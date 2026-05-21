@@ -214,12 +214,12 @@ public final class StateSerdes<K, V> {
         } catch (final ClassCastException e) {
             final String keyClass = key == null ? "unknown because key is null" : key.getClass().getName();
             throw new StreamsException(
-                String.format("A serializer (%s) is not compatible to the actual key type " +
+                    String.format("A serializer (%s) is not compatible to the actual key type " +
                         "(key type: %s). Change the default Serdes in StreamConfig or " +
                         "provide correct Serdes via method parameters.",
-                    keySerializer().getClass().getName(),
-                    keyClass),
-                e);
+                        keySerializer().getClass().getName(),
+                        keyClass),
+                    e);
         }
     }
 
@@ -256,12 +256,12 @@ public final class StateSerdes<K, V> {
                 valueClass = value == null ? "unknown because value is null" : value.getClass().getName();
             }
             throw new StreamsException(
-                String.format("A serializer (%s) is not compatible to the actual value type " +
+                    String.format("A serializer (%s) is not compatible to the actual value type " +
                         "(value type: %s). Change the default Serdes in StreamConfig or " +
                         "provide correct Serdes via method parameters.",
-                    serializerClass.getName(),
-                    valueClass),
-                e);
+                        serializerClass.getName(),
+                        valueClass),
+                    e);
         }
     }
 }

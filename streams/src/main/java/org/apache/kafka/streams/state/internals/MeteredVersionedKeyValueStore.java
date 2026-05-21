@@ -66,8 +66,8 @@ import static org.apache.kafka.streams.processor.internals.metrics.StreamsMetric
  * @param <V> The (raw) value type
  */
 public class MeteredVersionedKeyValueStore<K, V>
-    extends WrappedStateStore<VersionedBytesStore, K, V>
-    implements VersionedKeyValueStore<K, V> {
+        extends WrappedStateStore<VersionedBytesStore, K, V>
+        implements VersionedKeyValueStore<K, V> {
 
     private final MeteredVersionedKeyValueStoreInternal internal;
 
@@ -104,22 +104,22 @@ public class MeteredVersionedKeyValueStore<K, V>
         private StateSerdes<K, V> plainValueSerdes;
 
         private final Map<Class<?>, QueryHandler<?>> queryHandlers =
-            mkMap(
-                mkEntry(
-                    RangeQuery.class,
-                    (query, positionBound, config, store) -> runRangeQuery(query, positionBound, config)
+                mkMap(
+                    mkEntry(
+                        RangeQuery.class,
+                        (query, positionBound, config, store) -> runRangeQuery(query, positionBound, config)
                 ),
-                mkEntry(
-                    KeyQuery.class,
-                    (query, positionBound, config, store) -> runKeyQuery(query, positionBound, config)
+                    mkEntry(
+                        KeyQuery.class,
+                        (query, positionBound, config, store) -> runKeyQuery(query, positionBound, config)
                 ),
-                mkEntry(
-                    VersionedKeyQuery.class,
-                    (query, positionBound, config, store) -> runVersionedKeyQuery(query, positionBound, config)
+                    mkEntry(
+                        VersionedKeyQuery.class,
+                        (query, positionBound, config, store) -> runVersionedKeyQuery(query, positionBound, config)
                 ),
-                mkEntry(
-                    MultiVersionedKeyQuery.class,
-                    (query, positionBound, config, store) -> runMultiVersionedKeyQuery(query, positionBound, config)
+                    mkEntry(
+                        MultiVersionedKeyQuery.class,
+                        (query, positionBound, config, store) -> runMultiVersionedKeyQuery(query, positionBound, config)
                 )
             );
 
@@ -131,11 +131,11 @@ public class MeteredVersionedKeyValueStore<K, V>
             final Serde<V> valueSerde
         ) {
             super(
-                inner,
-                metricScope,
-                time,
-                keySerde,
-                valueSerde == null
+                    inner,
+                    metricScope,
+                    time,
+                    keySerde,
+                    valueSerde == null
                     ? null
                     : new ValueAndTimestampSerde<>(valueSerde)
             );
@@ -147,13 +147,13 @@ public class MeteredVersionedKeyValueStore<K, V>
             Objects.requireNonNull(key, "key cannot be null");
             try {
                 final long validTo = maybeMeasureLatency(
-                    () -> inner.put(
-                        serializeKey(key),
-                        plainValueSerdes.rawValue(value, internalContext.headers()),
-                        timestamp
+                        () -> inner.put(
+                            serializeKey(key),
+                            plainValueSerdes.rawValue(value, internalContext.headers()),
+                            timestamp
                     ),
-                    time,
-                    putSensor
+                        time,
+                        putSensor
                 );
                 maybeRecordE2ELatency();
                 return validTo;
@@ -201,10 +201,10 @@ public class MeteredVersionedKeyValueStore<K, V>
                 }
             } else {
                 result = ((QueryHandler<R>) handler).apply(
-                    query,
-                    positionBound,
-                    config,
-                    this
+                        query,
+                        positionBound,
+                        config,
+                        this
                 );
                 if (config.isCollectExecutionInfo()) {
                     result.addExecutionInfo("Handled in " + getClass() + " with serdes " + serdes + " in " + (time.nanoseconds() - start) + "ns");
@@ -248,11 +248,11 @@ public class MeteredVersionedKeyValueStore<K, V>
                 rawKeyQuery = rawKeyQuery.asOf(typedKeyQuery.asOfTimestamp().get());
             }
             final QueryResult<VersionedRecord<byte[]>> rawResult =
-                wrapped().query(rawKeyQuery, positionBound, config);
+                    wrapped().query(rawKeyQuery, positionBound, config);
             if (rawResult.isSuccess() && rawResult.getResult() != null) {
                 final VersionedRecord<V> versionedRecord = StoreQueryUtils.deserializeVersionedRecord(plainValueSerdes, rawResult.getResult());
                 final QueryResult<VersionedRecord<V>> typedQueryResult =
-                    InternalQueryResultUtil.copyAndSubstituteDeserializedResult(rawResult, versionedRecord);
+                        InternalQueryResultUtil.copyAndSubstituteDeserializedResult(rawResult, versionedRecord);
                 result = (QueryResult<R>) typedQueryResult;
             } else {
                 // the generic type doesn't matter, since failed queries have no result set.
@@ -286,16 +286,16 @@ public class MeteredVersionedKeyValueStore<K, V>
             final QueryResult<VersionedRecordIterator<byte[]>> rawResult = wrapped().query(rawKeyQuery, positionBound, config);
             if (rawResult.isSuccess()) {
                 final MeteredMultiVersionedKeyQueryIterator<V> typedResult =
-                    new MeteredMultiVersionedKeyQueryIterator<>(
-                        rawResult.getResult(),
-                        iteratorDurationSensor,
-                        time,
-                        StoreQueryUtils.deserializeValue(plainValueSerdes),
-                        numOpenIterators,
-                        openIterators
+                        new MeteredMultiVersionedKeyQueryIterator<>(
+                            rawResult.getResult(),
+                            iteratorDurationSensor,
+                            time,
+                            StoreQueryUtils.deserializeValue(plainValueSerdes),
+                            numOpenIterators,
+                            openIterators
                     );
                 final QueryResult<MeteredMultiVersionedKeyQueryIterator<V>> typedQueryResult =
-                    InternalQueryResultUtil.copyAndSubstituteDeserializedResult(rawResult, typedResult);
+                        InternalQueryResultUtil.copyAndSubstituteDeserializedResult(rawResult, typedResult);
                 result = (QueryResult<R>) typedQueryResult;
             } else {
                 // the generic type doesn't matter, since failed queries have no result set.
@@ -325,12 +325,12 @@ public class MeteredVersionedKeyValueStore<K, V>
             final String storeName = super.name();
             final String changelogTopic = ProcessorContextUtils.changelogFor(context, storeName, Boolean.FALSE);
             plainValueSerdes = StoreSerdeInitializer.prepareStoreSerde(
-                context,
-                storeName,
-                changelogTopic,
-                keySerde,
-                plainValueSerde,
-                WrappingNullableUtils::prepareValueSerde
+                    context,
+                    storeName,
+                    changelogTopic,
+                    keySerde,
+                    plainValueSerde,
+                    WrappingNullableUtils::prepareValueSerde
             );
         }
     }

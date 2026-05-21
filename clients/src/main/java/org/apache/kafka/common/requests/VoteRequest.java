@@ -79,10 +79,10 @@ public class VoteRequest extends AbstractRequest {
         return new VoteRequestData()
                    .setClusterId(clusterId)
                    .setTopics(List.of(
-                       new VoteRequestData.TopicData()
+                           new VoteRequestData.TopicData()
                            .setTopicName(topicPartition.topic())
                            .setPartitions(List.of(
-                               new VoteRequestData.PartitionData()
+                                   new VoteRequestData.PartitionData()
                                    .setPartitionIndex(topicPartition.partition())
                                    .setReplicaEpoch(replicaEpoch)
                                    .setReplicaId(replicaId)

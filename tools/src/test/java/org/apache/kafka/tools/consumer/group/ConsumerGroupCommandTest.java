@@ -28,30 +28,30 @@ public class ConsumerGroupCommandTest {
     @Test
     public void testValidateRegexCommandWithValidRegex() {
         String output = ToolsTestUtils.grabConsoleOutput(
-            () -> ConsumerGroupCommand.main(List.of(
-                "--validate-regex",
-                "foo.*"
+                () -> ConsumerGroupCommand.main(List.of(
+                    "--validate-regex",
+                    "foo.*"
             ).toArray(new String[0]))
         );
 
         assertEquals(
-            "The regular expression `foo.*` is valid.\n",
-            output
+                "The regular expression `foo.*` is valid.\n",
+                output
         );
     }
 
     @Test
     public void testValidateRegexCommandWithInvalidRegex() {
         String output = ToolsTestUtils.grabConsoleOutput(
-            () -> ConsumerGroupCommand.main(List.of(
-                "--validate-regex",
-                "[foo.*"
+                () -> ConsumerGroupCommand.main(List.of(
+                    "--validate-regex",
+                    "[foo.*"
             ).toArray(new String[0]))
         );
 
         assertEquals(
-            "The regular expression `[foo.*` is invalid: missing closing ].\n",
-            output
+                "The regular expression `[foo.*` is invalid: missing closing ].\n",
+                output
         );
     }
 }

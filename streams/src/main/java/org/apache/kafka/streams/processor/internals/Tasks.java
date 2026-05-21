@@ -75,7 +75,7 @@ class Tasks implements TasksRegistry {
     @Override
     public Map<TaskId, Set<TopicPartition>> drainPendingActiveTasksForTopologies(final Set<String> currentTopologies) {
         final Map<TaskId, Set<TopicPartition>> pendingActiveTasksForTopologies =
-            filterMap(pendingActiveTasksToCreate, t -> currentTopologies.contains(t.getKey().topologyName()));
+                filterMap(pendingActiveTasksToCreate, t -> currentTopologies.contains(t.getKey().topologyName()));
 
         pendingActiveTasksToCreate.keySet().removeAll(pendingActiveTasksForTopologies.keySet());
 
@@ -85,7 +85,7 @@ class Tasks implements TasksRegistry {
     @Override
     public Map<TaskId, Set<TopicPartition>> drainPendingStandbyTasksForTopologies(final Set<String> currentTopologies) {
         final Map<TaskId, Set<TopicPartition>> pendingActiveTasksForTopologies =
-            filterMap(pendingStandbyTasksToCreate, t -> currentTopologies.contains(t.getKey().topologyName()));
+                filterMap(pendingStandbyTasksToCreate, t -> currentTopologies.contains(t.getKey().topologyName()));
 
         pendingStandbyTasksToCreate.keySet().removeAll(pendingActiveTasksForTopologies.keySet());
 

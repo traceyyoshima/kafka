@@ -158,10 +158,10 @@ public class ClusterMetadataAuthorizerTest {
     }
 
     static final List<AclBinding> TEST_BINDINGS = List.of(
-        new AclBinding(new ResourcePattern(TOPIC, WILDCARD_RESOURCE, LITERAL),
-            new AccessControlEntry(WILDCARD_PRINCIPAL, WILDCARD, READ, ALLOW)),
-        new AclBinding(new ResourcePattern(TOPIC, WILDCARD_RESOURCE, LITERAL),
-            new AccessControlEntry(WILDCARD_PRINCIPAL, WILDCARD, WRITE, ALLOW))
+            new AclBinding(new ResourcePattern(TOPIC, WILDCARD_RESOURCE, LITERAL),
+                new AccessControlEntry(WILDCARD_PRINCIPAL, WILDCARD, READ, ALLOW)),
+            new AclBinding(new ResourcePattern(TOPIC, WILDCARD_RESOURCE, LITERAL),
+                new AccessControlEntry(WILDCARD_PRINCIPAL, WILDCARD, WRITE, ALLOW))
     );
 
     static final List<AclBindingFilter> TEST_FILTERS = TEST_BINDINGS.stream().
@@ -174,14 +174,14 @@ public class ClusterMetadataAuthorizerTest {
         authorizer.setAclMutator(mutator);
         CompletableFuture<List<AclCreateResult>> response = new CompletableFuture<>();
         response.complete(List.of(AclCreateResult.SUCCESS,
-            new AclCreateResult(new InvalidRequestException("invalid"))));
+                new AclCreateResult(new InvalidRequestException("invalid"))));
         mutator.setCreateAclsResponse(response);
         List<? extends CompletionStage<AclCreateResult>> results = authorizer.createAcls(
-            new MockAuthorizableRequestContext.Builder().build(), TEST_BINDINGS);
+                new MockAuthorizableRequestContext.Builder().build(), TEST_BINDINGS);
         assertEquals(2, results.size());
         assertEquals(Optional.empty(), results.get(0).toCompletableFuture().get().exception());
         assertEquals(InvalidRequestException.class,
-            results.get(1).toCompletableFuture().get().exception().get().getClass());
+                results.get(1).toCompletableFuture().get().exception().get().getClass());
     }
 
     @Test
@@ -193,12 +193,12 @@ public class ClusterMetadataAuthorizerTest {
         response.completeExceptionally(new AuthorizationException("not authorized"));
         mutator.setCreateAclsResponse(response);
         List<? extends CompletionStage<AclCreateResult>> results = authorizer.createAcls(
-            new MockAuthorizableRequestContext.Builder().build(), TEST_BINDINGS);
+                new MockAuthorizableRequestContext.Builder().build(), TEST_BINDINGS);
         assertEquals(2, results.size());
         assertEquals(AuthorizationException.class,
-            results.get(0).toCompletableFuture().get().exception().get().getClass());
+                results.get(0).toCompletableFuture().get().exception().get().getClass());
         assertEquals(AuthorizationException.class,
-            results.get(1).toCompletableFuture().get().exception().get().getClass());
+                results.get(1).toCompletableFuture().get().exception().get().getClass());
     }
 
     @Test
@@ -209,10 +209,10 @@ public class ClusterMetadataAuthorizerTest {
         CompletableFuture<List<AclDeleteResult>> response = new CompletableFuture<>();
         response.complete(List.of(new AclDeleteResult(
                 Set.of(new AclBindingDeleteResult(TEST_BINDINGS.get(0)))),
-            new AclDeleteResult(new InvalidRequestException("invalid"))));
+                new AclDeleteResult(new InvalidRequestException("invalid"))));
         mutator.setDeleteAclsResponse(response);
         List<? extends CompletionStage<AclDeleteResult>> results = authorizer.deleteAcls(
-            new MockAuthorizableRequestContext.Builder().build(), TEST_FILTERS);
+                new MockAuthorizableRequestContext.Builder().build(), TEST_FILTERS);
         assertEquals(2, results.size());
 
         Collection<AclBindingDeleteResult> deleteResults0 = results.get(0).toCompletableFuture().
@@ -235,7 +235,7 @@ public class ClusterMetadataAuthorizerTest {
         response.completeExceptionally(new AuthorizationException("not authorized"));
         mutator.setDeleteAclsResponse(response);
         List<? extends CompletionStage<AclDeleteResult>> results = authorizer.deleteAcls(
-            new MockAuthorizableRequestContext.Builder().build(), TEST_FILTERS);
+                new MockAuthorizableRequestContext.Builder().build(), TEST_FILTERS);
         assertEquals(2, results.size());
         for (int i = 0; i < 2; i++) {
             AclDeleteResult deleteResult = results.get(i).toCompletableFuture().get();

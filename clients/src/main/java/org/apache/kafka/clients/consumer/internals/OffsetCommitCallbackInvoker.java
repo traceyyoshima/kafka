@@ -43,9 +43,9 @@ public class OffsetCommitCallbackInvoker {
     public void enqueueInterceptorInvocation(final Map<TopicPartition, OffsetAndMetadata> offsets) {
         if (!interceptors.isEmpty()) {
             callbackQueue.add(new OffsetCommitCallbackTask(
-                (offsetsParam, exception) -> interceptors.onCommit(offsetsParam),
-                offsets,
-                null
+                    (offsetsParam, exception) -> interceptors.onCommit(offsetsParam),
+                    offsets,
+                    null
             ));
         }
     }

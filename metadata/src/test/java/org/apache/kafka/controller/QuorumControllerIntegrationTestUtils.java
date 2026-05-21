@@ -112,19 +112,19 @@ public class QuorumControllerIntegrationTestUtils {
         Map<Integer, Long> brokerEpochs = new HashMap<>();
         for (int brokerId = 0; brokerId < numBrokers; brokerId++) {
             BrokerRegistrationReply reply = controller.registerBroker(ANONYMOUS_CONTEXT,
-                new BrokerRegistrationRequestData()
+                    new BrokerRegistrationRequestData()
                     .setBrokerId(brokerId)
                     .setRack(null)
                     .setClusterId(controller.clusterId())
                     .setFeatures(brokerFeaturesPlusFeatureVersions(MetadataVersion.MINIMUM_VERSION, MetadataVersion.latestTesting(),
-                        Map.of(EligibleLeaderReplicasVersion.FEATURE_NAME, EligibleLeaderReplicasVersion.ELRV_1.featureLevel())))
+                            Map.of(EligibleLeaderReplicasVersion.FEATURE_NAME, EligibleLeaderReplicasVersion.ELRV_1.featureLevel())))
                     .setIncarnationId(Uuid.fromString("kxAT73dKQsitIedpiPtwB" + brokerId))
                     .setLogDirs(List.of(
-                        Uuid.fromString("TESTBROKER" + Integer.toString(100000 + brokerId).substring(1) + "DIRAAAA")
+                            Uuid.fromString("TESTBROKER" + Integer.toString(100000 + brokerId).substring(1) + "DIRAAAA")
                     ))
                     .setListeners(new ListenerCollection(
-                        List.of(
-                            new Listener()
+                            List.of(
+                                new Listener()
                                 .setName("PLAINTEXT")
                                 .setHost("localhost")
                                 .setPort(9092 + brokerId)
@@ -136,7 +136,7 @@ public class QuorumControllerIntegrationTestUtils {
 
             // Send heartbeat to unfence
             controller.processBrokerHeartbeat(ANONYMOUS_CONTEXT,
-                new BrokerHeartbeatRequestData()
+                    new BrokerHeartbeatRequestData()
                     .setWantFence(false)
                     .setBrokerEpoch(brokerEpochs.get(brokerId))
                     .setBrokerId(brokerId)
@@ -164,7 +164,7 @@ public class QuorumControllerIntegrationTestUtils {
         }
         for (Integer brokerId : brokers) {
             BrokerHeartbeatReply reply = controller.processBrokerHeartbeat(ANONYMOUS_CONTEXT,
-                new BrokerHeartbeatRequestData()
+                    new BrokerHeartbeatRequestData()
                     .setWantFence(false)
                     .setBrokerEpoch(brokerEpochs.get(brokerId))
                     .setBrokerId(brokerId)
@@ -195,13 +195,13 @@ public class QuorumControllerIntegrationTestUtils {
         CreateTopicsRequestData request = new CreateTopicsRequestData();
         for (int i = 0; i < numTopics; i++) {
             request.topics().add(
-                new CreatableTopic().
+                    new CreatableTopic().
                     setName(prefix + i).
                     setNumPartitions(1).
                     setReplicationFactor((short) replicationFactor));
         }
         CreateTopicsResponseData response =
-            controller.createTopics(ANONYMOUS_CONTEXT, request, describable, false).get();
+                controller.createTopics(ANONYMOUS_CONTEXT, request, describable, false).get();
         for (int i = 0; i < numTopics; i++) {
             CreatableTopicResult result = response.topics().find(prefix + i);
             if (result.errorCode() != Errors.TOPIC_ALREADY_EXISTS.code()) {

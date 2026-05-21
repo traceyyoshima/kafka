@@ -37,7 +37,7 @@ public class SampleTaskWorker implements TaskWorker {
     SampleTaskWorker(SampleTaskSpec spec) {
         this.spec = spec;
         this.executor = Executors.newSingleThreadScheduledExecutor(
-            ThreadUtils.createThreadFactory("SampleTaskWorker", false));
+                ThreadUtils.createThreadFactory("SampleTaskWorker", false));
         this.future = null;
     }
 

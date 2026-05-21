@@ -145,7 +145,7 @@ public final class SlidingWindows {
         }
         final SlidingWindows that = (SlidingWindows) o;
         return timeDifferenceMs == that.timeDifferenceMs &&
-            graceMs == that.graceMs;
+                graceMs == that.graceMs;
     }
 
     @Override
@@ -156,8 +156,8 @@ public final class SlidingWindows {
     @Override
     public String toString() {
         return "SlidingWindows{" +
-            ", sizeMs=" + timeDifferenceMs +
-            ", graceMs=" + graceMs +
-            '}';
+                ", sizeMs=" + timeDifferenceMs +
+                ", graceMs=" + graceMs +
+                '}';
     }
 }

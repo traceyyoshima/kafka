@@ -218,7 +218,6 @@ public class Struct {
         return this;
     }
 
-
     /**
      * Validates that this struct has filled in all the necessary data with valid values. For required fields
      * without defaults, this validates that a value has been set and has matching types/schemas. If any validation

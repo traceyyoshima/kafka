@@ -76,7 +76,7 @@ public class DeleteConsumerGroupOffsetsHandler extends AdminApiHandler.Batched<C
     private void validateKeys(Set<CoordinatorKey> groupIds) {
         if (!groupIds.equals(Collections.singleton(groupId))) {
             throw new IllegalArgumentException("Received unexpected group ids " + groupIds +
-                " (expected only " + Collections.singleton(groupId) + ")");
+                    " (expected only " + Collections.singleton(groupId) + ")");
         }
     }
 
@@ -86,7 +86,7 @@ public class DeleteConsumerGroupOffsetsHandler extends AdminApiHandler.Batched<C
 
         final OffsetDeleteRequestTopicCollection topics = new OffsetDeleteRequestTopicCollection();
         partitions.stream().collect(Collectors.groupingBy(TopicPartition::topic)).forEach((topic, topicPartitions) -> topics.add(
-            new OffsetDeleteRequestTopic()
+                new OffsetDeleteRequestTopic()
             .setName(topic)
             .setPartitions(topicPartitions.stream()
                 .map(tp -> new OffsetDeleteRequestPartition().setPartitionIndex(tp.partition()))
@@ -95,7 +95,7 @@ public class DeleteConsumerGroupOffsetsHandler extends AdminApiHandler.Batched<C
         ));
 
         return new OffsetDeleteRequest.Builder(
-            new OffsetDeleteRequestData()
+                new OffsetDeleteRequestData()
                 .setGroupId(groupId.idValue)
                 .setTopics(topics)
         );
@@ -122,10 +122,10 @@ public class DeleteConsumerGroupOffsetsHandler extends AdminApiHandler.Batched<C
         } else {
             final Map<TopicPartition, Errors> partitionResults = new HashMap<>();
             response.data().topics().forEach(topic ->
-                topic.partitions().forEach(partition ->
-                    partitionResults.put(
-                        new TopicPartition(topic.name(), partition.partitionIndex()),
-                        Errors.forCode(partition.errorCode())
+                    topic.partitions().forEach(partition ->
+                            partitionResults.put(
+                            new TopicPartition(topic.name(), partition.partitionIndex()),
+                            Errors.forCode(partition.errorCode())
                     )
                 )
             );
@@ -152,7 +152,7 @@ public class DeleteConsumerGroupOffsetsHandler extends AdminApiHandler.Batched<C
             case COORDINATOR_LOAD_IN_PROGRESS:
                 // If the coordinator is in the middle of loading, then we just need to retry
                 log.debug("`OffsetDelete` request for group id {} failed because the coordinator" +
-                    " is still in the process of loading state. Will retry.", groupId.idValue);
+                        " is still in the process of loading state. Will retry.", groupId.idValue);
                 break;
 
             case COORDINATOR_NOT_AVAILABLE:
@@ -160,7 +160,7 @@ public class DeleteConsumerGroupOffsetsHandler extends AdminApiHandler.Batched<C
                 // If the coordinator is unavailable or there was a coordinator change, then we unmap
                 // the key so that we retry the `FindCoordinator` request
                 log.debug("`OffsetDelete` request for group id {} returned error {}. " +
-                    "Will attempt to find the coordinator again and retry.", groupId.idValue, error);
+                        "Will attempt to find the coordinator again and retry.", groupId.idValue, error);
                 groupsToUnmap.add(groupId);
                 break;
 

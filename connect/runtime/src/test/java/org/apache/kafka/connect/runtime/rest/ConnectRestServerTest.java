@@ -197,8 +197,8 @@ public class ConnectRestServerTest {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         response.getEntity().writeTo(baos);
         assertArrayEquals(
-            request.getAllowedMethods(response).toArray(),
-            baos.toString(StandardCharsets.UTF_8).split(", ")
+                request.getAllowedMethods(response).toArray(),
+                baos.toString(StandardCharsets.UTF_8).split(", ")
         );
     }
 
@@ -227,7 +227,7 @@ public class ConnectRestServerTest {
 
         if (expectedHeader != null) {
             assertEquals(expectedHeader,
-                response.getFirstHeader("Access-Control-Allow-Origin").getValue());
+                    response.getFirstHeader("Access-Control-Allow-Origin").getValue());
         }
 
         request = new HttpOptions("/connector-plugins/FileStreamSource/validate");
@@ -238,11 +238,11 @@ public class ConnectRestServerTest {
         assertEquals(404, response.getStatusLine().getStatusCode());
         if (expectedHeader != null) {
             assertEquals(expectedHeader,
-                response.getFirstHeader("Access-Control-Allow-Origin").getValue());
+                    response.getFirstHeader("Access-Control-Allow-Origin").getValue());
         }
         if (method != null) {
             assertEquals(method,
-                response.getFirstHeader("Access-Control-Allow-Methods").getValue());
+                    response.getFirstHeader("Access-Control-Allow-Methods").getValue());
         }
     }
 
@@ -428,7 +428,7 @@ public class ConnectRestServerTest {
     }
 
     private void checkCustomizedHttpResponseHeaders(String headerConfig, Map<String, String> expectedHeaders)
-            throws IOException  {
+        throws IOException  {
         Map<String, String> configMap = baseServerProps();
         configMap.put("offset.storage.file.filename", "/tmp");
         configMap.put(RestServerConfig.RESPONSE_HTTP_HEADERS_CONFIG, headerConfig);

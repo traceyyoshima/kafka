@@ -174,7 +174,6 @@ public class ErrorHandlingTaskTest {
 
     private boolean enableTopicCreation;
 
-
     public void setup(boolean enableTopicCreation) {
         this.enableTopicCreation = enableTopicCreation;
         time = new MockTime(0, 0, 0);
@@ -431,10 +430,10 @@ public class ErrorHandlingTaskTest {
         Plugin<Converter> valueConverterPlugin = metrics.wrap(converter, taskId,  false);
         Plugin<HeaderConverter> headerConverterPlugin = metrics.wrap(headerConverter, taskId);
         workerSinkTask = new WorkerSinkTask(
-            taskId, sinkTask, statusListener, initialState, workerConfig,
-            ClusterConfigState.EMPTY, metrics, keyConverterPlugin, valueConverterPlugin, errorHandlingMetrics,
+                taskId, sinkTask, statusListener, initialState, workerConfig,
+                ClusterConfigState.EMPTY, metrics, keyConverterPlugin, valueConverterPlugin, errorHandlingMetrics,
                 headerConverterPlugin, sinkTransforms, consumer, pluginLoader, time,
-            retryWithToleranceOperator, workerErrantRecordReporter,
+                retryWithToleranceOperator, workerErrantRecordReporter,
                 statusBackingStore, () -> errorReporters, null, TestPlugins.noOpLoaderSwap());
     }
 
@@ -467,7 +466,7 @@ public class ErrorHandlingTaskTest {
         Plugin<Converter> valueConverterPlugin = metrics.wrap(converter, taskId,  false);
         Plugin<HeaderConverter> headerConverterPlugin = metrics.wrap(headerConverter, taskId);
         workerSourceTask = spy(new WorkerSourceTask(
-            taskId, sourceTask, statusListener, initialState, keyConverterPlugin,
+                taskId, sourceTask, statusListener, initialState, keyConverterPlugin,
                 valueConverterPlugin, errorHandlingMetrics, headerConverterPlugin,
                 sourceTransforms, producer, admin,
                 TopicCreationGroup.configuredGroups(sourceConfig),

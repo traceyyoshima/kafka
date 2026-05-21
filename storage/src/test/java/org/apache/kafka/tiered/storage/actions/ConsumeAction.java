@@ -112,13 +112,13 @@ public final class ConsumeAction implements TieredStorageTestAction {
 
         assertFalse(expectedFromSecondTierCount > recordsCountFromFirstIndex,
                 "Not enough records found in tiered storage from offset " + fetchOffset + " for "
-                        + topicPartition + ". Expected: " + expectedFromSecondTierCount
-                        + ", Was: " + recordsCountFromFirstIndex);
+                + topicPartition + ". Expected: " + expectedFromSecondTierCount
+                + ", Was: " + recordsCountFromFirstIndex);
 
         assertFalse(expectedFromSecondTierCount < recordsCountFromFirstIndex,
                 "Too many records found in tiered storage from offset " + fetchOffset + " for "
-                        + topicPartition + ". Expected: " + expectedFromSecondTierCount
-                        + ", Was: " + recordsCountFromFirstIndex);
+                + topicPartition + ". Expected: " + expectedFromSecondTierCount
+                + ", Was: " + recordsCountFromFirstIndex);
 
         List<Record> storedRecords =
                 tieredStorageRecords.subList(indexOfFetchOffsetInTieredStorage, tieredStorageRecords.size());
@@ -173,14 +173,14 @@ public final class ConsumeAction implements TieredStorageTestAction {
         int exceptedCount
     ) {
         return String.format(
-            "Expected %s requests count from broker %d to tiered storage for topic-partition %s to be %s %d, " +
-                    "but actual count was %d.",
-            eventType,
-            remoteFetchSpec.sourceBrokerId(),
-            remoteFetchSpec.topicPartition(),
-            operationTypeToString(exceptedOperationType),
-            exceptedCount,
-            actualCount
+                "Expected %s requests count from broker %d to tiered storage for topic-partition %s to be %s %d, " +
+                "but actual count was %d.",
+                eventType,
+                remoteFetchSpec.sourceBrokerId(),
+                remoteFetchSpec.topicPartition(),
+                operationTypeToString(exceptedOperationType),
+                exceptedCount,
+                actualCount
         );
     }
 

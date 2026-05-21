@@ -57,7 +57,7 @@ public class UsePartitionTimeOnInvalidTimestamp extends ExtractRecordMetadataTim
     public long onInvalidTimestamp(final ConsumerRecord<Object, Object> record,
                                    final long recordTimestamp,
                                    final long partitionTime)
-            throws StreamsException {
+        throws StreamsException {
         if (partitionTime < 0) {
             throw new StreamsException("Could not infer new timestamp for input record " + record
                     + " because partition time is unknown.");

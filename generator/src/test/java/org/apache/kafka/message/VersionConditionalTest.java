@@ -47,7 +47,7 @@ public class VersionConditionalTest {
             ifNotMember(__ -> buffer.printf("System.out.println(\"foobar\");%n")).
             generate(buffer);
         claimEquals(buffer,
-            "System.out.println(\"foobar\");%n");
+                "System.out.println(\"foobar\");%n");
     }
 
     @Test
@@ -59,7 +59,7 @@ public class VersionConditionalTest {
             ifNotMember(__ -> buffer.printf("System.out.println(\"foobar\");%n")).
             generate(buffer);
         claimEquals(buffer,
-            "System.out.println(\"foobar\");%n");
+                "System.out.println(\"foobar\");%n");
     }
 
     @Test
@@ -87,7 +87,7 @@ public class VersionConditionalTest {
             allowMembershipCheckAlwaysFalse(false).
             generate(buffer);
         claimEquals(buffer,
-            "System.out.println(\"hello world\");%n");
+                "System.out.println(\"hello world\");%n");
     }
 
     @Test
@@ -100,9 +100,9 @@ public class VersionConditionalTest {
             alwaysEmitBlockScope(true).
             generate(buffer);
         claimEquals(buffer,
-            "{%n",
-            "    System.out.println(\"hello world\");%n",
-            "}%n");
+                "{%n",
+                "    System.out.println(\"hello world\");%n",
+                "}%n");
     }
 
     @Test
@@ -114,11 +114,11 @@ public class VersionConditionalTest {
             ifNotMember(__ -> buffer.printf("System.out.println(\"foobar\");%n")).
             generate(buffer);
         claimEquals(buffer,
-            "if (_version >= 1) {%n",
-            "    System.out.println(\"hello world\");%n",
-            "} else {%n",
-            "    System.out.println(\"foobar\");%n",
-            "}%n");
+                "if (_version >= 1) {%n",
+                "    System.out.println(\"hello world\");%n",
+                "} else {%n",
+                "    System.out.println(\"foobar\");%n",
+                "}%n");
     }
 
     @Test
@@ -129,9 +129,9 @@ public class VersionConditionalTest {
             ifMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
             generate(buffer);
         claimEquals(buffer,
-            "if (_version >= 1) {%n",
-            "    System.out.println(\"hello world\");%n",
-            "}%n");
+                "if (_version >= 1) {%n",
+                "    System.out.println(\"hello world\");%n",
+                "}%n");
     }
 
     @Test
@@ -142,9 +142,9 @@ public class VersionConditionalTest {
             ifNotMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
             generate(buffer);
         claimEquals(buffer,
-            "if (_version < 1) {%n",
-            "    System.out.println(\"hello world\");%n",
-            "}%n");
+                "if (_version < 1) {%n",
+                "    System.out.println(\"hello world\");%n",
+                "}%n");
     }
 
     @Test
@@ -156,11 +156,11 @@ public class VersionConditionalTest {
             ifNotMember(__ -> buffer.printf("System.out.println(\"foobar\");%n")).
             generate(buffer);
         claimEquals(buffer,
-            "if (_version <= 10) {%n",
-            "    System.out.println(\"hello world\");%n",
-            "} else {%n",
-            "    System.out.println(\"foobar\");%n",
-            "}%n");
+                "if (_version <= 10) {%n",
+                "    System.out.println(\"hello world\");%n",
+                "} else {%n",
+                "    System.out.println(\"foobar\");%n",
+                "}%n");
     }
 
     @Test
@@ -171,9 +171,9 @@ public class VersionConditionalTest {
             ifMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
             generate(buffer);
         claimEquals(buffer,
-            "if (_version <= 10) {%n",
-            "    System.out.println(\"hello world\");%n",
-            "}%n");
+                "if (_version <= 10) {%n",
+                "    System.out.println(\"hello world\");%n",
+                "}%n");
     }
 
     @Test
@@ -184,9 +184,9 @@ public class VersionConditionalTest {
             ifNotMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
             generate(buffer);
         claimEquals(buffer,
-            "if (_version < 1) {%n",
-            "    System.out.println(\"hello world\");%n",
-            "}%n");
+                "if (_version < 1) {%n",
+                "    System.out.println(\"hello world\");%n",
+                "}%n");
     }
 
     @Test
@@ -198,8 +198,8 @@ public class VersionConditionalTest {
             allowMembershipCheckAlwaysFalse(false).
             generate(buffer);
         claimEquals(buffer,
-            "if ((_version >= 5) && (_version <= 10)) {%n",
-            "    System.out.println(\"hello world\");%n",
-            "}%n");
+                "if ((_version >= 5) && (_version <= 10)) {%n",
+                "    System.out.println(\"hello world\");%n",
+                "}%n");
     }
 }

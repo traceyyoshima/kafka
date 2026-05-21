@@ -39,12 +39,12 @@ public class RocksDbSessionHeadersBytesStoreSupplier implements SessionBytesStor
     @Override
     public SessionStore<Bytes, byte[]> get() {
         return new RocksDBSessionStoreWithHeaders(
-            new SessionRocksDBSegmentedBytesStoreWithHeaders(
-                name,
-                metricsScope(),
-                retentionPeriod,
-                segmentIntervalMs(),
-                new SessionKeySchema()
+                new SessionRocksDBSegmentedBytesStoreWithHeaders(
+                    name,
+                    metricsScope(),
+                    retentionPeriod,
+                    segmentIntervalMs(),
+                    new SessionKeySchema()
             ));
     }
 

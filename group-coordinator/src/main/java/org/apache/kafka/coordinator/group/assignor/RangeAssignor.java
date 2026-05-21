@@ -130,12 +130,12 @@ public class RangeAssignor implements ConsumerGroupPartitionAssignor {
         @Override
         public String toString() {
             return "TopicMetadata(topicId=" + topicId +
-                ", numPartitions=" + numPartitions +
-                ", numMembers=" + numMembers +
-                ", minQuota=" + minQuota +
-                ", extraPartitions=" + extraPartitions +
-                ", nextRange=" + nextRange +
-                ')';
+                    ", numPartitions=" + numPartitions +
+                    ", numMembers=" + numMembers +
+                    ", minQuota=" + minQuota +
+                    ", extraPartitions=" + extraPartitions +
+                    ", nextRange=" + nextRange +
+                    ')';
         }
     }
 
@@ -159,9 +159,9 @@ public class RangeAssignor implements ConsumerGroupPartitionAssignor {
                 throw new PartitionAssignorException("Member is subscribed to a non-existent topic");
             }
             TopicMetadata m = new TopicMetadata(
-                topicId,
-                numPartitions,
-                numMembers
+                    topicId,
+                    numPartitions,
+                    numMembers
             );
             topics.add(m);
         }
@@ -202,9 +202,9 @@ public class RangeAssignor implements ConsumerGroupPartitionAssignor {
                     }
 
                     return new TopicMetadata(
-                        topicId,
-                        numPartitions,
-                        0
+                            topicId,
+                            numPartitions,
+                            0
                     );
                 });
                 topicMetadata.numMembers++;

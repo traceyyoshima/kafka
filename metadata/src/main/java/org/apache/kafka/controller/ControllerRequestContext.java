@@ -50,7 +50,7 @@ public class ControllerRequestContext {
         KafkaPrincipal principal,
         OptionalLong deadlineNs
     ) {
-        this(requestHeader, principal, deadlineNs, __ -> { });
+        this(requestHeader, principal, deadlineNs, __ -> {});
     }
 
     public ControllerRequestContext(
@@ -69,7 +69,7 @@ public class ControllerRequestContext {
         AuthorizableRequestContext requestContext,
         OptionalLong deadlineNs
     ) {
-        this(requestContext, deadlineNs, __ -> { });
+        this(requestContext, deadlineNs, __ -> {});
     }
 
     public ControllerRequestContext(
@@ -78,14 +78,14 @@ public class ControllerRequestContext {
         Consumer<Integer> partitionChangeQuotaApplier
     ) {
         this(
-            new RequestHeaderData()
+                new RequestHeaderData()
                 .setRequestApiKey((short) requestContext.requestType())
                 .setRequestApiVersion((short) requestContext.requestVersion())
                 .setCorrelationId(requestContext.correlationId())
                 .setClientId(requestContext.clientId()),
-            requestContext.principal(),
-            deadlineNs,
-            partitionChangeQuotaApplier
+                requestContext.principal(),
+                deadlineNs,
+                partitionChangeQuotaApplier
         );
     }
 

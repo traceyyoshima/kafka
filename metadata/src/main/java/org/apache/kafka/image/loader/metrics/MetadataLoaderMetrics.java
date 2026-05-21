@@ -43,13 +43,13 @@ import java.util.function.Consumer;
  */
 public final class MetadataLoaderMetrics implements AutoCloseable {
     private static final MetricName CURRENT_METADATA_VERSION = getMetricName(
-        "MetadataLoader", "CurrentMetadataVersion");
+            "MetadataLoader", "CurrentMetadataVersion");
     private static final MetricName HANDLE_LOAD_SNAPSHOT_COUNT = getMetricName(
-        "MetadataLoader", "HandleLoadSnapshotCount");
+            "MetadataLoader", "HandleLoadSnapshotCount");
     private static final MetricName CURRENT_CONTROLLER_ID = getMetricName(
-        "MetadataLoader", "CurrentControllerId");
+            "MetadataLoader", "CurrentControllerId");
     private static final MetricName AVERAGE_IDLE_RATIO = getMetricName(
-        "MetadataLoader", "AvgIdleRatio");
+            "MetadataLoader", "AvgIdleRatio");
     private static final String FINALIZED_LEVEL_METRIC_NAME = "FinalizedLevel";
     private static final String FEATURE_NAME_TAG = "featureName";
 
@@ -119,26 +119,26 @@ public final class MetadataLoaderMetrics implements AutoCloseable {
 
     private void addFinalizedFeatureLevelMetric(String featureName) {
         registry.ifPresent(r -> r.newGauge(
-            getFeatureNameTagMetricName(
-                "MetadataLoader",
-                FINALIZED_LEVEL_METRIC_NAME,
-                featureName
+                getFeatureNameTagMetricName(
+                    "MetadataLoader",
+                    FINALIZED_LEVEL_METRIC_NAME,
+                    featureName
             ),
-            new Gauge<Short>() {
-                @Override
-                public Short value() {
-                    return finalizedFeatureLevel(featureName);
+                new Gauge<Short>() {
+                    @Override
+                    public Short value() {
+                        return finalizedFeatureLevel(featureName);
+                    }
                 }
-            }
         ));
     }
 
     private void removeFinalizedFeatureLevelMetric(String featureName) {
         registry.ifPresent(r -> r.removeMetric(
-            getFeatureNameTagMetricName(
-                "MetadataLoader",
-                FINALIZED_LEVEL_METRIC_NAME,
-                featureName
+                getFeatureNameTagMetricName(
+                    "MetadataLoader",
+                    FINALIZED_LEVEL_METRIC_NAME,
+                    featureName
             )
         ));
     }
@@ -207,8 +207,8 @@ public final class MetadataLoaderMetrics implements AutoCloseable {
         while (iter.hasNext()) {
             final var featureName = iter.next();
             if (newFinalizedLevels.containsKey(featureName) ||
-                featureName.equals(MetadataVersion.FEATURE_NAME) ||
-                featureName.equals(KRaftVersion.FEATURE_NAME)) {
+                    featureName.equals(MetadataVersion.FEATURE_NAME) ||
+                    featureName.equals(KRaftVersion.FEATURE_NAME)) {
                 continue;
             }
             removeFinalizedFeatureLevelMetric(featureName);
@@ -240,10 +240,10 @@ public final class MetadataLoaderMetrics implements AutoCloseable {
     @Override
     public void close() {
         registry.ifPresent(r -> List.of(
-            CURRENT_METADATA_VERSION,
-            CURRENT_CONTROLLER_ID,
-            HANDLE_LOAD_SNAPSHOT_COUNT,
-            AVERAGE_IDLE_RATIO
+                CURRENT_METADATA_VERSION,
+                CURRENT_CONTROLLER_ID,
+                HANDLE_LOAD_SNAPSHOT_COUNT,
+                AVERAGE_IDLE_RATIO
         ).forEach(r::removeMetric));
         for (var featureName : finalizedFeatureLevels.keySet()) {
             removeFinalizedFeatureLevelMetric(featureName);

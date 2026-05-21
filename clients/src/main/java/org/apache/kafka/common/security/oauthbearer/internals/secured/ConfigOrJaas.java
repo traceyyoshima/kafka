@@ -161,8 +161,8 @@ class ConfigOrJaas {
                 // Log if the user is using the deprecated JAAS option.
                 LOG.warn(
                         "Both the OAuth configuration {} as well as the JAAS option {} (from the {} configuration) were provided. " +
-                                "Since the {} JAAS option is deprecated, it will be ignored and the value from the {} configuration will be used. " +
-                                "Please update your configuration to only use {}.",
+                        "Since the {} JAAS option is deprecated, it will be ignored and the value from the {} configuration will be used. " +
+                        "Please update your configuration to only use {}.",
                         configName,
                         jaasName,
                         SASL_JAAS_CONFIG,
@@ -179,7 +179,7 @@ class ConfigOrJaas {
             // Log if the user is using the deprecated JAAS option.
             LOG.warn(
                     "The OAuth JAAS option {} was configured in {}, but that JAAS option is deprecated and will be removed. " +
-                            "Please update your configuration to use the {} configuration instead.",
+                    "Please update your configuration to use the {} configuration instead.",
                     jaasName,
                     SASL_JAAS_CONFIG,
                     configName

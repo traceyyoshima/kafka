@@ -43,21 +43,21 @@ public class ScramCredentialDataTest {
     }
 
     private static final List<ScramCredentialData> SCRAMCREDENTIALDATA = List.of(
-        new ScramCredentialData(
-            randomBuffer(random, 1024),
-            randomBuffer(random, 1024),
-            randomBuffer(random, 1024),
-            4096),
-        new ScramCredentialData(
-            randomBuffer(random, 1024),
-            randomBuffer(random, 1024),
-            randomBuffer(random, 1024),
-            8192),
-        new ScramCredentialData(
-            randomBuffer(random, 1024),
-            randomBuffer(random, 1024),
-            randomBuffer(random, 1024),
-            10000));
+            new ScramCredentialData(
+                randomBuffer(random, 1024),
+                randomBuffer(random, 1024),
+                randomBuffer(random, 1024),
+                4096),
+            new ScramCredentialData(
+                randomBuffer(random, 1024),
+                randomBuffer(random, 1024),
+                randomBuffer(random, 1024),
+                8192),
+            new ScramCredentialData(
+                randomBuffer(random, 1024),
+                randomBuffer(random, 1024),
+                randomBuffer(random, 1024),
+                10000));
 
     @Test
     public void testValues() {
@@ -80,11 +80,11 @@ public class ScramCredentialDataTest {
     @Test
     public void testToString() {
         assertEquals("ScramCredentialData" +
-            "(salt=" + "[hidden]" +
-            ", storedKey=" + "[hidden]" +
-            ", serverKey=" + "[hidden]" +
-            ", iterations=" + "[hidden]" +
-            ")", SCRAMCREDENTIALDATA.get(0).toString());
+                "(salt=" + "[hidden]" +
+                ", storedKey=" + "[hidden]" +
+                ", serverKey=" + "[hidden]" +
+                ", iterations=" + "[hidden]" +
+                ")", SCRAMCREDENTIALDATA.get(0).toString());
     }
 
     @Test
@@ -148,12 +148,12 @@ public class ScramCredentialDataTest {
 
     private void testRoundTrip(ScramCredentialData scramCredentialData) {
         ApiMessageAndVersion messageAndVersion = new ApiMessageAndVersion(
-            scramCredentialData.toRecord("alice", ScramMechanism.SCRAM_SHA_256), (short) 0);
+                scramCredentialData.toRecord("alice", ScramMechanism.SCRAM_SHA_256), (short) 0);
         ScramCredentialData scramCredentialData2 = ScramCredentialData.fromRecord(
-            (UserScramCredentialRecord) messageAndVersion.message());
+                (UserScramCredentialRecord) messageAndVersion.message());
         assertEquals(scramCredentialData, scramCredentialData2);
         ApiMessageAndVersion messageAndVersion2 = new ApiMessageAndVersion(
-            scramCredentialData2.toRecord("alice", ScramMechanism.SCRAM_SHA_256), (short) 0);
+                scramCredentialData2.toRecord("alice", ScramMechanism.SCRAM_SHA_256), (short) 0);
         assertEquals(messageAndVersion, messageAndVersion2);
     }
 

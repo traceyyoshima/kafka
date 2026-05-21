@@ -54,11 +54,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ClusterTestDefaults(
-    types = {Type.KRAFT},
-    brokers = 3,
-    serverProperties = {
-        @ClusterConfigProperty(key = ServerLogConfigs.AUTO_CREATE_TOPICS_ENABLE_CONFIG, value = "false"),
-    }
+        types = {Type.KRAFT},
+        brokers = 3,
+        serverProperties = {
+            @ClusterConfigProperty(key = ServerLogConfigs.AUTO_CREATE_TOPICS_ENABLE_CONFIG, value = "false"),
+        }
 )
 public class CreateTopicsRequestTest {
 
@@ -68,26 +68,26 @@ public class CreateTopicsRequestTest {
         validateValidCreateTopicsRequests(cluster, topicsReq(topicReq("topic1")));
         validateValidCreateTopicsRequests(cluster, topicsReq(topicReq("topic2", null, 3)));
         validateValidCreateTopicsRequests(cluster, topicsReq(
-            topicReq("topic3", 5, 2, Map.of("min.insync.replicas", "2"), null)));
+                topicReq("topic3", 5, 2, Map.of("min.insync.replicas", "2"), null)));
 
         // Manual assignments
         validateValidCreateTopicsRequests(cluster, topicsReq(
-            topicReq("topic4", null, null, null, Map.of(0, List.of(0)))));
+                topicReq("topic4", null, null, null, Map.of(0, List.of(0)))));
         validateValidCreateTopicsRequests(cluster, topicsReq(
-            topicReq("topic5", null, null, Map.of("min.insync.replicas", "2"),
-                Map.of(0, List.of(0, 1), 1, List.of(1, 0), 2, List.of(1, 2)))));
+                topicReq("topic5", null, null, Map.of("min.insync.replicas", "2"),
+                    Map.of(0, List.of(0, 1), 1, List.of(1, 0), 2, List.of(1, 2)))));
 
         // Mixed
         validateValidCreateTopicsRequests(cluster, topicsReq(
-            topicReq("topic6"),
-            topicReq("topic7", 5, 2),
-            topicReq("topic8", null, null, null,
-                Map.of(0, List.of(0, 1), 1, List.of(1, 0), 2, List.of(1, 2)))));
+                topicReq("topic6"),
+                topicReq("topic7", 5, 2),
+                topicReq("topic8", null, null, null,
+                    Map.of(0, List.of(0, 1), 1, List.of(1, 0), 2, List.of(1, 2)))));
         validateValidCreateTopicsRequests(cluster, topicsReq(true,
-            topicReq("topic9"),
-            topicReq("topic10", 5, 2),
-            topicReq("topic11", null, null, null,
-                Map.of(0, List.of(0, 1), 1, List.of(1, 0), 2, List.of(1, 2)))));
+                topicReq("topic9"),
+                topicReq("topic10", 5, 2),
+                topicReq("topic11", null, null, null,
+                    Map.of(0, List.of(0, 1), 1, List.of(1, 0), 2, List.of(1, 2)))));
 
         // Defaults
         validateValidCreateTopicsRequests(cluster, topicsReq(topicReq("topic12", -1, -1)));
@@ -104,38 +104,38 @@ public class CreateTopicsRequestTest {
 
         // Basic
         validateErrorCreateTopicsRequests(cluster,
-            topicsReq(topicReq(existingTopic)),
-            Map.of(existingTopic, new ApiError(Errors.TOPIC_ALREADY_EXISTS, "Topic 'existing-topic' already exists.")), true);
+                topicsReq(topicReq(existingTopic)),
+                Map.of(existingTopic, new ApiError(Errors.TOPIC_ALREADY_EXISTS, "Topic 'existing-topic' already exists.")), true);
         validateErrorCreateTopicsRequests(cluster,
-            topicsReq(topicReq("error-partitions", -2, null)),
-            Map.of("error-partitions", new ApiError(Errors.INVALID_PARTITIONS)), false);
+                topicsReq(topicReq("error-partitions", -2, null)),
+                Map.of("error-partitions", new ApiError(Errors.INVALID_PARTITIONS)), false);
         validateErrorCreateTopicsRequests(cluster,
-            topicsReq(topicReq("error-replication", null, brokerCount + 1)),
-            Map.of("error-replication", new ApiError(Errors.INVALID_REPLICATION_FACTOR)), false);
+                topicsReq(topicReq("error-replication", null, brokerCount + 1)),
+                Map.of("error-replication", new ApiError(Errors.INVALID_REPLICATION_FACTOR)), false);
         validateErrorCreateTopicsRequests(cluster,
-            topicsReq(topicReq("error-config", null, null, Map.of("not.a.property", "error"), null)),
-            Map.of("error-config", new ApiError(Errors.INVALID_CONFIG)), false);
+                topicsReq(topicReq("error-config", null, null, Map.of("not.a.property", "error"), null)),
+                Map.of("error-config", new ApiError(Errors.INVALID_CONFIG)), false);
         validateErrorCreateTopicsRequests(cluster,
-            topicsReq(topicReq("error-assignment", null, null, null,
-                Map.of(0, List.of(0, 1), 1, List.of(0)))),
-            Map.of("error-assignment", new ApiError(Errors.INVALID_REPLICA_ASSIGNMENT)), false);
+                topicsReq(topicReq("error-assignment", null, null, null,
+                    Map.of(0, List.of(0, 1), 1, List.of(0)))),
+                Map.of("error-assignment", new ApiError(Errors.INVALID_REPLICA_ASSIGNMENT)), false);
 
         // Partial
         validateErrorCreateTopicsRequests(cluster,
-            topicsReq(
-                topicReq(existingTopic),
-                topicReq("partial-partitions", -2, null),
-                topicReq("partial-replication", null, brokerCount + 1),
-                topicReq("partial-assignment", null, null, null,
-                    Map.of(0, List.of(0, 1), 1, List.of(0))),
-                topicReq("partial-none")),
-            Map.of(
-                existingTopic, new ApiError(Errors.TOPIC_ALREADY_EXISTS),
-                "partial-partitions", new ApiError(Errors.INVALID_PARTITIONS),
-                "partial-replication", new ApiError(Errors.INVALID_REPLICATION_FACTOR),
-                "partial-assignment", new ApiError(Errors.INVALID_REPLICA_ASSIGNMENT),
-                "partial-none", new ApiError(Errors.NONE)),
-            false);
+                topicsReq(
+                    topicReq(existingTopic),
+                    topicReq("partial-partitions", -2, null),
+                    topicReq("partial-replication", null, brokerCount + 1),
+                    topicReq("partial-assignment", null, null, null,
+                        Map.of(0, List.of(0, 1), 1, List.of(0))),
+                    topicReq("partial-none")),
+                Map.of(
+                    existingTopic, new ApiError(Errors.TOPIC_ALREADY_EXISTS),
+                    "partial-partitions", new ApiError(Errors.INVALID_PARTITIONS),
+                    "partial-replication", new ApiError(Errors.INVALID_REPLICATION_FACTOR),
+                    "partial-assignment", new ApiError(Errors.INVALID_REPLICA_ASSIGNMENT),
+                    "partial-none", new ApiError(Errors.NONE)),
+                false);
         validateTopicExists(cluster, "partial-none", 1);
     }
 
@@ -143,12 +143,12 @@ public class CreateTopicsRequestTest {
     public void testInvalidCreateTopicsRequests(ClusterInstance cluster) throws Exception {
         // Partitions/ReplicationFactor and ReplicaAssignment should not both be specified
         validateErrorCreateTopicsRequests(cluster,
-            topicsReq(topicReq("bad-args-topic", 10, 3, null, Map.of(0, List.of(0)))),
-            Map.of("bad-args-topic", new ApiError(Errors.INVALID_REQUEST)), false);
+                topicsReq(topicReq("bad-args-topic", 10, 3, null, Map.of(0, List.of(0)))),
+                Map.of("bad-args-topic", new ApiError(Errors.INVALID_REQUEST)), false);
 
         validateErrorCreateTopicsRequests(cluster,
-            topicsReq(true, topicReq("bad-args-topic", 10, 3, null, Map.of(0, List.of(0)))),
-            Map.of("bad-args-topic", new ApiError(Errors.INVALID_REQUEST)), false);
+                topicsReq(true, topicReq("bad-args-topic", 10, 3, null, Map.of(0, List.of(0)))),
+                Map.of("bad-args-topic", new ApiError(Errors.INVALID_REQUEST)), false);
     }
 
     @ClusterTest
@@ -159,7 +159,7 @@ public class CreateTopicsRequestTest {
                 .setTimeoutMs(10000)
                 .setValidateOnly(false)
                 .setTopics(new CreatableTopicCollection(List.of(
-                    topicReq(topic, 1, 1, Map.of("min.insync.replicas", "2"), null)
+                        topicReq(topic, 1, 1, Map.of("min.insync.replicas", "2"), null)
                 ).iterator()));
 
             CreateTopicsRequest request = new CreateTopicsRequest.Builder(data).build(version);
@@ -194,11 +194,11 @@ public class CreateTopicsRequestTest {
     @ClusterTest
     public void testCreateClusterMetadataTopic(ClusterInstance cluster) throws Exception {
         validateErrorCreateTopicsRequests(cluster,
-            topicsReq(topicReq(Topic.CLUSTER_METADATA_TOPIC_NAME)),
-            Map.of(Topic.CLUSTER_METADATA_TOPIC_NAME,
-                new ApiError(Errors.INVALID_REQUEST,
-                    "Creation of internal topic " + Topic.CLUSTER_METADATA_TOPIC_NAME + " is prohibited.")),
-            true);
+                topicsReq(topicReq(Topic.CLUSTER_METADATA_TOPIC_NAME)),
+                Map.of(Topic.CLUSTER_METADATA_TOPIC_NAME,
+                    new ApiError(Errors.INVALID_REQUEST,
+                        "Creation of internal topic " + Topic.CLUSTER_METADATA_TOPIC_NAME + " is prohibited.")),
+                true);
     }
 
     private static CreateTopicsRequest topicsReq(CreatableTopic... topics) {
@@ -247,7 +247,7 @@ public class CreateTopicsRequestTest {
         if (config != null) {
             var effectiveConfigs = new CreatableTopicConfigCollection();
             config.forEach((configName, configValue) ->
-                effectiveConfigs.add(new CreatableTopicConfig()
+                    effectiveConfigs.add(new CreatableTopicConfig()
                     .setName(configName)
                     .setValue(configValue)));
             topic.setConfigs(effectiveConfigs);
@@ -255,7 +255,7 @@ public class CreateTopicsRequestTest {
         if (assignment != null) {
             var effectiveAssignments = new CreatableReplicaAssignmentCollection();
             assignment.forEach((partitionIndex, brokerIdList) ->
-                effectiveAssignments.add(new CreatableReplicaAssignment()
+                    effectiveAssignments.add(new CreatableReplicaAssignment()
                     .setPartitionIndex(partitionIndex)
                     .setBrokerIds(new ArrayList<>(brokerIdList))));
             topic.setAssignments(effectiveAssignments);
@@ -267,7 +267,7 @@ public class CreateTopicsRequestTest {
         CreateTopicsResponse response = sendCreateTopicRequest(cluster, request);
 
         assertFalse(response.errorCounts().keySet().stream().anyMatch(e -> e.code() > 0),
-            "There should be no errors, found " + response.errorCounts().keySet());
+                "There should be no errors, found " + response.errorCounts().keySet());
 
         for (CreatableTopic topic : request.data().topics()) {
             if (!request.data().validateOnly()) {
@@ -283,7 +283,7 @@ public class CreateTopicsRequestTest {
     private static void verifyMetadata(ClusterInstance cluster, CreatableTopic topic,
                                        boolean validateOnly) throws Exception {
         MetadataResponse metadataResponse = sendMetadataRequest(cluster,
-            new MetadataRequest.Builder(List.of(topic.name()), false).build());
+                new MetadataRequest.Builder(List.of(topic.name()), false).build());
         MetadataResponse.TopicMetadata metadataForTopic = metadataResponse.topicMetadata().stream()
             .filter(t -> topic.name().equals(t.topic())).findFirst().orElse(null);
 
@@ -299,18 +299,18 @@ public class CreateTopicsRequestTest {
             assertEquals(Errors.NONE, metadataForTopic.error());
             if (partitions == -1) {
                 assertEquals(defaultNumPartitions(cluster), metadataForTopic.partitionMetadata().size(),
-                    "The topic should have the default number of partitions");
+                        "The topic should have the default number of partitions");
             } else {
                 assertEquals(partitions, metadataForTopic.partitionMetadata().size(),
-                    "The topic should have the correct number of partitions");
+                        "The topic should have the correct number of partitions");
             }
 
             if (replication == -1) {
                 assertEquals(defaultReplicationFactor(cluster), metadataForTopic.partitionMetadata().get(0).replicaIds.size(),
-                    "The topic should have the default replication factor");
+                        "The topic should have the default replication factor");
             } else {
                 assertEquals(replication, metadataForTopic.partitionMetadata().get(0).replicaIds.size(),
-                    "The topic should have the correct replication factor");
+                        "The topic should have the correct replication factor");
             }
         }
     }
@@ -350,9 +350,9 @@ public class CreateTopicsRequestTest {
     private static void validateTopicExists(ClusterInstance cluster, String topic, int partitions) throws Exception {
         cluster.waitTopicCreation(topic, partitions);
         MetadataResponse metadataResponse = sendMetadataRequest(cluster,
-            new MetadataRequest.Builder(List.of(topic), true).build());
+                new MetadataRequest.Builder(List.of(topic), true).build());
         assertTrue(metadataResponse.topicMetadata().stream().anyMatch(p -> topic.equals(p.topic()) && p.error() == Errors.NONE),
-            "The topic should be created");
+                "The topic should be created");
     }
 
     private static CreateTopicsResponse sendCreateTopicRequest(ClusterInstance cluster, CreateTopicsRequest request) throws Exception {

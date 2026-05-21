@@ -42,6 +42,7 @@ public final class AdminUtils {
 
         var condition = new Supplier<Boolean>() {
             int leader = Node.noNode().id();
+
             @Override
             public Boolean get() {
                 checkLeader();

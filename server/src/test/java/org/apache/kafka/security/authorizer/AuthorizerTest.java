@@ -687,7 +687,7 @@ public class AuthorizerTest {
 
         Set<AclBinding> expectedAcls = new HashSet<>();
         resourceToAcls.forEach((res, aces) ->
-            aces.forEach(ace -> expectedAcls.add(new AclBinding(res, ace)))
+                aces.forEach(ace -> expectedAcls.add(new AclBinding(res, ace)))
         );
         acls.forEach(acl -> expectedAcls.add(new AclBinding(resource, acl)));
         TestUtils.waitForCondition(() -> expectedAcls.equals(getAcls(authorizer)), "changes not propagated in timeout period.");

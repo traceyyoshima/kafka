@@ -135,7 +135,7 @@ public class RestoreIntegrationTest {
     @BeforeAll
     public static void startCluster() throws IOException {
         CLUSTER.start();
-        
+
         final Properties adminConfig = new Properties();
         adminConfig.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers());
         admin = Admin.create(adminConfig);
@@ -227,7 +227,7 @@ public class RestoreIntegrationTest {
 
         IntegrationTestUtils.purgeLocalStreamsState(streamsConfiguration);
         builder.table(inputTopic, Materialized.<Integer, Bytes>as(
-                        Stores.persistentTimestampedKeyValueStore(stateStoreName))
+                Stores.persistentTimestampedKeyValueStore(stateStoreName))
                 .withKeySerde(Serdes.Integer())
                 .withValueSerde(Serdes.Bytes())
                 .withCachingDisabled()).toStream().to(outputTopic);
@@ -293,17 +293,17 @@ public class RestoreIntegrationTest {
         final CountDownLatch shutdownLatch = new CountDownLatch(1);
 
         topology.addReadOnlyStateStore(
-            Stores.keyValueStoreBuilder(
-                Stores.persistentKeyValueStore("store"),
-                new Serdes.IntegerSerde(),
-                new Serdes.StringSerde()
+                Stores.keyValueStoreBuilder(
+                    Stores.persistentKeyValueStore("store"),
+                    new Serdes.IntegerSerde(),
+                    new Serdes.StringSerde()
             ),
-            "readOnlySource",
-            new IntegerDeserializer(),
-            new StringDeserializer(),
-            inputStream,
-            "readOnlyProcessor",
-            () -> new ReadOnlyStoreProcessor(numReceived, offsetLimitDelta, shutdownLatch)
+                "readOnlySource",
+                new IntegerDeserializer(),
+                new StringDeserializer(),
+                inputStream,
+                "readOnlyProcessor",
+                () -> new ReadOnlyStoreProcessor(numReceived, offsetLimitDelta, shutdownLatch)
         );
 
         kafkaStreams = new KafkaStreams(topology, props);
@@ -458,8 +458,8 @@ public class RestoreIntegrationTest {
         stream
             .groupByKey()
             .reduce(
-                Integer::sum,
-                Materialized.<Integer, Integer, KeyValueStore<Bytes, byte[]>>as("reduce-store").withLoggingDisabled()
+                    Integer::sum,
+                    Materialized.<Integer, Integer, KeyValueStore<Bytes, byte[]>>as("reduce-store").withLoggingDisabled()
             );
         final Properties props = props();
         if (useNewProtocol) {
@@ -619,13 +619,13 @@ public class RestoreIntegrationTest {
         CLUSTER.createTopic(outputTopic, 5, 1);
 
         final Map<String, Object> kafkaStreams1Configuration = mkMap(
-            mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory(appId).getPath() + "-ks1"),
-            mkEntry(StreamsConfig.CLIENT_ID_CONFIG, appId + "-ks1"),
-            mkEntry(StreamsConfig.restoreConsumerPrefix(ConsumerConfig.MAX_POLL_RECORDS_CONFIG), 1)
+                mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory(appId).getPath() + "-ks1"),
+                mkEntry(StreamsConfig.CLIENT_ID_CONFIG, appId + "-ks1"),
+                mkEntry(StreamsConfig.restoreConsumerPrefix(ConsumerConfig.MAX_POLL_RECORDS_CONFIG), 1)
         );
         final Map<String, Object> kafkaStreams2Configuration = mkMap(
-            mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory(appId).getPath() + "-ks2"),
-            mkEntry(StreamsConfig.CLIENT_ID_CONFIG, appId + "-ks2")
+                mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory(appId).getPath() + "-ks2"),
+                mkEntry(StreamsConfig.CLIENT_ID_CONFIG, appId + "-ks2")
         );
 
         final StreamsBuilder builder = new StreamsBuilder();
@@ -737,18 +737,18 @@ public class RestoreIntegrationTest {
         consumerProperties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "group-" + appId);
         consumerProperties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         consumerProperties.setProperty(
-            ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
-            IntegerDeserializer.class.getName()
+                ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
+                IntegerDeserializer.class.getName()
         );
         consumerProperties.setProperty(
-            ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
-            IntegerDeserializer.class.getName()
+                ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
+                IntegerDeserializer.class.getName()
         );
 
         IntegrationTestUtils.waitUntilFinalKeyValueRecordsReceived(
-            consumerProperties,
-            outputTopic,
-            expectedRecords
+                consumerProperties,
+                outputTopic,
+                expectedRecords
         );
     }
 
@@ -847,15 +847,15 @@ public class RestoreIntegrationTest {
 
     private void sendEvents(final String topic, final List<KeyValue<Integer, Integer>> events) {
         IntegrationTestUtils.produceKeyValuesSynchronously(
-            topic,
-            events,
-            TestUtils.producerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerSerializer.class,
-                IntegerSerializer.class,
-                new Properties()
+                topic,
+                events,
+                TestUtils.producerConfig(
+                    CLUSTER.bootstrapServers(),
+                    IntegerSerializer.class,
+                    IntegerSerializer.class,
+                    new Properties()
             ),
-            CLUSTER.time
+                CLUSTER.time
         );
     }
 
@@ -926,7 +926,7 @@ public class RestoreIntegrationTest {
         producerConfig.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers());
 
         try (final KafkaProducer<Integer, Integer> producer =
-                     new KafkaProducer<>(producerConfig, new IntegerSerializer(), new IntegerSerializer())) {
+                new KafkaProducer<>(producerConfig, new IntegerSerializer(), new IntegerSerializer())) {
 
             for (int i = 0; i < numberOfKeys; i++) {
                 final int offset = startingOffset + i;
@@ -996,9 +996,9 @@ public class RestoreIntegrationTest {
 
     private void waitForTransitionTo(final Set<KafkaStreams.State> observed, final KafkaStreams.State state, final Duration timeout) throws Exception {
         waitForCondition(
-            () -> observed.contains(state),
-            timeout.toMillis(),
-            () -> "Client did not transition to " + state + " on time. Observed transitions: " + observed
+                () -> observed.contains(state),
+                timeout.toMillis(),
+                () -> "Client did not transition to " + state + " on time. Observed transitions: " + observed
         );
     }
 

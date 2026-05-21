@@ -63,13 +63,13 @@ public final class VoterSet {
     public Set<Node> voterNodes(Stream<Integer> voterIds, ListenerName listenerName) {
         return voterIds
             .map(voterId ->
-                voterNode(voterId, listenerName).orElseThrow(() ->
+                    voterNode(voterId, listenerName).orElseThrow(() ->
                     new IllegalArgumentException(
-                        String.format(
-                            "Unable to find endpoint for voter %d and listener %s in %s",
-                            voterId,
-                            listenerName,
-                            voters
+                            String.format(
+                                "Unable to find endpoint for voter %d and listener %s in %s",
+                                voterId,
+                                listenerName,
+                                voters
                         )
                     )
                 )
@@ -99,8 +99,8 @@ public final class VoterSet {
     public boolean voterNodeNeedsUpdate(VoterNode updatedVoterNode) {
         return Optional.ofNullable(voters.get(updatedVoterNode.voterKey().id()))
             .map(
-                node -> node.isVoter(updatedVoterNode.voterKey()) &&
-                        !node.equals(updatedVoterNode)
+                    node -> node.isVoter(updatedVoterNode.voterKey()) &&
+                            !node.equals(updatedVoterNode)
             )
             .orElse(false);
     }
@@ -221,8 +221,8 @@ public final class VoterSet {
     public Optional<VoterSet> removeVoter(ReplicaKey voterKey) {
         VoterNode oldVoter = voters.get(voterKey.id());
         if (oldVoter != null &&
-            Objects.equals(oldVoter.voterKey(), voterKey) &&
-            voters.size() > 1
+                Objects.equals(oldVoter.voterKey(), voterKey) &&
+                voters.size() > 1
         ) {
             HashMap<Integer, VoterNode> newVoters = new HashMap<>(voters);
             newVoters.remove(voterKey.id());
@@ -411,14 +411,13 @@ public final class VoterSet {
             return supportedKRaftVersion;
         }
 
-
         private Optional<InetSocketAddress> address(ListenerName listener) {
             return listeners.address(listener);
         }
 
         private boolean supportsVersion(KRaftVersion version) {
             return version.featureLevel() >= supportedKRaftVersion.min() &&
-                   version.featureLevel() <= supportedKRaftVersion.max();
+                    version.featureLevel() <= supportedKRaftVersion.max();
         }
 
         @Override
@@ -441,10 +440,10 @@ public final class VoterSet {
         @Override
         public String toString() {
             return String.format(
-                "VoterNode(voterKey=%s, listeners=%s, supportedKRaftVersion=%s)",
-                voterKey,
-                listeners,
-                supportedKRaftVersion
+                    "VoterNode(voterKey=%s, listeners=%s, supportedKRaftVersion=%s)",
+                    voterKey,
+                    listeners,
+                    supportedKRaftVersion
             );
         }
 
@@ -458,6 +457,7 @@ public final class VoterSet {
     }
 
     private static final VoterSet EMPTY = new VoterSet(Map.of());
+
     public static VoterSet empty() {
         return EMPTY;
     }
@@ -472,13 +472,13 @@ public final class VoterSet {
         HashMap<Integer, VoterNode> voterNodes = new HashMap<>(voters.voters().size());
         for (VotersRecord.Voter voter: voters.voters()) {
             voterNodes.put(
-                voter.voterId(),
-                new VoterNode(
-                    ReplicaKey.of(voter.voterId(), voter.voterDirectoryId()),
-                    Endpoints.fromVotersRecordEndpoints(voter.endpoints()),
-                    new SupportedVersionRange(
-                        voter.kRaftVersionFeature().minSupportedVersion(),
-                        voter.kRaftVersionFeature().maxSupportedVersion()
+                    voter.voterId(),
+                    new VoterNode(
+                        ReplicaKey.of(voter.voterId(), voter.voterDirectoryId()),
+                        Endpoints.fromVotersRecordEndpoints(voter.endpoints()),
+                        new SupportedVersionRange(
+                            voter.kRaftVersionFeature().minSupportedVersion(),
+                            voter.kRaftVersionFeature().maxSupportedVersion()
                     )
                 )
             );
@@ -499,12 +499,12 @@ public final class VoterSet {
             .entrySet()
             .stream()
             .collect(
-                Collectors.toMap(
-                    Map.Entry::getKey,
-                    entry -> new VoterNode(
-                        ReplicaKey.of(entry.getKey(), Uuid.ZERO_UUID),
-                        Endpoints.fromInetSocketAddresses(Map.of(listener, entry.getValue())),
-                        new SupportedVersionRange((short) 0, (short) 0)
+                    Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> new VoterNode(
+                            ReplicaKey.of(entry.getKey(), Uuid.ZERO_UUID),
+                            Endpoints.fromInetSocketAddresses(Map.of(listener, entry.getValue())),
+                            new SupportedVersionRange((short) 0, (short) 0)
                     )
                 )
             );

@@ -71,13 +71,13 @@ public class LeftOrRightValueSerializerTest {
     @Test
     public void shouldThrowIfSerializeValueAsNull() {
         assertThrows(NullPointerException.class,
-            () -> STRING_OR_INTEGER_SERDE.serializer().serialize(TOPIC, HEADERS, LeftOrRightValue.makeLeftValue(null)));
+                () -> STRING_OR_INTEGER_SERDE.serializer().serialize(TOPIC, HEADERS, LeftOrRightValue.makeLeftValue(null)));
     }
 
     @Test
     public void shouldThrowIfSerializeOtherValueAsNull() {
         assertThrows(NullPointerException.class,
-            () -> STRING_OR_INTEGER_SERDE.serializer().serialize(TOPIC, HEADERS, LeftOrRightValue.makeRightValue(null)));
+                () -> STRING_OR_INTEGER_SERDE.serializer().serialize(TOPIC, HEADERS, LeftOrRightValue.makeRightValue(null)));
     }
 
     @Test

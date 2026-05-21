@@ -131,12 +131,12 @@ public class OffsetMetadataManager {
             }
 
             return new OffsetMetadataManager(
-                snapshotRegistry,
-                logContext,
-                time,
-                groupMetadataManager,
-                config,
-                metrics
+                    snapshotRegistry,
+                    logContext,
+                    time,
+                    groupMetadataManager,
+                    config,
+                    metrics
             );
         }
     }
@@ -232,7 +232,7 @@ public class OffsetMetadataManager {
          */
         private void clear(String groupId, String topic, int partition) {
             TimelineHashMap<String, TimelineHashMap<Integer, TimelineHashSet<Long>>> openTransactionsByTopic =
-                openTransactionsByGroup.get(groupId);
+                    openTransactionsByGroup.get(groupId);
             if (openTransactionsByTopic == null) return;
 
             TimelineHashMap<Integer, TimelineHashSet<Long>> openTransactionsByPartition = openTransactionsByTopic.get(topic);
@@ -279,7 +279,7 @@ public class OffsetMetadataManager {
          */
         private void forEachTopicPartition(String groupId, BiConsumer<String, Integer> action) {
             TimelineHashMap<String, TimelineHashMap<Integer, TimelineHashSet<Long>>> openTransactionsByTopic =
-                openTransactionsByGroup.get(groupId);
+                    openTransactionsByGroup.get(groupId);
             if (openTransactionsByTopic == null) return;
 
             openTransactionsByTopic.forEach((topic, openTransactionsByPartition) -> {
@@ -314,7 +314,7 @@ public class OffsetMetadataManager {
          */
         private TimelineHashSet<Long> get(String groupId, String topic, int partition) {
             TimelineHashMap<String, TimelineHashMap<Integer, TimelineHashSet<Long>>> openTransactionsByTopic =
-                openTransactionsByGroup.get(groupId);
+                    openTransactionsByGroup.get(groupId);
             if (openTransactionsByTopic == null) return null;
 
             TimelineHashMap<Integer, TimelineHashSet<Long>> openTransactionsByPartition = openTransactionsByTopic.get(topic);
@@ -469,11 +469,11 @@ public class OffsetMetadataManager {
         }
 
         CommitPartitionValidator validator = group.validateOffsetCommit(
-            request.memberId(),
-            request.groupInstanceId(),
-            request.generationIdOrMemberEpoch(),
-            false,
-            context.requestVersion()
+                request.memberId(),
+                request.groupInstanceId(),
+                request.generationIdOrMemberEpoch(),
+                false,
+                context.requestVersion()
         );
 
         // In the old consumer group protocol, the offset commits maintain the session if
@@ -482,8 +482,8 @@ public class OffsetMetadataManager {
             ClassicGroup classicGroup = (ClassicGroup) group;
             if (classicGroup.isInState(ClassicGroupState.STABLE) || classicGroup.isInState(ClassicGroupState.PREPARING_REBALANCE)) {
                 groupMetadataManager.rescheduleClassicGroupMemberHeartbeat(
-                    classicGroup,
-                    classicGroup.member(request.memberId())
+                        classicGroup,
+                        classicGroup.member(request.memberId())
                 );
             }
         }
@@ -523,11 +523,11 @@ public class OffsetMetadataManager {
 
         try {
             return group.validateOffsetCommit(
-                request.memberId(),
-                request.groupInstanceId(),
-                request.generationIdOrMemberEpoch(),
-                true,
-                context.requestVersion()
+                    request.memberId(),
+                    request.groupInstanceId(),
+                    request.generationIdOrMemberEpoch(),
+                    true,
+                    context.requestVersion()
             );
         } catch (StaleMemberEpochException ex) {
             if (TxnOffsetCommitRequest.supportsStaleMemberEpochError((short) context.requestVersion())) {
@@ -551,9 +551,9 @@ public class OffsetMetadataManager {
     ) throws GroupIdNotFoundException {
         Group group = groupMetadataManager.group(request.groupId(), lastCommittedOffset);
         group.validateOffsetFetch(
-            request.memberId(),
-            request.memberEpoch(),
-            lastCommittedOffset
+                request.memberId(),
+                request.memberEpoch(),
+                lastCommittedOffset
         );
     }
 
@@ -632,31 +632,31 @@ public class OffsetMetadataManager {
                 } else {
                     // Validate commit per-partition
                     validator.validate(
-                        topic.name(),
-                        topic.topicId(),
-                        partition.partitionIndex()
+                            topic.name(),
+                            topic.topicId(),
+                            partition.partitionIndex()
                     );
 
                     log.debug("[GroupId {}] Committing offsets {} for partition {}-{}-{} from member {} with leader epoch {}.",
-                        request.groupId(), partition.committedOffset(), topic.topicId(), topic.name(), partition.partitionIndex(),
-                        request.memberId(), partition.committedLeaderEpoch());
+                            request.groupId(), partition.committedOffset(), topic.topicId(), topic.name(), partition.partitionIndex(),
+                            request.memberId(), partition.committedLeaderEpoch());
 
                     topicResponse.partitions().add(new OffsetCommitResponsePartition()
                         .setPartitionIndex(partition.partitionIndex())
                         .setErrorCode(Errors.NONE.code()));
 
                     final OffsetAndMetadata offsetAndMetadata = OffsetAndMetadata.fromRequest(
-                        topic.topicId(),
-                        partition,
-                        currentTimeMs,
-                        expireTimestampMs
+                            topic.topicId(),
+                            partition,
+                            currentTimeMs,
+                            expireTimestampMs
                     );
 
                     records.add(GroupCoordinatorRecordHelpers.newOffsetCommitRecord(
-                        request.groupId(),
-                        topic.name(),
-                        partition.partitionIndex(),
-                        offsetAndMetadata
+                            request.groupId(),
+                            topic.name(),
+                            partition.partitionIndex(),
+                            offsetAndMetadata
                     ));
                 }
             });
@@ -703,9 +703,9 @@ public class OffsetMetadataManager {
                     // Validate commit per-partition
                     try {
                         validator.validate(
-                            topic.name(),
-                            topic.topicId(),
-                            partition.partitionIndex()
+                                topic.name(),
+                                topic.topicId(),
+                                partition.partitionIndex()
                         );
                     } catch (StaleMemberEpochException ex) {
                         if (TxnOffsetCommitRequest.supportsStaleMemberEpochError((short) context.requestVersion())) {
@@ -717,24 +717,24 @@ public class OffsetMetadataManager {
                     }
 
                     log.debug("[GroupId {}] Committing transactional offsets {} for partition {}-{}-{} from member {} with leader epoch {}.",
-                        request.groupId(), partition.committedOffset(), topic.topicId(), topic.name(), partition.partitionIndex(),
-                        request.memberId(), partition.committedLeaderEpoch());
+                            request.groupId(), partition.committedOffset(), topic.topicId(), topic.name(), partition.partitionIndex(),
+                            request.memberId(), partition.committedLeaderEpoch());
 
                     topicResponse.partitions().add(new TxnOffsetCommitResponsePartition()
                         .setPartitionIndex(partition.partitionIndex())
                         .setErrorCode(Errors.NONE.code()));
 
                     final OffsetAndMetadata offsetAndMetadata = OffsetAndMetadata.fromRequest(
-                        topic.topicId(),
-                        partition,
-                        currentTimeMs
+                            topic.topicId(),
+                            partition,
+                            currentTimeMs
                     );
 
                     records.add(GroupCoordinatorRecordHelpers.newOffsetCommitRecord(
-                        request.groupId(),
-                        topic.name(),
-                        partition.partitionIndex(),
-                        offsetAndMetadata
+                            request.groupId(),
+                            topic.name(),
+                            partition.partitionIndex(),
+                            offsetAndMetadata
                     ));
                 }
             });
@@ -761,15 +761,15 @@ public class OffsetMetadataManager {
         final Group group = validateOffsetDelete(request);
         final List<CoordinatorRecord> records = new ArrayList<>();
         final OffsetDeleteResponseData.OffsetDeleteResponseTopicCollection responseTopicCollection =
-            new OffsetDeleteResponseData.OffsetDeleteResponseTopicCollection();
+                new OffsetDeleteResponseData.OffsetDeleteResponseTopicCollection();
 
         request.topics().forEach(topic -> {
             final OffsetDeleteResponseData.OffsetDeleteResponsePartitionCollection responsePartitionCollection =
-                new OffsetDeleteResponseData.OffsetDeleteResponsePartitionCollection();
+                    new OffsetDeleteResponseData.OffsetDeleteResponsePartitionCollection();
 
             if (group.isSubscribedToTopic(topic.name())) {
                 topic.partitions().forEach(partition ->
-                    responsePartitionCollection.add(new OffsetDeleteResponseData.OffsetDeleteResponsePartition()
+                        responsePartitionCollection.add(new OffsetDeleteResponseData.OffsetDeleteResponsePartition()
                         .setPartitionIndex(partition.partitionIndex())
                         .setErrorCode(Errors.GROUP_SUBSCRIBED_TO_TOPIC.code())
                     )
@@ -784,11 +784,11 @@ public class OffsetMetadataManager {
                     // A tombstone is written if an offset is present in the main storage or
                     // if a pending transactional offset exists.
                     if (hasCommittedOffset(request.groupId(), topic.name(), partition.partitionIndex()) ||
-                        hasPendingTransactionalOffsets(request.groupId(), topic.name(), partition.partitionIndex())) {
+                            hasPendingTransactionalOffsets(request.groupId(), topic.name(), partition.partitionIndex())) {
                         records.add(GroupCoordinatorRecordHelpers.newOffsetCommitTombstoneRecord(
-                            request.groupId(),
-                            topic.name(),
-                            partition.partitionIndex()
+                                request.groupId(),
+                                topic.name(),
+                                partition.partitionIndex()
                         ));
                     }
                 });
@@ -802,8 +802,8 @@ public class OffsetMetadataManager {
         metrics.record(OFFSET_DELETIONS_SENSOR_NAME, records.size());
 
         return new CoordinatorResult<>(
-            records,
-            new OffsetDeleteResponseData().setTopics(responseTopicCollection)
+                records,
+                new OffsetDeleteResponseData().setTopics(responseTopicCollection)
         );
     }
 
@@ -827,10 +827,10 @@ public class OffsetMetadataManager {
         // Delete all the offsets from the main storage.
         if (offsetsByTopic != null) {
             offsetsByTopic.forEach((topic, offsetsByPartition) ->
-                offsetsByPartition.keySet().forEach(partition -> {
-                    records.add(GroupCoordinatorRecordHelpers.newOffsetCommitTombstoneRecord(groupId, topic, partition));
-                    numDeletedOffsets.getAndIncrement();
-                })
+                    offsetsByPartition.keySet().forEach(partition -> {
+                        records.add(GroupCoordinatorRecordHelpers.newOffsetCommitTombstoneRecord(groupId, topic, partition));
+                        numDeletedOffsets.getAndIncrement();
+                    })
             );
         }
 
@@ -898,16 +898,16 @@ public class OffsetMetadataManager {
 
         final List<OffsetFetchResponseData.OffsetFetchResponseTopics> topicResponses = new ArrayList<>(request.topics().size());
         final TimelineHashMap<String, TimelineHashMap<Integer, OffsetAndMetadata>> groupOffsets =
-            failAllPartitions ? null : offsets.offsetsByGroup.get(request.groupId(), lastCommittedOffset);
+                failAllPartitions ? null : offsets.offsetsByGroup.get(request.groupId(), lastCommittedOffset);
         // We inline the lookups from hasPendingTransactionalOffsets here, to avoid repeating string
         // comparisons of group ids and topic names for every partition. They're only used when the
         // client has requested stable offsets.
         final TimelineHashMap<String, TimelineHashMap<Integer, TimelineHashSet<Long>>> openTransactionsByTopic =
-            requireStable ? openTransactions.openTransactionsByGroup.get(request.groupId(), lastCommittedOffset) : null;
+                requireStable ? openTransactions.openTransactionsByGroup.get(request.groupId(), lastCommittedOffset) : null;
 
         request.topics().forEach(topic -> {
             final OffsetFetchResponseData.OffsetFetchResponseTopics topicResponse =
-                new OffsetFetchResponseData.OffsetFetchResponseTopics()
+                    new OffsetFetchResponseData.OffsetFetchResponseTopics()
                     .setTopicId(topic.topicId())
                     .setName(topic.name());
             topicResponses.add(topicResponse);
@@ -915,15 +915,15 @@ public class OffsetMetadataManager {
             final TimelineHashMap<Integer, OffsetAndMetadata> topicOffsets = groupOffsets == null ?
                 null : groupOffsets.get(topic.name(), lastCommittedOffset);
             final TimelineHashMap<Integer, TimelineHashSet<Long>> openTransactionsByPartition =
-                (requireStable && openTransactionsByTopic != null) ? openTransactionsByTopic.get(topic.name(), lastCommittedOffset) : null;
+                    (requireStable && openTransactionsByTopic != null) ? openTransactionsByTopic.get(topic.name(), lastCommittedOffset) : null;
 
             topic.partitionIndexes().forEach(partitionIndex -> {
                 final OffsetAndMetadata offsetAndMetadata = topicOffsets == null ?
                     null : topicOffsets.get(partitionIndex, lastCommittedOffset);
 
                 if (requireStable &&
-                    openTransactionsByPartition != null &&
-                    openTransactionsByPartition.containsKey(partitionIndex, lastCommittedOffset)) {
+                        openTransactionsByPartition != null &&
+                        openTransactionsByPartition.containsKey(partitionIndex, lastCommittedOffset)) {
                     topicResponse.partitions().add(new OffsetFetchResponseData.OffsetFetchResponsePartitions()
                         .setPartitionIndex(partitionIndex)
                         .setErrorCode(Errors.UNSTABLE_OFFSET_COMMIT.code())
@@ -983,22 +983,22 @@ public class OffsetMetadataManager {
 
         final List<OffsetFetchResponseData.OffsetFetchResponseTopics> topicResponses = new ArrayList<>();
         final TimelineHashMap<String, TimelineHashMap<Integer, OffsetAndMetadata>> groupOffsets =
-            offsets.offsetsByGroup.get(request.groupId(), lastCommittedOffset);
+                offsets.offsetsByGroup.get(request.groupId(), lastCommittedOffset);
         // We inline the lookups from hasPendingTransactionalOffsets here, to avoid repeating string
         // comparisons of group ids and topic names for every partition. They're only used when the
         // client has requested stable offsets.
         final TimelineHashMap<String, TimelineHashMap<Integer, TimelineHashSet<Long>>> openTransactionsByTopic =
-            requireStable ? openTransactions.openTransactionsByGroup.get(request.groupId(), lastCommittedOffset) : null;
+                requireStable ? openTransactions.openTransactionsByGroup.get(request.groupId(), lastCommittedOffset) : null;
 
         if (groupOffsets != null) {
             groupOffsets.entrySet(lastCommittedOffset).forEach(topicEntry -> {
                 final String topic = topicEntry.getKey();
                 final TimelineHashMap<Integer, OffsetAndMetadata> topicOffsets = topicEntry.getValue();
                 final TimelineHashMap<Integer, TimelineHashSet<Long>> openTransactionsByPartition =
-                    (requireStable && openTransactionsByTopic != null) ? openTransactionsByTopic.get(topic, lastCommittedOffset) : null;
+                        (requireStable && openTransactionsByTopic != null) ? openTransactionsByTopic.get(topic, lastCommittedOffset) : null;
 
                 final OffsetFetchResponseData.OffsetFetchResponseTopics topicResponse =
-                    new OffsetFetchResponseData.OffsetFetchResponseTopics()
+                        new OffsetFetchResponseData.OffsetFetchResponseTopics()
                         // It is set to zero for now but it will be set to the persisted
                         // topic id along the committed offset, if present.
                         .setTopicId(Uuid.ZERO_UUID)
@@ -1010,8 +1010,8 @@ public class OffsetMetadataManager {
                     final OffsetAndMetadata offsetAndMetadata = partitionEntry.getValue();
 
                     if (requireStable &&
-                        openTransactionsByPartition != null &&
-                        openTransactionsByPartition.containsKey(partition, lastCommittedOffset)) {
+                            openTransactionsByPartition != null &&
+                            openTransactionsByPartition.containsKey(partition, lastCommittedOffset)) {
                         topicResponse.partitions().add(new OffsetFetchResponseData.OffsetFetchResponsePartitions()
                             .setPartitionIndex(partition)
                             .setErrorCode(Errors.UNSTABLE_OFFSET_COMMIT.code())
@@ -1045,7 +1045,7 @@ public class OffsetMetadataManager {
      */
     public boolean cleanupExpiredOffsets(String groupId, List<CoordinatorRecord> records) {
         TimelineHashMap<String, TimelineHashMap<Integer, OffsetAndMetadata>> offsetsByTopic =
-            offsets.offsetsByGroup.get(groupId);
+                offsets.offsetsByGroup.get(groupId);
         if (offsetsByTopic == null) {
             return !openTransactions.contains(groupId);
         }
@@ -1067,7 +1067,7 @@ public class OffsetMetadataManager {
                 partitions.forEach((partition, offsetAndMetadata) -> {
                     // We don't expire the offset yet if there is a pending transactional offset for the partition.
                     if (condition.isOffsetExpired(offsetAndMetadata, currentTimestampMs, config.offsetsRetentionMs()) &&
-                        !hasPendingTransactionalOffsets(groupId, topic, partition)) {
+                            !hasPendingTransactionalOffsets(groupId, topic, partition)) {
                         appendOffsetCommitTombstone(groupId, topic, partition, records);
                         log.debug("[GroupId {}] Expired offset for partition={}-{}", groupId, topic, partition);
                     } else {
@@ -1130,7 +1130,7 @@ public class OffsetMetadataManager {
     private void appendOffsetCommitTombstone(
         String groupId,
         String topic,
-        int partition, 
+        int partition,
         List<CoordinatorRecord> records
     ) {
         records.add(GroupCoordinatorRecordHelpers.newOffsetCommitTombstoneRecord(groupId, topic, partition));
@@ -1173,10 +1173,10 @@ public class OffsetMetadataManager {
                 // If the offset is not part of a transaction, it is directly stored
                 // in the offsets store.
                 OffsetAndMetadata previousValue = offsets.put(
-                    groupId,
-                    topic,
-                    partition,
-                    OffsetAndMetadata.fromRecord(recordOffset, value)
+                        groupId,
+                        topic,
+                        partition,
+                        OffsetAndMetadata.fromRecord(recordOffset, value)
                 );
                 if (previousValue == null) {
                     metrics.incrementNumOffsets();
@@ -1189,10 +1189,10 @@ public class OffsetMetadataManager {
                 pendingTransactionalOffsets
                     .computeIfAbsent(producerId, __ -> new Offsets())
                     .put(
-                        groupId,
-                        topic,
-                        partition,
-                        OffsetAndMetadata.fromRecord(recordOffset, value)
+                            groupId,
+                            topic,
+                            partition,
+                            OffsetAndMetadata.fromRecord(recordOffset, value)
                     );
                 openTransactions.add(groupId, topic, partition, producerId);
             }
@@ -1228,7 +1228,7 @@ public class OffsetMetadataManager {
 
         if (pendingOffsets == null) {
             log.debug("Replayed end transaction marker with result {} for producer id {} but " +
-                "no pending offsets are present. Ignoring it.", result, producerId);
+                    "no pending offsets are present. Ignoring it.", result, producerId);
             return;
         }
 
@@ -1247,9 +1247,9 @@ public class OffsetMetadataManager {
                 topicOffsets.forEach((topicName, partitionOffsets) -> {
                     partitionOffsets.forEach((partitionId, offsetAndMetadata) -> {
                         OffsetAndMetadata existingOffsetAndMetadata = offsets.get(
-                            groupId,
-                            topicName,
-                            partitionId
+                                groupId,
+                                topicName,
+                                partitionId
                         );
 
                         // We always keep the most recent committed offset when we have a mix of transactional and regular
@@ -1257,21 +1257,21 @@ public class OffsetMetadataManager {
                         // __consumer_offsets topic itself may result in the wrong offset commit being materialized.
                         if (existingOffsetAndMetadata == null || offsetAndMetadata.recordOffset > existingOffsetAndMetadata.recordOffset) {
                             log.debug("Committed transactional offset commit {} for producer id {} in group {} " +
-                                "with topic {} and partition {}.",
-                                offsetAndMetadata, producerId, groupId, topicName, partitionId);
+                                    "with topic {} and partition {}.",
+                                    offsetAndMetadata, producerId, groupId, topicName, partitionId);
                             OffsetAndMetadata previousValue = offsets.put(
-                                groupId,
-                                topicName,
-                                partitionId,
-                                offsetAndMetadata
+                                    groupId,
+                                    topicName,
+                                    partitionId,
+                                    offsetAndMetadata
                             );
                             if (previousValue == null) {
                                 metrics.incrementNumOffsets();
                             }
                         } else {
                             log.info("Skipped the materialization of transactional offset commit {} for producer id {} in group {} with topic {}, " +
-                                "partition {} since its record offset {} is smaller than the record offset {} of the last committed offset.",
-                                offsetAndMetadata, producerId, groupId, topicName, partitionId, offsetAndMetadata.recordOffset, existingOffsetAndMetadata.recordOffset);
+                                    "partition {} since its record offset {} is smaller than the record offset {} of the last committed offset.",
+                                    offsetAndMetadata, producerId, groupId, topicName, partitionId, offsetAndMetadata.recordOffset, existingOffsetAndMetadata.recordOffset);
                         }
                     });
                 });

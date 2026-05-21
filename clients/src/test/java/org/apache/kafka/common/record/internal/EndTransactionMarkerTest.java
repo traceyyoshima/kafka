@@ -45,13 +45,13 @@ public class EndTransactionMarkerTest {
     @Test
     public void testUnknownControlTypeNotAllowed() {
         assertThrows(IllegalArgumentException.class,
-            () -> new EndTransactionMarker(ControlRecordType.UNKNOWN, 24));
+                () -> new EndTransactionMarker(ControlRecordType.UNKNOWN, 24));
     }
 
     @Test
     public void testCannotDeserializeUnknownControlType() {
         assertThrows(IllegalArgumentException.class,
-            () -> EndTransactionMarker.deserializeValue(ControlRecordType.UNKNOWN, ByteBuffer.wrap(new byte[0])));
+                () -> EndTransactionMarker.deserializeValue(ControlRecordType.UNKNOWN, ByteBuffer.wrap(new byte[0])));
     }
 
     @Test
@@ -87,7 +87,7 @@ public class EndTransactionMarkerTest {
     public void testSerializeAndDeserialize() {
         for (ControlRecordType type: VALID_CONTROLLER_RECORD_TYPE) {
             for (short version = EndTxnMarker.LOWEST_SUPPORTED_VERSION;
-                 version <= EndTxnMarker.HIGHEST_SUPPORTED_VERSION; version++) {
+                version <= EndTxnMarker.HIGHEST_SUPPORTED_VERSION; version++) {
                 EndTransactionMarker marker = new EndTransactionMarker(type, 1);
 
                 ByteBuffer buffer = marker.serializeValue();
@@ -107,7 +107,7 @@ public class EndTransactionMarkerTest {
             int valueSize = marker.serializeValue().remaining();
             int headerSize = ByteUtils.sizeOfVarint(Record.EMPTY_HEADERS.length);
             int totalSize = 1 + offsetSize + timestampSize + ByteUtils.sizeOfVarint(keySize) + keySize + ByteUtils.sizeOfVarint(valueSize) + valueSize + headerSize;
-            assertEquals(ByteUtils.sizeOfVarint(totalSize) +  totalSize, marker.endTxnMarkerValueSize());
+            assertEquals(ByteUtils.sizeOfVarint(totalSize) + totalSize, marker.endTxnMarkerValueSize());
         }
     }
 
@@ -116,7 +116,7 @@ public class EndTransactionMarkerTest {
         int coordinatorEpoch = 10;
         for (ControlRecordType type: VALID_CONTROLLER_RECORD_TYPE) {
             for (short version = EndTxnMarker.LOWEST_SUPPORTED_VERSION;
-                 version <= EndTxnMarker.HIGHEST_SUPPORTED_VERSION; version++) {
+                version <= EndTxnMarker.HIGHEST_SUPPORTED_VERSION; version++) {
 
                 Struct struct = new Struct(v0Schema);
                 struct.set("version", version);
@@ -138,7 +138,7 @@ public class EndTransactionMarkerTest {
         int coordinatorEpoch = 10;
         for (ControlRecordType type: VALID_CONTROLLER_RECORD_TYPE) {
             for (short version = EndTxnMarker.LOWEST_SUPPORTED_VERSION;
-                 version <= EndTxnMarker.HIGHEST_SUPPORTED_VERSION; version++) {
+                version <= EndTxnMarker.HIGHEST_SUPPORTED_VERSION; version++) {
                 EndTransactionMarker marker = new EndTransactionMarker(type, coordinatorEpoch);
                 ByteBuffer newVersionBuffer = marker.serializeValue();
 

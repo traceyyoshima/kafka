@@ -220,7 +220,7 @@ public class BrokerLifecycleManager {
             Time time,
             String threadNamePrefix,
             Map<String, Uuid> logDirs) {
-        this(config, time, threadNamePrefix, logDirs, () -> { }, () -> false);
+        this(config, time, threadNamePrefix, logDirs, () -> {}, () -> false);
     }
 
     public BrokerLifecycleManager(

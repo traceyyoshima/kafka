@@ -39,7 +39,7 @@ import static org.apache.kafka.streams.state.VersionedKeyValueStore.PUT_RETURN_C
 import static org.apache.kafka.streams.state.internals.KeyValueStoreWrapper.PUT_RETURN_CODE_IS_LATEST;
 
 public class KTableAggregate<KIn, VIn, VAgg> implements
-    KTableProcessorSupplier<KIn, VIn, KIn, VAgg> {
+        KTableProcessorSupplier<KIn, VIn, KIn, VAgg> {
 
     private final String storeName;
     private final StoreFactory storeFactory;
@@ -86,10 +86,10 @@ public class KTableAggregate<KIn, VIn, VAgg> implements
         public void init(final ProcessorContext<KIn, Change<VAgg>> context) {
             store = new KeyValueStoreWrapper<>(context, storeName);
             tupleForwarder = new TimestampedTupleForwarder<>(
-                store.store(),
-                context,
-                store.isHeadersStore() ? new TimestampedCacheFlushListenerWithHeaders<>(context) : new TimestampedCacheFlushListener<>(context),
-                sendOldValues);
+                    store.store(),
+                    context,
+                    store.isHeadersStore() ? new TimestampedCacheFlushListenerWithHeaders<>(context) : new TimestampedCacheFlushListener<>(context),
+                    sendOldValues);
         }
 
         /**
@@ -138,7 +138,7 @@ public class KTableAggregate<KIn, VIn, VAgg> implements
             // if not put to store, do not forward downstream either
             if (putReturnCode != PUT_RETURN_CODE_NOT_PUT) {
                 tupleForwarder.maybeForward(
-                    record.withValue(new Change<>(newAgg, sendOldValues ? oldAgg : null, putReturnCode == PUT_RETURN_CODE_IS_LATEST))
+                        record.withValue(new Change<>(newAgg, sendOldValues ? oldAgg : null, putReturnCode == PUT_RETURN_CODE_IS_LATEST))
                         .withTimestamp(newTimestamp));
             }
         }

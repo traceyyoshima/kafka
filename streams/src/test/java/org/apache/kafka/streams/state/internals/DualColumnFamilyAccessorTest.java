@@ -91,7 +91,6 @@ public class DualColumnFamilyAccessorTest extends AbstractColumnFamilyAccessorTe
         return new DualColumnFamilyAccessor(offsetsCF, oldCF, newCF, valueConverter, store, storeOpen);
     }
 
-
     @Test
     public void shouldPutValueToNewColumnFamilyAndDeleteFromOld() throws RocksDBException {
         accessor.put(dbAccessor, KEY, NEW_VALUE);
@@ -416,7 +415,7 @@ public class DualColumnFamilyAccessorTest extends AbstractColumnFamilyAccessorTe
         inMemory.put(newCF, "d".getBytes(), "new-d".getBytes());
 
         final ManagedKeyValueIterator<Bytes, byte[]> it = accessor.all(inMemory, true);
-        it.onClose(() -> { });
+        it.onClose(() -> {});
 
         assertTrue(it.hasNext());
         final KeyValue<Bytes, byte[]> kv0 = it.next();
@@ -450,7 +449,7 @@ public class DualColumnFamilyAccessorTest extends AbstractColumnFamilyAccessorTe
         inMemory.put(newCF, "d".getBytes(), "new-d".getBytes());
 
         final ManagedKeyValueIterator<Bytes, byte[]> it = accessor.all(inMemory, false);
-        it.onClose(() -> { });
+        it.onClose(() -> {});
 
         final List<Bytes> keys = new ArrayList<>();
         while (it.hasNext()) {
@@ -475,7 +474,7 @@ public class DualColumnFamilyAccessorTest extends AbstractColumnFamilyAccessorTe
 
         final ManagedKeyValueIterator<Bytes, byte[]> it =
                 accessor.range(inMemory, Bytes.wrap("b".getBytes()), Bytes.wrap("c".getBytes()), true);
-        it.onClose(() -> { });
+        it.onClose(() -> {});
 
         final List<byte[]> keys = new ArrayList<>();
         while (it.hasNext()) {
@@ -495,7 +494,7 @@ public class DualColumnFamilyAccessorTest extends AbstractColumnFamilyAccessorTe
 
         final ManagedKeyValueIterator<Bytes, byte[]> it =
                 accessor.prefixScan(inMemory, Bytes.wrap("foo:".getBytes()));
-        it.onClose(() -> { });
+        it.onClose(() -> {});
 
         final List<byte[]> keys = new ArrayList<>();
         while (it.hasNext()) {
@@ -513,7 +512,7 @@ public class DualColumnFamilyAccessorTest extends AbstractColumnFamilyAccessorTe
         inMemory.put(newCF, "x".getBytes(), "new-x".getBytes());
 
         final ManagedKeyValueIterator<Bytes, byte[]> it = accessor.all(inMemory, true);
-        it.onClose(() -> { });
+        it.onClose(() -> {});
 
         assertTrue(it.hasNext());
         final KeyValue<Bytes, byte[]> kv = it.next();

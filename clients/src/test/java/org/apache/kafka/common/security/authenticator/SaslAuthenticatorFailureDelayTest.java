@@ -231,7 +231,7 @@ public abstract class SaslAuthenticatorFailureDelayTest {
     }
 
     private ChannelState createAndCheckClientConnectionFailure(SecurityProtocol securityProtocol, String node)
-            throws Exception {
+        throws Exception {
         createClientConnection(securityProtocol, node);
         ChannelState finalState = NetworkTestUtils.waitForChannelClose(selector, node,
                 ChannelState.State.AUTHENTICATION_FAILED);

@@ -44,7 +44,7 @@ public class RLMQuotaManagerTest {
     @Test
     public void testQuotaExceeded() {
         RLMQuotaManager quotaManager = new RLMQuotaManager(
-            new RLMQuotaManagerConfig(50, 11, 1), metrics, QUOTA_TYPE, DESCRIPTION, time);
+                new RLMQuotaManagerConfig(50, 11, 1), metrics, QUOTA_TYPE, DESCRIPTION, time);
 
         assertEquals(0L, quotaManager.getThrottleTimeMs());
         quotaManager.record(500);
@@ -64,7 +64,7 @@ public class RLMQuotaManagerTest {
     @Test
     public void testQuotaUpdate() {
         RLMQuotaManager quotaManager = new RLMQuotaManager(
-            new RLMQuotaManagerConfig(50, 11, 1), metrics, QUOTA_TYPE, DESCRIPTION, time);
+                new RLMQuotaManagerConfig(50, 11, 1), metrics, QUOTA_TYPE, DESCRIPTION, time);
 
         assertFalse(quotaManager.getThrottleTimeMs() > 0);
         quotaManager.record(51);

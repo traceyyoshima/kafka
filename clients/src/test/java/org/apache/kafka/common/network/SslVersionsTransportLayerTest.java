@@ -87,10 +87,10 @@ public class SslVersionsTransportLayerTest {
         Map<String, Object> sslServerConfigs = getTrustingConfig(serverCertStores, clientCertStores, serverProtocols);
 
         NioEchoServer server = NetworkTestUtils.createEchoServer(ListenerName.forSecurityProtocol(SecurityProtocol.SSL),
-            SecurityProtocol.SSL,
-            new TestSecurityConfig(sslServerConfigs),
-            null,
-            TIME);
+                SecurityProtocol.SSL,
+                new TestSecurityConfig(sslServerConfigs),
+                null,
+                TIME);
         Selector selector = createClientSelector(sslClientConfigs);
 
         String node = "0";
@@ -145,7 +145,7 @@ public class SslVersionsTransportLayerTest {
         assertFalse(clientProtocols.isEmpty());
 
         return serverProtocols.contains(clientProtocols.get(0)) ||
-            (clientProtocols.get(0).equals("TLSv1.3") && !Collections.disjoint(serverProtocols, clientProtocols));
+                (clientProtocols.get(0).equals("TLSv1.3") && !Collections.disjoint(serverProtocols, clientProtocols));
     }
 
     private static Map<String, Object> getTrustingConfig(CertStores certStores, CertStores peerCertStores, List<String> tlsProtocols) {
@@ -163,7 +163,7 @@ public class SslVersionsTransportLayerTest {
 
     private Selector createClientSelector(Map<String, Object> sslClientConfigs) {
         SslTransportLayerTest.TestSslChannelBuilder channelBuilder =
-            new SslTransportLayerTest.TestSslChannelBuilder(ConnectionMode.CLIENT);
+                new SslTransportLayerTest.TestSslChannelBuilder(ConnectionMode.CLIENT);
         channelBuilder.configureBufferSizes(null, null, null);
         channelBuilder.configure(sslClientConfigs);
         return new Selector(100 * 5000, new Metrics(), TIME, "MetricGroup", channelBuilder, new LogContext());

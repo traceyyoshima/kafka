@@ -47,7 +47,7 @@ public class ApiMessageAndVersion {
         if (o == null || getClass() != o.getClass()) return false;
         ApiMessageAndVersion that = (ApiMessageAndVersion) o;
         return version == that.version &&
-            Objects.equals(message, that.message);
+                Objects.equals(message, that.message);
     }
 
     @Override

@@ -339,10 +339,10 @@ public abstract class AbstractHerder implements Herder, TaskStatus.Listener, Con
         Map<String, String> config = configState.rawConnectorConfig(connector);
 
         return new ConnectorInfo(
-            connector,
-            config,
-            configState.tasks(connector),
-            connectorType(config)
+                connector,
+                config,
+                configState.tasks(connector),
+                connectorType(config)
         );
     }
 
@@ -677,7 +677,7 @@ public abstract class AbstractHerder implements Herder, TaskStatus.Listener, Con
 
     protected boolean connectorUsesProducer(org.apache.kafka.connect.health.ConnectorType connectorType, Map<String, String> connProps) {
         return connectorType == org.apache.kafka.connect.health.ConnectorType.SOURCE
-            || SinkConnectorConfig.hasDlqTopicConfig(connProps);
+                || SinkConnectorConfig.hasDlqTopicConfig(connProps);
     }
 
     private ConfigInfos validateClientOverrides(
@@ -923,7 +923,7 @@ public abstract class AbstractHerder implements Herder, TaskStatus.Listener, Con
             clientConfigs.put(configName, parsedConfigValue);
         }
         ConnectorClientConfigRequest connectorClientConfigRequest = new ConnectorClientConfigRequest(
-            connName, connectorType, connectorClass, clientConfigs, clientType);
+                connName, connectorType, connectorClass, clientConfigs, clientType);
         List<ConfigValue> configValues = connectorClientConfigOverridePolicyPlugin.get().validate(connectorClientConfigRequest);
 
         return prefixedConfigInfos(configDef.configKeys(), configValues, prefix);
@@ -1079,9 +1079,9 @@ public abstract class AbstractHerder implements Herder, TaskStatus.Listener, Con
                 }
             }
             callback.onCompletion(
-                new BadRequestException(
-                    messages.append(
-                        "\nYou can also find the above list of errors at the endpoint `/connector-plugins/{connectorType}/config/validate`"
+                    new BadRequestException(
+                        messages.append(
+                            "\nYou can also find the above list of errors at the endpoint `/connector-plugins/{connectorType}/config/validate`"
                     ).toString()
                 ), null
             );

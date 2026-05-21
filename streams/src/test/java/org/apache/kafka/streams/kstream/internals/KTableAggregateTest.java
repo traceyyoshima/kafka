@@ -77,12 +77,12 @@ public class KTableAggregateTest {
     private final Grouped<String, String> stringSerialized = Grouped.with(stringSerde, stringSerde);
     private final MockApiProcessorSupplier<String, Object, Void, Void> supplier = new MockApiProcessorSupplier<>();
     private static final Properties CONFIG = mkProperties(mkMap(
-        mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory("kafka-test").getAbsolutePath())));
+            mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory("kafka-test").getAbsolutePath())));
 
     private StreamsBuilder createStreamBuilderInMemory(final boolean withHeaders) {
         final Properties props = StreamsTestUtils.getStreamsConfig(Serdes.String(), Serdes.String());
         props.put(StreamsConfig.DSL_STORE_SUPPLIERS_CLASS_CONFIG,
-                    BuiltInDslStoreSuppliers.InMemoryDslStoreSuppliers.class.getName());
+                BuiltInDslStoreSuppliers.InMemoryDslStoreSuppliers.class.getName());
         StreamsTestUtils.maybeSetDslStoreFormatHeaders(props, withHeaders);
         return new StreamsBuilder(new TopologyConfig(new StreamsConfig(props)));
     }
@@ -96,22 +96,22 @@ public class KTableAggregateTest {
         final KTable<String, String> table1 = builder.table(topic1, consumed);
         final KTable<String, String> table2 = table1
             .groupBy(
-                MockMapper.noOpKeyValueMapper(),
-                stringSerialized)
+                    MockMapper.noOpKeyValueMapper(),
+                    stringSerialized)
             .aggregate(
-                MockInitializer.STRING_INIT,
-                MockAggregator.TOSTRING_ADDER,
-                MockAggregator.TOSTRING_REMOVER,
-                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("topic1-Canonized")
+                    MockInitializer.STRING_INIT,
+                    MockAggregator.TOSTRING_ADDER,
+                    MockAggregator.TOSTRING_REMOVER,
+                    Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("topic1-Canonized")
                     .withValueSerde(stringSerde));
 
         table2.toStream().process(supplier);
 
         try (
-            final TopologyTestDriver driver = new TopologyTestDriver(
-                builder.build(), CONFIG, Instant.ofEpochMilli(0L))) {
+                final TopologyTestDriver driver = new TopologyTestDriver(
+                    builder.build(), CONFIG, Instant.ofEpochMilli(0L))) {
             final TestInputTopic<String, String> inputTopic =
-                driver.createInputTopic(topic1, new StringSerializer(), new StringSerializer(), Instant.ofEpochMilli(0L), Duration.ZERO);
+                    driver.createInputTopic(topic1, new StringSerializer(), new StringSerializer(), Instant.ofEpochMilli(0L), Duration.ZERO);
 
             final Headers headers = new RecordHeaders();
             headers.add(new RecordHeader("header-key",  "header-value".getBytes(StandardCharsets.UTF_8)));
@@ -125,16 +125,16 @@ public class KTableAggregateTest {
             inputTopic.pipeInput("C", "8", 10L);
 
             assertEquals(
-                asList(
-                    new KeyValueTimestamp<>("A", "0+1", 10L),
-                    new KeyValueTimestamp<>("B", "0+2", 15L),
-                    new KeyValueTimestamp<>("A", "0+1-1+3", 20L),
-                    new KeyValueTimestamp<>("B", "0+2-2+4", 18L),
-                    new KeyValueTimestamp<>("C", "0+5", 5L),
-                    new KeyValueTimestamp<>("D", "0+6", 25L),
-                    new KeyValueTimestamp<>("B", "0+2-2+4-4+7", 18L),
-                    new KeyValueTimestamp<>("C", "0+5-5+8", 10L)),
-                supplier.theCapturedProcessor().processed());
+                    asList(
+                        new KeyValueTimestamp<>("A", "0+1", 10L),
+                        new KeyValueTimestamp<>("B", "0+2", 15L),
+                        new KeyValueTimestamp<>("A", "0+1-1+3", 20L),
+                        new KeyValueTimestamp<>("B", "0+2-2+4", 18L),
+                        new KeyValueTimestamp<>("C", "0+5", 5L),
+                        new KeyValueTimestamp<>("D", "0+6", 25L),
+                        new KeyValueTimestamp<>("B", "0+2-2+4-4+7", 18L),
+                        new KeyValueTimestamp<>("C", "0+5-5+8", 10L)),
+                    supplier.theCapturedProcessor().processed());
         }
     }
 
@@ -147,31 +147,31 @@ public class KTableAggregateTest {
         final KTable<String, String> table1 = builder.table(topic1, consumed);
         final KTable<String, String> table2 = table1
             .groupBy(
-                (key, value) -> {
-                    switch (key) {
+                    (key, value) -> {
+                        switch (key) {
                         case "null":
                             return KeyValue.pair(null, value);
                         case "NULL":
                             return null;
                         default:
                             return KeyValue.pair(value, value);
-                    }
-                },
-                stringSerialized)
+                        }
+                    },
+                    stringSerialized)
             .aggregate(
-                MockInitializer.STRING_INIT,
-                MockAggregator.TOSTRING_ADDER,
-                MockAggregator.TOSTRING_REMOVER,
-                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("topic1-Canonized")
+                    MockInitializer.STRING_INIT,
+                    MockAggregator.TOSTRING_ADDER,
+                    MockAggregator.TOSTRING_REMOVER,
+                    Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("topic1-Canonized")
                     .withValueSerde(stringSerde));
 
         table2.toStream().process(supplier);
 
         try (
-            final TopologyTestDriver driver = new TopologyTestDriver(
-                builder.build(), CONFIG, Instant.ofEpochMilli(0L))) {
+                final TopologyTestDriver driver = new TopologyTestDriver(
+                    builder.build(), CONFIG, Instant.ofEpochMilli(0L))) {
             final TestInputTopic<String, String> inputTopic =
-                driver.createInputTopic(topic1, new StringSerializer(), new StringSerializer(), Instant.ofEpochMilli(0L), Duration.ZERO);
+                    driver.createInputTopic(topic1, new StringSerializer(), new StringSerializer(), Instant.ofEpochMilli(0L), Duration.ZERO);
 
             inputTopic.pipeInput("A", "1", 10L);
             inputTopic.pipeInput("A", (String) null, 15L);
@@ -183,16 +183,16 @@ public class KTableAggregateTest {
             inputTopic.pipeInput("B", "7", 22L);
 
             assertEquals(
-                asList(
-                    new KeyValueTimestamp<>("1", "0+1", 10),
-                    new KeyValueTimestamp<>("1", "0+1-1", 15),
-                    new KeyValueTimestamp<>("1", "0+1-1+1", 15),
-                    new KeyValueTimestamp<>("2", "0+2", 20),
-                    new KeyValueTimestamp<>("2", "0+2-2", 23),
-                    new KeyValueTimestamp<>("4", "0+4", 23),
-                    new KeyValueTimestamp<>("4", "0+4-4", 23),
-                    new KeyValueTimestamp<>("7", "0+7", 22)),
-                supplier.theCapturedProcessor().processed());
+                    asList(
+                        new KeyValueTimestamp<>("1", "0+1", 10),
+                        new KeyValueTimestamp<>("1", "0+1-1", 15),
+                        new KeyValueTimestamp<>("1", "0+1-1+1", 15),
+                        new KeyValueTimestamp<>("2", "0+2", 20),
+                        new KeyValueTimestamp<>("2", "0+2-2", 23),
+                        new KeyValueTimestamp<>("4", "0+4", 23),
+                        new KeyValueTimestamp<>("4", "0+4-4", 23),
+                        new KeyValueTimestamp<>("7", "0+7", 22)),
+                    supplier.theCapturedProcessor().processed());
         }
     }
 
@@ -202,35 +202,35 @@ public class KTableAggregateTest {
         final String topic1 = "topic1";
 
         final Materialized<String, String, KeyValueStore<Bytes, byte[]>> versionedMaterialize =
-            Materialized.as(Stores.persistentVersionedKeyValueStore("versioned", Duration.ofMinutes(5)));
+                Materialized.as(Stores.persistentVersionedKeyValueStore("versioned", Duration.ofMinutes(5)));
         final KTable<String, String> table1 = builder.table(topic1, consumed, versionedMaterialize);
         final KTable<String, String> table2 = table1
             .groupBy(
-                (key, value) -> {
-                    switch (key) {
+                    (key, value) -> {
+                        switch (key) {
                         case "null":
                             return KeyValue.pair(null, value);
                         case "NULL":
                             return null;
                         default:
                             return KeyValue.pair(value, value);
-                    }
-                },
-                stringSerialized)
+                        }
+                    },
+                    stringSerialized)
             .aggregate(
-                MockInitializer.STRING_INIT,
-                MockAggregator.TOSTRING_ADDER,
-                MockAggregator.TOSTRING_REMOVER,
-                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("topic1-Canonized")
+                    MockInitializer.STRING_INIT,
+                    MockAggregator.TOSTRING_ADDER,
+                    MockAggregator.TOSTRING_REMOVER,
+                    Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("topic1-Canonized")
                     .withValueSerde(stringSerde));
 
         table2.toStream().process(supplier);
 
         try (
-            final TopologyTestDriver driver = new TopologyTestDriver(
-                builder.build(), CONFIG, Instant.ofEpochMilli(0L))) {
+                final TopologyTestDriver driver = new TopologyTestDriver(
+                    builder.build(), CONFIG, Instant.ofEpochMilli(0L))) {
             final TestInputTopic<String, String> inputTopic =
-                driver.createInputTopic(topic1, new StringSerializer(), new StringSerializer(), Instant.ofEpochMilli(0L), Duration.ZERO);
+                    driver.createInputTopic(topic1, new StringSerializer(), new StringSerializer(), Instant.ofEpochMilli(0L), Duration.ZERO);
 
             inputTopic.pipeInput("A", "1", 10L);
             inputTopic.pipeInput("A", (String) null, 15L);
@@ -242,13 +242,13 @@ public class KTableAggregateTest {
             inputTopic.pipeInput("B", "7", 22L); // out-of-order record will be ignored
 
             assertEquals(
-                asList(
-                    new KeyValueTimestamp<>("1", "0+1", 10),
-                    new KeyValueTimestamp<>("1", "0+1-1", 15),
-                    new KeyValueTimestamp<>("2", "0+2", 20),
-                    new KeyValueTimestamp<>("2", "0+2-2", 23),
-                    new KeyValueTimestamp<>("4", "0+4", 23)),
-                supplier.theCapturedProcessor().processed());
+                    asList(
+                        new KeyValueTimestamp<>("1", "0+1", 10),
+                        new KeyValueTimestamp<>("1", "0+1-1", 15),
+                        new KeyValueTimestamp<>("2", "0+2", 20),
+                        new KeyValueTimestamp<>("2", "0+2-2", 23),
+                        new KeyValueTimestamp<>("4", "0+4", 23)),
+                    supplier.theCapturedProcessor().processed());
         }
     }
 
@@ -256,10 +256,10 @@ public class KTableAggregateTest {
                                         final String input,
                                         final MockApiProcessorSupplier<String, Object, Void, Void> supplier) {
         try (
-            final TopologyTestDriver driver = new TopologyTestDriver(
-                builder.build(), CONFIG, Instant.ofEpochMilli(0L))) {
+                final TopologyTestDriver driver = new TopologyTestDriver(
+                    builder.build(), CONFIG, Instant.ofEpochMilli(0L))) {
             final TestInputTopic<String, String> inputTopic =
-                driver.createInputTopic(input, new StringSerializer(), new StringSerializer(), Instant.ofEpochMilli(0L), Duration.ZERO);
+                    driver.createInputTopic(input, new StringSerializer(), new StringSerializer(), Instant.ofEpochMilli(0L), Duration.ZERO);
 
             inputTopic.pipeInput("A", "green", 10L);
             inputTopic.pipeInput("B", "green", 9L);
@@ -268,17 +268,16 @@ public class KTableAggregateTest {
             inputTopic.pipeInput("D", "green", 11L);
 
             assertEquals(
-                asList(
-                    new KeyValueTimestamp<>("green", 1L, 10),
-                    new KeyValueTimestamp<>("green", 2L, 10),
-                    new KeyValueTimestamp<>("green", 1L, 12),
-                    new KeyValueTimestamp<>("blue", 1L, 12),
-                    new KeyValueTimestamp<>("yellow", 1L, 15),
-                    new KeyValueTimestamp<>("green", 2L, 12)),
-                supplier.theCapturedProcessor().processed());
+                    asList(
+                        new KeyValueTimestamp<>("green", 1L, 10),
+                        new KeyValueTimestamp<>("green", 2L, 10),
+                        new KeyValueTimestamp<>("green", 1L, 12),
+                        new KeyValueTimestamp<>("blue", 1L, 12),
+                        new KeyValueTimestamp<>("yellow", 1L, 15),
+                        new KeyValueTimestamp<>("green", 2L, 12)),
+                    supplier.theCapturedProcessor().processed());
         }
     }
-
 
     @ParameterizedTest
     @CsvSource({"true", "false"})
@@ -318,7 +317,7 @@ public class KTableAggregateTest {
         final String input = "count-test-input";
 
         final Materialized<String, String, KeyValueStore<Bytes, byte[]>> versionedMaterialize =
-            Materialized.as(Stores.persistentVersionedKeyValueStore("versioned", Duration.ofMinutes(5)));
+                Materialized.as(Stores.persistentVersionedKeyValueStore("versioned", Duration.ofMinutes(5)));
         builder
             .table(input, consumed, versionedMaterialize)
             .groupBy(MockMapper.selectValueKeyValueMapper(), stringSerialized)
@@ -327,10 +326,10 @@ public class KTableAggregateTest {
             .process(supplier);
 
         try (
-            final TopologyTestDriver driver = new TopologyTestDriver(
-                builder.build(), CONFIG, Instant.ofEpochMilli(0L))) {
+                final TopologyTestDriver driver = new TopologyTestDriver(
+                    builder.build(), CONFIG, Instant.ofEpochMilli(0L))) {
             final TestInputTopic<String, String> inputTopic =
-                driver.createInputTopic(input, new StringSerializer(), new StringSerializer(), Instant.ofEpochMilli(0L), Duration.ZERO);
+                    driver.createInputTopic(input, new StringSerializer(), new StringSerializer(), Instant.ofEpochMilli(0L), Duration.ZERO);
 
             inputTopic.pipeInput("A", "green", 10L);
             inputTopic.pipeInput("B", "green", 9L);
@@ -340,14 +339,14 @@ public class KTableAggregateTest {
             inputTopic.pipeInput("D", "green", 11L);
 
             assertEquals(
-                asList(
-                    new KeyValueTimestamp<>("green", 1L, 10),
-                    new KeyValueTimestamp<>("green", 2L, 10),
-                    new KeyValueTimestamp<>("green", 1L, 12),
-                    new KeyValueTimestamp<>("blue", 1L, 12),
-                    new KeyValueTimestamp<>("yellow", 1L, 15),
-                    new KeyValueTimestamp<>("green", 2L, 12)),
-                supplier.theCapturedProcessor().processed());
+                    asList(
+                        new KeyValueTimestamp<>("green", 1L, 10),
+                        new KeyValueTimestamp<>("green", 2L, 10),
+                        new KeyValueTimestamp<>("green", 1L, 12),
+                        new KeyValueTimestamp<>("blue", 1L, 12),
+                        new KeyValueTimestamp<>("yellow", 1L, 15),
+                        new KeyValueTimestamp<>("green", 2L, 12)),
+                    supplier.theCapturedProcessor().processed());
         }
     }
 
@@ -361,24 +360,24 @@ public class KTableAggregateTest {
         builder
             .table(input, consumed)
             .groupBy(
-                (key, value) -> KeyValue.pair(
-                    String.valueOf(key.charAt(0)),
-                    String.valueOf(key.charAt(1))),
-                stringSerialized)
+                    (key, value) -> KeyValue.pair(
+                        String.valueOf(key.charAt(0)),
+                        String.valueOf(key.charAt(1))),
+                    stringSerialized)
             .aggregate(
-                () -> "",
-                (aggKey, value, aggregate) -> aggregate + value,
-                (key, value, aggregate) -> aggregate.replaceAll(value, ""),
-                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("someStore")
+                    () -> "",
+                    (aggKey, value, aggregate) -> aggregate + value,
+                    (key, value, aggregate) -> aggregate.replaceAll(value, ""),
+                    Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("someStore")
                     .withValueSerde(Serdes.String()))
             .toStream()
             .process(supplier);
 
         try (
-            final TopologyTestDriver driver = new TopologyTestDriver(
-                builder.build(), CONFIG, Instant.ofEpochMilli(0L))) {
+                final TopologyTestDriver driver = new TopologyTestDriver(
+                    builder.build(), CONFIG, Instant.ofEpochMilli(0L))) {
             final TestInputTopic<String, String> inputTopic =
-                driver.createInputTopic(input, new StringSerializer(), new StringSerializer(), Instant.ofEpochMilli(0L), Duration.ZERO);
+                    driver.createInputTopic(input, new StringSerializer(), new StringSerializer(), Instant.ofEpochMilli(0L), Duration.ZERO);
 
             final MockApiProcessor<String, String, Void, Void> proc = supplier.theCapturedProcessor();
 
@@ -388,13 +387,13 @@ public class KTableAggregateTest {
             inputTopic.pipeInput("12", "C", 6L);
 
             assertEquals(
-                asList(
-                    new KeyValueTimestamp<>("1", "1", 10),
-                    new KeyValueTimestamp<>("1", "12", 10),
-                    new KeyValueTimestamp<>("1", "2", 12),
-                    new KeyValueTimestamp<>("1", "2", 12L)
+                    asList(
+                        new KeyValueTimestamp<>("1", "1", 10),
+                        new KeyValueTimestamp<>("1", "12", 10),
+                        new KeyValueTimestamp<>("1", "2", 12),
+                        new KeyValueTimestamp<>("1", "2", 12L)
                 ),
-                proc.processed()
+                    proc.processed()
             );
         }
     }

@@ -61,28 +61,28 @@ public class SlidingWindowStoreMaterializer<K, V> extends MaterializedStoreFacto
     public StoreBuilder<?> builder() {
         final WindowBytesStoreSupplier supplier = materialized.storeSupplier() == null
             ? dslStoreSuppliers().windowStore(new DslWindowParams(
-                materialized.storeName(),
-                Duration.ofMillis(retentionPeriod),
-                Duration.ofMillis(windows.timeDifferenceMs()),
-                false,
-                emitStrategy,
-                true,
-                dslStoreFormat()
+                    materialized.storeName(),
+                    Duration.ofMillis(retentionPeriod),
+                    Duration.ofMillis(windows.timeDifferenceMs()),
+                    false,
+                    emitStrategy,
+                    true,
+                    dslStoreFormat()
             ))
             : (WindowBytesStoreSupplier) materialized.storeSupplier();
 
         final StoreBuilder<?> builder;
         if (supplier instanceof HeadersBytesStoreSupplier) {
             builder = Stores.timestampedWindowStoreWithHeadersBuilder(
-                supplier,
-                materialized.keySerde(),
-                materialized.valueSerde()
+                    supplier,
+                    materialized.keySerde(),
+                    materialized.valueSerde()
             );
         } else {
             builder = Stores.timestampedWindowStoreBuilder(
-                supplier,
-                materialized.keySerde(),
-                materialized.valueSerde()
+                    supplier,
+                    materialized.keySerde(),
+                    materialized.valueSerde()
             );
         }
 
@@ -104,7 +104,7 @@ public class SlidingWindowStoreMaterializer<K, V> extends MaterializedStoreFacto
 
     @Override
     public final long retentionPeriod() {
-        return  materialized.retention() != null
+        return materialized.retention() != null
                 ? materialized.retention().toMillis()
                 : windows.gracePeriodMs() + 2 * windows.timeDifferenceMs();
     }

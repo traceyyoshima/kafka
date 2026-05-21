@@ -91,7 +91,7 @@ import static org.mockito.Mockito.when;
 public class SaslServerAuthenticatorTest {
 
     private final String clientId = "clientId";
-    
+
     @Test
     public void testOversizeRequest() throws IOException {
         TransportLayer transportLayer = mock(TransportLayer.class);
@@ -142,7 +142,7 @@ public class SaslServerAuthenticatorTest {
 
         short invalidApiKeyId = (short) (Arrays.stream(ApiKeys.values()).mapToInt(k -> k.id).max().getAsInt() + 1);
         ByteBuffer headerBuffer = RequestTestUtils.serializeRequestHeader(new RequestHeader(
-            new RequestHeaderData()
+                new RequestHeaderData()
                 .setRequestApiKey(invalidApiKeyId)
                 .setRequestApiVersion((short) 0),
                 (short) 2));
@@ -279,9 +279,9 @@ public class SaslServerAuthenticatorTest {
         Duration largeExpirationTime = Duration.ofMillis(Long.MAX_VALUE);
 
         try (
-            MockedStatic<?> ignored = mockSaslServer(saslServer, mechanism, time, largeExpirationTime);
-            MockedStatic<?> ignored2 = mockKafkaPrincipal("[principal-type]", "[principal-name");
-            TransportLayer transportLayer = mockTransportLayer()
+                MockedStatic<?> ignored = mockSaslServer(saslServer, mechanism, time, largeExpirationTime);
+                MockedStatic<?> ignored2 = mockKafkaPrincipal("[principal-type]", "[principal-name");
+                TransportLayer transportLayer = mockTransportLayer()
         ) {
 
             SaslServerAuthenticator authenticator = getSaslServerAuthenticatorForOAuth(mechanism, transportLayer, time, largeExpirationTime.toMillis());
@@ -295,7 +295,7 @@ public class SaslServerAuthenticatorTest {
             Throwable t = assertThrows(IllegalArgumentException.class, authenticator::authenticate);
             assertEquals(ArithmeticException.class, t.getCause().getClass());
             assertEquals("Cannot convert " + Long.MAX_VALUE + " millisecond to nanosecond due to arithmetic overflow",
-                t.getMessage());
+                    t.getMessage());
         }
     }
 

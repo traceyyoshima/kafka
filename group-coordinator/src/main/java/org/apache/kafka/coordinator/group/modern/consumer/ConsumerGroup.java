@@ -261,7 +261,7 @@ public class ConsumerGroup extends ModernGroup<ConsumerGroupMember> {
 
         if (!createIfNotExists) {
             throw new UnknownMemberIdException(
-                String.format("Member %s is not a member of group %s.", memberId, groupId)
+                    String.format("Member %s is not a member of group %s.", memberId, groupId)
             );
         }
 
@@ -389,7 +389,7 @@ public class ConsumerGroup extends ModernGroup<ConsumerGroupMember> {
             // is not subscribed to it, we must remove it from the subscribed topic names.
             if (!oldSubscribedTopicRegex.equals(newSubscribedTopicRegex) && numSubscribedMembers(oldSubscribedTopicRegex) == 1) {
                 resolvedRegularExpression(oldSubscribedTopicRegex).ifPresent(resolvedRegularExpression ->
-                    resolvedRegularExpression.topics().forEach(topic -> subscribedTopicsNames.compute(topic, SubscriptionCount::decRegexCount))
+                        resolvedRegularExpression.topics().forEach(topic -> subscribedTopicsNames.compute(topic, SubscriptionCount::decRegexCount))
                 );
             }
         }
@@ -442,9 +442,9 @@ public class ConsumerGroup extends ModernGroup<ConsumerGroupMember> {
         Map<String, SubscriptionCount> subscribedTopicsNames = super.computeSubscribedTopicNames(removedMembers);
 
         removedRegexes.forEach(regex ->
-            resolvedRegularExpression(regex).ifPresent(resolvedRegularExpression ->
-                resolvedRegularExpression.topics().forEach(topic ->
-                    subscribedTopicsNames.compute(topic, SubscriptionCount::decRegexCount)
+                resolvedRegularExpression(regex).ifPresent(resolvedRegularExpression ->
+                        resolvedRegularExpression.topics().forEach(topic ->
+                                subscribedTopicsNames.compute(topic, SubscriptionCount::decRegexCount)
                 )
             )
         );
@@ -661,7 +661,7 @@ public class ConsumerGroup extends ModernGroup<ConsumerGroupMember> {
         // The TxnOffsetCommit API does not require the member id, the generation id and the group instance id fields.
         // Hence, they are only validated if any of them is provided
         if (isTransactional && memberEpoch == JoinGroupRequest.UNKNOWN_GENERATION_ID &&
-            memberId.equals(JoinGroupRequest.UNKNOWN_MEMBER_ID) && groupInstanceId == null)
+                memberId.equals(JoinGroupRequest.UNKNOWN_MEMBER_ID) && groupInstanceId == null)
             return CommitPartitionValidator.NO_OP;
 
         final ConsumerGroupMember member = getOrMaybeCreateMember(memberId, false);
@@ -670,7 +670,7 @@ public class ConsumerGroup extends ModernGroup<ConsumerGroupMember> {
         // the member should be using the OffsetCommit API version >= 9.
         if (!isTransactional && !member.useClassicProtocol() && apiVersion < 9) {
             throw new UnsupportedVersionException("OffsetCommit version 9 or above must be used " +
-                "by members using the consumer group protocol");
+                    "by members using the consumer group protocol");
         }
 
         // For members in a consumer group, the epoch must either match the last epoch sent
@@ -682,10 +682,10 @@ public class ConsumerGroup extends ModernGroup<ConsumerGroupMember> {
         if (memberEpoch > member.memberEpoch()) {
             if (member.useClassicProtocol()) {
                 throw new IllegalGenerationException(String.format("Received generation id %d is newer than "
-                    + "current member epoch %d.", memberEpoch, member.memberEpoch()));
+                        + "current member epoch %d.", memberEpoch, member.memberEpoch()));
             } else {
                 throw new StaleMemberEpochException(String.format("Received member epoch %d is newer than "
-                    + "current member epoch %d.", memberEpoch, member.memberEpoch()));
+                        + "current member epoch %d.", memberEpoch, member.memberEpoch()));
             }
         }
 
@@ -719,7 +719,7 @@ public class ConsumerGroup extends ModernGroup<ConsumerGroupMember> {
         final ConsumerGroupMember member = members.get(memberId, lastCommittedOffset);
         if (member == null) {
             throw new UnknownMemberIdException(String.format("Member %s is not a member of group %s.",
-                memberId, groupId));
+                    memberId, groupId));
         }
         validateMemberEpoch(memberEpoch, member.memberEpoch(), member.useClassicProtocol());
     }
@@ -750,20 +750,20 @@ public class ConsumerGroup extends ModernGroup<ConsumerGroupMember> {
     @Override
     public void createGroupTombstoneRecords(List<CoordinatorRecord> records) {
         members.keySet().forEach(memberId ->
-            records.add(GroupCoordinatorRecordHelpers.newConsumerGroupCurrentAssignmentTombstoneRecord(groupId, memberId))
+                records.add(GroupCoordinatorRecordHelpers.newConsumerGroupCurrentAssignmentTombstoneRecord(groupId, memberId))
         );
 
         members.keySet().forEach(memberId ->
-            records.add(GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentTombstoneRecord(groupId, memberId))
+                records.add(GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentTombstoneRecord(groupId, memberId))
         );
         records.add(GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentMetadataTombstoneRecord(groupId));
 
         members.keySet().forEach(memberId ->
-            records.add(GroupCoordinatorRecordHelpers.newConsumerGroupMemberSubscriptionTombstoneRecord(groupId, memberId))
+                records.add(GroupCoordinatorRecordHelpers.newConsumerGroupMemberSubscriptionTombstoneRecord(groupId, memberId))
         );
 
         resolvedRegularExpressions.keySet().forEach(regex ->
-            records.add(GroupCoordinatorRecordHelpers.newConsumerGroupRegularExpressionTombstone(groupId, regex))
+                records.add(GroupCoordinatorRecordHelpers.newConsumerGroupRegularExpressionTombstone(groupId, regex))
         );
 
         records.add(GroupCoordinatorRecordHelpers.newConsumerGroupSubscriptionMetadataTombstoneRecord(groupId));
@@ -801,7 +801,7 @@ public class ConsumerGroup extends ModernGroup<ConsumerGroupMember> {
         });
 
         resolvedRegularExpressions.keySet().forEach(regex ->
-            records.add(GroupCoordinatorRecordHelpers.newConsumerGroupRegularExpressionTombstone(groupId, regex))
+                records.add(GroupCoordinatorRecordHelpers.newConsumerGroupRegularExpressionTombstone(groupId, regex))
         );
 
         records.add(GroupCoordinatorRecordHelpers.newConsumerGroupSubscriptionMetadataTombstoneRecord(groupId));
@@ -845,10 +845,10 @@ public class ConsumerGroup extends ModernGroup<ConsumerGroupMember> {
         if (receivedMemberEpoch != expectedMemberEpoch) {
             if (useClassicProtocol) {
                 throw new IllegalGenerationException(String.format("The received generation id %d does not match " +
-                    "the expected member epoch %d.", receivedMemberEpoch, expectedMemberEpoch));
+                        "the expected member epoch %d.", receivedMemberEpoch, expectedMemberEpoch));
             } else {
                 throw new StaleMemberEpochException(String.format("The received member epoch %d does not match "
-                    + "the expected member epoch %d.", receivedMemberEpoch, expectedMemberEpoch));
+                        + "the expected member epoch %d.", receivedMemberEpoch, expectedMemberEpoch));
             }
         }
     }
@@ -876,25 +876,25 @@ public class ConsumerGroup extends ModernGroup<ConsumerGroupMember> {
             if (assignmentEpoch == null) {
                 if (member.useClassicProtocol()) {
                     throw new IllegalGenerationException(String.format(
-                        "Partition %s-%d is not assigned or pending revocation for member.",
-                        topicName, partitionId));
+                            "Partition %s-%d is not assigned or pending revocation for member.",
+                            topicName, partitionId));
                 } else {
                     throw new StaleMemberEpochException(String.format(
-                        "Partition %s-%d is not assigned or pending revocation for member.",
-                        topicName, partitionId));
+                            "Partition %s-%d is not assigned or pending revocation for member.",
+                            topicName, partitionId));
                 }
             }
 
             if (receivedMemberEpoch < assignmentEpoch) {
                 if (member.useClassicProtocol()) {
                     throw new IllegalGenerationException(String.format(
-                        "Received generation id %d is older than assignment epoch %d for partition %s-%d.",
-                        receivedMemberEpoch, assignmentEpoch, topicName, partitionId)
+                            "Received generation id %d is older than assignment epoch %d for partition %s-%d.",
+                            receivedMemberEpoch, assignmentEpoch, topicName, partitionId)
                     );
                 } else {
                     throw new StaleMemberEpochException(String.format(
-                        "Received member epoch %d is older than assignment epoch %d for partition %s-%d.",
-                        receivedMemberEpoch, assignmentEpoch, topicName, partitionId)
+                            "Received member epoch %d is older than assignment epoch %d for partition %s-%d.",
+                            receivedMemberEpoch, assignmentEpoch, topicName, partitionId)
                     );
                 }
             }
@@ -949,9 +949,9 @@ public class ConsumerGroup extends ModernGroup<ConsumerGroupMember> {
     @Override
     protected void maybeUpdateGroupSubscriptionType() {
         subscriptionType.set(subscriptionType(
-            subscribedRegularExpressions,
-            subscribedTopicNames,
-            members.size()
+                subscribedRegularExpressions,
+                subscribedTopicNames,
+                members.size()
         ));
     }
 
@@ -1001,12 +1001,12 @@ public class ConsumerGroup extends ModernGroup<ConsumerGroupMember> {
     ) {
         if (oldMember != null) {
             oldMember.serverAssignorName().ifPresent(name ->
-                serverAssignorCount.compute(name, Utils::decValue)
+                    serverAssignorCount.compute(name, Utils::decValue)
             );
         }
         if (newMember != null) {
             newMember.serverAssignorName().ifPresent(name ->
-                serverAssignorCount.compute(name, Utils::incValue)
+                    serverAssignorCount.compute(name, Utils::incValue)
             );
         }
     }
@@ -1063,15 +1063,15 @@ public class ConsumerGroup extends ModernGroup<ConsumerGroupMember> {
     ) {
         if (oldMember != null) {
             oldMember.supportedClassicProtocols().ifPresent(protocols ->
-                protocols.forEach(protocol ->
-                    classicProtocolMembersSupportedProtocols.compute(protocol.name(), Utils::decValue)
+                    protocols.forEach(protocol ->
+                            classicProtocolMembersSupportedProtocols.compute(protocol.name(), Utils::decValue)
                 )
             );
         }
         if (newMember != null) {
             newMember.supportedClassicProtocols().ifPresent(protocols ->
-                protocols.forEach(protocol ->
-                    classicProtocolMembersSupportedProtocols.compute(protocol.name(), Utils::incValue)
+                    protocols.forEach(protocol ->
+                            classicProtocolMembersSupportedProtocols.compute(protocol.name(), Utils::incValue)
                 )
             );
         }
@@ -1166,8 +1166,8 @@ public class ConsumerGroup extends ModernGroup<ConsumerGroupMember> {
                         partitionsOrNull.put(partitionId, epoch);
                     } else {
                         throw new IllegalStateException(
-                            String.format("Cannot set the epoch of %s-%s to %d because the partition is " +
-                                "still owned at epoch %d", topicId, partitionId, epoch, prevValue));
+                                String.format("Cannot set the epoch of %s-%s to %d because the partition is " +
+                                    "still owned at epoch %d", topicId, partitionId, epoch, prevValue));
                     }
                 }
                 return partitionsOrNull;
@@ -1187,10 +1187,10 @@ public class ConsumerGroup extends ModernGroup<ConsumerGroupMember> {
             .setGroupState(state.get(committedOffset).toString())
             .setAssignmentEpoch(targetAssignmentMetadata.get(committedOffset).assignmentEpoch());
         members.entrySet(committedOffset).forEach(
-            entry -> describedGroup.members().add(
-                entry.getValue().asConsumerGroupDescribeMember(
-                    targetAssignment.get(entry.getValue().memberId(), committedOffset),
-                    image
+                entry -> describedGroup.members().add(
+                    entry.getValue().asConsumerGroupDescribeMember(
+                        targetAssignment.get(entry.getValue().memberId(), committedOffset),
+                        image
                 )
             )
         );
@@ -1230,7 +1230,7 @@ public class ConsumerGroup extends ModernGroup<ConsumerGroupMember> {
                 assignedPartitions = Map.of();
             } else {
                 ConsumerProtocolAssignment assignment = ConsumerProtocol.deserializeConsumerProtocolAssignment(
-                    ByteBuffer.wrap(classicGroupMember.assignment())
+                        ByteBuffer.wrap(classicGroupMember.assignment())
                 );
                 if (assignment.userData() != null && assignment.userData().hasRemaining()) {
                     throw new UnsupportedVersionException("userData from a custom assignor would be lost");
@@ -1241,7 +1241,7 @@ public class ConsumerGroup extends ModernGroup<ConsumerGroupMember> {
             // Every member is guaranteed to have metadata set when it joins,
             // so we don't check for empty subscription here.
             ConsumerProtocolSubscription subscription = ConsumerProtocol.deserializeConsumerProtocolSubscription(
-                ByteBuffer.wrap(classicGroupMember.metadata(classicGroup.protocolName().get()))
+                    ByteBuffer.wrap(classicGroupMember.metadata(classicGroup.protocolName().get()))
             );
 
             // The target assignment and the assigned partitions of each member are set based on the last
@@ -1260,10 +1260,10 @@ public class ConsumerGroup extends ModernGroup<ConsumerGroupMember> {
                 .setSubscribedTopicNames(subscription.topics())
                 .setAssignedPartitions(Utils.toAssignmentWithEpochs(assignedPartitions, classicGroup.generationId()))
                 .setClassicMemberMetadata(
-                    new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
+                        new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
                         .setSessionTimeoutMs(classicGroupMember.sessionTimeoutMs())
                         .setSupportedProtocols(ConsumerGroupMember.classicProtocolListFromJoinRequestProtocolCollection(
-                            classicGroupMember.supportedProtocols()
+                                classicGroupMember.supportedProtocols()
                         ))
                 )
                 .build();
@@ -1272,9 +1272,9 @@ public class ConsumerGroup extends ModernGroup<ConsumerGroupMember> {
         });
 
         consumerGroup.setMetadataHash(ModernGroup.computeMetadataHash(
-            consumerGroup.subscribedTopicNames(),
-            topicHashCache,
-            metadataImage
+                consumerGroup.subscribedTopicNames(),
+                topicHashCache,
+                metadataImage
         ));
 
         return consumerGroup;
@@ -1289,23 +1289,23 @@ public class ConsumerGroup extends ModernGroup<ConsumerGroupMember> {
         List<CoordinatorRecord> records
     ) {
         members().forEach((__, consumerGroupMember) ->
-            records.add(GroupCoordinatorRecordHelpers.newConsumerGroupMemberSubscriptionRecord(groupId(), consumerGroupMember))
+                records.add(GroupCoordinatorRecordHelpers.newConsumerGroupMemberSubscriptionRecord(groupId(), consumerGroupMember))
         );
 
         records.add(GroupCoordinatorRecordHelpers.newConsumerGroupEpochRecord(groupId(), groupEpoch(), metadataHash()));
 
         members().forEach((consumerGroupMemberId, consumerGroupMember) ->
-            records.add(GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentRecord(
-                groupId(),
-                consumerGroupMemberId,
-                targetAssignment(consumerGroupMemberId).partitions()
+                records.add(GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentRecord(
+                    groupId(),
+                    consumerGroupMemberId,
+                    targetAssignment(consumerGroupMemberId).partitions()
             ))
         );
 
         records.add(GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentMetadataRecord(groupId(), assignmentEpoch(), assignmentTimestamp()));
 
         members().forEach((__, consumerGroupMember) ->
-            records.add(GroupCoordinatorRecordHelpers.newConsumerGroupCurrentAssignmentRecord(groupId(), consumerGroupMember))
+                records.add(GroupCoordinatorRecordHelpers.newConsumerGroupCurrentAssignmentRecord(groupId(), consumerGroupMember))
         );
     }
 
@@ -1325,7 +1325,7 @@ public class ConsumerGroup extends ModernGroup<ConsumerGroupMember> {
                 return !memberProtocols.isEmpty();
             } else {
                 return memberProtocols.stream().anyMatch(
-                    name -> classicProtocolMembersSupportedProtocols.getOrDefault(name, 0) == numClassicProtocolMembers()
+                        name -> classicProtocolMembersSupportedProtocols.getOrDefault(name, 0) == numClassicProtocolMembers()
                 );
             }
         }

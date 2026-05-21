@@ -203,9 +203,9 @@ public class KTableRepartitionMap<K, V, K1, V1> implements KTableRepartitionMapS
 
         private ValueTimestampHeaders<KeyValue<? extends K1, ? extends V1>> mapValue(final K key, final ValueTimestampHeaders<V> valueTimestampHeaders) {
             return ValueTimestampHeaders.make(
-                mapper.apply(key, getValueOrNull(valueTimestampHeaders)),
-                valueTimestampHeaders == null ? context.recordContext().timestamp() : valueTimestampHeaders.timestamp(),
-                new RecordHeaders()
+                    mapper.apply(key, getValueOrNull(valueTimestampHeaders)),
+                    valueTimestampHeaders == null ? context.recordContext().timestamp() : valueTimestampHeaders.timestamp(),
+                    new RecordHeaders()
             );
         }
     }

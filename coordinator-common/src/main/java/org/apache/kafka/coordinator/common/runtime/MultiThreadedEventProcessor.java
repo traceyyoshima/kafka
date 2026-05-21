@@ -106,7 +106,7 @@ public final class MultiThreadedEventProcessor implements CoordinatorEventProces
         this.metrics.registerEventQueueSizeGauge(accumulator::size);
         this.threads = IntStream.range(0, numThreads).mapToObj(threadId ->
             new EventProcessorThread(
-                threadPrefix + threadId
+                    threadPrefix + threadId
             )
         ).collect(Collectors.toList());
         this.threads.forEach(EventProcessorThread::start);

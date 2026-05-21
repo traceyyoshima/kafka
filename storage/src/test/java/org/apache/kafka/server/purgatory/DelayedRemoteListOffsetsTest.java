@@ -73,14 +73,14 @@ public class DelayedRemoteListOffsetsTest {
     public void testResponseOnRequestExpiration() throws InterruptedException {
         AtomicInteger numResponse = new AtomicInteger(0);
         Consumer<Collection<ListOffsetsResponseData.ListOffsetsTopicResponse>> responseCallback = response ->
-            response.forEach(topic ->
-                topic.partitions().forEach(partition -> {
-                    assertEquals(Errors.REQUEST_TIMED_OUT.code(), partition.errorCode());
-                    assertEquals(ListOffsetsResponse.UNKNOWN_TIMESTAMP, partition.timestamp());
-                    assertEquals(ListOffsetsResponse.UNKNOWN_OFFSET, partition.offset());
-                    assertEquals(-1, partition.leaderEpoch());
-                    numResponse.incrementAndGet();
-                })
+                response.forEach(topic ->
+                        topic.partitions().forEach(partition -> {
+                            assertEquals(Errors.REQUEST_TIMED_OUT.code(), partition.errorCode());
+                            assertEquals(ListOffsetsResponse.UNKNOWN_TIMESTAMP, partition.timestamp());
+                            assertEquals(ListOffsetsResponse.UNKNOWN_OFFSET, partition.offset());
+                            assertEquals(-1, partition.leaderEpoch());
+                            numResponse.incrementAndGet();
+                        })
             );
 
         AtomicInteger cancelledCount = new AtomicInteger(0);
@@ -94,9 +94,9 @@ public class DelayedRemoteListOffsetsTest {
         });
 
         Map<TopicPartition, ListOffsetsPartitionStatus> statusByPartition = Map.of(
-            new TopicPartition("test", 0), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(holder)).build(),
-            new TopicPartition("test", 1), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(holder)).build(),
-            new TopicPartition("test1", 0), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(holder)).build()
+                new TopicPartition("test", 0), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(holder)).build(),
+                new TopicPartition("test", 1), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(holder)).build(),
+                new TopicPartition("test1", 0), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(holder)).build()
         );
 
         DelayedRemoteListOffsets delayedRemoteListOffsets = new DelayedRemoteListOffsets(delayMs, 5, statusByPartition, partitionOrException, responseCallback);
@@ -120,14 +120,14 @@ public class DelayedRemoteListOffsetsTest {
     public void testResponseOnSuccess() {
         AtomicInteger numResponse = new AtomicInteger(0);
         Consumer<Collection<ListOffsetsResponseData.ListOffsetsTopicResponse>> responseCallback = response ->
-            response.forEach(topic ->
-                topic.partitions().forEach(partition -> {
-                    assertEquals(Errors.NONE.code(), partition.errorCode());
-                    assertEquals(100L, partition.timestamp());
-                    assertEquals(100L, partition.offset());
-                    assertEquals(50, partition.leaderEpoch());
-                    numResponse.incrementAndGet();
-                })
+                response.forEach(topic ->
+                        topic.partitions().forEach(partition -> {
+                            assertEquals(Errors.NONE.code(), partition.errorCode());
+                            assertEquals(100L, partition.timestamp());
+                            assertEquals(100L, partition.offset());
+                            assertEquals(50, partition.leaderEpoch());
+                            numResponse.incrementAndGet();
+                        })
             );
 
         FileRecords.TimestampAndOffset timestampAndOffset = new FileRecords.TimestampAndOffset(100L, 100L, Optional.of(50));
@@ -145,9 +145,9 @@ public class DelayedRemoteListOffsetsTest {
         });
 
         Map<TopicPartition, ListOffsetsPartitionStatus> statusByPartition = Map.of(
-            new TopicPartition("test", 0), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(holder)).build(),
-            new TopicPartition("test", 1), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(holder)).build(),
-            new TopicPartition("test1", 0), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(holder)).build()
+                new TopicPartition("test", 0), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(holder)).build(),
+                new TopicPartition("test", 1), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(holder)).build(),
+                new TopicPartition("test1", 0), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(holder)).build()
         );
 
         DelayedRemoteListOffsets delayedRemoteListOffsets = new DelayedRemoteListOffsets(delayMs, 5, statusByPartition, partitionOrException, responseCallback);
@@ -162,21 +162,21 @@ public class DelayedRemoteListOffsetsTest {
     public void testResponseOnPartialError() {
         AtomicInteger numResponse = new AtomicInteger(0);
         Consumer<Collection<ListOffsetsResponseData.ListOffsetsTopicResponse>> responseCallback = response ->
-            response.forEach(topic ->
-                topic.partitions().forEach(partition -> {
-                    if (topic.name().equals("test1")) {
-                        assertEquals(Errors.UNKNOWN_SERVER_ERROR.code(), partition.errorCode());
-                        assertEquals(ListOffsetsResponse.UNKNOWN_TIMESTAMP, partition.timestamp());
-                        assertEquals(ListOffsetsResponse.UNKNOWN_OFFSET, partition.offset());
-                        assertEquals(-1, partition.leaderEpoch());
-                    } else {
-                        assertEquals(Errors.NONE.code(), partition.errorCode());
-                        assertEquals(100L, partition.timestamp());
-                        assertEquals(100L, partition.offset());
-                        assertEquals(50, partition.leaderEpoch());
-                    }
-                    numResponse.incrementAndGet();
-                })
+                response.forEach(topic ->
+                        topic.partitions().forEach(partition -> {
+                            if (topic.name().equals("test1")) {
+                                assertEquals(Errors.UNKNOWN_SERVER_ERROR.code(), partition.errorCode());
+                                assertEquals(ListOffsetsResponse.UNKNOWN_TIMESTAMP, partition.timestamp());
+                                assertEquals(ListOffsetsResponse.UNKNOWN_OFFSET, partition.offset());
+                                assertEquals(-1, partition.leaderEpoch());
+                            } else {
+                                assertEquals(Errors.NONE.code(), partition.errorCode());
+                                assertEquals(100L, partition.timestamp());
+                                assertEquals(100L, partition.offset());
+                                assertEquals(50, partition.leaderEpoch());
+                            }
+                            numResponse.incrementAndGet();
+                        })
             );
 
         FileRecords.TimestampAndOffset timestampAndOffset = new FileRecords.TimestampAndOffset(100L, 100L, Optional.of(50));
@@ -200,9 +200,9 @@ public class DelayedRemoteListOffsetsTest {
         when(errorFutureHolder.jobFuture()).thenReturn(jobFuture);
 
         Map<TopicPartition, ListOffsetsPartitionStatus> statusByPartition = Map.of(
-            new TopicPartition("test", 0), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(holder)).build(),
-            new TopicPartition("test", 1), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(holder)).build(),
-            new TopicPartition("test1", 0), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(errorFutureHolder)).build()
+                new TopicPartition("test", 0), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(holder)).build(),
+                new TopicPartition("test", 1), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(holder)).build(),
+                new TopicPartition("test1", 0), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(errorFutureHolder)).build()
         );
 
         DelayedRemoteListOffsets delayedRemoteListOffsets = new DelayedRemoteListOffsets(delayMs, 5, statusByPartition, partitionOrException, responseCallback);
@@ -217,21 +217,21 @@ public class DelayedRemoteListOffsetsTest {
     public void testPartialResponseWhenNotLeaderOrFollowerExceptionOnOnePartition() {
         AtomicInteger numResponse = new AtomicInteger(0);
         Consumer<Collection<ListOffsetsResponseData.ListOffsetsTopicResponse>> responseCallback = response ->
-            response.forEach(topic ->
-                topic.partitions().forEach(partition -> {
-                    if (topic.name().equals("test1") && partition.partitionIndex() == 0) {
-                        assertEquals(Errors.NOT_LEADER_OR_FOLLOWER.code(), partition.errorCode());
-                        assertEquals(ListOffsetsResponse.UNKNOWN_TIMESTAMP, partition.timestamp());
-                        assertEquals(ListOffsetsResponse.UNKNOWN_OFFSET, partition.offset());
-                        assertEquals(-1, partition.leaderEpoch());
-                    } else {
-                        assertEquals(Errors.NONE.code(), partition.errorCode());
-                        assertEquals(100L, partition.timestamp());
-                        assertEquals(100L, partition.offset());
-                        assertEquals(50, partition.leaderEpoch());
-                    }
-                    numResponse.incrementAndGet();
-                })
+                response.forEach(topic ->
+                        topic.partitions().forEach(partition -> {
+                            if (topic.name().equals("test1") && partition.partitionIndex() == 0) {
+                                assertEquals(Errors.NOT_LEADER_OR_FOLLOWER.code(), partition.errorCode());
+                                assertEquals(ListOffsetsResponse.UNKNOWN_TIMESTAMP, partition.timestamp());
+                                assertEquals(ListOffsetsResponse.UNKNOWN_OFFSET, partition.offset());
+                                assertEquals(-1, partition.leaderEpoch());
+                            } else {
+                                assertEquals(Errors.NONE.code(), partition.errorCode());
+                                assertEquals(100L, partition.timestamp());
+                                assertEquals(100L, partition.offset());
+                                assertEquals(50, partition.leaderEpoch());
+                            }
+                            numResponse.incrementAndGet();
+                        })
             );
 
         FileRecords.TimestampAndOffset timestampAndOffset = new FileRecords.TimestampAndOffset(100L, 100L, Optional.of(50));
@@ -256,10 +256,10 @@ public class DelayedRemoteListOffsetsTest {
         when(errorFutureHolder.jobFuture()).thenReturn(jobFuture);
 
         Map<TopicPartition, ListOffsetsPartitionStatus> statusByPartition = Map.of(
-            new TopicPartition("test", 0), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(holder)).build(),
-            new TopicPartition("test", 1), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(holder)).build(),
-            new TopicPartition("test1", 0), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(errorFutureHolder)).build(),
-            new TopicPartition("test1", 1), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(holder)).build()
+                new TopicPartition("test", 0), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(holder)).build(),
+                new TopicPartition("test", 1), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(holder)).build(),
+                new TopicPartition("test1", 0), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(errorFutureHolder)).build(),
+                new TopicPartition("test1", 1), ListOffsetsPartitionStatus.builder().futureHolderOpt(Optional.of(holder)).build()
         );
 
         DelayedRemoteListOffsets delayedRemoteListOffsets = new DelayedRemoteListOffsets(delayMs, 5, statusByPartition, partitionOrException, responseCallback);
@@ -288,8 +288,8 @@ public class DelayedRemoteListOffsetsTest {
         Map<MetricName, Metric> metricsBefore = KafkaYammerMetrics.defaultRegistry().allMetrics();
         assertTrue(metricsBefore.keySet().stream().anyMatch(name ->
                         name.getMBeanName().contains("topic=test-remove-metrics") &&
-                                name.getMBeanName().contains("partition=0") &&
-                                name.getMBeanName().contains("name=ExpiresPerSec")),
+                name.getMBeanName().contains("partition=0") &&
+                name.getMBeanName().contains("name=ExpiresPerSec")),
                 "Partition metric should be registered in Yammer registry");
 
         long aggregateCountBefore = DelayedRemoteListOffsets.AGGREGATE_EXPIRATION_METER.count();
@@ -305,8 +305,8 @@ public class DelayedRemoteListOffsetsTest {
         Map<MetricName, Metric> metricsAfter = KafkaYammerMetrics.defaultRegistry().allMetrics();
         assertFalse(metricsAfter.keySet().stream().anyMatch(name ->
                         name.getMBeanName().contains("topic=test-remove-metrics") &&
-                                name.getMBeanName().contains("partition=0") &&
-                                name.getMBeanName().contains("name=ExpiresPerSec")),
+                name.getMBeanName().contains("partition=0") &&
+                name.getMBeanName().contains("name=ExpiresPerSec")),
                 "Partition metric should be removed from Yammer registry");
 
         // Verify the aggregate metric is unaffected

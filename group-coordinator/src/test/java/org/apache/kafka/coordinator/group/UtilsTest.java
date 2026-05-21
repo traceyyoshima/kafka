@@ -186,30 +186,30 @@ public class UtilsTest {
         long result = Utils.computeTopicHash(FOO_TOPIC_NAME, FOO_METADATA_IMAGE);
 
         assertNotEquals(
-            Utils.computeTopicHash(FOO_TOPIC_NAME, differentImage),
-            result
+                Utils.computeTopicHash(FOO_TOPIC_NAME, differentImage),
+                result
         );
     }
 
     private static Stream<Arguments> differentFieldGenerator() {
         return Stream.of(
-            Arguments.of(
-                new MetadataImageBuilder() // different topic id
+                Arguments.of(
+                    new MetadataImageBuilder() // different topic id
                     .addTopic(Uuid.randomUuid(), FOO_TOPIC_NAME, FOO_NUM_PARTITIONS)
                     .addRacks()
                     .buildCoordinatorMetadataImage()
             ),
-            Arguments.of(new MetadataImageBuilder() // different topic name
+                Arguments.of(new MetadataImageBuilder() // different topic name
                     .addTopic(FOO_TOPIC_ID, "bar", FOO_NUM_PARTITIONS)
                     .addRacks()
                     .buildCoordinatorMetadataImage()
             ),
-            Arguments.of(new MetadataImageBuilder() // different partitions
+                Arguments.of(new MetadataImageBuilder() // different partitions
                     .addTopic(FOO_TOPIC_ID, FOO_TOPIC_NAME, 1)
                     .addRacks()
                     .buildCoordinatorMetadataImage()
             ),
-            Arguments.of(new MetadataImageBuilder() // different racks
+                Arguments.of(new MetadataImageBuilder() // different racks
                     .addTopic(FOO_TOPIC_ID, FOO_TOPIC_NAME, FOO_NUM_PARTITIONS)
                     .buildCoordinatorMetadataImage()
             )
@@ -236,13 +236,13 @@ public class UtilsTest {
     @Test
     void testComputeGroupHashWithSameKeyButDifferentValue() {
         Map<String, Long> map1 = Map.of(
-            BAR_TOPIC_NAME, 123L,
-            FOO_TOPIC_NAME, 456L
+                BAR_TOPIC_NAME, 123L,
+                FOO_TOPIC_NAME, 456L
         );
 
         Map<String, Long> map2 = Map.of(
-            BAR_TOPIC_NAME, 456L,
-            FOO_TOPIC_NAME, 123L
+                BAR_TOPIC_NAME, 456L,
+                FOO_TOPIC_NAME, 123L
         );
         assertNotEquals(Utils.computeGroupHash(map1), Utils.computeGroupHash(map2));
     }
@@ -250,51 +250,51 @@ public class UtilsTest {
     @Test
     void testAssignmentFromTopicPartitionsWithNegativeDefaultEpoch() {
         List<ConsumerGroupCurrentMemberAssignmentValue.TopicPartitions> topicPartitions = List.of(
-            new ConsumerGroupCurrentMemberAssignmentValue.TopicPartitions()
+                new ConsumerGroupCurrentMemberAssignmentValue.TopicPartitions()
                 .setTopicId(FOO_TOPIC_ID)
                 .setPartitions(Arrays.asList(0, 1, 2))
         );
 
         Map<Uuid, Map<Integer, Integer>> result = Utils.assignmentFromTopicPartitions(
-            LOG,
-            GROUP_ID,
-            topicPartitions,
-            LEAVE_GROUP_STATIC_MEMBER_EPOCH // -2
+                LOG,
+                GROUP_ID,
+                topicPartitions,
+                LEAVE_GROUP_STATIC_MEMBER_EPOCH // -2
         );
 
         // Verify epoch is adjusted to 0
         assertEquals(
-            mkAssignmentWithEpochs(
-                mkTopicAssignmentWithEpochs(FOO_TOPIC_ID, 0, 0, 1, 2)
+                mkAssignmentWithEpochs(
+                    mkTopicAssignmentWithEpochs(FOO_TOPIC_ID, 0, 0, 1, 2)
             ),
-            result
+                result
         );
     }
 
     @Test
     void testAssignmentFromTopicPartitionsWithEpochsProvided() {
         List<ConsumerGroupCurrentMemberAssignmentValue.TopicPartitions> topicPartitions = List.of(
-            new ConsumerGroupCurrentMemberAssignmentValue.TopicPartitions()
+                new ConsumerGroupCurrentMemberAssignmentValue.TopicPartitions()
                 .setTopicId(FOO_TOPIC_ID)
                 .setPartitions(Arrays.asList(0, 1, 2))
                 .setAssignmentEpochs(Arrays.asList(5, 6, 7))
         );
 
         Map<Uuid, Map<Integer, Integer>> result = Utils.assignmentFromTopicPartitions(
-            LOG,
-            GROUP_ID,
-            topicPartitions,
-            LEAVE_GROUP_STATIC_MEMBER_EPOCH // -2
+                LOG,
+                GROUP_ID,
+                topicPartitions,
+                LEAVE_GROUP_STATIC_MEMBER_EPOCH // -2
         );
 
         // Verify assignment epochs are used
         assertEquals(
-            mkAssignmentWithEpochs(
-                mkTopicAssignmentWithEpochs(FOO_TOPIC_ID, 5, 0),
-                mkTopicAssignmentWithEpochs(FOO_TOPIC_ID, 6, 1),
-                mkTopicAssignmentWithEpochs(FOO_TOPIC_ID, 7, 2)
+                mkAssignmentWithEpochs(
+                    mkTopicAssignmentWithEpochs(FOO_TOPIC_ID, 5, 0),
+                    mkTopicAssignmentWithEpochs(FOO_TOPIC_ID, 6, 1),
+                    mkTopicAssignmentWithEpochs(FOO_TOPIC_ID, 7, 2)
             ),
-            result
+                result
         );
     }
 
@@ -302,7 +302,7 @@ public class UtilsTest {
     void testAssignmentFromTopicPartitionsWithUnequalEpochLength() {
         // Empty array epochs list
         List<ConsumerGroupCurrentMemberAssignmentValue.TopicPartitions> topicPartitions = List.of(
-            new ConsumerGroupCurrentMemberAssignmentValue.TopicPartitions()
+                new ConsumerGroupCurrentMemberAssignmentValue.TopicPartitions()
                 .setTopicId(FOO_TOPIC_ID)
                 .setPartitions(Arrays.asList(0, 1, 2))
                 .setAssignmentEpochs(List.of(0))
@@ -312,17 +312,17 @@ public class UtilsTest {
             Map<Uuid, Map<Integer, Integer>> result = Utils.assignmentFromTopicPartitions(LOG, GROUP_ID, topicPartitions, 7);
             // Verify fallback to default epoch for empty epochs list
             assertEquals(
-                mkAssignmentWithEpochs(
-                    mkTopicAssignmentWithEpochs(FOO_TOPIC_ID, 7, 0),
-                    mkTopicAssignmentWithEpochs(FOO_TOPIC_ID, 7, 1),
-                    mkTopicAssignmentWithEpochs(FOO_TOPIC_ID, 7, 2)
+                    mkAssignmentWithEpochs(
+                        mkTopicAssignmentWithEpochs(FOO_TOPIC_ID, 7, 0),
+                        mkTopicAssignmentWithEpochs(FOO_TOPIC_ID, 7, 1),
+                        mkTopicAssignmentWithEpochs(FOO_TOPIC_ID, 7, 2)
                 ),
-                result
+                    result
             );
             // Verify error log includes group id
             assertEquals(1, appender.getMessages("ERROR").stream()
                 .filter(msg -> msg.contains("[GroupId " + GROUP_ID + "] Size of assignment epochs 1 is not equal to partitions 3 for topic "
-                    + FOO_TOPIC_ID))
+                        + FOO_TOPIC_ID))
                 .count());
         }
     }

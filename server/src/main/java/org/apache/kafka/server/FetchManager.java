@@ -79,7 +79,7 @@ public class FetchManager {
                 fetchContext = new FullFetchContext(time, cache, fetchData, reqVersion >= 13, isFollower);
 
             LOGGER.debug("Created a new full FetchContext with {}.{}{}",
-                partitionsToLogString(fetchData.keySet()), removedFetchSessionStr, suffix);
+                    partitionsToLogString(fetchData.keySet()), removedFetchSessionStr, suffix);
             return fetchContext;
         } else {
             FetchSessionCacheShard cacheShard = cache.getCacheShard(reqMetadata.sessionId());
@@ -94,12 +94,12 @@ public class FetchManager {
                     synchronized (session) {
                         if (session.epoch() != reqMetadata.epoch()) {
                             LOGGER.debug("Session error for {}: expected epoch {}, but got {} instead.",
-                                reqMetadata.sessionId(), session.epoch(), reqMetadata.epoch());
+                                    reqMetadata.sessionId(), session.epoch(), reqMetadata.epoch());
 
                             return new SessionErrorContext(Errors.INVALID_FETCH_SESSION_EPOCH);
                         } else if (session.usesTopicIds() && reqVersion < 13 || !session.usesTopicIds() && reqVersion >= 13)  {
                             LOGGER.debug("Session error for {}: expected  {}, but request version {} means that we can not.",
-                                reqMetadata.sessionId(), session.usesTopicIds() ? "to use topic IDs" : "to not use topic IDs", reqVersion);
+                                    reqMetadata.sessionId(), session.usesTopicIds() ? "to use topic IDs" : "to not use topic IDs", reqVersion);
 
                             return new SessionErrorContext(Errors.FETCH_SESSION_TOPIC_ID_ERROR);
                         } else {
@@ -109,8 +109,8 @@ public class FetchManager {
                             List<TopicIdPartition> removed = lists.get(2);
                             if (session.isEmpty()) {
                                 LOGGER.debug("Created a new sessionless FetchContext and closing session id {}, " +
-                                    "epoch {}: after removing {}, there are no more partitions left.",
-                                    session.id(), session.epoch(), partitionsToLogString(removed));
+                                        "epoch {}: after removing {}, there are no more partitions left.",
+                                        session.id(), session.epoch(), partitionsToLogString(removed));
                                 cacheShard.remove(session);
 
                                 return new SessionlessFetchContext(fetchData);
@@ -118,9 +118,9 @@ public class FetchManager {
                                 cacheShard.touch(session, time.milliseconds());
                                 session.setEpoch(FetchMetadata.nextEpoch(session.epoch()));
                                 LOGGER.debug("Created a new incremental FetchContext for session id {}, " +
-                                    "epoch {}: added {}, updated {}, removed {}",
-                                    session.id(), session.epoch(), partitionsToLogString(added),
-                                    partitionsToLogString(updated), partitionsToLogString(removed));
+                                        "epoch {}: added {}, updated {}, removed {}",
+                                        session.id(), session.epoch(), partitionsToLogString(added),
+                                        partitionsToLogString(updated), partitionsToLogString(removed));
 
                                 return new IncrementalFetchContext(reqMetadata, session, topicNames);
                             }

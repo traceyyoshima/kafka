@@ -41,81 +41,81 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Timeout(value = 40)
 public class EventHandlerExceptionInfoTest {
     private static final EventHandlerExceptionInfo TOPIC_EXISTS =
-        EventHandlerExceptionInfo.fromInternal(new TopicExistsException("Topic exists."), OptionalInt::empty);
+            EventHandlerExceptionInfo.fromInternal(new TopicExistsException("Topic exists."), OptionalInt::empty);
 
     private static final EventHandlerExceptionInfo REJECTED_EXECUTION =
-        EventHandlerExceptionInfo.fromInternal(new RejectedExecutionException(), OptionalInt::empty);
+            EventHandlerExceptionInfo.fromInternal(new RejectedExecutionException(), OptionalInt::empty);
 
     private static final EventHandlerExceptionInfo BOUNDED_LIST_TOO_LONG =
-        EventHandlerExceptionInfo.fromInternal(new BoundedListTooLongException("too long"), OptionalInt::empty);
+            EventHandlerExceptionInfo.fromInternal(new BoundedListTooLongException("too long"), OptionalInt::empty);
 
     private static final EventHandlerExceptionInfo PERIODIC_FAILURE =
-        EventHandlerExceptionInfo.fromInternal(
-            new PeriodicControlTaskException("foo: task failed: null pointer.",
-                new NullPointerException()), OptionalInt::empty);
+            EventHandlerExceptionInfo.fromInternal(
+                new PeriodicControlTaskException("foo: task failed: null pointer.",
+                    new NullPointerException()), OptionalInt::empty);
 
     private static final EventHandlerExceptionInfo INTERRUPTED =
-        EventHandlerExceptionInfo.fromInternal(
-            new InterruptedException(),
-            () -> OptionalInt.of(1));
+            EventHandlerExceptionInfo.fromInternal(
+                new InterruptedException(),
+                () -> OptionalInt.of(1));
 
     private static final EventHandlerExceptionInfo NULL_POINTER =
-        EventHandlerExceptionInfo.fromInternal(
-            new NullPointerException(),
-            () -> OptionalInt.of(1));
+            EventHandlerExceptionInfo.fromInternal(
+                new NullPointerException(),
+                () -> OptionalInt.of(1));
 
     private static final EventHandlerExceptionInfo NOT_LEADER =
-        EventHandlerExceptionInfo.fromInternal(
-            new NotLeaderException("Append failed"),
-            () -> OptionalInt.of(2));
+            EventHandlerExceptionInfo.fromInternal(
+                new NotLeaderException("Append failed"),
+                () -> OptionalInt.of(2));
 
     @Test
     public void testTopicExistsExceptionInfo() {
         assertEquals(new EventHandlerExceptionInfo(false, false,
-            new TopicExistsException("Topic exists.")),
+                new TopicExistsException("Topic exists.")),
                 TOPIC_EXISTS);
     }
 
     @Test
     public void testTopicExistsExceptionFailureMessage() {
         assertEquals("event failed with TopicExistsException in 234 microseconds. Exception message: Topic exists.",
-            TOPIC_EXISTS.failureMessage(123, OptionalLong.of(234L), true, 456L));
+                TOPIC_EXISTS.failureMessage(123, OptionalLong.of(234L), true, 456L));
     }
 
     @Test
     public void testRejectedExecutionExceptionInfo() {
         assertEquals(new EventHandlerExceptionInfo(false, false,
-            new RejectedExecutionException(),
-            new TimeoutException("The controller is shutting down.", new RejectedExecutionException())),
+                new RejectedExecutionException(),
+                new TimeoutException("The controller is shutting down.", new RejectedExecutionException())),
                 REJECTED_EXECUTION);
     }
 
     @Test
     public void testRejectedExecutionExceptionFailureMessage() {
         assertEquals("event unable to start processing because of RejectedExecutionException (treated " +
-            "as TimeoutException).",
-            REJECTED_EXECUTION.failureMessage(123, OptionalLong.empty(), true, 456L));
+                "as TimeoutException).",
+                REJECTED_EXECUTION.failureMessage(123, OptionalLong.empty(), true, 456L));
     }
 
     @Test
     public void testBoundedListTooLongExceptionInfo() {
         assertEquals(new EventHandlerExceptionInfo(false, false,
-            new BoundedListTooLongException("too long"),
-            new PolicyViolationException("Unable to perform excessively large batch operation.")),
+                new BoundedListTooLongException("too long"),
+                new PolicyViolationException("Unable to perform excessively large batch operation.")),
                 BOUNDED_LIST_TOO_LONG);
     }
 
     @Test
     public void testBoundedListTooLongExceptionFailureMessage() {
         assertEquals("event failed with BoundedListTooLongException (treated as PolicyViolationException) " +
-            "in 234 microseconds. Exception message: too long",
+                "in 234 microseconds. Exception message: too long",
                 BOUNDED_LIST_TOO_LONG.failureMessage(123, OptionalLong.of(234L), true, 456L));
     }
 
     @Test
     public void testPeriodicControlTaskExceptionInfo() {
         assertEquals(new EventHandlerExceptionInfo(true, false,
-            new PeriodicControlTaskException("foo: task failed: null pointer.", new NullPointerException())),
+                new PeriodicControlTaskException("foo: task failed: null pointer.", new NullPointerException())),
                 PERIODIC_FAILURE);
     }
 
@@ -128,63 +128,63 @@ public class EventHandlerExceptionInfoTest {
     @Test
     public void testInterruptedExceptionInfo() {
         assertEquals(new EventHandlerExceptionInfo(true, true,
-            new InterruptedException(),
-            new UnknownServerException("The controller was interrupted.")),
+                new InterruptedException(),
+                new UnknownServerException("The controller was interrupted.")),
                 INTERRUPTED);
     }
 
     @Test
     public void testInterruptedExceptionFailureMessageWhenActive() {
         assertEquals("event unable to start processing because of InterruptedException (treated as " +
-            "UnknownServerException) at epoch 123. Renouncing leadership and reverting to the " +
-            "last committed offset 456.",
-            INTERRUPTED.failureMessage(123, OptionalLong.empty(), true, 456L));
+                "UnknownServerException) at epoch 123. Renouncing leadership and reverting to the " +
+                "last committed offset 456.",
+                INTERRUPTED.failureMessage(123, OptionalLong.empty(), true, 456L));
     }
 
     @Test
     public void testInterruptedExceptionFailureMessageWhenInactive() {
         assertEquals("event unable to start processing because of InterruptedException (treated as " +
-            "UnknownServerException) at epoch 123. The controller is already in standby mode.",
+                "UnknownServerException) at epoch 123. The controller is already in standby mode.",
                 INTERRUPTED.failureMessage(123, OptionalLong.empty(), false, 456L));
     }
 
     @Test
     public void testNullPointerExceptionInfo() {
         assertEquals(new EventHandlerExceptionInfo(true, true,
-            new NullPointerException(),
-            new UnknownServerException(new NullPointerException())),
+                new NullPointerException(),
+                new UnknownServerException(new NullPointerException())),
                 NULL_POINTER);
     }
 
     @Test
     public void testNullPointerExceptionFailureMessageWhenActive() {
         assertEquals("event failed with NullPointerException (treated as UnknownServerException) " +
-            "at epoch 123 in 40 microseconds. Renouncing leadership and reverting to the last " +
-            "committed offset 456.",
+                "at epoch 123 in 40 microseconds. Renouncing leadership and reverting to the last " +
+                "committed offset 456.",
                 NULL_POINTER.failureMessage(123, OptionalLong.of(40L), true, 456L));
     }
 
     @Test
     public void testNullPointerExceptionFailureMessageWhenInactive() {
         assertEquals("event failed with NullPointerException (treated as UnknownServerException) " +
-            "at epoch 123 in 40 microseconds. The controller is already in standby mode.",
+                "at epoch 123 in 40 microseconds. The controller is already in standby mode.",
                 NULL_POINTER.failureMessage(123, OptionalLong.of(40L), false, 456L));
     }
 
     @Test
     public void testNotLeaderExceptionInfo() {
         assertEquals(new EventHandlerExceptionInfo(false, true,
-            new NotLeaderException("Append failed"),
-            new NotControllerException("The active controller appears to be node 2.")),
+                new NotLeaderException("Append failed"),
+                new NotControllerException("The active controller appears to be node 2.")),
                 NOT_LEADER);
     }
 
     @Test
     public void testNotLeaderExceptionFailureMessage() {
         assertEquals("event unable to start processing because of NotLeaderException (treated as " +
-            "NotControllerException) at epoch 123. Renouncing leadership and reverting to the " +
-            "last committed offset 456. Exception message: Append failed",
-            NOT_LEADER.failureMessage(123, OptionalLong.empty(), true, 456L));
+                "NotControllerException) at epoch 123. Renouncing leadership and reverting to the " +
+                "last committed offset 456. Exception message: Append failed",
+                NOT_LEADER.failureMessage(123, OptionalLong.empty(), true, 456L));
     }
 
     @Test

@@ -135,11 +135,11 @@ public class TopicCommandTest {
     @Test
     public void testConfigOptWithBootstrapServers() {
         assertInitializeInvalidOptionsExitCode(1,
-            new String[] {"--bootstrap-server", bootstrapServer, "--alter", "--topic", topicName,
+                new String[] {"--bootstrap-server", bootstrapServer, "--alter", "--topic", topicName,
                 "--partitions", "3", "--config", "cleanup.policy=compact"});
         TopicCommand.TopicCommandOptions opts =
-            new TopicCommand.TopicCommandOptions(
-                new String[] {"--bootstrap-server", bootstrapServer, "--create", "--topic", topicName, "--partitions", "3",
+                new TopicCommand.TopicCommandOptions(
+                    new String[] {"--bootstrap-server", bootstrapServer, "--create", "--topic", topicName, "--partitions", "3",
                     "--replication-factor", "3", "--config", "cleanup.policy=compact"});
         assertTrue(opts.hasCreateOption());
         assertEquals(bootstrapServer, opts.bootstrapServer().get());
@@ -149,7 +149,7 @@ public class TopicCommandTest {
     @Test
     public void testCreateWithPartitionCountWithoutReplicationFactorShouldSucceed() {
         TopicCommand.TopicCommandOptions opts = new TopicCommand.TopicCommandOptions(
-            new String[] {"--bootstrap-server", bootstrapServer,
+                new String[] {"--bootstrap-server", bootstrapServer,
                 "--create",
                 "--partitions", "2",
                 "--topic", topicName});
@@ -161,7 +161,7 @@ public class TopicCommandTest {
     @Test
     public void testCreateWithReplicationFactorWithoutPartitionCountShouldSucceed() {
         TopicCommand.TopicCommandOptions opts = new TopicCommand.TopicCommandOptions(
-            new String[] {"--bootstrap-server", bootstrapServer,
+                new String[] {"--bootstrap-server", bootstrapServer,
                 "--create",
                 "--replication-factor", "3",
                 "--topic", topicName});
@@ -173,7 +173,7 @@ public class TopicCommandTest {
     @Test
     public void testCreateWithAssignmentAndPartitionCount() {
         assertInitializeInvalidOptionsExitCode(1,
-            new String[]{"--bootstrap-server", bootstrapServer,
+                new String[]{"--bootstrap-server", bootstrapServer,
                 "--create",
                 "--replica-assignment", "3:0,5:1",
                 "--partitions", "2",
@@ -183,7 +183,7 @@ public class TopicCommandTest {
     @Test
     public void testCreateWithAssignmentAndReplicationFactor() {
         assertInitializeInvalidOptionsExitCode(1,
-            new String[] {"--bootstrap-server", bootstrapServer,
+                new String[] {"--bootstrap-server", bootstrapServer,
                 "--create",
                 "--replica-assignment", "3:0,5:1",
                 "--replication-factor", "2",
@@ -193,7 +193,7 @@ public class TopicCommandTest {
     @Test
     public void testCreateWithoutPartitionCountAndReplicationFactorShouldSucceed() {
         TopicCommand.TopicCommandOptions opts = new TopicCommand.TopicCommandOptions(
-            new String[] {"--bootstrap-server", bootstrapServer,
+                new String[] {"--bootstrap-server", bootstrapServer,
                 "--create",
                 "--topic", topicName});
         assertTrue(opts.hasCreateOption());
@@ -204,7 +204,7 @@ public class TopicCommandTest {
     @Test
     public void testDescribeShouldSucceed() {
         TopicCommand.TopicCommandOptions opts = new TopicCommand.TopicCommandOptions(
-            new String[] {"--bootstrap-server", bootstrapServer,
+                new String[] {"--bootstrap-server", bootstrapServer,
                 "--describe",
                 "--topic", topicName});
         assertTrue(opts.hasDescribeOption());
@@ -214,13 +214,12 @@ public class TopicCommandTest {
     @Test
     public void testDescribeWithDescribeTopicsApiShouldSucceed() {
         TopicCommand.TopicCommandOptions opts = new TopicCommand.TopicCommandOptions(
-            new String[] {"--bootstrap-server", bootstrapServer,
+                new String[] {"--bootstrap-server", bootstrapServer,
                 "--describe",
                 "--topic", topicName});
         assertTrue(opts.hasDescribeOption());
         assertEquals(topicName, opts.topic().get());
     }
-
 
     @Test
     public void testParseAssignmentDuplicateEntries() {
@@ -251,10 +250,10 @@ public class TopicCommandTest {
         when(adminClient.createTopics(any(), any())).thenReturn(result);
 
         assertThrows(ThrottlingQuotaExceededException.class,
-            () -> topicService.createTopic(new TopicCommand.TopicCommandOptions(new String[]{
-                "--bootstrap-server", bootstrapServer,
-                "--create", "--topic", topicName
-            })));
+                () -> topicService.createTopic(new TopicCommand.TopicCommandOptions(new String[]{
+                    "--bootstrap-server", bootstrapServer,
+                    "--create", "--topic", topicName
+                })));
 
         NewTopic expectedNewTopic = new NewTopic(topicName, Optional.empty(), Optional.empty())
                 .configs(Map.of());
@@ -277,10 +276,10 @@ public class TopicCommandTest {
         when(adminClient.deleteTopics(anyCollection(), any())).thenReturn(result);
 
         ExecutionException exception = assertThrows(ExecutionException.class,
-            () -> topicService.deleteTopic(new TopicCommand.TopicCommandOptions(new String[]{
-                "--bootstrap-server", bootstrapServer,
-                "--delete", "--topic", topicName
-            })));
+                () -> topicService.deleteTopic(new TopicCommand.TopicCommandOptions(new String[]{
+                    "--bootstrap-server", bootstrapServer,
+                    "--delete", "--topic", topicName
+                })));
 
         assertInstanceOf(ThrottlingQuotaExceededException.class, exception.getCause());
 
@@ -307,10 +306,10 @@ public class TopicCommandTest {
         when(adminClient.createPartitions(any(), any())).thenReturn(result);
 
         Exception exception = assertThrows(ExecutionException.class,
-            () -> topicService.alterTopic(new TopicCommand.TopicCommandOptions(new String[]{
-                "--alter", "--topic", topicName, "--partitions", "3",
-                "--bootstrap-server", bootstrapServer
-            })));
+                () -> topicService.alterTopic(new TopicCommand.TopicCommandOptions(new String[]{
+                    "--alter", "--topic", topicName, "--partitions", "3",
+                    "--bootstrap-server", bootstrapServer
+                })));
         assertInstanceOf(ThrottlingQuotaExceededException.class, exception.getCause());
 
         verify(adminClient, times(1)).createPartitions(
@@ -375,11 +374,11 @@ public class TopicCommandTest {
     }
 
     @ClusterTest(
-        brokers = 3,
-        serverProperties = {
-            @ClusterConfigProperty(key = "log.initial.task.delay.ms", value = "100"),
-            @ClusterConfigProperty(key = "log.segment.delete.delay.ms", value = "1000")
-        }
+            brokers = 3,
+            serverProperties = {
+                @ClusterConfigProperty(key = "log.initial.task.delay.ms", value = "100"),
+                @ClusterConfigProperty(key = "log.segment.delete.delay.ms", value = "1000")
+            }
     )
     public void testCreate(ClusterInstance clusterInstance) throws InterruptedException, ExecutionException {
         String testTopicName = TestUtils.randomString(10);
@@ -399,11 +398,11 @@ public class TopicCommandTest {
     }
 
     @ClusterTest(
-        brokers = 3,
-        serverProperties = {
-            @ClusterConfigProperty(key = "log.initial.task.delay.ms", value = "100"),
-            @ClusterConfigProperty(key = "log.segment.delete.delay.ms", value = "1000")
-        }
+            brokers = 3,
+            serverProperties = {
+                @ClusterConfigProperty(key = "log.initial.task.delay.ms", value = "100"),
+                @ClusterConfigProperty(key = "log.segment.delete.delay.ms", value = "1000")
+            }
     )
     public void testCreateWithDefaults(ClusterInstance clusterInstance) throws InterruptedException, ExecutionException {
         String testTopicName = TestUtils.randomString(10);
@@ -432,11 +431,11 @@ public class TopicCommandTest {
     }
 
     @ClusterTest(
-        brokers = 3,
-        serverProperties = {
-            @ClusterConfigProperty(key = "log.initial.task.delay.ms", value = "100"),
-            @ClusterConfigProperty(key = "log.segment.delete.delay.ms", value = "1000")
-        }
+            brokers = 3,
+            serverProperties = {
+                @ClusterConfigProperty(key = "log.initial.task.delay.ms", value = "100"),
+                @ClusterConfigProperty(key = "log.segment.delete.delay.ms", value = "1000")
+            }
     )
     public void testCreateWithDefaultReplication(ClusterInstance clusterInstance) throws InterruptedException, ExecutionException {
         String testTopicName = TestUtils.randomString(10);
@@ -485,7 +484,6 @@ public class TopicCommandTest {
 
             adminClient.createTopics(List.of(new NewTopic(testTopicName, 2, (short) 2).configs(topicConfig)));
             clusterInstance.waitTopicCreation(testTopicName, 2);
-
 
             Config configs = adminClient.describeConfigs(Set.of(configResource)).all().get().get(configResource);
             assertEquals(1000, Integer.valueOf(configs.get("delete.retention.ms").value()),
@@ -812,8 +810,8 @@ public class TopicCommandTest {
                     .allTopicNames().get().get(testTopicName).partitions()
                     .stream()
                     .collect(Collectors.toMap(
-                        TopicPartitionInfo::partition,
-                        info -> info.replicas().stream().map(Node::id).toList()));
+                            TopicPartitionInfo::partition,
+                            info -> info.replicas().stream().map(Node::id).toList()));
             checkReplicaDistribution(assignment, rackInfo, rackInfo.size(), numPartitions,
                     replicationFactor, true, true, true);
 
@@ -876,11 +874,11 @@ public class TopicCommandTest {
     }
 
     @ClusterTest(
-        brokers = 3,
-        serverProperties = {
-            @ClusterConfigProperty(key = "log.initial.task.delay.ms", value = "100"),
-            @ClusterConfigProperty(key = "log.segment.delete.delay.ms", value = "1000")
-        }
+            brokers = 3,
+            serverProperties = {
+                @ClusterConfigProperty(key = "log.initial.task.delay.ms", value = "100"),
+                @ClusterConfigProperty(key = "log.segment.delete.delay.ms", value = "1000")
+            }
     )
     public void testTopicDeletion(ClusterInstance clusterInstance) throws Exception {
         try (Admin adminClient = clusterInstance.admin();
@@ -902,11 +900,11 @@ public class TopicCommandTest {
     }
 
     @ClusterTest(
-        brokers = 3,
-        serverProperties = {
-            @ClusterConfigProperty(key = "log.initial.task.delay.ms", value = "100"),
-            @ClusterConfigProperty(key = "log.segment.delete.delay.ms", value = "1000")
-        }
+            brokers = 3,
+            serverProperties = {
+                @ClusterConfigProperty(key = "log.initial.task.delay.ms", value = "100"),
+                @ClusterConfigProperty(key = "log.segment.delete.delay.ms", value = "1000")
+            }
     )
     public void testTopicWithCollidingCharDeletionAndCreateAgain(ClusterInstance clusterInstance) throws Exception {
         try (Admin adminClient = clusterInstance.admin();
@@ -921,7 +919,7 @@ public class TopicCommandTest {
             topicService.deleteTopic(deleteOpts);
             TestUtils.waitForCondition(
                     () -> adminClient.listTopics().listings().get().stream().noneMatch(topic -> topic.name().equals(topicWithCollidingChar)),
-                        CLUSTER_WAIT_MS, String.format("Delete topic fail in %s ms", CLUSTER_WAIT_MS)
+                    CLUSTER_WAIT_MS, String.format("Delete topic fail in %s ms", CLUSTER_WAIT_MS)
             );
 
             clusterInstance.waitTopicDeletion(topicWithCollidingChar);
@@ -933,11 +931,11 @@ public class TopicCommandTest {
     }
 
     @ClusterTest(
-        brokers = 3,
-        serverProperties = {
-            @ClusterConfigProperty(key = "log.initial.task.delay.ms", value = "100"),
-            @ClusterConfigProperty(key = "log.segment.delete.delay.ms", value = "1000")
-        }
+            brokers = 3,
+            serverProperties = {
+                @ClusterConfigProperty(key = "log.initial.task.delay.ms", value = "100"),
+                @ClusterConfigProperty(key = "log.segment.delete.delay.ms", value = "1000")
+            }
     )
     public void testDeleteInternalTopic(ClusterInstance clusterInstance) throws Exception {
         try (Admin adminClient = clusterInstance.admin();
@@ -963,11 +961,11 @@ public class TopicCommandTest {
     }
 
     @ClusterTest(
-        brokers = 3,
-        serverProperties = {
-            @ClusterConfigProperty(key = "log.initial.task.delay.ms", value = "100"),
-            @ClusterConfigProperty(key = "log.segment.delete.delay.ms", value = "1000")
-        }
+            brokers = 3,
+            serverProperties = {
+                @ClusterConfigProperty(key = "log.initial.task.delay.ms", value = "100"),
+                @ClusterConfigProperty(key = "log.segment.delete.delay.ms", value = "1000")
+            }
     )
     public void testDeleteWhenTopicDoesntExist(ClusterInstance clusterInstance) throws Exception {
         String testTopicName = TestUtils.randomString(10);
@@ -981,11 +979,11 @@ public class TopicCommandTest {
     }
 
     @ClusterTest(
-        brokers = 3,
-        serverProperties = {
-            @ClusterConfigProperty(key = "log.initial.task.delay.ms", value = "100"),
-            @ClusterConfigProperty(key = "log.segment.delete.delay.ms", value = "1000")
-        }
+            brokers = 3,
+            serverProperties = {
+                @ClusterConfigProperty(key = "log.initial.task.delay.ms", value = "100"),
+                @ClusterConfigProperty(key = "log.segment.delete.delay.ms", value = "1000")
+            }
     )
     public void testDeleteWhenTopicDoesntExistWithIfExists(ClusterInstance clusterInstance) throws Exception {
         String testTopicName = TestUtils.randomString(10);
@@ -1123,7 +1121,6 @@ public class TopicCommandTest {
         }
     }
 
-
     @ClusterTest(brokers = 3)
     public void testDescribeUnderMinIsrPartitions(ClusterInstance clusterInstance) throws InterruptedException {
         String testTopicName = TestUtils.randomString(10);
@@ -1186,7 +1183,7 @@ public class TopicCommandTest {
             // let's wait until the LAIR is propagated
             TestUtils.waitForCondition(
                     () -> !adminClient.listPartitionReassignments(Set.of(tp)).reassignments().get()
-                                    .get(tp).addingReplicas().isEmpty(), CLUSTER_WAIT_MS, "Reassignment didn't add the second node"
+                            .get(tp).addingReplicas().isEmpty(), CLUSTER_WAIT_MS, "Reassignment didn't add the second node"
             );
 
             // describe the topic and test if it's under-replicated
@@ -1247,7 +1244,6 @@ public class TopicCommandTest {
                     () -> clusterInstance.aliveBrokers().values().stream().allMatch(broker -> broker.metadataCache().getLeaderAndIsr(testTopicName, 0).get().isr().size() == 4),
                     CLUSTER_WAIT_MS, String.format("Timeout waiting for partition metadata propagating to brokers for %s topic", testTopicName)
             );
-
 
             String output = captureDescribeTopicStandardOut(clusterInstance, buildTopicCommandOptionsWithBootstrap(clusterInstance, "--describe", "--at-min-isr-partitions", "--exclude-internal"));
             String[] rows = output.split(System.lineSeparator());
@@ -1412,7 +1408,7 @@ public class TopicCommandTest {
 
         try (Admin adminClient = cluster.admin()) {
             CreateTopicsResult internalResult = adminClient.createTopics(List.of(new NewTopic(internalConfigTopicName, defaultNumPartitions, defaultReplicationFactor).configs(
-                Map.of(LogConfig.INTERNAL_SEGMENT_BYTES_CONFIG, "1000")
+                    Map.of(LogConfig.INTERNAL_SEGMENT_BYTES_CONFIG, "1000")
             )));
 
             ConfigEntry internalConfigEntry = internalResult.config(internalConfigTopicName).get().get(LogConfig.INTERNAL_SEGMENT_BYTES_CONFIG);
@@ -1420,7 +1416,7 @@ public class TopicCommandTest {
             assertEquals("1000", internalConfigEntry.value());
 
             CreateTopicsResult nonInternalResult = adminClient.createTopics(List.of(new NewTopic(testTopicName, defaultNumPartitions, defaultReplicationFactor)));
-            
+
             ConfigEntry nonInternalConfigEntry = nonInternalResult.config(testTopicName).get().get(LogConfig.INTERNAL_SEGMENT_BYTES_CONFIG);
             assertNull(nonInternalConfigEntry, "Non-internal config entry should be null");
         }

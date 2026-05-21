@@ -96,7 +96,7 @@ public final class AggregationWithHeaders<AGG> {
         }
         final AggregationWithHeaders<?> that = (AggregationWithHeaders<?>) o;
         return Objects.equals(aggregation, that.aggregation)
-            && Objects.equals(this.headers, that.headers);
+                && Objects.equals(this.headers, that.headers);
     }
 
     @Override
@@ -107,8 +107,8 @@ public final class AggregationWithHeaders<AGG> {
     @Override
     public String toString() {
         return "AggregationWithHeaders{" +
-            "aggregation=" + aggregation +
-            ", headers=" + headers +
-            '}';
+                "aggregation=" + aggregation +
+                ", headers=" + headers +
+                '}';
     }
 }

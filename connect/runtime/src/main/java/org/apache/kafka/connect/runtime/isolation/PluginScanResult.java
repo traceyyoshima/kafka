@@ -66,7 +66,7 @@ public class PluginScanResult {
         this.restExtensions = restExtensions;
         this.connectorClientConfigPolicies = connectorClientConfigPolicies;
         this.allPlugins =
-            List.of(sinkConnectors, sourceConnectors, converters, headerConverters, transformations, predicates,
+                List.of(sinkConnectors, sourceConnectors, converters, headerConverters, transformations, predicates,
                     configProviders, restExtensions, connectorClientConfigPolicies);
     }
 

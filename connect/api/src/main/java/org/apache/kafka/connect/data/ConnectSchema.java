@@ -33,21 +33,21 @@ public class ConnectSchema implements Schema {
      * Maps {@link Schema.Type}s to a list of Java classes that can be used to represent them.
      */
     private static final Map<Type, List<Class<?>>> SCHEMA_TYPE_CLASSES = Collections.unmodifiableMap(new EnumMap<>(Map.ofEntries(
-        Map.entry(Type.INT8, List.of(Byte.class)),
-        Map.entry(Type.INT16, List.of(Short.class)),
-        Map.entry(Type.INT32, List.of(Integer.class)),
-        Map.entry(Type.INT64, List.of(Long.class)),
-        Map.entry(Type.FLOAT32, List.of(Float.class)),
-        Map.entry(Type.FLOAT64, List.of(Double.class)),
-        Map.entry(Type.BOOLEAN, List.of(Boolean.class)),
-        Map.entry(Type.STRING, List.of(String.class)),
-        // Bytes are special and have 2 representations. byte[] causes problems because it doesn't handle equals() and
-        // hashCode() like we want objects to, so we support both byte[] and ByteBuffer. Using plain byte[] can cause
-        // those methods to fail, so ByteBuffers are recommended
-        Map.entry(Type.BYTES, List.of(byte[].class, ByteBuffer.class)),
-        Map.entry(Type.ARRAY, List.of(List.class)),
-        Map.entry(Type.MAP, List.of(Map.class)),
-        Map.entry(Type.STRUCT, List.of(Struct.class))
+            Map.entry(Type.INT8, List.of(Byte.class)),
+            Map.entry(Type.INT16, List.of(Short.class)),
+            Map.entry(Type.INT32, List.of(Integer.class)),
+            Map.entry(Type.INT64, List.of(Long.class)),
+            Map.entry(Type.FLOAT32, List.of(Float.class)),
+            Map.entry(Type.FLOAT64, List.of(Double.class)),
+            Map.entry(Type.BOOLEAN, List.of(Boolean.class)),
+            Map.entry(Type.STRING, List.of(String.class)),
+            // Bytes are special and have 2 representations. byte[] causes problems because it doesn't handle equals() and
+            // hashCode() like we want objects to, so we support both byte[] and ByteBuffer. Using plain byte[] can cause
+            // those methods to fail, so ByteBuffers are recommended
+            Map.entry(Type.BYTES, List.of(byte[].class, ByteBuffer.class)),
+            Map.entry(Type.ARRAY, List.of(List.class)),
+            Map.entry(Type.MAP, List.of(Map.class)),
+            Map.entry(Type.STRUCT, List.of(Struct.class))
     )));
     /**
      * Maps known logical types to a list of Java classes that can be used to represent them.
@@ -56,10 +56,10 @@ public class ConnectSchema implements Schema {
     // schemaless data and logical types will have ambiguous schemas (e.g. many of them use the same Java class) so
     // they should not be used without schemas.
     private static final Map<String, List<Class<?>>> LOGICAL_TYPE_CLASSES = Map.of(
-        Decimal.LOGICAL_NAME, List.of(BigDecimal.class),
-        Date.LOGICAL_NAME, List.of(java.util.Date.class),
-        Time.LOGICAL_NAME, List.of(java.util.Date.class),
-        Timestamp.LOGICAL_NAME, List.of(java.util.Date.class)
+            Decimal.LOGICAL_NAME, List.of(BigDecimal.class),
+            Date.LOGICAL_NAME, List.of(java.util.Date.class),
+            Time.LOGICAL_NAME, List.of(java.util.Date.class),
+            Timestamp.LOGICAL_NAME, List.of(java.util.Date.class)
     );
 
     /**
@@ -197,8 +197,6 @@ public class ConnectSchema implements Schema {
         return valueSchema;
     }
 
-
-
     /**
      * Validate that the value can be used with the schema, i.e. that its type matches the schema type and nullability
      * requirements. Throws a {@link DataException} if the value is invalid.
@@ -302,7 +300,6 @@ public class ConnectSchema implements Schema {
         return this;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -324,7 +321,7 @@ public class ConnectSchema implements Schema {
     public int hashCode() {
         if (this.hash == null) {
             this.hash = Objects.hash(type, optional, defaultValue, fields, keySchema, valueSchema, name, version, doc,
-                parameters);
+                    parameters);
         }
         return this.hash;
     }
@@ -336,7 +333,6 @@ public class ConnectSchema implements Schema {
         else
             return "Schema{" + type + "}";
     }
-
 
     /**
      * Get the {@link Schema.Type} associated with the given class.

@@ -108,13 +108,13 @@ public class TopicBasedRemoteLogMetadataManager implements BrokerReadyCallback, 
      */
     @Override
     public CompletableFuture<Void> addRemoteLogSegmentMetadata(RemoteLogSegmentMetadata remoteLogSegmentMetadata)
-            throws RemoteStorageException {
+        throws RemoteStorageException {
         Objects.requireNonNull(remoteLogSegmentMetadata, "remoteLogSegmentMetadata can not be null");
         return withReadLockAndEnsureInitialized(() -> {
             if (remoteLogSegmentMetadata.state() != RemoteLogSegmentState.COPY_SEGMENT_STARTED) {
                 throw new IllegalArgumentException(
                         "Given remoteLogSegmentMetadata should have state as " + RemoteLogSegmentState.COPY_SEGMENT_STARTED
-                                + " but it contains state as: " + remoteLogSegmentMetadata.state());
+                        + " but it contains state as: " + remoteLogSegmentMetadata.state());
             }
             return storeRemoteLogMetadata(remoteLogSegmentMetadata);
         });
@@ -122,7 +122,7 @@ public class TopicBasedRemoteLogMetadataManager implements BrokerReadyCallback, 
 
     @Override
     public CompletableFuture<Void> updateRemoteLogSegmentMetadata(RemoteLogSegmentMetadataUpdate metadataUpdate)
-            throws RemoteStorageException {
+        throws RemoteStorageException {
         Objects.requireNonNull(metadataUpdate, "metadataUpdate can not be null");
         return withReadLockAndEnsureInitialized(() -> {
             if (metadataUpdate.state() == RemoteLogSegmentState.COPY_SEGMENT_STARTED) {
@@ -135,7 +135,7 @@ public class TopicBasedRemoteLogMetadataManager implements BrokerReadyCallback, 
 
     @Override
     public CompletableFuture<Void> putRemotePartitionDeleteMetadata(RemotePartitionDeleteMetadata deleteMetadata)
-            throws RemoteStorageException {
+        throws RemoteStorageException {
         Objects.requireNonNull(deleteMetadata, "deleteMetadata can not be null");
         return withReadLockAndEnsureInitialized(
                 () -> storeRemoteLogMetadata(deleteMetadata));
@@ -183,14 +183,14 @@ public class TopicBasedRemoteLogMetadataManager implements BrokerReadyCallback, 
     @Override
     public Optional<Long> highestOffsetForEpoch(TopicIdPartition topicIdPartition,
                                                 int leaderEpoch)
-            throws RemoteStorageException {
+        throws RemoteStorageException {
         return withReadLockAndEnsureInitialized(
                 () -> remotePartitionMetadataStore.highestLogOffset(topicIdPartition, leaderEpoch));
     }
 
     @Override
     public Iterator<RemoteLogSegmentMetadata> listRemoteLogSegments(TopicIdPartition topicIdPartition)
-            throws RemoteStorageException {
+        throws RemoteStorageException {
         Objects.requireNonNull(topicIdPartition, "topicIdPartition can not be null");
         return withReadLockAndEnsureInitialized(
                 () -> remotePartitionMetadataStore.listRemoteLogSegments(topicIdPartition));
@@ -198,7 +198,7 @@ public class TopicBasedRemoteLogMetadataManager implements BrokerReadyCallback, 
 
     @Override
     public Iterator<RemoteLogSegmentMetadata> listRemoteLogSegments(TopicIdPartition topicIdPartition, int leaderEpoch)
-            throws RemoteStorageException {
+        throws RemoteStorageException {
         Objects.requireNonNull(topicIdPartition, "topicIdPartition can not be null");
         return withReadLockAndEnsureInitialized(
                 () -> remotePartitionMetadataStore.listRemoteLogSegments(topicIdPartition, leaderEpoch));
@@ -480,11 +480,10 @@ public class TopicBasedRemoteLogMetadataManager implements BrokerReadyCallback, 
         return initialized.get();
     }
 
-
     private void ensureInitializedAndNotClosed() {
         if (closing.get() || !initialized.get()) {
             throw new IllegalStateException("This instance is in invalid state, initialized: " + initialized +
-                                                    " close: " + closing);
+                    " close: " + closing);
         }
     }
 

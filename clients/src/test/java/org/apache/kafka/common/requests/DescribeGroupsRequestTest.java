@@ -32,20 +32,20 @@ public class DescribeGroupsRequestTest {
     @Test
     public void testGetErrorDescribedGroupList() {
         List<DescribeGroupsResponseData.DescribedGroup> expectedDescribedGroupList = Arrays.asList(
-            new DescribeGroupsResponseData.DescribedGroup()
+                new DescribeGroupsResponseData.DescribedGroup()
                 .setGroupId("group-id-1")
                 .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code()),
-            new DescribeGroupsResponseData.DescribedGroup()
+                new DescribeGroupsResponseData.DescribedGroup()
                 .setGroupId("group-id-2")
                 .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code()),
-            new DescribeGroupsResponseData.DescribedGroup()
+                new DescribeGroupsResponseData.DescribedGroup()
                 .setGroupId("group-id-3")
                 .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code())
         );
 
         List<DescribeGroupsResponseData.DescribedGroup> describedGroupList = getErrorDescribedGroupList(
-            Arrays.asList("group-id-1", "group-id-2", "group-id-3"),
-            Errors.COORDINATOR_LOAD_IN_PROGRESS
+                Arrays.asList("group-id-1", "group-id-2", "group-id-3"),
+                Errors.COORDINATOR_LOAD_IN_PROGRESS
         );
 
         assertEquals(expectedDescribedGroupList, describedGroupList);

@@ -79,6 +79,6 @@ public class FilesUnreadableFaultSpec extends TaskSpec {
     @Override
     public TaskWorker newTaskWorker(String id) {
         return new KiboshFaultWorker(id,
-            new KiboshFilesUnreadableFaultSpec(prefix, errorCode), mountPath);
+                new KiboshFilesUnreadableFaultSpec(prefix, errorCode), mountPath);
     }
 }

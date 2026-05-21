@@ -99,10 +99,10 @@ public class ShareGroupMessageFormatterTest extends CoordinatorRecordMessageForm
     @Override
     protected Stream<Arguments> parameters() {
         return Stream.of(
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 10, SHARE_GROUP_MEMBER_METADATA_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_GROUP_MEMBER_METADATA_VALUE).array(),
-                """
+                Arguments.of(
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 10, SHARE_GROUP_MEMBER_METADATA_KEY).array(),
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_GROUP_MEMBER_METADATA_VALUE).array(),
+                    """
                     {"key":{"type":10,"data":{"groupId":"group-id","memberId":"member-id"}},
                      "value":{"version":0,
                               "data":{"rackId":"rack-a",
@@ -111,67 +111,67 @@ public class ShareGroupMessageFormatterTest extends CoordinatorRecordMessageForm
                                       "subscribedTopicNames":["topic"]}}}
                 """
             ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 10, SHARE_GROUP_MEMBER_METADATA_KEY).array(),
-                null,
-                """
+                Arguments.of(
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 10, SHARE_GROUP_MEMBER_METADATA_KEY).array(),
+                    null,
+                    """
                     {"key":{"type":10,"data":{"groupId":"group-id","memberId":"member-id"}},"value":null}
                 """
             ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 11, SHARE_GROUP_METADATA_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_GROUP_METADATA_VALUE).array(),
-                """
+                Arguments.of(
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 11, SHARE_GROUP_METADATA_KEY).array(),
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_GROUP_METADATA_VALUE).array(),
+                    """
                     {"key":{"type":11,"data":{"groupId":"group-id"}},
                      "value":{"version":0,
                               "data":{"epoch":1,
                                       "metadataHash":1}}}
                 """
             ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 11, SHARE_GROUP_METADATA_KEY).array(),
-                null,
-                """
+                Arguments.of(
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 11, SHARE_GROUP_METADATA_KEY).array(),
+                    null,
+                    """
                     {"key":{"type":11,"data":{"groupId":"group-id"}},"value":null}
                 """
             ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 12, SHARE_GROUP_TARGET_ASSIGNMENT_METADATA_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_GROUP_TARGET_ASSIGNMENT_METADATA_VALUE).array(),
-                """
+                Arguments.of(
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 12, SHARE_GROUP_TARGET_ASSIGNMENT_METADATA_KEY).array(),
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_GROUP_TARGET_ASSIGNMENT_METADATA_VALUE).array(),
+                    """
                     {"key":{"type":12,"data":{"groupId":"group-id"}},
                      "value":{"version":0,
                               "data":{"assignmentEpoch":1}}}
                 """
             ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 12, SHARE_GROUP_TARGET_ASSIGNMENT_METADATA_KEY).array(),
-                null,
-                """
+                Arguments.of(
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 12, SHARE_GROUP_TARGET_ASSIGNMENT_METADATA_KEY).array(),
+                    null,
+                    """
                     {"key":{"type":12,"data":{"groupId":"group-id"}},"value":null}
                 """
             ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 13, SHARE_GROUP_TARGET_ASSIGNMENT_MEMBER_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_GROUP_TARGET_ASSIGNMENT_MEMBER_VALUE).array(),
-                """
+                Arguments.of(
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 13, SHARE_GROUP_TARGET_ASSIGNMENT_MEMBER_KEY).array(),
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_GROUP_TARGET_ASSIGNMENT_MEMBER_VALUE).array(),
+                    """
                     {"key":{"type":13,"data":{"groupId":"group-id","memberId":"member-id"}},
                      "value":{"version":0,
                               "data":{"topicPartitions":[{"topicId":"AAAAAAAAAAAAAAAAAAAAAQ",
                                                           "partitions":[0,1]}]}}}
                 """
             ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 13, SHARE_GROUP_TARGET_ASSIGNMENT_MEMBER_KEY).array(),
-                null,
-                """
+                Arguments.of(
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 13, SHARE_GROUP_TARGET_ASSIGNMENT_MEMBER_KEY).array(),
+                    null,
+                    """
                     {"key":{"type":13,"data":{"groupId":"group-id","memberId":"member-id"}},"value":null}
                 """
             ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 14, SHARE_GROUP_CURRENT_MEMBER_ASSIGNMENT_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_GROUP_CURRENT_MEMBER_ASSIGNMENT_VALUE).array(),
-                """
+                Arguments.of(
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 14, SHARE_GROUP_CURRENT_MEMBER_ASSIGNMENT_KEY).array(),
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_GROUP_CURRENT_MEMBER_ASSIGNMENT_VALUE).array(),
+                    """
                     {"key":{"type":14,"data":{"groupId":"group-id","memberId":"member-id"}},
                      "value":{"version":0,
                               "data":{"memberEpoch":1,
@@ -181,17 +181,17 @@ public class ShareGroupMessageFormatterTest extends CoordinatorRecordMessageForm
                                                              "partitions":[0,1]}]}}}
                 """
             ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 14, SHARE_GROUP_CURRENT_MEMBER_ASSIGNMENT_KEY).array(),
-                null,
-                """
+                Arguments.of(
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 14, SHARE_GROUP_CURRENT_MEMBER_ASSIGNMENT_KEY).array(),
+                    null,
+                    """
                     {"key":{"type":14,"data":{"groupId":"group-id","memberId":"member-id"}},"value":null}
                 """
             ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 15, SHARE_GROUP_STATE_PARTITION_METADATA_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_GROUP_STATE_PARTITION_METADATA_VALUE).array(),
-                """
+                Arguments.of(
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 15, SHARE_GROUP_STATE_PARTITION_METADATA_KEY).array(),
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_GROUP_STATE_PARTITION_METADATA_VALUE).array(),
+                    """
                     {"key":{"type":15,"data":{"groupId":"group-id"}},
                      "value":{"version":0,
                               "data":{"initializingTopics":[{"topicId":"AAAAAAAAAAAAAAAAAAAAAQ",
@@ -204,10 +204,10 @@ public class ShareGroupMessageFormatterTest extends CoordinatorRecordMessageForm
                                                          "topicName":"topic"}]}}}
                 """
             ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 15, SHARE_GROUP_STATE_PARTITION_METADATA_KEY).array(),
-                null,
-                """
+                Arguments.of(
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 15, SHARE_GROUP_STATE_PARTITION_METADATA_KEY).array(),
+                    null,
+                    """
                     {"key":{"type":15,"data":{"groupId":"group-id"}},"value":null}
                 """
             )

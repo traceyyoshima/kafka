@@ -92,10 +92,10 @@ public class RemoveMembersFromConsumerGroupHandlerTest {
 
     private LeaveGroupResponse buildResponse(Errors error) {
         return new LeaveGroupResponse(
-            new LeaveGroupResponseData()
+                new LeaveGroupResponseData()
                 .setErrorCode(error.code())
                 .setMembers(singletonList(
-                    new MemberResponse()
+                        new MemberResponse()
                         .setErrorCode(Errors.NONE.code())
                         .setMemberId("m1")
                         .setGroupInstanceId("m1-gii"))));
@@ -103,10 +103,10 @@ public class RemoveMembersFromConsumerGroupHandlerTest {
 
     private LeaveGroupResponse buildResponseWithMemberError(Errors error) {
         return new LeaveGroupResponse(
-            new LeaveGroupResponseData()
+                new LeaveGroupResponseData()
                 .setErrorCode(Errors.NONE.code())
                 .setMembers(singletonList(
-                    new MemberResponse()
+                        new MemberResponse()
                         .setErrorCode(error.code())
                         .setMemberId("m1")
                         .setGroupInstanceId("m1-gii"))));

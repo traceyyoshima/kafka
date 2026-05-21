@@ -67,7 +67,7 @@ public class RemoveRaftVoterRequest extends AbstractRequest {
 
     public static RemoveRaftVoterRequest parse(Readable readable, short version) {
         return new RemoveRaftVoterRequest(
-            new RemoveRaftVoterRequestData(readable, version),
-            version);
+                new RemoveRaftVoterRequestData(readable, version),
+                version);
     }
 }

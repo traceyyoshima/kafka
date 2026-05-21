@@ -212,10 +212,10 @@ public class OffsetFetcher {
             if (subscriptions.partitionEndOffset(topicPartition, isolationLevel) == null &&
                     offsetFetcherUtils.maybeSetPartitionEndOffsetRequest(topicPartition)) {
                 beginningOrEndOffset(
-                    Set.of(topicPartition),
-                    ListOffsetsRequest.LATEST_TIMESTAMP,
-                    time.timer(0L),
-                    true
+                        Set.of(topicPartition),
+                        ListOffsetsRequest.LATEST_TIMESTAMP,
+                        time.timer(0L),
+                        true
                 );
             }
 
@@ -299,7 +299,7 @@ public class OffsetFetcher {
 
             if (!hasUsableOffsetForLeaderEpochVersion(nodeApiVersions)) {
                 log.debug("Skipping validation of fetch offsets for partitions {} since the broker does not " +
-                                "support the required protocol version (introduced in Kafka 2.3)",
+                        "support the required protocol version (introduced in Kafka 2.3)",
                         fetchPositions.keySet());
                 for (TopicPartition partition : fetchPositions.keySet()) {
                     subscriptions.completeValidation(partition);

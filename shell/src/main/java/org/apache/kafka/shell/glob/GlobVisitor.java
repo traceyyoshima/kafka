@@ -95,7 +95,7 @@ public final class GlobVisitor implements Consumer<MetadataShellState> {
         String fullGlob = glob.startsWith("/") ? glob :
             state.workingDirectory() + "/" + glob;
         List<String> globComponents =
-            CommandUtils.stripDotPathComponents(CommandUtils.splitPath(fullGlob));
+                CommandUtils.stripDotPathComponents(CommandUtils.splitPath(fullGlob));
         MetadataNode root = state.root();
         if (root == null) {
             throw new RuntimeException("Invalid null root");

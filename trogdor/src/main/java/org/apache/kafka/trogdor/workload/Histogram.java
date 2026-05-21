@@ -167,7 +167,7 @@ public class Histogram {
         float average = (numSamples == 0) ? 0.0f : (total / numSamples);
 
         List<PercentileSummary> percentileSummaries =
-            summarizePercentiles(countsCopy, percentiles, numSamples);
+                summarizePercentiles(countsCopy, percentiles, numSamples);
         return new Summary(numSamples, average, percentileSummaries);
     }
 

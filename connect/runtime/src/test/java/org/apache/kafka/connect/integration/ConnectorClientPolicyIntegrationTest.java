@@ -183,7 +183,6 @@ public class ConnectorClientPolicyIntegrationTest {
         }
     }
 
-
     public Map<String, String> basicConnectorConfig() {
         Map<String, String> props = new HashMap<>();
         props.put(CONNECTOR_CLASS_CONFIG, TestableSinkConnector.class.getSimpleName());

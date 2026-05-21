@@ -74,7 +74,7 @@ public class ShareGroupBuilder {
 
         // Add subscription records for members.
         members.forEach((memberId, member) ->
-            records.add(GroupCoordinatorRecordHelpers.newShareGroupMemberSubscriptionRecord(groupId, member))
+                records.add(GroupCoordinatorRecordHelpers.newShareGroupMemberSubscriptionRecord(groupId, member))
         );
 
         // Add group epoch record.
@@ -82,7 +82,7 @@ public class ShareGroupBuilder {
 
         // Add target assignment records.
         assignments.forEach((memberId, assignment) ->
-            records.add(GroupCoordinatorRecordHelpers.newShareGroupTargetAssignmentRecord(groupId, memberId, assignment.partitions()))
+                records.add(GroupCoordinatorRecordHelpers.newShareGroupTargetAssignmentRecord(groupId, memberId, assignment.partitions()))
         );
 
         // Add target assignment epoch.

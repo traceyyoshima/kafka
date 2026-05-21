@@ -36,11 +36,11 @@ public class DeleteGroupsRequestTest {
         DeleteGroupsRequestData data = new DeleteGroupsRequestData()
             .setGroupsNames(Arrays.asList(groupId1, groupId2));
         DeleteGroupsResponseData.DeletableGroupResultCollection expectedResultCollection =
-            new DeleteGroupsResponseData.DeletableGroupResultCollection(Arrays.asList(
-                new DeleteGroupsResponseData.DeletableGroupResult()
+                new DeleteGroupsResponseData.DeletableGroupResultCollection(Arrays.asList(
+                    new DeleteGroupsResponseData.DeletableGroupResult()
                     .setGroupId(groupId1)
                     .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code()),
-                new DeleteGroupsResponseData.DeletableGroupResult()
+                    new DeleteGroupsResponseData.DeletableGroupResult()
                     .setGroupId(groupId2)
                     .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code())
             ));

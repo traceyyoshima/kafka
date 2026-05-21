@@ -75,13 +75,13 @@ public class BrokerRegistrationTrackerTest {
 
     @Test
     public void testTrackerName() {
-        BrokerRegistrationTrackerTestContext ctx  = new BrokerRegistrationTrackerTestContext();
+        BrokerRegistrationTrackerTestContext ctx = new BrokerRegistrationTrackerTestContext();
         assertEquals("BrokerRegistrationTracker(id=1)", ctx.tracker.name());
     }
 
     @Test
     public void testMetadataVersionUpdateWithoutRegistrationDoesNothing() {
-        BrokerRegistrationTrackerTestContext ctx  = new BrokerRegistrationTrackerTestContext();
+        BrokerRegistrationTrackerTestContext ctx = new BrokerRegistrationTrackerTestContext();
         MetadataDelta delta = ctx.newDelta();
         delta.replay(new FeatureLevelRecord().
             setName(MetadataVersion.FEATURE_NAME).
@@ -92,7 +92,7 @@ public class BrokerRegistrationTrackerTest {
 
     @Test
     public void testBrokerUpdateWithoutNewMvDoesNothing() {
-        BrokerRegistrationTrackerTestContext ctx  = new BrokerRegistrationTrackerTestContext();
+        BrokerRegistrationTrackerTestContext ctx = new BrokerRegistrationTrackerTestContext();
         MetadataDelta delta = ctx.newDelta();
         delta.replay(new RegisterBrokerRecord().
             setBrokerId(1).
@@ -108,7 +108,7 @@ public class BrokerRegistrationTrackerTest {
     @ParameterizedTest
     @ValueSource(booleans = {false, true})
     public void testBrokerUpdateWithNewMv(boolean jbodMv) {
-        BrokerRegistrationTrackerTestContext ctx  = new BrokerRegistrationTrackerTestContext();
+        BrokerRegistrationTrackerTestContext ctx = new BrokerRegistrationTrackerTestContext();
         MetadataDelta delta = ctx.newDelta();
         delta.replay(new RegisterBrokerRecord().
             setBrokerId(1).
@@ -129,7 +129,7 @@ public class BrokerRegistrationTrackerTest {
     @ParameterizedTest
     @ValueSource(booleans = {false, true})
     public void testBrokerUpdateWithNewMvWithTwoDeltas(boolean jbodMv) {
-        BrokerRegistrationTrackerTestContext ctx  = new BrokerRegistrationTrackerTestContext();
+        BrokerRegistrationTrackerTestContext ctx = new BrokerRegistrationTrackerTestContext();
         MetadataDelta delta = ctx.newDelta();
         delta.replay(new RegisterBrokerRecord().
             setBrokerId(1).

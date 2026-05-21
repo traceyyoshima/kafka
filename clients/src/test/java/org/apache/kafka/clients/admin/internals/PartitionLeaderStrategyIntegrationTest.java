@@ -65,12 +65,12 @@ public class PartitionLeaderStrategyIntegrationTest {
         PartitionLeaderStrategy.PartitionLeaderFuture<Void> result
     ) {
         return new AdminApiDriver<>(
-            new MockApiHandler(),
-            result,
-            time.milliseconds() + TIMEOUT_MS,
-            RETRY_BACKOFF_MS,
-            RETRY_BACKOFF_MS,
-            logContext
+                new MockApiHandler(),
+                result,
+                time.milliseconds() + TIMEOUT_MS,
+                RETRY_BACKOFF_MS,
+                RETRY_BACKOFF_MS,
+                logContext
         );
     }
 
@@ -84,7 +84,7 @@ public class PartitionLeaderStrategyIntegrationTest {
 
         // First, the lookup stage needs to obtain leadership data because the cache is empty
         PartitionLeaderStrategy.PartitionLeaderFuture<Void> result =
-            new PartitionLeaderStrategy.PartitionLeaderFuture<>(requestKeys, partitionLeaderCache);
+                new PartitionLeaderStrategy.PartitionLeaderFuture<>(requestKeys, partitionLeaderCache);
         AdminApiDriver<TopicPartition, Void> driver = buildDriver(result);
 
         List<AdminApiDriver.RequestSpec<TopicPartition>> requestSpecs = driver.poll();
@@ -154,7 +154,7 @@ public class PartitionLeaderStrategyIntegrationTest {
 
         // First, the lookup stage needs to obtain leadership data because the cache is empty
         PartitionLeaderStrategy.PartitionLeaderFuture<Void> result =
-            new PartitionLeaderStrategy.PartitionLeaderFuture<>(requestKeys, partitionLeaderCache);
+                new PartitionLeaderStrategy.PartitionLeaderFuture<>(requestKeys, partitionLeaderCache);
         AdminApiDriver<TopicPartition, Void> driver = buildDriver(result);
 
         List<AdminApiDriver.RequestSpec<TopicPartition>> requestSpecs = driver.poll();
@@ -300,7 +300,7 @@ public class PartitionLeaderStrategyIntegrationTest {
 
         // First, the lookup stage needs to obtain leadership data because the cache is empty
         PartitionLeaderStrategy.PartitionLeaderFuture<Void> result =
-            new PartitionLeaderStrategy.PartitionLeaderFuture<>(requestKeys, partitionLeaderCache);
+                new PartitionLeaderStrategy.PartitionLeaderFuture<>(requestKeys, partitionLeaderCache);
         AdminApiDriver<TopicPartition, Void> driver = buildDriver(result);
 
         List<AdminApiDriver.RequestSpec<TopicPartition>> requestSpecs = driver.poll();
@@ -362,7 +362,7 @@ public class PartitionLeaderStrategyIntegrationTest {
         TopicPartition tp0 = new TopicPartition("T", 0);
         PartitionLeaderCache partitionLeaderCache = new PartitionLeaderCache();
         PartitionLeaderStrategy.PartitionLeaderFuture<Void> result =
-            new PartitionLeaderStrategy.PartitionLeaderFuture<>(Collections.singleton(tp0), partitionLeaderCache);
+                new PartitionLeaderStrategy.PartitionLeaderFuture<>(Collections.singleton(tp0), partitionLeaderCache);
         AdminApiDriver<TopicPartition, Void> driver = buildDriver(result);
 
         List<AdminApiDriver.RequestSpec<TopicPartition>> requestSpecs = driver.poll();
@@ -382,7 +382,7 @@ public class PartitionLeaderStrategyIntegrationTest {
         TopicPartition tp0 = new TopicPartition("T", 0);
         PartitionLeaderCache partitionLeaderCache = new PartitionLeaderCache();
         PartitionLeaderStrategy.PartitionLeaderFuture<Void> result =
-            new PartitionLeaderStrategy.PartitionLeaderFuture<>(Collections.singleton(tp0), partitionLeaderCache);
+                new PartitionLeaderStrategy.PartitionLeaderFuture<>(Collections.singleton(tp0), partitionLeaderCache);
         AdminApiDriver<TopicPartition, Void> driver = buildDriver(result);
 
         List<AdminApiDriver.RequestSpec<TopicPartition>> requestSpecs = driver.poll();
@@ -416,10 +416,10 @@ public class PartitionLeaderStrategyIntegrationTest {
         ListOffsetsResponseData response = new ListOffsetsResponseData();
         keys.forEach(tp -> {
             ListOffsetsResponseData.ListOffsetsPartitionResponse partResponse =
-                new ListOffsetsResponseData.ListOffsetsPartitionResponse()
+                    new ListOffsetsResponseData.ListOffsetsPartitionResponse()
                     .setPartitionIndex(tp.partition());
             ListOffsetsResponseData.ListOffsetsTopicResponse topicResponse =
-                new ListOffsetsResponseData.ListOffsetsTopicResponse()
+                    new ListOffsetsResponseData.ListOffsetsTopicResponse()
                     .setName(tp.topic())
                     .setPartitions(Collections.singletonList(partResponse));
             response.topics().add(topicResponse);
@@ -432,11 +432,11 @@ public class PartitionLeaderStrategyIntegrationTest {
         ListOffsetsResponseData response = new ListOffsetsResponseData();
         keys.forEach(tp -> {
             ListOffsetsResponseData.ListOffsetsPartitionResponse partResponse =
-                new ListOffsetsResponseData.ListOffsetsPartitionResponse()
+                    new ListOffsetsResponseData.ListOffsetsPartitionResponse()
                     .setPartitionIndex(tp.partition())
                     .setErrorCode(error.code());
             ListOffsetsResponseData.ListOffsetsTopicResponse topicResponse =
-                new ListOffsetsResponseData.ListOffsetsTopicResponse()
+                    new ListOffsetsResponseData.ListOffsetsTopicResponse()
                     .setName(tp.topic())
                     .setPartitions(Collections.singletonList(partResponse));
             response.topics().add(topicResponse);

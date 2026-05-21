@@ -52,11 +52,11 @@ public class TimingWheelTest {
     public void testAddExpiredTask() {
         long startMs = 1000L;
         TimingWheel timingWheel = new TimingWheel(
-            10L, 
-            5, 
-            startMs, 
-            new AtomicInteger(0), 
-            new DelayQueue<>()
+                10L,
+                5,
+                startMs,
+                new AtomicInteger(0),
+                new DelayQueue<>()
         );
 
         long expirationMs = startMs - 1; // 999ms, less than current time
@@ -71,11 +71,11 @@ public class TimingWheelTest {
         long startMs = 1000L;
         long tickMs = 10L;
         TimingWheel timingWheel = new TimingWheel(
-            tickMs,
-            5,
-            startMs,
-            new AtomicInteger(0),
-            new DelayQueue<>()
+                tickMs,
+                5,
+                startMs,
+                new AtomicInteger(0),
+                new DelayQueue<>()
         );
 
         long expirationMs = startMs + tickMs * 2;
@@ -92,11 +92,11 @@ public class TimingWheelTest {
     public void testAddTaskInCurrentBucket() {
         long startMs = 1000L;
         TimingWheel timingWheel = new TimingWheel(
-            10L,
-            5,
-            startMs,
-            new AtomicInteger(0),
-            new DelayQueue<>()
+                10L,
+                5,
+                startMs,
+                new AtomicInteger(0),
+                new DelayQueue<>()
         );
 
         long expirationMs = startMs + 5; // Within current tick
@@ -110,11 +110,11 @@ public class TimingWheelTest {
     public void testAdvanceClockWithinTick() {
         long startMs = 1000L;
         TimingWheel timingWheel = new TimingWheel(
-            10L,
-            5,
-            startMs,
-            new AtomicInteger(0),
-            new DelayQueue<>()
+                10L,
+                5,
+                startMs,
+                new AtomicInteger(0),
+                new DelayQueue<>()
         );
 
         timingWheel.advanceClock(startMs + 5);
@@ -127,11 +127,11 @@ public class TimingWheelTest {
         long startMs = 1000L;
         long tickMs = 10L;
         TimingWheel timingWheel = new TimingWheel(
-            tickMs,
-            5,
-            startMs,
-            new AtomicInteger(0),
-            new DelayQueue<>()
+                tickMs,
+                5,
+                startMs,
+                new AtomicInteger(0),
+                new DelayQueue<>()
         );
 
         timingWheel.advanceClock(startMs + tickMs);
@@ -145,13 +145,13 @@ public class TimingWheelTest {
         long tickMs = 10L;
         int wheelSize = 5;
         TimingWheel timingWheel = new TimingWheel(
-            tickMs,
-            wheelSize,
-            startMs,
-            new AtomicInteger(0),
-            new DelayQueue<>()
+                tickMs,
+                wheelSize,
+                startMs,
+                new AtomicInteger(0),
+                new DelayQueue<>()
         );
-        
+
         assertNull(timingWheel.overflowWheel(), "Overflow wheel should not exist initially");
 
         // First overflow task should create parent wheel
@@ -179,11 +179,11 @@ public class TimingWheelTest {
         long tickMs = 10L;
         int wheelSize = 5;
         TimingWheel timingWheel = new TimingWheel(
-            tickMs,
-            wheelSize,
-            startMs,
-            new AtomicInteger(0),
-            new DelayQueue<>()
+                tickMs,
+                wheelSize,
+                startMs,
+                new AtomicInteger(0),
+                new DelayQueue<>()
         );
 
         // Create overflow wheel

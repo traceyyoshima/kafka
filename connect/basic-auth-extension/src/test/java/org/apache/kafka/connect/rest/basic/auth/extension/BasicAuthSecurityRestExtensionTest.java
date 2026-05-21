@@ -71,7 +71,7 @@ public class BasicAuthSecurityRestExtensionTest {
         extension.register(context);
 
         assertNotEquals(overwrittenConfiguration, jaasFilter.getValue().configuration,
-            "Overwritten JAAS configuration should not be used by basic auth REST extension");
+                "Overwritten JAAS configuration should not be used by basic auth REST extension");
     }
 
     @Test

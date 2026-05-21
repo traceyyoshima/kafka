@@ -28,11 +28,11 @@ import org.apache.kafka.server.common.ApiMessageAndVersion;
 public class ShareCoordinatorRecordHelpers {
     public static CoordinatorRecord newShareSnapshotRecord(String groupId, Uuid topicId, int partitionId, ShareGroupOffset offsetData) {
         return CoordinatorRecord.record(
-            new ShareSnapshotKey()
+                new ShareSnapshotKey()
                 .setGroupId(groupId)
                 .setTopicId(topicId)
                 .setPartition(partitionId),
-            new ApiMessageAndVersion(new ShareSnapshotValue()
+                new ApiMessageAndVersion(new ShareSnapshotValue()
                 .setSnapshotEpoch(offsetData.snapshotEpoch())
                 .setStateEpoch(offsetData.stateEpoch())
                 .setLeaderEpoch(offsetData.leaderEpoch())
@@ -47,18 +47,18 @@ public class ShareCoordinatorRecordHelpers {
                     .toList())
                 .setCreateTimestamp(offsetData.createTimestamp())
                 .setWriteTimestamp(offsetData.writeTimestamp()),
-                (short) 0
+                    (short) 0
             )
         );
     }
 
     public static CoordinatorRecord newShareUpdateRecord(String groupId, Uuid topicId, int partitionId, ShareGroupOffset offsetData) {
         return CoordinatorRecord.record(
-            new ShareUpdateKey()
+                new ShareUpdateKey()
                 .setGroupId(groupId)
                 .setTopicId(topicId)
                 .setPartition(partitionId),
-            new ApiMessageAndVersion(new ShareUpdateValue()
+                new ApiMessageAndVersion(new ShareUpdateValue()
                 .setSnapshotEpoch(offsetData.snapshotEpoch())
                 .setLeaderEpoch(offsetData.leaderEpoch())
                 .setStartOffset(offsetData.startOffset())
@@ -70,7 +70,7 @@ public class ShareCoordinatorRecordHelpers {
                         .setDeliveryCount(batch.deliveryCount())
                         .setDeliveryState(batch.deliveryState()))
                     .toList()),
-                (short) 0
+                    (short) 0
             )
         );
     }
@@ -78,7 +78,7 @@ public class ShareCoordinatorRecordHelpers {
     public static CoordinatorRecord newShareStateTombstoneRecord(String groupId, Uuid topicId, int partitionId) {
         // Always generate share snapshot type record for tombstone.
         return CoordinatorRecord.tombstone(
-            new ShareSnapshotKey()
+                new ShareSnapshotKey()
                 .setGroupId(groupId)
                 .setTopicId(topicId)
                 .setPartition(partitionId)

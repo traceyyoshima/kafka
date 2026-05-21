@@ -85,7 +85,7 @@ public class ClientMetricsManager implements AutoCloseable {
 
     private static final Logger log = LoggerFactory.getLogger(ClientMetricsManager.class);
     private static final List<Byte> SUPPORTED_COMPRESSION_TYPES = List.of(CompressionType.ZSTD.id, CompressionType.LZ4.id,
-        CompressionType.GZIP.id, CompressionType.SNAPPY.id);
+            CompressionType.GZIP.id, CompressionType.SNAPPY.id);
     // Max cache size (16k active client connections per broker)
     private static final int CACHE_MAX_SIZE = 16384;
     private static final int DEFAULT_CACHE_EXPIRY_MS = 60 * 1000;
@@ -190,7 +190,7 @@ public class ClientMetricsManager implements AutoCloseable {
         Uuid clientInstanceId = request.data().clientInstanceId();
         if (clientInstanceId == null || Uuid.RESERVED.contains(clientInstanceId)) {
             String msg = String.format("Invalid request from the client [%s], invalid client instance id",
-                clientInstanceId);
+                    clientInstanceId);
             return request.getErrorResponse(0, new InvalidRequestException(msg));
         }
 
@@ -249,8 +249,8 @@ public class ClientMetricsManager implements AutoCloseable {
         List<String> clientMatchPattern = configs.getList(ClientMetricsConfigs.MATCH_CONFIG);
 
         SubscriptionInfo newSubscription =
-            new SubscriptionInfo(subscriptionName, metrics, pushInterval,
-                ClientMetricsConfigs.parseMatchingPatterns(clientMatchPattern));
+                new SubscriptionInfo(subscriptionName, metrics, pushInterval,
+                    ClientMetricsConfigs.parseMatchingPatterns(clientMatchPattern));
 
         subscriptionMap.put(subscriptionName, newSubscription);
     }
@@ -282,7 +282,7 @@ public class ClientMetricsManager implements AutoCloseable {
                 }
 
                 ClientMetricsInstanceMetadata instanceMetadata = new ClientMetricsInstanceMetadata(
-                    clientInstanceId, requestContext);
+                        clientInstanceId, requestContext);
                 clientInstance = createClientInstanceAndUpdateCache(clientInstanceId, instanceMetadata, requestContext.connectionId());
             }
         } else if (clientInstance.subscriptionVersion() < subscriptionUpdateVersion.get()) {
@@ -338,7 +338,7 @@ public class ClientMetricsManager implements AutoCloseable {
         for (SubscriptionInfo info : subscriptionMap.values()) {
             if (instanceMetadata.isMatch(info.matchPattern())) {
                 allMetricsSubscribed = allMetricsSubscribed || info.metrics().contains(
-                    ClientMetricsConfigs.ALL_SUBSCRIBED_METRICS);
+                        ClientMetricsConfigs.ALL_SUBSCRIBED_METRICS);
                 subscribedMetrics.addAll(info.metrics());
                 pushIntervalMs = Math.min(pushIntervalMs, info.intervalMs());
             }
@@ -357,7 +357,7 @@ public class ClientMetricsManager implements AutoCloseable {
         int subscriptionId = computeSubscriptionId(subscribedMetrics, pushIntervalMs, clientInstanceId);
 
         return new ClientMetricsInstance(clientInstanceId, instanceMetadata, subscriptionId,
-            currentSubscriptionVersion, subscribedMetrics, pushIntervalMs);
+                currentSubscriptionVersion, subscribedMetrics, pushIntervalMs);
     }
 
     /**
@@ -391,10 +391,10 @@ public class ClientMetricsManager implements AutoCloseable {
         ClientMetricsInstance clientInstance, long timestamp) {
 
         if (!clientInstance.maybeUpdateGetRequestTimestamp(timestamp) && (clientInstance.lastKnownError() != Errors.UNKNOWN_SUBSCRIPTION_ID
-            && clientInstance.lastKnownError() != Errors.UNSUPPORTED_COMPRESSION_TYPE)) {
+                && clientInstance.lastKnownError() != Errors.UNSUPPORTED_COMPRESSION_TYPE)) {
             clientMetricsStats.recordThrottleCount(clientInstance.clientInstanceId());
             String msg = String.format("Request from the client [%s] arrived before the next push interval time",
-                request.data().clientInstanceId());
+                    request.data().clientInstanceId());
             throw new ThrottlingQuotaExceededException(msg);
         }
     }
@@ -403,7 +403,7 @@ public class ClientMetricsManager implements AutoCloseable {
 
         if (clientInstance.terminating()) {
             String msg = String.format(
-                "Client [%s] sent the previous request with state terminating to TRUE, can not accept"
+                    "Client [%s] sent the previous request with state terminating to TRUE, can not accept"
                     + "any requests after that", request.data().clientInstanceId());
             throw new InvalidRequestException(msg);
         }
@@ -411,26 +411,26 @@ public class ClientMetricsManager implements AutoCloseable {
         if (!clientInstance.maybeUpdatePushRequestTimestamp(timestamp) && !request.data().terminating()) {
             clientMetricsStats.recordThrottleCount(clientInstance.clientInstanceId());
             String msg = String.format("Request from the client [%s] arrived before the next push interval time",
-                request.data().clientInstanceId());
+                    request.data().clientInstanceId());
             throw new ThrottlingQuotaExceededException(msg);
         }
 
         if (request.data().subscriptionId() != clientInstance.subscriptionId()) {
             clientMetricsStats.recordUnknownSubscriptionCount();
             String msg = String.format("Unknown client subscription id for the client [%s]",
-                request.data().clientInstanceId());
+                    request.data().clientInstanceId());
             throw new UnknownSubscriptionIdException(msg);
         }
 
         if (!isSupportedCompressionType(request.data().compressionType())) {
             String msg = String.format("Unknown compression type [%s] is received in telemetry request from [%s]",
-                request.data().compressionType(), request.data().clientInstanceId());
+                    request.data().compressionType(), request.data().clientInstanceId());
             throw new UnsupportedCompressionTypeException(msg);
         }
 
         if (request.data().metrics() != null && request.data().metrics().limit() > clientTelemetryMaxBytes) {
             String msg = String.format("Telemetry request from [%s] is larger than the maximum allowed size [%s]",
-                request.data().clientInstanceId(), clientTelemetryMaxBytes);
+                    request.data().clientInstanceId(), clientTelemetryMaxBytes);
             throw new TelemetryTooLargeException(msg);
         }
     }
@@ -556,7 +556,7 @@ public class ClientMetricsManager implements AutoCloseable {
                 */
                 long lastErrorMs = lastCacheErrorLogMs.get();
                 if (time.milliseconds() - lastErrorMs > CACHE_ERROR_LOG_INTERVAL_MS &&
-                    lastCacheErrorLogMs.compareAndSet(lastErrorMs, time.milliseconds())) {
+                        lastCacheErrorLogMs.compareAndSet(lastErrorMs, time.milliseconds())) {
                     log.warn("Client metrics instance cache cannot find the client instance id: {}. The cache"
                             + " must be at capacity, size: {}. Connection map size: {}",
                             clientInstanceId, clientInstanceCache.size(), clientConnectionIdMap.size());
@@ -589,14 +589,14 @@ public class ClientMetricsManager implements AutoCloseable {
         ClientMetricsStats() {
             Measurable instanceCount = (config, now) -> clientInstanceCache.size();
             MetricName instanceCountMetric = metrics.metricName(INSTANCE_COUNT, GROUP_NAME,
-                "The current number of client metrics instances being managed by the broker");
+                    "The current number of client metrics instances being managed by the broker");
             metrics.addMetric(instanceCountMetric, instanceCount);
             registeredMetricNames.add(instanceCountMetric);
 
             Sensor unknownSubscriptionRequestCountSensor = metrics.sensor(
-                ClientMetricsStats.UNKNOWN_SUBSCRIPTION_REQUEST);
+                    ClientMetricsStats.UNKNOWN_SUBSCRIPTION_REQUEST);
             unknownSubscriptionRequestCountSensor.add(createMeter(metrics, new WindowedCount(),
-                ClientMetricsStats.UNKNOWN_SUBSCRIPTION_REQUEST, Map.of()));
+                    ClientMetricsStats.UNKNOWN_SUBSCRIPTION_REQUEST, Map.of()));
             sensorsName.add(unknownSubscriptionRequestCountSensor.name());
         }
 
@@ -616,9 +616,9 @@ public class ClientMetricsManager implements AutoCloseable {
             Sensor pluginExport = metrics.sensor(ClientMetricsStats.PLUGIN_EXPORT + "-" + clientInstanceId);
             pluginExport.add(createMeter(metrics, new WindowedCount(), ClientMetricsStats.PLUGIN_EXPORT, tags));
             pluginExport.add(metrics.metricName(ClientMetricsStats.PLUGIN_EXPORT_TIME + "-avg",
-                ClientMetricsStats.GROUP_NAME, "Average time broker spent in invoking plugin exportMetrics call", tags), new Avg());
+                    ClientMetricsStats.GROUP_NAME, "Average time broker spent in invoking plugin exportMetrics call", tags), new Avg());
             pluginExport.add(metrics.metricName(ClientMetricsStats.PLUGIN_EXPORT_TIME + "-max",
-                ClientMetricsStats.GROUP_NAME, "Maximum time broker spent in invoking plugin exportMetrics call", tags), new Max());
+                    ClientMetricsStats.GROUP_NAME, "Maximum time broker spent in invoking plugin exportMetrics call", tags), new Max());
             sensorsName.add(pluginExport.name());
 
             Sensor pluginErrorCount = metrics.sensor(ClientMetricsStats.PLUGIN_ERROR + "-" + clientInstanceId);
@@ -662,9 +662,9 @@ public class ClientMetricsManager implements AutoCloseable {
 
         private Meter createMeter(Metrics metrics, SampledStat stat, String name, Map<String, String> metricTags) {
             MetricName rateMetricName = metrics.metricName(name + "-rate", ClientMetricsStats.GROUP_NAME,
-                String.format("The number of %s per second", name), metricTags);
+                    String.format("The number of %s per second", name), metricTags);
             MetricName totalMetricName = metrics.metricName(name + "-count", ClientMetricsStats.GROUP_NAME,
-                String.format("The total number of %s", name), metricTags);
+                    String.format("The total number of %s", name), metricTags);
             return new Meter(stat, rateMetricName, totalMetricName);
         }
 

@@ -41,14 +41,14 @@ public class RequestManagersTest {
     @Test
     public void testMemberStateListenerRegistered() {
 
-        final MemberStateListener listener = (memberEpoch, memberId) -> { };
+        final MemberStateListener listener = (memberEpoch, memberId) -> {};
 
         final Properties properties = requiredConsumerConfig();
         properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "consumerGroup");
         final ConsumerConfig config = new ConsumerConfig(properties);
         final GroupRebalanceConfig groupRebalanceConfig = new GroupRebalanceConfig(
-            config,
-            GroupRebalanceConfig.ProtocolType.CONSUMER
+                config,
+                GroupRebalanceConfig.ProtocolType.CONSUMER
         );
         LogContext logContext = new LogContext();
         MockTime time = new MockTime();
@@ -56,23 +56,23 @@ public class RequestManagersTest {
         SubscriptionState subscriptions = mock(SubscriptionState.class);
         ApiVersions apiVersions = mock(ApiVersions.class);
         final RequestManagers requestManagers = RequestManagers.supplier(
-            time,
-            logContext,
-            mock(BackgroundEventHandler.class),
-            metadata,
-            subscriptions,
-            mock(FetchBuffer.class),
-            config,
-            groupRebalanceConfig,
-            apiVersions,
-            mock(FetchMetricsManager.class),
-            () -> mock(NetworkClientDelegate.class),
-            Optional.empty(),
-            new Metrics(),
-            mock(OffsetCommitCallbackInvoker.class),
-            listener,
-            Optional.empty(),
-            new PositionsValidator(logContext, time, subscriptions, metadata)
+                time,
+                logContext,
+                mock(BackgroundEventHandler.class),
+                metadata,
+                subscriptions,
+                mock(FetchBuffer.class),
+                config,
+                groupRebalanceConfig,
+                apiVersions,
+                mock(FetchMetricsManager.class),
+                () -> mock(NetworkClientDelegate.class),
+                Optional.empty(),
+                new Metrics(),
+                mock(OffsetCommitCallbackInvoker.class),
+                listener,
+                Optional.empty(),
+                new PositionsValidator(logContext, time, subscriptions, metadata)
         ).get();
         assertTrue(requestManagers.consumerMembershipManager.isPresent());
         assertTrue(requestManagers.streamsMembershipManager.isEmpty());
@@ -87,14 +87,14 @@ public class RequestManagersTest {
     @Test
     public void testStreamMemberStateListenerRegistered() {
 
-        final MemberStateListener listener = (memberEpoch, memberId) -> { };
+        final MemberStateListener listener = (memberEpoch, memberId) -> {};
 
         final Properties properties = requiredConsumerConfig();
         properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "consumerGroup");
         final ConsumerConfig config = new ConsumerConfig(properties);
         final GroupRebalanceConfig groupRebalanceConfig = new GroupRebalanceConfig(
-            config,
-            GroupRebalanceConfig.ProtocolType.CONSUMER
+                config,
+                GroupRebalanceConfig.ProtocolType.CONSUMER
         );
         LogContext logContext = new LogContext();
         MockTime time = new MockTime();
@@ -102,23 +102,23 @@ public class RequestManagersTest {
         SubscriptionState subscriptions = mock(SubscriptionState.class);
         ApiVersions apiVersions = mock(ApiVersions.class);
         final RequestManagers requestManagers = RequestManagers.supplier(
-            time,
-            logContext,
-            mock(BackgroundEventHandler.class),
-            metadata,
-            subscriptions,
-            mock(FetchBuffer.class),
-            config,
-            groupRebalanceConfig,
-            apiVersions,
-            mock(FetchMetricsManager.class),
-            () -> mock(NetworkClientDelegate.class),
-            Optional.empty(),
-            new Metrics(),
-            mock(OffsetCommitCallbackInvoker.class),
-            listener,
-            Optional.of(new StreamsRebalanceData(UUID.randomUUID(), Optional.empty(), Optional.empty(), Map.of(), Map.of())),
-            new PositionsValidator(logContext, time, subscriptions, metadata)
+                time,
+                logContext,
+                mock(BackgroundEventHandler.class),
+                metadata,
+                subscriptions,
+                mock(FetchBuffer.class),
+                config,
+                groupRebalanceConfig,
+                apiVersions,
+                mock(FetchMetricsManager.class),
+                () -> mock(NetworkClientDelegate.class),
+                Optional.empty(),
+                new Metrics(),
+                mock(OffsetCommitCallbackInvoker.class),
+                listener,
+                Optional.of(new StreamsRebalanceData(UUID.randomUUID(), Optional.empty(), Optional.empty(), Map.of(), Map.of())),
+                new PositionsValidator(logContext, time, subscriptions, metadata)
         ).get();
         assertTrue(requestManagers.streamsMembershipManager.isPresent());
         assertTrue(requestManagers.streamsGroupHeartbeatRequestManager.isPresent());

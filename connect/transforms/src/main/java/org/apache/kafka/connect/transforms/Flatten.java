@@ -42,10 +42,10 @@ public abstract class Flatten<R extends ConnectRecord<R>> implements Transformat
 
     public static final String OVERVIEW_DOC =
             "Flatten a nested data structure, generating names for each field by concatenating the field names at each "
-                    + "level with a configurable delimiter character. Applies to Struct when schema present, or a Map "
-                    + "in the case of schemaless data. Array fields and their contents are not modified. The default delimiter is '.'."
-                    + "<p/>Use the concrete transformation type designed for the record key (<code>" + Key.class.getName() + "</code>) "
-                    + "or value (<code>" + Value.class.getName() + "</code>).";
+            + "level with a configurable delimiter character. Applies to Struct when schema present, or a Map "
+            + "in the case of schemaless data. Array fields and their contents are not modified. The default delimiter is '.'."
+            + "<p/>Use the concrete transformation type designed for the record key (<code>" + Key.class.getName() + "</code>) "
+            + "or value (<code>" + Value.class.getName() + "</code>).";
 
     private static final String DELIMITER_CONFIG = "delimiter";
     private static final String DELIMITER_DEFAULT = ".";
@@ -53,7 +53,7 @@ public abstract class Flatten<R extends ConnectRecord<R>> implements Transformat
     public static final ConfigDef CONFIG_DEF = new ConfigDef()
             .define(DELIMITER_CONFIG, ConfigDef.Type.STRING, DELIMITER_DEFAULT, ConfigDef.Importance.MEDIUM,
                     "Delimiter to insert between field names from the input record when generating field names for the "
-                            + "output record");
+                    + "output record");
 
     private static final String PURPOSE = "flattening";
 

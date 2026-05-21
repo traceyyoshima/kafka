@@ -60,7 +60,6 @@ public class TopicsImageSnapshotLoadBenchmark {
 
     private TopicsDelta topicsDelta;
 
-
     @Setup(Level.Trial)
     public void setup() {
         // build a delta to apply within the benchmark code
@@ -97,7 +96,7 @@ public class TopicsImageSnapshotLoadBenchmark {
         ArrayList<Integer> replicas = new ArrayList<>();
         int numBrokers = getNumBrokers(totalTopicCount, partitionsPerTopic, replicationFactor, numReplicasPerBroker);
         IntStream.range(0, replicationFactor).forEach(replicaNumber ->
-            replicas.add((replicaNumber + currentLeader) % numBrokers));
+                replicas.add((replicaNumber + currentLeader) % numBrokers));
         return replicas;
     }
 

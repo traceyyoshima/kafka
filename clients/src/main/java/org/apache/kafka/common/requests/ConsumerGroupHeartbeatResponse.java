@@ -73,7 +73,7 @@ public class ConsumerGroupHeartbeatResponse extends AbstractResponse {
 
     public static ConsumerGroupHeartbeatResponse parse(Readable readable, short version) {
         return new ConsumerGroupHeartbeatResponse(new ConsumerGroupHeartbeatResponseData(
-            readable, version));
+                readable, version));
     }
 
     public static ConsumerGroupHeartbeatResponseData.Assignment createAssignment(

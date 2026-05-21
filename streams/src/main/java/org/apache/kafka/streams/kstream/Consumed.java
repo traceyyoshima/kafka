@@ -78,12 +78,12 @@ public class Consumed<K, V> implements NamedOperation<Consumed<K, V>> {
 
     protected Consumed(final Consumed<K, V> consumed) {
         this(
-            consumed.keySerde,
-            consumed.valueSerde,
-            consumed.timestampExtractor,
-            consumed.legacyResetPolicy,
-            consumed.resetPolicy,
-            consumed.processorName
+                consumed.keySerde,
+                consumed.valueSerde,
+                consumed.timestampExtractor,
+                consumed.legacyResetPolicy,
+                consumed.resetPolicy,
+                consumed.processorName
         );
     }
 
@@ -279,12 +279,12 @@ public class Consumed<K, V> implements NamedOperation<Consumed<K, V>> {
     @Deprecated
     public Consumed<K, V> withOffsetResetPolicy(final Topology.AutoOffsetReset resetPolicy) {
         return new Consumed<>(
-            keySerde,
-            valueSerde,
-            timestampExtractor,
-            resetPolicy,
-            convertOldToNew(resetPolicy),
-            processorName
+                keySerde,
+                valueSerde,
+                timestampExtractor,
+                resetPolicy,
+                convertOldToNew(resetPolicy),
+                processorName
         );
     }
 
@@ -323,10 +323,10 @@ public class Consumed<K, V> implements NamedOperation<Consumed<K, V>> {
         }
         final Consumed<?, ?> consumed = (Consumed<?, ?>) o;
         return Objects.equals(keySerde, consumed.keySerde) &&
-               Objects.equals(valueSerde, consumed.valueSerde) &&
-               Objects.equals(timestampExtractor, consumed.timestampExtractor) &&
-               legacyResetPolicy == consumed.legacyResetPolicy &&
-               resetPolicy == consumed.resetPolicy;
+                Objects.equals(valueSerde, consumed.valueSerde) &&
+                Objects.equals(timestampExtractor, consumed.timestampExtractor) &&
+                legacyResetPolicy == consumed.legacyResetPolicy &&
+                resetPolicy == consumed.resetPolicy;
     }
 
     @Override

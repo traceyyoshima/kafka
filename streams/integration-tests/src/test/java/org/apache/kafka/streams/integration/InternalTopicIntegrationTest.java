@@ -89,7 +89,6 @@ public class InternalTopicIntegrationTest {
         CLUSTER.stop();
     }
 
-
     private static final String APP_ID = "internal-topics-integration-test";
     private static final String DEFAULT_INPUT_TOPIC = "inputTopic";
     private static final String DEFAULT_INPUT_TABLE_TOPIC = "inputTable";
@@ -173,24 +172,23 @@ public class InternalTopicIntegrationTest {
         final KTable<String, String> inputTable = streamsBuilder.table(DEFAULT_INPUT_TABLE_TOPIC);
         inputTopic
             .groupBy(
-                (k, v) -> k,
-                Grouped.with("GroupName", Serdes.String(), Serdes.String())
+                    (k, v) -> k,
+                    Grouped.with("GroupName", Serdes.String(), Serdes.String())
             )
             .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofMinutes(10)))
             .aggregate(
-                () -> "",
-                (k, v, a) -> a + k)
+                    () -> "",
+                    (k, v, a) -> a + k)
             .leftJoin(
-                inputTable,
-                v -> v,
-                (x, y) -> x + y
+                    inputTable,
+                    v -> v,
+                    (x, y) -> x + y
             );
 
         try (final KafkaStreams streams = new KafkaStreams(streamsBuilder.build(), streamsProp)) {
             startApplicationAndWaitUntilRunning(streams);
         }
     }
-
 
     @ParameterizedTest
     @CsvSource({"false, false", "false, true", "true, false", "true, true"})

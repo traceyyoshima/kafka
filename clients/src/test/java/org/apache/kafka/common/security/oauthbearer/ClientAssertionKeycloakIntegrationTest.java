@@ -132,8 +132,8 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
     public static void setUpKeycloak() throws Exception {
         // Skip the entire test class if Docker is not available
         org.junit.jupiter.api.Assumptions.assumeTrue(
-            DockerClientFactory.instance().isDockerAvailable(),
-            "Docker is not available - skipping integration tests"
+                DockerClientFactory.instance().isDockerAvailable(),
+                "Docker is not available - skipping integration tests"
         );
 
         keycloak = new KeycloakContainer();
@@ -162,9 +162,9 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
 
         // Allow the token endpoints and key files in the security allowlists
         System.setProperty(ALLOWED_SASL_OAUTHBEARER_URLS_CONFIG,
-            tokenEndpointUrl + "," + shortLivedTokenEndpointUrl);
+                tokenEndpointUrl + "," + shortLivedTokenEndpointUrl);
         System.setProperty(ALLOWED_SASL_OAUTHBEARER_FILES_CONFIG,
-            rsaPrivateKeyFile.getAbsolutePath() + "," + ecPrivateKeyFile.getAbsolutePath());
+                rsaPrivateKeyFile.getAbsolutePath() + "," + ecPrivateKeyFile.getAbsolutePath());
     }
 
     @AfterAll
@@ -195,7 +195,7 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
     @Test
     public void testClientAssertionWithLocallyGeneratedJWT_RS256() throws Exception {
         Map<String, Object> configs = createAssertionConfigs(
-            rsaPrivateKeyFile, "RS256", CLIENT_ID, tokenEndpointUrl);
+                rsaPrivateKeyFile, "RS256", CLIENT_ID, tokenEndpointUrl);
 
         try (ClientCredentialsJwtRetriever retriever = createRetriever(configs)) {
             String accessToken = retriever.retrieve();
@@ -214,7 +214,7 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
     @Test
     public void testClientAssertionWithLocallyGeneratedJWT_ES256() throws Exception {
         Map<String, Object> configs = createAssertionConfigs(
-            ecPrivateKeyFile, "ES256", CLIENT_ID, tokenEndpointUrl);
+                ecPrivateKeyFile, "ES256", CLIENT_ID, tokenEndpointUrl);
 
         try (ClientCredentialsJwtRetriever retriever = createRetriever(configs)) {
             String accessToken = retriever.retrieve();
@@ -231,7 +231,7 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
     @Test
     public void testMultipleTokenRetrievalsProduceDifferentTokens() throws Exception {
         Map<String, Object> configs = createAssertionConfigs(
-            rsaPrivateKeyFile, "RS256", CLIENT_ID, tokenEndpointUrl);
+                rsaPrivateKeyFile, "RS256", CLIENT_ID, tokenEndpointUrl);
 
         try (ClientCredentialsJwtRetriever retriever = createRetriever(configs)) {
             String token1 = retriever.retrieve();
@@ -303,7 +303,7 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
     public void testTokenRefreshWithClientAssertion() throws Exception {
         // Configure assertion against the short-lived realm
         Map<String, Object> configs = createAssertionConfigs(
-            rsaPrivateKeyFile, "RS256", CLIENT_ID, shortLivedTokenEndpointUrl);
+                rsaPrivateKeyFile, "RS256", CLIENT_ID, shortLivedTokenEndpointUrl);
 
         // Set sasl.login.refresh.* configs for aggressive token refresh
         configs.put(SASL_LOGIN_REFRESH_WINDOW_FACTOR, 0.5);    // refresh at 50% of token lifetime
@@ -321,7 +321,7 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
             long initialExp = initialPayload.get("exp").asLong();
             long initialIat = initialPayload.get("iat").asLong();
             assertEquals(SHORT_TOKEN_LIFESPAN_SECONDS, initialExp - initialIat,
-                "Token lifespan should match the realm's accessTokenLifespan ("
+                    "Token lifespan should match the realm's accessTokenLifespan ("
                     + SHORT_TOKEN_LIFESPAN_SECONDS + "s)");
 
             // Wait for the token to expire
@@ -332,14 +332,14 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
             assertValidJwt(refreshedToken);
 
             assertNotEquals(initialToken, refreshedToken,
-                "Refreshed token should differ from initial token");
+                    "Refreshed token should differ from initial token");
 
             // Verify the refreshed token's exp is in the future
             JsonNode refreshedPayload = decodeJwtPayload(refreshedToken);
             long refreshedExp = refreshedPayload.get("exp").asLong();
             long nowSeconds = System.currentTimeMillis() / 1000;
             assertTrue(refreshedExp > nowSeconds,
-                "Refreshed token's exp should be in the future");
+                    "Refreshed token's exp should be in the future");
         }
     }
 
@@ -359,7 +359,7 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
     @Test
     public void testHttpRequestFormatCompliance() throws Exception {
         Map<String, Object> configs = createAssertionConfigs(
-            rsaPrivateKeyFile, "RS256", CLIENT_ID, tokenEndpointUrl);
+                rsaPrivateKeyFile, "RS256", CLIENT_ID, tokenEndpointUrl);
 
         ConfigurationUtils cu = new ConfigurationUtils(configs);
         JaasOptionsUtils jou = new JaasOptionsUtils(Collections.emptyMap());
@@ -368,30 +368,30 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
         // Verify headers
         Map<String, String> headers = formatter.formatHeaders();
         assertEquals("application/x-www-form-urlencoded", headers.get("Content-Type"),
-            "Content-Type must be application/x-www-form-urlencoded per RFC 7523");
+                "Content-Type must be application/x-www-form-urlencoded per RFC 7523");
         assertEquals("application/json", headers.get("Accept"),
-            "Accept header should request JSON response");
+                "Accept header should request JSON response");
         assertEquals("no-cache", headers.get("Cache-Control"),
-            "Cache-Control should be no-cache");
+                "Cache-Control should be no-cache");
 
         // Verify body parameters
         String body = formatter.formatBody();
         assertNotNull(body, "Request body should not be null");
 
         assertTrue(body.contains("grant_type=client_credentials"),
-            "Body must contain grant_type=client_credentials");
+                "Body must contain grant_type=client_credentials");
         assertTrue(body.contains(
-            "client_assertion_type=urn%3Aietf%3Aparams%3Aoauth%3Aclient-assertion-type%3Ajwt-bearer"),
-            "Body must contain URL-encoded client_assertion_type per RFC 7521");
+                "client_assertion_type=urn%3Aietf%3Aparams%3Aoauth%3Aclient-assertion-type%3Ajwt-bearer"),
+                "Body must contain URL-encoded client_assertion_type per RFC 7521");
         assertTrue(body.contains("client_assertion="),
-            "Body must contain client_assertion parameter");
+                "Body must contain client_assertion parameter");
 
         // Verify the client_assertion value is a valid 3-part JWT
         String assertionParam = extractBodyParam(body, "client_assertion");
         assertNotNull(assertionParam, "client_assertion parameter should have a value");
         String[] jwtParts = assertionParam.split("\\.");
         assertEquals(3, jwtParts.length,
-            "client_assertion should be a JWT with 3 parts (header.payload.signature)");
+                "client_assertion should be a JWT with 3 parts (header.payload.signature)");
     }
 
     // ==================== Fallback to Client Secret ====================
@@ -434,15 +434,15 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
 
         Map<String, String> headers = formatter.formatHeaders();
         assertTrue(headers.containsKey("Authorization"),
-            "Client secret formatter should use Authorization header");
+                "Client secret formatter should use Authorization header");
         assertTrue(headers.get("Authorization").startsWith("Basic "),
-            "Authorization header should use Basic scheme");
+                "Authorization header should use Basic scheme");
 
         String body = formatter.formatBody();
         assertTrue(body.contains("grant_type=client_credentials"),
-            "Body should contain grant_type");
+                "Body should contain grant_type");
         assertFalse(body.contains("client_assertion"),
-            "Client secret body should not contain client_assertion");
+                "Client secret body should not contain client_assertion");
     }
 
     // ==================== Precedence Tests ====================
@@ -499,7 +499,7 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
     @Test
     public void testAssertionConfigOverridesClientSecret() throws Exception {
         Map<String, Object> configs = createAssertionConfigs(
-            rsaPrivateKeyFile, "RS256", CLIENT_ID, tokenEndpointUrl);
+                rsaPrivateKeyFile, "RS256", CLIENT_ID, tokenEndpointUrl);
 
         // Also add client secret configs with a deliberately wrong secret.
         // If the factory incorrectly falls back to the secret path, authentication
@@ -527,7 +527,7 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
     public void testReconfigureFromAssertionToClientSecret() throws Exception {
         // Step 1: Authenticate with client assertion
         Map<String, Object> assertionConfigs = createAssertionConfigs(
-            rsaPrivateKeyFile, "RS256", CLIENT_ID, tokenEndpointUrl);
+                rsaPrivateKeyFile, "RS256", CLIENT_ID, tokenEndpointUrl);
 
         try (ClientCredentialsJwtRetriever assertionRetriever = createRetriever(assertionConfigs)) {
             String assertionToken = assertionRetriever.retrieve();
@@ -559,7 +559,7 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
     public void testSwitchFromLocallyGeneratedToFileBased() throws Exception {
         // Step 1: Authenticate with locally-generated assertion
         Map<String, Object> localConfigs = createAssertionConfigs(
-            rsaPrivateKeyFile, "RS256", CLIENT_ID, tokenEndpointUrl);
+                rsaPrivateKeyFile, "RS256", CLIENT_ID, tokenEndpointUrl);
 
         try (ClientCredentialsJwtRetriever localRetriever = createRetriever(localConfigs)) {
             String localToken = localRetriever.retrieve();
@@ -619,7 +619,7 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
 
         // Step 2: Reconfigure with locally-generated assertion (file config removed)
         Map<String, Object> localConfigs = createAssertionConfigs(
-            rsaPrivateKeyFile, "RS256", CLIENT_ID, tokenEndpointUrl);
+                rsaPrivateKeyFile, "RS256", CLIENT_ID, tokenEndpointUrl);
 
         try (ClientCredentialsJwtRetriever localRetriever = createRetriever(localConfigs)) {
             String localToken = localRetriever.retrieve();
@@ -647,11 +647,11 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
             addToFileAllowlist(unregisteredKeyFile);
 
             Map<String, Object> configs = createAssertionConfigs(
-                unregisteredKeyFile, "RS256", CLIENT_ID, tokenEndpointUrl);
+                    unregisteredKeyFile, "RS256", CLIENT_ID, tokenEndpointUrl);
 
             try (ClientCredentialsJwtRetriever retriever = createRetriever(configs)) {
                 Exception exception = assertThrows(Exception.class, retriever::retrieve,
-                    "Authentication with unregistered key should fail");
+                        "Authentication with unregistered key should fail");
                 assertNotNull(exception.getMessage(), "Error message should not be null");
             }
         } finally {
@@ -679,7 +679,7 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
 
             try (ClientCredentialsJwtRetriever retriever = createRetriever(configs)) {
                 assertThrows(Exception.class, retriever::retrieve,
-                    "Expired assertion should be rejected by Keycloak");
+                        "Expired assertion should be rejected by Keycloak");
             }
         } finally {
             assertionFile.delete();
@@ -707,7 +707,7 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
 
         try (ClientCredentialsJwtRetriever retriever = createRetriever(configs)) {
             assertThrows(Exception.class, retriever::retrieve,
-                "Assertion with invalid audience should be rejected by Keycloak");
+                    "Assertion with invalid audience should be rejected by Keycloak");
         }
     }
 
@@ -720,7 +720,7 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
     @Test
     public void testClientAssertionWithMalformedAssertionFile() throws Exception {
         File malformedFile = writeStringToTempFile(
-            "this-is-not-a-valid-jwt-assertion", "malformed-assertion-", ".jwt");
+                "this-is-not-a-valid-jwt-assertion", "malformed-assertion-", ".jwt");
 
         try {
             addToFileAllowlist(malformedFile);
@@ -849,7 +849,7 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
 
         try {
             Map<String, Object> configs = createAssertionConfigs(
-                rsaPrivateKeyFile, "RS256", CLIENT_ID, unreachableUrl);
+                    rsaPrivateKeyFile, "RS256", CLIENT_ID, unreachableUrl);
 
             // Use very short timeouts and retries so the test completes quickly
             configs.put(SASL_LOGIN_CONNECT_TIMEOUT_MS, 1000);
@@ -860,13 +860,13 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
             try (ClientCredentialsJwtRetriever retriever = createRetriever(configs)) {
                 long start = System.currentTimeMillis();
                 assertThrows(Exception.class, retriever::retrieve,
-                    "Retrieval from unreachable endpoint should fail with an exception");
+                        "Retrieval from unreachable endpoint should fail with an exception");
                 long elapsed = System.currentTimeMillis() - start;
 
                 // Verify the request did not hang forever; with 1s max backoff it should
                 // complete well within 30 seconds even with retries.
                 assertTrue(elapsed < 30_000,
-                    "Request to unreachable endpoint should not hang; took " + elapsed + " ms");
+                        "Request to unreachable endpoint should not hang; took " + elapsed + " ms");
             }
         } finally {
             // Restore the original allowlist
@@ -893,7 +893,7 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
             addToFileAllowlist(unregisteredKeyFile);
 
             Map<String, Object> configs = createAssertionConfigs(
-                unregisteredKeyFile, "RS256", CLIENT_ID, tokenEndpointUrl);
+                    unregisteredKeyFile, "RS256", CLIENT_ID, tokenEndpointUrl);
 
             // Set a generous retry window so we can verify it was NOT used
             configs.put(SASL_LOGIN_RETRY_BACKOFF_MS, 500L);
@@ -902,13 +902,13 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
             try (ClientCredentialsJwtRetriever retriever = createRetriever(configs)) {
                 long start = System.currentTimeMillis();
                 assertThrows(Exception.class, retriever::retrieve,
-                    "Unregistered key should fail authentication");
+                        "Unregistered key should fail authentication");
                 long elapsed = System.currentTimeMillis() - start;
 
                 // 400 Bad Request is in UNRETRYABLE_HTTP_CODES, so the retry loop should
                 // break immediately. If retries were attempted we'd see ~10s+ elapsed.
                 assertTrue(elapsed < 5_000,
-                    "Unretryable 4xx error should fail fast without retries; took " + elapsed + " ms");
+                        "Unretryable 4xx error should fail fast without retries; took " + elapsed + " ms");
             }
         } finally {
             unregisteredKeyFile.delete();
@@ -924,12 +924,12 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
     @Test
     public void testClientCredentialsJwtRetrieverLifecycle() throws Exception {
         Map<String, Object> configs = createAssertionConfigs(
-            rsaPrivateKeyFile, "RS256", CLIENT_ID, tokenEndpointUrl);
+                rsaPrivateKeyFile, "RS256", CLIENT_ID, tokenEndpointUrl);
 
         ClientCredentialsJwtRetriever retriever = new ClientCredentialsJwtRetriever();
 
         assertDoesNotThrow(() -> retriever.configure(
-            configs, "OAUTHBEARER", getJaasConfigEntries()));
+                configs, "OAUTHBEARER", getJaasConfigEntries()));
 
         String token = retriever.retrieve();
         assertValidJwt(token);
@@ -959,9 +959,9 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
             addToFileAllowlist(encryptedKeyFile);
 
             Map<String, Object> configs = createAssertionConfigs(
-                encryptedKeyFile, "RS256", CLIENT_ID, tokenEndpointUrl);
+                    encryptedKeyFile, "RS256", CLIENT_ID, tokenEndpointUrl);
             configs.put(SASL_OAUTHBEARER_ASSERTION_PRIVATE_KEY_PASSPHRASE,
-                new org.apache.kafka.common.config.types.Password(passphrase));
+                    new org.apache.kafka.common.config.types.Password(passphrase));
 
             try (ClientCredentialsJwtRetriever retriever = createRetriever(configs)) {
                 String accessToken = retriever.retrieve();
@@ -988,9 +988,9 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
             addToFileAllowlist(encryptedKeyFile);
 
             Map<String, Object> configs = createAssertionConfigs(
-                encryptedKeyFile, "ES256", CLIENT_ID, tokenEndpointUrl);
+                    encryptedKeyFile, "ES256", CLIENT_ID, tokenEndpointUrl);
             configs.put(SASL_OAUTHBEARER_ASSERTION_PRIVATE_KEY_PASSPHRASE,
-                new org.apache.kafka.common.config.types.Password(passphrase));
+                    new org.apache.kafka.common.config.types.Password(passphrase));
 
             try (ClientCredentialsJwtRetriever retriever = createRetriever(configs)) {
                 String accessToken = retriever.retrieve();
@@ -1019,9 +1019,9 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
             addToFileAllowlist(encryptedKeyFile);
 
             Map<String, Object> configs = createAssertionConfigs(
-                encryptedKeyFile, "RS256", CLIENT_ID, tokenEndpointUrl);
+                    encryptedKeyFile, "RS256", CLIENT_ID, tokenEndpointUrl);
             configs.put(SASL_OAUTHBEARER_ASSERTION_PRIVATE_KEY_PASSPHRASE,
-                new org.apache.kafka.common.config.types.Password(wrongPassphrase));
+                    new org.apache.kafka.common.config.types.Password(wrongPassphrase));
 
             // The wrong passphrase error can surface during configure() (CachedFile eagerly
             // loads the key) or during retrieve(), so wrap the entire flow in assertThrows.
@@ -1069,13 +1069,13 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
         assertFalse(jwt.isEmpty(), "JWT should not be empty");
         String[] parts = jwt.split("\\.");
         assertEquals(3, parts.length,
-            "JWT should have 3 parts (header.payload.signature), got: " + parts.length);
+                "JWT should have 3 parts (header.payload.signature), got: " + parts.length);
 
         Base64.Decoder decoder = Base64.getUrlDecoder();
         for (int i = 0; i < 3; i++) {
             final int idx = i;
             assertDoesNotThrow(() -> decoder.decode(parts[idx]),
-                "JWT part " + idx + " should be valid Base64URL");
+                    "JWT part " + idx + " should be valid Base64URL");
         }
     }
 
@@ -1092,11 +1092,11 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
 
         String expectedIssuer = keycloak.getAuthServerUrl() + "/realms/" + realmName;
         assertEquals(expectedIssuer, payload.get("iss").asText(),
-            "Token issuer should match Keycloak realm");
+                "Token issuer should match Keycloak realm");
 
         if (payload.has("azp")) {
             assertEquals(expectedClientId, payload.get("azp").asText(),
-                "Token authorized party (azp) should match client ID");
+                    "Token authorized party (azp) should match client ID");
         }
     }
 
@@ -1154,11 +1154,11 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
         int iterations = 10000;
 
         javax.crypto.spec.PBEParameterSpec pbeParamSpec =
-            new javax.crypto.spec.PBEParameterSpec(salt, iterations);
+                new javax.crypto.spec.PBEParameterSpec(salt, iterations);
         javax.crypto.spec.PBEKeySpec pbeKeySpec =
-            new javax.crypto.spec.PBEKeySpec(passphrase.toCharArray());
+                new javax.crypto.spec.PBEKeySpec(passphrase.toCharArray());
         javax.crypto.SecretKeyFactory skf =
-            javax.crypto.SecretKeyFactory.getInstance(pbeAlgorithm);
+                javax.crypto.SecretKeyFactory.getInstance(pbeAlgorithm);
         javax.crypto.SecretKey pbeKey = skf.generateSecret(pbeKeySpec);
 
         javax.crypto.Cipher cipher = javax.crypto.Cipher.getInstance(pbeAlgorithm);
@@ -1168,7 +1168,7 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
         // Build EncryptedPrivateKeyInfo (PKCS#8 encrypted format)
         java.security.AlgorithmParameters algParams = cipher.getParameters();
         javax.crypto.EncryptedPrivateKeyInfo encryptedInfo =
-            new javax.crypto.EncryptedPrivateKeyInfo(algParams, encryptedBytes);
+                new javax.crypto.EncryptedPrivateKeyInfo(algParams, encryptedBytes);
         byte[] derEncoded = encryptedInfo.getEncoded();
 
         // Write as PEM
@@ -1223,9 +1223,9 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
                                   KeyPair keyPair, String algorithm) throws Exception {
         Base64.Encoder encoder = Base64.getUrlEncoder().withoutPadding();
         String headerB64 = encoder.encodeToString(
-            OBJECT_MAPPER.writeValueAsBytes(header));
+                OBJECT_MAPPER.writeValueAsBytes(header));
         String payloadB64 = encoder.encodeToString(
-            OBJECT_MAPPER.writeValueAsBytes(payload));
+                OBJECT_MAPPER.writeValueAsBytes(payload));
         String content = headerB64 + "." + payloadB64;
 
         java.security.Signature sig = "ES256".equals(algorithm)
@@ -1252,7 +1252,7 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
     private static void addToFileAllowlist(File file) {
         String existing = System.getProperty(ALLOWED_SASL_OAUTHBEARER_FILES_CONFIG, "");
         System.setProperty(ALLOWED_SASL_OAUTHBEARER_FILES_CONFIG,
-            existing + "," + file.getAbsolutePath());
+                existing + "," + file.getAbsolutePath());
     }
 
     // ==================== Helper: Keycloak Admin Setup ====================
@@ -1346,8 +1346,8 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
         String e = Base64.getUrlEncoder().withoutPadding().encodeToString(eBytes);
 
         return String.format(
-            "{\"kty\":\"RSA\",\"kid\":\"%s\",\"use\":\"sig\",\"alg\":\"RS256\",\"n\":\"%s\",\"e\":\"%s\"}",
-            keyId, n, e);
+                "{\"kty\":\"RSA\",\"kid\":\"%s\",\"use\":\"sig\",\"alg\":\"RS256\",\"n\":\"%s\",\"e\":\"%s\"}",
+                keyId, n, e);
     }
 
     private static String convertEcToJwk(ECPublicKey ecKey, String keyId) {
@@ -1358,8 +1358,8 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
         String y = Base64.getUrlEncoder().withoutPadding().encodeToString(yBytes);
 
         return String.format(
-            "{\"kty\":\"EC\",\"kid\":\"%s\",\"use\":\"sig\",\"alg\":\"ES256\",\"crv\":\"P-256\",\"x\":\"%s\",\"y\":\"%s\"}",
-            keyId, x, y);
+                "{\"kty\":\"EC\",\"kid\":\"%s\",\"use\":\"sig\",\"alg\":\"ES256\",\"crv\":\"P-256\",\"x\":\"%s\",\"y\":\"%s\"}",
+                keyId, x, y);
     }
 
     /** Removes leading zero byte from BigInteger two's-complement representation. */
@@ -1386,7 +1386,7 @@ public class ClientAssertionKeycloakIntegrationTest extends OAuthBearerTest {
             return result;
         } else {
             throw new IllegalArgumentException(
-                "Byte array of length " + bytes.length + " cannot be converted to " + length + " bytes");
+                    "Byte array of length " + bytes.length + " cannot be converted to " + length + " bytes");
         }
     }
 }

@@ -39,7 +39,7 @@ public class MockTimeTest {
     @Test
     public void shouldNotAllowNegativeSleep() {
         assertThrows(IllegalArgumentException.class,
-            () -> new TopologyTestDriver.MockTime(42).sleep(-1L));
+                () -> new TopologyTestDriver.MockTime(42).sleep(-1L));
     }
 
     @Test

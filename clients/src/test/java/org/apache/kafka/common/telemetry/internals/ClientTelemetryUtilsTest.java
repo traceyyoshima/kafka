@@ -131,15 +131,15 @@ public class ClientTelemetryUtilsTest {
         assertEquals(CompressionType.LZ4, ClientTelemetryUtils.preferredCompressionType(List.of(CompressionType.GZIP, CompressionType.LZ4), Set.of(CompressionType.GZIP)));
         assertEquals(CompressionType.SNAPPY, ClientTelemetryUtils.preferredCompressionType(List.of(CompressionType.GZIP, CompressionType.LZ4, CompressionType.SNAPPY), Set.of(CompressionType.GZIP, CompressionType.LZ4)));
         assertEquals(CompressionType.NONE, ClientTelemetryUtils.preferredCompressionType(List.of(CompressionType.GZIP, CompressionType.LZ4), Set.of(CompressionType.GZIP, CompressionType.LZ4)));
-        
+
         // Test edge case: no match between requested and supported types
         assertEquals(CompressionType.GZIP, ClientTelemetryUtils.preferredCompressionType(List.of(CompressionType.GZIP, CompressionType.LZ4), Set.of(CompressionType.SNAPPY)));
 
         // Test NullPointerException for null parameters
         assertThrows(NullPointerException.class, () ->
-            ClientTelemetryUtils.preferredCompressionType(null, Set.of()));
+                ClientTelemetryUtils.preferredCompressionType(null, Set.of()));
         assertThrows(NullPointerException.class, () ->
-            ClientTelemetryUtils.preferredCompressionType(List.of(CompressionType.GZIP, CompressionType.NONE), null));
+                ClientTelemetryUtils.preferredCompressionType(List.of(CompressionType.GZIP, CompressionType.NONE), null));
     }
 
     @ParameterizedTest
@@ -163,19 +163,19 @@ public class ClientTelemetryUtilsTest {
     private MetricsData getMetricsData() {
         List<Metric> metricsList = new ArrayList<>();
         metricsList.add(SinglePointMetric.sum(
-                        new MetricKey("metricName"), 1.0, true, Instant.now(), null, Set.of())
+                new MetricKey("metricName"), 1.0, true, Instant.now(), null, Set.of())
                 .builder().build());
         metricsList.add(SinglePointMetric.sum(
-                        new MetricKey("metricName1"), 100.0, false, Instant.now(),  Instant.now(), Set.of())
+                new MetricKey("metricName1"), 100.0, false, Instant.now(),  Instant.now(), Set.of())
                 .builder().build());
         metricsList.add(SinglePointMetric.deltaSum(
-                        new MetricKey("metricName2"), 1.0, true, Instant.now(), Instant.now(), Set.of())
+                new MetricKey("metricName2"), 1.0, true, Instant.now(), Instant.now(), Set.of())
                 .builder().build());
         metricsList.add(SinglePointMetric.gauge(
-                        new MetricKey("metricName3"), 1.0, Instant.now(), Set.of())
+                new MetricKey("metricName3"), 1.0, Instant.now(), Set.of())
                 .builder().build());
         metricsList.add(SinglePointMetric.gauge(
-                        new MetricKey("metricName4"), Long.valueOf(100), Instant.now(), Set.of())
+                new MetricKey("metricName4"), Long.valueOf(100), Instant.now(), Set.of())
                 .builder().build());
 
         MetricsData.Builder builder = MetricsData.newBuilder();

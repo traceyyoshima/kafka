@@ -73,27 +73,27 @@ public class InMemoryKeyValueStore implements KeyValueStore<Bytes, byte[]> {
                      final StateStore root) {
         if (root != null) {
             final boolean consistencyEnabled = StreamsConfig.InternalConfig.getBoolean(
-                stateStoreContext.appConfigs(),
-                IQ_CONSISTENCY_OFFSET_VECTOR_ENABLED,
-                false
+                    stateStoreContext.appConfigs(),
+                    IQ_CONSISTENCY_OFFSET_VECTOR_ENABLED,
+                    false
             );
             // register the store
             open = true;
 
             stateStoreContext.register(
-                root,
-                (RecordBatchingStateRestoreCallback) records -> {
+                    root,
+                    (RecordBatchingStateRestoreCallback) records -> {
                     synchronized (position) {
                         for (final ConsumerRecord<byte[], byte[]> record : records) {
                             put(Bytes.wrap(record.key()), record.value());
                             ChangelogRecordDeserializationHelper.applyChecksAndUpdatePosition(
-                                record,
-                                consistencyEnabled,
-                                position
+                                    record,
+                                    consistencyEnabled,
+                                    position
                             );
                         }
                     }
-                }
+                    }
             );
         }
 
@@ -122,12 +122,12 @@ public class InMemoryKeyValueStore implements KeyValueStore<Bytes, byte[]> {
                                     final QueryConfig config) {
 
         return StoreQueryUtils.handleBasicQueries(
-            query,
-            positionBound,
-            config,
-            this,
-            position,
-            context
+                query,
+                positionBound,
+                config,
+                this,
+                position,
+                context
         );
     }
 

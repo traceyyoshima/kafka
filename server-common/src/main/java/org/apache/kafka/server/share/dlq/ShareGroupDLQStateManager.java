@@ -89,12 +89,12 @@ public class ShareGroupDLQStateManager {
         this.timer = timer;
         this.cacheHelper = cacheHelper;
         this.sender = new SendThread(
-            "ShareGroupDLQSendThread",
-            client,
-            Math.toIntExact(CommonClientConfigs.DEFAULT_SOCKET_CONNECTION_SETUP_TIMEOUT_MAX_MS),  //30 seconds
+                "ShareGroupDLQSendThread",
+                client,
+                Math.toIntExact(CommonClientConfigs.DEFAULT_SOCKET_CONNECTION_SETUP_TIMEOUT_MAX_MS),  //30 seconds
             this.time,
-            true,
-            new Random(this.time.milliseconds())
+                true,
+                new Random(this.time.milliseconds())
         );
     }
 
@@ -146,11 +146,11 @@ public class ShareGroupDLQStateManager {
             this.param = param;
             this.result = result;
             this.createTopicsBackoff = new ExponentialBackoffManager(
-                maxRPCRetryAttempts,
-                backoffMs,
-                RETRY_BACKOFF_EXP_BASE,
-                backoffMaxMs,
-                RETRY_BACKOFF_JITTER
+                    maxRPCRetryAttempts,
+                    backoffMs,
+                    RETRY_BACKOFF_EXP_BASE,
+                    backoffMaxMs,
+                    RETRY_BACKOFF_JITTER
             );
         }
 
@@ -364,10 +364,10 @@ public class ShareGroupDLQStateManager {
                     try {
                         AbstractRequest.Builder<CreateTopicsRequest> builder = handler.createTopicBuilder();
                         return List.of(new RequestAndCompletionHandler(
-                            time.milliseconds(),
-                            randomNode,
-                            builder,
-                            handler
+                                time.milliseconds(),
+                                randomNode,
+                                builder,
+                                handler
                         ));
                     } catch (ConfigException exp) {
                         log.error("Unable to create topic request.", exp);

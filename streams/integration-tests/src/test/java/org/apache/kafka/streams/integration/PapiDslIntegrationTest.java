@@ -123,7 +123,7 @@ public class PapiDslIntegrationTest {
             .table("input-topic", Consumed.with(Serdes.String(), Serdes.String()))
             .transformValues(() -> new ValueTransformerWithKey<>() {
                 @Override
-                public void init(final ProcessorContext context) { }
+                public void init(final ProcessorContext context) {}
 
                 @Override
                 public String transform(final String readOnlyKey, final String value) {
@@ -131,7 +131,7 @@ public class PapiDslIntegrationTest {
                 }
 
                 @Override
-                public void close() { }
+                public void close() {}
             }, Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String()))
         );
     }
@@ -142,9 +142,9 @@ public class PapiDslIntegrationTest {
             .table("input-topic", Consumed.with(Serdes.String(), Serdes.String()))
             .groupBy((KeyValueMapper<String, String, KeyValue<String, String>>) KeyValue::pair, Grouped.with(Serdes.String(), Serdes.String()))
             .reduce(
-                (value, aggregate) -> value,
-                (value, aggregate) -> aggregate,
-                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
+                    (value, aggregate) -> value,
+                    (value, aggregate) -> aggregate,
+                    Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
             )
         );
     }
@@ -155,10 +155,10 @@ public class PapiDslIntegrationTest {
             .table("input-topic", Consumed.with(Serdes.String(), Serdes.String()))
             .groupBy((KeyValueMapper<String, String, KeyValue<String, String>>) KeyValue::pair, Grouped.with(Serdes.String(), Serdes.String()))
             .aggregate(
-                () -> "",
-                (key, value, aggregate) -> value,
-                (key, value, aggregate) -> aggregate,
-                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
+                    () -> "",
+                    (key, value, aggregate) -> value,
+                    (key, value, aggregate) -> aggregate,
+                    Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
             )
         );
     }
@@ -197,9 +197,9 @@ public class PapiDslIntegrationTest {
         verifyJoin(builder
             .table("left-input-topic", Consumed.with(Serdes.String(), Serdes.String()))
             .join(
-                builder.table("right-input-topic", Consumed.with(Serdes.String(), Serdes.String())),
-                (left, right) -> left + "-" + right,
-                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
+                    builder.table("right-input-topic", Consumed.with(Serdes.String(), Serdes.String())),
+                    (left, right) -> left + "-" + right,
+                    Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
             )
         );
     }
@@ -209,10 +209,10 @@ public class PapiDslIntegrationTest {
         verifyJoin(builder
             .table("left-input-topic", Consumed.with(Serdes.String(), Serdes.String()))
             .join(
-                builder.table("right-input-topic", Consumed.with(Serdes.String(), Serdes.String())),
-                (key, value) -> key,
-                (left, right) -> left + "-" + right,
-                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
+                    builder.table("right-input-topic", Consumed.with(Serdes.String(), Serdes.String())),
+                    (key, value) -> key,
+                    (left, right) -> left + "-" + right,
+                    Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
             )
         );
     }
@@ -223,8 +223,8 @@ public class PapiDslIntegrationTest {
             .stream("input-topic", Consumed.with(Serdes.String(), Serdes.String()))
             .groupByKey()
             .reduce(
-                (value, aggregate) -> value,
-                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
+                    (value, aggregate) -> value,
+                    Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
             )
         );
     }
@@ -235,9 +235,9 @@ public class PapiDslIntegrationTest {
             .stream("input-topic", Consumed.with(Serdes.String(), Serdes.String()))
             .groupByKey()
             .aggregate(
-                () -> "",
-                (key, value, aggregate) -> value,
-                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
+                    () -> "",
+                    (key, value, aggregate) -> value,
+                    Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
             )
         );
     }
@@ -285,8 +285,8 @@ public class PapiDslIntegrationTest {
             .groupByKey()
             .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofHours(1L)))
             .reduce(
-                (value, aggregate) -> value,
-                Materialized.<String, String, WindowStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
+                    (value, aggregate) -> value,
+                    Materialized.<String, String, WindowStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
             )
         );
     }
@@ -299,10 +299,10 @@ public class PapiDslIntegrationTest {
             .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofHours(1L)))
             .emitStrategy(EmitStrategy.onWindowClose())
             .reduce(
-                (value, aggregate) -> value,
-                Materialized.<String, String, WindowStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
+                    (value, aggregate) -> value,
+                    Materialized.<String, String, WindowStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
             ),
-            true
+                true
         );
     }
 
@@ -313,9 +313,9 @@ public class PapiDslIntegrationTest {
             .groupByKey()
             .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofHours(1L)))
             .aggregate(
-                () -> "",
-                (key, value, aggregate) -> value,
-                Materialized.<String, String, WindowStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
+                    () -> "",
+                    (key, value, aggregate) -> value,
+                    Materialized.<String, String, WindowStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
             )
         );
     }
@@ -328,11 +328,11 @@ public class PapiDslIntegrationTest {
             .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofHours(1L)))
             .emitStrategy(EmitStrategy.onWindowClose())
             .aggregate(
-                () -> "",
-                (key, value, aggregate) -> value,
-                Materialized.<String, String, WindowStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
+                    () -> "",
+                    (key, value, aggregate) -> value,
+                    Materialized.<String, String, WindowStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
             ),
-            true
+                true
         );
     }
 
@@ -379,8 +379,8 @@ public class PapiDslIntegrationTest {
             .groupByKey()
             .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(Duration.ofHours(1L)))
             .reduce(
-                (value, aggregate) -> value,
-                Materialized.<String, String, SessionStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
+                    (value, aggregate) -> value,
+                    Materialized.<String, String, SessionStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
             )
         );
     }
@@ -393,13 +393,13 @@ public class PapiDslIntegrationTest {
             .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(Duration.ofHours(1L)))
             .emitStrategy(EmitStrategy.onWindowClose())
             .reduce(
-                (value, aggregate) -> value,
-                Materialized.<String, String, SessionStore<Bytes, byte[]>>as("table-store")
+                    (value, aggregate) -> value,
+                    Materialized.<String, String, SessionStore<Bytes, byte[]>>as("table-store")
                     .withKeySerde(Serdes.String())
                     .withValueSerde(Serdes.String())
                     .withRetention(Duration.ofHours(10L))
             ),
-            true
+                true
         );
     }
 
@@ -410,10 +410,10 @@ public class PapiDslIntegrationTest {
             .groupByKey()
             .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(Duration.ofHours(1L)))
             .aggregate(
-                () -> "",
-                (key, value, aggregate) -> value,
-                (key, left, right) -> "",
-                Materialized.<String, String, SessionStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
+                    () -> "",
+                    (key, value, aggregate) -> value,
+                    (key, left, right) -> "",
+                    Materialized.<String, String, SessionStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
             )
         );
     }
@@ -426,15 +426,15 @@ public class PapiDslIntegrationTest {
             .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(Duration.ofHours(1L)))
             .emitStrategy(EmitStrategy.onWindowClose())
             .aggregate(
-                () -> "",
-                (key, value, aggregate) -> value,
-                (key, left, right) -> "",
-                Materialized.<String, String, SessionStore<Bytes, byte[]>>as("table-store")
+                    () -> "",
+                    (key, value, aggregate) -> value,
+                    (key, left, right) -> "",
+                    Materialized.<String, String, SessionStore<Bytes, byte[]>>as("table-store")
                     .withKeySerde(Serdes.String())
                     .withValueSerde(Serdes.String())
                     .withRetention(Duration.ofHours(10L))
             ),
-            true
+                true
         );
     }
 
@@ -445,8 +445,8 @@ public class PapiDslIntegrationTest {
             .groupByKey()
             .windowedBy(SlidingWindows.ofTimeDifferenceWithNoGrace(Duration.ofHours(1L)))
             .reduce(
-                (value, aggregate) -> value,
-                Materialized.<String, String, WindowStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
+                    (value, aggregate) -> value,
+                    Materialized.<String, String, WindowStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
             )
         );
     }
@@ -459,10 +459,10 @@ public class PapiDslIntegrationTest {
                 .windowedBy(SlidingWindows.ofTimeDifferenceWithNoGrace(Duration.ofHours(1L)))
                 .emitStrategy(EmitStrategy.onWindowClose())
                 .reduce(
-                    (value, aggregate) -> value,
-                    Materialized.<String, String, WindowStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
+                        (value, aggregate) -> value,
+                        Materialized.<String, String, WindowStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
                 ),
-            true
+                true
         );
     }
 
@@ -473,9 +473,9 @@ public class PapiDslIntegrationTest {
             .groupByKey()
             .windowedBy(SlidingWindows.ofTimeDifferenceWithNoGrace(Duration.ofHours(1L)))
             .aggregate(
-                () -> "",
-                (key, value, aggregate) -> value,
-                Materialized.<String, String, WindowStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
+                    () -> "",
+                    (key, value, aggregate) -> value,
+                    Materialized.<String, String, WindowStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
             )
         );
     }
@@ -488,11 +488,11 @@ public class PapiDslIntegrationTest {
                 .windowedBy(SlidingWindows.ofTimeDifferenceWithNoGrace(Duration.ofHours(1L)))
                 .emitStrategy(EmitStrategy.onWindowClose())
                 .aggregate(
-                    () -> "",
-                    (key, value, aggregate) -> value,
-                    Materialized.<String, String, WindowStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
+                        () -> "",
+                        (key, value, aggregate) -> value,
+                        Materialized.<String, String, WindowStore<Bytes, byte[]>>as("table-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
                 ),
-            true
+                true
         );
     }
 
@@ -567,15 +567,15 @@ public class PapiDslIntegrationTest {
         final StreamsBuilder builder = new StreamsBuilder();
 
         final Materialized<String, String, KeyValueStore<Bytes, byte[]>> materialized =
-            Materialized.as(Stores.persistentTimestampedKeyValueStoreWithHeaders("table-store"));
+                Materialized.as(Stores.persistentTimestampedKeyValueStoreWithHeaders("table-store"));
 
         builder
             .stream("input-topic", Consumed.with(Serdes.String(), Serdes.String()))
             .groupByKey()
             .aggregate(
-                () -> "",
-                (key, value, aggregate) -> value,
-                materialized.withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
+                    () -> "",
+                    (key, value, aggregate) -> value,
+                    materialized.withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
             )
             .toStream()
             .process(() -> new ContextualProcessor<String, String, String, String>() {
@@ -608,14 +608,14 @@ public class PapiDslIntegrationTest {
         final StreamsBuilder builder = new StreamsBuilder();
 
         final Materialized<String, String, KeyValueStore<Bytes, byte[]>> materialized =
-            Materialized.as(Stores.persistentTimestampedKeyValueStoreWithHeaders("table-store"));
+                Materialized.as(Stores.persistentTimestampedKeyValueStoreWithHeaders("table-store"));
 
         builder
             .stream("input-topic", Consumed.with(Serdes.String(), Serdes.String()))
             .groupByKey()
             .reduce(
-                (value, aggregate) -> value,
-                materialized.withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
+                    (value, aggregate) -> value,
+                    materialized.withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
             )
             .toStream()
             .process(() -> new ContextualProcessor<String, String, String, String>() {
@@ -681,16 +681,16 @@ public class PapiDslIntegrationTest {
         final StreamsBuilder builder = new StreamsBuilder();
 
         final Materialized<String, String, WindowStore<Bytes, byte[]>> materialized =
-            Materialized.as(Stores.persistentTimestampedWindowStoreWithHeaders("table-store", Duration.ofHours(24L), Duration.ofHours(1L), false));
+                Materialized.as(Stores.persistentTimestampedWindowStoreWithHeaders("table-store", Duration.ofHours(24L), Duration.ofHours(1L), false));
 
         builder
             .stream("input-topic", Consumed.with(Serdes.String(), Serdes.String()))
             .groupByKey()
             .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofHours(1L)))
             .aggregate(
-                () -> "",
-                (key, value, aggregate) -> value,
-                materialized.withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
+                    () -> "",
+                    (key, value, aggregate) -> value,
+                    materialized.withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
             )
             .toStream()
             .process(() -> new ContextualProcessor<Windowed<String>, String, Windowed<String>, String>() {
@@ -724,17 +724,17 @@ public class PapiDslIntegrationTest {
         final StreamsBuilder builder = new StreamsBuilder();
 
         final Materialized<String, String, SessionStore<Bytes, byte[]>> materialized =
-            Materialized.as(Stores.persistentSessionStoreWithHeaders("table-store", Duration.ofHours(1L)));
+                Materialized.as(Stores.persistentSessionStoreWithHeaders("table-store", Duration.ofHours(1L)));
 
         builder
             .stream("input-topic", Consumed.with(Serdes.String(), Serdes.String()))
             .groupByKey()
             .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(Duration.ofHours(1L)))
             .aggregate(
-                () -> "",
-                (key, value, aggregate) -> value,
-                (key, left, right) -> left,
-                materialized.withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
+                    () -> "",
+                    (key, value, aggregate) -> value,
+                    (key, left, right) -> left,
+                    materialized.withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
             )
             .toStream((windowedKey, value) -> windowedKey.key())
             .process(() -> new ContextualProcessor<String, String, String, String>() {
@@ -767,15 +767,15 @@ public class PapiDslIntegrationTest {
         final StreamsBuilder builder = new StreamsBuilder();
 
         final Materialized<String, String, SessionStore<Bytes, byte[]>> materialized =
-            Materialized.as(Stores.persistentSessionStoreWithHeaders("table-store", Duration.ofHours(1L)));
+                Materialized.as(Stores.persistentSessionStoreWithHeaders("table-store", Duration.ofHours(1L)));
 
         builder
             .stream("input-topic", Consumed.with(Serdes.String(), Serdes.String()))
             .groupByKey()
             .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(Duration.ofHours(1L)))
             .reduce(
-                (value, aggregate) -> value,
-                materialized.withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
+                    (value, aggregate) -> value,
+                    materialized.withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
             )
             .toStream((windowedKey, value) -> windowedKey.key())
             .process(() -> new ContextualProcessor<String, String, String, String>() {

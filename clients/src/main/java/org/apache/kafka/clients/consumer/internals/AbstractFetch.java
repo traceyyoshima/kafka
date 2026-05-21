@@ -210,7 +210,7 @@ public abstract class AbstractFetch implements Closeable {
                     log.debug("For {}, received error {}, with leaderIdAndEpoch {}", partition, partitionError, partitionData.currentLeader());
                     if (partitionData.currentLeader().leaderId() != -1 && partitionData.currentLeader().leaderEpoch() != -1) {
                         partitionsWithUpdatedLeaderInfo.put(partition, new Metadata.LeaderIdAndEpoch(
-                            Optional.of(partitionData.currentLeader().leaderId()), Optional.of(partitionData.currentLeader().leaderEpoch())));
+                                Optional.of(partitionData.currentLeader().leaderId()), Optional.of(partitionData.currentLeader().leaderEpoch())));
                     }
                 }
 
@@ -243,10 +243,10 @@ public abstract class AbstractFetch implements Closeable {
 
                 Set<TopicPartition> updatedPartitions = metadata.updatePartitionLeadership(partitionsWithUpdatedLeaderInfo, leaderNodes);
                 updatedPartitions.forEach(
-                    tp -> {
-                        log.debug("For {}, as the leader was updated, position will be validated.", tp);
-                        subscriptions.maybeValidatePositionForCurrentLeader(apiVersions, tp, metadata.currentLeader(tp));
-                    }
+                        tp -> {
+                            log.debug("For {}, as the leader was updated, position will be validated.", tp);
+                            subscriptions.maybeValidatePositionForCurrentLeader(apiVersions, tp, metadata.currentLeader(tp));
+                        }
                 );
             }
 

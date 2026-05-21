@@ -415,8 +415,8 @@ public class StreamsResetterTest {
             nodes.put(i, new Node(i, "localhost", 8121 + i));
         }
         return new Cluster("mockClusterId", nodes.values(),
-            Set.of(), Set.of(),
-            Set.of(), nodes.get(0));
+                Set.of(), Set.of(),
+                Set.of(), nodes.get(0));
     }
 
     private static class EmptyPartitionConsumer<K, V> extends MockConsumer<K, V> {

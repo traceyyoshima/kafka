@@ -100,12 +100,12 @@ public final class ClusterDelta {
         BrokerRegistration broker = broker(brokerId);
         if (broker == null) {
             throw new IllegalStateException("Tried to " + action + " broker " + brokerId +
-                ", but that broker was not registered.");
+                    ", but that broker was not registered.");
         }
         if (broker.epoch() != epoch) {
             throw new IllegalStateException("Tried to " + action + " broker " + brokerId +
-                ", but the given epoch, " + epoch + ", did not match the current broker " +
-                "epoch, " + broker.epoch());
+                    ", but the given epoch, " + epoch + ", did not match the current broker " +
+                    "epoch, " + broker.epoch());
         }
         return broker;
     }
@@ -113,41 +113,41 @@ public final class ClusterDelta {
     public void replay(FenceBrokerRecord record) {
         BrokerRegistration curRegistration = getBrokerOrThrow(record.id(), record.epoch(), "fence");
         changedBrokers.put(record.id(), Optional.of(curRegistration.cloneWith(
-            BrokerRegistrationFencingChange.FENCE.asBoolean(),
-            Optional.empty(),
-            Optional.empty(),
-            Optional.empty()
+                BrokerRegistrationFencingChange.FENCE.asBoolean(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty()
         )));
     }
 
     public void replay(UnfenceBrokerRecord record) {
         BrokerRegistration curRegistration = getBrokerOrThrow(record.id(), record.epoch(), "unfence");
         changedBrokers.put(record.id(), Optional.of(curRegistration.cloneWith(
-            BrokerRegistrationFencingChange.UNFENCE.asBoolean(),
-            Optional.empty(),
-            Optional.empty(),
-            Optional.empty()
+                BrokerRegistrationFencingChange.UNFENCE.asBoolean(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty()
         )));
     }
 
     public void replay(BrokerRegistrationChangeRecord record) {
         BrokerRegistration curRegistration =
-            getBrokerOrThrow(record.brokerId(), record.brokerEpoch(), "change");
+                getBrokerOrThrow(record.brokerId(), record.brokerEpoch(), "change");
         BrokerRegistrationFencingChange fencingChange =
-            BrokerRegistrationFencingChange.fromValue(record.fenced()).orElseThrow(
-                () -> new IllegalStateException(String.format("Unable to replay %s: unknown " +
-                    "value for fenced field: %d", record, record.fenced())));
+                BrokerRegistrationFencingChange.fromValue(record.fenced()).orElseThrow(
+                    () -> new IllegalStateException(String.format("Unable to replay %s: unknown " +
+                        "value for fenced field: %d", record, record.fenced())));
         BrokerRegistrationInControlledShutdownChange inControlledShutdownChange =
-            BrokerRegistrationInControlledShutdownChange.fromValue(record.inControlledShutdown()).orElseThrow(
-                () -> new IllegalStateException(String.format("Unable to replay %s: unknown " +
-                    "value for inControlledShutdown field: %d", record, record.inControlledShutdown())));
+                BrokerRegistrationInControlledShutdownChange.fromValue(record.inControlledShutdown()).orElseThrow(
+                    () -> new IllegalStateException(String.format("Unable to replay %s: unknown " +
+                        "value for inControlledShutdown field: %d", record, record.inControlledShutdown())));
         Optional<List<Uuid>> directoriesChange = Optional.ofNullable(record.logDirs()).filter(list -> !list.isEmpty());
         Optional<List<Uuid>> cordonedDirectoriesChange = Optional.ofNullable(record.cordonedLogDirs());
         BrokerRegistration nextRegistration = curRegistration.cloneWith(
-            fencingChange.asBoolean(),
-            inControlledShutdownChange.asBoolean(),
-            directoriesChange,
-            cordonedDirectoriesChange
+                fencingChange.asBoolean(),
+                inControlledShutdownChange.asBoolean(),
+                directoriesChange,
+                cordonedDirectoriesChange
         );
         if (!curRegistration.equals(nextRegistration)) {
             changedBrokers.put(record.brokerId(), Optional.of(nextRegistration));
@@ -195,8 +195,8 @@ public final class ClusterDelta {
     @Override
     public String toString() {
         return "ClusterDelta(" +
-            "changedBrokers=" + changedBrokers +
-            ", changedControllers=" + changedControllers +
-            ')';
+                "changedBrokers=" + changedBrokers +
+                ", changedControllers=" + changedControllers +
+                ')';
     }
 }

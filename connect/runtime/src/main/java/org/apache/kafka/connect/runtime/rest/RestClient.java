@@ -91,7 +91,7 @@ public class RestClient {
      * @return The deserialized response to the HTTP request, containing null if no data is expected or returned.
      */
     public <T> HttpResponse<T> httpRequest(String url, String method, HttpHeaders headers, Object requestBodyData,
-                                                  TypeReference<T> responseFormat) {
+                                           TypeReference<T> responseFormat) {
         return httpRequest(url, method, headers, requestBodyData, responseFormat, null, null);
     }
 
@@ -108,7 +108,7 @@ public class RestClient {
      *                                  may be null if the request doesn't need to be signed
      */
     public void httpRequest(String url, String method, HttpHeaders headers, Object requestBodyData,
-                                           SecretKey sessionKey, String requestSignatureAlgorithm) {
+                            SecretKey sessionKey, String requestSignatureAlgorithm) {
         httpRequest(url, method, headers, requestBodyData, new TypeReference<Void>() { }, sessionKey, requestSignatureAlgorithm);
     }
 
@@ -128,8 +128,8 @@ public class RestClient {
      * @return The deserialized response to the HTTP request, containing null if no data is expected or returned.
      */
     public <T> HttpResponse<T> httpRequest(String url, String method, HttpHeaders headers, Object requestBodyData,
-                                                  TypeReference<T> responseFormat,
-                                                  SecretKey sessionKey, String requestSignatureAlgorithm) {
+                                           TypeReference<T> responseFormat,
+                                           SecretKey sessionKey, String requestSignatureAlgorithm) {
         Objects.requireNonNull(url, "url must be non-null");
         Objects.requireNonNull(method, "method must be non-null");
         Objects.requireNonNull(responseFormat, "response format must be non-null");
@@ -178,11 +178,11 @@ public class RestClient {
 
             if (sessionKey != null && requestSignatureAlgorithm != null) {
                 InternalRequestSignature.addToRequest(
-                    Crypto.SYSTEM,
-                    sessionKey,
-                    serializedBody != null ? serializedBody.getBytes(StandardCharsets.UTF_8) : null,
-                    requestSignatureAlgorithm,
-                    req
+                        Crypto.SYSTEM,
+                        sessionKey,
+                        serializedBody != null ? serializedBody.getBytes(StandardCharsets.UTF_8) : null,
+                        requestSignatureAlgorithm,
+                        req
                 );
             }
 
@@ -220,7 +220,6 @@ public class RestClient {
             throw new ConnectRestException(Response.Status.INTERNAL_SERVER_ERROR, "Error trying to forward REST request: " + t.getMessage(), t);
         }
     }
-
 
     /**
      * Extract headers from REST call and add to client request

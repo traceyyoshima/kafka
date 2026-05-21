@@ -32,12 +32,12 @@ public class GroupRebalanceConfigTest {
     @EnumSource(value = GroupRebalanceConfig.ProtocolType.class, names = {"CONSUMER", "SHARE"})
     void testRackIdIsEmptyIfNoDefined(GroupRebalanceConfig.ProtocolType protocolType) {
         GroupRebalanceConfig groupRebalanceConfig = new GroupRebalanceConfig(
-            new ConsumerConfig(Map.of(
-                ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer",
-                ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer",
-                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092"
+                new ConsumerConfig(Map.of(
+                    ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer",
+                    ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer",
+                    ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092"
             )),
-            protocolType
+                protocolType
         );
         assertTrue(groupRebalanceConfig.rackId.isEmpty());
     }
@@ -46,13 +46,13 @@ public class GroupRebalanceConfigTest {
     @EnumSource(value = GroupRebalanceConfig.ProtocolType.class, names = {"CONSUMER", "SHARE"})
     void testRackIdIsEmptyIfValueIsEmptyString(GroupRebalanceConfig.ProtocolType protocolType) {
         GroupRebalanceConfig groupRebalanceConfig = new GroupRebalanceConfig(
-            new ConsumerConfig(Map.of(
-                ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer",
-                ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer",
-                ConsumerConfig.CLIENT_RACK_CONFIG, "",
-                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092"
+                new ConsumerConfig(Map.of(
+                    ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer",
+                    ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer",
+                    ConsumerConfig.CLIENT_RACK_CONFIG, "",
+                    ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092"
             )),
-            protocolType
+                protocolType
         );
         assertTrue(groupRebalanceConfig.rackId.isEmpty());
     }
@@ -61,13 +61,13 @@ public class GroupRebalanceConfigTest {
     @EnumSource(value = GroupRebalanceConfig.ProtocolType.class, names = {"CONSUMER", "SHARE"})
     void testRackIdIsNotEmptyIfDefined(GroupRebalanceConfig.ProtocolType protocolType) {
         GroupRebalanceConfig groupRebalanceConfig = new GroupRebalanceConfig(
-            new ConsumerConfig(Map.of(
-                ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer",
-                ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer",
-                ConsumerConfig.CLIENT_RACK_CONFIG, "rack1",
-                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092"
+                new ConsumerConfig(Map.of(
+                    ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer",
+                    ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer",
+                    ConsumerConfig.CLIENT_RACK_CONFIG, "rack1",
+                    ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092"
             )),
-            protocolType
+                protocolType
         );
         assertTrue(groupRebalanceConfig.rackId.isPresent());
         assertEquals("rack1", groupRebalanceConfig.rackId.get());

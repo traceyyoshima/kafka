@@ -77,7 +77,7 @@ public class DescribeDelegationTokenResponse extends AbstractResponse {
 
     public static DescribeDelegationTokenResponse parse(Readable readable, short version) {
         return new DescribeDelegationTokenResponse(new DescribeDelegationTokenResponseData(
-            readable, version));
+                readable, version));
     }
 
     @Override
@@ -108,14 +108,14 @@ public class DescribeDelegationTokenResponse extends AbstractResponse {
         return data.tokens()
             .stream()
             .map(ddt -> new DelegationToken(new TokenInformation(
-                ddt.tokenId(),
-                new KafkaPrincipal(ddt.principalType(), ddt.principalName()),
-                new KafkaPrincipal(ddt.tokenRequesterPrincipalType(), ddt.tokenRequesterPrincipalName()),
-                ddt.renewers()
+                    ddt.tokenId(),
+                    new KafkaPrincipal(ddt.principalType(), ddt.principalName()),
+                    new KafkaPrincipal(ddt.tokenRequesterPrincipalType(), ddt.tokenRequesterPrincipalName()),
+                    ddt.renewers()
                     .stream()
                     .map(ddtr -> new KafkaPrincipal(ddtr.principalType(), ddtr.principalName()))
                     .collect(Collectors.toList()), ddt.issueTimestamp(), ddt.maxTimestamp(), ddt.expiryTimestamp()),
-                ddt.hmac()))
+                    ddt.hmac()))
             .collect(Collectors.toList());
     }
 

@@ -186,16 +186,16 @@ public class DefaultRecordBatchTest {
     @Test
     public void testSizeInBytes() {
         Header[] headers = new Header[] {
-            new RecordHeader("foo", "value".getBytes()),
-            new RecordHeader("bar", null)
+                new RecordHeader("foo", "value".getBytes()),
+                new RecordHeader("bar", null)
         };
 
         long timestamp = System.currentTimeMillis();
         SimpleRecord[] records = new SimpleRecord[] {
-            new SimpleRecord(timestamp, "key".getBytes(), "value".getBytes()),
-            new SimpleRecord(timestamp + 30000, null, "value".getBytes()),
-            new SimpleRecord(timestamp + 60000, "key".getBytes(), null),
-            new SimpleRecord(timestamp + 60000, "key".getBytes(), "value".getBytes(), headers)
+                new SimpleRecord(timestamp, "key".getBytes(), "value".getBytes()),
+                new SimpleRecord(timestamp + 30000, null, "value".getBytes()),
+                new SimpleRecord(timestamp + 60000, "key".getBytes(), null),
+                new SimpleRecord(timestamp + 60000, "key".getBytes(), "value".getBytes(), headers)
         };
         int actualSize = MemoryRecords.withRecords(Compression.NONE, records).sizeInBytes();
         assertEquals(actualSize, DefaultRecordBatch.sizeInBytes(Arrays.asList(records)));
@@ -272,9 +272,9 @@ public class DefaultRecordBatchTest {
     @Test
     public void testSetLastOffset() {
         SimpleRecord[] simpleRecords = new SimpleRecord[] {
-            new SimpleRecord(1L, "a".getBytes(), "1".getBytes()),
-            new SimpleRecord(2L, "b".getBytes(), "2".getBytes()),
-            new SimpleRecord(3L, "c".getBytes(), "3".getBytes())
+                new SimpleRecord(1L, "a".getBytes(), "1".getBytes()),
+                new SimpleRecord(2L, "b".getBytes(), "2".getBytes()),
+                new SimpleRecord(3L, "c".getBytes(), "3".getBytes())
         };
         MemoryRecords records = MemoryRecords.withRecords(RecordBatch.MAGIC_VALUE_V2, 0L,
                 Compression.NONE, TimestampType.CREATE_TIME, simpleRecords);
@@ -406,19 +406,19 @@ public class DefaultRecordBatchTest {
         RANDOM.nextBytes(largeRecordValue);
 
         MemoryRecords records = MemoryRecords.withRecords(RecordBatch.MAGIC_VALUE_V2, 0L,
-            compression, TimestampType.CREATE_TIME,
-            // one sample with small value size
-            new SimpleRecord(1L, "a".getBytes(), "1".getBytes()),
-            // one sample with null value
-            new SimpleRecord(2L, "b".getBytes(), null),
-            // one sample with null key
-            new SimpleRecord(3L, null, "3".getBytes()),
-            // one sample with null key and null value
-            new SimpleRecord(4L, null, (byte[]) null),
-            // one sample with large value size
-            new SimpleRecord(1000L, "abc".getBytes(), largeRecordValue),
-            // one sample with headers, one of the header has null value
-            new SimpleRecord(9999L, "abc".getBytes(), "0".getBytes(), headers)
+                compression, TimestampType.CREATE_TIME,
+                // one sample with small value size
+                new SimpleRecord(1L, "a".getBytes(), "1".getBytes()),
+                // one sample with null value
+                new SimpleRecord(2L, "b".getBytes(), null),
+                // one sample with null key
+                new SimpleRecord(3L, null, "3".getBytes()),
+                // one sample with null key and null value
+                new SimpleRecord(4L, null, (byte[]) null),
+                // one sample with large value size
+                new SimpleRecord(1000L, "abc".getBytes(), largeRecordValue),
+                // one sample with headers, one of the header has null value
+                new SimpleRecord(9999L, "abc".getBytes(), "0".getBytes(), headers)
             );
 
         DefaultRecordBatch batch = new DefaultRecordBatch(records.buffer());
@@ -452,9 +452,9 @@ public class DefaultRecordBatchTest {
     public void testBufferReuseInSkipKeyValueIterator(CompressionType compressionType, int expectedNumBufferAllocations, byte[] recordValue) {
         Compression compression = Compression.of(compressionType).build();
         MemoryRecords records = MemoryRecords.withRecords(RecordBatch.MAGIC_VALUE_V2, 0L,
-            compression, TimestampType.CREATE_TIME,
-            new SimpleRecord(1000L, "a".getBytes(), "0".getBytes()),
-            new SimpleRecord(9999L, "b".getBytes(), recordValue)
+                compression, TimestampType.CREATE_TIME,
+                new SimpleRecord(1000L, "a".getBytes(), "0".getBytes()),
+                new SimpleRecord(9999L, "b".getBytes(), recordValue)
         );
 
         DefaultRecordBatch batch = new DefaultRecordBatch(records.buffer());
@@ -473,29 +473,30 @@ public class DefaultRecordBatchTest {
             verify(bufferSupplier, times(expectedNumBufferAllocations)).release(any(ByteBuffer.class));
         }
     }
+
     private static Stream<Arguments> testBufferReuseInSkipKeyValueIterator() {
         byte[] smallRecordValue = "1".getBytes();
         byte[] largeRecordValue = new byte[512 * 1024]; // 512KB
         RANDOM.nextBytes(largeRecordValue);
 
         return Stream.of(
-            /*
+                /*
              * 1 allocation per batch (i.e. per iterator instance) for buffer holding uncompressed data
              * = 1 buffer allocations
              */
-            Arguments.of(CompressionType.GZIP, 1, smallRecordValue),
-            Arguments.of(CompressionType.GZIP, 1, largeRecordValue),
-            Arguments.of(CompressionType.SNAPPY, 1, smallRecordValue),
-            Arguments.of(CompressionType.SNAPPY, 1, largeRecordValue),
-            /*
+                Arguments.of(CompressionType.GZIP, 1, smallRecordValue),
+                Arguments.of(CompressionType.GZIP, 1, largeRecordValue),
+                Arguments.of(CompressionType.SNAPPY, 1, smallRecordValue),
+                Arguments.of(CompressionType.SNAPPY, 1, largeRecordValue),
+                /*
              * 1 allocation per batch (i.e. per iterator instance) for buffer holding compressed data
              * 1 allocation per batch (i.e. per iterator instance) for buffer holding uncompressed data
              * = 2 buffer allocations
              */
-            Arguments.of(CompressionType.LZ4, 2, smallRecordValue),
-            Arguments.of(CompressionType.LZ4, 2, largeRecordValue),
-            Arguments.of(CompressionType.ZSTD, 2, smallRecordValue),
-            Arguments.of(CompressionType.ZSTD, 2, largeRecordValue)
+                Arguments.of(CompressionType.LZ4, 2, smallRecordValue),
+                Arguments.of(CompressionType.LZ4, 2, largeRecordValue),
+                Arguments.of(CompressionType.ZSTD, 2, smallRecordValue),
+                Arguments.of(CompressionType.ZSTD, 2, largeRecordValue)
         );
     }
 
@@ -503,8 +504,8 @@ public class DefaultRecordBatchTest {
     @MethodSource
     public void testZstdJniForSkipKeyValueIterator(int expectedJniCalls, byte[] recordValue) throws IOException {
         MemoryRecords records = MemoryRecords.withRecords(RecordBatch.MAGIC_VALUE_V2, 0L,
-            Compression.zstd().build(), TimestampType.CREATE_TIME,
-            new SimpleRecord(9L, "hakuna-matata".getBytes(), recordValue)
+                Compression.zstd().build(), TimestampType.CREATE_TIME,
+                new SimpleRecord(9L, "hakuna-matata".getBytes(), recordValue)
         );
 
         // Buffer containing compressed data
@@ -539,18 +540,18 @@ public class DefaultRecordBatchTest {
         RANDOM.nextBytes(largeRecordValue);
 
         return Stream.of(
-            /*
+                /*
              * We expect exactly 2 read call to the JNI:
              * 1 for fetching the full data (size < 16KB)
              * 1 for detecting end of stream by trying to read more data
              */
-            Arguments.of(2, smallRecordValue),
-            /*
+                Arguments.of(2, smallRecordValue),
+                /*
              * We expect exactly 4 read call to the JNI:
              * 3 for fetching the full data (Math.ceil(40/16))
              * 1 for detecting end of stream by trying to read more data
              */
-            Arguments.of(4, largeRecordValue)
+                Arguments.of(4, largeRecordValue)
         );
     }
 

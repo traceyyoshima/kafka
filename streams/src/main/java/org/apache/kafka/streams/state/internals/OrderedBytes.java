@@ -24,6 +24,7 @@ import java.nio.ByteBuffer;
 class OrderedBytes {
 
     private static final int MIN_KEY_LENGTH = 1;
+
     /**
      * Returns the upper byte range for a key with a given fixed size maximum suffix
      *
@@ -38,7 +39,7 @@ class OrderedBytes {
         // will always be true (this is a byte to unsigned int conversion comparison)
         if (firstTimestampByte == 0) {
             return Bytes.wrap(
-                rangeEnd
+                    rangeEnd
                     .put(bytes)
                     .put(maxSuffix)
                     .array()
@@ -71,7 +72,7 @@ class OrderedBytes {
         // to keyFrom to create a key that will match the range, yet that would precede
         // KeySchema.toBinaryKey(keyFrom, from, 0) in byte order
         return Bytes.wrap(
-            rangeStart
+                rangeStart
                 .put(bytes)
                 .put(minSuffix)
                 .array()

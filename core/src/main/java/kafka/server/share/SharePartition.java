@@ -151,10 +151,10 @@ public class SharePartition {
      * To provide static mapping between acknowledgement type bytes to RecordState.
      */
     private static final Map<Byte, RecordState> ACK_TYPE_TO_RECORD_STATE = Map.of(
-        (byte) 0, RecordState.ARCHIVED,                             // Represents gap
+            (byte) 0, RecordState.ARCHIVED,                             // Represents gap
         AcknowledgeType.ACCEPT.id, RecordState.ACKNOWLEDGED,
-        AcknowledgeType.RELEASE.id, RecordState.AVAILABLE,
-        AcknowledgeType.REJECT.id, RecordState.ARCHIVED
+            AcknowledgeType.RELEASE.id, RecordState.AVAILABLE,
+            AcknowledgeType.REJECT.id, RecordState.ARCHIVED
     );
 
     /**
@@ -355,8 +355,8 @@ public class SharePartition {
         Supplier<Boolean> shareGroupDlqEnableSupplier
     ) {
         this(groupId, topicIdPartition, leaderEpoch, defaultMaxInFlightRecords, defaultMaxDeliveryCount, defaultRecordLockDurationMs,
-            timer, time, persister, replicaManager, configProvider, SharePartitionState.EMPTY, listener,
-            new SharePartitionMetrics(groupId, topicIdPartition.topic(), topicIdPartition.partition()), shareGroupDlqEnableSupplier);
+                timer, time, persister, replicaManager, configProvider, SharePartitionState.EMPTY, listener,
+                new SharePartitionMetrics(groupId, topicIdPartition.topic(), topicIdPartition.partition()), shareGroupDlqEnableSupplier);
     }
 
     // Visible for testing
@@ -440,7 +440,7 @@ public class SharePartition {
             .setGroupTopicPartitionData(new GroupTopicPartitionData.Builder<PartitionIdLeaderEpochData>()
                 .setGroupId(this.groupId)
                 .setTopicsData(List.of(new TopicData<>(topicIdPartition.topicId(),
-                    List.of(PartitionFactory.newPartitionIdLeaderEpochData(topicIdPartition.partition(), leaderEpoch)))))
+                        List.of(PartitionFactory.newPartitionIdLeaderEpochData(topicIdPartition.partition(), leaderEpoch)))))
                 .build())
             .build()
         ).whenComplete((result, exception) -> {
@@ -455,7 +455,7 @@ public class SharePartition {
 
                 if (result == null || result.topicsData() == null || result.topicsData().size() != 1) {
                     log.error("Failed to initialize the share partition: {}-{}. Invalid state found: {}.",
-                        groupId, topicIdPartition, result);
+                            groupId, topicIdPartition, result);
                     throwable = new IllegalStateException(String.format("Failed to initialize the share partition %s-%s", groupId, topicIdPartition));
                     return;
                 }
@@ -463,7 +463,7 @@ public class SharePartition {
                 TopicData<PartitionAllData> state = result.topicsData().get(0);
                 if (state.topicId() != topicIdPartition.topicId() || state.partitions().size() != 1) {
                     log.error("Failed to initialize the share partition: {}-{}. Invalid topic partition response: {}.",
-                        groupId, topicIdPartition, result);
+                            groupId, topicIdPartition, result);
                     throwable = new IllegalStateException(String.format("Failed to initialize the share partition %s-%s", groupId, topicIdPartition));
                     return;
                 }
@@ -471,7 +471,7 @@ public class SharePartition {
                 PartitionAllData partitionData = state.partitions().get(0);
                 if (partitionData.partition() != topicIdPartition.partition()) {
                     log.error("Failed to initialize the share partition: {}-{}. Invalid partition response: {}.",
-                        groupId, topicIdPartition, partitionData);
+                            groupId, topicIdPartition, partitionData);
                     throwable = new IllegalStateException(String.format("Failed to initialize the share partition %s-%s", groupId, topicIdPartition));
                     return;
                 }
@@ -479,7 +479,7 @@ public class SharePartition {
                 if (partitionData.errorCode() != Errors.NONE.code()) {
                     KafkaException ex = fetchPersisterError(partitionData.errorCode(), partitionData.errorMessage());
                     maybeLogError(String.format("Failed to initialize the share partition: %s-%s. Exception occurred: %s.",
-                        groupId, topicIdPartition, partitionData), Errors.forCode(partitionData.errorCode()), ex);
+                            groupId, topicIdPartition, partitionData), Errors.forCode(partitionData.errorCode()), ex);
                     throwable = ex;
                     return;
                 }
@@ -497,7 +497,7 @@ public class SharePartition {
                     if (stateBatch.firstOffset() < startOffset) {
                         log.error("Invalid state batch found for the share partition: {}-{}. The base offset: {}"
                                 + " is less than the start offset: {}.", groupId, topicIdPartition,
-                            stateBatch.firstOffset(), startOffset);
+                                stateBatch.firstOffset(), startOffset);
                         throwable = new IllegalStateException(String.format("Failed to initialize the share partition %s-%s", groupId, topicIdPartition));
                         return;
                     }
@@ -505,7 +505,7 @@ public class SharePartition {
                     if (stateBatch.lastOffset() < stateBatch.firstOffset()) {
                         log.error("Invalid state batch found for the share partition: {}-{}. The last offset: {}"
                                 + " is less than the first offset of the batch: {}.", groupId, topicIdPartition,
-                            stateBatch.lastOffset(), stateBatch.firstOffset());
+                                stateBatch.lastOffset(), stateBatch.firstOffset());
                         throwable = new IllegalStateException(String.format("Failed to initialize the share partition %s-%s", groupId, topicIdPartition));
                         return;
                     }
@@ -515,8 +515,8 @@ public class SharePartition {
                     }
                     previousBatchLastOffset = stateBatch.lastOffset();
                     InFlightBatch inFlightBatch = new InFlightBatch(timer, time, EMPTY_MEMBER_ID, stateBatch.firstOffset(),
-                        stateBatch.lastOffset(), RecordState.forId(stateBatch.deliveryState()), stateBatch.deliveryCount(),
-                        null, timeoutHandler, sharePartitionMetrics);
+                            stateBatch.lastOffset(), RecordState.forId(stateBatch.deliveryState()), stateBatch.deliveryCount(),
+                            null, timeoutHandler, sharePartitionMetrics);
                     cachedState.put(stateBatch.firstOffset(), inFlightBatch);
                     // During initialization, deliveryCompleteCount is updated with the number of records that are in the
                     // ACKNOWLEDGED or ARCHIVED state.
@@ -544,7 +544,7 @@ public class SharePartition {
                 // Set the partition state to Active and complete the future.
                 partitionState = SharePartitionState.ACTIVE;
                 log.debug("Initialized share partition: {}-{} with persister read state: {}, cached state: {}",
-                    groupId, topicIdPartition, result.topicsData(), cachedState);
+                        groupId, topicIdPartition, result.topicsData(), cachedState);
             } catch (Exception e) {
                 throwable = e;
             } finally {
@@ -756,7 +756,7 @@ public class SharePartition {
         }
 
         LastOffsetAndMaxRecords lastOffsetAndMaxRecords = lastOffsetAndMaxRecordsToAcquire(fetchOffset,
-            maxFetchRecords, lastBatch.lastOffset());
+                maxFetchRecords, lastBatch.lastOffset());
         if (lastOffsetAndMaxRecords.maxRecords() <= 0) {
             return ShareAcquiredRecords.empty();
         }
@@ -812,12 +812,12 @@ public class SharePartition {
             // to align with startOffset or moved back to align with floor entry hence compute the
             // min of first batch base offset and adjusted base offset.
             final NavigableMap<Long, InFlightBatch> subMap = cachedState.subMap(
-                Math.min(firstBatch.baseOffset(), baseOffset), true, lastOffsetToAcquire, true);
+                    Math.min(firstBatch.baseOffset(), baseOffset), true, lastOffsetToAcquire, true);
             // No overlap with request offsets in the cache for in-flight records. Acquire the complete
             // batch.
             if (subMap.isEmpty()) {
                 log.trace("No cached data exists for the share partition for requested fetch batch: {}-{}",
-                    groupId, topicIdPartition);
+                        groupId, topicIdPartition);
                 // It's safe to use lastOffsetToAcquire instead of lastBatch.lastOffset() because there is no
                 // overlap hence the lastOffsetToAcquire is same as lastBatch.lastOffset() or before that.
                 // Also, the first offset to acquire should be baseOffset. The baseOffset could be adjusted
@@ -829,12 +829,12 @@ public class SharePartition {
                 // is adjusted to 5, to the startOffset. As there is no cached batch from 0-10, the
                 // submap will be empty and the first offset for batch for acquire should be 5 not 0.
                 ShareAcquiredRecords shareAcquiredRecords = acquireNewBatchRecords(memberId, fetchPartitionData.records.batches(), isRecordLimitMode,
-                    baseOffset, lastOffsetToAcquire, batchSize, maxRecordsToAcquire);
+                        baseOffset, lastOffsetToAcquire, batchSize, maxRecordsToAcquire);
                 return maybeFilterAbortedTransactionalAcquiredRecords(fetchPartitionData, isolationLevel, shareAcquiredRecords);
             }
 
             log.trace("Overlap exists with in-flight records. Acquire the records if available for"
-                + " the share partition: {}-{}", groupId, topicIdPartition);
+                    + " the share partition: {}-{}", groupId, topicIdPartition);
             List<AcquiredRecords> result = new ArrayList<>();
             // The acquired count is used to track the number of records acquired for the request.
             int acquiredCount = 0;
@@ -869,7 +869,7 @@ public class SharePartition {
                         // gap will be computed correctly.
                         int numRecordsRemaining = maxRecordsToAcquire - acquiredCount;
                         ShareAcquiredRecords shareAcquiredRecords = acquireNewBatchRecords(memberId, fetchPartitionData.records.batches(), isRecordLimitMode,
-                            maybeGapStartOffset, entry.getKey() - 1, batchSize, numRecordsRemaining);
+                                maybeGapStartOffset, entry.getKey() - 1, batchSize, numRecordsRemaining);
                         result.addAll(shareAcquiredRecords.acquiredRecords());
                         acquiredCount += shareAcquiredRecords.count();
                     }
@@ -899,7 +899,7 @@ public class SharePartition {
                     log.trace("Subset or offset tracked batch record found for share partition,"
                             + " batch: {} request offsets - first: {}, last: {} for the share"
                             + " partition: {}-{}", inFlightBatch, firstBatch.baseOffset(),
-                        lastOffsetToAcquire, groupId, topicIdPartition);
+                            lastOffsetToAcquire, groupId, topicIdPartition);
                     if (inFlightBatch.offsetState() == null) {
                         // Though the request is a subset of in-flight batch but the offset
                         // tracking has not been initialized yet which means that we could only
@@ -909,7 +909,7 @@ public class SharePartition {
                         if (inFlightBatch.batchState() != RecordState.AVAILABLE || inFlightBatch.batchHasOngoingStateTransition()) {
                             log.trace("The batch is not available to acquire in share partition: {}-{}, skipping: {}"
                                     + " skipping offset tracking for batch as well.", groupId,
-                                topicIdPartition, inFlightBatch);
+                                    topicIdPartition, inFlightBatch);
                             continue;
                         }
                         // The request batch is a subset or per offset state is managed hence update
@@ -934,14 +934,14 @@ public class SharePartition {
                 // The in-flight batch is a full match hence change the state of the complete batch.
                 if (inFlightBatch.batchState() != RecordState.AVAILABLE || inFlightBatch.batchHasOngoingStateTransition()) {
                     log.trace("The batch is not available to acquire in share partition: {}-{}, skipping: {}",
-                        groupId, topicIdPartition, inFlightBatch);
+                            groupId, topicIdPartition, inFlightBatch);
                     continue;
                 }
 
                 InFlightState updateResult = inFlightBatch.tryUpdateBatchState(RecordState.ACQUIRED, DeliveryCountOps.INCREASE, maxDeliveryCount(), memberId, shareGroupDlqEnableSupplier.get());
                 if (updateResult == null || updateResult.state() != RecordState.ACQUIRED) {
                     log.info("Unable to acquire records for the batch: {} in share partition: {}-{}",
-                        inFlightBatch, groupId, topicIdPartition);
+                            inFlightBatch, groupId, topicIdPartition);
                     continue;
                 }
                 // Schedule acquisition lock timeout for the batch.
@@ -962,8 +962,8 @@ public class SharePartition {
                 log.trace("There exists another batch which needs to be acquired as well");
                 int numRecordsRemaining = maxRecordsToAcquire - acquiredCount;
                 ShareAcquiredRecords shareAcquiredRecords = acquireNewBatchRecords(memberId, fetchPartitionData.records.batches(), isRecordLimitMode,
-                    subMap.lastEntry().getValue().lastOffset() + 1,
-                    lastOffsetToAcquire, batchSize, numRecordsRemaining);
+                        subMap.lastEntry().getValue().lastOffset() + 1,
+                        lastOffsetToAcquire, batchSize, numRecordsRemaining);
                 result.addAll(shareAcquiredRecords.acquiredRecords());
                 acquiredCount += shareAcquiredRecords.count();
             }
@@ -1007,14 +1007,14 @@ public class SharePartition {
                     ackTypeMap = fetchAckTypeMapForBatch(batch);
                 } catch (IllegalArgumentException e) {
                     log.debug("Invalid acknowledge type: {} for share partition: {}-{}",
-                        batch.acknowledgeTypes(), groupId, topicIdPartition);
+                            batch.acknowledgeTypes(), groupId, topicIdPartition);
                     throwable = new InvalidRequestException("Invalid acknowledge type: " + batch.acknowledgeTypes());
                     break;
                 }
 
                 if (batch.lastOffset() < startOffset) {
                     log.trace("All offsets in the acknowledgement batch {} are already archived: {}-{}",
-                        batch, groupId, topicIdPartition);
+                            batch, groupId, topicIdPartition);
                     continue;
                 }
 
@@ -1030,11 +1030,11 @@ public class SharePartition {
 
                 // Acknowledge the records for the batch.
                 Optional<Throwable> ackThrowable = acknowledgeBatchRecords(
-                    memberId,
-                    batch,
-                    ackTypeMap,
-                    subMap,
-                    persisterBatches
+                        memberId,
+                        batch,
+                        ackTypeMap,
+                        subMap,
+                        persisterBatches
                 );
 
                 if (ackThrowable.isPresent()) {
@@ -1134,7 +1134,7 @@ public class SharePartition {
                 );
                 if (updateResult == null) {
                     log.debug("Unable to release records from acquired state for the offset: {} in batch: {}"
-                                    + " for the share partition: {}-{}", offsetState.getKey(),
+                            + " for the share partition: {}-{}", offsetState.getKey(),
                             inFlightBatch, groupId, topicIdPartition);
                     return Optional.of(new InvalidRecordStateException("Unable to release acquired records for the offset"));
                 }
@@ -1142,7 +1142,7 @@ public class SharePartition {
                 // Successfully updated the state of the offset and created a persister state batch for write to persister.
                 Throwable dlqCause = updateResult.state() == RecordState.ARCHIVING ? ShareGroupDLQManager.DELIVERY_COUNT_EXCEEDED : null;
                 persisterBatches.add(new PersisterBatch(updateResult, new PersisterStateBatch(offsetState.getKey(),
-                    offsetState.getKey(), updateResult.state().id(), (short) updateResult.deliveryCount()), dlqCause));
+                        offsetState.getKey(), updateResult.state().id(), (short) updateResult.deliveryCount()), dlqCause));
                 if (offsetState.getKey() >= startOffset && isStateTerminal(updateResult.state())) {
                     deliveryCompleteCount.incrementAndGet();
                 }
@@ -1186,7 +1186,7 @@ public class SharePartition {
             // If DLQ support is enabled, then update the DLQ cause exception message.
             Throwable dlqCause = updateResult.state() == RecordState.ARCHIVING ? ShareGroupDLQManager.DELIVERY_COUNT_EXCEEDED : null;
             persisterBatches.add(new PersisterBatch(updateResult, new PersisterStateBatch(inFlightBatch.firstOffset(),
-                inFlightBatch.lastOffset(), updateResult.state().id(), (short) updateResult.deliveryCount()), dlqCause));
+                    inFlightBatch.lastOffset(), updateResult.state().id(), (short) updateResult.deliveryCount()), dlqCause));
             if (isStateTerminal(updateResult.state())) {
                 deliveryCompleteCount.addAndGet(numInFlightRecordsInBatch(inFlightBatch.firstOffset(), inFlightBatch.lastOffset()));
             }
@@ -1215,7 +1215,7 @@ public class SharePartition {
      */
     void updateCacheAndOffsets(long logStartOffset) {
         log.debug("Updating cached states for share partition: {}-{} with new log start offset: {}",
-            groupId, topicIdPartition, logStartOffset);
+                groupId, topicIdPartition, logStartOffset);
         lock.writeLock().lock();
         try {
             if (logStartOffset <= startOffset) {
@@ -1409,9 +1409,9 @@ public class SharePartition {
                 // Maintain state per offset if the inflight batch is not a full match or the offset state is managed.
                 if (!fullMatch || inFlightBatch.offsetState() != null) {
                     log.debug("Subset or offset tracked batch record found while trying to update offsets "
-                        + "and cached state map, batch: {}, offsets to update - first: {}, last: {} "
-                        + "for the share partition: {}-{}", inFlightBatch, startOffset, endOffset - 1,
-                        groupId, topicIdPartition);
+                            + "and cached state map, batch: {}, offsets to update - first: {}, last: {} "
+                            + "for the share partition: {}-{}", inFlightBatch, startOffset, endOffset - 1,
+                            groupId, topicIdPartition);
 
                     if (inFlightBatch.offsetState() == null) {
                         if (inFlightBatch.batchState() != initialState) {
@@ -1542,7 +1542,7 @@ public class SharePartition {
             // we are logging when an instance that does not hold the fetch lock tries to release it.
             Uuid fetchLockAcquiredBy = fetchLock.getAndSet(null);
             log.info("Instance {} does not hold the fetch lock, yet trying to release it for share partition {}-{}. The lock was held by {}",
-                fetchId, groupId, topicIdPartition, fetchLockAcquiredBy);
+                    fetchId, groupId, topicIdPartition, fetchLockAcquiredBy);
         }
         long acquiredDurationMs = currentTime - fetchLockAcquiredTimeMs;
         // Update the metric for the fetch lock time.
@@ -1628,7 +1628,7 @@ public class SharePartition {
     }
 
     private boolean stateNotActive() {
-        return  partitionState() != SharePartitionState.ACTIVE;
+        return partitionState() != SharePartitionState.ACTIVE;
     }
 
     private boolean emptyToInitialState() {
@@ -1647,11 +1647,11 @@ public class SharePartition {
         return switch (currentState) {
             case ACTIVE -> true;
             case FAILED -> throw new IllegalStateException(
-                String.format("Share partition failed to load %s-%s", groupId, topicIdPartition));
+                    String.format("Share partition failed to load %s-%s", groupId, topicIdPartition));
             case INITIALIZING -> throw new LeaderNotAvailableException(
-                String.format("Share partition is already initializing %s-%s", groupId, topicIdPartition));
+                    String.format("Share partition is already initializing %s-%s", groupId, topicIdPartition));
             case FENCED -> throw new LeaderNotAvailableException(
-                String.format("Share partition is fenced %s-%s", groupId, topicIdPartition));
+                    String.format("Share partition is fenced %s-%s", groupId, topicIdPartition));
             case EMPTY ->
                 // The share partition is not yet initialized.
                 false;
@@ -1724,11 +1724,11 @@ public class SharePartition {
                     log.debug("Share partition {}-{} is at max in-flight records limit: {}. "
                             + "However, fetch is happening in-between the in-flight batches, hence adjusting "
                             + "last offset to: {} and max records to: {}", groupId, topicIdPartition,
-                        maxInFlightRecords, lastOffsetToAcquire, maxRecordsToAcquire);
+                            maxInFlightRecords, lastOffsetToAcquire, maxRecordsToAcquire);
                 } else {
                     // The share partition is already at max in-flight records, hence cannot acquire more records.
                     log.debug("Share partition {}-{} has reached max in-flight records limit: {}. Cannot acquire more records, inflight records count: {}",
-                        groupId, topicIdPartition, maxInFlightRecords, inFlightRecordsCount);
+                            groupId, topicIdPartition, maxInFlightRecords, inFlightRecordsCount);
                 }
             }
         } finally {
@@ -1862,16 +1862,16 @@ public class SharePartition {
                 // and offset 15-19 should still in available state.
                 if (acquiredRecords.lastOffset() - acquiredRecords.firstOffset() + 1 > maxFetchRecords) {
                     InFlightBatch inFlightBatch = new InFlightBatch(
-                        timer,
-                        time,
-                        memberId,
-                        acquiredRecords.firstOffset(),
-                        acquiredRecords.lastOffset(),
-                        RecordState.ACQUIRED,
-                        1,
-                        null,
-                        timeoutHandler,
-                        sharePartitionMetrics);
+                            timer,
+                            time,
+                            memberId,
+                            acquiredRecords.firstOffset(),
+                            acquiredRecords.lastOffset(),
+                            RecordState.ACQUIRED,
+                            1,
+                            null,
+                            timeoutHandler,
+                            sharePartitionMetrics);
                     int delayMs = configProvider.recordLockDurationMsOrDefault(groupId, defaultRecordLockDurationMs);
                     long lastOffset = acquiredRecords.firstOffset() + maxFetchRecords - 1;
                     inFlightBatch.maybeInitializeOffsetStateUpdate(lastOffset, delayMs);
@@ -1879,7 +1879,7 @@ public class SharePartition {
 
                     cachedState.put(acquiredRecords.firstOffset(), inFlightBatch);
                     sharePartitionMetrics.recordInFlightBatchMessageCount(
-                        acquiredRecords.lastOffset() - acquiredRecords.firstOffset() + 1);
+                            acquiredRecords.lastOffset() - acquiredRecords.firstOffset() + 1);
                     acquiredRecords.setLastOffset(lastOffset);
                     return List.of(acquiredRecords);
                 }
@@ -1902,19 +1902,19 @@ public class SharePartition {
         try {
             acquiredRecordsList.forEach(acquiredRecords -> {
                 AcquisitionLockTimerTask timerTask = scheduleAcquisitionLockTimeout(
-                    memberId, acquiredRecords.firstOffset(), acquiredRecords.lastOffset());
+                        memberId, acquiredRecords.firstOffset(), acquiredRecords.lastOffset());
 
                 cachedState.put(acquiredRecords.firstOffset(), new InFlightBatch(
-                    timer,
-                    time,
-                    memberId,
-                    acquiredRecords.firstOffset(),
-                    acquiredRecords.lastOffset(),
-                    RecordState.ACQUIRED,
-                    1,
-                    timerTask,
-                    timeoutHandler,
-                    sharePartitionMetrics));
+                        timer,
+                        time,
+                        memberId,
+                        acquiredRecords.firstOffset(),
+                        acquiredRecords.lastOffset(),
+                        RecordState.ACQUIRED,
+                        1,
+                        timerTask,
+                        timeoutHandler,
+                        sharePartitionMetrics));
                 // Update the in-flight batch message count metrics for the share partition.
                 sharePartitionMetrics.recordInFlightBatchMessageCount(acquiredRecords.lastOffset() - acquiredRecords.firstOffset() + 1);
             });
@@ -1960,7 +1960,7 @@ public class SharePartition {
 
                 if (offsetState.getValue().state() != RecordState.AVAILABLE || offsetState.getValue().hasOngoingStateTransition()) {
                     log.trace("The offset {} is not available in share partition: {}-{}, skipping: {}",
-                        offsetState.getKey(), groupId, topicIdPartition, inFlightBatch);
+                            offsetState.getKey(), groupId, topicIdPartition, inFlightBatch);
                     continue;
                 }
 
@@ -1972,7 +1972,7 @@ public class SharePartition {
                 // the current record, which shall be delivered alone in next fetch.
                 if (maxDeliveryCount > 2 && recordDeliveryCount == maxDeliveryCount - 1 && acquiredCount > 0) {
                     log.warn("The offset {} is on last delivery attempt in share partition: {}-{}, should be delivered alone in next fetch",
-                        offsetState.getKey(), groupId, topicIdPartition);
+                            offsetState.getKey(), groupId, topicIdPartition);
                     break;
                 }
 
@@ -1996,11 +1996,11 @@ public class SharePartition {
                 }
 
                 InFlightState updateResult = offsetState.getValue().tryUpdateState(RecordState.ACQUIRED, DeliveryCountOps.INCREASE,
-                    maxDeliveryCount, memberId, shareGroupDlqEnableSupplier.get());
+                        maxDeliveryCount, memberId, shareGroupDlqEnableSupplier.get());
                 if (updateResult == null || updateResult.state() != RecordState.ACQUIRED) {
                     log.trace("Unable to acquire records for the offset: {} in batch: {}"
                             + " for the share partition: {}-{}", offsetState.getKey(), inFlightBatch,
-                        groupId, topicIdPartition);
+                            groupId, topicIdPartition);
                     continue;
                 }
                 // Schedule acquisition lock timeout for the offset.
@@ -2017,7 +2017,7 @@ public class SharePartition {
                 // Delivered alone.
                 if (offsetState.getValue().deliveryCount() == maxDeliveryCount && maxDeliveryCount > 2) {
                     log.warn("The offset {} is on last delivery attempt in share partition: {}-{}, should be delivered alone in this fetch",
-                        offsetState.getKey(), groupId, topicIdPartition);
+                            offsetState.getKey(), groupId, topicIdPartition);
                     break;
                 }
                 if (isRecordLimitMode && acquiredCount == maxFetchRecords) {
@@ -2026,7 +2026,7 @@ public class SharePartition {
                 }
                 if (hasThrottledRecord && acquiredCount == maxFetchRecordsWhileThrottledRecords) {
                     log.debug("Breaking early due to throttling for share partition: {}-{}, acquired {} records.",
-                        groupId, topicIdPartition, acquiredCount);
+                            groupId, topicIdPartition, acquiredCount);
                     break;
                 }
             }
@@ -2136,9 +2136,9 @@ public class SharePartition {
                     floorOffset = cachedState.floorEntry(startOffset);
                 } else {
                     log.debug("Batch record {} not found for share partition: {}-{}", batch, groupId,
-                        topicIdPartition);
+                            topicIdPartition);
                     throw new InvalidRecordStateException(
-                        "Batch record not found. The request batch offsets are not found in the cache.");
+                            "Batch record not found. The request batch offsets are not found in the cache.");
                 }
             }
 
@@ -2183,7 +2183,7 @@ public class SharePartition {
                 // If startOffset has moved ahead of the in-flight batch, skip the batch.
                 if (inFlightBatch.lastOffset() < startOffset) {
                     log.trace("All offsets in the inflight batch {} are already archived: {}-{}",
-                        inFlightBatch, groupId, topicIdPartition);
+                            inFlightBatch, groupId, topicIdPartition);
                     continue;
                 }
 
@@ -2196,7 +2196,7 @@ public class SharePartition {
 
                     if (inFlightBatch.batchHasOngoingStateTransition()) {
                         log.debug("The batch has on-going transition, batch: {} for the share "
-                            + "partition: {}-{}", inFlightBatch, groupId, topicIdPartition);
+                                + "partition: {}-{}", inFlightBatch, groupId, topicIdPartition);
                         return Optional.of(new InvalidRecordStateException("The record state is invalid. The acknowledgement of delivery could not be completed."));
                     }
                 }
@@ -2213,7 +2213,7 @@ public class SharePartition {
                     log.debug("Subset or offset tracked batch record found for acknowledgement,"
                             + " batch: {}, request offsets - first: {}, last: {}, client per offset"
                             + "state {} for the share partition: {}-{}", inFlightBatch, batch.firstOffset(),
-                        batch.lastOffset(), isPerOffsetClientAck, groupId, topicIdPartition);
+                            batch.lastOffset(), isPerOffsetClientAck, groupId, topicIdPartition);
                     if (inFlightBatch.offsetState() == null) {
                         // Though the request is a subset of in-flight batch but the offset
                         // tracking has not been initialized yet which means that we could only
@@ -2222,7 +2222,7 @@ public class SharePartition {
                         // the in-flight offset tracking unnecessarily.
                         if (inFlightBatch.batchState() != RecordState.ACQUIRED) {
                             log.debug("The batch is not in the acquired state: {} for share partition: {}-{}",
-                                inFlightBatch, groupId, topicIdPartition);
+                                    inFlightBatch, groupId, topicIdPartition);
                             return Optional.of(new InvalidRecordStateException("The batch cannot be acknowledged. The subset batch is not in the acquired state."));
                         }
                         // The request batch is a subset and requires per offset state hence initialize
@@ -2231,11 +2231,11 @@ public class SharePartition {
                     }
 
                     throwable = acknowledgePerOffsetBatchRecords(memberId, batch, inFlightBatch,
-                        ackTypeMap, persisterBatches);
+                            ackTypeMap, persisterBatches);
                 } else {
                     // The in-flight batch is a full match hence change the state of the complete batch.
                     throwable = acknowledgeCompleteBatch(batch, inFlightBatch,
-                        ackTypeMap.get(batch.firstOffset()), persisterBatches, memberId);
+                            ackTypeMap.get(batch.firstOffset()), persisterBatches, memberId);
                 }
 
                 if (throwable.isPresent()) {
@@ -2255,13 +2255,13 @@ public class SharePartition {
         // EMPTY_MEMBER_ID is used to indicate that the batch is not in acquired state.
         if (inFlightBatch.batchMemberId().equals(EMPTY_MEMBER_ID)) {
             log.debug("The batch is not in the acquired state: {} for share partition: {}-{}. Empty member id for batch.",
-                inFlightBatch, groupId, topicIdPartition);
+                    inFlightBatch, groupId, topicIdPartition);
             return Optional.of(new InvalidRecordStateException("The batch cannot be acknowledged. The batch is not in the acquired state."));
         }
 
         if (!inFlightBatch.batchMemberId().equals(memberId)) {
             log.debug("Member {} is not the owner of batch record {} for share partition: {}-{}",
-                memberId, inFlightBatch, groupId, topicIdPartition);
+                    memberId, inFlightBatch, groupId, topicIdPartition);
             return Optional.of(new InvalidRecordStateException("Member is not the owner of batch record"));
         }
         return Optional.empty();
@@ -2293,26 +2293,26 @@ public class SharePartition {
                 if (offsetState.getValue().state() != RecordState.ACQUIRED) {
                     log.debug("The offset is not acquired, offset: {} batch: {} for the share"
                             + " partition: {}-{}", offsetState.getKey(), inFlightBatch, groupId,
-                        topicIdPartition);
+                            topicIdPartition);
                     return Optional.of(new InvalidRecordStateException(
-                        "The offset cannot be acknowledged. The offset is not acquired."));
+                            "The offset cannot be acknowledged. The offset is not acquired."));
                 }
 
                 if (offsetState.getValue().hasOngoingStateTransition()) {
                     log.debug("The offset has on-going transition, offset: {} batch: {} for the share"
                             + " partition: {}-{}", offsetState.getKey(), inFlightBatch, groupId,
-                        topicIdPartition);
+                            topicIdPartition);
                     return Optional.of(new InvalidRecordStateException(
-                        "The record state is invalid. The acknowledgement of delivery could not be completed."));
+                            "The record state is invalid. The acknowledgement of delivery could not be completed."));
                 }
 
                 // Check if member id is the owner of the offset.
                 if (!offsetState.getValue().memberId().equals(memberId)) {
                     log.debug("Member {} is not the owner of offset: {} in batch: {} for the share"
                             + " partition: {}-{}", memberId, offsetState.getKey(), inFlightBatch,
-                        groupId, topicIdPartition);
+                            groupId, topicIdPartition);
                     return Optional.of(
-                        new InvalidRecordStateException("Member is not the owner of offset"));
+                            new InvalidRecordStateException("Member is not the owner of offset"));
                 }
 
                 // In case of 0 size ackTypeMap, we have already validated the batch.acknowledgeTypes.
@@ -2322,7 +2322,7 @@ public class SharePartition {
                     if (!configProvider.isRenewAcknowledgeEnabled(groupId)) {
                         log.debug("Renew acknowledge is not enabled for the group: {}", groupId);
                         return Optional.of(new InvalidRecordStateException(
-                            "Renewing acquisition locks is not enabled for the group."));
+                                "Renewing acquisition locks is not enabled for the group."));
                     }
                     // If RENEW, renew the acquisition lock timer for this offset and continue without changing state.
                     // We do not care about recordState map here.
@@ -2330,7 +2330,7 @@ public class SharePartition {
                     long key = offsetState.getKey();
                     InFlightState state = offsetState.getValue();
                     log.debug("Renewing acquisition lock for {}-{} with offset {} in batch {} for member {}.",
-                        groupId, topicIdPartition, key, inFlightBatch, memberId);
+                            groupId, topicIdPartition, key, inFlightBatch, memberId);
                     state.cancelAndClearAcquisitionLockTimeoutTask();
                     AcquisitionLockTimerTask renewalTask = scheduleAcquisitionLockTimeout(memberId, key, key);
                     state.updateAcquisitionLockTimeoutTask(renewalTask);
@@ -2346,19 +2346,19 @@ public class SharePartition {
                     }
 
                     InFlightState updateResult = offsetState.getValue().startStateTransition(
-                        recordState,
-                        DeliveryCountOps.NO_OP,
-                        this.maxDeliveryCount(),
-                        EMPTY_MEMBER_ID,
-                        shareGroupDlqEnableSupplier.get()
+                            recordState,
+                            DeliveryCountOps.NO_OP,
+                            this.maxDeliveryCount(),
+                            EMPTY_MEMBER_ID,
+                            shareGroupDlqEnableSupplier.get()
                     );
 
                     if (updateResult == null) {
                         log.debug("Unable to acknowledge records for the offset: {} in batch: {}"
                                 + " for the share partition: {}-{}", offsetState.getKey(),
-                            inFlightBatch, groupId, topicIdPartition);
+                                inFlightBatch, groupId, topicIdPartition);
                         return Optional.of(new InvalidRecordStateException(
-                            "Unable to acknowledge records for the batch"));
+                                "Unable to acknowledge records for the batch"));
                     }
 
                     // This check makes sure that we don't skip the cause if updated result
@@ -2369,7 +2369,7 @@ public class SharePartition {
 
                     // Successfully updated the state of the offset and created a persister state batch for write to persister.
                     persisterBatches.add(new PersisterBatch(updateResult, new PersisterStateBatch(offsetState.getKey(),
-                        offsetState.getKey(), updateResult.state().id(), (short) updateResult.deliveryCount()), dlqCause));
+                            offsetState.getKey(), updateResult.state().id(), (short) updateResult.deliveryCount()), dlqCause));
                     if (isStateTerminal(updateResult.state())) {
                         deliveryCompleteCount.incrementAndGet();
                     }
@@ -2393,12 +2393,12 @@ public class SharePartition {
         try {
             // The in-flight batch is a full match hence change the state of the complete.
             log.trace("Acknowledging complete batch record {} for the share partition: {}-{}",
-                batch, groupId, topicIdPartition);
+                    batch, groupId, topicIdPartition);
             if (inFlightBatch.batchState() != RecordState.ACQUIRED) {
                 log.debug("The batch is not in the acquired state: {} for share partition: {}-{}",
-                    inFlightBatch, groupId, topicIdPartition);
+                        inFlightBatch, groupId, topicIdPartition);
                 return Optional.of(new InvalidRecordStateException(
-                    "The batch cannot be acknowledged. The batch is not in the acquired state."));
+                        "The batch cannot be acknowledged. The batch is not in the acquired state."));
             }
 
             // If the request is a full-batch RENEW acknowledgement (ack type 4), then renew the
@@ -2409,15 +2409,15 @@ public class SharePartition {
                 if (!configProvider.isRenewAcknowledgeEnabled(groupId)) {
                     log.debug("Renew acknowledge is not enabled for the group: {}", groupId);
                     return Optional.of(new InvalidRecordStateException(
-                        "Renewing acquisition locks is not enabled for the group."));
+                            "Renewing acquisition locks is not enabled for the group."));
                 }
                 // Renew the acquisition lock timer for the complete batch. We have already
                 // checked that the batchState is ACQUIRED above.
                 log.debug("Renewing acquisition lock for {}-{} with batch {}-{} for member {}.",
-                    groupId, topicIdPartition, inFlightBatch.firstOffset(), inFlightBatch.lastOffset(), memberId);
+                        groupId, topicIdPartition, inFlightBatch.firstOffset(), inFlightBatch.lastOffset(), memberId);
                 inFlightBatch.cancelAndClearAcquisitionLockTimeoutTask();
                 AcquisitionLockTimerTask renewalTask = scheduleAcquisitionLockTimeout(memberId,
-                    inFlightBatch.firstOffset(), inFlightBatch.lastOffset());
+                        inFlightBatch.firstOffset(), inFlightBatch.lastOffset());
                 inFlightBatch.updateAcquisitionLockTimeout(renewalTask);
                 // Nothing to persist.
                 return Optional.empty();
@@ -2434,18 +2434,18 @@ public class SharePartition {
             }
 
             InFlightState updateResult = inFlightBatch.startBatchStateTransition(
-                recordState,
-                DeliveryCountOps.NO_OP,
-                this.maxDeliveryCount(),
-                EMPTY_MEMBER_ID,
-                shareGroupDlqEnableSupplier.get()
+                    recordState,
+                    DeliveryCountOps.NO_OP,
+                    this.maxDeliveryCount(),
+                    EMPTY_MEMBER_ID,
+                    shareGroupDlqEnableSupplier.get()
             );
             if (updateResult == null) {
                 log.debug("Unable to acknowledge records for the batch: {} with state: {}"
                         + " for the share partition: {}-{}", inFlightBatch, recordState, groupId,
-                    topicIdPartition);
+                        topicIdPartition);
                 return Optional.of(
-                    new InvalidRecordStateException("Unable to acknowledge records for the batch"));
+                        new InvalidRecordStateException("Unable to acknowledge records for the batch"));
             }
 
             // This check makes sure that we don't skip the cause if updated result
@@ -2456,7 +2456,7 @@ public class SharePartition {
 
             // Successfully updated the state of the batch and created a persister state batch for write to persister.
             persisterBatches.add(new PersisterBatch(updateResult, new PersisterStateBatch(inFlightBatch.firstOffset(),
-                inFlightBatch.lastOffset(), updateResult.state().id(), (short) updateResult.deliveryCount()), dlqCause));
+                    inFlightBatch.lastOffset(), updateResult.state().id(), (short) updateResult.deliveryCount()), dlqCause));
             if (isStateTerminal(updateResult.state())) {
                 deliveryCompleteCount.addAndGet((int) (inFlightBatch.lastOffset() - inFlightBatch.firstOffset() + 1));
             }
@@ -2508,7 +2508,7 @@ public class SharePartition {
             try {
                 // Log in DEBUG to avoid flooding of logs for a faulty client.
                 log.debug("Request failed for updating state, rollback any changed state"
-                    + " for the share partition: {}-{}", groupId, topicIdPartition);
+                        + " for the share partition: {}-{}", groupId, topicIdPartition);
                 persisterBatches.forEach(persisterBatch -> {
                     persisterBatch.updatedState.completeStateTransition(false);
                     if (persisterBatch.updatedState.state() == RecordState.AVAILABLE) {
@@ -2545,7 +2545,7 @@ public class SharePartition {
                 try {
                     if (exception != null) {
                         log.debug("Failed to write state to persister for the share partition: {}-{}",
-                            groupId, topicIdPartition, exception);
+                                groupId, topicIdPartition, exception);
                         // In case of failure when transition state is rolled back then it should be rolled
                         // back to ACQUIRED state, unless acquisition lock for the state has expired.
                         persisterBatches.forEach(persisterBatch -> {
@@ -2565,7 +2565,7 @@ public class SharePartition {
                     }
 
                     log.trace("State change request successful for share partition: {}-{}",
-                        groupId, topicIdPartition);
+                            groupId, topicIdPartition);
 
                     for (PersisterBatch persisterBatch : persisterBatches) {
                         persisterBatch.updatedState().completeStateTransition(true);
@@ -2595,11 +2595,11 @@ public class SharePartition {
                 // Persister batch state has been moved to ARCHIVING, we must now start the DLQ flow and transition to ARCHIVED.
                 dlqBatches.forEach(persisterBatch -> {
                     initiateDLQAndArchive(
-                        persisterBatch.updatedState,
-                        persisterBatch.stateBatch.firstOffset(),
-                        persisterBatch.stateBatch.lastOffset(),
-                        persisterBatch.stateBatch.deliveryCount(),
-                        persisterBatch.dlqCause
+                            persisterBatch.updatedState,
+                            persisterBatch.stateBatch.firstOffset(),
+                            persisterBatch.stateBatch.lastOffset(),
+                            persisterBatch.stateBatch.deliveryCount(),
+                            persisterBatch.dlqCause
                     );
                 });
             });
@@ -2720,7 +2720,7 @@ public class SharePartition {
             // Thus, the persister has no clue about what happened with the batch 10-20. During the re-initialization of
             // the share partition, the start offset is set to 10 and the cached state has the batch 21-30, resulting in a gap.
             log.debug("The start offset: {} is not found in the cached state for share partition: {}-{} " +
-                "as there is an acquirable gap at the beginning. Cannot move the start offset.", startOffset, groupId, topicIdPartition);
+                    "as there is an acquirable gap at the beginning. Cannot move the start offset.", startOffset, groupId, topicIdPartition);
             return false;
         }
         boolean isBatchState = entry.getValue().offsetState() == null;
@@ -2817,7 +2817,7 @@ public class SharePartition {
         RecordBatch previousBatch = null;
         for (RecordBatch batch : batches) {
             if (offset >= batch.baseOffset()) {
-                previousBatch =  batch;
+                previousBatch = batch;
                 continue;
             }
             break;
@@ -2834,32 +2834,32 @@ public class SharePartition {
             .setGroupTopicPartitionData(new GroupTopicPartitionData.Builder<PartitionStateBatchData>()
                 .setGroupId(this.groupId)
                 .setTopicsData(List.of(new TopicData<>(topicIdPartition.topicId(),
-                    List.of(PartitionFactory.newPartitionStateBatchData(
-                        topicIdPartition.partition(), stateEpoch, startOffset(), deliveryCompleteCount(), leaderEpoch, stateBatches))))
+                        List.of(PartitionFactory.newPartitionStateBatchData(
+                            topicIdPartition.partition(), stateEpoch, startOffset(), deliveryCompleteCount(), leaderEpoch, stateBatches))))
                 ).build()).build())
             .whenComplete((result, exception) -> {
                 if (exception != null) {
                     log.error("Failed to write the share group state for share partition: {}-{}", groupId, topicIdPartition, exception);
                     future.completeExceptionally(new IllegalStateException(String.format("Failed to write the share group state for share partition %s-%s",
-                        groupId, topicIdPartition), exception));
+                            groupId, topicIdPartition), exception));
                     return;
                 }
 
                 if (result == null || result.topicsData() == null || result.topicsData().size() != 1) {
                     log.error("Failed to write the share group state for share partition: {}-{}. Invalid state found: {}",
-                        groupId, topicIdPartition, result);
+                            groupId, topicIdPartition, result);
                     future.completeExceptionally(new IllegalStateException(String.format("Failed to write the share group state for share partition %s-%s",
-                        groupId, topicIdPartition)));
+                            groupId, topicIdPartition)));
                     return;
                 }
 
                 TopicData<PartitionErrorData> state = result.topicsData().get(0);
                 if (state.topicId() != topicIdPartition.topicId() || state.partitions().size() != 1
-                    || state.partitions().get(0).partition() != topicIdPartition.partition()) {
+                        || state.partitions().get(0).partition() != topicIdPartition.partition()) {
                     log.error("Failed to write the share group state for share partition: {}-{}. Invalid topic partition response: {}",
-                        groupId, topicIdPartition, result);
+                            groupId, topicIdPartition, result);
                     future.completeExceptionally(new IllegalStateException(String.format("Failed to write the share group state for share partition %s-%s",
-                        groupId, topicIdPartition)));
+                            groupId, topicIdPartition)));
                     return;
                 }
 
@@ -2867,7 +2867,7 @@ public class SharePartition {
                 if (partitionData.errorCode() != Errors.NONE.code()) {
                     KafkaException ex = fetchPersisterError(partitionData.errorCode(), partitionData.errorMessage());
                     maybeLogError(String.format("Failed to write the share group state for share partition: %s-%s due to exception",
-                        groupId, topicIdPartition), Errors.forCode(partitionData.errorCode()), ex);
+                            groupId, topicIdPartition), Errors.forCode(partitionData.errorCode()), ex);
                     future.completeExceptionally(ex);
                     return;
                 }
@@ -2958,8 +2958,8 @@ public class SharePartition {
                     InFlightBatch inFlightBatch = entry.getValue();
 
                     if (inFlightBatch.offsetState() == null
-                        && inFlightBatch.batchState() == RecordState.ACQUIRED
-                        && checkForStartOffsetWithinBatch(inFlightBatch.firstOffset(), inFlightBatch.lastOffset())) {
+                            && inFlightBatch.batchState() == RecordState.ACQUIRED
+                            && checkForStartOffsetWithinBatch(inFlightBatch.firstOffset(), inFlightBatch.lastOffset())) {
 
                         // For the case when batch.firstOffset < start offset <= batch.lastOffset, we will be having some
                         // acquired records that need to move to archived state despite their delivery count.
@@ -2981,7 +2981,7 @@ public class SharePartition {
                 writeShareGroupState(stateBatches).whenComplete((result, exception) -> {
                     if (exception != null) {
                         log.debug("Failed to write the share group state on acquisition lock timeout for share partition: {}-{} memberId: {}",
-                            groupId, topicIdPartition, memberId, exception);
+                                groupId, topicIdPartition, memberId, exception);
                     }
                     // Even if write share group state RPC call fails, we will still go ahead with the state transition.
                     // Update the cached state and start and end offsets after releasing the acquisition lock on timeout.
@@ -2989,11 +2989,11 @@ public class SharePartition {
 
                     // Persister batch state has been moved to ARCHIVING, we must now start the DLQ flow and transition to ARCHIVED.
                     dlqBatches.forEach(dlqBatch -> initiateDLQAndArchive(
-                        dlqBatch.updatedState(),
-                        dlqBatch.firstOffset(),
-                        dlqBatch.lastOffset(),
-                        dlqBatch.deliveryCount(),
-                        ShareGroupDLQManager.DELIVERY_COUNT_EXCEEDED
+                            dlqBatch.updatedState(),
+                            dlqBatch.firstOffset(),
+                            dlqBatch.lastOffset(),
+                            dlqBatch.deliveryCount(),
+                            ShareGroupDLQManager.DELIVERY_COUNT_EXCEEDED
                     ));
                 });
             }
@@ -3031,8 +3031,8 @@ public class SharePartition {
                 // Don't increment deliveryCompleteCount here — deferred to phase 2
                 // Don't updateFindNextFetchOffset — ARCHIVING is not fetchable
                 dlqBatches.add(new DlqBatch(updateResult,
-                    inFlightBatch.firstOffset(), inFlightBatch.lastOffset(),
-                    (short) updateResult.deliveryCount()));
+                        inFlightBatch.firstOffset(), inFlightBatch.lastOffset(),
+                        (short) updateResult.deliveryCount()));
                 return;
             }
 
@@ -3072,7 +3072,7 @@ public class SharePartition {
             }
             if (offsetState.getValue().state() != RecordState.ACQUIRED) {
                 log.debug("The offset is not in acquired state while release of acquisition lock on timeout, skipping, offset: {} batch: {}"
-                                + " for the share partition: {}-{} memberId: {}", offsetState.getKey(), inFlightBatch,
+                        + " for the share partition: {}-{} memberId: {}", offsetState.getKey(), inFlightBatch,
                         groupId, topicIdPartition, memberId);
                 continue;
             }
@@ -3084,7 +3084,7 @@ public class SharePartition {
                     shareGroupDlqEnableSupplier.get());
             if (updateResult == null) {
                 log.error("Unable to release acquisition lock on timeout for the offset: {} in batch: {}"
-                                + " for the share partition: {}-{} memberId: {}", offsetState.getKey(), inFlightBatch,
+                        + " for the share partition: {}-{} memberId: {}", offsetState.getKey(), inFlightBatch,
                         groupId, topicIdPartition, memberId);
                 continue;
             }
@@ -3098,7 +3098,7 @@ public class SharePartition {
                 // Don't increment deliveryCompleteCount here — deferred to phase 2
                 // Don't updateFindNextFetchOffset — ARCHIVING is not fetchable
                 dlqBatches.add(new DlqBatch(updateResult, offsetState.getKey(),
-                    offsetState.getKey(), (short) updateResult.deliveryCount()));
+                        offsetState.getKey(), (short) updateResult.deliveryCount()));
                 continue;
             }
 
@@ -3149,7 +3149,7 @@ public class SharePartition {
         // When FetchIsolation.TXN_COMMITTED is used as isolation level by the share group, we need to filter any
         // transactions that were aborted/did not commit due to timeout.
         List<AcquiredRecords> result = filterAbortedTransactionalAcquiredRecords(fetchPartitionData.records.batches(),
-            shareAcquiredRecords.acquiredRecords(), fetchPartitionData.abortedTransactions.get());
+                shareAcquiredRecords.acquiredRecords(), fetchPartitionData.abortedTransactions.get());
         int acquiredCount = 0;
         for (AcquiredRecords records : result) {
             acquiredCount += (int) (records.lastOffset() - records.firstOffset() + 1);
@@ -3223,7 +3223,7 @@ public class SharePartition {
             // Overlap check - unresolvedFirstOffset offsets overlap with the batchToArchive offsets. We need to filter out the overlapping
             // offsets in such a scenario.
             if (unresolvedFirstOffset <= batchToArchive.lastOffset() &&
-                unresolvedLastOffset >= batchToArchive.baseOffset()) {
+                    unresolvedLastOffset >= batchToArchive.baseOffset()) {
                 unresolvedAcquiredRecords = null;
                 // Split the unresolvedFirstOffset into parts - before and after the overlapping record batchToArchive.
                 if (unresolvedFirstOffset < batchToArchive.baseOffset()) {
@@ -3267,9 +3267,9 @@ public class SharePartition {
             Map.Entry<Long, InFlightBatch> floorEntry = cachedState.floorEntry(recordBatch.baseOffset());
             if (floorEntry == null) {
                 log.debug("Fetched batch record {} not found for share partition: {}-{}", recordBatch, groupId,
-                    topicIdPartition);
+                        topicIdPartition);
                 throw new IllegalStateException(
-                    "Batch record not found. The request batch offsets are not found in the cache.");
+                        "Batch record not found. The request batch offsets are not found in the cache.");
             }
             return cachedState.subMap(floorEntry.getKey(), true, recordBatch.lastOffset(), true);
         } finally {
@@ -3299,7 +3299,7 @@ public class SharePartition {
                     abortedProducerIds.remove(producerId);
                 } else if (isBatchAborted(currentBatch, abortedProducerIds)) {
                     log.debug("Skipping aborted record batch for share partition: {}-{} with producerId {} and " +
-                        "offsets {} to {}", groupId, topicIdPartition, producerId, currentBatch.baseOffset(), currentBatch.lastOffset());
+                            "offsets {} to {}", groupId, topicIdPartition, producerId, currentBatch.baseOffset(), currentBatch.lastOffset());
                     recordsToArchive.add(currentBatch);
                 }
             }
@@ -3309,7 +3309,7 @@ public class SharePartition {
 
     private PriorityQueue<FetchResponseData.AbortedTransaction> orderedAbortedTransactions(List<FetchResponseData.AbortedTransaction> abortedTransactions) {
         PriorityQueue<FetchResponseData.AbortedTransaction> orderedAbortedTransactions = new PriorityQueue<>(
-            abortedTransactions.size(), Comparator.comparingLong(FetchResponseData.AbortedTransaction::firstOffset)
+                abortedTransactions.size(), Comparator.comparingLong(FetchResponseData.AbortedTransaction::firstOffset)
         );
         orderedAbortedTransactions.addAll(abortedTransactions);
         return orderedAbortedTransactions;
@@ -3338,8 +3338,8 @@ public class SharePartition {
                                long lastOffset, short deliveryCount, Throwable dlqCause) {
         // Step 1: Enqueue to DLQ
         shareGroupDLQ.enqueue(new ShareGroupDLQRecordParameter(
-            groupId, topicIdPartition, firstOffset, lastOffset,
-            Optional.of(deliveryCount), Optional.ofNullable(dlqCause), false
+                groupId, topicIdPartition, firstOffset, lastOffset,
+                Optional.of(deliveryCount), Optional.ofNullable(dlqCause), false
         )).whenComplete((v1, dlqException) -> {
             if (dlqException != null) {
                 log.error("Failed to write to DLQ, proceeding to ARCHIVED regardless.", dlqException);

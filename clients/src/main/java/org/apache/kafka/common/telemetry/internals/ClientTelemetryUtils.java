@@ -82,7 +82,7 @@ public class ClientTelemetryUtils {
             case UNSUPPORTED_VERSION:
                 pushIntervalMs = Integer.MAX_VALUE;
                 reason = "The broker response indicates the client sent an request that cannot be resolved"
-                    + " by re-trying, hence disable telemetry";
+                        + " by re-trying, hence disable telemetry";
                 break;
             case UNKNOWN_SUBSCRIPTION_ID:
             case UNSUPPORTED_COMPRESSION_TYPE:
@@ -146,7 +146,7 @@ public class ClientTelemetryUtils {
     public static int validateIntervalMs(int intervalMs) {
         if (intervalMs <= 0) {
             log.warn("Telemetry subscription push interval value from broker was invalid ({}),"
-                + " substituting with default value of {}", intervalMs, ClientTelemetryReporter.DEFAULT_PUSH_INTERVAL_MS);
+                    + " substituting with default value of {}", intervalMs, ClientTelemetryReporter.DEFAULT_PUSH_INTERVAL_MS);
             return ClientTelemetryReporter.DEFAULT_PUSH_INTERVAL_MS;
         }
 
@@ -215,7 +215,7 @@ public class ClientTelemetryUtils {
     public static ByteBuffer decompress(ByteBuffer metrics, CompressionType compressionType) {
         Compression compression = Compression.of(compressionType).build();
         try (InputStream in = compression.wrapForInput(metrics, RecordBatch.CURRENT_MAGIC_VALUE, BufferSupplier.create());
-            ByteBufferOutputStream out = new ByteBufferOutputStream(512)) {
+                ByteBufferOutputStream out = new ByteBufferOutputStream(512)) {
             byte[] bytes = new byte[metrics.limit() * 2];
             int nRead;
             while ((nRead = in.read(bytes, 0, bytes.length)) != -1) {

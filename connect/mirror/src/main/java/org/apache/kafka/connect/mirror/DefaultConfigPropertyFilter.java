@@ -82,7 +82,6 @@ public class DefaultConfigPropertyFilter implements ConfigPropertyFilter {
                     Importance.MEDIUM,
                     USE_DEFAULTS_FROM_DOC);
 
-
         ConfigPropertyFilterConfig(Map<String, ?> props) {
             super(DEF, props, false);
         }

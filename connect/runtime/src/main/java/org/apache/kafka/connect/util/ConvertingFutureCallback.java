@@ -59,7 +59,7 @@ public abstract class ConvertingFutureCallback<U, T> implements Callback<U>, Fut
             if (isDone()) {
                 return;
             }
-            
+
             if (error != null) {
                 this.exception = error;
             } else {
@@ -110,7 +110,7 @@ public abstract class ConvertingFutureCallback<U, T> implements Callback<U>, Fut
 
     @Override
     public T get(long l, TimeUnit timeUnit)
-            throws InterruptedException, ExecutionException, TimeoutException {
+        throws InterruptedException, ExecutionException, TimeoutException {
         if (!finishedLatch.await(l, timeUnit)) {
             Stage stage = currentStage;
             if (stage != null) {

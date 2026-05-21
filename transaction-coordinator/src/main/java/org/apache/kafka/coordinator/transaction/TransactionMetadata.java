@@ -125,7 +125,7 @@ public class TransactionMetadata {
     public void removePartition(TopicPartition topicPartition) {
         if (state != TransactionState.PREPARE_COMMIT && state != TransactionState.PREPARE_ABORT)
             throw new IllegalStateException("Transaction metadata's current state is " + state + ", and its pending state is " +
-                pendingState + " while trying to remove partitions whose txn marker has been sent, this is not expected");
+                    pendingState + " while trying to remove partitions whose txn marker has been sent, this is not expected");
 
         topicPartitions.remove(topicPartition);
     }
@@ -134,7 +134,7 @@ public class TransactionMetadata {
     public TxnTransitMetadata prepareNoTransit() {
         // do not call transitTo as it will set the pending state, a follow-up call to abort the transaction will set its pending state
         return new TxnTransitMetadata(producerId, prevProducerId, nextProducerId, producerEpoch, lastProducerEpoch, txnTimeoutMs,
-            state, new HashSet<>(topicPartitions), txnStartTimestamp, txnLastUpdateTimestamp, clientTransactionVersion);
+                state, new HashSet<>(topicPartitions), txnStartTimestamp, txnLastUpdateTimestamp, clientTransactionVersion);
     }
 
     public TxnTransitMetadata prepareFenceProducerEpoch() {
@@ -182,7 +182,7 @@ public class TransactionMetadata {
         } else {
             // Otherwise, the producer has a fenced epoch and should receive an PRODUCER_FENCED error
             LOGGER.info("Expected producer epoch {} does not match current producer epoch {} or previous producer epoch {}",
-                expectedProducerEpoch.get(), producerEpoch, lastProducerEpoch);
+                    expectedProducerEpoch.get(), producerEpoch, lastProducerEpoch);
             throw Errors.PRODUCER_FENCED.exception();
         }
 
@@ -311,14 +311,14 @@ public class TransactionMetadata {
 
     private boolean hasPendingTransaction() {
         return state == TransactionState.ONGOING ||
-            state == TransactionState.PREPARE_ABORT ||
-            state == TransactionState.PREPARE_COMMIT;
+                state == TransactionState.PREPARE_ABORT ||
+                state == TransactionState.PREPARE_COMMIT;
     }
 
     private TxnTransitMetadata prepareTransitionTo(TransitionData data) {
         if (pendingState.isPresent())
             throw new IllegalStateException("Preparing transaction state transition to " + state +
-                " while it already a pending state " + pendingState.get());
+                    " while it already a pending state " + pendingState.get());
 
         if (data.producerId < 0)
             throw new IllegalArgumentException("Illegal new producer id " + data.producerId);
@@ -332,9 +332,9 @@ public class TransactionMetadata {
         // check that the new state transition is valid and update the pending state if necessary
         if (data.state.validPreviousStates().contains(this.state)) {
             TxnTransitMetadata transitMetadata = new TxnTransitMetadata(
-                data.producerId, this.producerId, data.nextProducerId, data.producerEpoch, data.lastProducerEpoch,
-                data.txnTimeoutMs, data.state, data.topicPartitions,
-                data.txnStartTimestamp, data.txnLastUpdateTimestamp, data.clientTransactionVersion
+                    data.producerId, this.producerId, data.nextProducerId, data.producerEpoch, data.lastProducerEpoch,
+                    data.txnTimeoutMs, data.state, data.topicPartitions,
+                    data.txnStartTimestamp, data.txnLastUpdateTimestamp, data.clientTransactionVersion
             );
 
             LOGGER.debug("TransactionalId {} prepare transition from {} to {}", transactionalId, this.state, data.state);
@@ -342,7 +342,7 @@ public class TransactionMetadata {
             return transitMetadata;
         }
         throw new IllegalStateException("Preparing transaction state transition to " + data.state + " failed since the target state " +
-            data.state + " is not a valid previous state of the current state " + this.state);
+                data.state + " is not a valid previous state of the current state " + this.state);
     }
 
     @SuppressWarnings("CyclomaticComplexity")
@@ -361,9 +361,9 @@ public class TransactionMetadata {
 
         TransactionState toState = pendingState.orElseThrow(() -> {
             LOGGER.error(MarkerFactory.getMarker(LogLevelConfig.FATAL_LOG_LEVEL),
-                "{}'s transition to {} failed since pendingState is not defined: this should not happen", this, transitMetadata);
+                    "{}'s transition to {} failed since pendingState is not defined: this should not happen", this, transitMetadata);
             return new IllegalStateException("TransactionalId " + transactionalId +
-                " completing transaction state transition while it does not have a pending state");
+                    " completing transaction state transition while it does not have a pending state");
         });
 
         if (!toState.equals(transitMetadata.txnState())) throwStateTransitionFailure(transitMetadata);
@@ -371,16 +371,16 @@ public class TransactionMetadata {
         switch (toState) {
             case EMPTY: // from initPid
                 if ((producerEpoch != transitMetadata.producerEpoch() && !validProducerEpochBump(transitMetadata)) ||
-                    !transitMetadata.topicPartitions().isEmpty() ||
-                    transitMetadata.txnStartTimestamp() != -1) {
+                        !transitMetadata.topicPartitions().isEmpty() ||
+                        transitMetadata.txnStartTimestamp() != -1) {
                     throwStateTransitionFailure(transitMetadata);
                 }
                 break;
 
             case ONGOING: // from addPartitions
                 if (!validProducerEpoch(transitMetadata) ||
-                    !transitMetadata.topicPartitions().containsAll(topicPartitions) ||
-                    txnTimeoutMs != transitMetadata.txnTimeoutMs()) {
+                        !transitMetadata.topicPartitions().containsAll(topicPartitions) ||
+                        txnTimeoutMs != transitMetadata.txnTimeoutMs()) {
                     throwStateTransitionFailure(transitMetadata);
                 }
                 break;
@@ -390,13 +390,13 @@ public class TransactionMetadata {
                 // In V2, we allow state transits from Empty, CompleteCommit and CompleteAbort to PrepareAbort. It is possible
                 // their updated start time is not equal to the current start time.
                 boolean allowedEmptyAbort = toState == TransactionState.PREPARE_ABORT && transitMetadata.clientTransactionVersion().supportsEpochBump() &&
-                    (state == TransactionState.EMPTY || state == TransactionState.COMPLETE_COMMIT || state == TransactionState.COMPLETE_ABORT);
+                        (state == TransactionState.EMPTY || state == TransactionState.COMPLETE_COMMIT || state == TransactionState.COMPLETE_ABORT);
                 boolean validTimestamp = txnStartTimestamp == transitMetadata.txnStartTimestamp() || allowedEmptyAbort;
 
                 if (!validProducerEpoch(transitMetadata) ||
-                    !topicPartitions.equals(transitMetadata.topicPartitions()) ||
-                    txnTimeoutMs != transitMetadata.txnTimeoutMs() ||
-                    !validTimestamp) {
+                        !topicPartitions.equals(transitMetadata.topicPartitions()) ||
+                        txnTimeoutMs != transitMetadata.txnTimeoutMs() ||
+                        !validTimestamp) {
                     throwStateTransitionFailure(transitMetadata);
                 }
                 break;
@@ -404,8 +404,8 @@ public class TransactionMetadata {
             case COMPLETE_ABORT: // from write markers
             case COMPLETE_COMMIT:
                 if (!validProducerEpoch(transitMetadata) ||
-                    txnTimeoutMs != transitMetadata.txnTimeoutMs() ||
-                    transitMetadata.txnStartTimestamp() == -1) {
+                        txnTimeoutMs != transitMetadata.txnTimeoutMs() ||
+                        transitMetadata.txnStartTimestamp() == -1) {
                     throwStateTransitionFailure(transitMetadata);
                 }
                 break;
@@ -422,8 +422,8 @@ public class TransactionMetadata {
                 // The transactionalId was being expired. The completion of the operation should result in removal of the
                 // the metadata from the cache, so we should never realistically transition to the dead state.
                 throw new IllegalStateException("TransactionalId " + transactionalId + " is trying to complete a transition to " +
-                    toState + ". This means that the transactionalId was being expired, and the only acceptable completion of " +
-                    "this operation is to remove the transaction metadata from the cache, not to persist the " + toState + " in the log.");
+                        toState + ". This means that the transactionalId was being expired, and the only acceptable completion of " +
+                        "this operation is to remove the transaction metadata from the cache, not to persist the " + toState + " in the log.");
 
             default:
                 break;
@@ -474,13 +474,13 @@ public class TransactionMetadata {
         short transitLastProducerEpoch = transitMetadata.lastProducerEpoch();
 
         if (isAtLeastTransactionsV2 &&
-            (txnState == TransactionState.COMPLETE_COMMIT || txnState == TransactionState.COMPLETE_ABORT) &&
-            transitProducerEpoch == 0) {
+                (txnState == TransactionState.COMPLETE_COMMIT || txnState == TransactionState.COMPLETE_ABORT) &&
+                transitProducerEpoch == 0) {
             return transitLastProducerEpoch == lastProducerEpoch && transitMetadata.prevProducerId() == producerId;
         }
 
         if (isAtLeastTransactionsV2 &&
-            (txnState == TransactionState.PREPARE_COMMIT || txnState == TransactionState.PREPARE_ABORT)) {
+                (txnState == TransactionState.PREPARE_COMMIT || txnState == TransactionState.PREPARE_ABORT)) {
             return transitLastProducerEpoch == producerEpoch && transitProducerId == producerId;
         }
         return transitProducerEpoch == producerEpoch && transitProducerId == producerId;
@@ -494,10 +494,10 @@ public class TransactionMetadata {
 
     private void throwStateTransitionFailure(TxnTransitMetadata txnTransitMetadata) {
         LOGGER.error(MarkerFactory.getMarker(LogLevelConfig.FATAL_LOG_LEVEL),
-            "{}'s transition to {} failed: this should not happen", this, txnTransitMetadata);
+                "{}'s transition to {} failed: this should not happen", this, txnTransitMetadata);
 
         throw new IllegalStateException("TransactionalId " + transactionalId + " failed transition to state " + txnTransitMetadata +
-            " due to unexpected metadata");
+                " due to unexpected metadata");
     }
 
     public boolean pendingTransitionInProgress() {
@@ -512,6 +512,7 @@ public class TransactionMetadata {
     public void setProducerId(long producerId) {
         this.producerId = producerId;
     }
+
     public long producerId() {
         return producerId;
     }
@@ -520,6 +521,7 @@ public class TransactionMetadata {
     public void setPrevProducerId(long prevProducerId) {
         this.prevProducerId = prevProducerId;
     }
+
     public long prevProducerId() {
         return prevProducerId;
     }
@@ -597,20 +599,20 @@ public class TransactionMetadata {
     @Override
     public String toString() {
         return "TransactionMetadata(" +
-            "transactionalId=" + transactionalId +
-            ", producerId=" + producerId +
-            ", prevProducerId=" + prevProducerId +
-            ", nextProducerId=" + nextProducerId +
-            ", producerEpoch=" + producerEpoch +
-            ", lastProducerEpoch=" + lastProducerEpoch +
-            ", txnTimeoutMs=" + txnTimeoutMs +
-            ", state=" + state +
-            ", pendingState=" + pendingState +
-            ", topicPartitions=" + topicPartitions +
-            ", txnStartTimestamp=" + txnStartTimestamp +
-            ", txnLastUpdateTimestamp=" + txnLastUpdateTimestamp +
-            ", clientTransactionVersion=" + clientTransactionVersion +
-            ")";
+                "transactionalId=" + transactionalId +
+                ", producerId=" + producerId +
+                ", prevProducerId=" + prevProducerId +
+                ", nextProducerId=" + nextProducerId +
+                ", producerEpoch=" + producerEpoch +
+                ", lastProducerEpoch=" + lastProducerEpoch +
+                ", txnTimeoutMs=" + txnTimeoutMs +
+                ", state=" + state +
+                ", pendingState=" + pendingState +
+                ", topicPartitions=" + topicPartitions +
+                ", txnStartTimestamp=" + txnStartTimestamp +
+                ", txnLastUpdateTimestamp=" + txnLastUpdateTimestamp +
+                ", clientTransactionVersion=" + clientTransactionVersion +
+                ")";
     }
 
     @Override
@@ -620,34 +622,34 @@ public class TransactionMetadata {
 
         TransactionMetadata other = (TransactionMetadata) obj;
         return transactionalId.equals(other.transactionalId) &&
-            producerId == other.producerId &&
-            prevProducerId == other.prevProducerId &&
-            nextProducerId == other.nextProducerId &&
-            producerEpoch == other.producerEpoch &&
-            lastProducerEpoch == other.lastProducerEpoch &&
-            txnTimeoutMs == other.txnTimeoutMs &&
-            state.equals(other.state) &&
-            topicPartitions.equals(other.topicPartitions) &&
-            txnStartTimestamp == other.txnStartTimestamp &&
-            txnLastUpdateTimestamp == other.txnLastUpdateTimestamp &&
-            clientTransactionVersion.equals(other.clientTransactionVersion);
+                producerId == other.producerId &&
+                prevProducerId == other.prevProducerId &&
+                nextProducerId == other.nextProducerId &&
+                producerEpoch == other.producerEpoch &&
+                lastProducerEpoch == other.lastProducerEpoch &&
+                txnTimeoutMs == other.txnTimeoutMs &&
+                state.equals(other.state) &&
+                topicPartitions.equals(other.topicPartitions) &&
+                txnStartTimestamp == other.txnStartTimestamp &&
+                txnLastUpdateTimestamp == other.txnLastUpdateTimestamp &&
+                clientTransactionVersion.equals(other.clientTransactionVersion);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
-            transactionalId,
-            producerId,
-            prevProducerId,
-            nextProducerId,
-            producerEpoch,
-            lastProducerEpoch,
-            txnTimeoutMs,
-            state,
-            topicPartitions,
-            txnStartTimestamp,
-            txnLastUpdateTimestamp,
-            clientTransactionVersion
+                transactionalId,
+                producerId,
+                prevProducerId,
+                nextProducerId,
+                producerEpoch,
+                lastProducerEpoch,
+                txnTimeoutMs,
+                state,
+                topicPartitions,
+                txnStartTimestamp,
+                txnLastUpdateTimestamp,
+                clientTransactionVersion
         );
     }
 

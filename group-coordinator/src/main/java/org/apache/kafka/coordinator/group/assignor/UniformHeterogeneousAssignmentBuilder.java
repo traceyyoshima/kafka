@@ -168,7 +168,7 @@ public class UniformHeterogeneousAssignmentBuilder {
                 int numPartitions = subscribedTopicDescriber.numPartitions(topicId);
                 if (numPartitions == -1) {
                     throw new PartitionAssignorException(
-                        "Members are subscribed to topic " + topicId + " which doesn't exist in the topic metadata."
+                            "Members are subscribed to topic " + topicId + " which doesn't exist in the topic metadata."
                     );
                 }
                 subscribedTopicIds.add(topicId);
@@ -184,8 +184,8 @@ public class UniformHeterogeneousAssignmentBuilder {
 
             // Order by partitions per subscriber, descending.
             int order = Double.compare(
-                (double) topic2PartitionCount / topic2SubscriberCount,
-                (double) topic1PartitionCount / topic1SubscriberCount
+                    (double) topic2PartitionCount / topic2SubscriberCount,
+                    (double) topic1PartitionCount / topic1SubscriberCount
             );
 
             // Then order by subscriber count, ascending.
@@ -204,8 +204,8 @@ public class UniformHeterogeneousAssignmentBuilder {
         this.memberComparator = (memberIndex1, memberIndex2) -> {
             // Order by number of assigned partitions, ascending.
             int order = Integer.compare(
-                memberTargetAssignmentSizes[memberIndex1],
-                memberTargetAssignmentSizes[memberIndex2]
+                    memberTargetAssignmentSizes[memberIndex1],
+                    memberTargetAssignmentSizes[memberIndex2]
             );
 
             // Then order by member index, ascending.
@@ -437,7 +437,7 @@ public class UniformHeterogeneousAssignmentBuilder {
             nextMostLoadedMember = sortedMembers.size() - 1;
 
             return memberTargetAssignmentSizes[sortedMembers.get(sortedMembers.size() - 1)] -
-                   memberTargetAssignmentSizes[sortedMembers.get(0)];
+                    memberTargetAssignmentSizes[sortedMembers.get(0)];
         }
 
         /**
@@ -471,7 +471,7 @@ public class UniformHeterogeneousAssignmentBuilder {
 
                 // Expand the range.
                 while (leastLoadedRangeEnd < sortedMembers.size() &&
-                    memberTargetAssignmentSizes[sortedMembers.get(leastLoadedRangeEnd)] == leastLoadedRangePartitionCount) {
+                        memberTargetAssignmentSizes[sortedMembers.get(leastLoadedRangeEnd)] == leastLoadedRangePartitionCount) {
                     leastLoadedRangeEnd++;
                 }
 
@@ -498,7 +498,7 @@ public class UniformHeterogeneousAssignmentBuilder {
         public int nextMostLoadedMember() {
             if (nextMostLoadedMember < mostLoadedRangeStart) {
                 if (mostLoadedRangeEnd <= mostLoadedRangeStart &&
-                    mostLoadedRangeStart > 0) {
+                        mostLoadedRangeStart > 0) {
                     // The range is empty due to calls to excludeMostLoadedMember(). We risk not
                     // expanding the range below and returning a member outside the range. Ensure
                     // that we always expand the range below by resetting the partition count.
@@ -509,7 +509,7 @@ public class UniformHeterogeneousAssignmentBuilder {
 
                 // Expand the range.
                 while (mostLoadedRangeStart > 0 &&
-                    memberTargetAssignmentSizes[sortedMembers.get(mostLoadedRangeStart - 1)] == mostLoadedRangePartitionCount) {
+                        memberTargetAssignmentSizes[sortedMembers.get(mostLoadedRangeStart - 1)] == mostLoadedRangePartitionCount) {
                     mostLoadedRangeStart--;
                 }
 
@@ -662,15 +662,15 @@ public class UniformHeterogeneousAssignmentBuilder {
                 Uuid topicId = sortedTopicIds.get(topicIndex);
 
                 int reassignedPartitionCount = balanceTopic(
-                    topicId,
-                    memberAssignmentBalancer,
-                    partitions,
-                    startPartitionIndices,
-                    endPartitionIndices
+                        topicId,
+                        memberAssignmentBalancer,
+                        partitions,
+                        startPartitionIndices,
+                        endPartitionIndices
                 );
 
                 if (reassignedPartitionCount > 0 ||
-                    lastRebalanceTopicIndex == -1) {
+                        lastRebalanceTopicIndex == -1) {
                     lastRebalanceTopicIndex = topicIndex;
                 }
             }
@@ -729,7 +729,7 @@ public class UniformHeterogeneousAssignmentBuilder {
             partitions.add(partition);
         }
         partitions.sort(
-            Comparator
+                Comparator
                 .comparingInt((Integer partition) -> partitionOwners[partition])
                 .thenComparingInt(partition -> partition)
         );
@@ -765,7 +765,7 @@ public class UniformHeterogeneousAssignmentBuilder {
                 }
 
                 if (!endPartitionIndices.containsKey(mostLoadedMemberIndex) ||
-                    endPartitionIndices.get(mostLoadedMemberIndex) - startPartitionIndices.get(mostLoadedMemberIndex) <= 0) {
+                        endPartitionIndices.get(mostLoadedMemberIndex) - startPartitionIndices.get(mostLoadedMemberIndex) <= 0) {
                     memberAssignmentBalancer.excludeMostLoadedMember();
                     continue;
                 }

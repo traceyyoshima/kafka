@@ -47,22 +47,22 @@ public class KStreamForeachTest {
     public void testForeach() {
         // Given
         final List<KeyValue<Integer, String>> inputRecords = Arrays.asList(
-            new KeyValue<>(0, "zero"),
-            new KeyValue<>(1, "one"),
-            new KeyValue<>(2, "two"),
-            new KeyValue<>(3, "three")
+                new KeyValue<>(0, "zero"),
+                new KeyValue<>(1, "one"),
+                new KeyValue<>(2, "two"),
+                new KeyValue<>(3, "three")
         );
 
         final List<KeyValue<Integer, String>> expectedRecords = Arrays.asList(
-            new KeyValue<>(0, "ZERO"),
-            new KeyValue<>(2, "ONE"),
-            new KeyValue<>(4, "TWO"),
-            new KeyValue<>(6, "THREE")
+                new KeyValue<>(0, "ZERO"),
+                new KeyValue<>(2, "ONE"),
+                new KeyValue<>(4, "TWO"),
+                new KeyValue<>(6, "THREE")
         );
 
         final List<KeyValue<Integer, String>> actualRecords = new ArrayList<>();
         final ForeachAction<Integer, String> action =
-            (key, value) -> actualRecords.add(new KeyValue<>(key * 2, value.toUpperCase(Locale.ROOT)));
+                (key, value) -> actualRecords.add(new KeyValue<>(key * 2, value.toUpperCase(Locale.ROOT)));
 
         // When
         final StreamsBuilder builder = new StreamsBuilder();
@@ -87,7 +87,7 @@ public class KStreamForeachTest {
 
     @Test
     public void testTypeVariance() {
-        final ForeachAction<Number, Object> consume = (key, value) -> { };
+        final ForeachAction<Number, Object> consume = (key, value) -> {};
 
         new StreamsBuilder()
             .<Integer, String>stream("emptyTopic")

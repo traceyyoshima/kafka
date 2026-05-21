@@ -83,7 +83,7 @@ public final class FieldSpec {
             null : this.taggedVersions);
         if (this.versions == null) {
             throw new RuntimeException("You must specify the version of the " +
-                name + " structure.");
+                    name + " structure.");
         }
         this.fields = fields == null ? List.of() : List.copyOf(fields);
         this.type = FieldType.parse(Objects.requireNonNull(type));
@@ -107,8 +107,8 @@ public final class FieldSpec {
             // Check struct invariants
             if (this.type.isStruct() || this.type.isStructArray()) {
                 new StructSpec(name,
-                    versions,
-                    Versions.NONE_STRING, // version deprecations not supported at field level
+                        versions,
+                        Versions.NONE_STRING, // version deprecations not supported at field level
                     fields);
             }
         }
@@ -122,8 +122,8 @@ public final class FieldSpec {
                 // types.  Overrides are only needed to keep compatibility with some old formats,
                 // so there isn't any need to support them for all types.
                 throw new RuntimeException("Invalid flexibleVersions override for " + name +
-                    ".  Only fields of type string or bytes can specify a flexibleVersions " +
-                    "override.");
+                        ".  Only fields of type string or bytes can specify a flexibleVersions " +
+                        "override.");
             }
         }
         this.tag = Optional.ofNullable(tag);
@@ -135,7 +135,7 @@ public final class FieldSpec {
         this.zeroCopy = zeroCopy;
         if (this.zeroCopy && !this.type.isBytes()) {
             throw new RuntimeException("Invalid zeroCopy value for " + name +
-                ". Only fields of type bytes can use zeroCopy flag.");
+                    ". Only fields of type bytes can use zeroCopy flag.");
         }
     }
 
@@ -143,33 +143,33 @@ public final class FieldSpec {
         if (this.tag.isPresent()) {
             if (this.tag.get() < 0) {
                 throw new RuntimeException("Field " + name + " specifies a tag of " + this.tag.get() +
-                    ".  Tags cannot be negative.");
+                        ".  Tags cannot be negative.");
             }
             if (this.taggedVersions.empty()) {
                 throw new RuntimeException("Field " + name + " specifies a tag of " + this.tag.get() +
-                    ", but has no tagged versions.  If a tag is specified, taggedVersions must " +
-                    "be specified as well.");
+                        ", but has no tagged versions.  If a tag is specified, taggedVersions must " +
+                        "be specified as well.");
             }
             Versions nullableTaggedVersions = this.nullableVersions.intersect(this.taggedVersions);
             if (!(nullableTaggedVersions.empty() || nullableTaggedVersions.equals(this.taggedVersions))) {
                 throw new RuntimeException("Field " + name + " specifies nullableVersions " +
-                    this.nullableVersions + " and taggedVersions " + this.taggedVersions + ".  " +
-                    "Either all tagged versions must be nullable, or none must be.");
+                        this.nullableVersions + " and taggedVersions " + this.taggedVersions + ".  " +
+                        "Either all tagged versions must be nullable, or none must be.");
             }
             if (this.taggedVersions.highest() < Short.MAX_VALUE) {
                 throw new RuntimeException("Field " + name + " specifies taggedVersions " +
-                    this.taggedVersions + ", which is not open-ended.  taggedVersions must " +
-                    "be either none, or an open-ended range (that ends with a plus sign).");
+                        this.taggedVersions + ", which is not open-ended.  taggedVersions must " +
+                        "be either none, or an open-ended range (that ends with a plus sign).");
             }
             if (!this.taggedVersions.intersect(this.versions).equals(this.taggedVersions)) {
                 throw new RuntimeException("Field " + name + " specifies taggedVersions " +
-                    this.taggedVersions + ", and versions " + this.versions + ".  " +
-                    "taggedVersions must be a subset of versions.");
+                        this.taggedVersions + ", and versions " + this.versions + ".  " +
+                        "taggedVersions must be a subset of versions.");
             }
         } else if (!this.taggedVersions.empty()) {
             throw new RuntimeException("Field " + name + " does not specify a tag, " +
-                "but specifies tagged versions of " + this.taggedVersions + ".  " +
-                "Please specify a tag, or remove the taggedVersions.");
+                    "but specifies tagged versions of " + this.taggedVersions + ".  " +
+                    "Please specify a tag, or remove the taggedVersions.");
         }
     }
 
@@ -299,14 +299,14 @@ public final class FieldSpec {
                 return "false";
             } else {
                 throw new RuntimeException("Invalid default for boolean field " +
-                    name + ": " + fieldDefault);
+                        name + ": " + fieldDefault);
             }
         } else if ((type instanceof FieldType.Int8FieldType) ||
-            (type instanceof FieldType.Int16FieldType) ||
-            (type instanceof FieldType.Uint16FieldType) ||
-            (type instanceof FieldType.Uint32FieldType) ||
-            (type instanceof FieldType.Int32FieldType) ||
-            (type instanceof FieldType.Int64FieldType)) {
+                (type instanceof FieldType.Int16FieldType) ||
+                (type instanceof FieldType.Uint16FieldType) ||
+                (type instanceof FieldType.Uint32FieldType) ||
+                (type instanceof FieldType.Int32FieldType) ||
+                (type instanceof FieldType.Int64FieldType)) {
             int base = 10;
             String defaultString = fieldDefault;
             if (defaultString.startsWith("0x")) {
@@ -321,7 +321,7 @@ public final class FieldSpec {
                         Byte.valueOf(defaultString, base);
                     } catch (NumberFormatException e) {
                         throw new RuntimeException("Invalid default for int8 field " +
-                            name + ": " + defaultString, e);
+                                name + ": " + defaultString, e);
                     }
                     return "(byte) " + fieldDefault;
                 }
@@ -333,7 +333,7 @@ public final class FieldSpec {
                         Short.valueOf(defaultString, base);
                     } catch (NumberFormatException e) {
                         throw new RuntimeException("Invalid default for int16 field " +
-                            name + ": " + defaultString, e);
+                                name + ": " + defaultString, e);
                     }
                     return "(short) " + fieldDefault;
                 }
@@ -349,7 +349,7 @@ public final class FieldSpec {
                         }
                     } catch (NumberFormatException e) {
                         throw new RuntimeException("Invalid default for uint16 field " +
-                            name + ": " + defaultString, e);
+                                name + ": " + defaultString, e);
                     }
                     return fieldDefault;
                 }
@@ -377,7 +377,7 @@ public final class FieldSpec {
                         Integer.valueOf(defaultString, base);
                     } catch (NumberFormatException e) {
                         throw new RuntimeException("Invalid default for int32 field " +
-                            name + ": " + defaultString, e);
+                                name + ": " + defaultString, e);
                     }
                     return fieldDefault;
                 }
@@ -389,7 +389,7 @@ public final class FieldSpec {
                         Long.valueOf(defaultString, base);
                     } catch (NumberFormatException e) {
                         throw new RuntimeException("Invalid default for int64 field " +
-                            name + ": " + defaultString, e);
+                                name + ": " + defaultString, e);
                     }
                     return fieldDefault + "L";
                 }
@@ -407,7 +407,7 @@ public final class FieldSpec {
                     uuidBytes.getLong();
                 } catch (IllegalArgumentException e) {
                     throw new RuntimeException("Invalid default for uuid field " +
-                        name + ": " + fieldDefault, e);
+                            name + ": " + fieldDefault, e);
                 }
                 headerGenerator.addImport(MessageGenerator.UUID_CLASS);
                 return "Uuid.fromString(\"" + fieldDefault + "\")";
@@ -420,7 +420,7 @@ public final class FieldSpec {
                     Double.parseDouble(fieldDefault);
                 } catch (NumberFormatException e) {
                     throw new RuntimeException("Invalid default for float64 field " +
-                        name + ": " + fieldDefault, e);
+                            name + ": " + fieldDefault, e);
                 }
                 return "Double.parseDouble(\"" + fieldDefault + "\")";
             }
@@ -437,8 +437,8 @@ public final class FieldSpec {
                 return "null";
             } else if (!fieldDefault.isEmpty()) {
                 throw new RuntimeException("Invalid default for bytes field " +
-                    name + ".  The only valid default for a bytes field " +
-                    "is empty or null.");
+                        name + ".  The only valid default for a bytes field " +
+                        "is empty or null.");
             }
             if (zeroCopy) {
                 headerGenerator.addImport(MessageGenerator.BYTE_UTILS_CLASS);
@@ -455,8 +455,8 @@ public final class FieldSpec {
                 return "null";
             } else if (!fieldDefault.isEmpty()) {
                 throw new RuntimeException("Invalid default for struct field " +
-                    name + ".  The only valid default for a struct field " +
-                    "is the empty struct or null.");
+                        name + ".  The only valid default for a struct field " +
+                        "is the empty struct or null.");
             }
             return "new " + type + "()";
         } else if (type.isArray()) {
@@ -465,11 +465,11 @@ public final class FieldSpec {
                 return "null";
             } else if (!fieldDefault.isEmpty()) {
                 throw new RuntimeException("Invalid default for array field " +
-                    name + ".  The only valid default for an array field " +
-                    "is the empty array or null.");
+                        name + ".  The only valid default for an array field " +
+                        "is the empty array or null.");
             }
             return String.format("new %s(0)",
-                concreteJavaType(headerGenerator, structRegistry));
+                    concreteJavaType(headerGenerator, structRegistry));
         } else {
             throw new RuntimeException("Unsupported field type " + type);
         }
@@ -478,8 +478,8 @@ public final class FieldSpec {
     private void validateNullDefault() {
         if (!(nullableVersions().contains(versions))) {
             throw new RuntimeException("null cannot be the default for field " +
-                name + ", because not all versions of this field are " +
-                "nullable.");
+                    name + ", because not all versions of this field are " +
+                    "nullable.");
         }
     }
 
@@ -534,7 +534,7 @@ public final class FieldSpec {
             } else {
                 headerGenerator.addImport(MessageGenerator.LIST_CLASS);
                 return String.format("List<%s>",
-                    arrayType.elementType().getBoxedJavaType(headerGenerator));
+                        arrayType.elementType().getBoxedJavaType(headerGenerator));
             }
         } else {
             throw new RuntimeException("Unknown field type " + type);
@@ -558,7 +558,7 @@ public final class FieldSpec {
             } else {
                 headerGenerator.addImport(MessageGenerator.ARRAYLIST_CLASS);
                 return String.format("ArrayList<%s>",
-                    arrayType.elementType().getBoxedJavaType(headerGenerator));
+                        arrayType.elementType().getBoxedJavaType(headerGenerator));
             }
         } else {
             return fieldAbstractJavaType(headerGenerator, structRegistry);
@@ -594,7 +594,7 @@ public final class FieldSpec {
                 buffer.printf("if (!%s%s.isEmpty()) {%n", fieldPrefix, camelCaseName());
             } else {
                 buffer.printf("if (%s%s == null || !%s%s.isEmpty()) {%n",
-                    fieldPrefix, camelCaseName(), fieldPrefix, camelCaseName());
+                        fieldPrefix, camelCaseName(), fieldPrefix, camelCaseName());
             }
         } else if (type().isBytes()) {
             if (fieldDefault.equals("null")) {
@@ -602,18 +602,18 @@ public final class FieldSpec {
             } else if (nullableVersions.empty()) {
                 if (zeroCopy()) {
                     buffer.printf("if (%s%s.hasRemaining()) {%n",
-                        fieldPrefix, camelCaseName());
+                            fieldPrefix, camelCaseName());
                 } else {
                     buffer.printf("if (%s%s.length != 0) {%n",
-                        fieldPrefix, camelCaseName());
+                            fieldPrefix, camelCaseName());
                 }
             } else {
                 if (zeroCopy()) {
                     buffer.printf("if (%s%s == null || %s%s.remaining() > 0) {%n",
-                        fieldPrefix, camelCaseName(), fieldPrefix, camelCaseName());
+                            fieldPrefix, camelCaseName(), fieldPrefix, camelCaseName());
                 } else {
                     buffer.printf("if (%s%s == null || %s%s.length != 0) {%n",
-                        fieldPrefix, camelCaseName(), fieldPrefix, camelCaseName());
+                            fieldPrefix, camelCaseName(), fieldPrefix, camelCaseName());
                 }
             }
         } else if (type().isString() || type().isStruct() || type() instanceof FieldType.UUIDFieldType) {
@@ -621,19 +621,19 @@ public final class FieldSpec {
                 buffer.printf("if (%s%s != null) {%n", fieldPrefix, camelCaseName());
             } else if (nullableVersions.empty()) {
                 buffer.printf("if (!%s%s.equals(%s)) {%n",
-                    fieldPrefix, camelCaseName(), fieldDefault);
+                        fieldPrefix, camelCaseName(), fieldDefault);
             } else {
                 buffer.printf("if (%s%s == null || !%s%s.equals(%s)) {%n",
-                    fieldPrefix, camelCaseName(), fieldPrefix, camelCaseName(),
-                    fieldDefault);
+                        fieldPrefix, camelCaseName(), fieldPrefix, camelCaseName(),
+                        fieldDefault);
             }
         } else if (type() instanceof FieldType.BoolFieldType) {
             buffer.printf("if (%s%s%s) {%n",
-                fieldDefault.equals("true") ? "!" : "",
-                fieldPrefix, camelCaseName());
+                    fieldDefault.equals("true") ? "!" : "",
+                    fieldPrefix, camelCaseName());
         } else {
             buffer.printf("if (%s%s != %s) {%n",
-                fieldPrefix, camelCaseName(), fieldDefault);
+                    fieldPrefix, camelCaseName(), fieldDefault);
         }
     }
 
@@ -651,12 +651,12 @@ public final class FieldSpec {
                                         String fieldPrefix,
                                         CodeBuffer buffer) {
         generateNonDefaultValueCheck(headerGenerator, structRegistry,
-            buffer, fieldPrefix, nullableVersions());
+                buffer, fieldPrefix, nullableVersions());
         buffer.incrementIndent();
         headerGenerator.addImport(MessageGenerator.UNSUPPORTED_VERSION_EXCEPTION_CLASS);
         buffer.printf("throw new UnsupportedVersionException(" +
                 "\"Attempted to write a non-default %s at version \" + _version);%n",
-            camelCaseName());
+                camelCaseName());
         buffer.decrementIndent();
         buffer.printf("}%n");
     }

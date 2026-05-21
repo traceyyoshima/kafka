@@ -38,7 +38,6 @@ public class TimestampTest {
         EPOCH = new GregorianCalendar(1970, Calendar.JANUARY, 1, 0, 0, 0);
         EPOCH.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-
         EPOCH_PLUS_MILLIS = new GregorianCalendar(1970, Calendar.JANUARY, 1, 0, 0, 0);
         EPOCH_PLUS_MILLIS.setTimeZone(TimeZone.getTimeZone("UTC"));
         EPOCH_PLUS_MILLIS.add(Calendar.MILLISECOND, NUM_MILLIS);
@@ -61,7 +60,7 @@ public class TimestampTest {
     @Test
     public void testFromLogicalInvalidSchema() {
         assertThrows(DataException.class,
-            () -> Timestamp.fromLogical(Timestamp.builder().name("invalid").build(), EPOCH.getTime()));
+                () -> Timestamp.fromLogical(Timestamp.builder().name("invalid").build(), EPOCH.getTime()));
     }
 
     @Test
@@ -73,6 +72,6 @@ public class TimestampTest {
     @Test
     public void testToLogicalInvalidSchema() {
         assertThrows(DataException.class,
-            () -> Date.toLogical(Date.builder().name("invalid").build(), 0));
+                () -> Date.toLogical(Date.builder().name("invalid").build(), 0));
     }
 }

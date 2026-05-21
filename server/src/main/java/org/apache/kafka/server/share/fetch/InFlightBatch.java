@@ -278,10 +278,10 @@ public class InFlightBatch {
     @Override
     public String toString() {
         return "InFlightBatch(" +
-            "firstOffset=" + firstOffset +
-            ", lastOffset=" + lastOffset +
-            ", inFlightState=" + batchState +
-            ", offsetState=" + ((offsetState == null) ? "null" : offsetState) +
-            ")";
+                "firstOffset=" + firstOffset +
+                ", lastOffset=" + lastOffset +
+                ", inFlightState=" + batchState +
+                ", offsetState=" + ((offsetState == null) ? "null" : offsetState) +
+                ")";
     }
 }

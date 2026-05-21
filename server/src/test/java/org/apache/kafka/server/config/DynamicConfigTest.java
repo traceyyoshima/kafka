@@ -41,19 +41,19 @@ public class DynamicConfigTest {
 
             // add dynamic config
             admin.incrementalAlterConfigs(Map.of(cr, List.of(new AlterConfigOp(
-                new ConfigEntry("consumer.session.timeout.ms", "45001"), AlterConfigOp.OpType.SET))))
+                    new ConfigEntry("consumer.session.timeout.ms", "45001"), AlterConfigOp.OpType.SET))))
                 .all()
                 .get();
             TestUtils.waitForCondition(() -> !admin.listConfigResources(Set.of(ConfigResource.Type.GROUP), new ListConfigResourcesOptions()).all().get().isEmpty(),
-                "Should include a group with dynamic config");
+                    "Should include a group with dynamic config");
 
             // remove dynamic config
             admin.incrementalAlterConfigs(Map.of(cr, List.of(new AlterConfigOp(
-                new ConfigEntry("consumer.session.timeout.ms", null), AlterConfigOp.OpType.DELETE))))
+                    new ConfigEntry("consumer.session.timeout.ms", null), AlterConfigOp.OpType.DELETE))))
                 .all()
                 .get();
             TestUtils.waitForCondition(() -> admin.listConfigResources(Set.of(ConfigResource.Type.GROUP), new ListConfigResourcesOptions()).all().get().isEmpty(),
-                "Should not include any group");
+                    "Should not include any group");
         }
     }
 }

@@ -75,11 +75,11 @@ public class TestUtils {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
             final String reason = String.format(
-                "Expected all streams instances in %s to be %s within %d ms, but the following were not: %s",
-                streamsList,
-                state,
-                timeout.toMillis(),
-                wrongStateMap
+                    "Expected all streams instances in %s to be %s within %d ms, but the following were not: %s",
+                    streamsList,
+                    state,
+                    timeout.toMillis(),
+                    wrongStateMap
             );
             assertThat(reason, wrongStateMap.isEmpty());
         });
@@ -204,7 +204,7 @@ public class TestUtils {
     }
 
     private static class CountingDelegatingProcessorSupplier<KIn, VIn, KOut, VOut>
-        implements WrappedProcessorSupplier<KIn, VIn, KOut, VOut> {
+            implements WrappedProcessorSupplier<KIn, VIn, KOut, VOut> {
 
         private final WrapperRecorder counter;
         private final String processorName;
@@ -238,7 +238,7 @@ public class TestUtils {
     }
 
     private static class CountingDelegatingFixedKeyProcessorSupplier<KIn, VIn, VOut>
-        implements WrappedFixedKeyProcessorSupplier<KIn, VIn, VOut> {
+            implements WrappedFixedKeyProcessorSupplier<KIn, VIn, VOut> {
 
         private final WrapperRecorder counter;
         private final String processorName;

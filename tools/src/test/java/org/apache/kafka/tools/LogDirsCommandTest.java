@@ -61,10 +61,10 @@ public class LogDirsCommandTest {
             Map<Integer, Map<String, LogDirDescription>> logDirs = assertDoesNotThrow(() -> admin.describeLogDirs(clusterInstance.brokerIds()).allDescriptions().get());
             assertFalse(logDirs.isEmpty());
             logDirs.forEach((brokerId, logDirInfo) ->
-                logDirInfo.forEach((logDir, logDirInfoValue) -> {
-                    assertTrue(output.contains("\"logDir\":\"" + logDir + "\""));
-                    logDirInfoValue.replicaInfos().forEach((topicPartition, replicaInfo) -> assertTrue(output.contains("\"partition\":\"" + topicPartition + "\"")));
-                }));
+                    logDirInfo.forEach((logDir, logDirInfoValue) -> {
+                        assertTrue(output.contains("\"logDir\":\"" + logDir + "\""));
+                        logDirInfoValue.replicaInfos().forEach((topicPartition, replicaInfo) -> assertTrue(output.contains("\"partition\":\"" + topicPartition + "\"")));
+                    }));
         }
     }
 
@@ -105,12 +105,12 @@ public class LogDirsCommandTest {
             Map<Integer, Map<String, LogDirDescription>> logDirs = assertDoesNotThrow(() -> admin.describeLogDirs(clusterInstance.brokerIds()).allDescriptions().get());
             assertFalse(logDirs.isEmpty());
             logDirs.forEach((brokerId, logDirInfo) ->
-                logDirInfo.forEach((logDir, logDirInfoValue) -> {
-                    assertTrue(output.contains("\"logDir\":\"" + logDir + "\""));
-                    logDirInfoValue.replicaInfos().forEach((topicPartition, replicaInfo) ->
-                        assertFalse(output.contains("\"partition\":\"" + topicPartition + "\""))
+                    logDirInfo.forEach((logDir, logDirInfoValue) -> {
+                        assertTrue(output.contains("\"logDir\":\"" + logDir + "\""));
+                        logDirInfoValue.replicaInfos().forEach((topicPartition, replicaInfo) ->
+                                assertFalse(output.contains("\"partition\":\"" + topicPartition + "\""))
                     );
-                }));
+                    }));
         }
     }
 
@@ -129,12 +129,12 @@ public class LogDirsCommandTest {
             assertTrue(output.contains("\"partition\":\"" + new TopicPartition(TOPIC, 0) + "\""));
             assertFalse(output.contains("\"partition\":\"" + new TopicPartition("other-topic", 0) + "\"")); // other-topic should not be present
             logDirs.forEach((brokerId, logDirInfo) ->
-                logDirInfo.forEach((logDir, logDirInfoValue) -> {
-                    assertTrue(output.contains("\"logDir\":\"" + logDir + "\""));
-                    logDirInfoValue.replicaInfos().keySet().stream().filter(tp -> !tp.topic().equals(TOPIC)).forEach(tp ->
-                        assertFalse(output.contains("\"partition\":\"" + tp + "\""))
+                    logDirInfo.forEach((logDir, logDirInfoValue) -> {
+                        assertTrue(output.contains("\"logDir\":\"" + logDir + "\""));
+                        logDirInfoValue.replicaInfos().keySet().stream().filter(tp -> !tp.topic().equals(TOPIC)).forEach(tp ->
+                                assertFalse(output.contains("\"partition\":\"" + tp + "\""))
                     );
-                }));
+                    }));
         }
     }
 
@@ -177,9 +177,9 @@ public class LogDirsCommandTest {
             Map<String, Object> information = new ObjectMapper().readValue(standardOutputLines[2], HashMap.class);
             List<Object> brokersInformation = (List<Object>) information.get("brokers");
             Set<Integer> brokerIds = new HashSet<>() {{
-                    add((Integer) ((HashMap<String, Object>) brokersInformation.get(0)).get("broker"));
-                    add((Integer) ((HashMap<String, Object>) brokersInformation.get(1)).get("broker"));
-                }};
+                add((Integer) ((HashMap<String, Object>) brokersInformation.get(0)).get("broker"));
+                add((Integer) ((HashMap<String, Object>) brokersInformation.get(1)).get("broker"));
+            }};
             assertEquals(2, brokersInformation.size());
             assertEquals(Set.of(2, 1), brokerIds);
         }

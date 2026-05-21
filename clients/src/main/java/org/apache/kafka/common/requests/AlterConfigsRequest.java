@@ -70,7 +70,7 @@ public class AlterConfigsRequest extends AbstractRequest {
             Objects.requireNonNull(configs, "configs");
             for (Map.Entry<ConfigResource, Config> entry : configs.entrySet()) {
                 AlterConfigsRequestData.AlterConfigsResource resource =
-                    new AlterConfigsRequestData.AlterConfigsResource()
+                        new AlterConfigsRequestData.AlterConfigsResource()
                         .setResourceName(entry.getKey().name())
                         .setResourceType(entry.getKey().type().id());
                 for (ConfigEntry x : entry.getValue().entries) {
@@ -103,10 +103,10 @@ public class AlterConfigsRequest extends AbstractRequest {
 
     public Map<ConfigResource, Config> configs() {
         return data.resources().stream().collect(Collectors.toMap(
-            resource -> new ConfigResource(
+                resource -> new ConfigResource(
                     ConfigResource.Type.forId(resource.resourceType()),
                     resource.resourceName()),
-            resource -> new Config(resource.configs().stream()
+                resource -> new Config(resource.configs().stream()
                     .map(entry -> new ConfigEntry(entry.name(), entry.value()))
                     .collect(Collectors.toList()))));
     }

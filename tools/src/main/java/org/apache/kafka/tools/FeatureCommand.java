@@ -319,7 +319,7 @@ public class FeatureCommand {
                 }
             } catch (Throwable e) {
                 throw new TerseException(upgradeType.name() + " for release version " + releaseVersion +
-                    " failed because at least one feature had the following error: " + e.getMessage());
+                        " failed because at least one feature had the following error: " + e.getMessage());
             }
         } else {
             if (metadata != null) {

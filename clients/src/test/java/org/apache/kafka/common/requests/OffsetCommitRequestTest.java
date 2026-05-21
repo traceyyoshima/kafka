@@ -63,21 +63,21 @@ public class OffsetCommitRequestTest {
     @BeforeEach
     public void setUp() {
         List<OffsetCommitRequestTopic> topics = Arrays.asList(
-            new OffsetCommitRequestTopic()
+                new OffsetCommitRequestTopic()
                 .setTopicId(topicIdOne)
                 .setName(topicOne)
                 .setPartitions(Collections.singletonList(
-                    new OffsetCommitRequestPartition()
+                        new OffsetCommitRequestPartition()
                         .setPartitionIndex(partitionOne)
                         .setCommittedOffset(offset)
                         .setCommittedLeaderEpoch(leaderEpoch)
                         .setCommittedMetadata(metadata)
                 )),
-            new OffsetCommitRequestTopic()
+                new OffsetCommitRequestTopic()
                 .setTopicId(topicIdTwo)
                 .setName(topicTwo)
                 .setPartitions(Collections.singletonList(
-                    new OffsetCommitRequestPartition()
+                        new OffsetCommitRequestPartition()
                         .setPartitionIndex(partitionTwo)
                         .setCommittedOffset(offset)
                         .setCommittedLeaderEpoch(leaderEpoch)
@@ -111,7 +111,7 @@ public class OffsetCommitRequestTest {
     @Test
     public void testVersionSupportForGroupInstanceId() {
         OffsetCommitRequest.Builder builder = OffsetCommitRequest.Builder.forTopicNames(
-            new OffsetCommitRequestData()
+                new OffsetCommitRequestData()
                 .setGroupId(groupId)
                 .setMemberId(memberId)
                 .setGroupInstanceId(groupInstanceId)
@@ -131,18 +131,18 @@ public class OffsetCommitRequestTest {
     public void testGetErrorResponse() {
         OffsetCommitResponseData expectedResponse = new OffsetCommitResponseData()
             .setTopics(Arrays.asList(
-                new OffsetCommitResponseTopic()
+                    new OffsetCommitResponseTopic()
                     .setTopicId(topicIdOne)
                     .setName(topicOne)
                     .setPartitions(Collections.singletonList(
-                        new OffsetCommitResponsePartition()
+                            new OffsetCommitResponsePartition()
                             .setErrorCode(Errors.UNKNOWN_MEMBER_ID.code())
                             .setPartitionIndex(partitionOne))),
-                new OffsetCommitResponseTopic()
+                    new OffsetCommitResponseTopic()
                     .setTopicId(topicIdTwo)
                     .setName(topicTwo)
                     .setPartitions(Collections.singletonList(
-                        new OffsetCommitResponsePartition()
+                            new OffsetCommitResponsePartition()
                             .setErrorCode(Errors.UNKNOWN_MEMBER_ID.code())
                             .setPartitionIndex(partitionTwo)))));
 

@@ -116,11 +116,11 @@ public class StandardAuthorizerData {
 
     static StandardAuthorizerData createEmpty() {
         return new StandardAuthorizerData(createLogger(-1),
-            null,
-            false,
-            Set.of(),
-            DENIED,
-            new AclCache());
+                null,
+                false,
+                Set.of(),
+                DENIED,
+                new AclCache());
     }
 
     private StandardAuthorizerData(Logger log,
@@ -140,43 +140,43 @@ public class StandardAuthorizerData {
 
     StandardAuthorizerData copyWithNewAclMutator(AclMutator newAclMutator) {
         return new StandardAuthorizerData(
-            log,
-            newAclMutator,
-            loadingComplete,
-            superUsers,
-            noAclRule.result,
-            aclCache);
+                log,
+                newAclMutator,
+                loadingComplete,
+                superUsers,
+                noAclRule.result,
+                aclCache);
     }
 
     StandardAuthorizerData copyWithNewLoadingComplete(boolean newLoadingComplete) {
         return new StandardAuthorizerData(log,
-            aclMutator,
-            newLoadingComplete,
-            superUsers,
-            noAclRule.result,
-            aclCache);
+                aclMutator,
+                newLoadingComplete,
+                superUsers,
+                noAclRule.result,
+                aclCache);
     }
 
     StandardAuthorizerData copyWithNewConfig(int nodeId,
                                              Set<String> newSuperUsers,
                                              AuthorizationResult newDefaultResult) {
         return new StandardAuthorizerData(
-            createLogger(nodeId),
-            aclMutator,
-            loadingComplete,
-            newSuperUsers,
-            newDefaultResult,
-            aclCache);
+                createLogger(nodeId),
+                aclMutator,
+                loadingComplete,
+                newSuperUsers,
+                newDefaultResult,
+                aclCache);
     }
 
     StandardAuthorizerData copyWithNewAcls(AclCache aclCache) {
         StandardAuthorizerData newData = new StandardAuthorizerData(
-            log,
-            aclMutator,
-            loadingComplete,
-            superUsers,
-            noAclRule.result,
-            aclCache);
+                log,
+                aclMutator,
+                loadingComplete,
+                superUsers,
+                noAclRule.result,
+                aclCache);
         log.info("Initialized with {} acl(s).", aclCache.count());
         return newData;
     }
@@ -240,9 +240,9 @@ public class StandardAuthorizerData {
             throw new AuthorizerNotReadyException();
         } else {
             rule = findAclRule(
-                matchingPrincipals(requestContext),
-                requestContext.clientAddress().getHostAddress(),
-                action
+                    matchingPrincipals(requestContext),
+                    requestContext.clientAddress().getHostAddress(),
+                    action
             );
         }
         logAuditMessage(principal, requestContext, action, rule);
@@ -335,13 +335,13 @@ public class StandardAuthorizerData {
         // Once we reached element 5, we would jump to element 7.
         MatchingRuleBuilder matchingRuleBuilder = new MatchingRuleBuilder(noAclRule);
         StandardAcl exemplar = new StandardAcl(
-            action.resourcePattern().resourceType(),
-            action.resourcePattern().name(),
-            PatternType.UNKNOWN, // Note that the UNKNOWN value sorts before all others.
+                action.resourcePattern().resourceType(),
+                action.resourcePattern().name(),
+                PatternType.UNKNOWN, // Note that the UNKNOWN value sorts before all others.
             "",
-            "",
-            AclOperation.UNKNOWN,
-            AclPermissionType.UNKNOWN);
+                "",
+                AclOperation.UNKNOWN,
+                AclPermissionType.UNKNOWN);
         AclCache aclCacheSnapshot = aclCache;
         checkSection(aclCacheSnapshot, action, exemplar, matchingPrincipals, host, matchingRuleBuilder);
         if (matchingRuleBuilder.foundDeny()) {
@@ -352,13 +352,13 @@ public class StandardAuthorizerData {
         // ACLs that match any resource name. These are stored as type = LITERAL,
         // name = "*". We search these next.
         exemplar = new StandardAcl(
-            action.resourcePattern().resourceType(),
-            WILDCARD,
-            LITERAL,
-            "",
-            "",
-            AclOperation.UNKNOWN,
-            AclPermissionType.UNKNOWN);
+                action.resourcePattern().resourceType(),
+                WILDCARD,
+                LITERAL,
+                "",
+                "",
+                AclOperation.UNKNOWN,
+                AclPermissionType.UNKNOWN);
         checkSection(aclCacheSnapshot, action, exemplar, matchingPrincipals, host, matchingRuleBuilder);
         return matchingRuleBuilder.build();
     }
@@ -409,12 +409,12 @@ public class StandardAuthorizerData {
                 // stepped outside of the section we care about. Scan for any other potential
                 // prefix matches.
                 exemplar = new StandardAcl(exemplar.resourceType(),
-                    exemplar.resourceName().substring(0, matchesUpTo),
-                    exemplar.patternType(),
-                    exemplar.principal(),
-                    exemplar.host(),
-                    exemplar.operation(),
-                    exemplar.permissionType());
+                        exemplar.resourceName().substring(0, matchesUpTo),
+                        exemplar.patternType(),
+                        exemplar.principal(),
+                        exemplar.host(),
+                        exemplar.operation(),
+                        exemplar.permissionType());
                 tailSet = aclCacheSnapshot.aclsByResource().tailSet(exemplar, true);
                 iterator = tailSet.iterator();
                 continue;
@@ -434,22 +434,22 @@ public class StandardAuthorizerData {
      * The set of operations which imply DESCRIBE permission, when used in an ALLOW acl.
      */
     private static final Set<AclOperation> IMPLIES_DESCRIBE =
-        Set.of(DESCRIBE, READ, WRITE, DELETE, ALTER);
+            Set.of(DESCRIBE, READ, WRITE, DELETE, ALTER);
 
     /**
      * The set of operations which imply DESCRIBE_CONFIGS permission, when used in an ALLOW acl.
      */
     private static final Set<AclOperation> IMPLIES_DESCRIBE_CONFIGS =
-        Set.of(DESCRIBE_CONFIGS, ALTER_CONFIGS);
+            Set.of(DESCRIBE_CONFIGS, ALTER_CONFIGS);
 
     static AuthorizationResult findResult(Action action,
                                           AuthorizableRequestContext requestContext,
                                           StandardAcl acl) {
         return findResult(
-            action,
-            matchingPrincipals(requestContext),
-            requestContext.clientAddress().getHostAddress(),
-            acl
+                action,
+                matchingPrincipals(requestContext),
+                requestContext.clientAddress().getHostAddress(),
+                acl
         );
     }
 

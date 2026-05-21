@@ -38,10 +38,10 @@ public class FinalizedVersionRange {
     public FinalizedVersionRange(final short minVersionLevel, final short maxVersionLevel) {
         if (minVersionLevel < 0 || maxVersionLevel < 0 || maxVersionLevel < minVersionLevel) {
             throw new IllegalArgumentException(
-                String.format(
-                    "Expected minVersionLevel >= 0, maxVersionLevel >= 0 and" +
-                    " maxVersionLevel >= minVersionLevel, but received" +
-                    " minVersionLevel: %d, maxVersionLevel: %d", minVersionLevel, maxVersionLevel));
+                    String.format(
+                        "Expected minVersionLevel >= 0, maxVersionLevel >= 0 and" +
+                        " maxVersionLevel >= minVersionLevel, but received" +
+                        " minVersionLevel: %d, maxVersionLevel: %d", minVersionLevel, maxVersionLevel));
         }
         this.minVersionLevel = minVersionLevel;
         this.maxVersionLevel = maxVersionLevel;
@@ -66,7 +66,7 @@ public class FinalizedVersionRange {
 
         final FinalizedVersionRange that = (FinalizedVersionRange) other;
         return this.minVersionLevel == that.minVersionLevel &&
-            this.maxVersionLevel == that.maxVersionLevel;
+                this.maxVersionLevel == that.maxVersionLevel;
     }
 
     @Override
@@ -77,8 +77,8 @@ public class FinalizedVersionRange {
     @Override
     public String toString() {
         return String.format(
-            "FinalizedVersionRange[min_version_level:%d, max_version_level:%d]",
-            minVersionLevel,
-            maxVersionLevel);
+                "FinalizedVersionRange[min_version_level:%d, max_version_level:%d]",
+                minVersionLevel,
+                maxVersionLevel);
     }
 }

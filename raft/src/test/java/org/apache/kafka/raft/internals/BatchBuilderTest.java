@@ -49,21 +49,21 @@ class BatchBuilderTest {
         int leaderEpoch = 15;
         Compression compression = Compression.of(compressionType).build();
         BatchBuilder<String> builder = new BatchBuilder<>(
-            buffer,
-            serde,
-            compression,
-            baseOffset,
-            logAppendTime,
-            leaderEpoch,
-            buffer.limit()
+                buffer,
+                serde,
+                compression,
+                baseOffset,
+                logAppendTime,
+                leaderEpoch,
+                buffer.limit()
         );
 
         List<String> records = List.of(
-            "a",
-            "ap",
-            "app",
-            "appl",
-            "apple"
+                "a",
+                "ap",
+                "app",
+                "appl",
+                "apple"
         );
 
         records.forEach(record -> builder.appendRecord(record, null));
@@ -89,7 +89,6 @@ class BatchBuilderTest {
         assertEquals(records, builtRecords);
     }
 
-
     @ParameterizedTest
     @ValueSource(ints = {128, 157, 256, 433, 512, 777, 1024})
     public void testHasRoomForUncompressed(int batchSize) {
@@ -99,13 +98,13 @@ class BatchBuilderTest {
         int leaderEpoch = 15;
 
         BatchBuilder<String> builder = new BatchBuilder<>(
-            buffer,
-            serde,
-            Compression.NONE,
-            baseOffset,
-            logAppendTime,
-            leaderEpoch,
-            buffer.limit()
+                buffer,
+                serde,
+                Compression.NONE,
+                baseOffset,
+                logAppendTime,
+                leaderEpoch,
+                buffer.limit()
         );
 
         String record = "i am a record";
@@ -119,6 +118,6 @@ class BatchBuilderTest {
         MemoryRecords records = builder.build();
         assertEquals(sizeInBytes, records.sizeInBytes());
         assertTrue(sizeInBytes <= batchSize, "Built batch size "
-            + sizeInBytes + " is larger than max batch size " + batchSize);
+                + sizeInBytes + " is larger than max batch size " + batchSize);
     }
 }

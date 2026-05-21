@@ -227,17 +227,17 @@ public class DelegationTokenCommand {
                     .ofType(String.class);
 
             this.maxLifeTimeOpt = parser.accepts("max-life-time-period", "Max life period for the token in milliseconds. If the value is -1," +
-                            " then token max life time will default to the server side config value of (delegation.token.max.lifetime.ms).")
+                    " then token max life time will default to the server side config value of (delegation.token.max.lifetime.ms).")
                     .withOptionalArg()
                     .ofType(Long.class);
 
             this.renewTimePeriodOpt = parser.accepts("renew-time-period", "Renew time period in milliseconds. If the value is -1, then the" +
-                            " renew time period will default to the server side config value of (delegation.token.expiry.time.ms).")
+                    " renew time period will default to the server side config value of (delegation.token.expiry.time.ms).")
                     .withOptionalArg()
                     .ofType(Long.class);
 
             this.expiryTimePeriodOpt = parser.accepts("expiry-time-period", "Expiry time period in milliseconds. If the value is -1, then the" +
-                            " token will get invalidated immediately.")
+                    " token will get invalidated immediately.")
                     .withOptionalArg()
                     .ofType(Long.class);
 
@@ -265,11 +265,11 @@ public class DelegationTokenCommand {
         }
 
         public long maxLifeTime() {
-            return  options.valueOf(maxLifeTimeOpt);
+            return options.valueOf(maxLifeTimeOpt);
         }
 
         public long renewTimePeriod() {
-            return  options.valueOf(renewTimePeriodOpt);
+            return options.valueOf(renewTimePeriodOpt);
         }
 
         public long expiryTimePeriod() {
@@ -279,7 +279,7 @@ public class DelegationTokenCommand {
         public String hmac() {
             return options.valueOf(hmacOpt);
         }
-        
+
         public void checkArgs() {
             // check required args
             CommandLineUtils.checkRequiredArgs(parser, options, bootstrapServerOpt, commandConfigOpt);

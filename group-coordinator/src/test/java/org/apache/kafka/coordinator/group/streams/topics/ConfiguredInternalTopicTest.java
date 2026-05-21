@@ -33,25 +33,25 @@ public class ConfiguredInternalTopicTest {
     @Test
     public void testConstructorWithNullName() {
         assertThrows(NullPointerException.class,
-            () -> new ConfiguredInternalTopic(null, 1, Optional.empty(), Map.of()));
+                () -> new ConfiguredInternalTopic(null, 1, Optional.empty(), Map.of()));
     }
 
     @Test
     public void testConstructorWithInvalidName() {
         assertThrows(InvalidTopicException.class,
-            () -> new ConfiguredInternalTopic("invalid topic name", 1, Optional.empty(), Map.of()));
+                () -> new ConfiguredInternalTopic("invalid topic name", 1, Optional.empty(), Map.of()));
     }
 
     @Test
     public void testConstructorWithNullTopicConfigs() {
         assertThrows(NullPointerException.class,
-            () -> new ConfiguredInternalTopic("test-topic", 1, Optional.empty(), null));
+                () -> new ConfiguredInternalTopic("test-topic", 1, Optional.empty(), null));
     }
 
     @Test
     public void testConstructorWithZeroPartitions() {
         assertThrows(IllegalArgumentException.class,
-            () -> new ConfiguredInternalTopic("test-topic", 0, Optional.empty(), Map.of()));
+                () -> new ConfiguredInternalTopic("test-topic", 0, Optional.empty(), Map.of()));
     }
 
     @Test
@@ -62,7 +62,7 @@ public class ConfiguredInternalTopicTest {
         int numberOfPartitions = 3;
         Optional<Short> replicationFactor = Optional.of((short) 2);
         ConfiguredInternalTopic configuredInternalTopic = new ConfiguredInternalTopic(
-            topicName, numberOfPartitions, replicationFactor, topicConfigs);
+                topicName, numberOfPartitions, replicationFactor, topicConfigs);
 
         StreamsGroupDescribeResponseData.TopicInfo topicInfo = configuredInternalTopic.asStreamsGroupDescribeTopicInfo();
 

@@ -184,9 +184,9 @@ public class KeyValueStoreTestDriver<K, V> {
                                                               final Serializer<V> valueSerializer,
                                                               final Deserializer<V> valueDeserializer) {
         final StateSerdes<K, V> serdes = new StateSerdes<>(
-            "unexpected",
-            Serdes.serdeFrom(keySerializer, keyDeserializer),
-            Serdes.serdeFrom(valueSerializer, valueDeserializer));
+                "unexpected",
+                Serdes.serdeFrom(keySerializer, keyDeserializer),
+                Serdes.serdeFrom(valueSerializer, valueDeserializer));
         return new KeyValueStoreTestDriver<>(serdes);
     }
 
@@ -213,17 +213,17 @@ public class KeyValueStoreTestDriver<K, V> {
 
         final LogContext logContext = new LogContext("KeyValueStoreTestDriver ");
         final RecordCollector recordCollector = new RecordCollectorImpl(
-            logContext,
-            new TaskId(0, 0),
-            new StreamsProducer(
-                new MockProducer<>(null, true, null, null, null),
-                AT_LEAST_ONCE,
-                Time.SYSTEM,
-                logContext
+                logContext,
+                new TaskId(0, 0),
+                new StreamsProducer(
+                    new MockProducer<>(null, true, null, null, null),
+                    AT_LEAST_ONCE,
+                    Time.SYSTEM,
+                    logContext
             ),
-            new DefaultProductionExceptionHandler(),
-            new MockStreamsMetrics(new Metrics()),
-            topology
+                new DefaultProductionExceptionHandler(),
+                new MockStreamsMetrics(new Metrics()),
+                topology
         ) {
             @Override
             public <K1, V1> void send(final String topic,

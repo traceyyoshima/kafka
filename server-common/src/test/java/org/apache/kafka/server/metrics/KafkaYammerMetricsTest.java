@@ -31,16 +31,16 @@ class KafkaYammerMetricsTest {
     @Test
     public void testUntaggedMetric() {
         MetricName metricName = KafkaYammerMetrics.getMetricName(
-            "kafka.metrics",
-            "TestMetrics",
-            "UntaggedMetric"
+                "kafka.metrics",
+                "TestMetrics",
+                "UntaggedMetric"
         );
 
         assertEquals("kafka.metrics", metricName.getGroup());
         assertEquals("TestMetrics", metricName.getType());
         assertEquals("UntaggedMetric", metricName.getName());
         assertEquals("kafka.metrics:type=TestMetrics,name=UntaggedMetric",
-            metricName.getMBeanName());
+                metricName.getMBeanName());
         assertNull(metricName.getScope());
     }
 
@@ -52,10 +52,10 @@ class KafkaYammerMetricsTest {
         tags.put("baz", "raz.taz");
 
         MetricName metricName = KafkaYammerMetrics.getMetricName(
-            "kafka.metrics",
-            "TestMetrics",
-            "TaggedMetric",
-            tags
+                "kafka.metrics",
+                "TestMetrics",
+                "TaggedMetric",
+                tags
         );
 
         assertEquals("kafka.metrics", metricName.getGroup());
@@ -64,7 +64,7 @@ class KafkaYammerMetricsTest {
 
         // MBean name should preserve initial ordering
         assertEquals("kafka.metrics:type=TestMetrics,name=TaggedMetric,foo=bar,bar=baz,baz=raz.taz",
-            metricName.getMBeanName());
+                metricName.getMBeanName());
 
         // Scope should be sorted by key
         assertEquals("bar.baz.baz.raz_taz.foo.bar", metricName.getScope());
@@ -78,10 +78,10 @@ class KafkaYammerMetricsTest {
         tags.put("baz", "raz.taz");
 
         MetricName metricName = KafkaYammerMetrics.getMetricName(
-            "kafka.metrics",
-            "TestMetrics",
-            "TaggedMetric",
-            tags
+                "kafka.metrics",
+                "TestMetrics",
+                "TaggedMetric",
+                tags
         );
 
         assertEquals("kafka.metrics", metricName.getGroup());
@@ -90,7 +90,7 @@ class KafkaYammerMetricsTest {
 
         // MBean name should preserve initial ordering (with empty key value removed)
         assertEquals("kafka.metrics:type=TestMetrics,name=TaggedMetric,foo=bar,baz=raz.taz",
-            metricName.getMBeanName());
+                metricName.getMBeanName());
 
         // Scope should be sorted by key (with empty key value removed)
         assertEquals("baz.raz_taz.foo.bar", metricName.getScope());

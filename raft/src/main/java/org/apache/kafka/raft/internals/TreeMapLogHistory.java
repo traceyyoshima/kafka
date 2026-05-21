@@ -32,14 +32,14 @@ public final class TreeMapLogHistory<T> implements LogHistory<T> {
         // we consider -1 a legal offset to account for loading values from the 0-0.checkpoint
         if (offset < -1) {
             throw new IllegalArgumentException(
-                String.format("Next offset %d must be greater than or equal to -1", offset)
+                    String.format("Next offset %d must be greater than or equal to -1", offset)
             );
         }
 
         Map.Entry<Long, ?> lastEntry = history.lastEntry();
         if (lastEntry != null && offset <= lastEntry.getKey()) {
             throw new IllegalArgumentException(
-                String.format("Next offset %d must be greater than the last offset %d", offset, lastEntry.getKey())
+                    String.format("Next offset %d must be greater than the last offset %d", offset, lastEntry.getKey())
             );
         }
 

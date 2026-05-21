@@ -57,10 +57,10 @@ public class ProcessorNodeMetricsTest {
         when(streamsMetrics.nodeLevelTagMap(THREAD_ID, TASK_ID, PROCESSOR_NODE_ID)).thenReturn(tagMap);
 
         getAndVerifySensor(
-            () -> ProcessorNodeMetrics.suppressionEmitSensor(THREAD_ID, TASK_ID, PROCESSOR_NODE_ID, streamsMetrics),
-            metricNamePrefix,
-            descriptionOfRate,
-            descriptionOfCount
+                () -> ProcessorNodeMetrics.suppressionEmitSensor(THREAD_ID, TASK_ID, PROCESSOR_NODE_ID, streamsMetrics),
+                metricNamePrefix,
+                descriptionOfRate,
+                descriptionOfCount
         );
     }
 
@@ -74,10 +74,10 @@ public class ProcessorNodeMetricsTest {
         when(streamsMetrics.nodeLevelTagMap(THREAD_ID, TASK_ID, PROCESSOR_NODE_ID)).thenReturn(tagMap);
 
         getAndVerifySensor(
-            () -> ProcessorNodeMetrics.skippedIdempotentUpdatesSensor(THREAD_ID, TASK_ID, PROCESSOR_NODE_ID, streamsMetrics),
-            metricNamePrefix,
-            descriptionOfRate,
-            descriptionOfCount
+                () -> ProcessorNodeMetrics.skippedIdempotentUpdatesSensor(THREAD_ID, TASK_ID, PROCESSOR_NODE_ID, streamsMetrics),
+                metricNamePrefix,
+                descriptionOfRate,
+                descriptionOfCount
         );
     }
 
@@ -95,23 +95,23 @@ public class ProcessorNodeMetricsTest {
         try (final MockedStatic<StreamsMetricsImpl> streamsMetricsStaticMock = mockStatic(StreamsMetricsImpl.class)) {
             final Sensor sensor = ProcessorNodeMetrics.processAtSourceSensor(THREAD_ID, TASK_ID, PROCESSOR_NODE_ID, streamsMetrics);
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addInvocationRateAndCountToSensor(
-                    expectedSensor,
-                    PROCESSOR_NODE_LEVEL_GROUP,
-                    tagMap,
-                    metricNamePrefix,
-                    descriptionOfRate,
-                    descriptionOfCount
+                    () -> StreamsMetricsImpl.addInvocationRateAndCountToSensor(
+                        expectedSensor,
+                        PROCESSOR_NODE_LEVEL_GROUP,
+                        tagMap,
+                        metricNamePrefix,
+                        descriptionOfRate,
+                        descriptionOfCount
                 )
             );
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addInvocationRateAndCountToSensor(
-                    expectedParentSensor,
-                    TASK_LEVEL_GROUP,
-                    parentTagMap,
-                    metricNamePrefix,
-                    descriptionOfRate,
-                    descriptionOfCount
+                    () -> StreamsMetricsImpl.addInvocationRateAndCountToSensor(
+                        expectedParentSensor,
+                        TASK_LEVEL_GROUP,
+                        parentTagMap,
+                        metricNamePrefix,
+                        descriptionOfRate,
+                        descriptionOfCount
                 )
             );
             assertThat(sensor, is(expectedSensor));
@@ -122,12 +122,12 @@ public class ProcessorNodeMetricsTest {
                                        final RecordingLevel recordingLevel,
                                        final Sensor... parentSensors) {
         when(streamsMetrics.nodeLevelSensor(
-            THREAD_ID,
-            TASK_ID,
-            PROCESSOR_NODE_ID,
-            metricNamePrefix,
-            recordingLevel,
-            parentSensors
+                THREAD_ID,
+                TASK_ID,
+                PROCESSOR_NODE_ID,
+                metricNamePrefix,
+                recordingLevel,
+                parentSensors
         )).thenReturn(expectedSensor);
         when(streamsMetrics.nodeLevelTagMap(THREAD_ID, TASK_ID, PROCESSOR_NODE_ID)).thenReturn(tagMap);
     }
@@ -139,13 +139,13 @@ public class ProcessorNodeMetricsTest {
         try (final MockedStatic<StreamsMetricsImpl> streamsMetricsStaticMock = mockStatic(StreamsMetricsImpl.class)) {
             final Sensor sensor = sensorSupplier.get();
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addInvocationRateAndCountToSensor(
-                    expectedSensor,
-                    PROCESSOR_NODE_LEVEL_GROUP,
-                    tagMap,
-                    metricNamePrefix,
-                    descriptionOfRate,
-                    descriptionOfCount
+                    () -> StreamsMetricsImpl.addInvocationRateAndCountToSensor(
+                        expectedSensor,
+                        PROCESSOR_NODE_LEVEL_GROUP,
+                        tagMap,
+                        metricNamePrefix,
+                        descriptionOfRate,
+                        descriptionOfCount
                 )
             );
             assertThat(sensor, is(expectedSensor));

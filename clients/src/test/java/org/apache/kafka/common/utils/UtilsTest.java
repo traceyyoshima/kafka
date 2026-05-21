@@ -1120,17 +1120,17 @@ public class UtilsTest {
         // check some invalid formats
         // test null timestamp
         assertTrue(assertThrows(IllegalArgumentException.class, () ->
-            Utils.getDateTime(null)
+                Utils.getDateTime(null)
         ).getMessage().contains("Error parsing timestamp with null value"));
 
         // test pattern: yyyy-MM-dd'T'HH:mm:ss.X
         checkExceptionForGetDateTimeMethod(() ->
-            invokeGetDateTimeMethod(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.X"))
+                invokeGetDateTimeMethod(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.X"))
         );
 
         // test pattern: yyyy-MM-dd HH:mm:ss
         assertTrue(assertThrows(ParseException.class, () ->
-            invokeGetDateTimeMethod(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
+                invokeGetDateTimeMethod(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
         ).getMessage().contains("It does not contain a 'T' according to ISO8601 format"));
 
         // KAFKA-10685: use DateTimeFormatter generate micro/nano second timestamp
@@ -1144,17 +1144,17 @@ public class UtilsTest {
 
         // test pattern: yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS
         checkExceptionForGetDateTimeMethod(() ->
-            Utils.getDateTime(formatter.format(timestampWithNanoSeconds))
+                Utils.getDateTime(formatter.format(timestampWithNanoSeconds))
         );
 
         // test pattern: yyyy-MM-dd'T'HH:mm:ss.SSSSSS
         checkExceptionForGetDateTimeMethod(() ->
-            Utils.getDateTime(formatter.format(timestampWithMicroSeconds))
+                Utils.getDateTime(formatter.format(timestampWithMicroSeconds))
         );
 
         // test pattern: yyyy-MM-dd'T'HH:mm:ss
         checkExceptionForGetDateTimeMethod(() ->
-            Utils.getDateTime(formatter.format(timestampWithSeconds))
+                Utils.getDateTime(formatter.format(timestampWithSeconds))
         );
     }
 
@@ -1263,38 +1263,38 @@ public class UtilsTest {
         Map<String, Object> recorded = new HashMap<>();
 
         Utils.tryAll(asList(
-            recordingCallable(recorded, "valid-0", null),
-            recordingCallable(recorded, null, new TestException("exception-1")),
-            recordingCallable(recorded, "valid-2", null),
-            recordingCallable(recorded, null, new TestException("exception-3"))
+                recordingCallable(recorded, "valid-0", null),
+                recordingCallable(recorded, null, new TestException("exception-1")),
+                recordingCallable(recorded, "valid-2", null),
+                recordingCallable(recorded, null, new TestException("exception-3"))
         ));
         Map<String, Object> expected = Map.of(
-            "valid-0", "valid-0",
-            "exception-1", new TestException("exception-1"),
-            "valid-2", "valid-2",
-            "exception-3", new TestException("exception-3")
+                "valid-0", "valid-0",
+                "exception-1", new TestException("exception-1"),
+                "valid-2", "valid-2",
+                "exception-3", new TestException("exception-3")
         );
         assertEquals(expected, recorded);
 
         recorded.clear();
         Utils.tryAll(asList(
-            recordingCallable(recorded, "valid-0", null),
-            recordingCallable(recorded, "valid-1", null)
+                recordingCallable(recorded, "valid-0", null),
+                recordingCallable(recorded, "valid-1", null)
         ));
         expected = Map.of(
-            "valid-0", "valid-0",
-            "valid-1", "valid-1"
+                "valid-0", "valid-0",
+                "valid-1", "valid-1"
         );
         assertEquals(expected, recorded);
 
         recorded.clear();
         Utils.tryAll(asList(
-            recordingCallable(recorded, null, new TestException("exception-0")),
-            recordingCallable(recorded, null, new TestException("exception-1")))
+                recordingCallable(recorded, null, new TestException("exception-0")),
+                recordingCallable(recorded, null, new TestException("exception-1")))
         );
         expected = Map.of(
-            "exception-0", new TestException("exception-0"),
-            "exception-1", new TestException("exception-1")
+                "exception-0", new TestException("exception-0"),
+                "exception-1", new TestException("exception-1")
         );
         assertEquals(expected, recorded);
     }
@@ -1321,6 +1321,7 @@ public class UtilsTest {
 
     private static class TestException extends Exception {
         final String key;
+
         TestException(String key) {
             this.key = key;
         }

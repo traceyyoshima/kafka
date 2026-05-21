@@ -87,6 +87,7 @@ public final class TopicBasedRemoteLogMetadataManagerConfig {
     private static final String REMOTE_LOG_METADATA_CLIENT_PREFIX = "__remote_log_metadata_client";
 
     private static final ConfigDef CONFIG = new ConfigDef();
+
     static {
         CONFIG.define(REMOTE_LOG_METADATA_TOPIC_REPLICATION_FACTOR_PROP, SHORT, DEFAULT_REMOTE_LOG_METADATA_TOPIC_REPLICATION_FACTOR, atLeast(1), LOW,
                       REMOTE_LOG_METADATA_TOPIC_REPLICATION_FACTOR_DOC)

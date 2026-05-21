@@ -226,8 +226,8 @@ public class ProcessorTopologyTest {
         final ProcessorTopology processorTopology = topology.getInternalBuilder("X").buildTopology();
 
         processorTopology.updateSourceTopics(mkMap(
-            mkEntry(sourceNodeWithinSubtopology, Collections.singletonList(topicWithinSubtopology)),
-            mkEntry(sourceNodeOutsideSubtopology, Collections.singletonList(topicOutsideSubtopology))
+                mkEntry(sourceNodeWithinSubtopology, Collections.singletonList(topicWithinSubtopology)),
+                mkEntry(sourceNodeOutsideSubtopology, Collections.singletonList(topicOutsideSubtopology))
             )
         );
 
@@ -245,9 +245,9 @@ public class ProcessorTopologyTest {
         final ProcessorTopology processorTopology = topology.getInternalBuilder("X").buildTopology();
 
         final Throwable exception = assertThrows(
-            IllegalStateException.class,
-            () -> processorTopology.updateSourceTopics(Collections.singletonMap(
-                existingSourceNode, Collections.singletonList(topicOfExistingSourceNode)
+                IllegalStateException.class,
+                () -> processorTopology.updateSourceTopics(Collections.singletonMap(
+                    existingSourceNode, Collections.singletonList(topicOfExistingSourceNode)
             ))
         );
         assertThat(exception.getMessage(), is("Node " + nonExistingSourceNode + " not found in full topology"));
@@ -264,15 +264,15 @@ public class ProcessorTopologyTest {
         final ProcessorTopology processorTopology = topology.getInternalBuilder("X").buildTopology();
 
         final Throwable exception = assertThrows(
-            IllegalStateException.class,
-            () -> processorTopology.updateSourceTopics(mkMap(
-                mkEntry(sourceNode, Collections.singletonList(doublySubscribedTopic)),
-                mkEntry(updatedSourceNode, Arrays.asList(topic, doublySubscribedTopic))
+                IllegalStateException.class,
+                () -> processorTopology.updateSourceTopics(mkMap(
+                    mkEntry(sourceNode, Collections.singletonList(doublySubscribedTopic)),
+                    mkEntry(updatedSourceNode, Arrays.asList(topic, doublySubscribedTopic))
             ))
         );
         assertThat(
-            exception.getMessage(),
-            startsWith("Topic " + doublySubscribedTopic + " was already registered to source node")
+                exception.getMessage(),
+                startsWith("Topic " + doublySubscribedTopic + " was already registered to source node")
         );
     }
 
@@ -338,7 +338,7 @@ public class ProcessorTopologyTest {
         driver = new TopologyTestDriver(createConnectedStateStoreTopology("connectedStore"), props);
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -357,7 +357,7 @@ public class ProcessorTopologyTest {
     public void testDrivingConnectedStateStoreInDifferentProcessorsTopology() {
         final String storeName = "connectedStore";
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore(storeName), Serdes.String(), Serdes.String());
+                Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore(storeName), Serdes.String(), Serdes.String());
         topology
             .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
             .addSource("source2", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_2)
@@ -369,7 +369,7 @@ public class ProcessorTopologyTest {
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -387,7 +387,7 @@ public class ProcessorTopologyTest {
     @Test
     public void testPrefixScanInMemoryStoreNoCachingNoLogging() {
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
+                Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
                 .withCachingDisabled()
                 .withLoggingDisabled();
         topology
@@ -399,7 +399,7 @@ public class ProcessorTopologyTest {
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -422,7 +422,7 @@ public class ProcessorTopologyTest {
     @Test
     public void testPrefixScanInMemoryStoreWithCachingNoLogging() {
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
+                Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
                 .withCachingEnabled()
                 .withLoggingDisabled();
         topology
@@ -434,7 +434,7 @@ public class ProcessorTopologyTest {
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -457,7 +457,7 @@ public class ProcessorTopologyTest {
     @Test
     public void testPrefixScanInMemoryStoreWithCachingWithLogging() {
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
+                Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
                 .withCachingEnabled()
                 .withLoggingEnabled(Collections.emptyMap());
         topology
@@ -469,7 +469,7 @@ public class ProcessorTopologyTest {
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -492,7 +492,7 @@ public class ProcessorTopologyTest {
     @Test
     public void testPrefixScanPersistentStoreNoCachingNoLogging() {
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
+                Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
                 .withCachingDisabled()
                 .withLoggingDisabled();
         topology
@@ -504,7 +504,7 @@ public class ProcessorTopologyTest {
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -527,7 +527,7 @@ public class ProcessorTopologyTest {
     @Test
     public void testPrefixScanPersistentStoreWithCachingNoLogging() {
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
+                Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
                 .withCachingEnabled()
                 .withLoggingDisabled();
         topology
@@ -539,7 +539,7 @@ public class ProcessorTopologyTest {
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -562,7 +562,7 @@ public class ProcessorTopologyTest {
     @Test
     public void testPrefixScanPersistentStoreWithCachingWithLogging() {
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
+                Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
                 .withCachingEnabled()
                 .withLoggingEnabled(Collections.emptyMap());
         topology
@@ -574,7 +574,7 @@ public class ProcessorTopologyTest {
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -597,7 +597,7 @@ public class ProcessorTopologyTest {
     @Test
     public void testPrefixScanPersistentTimestampedStoreNoCachingNoLogging() {
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.persistentTimestampedKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
+                Stores.keyValueStoreBuilder(Stores.persistentTimestampedKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
                 .withCachingDisabled()
                 .withLoggingDisabled();
         topology
@@ -609,7 +609,7 @@ public class ProcessorTopologyTest {
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -632,7 +632,7 @@ public class ProcessorTopologyTest {
     @Test
     public void testPrefixScanPersistentTimestampedStoreWithCachingNoLogging() {
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.persistentTimestampedKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
+                Stores.keyValueStoreBuilder(Stores.persistentTimestampedKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
                 .withCachingEnabled()
                 .withLoggingDisabled();
         topology
@@ -644,7 +644,7 @@ public class ProcessorTopologyTest {
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -667,7 +667,7 @@ public class ProcessorTopologyTest {
     @Test
     public void testPrefixScanPersistentTimestampedStoreWithCachingWithLogging() {
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.persistentTimestampedKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
+                Stores.keyValueStoreBuilder(Stores.persistentTimestampedKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
                 .withCachingEnabled()
                 .withLoggingEnabled(Collections.emptyMap());
         topology
@@ -679,7 +679,7 @@ public class ProcessorTopologyTest {
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -702,7 +702,7 @@ public class ProcessorTopologyTest {
     @Test
     public void testPrefixScanLruMapNoCachingNoLogging() {
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.lruMap(DEFAULT_STORE_NAME, 100), Serdes.String(), Serdes.String())
+                Stores.keyValueStoreBuilder(Stores.lruMap(DEFAULT_STORE_NAME, 100), Serdes.String(), Serdes.String())
                 .withCachingDisabled()
                 .withLoggingDisabled();
         topology
@@ -714,7 +714,7 @@ public class ProcessorTopologyTest {
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -737,7 +737,7 @@ public class ProcessorTopologyTest {
     @Test
     public void testPrefixScanLruMapWithCachingNoLogging() {
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.lruMap(DEFAULT_STORE_NAME, 100), Serdes.String(), Serdes.String())
+                Stores.keyValueStoreBuilder(Stores.lruMap(DEFAULT_STORE_NAME, 100), Serdes.String(), Serdes.String())
                 .withCachingEnabled()
                 .withLoggingDisabled();
         topology
@@ -749,7 +749,7 @@ public class ProcessorTopologyTest {
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -772,7 +772,7 @@ public class ProcessorTopologyTest {
     @Test
     public void testPrefixScanLruMapWithCachingWithLogging() {
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.lruMap(DEFAULT_STORE_NAME, 100), Serdes.String(), Serdes.String())
+                Stores.keyValueStoreBuilder(Stores.lruMap(DEFAULT_STORE_NAME, 100), Serdes.String(), Serdes.String())
                 .withCachingEnabled()
                 .withLoggingEnabled(Collections.emptyMap());
         topology
@@ -784,7 +784,7 @@ public class ProcessorTopologyTest {
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -866,7 +866,6 @@ public class ProcessorTopologyTest {
         assertThat(outputTopic.readRecord(),
                 equalTo(new TestRecord<>("key3", "value3", null, 3000L)));
     }
-
 
     @Test
     public void testTopologyInitializationWithInitialKeyAndValue() {
@@ -1046,8 +1045,6 @@ public class ProcessorTopologyTest {
                 .addStateStore(storeBuilder, processor);
         return topology.getInternalBuilder("anyAppId").buildTopology();
     }
-
-
 
     private void assertNextOutputRecord(final TestRecord<String, String> record,
                                         final String key,
@@ -1304,7 +1301,6 @@ public class ProcessorTopologyTest {
             store.put(record.key(), record.value());
         }
     }
-
 
     /**
      * A processor that stores each key-value pair in an in-memory key-value store registered with the context.

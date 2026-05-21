@@ -78,7 +78,9 @@ public class TransactionsTestHelper {
 
     public interface TransactionHooks {
         void verifyLogStartOffsets(Map<TopicPartition, Long> expectedOffsets) throws InterruptedException;
+
         void maybeVerifyLocalLogStartOffsets(Map<TopicPartition, Long> expectedOffsets) throws InterruptedException;
+
         void maybeWaitForAtLeastOneSegmentUpload(List<TopicPartition> topicPartitions);
     }
 

@@ -108,7 +108,7 @@ public class ReassignPartitionsCommandTest {
             .range(0, 4)
             .boxed()
             .collect(Collectors.toMap(Function.identity(), i ->
-        BROKER_LEVEL_THROTTLES.stream().collect(Collectors.toMap(Function.identity(), t -> -1L))
+                    BROKER_LEVEL_THROTTLES.stream().collect(Collectors.toMap(Function.identity(), t -> -1L))
     ));
 
     ReassignPartitionsCommandTest(ClusterInstance clusterInstance) {
@@ -375,8 +375,8 @@ public class ReassignPartitionsCommandTest {
 
         // The reassignment will bring replicas 3 and 4 into the replica set.
         String assignment = "{\"version\":1,\"partitions\":" +
-            "[{\"topic\":\"foo\",\"partition\":0,\"replicas\":[0,1,2,3,4],\"log_dirs\":[\"any\",\"any\",\"any\",\"any\",\"any\"]}" +
-            "]}";
+                "[{\"topic\":\"foo\",\"partition\":0,\"replicas\":[0,1,2,3,4],\"log_dirs\":[\"any\",\"any\",\"any\",\"any\",\"any\"]}" +
+                "]}";
 
         // We will throttle replica 4 so that only replica 3 joins the ISR
         setReplicationThrottleForPartitions(foo0);
@@ -385,15 +385,15 @@ public class ReassignPartitionsCommandTest {
         runExecuteAssignment(false, assignment, -1L, -1L);
         try (Admin admin = Admin.create(Map.of(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, clusterInstance.bootstrapServers()))) {
             TestUtils.waitForCondition(
-                () -> {
-                    Set<Integer> isr = admin.describeTopics(Set.of(foo0.topic()))
+                    () -> {
+                        Set<Integer> isr = admin.describeTopics(Set.of(foo0.topic()))
                         .allTopicNames().get().get(foo0.topic()).partitions().stream()
                         .filter(p -> p.partition() == foo0.partition())
                         .flatMap(p -> p.isr().stream())
                         .map(Node::id).collect(Collectors.toSet());
-                    return isr.containsAll(List.of(0, 1, 2, 3));
-                },
-                "Timed out while waiting for replica 3 to join the ISR"
+                        return isr.containsAll(List.of(0, 1, 2, 3));
+                    },
+                    "Timed out while waiting for replica 3 to join the ISR"
             );
         }
 
@@ -434,8 +434,8 @@ public class ReassignPartitionsCommandTest {
 
             // Remove the throttle
             admin.incrementalAlterConfigs(Map.of(
-                            new ConfigResource(ConfigResource.Type.BROKER, "0"),
-                            List.of(new AlterConfigOp(
+                    new ConfigResource(ConfigResource.Type.BROKER, "0"),
+                    List.of(new AlterConfigOp(
                                     new ConfigEntry(QuotaConfig.REPLICA_ALTER_LOG_DIRS_IO_MAX_BYTES_PER_SECOND_CONFIG, ""), AlterConfigOp.OpType.DELETE))))
                     .all().get();
             waitForBrokerLevelThrottles(admin, unthrottledBrokerConfigs);
@@ -495,9 +495,9 @@ public class ReassignPartitionsCommandTest {
                 "]}";
         try (Admin admin = clusterInstance.admin()) {
             assertEquals("Error reassigning partition(s):\n" +
-                            "bar-0: The replication factor is changed from 3 to 1\n" +
-                            "foo-0: The replication factor is changed from 3 to 2\n" +
-                            "foo-1: The replication factor is changed from 3 to 4",
+                    "bar-0: The replication factor is changed from 3 to 1\n" +
+                    "foo-0: The replication factor is changed from 3 to 2\n" +
+                    "foo-1: The replication factor is changed from 3 to 4",
                     assertThrows(TerseException.class, () -> executeAssignment(admin, false, assignment, -1L, -1L, 10000L, Time.SYSTEM, true)).getMessage());
         }
     }
@@ -526,7 +526,7 @@ public class ReassignPartitionsCommandTest {
             generateAssignment(admin, topicsToMoveJson, "1,2,3", false);
         }
     }
-    
+
     @ClusterTest(types = {Type.KRAFT})
     public void testExecuteAssignmentWithOneBootstrapServerShutdownWontTimeout() throws Exception {
         var brokerIdToShutdown = 0;
@@ -535,16 +535,16 @@ public class ReassignPartitionsCommandTest {
         produceMessages(foo0.topic(), foo0.partition(), 100);
         clusterInstance.shutdownBroker(brokerIdToShutdown);
         TestUtils.waitForCondition(
-            () -> clusterInstance.aliveBrokers().size() == 4,
-            "Waiting for broker to shutdown failed"
+                () -> clusterInstance.aliveBrokers().size() == 4,
+                "Waiting for broker to shutdown failed"
         );
         // Execute the assignment
         String assignment = "{\"version\":1,\"partitions\":" +
-            "[{\"topic\":\"foo\",\"partition\":0,\"replicas\":[3,1,2],\"log_dirs\":[\"any\",\"any\",\"any\"]}" +
-            "]}";
+                "[{\"topic\":\"foo\",\"partition\":0,\"replicas\":[3,1,2],\"log_dirs\":[\"any\",\"any\",\"any\"]}" +
+                "]}";
         runExecuteAssignment(false, assignment, -1L, -1L);
     }
-    
+
     private void createTopics() {
         try (Admin admin = Admin.create(Map.of(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, clusterInstance.bootstrapServers()))) {
             Map<Integer, List<Integer>> fooReplicasAssignments = new HashMap<>();
@@ -713,15 +713,15 @@ public class ReassignPartitionsCommandTest {
 
             String reassignmentJson =
                     " { \"version\": 1," +
-                            "  \"partitions\": [" +
-                            "    {" +
-                            "     \"topic\": \"" + topicPartition.topic() + "\"," +
-                            "     \"partition\": " + topicPartition.partition() + "," +
-                            "     \"replicas\": [" + replicas.stream().map(Object::toString).collect(Collectors.joining(",")) + "]," +
-                            "     \"log_dirs\": [" + String.join(",", logDirs) + "]" +
-                            "    }" +
-                            "   ]" +
-                            "  }";
+                    "  \"partitions\": [" +
+                    "    {" +
+                    "     \"topic\": \"" + topicPartition.topic() + "\"," +
+                    "     \"partition\": " + topicPartition.partition() + "," +
+                    "     \"replicas\": [" + replicas.stream().map(Object::toString).collect(Collectors.joining(",")) + "]," +
+                    "     \"log_dirs\": [" + String.join(",", logDirs) + "]" +
+                    "    }" +
+                    "   ]" +
+                    "  }";
 
             return new LogDirReassignment(reassignmentJson, currentDir, newDir);
         }

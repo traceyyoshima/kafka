@@ -64,9 +64,9 @@ public class StreamThreadStateStoreProvider {
             if (storeQueryParams.partition() != null) {
                 for (final Task task : tasks) {
                     if (task.id().partition() == storeQueryParams.partition() &&
-                        (topologyName == null || topologyName.equals(task.id().topologyName())) &&
-                        task.store(storeName) != null &&
-                        storeName.equals(task.store(storeName).name())) {
+                            (topologyName == null || topologyName.equals(task.id().topologyName())) &&
+                            task.store(storeName) != null &&
+                            storeName.equals(task.store(storeName).name())) {
                         final T typedStore = validateAndCastStores(task.store(storeName), queryableStoreType, storeName, task.id());
                         return Collections.singletonList(typedStore);
                     }
@@ -87,8 +87,8 @@ public class StreamThreadStateStoreProvider {
             }
         } else {
             throw new InvalidStateStoreException("Cannot get state store " + storeName + " because the stream thread is " +
-                                                    state + ", not RUNNING" +
-                                                    (storeQueryParams.staleStoresEnabled() ? " or REBALANCING" : ""));
+                    state + ", not RUNNING" +
+                    (storeQueryParams.staleStoresEnabled() ? " or REBALANCING" : ""));
         }
     }
 
@@ -103,8 +103,8 @@ public class StreamThreadStateStoreProvider {
             if (!store.isOpen()) {
                 throw new InvalidStateStoreException(
                         "Cannot get state store " + storeName + " for task " + taskId +
-                            " because the store is not open. " +
-                            "The state store may have migrated to another instance.");
+                        " because the store is not open. " +
+                        "The state store may have migrated to another instance.");
             }
             if (store instanceof TimestampedKeyValueStoreWithHeaders) {
                 if (queryableStoreType instanceof QueryableStoreTypes.KeyValueStoreType) {
@@ -129,7 +129,7 @@ public class StreamThreadStateStoreProvider {
             return (T) store;
         } else {
             throw new InvalidStateStoreException(
-                "Cannot get state store " + storeName +
+                    "Cannot get state store " + storeName +
                     " because the queryable store type [" + queryableStoreType.getClass() +
                     "] does not accept the actual store type [" + store.getClass() + "]."
             );

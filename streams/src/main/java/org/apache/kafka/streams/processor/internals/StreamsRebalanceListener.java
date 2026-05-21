@@ -83,8 +83,8 @@ public class StreamsRebalanceListener implements ConsumerRebalanceListener {
     @Override
     public void onPartitionsRevoked(final Collection<TopicPartition> partitions) {
         log.debug("Current state {}: revoked partitions {} because of consumer rebalance.\n" +
-                      "\tcurrently assigned active tasks: {}\n" +
-                      "\tcurrently assigned standby tasks: {}\n",
+                "\tcurrently assigned active tasks: {}\n" +
+                "\tcurrently assigned standby tasks: {}\n",
                   streamThread.state(),
                   partitions,
                   taskManager.activeTaskIds(),
@@ -105,8 +105,8 @@ public class StreamsRebalanceListener implements ConsumerRebalanceListener {
     @Override
     public void onPartitionsLost(final Collection<TopicPartition> partitions) {
         log.info("at state {}: partitions {} lost due to missed rebalance.\n" +
-                     "\tlost active tasks: {}\n" +
-                     "\tlost assigned standby tasks: {}\n",
+                "\tlost active tasks: {}\n" +
+                "\tlost assigned standby tasks: {}\n",
                  streamThread.state(),
                  partitions,
                  taskManager.activeTaskIds(),

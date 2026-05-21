@@ -68,7 +68,7 @@ public class DescribeUserScramCredentialsRequest extends AbstractRequest {
                 .setErrorMessage(apiError.message());
 
         data.users().forEach(__ ->
-            response.results().add(new DescribeUserScramCredentialsResponseData.DescribeUserScramCredentialsResult()
+                response.results().add(new DescribeUserScramCredentialsResponseData.DescribeUserScramCredentialsResult()
                 .setErrorCode(apiError.error().code())
                 .setErrorMessage(apiError.message()))
         );

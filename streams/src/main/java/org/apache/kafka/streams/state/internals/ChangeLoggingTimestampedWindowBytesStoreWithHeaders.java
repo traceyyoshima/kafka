@@ -45,16 +45,16 @@ public class ChangeLoggingTimestampedWindowBytesStoreWithHeaders extends ChangeL
     void log(final Bytes key,
              final byte[] valueTimestampHeaders) {
         internalContext.logChange(
-            name(),
-            key,
-            rawPlainValue(valueTimestampHeaders),
-            valueTimestampHeaders != null
+                name(),
+                key,
+                rawPlainValue(valueTimestampHeaders),
+                valueTimestampHeaders != null
                 ? timestamp(valueTimestampHeaders)
                 : internalContext.recordContext().timestamp(),
-            valueTimestampHeaders != null
+                valueTimestampHeaders != null
                 ? headers(valueTimestampHeaders)
                 : internalContext.recordContext().headers(),
-            wrapped().getPosition()
+                wrapped().getPosition()
         );
     }
 }

@@ -93,24 +93,24 @@ public class StreamsGroupBuilder {
 
         // Add records for members.
         members.forEach((memberId, member) ->
-            records.add(
-                StreamsCoordinatorRecordHelpers.newStreamsGroupMemberRecord(groupId, member))
+                records.add(
+                    StreamsCoordinatorRecordHelpers.newStreamsGroupMemberRecord(groupId, member))
         );
 
         // Add group epoch record.
         records.add(
-            StreamsCoordinatorRecordHelpers.newStreamsGroupMetadataRecord(groupId, groupEpoch, metadataHash, validatedTopologyEpoch, lastAssignmentConfigs));
+                StreamsCoordinatorRecordHelpers.newStreamsGroupMetadataRecord(groupId, groupEpoch, metadataHash, validatedTopologyEpoch, lastAssignmentConfigs));
 
         // Add target assignment records.
         targetAssignments.forEach((memberId, assignment) ->
-            records.add(
-                StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentRecord(groupId, memberId, assignment))
+                records.add(
+                    StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentRecord(groupId, memberId, assignment))
         );
 
         // Add topology record.
         if (topology != null) {
             records.add(StreamsCoordinatorRecordHelpers.newStreamsGroupTopologyRecord(
-                groupId,
+                    groupId,
                     new StreamsGroupTopologyValue()
                         .setEpoch(topology.topologyEpoch())
                         .setSubtopologies(topology.subtopologies().values().stream().sorted(Comparator.comparing(Subtopology::subtopologyId)).toList()))
@@ -119,12 +119,12 @@ public class StreamsGroupBuilder {
 
         // Add target assignment epoch.
         records.add(StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentMetadataRecord(groupId,
-            targetAssignmentEpoch, targetAssignmentTimestamp));
+                targetAssignmentEpoch, targetAssignmentTimestamp));
 
         // Add current assignment records for members.
         members.forEach((memberId, member) ->
-            records.add(
-                StreamsCoordinatorRecordHelpers.newStreamsGroupCurrentAssignmentRecord(groupId, member))
+                records.add(
+                    StreamsCoordinatorRecordHelpers.newStreamsGroupCurrentAssignmentRecord(groupId, member))
         );
 
         return records;

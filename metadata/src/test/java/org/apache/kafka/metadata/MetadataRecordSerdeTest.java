@@ -41,8 +41,6 @@ class MetadataRecordSerdeTest {
             .setName("foo")
             .setTopicId(Uuid.randomUuid());
 
-
-
         for (short version = TopicRecord.LOWEST_SUPPORTED_VERSION; version <= TopicRecord.HIGHEST_SUPPORTED_VERSION; version++) {
             ApiMessageAndVersion messageAndVersion = new ApiMessageAndVersion(topicRecord, version);
 

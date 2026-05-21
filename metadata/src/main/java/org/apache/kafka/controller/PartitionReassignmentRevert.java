@@ -37,10 +37,10 @@ class PartitionReassignmentRevert {
         // special case below.)
 
         PartitionReassignmentReplicas ongoingReassignment =
-            new PartitionReassignmentReplicas(
-                Replicas.toList(registration.removingReplicas),
-                Replicas.toList(registration.addingReplicas),
-                Replicas.toList(registration.replicas)
+                new PartitionReassignmentReplicas(
+                    Replicas.toList(registration.removingReplicas),
+                    Replicas.toList(registration.addingReplicas),
+                    Replicas.toList(registration.replicas)
             );
 
         this.replicas = ongoingReassignment.originalReplicas();
@@ -58,7 +58,7 @@ class PartitionReassignmentRevert {
                 // starting with an empty replica set prior to the reassignment we are
                 // trying to revert.
                 throw new InvalidReplicaAssignmentException("Invalid replica " +
-                    "assignment: addingReplicas contains all replicas.");
+                        "assignment: addingReplicas contains all replicas.");
             }
             isr.add(replicas.get(0));
             this.unclean = true;
@@ -88,15 +88,15 @@ class PartitionReassignmentRevert {
     public boolean equals(Object o) {
         if (!(o instanceof PartitionReassignmentRevert other)) return false;
         return replicas.equals(other.replicas) &&
-            isr.equals(other.isr) &&
-            unclean == other.unclean;
+                isr.equals(other.isr) &&
+                unclean == other.unclean;
     }
 
     @Override
     public String toString() {
         return "PartitionReassignmentRevert(" +
-            "replicas=" + replicas + ", " +
-            "isr=" + isr + ", " +
-            "unclean=" + unclean + ")";
+                "replicas=" + replicas + ", " +
+                "isr=" + isr + ", " +
+                "unclean=" + unclean + ")";
     }
 }

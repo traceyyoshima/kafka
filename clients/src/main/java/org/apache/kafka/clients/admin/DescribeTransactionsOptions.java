@@ -26,8 +26,8 @@ public class DescribeTransactionsOptions extends AbstractOptions<DescribeTransac
     @Override
     public String toString() {
         return "DescribeTransactionsOptions(" +
-            "timeoutMs=" + timeoutMs +
-            ')';
+                "timeoutMs=" + timeoutMs +
+                ')';
     }
 
 }

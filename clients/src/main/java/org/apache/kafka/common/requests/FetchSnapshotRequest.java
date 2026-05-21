@@ -36,7 +36,7 @@ public final class FetchSnapshotRequest extends AbstractRequest {
     @Override
     public FetchSnapshotResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         return new FetchSnapshotResponse(
-            new FetchSnapshotResponseData()
+                new FetchSnapshotResponseData()
                 .setThrottleTimeMs(throttleTimeMs)
                 .setErrorCode(Errors.forException(e).code())
         );

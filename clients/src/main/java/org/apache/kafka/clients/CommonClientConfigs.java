@@ -80,29 +80,29 @@ public class CommonClientConfigs {
 
     public static final String RECONNECT_BACKOFF_MS_CONFIG = "reconnect.backoff.ms";
     public static final String RECONNECT_BACKOFF_MS_DOC = "The base amount of time to wait before attempting to reconnect to a given host. " +
-        "This avoids repeatedly connecting to a host in a tight loop. This backoff applies to all connection attempts by the client to a broker. " +
-        "This value is the initial backoff value and will increase exponentially for each consecutive connection failure, up to the <code>reconnect.backoff.max.ms</code> value.";
+            "This avoids repeatedly connecting to a host in a tight loop. This backoff applies to all connection attempts by the client to a broker. " +
+            "This value is the initial backoff value and will increase exponentially for each consecutive connection failure, up to the <code>reconnect.backoff.max.ms</code> value.";
 
     public static final String RECONNECT_BACKOFF_MAX_MS_CONFIG = "reconnect.backoff.max.ms";
     public static final String RECONNECT_BACKOFF_MAX_MS_DOC = "The maximum amount of time in milliseconds to wait when reconnecting to a broker that has repeatedly failed to connect. " +
-        "If provided, the backoff per host will increase exponentially for each consecutive connection failure, up to this maximum. After calculating the backoff increase, 20% random jitter is added to avoid connection storms.";
+            "If provided, the backoff per host will increase exponentially for each consecutive connection failure, up to this maximum. After calculating the backoff increase, 20% random jitter is added to avoid connection storms.";
 
     public static final String RETRIES_CONFIG = "retries";
     public static final String RETRIES_DOC = "It is recommended to set the value to either <code>MAX_VALUE</code> or zero, and use corresponding timeout parameters to control how long a client should retry a request." +
-        " Setting a value greater than zero will cause the client to resend any request that fails with a potentially transient error." +
-        " Setting a value of zero will lead to transient errors not being retried, and they will be propagated to the application to be handled.";
+            " Setting a value greater than zero will cause the client to resend any request that fails with a potentially transient error." +
+            " Setting a value of zero will lead to transient errors not being retried, and they will be propagated to the application to be handled.";
 
     public static final String RETRY_BACKOFF_MS_CONFIG = "retry.backoff.ms";
     public static final String RETRY_BACKOFF_MS_DOC = "The amount of time to wait before attempting to retry a failed request to a given topic partition. " +
-        "This avoids repeatedly sending requests in a tight loop under some failure scenarios. This value is the initial backoff value and will increase exponentially for each failed request, " +
-        "up to the <code>retry.backoff.max.ms</code> value.";
+            "This avoids repeatedly sending requests in a tight loop under some failure scenarios. This value is the initial backoff value and will increase exponentially for each failed request, " +
+            "up to the <code>retry.backoff.max.ms</code> value.";
     public static final Long DEFAULT_RETRY_BACKOFF_MS = 100L;
 
     public static final String RETRY_BACKOFF_MAX_MS_CONFIG = "retry.backoff.max.ms";
     public static final String RETRY_BACKOFF_MAX_MS_DOC = "The maximum amount of time in milliseconds to wait when retrying a request to the broker that has repeatedly failed. " +
-        "If provided, the backoff per client will increase exponentially for each failed request, up to this maximum. To prevent all clients from being synchronized upon retry, " +
-        "a randomized jitter with a factor of 0.2 will be applied to the backoff, resulting in the backoff falling within a range between 20% below and 20% above the computed value. " +
-        "If <code>retry.backoff.ms</code> is set to be higher than <code>retry.backoff.max.ms</code>, then <code>retry.backoff.max.ms</code> will be used as a constant backoff from the beginning without any exponential increase";
+            "If provided, the backoff per client will increase exponentially for each failed request, up to this maximum. To prevent all clients from being synchronized upon retry, " +
+            "a randomized jitter with a factor of 0.2 will be applied to the backoff, resulting in the backoff falling within a range between 20% below and 20% above the computed value. " +
+            "If <code>retry.backoff.ms</code> is set to be higher than <code>retry.backoff.max.ms</code>, then <code>retry.backoff.max.ms</code> will be used as a constant backoff from the beginning without any exponential increase";
     public static final Long DEFAULT_RETRY_BACKOFF_MAX_MS = 1000L;
 
     public static final int RETRY_BACKOFF_EXP_BASE = 2;
@@ -138,15 +138,15 @@ public class CommonClientConfigs {
 
     public static final String SOCKET_CONNECTION_SETUP_TIMEOUT_MS_CONFIG = "socket.connection.setup.timeout.ms";
     public static final String SOCKET_CONNECTION_SETUP_TIMEOUT_MS_DOC = "The amount of time the client will wait for the socket connection to be established. " +
-        "If the connection is not built before the timeout elapses, clients will close the socket channel. " +
-        "This value is the initial backoff value and will increase exponentially for each consecutive connection failure, " +
-        "up to the <code>socket.connection.setup.timeout.max.ms</code> value.";
+            "If the connection is not built before the timeout elapses, clients will close the socket channel. " +
+            "This value is the initial backoff value and will increase exponentially for each consecutive connection failure, " +
+            "up to the <code>socket.connection.setup.timeout.max.ms</code> value.";
     public static final Long DEFAULT_SOCKET_CONNECTION_SETUP_TIMEOUT_MS = 10 * 1000L;
 
     public static final String SOCKET_CONNECTION_SETUP_TIMEOUT_MAX_MS_CONFIG = "socket.connection.setup.timeout.max.ms";
     public static final String SOCKET_CONNECTION_SETUP_TIMEOUT_MAX_MS_DOC = "The maximum amount of time the client will wait for the socket connection to be established. " +
-        "The connection setup timeout will increase exponentially for each consecutive connection failure up to this maximum. To avoid connection storms, " +
-        "a randomization factor of 0.2 will be applied to the timeout resulting in a random range between 20% below and 20% above the computed value.";
+            "The connection setup timeout will increase exponentially for each consecutive connection failure up to this maximum. To avoid connection storms, " +
+            "a randomization factor of 0.2 will be applied to the timeout resulting in a random range between 20% below and 20% above the computed value.";
     public static final Long DEFAULT_SOCKET_CONNECTION_SETUP_TIMEOUT_MAX_MS = 30 * 1000L;
 
     public static final String CONNECTIONS_MAX_IDLE_MS_CONFIG = "connections.max.idle.ms";
@@ -267,7 +267,7 @@ public class CommonClientConfigs {
         HashMap<String, Object> rval = new HashMap<>();
         Map<String, Object> originalConfig = config.originals();
         if ((!originalConfig.containsKey(RECONNECT_BACKOFF_MAX_MS_CONFIG)) &&
-            originalConfig.containsKey(RECONNECT_BACKOFF_MS_CONFIG)) {
+                originalConfig.containsKey(RECONNECT_BACKOFF_MS_CONFIG)) {
             log.warn("Disabling exponential reconnect backoff because {} is set, but {} is not.",
                     RECONNECT_BACKOFF_MS_CONFIG, RECONNECT_BACKOFF_MAX_MS_CONFIG);
             rval.put(RECONNECT_BACKOFF_MAX_MS_CONFIG, parsedValues.get(RECONNECT_BACKOFF_MS_CONFIG));
@@ -286,8 +286,8 @@ public class CommonClientConfigs {
         if (retryBackoffMs > retryBackoffMaxMs) {
             log.warn("Configuration '{}' with value '{}' is greater than configuration '{}' with value '{}'. " +
                     "A static backoff with value '{}' will be applied.",
-                RETRY_BACKOFF_MS_CONFIG, retryBackoffMs,
-                RETRY_BACKOFF_MAX_MS_CONFIG, retryBackoffMaxMs, retryBackoffMaxMs);
+                    RETRY_BACKOFF_MS_CONFIG, retryBackoffMs,
+                    RETRY_BACKOFF_MAX_MS_CONFIG, retryBackoffMaxMs, retryBackoffMaxMs);
         }
 
         long connectionSetupTimeoutMs = config.getLong(SOCKET_CONNECTION_SETUP_TIMEOUT_MS_CONFIG);
@@ -295,8 +295,8 @@ public class CommonClientConfigs {
         if (connectionSetupTimeoutMs > connectionSetupTimeoutMaxMs) {
             log.warn("Configuration '{}' with value '{}' is greater than configuration '{}' with value '{}'. " +
                     "A static connection setup timeout with value '{}' will be applied.",
-                SOCKET_CONNECTION_SETUP_TIMEOUT_MS_CONFIG, connectionSetupTimeoutMs,
-                SOCKET_CONNECTION_SETUP_TIMEOUT_MAX_MS_CONFIG, connectionSetupTimeoutMaxMs, connectionSetupTimeoutMaxMs);
+                    SOCKET_CONNECTION_SETUP_TIMEOUT_MS_CONFIG, connectionSetupTimeoutMs,
+                    SOCKET_CONNECTION_SETUP_TIMEOUT_MAX_MS_CONFIG, connectionSetupTimeoutMaxMs, connectionSetupTimeoutMaxMs);
         }
     }
 

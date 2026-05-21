@@ -75,21 +75,21 @@ import static org.mockito.Mockito.when;
 public class RackAwarenessStreamsPartitionAssignorTest {
 
     private final List<PartitionInfo> infos = asList(
-        new PartitionInfo("topic0", 0, Node.noNode(), new Node[0], new Node[0]),
-        new PartitionInfo("topic0", 1, Node.noNode(), new Node[0], new Node[0]),
-        new PartitionInfo("topic0", 2, Node.noNode(), new Node[0], new Node[0]),
-        new PartitionInfo("topic1", 0, Node.noNode(), new Node[0], new Node[0]),
-        new PartitionInfo("topic1", 1, Node.noNode(), new Node[0], new Node[0]),
-        new PartitionInfo("topic1", 2, Node.noNode(), new Node[0], new Node[0]),
-        new PartitionInfo("topic2", 0, Node.noNode(), new Node[0], new Node[0]),
-        new PartitionInfo("topic2", 1, Node.noNode(), new Node[0], new Node[0]),
-        new PartitionInfo("topic2", 2, Node.noNode(), new Node[0], new Node[0]),
-        new PartitionInfo("topic3", 0, Node.noNode(), new Node[0], new Node[0]),
-        new PartitionInfo("topic3", 1, Node.noNode(), new Node[0], new Node[0]),
-        new PartitionInfo("topic3", 2, Node.noNode(), new Node[0], new Node[0]),
-        new PartitionInfo("topic4", 0, Node.noNode(), new Node[0], new Node[0]),
-        new PartitionInfo("topic4", 1, Node.noNode(), new Node[0], new Node[0]),
-        new PartitionInfo("topic4", 2, Node.noNode(), new Node[0], new Node[0])
+            new PartitionInfo("topic0", 0, Node.noNode(), new Node[0], new Node[0]),
+            new PartitionInfo("topic0", 1, Node.noNode(), new Node[0], new Node[0]),
+            new PartitionInfo("topic0", 2, Node.noNode(), new Node[0], new Node[0]),
+            new PartitionInfo("topic1", 0, Node.noNode(), new Node[0], new Node[0]),
+            new PartitionInfo("topic1", 1, Node.noNode(), new Node[0], new Node[0]),
+            new PartitionInfo("topic1", 2, Node.noNode(), new Node[0], new Node[0]),
+            new PartitionInfo("topic2", 0, Node.noNode(), new Node[0], new Node[0]),
+            new PartitionInfo("topic2", 1, Node.noNode(), new Node[0], new Node[0]),
+            new PartitionInfo("topic2", 2, Node.noNode(), new Node[0], new Node[0]),
+            new PartitionInfo("topic3", 0, Node.noNode(), new Node[0], new Node[0]),
+            new PartitionInfo("topic3", 1, Node.noNode(), new Node[0], new Node[0]),
+            new PartitionInfo("topic3", 2, Node.noNode(), new Node[0], new Node[0]),
+            new PartitionInfo("topic4", 0, Node.noNode(), new Node[0], new Node[0]),
+            new PartitionInfo("topic4", 1, Node.noNode(), new Node[0], new Node[0]),
+            new PartitionInfo("topic4", 2, Node.noNode(), new Node[0], new Node[0])
     );
 
     final String consumer1 = "consumer1";
@@ -102,7 +102,6 @@ public class RackAwarenessStreamsPartitionAssignorTest {
     final String consumer8 = "consumer8";
     final String consumer9 = "consumer9";
 
-
     private final Cluster metadata = new Cluster(
             "cluster",
             singletonList(Node.noNode()),
@@ -111,6 +110,7 @@ public class RackAwarenessStreamsPartitionAssignorTest {
             emptySet());
 
     private static final List<String> ALL_TAG_KEYS = new ArrayList<>();
+
     static {
         for (int i = 0; i < StreamsConfig.MAX_RACK_AWARE_ASSIGNMENT_TAG_LIST_SIZE; i++) {
             ALL_TAG_KEYS.add("key-" + i);
@@ -185,7 +185,7 @@ public class RackAwarenessStreamsPartitionAssignorTest {
         adminClient = createMockAdminClientForAssignor(getTopicPartitionOffsetsMap(
                 Arrays.asList(APPLICATION_ID + "-store2-changelog", APPLICATION_ID + "-store3-changelog", APPLICATION_ID + "-store4-changelog"),
                 Arrays.asList(3, 3, 3)),
-            true);
+                true);
         configurePartitionAssignorWith(Collections.singletonMap(StreamsConfig.NUM_STANDBY_REPLICAS_CONFIG, 1));
 
         final Map<String, String> clientTags1 = new HashMap<>();
@@ -229,7 +229,7 @@ public class RackAwarenessStreamsPartitionAssignorTest {
         createMockTaskManager();
         adminClient = createMockAdminClientForAssignor(getTopicPartitionOffsetsMap(Arrays.asList(APPLICATION_ID + "-store0-changelog", APPLICATION_ID + "-store1-changelog", APPLICATION_ID + "-store2-changelog"),
                 Arrays.asList(3, 3, 3)),
-            true);
+                true);
         configurePartitionAssignorWith(Collections.singletonMap(StreamsConfig.NUM_STANDBY_REPLICAS_CONFIG, 1));
 
         // use the same tag value for key1, and different value for key2
@@ -277,36 +277,36 @@ public class RackAwarenessStreamsPartitionAssignorTest {
         adminClient = createMockAdminClientForAssignor(getTopicPartitionOffsetsMap(
                 Arrays.asList(APPLICATION_ID + "-store0-changelog", APPLICATION_ID + "-store1-changelog", APPLICATION_ID + "-store2-changelog"),
                 Arrays.asList(3, 3, 3)),
-            true);
+                true);
         configurePartitionAssignorWith(Collections.singletonMap(StreamsConfig.NUM_STANDBY_REPLICAS_CONFIG, 2));
 
         final Map<String, String> clientTags1 = mkMap(
-            mkEntry(ALL_TAG_KEYS.get(0), "value-0-1"),
-            mkEntry(ALL_TAG_KEYS.get(1), "value-1-1"));
+                mkEntry(ALL_TAG_KEYS.get(0), "value-0-1"),
+                mkEntry(ALL_TAG_KEYS.get(1), "value-1-1"));
         final Map<String, String> clientTags2 = mkMap(
-            mkEntry(ALL_TAG_KEYS.get(0), "value-0-1"),
-            mkEntry(ALL_TAG_KEYS.get(1), "value-1-2"));
+                mkEntry(ALL_TAG_KEYS.get(0), "value-0-1"),
+                mkEntry(ALL_TAG_KEYS.get(1), "value-1-2"));
         final Map<String, String> clientTags3 = mkMap(
-            mkEntry(ALL_TAG_KEYS.get(0), "value-0-1"),
-            mkEntry(ALL_TAG_KEYS.get(1), "value-1-3"));
+                mkEntry(ALL_TAG_KEYS.get(0), "value-0-1"),
+                mkEntry(ALL_TAG_KEYS.get(1), "value-1-3"));
         final Map<String, String> clientTags4 = mkMap(
-            mkEntry(ALL_TAG_KEYS.get(0), "value-0-2"),
-            mkEntry(ALL_TAG_KEYS.get(1), "value-1-1"));
+                mkEntry(ALL_TAG_KEYS.get(0), "value-0-2"),
+                mkEntry(ALL_TAG_KEYS.get(1), "value-1-1"));
         final Map<String, String> clientTags5 = mkMap(
-            mkEntry(ALL_TAG_KEYS.get(0), "value-0-2"),
-            mkEntry(ALL_TAG_KEYS.get(1), "value-1-2"));
+                mkEntry(ALL_TAG_KEYS.get(0), "value-0-2"),
+                mkEntry(ALL_TAG_KEYS.get(1), "value-1-2"));
         final Map<String, String> clientTags6 = mkMap(
-            mkEntry(ALL_TAG_KEYS.get(0), "value-0-2"),
-            mkEntry(ALL_TAG_KEYS.get(1), "value-1-3"));
+                mkEntry(ALL_TAG_KEYS.get(0), "value-0-2"),
+                mkEntry(ALL_TAG_KEYS.get(1), "value-1-3"));
         final Map<String, String> clientTags7 = mkMap(
-            mkEntry(ALL_TAG_KEYS.get(0), "value-0-3"),
-            mkEntry(ALL_TAG_KEYS.get(1), "value-1-1"));
+                mkEntry(ALL_TAG_KEYS.get(0), "value-0-3"),
+                mkEntry(ALL_TAG_KEYS.get(1), "value-1-1"));
         final Map<String, String> clientTags8 = mkMap(
-            mkEntry(ALL_TAG_KEYS.get(0), "value-0-3"),
-            mkEntry(ALL_TAG_KEYS.get(1), "value-1-2"));
+                mkEntry(ALL_TAG_KEYS.get(0), "value-0-3"),
+                mkEntry(ALL_TAG_KEYS.get(1), "value-1-2"));
         final Map<String, String> clientTags9 = mkMap(
-            mkEntry(ALL_TAG_KEYS.get(0), "value-0-3"),
-            mkEntry(ALL_TAG_KEYS.get(1), "value-1-3"));
+                mkEntry(ALL_TAG_KEYS.get(0), "value-0-3"),
+                mkEntry(ALL_TAG_KEYS.get(1), "value-1-3"));
 
         final Map<String, Map<String, String>> hostTags = new HashMap<>();
         subscriptions.put(consumer1, getSubscription(PID_1, EMPTY_TASKS, clientTags1));
@@ -343,27 +343,27 @@ public class RackAwarenessStreamsPartitionAssignorTest {
         adminClient = createMockAdminClientForAssignor(getTopicPartitionOffsetsMap(
                 Arrays.asList(APPLICATION_ID + "-store0-changelog", APPLICATION_ID + "-store1-changelog", APPLICATION_ID + "-store2-changelog"),
                 Arrays.asList(3, 3, 3)),
-            true);
+                true);
         configurePartitionAssignorWith(Collections.singletonMap(StreamsConfig.NUM_STANDBY_REPLICAS_CONFIG, 2));
 
         final Map<String, String> clientTags1 = mkMap(
-            mkEntry(ALL_TAG_KEYS.get(0), "value-0-1"),
-            mkEntry(ALL_TAG_KEYS.get(1), "value-1-1"));
+                mkEntry(ALL_TAG_KEYS.get(0), "value-0-1"),
+                mkEntry(ALL_TAG_KEYS.get(1), "value-1-1"));
         final Map<String, String> clientTags2 = mkMap(
-            mkEntry(ALL_TAG_KEYS.get(0), "value-0-1"),
-            mkEntry(ALL_TAG_KEYS.get(1), "value-1-2"));
+                mkEntry(ALL_TAG_KEYS.get(0), "value-0-1"),
+                mkEntry(ALL_TAG_KEYS.get(1), "value-1-2"));
         final Map<String, String> clientTags3 = mkMap(
-            mkEntry(ALL_TAG_KEYS.get(0), "value-0-1"),
-            mkEntry(ALL_TAG_KEYS.get(1), "value-1-3"));
+                mkEntry(ALL_TAG_KEYS.get(0), "value-0-1"),
+                mkEntry(ALL_TAG_KEYS.get(1), "value-1-3"));
         final Map<String, String> clientTags4 = mkMap(
-            mkEntry(ALL_TAG_KEYS.get(0), "value-0-2"),
-            mkEntry(ALL_TAG_KEYS.get(1), "value-1-1"));
+                mkEntry(ALL_TAG_KEYS.get(0), "value-0-2"),
+                mkEntry(ALL_TAG_KEYS.get(1), "value-1-1"));
         final Map<String, String> clientTags5 = mkMap(
-            mkEntry(ALL_TAG_KEYS.get(0), "value-0-2"),
-            mkEntry(ALL_TAG_KEYS.get(1), "value-1-2"));
+                mkEntry(ALL_TAG_KEYS.get(0), "value-0-2"),
+                mkEntry(ALL_TAG_KEYS.get(1), "value-1-2"));
         final Map<String, String> clientTags6 = mkMap(
-            mkEntry(ALL_TAG_KEYS.get(0), "value-0-2"),
-            mkEntry(ALL_TAG_KEYS.get(1), "value-1-3"));
+                mkEntry(ALL_TAG_KEYS.get(0), "value-0-2"),
+                mkEntry(ALL_TAG_KEYS.get(1), "value-1-3"));
 
         final Map<String, Map<String, String>> hostTags = new HashMap<>();
         subscriptions.put(consumer1, getSubscription(PID_1, EMPTY_TASKS, clientTags1));
@@ -415,11 +415,11 @@ public class RackAwarenessStreamsPartitionAssignorTest {
         for (final Map.Entry<TaskId, ClientTagDistribution> entry: taskClientTags.entrySet()) {
             if (!tagsAmongStandbysAreDifferent(entry.getValue(), tagsToCheck))
                 throw new AssertionError("task " + entry.getKey() + "'s tag-distribution for " + tagsToCheck +
-                    " among standbys is not ideal: " + entry.getValue());
+                        " among standbys is not ideal: " + entry.getValue());
 
             if (!tagsAmongActiveAndAllStandbysAreDifferent(entry.getValue(), tagsToCheck))
                 throw new AssertionError("task " + entry.getKey() + "'s tag-distribution for " + tagsToCheck +
-                    " between active and standbys is not ideal: " + entry.getValue());
+                        " between active and standbys is not ideal: " + entry.getValue());
         }
     }
 
@@ -428,20 +428,20 @@ public class RackAwarenessStreamsPartitionAssignorTest {
         for (final Map.Entry<TaskId, ClientTagDistribution> entry: taskClientTags.entrySet()) {
             if (!tagsAmongActiveAndAtLeastOneStandbyIsDifferent(entry.getValue(), tagsToCheck))
                 throw new AssertionError("task " + entry.getKey() + "'s tag-distribution for " + tagsToCheck +
-                    "between active and standbys is not partially ideal: " + entry.getValue());
+                        "between active and standbys is not partially ideal: " + entry.getValue());
         }
     }
 
     private static boolean tagsAmongActiveAndAllStandbysAreDifferent(final ClientTagDistribution tagDistribution,
                                                                      final List<String> tagsToCheck) {
         return tagDistribution.standbysClientTags.stream().allMatch(standbyTags ->
-            tagsToCheck.stream().noneMatch(tag -> tagDistribution.activeClientTags.get(tag).equals(standbyTags.get(tag))));
+                tagsToCheck.stream().noneMatch(tag -> tagDistribution.activeClientTags.get(tag).equals(standbyTags.get(tag))));
     }
 
     private static boolean tagsAmongActiveAndAtLeastOneStandbyIsDifferent(final ClientTagDistribution tagDistribution,
                                                                           final List<String> tagsToCheck) {
         return tagDistribution.standbysClientTags.stream().anyMatch(standbyTags ->
-            tagsToCheck.stream().noneMatch(tag -> tagDistribution.activeClientTags.get(tag).equals(standbyTags.get(tag))));
+                tagsToCheck.stream().noneMatch(tag -> tagDistribution.activeClientTags.get(tag).equals(standbyTags.get(tag))));
     }
 
     private static boolean tagsAmongStandbysAreDifferent(final ClientTagDistribution tagDistribution,
@@ -503,10 +503,10 @@ public class RackAwarenessStreamsPartitionAssignorTest {
         @Override
         public String toString() {
             return "ClientTagDistribution{" +
-                "taskId=" + taskId +
-                ", activeClientTags=" + activeClientTags +
-                ", standbysClientTags=" + standbysClientTags +
-                '}';
+                    "taskId=" + taskId +
+                    ", activeClientTags=" + activeClientTags +
+                    ", standbysClientTags=" + standbysClientTags +
+                    '}';
         }
     }
 
@@ -537,9 +537,9 @@ public class RackAwarenessStreamsPartitionAssignorTest {
                                                                           final Collection<TaskId> prevActiveTasks,
                                                                           final Map<String, String> clientTags) {
         return new ConsumerPartitionAssignor.Subscription(
-            singletonList("source1"),
-            new SubscriptionInfo(LATEST_SUPPORTED_VERSION, LATEST_SUPPORTED_VERSION, processId, null,
-                getTaskOffsetSums(prevActiveTasks), (byte) 0, 0, clientTags).encode()
+                singletonList("source1"),
+                new SubscriptionInfo(LATEST_SUPPORTED_VERSION, LATEST_SUPPORTED_VERSION, processId, null,
+                    getTaskOffsetSums(prevActiveTasks), (byte) 0, 0, clientTags).encode()
         );
     }
 

@@ -69,7 +69,7 @@ public class ApiKeysTest {
             Schema responseSchema = apiKey.messageType.responseSchemas()[apiKey.latestVersion()];
             BoundField throttleTimeField = responseSchema.get("throttle_time_ms");
             if ((apiKey.clusterAction && !clusterActionsWithThrottleTimeMs.contains(apiKey))
-                || authenticationKeys.contains(apiKey))
+                    || authenticationKeys.contains(apiKey))
                 assertNull(throttleTimeField, "Unexpected throttle time field: " + apiKey);
             else
                 assertNotNull(throttleTimeField, "Throttle time field missing: " + apiKey);
@@ -85,13 +85,13 @@ public class ApiKeysTest {
             }
         }
         assertEquals(Collections.emptySet(), apisMissingScope,
-            "Found some APIs missing scope definition");
+                "Found some APIs missing scope definition");
     }
 
     @Test
     public void testHasValidVersions() {
         var apiKeysWithNoValidVersions = Set.of(ApiKeys.LEADER_AND_ISR, ApiKeys.STOP_REPLICA, ApiKeys.UPDATE_METADATA,
-            ApiKeys.CONTROLLED_SHUTDOWN);
+                ApiKeys.CONTROLLED_SHUTDOWN);
         for (ApiKeys apiKey : ApiKeys.values()) {
             if (apiKeysWithNoValidVersions.contains(apiKey))
                 assertFalse(apiKey.hasValidVersion());

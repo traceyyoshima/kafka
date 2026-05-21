@@ -61,7 +61,6 @@ public class MirrorConnectorsIntegrationTransactionsTest extends MirrorConnector
         return producer;
     }
 
-
     @Override
     protected void produceMessages(Producer<byte[], byte[]> producer, List<ProducerRecord<byte[], byte[]>> records) {
         try {

@@ -95,9 +95,9 @@ public class MockInternalProcessorContext<KOut, VOut> extends MockProcessorConte
     @Override
     public void setRecordContext(final ProcessorRecordContext recordContext) {
         setRecordMetadata(
-            recordContext.topic(),
-            recordContext.partition(),
-            recordContext.offset()
+                recordContext.topic(),
+                recordContext.partition(),
+                recordContext.offset()
         );
         this.headers = recordContext.headers();
         this.timestamp = recordContext.timestamp();
@@ -264,8 +264,8 @@ public class MockInternalProcessorContext<KOut, VOut> extends MockProcessorConte
     public <K extends KOut, V extends VOut> void forward(final FixedKeyRecord<K, V> record,
                                                          final String childName) {
         forward(
-            new Record<>(record.key(), record.value(), record.timestamp(), record.headers()),
-            childName
+                new Record<>(record.key(), record.value(), record.timestamp(), record.headers()),
+                childName
         );
     }
 }

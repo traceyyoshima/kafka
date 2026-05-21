@@ -59,7 +59,7 @@ public class PCollectionsImmutableSet<E> implements ImmutableSet<E> {
     public ImmutableSet<E> added(E e) {
         return new PCollectionsImmutableSet<>(underlying().plus(e));
     }
-    
+
     @Override
     public ImmutableSet<E> removed(E e) {
         return new PCollectionsImmutableSet<>(underlying().minus(e));
@@ -178,8 +178,8 @@ public class PCollectionsImmutableSet<E> implements ImmutableSet<E> {
     @Override
     public String toString() {
         return "PCollectionsImmutableSet{" +
-            "underlying=" + underlying() +
-            '}';
+                "underlying=" + underlying() +
+                '}';
     }
 
     // package-private for testing

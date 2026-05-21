@@ -58,7 +58,7 @@ public final class RecordRedactorTest {
     @Test
     public void testUserScramCredentialRecordToString() {
         assertEquals("UserScramCredentialRecord(name='bob', mechanism=0, " +
-            "salt=(redacted), storedKey=(redacted), serverKey=(redacted), iterations=128)",
+                "salt=(redacted), storedKey=(redacted), serverKey=(redacted), iterations=128)",
                 REDACTOR.toLoggableString(new UserScramCredentialRecord().
                     setName("bob").
                     setMechanism((byte) 0).
@@ -71,7 +71,7 @@ public final class RecordRedactorTest {
     @Test
     public void testUserScramCredentialRecordToStringWithNullName() {
         assertEquals("UserScramCredentialRecord(name=null, mechanism=1, " +
-                        "salt=(redacted), storedKey=(redacted), serverKey=(redacted), iterations=256)",
+                "salt=(redacted), storedKey=(redacted), serverKey=(redacted), iterations=256)",
                 REDACTOR.toLoggableString(new UserScramCredentialRecord().
                         setName(null).
                         setMechanism((byte) 1).
@@ -84,7 +84,7 @@ public final class RecordRedactorTest {
     @Test
     public void testSensitiveConfigRecordToString() {
         assertEquals("ConfigRecord(resourceType=4, resourceName='0', name='quux', " +
-            "value='(redacted)')",
+                "value='(redacted)')",
                 REDACTOR.toLoggableString(new ConfigRecord().
                     setResourceType(BROKER.id()).
                     setResourceName("0").
@@ -95,7 +95,7 @@ public final class RecordRedactorTest {
     @Test
     public void testNonSensitiveConfigRecordToString() {
         assertEquals("ConfigRecord(resourceType=4, resourceName='0', name='foobar', " +
-            "value='item1,item2')",
+                "value='item1,item2')",
                 REDACTOR.toLoggableString(new ConfigRecord().
                     setResourceType(BROKER.id()).
                     setResourceName("0").

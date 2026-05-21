@@ -228,7 +228,7 @@ public class JoinWindows extends Windows<Window> {
         // re-use the enableSpuriousResultFix flag to identify if grace is called after ofTimeDifferenceAndGrace/ofTimeDifferenceWithNoGrace
         if (this.enableSpuriousResultFix) {
             throw new IllegalStateException(
-                "Cannot call grace() after setting grace value via ofTimeDifferenceAndGrace or ofTimeDifferenceWithNoGrace.");
+                    "Cannot call grace() after setting grace value via ofTimeDifferenceAndGrace or ofTimeDifferenceWithNoGrace.");
         }
 
         final String msgPrefix = prepareMillisCheckFailMsgPrefix(afterWindowEnd, "afterWindowEnd");
@@ -251,8 +251,8 @@ public class JoinWindows extends Windows<Window> {
         }
         final JoinWindows that = (JoinWindows) o;
         return beforeMs == that.beforeMs &&
-            afterMs == that.afterMs &&
-            graceMs == that.graceMs;
+                afterMs == that.afterMs &&
+                graceMs == that.graceMs;
     }
 
     @Override
@@ -263,9 +263,9 @@ public class JoinWindows extends Windows<Window> {
     @Override
     public String toString() {
         return "JoinWindows{" +
-            "beforeMs=" + beforeMs +
-            ", afterMs=" + afterMs +
-            ", graceMs=" + graceMs +
-            '}';
+                "beforeMs=" + beforeMs +
+                ", afterMs=" + afterMs +
+                ", graceMs=" + graceMs +
+                '}';
     }
 }

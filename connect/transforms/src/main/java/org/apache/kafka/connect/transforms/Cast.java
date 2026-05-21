@@ -61,10 +61,10 @@ public abstract class Cast<R extends ConnectRecord<R>> implements Transformation
     // allow casting nested fields.
     public static final String OVERVIEW_DOC =
             "Cast fields or the entire key or value to a specific type, e.g. to force an integer field to a smaller "
-                    + "width. Cast from integers, floats, boolean and string to any other type, "
-                    + "and cast binary to string (base64 encoded)."
-                    + "<p/>Use the concrete transformation type designed for the record key (<code>" + Key.class.getName() + "</code>) "
-                    + "or value (<code>" + Value.class.getName() + "</code>).";
+            + "width. Cast from integers, floats, boolean and string to any other type, "
+            + "and cast binary to string (base64 encoded)."
+            + "<p/>Use the concrete transformation type designed for the record key (<code>" + Key.class.getName() + "</code>) "
+            + "or value (<code>" + Value.class.getName() + "</code>).";
 
     public static final String SPEC_CONFIG = "spec";
     public static final String REPLACE_NULL_WITH_DEFAULT_CONFIG = "replace.null.with.default";
@@ -80,8 +80,8 @@ public abstract class Cast<R extends ConnectRecord<R>> implements Transformation
                         parseFieldTypes(value);
                     },
                     () -> "list of colon-delimited pairs, e.g. <code>foo:bar,abc:xyz</code>"),
-            ConfigDef.Importance.HIGH,
-            "List of fields and the type to cast them to of the form field1:type,field2:type to cast fields of "
+                    ConfigDef.Importance.HIGH,
+                    "List of fields and the type to cast them to of the form field1:type,field2:type to cast fields of "
                     + "Maps or Structs. A single type to cast the entire value. Valid types are int8, int16, int32, "
                     + "int64, float32, float64, boolean, and string. Note that binary fields can only be cast to string.")
             .define(REPLACE_NULL_WITH_DEFAULT_CONFIG,
@@ -94,14 +94,14 @@ public abstract class Cast<R extends ConnectRecord<R>> implements Transformation
 
     private static final Set<Schema.Type> SUPPORTED_CAST_INPUT_TYPES = EnumSet.of(
             Schema.Type.INT8, Schema.Type.INT16, Schema.Type.INT32, Schema.Type.INT64,
-                    Schema.Type.FLOAT32, Schema.Type.FLOAT64, Schema.Type.BOOLEAN,
-                            Schema.Type.STRING, Schema.Type.BYTES
+            Schema.Type.FLOAT32, Schema.Type.FLOAT64, Schema.Type.BOOLEAN,
+            Schema.Type.STRING, Schema.Type.BYTES
     );
 
     private static final Set<Schema.Type> SUPPORTED_CAST_OUTPUT_TYPES = EnumSet.of(
             Schema.Type.INT8, Schema.Type.INT16, Schema.Type.INT32, Schema.Type.INT64,
-                    Schema.Type.FLOAT32, Schema.Type.FLOAT64, Schema.Type.BOOLEAN,
-                            Schema.Type.STRING
+            Schema.Type.FLOAT32, Schema.Type.FLOAT64, Schema.Type.BOOLEAN,
+            Schema.Type.STRING
     );
 
     // As a special case for casting the entire value (e.g. the incoming key is a int64 but you know it could be an
@@ -148,7 +148,6 @@ public abstract class Cast<R extends ConnectRecord<R>> implements Transformation
     @Override
     public void close() {
     }
-
 
     private R applySchemaless(R record) {
         if (wholeValueCastType != null) {
@@ -424,13 +423,13 @@ public abstract class Cast<R extends ConnectRecord<R>> implements Transformation
             case INPUT:
                 if (!SUPPORTED_CAST_INPUT_TYPES.contains(type)) {
                     throw new DataException("Cast transformation does not support casting from " +
-                        type + "; supported types are " + SUPPORTED_CAST_INPUT_TYPES);
+                            type + "; supported types are " + SUPPORTED_CAST_INPUT_TYPES);
                 }
                 break;
             case OUTPUT:
                 if (!SUPPORTED_CAST_OUTPUT_TYPES.contains(type)) {
                     throw new ConfigException("Cast transformation does not support casting to " +
-                        type + "; supported types are " + SUPPORTED_CAST_OUTPUT_TYPES);
+                            type + "; supported types are " + SUPPORTED_CAST_OUTPUT_TYPES);
                 }
                 break;
         }

@@ -998,7 +998,6 @@ public class Values {
             return parseAsTemporal(token);
         }
 
-
         private static SchemaAndValue parseAsNumber(String token) {
             // Try to parse as a number ...
             BigDecimal decimal = new BigDecimal(token);

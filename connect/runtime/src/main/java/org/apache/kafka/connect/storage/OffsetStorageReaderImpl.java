@@ -89,7 +89,7 @@ public class OffsetStorageReaderImpl implements CloseableOffsetStorageReader {
             synchronized (offsetReadFutures) {
                 if (closed.get()) {
                     throw new ConnectException(
-                        "Offset reader is closed. This is likely because the task has already been "
+                            "Offset reader is closed. This is likely because the task has already been "
                             + "scheduled to stop but has taken longer than the graceful shutdown "
                             + "period to do so.");
                 }
@@ -101,7 +101,7 @@ public class OffsetStorageReaderImpl implements CloseableOffsetStorageReader {
                 raw = offsetReadFuture.get();
             } catch (CancellationException e) {
                 throw new ConnectException(
-                    "Offset reader closed while attempting to read offsets. This is likely because "
+                        "Offset reader closed while attempting to read offsets. This is likely because "
                         + "the task was been scheduled to stop but has taken longer than the "
                         + "graceful shutdown period to do so.");
             } finally {

@@ -102,7 +102,6 @@ class ChangeLoggingWindowBytesStore
         return wrapped().all();
     }
 
-
     @Override
     public KeyValueIterator<Windowed<Bytes>, byte[]> backwardAll() {
         return wrapped().backwardAll();

@@ -66,7 +66,7 @@ public class DelegationTokenPublisher implements MetadataPublisher {
             }
         } catch (Throwable t) {
             var msg = String.format("Uncaught exception while publishing DelegationToken changes from %s MetadataDelta up to %s",
-                first ? "initial" : "update", newImage.highestOffsetAndEpoch().offset());
+                    first ? "initial" : "update", newImage.highestOffsetAndEpoch().offset());
             faultHandler.handleFault(msg, t);
         }
     }

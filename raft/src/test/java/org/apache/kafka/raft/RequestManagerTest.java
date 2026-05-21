@@ -44,10 +44,10 @@ public class RequestManagerTest {
         Node node2 = new Node(2, "mock-host-2", 4321);
 
         RequestManager cache = new RequestManager(
-            makeBootstrapList(3),
-            retryBackoffMs,
-            requestTimeoutMs,
-            random
+                makeBootstrapList(3),
+                retryBackoffMs,
+                requestTimeoutMs,
+                random
         );
 
         // One host has an inflight request
@@ -71,10 +71,10 @@ public class RequestManagerTest {
         Node node = new Node(1, "mock-host-1", 4321);
 
         RequestManager cache = new RequestManager(
-            makeBootstrapList(3),
-            retryBackoffMs,
-            requestTimeoutMs,
-            random
+                makeBootstrapList(3),
+                retryBackoffMs,
+                requestTimeoutMs,
+                random
         );
 
         assertTrue(cache.isReady(node, time.milliseconds()));
@@ -95,10 +95,10 @@ public class RequestManagerTest {
         Node node = new Node(1, "mock-host-1", 4321);
 
         RequestManager cache = new RequestManager(
-            makeBootstrapList(3),
-            retryBackoffMs,
-            requestTimeoutMs,
-            random
+                makeBootstrapList(3),
+                retryBackoffMs,
+                requestTimeoutMs,
+                random
         );
 
         long correlationId = 1;
@@ -113,10 +113,10 @@ public class RequestManagerTest {
         Node node = new Node(1, "mock-host-1", 4321);
 
         RequestManager cache = new RequestManager(
-            makeBootstrapList(3),
-            retryBackoffMs,
-            requestTimeoutMs,
-            random
+                makeBootstrapList(3),
+                retryBackoffMs,
+                requestTimeoutMs,
+                random
         );
 
         long correlationId = 1;
@@ -131,10 +131,10 @@ public class RequestManagerTest {
         Node node = new Node(1, "mock-host-1", 4321);
 
         RequestManager cache = new RequestManager(
-            makeBootstrapList(3),
-            retryBackoffMs,
-            requestTimeoutMs,
-            random
+                makeBootstrapList(3),
+                retryBackoffMs,
+                requestTimeoutMs,
+                random
         );
 
         long correlationId = 1;
@@ -152,25 +152,25 @@ public class RequestManagerTest {
     public void testRequestToBootstrapList() {
         List<Node> bootstrapList = makeBootstrapList(2);
         RequestManager cache = new RequestManager(
-            bootstrapList,
-            retryBackoffMs,
-            requestTimeoutMs,
-            random
+                bootstrapList,
+                retryBackoffMs,
+                requestTimeoutMs,
+                random
         );
 
         // Find a ready node with the starting state
         Node bootstrapNode1 = cache.findReadyBootstrapServer(time.milliseconds()).get();
         assertTrue(
-            bootstrapList.contains(bootstrapNode1),
-            String.format("%s is not in %s", bootstrapNode1, bootstrapList)
+                bootstrapList.contains(bootstrapNode1),
+                String.format("%s is not in %s", bootstrapNode1, bootstrapList)
         );
         assertEquals(0, cache.backoffBeforeAvailableBootstrapServer(time.milliseconds()));
 
         // Send a request and check the cache state
         cache.onRequestSent(bootstrapNode1, 1, time.milliseconds());
         assertEquals(
-            Optional.empty(),
-            cache.findReadyBootstrapServer(time.milliseconds())
+                Optional.empty(),
+                cache.findReadyBootstrapServer(time.milliseconds())
         );
         assertEquals(requestTimeoutMs, cache.backoffBeforeAvailableBootstrapServer(time.milliseconds()));
 
@@ -184,18 +184,17 @@ public class RequestManagerTest {
         // Send a request to the second node and check the state
         cache.onRequestSent(bootstrapNode2, 2, time.milliseconds());
         assertEquals(
-            Optional.empty(),
-            cache.findReadyBootstrapServer(time.milliseconds())
+                Optional.empty(),
+                cache.findReadyBootstrapServer(time.milliseconds())
         );
         assertEquals(requestTimeoutMs, cache.backoffBeforeAvailableBootstrapServer(time.milliseconds()));
-
 
         // Fail the second request before the request timeout
         time.sleep(retryBackoffMs - 1);
         cache.onResponseResult(bootstrapNode2, 2, false, time.milliseconds());
         assertEquals(
-            Optional.empty(),
-            cache.findReadyBootstrapServer(time.milliseconds())
+                Optional.empty(),
+                cache.findReadyBootstrapServer(time.milliseconds())
         );
         assertEquals(1, cache.backoffBeforeAvailableBootstrapServer(time.milliseconds()));
 
@@ -211,10 +210,10 @@ public class RequestManagerTest {
         Node otherNode = new Node(1, "other-node", 1234);
         List<Node> bootstrapList = makeBootstrapList(3);
         RequestManager cache = new RequestManager(
-            bootstrapList,
-            retryBackoffMs,
-            requestTimeoutMs,
-            random
+                bootstrapList,
+                retryBackoffMs,
+                requestTimeoutMs,
+                random
         );
 
         // Send request to a node that is not in the bootstrap list
@@ -227,10 +226,10 @@ public class RequestManagerTest {
         Node otherNode = new Node(1, "other-node", 1234);
         List<Node> bootstrapList = makeBootstrapList(3);
         RequestManager cache = new RequestManager(
-            bootstrapList,
-            retryBackoffMs,
-            requestTimeoutMs,
-            random
+                bootstrapList,
+                retryBackoffMs,
+                requestTimeoutMs,
+                random
         );
 
         // Send request to a node that is not in the bootstrap list
@@ -249,17 +248,17 @@ public class RequestManagerTest {
     public void testHasRequestTimedOut() {
         List<Node> bootstrapList = makeBootstrapList(2);
         RequestManager cache = new RequestManager(
-            bootstrapList,
-            retryBackoffMs,
-            requestTimeoutMs,
-            random
+                bootstrapList,
+                retryBackoffMs,
+                requestTimeoutMs,
+                random
         );
 
         // Find a ready node with the starting state
         Node bootstrapNode1 = cache.findReadyBootstrapServer(time.milliseconds()).get();
         assertTrue(
-            bootstrapList.contains(bootstrapNode1),
-            String.format("%s is not in %s", bootstrapNode1, bootstrapList)
+                bootstrapList.contains(bootstrapNode1),
+                String.format("%s is not in %s", bootstrapNode1, bootstrapList)
         );
         // Before sending a request, no request should have timed out
         assertFalse(cache.hasRequestTimedOut(bootstrapNode1, time.milliseconds()));
@@ -267,8 +266,8 @@ public class RequestManagerTest {
         // Send a request
         cache.onRequestSent(bootstrapNode1, 1, time.milliseconds());
         assertEquals(
-            Optional.empty(),
-            cache.findReadyBootstrapServer(time.milliseconds())
+                Optional.empty(),
+                cache.findReadyBootstrapServer(time.milliseconds())
         );
         assertFalse(cache.hasRequestTimedOut(bootstrapNode1, time.milliseconds()));
 
@@ -285,10 +284,10 @@ public class RequestManagerTest {
         Node otherNode = new Node(1, "other-node", 1234);
         List<Node> bootstrapList = makeBootstrapList(3);
         RequestManager cache = new RequestManager(
-            bootstrapList,
-            retryBackoffMs,
-            requestTimeoutMs,
-            random
+                bootstrapList,
+                retryBackoffMs,
+                requestTimeoutMs,
+                random
         );
 
         assertFalse(cache.hasAnyInflightRequest(time.milliseconds()));

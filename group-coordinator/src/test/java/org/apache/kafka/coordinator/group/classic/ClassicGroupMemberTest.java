@@ -46,15 +46,15 @@ public class ClassicGroupMemberTest {
             .setMetadata(new byte[]{0}));
 
         ClassicGroupMember member = new ClassicGroupMember(
-            "member",
-            Optional.of("group-instance-id"),
-            "client-id",
-            "client-host",
-            10,
-            4500,
-            "generic",
-            protocols,
-            new byte[0]
+                "member",
+                Optional.of("group-instance-id"),
+                "client-id",
+                "client-host",
+                10,
+                4500,
+                "generic",
+                protocols,
+                new byte[0]
         );
 
         JoinGroupRequestProtocolCollection collection = new JoinGroupRequestProtocolCollection();
@@ -103,15 +103,15 @@ public class ClassicGroupMemberTest {
             .setMetadata(new byte[0]));
 
         ClassicGroupMember member = new ClassicGroupMember(
-            "member",
-            Optional.of("group-instance-id"),
-            "client-id",
-            "client-host",
-            10,
-            4500,
-            "generic",
-            protocols,
-            EMPTY_ASSIGNMENT
+                "member",
+                Optional.of("group-instance-id"),
+                "client-id",
+                "client-host",
+                10,
+                4500,
+                "generic",
+                protocols,
+                EMPTY_ASSIGNMENT
         );
 
         Set<String> expectedProtocolNames = new HashSet<>();
@@ -137,15 +137,15 @@ public class ClassicGroupMemberTest {
             .setMetadata(new byte[]{1}));
 
         ClassicGroupMember member = new ClassicGroupMember(
-            "member",
-            Optional.of("group-instance-id"),
-            "client-id",
-            "client-host",
-            10,
-            4500,
-            "generic",
-            protocols,
-            EMPTY_ASSIGNMENT
+                "member",
+                Optional.of("group-instance-id"),
+                "client-id",
+                "client-host",
+                10,
+                4500,
+                "generic",
+                protocols,
+                EMPTY_ASSIGNMENT
         );
 
         assertArrayEquals(new byte[]{0}, member.metadata("range"));
@@ -155,19 +155,19 @@ public class ClassicGroupMemberTest {
     @Test
     public void testMetadataRaisesOnUnsupportedProtocol() {
         ClassicGroupMember member = new ClassicGroupMember(
-            "member",
-            Optional.of("group-instance-id"),
-            "client-id",
-            "client-host",
-            10,
-            4500,
-            "generic",
-            new JoinGroupRequestProtocolCollection(),
-            EMPTY_ASSIGNMENT
+                "member",
+                Optional.of("group-instance-id"),
+                "client-id",
+                "client-host",
+                10,
+                4500,
+                "generic",
+                new JoinGroupRequestProtocolCollection(),
+                EMPTY_ASSIGNMENT
         );
 
         assertThrows(IllegalArgumentException.class, () ->
-            member.metadata("unknown")
+                member.metadata("unknown")
         );
     }
 
@@ -182,44 +182,44 @@ public class ClassicGroupMemberTest {
             .setMetadata(new byte[]{1}));
 
         ClassicGroupMember member = new ClassicGroupMember(
-            "member",
-            Optional.of("group-instance-id"),
-            "client-id",
-            "client-host",
-            10,
-            4500,
-            "generic",
-            protocols,
-            EMPTY_ASSIGNMENT
+                "member",
+                Optional.of("group-instance-id"),
+                "client-id",
+                "client-host",
+                10,
+                4500,
+                "generic",
+                protocols,
+                EMPTY_ASSIGNMENT
         );
 
         assertThrows(IllegalArgumentException.class, () ->
-            member.vote(Set.of("unknown"))
+                member.vote(Set.of("unknown"))
         );
     }
 
     @Test
     public void testHasValidGroupInstanceId() {
         ClassicGroupMember member = new ClassicGroupMember(
-            "member",
-            Optional.of("group-instance-id"),
-            "client-id",
-            "client-host",
-            10,
-            4500,
-            "generic",
-            new JoinGroupRequestProtocolCollection(),
-            EMPTY_ASSIGNMENT
+                "member",
+                Optional.of("group-instance-id"),
+                "client-id",
+                "client-host",
+                10,
+                4500,
+                "generic",
+                new JoinGroupRequestProtocolCollection(),
+                EMPTY_ASSIGNMENT
         );
 
         assertTrue(member.isStaticMember());
         assertEquals(Optional.of("group-instance-id"), member.groupInstanceId());
     }
-    
+
     @Test
     public void testPlainProtocolSet() {
         JoinGroupRequestProtocolCollection protocolCollection =
-            new JoinGroupRequestProtocolCollection();
+                new JoinGroupRequestProtocolCollection();
 
         protocolCollection.add(new JoinGroupRequestProtocol()
             .setName("range").setMetadata(new byte[]{0}));
@@ -236,15 +236,15 @@ public class ClassicGroupMemberTest {
     @Test
     public void testHasHeartbeatSatisfied() {
         ClassicGroupMember member = new ClassicGroupMember(
-            "member",
-            Optional.of("group-instance-id"),
-            "client-id",
-            "client-host",
-            10,
-            4500,
-            "generic",
-            new JoinGroupRequestProtocolCollection(),
-            EMPTY_ASSIGNMENT
+                "member",
+                Optional.of("group-instance-id"),
+                "client-id",
+                "client-host",
+                10,
+                4500,
+                "generic",
+                new JoinGroupRequestProtocolCollection(),
+                EMPTY_ASSIGNMENT
         );
 
         assertFalse(member.hasSatisfiedHeartbeat());
@@ -264,19 +264,19 @@ public class ClassicGroupMemberTest {
     @Test
     public void testDescribeNoMetadata() {
         ClassicGroupMember member = new ClassicGroupMember(
-            "member",
-            Optional.of("group-instance-id"),
-            "client-id",
-            "client-host",
-            10,
-            4500,
-            "generic",
-            new JoinGroupRequestProtocolCollection(),
-            new byte[0]
+                "member",
+                Optional.of("group-instance-id"),
+                "client-id",
+                "client-host",
+                10,
+                4500,
+                "generic",
+                new JoinGroupRequestProtocolCollection(),
+                new byte[0]
         );
 
         DescribeGroupsResponseData.DescribedGroupMember expectedDescribedGroupMember =
-            new DescribeGroupsResponseData.DescribedGroupMember()
+                new DescribeGroupsResponseData.DescribedGroupMember()
                 .setMemberId("member")
                 .setGroupInstanceId("group-instance-id")
                 .setClientId("client-id")
@@ -291,25 +291,25 @@ public class ClassicGroupMemberTest {
     @Test
     public void testDescribe() {
         JoinGroupRequestProtocolCollection protocols = new JoinGroupRequestProtocolCollection(List.of(
-            new JoinGroupRequestProtocol()
+                new JoinGroupRequestProtocol()
                 .setName("range")
                 .setMetadata(new byte[]{0})
         ));
 
         ClassicGroupMember member = new ClassicGroupMember(
-            "member",
-            Optional.of("group-instance-id"),
-            "client-id",
-            "client-host",
-            10,
-            4500,
-            "generic",
-            protocols,
-            new byte[0]
+                "member",
+                Optional.of("group-instance-id"),
+                "client-id",
+                "client-host",
+                10,
+                4500,
+                "generic",
+                protocols,
+                new byte[0]
         );
 
         DescribeGroupsResponseData.DescribedGroupMember expectedDescribedGroupMember =
-            new DescribeGroupsResponseData.DescribedGroupMember()
+                new DescribeGroupsResponseData.DescribedGroupMember()
                 .setMemberId("member")
                 .setGroupInstanceId("group-instance-id")
                 .setClientId("client-id")

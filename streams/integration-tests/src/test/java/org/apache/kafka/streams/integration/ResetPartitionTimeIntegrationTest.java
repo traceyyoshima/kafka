@@ -71,8 +71,9 @@ public class ResetPartitionTimeIntegrationTest {
         BROKER_CONFIG.put("transaction.state.log.replication.factor", (short) 1);
         BROKER_CONFIG.put("transaction.state.log.min.isr", 1);
     }
+
     public static final EmbeddedKafkaCluster CLUSTER =
-        new EmbeddedKafkaCluster(NUM_BROKERS, BROKER_CONFIG);
+            new EmbeddedKafkaCluster(NUM_BROKERS, BROKER_CONFIG);
 
     @BeforeAll
     public static void startCluster() throws IOException {
@@ -115,15 +116,15 @@ public class ResetPartitionTimeIntegrationTest {
         try {
             // start sending some records to have partition time committed 
             produceSynchronouslyToPartitionZero(
-                input,
-                Collections.singletonList(
-                    new KeyValueTimestamp<>("k3", "v3", NOW + 5000)
+                    input,
+                    Collections.singletonList(
+                        new KeyValueTimestamp<>("k3", "v3", NOW + 5000)
                 )
             );
             verifyOutput(
-                outputRaw,
-                Collections.singletonList(
-                    new KeyValueTimestamp<>("k3", "v3", NOW + 5000)
+                    outputRaw,
+                    Collections.singletonList(
+                        new KeyValueTimestamp<>("k3", "v3", NOW + 5000)
                 )
             );
             assertThat(lastRecordedTimestamp, is(-1L));
@@ -136,15 +137,15 @@ public class ResetPartitionTimeIntegrationTest {
 
             // resend some records and retrieve the last committed timestamp
             produceSynchronouslyToPartitionZero(
-                input,
-                Collections.singletonList(
-                    new KeyValueTimestamp<>("k5", "v5", NOW + 4999)
+                    input,
+                    Collections.singletonList(
+                        new KeyValueTimestamp<>("k5", "v5", NOW + 4999)
                 )
             );
             verifyOutput(
-                outputRaw,
-                Collections.singletonList(
-                    new KeyValueTimestamp<>("k5", "v5", NOW + 4999)
+                    outputRaw,
+                    Collections.singletonList(
+                        new KeyValueTimestamp<>("k5", "v5", NOW + 4999)
                 )
             );
             assertThat(lastRecordedTimestamp, is(NOW + 5000L));
@@ -164,11 +165,11 @@ public class ResetPartitionTimeIntegrationTest {
 
     private void verifyOutput(final String topic, final List<KeyValueTimestamp<String, String>> keyValueTimestamps) {
         final Properties properties = mkProperties(
-            mkMap(
-                mkEntry(ConsumerConfig.GROUP_ID_CONFIG, "test-group"),
-                mkEntry(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
-                mkEntry(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ((Deserializer<String>) STRING_DESERIALIZER).getClass().getName()),
-                mkEntry(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ((Deserializer<String>) STRING_DESERIALIZER).getClass().getName())
+                mkMap(
+                    mkEntry(ConsumerConfig.GROUP_ID_CONFIG, "test-group"),
+                    mkEntry(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
+                    mkEntry(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ((Deserializer<String>) STRING_DESERIALIZER).getClass().getName()),
+                    mkEntry(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ((Deserializer<String>) STRING_DESERIALIZER).getClass().getName())
             )
         );
         IntegrationTestUtils.verifyKeyValueTimestamps(properties, topic, keyValueTimestamps);
@@ -176,10 +177,10 @@ public class ResetPartitionTimeIntegrationTest {
 
     private static void produceSynchronouslyToPartitionZero(final String topic, final List<KeyValueTimestamp<String, String>> toProduce) {
         final Properties producerConfig = mkProperties(mkMap(
-            mkEntry(ProducerConfig.CLIENT_ID_CONFIG, "anything"),
-            mkEntry(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, ((Serializer<String>) STRING_SERIALIZER).getClass().getName()),
-            mkEntry(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ((Serializer<String>) STRING_SERIALIZER).getClass().getName()),
-            mkEntry(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers())
+                mkEntry(ProducerConfig.CLIENT_ID_CONFIG, "anything"),
+                mkEntry(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, ((Serializer<String>) STRING_SERIALIZER).getClass().getName()),
+                mkEntry(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ((Serializer<String>) STRING_SERIALIZER).getClass().getName()),
+                mkEntry(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers())
         ));
         IntegrationTestUtils.produceSynchronously(producerConfig, false, topic, Optional.of(0), toProduce);
     }

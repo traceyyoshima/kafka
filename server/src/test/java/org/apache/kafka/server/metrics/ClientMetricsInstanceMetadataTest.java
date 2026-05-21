@@ -39,30 +39,30 @@ public class ClientMetricsInstanceMetadataTest {
         assertTrue(instanceMetadata.isMatch(Map.of()));
 
         assertTrue(instanceMetadata.isMatch(
-            Map.of(ClientMetricsConfigs.CLIENT_ID, Pattern.compile(".*"))));
+                Map.of(ClientMetricsConfigs.CLIENT_ID, Pattern.compile(".*"))));
         assertTrue(instanceMetadata.isMatch(
-            Map.of(ClientMetricsConfigs.CLIENT_ID, Pattern.compile("producer-1"))));
+                Map.of(ClientMetricsConfigs.CLIENT_ID, Pattern.compile("producer-1"))));
         assertTrue(instanceMetadata.isMatch(
-            Map.of(ClientMetricsConfigs.CLIENT_ID, Pattern.compile("producer.*"))));
+                Map.of(ClientMetricsConfigs.CLIENT_ID, Pattern.compile("producer.*"))));
         assertTrue(instanceMetadata.isMatch(
-            Map.of(ClientMetricsConfigs.CLIENT_INSTANCE_ID, Pattern.compile(uuid.toString()))));
+                Map.of(ClientMetricsConfigs.CLIENT_INSTANCE_ID, Pattern.compile(uuid.toString()))));
         assertTrue(instanceMetadata.isMatch(
-            Map.of(ClientMetricsConfigs.CLIENT_SOFTWARE_NAME, Pattern.compile("apache-kafka-java"))));
+                Map.of(ClientMetricsConfigs.CLIENT_SOFTWARE_NAME, Pattern.compile("apache-kafka-java"))));
         assertTrue(instanceMetadata.isMatch(
-            Map.of(ClientMetricsConfigs.CLIENT_SOFTWARE_VERSION, Pattern.compile("3.5.2"))));
+                Map.of(ClientMetricsConfigs.CLIENT_SOFTWARE_VERSION, Pattern.compile("3.5.2"))));
         assertTrue(instanceMetadata.isMatch(
-            Map.of(ClientMetricsConfigs.CLIENT_SOURCE_ADDRESS, Pattern.compile(
-                InetAddress.getLocalHost().getHostAddress()))));
+                Map.of(ClientMetricsConfigs.CLIENT_SOURCE_ADDRESS, Pattern.compile(
+                    InetAddress.getLocalHost().getHostAddress()))));
         assertTrue(instanceMetadata.isMatch(
-            Map.of(ClientMetricsConfigs.CLIENT_SOURCE_PORT, Pattern.compile(
-                String.valueOf(ClientMetricsTestUtils.CLIENT_PORT)))));
+                Map.of(ClientMetricsConfigs.CLIENT_SOURCE_PORT, Pattern.compile(
+                    String.valueOf(ClientMetricsTestUtils.CLIENT_PORT)))));
     }
 
     @Test
     public void testIsMatchMultiplePatternValid() throws UnknownHostException {
         Uuid uuid = Uuid.randomUuid();
         ClientMetricsInstanceMetadata instanceMetadata = new ClientMetricsInstanceMetadata(uuid,
-            ClientMetricsTestUtils.requestContext());
+                ClientMetricsTestUtils.requestContext());
 
         Map<String, Pattern> patternMap = Map.of(
                 ClientMetricsConfigs.CLIENT_ID, Pattern.compile("producer-1"),
@@ -80,7 +80,7 @@ public class ClientMetricsInstanceMetadataTest {
     public void testIsMatchMismatchFail() throws UnknownHostException {
         Uuid uuid = Uuid.randomUuid();
         ClientMetricsInstanceMetadata instanceMetadata = new ClientMetricsInstanceMetadata(uuid,
-            ClientMetricsTestUtils.requestContext());
+                ClientMetricsTestUtils.requestContext());
 
         Map<String, Pattern> patternMap = new HashMap<>();
         patternMap.put(ClientMetricsConfigs.CLIENT_INSTANCE_ID, Pattern.compile(uuid.toString()));
@@ -122,7 +122,7 @@ public class ClientMetricsInstanceMetadataTest {
     public void testIsMatchWithInvalidKeyFail() throws UnknownHostException {
         Uuid uuid = Uuid.randomUuid();
         ClientMetricsInstanceMetadata instanceMetadata = new ClientMetricsInstanceMetadata(uuid,
-            ClientMetricsTestUtils.requestContext());
+                ClientMetricsTestUtils.requestContext());
 
         // Unknown key in pattern map
         assertFalse(instanceMetadata.isMatch(Map.of("unknown", Pattern.compile(".*"))));
@@ -134,11 +134,11 @@ public class ClientMetricsInstanceMetadataTest {
     public void testIsMatchWithNullValueFail() throws UnknownHostException {
         Uuid uuid = Uuid.randomUuid();
         ClientMetricsInstanceMetadata instanceMetadata = new ClientMetricsInstanceMetadata(uuid,
-            ClientMetricsTestUtils.requestContextWithNullClientInfo());
+                ClientMetricsTestUtils.requestContextWithNullClientInfo());
 
         assertFalse(instanceMetadata.isMatch(Map.of(ClientMetricsConfigs.CLIENT_SOFTWARE_NAME,
-            Pattern.compile(".*"))));
+                Pattern.compile(".*"))));
         assertFalse(instanceMetadata.isMatch(Map.of(ClientMetricsConfigs.CLIENT_SOFTWARE_VERSION,
-            Pattern.compile(".*"))));
+                Pattern.compile(".*"))));
     }
 }

@@ -245,7 +245,7 @@ public class Formatter {
         metadataLogDirectory.ifPresent(d -> {
             if (!directories.contains(d)) {
                 throw new FormatterException("The specified metadata log directory, " + d +
-                    " was not one of the given directories: " + directories);
+                        " was not one of the given directories: " + directories);
             }
         });
         releaseVersion = calculateEffectiveReleaseVersion();
@@ -264,7 +264,7 @@ public class Formatter {
         if (featureLevels.containsKey(MetadataVersion.FEATURE_NAME)) {
             if (releaseVersion != null) {
                 throw new FormatterException("Use --release-version instead of " +
-                    "--feature " + MetadataVersion.FEATURE_NAME + "=X to avoid ambiguity.");
+                        "--feature " + MetadataVersion.FEATURE_NAME + "=X to avoid ambiguity.");
             }
             return verifyReleaseVersion(MetadataVersion.fromFeatureLevel(
                     featureLevels.get(MetadataVersion.FEATURE_NAME)));
@@ -308,10 +308,10 @@ public class Formatter {
         supportedFeatures.forEach(supportedFeature -> {
             if (supportedFeature.featureName().equals(KRaftVersion.FEATURE_NAME)) {
                 newFeatureLevels.put(KRaftVersion.FEATURE_NAME, effectiveKRaftFeatureLevel(
-                    Optional.ofNullable(newFeatureLevels.get(KRaftVersion.FEATURE_NAME))));
+                        Optional.ofNullable(newFeatureLevels.get(KRaftVersion.FEATURE_NAME))));
             } else if (!newFeatureLevels.containsKey(supportedFeature.featureName())) {
                 newFeatureLevels.put(supportedFeature.featureName(),
-                    supportedFeature.defaultLevel(releaseVersion));
+                        supportedFeature.defaultLevel(releaseVersion));
             }
         });
         // Verify that the specified features support the given levels. This requires the full
@@ -322,7 +322,7 @@ public class Formatter {
                 short level = entry.getValue();
                 Feature supportedFeature = nameToSupportedFeature.get(featureName);
                 FeatureVersion featureVersion =
-                    supportedFeature.fromFeatureLevel(level, unstableFeatureVersionsEnabled);
+                        supportedFeature.fromFeatureLevel(level, unstableFeatureVersionsEnabled);
                 Feature.validateVersion(featureVersion, newFeatureLevels);
             }
         }
@@ -343,19 +343,19 @@ public class Formatter {
             if (configuredKRaftVersionLevel.get() == 0) {
                 if (hasDynamicQuorum()) {
                     throw new FormatterException(
-                        "Cannot set kraft.version to 0 if controller.quorum.voters is empty and one of the flags " +
-                        "--standalone, --initial-controllers, or --no-initial-controllers is used. For dynamic " +
-                        "controllers support, try removing the --feature flag for kraft.version."
+                            "Cannot set kraft.version to 0 if controller.quorum.voters is empty and one of the flags " +
+                            "--standalone, --initial-controllers, or --no-initial-controllers is used. For dynamic " +
+                            "controllers support, try removing the --feature flag for kraft.version."
                     );
                 }
             } else {
                 if (!hasDynamicQuorum()) {
                     throw new FormatterException(
-                        "Cannot set kraft.version to " + configuredKRaftVersionLevel.get() +
-                        " unless controller.quorum.voters is empty and one of the flags --standalone, " +
-                        "--initial-controllers, or --no-initial-controllers is used. " +
-                        "For dynamic controllers support, try using one of --standalone, --initial-controllers, " +
-                        "or --no-initial-controllers and removing controller.quorum.voters."
+                            "Cannot set kraft.version to " + configuredKRaftVersionLevel.get() +
+                            " unless controller.quorum.voters is empty and one of the flags --standalone, " +
+                            "--initial-controllers, or --no-initial-controllers is used. " +
+                            "For dynamic controllers support, try using one of --standalone, --initial-controllers, " +
+                            "or --no-initial-controllers and removing controller.quorum.voters."
                     );
                 }
             }
@@ -397,11 +397,11 @@ public class Formatter {
         if (!(ignoreFormatted || copier.logDirProps().isEmpty())) {
             String firstLogDir = copier.logDirProps().keySet().iterator().next();
             throw new FormatterException("Log directory " + firstLogDir + " is already formatted. " +
-                "Use --ignore-formatted to ignore this directory and format the others.");
+                    "Use --ignore-formatted to ignore this directory and format the others.");
         }
         if (!copier.errorLogDirs().isEmpty()) {
             copier.errorLogDirs().forEach(errorLogDir ->
-                printStream.println("I/O error trying to read log directory " + errorLogDir + ". Ignoring..."));
+                    printStream.println("I/O error trying to read log directory " + errorLogDir + ". Ignoring..."));
             if (ensemble.emptyLogDirs().isEmpty() && copier.logDirProps().isEmpty()) {
                 throw new FormatterException("No available log directories to format.");
             }
@@ -413,9 +413,9 @@ public class Formatter {
             Map<String, DirectoryType> directoryTypes = new HashMap<>();
             for (String emptyLogDir : ensemble.emptyLogDirs()) {
                 DirectoryType directoryType = DirectoryType.calculate(emptyLogDir,
-                    metadataLogDirectory.orElse(""),
-                    nodeId,
-                    initialControllers);
+                        metadataLogDirectory.orElse(""),
+                        nodeId,
+                        initialControllers);
                 directoryTypes.put(emptyLogDir, directoryType);
                 Uuid directoryId;
                 if (directoryType == DirectoryType.DYNAMIC_METADATA_VOTER_DIRECTORY) {
@@ -429,16 +429,16 @@ public class Formatter {
             }
             copier.setPreWriteHandler((writeLogDir, __, ____) -> {
                 printStream.printf("Formatting %s %s with %s %s.%n",
-                    directoryTypes.get(writeLogDir).description(), writeLogDir,
-                    MetadataVersion.FEATURE_NAME, releaseVersion);
+                        directoryTypes.get(writeLogDir).description(), writeLogDir,
+                        MetadataVersion.FEATURE_NAME, releaseVersion);
                 Files.createDirectories(Paths.get(writeLogDir));
                 BootstrapDirectory bootstrapDirectory = new BootstrapDirectory(writeLogDir);
                 bootstrapDirectory.writeBinaryFile(bootstrapMetadata);
                 if (directoryTypes.get(writeLogDir).isDynamicMetadataDirectory()) {
                     writeDynamicQuorumSnapshot(writeLogDir,
-                        initialControllers.get(),
-                        featureLevels.get(KRaftVersion.FEATURE_NAME),
-                        controllerListenerName);
+                            initialControllers.get(),
+                            featureLevels.get(KRaftVersion.FEATURE_NAME),
+                            controllerListenerName);
                 }
             });
             copier.setWriteErrorHandler((errorLogDir, e) -> {
@@ -466,7 +466,7 @@ public class Formatter {
 
         boolean isDynamicMetadataDirectory() {
             return this == DYNAMIC_METADATA_NON_VOTER_DIRECTORY ||
-                this == DYNAMIC_METADATA_VOTER_DIRECTORY;
+                    this == DYNAMIC_METADATA_VOTER_DIRECTORY;
         }
 
         static DirectoryType calculate(
@@ -502,8 +502,8 @@ public class Formatter {
             setLastContainedLogTimestamp(Time.SYSTEM.milliseconds()).
             setMaxBatchSizeBytes(KafkaRaftClient.MAX_BATCH_SIZE_BYTES).
             setRawSnapshotWriter(FileRawSnapshotWriter.create(
-                clusterMetadataDirectory.toPath(),
-                Snapshots.BOOTSTRAP_SNAPSHOT_ID)).
+                    clusterMetadataDirectory.toPath(),
+                    Snapshots.BOOTSTRAP_SNAPSHOT_ID)).
             setKraftVersion(KRaftVersion.fromFeatureLevel(kraftVersion)).
             setVoterSet(Optional.of(voterSet));
         try (RecordsSnapshotWriter<ApiMessageAndVersion> writer = builder.build(MetadataRecordSerde.INSTANCE)) {

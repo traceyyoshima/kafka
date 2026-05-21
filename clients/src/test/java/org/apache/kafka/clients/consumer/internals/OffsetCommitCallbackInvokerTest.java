@@ -56,9 +56,9 @@ public class OffsetCommitCallbackInvokerTest {
     public void testMultipleUserCallbacksInvoked() {
         final TopicPartition t0 = new TopicPartition("t0", 2);
         Map<TopicPartition, OffsetAndMetadata> offsets1 =
-            Collections.singletonMap(t0, new OffsetAndMetadata(10L));
+                Collections.singletonMap(t0, new OffsetAndMetadata(10L));
         Map<TopicPartition, OffsetAndMetadata> offsets2 =
-            Collections.singletonMap(t0, new OffsetAndMetadata(20L));
+                Collections.singletonMap(t0, new OffsetAndMetadata(20L));
         OffsetCommitCallback callback1 = mock(OffsetCommitCallback.class);
         OffsetCommitCallback callback2 = mock(OffsetCommitCallback.class);
 
@@ -80,9 +80,9 @@ public class OffsetCommitCallbackInvokerTest {
     public void testNoOnCommitOnEmptyInterceptors() {
         final TopicPartition t0 = new TopicPartition("t0", 2);
         Map<TopicPartition, OffsetAndMetadata> offsets1 =
-            Collections.singletonMap(t0, new OffsetAndMetadata(10L));
+                Collections.singletonMap(t0, new OffsetAndMetadata(10L));
         Map<TopicPartition, OffsetAndMetadata> offsets2 =
-            Collections.singletonMap(t0, new OffsetAndMetadata(20L));
+                Collections.singletonMap(t0, new OffsetAndMetadata(20L));
         when(consumerInterceptors.isEmpty()).thenReturn(true);
 
         offsetCommitCallbackInvoker.enqueueInterceptorInvocation(offsets1);
@@ -95,9 +95,9 @@ public class OffsetCommitCallbackInvokerTest {
     public void testOnlyInterceptors() {
         final TopicPartition t0 = new TopicPartition("t0", 2);
         Map<TopicPartition, OffsetAndMetadata> offsets1 =
-            Collections.singletonMap(t0, new OffsetAndMetadata(10L));
+                Collections.singletonMap(t0, new OffsetAndMetadata(10L));
         Map<TopicPartition, OffsetAndMetadata> offsets2 =
-            Collections.singletonMap(t0, new OffsetAndMetadata(20L));
+                Collections.singletonMap(t0, new OffsetAndMetadata(20L));
         when(consumerInterceptors.isEmpty()).thenReturn(false);
 
         offsetCommitCallbackInvoker.enqueueInterceptorInvocation(offsets1);
@@ -117,9 +117,9 @@ public class OffsetCommitCallbackInvokerTest {
     public void testMixedCallbacksInterceptorsInvoked() {
         final TopicPartition t0 = new TopicPartition("t0", 2);
         Map<TopicPartition, OffsetAndMetadata> offsets1 =
-            Collections.singletonMap(t0, new OffsetAndMetadata(10L));
+                Collections.singletonMap(t0, new OffsetAndMetadata(10L));
         Map<TopicPartition, OffsetAndMetadata> offsets2 =
-            Collections.singletonMap(t0, new OffsetAndMetadata(20L));
+                Collections.singletonMap(t0, new OffsetAndMetadata(20L));
         OffsetCommitCallback callback1 = mock(OffsetCommitCallback.class);
         when(consumerInterceptors.isEmpty()).thenReturn(false);
 

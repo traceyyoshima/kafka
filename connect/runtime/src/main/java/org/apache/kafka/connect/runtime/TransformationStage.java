@@ -46,7 +46,6 @@ public class TransformationStage<R extends ConnectRecord<R>> implements AutoClos
     private final String predicateVersion;
     private final Function<ClassLoader, LoaderSwap> pluginLoaderSwapper;
 
-
     TransformationStage(
         Plugin<Transformation<R>> transformationPlugin,
         String transformAlias,
@@ -120,23 +119,21 @@ public class TransformationStage<R extends ConnectRecord<R>> implements AutoClos
         }
     }
 
-
     public record StageInfo(AliasedPluginInfo transform, AliasedPluginInfo predicate) {
         public StageInfo {
             Objects.requireNonNull(transform, "transform cannot be null");
         }
     }
 
-
     public StageInfo transformationStageInfo() {
         AliasedPluginInfo transformInfo = new AliasedPluginInfo(
-            transformAlias,
-            transformationPlugin.get().getClass().getName(),
-            transformVersion
+                transformAlias,
+                transformationPlugin.get().getClass().getName(),
+                transformVersion
         );
         AliasedPluginInfo predicateInfo = predicatePlugin != null ? new AliasedPluginInfo(
-            predicateAlias,
-            predicatePlugin.get().getClass().getName(), predicateVersion
+                predicateAlias,
+                predicatePlugin.get().getClass().getName(), predicateVersion
         ) : null;
         return new StageInfo(transformInfo, predicateInfo);
     }

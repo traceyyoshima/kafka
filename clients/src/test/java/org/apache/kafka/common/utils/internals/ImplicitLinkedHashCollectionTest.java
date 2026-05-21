@@ -139,7 +139,7 @@ public class ImplicitLinkedHashCollectionTest {
         while (iterator.hasNext()) {
             TestElement element = iterator.next();
             assertTrue(i < sequence.length, "Iterator yielded " + (i + 1) + " elements, but only " +
-                sequence.length + " were expected.");
+                    sequence.length + " were expected.");
             assertEquals(sequence[i].intValue(), element.key, "Iterator value number " + (i + 1) + " was incorrect.");
             i = i + 1;
         }
@@ -152,13 +152,13 @@ public class ImplicitLinkedHashCollectionTest {
         while (iter.hasNext()) {
             TestElement element = iter.next();
             assertTrue(expectedIter.hasNext(), "Iterator yielded " + (i + 1) + " elements, but only " + i +
-                " were expected.");
+                    " were expected.");
             Integer expected = expectedIter.next();
             assertEquals(expected.intValue(), element.key, "Iterator value number " + (i + 1) + " was incorrect.");
             i = i + 1;
         }
         assertFalse(expectedIter.hasNext(), "Iterator yielded " + i + " elements, but at least " + (i + 1) +
-            " were expected.");
+                " were expected.");
     }
 
     @Test
@@ -598,9 +598,9 @@ public class ImplicitLinkedHashCollectionTest {
     @Test
     public void testRemovals() {
         ImplicitLinkedHashCollection<TestElement> coll = new ImplicitLinkedHashCollection<>();
-        List<TestElement> elements  = new ArrayList<>();
+        List<TestElement> elements = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            TestElement element  = new TestElement(i, i);
+            TestElement element = new TestElement(i, i);
             elements.add(element);
             coll.add(element);
         }

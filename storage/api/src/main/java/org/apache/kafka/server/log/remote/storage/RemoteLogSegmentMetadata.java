@@ -151,8 +151,8 @@ public class RemoteLogSegmentMetadata extends RemoteLogMetadata {
         this.startOffset = startOffset;
 
         if (endOffset < startOffset) {
-            throw new IllegalArgumentException("Unexpected end offset = " + endOffset + 
-                                               ". EndOffset for a remote segment cannot be less than startOffset = " + startOffset);
+            throw new IllegalArgumentException("Unexpected end offset = " + endOffset +
+                    ". EndOffset for a remote segment cannot be less than startOffset = " + startOffset);
         }
         this.endOffset = endOffset;
         this.maxTimestampMs = maxTimestampMs;
@@ -352,18 +352,18 @@ public class RemoteLogSegmentMetadata extends RemoteLogMetadata {
     @Override
     public String toString() {
         return "RemoteLogSegmentMetadata{" +
-               "remoteLogSegmentId=" + remoteLogSegmentId +
-               ", startOffset=" + startOffset +
-               ", endOffset=" + endOffset +
-               ", brokerId=" + brokerId() +
-               ", maxTimestampMs=" + maxTimestampMs +
-               ", eventTimestampMs=" + eventTimestampMs() +
-               ", segmentLeaderEpochs=" + segmentLeaderEpochs +
-               ", segmentSizeInBytes=" + segmentSizeInBytes +
-               ", customMetadata=" + customMetadata +
-               ", state=" + state +
-               ", txnIdxEmpty=" + txnIdxEmpty +
-               '}';
+                "remoteLogSegmentId=" + remoteLogSegmentId +
+                ", startOffset=" + startOffset +
+                ", endOffset=" + endOffset +
+                ", brokerId=" + brokerId() +
+                ", maxTimestampMs=" + maxTimestampMs +
+                ", eventTimestampMs=" + eventTimestampMs() +
+                ", segmentLeaderEpochs=" + segmentLeaderEpochs +
+                ", segmentSizeInBytes=" + segmentSizeInBytes +
+                ", customMetadata=" + customMetadata +
+                ", state=" + state +
+                ", txnIdxEmpty=" + txnIdxEmpty +
+                '}';
     }
 
     /**

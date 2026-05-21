@@ -53,41 +53,42 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 class TransactionLogTest {
 
     private final Set<TopicPartition> topicPartitions = Set.of(
-        new TopicPartition("topic1", 0),
-        new TopicPartition("topic1", 1),
-        new TopicPartition("topic2", 0),
-        new TopicPartition("topic2", 1),
-        new TopicPartition("topic2", 2)
+            new TopicPartition("topic1", 0),
+            new TopicPartition("topic1", 1),
+            new TopicPartition("topic2", 0),
+            new TopicPartition("topic2", 1),
+            new TopicPartition("topic2", 2)
     );
 
     private static TransactionMetadata TransactionMetadata(TransactionState state) {
         return new TransactionMetadata(
-            "transactionalId",
-            0L,
-            RecordBatch.NO_PRODUCER_ID,
-            RecordBatch.NO_PRODUCER_ID,
-            (short) 0,
-            RecordBatch.NO_PRODUCER_EPOCH,
-            1000,
-            state,
-            Set.of(),
-            0,
-            0,
-            LATEST_PRODUCTION
+                "transactionalId",
+                0L,
+                RecordBatch.NO_PRODUCER_ID,
+                RecordBatch.NO_PRODUCER_ID,
+                (short) 0,
+                RecordBatch.NO_PRODUCER_EPOCH,
+                1000,
+                state,
+                Set.of(),
+                0,
+                0,
+                LATEST_PRODUCTION
         );
     }
 
     private static Stream<TransactionState> transactionStatesProvider() {
         return Stream.of(
-            TransactionState.EMPTY,
-            TransactionState.ONGOING,
-            TransactionState.PREPARE_COMMIT,
-            TransactionState.COMPLETE_COMMIT,
-            TransactionState.PREPARE_ABORT,
-            TransactionState.COMPLETE_ABORT
+                TransactionState.EMPTY,
+                TransactionState.ONGOING,
+                TransactionState.PREPARE_COMMIT,
+                TransactionState.COMPLETE_COMMIT,
+                TransactionState.PREPARE_ABORT,
+                TransactionState.COMPLETE_ABORT
         );
     }
 
@@ -109,8 +110,8 @@ class TransactionLogTest {
         }
 
         var record = MemoryRecords.withRecords(Compression.NONE, new SimpleRecord(
-            TransactionLog.keyToBytes(txnMetadata.transactionalId()),
-            TransactionLog.valueToBytes(txnMetadata.prepareNoTransit(), TV_2)
+                TransactionLog.keyToBytes(txnMetadata.transactionalId()),
+                TransactionLog.valueToBytes(txnMetadata.prepareNoTransit(), TV_2)
         )).records().iterator().next();
         var readResult = assertInstanceOf(TransactionLog.TxnRecord.class, TransactionLog.read(record.key(), record.value()));
         var deserialized = readResult.metadata();
@@ -126,19 +127,19 @@ class TransactionLogTest {
             assertEquals(topicPartitions, deserialized.topicPartitions());
         }
     }
-  
+
     @Test
     void shouldRoundTripPreviousAndNextProducerIds() {
         var txnTransitMetadata = new TxnTransitMetadata(
-            200L,       // producerId
+                200L,       // producerId
             100L,       // prevProducerId
             201L,       // nextProducerId
             (short) 5,  // producerEpoch
             (short) 4,  // lastProducerEpoch
             1000,       // txnTimeoutMs
             TransactionState.PREPARE_COMMIT,
-            new HashSet<>(Set.of(new TopicPartition("topic", 0))),
-            0L,         // txnStartTimestamp
+                new HashSet<>(Set.of(new TopicPartition("topic", 0))),
+                0L,         // txnStartTimestamp
             0L,         // txnLastUpdateTimestamp
             TV_2
         );
@@ -159,22 +160,22 @@ class TransactionLogTest {
         // Version 0 is non-flexible, so tagged fields (previousProducerId,
         // nextProducerId) cannot be written. They fall back to defaults (-1).
         var txnTransitMetadata = new TxnTransitMetadata(
-            200L,       // producerId
+                200L,       // producerId
             100L,       // prevProducerId — not persisted at v0
             201L,       // nextProducerId — not persisted at v0
             (short) 5,  // producerEpoch
             (short) 4,  // lastProducerEpoch
             1000,       // txnTimeoutMs
             TransactionState.PREPARE_COMMIT,
-            new HashSet<>(Set.of(new TopicPartition("topic", 0))),
-            0L,         // txnStartTimestamp
+                new HashSet<>(Set.of(new TopicPartition("topic", 0))),
+                0L,         // txnStartTimestamp
             0L,         // txnLastUpdateTimestamp
             TV_0
         );
 
         var record = MemoryRecords.withRecords(Compression.NONE, new SimpleRecord(
-            TransactionLog.keyToBytes("transactionalId"),
-            TransactionLog.valueToBytes(txnTransitMetadata, TV_0)
+                TransactionLog.keyToBytes("transactionalId"),
+                TransactionLog.valueToBytes(txnTransitMetadata, TV_0)
         )).records().iterator().next();
         var readResult = assertInstanceOf(TransactionLog.TxnRecord.class, TransactionLog.read(record.key(), record.value()));
         var deserialized = readResult.metadata();
@@ -234,11 +235,11 @@ class TransactionLogTest {
         // Copy of TransactionLogValue.PartitionsSchema.SCHEMA_1 with a few
         // additional tagged fields.
         var futurePartitionsSchema = new Schema(
-            new Field("topic", Type.COMPACT_STRING, ""),
-            new Field("partition_ids", new CompactArrayOf(Type.INT32), ""),
-            TaggedFieldsSection.of(
-                100, new Field("partition_foo", Type.STRING, ""),
-                101, new Field("partition_foo", Type.INT32, "")
+                new Field("topic", Type.COMPACT_STRING, ""),
+                new Field("partition_ids", new CompactArrayOf(Type.INT32), ""),
+                TaggedFieldsSection.of(
+                    100, new Field("partition_foo", Type.STRING, ""),
+                    101, new Field("partition_foo", Type.INT32, "")
             )
         );
 
@@ -254,16 +255,16 @@ class TransactionLogTest {
         // Copy of TransactionLogValue.SCHEMA_1 with a few
         // additional tagged fields.
         var futureTransactionLogValueSchema = new Schema(
-            new Field("producer_id", Type.INT64, ""),
-            new Field("producer_epoch", Type.INT16, ""),
-            new Field("transaction_timeout_ms", Type.INT32, ""),
-            new Field("transaction_status", Type.INT8, ""),
-            new Field("transaction_partitions", CompactArrayOf.nullable(futurePartitionsSchema), ""),
-            new Field("transaction_last_update_timestamp_ms", Type.INT64, ""),
-            new Field("transaction_start_timestamp_ms", Type.INT64, ""),
-            TaggedFieldsSection.of(
-                100, new Field("txn_foo", Type.STRING, ""),
-                101, new Field("txn_bar", Type.INT32, "")
+                new Field("producer_id", Type.INT64, ""),
+                new Field("producer_epoch", Type.INT16, ""),
+                new Field("transaction_timeout_ms", Type.INT32, ""),
+                new Field("transaction_status", Type.INT8, ""),
+                new Field("transaction_partitions", CompactArrayOf.nullable(futurePartitionsSchema), ""),
+                new Field("transaction_last_update_timestamp_ms", Type.INT64, ""),
+                new Field("transaction_start_timestamp_ms", Type.INT64, ""),
+                TaggedFieldsSection.of(
+                    100, new Field("txn_foo", Type.STRING, ""),
+                    101, new Field("txn_bar", Type.INT32, "")
             )
         );
 

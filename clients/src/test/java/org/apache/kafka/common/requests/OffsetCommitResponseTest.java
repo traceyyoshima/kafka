@@ -76,12 +76,12 @@ public class OffsetCommitResponseTest {
     public void testParse() {
         OffsetCommitResponseData data = new OffsetCommitResponseData()
             .setTopics(Arrays.asList(
-                new OffsetCommitResponseTopic().setPartitions(
-                    Collections.singletonList(new OffsetCommitResponsePartition()
+                    new OffsetCommitResponseTopic().setPartitions(
+                        Collections.singletonList(new OffsetCommitResponsePartition()
                         .setPartitionIndex(partitionOne)
                         .setErrorCode(errorOne.code()))),
-                new OffsetCommitResponseTopic().setPartitions(
-                    Collections.singletonList(new OffsetCommitResponsePartition()
+                    new OffsetCommitResponseTopic().setPartitions(
+                        Collections.singletonList(new OffsetCommitResponsePartition()
                         .setPartitionIndex(partitionTwo)
                         .setErrorCode(errorTwo.code())))
             ))

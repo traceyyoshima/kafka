@@ -160,14 +160,14 @@ public final class IntGaugeSuite<K> implements AutoCloseable {
         this.modifyMetricsLock = new ReentrantLock();
         this.closed = false;
         log.trace("{}: created new gauge suite with maxEntries = {}.",
-            suiteName, maxEntries);
+                suiteName, maxEntries);
     }
 
     public void increment(K key) {
         synchronized (this) {
             if (closed) {
                 log.warn("{}: Attempted to increment {}, but the GaugeSuite was closed.",
-                    suiteName, key.toString());
+                        suiteName, key.toString());
                 return;
             }
             StoredIntGauge gauge = gauges.get(key);
@@ -181,7 +181,7 @@ public final class IntGaugeSuite<K> implements AutoCloseable {
             if (gauges.size() == maxEntries) {
                 if (removable.isEmpty()) {
                     log.debug("{}: Attempted to increment {}, but there are already {} entries.",
-                        suiteName, key.toString(), maxEntries);
+                            suiteName, key.toString(), maxEntries);
                     return;
                 }
                 Iterator<K> iter = removable.iterator();
@@ -191,7 +191,7 @@ public final class IntGaugeSuite<K> implements AutoCloseable {
                 gauges.remove(keyToRemove);
                 pending.push(new PendingMetricsChange(metricNameToRemove, null));
                 log.trace("{}: Removing the metric {}, which has a value of 0.",
-                    suiteName, keyToRemove.toString());
+                        suiteName, keyToRemove.toString());
             }
             MetricName metricNameToAdd = metricNameCalculator.apply(key);
             gauge = new StoredIntGauge(metricNameToAdd);
@@ -213,8 +213,8 @@ public final class IntGaugeSuite<K> implements AutoCloseable {
         try {
             log.trace("{}: entering performPendingMetricsOperations", suiteName);
             for (PendingMetricsChange change = pending.pollLast();
-                 change != null;
-                 change = pending.pollLast()) {
+                change != null;
+                change = pending.pollLast()) {
                 if (change.provider == null) {
                     if (log.isTraceEnabled()) {
                         log.trace("{}: removing metric {}", suiteName, change.metricName);
@@ -236,17 +236,17 @@ public final class IntGaugeSuite<K> implements AutoCloseable {
     public synchronized void decrement(K key) {
         if (closed) {
             log.warn("{}: Attempted to decrement {}, but the gauge suite was closed.",
-                suiteName, key.toString());
+                    suiteName, key.toString());
             return;
         }
         StoredIntGauge gauge = gauges.get(key);
         if (gauge == null) {
             log.debug("{}: Attempted to decrement {}, but no such metric was registered.",
-                suiteName, key.toString());
+                    suiteName, key.toString());
         } else {
             int cur = gauge.decrement();
             log.trace("{}: Removed a reference to {}.  {} reference(s) remaining.",
-                suiteName, key.toString(), cur);
+                    suiteName, key.toString(), cur);
             if (cur <= 0) {
                 removable.add(key);
             }
@@ -261,7 +261,7 @@ public final class IntGaugeSuite<K> implements AutoCloseable {
         }
         closed = true;
         int prevSize = 0;
-        for (Iterator<StoredIntGauge> iter = gauges.values().iterator(); iter.hasNext(); ) {
+        for (Iterator<StoredIntGauge> iter = gauges.values().iterator(); iter.hasNext();) {
             pending.push(new PendingMetricsChange(iter.next().metricName, null));
             prevSize++;
             iter.remove();

@@ -214,7 +214,7 @@ public class LoginManager {
                                                      String saslMechanism,
                                                      String configName,
                                                      Class<? extends T> defaultClass) {
-        String prefix  = jaasContext.type() == JaasContext.Type.SERVER ? ListenerName.saslMechanismPrefix(saslMechanism) : "";
+        String prefix = jaasContext.type() == JaasContext.Type.SERVER ? ListenerName.saslMechanismPrefix(saslMechanism) : "";
         @SuppressWarnings("unchecked")
         Class<? extends T> clazz = (Class<? extends T>) configs.get(prefix + configName);
         if (clazz != null && jaasContext.configurationEntries().size() != 1) {
@@ -257,9 +257,9 @@ public class LoginManager {
 
             LoginMetadata<?> loginMetadata = (LoginMetadata<?>) o;
             return Objects.equals(configInfo, loginMetadata.configInfo) &&
-                   Objects.equals(loginClass, loginMetadata.loginClass) &&
-                   Objects.equals(loginCallbackClass, loginMetadata.loginCallbackClass) &&
-                   Objects.equals(saslConfigs, loginMetadata.saslConfigs);
+                    Objects.equals(loginClass, loginMetadata.loginClass) &&
+                    Objects.equals(loginCallbackClass, loginMetadata.loginCallbackClass) &&
+                    Objects.equals(saslConfigs, loginMetadata.saslConfigs);
         }
     }
 }

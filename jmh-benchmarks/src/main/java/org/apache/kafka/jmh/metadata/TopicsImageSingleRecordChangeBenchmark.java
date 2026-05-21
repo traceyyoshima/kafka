@@ -58,7 +58,6 @@ public class TopicsImageSingleRecordChangeBenchmark {
 
     private TopicsDelta topicsDelta;
 
-
     @Setup(Level.Trial)
     public void setup() {
         // build an image containing all the specified topics and partitions

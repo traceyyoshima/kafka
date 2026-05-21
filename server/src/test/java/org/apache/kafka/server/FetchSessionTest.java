@@ -207,7 +207,7 @@ public class FetchSessionTest {
 
         // With no changes, the cached epochs should remain the same
         FetchRequest request2 = createRequest(new FetchMetadata(sessionId, 1), new LinkedHashMap<>(),
-            List.of(), false, FETCH.latestVersion());
+                List.of(), false, FETCH.latestVersion());
         FetchContext context2 = newContext(fetchManager, request2, topicNames);
         assertEquals(Map.of(tp0, Optional.empty(), tp1, Optional.of(1), tp2, Optional.of(2)), cachedLeaderEpochs(context2));
         context2.updateAndGenerateResponseData(response, List.of()).sessionId();
@@ -219,7 +219,7 @@ public class FetchSessionTest {
         requestData3.put(tp2.topicPartition(), new PartitionData(tp2.topicId(), 10, 0, 100, Optional.of(3)));
 
         FetchRequest request3 = createRequest(new FetchMetadata(sessionId, 2), requestData3,
-            List.of(), false, FETCH.latestVersion());
+                List.of(), false, FETCH.latestVersion());
         FetchContext context3 = newContext(fetchManager, request3, topicNames);
         assertEquals(Map.of(tp0, Optional.of(6), tp1, Optional.empty(), tp2, Optional.of(3)), cachedLeaderEpochs(context3));
     }
@@ -266,7 +266,7 @@ public class FetchSessionTest {
 
         // With no changes, the cached epochs should remain the same
         FetchRequest request2 = createRequest(new FetchMetadata(sessionId, 1), new LinkedHashMap<>(),
-            List.of(), false, FETCH.latestVersion());
+                List.of(), false, FETCH.latestVersion());
         FetchContext context2 = newContext(fetchManager, request2, topicNames);
         assertEquals(Map.of(tp0, Optional.empty(), tp1, Optional.of(1), tp2, Optional.of(2)), cachedLeaderEpochs(context2));
         assertEquals(Map.of(tp0, Optional.empty(), tp1, Optional.empty(), tp2, Optional.of(1)), cachedLastFetchedEpochs(context2));
@@ -333,28 +333,28 @@ public class FetchSessionTest {
         assertEquals(Errors.NONE, resp2.error());
         assertTrue(resp2.sessionId() != INVALID_SESSION_ID);
         assertEquals(
-            respData2.entrySet()
+                respData2.entrySet()
                 .stream()
                 .collect(Collectors.toMap(entry -> entry.getKey().topicPartition(), Map.Entry::getValue)),
-            resp2.responseData(topicNames, request2.version())
+                resp2.responseData(topicNames, request2.version())
         );
 
         // Test trying to create a new session with an invalid epoch
         FetchRequest request3 = createRequest(new FetchMetadata(resp2.sessionId(), 5), reqData2,
-            List.of(), false, FETCH.latestVersion());
+                List.of(), false, FETCH.latestVersion());
         FetchContext context3 = newContext(fetchManager, request3, topicNames);
         assertInstanceOf(SessionErrorContext.class, context3);
         assertEquals(Errors.INVALID_FETCH_SESSION_EPOCH, context3.updateAndGenerateResponseData(respData2, List.of()).error());
 
         // Test trying to create a new session with a non-existent session id
         FetchRequest request4 = createRequest(new FetchMetadata(resp2.sessionId() + 1, 1), reqData2,
-            List.of(), false, FETCH.latestVersion());
+                List.of(), false, FETCH.latestVersion());
         FetchContext context4 = newContext(fetchManager, request4, topicNames);
         assertEquals(Errors.FETCH_SESSION_ID_NOT_FOUND, context4.updateAndGenerateResponseData(respData2, List.of()).error());
 
         // Continue the first fetch session we created.
         FetchRequest request5 = createRequest(new FetchMetadata(resp2.sessionId(), 1), new LinkedHashMap<>(),
-            List.of(), false, FETCH.latestVersion());
+                List.of(), false, FETCH.latestVersion());
         FetchContext context5 = newContext(fetchManager, request5, topicNames);
         assertInstanceOf(IncrementalFetchContext.class, context5);
 
@@ -374,14 +374,14 @@ public class FetchSessionTest {
 
         // Test setting an invalid fetch session epoch.
         FetchRequest request6 = createRequest(new FetchMetadata(resp2.sessionId(), 5), reqData2,
-            List.of(), false, FETCH.latestVersion());
+                List.of(), false, FETCH.latestVersion());
         FetchContext context6 = newContext(fetchManager, request6, topicNames);
         assertInstanceOf(SessionErrorContext.class, context6);
         assertEquals(Errors.INVALID_FETCH_SESSION_EPOCH, context6.updateAndGenerateResponseData(respData2, List.of()).error());
 
         // Test generating a throttled response for the incremental fetch session
         FetchRequest request7 = createRequest(new FetchMetadata(resp2.sessionId(), 2), new LinkedHashMap<>(),
-            List.of(), false, FETCH.latestVersion());
+                List.of(), false, FETCH.latestVersion());
         FetchContext context7 = newContext(fetchManager, request7, topicNames);
         FetchResponse resp7 = context7.getThrottledResponse(100, List.of());
         assertEquals(Errors.NONE, resp7.error());
@@ -396,7 +396,7 @@ public class FetchSessionTest {
             reqData8.put(tp2.topicPartition(), new PartitionData(tp2.topicId(), 0, 0, 100, Optional.empty()));
             reqData8.put(tp3.topicPartition(), new PartitionData(tp3.topicId(), 10, 0, 100, Optional.empty()));
             FetchRequest request8 = createRequest(new FetchMetadata(prevSessionId, FINAL_EPOCH), reqData8,
-                List.of(), false, FETCH.latestVersion());
+                    List.of(), false, FETCH.latestVersion());
             FetchContext context8 = newContext(fetchManager, request8, topicNames);
             assertInstanceOf(SessionlessFetchContext.class, context8);
             assertEquals(0, cacheShard.size());
@@ -531,7 +531,7 @@ public class FetchSessionTest {
         assertTrue(resp1.sessionId() != INVALID_SESSION_ID);
         assertEquals(2, resp1.responseData(topicNames, request1.version()).size());
         resp1.responseData(topicNames, request1.version()).forEach((tp, resp) ->
-            assertEquals(Errors.NONE.code(), resp.errorCode()));
+                assertEquals(Errors.NONE.code(), resp.errorCode()));
     }
 
     @Test
@@ -577,12 +577,12 @@ public class FetchSessionTest {
         assertEquals(Errors.NONE, resp1.error());
         assertTrue(resp1.sessionId() != INVALID_SESSION_ID);
         assertEquals(
-            Map.of(
-                foo0.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code(),
-                foo1.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code(),
-                zar0.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code()
+                Map.of(
+                    foo0.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code(),
+                    foo1.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code(),
+                    zar0.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code()
             ),
-            resp1.responseData(topicNames, request1.version()).entrySet()
+                resp1.responseData(topicNames, request1.version()).entrySet()
                 .stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().errorCode()))
         );
@@ -615,12 +615,12 @@ public class FetchSessionTest {
         assertTrue(resp2.sessionId() != INVALID_SESSION_ID);
         assertEquals(3, resp2.responseData(topicNames, request2.version()).size());
         assertEquals(
-            Map.of(
-                foo0.topicPartition(), Errors.NONE.code(),
-                foo1.topicPartition(), Errors.NONE.code(),
-                zar0.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code()
+                Map.of(
+                    foo0.topicPartition(), Errors.NONE.code(),
+                    foo1.topicPartition(), Errors.NONE.code(),
+                    zar0.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code()
             ),
-            resp2.responseData(topicNames, request2.version()).entrySet()
+                resp2.responseData(topicNames, request2.version()).entrySet()
                 .stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().errorCode()))
         );
@@ -794,10 +794,10 @@ public class FetchSessionTest {
 
         // The metadata cache knows about foo and bar.
         FetchContext context3 = newContext(
-            new FetchMetadata(sessionId, 2),
-            List.of(bar),
-            fetchManager,
-            Map.of(foo.topicId(), foo.topic(), bar.topicId(), bar.topic())
+                new FetchMetadata(sessionId, 2),
+                List.of(bar),
+                fetchManager,
+                Map.of(foo.topicId(), foo.topic(), bar.topicId(), bar.topic())
         );
 
         // So foo and bar are resolved.
@@ -808,10 +808,10 @@ public class FetchSessionTest {
 
         // The metadata cache knows about all topics.
         FetchContext context4 = newContext(
-            new FetchMetadata(sessionId, 3),
-            List.of(),
-            fetchManager,
-            Map.of(foo.topicId(), foo.topic(), bar.topicId(), bar.topic(), zar.topicId(), zar.topic())
+                new FetchMetadata(sessionId, 3),
+                List.of(),
+                fetchManager,
+                Map.of(foo.topicId(), foo.topic(), bar.topicId(), bar.topic(), zar.topicId(), zar.topic())
         );
 
         // So all topics are resolved.
@@ -845,11 +845,11 @@ public class FetchSessionTest {
         Map<Uuid, String> context1Names = fooStartsResolved ? Map.of(foo.topicId(), foo.topic()) : Map.of();
         TopicIdPartition fooContext1 = fooStartsResolved ? foo : fooUnresolved;
         FetchContext context1 = newContext(
-            INITIAL,
-            List.of(fooContext1, bar),
-            List.of(),
-            fetchManager,
-            context1Names
+                INITIAL,
+                List.of(fooContext1, bar),
+                List.of(),
+                fetchManager,
+                context1Names
         );
 
         // So the context contains unresolved bar and a resolved foo iff fooStartsResolved
@@ -863,11 +863,11 @@ public class FetchSessionTest {
         Map<Uuid, String> context2Names = fooEndsResolved ? Map.of(foo.topicId(), foo.topic()) : Map.of();
         TopicIdPartition fooContext2 = fooEndsResolved ? foo : fooUnresolved;
         FetchContext context2 = newContext(
-            new FetchMetadata(sessionId, 1),
-            List.of(),
-            List.of(fooContext2),
-            fetchManager,
-            context2Names
+                new FetchMetadata(sessionId, 1),
+                List.of(),
+                List.of(fooContext2),
+                fetchManager,
+                context2Names
         );
 
         // So foo is removed but not the others.
@@ -878,11 +878,11 @@ public class FetchSessionTest {
 
         // Now remove bar
         FetchContext context3 = newContext(
-            new FetchMetadata(sessionId, 2),
-            List.of(),
-            List.of(bar),
-            fetchManager,
-            Map.of()
+                new FetchMetadata(sessionId, 2),
+                List.of(),
+                List.of(bar),
+                fetchManager,
+                Map.of()
         );
 
         // Context is sessionless since it is empty.
@@ -906,28 +906,28 @@ public class FetchSessionTest {
 
         // Start with a sessionless context.
         FetchContext context1 = newContext(
-            FetchMetadata.LEGACY,
-            List.of(foo, bar),
-            fetchManager,
-            receivingBrokerTopicNames
+                FetchMetadata.LEGACY,
+                List.of(foo, bar),
+                fetchManager,
+                receivingBrokerTopicNames
         );
         assertInstanceOf(SessionlessFetchContext.class, context1);
         // Check the response can be read as expected.
         checkResponseData(
-            Map.of(
-                foo.topicPartition(), Errors.UNKNOWN_TOPIC_OR_PARTITION.code(),
-                bar.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code()
+                Map.of(
+                    foo.topicPartition(), Errors.UNKNOWN_TOPIC_OR_PARTITION.code(),
+                    bar.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code()
             ),
-            updateAndGenerateResponseData(context1),
-            sendingTopicNames
+                updateAndGenerateResponseData(context1),
+                sendingTopicNames
         );
 
         // Now create a full context.
         FetchContext context2 = newContext(
-            INITIAL,
-            List.of(foo, bar),
-            fetchManager,
-            receivingBrokerTopicNames
+                INITIAL,
+                List.of(foo, bar),
+                fetchManager,
+                receivingBrokerTopicNames
         );
         assertInstanceOf(FullFetchContext.class, context2);
 
@@ -935,37 +935,37 @@ public class FetchSessionTest {
         FetchResponse response2 = updateAndGenerateResponseData(context2);
         int sessionId = response2.sessionId();
         checkResponseData(
-            Map.of(
-                foo.topicPartition(), Errors.UNKNOWN_TOPIC_OR_PARTITION.code(),
-                bar.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code()
+                Map.of(
+                    foo.topicPartition(), Errors.UNKNOWN_TOPIC_OR_PARTITION.code(),
+                    bar.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code()
             ),
-            response2,
-            sendingTopicNames
+                response2,
+                sendingTopicNames
         );
 
         // Now create an incremental context. We re-add foo as though the partition data is updated. In a real broker, the data would update.
         FetchContext context3 = newContext(
-            new FetchMetadata(sessionId, 1),
-            List.of(),
-            fetchManager,
-            receivingBrokerTopicNames
+                new FetchMetadata(sessionId, 1),
+                List.of(),
+                fetchManager,
+                receivingBrokerTopicNames
         );
         assertInstanceOf(IncrementalFetchContext.class, context3);
         checkResponseData(
-            Map.of(
-                foo.topicPartition(), Errors.UNKNOWN_TOPIC_OR_PARTITION.code(),
-                bar.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code()
+                Map.of(
+                    foo.topicPartition(), Errors.UNKNOWN_TOPIC_OR_PARTITION.code(),
+                    bar.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code()
             ),
-            updateAndGenerateResponseData(context3),
-            sendingTopicNames
+                updateAndGenerateResponseData(context3),
+                sendingTopicNames
         );
 
         // Finally create an error context by using the same epoch
         FetchContext context4 = newContext(
-            new FetchMetadata(sessionId, 1),
-            List.of(),
-            fetchManager,
-            receivingBrokerTopicNames
+                new FetchMetadata(sessionId, 1),
+                List.of(),
+                fetchManager,
+                receivingBrokerTopicNames
         );
         assertInstanceOf(SessionErrorContext.class, context4);
         // The response should be empty.
@@ -1044,7 +1044,7 @@ public class FetchSessionTest {
 
         // Create an incremental fetch request for session 1
         FetchRequest session1request2 = createRequest(new FetchMetadata(session1resp.sessionId(), 1), new LinkedHashMap<>(),
-            List.of(), false, FETCH.latestVersion());
+                List.of(), false, FETCH.latestVersion());
         FetchContext context1v2 = newContext(fetchManager, session1request2, topicNames);
         assertInstanceOf(IncrementalFetchContext.class, context1v2);
 
@@ -1079,7 +1079,7 @@ public class FetchSessionTest {
 
         assertTrue(cacheShard.get(session1resp.sessionId()).isPresent());
         assertFalse(cacheShard.get(session2resp.sessionId()).isPresent(),
-            "session 2 should have been evicted by latest session, as session 1 was used more recently");
+                "session 2 should have been evicted by latest session, as session 1 was used more recently");
         assertTrue(cacheShard.get(session3resp.sessionId()).isPresent());
     }
 
@@ -1211,7 +1211,7 @@ public class FetchSessionTest {
         assertEquals(2, session4resp.responseData(topicNames, session4request.version()).size());
 
         assertFalse(cacheShard.get(session1resp.sessionId()).isPresent(),
-            "session 1 should have been evicted by session 4 even though it is privileged as it has hit eviction time");
+                "session 1 should have been evicted by session 4 even though it is privileged as it has hit eviction time");
         assertTrue(cacheShard.get(session3resp.sessionId()).isPresent());
         assertTrue(cacheShard.get(session4resp.sessionId()).isPresent());
         assertEquals(2, cacheShard.size());
@@ -1253,7 +1253,7 @@ public class FetchSessionTest {
         // Create an incremental fetch request that removes foo-0 and foo-1
         // Verify that the previous fetch session was closed.
         FetchRequest request2 = createRequest(new FetchMetadata(resp1.sessionId(), 1), new LinkedHashMap<>(),
-            List.of(foo0, foo1), false, FETCH.latestVersion());
+                List.of(foo0, foo1), false, FETCH.latestVersion());
         FetchContext context2 = newContext(fetchManager, request2, topicNames);
         assertInstanceOf(SessionlessFetchContext.class, context2);
 
@@ -1375,14 +1375,14 @@ public class FetchSessionTest {
         assertEquals(Errors.NONE, resp1.error());
         assertNotEquals(INVALID_SESSION_ID, resp1.sessionId());
         assertEquals(
-            Set.of(tp1.topicPartition(), tp2.topicPartition(), tp3.topicPartition()),
-            resp1.responseData(topicNames, FETCH.latestVersion()).keySet()
+                Set.of(tp1.topicPartition(), tp2.topicPartition(), tp3.topicPartition()),
+                resp1.responseData(topicNames, FETCH.latestVersion()).keySet()
         );
 
         // Incremental fetch context returns partitions with changes but only deprioritizes
         // the partitions with records
         FetchContext context2 = fetchManager.newContext(FETCH.latestVersion(), new FetchMetadata(resp1.sessionId(), 1),
-            false, reqData, List.of(), topicNames);
+                false, reqData, List.of(), topicNames);
         assertInstanceOf(IncrementalFetchContext.class, context2);
 
         // Partitions are ordered in the session as per last response
@@ -1542,7 +1542,7 @@ public class FetchSessionTest {
         for (int sessionId : sessionIds) {
             i = i + 1;
             assertTrue(cacheShard.get(sessionId).isPresent(),
-                "Missing session " + i + " out of " + List.of(sessionIds).size() + " " + sessionId + "\"");
+                    "Missing session " + i + " out of " + List.of(sessionIds).size() + " " + sessionId + "\"");
         }
         assertEquals(sessionIds.length, cacheShard.size());
     }
@@ -1560,13 +1560,13 @@ public class FetchSessionTest {
                                        boolean isFromFollower,
                                        short version) {
         return new FetchRequest.Builder(
-            version,
-            version,
-            isFromFollower ? 1 : FetchRequest.CONSUMER_REPLICA_ID,
-            isFromFollower ? 1 : -1,
-            0,
-            0,
-            fetchData)
+                version,
+                version,
+                isFromFollower ? 1 : FetchRequest.CONSUMER_REPLICA_ID,
+                isFromFollower ? 1 : -1,
+                0,
+                0,
+                fetchData)
         .metadata(metadata)
         .removed(toForget)
         .build();
@@ -1575,13 +1575,13 @@ public class FetchSessionTest {
     private FetchRequest createRequestWithoutTopicIds(FetchMetadata metadata,
                                                       Map<TopicPartition, PartitionData> fetchData) {
         return new FetchRequest.Builder(
-            (short) 12,
-            (short) 12,
-            FetchRequest.CONSUMER_REPLICA_ID,
-            -1,
-            0,
-            0,
-            fetchData)
+                (short) 12,
+                (short) 12,
+                FetchRequest.CONSUMER_REPLICA_ID,
+                -1,
+                0,
+                0,
+                fetchData)
         .metadata(metadata)
         .removed(List.of())
         .build();
@@ -1589,12 +1589,12 @@ public class FetchSessionTest {
 
     private FetchContext newContext(FetchManager fetchManager, FetchRequest request, Map<Uuid, String> topicNames) {
         return fetchManager.newContext(
-            request.version(),
-            request.metadata(),
-            request.isFromFollower(),
-            request.fetchData(topicNames),
-            request.forgottenTopics(topicNames),
-            topicNames
+                request.version(),
+                request.metadata(),
+                request.isFromFollower(),
+                request.fetchData(topicNames),
+                request.forgottenTopics(topicNames),
+                topicNames
         );
     }
 
@@ -1605,21 +1605,21 @@ public class FetchSessionTest {
         LinkedHashMap<TopicPartition, PartitionData> data = new LinkedHashMap<>();
 
         partitions.forEach(topicIdPartition ->
-            data.put(
-                topicIdPartition.topicPartition(),
-                new PartitionData(topicIdPartition.topicId(), 0, 0, 100, Optional.empty())
+                data.put(
+                    topicIdPartition.topicPartition(),
+                    new PartitionData(topicIdPartition.topicId(), 0, 0, 100, Optional.empty())
             )
         );
 
         FetchRequest fetchRequest = createRequest(metadata, data, List.of(), false, FETCH.latestVersion());
 
         return fetchManager.newContext(
-            fetchRequest.version(),
-            fetchRequest.metadata(),
-            fetchRequest.isFromFollower(),
-            fetchRequest.fetchData(topicNames),
-            fetchRequest.forgottenTopics(topicNames),
-            topicNames
+                fetchRequest.version(),
+                fetchRequest.metadata(),
+                fetchRequest.isFromFollower(),
+                fetchRequest.fetchData(topicNames),
+                fetchRequest.forgottenTopics(topicNames),
+                topicNames
         );
     }
 
@@ -1631,21 +1631,21 @@ public class FetchSessionTest {
         LinkedHashMap<TopicPartition, PartitionData> data = new LinkedHashMap<>();
 
         partitions.forEach(topicIdPartition ->
-            data.put(
-                topicIdPartition.topicPartition(),
-                new PartitionData(topicIdPartition.topicId(), 0, 0, 100, Optional.empty())
+                data.put(
+                    topicIdPartition.topicPartition(),
+                    new PartitionData(topicIdPartition.topicId(), 0, 0, 100, Optional.empty())
             )
         );
 
         FetchRequest fetchRequest = createRequest(metadata, data, toForget, false, FETCH.latestVersion());
 
         return fetchManager.newContext(
-            fetchRequest.version(),
-            fetchRequest.metadata(),
-            fetchRequest.isFromFollower(),
-            fetchRequest.fetchData(topicNames),
-            fetchRequest.forgottenTopics(topicNames),
-            topicNames
+                fetchRequest.version(),
+                fetchRequest.metadata(),
+                fetchRequest.isFromFollower(),
+                fetchRequest.fetchData(topicNames),
+                fetchRequest.forgottenTopics(topicNames),
+                topicNames
         );
     }
 
@@ -1674,9 +1674,9 @@ public class FetchSessionTest {
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> data = new LinkedHashMap<>();
 
         context.foreachPartition((topicIdPartition, partData) ->
-            data.put(
-                topicIdPartition,
-                topicIdPartition.topic() == null
+                data.put(
+                    topicIdPartition,
+                    topicIdPartition.topic() == null
                     ? errorResponse(Errors.UNKNOWN_TOPIC_ID.code())
                     : new FetchResponseData.PartitionData()
                         .setPartitionIndex(1)
@@ -1693,9 +1693,9 @@ public class FetchSessionTest {
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> data = new LinkedHashMap<>();
 
         context.foreachPartition((topicIdPartition, partData) ->
-            data.put(
-                topicIdPartition,
-                topicIdPartition.topic() == null
+                data.put(
+                    topicIdPartition,
+                    topicIdPartition.topic() == null
                     ? errorResponse(Errors.UNKNOWN_TOPIC_ID.code())
                     : errorResponse(Errors.UNKNOWN_TOPIC_OR_PARTITION.code())
             )
@@ -1706,8 +1706,8 @@ public class FetchSessionTest {
 
     private void checkResponseData(Map<TopicPartition, Short> expected, FetchResponse response, Map<Uuid, String> topicNames) {
         assertEquals(
-            expected,
-            response.responseData(topicNames, FETCH.latestVersion()).entrySet()
+                expected,
+                response.responseData(topicNames, FETCH.latestVersion()).entrySet()
                 .stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().errorCode()))
         );

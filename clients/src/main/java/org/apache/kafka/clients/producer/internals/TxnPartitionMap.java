@@ -43,7 +43,7 @@ class TxnPartitionMap {
         TxnPartitionEntry ent = topicPartitions.get(topicPartition);
         if (ent == null) {
             throw new IllegalStateException("Trying to get txnPartitionEntry for " + topicPartition +
-                ", but it was never set for this partition.");
+                    ", but it was never set for this partition.");
         }
         return ent;
     }
@@ -83,7 +83,6 @@ class TxnPartitionMap {
     void remove(TopicPartition topicPartition) {
         topicPartitions.remove(topicPartition);
     }
-
 
     void updateLastAckedOffset(TopicPartition topicPartition, boolean isTransactional, long lastOffset) {
         OptionalLong lastAckedOffset = lastAckedOffset(topicPartition);

@@ -78,14 +78,14 @@ public class StateDirectoryIntegrationTest {
         CLUSTER.createTopic(input);
 
         final Properties producerConfig = mkProperties(mkMap(
-            mkEntry(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
-            mkEntry(ProducerConfig.ACKS_CONFIG, "all"),
-            mkEntry(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getCanonicalName()),
-            mkEntry(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getCanonicalName())
+                mkEntry(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
+                mkEntry(ProducerConfig.ACKS_CONFIG, "all"),
+                mkEntry(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getCanonicalName()),
+                mkEntry(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getCanonicalName())
         ));
 
         try (final KafkaProducer<String, String> producer =
-                 new KafkaProducer<>(producerConfig, Serdes.String().serializer(), Serdes.String().serializer())) {
+                new KafkaProducer<>(producerConfig, Serdes.String().serializer(), Serdes.String().serializer())) {
             // Create Test Records
             producer.send(new ProducerRecord<>(input, "a"));
             producer.send(new ProducerRecord<>(input, "b"));
@@ -96,8 +96,8 @@ public class StateDirectoryIntegrationTest {
 
             final StreamsBuilder builder = new StreamsBuilder();
             builder.table(
-                input,
-                Materialized
+                    input,
+                    Materialized
                     .<String, String, KeyValueStore<Bytes, byte[]>>as(storeName)
                     .withKeySerde(Serdes.String())
                     .withValueSerde(Serdes.String())
@@ -110,9 +110,9 @@ public class StateDirectoryIntegrationTest {
             // Create KafkaStreams instance
             final String applicationId = uniqueTestName + "-app";
             final Properties streamsConfig = mkProperties(mkMap(
-                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, applicationId),
-                mkEntry(StreamsConfig.STATE_DIR_CONFIG, stateDir),
-                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers())
+                    mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, applicationId),
+                    mkEntry(StreamsConfig.STATE_DIR_CONFIG, stateDir),
+                    mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers())
             ));
 
             final KafkaStreams streams = new KafkaStreams(topology, streamsConfig);
@@ -161,13 +161,13 @@ public class StateDirectoryIntegrationTest {
             // case 2: The state directory is not cleaned up, for it does not include any checkpoint file.
             // case 3: The state directory is not cleaned up, for it includes a checkpoint file but it is empty.
             assertTrue(appDir.exists()
-                || Arrays.stream(appDir.listFiles())
-                    .filter(
-                        (File f) -> f.isDirectory() && f.listFiles().length > 0 && !(new File(f, ".checkpoint")).exists()
+                    || Arrays.stream(appDir.listFiles())
+                .filter(
+                            (File f) -> f.isDirectory() && f.listFiles().length > 0 && !(new File(f, ".checkpoint")).exists()
                     ).findFirst().isPresent()
-                || Arrays.stream(appDir.listFiles())
-                    .filter(
-                        (File f) -> f.isDirectory() && (new File(f, ".checkpoint")).length() == 0L
+                    || Arrays.stream(appDir.listFiles())
+                .filter(
+                            (File f) -> f.isDirectory() && (new File(f, ".checkpoint")).length() == 0L
                     ).findFirst().isPresent()
             );
         } finally {
@@ -184,14 +184,14 @@ public class StateDirectoryIntegrationTest {
         CLUSTER.createTopic(input);
 
         final Properties producerConfig = mkProperties(mkMap(
-            mkEntry(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
-            mkEntry(ProducerConfig.ACKS_CONFIG, "all"),
-            mkEntry(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getCanonicalName()),
-            mkEntry(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getCanonicalName())
+                mkEntry(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
+                mkEntry(ProducerConfig.ACKS_CONFIG, "all"),
+                mkEntry(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getCanonicalName()),
+                mkEntry(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getCanonicalName())
         ));
 
         try (final KafkaProducer<String, String> producer =
-                 new KafkaProducer<>(producerConfig, Serdes.String().serializer(), Serdes.String().serializer())) {
+                new KafkaProducer<>(producerConfig, Serdes.String().serializer(), Serdes.String().serializer())) {
             // Create Test Records
             producer.send(new ProducerRecord<>(input, "a"));
             producer.send(new ProducerRecord<>(input, "b"));
@@ -202,8 +202,8 @@ public class StateDirectoryIntegrationTest {
 
             final StreamsBuilder builder = new StreamsBuilder();
             builder.table(
-                input,
-                Materialized
+                    input,
+                    Materialized
                     .<String, String, KeyValueStore<Bytes, byte[]>>as(storeName)
                     .withKeySerde(Serdes.String())
                     .withValueSerde(Serdes.String())
@@ -216,9 +216,9 @@ public class StateDirectoryIntegrationTest {
             // Create KafkaStreams instance
             final String applicationId = uniqueTestName + "-app";
             final Properties streamsConfig = mkProperties(mkMap(
-                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, applicationId),
-                mkEntry(StreamsConfig.STATE_DIR_CONFIG, stateDir),
-                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers())
+                    mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, applicationId),
+                    mkEntry(StreamsConfig.STATE_DIR_CONFIG, stateDir),
+                    mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers())
             ));
 
             final KafkaStreams streams = new KafkaStreams(topology, streamsConfig);

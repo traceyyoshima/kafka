@@ -244,22 +244,22 @@ public class TestLinearWriteSpeed {
             this.messages = messages;
             Utils.delete(dir);
             this.log = UnifiedLog.create(
-                dir,
-                config,
-                0L,
-                0L,
-                scheduler,
-                new BrokerTopicStats(),
-                Time.SYSTEM,
-                5 * 60 * 1000,
-                new ProducerStateManagerConfig(TransactionLogConfig.PRODUCER_ID_EXPIRATION_MS_DEFAULT, false),
-                TransactionLogConfig.PRODUCER_ID_EXPIRATION_CHECK_INTERVAL_MS_DEFAULT,
-                new LogDirFailureChannel(10),
-                true,
-                Optional.empty(),
-                new CopyOnWriteMap<>(),
-                false,
-                LogOffsetsListener.NO_OP_OFFSETS_LISTENER
+                    dir,
+                    config,
+                    0L,
+                    0L,
+                    scheduler,
+                    new BrokerTopicStats(),
+                    Time.SYSTEM,
+                    5 * 60 * 1000,
+                    new ProducerStateManagerConfig(TransactionLogConfig.PRODUCER_ID_EXPIRATION_MS_DEFAULT, false),
+                    TransactionLogConfig.PRODUCER_ID_EXPIRATION_CHECK_INTERVAL_MS_DEFAULT,
+                    new LogDirFailureChannel(10),
+                    true,
+                    Optional.empty(),
+                    new CopyOnWriteMap<>(),
+                    false,
+                    LogOffsetsListener.NO_OP_OFFSETS_LISTENER
             );
         }
 
@@ -267,12 +267,12 @@ public class TestLinearWriteSpeed {
             // reset the last offset for each batch to avoid failure caused by offset check
             messages.batches().forEach(b -> b.setLastOffset(b.lastOffset() - b.baseOffset()));
             log.appendAsLeader(
-                messages,
-                0,
-                AppendOrigin.CLIENT,
-                RequestLocal.noCaching(),
-                VerificationGuard.SENTINEL,
-                TV_UNKNOWN
+                    messages,
+                    0,
+                    AppendOrigin.CLIENT,
+                    RequestLocal.noCaching(),
+                    VerificationGuard.SENTINEL,
+                    TV_UNKNOWN
             );
             return messages.sizeInBytes();
         }
@@ -354,19 +354,19 @@ public class TestLinearWriteSpeed {
         OptionSpec<Void> mmapOpt = parser.accepts("mmap", "Do writes to mmap file.");
 
         return new Options(
-            dirOpt,
-            bytesOpt,
-            sizeOpt,
-            messageSizeOpt,
-            filesOpt,
-            reportingIntervalOpt,
-            maxThroughputOpt,
-            flushIntervalOpt,
-            compressionCodecOpt,
-            compressionLevelOpt,
-            channelOpt,
-            logOpt,
-            mmapOpt
+                dirOpt,
+                bytesOpt,
+                sizeOpt,
+                messageSizeOpt,
+                filesOpt,
+                reportingIntervalOpt,
+                maxThroughputOpt,
+                flushIntervalOpt,
+                compressionCodecOpt,
+                compressionLevelOpt,
+                channelOpt,
+                logOpt,
+                mmapOpt
         );
     }
 }

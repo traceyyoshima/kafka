@@ -38,12 +38,12 @@ public class KafkaRaftClientAutoJoinTest {
         final var newFollowerKey = replicaKey(oldFollower.id(), true);
         final int epoch = 1;
         final var context = new RaftClientTestContext.Builder(
-            newFollowerKey.id(),
-            newFollowerKey.directoryId().get()
+                newFollowerKey.id(),
+                newFollowerKey.directoryId().get()
         )
             .withRaftProtocol(KIP_853_PROTOCOL)
             .withStartingVoters(
-                VoterSetTest.voterSet(Stream.of(leader, oldFollower)), KRaftVersion.KRAFT_VERSION_1
+                    VoterSetTest.voterSet(Stream.of(leader, oldFollower)), KRaftVersion.KRAFT_VERSION_1
             )
             .withElectedLeader(epoch, leader.id())
             .withAutoJoin(true)
@@ -69,12 +69,12 @@ public class KafkaRaftClientAutoJoinTest {
         final var newVoter = replicaKey(follower.id() + 1, true);
         final int epoch = 1;
         final var context = new RaftClientTestContext.Builder(
-            newVoter.id(),
-            newVoter.directoryId().get()
+                newVoter.id(),
+                newVoter.directoryId().get()
         )
             .withRaftProtocol(KIP_853_PROTOCOL)
             .withStartingVoters(
-                VoterSetTest.voterSet(Stream.of(leader, follower)), KRaftVersion.KRAFT_VERSION_1
+                    VoterSetTest.voterSet(Stream.of(leader, follower)), KRaftVersion.KRAFT_VERSION_1
             )
             .withElectedLeader(epoch, leader.id())
             .withAutoJoin(true)
@@ -95,16 +95,16 @@ public class KafkaRaftClientAutoJoinTest {
 
         // deliver the add voter response, this is possible before a completed fetch because of KIP-1186
         context.deliverResponse(
-            addVoterRequest.correlationId(),
-            addVoterRequest.destination(),
-            RaftUtil.addVoterResponse(Errors.NONE, Errors.NONE.message())
+                addVoterRequest.correlationId(),
+                addVoterRequest.destination(),
+                RaftUtil.addVoterResponse(Errors.NONE, Errors.NONE.message())
         );
 
         // verify the replica can perform a fetch to commit the new voter set
         pollAndDeliverFetchToUpdateVoterSet(
-            context,
-            epoch,
-            VoterSetTest.voterSet(Stream.of(leader, newVoter))
+                context,
+                epoch,
+                VoterSetTest.voterSet(Stream.of(leader, newVoter))
         );
     }
 
@@ -115,12 +115,12 @@ public class KafkaRaftClientAutoJoinTest {
         final var newFollowerKey = replicaKey(oldFollower.id(), true);
         final int epoch = 1;
         final var context = new RaftClientTestContext.Builder(
-            newFollowerKey.id(),
-            newFollowerKey.directoryId().get()
+                newFollowerKey.id(),
+                newFollowerKey.directoryId().get()
         )
             .withRaftProtocol(KIP_853_PROTOCOL)
             .withStartingVoters(
-                VoterSetTest.voterSet(Stream.of(leader, oldFollower)), KRaftVersion.KRAFT_VERSION_1
+                    VoterSetTest.voterSet(Stream.of(leader, oldFollower)), KRaftVersion.KRAFT_VERSION_1
             )
             .withElectedLeader(epoch, leader.id())
             .withAutoJoin(true)
@@ -136,9 +136,9 @@ public class KafkaRaftClientAutoJoinTest {
         // after sending a remove voter the next request should be a fetch
         // this fetch will remove the old follower from the voter set
         pollAndDeliverFetchToUpdateVoterSet(
-            context,
-            epoch,
-            VoterSetTest.voterSet(Stream.of(leader))
+                context,
+                epoch,
+                VoterSetTest.voterSet(Stream.of(leader))
         );
 
         // advance time and complete a fetch to trigger the add voter request
@@ -149,16 +149,16 @@ public class KafkaRaftClientAutoJoinTest {
 
         // deliver the add voter response, this is possible before a completed fetch because of KIP-1186
         context.deliverResponse(
-            addVoterRequest.correlationId(),
-            addVoterRequest.destination(),
-            RaftUtil.addVoterResponse(Errors.NONE, Errors.NONE.message())
+                addVoterRequest.correlationId(),
+                addVoterRequest.destination(),
+                RaftUtil.addVoterResponse(Errors.NONE, Errors.NONE.message())
         );
 
         // verify the replica can perform a fetch to commit the new voter set
         pollAndDeliverFetchToUpdateVoterSet(
-            context,
-            epoch,
-            VoterSetTest.voterSet(Stream.of(leader, newFollowerKey))
+                context,
+                epoch,
+                VoterSetTest.voterSet(Stream.of(leader, newFollowerKey))
         );
 
         // advance time and complete a fetch and expire the update voter set timer
@@ -168,7 +168,6 @@ public class KafkaRaftClientAutoJoinTest {
         context.assertSentFetchRequest();
     }
 
-
     @Test
     public void testObserversDoNotAutoJoin() throws Exception {
         final var leader = replicaKey(randomReplicaId(), true);
@@ -176,12 +175,12 @@ public class KafkaRaftClientAutoJoinTest {
         final var newObserver = replicaKey(follower.id() + 1, true);
         final int epoch = 1;
         final var context = new RaftClientTestContext.Builder(
-            newObserver.id(),
-            newObserver.directoryId().get()
+                newObserver.id(),
+                newObserver.directoryId().get()
         )
             .withRaftProtocol(KIP_853_PROTOCOL)
             .withStartingVoters(
-                VoterSetTest.voterSet(Stream.of(leader, follower)), KRaftVersion.KRAFT_VERSION_1
+                    VoterSetTest.voterSet(Stream.of(leader, follower)), KRaftVersion.KRAFT_VERSION_1
             )
             .withElectedLeader(epoch, leader.id())
             .withAutoJoin(true)
@@ -205,12 +204,12 @@ public class KafkaRaftClientAutoJoinTest {
         final var observer = replicaKey(follower.id() + 1, true);
         final int epoch = 1;
         final var context = new RaftClientTestContext.Builder(
-            observer.id(),
-            observer.directoryId().get()
+                observer.id(),
+                observer.directoryId().get()
         )
             .withRaftProtocol(KIP_853_PROTOCOL)
             .withStartingVoters(
-                VoterSetTest.voterSet(Stream.of(leader, follower)), KRaftVersion.KRAFT_VERSION_1
+                    VoterSetTest.voterSet(Stream.of(leader, follower)), KRaftVersion.KRAFT_VERSION_1
             )
             .withElectedLeader(epoch, leader.id())
             .withAutoJoin(false)
@@ -234,12 +233,12 @@ public class KafkaRaftClientAutoJoinTest {
         final var observer = replicaKey(follower.id() + 1, true);
         final int epoch = 1;
         final var context = new RaftClientTestContext.Builder(
-            observer.id(),
-            observer.directoryId().get()
+                observer.id(),
+                observer.directoryId().get()
         )
             .withRaftProtocol(KIP_595_PROTOCOL)
             .withStartingVoters(
-                VoterSetTest.voterSet(Stream.of(leader, follower)), KRaftVersion.KRAFT_VERSION_0
+                    VoterSetTest.voterSet(Stream.of(leader, follower)), KRaftVersion.KRAFT_VERSION_0
             )
             .withElectedLeader(epoch, leader.id())
             .withAutoJoin(true)
@@ -264,9 +263,9 @@ public class KafkaRaftClientAutoJoinTest {
         context.pollUntilRequest();
         final var removeRequest = context.assertSentRemoveVoterRequest(oldFollower);
         context.deliverResponse(
-            removeRequest.correlationId(),
-            removeRequest.destination(),
-            RaftUtil.removeVoterResponse(Errors.NONE, Errors.NONE.message())
+                removeRequest.correlationId(),
+                removeRequest.destination(),
+                RaftUtil.removeVoterResponse(Errors.NONE, Errors.NONE.message())
         );
     }
 
@@ -276,8 +275,8 @@ public class KafkaRaftClientAutoJoinTest {
     ) throws Exception {
         context.pollUntilRequest();
         return context.assertSentAddVoterRequest(
-            newVoter,
-            context.client.quorum().localVoterNodeOrThrow().listeners()
+                newVoter,
+                context.client.quorum().localVoterNodeOrThrow().listeners()
         );
     }
 
@@ -289,28 +288,28 @@ public class KafkaRaftClientAutoJoinTest {
         context.pollUntilRequest();
         final var fetchRequest = context.assertSentFetchRequest();
         context.assertFetchRequestData(
-            fetchRequest,
-            epoch,
-            context.log.endOffset().offset(),
-            context.log.lastFetchedEpoch(),
-            context.client.highWatermark()
+                fetchRequest,
+                epoch,
+                context.log.endOffset().offset(),
+                context.log.lastFetchedEpoch(),
+                context.client.highWatermark()
         );
         // deliver the fetch response with the updated voter set
         context.deliverResponse(
-            fetchRequest.correlationId(),
-            fetchRequest.destination(),
-            context.fetchResponse(
-                epoch,
-                fetchRequest.destination().id(),
-                MemoryRecords.withVotersRecord(
-                    context.log.endOffset().offset(),
-                    context.time.milliseconds(),
+                fetchRequest.correlationId(),
+                fetchRequest.destination(),
+                context.fetchResponse(
                     epoch,
-                    BufferSupplier.NO_CACHING.get(300),
-                    newVoterSet.toVotersRecord((short) 0)
+                    fetchRequest.destination().id(),
+                    MemoryRecords.withVotersRecord(
+                        context.log.endOffset().offset(),
+                        context.time.milliseconds(),
+                        epoch,
+                        BufferSupplier.NO_CACHING.get(300),
+                        newVoterSet.toVotersRecord((short) 0)
                 ),
-                context.log.endOffset().offset() + 1,
-                Errors.NONE
+                    context.log.endOffset().offset() + 1,
+                    Errors.NONE
             )
         );
         // poll kraft to update the replica's voter set

@@ -88,14 +88,14 @@ public class DefaultStatePersister implements Persister {
                     .computeIfAbsent(partitionData.partition(), k -> new CompletableFuture<>());
 
                 handlers.add(
-                    stateManager.new InitializeStateHandler(
-                        groupId,
-                        topicData.topicId(),
-                        partitionData.partition(),
-                        partitionData.stateEpoch(),
-                        partitionData.startOffset(),
-                        future,
-                        null
+                        stateManager.new InitializeStateHandler(
+                            groupId,
+                            topicData.topicId(),
+                            partitionData.partition(),
+                            partitionData.stateEpoch(),
+                            partitionData.startOffset(),
+                            future,
+                            null
                     )
                 );
             });
@@ -106,7 +106,7 @@ public class DefaultStatePersister implements Persister {
         }
 
         CompletableFuture<Void> combinedFuture = CompletableFuture.allOf(
-            handlers.stream()
+                handlers.stream()
                 .map(PersisterStateManager.InitializeStateHandler::result)
                 .toArray(CompletableFuture[]::new));
 
@@ -140,19 +140,19 @@ public class DefaultStatePersister implements Persister {
                     .computeIfAbsent(partitionData.partition(), k -> new CompletableFuture<>());
 
                 log.debug("{}-{}-{}: stateEpoch - {}, leaderEpoch - {}.",
-                    groupId, topicData.topicId(), partitionData.partition(), partitionData.stateEpoch(), partitionData.leaderEpoch());
+                        groupId, topicData.topicId(), partitionData.partition(), partitionData.stateEpoch(), partitionData.leaderEpoch());
 
                 handlers.add(
-                    stateManager.new WriteStateHandler(
-                        groupId,
-                        topicData.topicId(),
-                        partitionData.partition(),
-                        partitionData.stateEpoch(),
-                        partitionData.leaderEpoch(),
-                        partitionData.startOffset(),
-                        partitionData.deliveryCompleteCount(),
-                        partitionData.stateBatches(),
-                        future, null)
+                        stateManager.new WriteStateHandler(
+                            groupId,
+                            topicData.topicId(),
+                            partitionData.partition(),
+                            partitionData.stateEpoch(),
+                            partitionData.leaderEpoch(),
+                            partitionData.startOffset(),
+                            partitionData.deliveryCompleteCount(),
+                            partitionData.stateBatches(),
+                            future, null)
                 );
             });
         });
@@ -162,7 +162,7 @@ public class DefaultStatePersister implements Persister {
         }
 
         CompletableFuture<Void> combinedFuture = CompletableFuture.allOf(
-            handlers.stream()
+                handlers.stream()
                 .map(PersisterStateManager.WriteStateHandler::result)
                 .toArray(CompletableFuture[]::new));
 
@@ -191,15 +191,15 @@ public class DefaultStatePersister implements Persister {
                             InitializeShareGroupStateResponse partitionResponse = future.join();
                             return partitionResponse.data().results().get(0).partitions().stream()
                                 .map(partitionResult -> PartitionFactory.newPartitionErrorData(
-                                    partitionResult.partition(),
-                                    partitionResult.errorCode(),
-                                    partitionResult.errorMessage()))
+                                        partitionResult.partition(),
+                                        partitionResult.errorCode(),
+                                        partitionResult.errorMessage()))
                                 .toList();
                         } catch (Exception e) {
                             log.error("Unexpected exception while initializing data in share coordinator", e);
                             return List.of(PartitionFactory.newPartitionErrorData(
-                                partition,
-                                Errors.UNKNOWN_SERVER_ERROR.code(),   // No specific public error code exists for InterruptedException / ExecutionException
+                                    partition,
+                                    Errors.UNKNOWN_SERVER_ERROR.code(),   // No specific public error code exists for InterruptedException / ExecutionException
                                 "Error initializing state in share coordinator: " + e.getMessage())
                             );
                         }
@@ -236,15 +236,15 @@ public class DefaultStatePersister implements Persister {
                             WriteShareGroupStateResponse partitionResponse = future.join();
                             return partitionResponse.data().results().get(0).partitions().stream()
                                 .map(partitionResult -> PartitionFactory.newPartitionErrorData(
-                                    partitionResult.partition(),
-                                    partitionResult.errorCode(),
-                                    partitionResult.errorMessage()))
+                                        partitionResult.partition(),
+                                        partitionResult.errorCode(),
+                                        partitionResult.errorMessage()))
                                 .toList();
                         } catch (Exception e) {
                             log.error("Unexpected exception while writing data to share coordinator", e);
                             return List.of(PartitionFactory.newPartitionErrorData(
-                                partition,
-                                Errors.UNKNOWN_SERVER_ERROR.code(),   // No specific public error code exists for InterruptedException / ExecutionException
+                                    partition,
+                                    Errors.UNKNOWN_SERVER_ERROR.code(),   // No specific public error code exists for InterruptedException / ExecutionException
                                 "Error writing state to share coordinator: " + e.getMessage())
                             );
                         }
@@ -285,13 +285,13 @@ public class DefaultStatePersister implements Persister {
                     .computeIfAbsent(partitionData.partition(), k -> new CompletableFuture<>());
 
                 handlers.add(
-                    stateManager.new ReadStateHandler(
-                        groupId,
-                        topicData.topicId(),
-                        partitionData.partition(),
-                        partitionData.leaderEpoch(),
-                        future,
-                        null)
+                        stateManager.new ReadStateHandler(
+                            groupId,
+                            topicData.topicId(),
+                            partitionData.partition(),
+                            partitionData.leaderEpoch(),
+                            future,
+                            null)
                 );
             });
         });
@@ -302,7 +302,7 @@ public class DefaultStatePersister implements Persister {
 
         // Combine all futures into a single CompletableFuture<Void>
         CompletableFuture<Void> combinedFuture = CompletableFuture.allOf(
-            handlers.stream()
+                handlers.stream()
                 .map(PersisterStateManager.ReadStateHandler::result)
                 .toArray(CompletableFuture[]::new));
 
@@ -332,23 +332,23 @@ public class DefaultStatePersister implements Persister {
                             ReadShareGroupStateResponse partitionResponse = future.join();
                             return partitionResponse.data().results().get(0).partitions().stream()
                                 .map(partitionResult -> PartitionFactory.newPartitionAllData(
-                                    partitionResult.partition(),
-                                    partitionResult.stateEpoch(),
-                                    partitionResult.startOffset(),
-                                    partitionResult.errorCode(),
-                                    partitionResult.errorMessage(),
-                                    partitionResult.stateBatches().stream().map(PersisterStateBatch::from).toList()
+                                        partitionResult.partition(),
+                                        partitionResult.stateEpoch(),
+                                        partitionResult.startOffset(),
+                                        partitionResult.errorCode(),
+                                        partitionResult.errorMessage(),
+                                        partitionResult.stateBatches().stream().map(PersisterStateBatch::from).toList()
                                 ))
                                 .toList();
                         } catch (Exception e) {
                             log.error("Unexpected exception while getting data from share coordinator", e);
                             return List.of(PartitionFactory.newPartitionAllData(
-                                partition,
-                                -1,
-                                -1,
-                                Errors.UNKNOWN_SERVER_ERROR.code(),   // No specific public error code exists for InterruptedException / ExecutionException
+                                    partition,
+                                    -1,
+                                    -1,
+                                    Errors.UNKNOWN_SERVER_ERROR.code(),   // No specific public error code exists for InterruptedException / ExecutionException
                                 "Error reading state from share coordinator: " + e.getMessage(),
-                                List.of())
+                                    List.of())
                             );
                         }
                     })
@@ -389,12 +389,12 @@ public class DefaultStatePersister implements Persister {
                     .computeIfAbsent(partitionData.partition(), k -> new CompletableFuture<>());
 
                 handlers.add(
-                    stateManager.new DeleteStateHandler(
-                        groupId,
-                        topicData.topicId(),
-                        partitionData.partition(),
-                        future,
-                        null
+                        stateManager.new DeleteStateHandler(
+                            groupId,
+                            topicData.topicId(),
+                            partitionData.partition(),
+                            future,
+                            null
                     )
                 );
             });
@@ -405,7 +405,7 @@ public class DefaultStatePersister implements Persister {
         }
 
         CompletableFuture<Void> combinedFuture = CompletableFuture.allOf(
-            handlers.stream()
+                handlers.stream()
                 .map(PersisterStateManager.DeleteStateHandler::result)
                 .toArray(CompletableFuture[]::new));
 
@@ -439,13 +439,13 @@ public class DefaultStatePersister implements Persister {
                     .computeIfAbsent(partitionData.partition(), k -> new CompletableFuture<>());
 
                 handlers.add(
-                    stateManager.new ReadStateSummaryHandler(
-                        groupId,
-                        topicData.topicId(),
-                        partitionData.partition(),
-                        partitionData.leaderEpoch(),
-                        future,
-                        null
+                        stateManager.new ReadStateSummaryHandler(
+                            groupId,
+                            topicData.topicId(),
+                            partitionData.partition(),
+                            partitionData.leaderEpoch(),
+                            future,
+                            null
                     )
                 );
             });
@@ -457,7 +457,7 @@ public class DefaultStatePersister implements Persister {
 
         // Combine all futures into a single CompletableFuture<Void>
         CompletableFuture<Void> combinedFuture = CompletableFuture.allOf(
-            handlers.stream()
+                handlers.stream()
                 .map(PersisterStateManager.ReadStateSummaryHandler::result)
                 .toArray(CompletableFuture[]::new));
 
@@ -487,23 +487,23 @@ public class DefaultStatePersister implements Persister {
                             ReadShareGroupStateSummaryResponse partitionResponse = future.join();
                             return partitionResponse.data().results().get(0).partitions().stream()
                                 .map(partitionResult -> PartitionFactory.newPartitionStateSummaryData(
-                                    partitionResult.partition(),
-                                    partitionResult.stateEpoch(),
-                                    partitionResult.startOffset(),
-                                    partitionResult.deliveryCompleteCount(),
-                                    partitionResult.leaderEpoch(),
-                                    partitionResult.errorCode(),
-                                    partitionResult.errorMessage()))
+                                        partitionResult.partition(),
+                                        partitionResult.stateEpoch(),
+                                        partitionResult.startOffset(),
+                                        partitionResult.deliveryCompleteCount(),
+                                        partitionResult.leaderEpoch(),
+                                        partitionResult.errorCode(),
+                                        partitionResult.errorMessage()))
                                 .toList();
                         } catch (Exception e) {
                             log.error("Unexpected exception while getting data from share coordinator", e);
                             return List.of(PartitionFactory.newPartitionStateSummaryData(
-                                partition,
-                                -1,
-                                -1,
-                                -1,
-                                -1,
-                                Errors.UNKNOWN_SERVER_ERROR.code(),   // No specific public error code exists for InterruptedException / ExecutionException
+                                    partition,
+                                    -1,
+                                    -1,
+                                    -1,
+                                    -1,
+                                    Errors.UNKNOWN_SERVER_ERROR.code(),   // No specific public error code exists for InterruptedException / ExecutionException
                                 "Error reading state from share coordinator: " + e.getMessage()));
                         }
                     })
@@ -548,9 +548,9 @@ public class DefaultStatePersister implements Persister {
                         } catch (Exception e) {
                             log.error("Unexpected exception while getting data from share coordinator", e);
                             return List.of(
-                                PartitionFactory.newPartitionErrorData(
-                                    partition,
-                                    Errors.UNKNOWN_SERVER_ERROR.code(),   // No specific public error code exists for InterruptedException / ExecutionException
+                                    PartitionFactory.newPartitionErrorData(
+                                        partition,
+                                        Errors.UNKNOWN_SERVER_ERROR.code(),   // No specific public error code exists for InterruptedException / ExecutionException
                                     "Error deleting state from share coordinator: " + e.getMessage()
                                 )
                             );
@@ -647,7 +647,7 @@ public class DefaultStatePersister implements Persister {
             for (PartitionIdData partitionData : topicData.partitions()) {
                 if (partitionData.partition() < 0) {
                     throw new IllegalArgumentException(
-                        String.format("%s has invalid partitionId - %s %s %d", prefix, groupId, topicData.topicId(), partitionData.partition()));
+                            String.format("%s has invalid partitionId - %s %s %d", prefix, groupId, topicData.topicId(), partitionData.partition()));
                 }
             }
         }

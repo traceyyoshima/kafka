@@ -49,9 +49,9 @@ public class MergedSortedCacheWrappedSessionStoreIteratorTest {
             KeyValue.pair(new Windowed<>(storeKey, storeWindow), storeKey.get())).iterator();
     private final SessionWindow cacheWindow = new SessionWindow(10, 20);
     private final Iterator<KeyValue<Bytes, LRUCacheEntry>> cacheKvs = Collections.singleton(
-        KeyValue.pair(
-            SINGLE_SEGMENT_CACHE_FUNCTION.cacheKey(SessionKeySchema.toBinary(new Windowed<>(cacheKey, cacheWindow))),
-            new LRUCacheEntry(cacheKey.get())
+            KeyValue.pair(
+                SINGLE_SEGMENT_CACHE_FUNCTION.cacheKey(SessionKeySchema.toBinary(new Windowed<>(cacheKey, cacheWindow))),
+                new LRUCacheEntry(cacheKey.get())
         )).iterator();
 
     @Test
@@ -146,10 +146,10 @@ public class MergedSortedCacheWrappedSessionStoreIteratorTest {
                                                                  final Iterator<KeyValue<Bytes, LRUCacheEntry>> cacheKvs,
                                                                  final boolean forward) {
         final DelegatingPeekingKeyValueIterator<Windowed<Bytes>, byte[]> storeIterator =
-            new DelegatingPeekingKeyValueIterator<>("store", new KeyValueIteratorStub<>(storeKvs));
+                new DelegatingPeekingKeyValueIterator<>("store", new KeyValueIteratorStub<>(storeKvs));
 
         final PeekingKeyValueIterator<Bytes, LRUCacheEntry> cacheIterator =
-            new DelegatingPeekingKeyValueIterator<>("cache", new KeyValueIteratorStub<>(cacheKvs));
+                new DelegatingPeekingKeyValueIterator<>("cache", new KeyValueIteratorStub<>(cacheKvs));
         return new MergedSortedCacheSessionStoreIterator(cacheIterator, storeIterator, SINGLE_SEGMENT_CACHE_FUNCTION, forward);
     }
 

@@ -115,7 +115,7 @@ public class AlterConsumerGroupOffsetsHandlerTest {
         Map<TopicPartition, Errors> partitionResults
     ) {
         AlterConsumerGroupOffsetsHandler handler =
-            new AlterConsumerGroupOffsetsHandler(groupKey.idValue, partitions, logContext);
+                new AlterConsumerGroupOffsetsHandler(groupKey.idValue, partitions, logContext);
         OffsetCommitResponse response = new OffsetCommitResponse(0, partitionResults);
         return handler.handleResponse(node, singleton(groupKey), response);
     }
@@ -125,7 +125,7 @@ public class AlterConsumerGroupOffsetsHandlerTest {
     ) {
         Map<TopicPartition, Errors> partitionErrors = new HashMap<>();
         partitions.keySet().forEach(partition ->
-            partitionErrors.put(partition, error)
+                partitionErrors.put(partition, error)
         );
         return partitionErrors;
     }
@@ -135,9 +135,9 @@ public class AlterConsumerGroupOffsetsHandlerTest {
     ) {
         CoordinatorKey groupKey = CoordinatorKey.byGroupId(groupId);
         AdminApiHandler.ApiResult<CoordinatorKey, Map<TopicPartition, Errors>> result = handleResponse(
-            groupKey,
-            partitions,
-            partitionResults
+                groupKey,
+                partitions,
+                partitionResults
         );
 
         assertEquals(singleton(groupKey), result.completedKeys.keySet());
@@ -151,9 +151,9 @@ public class AlterConsumerGroupOffsetsHandlerTest {
     ) {
         CoordinatorKey groupKey = CoordinatorKey.byGroupId(groupId);
         AdminApiHandler.ApiResult<CoordinatorKey, Map<TopicPartition, Errors>> result = handleResponse(
-            groupKey,
-            partitions,
-            partitionResults
+                groupKey,
+                partitions,
+                partitionResults
         );
 
         assertEquals(emptySet(), result.completedKeys.keySet());
@@ -166,9 +166,9 @@ public class AlterConsumerGroupOffsetsHandlerTest {
     ) {
         CoordinatorKey groupKey = CoordinatorKey.byGroupId(groupId);
         AdminApiHandler.ApiResult<CoordinatorKey, Map<TopicPartition, Errors>> result = handleResponse(
-            groupKey,
-            partitions,
-            partitionResults
+                groupKey,
+                partitions,
+                partitionResults
         );
 
         assertEquals(emptySet(), result.completedKeys.keySet());

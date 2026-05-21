@@ -18,7 +18,7 @@ package org.apache.kafka.streams.state.internals;
 
 public class RocksDBTimeOrderedKeyValueBytesStoreSupplier {
     private final String name;
-  
+
     public RocksDBTimeOrderedKeyValueBytesStoreSupplier(final String name) {
         this.name = name;
     }
@@ -29,8 +29,8 @@ public class RocksDBTimeOrderedKeyValueBytesStoreSupplier {
 
     public RocksDBTimeOrderedKeyValueBytesStore get() {
         return new RocksDBTimeOrderedKeyValueBytesStore(
-            name,
-            metricsScope()
+                name,
+                metricsScope()
         );
     }
 

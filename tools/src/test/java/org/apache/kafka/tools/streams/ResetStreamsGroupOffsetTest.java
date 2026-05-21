@@ -117,7 +117,7 @@ public class ResetStreamsGroupOffsetTest {
             adminClient.deleteTopics(topics).all().get();
             // delete all groups
             List<String> groupIds =
-                adminClient.listGroups(ListGroupsOptions.forStreamsGroups().timeoutMs(1000)).all().get()
+                    adminClient.listGroups(ListGroupsOptions.forStreamsGroups().timeoutMs(1000)).all().get()
                     .stream().map(GroupListing::groupId).toList();
             adminClient.deleteStreamsGroups(groupIds).all().get();
         } catch (final UnknownTopicOrPartitionException ignored) {
@@ -290,23 +290,23 @@ public class ResetStreamsGroupOffsetTest {
 
         // reset both partitions of topic1 and topic2:1 to specific offset
         args = new String[]{"--bootstrap-server", bootstrapServers, "--reset-offsets", "--group", appId,
-            "--input-topic", topic1,  "--input-topic", topic2 + ":1", "--to-offset", "5"};
+                "--input-topic", topic1,  "--input-topic", topic2 + ":1", "--to-offset", "5"};
         final Map<TopicPartition, Long> expectedOffsets = Map.of(
-            new TopicPartition(topic1, 0), 5L,
-            new TopicPartition(topic1, 1), 5L,
-            new TopicPartition(topic2, 1), 5L);
+                new TopicPartition(topic1, 0), 5L,
+                new TopicPartition(topic1, 1), 5L,
+                new TopicPartition(topic2, 1), 5L);
 
         resetOffsetsAndAssert(addTo(args, "--dry-run"), appId, List.of(topic1, topic2), expectedOffsets,
-            Map.of(
-                new TopicPartition(topic1, 0), 10L,
-                new TopicPartition(topic1, 1), 10L,
-                new TopicPartition(topic2, 0), 10L,
-                new TopicPartition(topic2, 1), 10L));
+                Map.of(
+                    new TopicPartition(topic1, 0), 10L,
+                    new TopicPartition(topic1, 1), 10L,
+                    new TopicPartition(topic2, 0), 10L,
+                    new TopicPartition(topic2, 1), 10L));
         resetOffsetsAndAssert(addTo(args, "--execute"), appId, List.of(topic1, topic2), expectedOffsets,
-            Map.of(new TopicPartition(topic1, 0), 5L,
-                new TopicPartition(topic1, 1), 5L,
-                new TopicPartition(topic2, 0), 10L,
-                new TopicPartition(topic2, 1), 5L));
+                Map.of(new TopicPartition(topic1, 0), 5L,
+                    new TopicPartition(topic1, 1), 5L,
+                    new TopicPartition(topic2, 0), 10L,
+                    new TopicPartition(topic2, 1), 5L));
 
         ///////////////////////////////////////// All topics (--all-input-topics) /////////////////////////////////////////
         resetForNextTest(appId, 10L, topic1, topic2);
@@ -327,9 +327,9 @@ public class ResetStreamsGroupOffsetTest {
         args = new String[]{"--bootstrap-server", bootstrapServers, "--reset-offsets", "--dry-run", "--group", appId, "--all-input-topics", "--to-offset", "5", "--export"};
         file = TestUtils.tempFile("reset-all", ".csv");
         exp = Map.of(new TopicPartition(topic1, 0), 5L,
-            new TopicPartition(topic1, 1), 5L,
-            new TopicPartition(topic2, 0), 5L,
-            new TopicPartition(topic2, 1), 5L);
+                new TopicPartition(topic1, 1), 5L,
+                new TopicPartition(topic2, 0), 5L,
+                new TopicPartition(topic2, 1), 5L);
         try (StreamsGroupCommand.StreamsGroupService service = getStreamsGroupService(args)) {
             Map<String, Map<TopicPartition, OffsetAndMetadata>> exportedOffsets = service.resetOffsets();
             writeContentToFile(file, service.exportOffsetsToCsv(exportedOffsets));
@@ -360,7 +360,7 @@ public class ResetStreamsGroupOffsetTest {
         produceMessagesOnTwoPartitions(RECORD_TOTAL, topic2);
 
         args = new String[]{"--bootstrap-server", bootstrapServers, "--reset-offsets", "--group", appId, "--all-input-topics", "--execute", "--to-offset", "5",
-            "--delete-internal-topic", internalTopic
+                "--delete-internal-topic", internalTopic
         };
 
         resetOffsetsAndAssertInternalTopicDeletion(args, appId, internalTopic);
@@ -417,10 +417,10 @@ public class ResetStreamsGroupOffsetTest {
         TopicPartition tp21 = new TopicPartition(topic2, 1);
         Map<TopicPartition, Long> committedOffsets = committedOffsets(List.of(topic1, topic2), appId);
         assertEquals(Map.of(
-            tp10, expectedCommittedOffset,
-            tp20, expectedCommittedOffset,
-            tp11, expectedCommittedOffset,
-            tp21, expectedCommittedOffset), committedOffsets);
+                tp10, expectedCommittedOffset,
+                tp20, expectedCommittedOffset,
+                tp11, expectedCommittedOffset,
+                tp21, expectedCommittedOffset), committedOffsets);
     }
 
     /**
@@ -452,8 +452,8 @@ public class ResetStreamsGroupOffsetTest {
         Map<TopicPartition, Long> expectedOffetMap = Arrays.stream(partitions)
             .boxed()
             .collect(Collectors.toMap(
-                partition -> new TopicPartition(topic, partition),
-                partition -> expectedOffset
+                    partition -> new TopicPartition(topic, partition),
+                    partition -> expectedOffset
             ));
         Map<String, Map<TopicPartition, Long>> expectedResetResults = Map.of(appId, expectedOffetMap);
         try (StreamsGroupCommand.StreamsGroupService service = getStreamsGroupService(args)) {
@@ -478,14 +478,14 @@ public class ResetStreamsGroupOffsetTest {
         // assert that the internal topics are deleted
         if (specifiedInternalTopics.length > 0) {
             TestUtils.waitForCondition(
-                () -> getInternalTopics(appId).size() == allInternalTopics.size(),
-                30_000, "Internal topics were not deleted as expected after reset"
+                    () -> getInternalTopics(appId).size() == allInternalTopics.size(),
+                    30_000, "Internal topics were not deleted as expected after reset"
             );
             // verify that the specified internal topics were deleted
             Set<String> internalTopicsAfterReset = getInternalTopics(appId);
             specifiedInternalTopicsList.forEach(topic ->
-                assertFalse(internalTopicsAfterReset.contains(topic),
-                    "Internal topic '" + topic + "' was not deleted as expected after reset")
+                    assertFalse(internalTopicsAfterReset.contains(topic),
+                        "Internal topic '" + topic + "' was not deleted as expected after reset")
             );
 
         } else {
@@ -535,11 +535,11 @@ public class ResetStreamsGroupOffsetTest {
                                        long expectedCommittedOffset) throws ExecutionException, InterruptedException {
         Map<String, Map<TopicPartition, Long>> resetOffsetsResultByGroup;
         Map<String, Map<TopicPartition, Long>> expectedResetResults = Map.of(
-            appId, Map.of(
-                new TopicPartition(topic1, 0), expectedOffset,
-                new TopicPartition(topic2, 0), expectedOffset,
-                new TopicPartition(topic1, 1), expectedOffset,
-                new TopicPartition(topic2, 1), expectedOffset
+                appId, Map.of(
+                    new TopicPartition(topic1, 0), expectedOffset,
+                    new TopicPartition(topic2, 0), expectedOffset,
+                    new TopicPartition(topic1, 1), expectedOffset,
+                    new TopicPartition(topic2, 1), expectedOffset
             )
         );
 
@@ -635,8 +635,8 @@ public class ResetStreamsGroupOffsetTest {
     private StreamsGroupCommand.StreamsGroupService getStreamsGroupService(String[] args) {
         StreamsGroupCommandOptions opts = StreamsGroupCommandOptions.fromArgs(args);
         return new StreamsGroupCommand.StreamsGroupService(
-            opts,
-            Map.of(AdminClientConfig.RETRIES_CONFIG, Integer.toString(Integer.MAX_VALUE))
+                opts,
+                Map.of(AdminClientConfig.RETRIES_CONFIG, Integer.toString(Integer.MAX_VALUE))
         );
     }
 
@@ -685,9 +685,9 @@ public class ResetStreamsGroupOffsetTest {
             // Explicit repartition step with a custom internal topic name
             .groupBy((key, value) -> key, Grouped.with(Serdes.String(), Serdes.String()))
             .aggregate(
-                () -> "()",
-                (key, value, aggregate) -> aggregate + ",(" + key + ": " + value + ")",
-                Materialized.as("aggregated_value"));
+                    () -> "()",
+                    (key, value, aggregate) -> aggregate + ",(" + key + ": " + value + ")",
+                    Materialized.as("aggregated_value"));
 
         valueCounts.toStream().peek((key, value) -> {
             if (recordCount.incrementAndGet() > numOfCommittedMessages) {
@@ -695,18 +695,15 @@ public class ResetStreamsGroupOffsetTest {
             }
         });
 
-
-        final KafkaStreams streams =  new KafkaStreams(builder.build(), STREAMS_CONFIG);
+        final KafkaStreams streams = new KafkaStreams(builder.build(), STREAMS_CONFIG);
         streams.cleanUp();
         streams.start();
 
         produceMessagesOnTwoPartitions(RECORD_TOTAL, topic1);
         produceMessagesOnTwoPartitions(RECORD_TOTAL, topic2);
 
-
         TestUtils.waitForCondition(() -> streams.state().equals(KafkaStreams.State.RUNNING),
                 () -> "Expected RUNNING state but streams is on " + streams.state());
-
 
         try {
             TestUtils.waitForCondition(() -> recordCount.get() == numOfCommittedMessages,
@@ -734,11 +731,11 @@ public class ResetStreamsGroupOffsetTest {
         }
 
         IntegrationTestUtils.produceSynchronously(
-            TestUtils.producerConfig(bootstrapServers, StringSerializer.class, StringSerializer.class),
-            false,
-            topic,
-            Optional.of(0),
-            data
+                TestUtils.producerConfig(bootstrapServers, StringSerializer.class, StringSerializer.class),
+                false,
+                topic,
+                Optional.of(0),
+                data
         );
 
         // partition 1
@@ -748,11 +745,11 @@ public class ResetStreamsGroupOffsetTest {
         }
 
         IntegrationTestUtils.produceSynchronously(
-            TestUtils.producerConfig(bootstrapServers, StringSerializer.class, StringSerializer.class),
-            false,
-            topic,
-            Optional.of(1),
-            data
+                TestUtils.producerConfig(bootstrapServers, StringSerializer.class, StringSerializer.class),
+                false,
+                topic,
+                Optional.of(1),
+                data
         );
     }
 }

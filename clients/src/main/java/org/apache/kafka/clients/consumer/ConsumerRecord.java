@@ -86,7 +86,7 @@ public class ConsumerRecord<K, V> {
                           K key,
                           V value) {
         this(topic, partition, offset, NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, NULL_SIZE, NULL_SIZE, key, value,
-            new RecordHeaders(), Optional.empty());
+                new RecordHeaders(), Optional.empty());
     }
 
     /**
@@ -116,7 +116,7 @@ public class ConsumerRecord<K, V> {
                           Headers headers,
                           Optional<Integer> leaderEpoch) {
         this(topic, partition, offset, timestamp, timestampType, serializedKeySize, serializedValueSize, key, value,
-            headers, leaderEpoch, Optional.empty());
+                headers, leaderEpoch, Optional.empty());
     }
 
     /**
@@ -186,7 +186,7 @@ public class ConsumerRecord<K, V> {
     public Headers headers() {
         return headers;
     }
-    
+
     /**
      * The key (or null if no key is specified)
      */
@@ -260,15 +260,15 @@ public class ConsumerRecord<K, V> {
     @Override
     public String toString() {
         return "ConsumerRecord(topic = " + topic
-               + ", partition = " + partition
-               + ", leaderEpoch = " + leaderEpoch.orElse(null)
-               + ", offset = " + offset
-               + ", " + timestampType + " = " + timestamp
-               + ", deliveryCount = " + deliveryCount.orElse(null)
-               + ", serialized key size = "  + serializedKeySize
-               + ", serialized value size = " + serializedValueSize
-               + ", headers = " + headers
-               + ", key = " + key
-               + ", value = " + value + ")";
+                + ", partition = " + partition
+                + ", leaderEpoch = " + leaderEpoch.orElse(null)
+                + ", offset = " + offset
+                + ", " + timestampType + " = " + timestamp
+                + ", deliveryCount = " + deliveryCount.orElse(null)
+                + ", serialized key size = " + serializedKeySize
+                + ", serialized value size = " + serializedValueSize
+                + ", headers = " + headers
+                + ", key = " + key
+                + ", value = " + value + ")";
     }
 }

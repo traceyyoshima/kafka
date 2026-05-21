@@ -43,8 +43,8 @@ public record ConnectorOffset(
     @Override
     public String toString() {
         return "{" +
-            "partition=" + partition +
-            ", offset=" + offset +
-            '}';
+                "partition=" + partition +
+                ", offset=" + offset +
+                '}';
     }
 }

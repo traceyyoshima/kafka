@@ -31,8 +31,8 @@ import org.apache.kafka.streams.state.internals.PrefixedSessionKeySchemas.TimeFi
 import java.util.Objects;
 
 public class RocksDBTimeOrderedSessionStore
-    extends WrappedStateStore<AbstractRocksDBTimeOrderedSegmentedBytesStore<? extends Segment>, Object, Object>
-    implements SessionStore<Bytes, byte[]> {
+        extends WrappedStateStore<AbstractRocksDBTimeOrderedSegmentedBytesStore<? extends Segment>, Object, Object>
+        implements SessionStore<Bytes, byte[]> {
 
     private StateStoreContext stateStoreContext;
 
@@ -53,12 +53,12 @@ public class RocksDBTimeOrderedSessionStore
                                     final QueryConfig config) {
 
         return StoreQueryUtils.handleBasicQueries(
-            query,
-            positionBound,
-            config,
-            this,
-            getPosition(),
-            stateStoreContext
+                query,
+                positionBound,
+                config,
+                this,
+                getPosition(),
+                stateStoreContext
         );
     }
 
@@ -74,9 +74,9 @@ public class RocksDBTimeOrderedSessionStore
                                                                   final long earliestSessionEndTime,
                                                                   final long latestSessionStartTime) {
         final KeyValueIterator<Bytes, byte[]> bytesIterator = wrapped().fetch(
-            key,
-            earliestSessionEndTime,
-            latestSessionStartTime
+                key,
+                earliestSessionEndTime,
+                latestSessionStartTime
         );
         return new WrappedSessionStoreIterator(bytesIterator, TimeFirstSessionKeySchema::from);
     }
@@ -86,9 +86,9 @@ public class RocksDBTimeOrderedSessionStore
                                                                           final long earliestSessionEndTime,
                                                                           final long latestSessionStartTime) {
         final KeyValueIterator<Bytes, byte[]> bytesIterator = wrapped().backwardFetch(
-            key,
-            earliestSessionEndTime,
-            latestSessionStartTime
+                key,
+                earliestSessionEndTime,
+                latestSessionStartTime
         );
         return new WrappedSessionStoreIterator(bytesIterator, TimeFirstSessionKeySchema::from);
     }
@@ -99,10 +99,10 @@ public class RocksDBTimeOrderedSessionStore
                                                                   final long earliestSessionEndTime,
                                                                   final long latestSessionStartTime) {
         final KeyValueIterator<Bytes, byte[]> bytesIterator = wrapped().fetch(
-            keyFrom,
-            keyTo,
-            earliestSessionEndTime,
-            latestSessionStartTime
+                keyFrom,
+                keyTo,
+                earliestSessionEndTime,
+                latestSessionStartTime
         );
         return new WrappedSessionStoreIterator(bytesIterator, TimeFirstSessionKeySchema::from);
     }
@@ -113,10 +113,10 @@ public class RocksDBTimeOrderedSessionStore
                                                                           final long earliestSessionEndTime,
                                                                           final long latestSessionStartTime) {
         final KeyValueIterator<Bytes, byte[]> bytesIterator = wrapped().backwardFetch(
-            keyFrom,
-            keyTo,
-            earliestSessionEndTime,
-            latestSessionStartTime
+                keyFrom,
+                keyTo,
+                earliestSessionEndTime,
+                latestSessionStartTime
         );
         return new WrappedSessionStoreIterator(bytesIterator, TimeFirstSessionKeySchema::from);
     }
@@ -126,9 +126,9 @@ public class RocksDBTimeOrderedSessionStore
                                final long sessionStartTime,
                                final long sessionEndTime) {
         return wrapped().fetchSession(
-            key,
-            sessionStartTime,
-            sessionEndTime
+                key,
+                sessionStartTime,
+                sessionEndTime
         );
     }
 

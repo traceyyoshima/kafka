@@ -32,6 +32,7 @@ public class ListTransactionsOptions extends AbstractOptions<ListTransactionsOpt
 
     private long filteredDuration = -1L;
     private String filteredTransactionalIdPattern;
+
     /**
      * Filter only the transactions that are in a specific set of states. If no filter
      * is specified or if the passed set of states is empty, then transactions in all
@@ -126,12 +127,12 @@ public class ListTransactionsOptions extends AbstractOptions<ListTransactionsOpt
     @Override
     public String toString() {
         return "ListTransactionsOptions(" +
-            "filteredStates=" + filteredStates +
-            ", filteredProducerIds=" + filteredProducerIds +
-            ", filteredDuration=" + filteredDuration +
-            ", filteredTransactionalIdPattern=" + filteredTransactionalIdPattern +
-            ", timeoutMs=" + timeoutMs +
-            ')';
+                "filteredStates=" + filteredStates +
+                ", filteredProducerIds=" + filteredProducerIds +
+                ", filteredDuration=" + filteredDuration +
+                ", filteredTransactionalIdPattern=" + filteredTransactionalIdPattern +
+                ", timeoutMs=" + timeoutMs +
+                ')';
     }
 
     @Override
@@ -140,9 +141,9 @@ public class ListTransactionsOptions extends AbstractOptions<ListTransactionsOpt
         if (o == null || getClass() != o.getClass()) return false;
         ListTransactionsOptions that = (ListTransactionsOptions) o;
         return Objects.equals(filteredStates, that.filteredStates) &&
-            Objects.equals(filteredProducerIds, that.filteredProducerIds) &&
-            Objects.equals(filteredDuration, that.filteredDuration) &&
-            Objects.equals(filteredTransactionalIdPattern, that.filteredTransactionalIdPattern);
+                Objects.equals(filteredProducerIds, that.filteredProducerIds) &&
+                Objects.equals(filteredDuration, that.filteredDuration) &&
+                Objects.equals(filteredTransactionalIdPattern, that.filteredTransactionalIdPattern);
     }
 
     @Override

@@ -39,23 +39,24 @@ public abstract class CoordinatorRecordMessageFormatterTest {
     private static final String TOPIC = "TOPIC";
 
     protected abstract CoordinatorRecordMessageFormatter formatter();
+
     protected abstract Stream<Arguments> parameters();
 
     @ParameterizedTest
     @MethodSource("parameters")
     public void testMessageFormatter(byte[] keyBuffer, byte[] valueBuffer, String expectedOutput) {
         ConsumerRecord<byte[], byte[]> record = new ConsumerRecord<>(
-            TOPIC,
-            0,
-            0,
-            0L,
-            TimestampType.CREATE_TIME,
-            0,
-            0,
-            keyBuffer,
-            valueBuffer,
-            new RecordHeaders(),
-            Optional.empty()
+                TOPIC,
+                0,
+                0,
+                0L,
+                TimestampType.CREATE_TIME,
+                0,
+                0,
+                keyBuffer,
+                valueBuffer,
+                new RecordHeaders(),
+                Optional.empty()
         );
 
         try (MessageFormatter formatter = formatter()) {

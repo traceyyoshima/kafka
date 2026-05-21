@@ -74,8 +74,8 @@ public class DeleteShareGroupOffsetsRequest extends AbstractRequest {
 
     public static DeleteShareGroupOffsetsRequest parse(Readable readable, short version) {
         return new DeleteShareGroupOffsetsRequest(
-            new DeleteShareGroupOffsetsRequestData(readable, version),
-            version
+                new DeleteShareGroupOffsetsRequestData(readable, version),
+                version
         );
     }
 

@@ -107,8 +107,8 @@ public final class ValueTimestampHeaders<V> {
         }
         final ValueTimestampHeaders<?> that = (ValueTimestampHeaders<?>) o;
         return timestamp == that.timestamp
-            && Objects.equals(value, that.value)
-            && Objects.equals(this.headers, that.headers);
+                && Objects.equals(value, that.value)
+                && Objects.equals(this.headers, that.headers);
     }
 
     @Override
@@ -119,9 +119,9 @@ public final class ValueTimestampHeaders<V> {
     @Override
     public String toString() {
         return "ValueTimestampHeaders{" +
-            "value=" + value +
-            ", timestamp=" + timestamp +
-            ", headers=" + headers +
-            '}';
+                "value=" + value +
+                ", timestamp=" + timestamp +
+                ", headers=" + headers +
+                '}';
     }
 }

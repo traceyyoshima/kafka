@@ -234,7 +234,7 @@ public class ApplicationEventProcessor implements EventProcessor<ApplicationEven
 
     private void process(final SharePollEvent event) {
         requestManagers.shareMembershipManager.ifPresent(shareMembershipManager ->
-            shareMembershipManager.maybeReconcile(true));
+                shareMembershipManager.maybeReconcile(true));
 
         requestManagers.shareHeartbeatRequestManager.ifPresent(hrm -> {
             ShareMembershipManager membershipManager = hrm.membershipManager();
@@ -253,7 +253,7 @@ public class ApplicationEventProcessor implements EventProcessor<ApplicationEven
     private void process(final AsyncCommitEvent event) {
         if (requestManagers.commitRequestManager.isEmpty()) {
             event.future().completeExceptionally(new KafkaException("Unable to async commit " +
-                "offset because the CommitRequestManager is not available. Check if group.id was set correctly"));
+                    "offset because the CommitRequestManager is not available. Check if group.id was set correctly"));
             return;
         }
 
@@ -271,7 +271,7 @@ public class ApplicationEventProcessor implements EventProcessor<ApplicationEven
     private void process(final SyncCommitEvent event) {
         if (requestManagers.commitRequestManager.isEmpty()) {
             event.future().completeExceptionally(new KafkaException("Unable to sync commit " +
-                "offset because the CommitRequestManager is not available. Check if group.id was set correctly"));
+                    "offset because the CommitRequestManager is not available. Check if group.id was set correctly"));
             return;
         }
 
@@ -330,7 +330,7 @@ public class ApplicationEventProcessor implements EventProcessor<ApplicationEven
      */
     private void process(final ListOffsetsEvent event) {
         final CompletableFuture<Map<TopicPartition, OffsetAndTimestampInternal>> future =
-            requestManagers.offsetsRequestManager.fetchOffsets(event.timestampsToSearch(), event.requireTimestamps());
+                requestManagers.offsetsRequestManager.fetchOffsets(event.timestampsToSearch(), event.requireTimestamps());
         future.whenComplete(complete(event.future()));
     }
 
@@ -399,7 +399,7 @@ public class ApplicationEventProcessor implements EventProcessor<ApplicationEven
     private void process(final TopicRe2JPatternSubscriptionChangeEvent event) {
         if (requestManagers.consumerMembershipManager.isEmpty()) {
             event.future().completeExceptionally(
-                new KafkaException("MembershipManager is not available when processing a subscribe event"));
+                    new KafkaException("MembershipManager is not available when processing a subscribe event"));
             return;
         }
         try {
@@ -477,8 +477,8 @@ public class ApplicationEventProcessor implements EventProcessor<ApplicationEven
     private void process(final ConsumerRebalanceListenerCallbackCompletedEvent event) {
         if (requestManagers.consumerHeartbeatRequestManager.isEmpty()) {
             log.warn(
-                "An internal error occurred; the group membership manager was not present, so the notification of the {} callback execution could not be sent",
-                event.methodName()
+                    "An internal error occurred; the group membership manager was not present, so the notification of the {} callback execution could not be sent",
+                    event.methodName()
             );
             return;
         }
@@ -623,9 +623,9 @@ public class ApplicationEventProcessor implements EventProcessor<ApplicationEven
         try {
             event.offsetEpoch().ifPresent(epoch -> metadata.updateLastSeenEpochIfNewer(event.partition(), epoch));
             SubscriptionState.FetchPosition newPosition = new SubscriptionState.FetchPosition(
-                event.offset(),
-                event.offsetEpoch(),
-                metadata.currentLeader(event.partition())
+                    event.offset(),
+                    event.offsetEpoch(),
+                    metadata.currentLeader(event.partition())
             );
             subscriptions.seekUnvalidated(event.partition(), newPosition);
             event.future().complete(null);
@@ -673,7 +673,7 @@ public class ApplicationEventProcessor implements EventProcessor<ApplicationEven
             final OptionalLong lagOpt;
             if (lag == null) {
                 if (subscriptions.partitionEndOffset(topicPartition, isolationLevel) == null &&
-                    !subscriptions.partitionEndOffsetRequested(topicPartition)) {
+                        !subscriptions.partitionEndOffsetRequested(topicPartition)) {
                     // If the log end offset is unknown and there isn't already an in-flight list offset
                     // request, issue one with the goal that the lag will be available the next time the
                     // user calls currentLag().
@@ -682,8 +682,8 @@ public class ApplicationEventProcessor implements EventProcessor<ApplicationEven
 
                     // Emulates the Consumer.endOffsets() logic...
                     Map<TopicPartition, Long> timestampToSearch = Collections.singletonMap(
-                        topicPartition,
-                        ListOffsetsRequest.LATEST_TIMESTAMP
+                            topicPartition,
+                            ListOffsetsRequest.LATEST_TIMESTAMP
                     );
 
                     requestManagers.offsetsRequestManager.fetchOffsets(timestampToSearch, false);
@@ -703,7 +703,7 @@ public class ApplicationEventProcessor implements EventProcessor<ApplicationEven
     private void process(final StreamsOnTasksRevokedCallbackCompletedEvent event) {
         if (requestManagers.streamsMembershipManager.isEmpty()) {
             log.warn("An internal error occurred; the Streams membership manager was not present, so the notification " +
-                "of the onTasksRevoked callback execution could not be sent");
+                    "of the onTasksRevoked callback execution could not be sent");
             return;
         }
         requestManagers.streamsMembershipManager.get().onTasksRevokedCallbackCompleted(event);
@@ -712,7 +712,7 @@ public class ApplicationEventProcessor implements EventProcessor<ApplicationEven
     private void process(final StreamsOnTasksAssignedCallbackCompletedEvent event) {
         if (requestManagers.streamsMembershipManager.isEmpty()) {
             log.warn("An internal error occurred; the Streams membership manager was not present, so the notification " +
-                "of the onTasksAssigned callback execution could not be sent");
+                    "of the onTasksAssigned callback execution could not be sent");
             return;
         }
         requestManagers.streamsMembershipManager.get().onTasksAssignedCallbackCompleted(event);
@@ -721,7 +721,7 @@ public class ApplicationEventProcessor implements EventProcessor<ApplicationEven
     private void process(final StreamsOnAllTasksLostCallbackCompletedEvent event) {
         if (requestManagers.streamsMembershipManager.isEmpty()) {
             log.warn("An internal error occurred; the Streams membership manager was not present, so the notification " +
-                "of the onAllTasksLost callback execution could not be sent");
+                    "of the onAllTasksLost callback execution could not be sent");
             return;
         }
         requestManagers.streamsMembershipManager.get().onAllTasksLostCallbackCompleted(event);
@@ -737,15 +737,15 @@ public class ApplicationEventProcessor implements EventProcessor<ApplicationEven
         try {
             if (requestManagers.consumerMembershipManager.isPresent()) {
                 requestManagers.consumerMembershipManager.get().applyAssignment(
-                    event.assignedPartitions(), event.addedPartitions());
+                        event.assignedPartitions(), event.addedPartitions());
             } else if (requestManagers.streamsMembershipManager.isPresent()) {
                 requestManagers.streamsMembershipManager.get().applyAssignment(
-                    event.assignedPartitions(), event.addedPartitions());
+                        event.assignedPartitions(), event.addedPartitions());
             } else {
                 log.warn("Neither ConsumerMembershipManager nor StreamsMembershipManager present " +
-                    "when processing ApplyAssignmentEvent");
+                        "when processing ApplyAssignmentEvent");
                 event.future().completeExceptionally(
-                    new IllegalStateException("No membership manager available when processing ApplyAssignmentEvent"));
+                        new IllegalStateException("No membership manager available when processing ApplyAssignmentEvent"));
                 return;
             }
             event.future().complete(null);
@@ -758,7 +758,7 @@ public class ApplicationEventProcessor implements EventProcessor<ApplicationEven
         // Trigger a reconciliation that can safely commit offsets if needed to rebalance,
         // as we're processing before any new fetching starts
         requestManagers.consumerMembershipManager.ifPresent(consumerMembershipManager ->
-            consumerMembershipManager.maybeReconcile(true));
+                consumerMembershipManager.maybeReconcile(true));
 
         // We completed checking pending reconciliations (commits triggered, revoked partitions marked to prevent fetching)
         // so the application thread poll loop can safely continue progress now (fetching)

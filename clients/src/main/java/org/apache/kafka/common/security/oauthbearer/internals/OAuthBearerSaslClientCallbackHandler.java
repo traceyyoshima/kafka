@@ -116,13 +116,13 @@ public class OAuthBearerSaslClientCallbackHandler implements AuthenticateCallbac
              * during normal operation also allows us to deal more robustly with potential bugs.
              */
             SortedSet<OAuthBearerToken> sortedByLifetime =
-                new TreeSet<>(
+                    new TreeSet<>(
                         Comparator.comparingLong(OAuthBearerToken::lifetimeMs));
             sortedByLifetime.addAll(privateCredentials);
             log.warn("Found {} OAuth Bearer tokens in Subject's private credentials; the oldest expires at {}, will use the newest, which expires at {}",
-                sortedByLifetime.size(),
-                new Date(sortedByLifetime.first().lifetimeMs()),
-                new Date(sortedByLifetime.last().lifetimeMs()));
+                    sortedByLifetime.size(),
+                    new Date(sortedByLifetime.first().lifetimeMs()),
+                    new Date(sortedByLifetime.last().lifetimeMs()));
             callback.token(sortedByLifetime.last());
         }
     }

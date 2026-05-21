@@ -116,11 +116,11 @@ public class FollowerState implements EpochState {
             .map(address -> new Node(leaderId, address.getHostString(), address.getPort()))
             .orElseThrow(() ->
                 new IllegalArgumentException(
-                    String.format(
-                        "Unknown endpoint for leader %d and listener %s, known endpoints are %s",
-                        leaderId,
-                        listener,
-                        leaderEndpoints
+                        String.format(
+                            "Unknown endpoint for leader %d and listener %s, known endpoints are %s",
+                            leaderId,
+                            listener,
+                            leaderEndpoints
                     )
                 )
             );
@@ -175,7 +175,7 @@ public class FollowerState implements EpochState {
     public boolean updateHighWatermark(OptionalLong newHighWatermark) {
         if (newHighWatermark.isEmpty() && highWatermark.isPresent()) {
             throw new IllegalArgumentException(
-                String.format("Attempt to overwrite current high watermark %s with unknown value", highWatermark)
+                    String.format("Attempt to overwrite current high watermark %s with unknown value", highWatermark)
             );
         }
 
@@ -185,14 +185,14 @@ public class FollowerState implements EpochState {
 
             if (updatedHighWatermark < 0) {
                 throw new IllegalArgumentException(
-                    String.format("Illegal negative (%d) high watermark update", updatedHighWatermark)
+                        String.format("Illegal negative (%d) high watermark update", updatedHighWatermark)
                 );
             } else if (previousHighWatermark > updatedHighWatermark) {
                 throw new IllegalArgumentException(
-                    String.format(
-                        "Non-monotonic update of high watermark from %d to %d",
-                        previousHighWatermark,
-                        updatedHighWatermark
+                        String.format(
+                            "Non-monotonic update of high watermark from %d to %d",
+                            previousHighWatermark,
+                            updatedHighWatermark
                     )
                 );
             } else if (previousHighWatermark == updatedHighWatermark) {
@@ -230,14 +230,14 @@ public class FollowerState implements EpochState {
             return true;
         }
         log.debug(
-            "Rejecting Vote request (preVote={}) from replica ({}) since we are in FollowerState with leader {} in " +
+                "Rejecting Vote request (preVote={}) from replica ({}) since we are in FollowerState with leader {} in " +
                 "epoch {}, hasFetchedFromLeader={}, replica's log is up-to-date={}",
-            isPreVote,
-            replicaKey,
-            leaderId,
-            epoch,
-            hasFetchedFromLeader,
-            isLogUpToDate
+                isPreVote,
+                replicaKey,
+                leaderId,
+                epoch,
+                hasFetchedFromLeader,
+                isLogUpToDate
         );
         return false;
     }
@@ -245,16 +245,16 @@ public class FollowerState implements EpochState {
     @Override
     public String toString() {
         return String.format(
-            "FollowerState(fetchTimeoutMs=%d, epoch=%d, leader=%d, leaderEndpoints=%s, votedKey=%s, " +
-            "voters=%s, highWatermark=%s, fetchingSnapshot=%s)",
-            fetchTimeoutMs,
-            epoch,
-            leaderId,
-            leaderEndpoints,
-            votedKey,
-            voters,
-            highWatermark,
-            fetchingSnapshot
+                "FollowerState(fetchTimeoutMs=%d, epoch=%d, leader=%d, leaderEndpoints=%s, votedKey=%s, " +
+                "voters=%s, highWatermark=%s, fetchingSnapshot=%s)",
+                fetchTimeoutMs,
+                epoch,
+                leaderId,
+                leaderEndpoints,
+                votedKey,
+                voters,
+                highWatermark,
+                fetchingSnapshot
         );
     }
 
@@ -270,16 +270,16 @@ public class FollowerState implements EpochState {
         if (!oldHighWatermark.equals(newHighWatermark)) {
             if (oldHighWatermark.isPresent()) {
                 log.trace(
-                    "High watermark set to {} from {} for epoch {}",
-                    newHighWatermark,
-                    oldHighWatermark.get(),
-                    epoch
+                        "High watermark set to {} from {} for epoch {}",
+                        newHighWatermark,
+                        oldHighWatermark.get(),
+                        epoch
                 );
             } else {
                 log.info(
-                    "High watermark set to {} for the first time for epoch {}",
-                    newHighWatermark,
-                    epoch
+                        "High watermark set to {} for the first time for epoch {}",
+                        newHighWatermark,
+                        epoch
                 );
             }
         }

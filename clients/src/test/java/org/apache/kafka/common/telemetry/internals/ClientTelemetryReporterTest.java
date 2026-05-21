@@ -91,7 +91,7 @@ public class ClientTelemetryReporterTest {
         metricsContext = new KafkaMetricsContext("test");
         uuid = Uuid.randomUuid();
         subscription = new ClientTelemetryReporter.ClientTelemetrySubscription(uuid, 1234, 20000,
-            Collections.emptyList(), true, null);
+                Collections.emptyList(), true, null);
     }
 
     @Test
@@ -105,7 +105,7 @@ public class ClientTelemetryReporterTest {
         assertNotNull(clientTelemetryReporter.telemetryProvider().resource());
         assertEquals(1, clientTelemetryReporter.telemetryProvider().resource().getAttributesCount());
         assertEquals(
-            ClientTelemetryProvider.CLIENT_RACK, clientTelemetryReporter.telemetryProvider().resource().getAttributes(0).getKey());
+                ClientTelemetryProvider.CLIENT_RACK, clientTelemetryReporter.telemetryProvider().resource().getAttributes(0).getKey());
         assertEquals("rack", clientTelemetryReporter.telemetryProvider().resource().getAttributes(0).getValue().getStringValue());
     }
 
@@ -260,7 +260,7 @@ public class ClientTelemetryReporterTest {
         GetTelemetrySubscriptionsRequest request = (GetTelemetrySubscriptionsRequest) requestOptional.get().build();
 
         GetTelemetrySubscriptionsRequest expectedResult = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData().setClientInstanceId(Uuid.ZERO_UUID), true).build();
+                new GetTelemetrySubscriptionsRequestData().setClientInstanceId(Uuid.ZERO_UUID), true).build();
 
         assertEquals(expectedResult.data(), request.data());
         assertEquals(ClientTelemetryState.SUBSCRIPTION_IN_PROGRESS, telemetrySender.state());
@@ -279,7 +279,7 @@ public class ClientTelemetryReporterTest {
         GetTelemetrySubscriptionsRequest request = (GetTelemetrySubscriptionsRequest) requestOptional.get().build();
 
         GetTelemetrySubscriptionsRequest expectedResult = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData().setClientInstanceId(subscription.clientInstanceId()), true).build();
+                new GetTelemetrySubscriptionsRequestData().setClientInstanceId(subscription.clientInstanceId()), true).build();
 
         assertEquals(expectedResult.data(), request.data());
         assertEquals(ClientTelemetryState.SUBSCRIPTION_IN_PROGRESS, telemetrySender.state());
@@ -303,7 +303,7 @@ public class ClientTelemetryReporterTest {
         PushTelemetryRequest request = (PushTelemetryRequest) requestOptional.get().build();
 
         PushTelemetryRequest expectedResult = new PushTelemetryRequest.Builder(
-            new PushTelemetryRequestData().setClientInstanceId(subscription.clientInstanceId())
+                new PushTelemetryRequestData().setClientInstanceId(subscription.clientInstanceId())
                 .setSubscriptionId(subscription.subscriptionId()), true).build();
 
         assertEquals(expectedResult.data(), request.data());
@@ -376,7 +376,7 @@ public class ClientTelemetryReporterTest {
         assertTrue(telemetrySender.maybeSetState(ClientTelemetryState.PUSH_NEEDED));
 
         ClientTelemetryReporter.ClientTelemetrySubscription subscription = new ClientTelemetryReporter.ClientTelemetrySubscription(
-            uuid, 1234, 20000, Collections.singletonList(compressionType), true, null);
+                uuid, 1234, 20000, Collections.singletonList(compressionType), true, null);
         telemetrySender.updateSubscriptionResult(subscription, time.milliseconds());
 
         Optional<AbstractRequest.Builder<?>> requestOptional = telemetrySender.createRequest();
@@ -401,7 +401,7 @@ public class ClientTelemetryReporterTest {
         assertTrue(telemetrySender.maybeSetState(ClientTelemetryState.PUSH_NEEDED));
 
         ClientTelemetryReporter.ClientTelemetrySubscription subscription = new ClientTelemetryReporter.ClientTelemetrySubscription(
-            uuid, 1234, 20000, Collections.singletonList(CompressionType.GZIP), true, null);
+                uuid, 1234, 20000, Collections.singletonList(CompressionType.GZIP), true, null);
         telemetrySender.updateSubscriptionResult(subscription, time.milliseconds());
 
         try (MockedStatic<ClientTelemetryUtils> mockedCompress = Mockito.mockStatic(ClientTelemetryUtils.class, new CallsRealMethods())) {
@@ -432,7 +432,7 @@ public class ClientTelemetryReporterTest {
 
         // Set up subscription with multiple compression types: GZIP -> LZ4 -> SNAPPY
         ClientTelemetryReporter.ClientTelemetrySubscription subscription = new ClientTelemetryReporter.ClientTelemetrySubscription(
-            uuid, 1234, 20000, List.of(CompressionType.GZIP, CompressionType.LZ4, CompressionType.SNAPPY), true, null);
+                uuid, 1234, 20000, List.of(CompressionType.GZIP, CompressionType.LZ4, CompressionType.SNAPPY), true, null);
         telemetrySender.updateSubscriptionResult(subscription, time.milliseconds());
 
         try (MockedStatic<ClientTelemetryUtils> mockedCompress = Mockito.mockStatic(ClientTelemetryUtils.class, new CallsRealMethods())) {
@@ -509,17 +509,17 @@ public class ClientTelemetryReporterTest {
 
         // Set up subscription with ZSTD compression type
         ClientTelemetryReporter.ClientTelemetrySubscription subscription = new ClientTelemetryReporter.ClientTelemetrySubscription(
-            uuid, 1234, 20000, List.of(CompressionType.ZSTD, CompressionType.LZ4), true, null);
+                uuid, 1234, 20000, List.of(CompressionType.ZSTD, CompressionType.LZ4), true, null);
         telemetrySender.updateSubscriptionResult(subscription, time.milliseconds());
 
         try (MockedStatic<ClientTelemetryUtils> mockedCompress = Mockito.mockStatic(ClientTelemetryUtils.class, new CallsRealMethods())) {
-            
+
             // === Test 1: NoClassDefFoundError fallback (recoverable) ===
             mockedCompress.when(() -> ClientTelemetryUtils.compress(any(), eq(CompressionType.ZSTD)))
                     .thenThrow(new NoClassDefFoundError("com/github/luben/zstd/BufferPool"));
-            
+
             assertEquals(ClientTelemetryState.PUSH_NEEDED, telemetrySender.state());
-            
+
             Optional<AbstractRequest.Builder<?>> request1 = telemetrySender.createRequest();
             assertNotNull(request1);
             assertTrue(request1.isPresent());
@@ -527,20 +527,20 @@ public class ClientTelemetryReporterTest {
             PushTelemetryRequest pushRequest1 = (PushTelemetryRequest) request1.get().build();
             assertEquals(CompressionType.NONE.id, pushRequest1.data().compressionType()); // Fallback to NONE
             assertEquals(ClientTelemetryState.PUSH_IN_PROGRESS, telemetrySender.state());
-            
+
             // Reset state (simulate successful response handling)
             assertTrue(telemetrySender.maybeSetState(ClientTelemetryState.PUSH_NEEDED));
-            
+
             // === Test 2: OutOfMemoryError causes termination (non-recoverable Error) ===
             mockedCompress.reset();
             mockedCompress.when(() -> ClientTelemetryUtils.compress(any(), eq(CompressionType.LZ4)))
                     .thenThrow(new OutOfMemoryError("Out of memory during compression"));
-            
+
             assertEquals(ClientTelemetryState.PUSH_NEEDED, telemetrySender.state());
 
             assertThrows(KafkaException.class, telemetrySender::createRequest);
             assertEquals(ClientTelemetryState.TERMINATED, telemetrySender.state());
-            
+
             // === Test 3: After termination, no more requests ===
             Optional<AbstractRequest.Builder<?>> request3 = telemetrySender.createRequest();
             assertNotNull(request3);
@@ -556,7 +556,7 @@ public class ClientTelemetryReporterTest {
 
         Uuid clientInstanceId = Uuid.randomUuid();
         GetTelemetrySubscriptionsResponse response = new GetTelemetrySubscriptionsResponse(
-            new GetTelemetrySubscriptionsResponseData()
+                new GetTelemetrySubscriptionsResponseData()
                 .setClientInstanceId(clientInstanceId)
                 .setSubscriptionId(5678)
                 .setAcceptedCompressionTypes(Collections.singletonList(CompressionType.GZIP.id))
@@ -582,7 +582,7 @@ public class ClientTelemetryReporterTest {
 
         Uuid clientInstanceId = Uuid.randomUuid();
         GetTelemetrySubscriptionsResponse response = new GetTelemetrySubscriptionsResponse(
-            new GetTelemetrySubscriptionsResponseData()
+                new GetTelemetrySubscriptionsResponseData()
                 .setClientInstanceId(clientInstanceId)
                 .setSubscriptionId(5678)
                 .setAcceptedCompressionTypes(Collections.singletonList(CompressionType.GZIP.id))
@@ -608,7 +608,7 @@ public class ClientTelemetryReporterTest {
 
         // throttling quota exceeded
         GetTelemetrySubscriptionsResponse response = new GetTelemetrySubscriptionsResponse(
-            new GetTelemetrySubscriptionsResponseData().setErrorCode(Errors.THROTTLING_QUOTA_EXCEEDED.code()));
+                new GetTelemetrySubscriptionsResponseData().setErrorCode(Errors.THROTTLING_QUOTA_EXCEEDED.code()));
 
         telemetrySender.handleResponse(response);
         assertEquals(ClientTelemetryState.SUBSCRIPTION_NEEDED, telemetrySender.state());
@@ -618,7 +618,7 @@ public class ClientTelemetryReporterTest {
 
         // invalid request error
         response = new GetTelemetrySubscriptionsResponse(
-            new GetTelemetrySubscriptionsResponseData().setErrorCode(Errors.INVALID_REQUEST.code()));
+                new GetTelemetrySubscriptionsResponseData().setErrorCode(Errors.INVALID_REQUEST.code()));
 
         telemetrySender.handleResponse(response);
         assertEquals(ClientTelemetryState.SUBSCRIPTION_NEEDED, telemetrySender.state());
@@ -629,7 +629,7 @@ public class ClientTelemetryReporterTest {
         // unsupported version error
         telemetrySender.enabled(true);
         response = new GetTelemetrySubscriptionsResponse(
-            new GetTelemetrySubscriptionsResponseData().setErrorCode(Errors.UNSUPPORTED_VERSION.code()));
+                new GetTelemetrySubscriptionsResponseData().setErrorCode(Errors.UNSUPPORTED_VERSION.code()));
 
         telemetrySender.handleResponse(response);
         assertEquals(ClientTelemetryState.SUBSCRIPTION_NEEDED, telemetrySender.state());
@@ -640,7 +640,7 @@ public class ClientTelemetryReporterTest {
         // unknown error
         telemetrySender.enabled(true);
         response = new GetTelemetrySubscriptionsResponse(
-            new GetTelemetrySubscriptionsResponseData().setErrorCode(Errors.UNKNOWN_SERVER_ERROR.code()));
+                new GetTelemetrySubscriptionsResponseData().setErrorCode(Errors.UNKNOWN_SERVER_ERROR.code()));
 
         telemetrySender.handleResponse(response);
         assertEquals(ClientTelemetryState.SUBSCRIPTION_NEEDED, telemetrySender.state());
@@ -659,7 +659,7 @@ public class ClientTelemetryReporterTest {
 
         Uuid clientInstanceId = Uuid.randomUuid();
         GetTelemetrySubscriptionsResponse response = new GetTelemetrySubscriptionsResponse(
-            new GetTelemetrySubscriptionsResponseData()
+                new GetTelemetrySubscriptionsResponseData()
                 .setClientInstanceId(clientInstanceId)
                 .setSubscriptionId(15678)
                 .setAcceptedCompressionTypes(Collections.singletonList(CompressionType.ZSTD.id))
@@ -730,7 +730,7 @@ public class ClientTelemetryReporterTest {
 
         // unknown subscription id
         PushTelemetryResponse response = new PushTelemetryResponse(
-            new PushTelemetryResponseData().setErrorCode(Errors.UNKNOWN_SUBSCRIPTION_ID.code()));
+                new PushTelemetryResponseData().setErrorCode(Errors.UNKNOWN_SUBSCRIPTION_ID.code()));
 
         telemetrySender.handleResponse(response);
         assertEquals(ClientTelemetryState.SUBSCRIPTION_NEEDED, telemetrySender.state());
@@ -742,7 +742,7 @@ public class ClientTelemetryReporterTest {
 
         // unsupported compression type
         response = new PushTelemetryResponse(
-            new PushTelemetryResponseData().setErrorCode(Errors.UNSUPPORTED_COMPRESSION_TYPE.code()));
+                new PushTelemetryResponseData().setErrorCode(Errors.UNSUPPORTED_COMPRESSION_TYPE.code()));
 
         telemetrySender.handleResponse(response);
         assertEquals(ClientTelemetryState.SUBSCRIPTION_NEEDED, telemetrySender.state());
@@ -754,7 +754,7 @@ public class ClientTelemetryReporterTest {
 
         // telemetry too large
         response = new PushTelemetryResponse(
-            new PushTelemetryResponseData().setErrorCode(Errors.TELEMETRY_TOO_LARGE.code()));
+                new PushTelemetryResponseData().setErrorCode(Errors.TELEMETRY_TOO_LARGE.code()));
 
         telemetrySender.handleResponse(response);
         assertEquals(ClientTelemetryState.SUBSCRIPTION_NEEDED, telemetrySender.state());
@@ -766,7 +766,7 @@ public class ClientTelemetryReporterTest {
 
         // throttling quota exceeded
         response = new PushTelemetryResponse(
-            new PushTelemetryResponseData().setErrorCode(Errors.THROTTLING_QUOTA_EXCEEDED.code()));
+                new PushTelemetryResponseData().setErrorCode(Errors.THROTTLING_QUOTA_EXCEEDED.code()));
 
         telemetrySender.handleResponse(response);
         assertEquals(ClientTelemetryState.SUBSCRIPTION_NEEDED, telemetrySender.state());
@@ -778,7 +778,7 @@ public class ClientTelemetryReporterTest {
 
         // invalid request error
         response = new PushTelemetryResponse(
-            new PushTelemetryResponseData().setErrorCode(Errors.INVALID_REQUEST.code()));
+                new PushTelemetryResponseData().setErrorCode(Errors.INVALID_REQUEST.code()));
 
         telemetrySender.handleResponse(response);
         assertEquals(ClientTelemetryState.SUBSCRIPTION_NEEDED, telemetrySender.state());
@@ -791,7 +791,7 @@ public class ClientTelemetryReporterTest {
         // unsupported version error
         telemetrySender.enabled(true);
         response = new PushTelemetryResponse(
-            new PushTelemetryResponseData().setErrorCode(Errors.UNSUPPORTED_VERSION.code()));
+                new PushTelemetryResponseData().setErrorCode(Errors.UNSUPPORTED_VERSION.code()));
 
         telemetrySender.handleResponse(response);
         assertEquals(ClientTelemetryState.SUBSCRIPTION_NEEDED, telemetrySender.state());
@@ -804,7 +804,7 @@ public class ClientTelemetryReporterTest {
         // invalid record
         telemetrySender.enabled(true);
         response = new PushTelemetryResponse(
-            new PushTelemetryResponseData().setErrorCode(Errors.INVALID_RECORD.code()));
+                new PushTelemetryResponseData().setErrorCode(Errors.INVALID_RECORD.code()));
 
         telemetrySender.handleResponse(response);
         assertEquals(ClientTelemetryState.SUBSCRIPTION_NEEDED, telemetrySender.state());
@@ -817,7 +817,7 @@ public class ClientTelemetryReporterTest {
         // unknown error
         telemetrySender.enabled(true);
         response = new PushTelemetryResponse(
-            new PushTelemetryResponseData().setErrorCode(Errors.UNKNOWN_SERVER_ERROR.code()));
+                new PushTelemetryResponseData().setErrorCode(Errors.UNKNOWN_SERVER_ERROR.code()));
 
         telemetrySender.handleResponse(response);
         assertEquals(ClientTelemetryState.SUBSCRIPTION_NEEDED, telemetrySender.state());
@@ -954,8 +954,8 @@ public class ClientTelemetryReporterTest {
         telemetrySender.updateSubscriptionResult(subscription, time.milliseconds());
         assertTrue(telemetrySender.maybeSetState(ClientTelemetryState.SUBSCRIPTION_IN_PROGRESS));
 
-        KafkaException wrappedException = new KafkaException("Version check failed", 
-            new UnsupportedVersionException("Broker doesn't support telemetry"));
+        KafkaException wrappedException = new KafkaException("Version check failed",
+                new UnsupportedVersionException("Broker doesn't support telemetry"));
         telemetrySender.handleFailedGetTelemetrySubscriptionsRequest(wrappedException);
 
         assertEquals(ClientTelemetryState.SUBSCRIPTION_NEEDED, telemetrySender.state());
@@ -1002,14 +1002,14 @@ public class ClientTelemetryReporterTest {
         assertTrue(telemetrySender.maybeSetState(ClientTelemetryState.SUBSCRIPTION_IN_PROGRESS));
 
         KafkaException chainedException = new TimeoutException("Outer timeout",
-            new DisconnectException("Inner disconnect"));
+                new DisconnectException("Inner disconnect"));
         telemetrySender.handleFailedGetTelemetrySubscriptionsRequest(chainedException);
 
         assertEquals(ClientTelemetryState.SUBSCRIPTION_NEEDED, telemetrySender.state());
         assertEquals(ClientTelemetryReporter.DEFAULT_PUSH_INTERVAL_MS, telemetrySender.intervalMs());
         assertTrue(telemetrySender.enabled());
     }
-    
+
     @Test
     public void testHandleFailedRequestWithGenericKafkaException() {
         ClientTelemetryReporter.DefaultClientTelemetrySender telemetrySender = (ClientTelemetryReporter.DefaultClientTelemetrySender) clientTelemetryReporter.telemetrySender();
@@ -1046,19 +1046,19 @@ public class ClientTelemetryReporterTest {
 
         assertTrue(telemetrySender.maybeSetState(ClientTelemetryState.SUBSCRIPTION_IN_PROGRESS));
         telemetrySender.handleFailedGetTelemetrySubscriptionsRequest(
-            new TimeoutException("Timeout 1"));
+                new TimeoutException("Timeout 1"));
         assertEquals(ClientTelemetryState.SUBSCRIPTION_NEEDED, telemetrySender.state());
         assertTrue(telemetrySender.enabled());
 
         assertTrue(telemetrySender.maybeSetState(ClientTelemetryState.SUBSCRIPTION_IN_PROGRESS));
         telemetrySender.handleFailedGetTelemetrySubscriptionsRequest(
-            new DisconnectException("Disconnect"));
+                new DisconnectException("Disconnect"));
         assertEquals(ClientTelemetryState.SUBSCRIPTION_NEEDED, telemetrySender.state());
         assertTrue(telemetrySender.enabled());
 
         assertTrue(telemetrySender.maybeSetState(ClientTelemetryState.SUBSCRIPTION_IN_PROGRESS));
         telemetrySender.handleFailedGetTelemetrySubscriptionsRequest(
-            new UnsupportedVersionException("Version not supported"));
+                new UnsupportedVersionException("Version not supported"));
         assertEquals(ClientTelemetryState.SUBSCRIPTION_NEEDED, telemetrySender.state());
         assertFalse(telemetrySender.enabled());
     }

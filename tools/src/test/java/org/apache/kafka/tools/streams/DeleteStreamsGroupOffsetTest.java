@@ -96,7 +96,7 @@ public class DeleteStreamsGroupOffsetTest {
             adminClient.deleteTopics(topics).all().get();
             // delete all groups
             List<String> groupIds =
-                adminClient.listGroups(ListGroupsOptions.forStreamsGroups().timeoutMs(1000)).all().get()
+                    adminClient.listGroups(ListGroupsOptions.forStreamsGroups().timeoutMs(1000)).all().get()
                     .stream().map(GroupListing::groupId).toList();
             adminClient.deleteStreamsGroups(groupIds).all().get();
         } catch (final UnknownTopicOrPartitionException ignored) {
@@ -147,7 +147,7 @@ public class DeleteStreamsGroupOffsetTest {
         Exit.setExitProcedure(((statusCode, message) -> {
             assertNotEquals(0, statusCode);
             assertTrue(message.contains("Option [delete-offsets] supports only one [group] at a time, but found:") &&
-                message.contains(group1) && message.contains(group2));
+                    message.contains(group1) && message.contains(group2));
             exited.set(true);
         }));
         try {
@@ -349,12 +349,12 @@ public class DeleteStreamsGroupOffsetTest {
             streams.cleanUp();
 
             TestUtils.waitForCondition(
-                () -> checkGroupState(service, appId, EMPTY),
-                "The group did not become empty as expected."
+                    () -> checkGroupState(service, appId, EMPTY),
+                    "The group did not become empty as expected."
             );
             TestUtils.waitForCondition(
-                () -> service.collectGroupMembers(appId).isEmpty(),
-                "The group size is not zero as expected."
+                    () -> service.collectGroupMembers(appId).isEmpty(),
+                    "The group size is not zero as expected."
             );
         }
     }
@@ -370,9 +370,9 @@ public class DeleteStreamsGroupOffsetTest {
         final KTable<String, String> valueCounts = inputStream
             .groupByKey()
             .aggregate(
-                () -> "()",
-                (key, value, aggregate) -> aggregate + ",(" + key + ": " + value + ")",
-                Materialized.as("aggregated_value"));
+                    () -> "()",
+                    (key, value, aggregate) -> aggregate + ",(" + key + ": " + value + ")",
+                    Materialized.as("aggregated_value"));
 
         valueCounts.toStream().peek((key, value) -> {
             if (recordCount.incrementAndGet() > RECORD_TOTAL) {
@@ -383,12 +383,12 @@ public class DeleteStreamsGroupOffsetTest {
         KafkaStreams streams = IntegrationTestUtils.getStartedStreams(createStreamsConfig(bootstrapServers, appId), builder, true);
 
         TestUtils.waitForCondition(
-            () -> !service.collectGroupMembers(appId).isEmpty(),
-            "The group did not initialize as expected."
+                () -> !service.collectGroupMembers(appId).isEmpty(),
+                "The group did not initialize as expected."
         );
         TestUtils.waitForCondition(
-            () -> checkGroupState(service, appId, GroupState.STABLE),
-            "The group did not become stable as expected."
+                () -> checkGroupState(service, appId, GroupState.STABLE),
+                "The group did not become stable as expected."
         );
 
         return streams;
@@ -423,18 +423,18 @@ public class DeleteStreamsGroupOffsetTest {
         }
 
         IntegrationTestUtils.produceSynchronously(
-            TestUtils.producerConfig(bootstrapServers, StringSerializer.class, StringSerializer.class),
-            false,
-            topic,
-            Optional.empty(),
-            data
+                TestUtils.producerConfig(bootstrapServers, StringSerializer.class, StringSerializer.class),
+                false,
+                topic,
+                Optional.empty(),
+                data
         );
     }
 
     private StreamsGroupCommand.StreamsGroupService getStreamsGroupService(String[] args) {
         StreamsGroupCommandOptions opts = StreamsGroupCommandOptions.fromArgs(args);
         return new StreamsGroupCommand.StreamsGroupService(
-            opts, cluster.createAdminClient());
+                opts, cluster.createAdminClient());
 
     }
 }

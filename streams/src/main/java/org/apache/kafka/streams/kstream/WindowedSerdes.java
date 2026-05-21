@@ -73,8 +73,8 @@ public class WindowedSerdes {
                                              final Serializer wrapper) {
         if (inner == null) {
             throw new NullPointerException("Inner serializer is `null`. " +
-                "User code must use constructor `" + wrapper.getClass().getSimpleName() + "(final Serializer<T> inner)` " +
-                "instead of the no-arg constructor.");
+                    "User code must use constructor `" + wrapper.getClass().getSimpleName() + "(final Serializer<T> inner)` " +
+                    "instead of the no-arg constructor.");
         }
     }
 
@@ -83,8 +83,8 @@ public class WindowedSerdes {
                                                final Deserializer wrapper) {
         if (inner == null) {
             throw new NullPointerException("Inner deserializer is `null`. " +
-                "User code must use constructor `" + wrapper.getClass().getSimpleName() + "(final Deserializer<T> inner)` " +
-                "instead of the no-arg constructor.");
+                    "User code must use constructor `" + wrapper.getClass().getSimpleName() + "(final Deserializer<T> inner)` " +
+                    "instead of the no-arg constructor.");
         }
     }
 }

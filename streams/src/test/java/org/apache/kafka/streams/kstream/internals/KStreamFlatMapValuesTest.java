@@ -47,12 +47,12 @@ public class KStreamFlatMapValuesTest {
         final StreamsBuilder builder = new StreamsBuilder();
 
         final ValueMapper<Number, Iterable<String>> mapper =
-            value -> {
-                final ArrayList<String> result = new ArrayList<>();
-                result.add("v" + value);
-                result.add("V" + value);
-                return result;
-            };
+                value -> {
+                    final ArrayList<String> result = new ArrayList<>();
+                    result.add("v" + value);
+                    result.add("V" + value);
+                    return result;
+                };
 
         final int[] expectedKeys = {0, 1, 2, 3};
 
@@ -70,25 +70,24 @@ public class KStreamFlatMapValuesTest {
         }
 
         final KeyValueTimestamp[] expected = {new KeyValueTimestamp<>(0, "v0", 0), new KeyValueTimestamp<>(0, "V0", 0),
-            new KeyValueTimestamp<>(1, "v1", 0), new KeyValueTimestamp<>(1, "V1", 0),
-            new KeyValueTimestamp<>(2, "v2", 0), new KeyValueTimestamp<>(2, "V2", 0),
-            new KeyValueTimestamp<>(3, "v3", 0), new KeyValueTimestamp<>(3, "V3", 0)};
+                new KeyValueTimestamp<>(1, "v1", 0), new KeyValueTimestamp<>(1, "V1", 0),
+                new KeyValueTimestamp<>(2, "v2", 0), new KeyValueTimestamp<>(2, "V2", 0),
+                new KeyValueTimestamp<>(3, "v3", 0), new KeyValueTimestamp<>(3, "V3", 0)};
 
         assertArrayEquals(expected, supplier.theCapturedProcessor().processed().toArray());
     }
-
 
     @Test
     public void testFlatMapValuesWithKeys() {
         final StreamsBuilder builder = new StreamsBuilder();
 
         final ValueMapperWithKey<Integer, Number, Iterable<String>> mapper =
-            (readOnlyKey, value) -> {
-                final ArrayList<String> result = new ArrayList<>();
-                result.add("v" + value);
-                result.add("k" + readOnlyKey);
-                return result;
-            };
+                (readOnlyKey, value) -> {
+                    final ArrayList<String> result = new ArrayList<>();
+                    result.add("v" + value);
+                    result.add("k" + readOnlyKey);
+                    return result;
+                };
 
         final int[] expectedKeys = {0, 1, 2, 3};
 
@@ -107,13 +106,13 @@ public class KStreamFlatMapValuesTest {
         }
 
         final KeyValueTimestamp[] expected = {new KeyValueTimestamp<>(0, "v0", 0),
-            new KeyValueTimestamp<>(0, "k0", 0),
-            new KeyValueTimestamp<>(1, "v1", 0),
-            new KeyValueTimestamp<>(1, "k1", 0),
-            new KeyValueTimestamp<>(2, "v2", 0),
-            new KeyValueTimestamp<>(2, "k2", 0),
-            new KeyValueTimestamp<>(3, "v3", 0),
-            new KeyValueTimestamp<>(3, "k3", 0)};
+                new KeyValueTimestamp<>(0, "k0", 0),
+                new KeyValueTimestamp<>(1, "v1", 0),
+                new KeyValueTimestamp<>(1, "k1", 0),
+                new KeyValueTimestamp<>(2, "v2", 0),
+                new KeyValueTimestamp<>(2, "k2", 0),
+                new KeyValueTimestamp<>(3, "v3", 0),
+                new KeyValueTimestamp<>(3, "k3", 0)};
 
         assertArrayEquals(expected, supplier.theCapturedProcessor().processed().toArray());
     }

@@ -43,7 +43,7 @@ public class RocksDBMetricsTest {
     private static final String STORE_TYPE = "test-store-type";
     private static final String STORE_NAME = "store";
     private static final RocksDBMetricContext ROCKSDB_METRIC_CONTEXT =
-        new RocksDBMetricContext(TASK_ID, STORE_TYPE, STORE_NAME);
+            new RocksDBMetricContext(TASK_ID, STORE_TYPE, STORE_NAME);
     private static final Gauge<BigInteger> VALUE_PROVIDER = (config, now) -> BigInteger.valueOf(10);
 
     private final Metrics metrics = new Metrics();
@@ -61,10 +61,10 @@ public class RocksDBMetricsTest {
         final String descriptionOfTotal = "Total number of bytes written to the RocksDB state store";
         final String descriptionOfRate = "Average number of bytes written per second to the RocksDB state store";
         verifyRateAndTotalSensor(
-            metricNamePrefix,
-            descriptionOfTotal,
-            descriptionOfRate,
-            RocksDBMetrics::bytesWrittenToDatabaseSensor
+                metricNamePrefix,
+                descriptionOfTotal,
+                descriptionOfRate,
+                RocksDBMetrics::bytesWrittenToDatabaseSensor
         );
     }
 
@@ -74,10 +74,10 @@ public class RocksDBMetricsTest {
         final String descriptionOfTotal = "Total number of bytes read from the RocksDB state store";
         final String descriptionOfRate = "Average number of bytes read per second from the RocksDB state store";
         verifyRateAndTotalSensor(
-            metricNamePrefix,
-            descriptionOfTotal,
-            descriptionOfRate,
-            RocksDBMetrics::bytesReadFromDatabaseSensor
+                metricNamePrefix,
+                descriptionOfTotal,
+                descriptionOfRate,
+                RocksDBMetrics::bytesReadFromDatabaseSensor
         );
     }
 
@@ -94,10 +94,10 @@ public class RocksDBMetricsTest {
         final String descriptionOfTotal = "Total number of bytes flushed from the memtable to disk";
         final String descriptionOfRate = "Average number of bytes flushed per second from the memtable to disk";
         verifyRateAndTotalSensor(
-            metricNamePrefix,
-            descriptionOfTotal,
-            descriptionOfRate,
-            RocksDBMetrics::memtableBytesFlushedSensor
+                metricNamePrefix,
+                descriptionOfTotal,
+                descriptionOfRate,
+                RocksDBMetrics::memtableBytesFlushedSensor
         );
     }
 
@@ -129,12 +129,12 @@ public class RocksDBMetricsTest {
         final String descriptionOfTotal = "Total duration of write stalls in ms";
         setupStreamsMetricsMock(metricNamePrefix);
         StreamsMetricsImpl.addAvgAndSumMetricsToSensor(
-            sensor,
-            STATE_LEVEL_GROUP,
-            tags,
-            metricNamePrefix,
-            descriptionOfAvg,
-            descriptionOfTotal
+                sensor,
+                STATE_LEVEL_GROUP,
+                tags,
+                metricNamePrefix,
+                descriptionOfAvg,
+                descriptionOfTotal
         );
 
         replayCallAndVerify(RocksDBMetrics::writeStallDurationSensor);
@@ -144,7 +144,7 @@ public class RocksDBMetricsTest {
     public void shouldGetBlockCacheDataHitRatioSensor() {
         final String metricNamePrefix = "block-cache-data-hit-ratio";
         final String description =
-            "Ratio of block cache hits for data relative to all lookups for data to the block cache";
+                "Ratio of block cache hits for data relative to all lookups for data to the block cache";
         verifyValueSensor(metricNamePrefix, description, RocksDBMetrics::blockCacheDataHitRatioSensor);
     }
 
@@ -152,7 +152,7 @@ public class RocksDBMetricsTest {
     public void shouldGetBlockCacheIndexHitRatioSensor() {
         final String metricNamePrefix = "block-cache-index-hit-ratio";
         final String description =
-            "Ratio of block cache hits for indexes relative to all lookups for indexes to the block cache";
+                "Ratio of block cache hits for indexes relative to all lookups for indexes to the block cache";
         verifyValueSensor(metricNamePrefix, description, RocksDBMetrics::blockCacheIndexHitRatioSensor);
     }
 
@@ -160,7 +160,7 @@ public class RocksDBMetricsTest {
     public void shouldGetBlockCacheFilterHitRatioSensor() {
         final String metricNamePrefix = "block-cache-filter-hit-ratio";
         final String description =
-            "Ratio of block cache hits for filters relative to all lookups for filters to the block cache";
+                "Ratio of block cache hits for filters relative to all lookups for filters to the block cache";
         verifyValueSensor(metricNamePrefix, description, RocksDBMetrics::blockCacheFilterHitRatioSensor);
     }
 
@@ -218,9 +218,9 @@ public class RocksDBMetricsTest {
         final String name = "num-entries-active-mem-table";
         final String description = "Total number of entries in the active memtable";
         runAndVerifyMutableMetric(
-            name,
-            description,
-            () -> RocksDBMetrics.addNumEntriesActiveMemTableMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
+                name,
+                description,
+                () -> RocksDBMetrics.addNumEntriesActiveMemTableMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
         );
     }
 
@@ -229,9 +229,9 @@ public class RocksDBMetricsTest {
         final String name = "num-deletes-active-mem-table";
         final String description = "Total number of delete entries in the active memtable";
         runAndVerifyMutableMetric(
-            name,
-            description,
-            () -> RocksDBMetrics.addNumDeletesActiveMemTableMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
+                name,
+                description,
+                () -> RocksDBMetrics.addNumDeletesActiveMemTableMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
         );
     }
 
@@ -240,9 +240,9 @@ public class RocksDBMetricsTest {
         final String name = "num-entries-imm-mem-tables";
         final String description = "Total number of entries in the unflushed immutable memtables";
         runAndVerifyMutableMetric(
-            name,
-            description,
-            () -> RocksDBMetrics.addNumEntriesImmMemTablesMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
+                name,
+                description,
+                () -> RocksDBMetrics.addNumEntriesImmMemTablesMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
         );
     }
 
@@ -251,9 +251,9 @@ public class RocksDBMetricsTest {
         final String name = "num-deletes-imm-mem-tables";
         final String description = "Total number of delete entries in the unflushed immutable memtables";
         runAndVerifyMutableMetric(
-            name,
-            description,
-            () -> RocksDBMetrics.addNumDeletesImmMemTablesMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
+                name,
+                description,
+                () -> RocksDBMetrics.addNumDeletesImmMemTablesMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
         );
     }
 
@@ -262,9 +262,9 @@ public class RocksDBMetricsTest {
         final String name = "num-immutable-mem-table";
         final String description = "Number of immutable memtables that have not yet been flushed";
         runAndVerifyMutableMetric(
-            name,
-            description,
-            () -> RocksDBMetrics.addNumImmutableMemTableMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
+                name,
+                description,
+                () -> RocksDBMetrics.addNumImmutableMemTableMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
         );
     }
 
@@ -273,9 +273,9 @@ public class RocksDBMetricsTest {
         final String name = "cur-size-active-mem-table";
         final String description = "Approximate size of active memtable in bytes";
         runAndVerifyMutableMetric(
-            name,
-            description,
-            () -> RocksDBMetrics.addCurSizeActiveMemTable(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
+                name,
+                description,
+                () -> RocksDBMetrics.addCurSizeActiveMemTable(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
         );
     }
 
@@ -284,9 +284,9 @@ public class RocksDBMetricsTest {
         final String name = "cur-size-all-mem-tables";
         final String description = "Approximate size of active and unflushed immutable memtables in bytes";
         runAndVerifyMutableMetric(
-            name,
-            description,
-            () -> RocksDBMetrics.addCurSizeAllMemTables(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
+                name,
+                description,
+                () -> RocksDBMetrics.addCurSizeAllMemTables(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
         );
     }
 
@@ -295,9 +295,9 @@ public class RocksDBMetricsTest {
         final String name = "size-all-mem-tables";
         final String description = "Approximate size of active, unflushed immutable, and pinned immutable memtables in bytes";
         runAndVerifyMutableMetric(
-            name,
-            description,
-            () -> RocksDBMetrics.addSizeAllMemTables(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
+                name,
+                description,
+                () -> RocksDBMetrics.addSizeAllMemTables(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
         );
     }
 
@@ -306,9 +306,9 @@ public class RocksDBMetricsTest {
         final String name = "mem-table-flush-pending";
         final String description = "Reports 1 if a memtable flush is pending, otherwise it reports 0";
         runAndVerifyMutableMetric(
-            name,
-            description,
-            () -> RocksDBMetrics.addMemTableFlushPending(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
+                name,
+                description,
+                () -> RocksDBMetrics.addMemTableFlushPending(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
         );
     }
 
@@ -317,9 +317,9 @@ public class RocksDBMetricsTest {
         final String name = "num-running-flushes";
         final String description = "Number of currently running flushes";
         runAndVerifyMutableMetric(
-            name,
-            description,
-            () -> RocksDBMetrics.addNumRunningFlushesMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
+                name,
+                description,
+                () -> RocksDBMetrics.addNumRunningFlushesMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
         );
     }
 
@@ -328,9 +328,9 @@ public class RocksDBMetricsTest {
         final String name = "compaction-pending";
         final String description = "Reports 1 if at least one compaction is pending, otherwise it reports 0";
         runAndVerifyMutableMetric(
-            name,
-            description,
-            () -> RocksDBMetrics.addCompactionPendingMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
+                name,
+                description,
+                () -> RocksDBMetrics.addCompactionPendingMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
         );
     }
 
@@ -339,9 +339,9 @@ public class RocksDBMetricsTest {
         final String name = "num-running-compactions";
         final String description = "Number of currently running compactions";
         runAndVerifyMutableMetric(
-            name,
-            description,
-            () -> RocksDBMetrics.addNumRunningCompactionsMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
+                name,
+                description,
+                () -> RocksDBMetrics.addNumRunningCompactionsMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
         );
     }
 
@@ -349,11 +349,11 @@ public class RocksDBMetricsTest {
     public void shouldAddEstimatePendingCompactionBytesMetric() {
         final String name = "estimate-pending-compaction-bytes";
         final String description =
-            "Estimated total number of bytes a compaction needs to rewrite on disk to get all levels down to under target size";
+                "Estimated total number of bytes a compaction needs to rewrite on disk to get all levels down to under target size";
         runAndVerifyMutableMetric(
-            name,
-            description,
-            () -> RocksDBMetrics.addEstimatePendingCompactionBytesMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
+                name,
+                description,
+                () -> RocksDBMetrics.addEstimatePendingCompactionBytesMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
         );
     }
 
@@ -362,9 +362,9 @@ public class RocksDBMetricsTest {
         final String name = "total-sst-files-size";
         final String description = "Total size in bytes of all SST files";
         runAndVerifyMutableMetric(
-            name,
-            description,
-            () -> RocksDBMetrics.addTotalSstFilesSizeMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
+                name,
+                description,
+                () -> RocksDBMetrics.addTotalSstFilesSizeMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
         );
     }
 
@@ -373,9 +373,9 @@ public class RocksDBMetricsTest {
         final String name = "live-sst-files-size";
         final String description = "Total size in bytes of all SST files that belong to the latest LSM tree";
         runAndVerifyMutableMetric(
-            name,
-            description,
-            () -> RocksDBMetrics.addLiveSstFilesSizeMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
+                name,
+                description,
+                () -> RocksDBMetrics.addLiveSstFilesSizeMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
         );
     }
 
@@ -384,9 +384,9 @@ public class RocksDBMetricsTest {
         final String name = "num-live-versions";
         final String description = "Number of live versions of the LSM tree";
         runAndVerifyMutableMetric(
-            name,
-            description,
-            () -> RocksDBMetrics.addNumLiveVersionMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
+                name,
+                description,
+                () -> RocksDBMetrics.addNumLiveVersionMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
         );
     }
 
@@ -395,9 +395,9 @@ public class RocksDBMetricsTest {
         final String name = "block-cache-capacity";
         final String description = "Capacity of the block cache in bytes";
         runAndVerifyMutableMetric(
-            name,
-            description,
-            () -> RocksDBMetrics.addBlockCacheCapacityMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
+                name,
+                description,
+                () -> RocksDBMetrics.addBlockCacheCapacityMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
         );
     }
 
@@ -406,9 +406,9 @@ public class RocksDBMetricsTest {
         final String name = "block-cache-usage";
         final String description = "Memory size of the entries residing in block cache in bytes";
         runAndVerifyMutableMetric(
-            name,
-            description,
-            () -> RocksDBMetrics.addBlockCacheUsageMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
+                name,
+                description,
+                () -> RocksDBMetrics.addBlockCacheUsageMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
         );
     }
 
@@ -417,9 +417,9 @@ public class RocksDBMetricsTest {
         final String name = "block-cache-pinned-usage";
         final String description = "Memory size for the entries being pinned in the block cache in bytes";
         runAndVerifyMutableMetric(
-            name,
-            description,
-            () -> RocksDBMetrics.addBlockCachePinnedUsageMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
+                name,
+                description,
+                () -> RocksDBMetrics.addBlockCachePinnedUsageMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
         );
     }
 
@@ -427,11 +427,11 @@ public class RocksDBMetricsTest {
     public void shouldAddEstimateNumKeysMetric() {
         final String name = "estimate-num-keys";
         final String description =
-            "Estimated number of keys in the active and unflushed immutable memtables and storage";
+                "Estimated number of keys in the active and unflushed immutable memtables and storage";
         runAndVerifyMutableMetric(
-            name,
-            description,
-            () -> RocksDBMetrics.addEstimateNumKeysMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
+                name,
+                description,
+                () -> RocksDBMetrics.addEstimateNumKeysMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
         );
     }
 
@@ -439,11 +439,11 @@ public class RocksDBMetricsTest {
     public void shouldAddEstimateTableReadersMemMetric() {
         final String name = "estimate-table-readers-mem";
         final String description =
-            "Estimated memory in bytes used for reading SST tables, excluding memory used in block cache";
+                "Estimated memory in bytes used for reading SST tables, excluding memory used in block cache";
         runAndVerifyMutableMetric(
-            name,
-            description,
-            () -> RocksDBMetrics.addEstimateTableReadersMemMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
+                name,
+                description,
+                () -> RocksDBMetrics.addEstimateTableReadersMemMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
         );
     }
 
@@ -452,9 +452,9 @@ public class RocksDBMetricsTest {
         final String name = "background-errors";
         final String description = "Total number of background errors";
         runAndVerifyMutableMetric(
-            name,
-            description,
-            () -> RocksDBMetrics.addBackgroundErrorsMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
+                name,
+                description,
+                () -> RocksDBMetrics.addBackgroundErrorsMetric(streamsMetrics, ROCKSDB_METRIC_CONTEXT, VALUE_PROVIDER)
         );
     }
 
@@ -479,12 +479,12 @@ public class RocksDBMetricsTest {
                                           final SensorCreator sensorCreator) {
         setupStreamsMetricsMock(metricNamePrefix);
         StreamsMetricsImpl.addRateOfSumAndSumMetricsToSensor(
-            sensor,
-            STATE_LEVEL_GROUP,
-            tags,
-            metricNamePrefix,
-            descriptionOfRate,
-            descriptionOfTotal
+                sensor,
+                STATE_LEVEL_GROUP,
+                tags,
+                metricNamePrefix,
+                descriptionOfRate,
+                descriptionOfTotal
         );
 
         replayCallAndVerify(sensorCreator);
@@ -541,7 +541,6 @@ public class RocksDBMetricsTest {
     private void replayCallAndVerify(final SensorCreator sensorCreator) {
 
         final Sensor sensor = sensorCreator.sensor(streamsMetrics, ROCKSDB_METRIC_CONTEXT);
-
 
         assertThat(sensor, is(this.sensor));
     }

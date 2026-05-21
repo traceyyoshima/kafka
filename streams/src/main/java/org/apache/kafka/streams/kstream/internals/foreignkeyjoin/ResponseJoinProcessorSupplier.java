@@ -48,7 +48,7 @@ import java.util.function.Supplier;
  * @param <VOut> Type of joined result of primary and foreign values
  */
 public class ResponseJoinProcessorSupplier<KLeft, VLeft, VRight, VOut>
-    implements ProcessorSupplier<KLeft, SubscriptionResponseWrapper<VRight>, KLeft, VOut> {
+        implements ProcessorSupplier<KLeft, SubscriptionResponseWrapper<VRight>, KLeft, VOut> {
 
     private static final Logger LOG = LoggerFactory.getLogger(ResponseJoinProcessorSupplier.class);
     private final KTableValueGetterSupplier<KLeft, VLeft> valueGetterSupplier;
@@ -77,7 +77,6 @@ public class ResponseJoinProcessorSupplier<KLeft, VLeft, VRight, VOut>
 
             private KTableValueGetter<KLeft, VLeft> valueGetter;
             private Sensor droppedRecordsSensor;
-
 
             @SuppressWarnings({"unchecked", "resource"})
             @Override

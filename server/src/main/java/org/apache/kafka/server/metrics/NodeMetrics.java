@@ -45,12 +45,12 @@ public final class NodeMetrics implements AutoCloseable {
 
     private void addSupportedLevelMetric(String metricName, String featureName, short value) {
         metrics.addMetric(
-            getFeatureNameTagMetricName(
-                metricName,
-                METRIC_GROUP_NAME,
-                featureName
+                getFeatureNameTagMetricName(
+                    metricName,
+                    METRIC_GROUP_NAME,
+                    featureName
             ),
-            (Gauge<Short>) (config, now) -> value
+                (Gauge<Short>) (config, now) -> value
         );
     }
 
@@ -58,17 +58,17 @@ public final class NodeMetrics implements AutoCloseable {
     public void close() {
         for (var featureName : supportedFeatureRanges.keySet()) {
             metrics.removeMetric(
-                getFeatureNameTagMetricName(
-                    MAXIMUM_SUPPORTED_LEVEL_NAME,
-                    METRIC_GROUP_NAME,
-                    featureName
+                    getFeatureNameTagMetricName(
+                        MAXIMUM_SUPPORTED_LEVEL_NAME,
+                        METRIC_GROUP_NAME,
+                        featureName
                 )
             );
             metrics.removeMetric(
-                getFeatureNameTagMetricName(
-                    MINIMUM_SUPPORTED_LEVEL_NAME,
-                    METRIC_GROUP_NAME,
-                    featureName
+                    getFeatureNameTagMetricName(
+                        MINIMUM_SUPPORTED_LEVEL_NAME,
+                        METRIC_GROUP_NAME,
+                        featureName
                 )
             );
         }
@@ -76,9 +76,9 @@ public final class NodeMetrics implements AutoCloseable {
 
     private MetricName getFeatureNameTagMetricName(String name, String group, String featureName) {
         return metrics.metricName(
-            name,
-            group,
-            Map.of(FEATURE_NAME_TAG, featureName.replace(".", "-"))
+                name,
+                group,
+                Map.of(FEATURE_NAME_TAG, featureName.replace(".", "-"))
         );
     }
 }

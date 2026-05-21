@@ -145,7 +145,7 @@ public final class CommandUtils {
                     complete = false;
                 }
                 candidates.add(new Candidate(candidateBuilder.toString(),
-                    candidateBuilder.toString(), null, null, null, null, complete));
+                        candidateBuilder.toString(), null, null, null, null, complete));
                 candidate = children.higher(candidate);
             }
         });

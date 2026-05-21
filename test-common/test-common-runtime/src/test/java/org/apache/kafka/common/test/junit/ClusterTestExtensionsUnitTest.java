@@ -55,24 +55,23 @@ public class ClusterTestExtensionsUnitTest {
         when(annot.value()).thenReturn("").thenReturn(" ").thenReturn("cfgEmpty");
 
         Assertions.assertEquals(
-            "ClusterTemplate value can't be empty string.",
-            Assertions.assertThrows(IllegalStateException.class, () ->
-                ext.processClusterTemplate(context, annot)
-            ).getMessage()
-        );
-
-
-        Assertions.assertEquals(
-            "ClusterTemplate value can't be empty string.",
-            Assertions.assertThrows(IllegalStateException.class, () ->
-                ext.processClusterTemplate(context, annot)
+                "ClusterTemplate value can't be empty string.",
+                Assertions.assertThrows(IllegalStateException.class, () ->
+                        ext.processClusterTemplate(context, annot)
             ).getMessage()
         );
 
         Assertions.assertEquals(
-            "ClusterConfig generator method should provide at least one config",
-            Assertions.assertThrows(IllegalStateException.class, () ->
-                ext.processClusterTemplate(context, annot)
+                "ClusterTemplate value can't be empty string.",
+                Assertions.assertThrows(IllegalStateException.class, () ->
+                        ext.processClusterTemplate(context, annot)
+            ).getMessage()
+        );
+
+        Assertions.assertEquals(
+                "ClusterConfig generator method should provide at least one config",
+                Assertions.assertThrows(IllegalStateException.class, () ->
+                        ext.processClusterTemplate(context, annot)
             ).getMessage()
         );
     }

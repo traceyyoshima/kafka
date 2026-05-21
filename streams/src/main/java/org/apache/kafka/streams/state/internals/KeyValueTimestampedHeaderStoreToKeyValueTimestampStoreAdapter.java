@@ -51,8 +51,8 @@ import java.util.stream.Collectors;
  * type with an empty {@link org.apache.kafka.common.header.Headers} object.
  */
 public class KeyValueTimestampedHeaderStoreToKeyValueTimestampStoreAdapter<K, V>
-    extends WrappedStateStore<TimestampedKeyValueStore<K, V>, K, V>
-    implements TimestampedKeyValueStoreWithHeaders<K, V> {
+        extends WrappedStateStore<TimestampedKeyValueStore<K, V>, K, V>
+        implements TimestampedKeyValueStoreWithHeaders<K, V> {
 
     public KeyValueTimestampedHeaderStoreToKeyValueTimestampStoreAdapter(final TimestampedKeyValueStore<K, V> timestampedKeyValueStore) {
         super(timestampedKeyValueStore);
@@ -118,16 +118,16 @@ public class KeyValueTimestampedHeaderStoreToKeyValueTimestampStoreAdapter<K, V>
     @Override
     public void put(final K key, final ValueTimestampHeaders<V> value) {
         wrapped().put(
-            key,
-            value == null ? null : ValueAndTimestamp.make(value.value(), value.timestamp())
+                key,
+                value == null ? null : ValueAndTimestamp.make(value.value(), value.timestamp())
         );
     }
 
     @Override
     public ValueTimestampHeaders<V> putIfAbsent(final K key, final ValueTimestampHeaders<V> value) {
         final ValueAndTimestamp<V> oldValueAndTimestamp = wrapped().putIfAbsent(
-            key,
-            value == null ? null : ValueAndTimestamp.make(value.value(), value.timestamp())
+                key,
+                value == null ? null : ValueAndTimestamp.make(value.value(), value.timestamp())
         );
 
         return oldValueAndTimestamp == null
@@ -138,11 +138,11 @@ public class KeyValueTimestampedHeaderStoreToKeyValueTimestampStoreAdapter<K, V>
     @Override
     public void putAll(final List<KeyValue<K, ValueTimestampHeaders<V>>> entries) {
         wrapped().putAll(
-            entries.stream().map(keyValuePair -> KeyValue.pair(
-                keyValuePair.key,
-                ValueAndTimestamp.make(keyValuePair.value.value(), keyValuePair.value.timestamp()))
+                entries.stream().map(keyValuePair -> KeyValue.pair(
+                    keyValuePair.key,
+                    ValueAndTimestamp.make(keyValuePair.value.value(), keyValuePair.value.timestamp()))
             )
-            .collect(Collectors.toList())
+                    .collect(Collectors.toList())
         );
     }
 

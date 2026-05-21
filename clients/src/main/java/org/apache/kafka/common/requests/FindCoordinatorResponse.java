@@ -148,7 +148,7 @@ public class FindCoordinatorResponse extends AbstractResponse {
     public static FindCoordinatorResponse prepareResponse(Errors error, String key, Node node) {
         FindCoordinatorResponseData data = new FindCoordinatorResponseData();
         data.setCoordinators(List.of(
-            prepareCoordinatorResponse(error, key, node)
+                prepareCoordinatorResponse(error, key, node)
         ));
         return new FindCoordinatorResponse(data);
     }

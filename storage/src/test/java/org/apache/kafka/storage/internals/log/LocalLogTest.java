@@ -316,7 +316,6 @@ class LocalLogTest {
 
         assertEquals(10L, log.segments().numberOfSegments());
 
-
         TestDeletionReason reason = new TestDeletionReason();
         List<LogSegment> toDelete = new ArrayList<>(log.segments().values());
         log.removeAndDeleteSegments(toDelete, asyncDelete, reason);

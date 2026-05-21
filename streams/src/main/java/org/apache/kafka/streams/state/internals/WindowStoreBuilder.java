@@ -55,12 +55,12 @@ public class WindowStoreBuilder<K, V> extends AbstractStoreBuilder<K, V, WindowS
         }
 
         return new MeteredWindowStore<>(
-            maybeWrapCaching(maybeWrapLogging(storeSupplier.get())),
-            storeSupplier.windowSize(),
-            storeSupplier.metricsScope(),
-            time,
-            keySerde,
-            valueSerde);
+                maybeWrapCaching(maybeWrapLogging(storeSupplier.get())),
+                storeSupplier.windowSize(),
+                storeSupplier.metricsScope(),
+                time,
+                keySerde,
+                valueSerde);
     }
 
     private WindowStore<Bytes, byte[]> maybeWrapCaching(final WindowStore<Bytes, byte[]> inner) {
@@ -68,9 +68,9 @@ public class WindowStoreBuilder<K, V> extends AbstractStoreBuilder<K, V, WindowS
             return inner;
         }
         return new CachingWindowStore(
-            inner,
-            storeSupplier.windowSize(),
-            storeSupplier.segmentIntervalMs());
+                inner,
+                storeSupplier.windowSize(),
+                storeSupplier.segmentIntervalMs());
     }
 
     private WindowStore<Bytes, byte[]> maybeWrapLogging(final WindowStore<Bytes, byte[]> inner) {
@@ -78,9 +78,9 @@ public class WindowStoreBuilder<K, V> extends AbstractStoreBuilder<K, V, WindowS
             return inner;
         }
         return new ChangeLoggingWindowBytesStore(
-            inner,
-            storeSupplier.retainDuplicates(),
-            WindowKeySchema::toStoreKeyBinary
+                inner,
+                storeSupplier.retainDuplicates(),
+                WindowKeySchema::toStoreKeyBinary
         );
     }
 

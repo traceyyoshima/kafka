@@ -114,19 +114,18 @@ public class SelfJoinUpgradeIntegrationTest {
         }
     }
 
-
     @ParameterizedTest
     @ValueSource(booleans = {false, true})
     public void shouldUpgradeWithTopologyOptimizationOff(final boolean withHeaders) throws Exception {
 
         final StreamsBuilder streamsBuilderOld = new StreamsBuilder();
         final KStream<String, String> leftOld = streamsBuilderOld.stream(
-            inputTopic, Consumed.with(Serdes.String(), Serdes.String()));
+                inputTopic, Consumed.with(Serdes.String(), Serdes.String()));
         final ValueJoiner<String, String, String> valueJoiner = (v, v2) -> v + v2;
         final KStream<String, String> joinedOld = leftOld.join(
-            leftOld,
-            valueJoiner,
-            JoinWindows.ofTimeDifferenceWithNoGrace(ofMinutes(100))
+                leftOld,
+                valueJoiner,
+                JoinWindows.ofTimeDifferenceWithNoGrace(ofMinutes(100))
         );
         joinedOld.to(outputTopic, Produced.with(Serdes.String(), Serdes.String()));
 
@@ -138,23 +137,22 @@ public class SelfJoinUpgradeIntegrationTest {
 
         final long currentTime = CLUSTER.time.milliseconds();
         processKeyValueAndVerifyCount(
-            "1",
-            "A",
-            currentTime + 42L,
-            singletonList(new KeyValueTimestamp<>("1", "AA", currentTime + 42L))
+                "1",
+                "A",
+                currentTime + 42L,
+                singletonList(new KeyValueTimestamp<>("1", "AA", currentTime + 42L))
         );
 
         processKeyValueAndVerifyCount(
-            "1",
-            "B",
-            currentTime + 43L,
-            asList(
-                new KeyValueTimestamp<>("1", "BA", currentTime + 43L),
-                new KeyValueTimestamp<>("1", "AB", currentTime + 43L),
-                new KeyValueTimestamp<>("1", "BB", currentTime + 43L)
+                "1",
+                "B",
+                currentTime + 43L,
+                asList(
+                    new KeyValueTimestamp<>("1", "BA", currentTime + 43L),
+                    new KeyValueTimestamp<>("1", "AB", currentTime + 43L),
+                    new KeyValueTimestamp<>("1", "BB", currentTime + 43L)
             )
         );
-
 
         kafkaStreams.close();
         kafkaStreams = null;
@@ -167,15 +165,15 @@ public class SelfJoinUpgradeIntegrationTest {
         final long currentTimeNew = CLUSTER.time.milliseconds();
 
         processKeyValueAndVerifyCount(
-            "1",
-            "C",
-            currentTimeNew + 44L,
-            asList(
-                new KeyValueTimestamp<>("1", "CA", currentTimeNew + 44L),
-                new KeyValueTimestamp<>("1", "CB", currentTimeNew + 44L),
-                new KeyValueTimestamp<>("1", "AC", currentTimeNew + 44L),
-                new KeyValueTimestamp<>("1", "BC", currentTimeNew + 44L),
-                new KeyValueTimestamp<>("1", "CC", currentTimeNew + 44L)
+                "1",
+                "C",
+                currentTimeNew + 44L,
+                asList(
+                    new KeyValueTimestamp<>("1", "CA", currentTimeNew + 44L),
+                    new KeyValueTimestamp<>("1", "CB", currentTimeNew + 44L),
+                    new KeyValueTimestamp<>("1", "AC", currentTimeNew + 44L),
+                    new KeyValueTimestamp<>("1", "BC", currentTimeNew + 44L),
+                    new KeyValueTimestamp<>("1", "CC", currentTimeNew + 44L)
             )
         );
 
@@ -188,15 +186,14 @@ public class SelfJoinUpgradeIntegrationTest {
 
         final StreamsBuilder streamsBuilderOld = new StreamsBuilder();
         final KStream<String, String> leftOld = streamsBuilderOld.stream(
-            inputTopic, Consumed.with(Serdes.String(), Serdes.String()));
+                inputTopic, Consumed.with(Serdes.String(), Serdes.String()));
         final ValueJoiner<String, String, String> valueJoiner = (v, v2) -> v + v2;
         final KStream<String, String> joinedOld = leftOld.join(
-            leftOld,
-            valueJoiner,
-            JoinWindows.ofTimeDifferenceWithNoGrace(ofMinutes(100))
+                leftOld,
+                valueJoiner,
+                JoinWindows.ofTimeDifferenceWithNoGrace(ofMinutes(100))
         );
         joinedOld.to(outputTopic, Produced.with(Serdes.String(), Serdes.String()));
-
 
         final Properties props = props();
         props.put(StreamsConfig.TOPOLOGY_OPTIMIZATION_CONFIG, StreamsConfig.OPTIMIZE);
@@ -206,20 +203,20 @@ public class SelfJoinUpgradeIntegrationTest {
 
         final long currentTime = CLUSTER.time.milliseconds();
         processKeyValueAndVerifyCount(
-            "1",
-            "A",
-            currentTime + 42L,
-            singletonList(new KeyValueTimestamp<>("1", "AA", currentTime + 42L))
+                "1",
+                "A",
+                currentTime + 42L,
+                singletonList(new KeyValueTimestamp<>("1", "AA", currentTime + 42L))
         );
 
         processKeyValueAndVerifyCount(
-            "1",
-            "B",
-            currentTime + 43L,
-            asList(
-                new KeyValueTimestamp<>("1", "BA", currentTime + 43L),
-                new KeyValueTimestamp<>("1", "AB", currentTime + 43L),
-                new KeyValueTimestamp<>("1", "BB", currentTime + 43L)
+                "1",
+                "B",
+                currentTime + 43L,
+                asList(
+                    new KeyValueTimestamp<>("1", "BA", currentTime + 43L),
+                    new KeyValueTimestamp<>("1", "AB", currentTime + 43L),
+                    new KeyValueTimestamp<>("1", "BB", currentTime + 43L)
             )
         );
 
@@ -234,21 +231,20 @@ public class SelfJoinUpgradeIntegrationTest {
         final long currentTimeNew = CLUSTER.time.milliseconds();
 
         processKeyValueAndVerifyCount(
-            "1",
-            "C",
-            currentTimeNew + 44L,
-            asList(
-                new KeyValueTimestamp<>("1", "CA", currentTimeNew + 44L),
-                new KeyValueTimestamp<>("1", "CB", currentTimeNew + 44L),
-                new KeyValueTimestamp<>("1", "AC", currentTimeNew + 44L),
-                new KeyValueTimestamp<>("1", "BC", currentTimeNew + 44L),
-                new KeyValueTimestamp<>("1", "CC", currentTimeNew + 44L)
+                "1",
+                "C",
+                currentTimeNew + 44L,
+                asList(
+                    new KeyValueTimestamp<>("1", "CA", currentTimeNew + 44L),
+                    new KeyValueTimestamp<>("1", "CB", currentTimeNew + 44L),
+                    new KeyValueTimestamp<>("1", "AC", currentTimeNew + 44L),
+                    new KeyValueTimestamp<>("1", "BC", currentTimeNew + 44L),
+                    new KeyValueTimestamp<>("1", "CC", currentTimeNew + 44L)
             )
         );
 
         kafkaStreams.close();
     }
-
 
     private <K, V> boolean processKeyValueAndVerifyCount(
         final K key,
@@ -258,13 +254,12 @@ public class SelfJoinUpgradeIntegrationTest {
         throws Exception {
 
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-            inputTopic,
-            singletonList(KeyValue.pair(key, value)),
-            TestUtils.producerConfig(CLUSTER.bootstrapServers(),
-                                     StringSerializer.class,
-                                     StringSerializer.class),
-            timestamp);
-
+                inputTopic,
+                singletonList(KeyValue.pair(key, value)),
+                TestUtils.producerConfig(CLUSTER.bootstrapServers(),
+                    StringSerializer.class,
+                    StringSerializer.class),
+                timestamp);
 
         final Properties consumerProperties = new Properties();
         consumerProperties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers());
@@ -274,13 +269,12 @@ public class SelfJoinUpgradeIntegrationTest {
         consumerProperties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         consumerProperties.put(TimeWindowedDeserializer.WINDOW_SIZE_MS_CONFIG, 500L);
 
-
         final List<KeyValueTimestamp<K, V>> actual =
-            IntegrationTestUtils.waitUntilMinKeyValueWithTimestampRecordsReceived(
-            consumerProperties,
-            outputTopic,
-            expected.size(),
-            60 * 1000);
+                IntegrationTestUtils.waitUntilMinKeyValueWithTimestampRecordsReceived(
+                    consumerProperties,
+                    outputTopic,
+                    expected.size(),
+                    60 * 1000);
 
         assertThat(actual, is(expected));
 

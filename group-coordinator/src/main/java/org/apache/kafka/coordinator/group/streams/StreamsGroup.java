@@ -389,7 +389,7 @@ public class StreamsGroup implements Group {
         }
 
         throw new UnknownMemberIdException(
-            String.format("Member %s is not a member of group %s.", memberId, groupId)
+                String.format("Member %s is not a member of group %s.", memberId, groupId)
         );
     }
 
@@ -664,9 +664,9 @@ public class StreamsGroup implements Group {
         Map<String, Long> topicHash = new HashMap<>(requiredTopicNames.size());
         requiredTopicNames.forEach(topicName -> {
             metadataImage.topicMetadata(topicName).ifPresent(__ ->
-                topicHash.put(
-                    topicName,
-                    topicHashCache.computeIfAbsent(topicName, k -> Utils.computeTopicHash(topicName, metadataImage))
+                    topicHash.put(
+                        topicName,
+                        topicHashCache.computeIfAbsent(topicName, k -> Utils.computeTopicHash(topicName, metadataImage))
                 ));
         });
         return Utils.computeGroupHash(topicHash);
@@ -740,7 +740,7 @@ public class StreamsGroup implements Group {
         // The TxnOffsetCommit API does not require the member ID, the generation ID and the group instance ID fields.
         // Hence, they are only validated if any of them is provided
         if (isTransactional && memberEpoch == JoinGroupRequest.UNKNOWN_GENERATION_ID &&
-            memberId.equals(JoinGroupRequest.UNKNOWN_MEMBER_ID) && groupInstanceId == null)
+                memberId.equals(JoinGroupRequest.UNKNOWN_MEMBER_ID) && groupInstanceId == null)
             return CommitPartitionValidator.NO_OP;
 
         final StreamsGroupMember member = getMemberOrThrow(memberId);
@@ -749,7 +749,7 @@ public class StreamsGroup implements Group {
         // the member should be using the OffsetCommit API version >= 9.
         if (!isTransactional && apiVersion < 9) {
             throw new UnsupportedVersionException("OffsetCommit version 9 or above must be used " +
-                "by members using the streams group protocol");
+                    "by members using the streams group protocol");
         }
 
         if (memberEpoch == member.memberEpoch()) {
@@ -758,7 +758,7 @@ public class StreamsGroup implements Group {
 
         if (memberEpoch > member.memberEpoch()) {
             throw new StaleMemberEpochException(String.format("Received member epoch %d is newer than " +
-                "current member epoch %d.", memberEpoch, member.memberEpoch()));
+                    "current member epoch %d.", memberEpoch, member.memberEpoch()));
         }
 
         // Member epoch is older; validate against per-partition assignment epochs.
@@ -788,7 +788,7 @@ public class StreamsGroup implements Group {
         final StreamsGroupMember member = members.get(memberId, lastCommittedOffset);
         if (member == null) {
             throw new UnknownMemberIdException(String.format("Member %s is not a member of group %s.",
-                memberId, groupId));
+                    memberId, groupId));
         }
         validateMemberEpoch(memberEpoch, member.memberEpoch());
     }
@@ -832,16 +832,16 @@ public class StreamsGroup implements Group {
     @Override
     public void createGroupTombstoneRecords(List<CoordinatorRecord> records) {
         members().forEach((memberId, member) ->
-            records.add(StreamsCoordinatorRecordHelpers.newStreamsGroupCurrentAssignmentTombstoneRecord(groupId(), memberId))
+                records.add(StreamsCoordinatorRecordHelpers.newStreamsGroupCurrentAssignmentTombstoneRecord(groupId(), memberId))
         );
 
         members().forEach((memberId, member) ->
-            records.add(StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentTombstoneRecord(groupId(), memberId))
+                records.add(StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentTombstoneRecord(groupId(), memberId))
         );
         records.add(StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentMetadataTombstoneRecord(groupId()));
 
         members().forEach((memberId, member) ->
-            records.add(StreamsCoordinatorRecordHelpers.newStreamsGroupMemberTombstoneRecord(groupId(), memberId))
+                records.add(StreamsCoordinatorRecordHelpers.newStreamsGroupMemberTombstoneRecord(groupId(), memberId))
         );
 
         records.add(StreamsCoordinatorRecordHelpers.newStreamsGroupEpochTombstoneRecord(groupId()));
@@ -892,7 +892,7 @@ public class StreamsGroup implements Group {
     ) throws StaleMemberEpochException {
         if (receivedMemberEpoch != expectedMemberEpoch) {
             throw new StaleMemberEpochException(String.format("The received member epoch %d does not match "
-                + "the expected member epoch %d.", receivedMemberEpoch, expectedMemberEpoch));
+                    + "the expected member epoch %d.", receivedMemberEpoch, expectedMemberEpoch));
         }
     }
 
@@ -932,12 +932,12 @@ public class StreamsGroup implements Group {
     ) {
         maybeRemoveTaskProcessId(oldMember);
         addTaskProcessId(
-            newMember.assignedTasks(),
-            newMember.processId()
+                newMember.assignedTasks(),
+                newMember.processId()
         );
         addTaskProcessId(
-            newMember.tasksPendingRevocation(),
-            newMember.processId()
+                newMember.tasksPendingRevocation(),
+                newMember.processId()
         );
     }
 
@@ -1071,7 +1071,7 @@ public class StreamsGroup implements Group {
                     String prevValue = partitionsOrNull.put(partitionId, processId);
                     if (prevValue != null) {
                         log.debug("[GroupId {}] Setting the process ID of {}-{} to {} even though the partition is " +
-                            "still owned by process ID {}", groupId, subtopologyId, partitionId, processId, prevValue);
+                                "still owned by process ID {}", groupId, subtopologyId, partitionId, processId, prevValue);
                     }
                 }
                 return partitionsOrNull;
@@ -1106,19 +1106,19 @@ public class StreamsGroup implements Group {
             .setGroupState(state.get(committedOffset).toString())
             .setAssignmentEpoch(targetAssignmentMetadata.get(committedOffset).assignmentEpoch())
             .setTopology(
-                configuredTopology.get(committedOffset)
+                    configuredTopology.get(committedOffset)
                     .filter(ConfiguredTopology::isReady)
                     .map(ConfiguredTopology::asStreamsGroupDescribeTopology)
                     .orElse(
-                        topology.get(committedOffset)
+                            topology.get(committedOffset)
                             .map(StreamsTopology::asStreamsGroupDescribeTopology)
                             .orElseThrow(() -> new IllegalStateException("There should always be a topology for a streams group."))
                     )
             );
         members.entrySet(committedOffset).forEach(
-            entry -> describedGroup.members().add(
-                entry.getValue().asStreamsGroupDescribeMember(
-                    targetAssignment.get(entry.getValue().memberId(), committedOffset)
+                entry -> describedGroup.members().add(
+                    entry.getValue().asStreamsGroupDescribeMember(
+                        targetAssignment.get(entry.getValue().memberId(), committedOffset)
                 )
             )
         );
@@ -1191,7 +1191,7 @@ public class StreamsGroup implements Group {
         List<StreamsGroupHeartbeatResponseData.EndpointToPartitions> endpointToPartitionsList = new ArrayList<>();
         if (updatedMember == null) {
             log.error("[GroupId {}] updatedMember is unexpectedly null in buildEndpointToPartitions. " +
-                "This is a bug, please file a JIRA ticket.", groupId);
+                    "This is a bug, please file a JIRA ticket.", groupId);
             return endpointToPartitionsList;
         }
         for (Map.Entry<String, StreamsGroupMember> entry : members.entrySet()) {
@@ -1222,9 +1222,9 @@ public class StreamsGroup implements Group {
         }
 
         Optional<StreamsGroupHeartbeatResponseData.EndpointToPartitions> computed =
-            EndpointToPartitionsManager.maybeEndpointToPartitions(member, this, metadataImage);
+                EndpointToPartitionsManager.maybeEndpointToPartitions(member, this, metadataImage);
         computed.ifPresent(endpointToPartitions ->
-            endpointToPartitionsCache.put(memberId, endpointToPartitions));
+                endpointToPartitionsCache.put(memberId, endpointToPartitions));
         return computed;
     }
 
@@ -1261,7 +1261,7 @@ public class StreamsGroup implements Group {
         // Retrieve topology once for all partitions - not per partition!
         final StreamsTopology streamsTopology = topology.get().orElseThrow(() ->
             new StaleMemberEpochException("Topology is not available for offset commit validation."));
-        
+
         final TasksTupleWithEpochs assignedTasks = member.assignedTasks();
         final TasksTupleWithEpochs tasksPendingRevocation = member.tasksPendingRevocation();
 
@@ -1285,14 +1285,14 @@ public class StreamsGroup implements Group {
 
             if (assignmentEpoch == null) {
                 throw new StaleMemberEpochException(String.format(
-                    "Task %s-%d is not assigned or pending revocation for member.",
-                    subtopologyId, partitionId));
+                        "Task %s-%d is not assigned or pending revocation for member.",
+                        subtopologyId, partitionId));
             }
 
             if (receivedMemberEpoch < assignmentEpoch) {
                 throw new StaleMemberEpochException(String.format(
-                    "Received member epoch %d is older than assignment epoch %d for task %s-%d.",
-                    receivedMemberEpoch, assignmentEpoch, subtopologyId, partitionId));
+                        "Received member epoch %d is older than assignment epoch %d for task %s-%d.",
+                        receivedMemberEpoch, assignmentEpoch, subtopologyId, partitionId));
             }
         };
     }

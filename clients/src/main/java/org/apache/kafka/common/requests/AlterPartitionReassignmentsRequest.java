@@ -65,7 +65,7 @@ public class AlterPartitionReassignmentsRequest extends AbstractRequest {
 
     public static AlterPartitionReassignmentsRequest parse(Readable readable, short version) {
         return new AlterPartitionReassignmentsRequest(new AlterPartitionReassignmentsRequestData(
-            readable, version), version);
+                readable, version), version);
     }
 
     public AlterPartitionReassignmentsRequestData data() {

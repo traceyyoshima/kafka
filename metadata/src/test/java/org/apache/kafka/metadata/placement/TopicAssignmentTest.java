@@ -34,8 +34,8 @@ public class TopicAssignmentTest {
         List<Integer> replicasP0 = List.of(0, 1, 2);
         List<Integer> replicasP1 = List.of(1, 2, 0);
         List<PartitionAssignment> partitionAssignments = List.of(
-            partitionAssignment(replicasP0),
-            partitionAssignment(replicasP1)
+                partitionAssignment(replicasP0),
+                partitionAssignment(replicasP1)
         );
         assertEquals(partitionAssignments, new TopicAssignment(partitionAssignments).assignments());
     }
@@ -43,17 +43,17 @@ public class TopicAssignmentTest {
     @Test
     public void testConsistentEqualsAndHashCode() {
         List<TopicAssignment> topicAssignments = List.of(
-            new TopicAssignment(
-                List.of(
-                    partitionAssignment(
-                        List.of(0, 1, 2)
+                new TopicAssignment(
+                    List.of(
+                        partitionAssignment(
+                            List.of(0, 1, 2)
                     )
                 )
             ),
-            new TopicAssignment(
-                List.of(
-                    partitionAssignment(
-                        List.of(1, 2, 0)
+                new TopicAssignment(
+                    List.of(
+                        partitionAssignment(
+                            List.of(1, 2, 0)
                     )
                 )
             )
@@ -82,7 +82,7 @@ public class TopicAssignmentTest {
                 Uuid.fromString("jUqCchHtTHqMxeVv4dw1RA")
         );
         List<PartitionAssignment> partitionAssignments = List.of(
-            new PartitionAssignment(replicas, directories::get)
+                new PartitionAssignment(replicas, directories::get)
         );
         TopicAssignment topicAssignment = new TopicAssignment(partitionAssignments);
         assertEquals("TopicAssignment[assignments=[PartitionAssignment(replicas=[0, 1, 2], " +

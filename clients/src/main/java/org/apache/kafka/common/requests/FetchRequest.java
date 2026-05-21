@@ -93,11 +93,11 @@ public class FetchRequest extends AbstractRequest {
             if (o == null || getClass() != o.getClass()) return false;
             PartitionData that = (PartitionData) o;
             return Objects.equals(topicId, that.topicId) &&
-                fetchOffset == that.fetchOffset &&
-                logStartOffset == that.logStartOffset &&
-                maxBytes == that.maxBytes &&
-                Objects.equals(currentLeaderEpoch, that.currentLeaderEpoch) &&
-                Objects.equals(lastFetchedEpoch, that.lastFetchedEpoch);
+                    fetchOffset == that.fetchOffset &&
+                    logStartOffset == that.logStartOffset &&
+                    maxBytes == that.maxBytes &&
+                    Objects.equals(currentLeaderEpoch, that.currentLeaderEpoch) &&
+                    Objects.equals(lastFetchedEpoch, that.lastFetchedEpoch);
         }
 
         @Override
@@ -108,13 +108,13 @@ public class FetchRequest extends AbstractRequest {
         @Override
         public String toString() {
             return "PartitionData(" +
-                "topicId=" + topicId +
-                ", fetchOffset=" + fetchOffset +
-                ", logStartOffset=" + logStartOffset +
-                ", maxBytes=" + maxBytes +
-                ", currentLeaderEpoch=" + currentLeaderEpoch +
-                ", lastFetchedEpoch=" + lastFetchedEpoch +
-                ')';
+                    "topicId=" + topicId +
+                    ", fetchOffset=" + fetchOffset +
+                    ", logStartOffset=" + logStartOffset +
+                    ", maxBytes=" + maxBytes +
+                    ", currentLeaderEpoch=" + currentLeaderEpoch +
+                    ", lastFetchedEpoch=" + lastFetchedEpoch +
+                    ')';
         }
     }
 
@@ -164,7 +164,7 @@ public class FetchRequest extends AbstractRequest {
 
         public static Builder forConsumer(short maxVersion, int maxWait, int minBytes, Map<TopicPartition, PartitionData> fetchData) {
             return new Builder(ApiKeys.FETCH.oldestVersion(), maxVersion,
-                CONSUMER_REPLICA_ID,  -1, maxWait, minBytes, fetchData);
+                    CONSUMER_REPLICA_ID,  -1, maxWait, minBytes, fetchData);
         }
 
         public static Builder forReplica(short allowedVersion, int replicaId, long replicaEpoch, int maxWait, int minBytes,
@@ -402,15 +402,15 @@ public class FetchRequest extends AbstractRequest {
                 name = topicNames.get(fetchTopic.topicId());
             }
             fetchTopic.partitions().forEach(fetchPartition ->
-                // Topic name may be null here if the topic name was unable to be resolved using the topicNames map.
-                fetchData.put(new TopicIdPartition(fetchTopic.topicId(), new TopicPartition(name, fetchPartition.partition())),
-                    new PartitionData(
-                        fetchTopic.topicId(),
-                        fetchPartition.fetchOffset(),
-                        fetchPartition.logStartOffset(),
-                        fetchPartition.partitionMaxBytes(),
-                        optionalEpoch(fetchPartition.currentLeaderEpoch()),
-                        optionalEpoch(fetchPartition.lastFetchedEpoch())
+                    // Topic name may be null here if the topic name was unable to be resolved using the topicNames map.
+                    fetchData.put(new TopicIdPartition(fetchTopic.topicId(), new TopicPartition(name, fetchPartition.partition())),
+                        new PartitionData(
+                            fetchTopic.topicId(),
+                            fetchPartition.fetchOffset(),
+                            fetchPartition.logStartOffset(),
+                            fetchPartition.partitionMaxBytes(),
+                            optionalEpoch(fetchPartition.currentLeaderEpoch()),
+                            optionalEpoch(fetchPartition.lastFetchedEpoch())
                     )
                 )
             );

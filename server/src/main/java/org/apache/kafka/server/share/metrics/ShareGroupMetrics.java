@@ -65,13 +65,13 @@ public class ShareGroupMetrics implements AutoCloseable {
         this.time = time;
         this.metricsGroup = new KafkaMetricsGroup("kafka.server", "ShareGroupMetrics");
         this.recordAcknowledgementMeterMap = Arrays.stream(AcknowledgeType.values()).collect(
-            Collectors.toMap(
-                type -> type.id,
-                type -> metricsGroup.newMeter(
-                    RECORD_ACKNOWLEDGEMENTS_PER_SEC,
-                    "records",
-                    TimeUnit.SECONDS,
-                    Map.of(ACK_TYPE_TAG, capitalize(type.toString()))
+                Collectors.toMap(
+                    type -> type.id,
+                    type -> metricsGroup.newMeter(
+                        RECORD_ACKNOWLEDGEMENTS_PER_SEC,
+                        "records",
+                        TimeUnit.SECONDS,
+                        Map.of(ACK_TYPE_TAG, capitalize(type.toString()))
                 )
             )
         );
@@ -97,13 +97,13 @@ public class ShareGroupMetrics implements AutoCloseable {
 
     public void recordTopicPartitionsFetchRatio(String groupId, long value) {
         topicPartitionsFetchRatio.computeIfAbsent(groupId,
-            k -> metricsGroup.newHistogram(TOPIC_PARTITIONS_FETCH_RATIO, true, Map.of("group", groupId)));
+                k -> metricsGroup.newHistogram(TOPIC_PARTITIONS_FETCH_RATIO, true, Map.of("group", groupId)));
         topicPartitionsFetchRatio.get(groupId).update(value);
     }
 
     public void recordTopicPartitionsAcquireTimeMs(String groupId, long timeMs) {
         topicPartitionsAcquireTimeMs.computeIfAbsent(groupId,
-            k -> metricsGroup.newHistogram(TOPIC_PARTITIONS_ACQUIRE_TIME_MS, true, Map.of("group", groupId)));
+                k -> metricsGroup.newHistogram(TOPIC_PARTITIONS_ACQUIRE_TIME_MS, true, Map.of("group", groupId)));
         topicPartitionsAcquireTimeMs.get(groupId).update(timeMs);
     }
 
@@ -130,7 +130,7 @@ public class ShareGroupMetrics implements AutoCloseable {
     @Override
     public void close() throws Exception {
         Arrays.stream(AcknowledgeType.values()).forEach(
-            m -> metricsGroup.removeMetric(RECORD_ACKNOWLEDGEMENTS_PER_SEC, Map.of(ACK_TYPE_TAG, m.toString())));
+                m -> metricsGroup.removeMetric(RECORD_ACKNOWLEDGEMENTS_PER_SEC, Map.of(ACK_TYPE_TAG, m.toString())));
         metricsGroup.removeMetric(PARTITION_LOAD_TIME_MS);
         topicPartitionsFetchRatio.forEach((k, v) -> metricsGroup.removeMetric(TOPIC_PARTITIONS_FETCH_RATIO, Map.of("group", k)));
         topicPartitionsAcquireTimeMs.forEach((k, v) -> metricsGroup.removeMetric(TOPIC_PARTITIONS_ACQUIRE_TIME_MS, Map.of("group", k)));

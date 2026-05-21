@@ -436,7 +436,7 @@ public class TopicAdmin implements AutoCloseable {
                 }
                 if (cause instanceof TopicAuthorizationException) {
                     log.debug("Not authorized to create topic(s) '{}' upon the brokers {}." +
-                                    " Falling back to assume topic(s) exist or will be auto-created by the broker.",
+                            " Falling back to assume topic(s) exist or will be auto-created by the broker.",
                             topicNameList, bootstrapServers);
                     return EMPTY_CREATION;
                 }
@@ -497,7 +497,7 @@ public class TopicAdmin implements AutoCloseable {
                 }
                 if (cause instanceof UnsupportedVersionException) {
                     String msg = String.format("Unable to describe topic(s) '%s' since the brokers "
-                                    + "at %s do not support the DescribeTopics API.",
+                            + "at %s do not support the DescribeTopics API.",
                             topicNameList, bootstrapServers);
                     throw new ConnectException(msg, cause);
                 }

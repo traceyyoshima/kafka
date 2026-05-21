@@ -39,7 +39,7 @@ public final class RackUtils {
 
     private static final Logger LOG = LoggerFactory.getLogger(RackUtils.class);
 
-    private RackUtils() { }
+    private RackUtils() {}
 
     public static void annotateTopicPartitionsWithRackInfo(final Cluster cluster,
                                                            final InternalTopicManager internalTopicManager,
@@ -60,7 +60,7 @@ public final class RackUtils {
         // We can issue an RPC call to get up-to-date information about the topics that had rack
         // information missing.
         final Map<String, List<TopicPartitionInfo>> freshTopicPartitionInfo =
-            describeTopics(internalTopicManager, topicsToDescribe);
+                describeTopics(internalTopicManager, topicsToDescribe);
 
         // Finally we compute the list of topics that already have all rack information known.
         final Set<TopicPartition> topicsWithUpToDateMetadata = topicPartitions.stream()
@@ -71,7 +71,7 @@ public final class RackUtils {
         // Lastly we compile the mapping of topic partition to rack ids by combining known data and
         // information that we got from the earlier RPC call.
         final Map<TopicPartition, Set<String>> racksForTopicPartition = knownRacksForPartition(
-            cluster, topicsWithUpToDateMetadata);
+                cluster, topicsWithUpToDateMetadata);
         freshTopicPartitionInfo.forEach((topic, partitionInfos) -> {
             for (final TopicPartitionInfo partitionInfo : partitionInfos) {
                 final int partition = partitionInfo.partition();
@@ -83,7 +83,7 @@ public final class RackUtils {
                 }
 
                 final Set<String> racks = replicas.stream().filter(Node::hasRack).map(Node::rack).collect(
-                    Collectors.toSet());
+                        Collectors.toSet());
                 racksForTopicPartition.computeIfAbsent(topicPartition, k -> new HashSet<>());
                 racksForTopicPartition.get(topicPartition).addAll(racks);
             }

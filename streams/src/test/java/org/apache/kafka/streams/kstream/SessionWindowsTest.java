@@ -78,31 +78,31 @@ public class SessionWindowsTest {
     @Test
     public void equalsAndHashcodeShouldBeValidForPositiveCases() {
         verifyEquality(
-            SessionWindows.ofInactivityGapWithNoGrace(ofMillis(1)),
-            SessionWindows.ofInactivityGapWithNoGrace(ofMillis(1))
+                SessionWindows.ofInactivityGapWithNoGrace(ofMillis(1)),
+                SessionWindows.ofInactivityGapWithNoGrace(ofMillis(1))
         );
 
         verifyEquality(
-            SessionWindows.ofInactivityGapAndGrace(ofMillis(1), ofMillis(11)),
-            SessionWindows.ofInactivityGapAndGrace(ofMillis(1), ofMillis(11))
+                SessionWindows.ofInactivityGapAndGrace(ofMillis(1), ofMillis(11)),
+                SessionWindows.ofInactivityGapAndGrace(ofMillis(1), ofMillis(11))
         );
     }
 
     @Test
     public void equalsAndHashcodeShouldBeValidForNegativeCases() {
         verifyInEquality(
-            SessionWindows.ofInactivityGapWithNoGrace(ofMillis(9)),
-            SessionWindows.ofInactivityGapWithNoGrace(ofMillis(1))
+                SessionWindows.ofInactivityGapWithNoGrace(ofMillis(9)),
+                SessionWindows.ofInactivityGapWithNoGrace(ofMillis(1))
         );
 
         verifyInEquality(
-            SessionWindows.ofInactivityGapAndGrace(ofMillis(9), ofMillis(9)),
-            SessionWindows.ofInactivityGapAndGrace(ofMillis(1), ofMillis(9))
+                SessionWindows.ofInactivityGapAndGrace(ofMillis(9), ofMillis(9)),
+                SessionWindows.ofInactivityGapAndGrace(ofMillis(1), ofMillis(9))
         );
 
         verifyInEquality(
-            SessionWindows.ofInactivityGapAndGrace(ofMillis(1), ofMillis(9)),
-            SessionWindows.ofInactivityGapAndGrace(ofMillis(1), ofMillis(6))
+                SessionWindows.ofInactivityGapAndGrace(ofMillis(1), ofMillis(9)),
+                SessionWindows.ofInactivityGapAndGrace(ofMillis(1), ofMillis(6))
         );
     }
 }

@@ -141,7 +141,6 @@ public class KTableKTableForeignKeyJoinDistributedTest {
         return streamsConfiguration;
     }
 
-
     private void configureBuilder(final StreamsBuilder builder) {
         final KTable<String, String> left = builder.table(
                 LEFT_TABLE
@@ -175,7 +174,6 @@ public class KTableKTableForeignKeyJoinDistributedTest {
         configureBuilder(builder1);
         final StreamsBuilder builder2 = new StreamsBuilder();
         configureBuilder(builder2);
-
 
         createClients(
                 builder1.build(streamsConfiguration1),

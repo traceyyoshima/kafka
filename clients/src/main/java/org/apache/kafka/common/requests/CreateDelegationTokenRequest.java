@@ -33,7 +33,7 @@ public class CreateDelegationTokenRequest extends AbstractRequest {
 
     public static CreateDelegationTokenRequest parse(Readable readable, short version) {
         return new CreateDelegationTokenRequest(new CreateDelegationTokenRequestData(readable, version),
-            version);
+                version);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class CreateDelegationTokenRequest extends AbstractRequest {
     @Override
     public AbstractResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         return CreateDelegationTokenResponse.prepareResponse(version(), throttleTimeMs, Errors.forException(e),
-            KafkaPrincipal.ANONYMOUS, KafkaPrincipal.ANONYMOUS);
+                KafkaPrincipal.ANONYMOUS, KafkaPrincipal.ANONYMOUS);
     }
 
     public static class Builder extends AbstractRequest.Builder<CreateDelegationTokenRequest> {

@@ -863,15 +863,15 @@ public class ShareConsumeRequestManagerTest {
 
         String acknowledgeErrorMessage = "ack failure with broker context";
         ShareFetchResponse response = fullFetchResponse(
-            tip0,
-            records,
-            acquiredRecords,
-            Errors.NONE,
-            Errors.UNKNOWN_SERVER_ERROR
+                tip0,
+                records,
+                acquiredRecords,
+                Errors.NONE,
+                Errors.UNKNOWN_SERVER_ERROR
         );
         response.data().responses().forEach(topicResponse ->
-            topicResponse.partitions().forEach(partition ->
-                partition.setAcknowledgeErrorMessage(acknowledgeErrorMessage)
+                topicResponse.partitions().forEach(partition ->
+                        partition.setAcknowledgeErrorMessage(acknowledgeErrorMessage)
             )
         );
 
@@ -1183,8 +1183,8 @@ public class ShareConsumeRequestManagerTest {
         subscriptions.assignFromSubscribed(partitions);
 
         client.updateMetadata(
-            RequestTestUtils.metadataUpdateWithIds(2, Map.of(topicName, 1),
-                tp -> validLeaderEpoch, topicIds, false));
+                RequestTestUtils.metadataUpdateWithIds(2, Map.of(topicName, 1),
+                    tp -> validLeaderEpoch, topicIds, false));
         Node nodeId0 = metadata.fetch().nodeById(0);
         Node nodeId1 = metadata.fetch().nodeById(1);
         LinkedList<Node> nodeList = new LinkedList<>(Arrays.asList(nodeId0, nodeId1));
@@ -1196,7 +1196,7 @@ public class ShareConsumeRequestManagerTest {
                 AcknowledgeType.ACCEPT, AcknowledgeType.RELEASE, AcknowledgeType.ACCEPT);
 
         shareConsumeRequestManager.commitSync(Map.of(tip0, new NodeAcknowledgements(0, acknowledgements)),
-            calculateDeadlineMs(time.timer(60000L)));
+                calculateDeadlineMs(time.timer(60000L)));
         assertNull(shareConsumeRequestManager.requestStates(0).getAsyncRequest());
 
         assertEquals(1, shareConsumeRequestManager.requestStates(0).getSyncRequestQueue().size());
@@ -1207,9 +1207,9 @@ public class ShareConsumeRequestManagerTest {
 
         // Fail the acknowledgement and provide the new current leader information - this should stop the retry
         client.prepareResponse(fullAcknowledgeResponse(tip0,
-            Errors.NOT_LEADER_OR_FOLLOWER,
-            new ShareAcknowledgeResponseData.LeaderIdAndEpoch().setLeaderId(nodeId1.id()).setLeaderEpoch(validLeaderEpoch + 1),
-            nodeList));
+                Errors.NOT_LEADER_OR_FOLLOWER,
+                new ShareAcknowledgeResponseData.LeaderIdAndEpoch().setLeaderId(nodeId1.id()).setLeaderEpoch(validLeaderEpoch + 1),
+                nodeList));
         networkClientDelegate.poll(time.timer(0));
 
         assertEquals(0, shareConsumeRequestManager.requestStates(0).getSyncRequestQueue().peek().getInFlightAcknowledgementsCount(tip0));
@@ -1847,8 +1847,8 @@ public class ShareConsumeRequestManagerTest {
         subscriptions.assignFromSubscribed(partitions);
 
         client.updateMetadata(
-            RequestTestUtils.metadataUpdateWithIds(2, Map.of(topicName, 2),
-                tp -> validLeaderEpoch, topicIds, false));
+                RequestTestUtils.metadataUpdateWithIds(2, Map.of(topicName, 2),
+                    tp -> validLeaderEpoch, topicIds, false));
         Node nodeId0 = metadata.fetch().nodeById(0);
         Node nodeId1 = metadata.fetch().nodeById(1);
         Node tp0Leader = metadata.fetch().leaderFor(tp0);
@@ -1865,7 +1865,7 @@ public class ShareConsumeRequestManagerTest {
         client.prepareResponseFrom(ShareFetchResponse.of(Errors.NONE, 0, partitionData, List.of(), 0), nodeId0);
         partitionData.clear();
         partitionData.put(tip1,
-            new ShareFetchResponseData.PartitionData()
+                new ShareFetchResponseData.PartitionData()
                 .setPartitionIndex(tip1.topicPartition().partition())
                 .setErrorCode(error.code()));
         client.prepareResponseFrom(ShareFetchResponse.of(Errors.NONE, 0, partitionData, List.of(), 0), nodeId1);
@@ -1900,7 +1900,7 @@ public class ShareConsumeRequestManagerTest {
 
         partitionData = buildPartitionDataMap(tip0, records, ShareCompletedFetchTest.acquiredRecords(2L, 1), Errors.NONE, Errors.NONE);
         partitionData.put(tip1,
-            new ShareFetchResponseData.PartitionData()
+                new ShareFetchResponseData.PartitionData()
                 .setPartitionIndex(tip1.topicPartition().partition())
                 .setRecords(records)
                 .setAcquiredRecords(ShareCompletedFetchTest.acquiredRecords(1L, 1))
@@ -1935,8 +1935,8 @@ public class ShareConsumeRequestManagerTest {
         subscriptions.assignFromSubscribed(partitions);
 
         client.updateMetadata(
-            RequestTestUtils.metadataUpdateWithIds(2, Map.of(topicName, 2),
-                tp -> validLeaderEpoch, topicIds, false));
+                RequestTestUtils.metadataUpdateWithIds(2, Map.of(topicName, 2),
+                    tp -> validLeaderEpoch, topicIds, false));
         Node nodeId0 = metadata.fetch().nodeById(0);
         Node nodeId1 = metadata.fetch().nodeById(1);
         Node tp0Leader = metadata.fetch().leaderFor(tp0);
@@ -1952,7 +1952,7 @@ public class ShareConsumeRequestManagerTest {
         client.prepareResponseFrom(ShareFetchResponse.of(Errors.NONE, 0, partitionData, List.of(), 0), nodeId0);
         partitionData = new LinkedHashMap<>();
         partitionData.put(tip1,
-            new ShareFetchResponseData.PartitionData()
+                new ShareFetchResponseData.PartitionData()
                 .setPartitionIndex(tip1.topicPartition().partition())
                 .setErrorCode(error.code())
                 .setCurrentLeader(new ShareFetchResponseData.LeaderIdAndEpoch()
@@ -1985,7 +1985,7 @@ public class ShareConsumeRequestManagerTest {
 
         partitionData = buildPartitionDataMap(tip0, records, ShareCompletedFetchTest.acquiredRecords(2L, 1), Errors.NONE, Errors.NONE);
         partitionData.put(tip1,
-            new ShareFetchResponseData.PartitionData()
+                new ShareFetchResponseData.PartitionData()
                 .setPartitionIndex(tip1.topicPartition().partition())
                 .setRecords(records)
                 .setAcquiredRecords(ShareCompletedFetchTest.acquiredRecords(1L, 1))
@@ -2021,8 +2021,8 @@ public class ShareConsumeRequestManagerTest {
         subscriptions.assignFromSubscribed(partitions);
 
         client.updateMetadata(
-            RequestTestUtils.metadataUpdateWithIds(2, Map.of(topicName, 2),
-                tp -> validLeaderEpoch, topicIds, false));
+                RequestTestUtils.metadataUpdateWithIds(2, Map.of(topicName, 2),
+                    tp -> validLeaderEpoch, topicIds, false));
         Node nodeId0 = metadata.fetch().nodeById(0);
         Node nodeId1 = metadata.fetch().nodeById(1);
 
@@ -2037,7 +2037,7 @@ public class ShareConsumeRequestManagerTest {
         client.prepareResponseFrom(ShareFetchResponse.of(Errors.NONE, 0, partitionData, List.of(), 0), nodeId0);
         partitionData = new LinkedHashMap<>();
         partitionData.put(tip1,
-            new ShareFetchResponseData.PartitionData()
+                new ShareFetchResponseData.PartitionData()
                 .setPartitionIndex(tip1.topicPartition().partition())
                 .setErrorCode(Errors.NONE.code()));
         client.prepareResponseFrom(ShareFetchResponse.of(Errors.NONE, 0, partitionData, List.of(), 0), nodeId1);
@@ -2071,14 +2071,14 @@ public class ShareConsumeRequestManagerTest {
 
         partitionData.clear();
         partitionData.put(tip0,
-            new ShareFetchResponseData.PartitionData()
+                new ShareFetchResponseData.PartitionData()
                 .setPartitionIndex(tip0.topicPartition().partition())
                 .setErrorCode(Errors.NONE.code())
                 .setAcknowledgeErrorCode(error.code()));
         client.prepareResponseFrom(ShareFetchResponse.of(Errors.NONE, 0, partitionData, List.of(), 0), nodeId0);
         partitionData = buildPartitionDataMap(tip0, records, ShareCompletedFetchTest.acquiredRecords(1L, 1), Errors.NONE, Errors.NONE);
         partitionData.put(tip1,
-            new ShareFetchResponseData.PartitionData()
+                new ShareFetchResponseData.PartitionData()
                 .setPartitionIndex(tip1.topicPartition().partition())
                 .setRecords(records)
                 .setAcquiredRecords(ShareCompletedFetchTest.acquiredRecords(1L, 1))
@@ -2142,7 +2142,7 @@ public class ShareConsumeRequestManagerTest {
         acknowledgementsTp0.add(1L, AcknowledgeType.ACCEPT);
 
         Acknowledgements acknowledgementsTp1 = getAcknowledgements(1,
-                        AcknowledgeType.ACCEPT, AcknowledgeType.ACCEPT);
+                AcknowledgeType.ACCEPT, AcknowledgeType.ACCEPT);
 
         Map<TopicIdPartition, NodeAcknowledgements> commitAcks = new HashMap<>();
         commitAcks.put(tip0, new NodeAcknowledgements(0, acknowledgementsTp0));
@@ -2330,8 +2330,8 @@ public class ShareConsumeRequestManagerTest {
         subscriptions.assignFromSubscribed(partitions);
 
         client.updateMetadata(
-            RequestTestUtils.metadataUpdateWithIds(2, Map.of(topicName, 2),
-                tp -> validLeaderEpoch, topicIds, false));
+                RequestTestUtils.metadataUpdateWithIds(2, Map.of(topicName, 2),
+                    tp -> validLeaderEpoch, topicIds, false));
         Node nodeId0 = metadata.fetch().nodeById(0);
         Node nodeId1 = metadata.fetch().nodeById(1);
 
@@ -2342,7 +2342,7 @@ public class ShareConsumeRequestManagerTest {
         assertFalse(shareConsumeRequestManager.hasCompletedFetches());
 
         LinkedHashMap<TopicIdPartition, ShareFetchResponseData.PartitionData> partitionData =
-            buildPartitionDataMap(tip0, records, ShareCompletedFetchTest.acquiredRecords(1L, 1), Errors.NONE, Errors.NONE);
+                buildPartitionDataMap(tip0, records, ShareCompletedFetchTest.acquiredRecords(1L, 1), Errors.NONE, Errors.NONE);
         client.prepareResponseFrom(ShareFetchResponse.of(Errors.NONE, 0, partitionData, List.of(), 0), nodeId0);
         partitionData = buildPartitionDataMap(tip1, records, ShareCompletedFetchTest.acquiredRecords(1L, 2), Errors.NONE, Errors.NONE);
         client.prepareResponseFrom(ShareFetchResponse.of(Errors.NONE, 0, partitionData, List.of(), 0), nodeId1);
@@ -2363,7 +2363,7 @@ public class ShareConsumeRequestManagerTest {
         acknowledgementsTp0.add(1L, AcknowledgeType.ACCEPT);
 
         Acknowledgements acknowledgementsTp1 = getAcknowledgements(1,
-            AcknowledgeType.ACCEPT, AcknowledgeType.ACCEPT);
+                AcknowledgeType.ACCEPT, AcknowledgeType.ACCEPT);
 
         shareConsumeRequestManager.fetch(Map.of(tip1, new NodeAcknowledgements(1, acknowledgementsTp1)));
 
@@ -2374,7 +2374,7 @@ public class ShareConsumeRequestManagerTest {
 
         // We fail the acknowledgements for records which were received from node0 with NOT_LEADER_OR_FOLLOWER exception.
         shareConsumeRequestManager.acknowledgeOnClose(Map.of(tip0, new NodeAcknowledgements(0, acknowledgementsTp0)),
-            calculateDeadlineMs(time.timer(100)));
+                calculateDeadlineMs(time.timer(100)));
 
         // Verify if the callback was invoked with the failed acknowledgements.
         assertEquals(1, completedAcknowledgements.get(0).size());
@@ -2408,8 +2408,8 @@ public class ShareConsumeRequestManagerTest {
         subscriptions.assignFromSubscribed(partitions);
 
         client.updateMetadata(
-            RequestTestUtils.metadataUpdateWithIds(2, Map.of(topicName, 2),
-                tp -> validLeaderEpoch, topicIds, false));
+                RequestTestUtils.metadataUpdateWithIds(2, Map.of(topicName, 2),
+                    tp -> validLeaderEpoch, topicIds, false));
         Node nodeId0 = metadata.fetch().nodeById(0);
         Node nodeId1 = metadata.fetch().nodeById(1);
 
@@ -2420,7 +2420,7 @@ public class ShareConsumeRequestManagerTest {
         assertFalse(shareConsumeRequestManager.hasCompletedFetches());
 
         LinkedHashMap<TopicIdPartition, ShareFetchResponseData.PartitionData> partitionData =
-            buildPartitionDataMap(tip0, records, ShareCompletedFetchTest.acquiredRecords(1L, 1), Errors.NONE, Errors.NONE);
+                buildPartitionDataMap(tip0, records, ShareCompletedFetchTest.acquiredRecords(1L, 1), Errors.NONE, Errors.NONE);
         client.prepareResponseFrom(ShareFetchResponse.of(Errors.NONE, 0, partitionData, List.of(), 0), nodeId0);
         partitionData = buildPartitionDataMap(tip1, records, ShareCompletedFetchTest.acquiredRecords(1L, 2), Errors.NONE, Errors.NONE);
         client.prepareResponseFrom(ShareFetchResponse.of(Errors.NONE, 0, partitionData, List.of(), 0), nodeId1);
@@ -2441,7 +2441,7 @@ public class ShareConsumeRequestManagerTest {
         acknowledgementsTp0.add(1L, AcknowledgeType.ACCEPT);
 
         Acknowledgements acknowledgementsTp1 = getAcknowledgements(1,
-            AcknowledgeType.ACCEPT, AcknowledgeType.ACCEPT);
+                AcknowledgeType.ACCEPT, AcknowledgeType.ACCEPT);
 
         shareConsumeRequestManager.fetch(Map.of(tip1, new NodeAcknowledgements(1, acknowledgementsTp1)));
 
@@ -2453,7 +2453,7 @@ public class ShareConsumeRequestManagerTest {
 
         // We fail the acknowledgements for records which were received from node0 and node 1 with NOT_LEADER_OR_FOLLOWER exception.
         shareConsumeRequestManager.acknowledgeOnClose(Map.of(tip0, new NodeAcknowledgements(0, acknowledgementsTp0)),
-            calculateDeadlineMs(time.timer(100)));
+                calculateDeadlineMs(time.timer(100)));
 
         // Verify if the callback was invoked with the failed acknowledgements.
         assertEquals(1, completedAcknowledgements.get(0).size());
@@ -2488,8 +2488,8 @@ public class ShareConsumeRequestManagerTest {
         subscriptions.assignFromSubscribed(partitions);
 
         client.updateMetadata(
-            RequestTestUtils.metadataUpdateWithIds(2, Map.of(topicName, 2),
-                tp -> validLeaderEpoch, topicIds, false));
+                RequestTestUtils.metadataUpdateWithIds(2, Map.of(topicName, 2),
+                    tp -> validLeaderEpoch, topicIds, false));
         Node nodeId0 = metadata.fetch().nodeById(0);
         Node nodeId1 = metadata.fetch().nodeById(1);
 
@@ -2501,7 +2501,7 @@ public class ShareConsumeRequestManagerTest {
 
         LinkedHashMap<TopicIdPartition, ShareFetchResponseData.PartitionData> partitionData = new LinkedHashMap<>();
         partitionData.put(tip0,
-            new ShareFetchResponseData.PartitionData()
+                new ShareFetchResponseData.PartitionData()
                 .setPartitionIndex(tip0.topicPartition().partition())
                 .setErrorCode(Errors.NONE.code())
                 .setRecords(records)
@@ -2510,7 +2510,7 @@ public class ShareConsumeRequestManagerTest {
         client.prepareResponseFrom(ShareFetchResponse.of(Errors.NONE, 0, partitionData, List.of(), 0), nodeId0);
         partitionData.clear();
         partitionData.put(tip1,
-            new ShareFetchResponseData.PartitionData()
+                new ShareFetchResponseData.PartitionData()
                 .setPartitionIndex(tip1.topicPartition().partition())
                 .setErrorCode(Errors.NONE.code()));
         client.prepareResponseFrom(ShareFetchResponse.of(Errors.NONE, 0, partitionData, List.of(), 0), nodeId1);
@@ -2539,14 +2539,14 @@ public class ShareConsumeRequestManagerTest {
 
         partitionData.clear();
         partitionData.put(tip0,
-            new ShareFetchResponseData.PartitionData()
+                new ShareFetchResponseData.PartitionData()
                 .setPartitionIndex(tip0.topicPartition().partition())
                 .setErrorCode(Errors.NONE.code())
                 .setAcknowledgeErrorCode(Errors.NONE.code()));
         client.prepareResponseFrom(ShareFetchResponse.of(Errors.NONE, 0, partitionData, List.of(), 0), nodeId0, true);
         partitionData.clear();
         partitionData.put(tip1,
-            new ShareFetchResponseData.PartitionData()
+                new ShareFetchResponseData.PartitionData()
                 .setPartitionIndex(tip1.topicPartition().partition())
                 .setRecords(records)
                 .setAcquiredRecords(ShareCompletedFetchTest.acquiredRecords(1L, 1))
@@ -2578,14 +2578,14 @@ public class ShareConsumeRequestManagerTest {
 
         partitionData.clear();
         partitionData.put(tip0,
-            new ShareFetchResponseData.PartitionData()
+                new ShareFetchResponseData.PartitionData()
                 .setPartitionIndex(tip0.topicPartition().partition())
                 .setErrorCode(Errors.NONE.code())
                 .setRecords(records)
                 .setAcquiredRecords(ShareCompletedFetchTest.acquiredRecords(1L, 1))
                 .setAcknowledgeErrorCode(Errors.NONE.code()));
         partitionData.put(tip1,
-            new ShareFetchResponseData.PartitionData()
+                new ShareFetchResponseData.PartitionData()
                 .setPartitionIndex(tip1.topicPartition().partition()));
         client.prepareResponseFrom(ShareFetchResponse.of(Errors.NONE, 0, partitionData, List.of(), 0), nodeId1);
         networkClientDelegate.poll(time.timer(0));
@@ -2632,7 +2632,7 @@ public class ShareConsumeRequestManagerTest {
         // Prepare responses from both nodes.
         LinkedHashMap<TopicIdPartition, ShareFetchResponseData.PartitionData> partitionData = new LinkedHashMap<>();
         partitionData.put(tip1,
-            new ShareFetchResponseData.PartitionData()
+                new ShareFetchResponseData.PartitionData()
                 .setPartitionIndex(tip1.topicPartition().partition())
                 .setErrorCode(Errors.NONE.code()));
         client.prepareResponseFrom(ShareFetchResponse.of(Errors.NONE, 0, partitionData, List.of(), 0), nodeId1);
@@ -2661,14 +2661,14 @@ public class ShareConsumeRequestManagerTest {
         partitionData.clear();
         // Let's assume there are no records for tp1 to fetch.
         partitionData.put(tip1,
-            new ShareFetchResponseData.PartitionData()
+                new ShareFetchResponseData.PartitionData()
                 .setPartitionIndex(tip1.topicPartition().partition())
                 .setErrorCode(Errors.NONE.code()));
         client.prepareResponseFrom(ShareFetchResponse.of(Errors.NONE, 0, partitionData, List.of(), 0), nodeId1);
 
         partitionData.clear();
         partitionData.put(tip0,
-            new ShareFetchResponseData.PartitionData()
+                new ShareFetchResponseData.PartitionData()
                 .setPartitionIndex(tip0.topicPartition().partition())
                 .setErrorCode(Errors.NONE.code())
                 .setAcknowledgeErrorCode(Errors.NONE.code()));
@@ -2691,18 +2691,18 @@ public class ShareConsumeRequestManagerTest {
 
         // Define all sensor names that should be created and removed
         String[] sensorNames = {
-            "fetch-throttle-time",
-            "bytes-fetched",
-            "records-fetched",
-            "fetch-latency",
-            "sent-acknowledgements",
-            "failed-acknowledgements"
+                "fetch-throttle-time",
+                "bytes-fetched",
+                "records-fetched",
+                "fetch-latency",
+                "sent-acknowledgements",
+                "failed-acknowledgements"
         };
 
         // Verify that sensors exist before closing
         for (String sensorName : sensorNames) {
             assertNotNull(metrics.getSensor(sensorName),
-                "Sensor " + sensorName + " should exist before closing");
+                    "Sensor " + sensorName + " should exist before closing");
         }
 
         // Close the request manager
@@ -2711,7 +2711,7 @@ public class ShareConsumeRequestManagerTest {
         // Verify that all sensors are removed after closing
         for (String sensorName : sensorNames) {
             assertNull(metrics.getSensor(sensorName),
-                "Sensor " + sensorName + " should be removed after closing");
+                    "Sensor " + sensorName + " should be removed after closing");
         }
     }
 
@@ -2723,7 +2723,7 @@ public class ShareConsumeRequestManagerTest {
         sendFetchAndVerifyResponse(records, acquiredRecords, Errors.NONE);
 
         Acknowledgements acknowledgements = getAcknowledgements(1,
-            AcknowledgeType.RENEW, AcknowledgeType.RENEW, AcknowledgeType.RENEW);
+                AcknowledgeType.RENEW, AcknowledgeType.RENEW, AcknowledgeType.RENEW);
 
         // Reading records from the share fetch buffer.
         fetchRecords();
@@ -2739,7 +2739,7 @@ public class ShareConsumeRequestManagerTest {
         assertFalse(shareConsumeRequestManager.hasCompletedFetches());
 
         assertEquals(3.0,
-            metrics.metrics().get(metrics.metricInstance(shareFetchMetricsRegistry.acknowledgementSendTotal)).metricValue());
+                metrics.metrics().get(metrics.metricInstance(shareFetchMetricsRegistry.acknowledgementSendTotal)).metricValue());
 
         assertEquals(0, renewedRecords.size());
 
@@ -2753,7 +2753,7 @@ public class ShareConsumeRequestManagerTest {
         assertTrue(partitionRecords.isEmpty());
 
         Acknowledgements acknowledgements2 = getAcknowledgements(1,
-            AcknowledgeType.ACCEPT, AcknowledgeType.ACCEPT, AcknowledgeType.ACCEPT);
+                AcknowledgeType.ACCEPT, AcknowledgeType.ACCEPT, AcknowledgeType.ACCEPT);
         shareConsumeRequestManager.fetch(Map.of(tip0, new NodeAcknowledgements(0, acknowledgements2)));
 
         assertEquals(1, sendFetches());
@@ -2769,7 +2769,7 @@ public class ShareConsumeRequestManagerTest {
         assertEquals(1, sendFetches());
         assertFalse(shareConsumeRequestManager.hasCompletedFetches());
         assertEquals(6.0,
-            metrics.metrics().get(metrics.metricInstance(shareFetchMetricsRegistry.acknowledgementSendTotal)).metricValue());
+                metrics.metrics().get(metrics.metricInstance(shareFetchMetricsRegistry.acknowledgementSendTotal)).metricValue());
     }
 
     private ShareFetchResponse fetchResponseWithTopLevelError(TopicIdPartition tp, Errors error) {
@@ -2825,7 +2825,7 @@ public class ShareConsumeRequestManagerTest {
                                                              ShareAcknowledgeResponseData.LeaderIdAndEpoch currentLeader,
                                                              List<Node> nodeEndpoints) {
         Map<TopicIdPartition, ShareAcknowledgeResponseData.PartitionData> partitions = Map.of(tp,
-            partitionDataForAcknowledge(tp, error, currentLeader));
+                partitionDataForAcknowledge(tp, error, currentLeader));
         return ShareAcknowledgeResponse.of(Errors.NONE, 0, new LinkedHashMap<>(partitions), nodeEndpoints, 0);
     }
 
@@ -2978,8 +2978,8 @@ public class ShareConsumeRequestManagerTest {
         properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         ConsumerConfig config = new ConsumerConfig(properties);
         networkClientDelegate = spy(new TestableNetworkClientDelegate(
-            time, config, logContext, client, metadata,
-            new BackgroundEventHandler(new LinkedBlockingQueue<>(), time, mock(AsyncConsumerMetrics.class)), false));
+                time, config, logContext, client, metadata,
+                new BackgroundEventHandler(new LinkedBlockingQueue<>(), time, mock(AsyncConsumerMetrics.class)), false));
     }
 
     private class TestableShareConsumeRequestManager<K, V> extends ShareConsumeRequestManager {
@@ -2997,7 +2997,7 @@ public class ShareConsumeRequestManagerTest {
                                                   ShareFetchCollector<K, V> fetchCollector,
                                                   String memberId) {
             super(time, logContext, groupId, metadata, subscriptions, shareFetchConfig, shareFetchBuffer,
-                acknowledgementEventHandler, metricsManager, retryBackoffMs, 1000);
+                    acknowledgementEventHandler, metricsManager, retryBackoffMs, 1000);
             this.shareFetchCollector = fetchCollector;
             if (memberId != null) {
                 onMemberEpochUpdated(Optional.empty(), memberId);
@@ -3154,7 +3154,7 @@ public class ShareConsumeRequestManagerTest {
             completedAcknowledgements.add(event.acknowledgementsMap());
             if (event.checkForRenewAcknowledgements()) {
                 event.acknowledgementsMap().values().forEach(acks ->
-                    acks.getAcknowledgementsTypeMap().forEach((offset, ackType) -> renewedRecords.add(offset)));
+                        acks.getAcknowledgementsTypeMap().forEach((offset, ackType) -> renewedRecords.add(offset)));
             }
         }
     }

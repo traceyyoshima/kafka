@@ -41,26 +41,26 @@ import static org.mockito.Mockito.verify;
 class ReadOnlyTaskTest {
 
     private final List<String> readOnlyMethods = List.of(
-        "needsInitializationOrRestoration",
-        "inputPartitions",
-        "changelogPartitions",
-        "commitRequested",
-        "commitNeeded",
-        "isActive",
-        "changelogOffsets",
-        "state",
-        "id",
-        "store"
+            "needsInitializationOrRestoration",
+            "inputPartitions",
+            "changelogPartitions",
+            "commitRequested",
+            "commitNeeded",
+            "isActive",
+            "changelogOffsets",
+            "state",
+            "id",
+            "store"
     );
 
     private final List<String> objectMethods = List.of(
-        "wait",
-        "equals",
-        "getClass",
-        "hashCode",
-        "notify",
-        "notifyAll",
-        "toString"
+            "wait",
+            "equals",
+            "getClass",
+            "hashCode",
+            "notify",
+            "notifyAll",
+            "toString"
     );
 
     final Task task = statelessTask(new TaskId(1, 0)).build();
@@ -131,7 +131,7 @@ class ReadOnlyTaskTest {
     @Test
     public void shouldDelegateCommitNeededIfStandby() {
         final StandbyTask standbyTask =
-            standbyTask(new TaskId(1, 0), Set.of(new TopicPartition("topic", 0))).build();
+                standbyTask(new TaskId(1, 0), Set.of(new TopicPartition("topic", 0))).build();
         final ReadOnlyTask readOnlyTask = new ReadOnlyTask(standbyTask);
 
         readOnlyTask.commitNeeded();
@@ -142,7 +142,7 @@ class ReadOnlyTaskTest {
     @Test
     public void shouldThrowUnsupportedOperationExceptionForCommitNeededIfActive() {
         final StreamTask statefulTask =
-            statefulTask(new TaskId(1, 0), Set.of(new TopicPartition("topic", 0))).build();
+                statefulTask(new TaskId(1, 0), Set.of(new TopicPartition("topic", 0))).build();
         final ReadOnlyTask readOnlyTask = new ReadOnlyTask(statefulTask);
 
         final Exception exception = assertThrows(UnsupportedOperationException.class, readOnlyTask::commitNeeded);
@@ -165,15 +165,15 @@ class ReadOnlyTaskTest {
     private void shouldThrowUnsupportedOperationException(final ReadOnlyTask readOnlyTask,
                                                           final Method method) {
         final Exception exception = assertThrows(
-            UnsupportedOperationException.class,
-            () -> {
-                try {
-                    method.invoke(readOnlyTask, getParameters(method.getParameterTypes()));
-                } catch (final InvocationTargetException invocationTargetException) {
-                    throw invocationTargetException.getCause();
-                }
-            },
-            "Something unexpected happened during invocation of method '" + method.getName() + "'!"
+                UnsupportedOperationException.class,
+                () -> {
+                    try {
+                        method.invoke(readOnlyTask, getParameters(method.getParameterTypes()));
+                    } catch (final InvocationTargetException invocationTargetException) {
+                        throw invocationTargetException.getCause();
+                    }
+                },
+                "Something unexpected happened during invocation of method '" + method.getName() + "'!"
         );
         assertEquals("This task is read-only", exception.getMessage());
     }
@@ -208,7 +208,7 @@ class ReadOnlyTaskTest {
                     parameters[i] = new IllegalStateException();
                     break;
                 case "java.util.function.Consumer":
-                    parameters[i] = (Consumer) ignored -> { };
+                    parameters[i] = (Consumer) ignored -> {};
                     break;
                 case "java.lang.Iterable":
                     parameters[i] = Collections.emptySet();

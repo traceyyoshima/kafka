@@ -311,6 +311,7 @@ public class DelayedOperationPurgatory<T extends DelayedOperation> {
         private final ConcurrentLinkedQueue<T> operations = new ConcurrentLinkedQueue<>();
 
         private final DelayedOperationKey key;
+
         Watchers(DelayedOperationKey key) {
             this.key = key;
         }

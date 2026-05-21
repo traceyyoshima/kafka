@@ -138,7 +138,7 @@ public class MeteredKeyValueStoreTest {
         metrics.config().recordLevel(Sensor.RecordingLevel.DEBUG);
         when(context.applicationId()).thenReturn(APPLICATION_ID);
         when(context.metrics()).thenReturn(
-            new StreamsMetricsImpl(metrics, "test", mockTime)
+                new StreamsMetricsImpl(metrics, "test", mockTime)
         );
         when(context.taskId()).thenReturn(taskId);
         when(context.changelogFor(STORE_NAME)).thenReturn(CHANGELOG_TOPIC);
@@ -153,11 +153,11 @@ public class MeteredKeyValueStoreTest {
     public void shouldDelegateInit() {
         setUp();
         final MeteredKeyValueStore<String, String> outer = new MeteredKeyValueStore<>(
-            inner,
-            STORE_TYPE,
-            new MockTime(),
-            Serdes.String(),
-            Serdes.String()
+                inner,
+                STORE_TYPE,
+                new MockTime(),
+                Serdes.String(),
+                Serdes.String()
         );
         doNothing().when(inner).init(context, outer);
         outer.init(context, outer);
@@ -193,11 +193,11 @@ public class MeteredKeyValueStoreTest {
         when(context.headers()).thenReturn(new RecordHeaders());
         when(inner.get(KEY_BYTES)).thenReturn(VALUE_BYTES);
         metered = new MeteredKeyValueStore<>(
-            inner,
-            STORE_TYPE,
-            new MockTime(),
-            keySerde,
-            valueSerde
+                inner,
+                STORE_TYPE,
+                new MockTime(),
+                keySerde,
+                valueSerde
         );
         metered.init(context, metered);
 
@@ -215,13 +215,13 @@ public class MeteredKeyValueStoreTest {
 
         metrics.addReporter(reporter);
         assertTrue(reporter.containsMbean(String.format(
-            "kafka.streams:type=%s,%s=%s,task-id=%s,%s-state-id=%s",
-            STORE_LEVEL_GROUP,
-            THREAD_ID_TAG_KEY,
-            threadId,
-            taskId,
-            STORE_TYPE,
-            STORE_NAME
+                "kafka.streams:type=%s,%s=%s,task-id=%s,%s-state-id=%s",
+                STORE_LEVEL_GROUP,
+                THREAD_ID_TAG_KEY,
+                threadId,
+                taskId,
+                STORE_TYPE,
+                STORE_NAME
         )));
     }
 
@@ -356,11 +356,11 @@ public class MeteredKeyValueStoreTest {
         when(cachedKeyValueStore.setFlushListener(any(CacheFlushListener.class), eq(false))).thenReturn(true);
 
         metered = new MeteredKeyValueStore<>(
-            cachedKeyValueStore,
-            STORE_TYPE,
-            new MockTime(),
-            Serdes.String(),
-            Serdes.String()
+                cachedKeyValueStore,
+                STORE_TYPE,
+                new MockTime(),
+                Serdes.String(),
+                Serdes.String()
         );
         assertTrue(metered.setFlushListener(null, false));
     }
@@ -373,32 +373,32 @@ public class MeteredKeyValueStoreTest {
         when(valueDeserializer.deserialize(anyString(), any(Headers.class), any(byte[].class))).thenReturn(VALUE);
 
         final StreamsMetricsImpl streamsMetrics =
-            new StreamsMetricsImpl(new Metrics(), "test", new MockTime());
+                new StreamsMetricsImpl(new Metrics(), "test", new MockTime());
         final InternalMockProcessorContext<?, ?> processorContext = new InternalMockProcessorContext<>(
-            TestUtils.tempDirectory(),
-            Serdes.String(),
-            Serdes.String(),
-            streamsMetrics,
-            new StreamsConfig(StreamsTestUtils.getStreamsConfig()),
-            MockRecordCollector::new,
-            new ThreadCache(new LogContext("testCache "), 1024L, streamsMetrics),
-            Time.SYSTEM
+                TestUtils.tempDirectory(),
+                Serdes.String(),
+                Serdes.String(),
+                streamsMetrics,
+                new StreamsConfig(StreamsTestUtils.getStreamsConfig()),
+                MockRecordCollector::new,
+                new ThreadCache(new LogContext("testCache "), 1024L, streamsMetrics),
+                Time.SYSTEM
         );
 
         final InMemoryKeyValueStore innerStore = new InMemoryKeyValueStore(STORE_NAME);
         final CachingKeyValueStore cachingStore = new CachingKeyValueStore(
-            innerStore,
-            CachingKeyValueStore.CacheType.KEY_VALUE_STORE
+                innerStore,
+                CachingKeyValueStore.CacheType.KEY_VALUE_STORE
         );
         final MeteredKeyValueStore<String, String> meteredStore = new MeteredKeyValueStore<>(
-            cachingStore,
-            STORE_TYPE,
-            new MockTime(),
-            Serdes.String(),
-            valueSerde
+                cachingStore,
+                STORE_TYPE,
+                new MockTime(),
+                Serdes.String(),
+                valueSerde
         );
         meteredStore.init(processorContext, meteredStore);
-        assertTrue(meteredStore.setFlushListener(record -> { }, false));
+        assertTrue(meteredStore.setFlushListener(record -> {}, false));
 
         final RecordHeaders headers = new RecordHeaders();
         headers.add(headerKey, "new".getBytes(StandardCharsets.UTF_8));

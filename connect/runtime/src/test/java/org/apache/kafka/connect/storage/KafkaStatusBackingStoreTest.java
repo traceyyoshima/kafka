@@ -127,7 +127,7 @@ public class KafkaStatusBackingStoreTest {
             ((Callback) invocation.getArgument(2)).onCompletion(null, null);
             return null;
         })
-        .when(kafkaBasedLog).send(eq("status-connector-conn"), eq(value), any(Callback.class));
+                .when(kafkaBasedLog).send(eq("status-connector-conn"), eq(value), any(Callback.class));
 
         ConnectorStatus status = new ConnectorStatus(CONNECTOR, ConnectorStatus.State.RUNNING, WORKER_ID, 0);
         store.put(status);
@@ -430,7 +430,6 @@ public class KafkaStatusBackingStoreTest {
         doReturn(kafkaLog).when(store).createKafkaBasedLog(any(), capturedProducerProps.capture(),
                 capturedConsumerProps.capture(), any(),
                 any(), any(), any(), any());
-
 
         when(workerConfig.getString(DistributedConfig.STATUS_STORAGE_TOPIC_CONFIG)).thenReturn("connect-statuses");
         store.configure(workerConfig);

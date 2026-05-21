@@ -245,8 +245,8 @@ public record StreamsGroupMember(String memberId,
             setProcessId(record.processId());
             setUserEndpoint(record.userEndpoint());
             setClientTags(record.clientTags().stream().collect(Collectors.toMap(
-                StreamsGroupMemberMetadataValue.KeyValue::key,
-                StreamsGroupMemberMetadataValue.KeyValue::value
+                    StreamsGroupMemberMetadataValue.KeyValue::key,
+                    StreamsGroupMemberMetadataValue.KeyValue::value
             )));
             return this;
         }
@@ -256,23 +256,23 @@ public record StreamsGroupMember(String memberId,
             setPreviousMemberEpoch(record.previousMemberEpoch());
             setState(MemberState.fromValue(record.state()));
             setAssignedTasks(
-                TasksTupleWithEpochs.fromCurrentAssignmentRecord(
-                    log,
-                    groupId,
-                    record.activeTasks(),
-                    record.standbyTasks(),
-                    record.warmupTasks(),
-                    record.memberEpoch()
+                    TasksTupleWithEpochs.fromCurrentAssignmentRecord(
+                        log,
+                        groupId,
+                        record.activeTasks(),
+                        record.standbyTasks(),
+                        record.warmupTasks(),
+                        record.memberEpoch()
                 )
             );
             setTasksPendingRevocation(
-                TasksTupleWithEpochs.fromCurrentAssignmentRecord(
-                    log,
-                    groupId,
-                    record.activeTasksPendingRevocation(),
-                    record.standbyTasksPendingRevocation(),
-                    record.warmupTasksPendingRevocation(),
-                    record.memberEpoch()
+                    TasksTupleWithEpochs.fromCurrentAssignmentRecord(
+                        log,
+                        groupId,
+                        record.activeTasksPendingRevocation(),
+                        record.standbyTasksPendingRevocation(),
+                        record.warmupTasksPendingRevocation(),
+                        record.memberEpoch()
                 )
             );
             return this;
@@ -298,21 +298,21 @@ public record StreamsGroupMember(String memberId,
 
         public StreamsGroupMember build() {
             return new StreamsGroupMember(
-                memberId,
-                memberEpoch,
-                previousMemberEpoch,
-                state,
-                instanceId,
-                rackId,
-                clientId,
-                clientHost,
-                rebalanceTimeoutMs,
-                topologyEpoch,
-                processId,
-                userEndpoint,
-                clientTags,
-                assignedTasks,
-                tasksPendingRevocation
+                    memberId,
+                    memberEpoch,
+                    previousMemberEpoch,
+                    state,
+                    instanceId,
+                    rackId,
+                    clientId,
+                    clientHost,
+                    rebalanceTimeoutMs,
+                    topologyEpoch,
+                    processId,
+                    userEndpoint,
+                    clientTags,
+                    assignedTasks,
+                    tasksPendingRevocation
             );
         }
     }
@@ -333,7 +333,7 @@ public record StreamsGroupMember(String memberId,
      */
     public StreamsGroupDescribeResponseData.Member asStreamsGroupDescribeMember(TasksTuple targetAssignment) {
         final StreamsGroupDescribeResponseData.Assignment describedTargetAssignment =
-            new StreamsGroupDescribeResponseData.Assignment();
+                new StreamsGroupDescribeResponseData.Assignment();
 
         if (targetAssignment != null) {
             describedTargetAssignment
@@ -346,7 +346,7 @@ public record StreamsGroupMember(String memberId,
             .setMemberEpoch(memberEpoch)
             .setMemberId(memberId)
             .setAssignment(
-                new StreamsGroupDescribeResponseData.Assignment()
+                    new StreamsGroupDescribeResponseData.Assignment()
                     .setActiveTasks(taskIdsFromMapWithEpochs(assignedTasks.activeTasksWithEpochs()))
                     .setStandbyTasks(taskIdsFromMap(assignedTasks.standbyTasks()))
                     .setWarmupTasks(taskIdsFromMap(assignedTasks.warmupTasks())))
@@ -356,15 +356,15 @@ public record StreamsGroupMember(String memberId,
             .setInstanceId(instanceId.orElse(null))
             .setRackId(rackId.orElse(null))
             .setClientTags(clientTags.entrySet().stream().map(
-                entry -> new StreamsGroupDescribeResponseData.KeyValue()
+                    entry -> new StreamsGroupDescribeResponseData.KeyValue()
                     .setKey(entry.getKey())
                     .setValue(entry.getValue())
             ).toList())
             .setProcessId(processId)
             .setTopologyEpoch(topologyEpoch)
             .setUserEndpoint(
-                userEndpoint.map(
-                    endpoint -> new StreamsGroupDescribeResponseData.Endpoint()
+                    userEndpoint.map(
+                        endpoint -> new StreamsGroupDescribeResponseData.Endpoint()
                         .setHost(endpoint.host())
                         .setPort(endpoint.port())
                     ).orElse(null)

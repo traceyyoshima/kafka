@@ -97,8 +97,8 @@ public class RocksDBVersionedStoreRestoreWriteBuffer {
                     final LogicalKeyValueSegment dbSegment = bufferSegment.dbSegment();
                     for (final Map.Entry<Bytes, byte[]> segmentEntry : bufferSegment.getAll().entrySet()) {
                         dbSegment.addToBatch(
-                            new KeyValue<>(segmentEntry.getKey().get(), segmentEntry.getValue()),
-                            segmentsBatch);
+                                new KeyValue<>(segmentEntry.getKey().get(), segmentEntry.getValue()),
+                                segmentsBatch);
                     }
                 }
 
@@ -118,8 +118,8 @@ public class RocksDBVersionedStoreRestoreWriteBuffer {
             for (final Map.Entry<Bytes, Optional<byte[]>> latestValueEntry : latestValueWriteBuffer.entrySet()) {
                 final byte[] value = latestValueEntry.getValue().orElse(null);
                 dbClient.addToLatestValueBatch(
-                    new KeyValue<>(latestValueEntry.getKey().get(), value),
-                    latestValueBatch);
+                        new KeyValue<>(latestValueEntry.getKey().get(), value),
+                        latestValueBatch);
             }
 
             // write to db
@@ -225,7 +225,7 @@ public class RocksDBVersionedStoreRestoreWriteBuffer {
             // head and not tail because the map is sorted in reverse order
             final long segmentFrom = segmentIdForTimestamp(timestampFrom);
             final List<WriteBufferSegmentWithDbFallback> bufferSegments =
-                new ArrayList<>(segmentsWriteBuffer.headMap(segmentFrom, true).values());
+                    new ArrayList<>(segmentsWriteBuffer.headMap(segmentFrom, true).values());
 
             final List<LogicalKeyValueSegment> dbSegments = dbClient.reversedSegments(timestampFrom);
 

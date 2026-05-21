@@ -179,7 +179,6 @@ public class GroupAuthorizerIntegrationTest {
         }, "Failed to verify ACLs deletion");
     }
 
-
     static final AuthorizableRequestContext ANONYMOUS_CONTEXT = new AuthorizableRequestContext() {
         @Override
         public String listenerName() {
@@ -257,8 +256,8 @@ public class GroupAuthorizerIntegrationTest {
         try {
             clusterInstance.createTopic(topic, 1, (short) 1);
             ExecutionException produceException = assertThrows(
-                ExecutionException.class,
-                () -> producer.send(new ProducerRecord<>(topic, "message".getBytes())).get()
+                    ExecutionException.class,
+                    () -> producer.send(new ProducerRecord<>(topic, "message".getBytes())).get()
             );
             Throwable cause = produceException.getCause();
             assertInstanceOf(TopicAuthorizationException.class, cause);
@@ -268,8 +267,8 @@ public class GroupAuthorizerIntegrationTest {
             TopicPartition topicPartition = new TopicPartition(topic, 0);
             consumer.assign(Collections.singletonList(topicPartition));
             TopicAuthorizationException consumeException = assertThrows(
-                TopicAuthorizationException.class,
-                () -> consumer.poll(Duration.ofSeconds(15))
+                    TopicAuthorizationException.class,
+                    () -> consumer.poll(Duration.ofSeconds(15))
             );
             assertEquals(consumeException.unauthorizedTopics(), topicAuthException.unauthorizedTopics());
         } finally {
@@ -309,9 +308,9 @@ public class GroupAuthorizerIntegrationTest {
         acls.add(createAcl(AclOperation.WRITE, AclPermissionType.ALLOW, CLIENT_PRINCIPAL));
         acls.add(createAcl(AclOperation.READ, AclPermissionType.ALLOW, CLIENT_PRINCIPAL));
         addAndVerifyAcls(
-            acls,
-            new ResourcePattern(ResourceType.TOPIC, topic, PatternType.LITERAL),
-            clusterInstance
+                acls,
+                new ResourcePattern(ResourceType.TOPIC, topic, PatternType.LITERAL),
+                clusterInstance
         );
         addAndVerifyAcls(
                 Set.of(createAcl(AclOperation.READ, AclPermissionType.ALLOW, CLIENT_PRINCIPAL)),
@@ -320,10 +319,10 @@ public class GroupAuthorizerIntegrationTest {
         );
 
         try (Producer<byte[], byte[]> producer = clusterInstance.producer();
-            Consumer<byte[], byte[]> consumer = clusterInstance.consumer(Map.of(
-                ConsumerConfig.GROUP_ID_CONFIG, group,
-                ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false",
-                GROUP_PROTOCOL_CONFIG, groupProtocol.name.toLowerCase(Locale.ROOT)))
+                Consumer<byte[], byte[]> consumer = clusterInstance.consumer(Map.of(
+                    ConsumerConfig.GROUP_ID_CONFIG, group,
+                    ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false",
+                    GROUP_PROTOCOL_CONFIG, groupProtocol.name.toLowerCase(Locale.ROOT)))
         ) {
             clusterInstance.createTopic(topic, 1, (short) 1);
             producer.send(new ProducerRecord<>(topic, "message".getBytes())).get();

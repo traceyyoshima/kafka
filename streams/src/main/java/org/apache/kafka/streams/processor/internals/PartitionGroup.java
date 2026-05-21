@@ -106,9 +106,9 @@ class PartitionGroup extends AbstractPartitionGroup {
                     }
                 }
                 logger.trace("Ready for processing because max.task.idle.ms is disabled." +
-                                "\n\tThere may be out-of-order processing for this task as a result." +
-                                "\n\tBuffered partitions: {}" +
-                                "\n\tNon-buffered partitions: {}",
+                        "\n\tThere may be out-of-order processing for this task as a result." +
+                        "\n\tBuffered partitions: {}" +
+                        "\n\tNon-buffered partitions: {}",
                         bufferedPartitions,
                         emptyPartitions);
             }
@@ -131,7 +131,7 @@ class PartitionGroup extends AbstractPartitionGroup {
             } else {
                 final Long fetchedLag = fetchedLags.getOrDefault(partition, -1L);
                 appendLog(logMessageBuilder, String.format("Partition %s has fetched lag of %d", partition, fetchedLag));
-                
+
                 if (fetchedLag == -1L) {
                     // must wait to fetch metadata for the partition
                     idlePartitionDeadlines.remove(partition);
@@ -142,8 +142,8 @@ class PartitionGroup extends AbstractPartitionGroup {
                     // must wait to poll the data we know to be on the broker
                     idlePartitionDeadlines.remove(partition);
                     appendLog(logMessageBuilder,
-                        String.format("Partition %s has current lag %d, but no data is buffered locally. Waiting to buffer some records.",
-                        partition, fetchedLag));
+                            String.format("Partition %s has current lag %d, but no data is buffered locally. Waiting to buffer some records.",
+                                partition, fetchedLag));
 
                     return new ReadyToProcessResult(false, Optional.of(logMessageBuilder.toString()));
                 } else {
@@ -157,9 +157,9 @@ class PartitionGroup extends AbstractPartitionGroup {
                     final long deadline = idlePartitionDeadlines.get(partition);
                     if (wallClockTime < deadline) {
                         appendLog(logMessageBuilder, String.format(
-                            "Partition %s has current lag 0 and current time is %d. " +
+                                "Partition %s has current lag 0 and current time is %d. " +
                                 "Waiting for new data to be produced for configured idle time %d (deadline is %d).",
-                            partition, wallClockTime, maxTaskIdleMs, deadline));
+                                partition, wallClockTime, maxTaskIdleMs, deadline));
 
                         return new ReadyToProcessResult(false, Optional.of(logMessageBuilder.toString()));
                     } else {
@@ -182,11 +182,11 @@ class PartitionGroup extends AbstractPartitionGroup {
         } else {
             enforcedProcessingSensor.record(1.0d, wallClockTime);
             logger.trace("Continuing to process although some partitions are empty on the broker." +
-                            "\n\tThere may be out-of-order processing for this task as a result." +
-                            "\n\tPartitions with local data: {}." +
-                            "\n\tPartitions we gave up waiting for, with their corresponding deadlines: {}." +
-                            "\n\tConfigured max.task.idle.ms: {}." +
-                            "\n\tCurrent wall-clock time: {}.",
+                    "\n\tThere may be out-of-order processing for this task as a result." +
+                    "\n\tPartitions with local data: {}." +
+                    "\n\tPartitions we gave up waiting for, with their corresponding deadlines: {}." +
+                    "\n\tConfigured max.task.idle.ms: {}." +
+                    "\n\tCurrent wall-clock time: {}.",
                     queued,
                     enforced,
                     maxTaskIdleMs,
@@ -255,7 +255,7 @@ class PartitionGroup extends AbstractPartitionGroup {
             if (record != null) {
                 totalBuffered -= oldSize - queue.size();
                 logger.trace("Partition {} polling next record:, oldSize={}, newSize={}, totalBuffered={}, recordTimestamp={}",
-                    queue.partition(), oldSize, queue.size(), totalBuffered, record.timestamp);
+                        queue.partition(), oldSize, queue.size(), totalBuffered, record.timestamp);
 
                 if (queue.isEmpty()) {
                     // if a certain queue has been drained, reset the flag
@@ -339,7 +339,6 @@ class PartitionGroup extends AbstractPartitionGroup {
 
         return recordQueue.headRecordLeaderEpoch();
     }
-
 
     /**
      * @throws IllegalStateException if the record's partition does not belong to this partition group

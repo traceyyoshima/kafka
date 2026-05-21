@@ -80,8 +80,8 @@ public class TimestampedToHeadersStoreAdapter implements KeyValueStore<Bytes, by
     public byte[] putIfAbsent(final Bytes key,
                               final byte[] valueWithTimestampAndHeaders) {
         return convertToHeaderFormat(store.putIfAbsent(
-            key,
-            rawTimestampedValue(valueWithTimestampAndHeaders)));
+                key,
+                rawTimestampedValue(valueWithTimestampAndHeaders)));
     }
 
     @Override
@@ -176,7 +176,7 @@ public class TimestampedToHeadersStoreAdapter implements KeyValueStore<Bytes, by
 
         if (config.isCollectExecutionInfo()) {
             result.addExecutionInfo(
-                "Handled in " + getClass() + " in " + (System.nanoTime() - start) + "ns"
+                    "Handled in " + getClass() + " in " + (System.nanoTime() - start) + "ns"
             );
         }
 

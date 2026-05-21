@@ -74,7 +74,7 @@ public class TaskAssignorIntegrationTest {
 
     // Just a dummy implementation so we can check the config
     public static final class MyLegacyTaskAssignor extends HighAvailabilityTaskAssignor implements
-        LegacyTaskAssignor { }
+            LegacyTaskAssignor { }
 
     @SuppressWarnings("unchecked")
     @Test
@@ -100,19 +100,19 @@ public class TaskAssignorIntegrationTest {
 
         // the implementation doesn't matter, we're just going to verify the reference.
         final AssignmentListener configuredAssignmentListener =
-            stable -> compilerDefeatingReference.incrementAndGet();
+                stable -> compilerDefeatingReference.incrementAndGet();
 
         final Properties properties = mkObjectProperties(
-            mkMap(
-                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
-                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, appId),
-                mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
-                mkEntry(StreamsConfig.NUM_STANDBY_REPLICAS_CONFIG, "5"),
-                mkEntry(StreamsConfig.ACCEPTABLE_RECOVERY_LAG_CONFIG, "6"),
-                mkEntry(StreamsConfig.MAX_WARMUP_REPLICAS_CONFIG, "7"),
-                mkEntry(StreamsConfig.PROBING_REBALANCE_INTERVAL_MS_CONFIG, "480000"),
-                mkEntry(StreamsConfig.InternalConfig.ASSIGNMENT_LISTENER, configuredAssignmentListener),
-                mkEntry(StreamsConfig.InternalConfig.INTERNAL_TASK_ASSIGNOR_CLASS, MyLegacyTaskAssignor.class.getName())
+                mkMap(
+                    mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
+                    mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, appId),
+                    mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
+                    mkEntry(StreamsConfig.NUM_STANDBY_REPLICAS_CONFIG, "5"),
+                    mkEntry(StreamsConfig.ACCEPTABLE_RECOVERY_LAG_CONFIG, "6"),
+                    mkEntry(StreamsConfig.MAX_WARMUP_REPLICAS_CONFIG, "7"),
+                    mkEntry(StreamsConfig.PROBING_REBALANCE_INTERVAL_MS_CONFIG, "480000"),
+                    mkEntry(StreamsConfig.InternalConfig.ASSIGNMENT_LISTENER, configuredAssignmentListener),
+                    mkEntry(StreamsConfig.InternalConfig.INTERNAL_TASK_ASSIGNOR_CLASS, MyLegacyTaskAssignor.class.getName())
             )
         );
 
@@ -152,7 +152,7 @@ public class TaskAssignorIntegrationTest {
             final Field taskAssignorSupplierField = StreamsPartitionAssignor.class.getDeclaredField("legacyTaskAssignorSupplier");
             taskAssignorSupplierField.setAccessible(true);
             final Supplier<LegacyTaskAssignor> taskAssignorSupplier =
-                (Supplier<LegacyTaskAssignor>) taskAssignorSupplierField.get(streamsPartitionAssignor);
+                    (Supplier<LegacyTaskAssignor>) taskAssignorSupplierField.get(streamsPartitionAssignor);
             final LegacyTaskAssignor taskAssignor = taskAssignorSupplier.get();
 
             assertThat(configs.numStandbyReplicas(), is(5));

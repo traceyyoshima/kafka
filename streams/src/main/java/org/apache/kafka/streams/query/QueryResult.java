@@ -58,8 +58,8 @@ public interface QueryResult<R> {
         final StateStore store) {
 
         return forFailure(
-            FailureReason.UNKNOWN_QUERY_TYPE,
-            "This store (" + store.getClass() + ") doesn't know how to execute "
+                FailureReason.UNKNOWN_QUERY_TYPE,
+                "This store (" + store.getClass() + ") doesn't know how to execute "
                 + "the given query (" + query + ")." +
                 " Contact the store maintainer if you need support for a new query type.");
     }
@@ -77,14 +77,14 @@ public interface QueryResult<R> {
 
         if (partition == null) {
             return new FailedQueryResult<>(
-                FailureReason.NOT_UP_TO_BOUND,
-                "The store is not initialized yet, so it is not yet up to the bound "
+                    FailureReason.NOT_UP_TO_BOUND,
+                    "The store is not initialized yet, so it is not yet up to the bound "
                     + positionBound
             );
         } else {
             return new FailedQueryResult<>(
-                FailureReason.NOT_UP_TO_BOUND,
-                "For store partition " + partition + ", the current position "
+                    FailureReason.NOT_UP_TO_BOUND,
+                    "For store partition " + partition + ", the current position "
                     + currentPosition + " is not yet up to the bound "
                     + positionBound
             );
@@ -107,7 +107,6 @@ public interface QueryResult<R> {
      * #getResult()}.
      */
     boolean isSuccess();
-
 
     /**
      * True iff the query execution failed. More information about the failure is available in

@@ -85,8 +85,8 @@ public class MetadataSchemaCheckerTool {
                 String child = namespace.getString("path");
                 String parent = namespace.getString("parent_path");
                 EvolutionVerifier verifier = new EvolutionVerifier(
-                    CheckerUtils.readMessageSpecFromFile(parent),
-                    CheckerUtils.readMessageSpecFromFile(child));
+                        CheckerUtils.readMessageSpecFromFile(parent),
+                        CheckerUtils.readMessageSpecFromFile(child));
                 verifier.verify();
                 writer.println("Successfully verified evolution of path: " + child +
                         " from parent: " + parent);
@@ -96,8 +96,8 @@ public class MetadataSchemaCheckerTool {
                 String path = namespace.getString("path");
                 String gitContent = readFileFromGitRef(path, namespace.getString("ref"));
                 EvolutionVerifier verifier = new EvolutionVerifier(
-                    CheckerUtils.readMessageSpecFromFile(path),
-                    CheckerUtils.readMessageSpecFromString(gitContent));
+                        CheckerUtils.readMessageSpecFromFile(path),
+                        CheckerUtils.readMessageSpecFromString(gitContent));
                 verifier.verify();
                 writer.println("Successfully verified evolution of file: " + namespace.getString("path"));
                 break;

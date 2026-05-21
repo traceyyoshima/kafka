@@ -55,19 +55,19 @@ public class InitializeShareGroupStateResult implements PersisterResult {
             .flatMap(topicData -> topicData.partitions().stream())
             .filter(e -> e.errorCode() != Errors.NONE.code())
             .collect(Collectors.groupingBy(
-                partitionError -> Errors.forCode(partitionError.errorCode()),
-                Collectors.summingInt(partitionError -> 1)
+                    partitionError -> Errors.forCode(partitionError.errorCode()),
+                    Collectors.summingInt(partitionError -> 1)
             ));
     }
 
     public Map<Uuid, Map<Integer, PartitionErrorData>> getErrors() {
         return topicsData.stream()
             .collect(Collectors.toMap(
-                TopicData::topicId,
-                topicData -> topicData.partitions().stream()
+                    TopicData::topicId,
+                    topicData -> topicData.partitions().stream()
                     .collect(Collectors.toMap(
-                        PartitionIdData::partition,
-                        partitionErrorData -> partitionErrorData
+                            PartitionIdData::partition,
+                            partitionErrorData -> partitionErrorData
                     ))
             ));
     }

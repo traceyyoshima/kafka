@@ -164,9 +164,9 @@ public final class WorkerManager {
         this.stateChangeExecutor = Executors.newSingleThreadScheduledExecutor(
                 ThreadUtils.createThreadFactory("WorkerManagerStateThread", false));
         this.workerCleanupExecutor = Executors.newCachedThreadPool(
-            ThreadUtils.createThreadFactory("WorkerCleanupThread%d", false));
+                ThreadUtils.createThreadFactory("WorkerCleanupThread%d", false));
         this.shutdownExecutor = Executors.newScheduledThreadPool(0,
-            ThreadUtils.createThreadFactory("WorkerManagerShutdownThread%d", false));
+                ThreadUtils.createThreadFactory("WorkerManagerShutdownThread%d", false));
     }
 
     enum State {
@@ -287,8 +287,8 @@ public final class WorkerManager {
         void transitionToRunning() {
             state = State.RUNNING;
             timeoutFuture = scheduler.schedule(stateChangeExecutor,
-                new StopWorker(workerId, false),
-                Math.max(0, spec.endMs() - time.milliseconds()));
+                    new StopWorker(workerId, false),
+                    Math.max(0, spec.endMs() - time.milliseconds()));
         }
 
         Future<Void> transitionToStopping() {
@@ -322,14 +322,14 @@ public final class WorkerManager {
                 submit(new CreateWorker(workerId, taskId, spec, time.milliseconds())).get();
             if (worker.doneFuture != null) {
                 log.info("{}: Ignoring request to create worker {}, because there is already " +
-                    "a worker with that id.", nodeName, workerId);
+                        "a worker with that id.", nodeName, workerId);
                 return worker.doneFuture;
             }
             worker.doneFuture = new KafkaFutureImpl<>();
             if (worker.spec.endMs() <= time.milliseconds()) {
                 log.info("{}: Will not run worker {} as it has expired.", nodeName, worker);
                 stateChangeExecutor.submit(new HandleWorkerHalting(worker,
-                    "worker expired", true));
+                        "worker expired", true));
                 return worker.doneFuture;
             }
             KafkaFutureImpl<String> haltFuture = new KafkaFutureImpl<>();
@@ -340,10 +340,10 @@ public final class WorkerManager {
                     log.info("{}: Worker {} is halting.", nodeName, worker);
                 } else {
                     log.info("{}: Worker {} is halting with error {}",
-                        nodeName, worker, errorString);
+                            nodeName, worker, errorString);
                 }
                 stateChangeExecutor.submit(
-                    new HandleWorkerHalting(worker, errorString, false));
+                        new HandleWorkerHalting(worker, errorString, false));
                 return null;
             });
             try {
@@ -351,17 +351,17 @@ public final class WorkerManager {
             } catch (Exception e) {
                 log.info("{}: Worker {} start() exception", nodeName, worker, e);
                 stateChangeExecutor.submit(new HandleWorkerHalting(worker,
-                    "worker.start() exception: " + Utils.stackTrace(e), true));
+                        "worker.start() exception: " + Utils.stackTrace(e), true));
             }
             stateChangeExecutor.submit(new FinishCreatingWorker(worker));
             return worker.doneFuture;
         } catch (ExecutionException e) {
             if (e.getCause() instanceof RequestConflictException) {
                 log.info("{}: request conflict while creating worker {} for task {} with spec {}.",
-                    nodeName, workerId, taskId, spec);
+                        nodeName, workerId, taskId, spec);
             } else {
                 log.info("{}: Error creating worker {} for task {} with spec {}",
-                    nodeName, workerId, taskId, spec, e);
+                        nodeName, workerId, taskId, spec, e);
             }
             throw e.getCause();
         }
@@ -390,10 +390,10 @@ public final class WorkerManager {
                 if (worker != null) {
                     if (!worker.taskId().equals(taskId)) {
                         throw new RequestConflictException("There is already a worker ID " + workerId +
-                            " with a different task ID.");
+                                " with a different task ID.");
                     } else if (!worker.spec().equals(spec)) {
                         throw new RequestConflictException("There is already a worker ID " + workerId +
-                            " with a different task spec.");
+                                " with a different task spec.");
                     } else {
                         return worker;
                     }
@@ -404,7 +404,7 @@ public final class WorkerManager {
                 return worker;
             } catch (Exception e) {
                 log.info("{}: unable to create worker {} for task {}, with spec {}",
-                    nodeName, workerId, taskId, spec, e);
+                        nodeName, workerId, taskId, spec, e);
                 throw e;
             }
         }
@@ -425,12 +425,12 @@ public final class WorkerManager {
             switch (worker.state) {
                 case CANCELLING:
                     log.info("{}: Worker {} was cancelled while it was starting up.  " +
-                        "Transitioning to STOPPING.", nodeName, worker);
+                            "Transitioning to STOPPING.", nodeName, worker);
                     worker.transitionToStopping();
                     break;
                 case STARTING:
                     log.info("{}: Worker {} is now RUNNING.  Scheduled to stop in {} ms.",
-                        nodeName, worker, worker.spec.durationMs());
+                            nodeName, worker, worker.spec.durationMs());
                     worker.transitionToRunning();
                     break;
                 default:
@@ -465,11 +465,11 @@ public final class WorkerManager {
                 case STARTING:
                     if (startupHalt) {
                         log.info("{}: Worker {} {} during startup.  Transitioning to DONE.",
-                            nodeName, worker, verb);
+                                nodeName, worker, verb);
                         worker.transitionToDone();
                     } else {
                         log.info("{}: Worker {} {} during startup.  Transitioning to CANCELLING.",
-                            nodeName, worker, verb);
+                                nodeName, worker, verb);
                         worker.state = State.CANCELLING;
                     }
                     break;
@@ -479,7 +479,7 @@ public final class WorkerManager {
                     break;
                 case RUNNING:
                     log.info("{}: Running worker {} {}.  Transitioning to STOPPING.",
-                        nodeName, worker, verb);
+                            nodeName, worker, verb);
                     worker.transitionToStopping();
                     break;
                 case STOPPING:
@@ -487,7 +487,7 @@ public final class WorkerManager {
                     break;
                 case DONE:
                     log.info("{}: Can't halt worker {} because it is already DONE.",
-                        nodeName, worker);
+                            nodeName, worker);
                     break;
             }
             return null;
@@ -515,11 +515,11 @@ public final class WorkerManager {
             worker.transitionToDone();
             if (worker.mustDestroy) {
                 log.info("{}: destroying worker {} with error {}",
-                    nodeName, worker, worker.error);
+                        nodeName, worker, worker.error);
                 workers.remove(worker.workerId);
             } else {
                 log.info("{}: completed worker {} with error {}",
-                    nodeName, worker, worker.error);
+                        nodeName, worker, worker.error);
             }
             return null;
         }
@@ -550,7 +550,7 @@ public final class WorkerManager {
             Worker worker = workers.get(workerId);
             if (worker == null) {
                 log.info("{}: Can't stop worker {} because there is no worker with that ID.",
-                    nodeName, workerId);
+                        nodeName, workerId);
                 return null;
             }
             if (mustDestroy) {
@@ -559,12 +559,12 @@ public final class WorkerManager {
             switch (worker.state) {
                 case STARTING:
                     log.info("{}: Cancelling worker {} during its startup process.",
-                        nodeName, worker);
+                            nodeName, worker);
                     worker.state = State.CANCELLING;
                     break;
                 case CANCELLING:
                     log.info("{}: Can't stop worker {}, because it is already being " +
-                        "cancelled.", nodeName, worker);
+                            "cancelled.", nodeName, worker);
                     break;
                 case RUNNING:
                     log.info("{}: Stopping running worker {}.", nodeName, worker);
@@ -577,11 +577,11 @@ public final class WorkerManager {
                 case DONE:
                     if (worker.mustDestroy) {
                         log.info("{}: destroying worker {} with error {}",
-                            nodeName, worker, worker.error);
+                                nodeName, worker, worker.error);
                         workers.remove(worker.workerId);
                     } else {
                         log.debug("{}: Can't stop worker {}, because it is already done.",
-                            nodeName, worker);
+                                nodeName, worker);
                     }
                     break;
             }

@@ -625,15 +625,15 @@ public class KafkaConsumer<K, V> implements Consumer<K, V> {
                   ConsumerMetadata metadata,
                   List<ConsumerPartitionAssignor> assignors) {
         delegate = CREATOR.create(
-            logContext,
-            time,
-            config,
-            keyDeserializer,
-            valueDeserializer,
-            client,
-            subscriptions,
-            metadata,
-            assignors
+                logContext,
+                time,
+                config,
+                keyDeserializer,
+                valueDeserializer,
+                client,
+                subscriptions,
+                metadata,
+                assignors
         );
     }
 

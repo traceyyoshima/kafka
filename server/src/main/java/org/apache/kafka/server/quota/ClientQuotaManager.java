@@ -79,6 +79,7 @@ public class ClientQuotaManager {
             return "user " + sanitizedUser;
         }
     }
+
     public record ClientIdEntity(String clientId) implements ClientQuotaEntity.ConfigEntity {
 
         @Override
@@ -119,10 +120,12 @@ public class ClientQuotaManager {
         public ClientQuotaEntity.ConfigEntityType entityType() {
             return ClientQuotaEntity.ConfigEntityType.DEFAULT_CLIENT_ID;
         }
+
         @Override
         public String name() {
             return DEFAULT_NAME;
         }
+
         @Override
         public String toString() {
             return "default client-id";
@@ -262,6 +265,7 @@ public class ClientQuotaManager {
     protected Metrics metrics() {
         return metrics;
     }
+
     protected Time time() {
         return time;
     }
@@ -439,7 +443,6 @@ public class ClientQuotaManager {
         return QuotaUtils.throttleTime(e, timeMs);
     }
 
-
     /**
      * This function either returns the sensors for a given client id or creates them if they don't exist
      */
@@ -576,7 +579,7 @@ public class ClientQuotaManager {
         }
 
         boolean isActive = !(quotaCallback instanceof DefaultQuotaCallback defaultCallback) ||
-            defaultCallback.getActiveQuotasEntities().contains(quotaEntity);
+                defaultCallback.getActiveQuotasEntities().contains(quotaEntity);
 
         int activeQuotaType;
         if (quotaEntity.userEntity() != null && quotaEntity.clientIdEntity() != null) {
@@ -616,7 +619,6 @@ public class ClientQuotaManager {
         LOG.info("Quota types enabled has been changed to {} with active quota entities: [{}]",
                 quotaTypesEnabled, activeEntities);
     }
-
 
     /**
      * Updates metrics configs. This is invoked when quota configs are updated when partition leaders change,

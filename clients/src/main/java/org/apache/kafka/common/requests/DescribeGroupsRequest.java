@@ -63,7 +63,7 @@ public class DescribeGroupsRequest extends AbstractRequest {
         DescribeGroupsResponseData describeGroupsResponseData = new DescribeGroupsResponseData();
 
         data.groups().forEach(groupId ->
-            describeGroupsResponseData.groups().add(DescribeGroupsResponse.groupError(groupId, error))
+                describeGroupsResponseData.groups().add(DescribeGroupsResponse.groupError(groupId, error))
         );
 
         if (version() >= 1) {

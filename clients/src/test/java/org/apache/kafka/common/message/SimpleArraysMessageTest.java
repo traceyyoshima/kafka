@@ -30,7 +30,7 @@ public class SimpleArraysMessageTest {
     public void testArrayBoundsChecking() {
         // SimpleArraysMessageData takes 2 arrays
         final ByteBuffer buf = ByteBuffer.wrap(new byte[] {
-            (byte) 0x7f, // Set size of first array to 126 which is larger than the size of this buffer
+                (byte) 0x7f, // Set size of first array to 126 which is larger than the size of this buffer
             (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00
         });
         final SimpleArraysMessageData out = new SimpleArraysMessageData();
@@ -43,7 +43,7 @@ public class SimpleArraysMessageTest {
     public void testArrayBoundsCheckingOtherArray() {
         // SimpleArraysMessageData takes 2 arrays
         final ByteBuffer buf = ByteBuffer.wrap(new byte[] {
-            (byte) 0x01, // Set size of first array to 0
+                (byte) 0x01, // Set size of first array to 0
             (byte) 0x7e, // Set size of second array to 125 which is larger than the size of this buffer
             (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00
         });

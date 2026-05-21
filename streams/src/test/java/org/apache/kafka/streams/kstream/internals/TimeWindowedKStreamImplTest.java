@@ -82,14 +82,14 @@ public class TimeWindowedKStreamImplTest {
 
     public static Stream<Arguments> data() {
         return Stream.of(
-            Arguments.of(StrategyType.ON_WINDOW_UPDATE, true, false),
-            Arguments.of(StrategyType.ON_WINDOW_UPDATE, true, true),
-            Arguments.of(StrategyType.ON_WINDOW_UPDATE, false, false),
-            Arguments.of(StrategyType.ON_WINDOW_UPDATE, false, true),
-            Arguments.of(StrategyType.ON_WINDOW_CLOSE, true, false),
-            Arguments.of(StrategyType.ON_WINDOW_CLOSE, true, true),
-            Arguments.of(StrategyType.ON_WINDOW_CLOSE, false, false),
-            Arguments.of(StrategyType.ON_WINDOW_CLOSE, false, true)
+                Arguments.of(StrategyType.ON_WINDOW_UPDATE, true, false),
+                Arguments.of(StrategyType.ON_WINDOW_UPDATE, true, true),
+                Arguments.of(StrategyType.ON_WINDOW_UPDATE, false, false),
+                Arguments.of(StrategyType.ON_WINDOW_UPDATE, false, true),
+                Arguments.of(StrategyType.ON_WINDOW_CLOSE, true, false),
+                Arguments.of(StrategyType.ON_WINDOW_CLOSE, true, true),
+                Arguments.of(StrategyType.ON_WINDOW_CLOSE, false, false),
+                Arguments.of(StrategyType.ON_WINDOW_CLOSE, false, true)
         );
     }
 
@@ -122,24 +122,24 @@ public class TimeWindowedKStreamImplTest {
 
         if (emitFinal) {
             assertEquals(
-                asList(
-                    new KeyValueTimestamp<>(KEY_1_WINDOW_0, 2L, 15L),
-                    new KeyValueTimestamp<>(KEY_1_WINDOW_1, 1L, 500L),
-                    new KeyValueTimestamp<>(KEY_2_WINDOW_1, 2L, 550L)
+                    asList(
+                        new KeyValueTimestamp<>(KEY_1_WINDOW_0, 2L, 15L),
+                        new KeyValueTimestamp<>(KEY_1_WINDOW_1, 1L, 500L),
+                        new KeyValueTimestamp<>(KEY_2_WINDOW_1, 2L, 550L)
                 ),
-                processed
+                    processed
             );
         } else {
             assertEquals(
-                asList(
-                    new KeyValueTimestamp<>(KEY_1_WINDOW_0, 1L, 10L),
-                    new KeyValueTimestamp<>(KEY_1_WINDOW_0, 2L, 15L),
-                    new KeyValueTimestamp<>(KEY_1_WINDOW_1, 1L, 500L),
-                    new KeyValueTimestamp<>(KEY_2_WINDOW_1, 1L, 550L),
-                    new KeyValueTimestamp<>(KEY_2_WINDOW_1, 2L, 550L),
-                    new KeyValueTimestamp<>(KEY_2_WINDOW_2, 1L, 1000L)
+                    asList(
+                        new KeyValueTimestamp<>(KEY_1_WINDOW_0, 1L, 10L),
+                        new KeyValueTimestamp<>(KEY_1_WINDOW_0, 2L, 15L),
+                        new KeyValueTimestamp<>(KEY_1_WINDOW_1, 1L, 500L),
+                        new KeyValueTimestamp<>(KEY_2_WINDOW_1, 1L, 550L),
+                        new KeyValueTimestamp<>(KEY_2_WINDOW_1, 2L, 550L),
+                        new KeyValueTimestamp<>(KEY_2_WINDOW_2, 1L, 1000L)
                 ),
-                processed
+                    processed
             );
         }
     }
@@ -162,24 +162,24 @@ public class TimeWindowedKStreamImplTest {
         final ArrayList<KeyValueTimestamp<Windowed<String>, String>> processed = supplier.theCapturedProcessor().processed();
         if (emitFinal) {
             assertEquals(
-                asList(
-                    new KeyValueTimestamp<>(KEY_1_WINDOW_0, "1+2", 15L),
-                    new KeyValueTimestamp<>(KEY_1_WINDOW_1, "3", 500L),
-                    new KeyValueTimestamp<>(KEY_2_WINDOW_1, "10+20", 550L)
+                    asList(
+                        new KeyValueTimestamp<>(KEY_1_WINDOW_0, "1+2", 15L),
+                        new KeyValueTimestamp<>(KEY_1_WINDOW_1, "3", 500L),
+                        new KeyValueTimestamp<>(KEY_2_WINDOW_1, "10+20", 550L)
                 ),
-                processed
+                    processed
             );
         } else {
             assertEquals(
-                asList(
-                    new KeyValueTimestamp<>(KEY_1_WINDOW_0, "1", 10L),
-                    new KeyValueTimestamp<>(KEY_1_WINDOW_0, "1+2", 15L),
-                    new KeyValueTimestamp<>(KEY_1_WINDOW_1, "3", 500L),
-                    new KeyValueTimestamp<>(KEY_2_WINDOW_1, "10", 550L),
-                    new KeyValueTimestamp<>(KEY_2_WINDOW_1, "10+20", 550L),
-                    new KeyValueTimestamp<>(KEY_2_WINDOW_2, "30", 1000L)
+                    asList(
+                        new KeyValueTimestamp<>(KEY_1_WINDOW_0, "1", 10L),
+                        new KeyValueTimestamp<>(KEY_1_WINDOW_0, "1+2", 15L),
+                        new KeyValueTimestamp<>(KEY_1_WINDOW_1, "3", 500L),
+                        new KeyValueTimestamp<>(KEY_2_WINDOW_1, "10", 550L),
+                        new KeyValueTimestamp<>(KEY_2_WINDOW_1, "10+20", 550L),
+                        new KeyValueTimestamp<>(KEY_2_WINDOW_2, "30", 1000L)
                 ),
-                processed
+                    processed
             );
         }
     }
@@ -192,9 +192,9 @@ public class TimeWindowedKStreamImplTest {
         windowedStream
             .emitStrategy(emitStrategy)
             .aggregate(
-                MockInitializer.STRING_INIT,
-                MockAggregator.TOSTRING_ADDER,
-                setMaterializedCache(Materialized.with(Serdes.String(), Serdes.String())))
+                    MockInitializer.STRING_INIT,
+                    MockAggregator.TOSTRING_ADDER,
+                    setMaterializedCache(Materialized.with(Serdes.String(), Serdes.String())))
             .toStream()
             .process(supplier);
 
@@ -206,24 +206,24 @@ public class TimeWindowedKStreamImplTest {
 
         if (emitFinal) {
             assertEquals(
-                asList(
-                    new KeyValueTimestamp<>(KEY_1_WINDOW_0, "0+1+2", 15L),
-                    new KeyValueTimestamp<>(KEY_1_WINDOW_1, "0+3", 500L),
-                    new KeyValueTimestamp<>(KEY_2_WINDOW_1, "0+10+20", 550L)
+                    asList(
+                        new KeyValueTimestamp<>(KEY_1_WINDOW_0, "0+1+2", 15L),
+                        new KeyValueTimestamp<>(KEY_1_WINDOW_1, "0+3", 500L),
+                        new KeyValueTimestamp<>(KEY_2_WINDOW_1, "0+10+20", 550L)
                 ),
-                processed
+                    processed
             );
         } else {
             assertEquals(
-                asList(
-                    new KeyValueTimestamp<>(KEY_1_WINDOW_0, "0+1", 10L),
-                    new KeyValueTimestamp<>(KEY_1_WINDOW_0, "0+1+2", 15L),
-                    new KeyValueTimestamp<>(KEY_1_WINDOW_1, "0+3", 500L),
-                    new KeyValueTimestamp<>(KEY_2_WINDOW_1, "0+10", 550L),
-                    new KeyValueTimestamp<>(KEY_2_WINDOW_1, "0+10+20", 550L),
-                    new KeyValueTimestamp<>(KEY_2_WINDOW_2, "0+30", 1000L)
+                    asList(
+                        new KeyValueTimestamp<>(KEY_1_WINDOW_0, "0+1", 10L),
+                        new KeyValueTimestamp<>(KEY_1_WINDOW_0, "0+1+2", 15L),
+                        new KeyValueTimestamp<>(KEY_1_WINDOW_1, "0+3", 500L),
+                        new KeyValueTimestamp<>(KEY_2_WINDOW_1, "0+10", 550L),
+                        new KeyValueTimestamp<>(KEY_2_WINDOW_1, "0+10+20", 550L),
+                        new KeyValueTimestamp<>(KEY_2_WINDOW_2, "0+30", 1000L)
                 ),
-                processed
+                    processed
             );
         }
     }
@@ -235,7 +235,7 @@ public class TimeWindowedKStreamImplTest {
         windowedStream
             .emitStrategy(emitStrategy)
             .count(
-                setMaterializedCache(Materialized.<String, Long, WindowStore<Bytes, byte[]>>as("count-store")
+                    setMaterializedCache(Materialized.<String, Long, WindowStore<Bytes, byte[]>>as("count-store")
                     .withKeySerde(Serdes.String())
                     .withValueSerde(Serdes.Long())));
 
@@ -244,7 +244,7 @@ public class TimeWindowedKStreamImplTest {
             {
                 final WindowStore<String, Long> windowStore = driver.getWindowStore("count-store");
                 final List<KeyValue<Windowed<String>, Long>> data =
-                    StreamsTestUtils.toListAndCloseIterator(windowStore.fetch("1", "2", ofEpochMilli(0), ofEpochMilli(1000L)));
+                        StreamsTestUtils.toListAndCloseIterator(windowStore.fetch("1", "2", ofEpochMilli(0), ofEpochMilli(1000L)));
 
                 if (withCache) {
                     // with cache returns all records (expired from underneath as well) as part of
@@ -269,9 +269,9 @@ public class TimeWindowedKStreamImplTest {
             }
             {
                 final WindowStore<String, ValueAndTimestamp<Long>> windowStore =
-                    driver.getTimestampedWindowStore("count-store");
+                        driver.getTimestampedWindowStore("count-store");
                 final List<KeyValue<Windowed<String>, ValueAndTimestamp<Long>>> data =
-                    StreamsTestUtils.toListAndCloseIterator(windowStore.fetch("1", "2", ofEpochMilli(0), ofEpochMilli(1000L)));
+                        StreamsTestUtils.toListAndCloseIterator(windowStore.fetch("1", "2", ofEpochMilli(0), ofEpochMilli(1000L)));
 
                 // the same values and logic described above applies here as well.
                 if (withCache) {
@@ -300,8 +300,8 @@ public class TimeWindowedKStreamImplTest {
     public void shouldMaterializeReduced(final StrategyType inputType, final boolean inputWithCache, final boolean withHeaders) {
         setup(inputType, inputWithCache, withHeaders);
         windowedStream.reduce(
-            MockReducer.STRING_ADDER,
-            setMaterializedCache(Materialized.<String, String, WindowStore<Bytes, byte[]>>as("reduced")
+                MockReducer.STRING_ADDER,
+                setMaterializedCache(Materialized.<String, String, WindowStore<Bytes, byte[]>>as("reduced")
                 .withKeySerde(Serdes.String())
                 .withValueSerde(Serdes.String())));
 
@@ -310,7 +310,7 @@ public class TimeWindowedKStreamImplTest {
             {
                 final WindowStore<String, String> windowStore = driver.getWindowStore("reduced");
                 final List<KeyValue<Windowed<String>, String>> data =
-                    StreamsTestUtils.toListAndCloseIterator(windowStore.fetch("1", "2", ofEpochMilli(0), ofEpochMilli(1000L)));
+                        StreamsTestUtils.toListAndCloseIterator(windowStore.fetch("1", "2", ofEpochMilli(0), ofEpochMilli(1000L)));
 
                 if (withCache) {
                     // with cache returns all records (expired from underneath as well) as part of
@@ -330,7 +330,7 @@ public class TimeWindowedKStreamImplTest {
             {
                 final WindowStore<String, ValueAndTimestamp<String>> windowStore = driver.getTimestampedWindowStore("reduced");
                 final List<KeyValue<Windowed<String>, ValueAndTimestamp<String>>> data =
-                    StreamsTestUtils.toListAndCloseIterator(windowStore.fetch("1", "2", ofEpochMilli(0), ofEpochMilli(1000L)));
+                        StreamsTestUtils.toListAndCloseIterator(windowStore.fetch("1", "2", ofEpochMilli(0), ofEpochMilli(1000L)));
 
                 // same logic/data as explained above.
                 if (withCache) {
@@ -352,9 +352,9 @@ public class TimeWindowedKStreamImplTest {
     public void shouldMaterializeAggregated(final StrategyType inputType, final boolean inputWithCache, final boolean withHeaders) {
         setup(inputType, inputWithCache, withHeaders);
         windowedStream.aggregate(
-            MockInitializer.STRING_INIT,
-            MockAggregator.TOSTRING_ADDER,
-            setMaterializedCache(Materialized.<String, String, WindowStore<Bytes, byte[]>>as("aggregated")
+                MockInitializer.STRING_INIT,
+                MockAggregator.TOSTRING_ADDER,
+                setMaterializedCache(Materialized.<String, String, WindowStore<Bytes, byte[]>>as("aggregated")
                 .withKeySerde(Serdes.String())
                 .withValueSerde(Serdes.String())));
 
@@ -363,7 +363,7 @@ public class TimeWindowedKStreamImplTest {
             {
                 final WindowStore<String, String> windowStore = driver.getWindowStore("aggregated");
                 final List<KeyValue<Windowed<String>, String>> data =
-                    StreamsTestUtils.toListAndCloseIterator(windowStore.fetch("1", "2", ofEpochMilli(0), ofEpochMilli(1000L)));
+                        StreamsTestUtils.toListAndCloseIterator(windowStore.fetch("1", "2", ofEpochMilli(0), ofEpochMilli(1000L)));
 
                 if (withCache) {
                     // with cache returns all records (expired from underneath as well) as part of
@@ -384,7 +384,7 @@ public class TimeWindowedKStreamImplTest {
             {
                 final WindowStore<String, ValueAndTimestamp<String>> windowStore = driver.getTimestampedWindowStore("aggregated");
                 final List<KeyValue<Windowed<String>, ValueAndTimestamp<String>>> data =
-                    StreamsTestUtils.toListAndCloseIterator(windowStore.fetch("1", "2", ofEpochMilli(0), ofEpochMilli(1000L)));
+                        StreamsTestUtils.toListAndCloseIterator(windowStore.fetch("1", "2", ofEpochMilli(0), ofEpochMilli(1000L)));
                 if (withCache) {
                     assertThat(data, equalTo(asList(
                             KeyValue.pair(new Windowed<>("1", new TimeWindow(0, 500)), ValueAndTimestamp.make("0+1+2", 15L)),
@@ -425,9 +425,9 @@ public class TimeWindowedKStreamImplTest {
     public void shouldThrowNullPointerOnMaterializedAggregateIfInitializerIsNull(final StrategyType inputType, final boolean inputWithCache, final boolean withHeaders) {
         setup(inputType, inputWithCache, withHeaders);
         assertThrows(NullPointerException.class, () -> windowedStream.aggregate(
-            null,
-            MockAggregator.TOSTRING_ADDER,
-            setMaterializedCache(Materialized.as("store"))));
+                null,
+                MockAggregator.TOSTRING_ADDER,
+                setMaterializedCache(Materialized.as("store"))));
     }
 
     @ParameterizedTest
@@ -435,9 +435,9 @@ public class TimeWindowedKStreamImplTest {
     public void shouldThrowNullPointerOnMaterializedAggregateIfAggregatorIsNull(final StrategyType inputType, final boolean inputWithCache, final boolean withHeaders) {
         setup(inputType, inputWithCache, withHeaders);
         assertThrows(NullPointerException.class, () -> windowedStream.aggregate(
-            MockInitializer.STRING_INIT,
-            null,
-            setMaterializedCache(Materialized.as("store"))));
+                MockInitializer.STRING_INIT,
+                null,
+                setMaterializedCache(Materialized.as("store"))));
     }
 
     @SuppressWarnings("unchecked")
@@ -446,9 +446,9 @@ public class TimeWindowedKStreamImplTest {
     public void shouldThrowNullPointerOnMaterializedAggregateIfMaterializedIsNull(final StrategyType inputType, final boolean inputWithCache, final boolean withHeaders) {
         setup(inputType, inputWithCache, withHeaders);
         assertThrows(NullPointerException.class, () -> windowedStream.aggregate(
-            MockInitializer.STRING_INIT,
-            MockAggregator.TOSTRING_ADDER,
-            (Materialized) null));
+                MockInitializer.STRING_INIT,
+                MockAggregator.TOSTRING_ADDER,
+                (Materialized) null));
     }
 
     @ParameterizedTest
@@ -456,8 +456,8 @@ public class TimeWindowedKStreamImplTest {
     public void shouldThrowNullPointerOnMaterializedReduceIfReducerIsNull(final StrategyType inputType, final boolean inputWithCache, final boolean withHeaders) {
         setup(inputType, inputWithCache, withHeaders);
         assertThrows(NullPointerException.class, () -> windowedStream.reduce(
-            null,
-            setMaterializedCache(Materialized.as("store"))));
+                null,
+                setMaterializedCache(Materialized.as("store"))));
     }
 
     @ParameterizedTest
@@ -466,8 +466,8 @@ public class TimeWindowedKStreamImplTest {
     public void shouldThrowNullPointerOnMaterializedReduceIfMaterializedIsNull(final StrategyType inputType, final boolean inputWithCache, final boolean withHeaders) {
         setup(inputType, inputWithCache, withHeaders);
         assertThrows(NullPointerException.class, () -> windowedStream.reduce(
-            MockReducer.STRING_ADDER,
-            (Materialized) null));
+                MockReducer.STRING_ADDER,
+                (Materialized) null));
     }
 
     @ParameterizedTest
@@ -475,8 +475,8 @@ public class TimeWindowedKStreamImplTest {
     public void shouldThrowNullPointerOnMaterializedReduceIfNamedIsNull(final StrategyType inputType, final boolean inputWithCache, final boolean withHeaders) {
         setup(inputType, inputWithCache, withHeaders);
         assertThrows(NullPointerException.class, () -> windowedStream.reduce(
-            MockReducer.STRING_ADDER,
-            (Named) null));
+                MockReducer.STRING_ADDER,
+                (Named) null));
     }
 
     @ParameterizedTest

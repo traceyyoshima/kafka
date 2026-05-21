@@ -38,14 +38,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SubscriptionJoinProcessorSupplierTest {
     final Map<String, ValueTimestampHeaders<String>> fks = Collections.singletonMap(
-        "fk1", ValueTimestampHeaders.make("foo", 1L, new RecordHeaders())
+            "fk1", ValueTimestampHeaders.make("foo", 1L, new RecordHeaders())
     );
     final KTableValueGetterSupplier<String, String> valueGetterSupplier = valueGetterSupplier(fks);
     final Processor<CombinedKey<String, String>,
-                    Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>,
-                    String,
-                    SubscriptionResponseWrapper<String>>
-        processor = processor(valueGetterSupplier);
+            Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>,
+            String,
+            SubscriptionResponseWrapper<String>>
+            processor = processor(valueGetterSupplier);
 
     @Test
     public void shouldDetectVersionChange() {
@@ -59,31 +59,31 @@ public class SubscriptionJoinProcessorSupplierTest {
         processor.init(context);
 
         final SubscriptionWrapper<String> newValue = new SubscriptionWrapper<>(
-            new long[]{1L},
-            Instruction.DELETE_KEY_AND_PROPAGATE,
-            "pk1",
-            SubscriptionWrapper.VERSION_0,
-            null
+                new long[]{1L},
+                Instruction.DELETE_KEY_AND_PROPAGATE,
+                "pk1",
+                SubscriptionWrapper.VERSION_0,
+                null
         );
         final Record<CombinedKey<String, String>, Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>> record =
-            new Record<>(
-                new CombinedKey<>("fk1", "pk1"),
-                new Change<>(ValueTimestampHeaders.make(newValue, 1L, new RecordHeaders()), null),
-                1L
+                new Record<>(
+                    new CombinedKey<>("fk1", "pk1"),
+                    new Change<>(ValueTimestampHeaders.make(newValue, 1L, new RecordHeaders()), null),
+                    1L
             );
         processor.process(record);
         final List<CapturedForward<? extends String, ? extends SubscriptionResponseWrapper<String>>> forwarded = context.forwarded();
         assertEquals(1, forwarded.size());
         assertEquals(
-            new Record<>(
-                "pk1",
-                new SubscriptionResponseWrapper<>(
-                    newValue.hash(),
-                    null,
-                    null),
-                1L
+                new Record<>(
+                    "pk1",
+                    new SubscriptionResponseWrapper<>(
+                        newValue.hash(),
+                        null,
+                        null),
+                    1L
             ),
-            forwarded.get(0).record()
+                forwarded.get(0).record()
         );
     }
 
@@ -93,32 +93,32 @@ public class SubscriptionJoinProcessorSupplierTest {
         processor.init(context);
 
         final SubscriptionWrapper<String> newValue = new SubscriptionWrapper<>(
-            new long[]{1L},
-            Instruction.DELETE_KEY_AND_PROPAGATE,
-            "pk1",
-            SubscriptionWrapper.VERSION_1,
-            12
+                new long[]{1L},
+                Instruction.DELETE_KEY_AND_PROPAGATE,
+                "pk1",
+                SubscriptionWrapper.VERSION_1,
+                12
         );
         final Record<CombinedKey<String, String>, Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>> record =
-            new Record<>(
-                new CombinedKey<>("fk1", "pk1"),
-                new Change<>(ValueTimestampHeaders.make(newValue, 1L, new RecordHeaders()), null),
-                1L
+                new Record<>(
+                    new CombinedKey<>("fk1", "pk1"),
+                    new Change<>(ValueTimestampHeaders.make(newValue, 1L, new RecordHeaders()), null),
+                    1L
             );
         processor.process(record);
         final List<CapturedForward<? extends String, ? extends SubscriptionResponseWrapper<String>>> forwarded = context.forwarded();
         assertEquals(1, forwarded.size());
         assertEquals(
-            new Record<>(
-                "pk1",
-                new SubscriptionResponseWrapper<>(
-                    newValue.hash(),
-                    null,
-                    12
+                new Record<>(
+                    "pk1",
+                    new SubscriptionResponseWrapper<>(
+                        newValue.hash(),
+                        null,
+                        12
                 ),
-                1L
+                    1L
             ),
-            forwarded.get(0).record()
+                forwarded.get(0).record()
         );
     }
 
@@ -128,32 +128,32 @@ public class SubscriptionJoinProcessorSupplierTest {
         processor.init(context);
 
         final SubscriptionWrapper<String> newValue = new SubscriptionWrapper<>(
-            new long[]{1L},
-            Instruction.PROPAGATE_ONLY_IF_FK_VAL_AVAILABLE,
-            "pk1",
-            SubscriptionWrapper.VERSION_0,
-            null
+                new long[]{1L},
+                Instruction.PROPAGATE_ONLY_IF_FK_VAL_AVAILABLE,
+                "pk1",
+                SubscriptionWrapper.VERSION_0,
+                null
         );
         final Record<CombinedKey<String, String>, Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>> record =
-            new Record<>(
-                new CombinedKey<>("fk1", "pk1"),
-                new Change<>(ValueTimestampHeaders.make(newValue, 1L, new RecordHeaders()), null),
-                1L
+                new Record<>(
+                    new CombinedKey<>("fk1", "pk1"),
+                    new Change<>(ValueTimestampHeaders.make(newValue, 1L, new RecordHeaders()), null),
+                    1L
         );
         processor.process(record);
         final List<CapturedForward<? extends String, ? extends SubscriptionResponseWrapper<String>>> forwarded = context.forwarded();
         assertEquals(1, forwarded.size());
         assertEquals(
-            new Record<>(
-                "pk1",
-                new SubscriptionResponseWrapper<>(
-                    newValue.hash(),
-                    "foo",
-                    null
+                new Record<>(
+                    "pk1",
+                    new SubscriptionResponseWrapper<>(
+                        newValue.hash(),
+                        "foo",
+                        null
                 ),
-                1L
+                    1L
             ),
-            forwarded.get(0).record()
+                forwarded.get(0).record()
         );
     }
 
@@ -163,32 +163,32 @@ public class SubscriptionJoinProcessorSupplierTest {
         processor.init(context);
 
         final SubscriptionWrapper<String> newValue = new SubscriptionWrapper<>(
-            new long[]{1L},
-            Instruction.PROPAGATE_ONLY_IF_FK_VAL_AVAILABLE,
-            "pk1",
-            SubscriptionWrapper.VERSION_1,
-            12
+                new long[]{1L},
+                Instruction.PROPAGATE_ONLY_IF_FK_VAL_AVAILABLE,
+                "pk1",
+                SubscriptionWrapper.VERSION_1,
+                12
         );
         final Record<CombinedKey<String, String>, Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>> record =
-            new Record<>(
-                new CombinedKey<>("fk1", "pk1"),
-                new Change<>(ValueTimestampHeaders.make(newValue, 1L, new RecordHeaders()), null),
-                1L
+                new Record<>(
+                    new CombinedKey<>("fk1", "pk1"),
+                    new Change<>(ValueTimestampHeaders.make(newValue, 1L, new RecordHeaders()), null),
+                    1L
             );
         processor.process(record);
         final List<CapturedForward<? extends String, ? extends SubscriptionResponseWrapper<String>>> forwarded = context.forwarded();
         assertEquals(1, forwarded.size());
         assertEquals(
-            new Record<>(
-                "pk1",
-                new SubscriptionResponseWrapper<>(
-                    newValue.hash(),
-                    "foo",
-                     12
+                new Record<>(
+                    "pk1",
+                    new SubscriptionResponseWrapper<>(
+                        newValue.hash(),
+                        "foo",
+                        12
                 ),
-                1L
+                    1L
             ),
-            forwarded.get(0).record());
+                forwarded.get(0).record());
     }
 
     @Test
@@ -197,33 +197,33 @@ public class SubscriptionJoinProcessorSupplierTest {
         processor.init(context);
 
         final SubscriptionWrapper<String> newValue = new SubscriptionWrapper<>(
-            new long[]{1L},
-            Instruction.PROPAGATE_NULL_IF_NO_FK_VAL_AVAILABLE,
-            "pk1",
-            SubscriptionWrapper.VERSION_0,
-            null
+                new long[]{1L},
+                Instruction.PROPAGATE_NULL_IF_NO_FK_VAL_AVAILABLE,
+                "pk1",
+                SubscriptionWrapper.VERSION_0,
+                null
         );
         Record<CombinedKey<String, String>, Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>> record =
-            new Record<>(
-                new CombinedKey<>("fk1", "pk1"),
-                new Change<>(ValueTimestampHeaders.make(newValue, 1L, new RecordHeaders()), null),
-                1L
+                new Record<>(
+                    new CombinedKey<>("fk1", "pk1"),
+                    new Change<>(ValueTimestampHeaders.make(newValue, 1L, new RecordHeaders()), null),
+                    1L
             );
         processor.process(record);
         // propagate matched FK
         List<CapturedForward<? extends String, ? extends SubscriptionResponseWrapper<String>>> forwarded = context.forwarded();
         assertEquals(1, forwarded.size());
         assertEquals(
-            new Record<>(
-                "pk1",
-                new SubscriptionResponseWrapper<>(
-                    newValue.hash(),
-                    "foo",
-                    null
+                new Record<>(
+                    "pk1",
+                    new SubscriptionResponseWrapper<>(
+                        newValue.hash(),
+                        "foo",
+                        null
                 ),
-                1L
+                    1L
             ),
-            forwarded.get(0).record());
+                forwarded.get(0).record());
 
         record = new Record<>(
                 new CombinedKey<>("fk9000", "pk1"),
@@ -235,16 +235,16 @@ public class SubscriptionJoinProcessorSupplierTest {
         forwarded = context.forwarded();
         assertEquals(2, forwarded.size());
         assertEquals(
-            new Record<>(
-                "pk1",
-                new SubscriptionResponseWrapper<>(
-                    newValue.hash(),
-                    null,
-                    null
+                new Record<>(
+                    "pk1",
+                    new SubscriptionResponseWrapper<>(
+                        newValue.hash(),
+                        null,
+                        null
                 ),
-                1L
+                    1L
             ),
-            forwarded.get(1).record());
+                forwarded.get(1).record());
     }
 
     @Test
@@ -253,52 +253,52 @@ public class SubscriptionJoinProcessorSupplierTest {
         processor.init(context);
 
         final SubscriptionWrapper<String> newValue = new SubscriptionWrapper<>(
-            new long[]{1L},
-            Instruction.PROPAGATE_NULL_IF_NO_FK_VAL_AVAILABLE,
-            "pk1",
-            SubscriptionWrapper.VERSION_1,
-            12);
+                new long[]{1L},
+                Instruction.PROPAGATE_NULL_IF_NO_FK_VAL_AVAILABLE,
+                "pk1",
+                SubscriptionWrapper.VERSION_1,
+                12);
         Record<CombinedKey<String, String>, Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>> record =
-            new Record<>(
-                new CombinedKey<>("fk1", "pk1"),
-                new Change<>(ValueTimestampHeaders.make(newValue, 1L, null), null),
-                1L
+                new Record<>(
+                    new CombinedKey<>("fk1", "pk1"),
+                    new Change<>(ValueTimestampHeaders.make(newValue, 1L, null), null),
+                    1L
             );
         processor.process(record);
         List<CapturedForward<? extends String, ? extends SubscriptionResponseWrapper<String>>> forwarded = context.forwarded();
         assertEquals(1, forwarded.size());
         assertEquals(
-            new Record<>(
-                "pk1",
-                new SubscriptionResponseWrapper<>(
-                    newValue.hash(),
-                    "foo",
-                    12
+                new Record<>(
+                    "pk1",
+                    new SubscriptionResponseWrapper<>(
+                        newValue.hash(),
+                        "foo",
+                        12
                 ),
-                1L
+                    1L
             ),
-            forwarded.get(0).record());
+                forwarded.get(0).record());
 
         record = new Record<>(
-            new CombinedKey<>("fk9000", "pk1"),
-            new Change<>(ValueTimestampHeaders.make(newValue, 1L, null), null),
-            1L
+                new CombinedKey<>("fk9000", "pk1"),
+                new Change<>(ValueTimestampHeaders.make(newValue, 1L, null), null),
+                1L
         );
         processor.process(record);
         // propagate null if there is no match
         forwarded = context.forwarded();
         assertEquals(2, forwarded.size());
         assertEquals(
-            new Record<>(
-                "pk1",
-                new SubscriptionResponseWrapper<>(
-                    newValue.hash(),
-                    null,
-                    12
+                new Record<>(
+                    "pk1",
+                    new SubscriptionResponseWrapper<>(
+                        newValue.hash(),
+                        null,
+                        12
                 ),
-                1L
+                    1L
             ),
-            forwarded.get(1).record());
+                forwarded.get(1).record());
     }
 
     @Test
@@ -307,16 +307,16 @@ public class SubscriptionJoinProcessorSupplierTest {
         processor.init(context);
 
         final SubscriptionWrapper<String> newValue = new SubscriptionWrapper<>(
-            new long[]{1L},
-            Instruction.DELETE_KEY_NO_PROPAGATE,
-            "pk1",
-            SubscriptionWrapper.VERSION_0,
-            null);
+                new long[]{1L},
+                Instruction.DELETE_KEY_NO_PROPAGATE,
+                "pk1",
+                SubscriptionWrapper.VERSION_0,
+                null);
         final Record<CombinedKey<String, String>, Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>> record =
-            new Record<>(
-                new CombinedKey<>("fk1", "pk1"),
-                new Change<>(ValueTimestampHeaders.make(newValue, 1L, null), null),
-                1L
+                new Record<>(
+                    new CombinedKey<>("fk1", "pk1"),
+                    new Change<>(ValueTimestampHeaders.make(newValue, 1L, null), null),
+                    1L
             );
         processor.process(record);
         final List<CapturedForward<? extends String, ? extends SubscriptionResponseWrapper<String>>> forwarded = context.forwarded();
@@ -329,15 +329,15 @@ public class SubscriptionJoinProcessorSupplierTest {
         processor.init(context);
 
         final SubscriptionWrapper<String> newValue = new SubscriptionWrapper<>(
-            new long[]{1L},
-            Instruction.DELETE_KEY_NO_PROPAGATE,
-            "pk1",
-            SubscriptionWrapper.VERSION_1,
-            12);
+                new long[]{1L},
+                Instruction.DELETE_KEY_NO_PROPAGATE,
+                "pk1",
+                SubscriptionWrapper.VERSION_1,
+                12);
         final Record<CombinedKey<String, String>, Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>> record =
-            new Record<>(new CombinedKey<>("fk1", "pk1"),
-                         new Change<>(ValueTimestampHeaders.make(newValue, 1L, null), null),
-                        1L
+                new Record<>(new CombinedKey<>("fk1", "pk1"),
+                    new Change<>(ValueTimestampHeaders.make(newValue, 1L, null), null),
+                    1L
             );
         processor.process(record);
         final List<CapturedForward<? extends String, ? extends SubscriptionResponseWrapper<String>>> forwarded = context.forwarded();
@@ -376,11 +376,11 @@ public class SubscriptionJoinProcessorSupplierTest {
     }
 
     private Processor<CombinedKey<String, String>,
-                      Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>,
-                      String,
-                      SubscriptionResponseWrapper<String>> processor(final KTableValueGetterSupplier<String, String> valueGetterSupplier) {
+        Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>,
+        String,
+        SubscriptionResponseWrapper<String>> processor(final KTableValueGetterSupplier<String, String> valueGetterSupplier) {
         final SubscriptionJoinProcessorSupplier<String, String, String> supplier =
-            new SubscriptionJoinProcessorSupplier<>(valueGetterSupplier);
+                new SubscriptionJoinProcessorSupplier<>(valueGetterSupplier);
         return supplier.get();
     }
 }

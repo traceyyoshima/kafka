@@ -38,8 +38,8 @@ public final class JsonConverterConfig extends ConverterConfig {
 
     public static final String SCHEMA_CONTENT_CONFIG = "schema.content";
     public static final String SCHEMA_CONTENT_DEFAULT = null;
-    private static final String SCHEMA_CONTENT_DOC = "When set, this is used as the schema for all messages, and the schemas within each of the message will be ignored." 
-        + "Otherwise, the schema will be included in the content of each message. This configuration applies only 'schemas.enable' is true, and it exclusively affects the sink connector.";
+    private static final String SCHEMA_CONTENT_DOC = "When set, this is used as the schema for all messages, and the schemas within each of the message will be ignored."
+            + "Otherwise, the schema will be included in the content of each message. This configuration applies only 'schemas.enable' is true, and it exclusively affects the sink connector.";
     private static final String SCHEMA_CONTENT_DISPLAY = "Schema Content";
 
     public static final String SCHEMAS_CACHE_SIZE_CONFIG = "schemas.cache.size";
@@ -50,7 +50,7 @@ public final class JsonConverterConfig extends ConverterConfig {
     public static final String DECIMAL_FORMAT_CONFIG = "decimal.format";
     public static final String DECIMAL_FORMAT_DEFAULT = DecimalFormat.BASE64.name();
     private static final String DECIMAL_FORMAT_DOC = "Controls which format this converter will serialize decimals in."
-        + " This value is case insensitive and can be either 'BASE64' (default) or 'NUMERIC'";
+            + " This value is case insensitive and can be either 'BASE64' (default) or 'NUMERIC'";
     private static final String DECIMAL_FORMAT_DISPLAY = "Decimal Format";
 
     public static final String REPLACE_NULL_WITH_DEFAULT_CONFIG = "replace.null.with.default";
@@ -74,12 +74,12 @@ public final class JsonConverterConfig extends ConverterConfig {
         group = "Serialization";
         orderInGroup = 0;
         CONFIG.define(
-            DECIMAL_FORMAT_CONFIG, Type.STRING, DECIMAL_FORMAT_DEFAULT,
-            ConfigDef.CaseInsensitiveValidString.in(
-                DecimalFormat.BASE64.name(),
-                DecimalFormat.NUMERIC.name()),
-            Importance.LOW, DECIMAL_FORMAT_DOC, group, orderInGroup++,
-            Width.MEDIUM, DECIMAL_FORMAT_DISPLAY);
+                DECIMAL_FORMAT_CONFIG, Type.STRING, DECIMAL_FORMAT_DEFAULT,
+                ConfigDef.CaseInsensitiveValidString.in(
+                    DecimalFormat.BASE64.name(),
+                    DecimalFormat.NUMERIC.name()),
+                Importance.LOW, DECIMAL_FORMAT_DOC, group, orderInGroup++,
+                Width.MEDIUM, DECIMAL_FORMAT_DISPLAY);
         CONFIG.define(
                 REPLACE_NULL_WITH_DEFAULT_CONFIG, Type.BOOLEAN, REPLACE_NULL_WITH_DEFAULT_DEFAULT,
                 Importance.LOW, REPLACE_NULL_WITH_DEFAULT_DOC, group, orderInGroup++,

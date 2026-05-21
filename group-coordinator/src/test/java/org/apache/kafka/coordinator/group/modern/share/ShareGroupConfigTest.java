@@ -63,7 +63,7 @@ public class ShareGroupConfigTest {
         configs.put(ShareGroupConfig.SHARE_GROUP_MIN_RECORD_LOCK_DURATION_MS_CONFIG, 15000);
         configs.put(ShareGroupConfig.SHARE_GROUP_RECORD_LOCK_DURATION_MS_CONFIG, 10000);
         assertEquals("group.share.record.lock.duration.ms must be greater than or equal to group.share.min.record.lock.duration.ms",
-            assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
 
         configs.clear();
         // test for when SHARE_GROUP_RECORD_LOCK_DURATION_MS_CONFIG is greater than SHARE_GROUP_MAX_RECORD_LOCK_DURATION_MS_CONFIG
@@ -71,7 +71,7 @@ public class ShareGroupConfigTest {
         configs.put(ShareGroupConfig.SHARE_GROUP_MIN_RECORD_LOCK_DURATION_MS_CONFIG, 15000);
         configs.put(ShareGroupConfig.SHARE_GROUP_RECORD_LOCK_DURATION_MS_CONFIG, 60000);
         assertEquals("group.share.max.record.lock.duration.ms must be greater than or equal to group.share.record.lock.duration.ms",
-            assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
 
         configs.clear();
         // test for when SHARE_GROUP_DELIVERY_COUNT_LIMIT_CONFIG is less than SHARE_GROUP_MIN_DELIVERY_COUNT_LIMIT_CONFIG
@@ -91,13 +91,13 @@ public class ShareGroupConfigTest {
         // test for when SHARE_GROUP_DELIVERY_COUNT_LIMIT_CONFIG is out of bounds
         configs.put(ShareGroupConfig.SHARE_GROUP_DELIVERY_COUNT_LIMIT_CONFIG, 1);
         assertEquals("Invalid value 1 for configuration group.share.delivery.count.limit: Value must be at least 2",
-            assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
 
         configs.clear();
         // test for when SHARE_GROUP_DELIVERY_COUNT_LIMIT_CONFIG is out of bounds
         configs.put(ShareGroupConfig.SHARE_GROUP_DELIVERY_COUNT_LIMIT_CONFIG, 11);
         assertEquals("Invalid value 11 for configuration group.share.delivery.count.limit: Value must be no more than 10",
-            assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
 
         configs.clear();
         // test for when SHARE_GROUP_PARTITION_MAX_RECORD_LOCKS_CONFIG is less than SHARE_GROUP_MIN_PARTITION_MAX_RECORD_LOCKS_CONFIG
@@ -117,20 +117,20 @@ public class ShareGroupConfigTest {
         // test for when SHARE_GROUP_PARTITION_MAX_RECORD_LOCKS_CONFIG is out of bounds
         configs.put(ShareGroupConfig.SHARE_GROUP_PARTITION_MAX_RECORD_LOCKS_CONFIG, 50);
         assertEquals("Invalid value 50 for configuration group.share.partition.max.record.locks: Value must be at least 100",
-            assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
 
         configs.clear();
         // test for when SHARE_GROUP_PARTITION_MAX_RECORD_LOCKS_CONFIG is out of bounds
         configs.put(ShareGroupConfig.SHARE_GROUP_PARTITION_MAX_RECORD_LOCKS_CONFIG, 20000);
         assertEquals("Invalid value 20000 for configuration group.share.partition.max.record.locks: Value must be no more than 10000",
-            assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
 
         configs.clear();
         // test for when SHARE_GROUP_MAX_SHARE_SESSIONS_CONFIG is less than SHARE_GROUP_MAX_SIZE_CONFIG
         configs.put(GroupCoordinatorConfig.SHARE_GROUP_MAX_SIZE_CONFIG, 2000);
         configs.put(ShareGroupConfig.SHARE_GROUP_MAX_SHARE_SESSIONS_CONFIG, 1000);
         assertEquals("Invalid value 2000 for configuration group.share.max.size: Value must be no more than 1000",
-            assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
     }
 
     public static ShareGroupConfig createShareGroupConfig(

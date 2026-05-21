@@ -1856,7 +1856,6 @@ public interface KTable<K, V> {
     <VO, VR> KTable<K, VR> outerJoin(final KTable<K, VO> other,
                                      final ValueJoiner<? super V, ? super VO, ? extends VR> joiner);
 
-
     /**
      * Join records of this {@code KTable} (left input) with another {@code KTable}'s (right input) records using
      * non-windowed outer equi join, with default serializers, deserializers, and state store.
@@ -2024,7 +2023,6 @@ public interface KTable<K, V> {
     <VO, VR> KTable<K, VR> outerJoin(final KTable<K, VO> other,
                                      final ValueJoiner<? super V, ? super VO, ? extends VR> joiner,
                                      final Materialized<K, VR, KeyValueStore<Bytes, byte[]>> materialized);
-
 
     /**
      * Join records of this {@code KTable} (left input) with another {@code KTable}'s (right input) records using
@@ -2194,6 +2192,7 @@ public interface KTable<K, V> {
                                     final BiFunction<? super K, ? super V, ? extends KO> foreignKeyExtractor,
                                     final ValueJoiner<? super V, ? super VO, ? extends VR> joiner,
                                     final TableJoined<K, KO> tableJoined);
+
     /**
      * Join records of this {@code KTable} with another {@code KTable} using non-windowed inner join.
      * <p>

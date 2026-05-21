@@ -34,24 +34,24 @@ public class MetadataQuorumCommandErrorTest {
     @Test
     public void testPropertiesFileDoesNotExists() {
         assertEquals(1,
-            MetadataQuorumCommand.mainNoExit("--bootstrap-server", "localhost:9092", "--command-config", "admin.properties", "describe"));
+                MetadataQuorumCommand.mainNoExit("--bootstrap-server", "localhost:9092", "--command-config", "admin.properties", "describe"));
         assertEquals("Properties file admin.properties does not exists!",
-            ToolsTestUtils.captureStandardErr(() ->
-                MetadataQuorumCommand.mainNoExit("--bootstrap-server", "localhost:9092", "--command-config", "admin.properties", "describe")));
+                ToolsTestUtils.captureStandardErr(() ->
+                        MetadataQuorumCommand.mainNoExit("--bootstrap-server", "localhost:9092", "--command-config", "admin.properties", "describe")));
     }
 
     @Test
     public void testDescribeOptions() {
         assertEquals(1, MetadataQuorumCommand.mainNoExit("--bootstrap-server", "localhost:9092", "describe"));
         assertEquals("One of --status or --replication must be specified with describe sub-command",
-            ToolsTestUtils.captureStandardErr(() ->
-                MetadataQuorumCommand.mainNoExit("--bootstrap-server", "localhost:9092", "describe")));
+                ToolsTestUtils.captureStandardErr(() ->
+                        MetadataQuorumCommand.mainNoExit("--bootstrap-server", "localhost:9092", "describe")));
 
         assertEquals(1,
-            MetadataQuorumCommand.mainNoExit("--bootstrap-server", "localhost:9092", "describe", "--status", "--replication"));
+                MetadataQuorumCommand.mainNoExit("--bootstrap-server", "localhost:9092", "describe", "--status", "--replication"));
         assertEquals("Only one of --status or --replication should be specified with describe sub-command",
-            ToolsTestUtils.captureStandardErr(() ->
-                MetadataQuorumCommand.mainNoExit("--bootstrap-server", "localhost:9092", "describe", "--status", "--replication")));
+                ToolsTestUtils.captureStandardErr(() ->
+                        MetadataQuorumCommand.mainNoExit("--bootstrap-server", "localhost:9092", "describe", "--status", "--replication")));
     }
 
     @Test
@@ -69,17 +69,17 @@ public class MetadataQuorumCommandErrorTest {
     @Test
     public void testRemoveControllerRequiresControllerId() {
         assertThrows(ArgumentParserException.class, () ->
-            MetadataQuorumCommand.execute("--bootstrap-server", "localhost:9092",
-                "remove-controller",
-                "--controller-directory-id", "_KWDkTahTVaiVVVTaugNew",
-                "--dry-run"));
+                MetadataQuorumCommand.execute("--bootstrap-server", "localhost:9092",
+                    "remove-controller",
+                    "--controller-directory-id", "_KWDkTahTVaiVVVTaugNew",
+                    "--dry-run"));
     }
 
     @Test
     public void testRemoveControllerRequiresControllerDirectoryId() {
         assertThrows(ArgumentParserException.class, () ->
-            MetadataQuorumCommand.execute("--bootstrap-server", "localhost:9092",
-                "remove-controller",
-                "--controller-id", "1"));
+                MetadataQuorumCommand.execute("--bootstrap-server", "localhost:9092",
+                    "remove-controller",
+                    "--controller-id", "1"));
     }
 }

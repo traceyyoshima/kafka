@@ -95,7 +95,6 @@ public class SinkRecordTest {
         assertEquals(record.headers(), duplicate.headers());
     }
 
-
     @Test
     public void shouldDuplicateRecordUsingNewHeaders() {
         Headers newHeaders = new ConnectHeaders().addString("h3", "hv3");

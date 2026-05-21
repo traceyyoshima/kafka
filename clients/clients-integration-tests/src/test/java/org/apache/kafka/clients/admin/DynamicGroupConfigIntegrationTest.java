@@ -42,14 +42,14 @@ public class DynamicGroupConfigIntegrationTest {
             // Verify default config only.
             // Expected synonym chain: DEFAULT_CONFIG
             assertGroupConfig(
-                admin,
-                groupResource,
-                GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                String.valueOf(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_DEFAULT),
-                ConfigEntry.ConfigSource.DEFAULT_CONFIG,
-                List.of(
-                    Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.DEFAULT_CONFIG))
+                    admin,
+                    groupResource,
+                    GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                    String.valueOf(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_DEFAULT),
+                    ConfigEntry.ConfigSource.DEFAULT_CONFIG,
+                    List.of(
+                        Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.DEFAULT_CONFIG))
             );
 
             // Set per-broker dynamic config.
@@ -57,16 +57,16 @@ public class DynamicGroupConfigIntegrationTest {
             alterConfig(admin, cluster, brokerResource, GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, "1500");
 
             assertGroupConfig(
-                admin,
-                groupResource,
-                GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                "1500",
-                ConfigEntry.ConfigSource.DYNAMIC_BROKER_CONFIG,
-                List.of(
-                    Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.DYNAMIC_BROKER_CONFIG),
-                    Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.DEFAULT_CONFIG))
+                    admin,
+                    groupResource,
+                    GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                    "1500",
+                    ConfigEntry.ConfigSource.DYNAMIC_BROKER_CONFIG,
+                    List.of(
+                        Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.DYNAMIC_BROKER_CONFIG),
+                        Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.DEFAULT_CONFIG))
             );
 
             // Set dynamic default broker config; per-broker config still takes precedence.
@@ -74,18 +74,18 @@ public class DynamicGroupConfigIntegrationTest {
             alterConfig(admin, cluster, brokerDefaultResource, GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, "2000");
 
             assertGroupConfig(
-                admin,
-                groupResource,
-                GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                "1500",
-                ConfigEntry.ConfigSource.DYNAMIC_BROKER_CONFIG,
-                List.of(
-                    Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.DYNAMIC_BROKER_CONFIG),
-                    Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.DYNAMIC_DEFAULT_BROKER_CONFIG),
-                    Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.DEFAULT_CONFIG))
+                    admin,
+                    groupResource,
+                    GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                    "1500",
+                    ConfigEntry.ConfigSource.DYNAMIC_BROKER_CONFIG,
+                    List.of(
+                        Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.DYNAMIC_BROKER_CONFIG),
+                        Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.DYNAMIC_DEFAULT_BROKER_CONFIG),
+                        Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.DEFAULT_CONFIG))
             );
 
             // Set group override; it takes precedence over all broker configs.
@@ -94,20 +94,20 @@ public class DynamicGroupConfigIntegrationTest {
             alterConfig(admin, cluster, groupResource, GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG, "3000");
 
             assertGroupConfig(
-                admin,
-                groupResource,
-                GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                "3000",
-                ConfigEntry.ConfigSource.DYNAMIC_GROUP_CONFIG,
-                List.of(
-                    Map.entry(GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.DYNAMIC_GROUP_CONFIG),
-                    Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.DYNAMIC_BROKER_CONFIG),
-                    Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.DYNAMIC_DEFAULT_BROKER_CONFIG),
-                    Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.DEFAULT_CONFIG))
+                    admin,
+                    groupResource,
+                    GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                    "3000",
+                    ConfigEntry.ConfigSource.DYNAMIC_GROUP_CONFIG,
+                    List.of(
+                        Map.entry(GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.DYNAMIC_GROUP_CONFIG),
+                        Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.DYNAMIC_BROKER_CONFIG),
+                        Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.DYNAMIC_DEFAULT_BROKER_CONFIG),
+                        Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.DEFAULT_CONFIG))
             );
         }
     }
@@ -121,14 +121,14 @@ public class DynamicGroupConfigIntegrationTest {
             // Verify default config for a config with no broker synonym.
             // Expected synonym chain: DEFAULT_CONFIG
             assertGroupConfig(
-                admin,
-                groupResource,
-                GroupConfig.SHARE_AUTO_OFFSET_RESET_CONFIG,
-                GroupConfig.SHARE_AUTO_OFFSET_RESET_DEFAULT,
-                ConfigEntry.ConfigSource.DEFAULT_CONFIG,
-                List.of(
-                    Map.entry(GroupConfig.SHARE_AUTO_OFFSET_RESET_CONFIG,
-                        ConfigEntry.ConfigSource.DEFAULT_CONFIG))
+                    admin,
+                    groupResource,
+                    GroupConfig.SHARE_AUTO_OFFSET_RESET_CONFIG,
+                    GroupConfig.SHARE_AUTO_OFFSET_RESET_DEFAULT,
+                    ConfigEntry.ConfigSource.DEFAULT_CONFIG,
+                    List.of(
+                        Map.entry(GroupConfig.SHARE_AUTO_OFFSET_RESET_CONFIG,
+                            ConfigEntry.ConfigSource.DEFAULT_CONFIG))
             );
 
             // Set group override; synonyms use group config name since there is no broker synonym.
@@ -136,24 +136,24 @@ public class DynamicGroupConfigIntegrationTest {
             alterConfig(admin, cluster, groupResource, GroupConfig.SHARE_AUTO_OFFSET_RESET_CONFIG, "earliest");
 
             assertGroupConfig(
-                admin,
-                groupResource,
-                GroupConfig.SHARE_AUTO_OFFSET_RESET_CONFIG,
-                "earliest",
-                ConfigEntry.ConfigSource.DYNAMIC_GROUP_CONFIG,
-                List.of(
-                    Map.entry(GroupConfig.SHARE_AUTO_OFFSET_RESET_CONFIG,
-                        ConfigEntry.ConfigSource.DYNAMIC_GROUP_CONFIG),
-                    Map.entry(GroupConfig.SHARE_AUTO_OFFSET_RESET_CONFIG,
-                        ConfigEntry.ConfigSource.DEFAULT_CONFIG))
+                    admin,
+                    groupResource,
+                    GroupConfig.SHARE_AUTO_OFFSET_RESET_CONFIG,
+                    "earliest",
+                    ConfigEntry.ConfigSource.DYNAMIC_GROUP_CONFIG,
+                    List.of(
+                        Map.entry(GroupConfig.SHARE_AUTO_OFFSET_RESET_CONFIG,
+                            ConfigEntry.ConfigSource.DYNAMIC_GROUP_CONFIG),
+                        Map.entry(GroupConfig.SHARE_AUTO_OFFSET_RESET_CONFIG,
+                            ConfigEntry.ConfigSource.DEFAULT_CONFIG))
             );
         }
     }
 
     @ClusterTest(types = {Type.KRAFT},
-        serverProperties = {
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "2000")
-        })
+            serverProperties = {
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "2000")
+            })
     public void testDescribeGroupConfigSynonymsWithStaticBrokerConfig(ClusterInstance cluster) throws Exception {
         try (var admin = cluster.admin()) {
             var group = "synonym-static-test-group";
@@ -164,16 +164,16 @@ public class DynamicGroupConfigIntegrationTest {
             // Verify static broker config is reflected in synonyms.
             // Expected synonym chain: STATIC_BROKER_CONFIG -> DEFAULT_CONFIG
             assertGroupConfig(
-                admin,
-                groupResource,
-                GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                "2000",
-                ConfigEntry.ConfigSource.STATIC_BROKER_CONFIG,
-                List.of(
-                    Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.STATIC_BROKER_CONFIG),
-                    Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.DEFAULT_CONFIG))
+                    admin,
+                    groupResource,
+                    GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                    "2000",
+                    ConfigEntry.ConfigSource.STATIC_BROKER_CONFIG,
+                    List.of(
+                        Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.STATIC_BROKER_CONFIG),
+                        Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.DEFAULT_CONFIG))
             );
 
             // Set group override; it takes precedence over static broker config.
@@ -181,18 +181,18 @@ public class DynamicGroupConfigIntegrationTest {
             alterConfig(admin, cluster, groupResource, GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG, "3000");
 
             assertGroupConfig(
-                admin,
-                groupResource,
-                GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                "3000",
-                ConfigEntry.ConfigSource.DYNAMIC_GROUP_CONFIG,
-                List.of(
-                    Map.entry(GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.DYNAMIC_GROUP_CONFIG),
-                    Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.STATIC_BROKER_CONFIG),
-                    Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.DEFAULT_CONFIG))
+                    admin,
+                    groupResource,
+                    GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                    "3000",
+                    ConfigEntry.ConfigSource.DYNAMIC_GROUP_CONFIG,
+                    List.of(
+                        Map.entry(GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.DYNAMIC_GROUP_CONFIG),
+                        Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.STATIC_BROKER_CONFIG),
+                        Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.DEFAULT_CONFIG))
             );
 
             // Add dynamic default broker config.
@@ -201,20 +201,20 @@ public class DynamicGroupConfigIntegrationTest {
             alterConfig(admin, cluster, brokerDefaultResource, GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, "4000");
 
             assertGroupConfig(
-                admin,
-                groupResource,
-                GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                "3000",
-                ConfigEntry.ConfigSource.DYNAMIC_GROUP_CONFIG,
-                List.of(
-                    Map.entry(GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.DYNAMIC_GROUP_CONFIG),
-                    Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.DYNAMIC_DEFAULT_BROKER_CONFIG),
-                    Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.STATIC_BROKER_CONFIG),
-                    Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.DEFAULT_CONFIG)));
+                    admin,
+                    groupResource,
+                    GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                    "3000",
+                    ConfigEntry.ConfigSource.DYNAMIC_GROUP_CONFIG,
+                    List.of(
+                        Map.entry(GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.DYNAMIC_GROUP_CONFIG),
+                        Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.DYNAMIC_DEFAULT_BROKER_CONFIG),
+                        Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.STATIC_BROKER_CONFIG),
+                        Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.DEFAULT_CONFIG)));
 
             // Add per-broker dynamic config to complete the full 5-layer synonym chain.
             // Expected synonym chain: DYNAMIC_GROUP_CONFIG -> DYNAMIC_BROKER_CONFIG -> DYNAMIC_DEFAULT_BROKER_CONFIG
@@ -222,22 +222,22 @@ public class DynamicGroupConfigIntegrationTest {
             alterConfig(admin, cluster, brokerResource, GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, "5000");
 
             assertGroupConfig(
-                admin,
-                groupResource,
-                GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                "3000",
-                ConfigEntry.ConfigSource.DYNAMIC_GROUP_CONFIG,
-                List.of(
-                    Map.entry(GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.DYNAMIC_GROUP_CONFIG),
-                    Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.DYNAMIC_BROKER_CONFIG),
-                    Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.DYNAMIC_DEFAULT_BROKER_CONFIG),
-                    Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.STATIC_BROKER_CONFIG),
-                    Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.DEFAULT_CONFIG))
+                    admin,
+                    groupResource,
+                    GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                    "3000",
+                    ConfigEntry.ConfigSource.DYNAMIC_GROUP_CONFIG,
+                    List.of(
+                        Map.entry(GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.DYNAMIC_GROUP_CONFIG),
+                        Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.DYNAMIC_BROKER_CONFIG),
+                        Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.DYNAMIC_DEFAULT_BROKER_CONFIG),
+                        Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.STATIC_BROKER_CONFIG),
+                        Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.DEFAULT_CONFIG))
             );
 
             // Delete group override; value falls back to per-broker dynamic config.
@@ -246,20 +246,20 @@ public class DynamicGroupConfigIntegrationTest {
             deleteConfig(admin, cluster, groupResource, GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG);
 
             assertGroupConfig(
-                admin,
-                groupResource,
-                GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                "5000",
-                ConfigEntry.ConfigSource.DYNAMIC_BROKER_CONFIG,
-                List.of(
-                    Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.DYNAMIC_BROKER_CONFIG),
-                    Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.DYNAMIC_DEFAULT_BROKER_CONFIG),
-                    Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.STATIC_BROKER_CONFIG),
-                    Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                        ConfigEntry.ConfigSource.DEFAULT_CONFIG)));
+                    admin,
+                    groupResource,
+                    GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                    "5000",
+                    ConfigEntry.ConfigSource.DYNAMIC_BROKER_CONFIG,
+                    List.of(
+                        Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.DYNAMIC_BROKER_CONFIG),
+                        Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.DYNAMIC_DEFAULT_BROKER_CONFIG),
+                        Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.STATIC_BROKER_CONFIG),
+                        Map.entry(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                            ConfigEntry.ConfigSource.DEFAULT_CONFIG)));
         }
     }
 
@@ -271,7 +271,7 @@ public class DynamicGroupConfigIntegrationTest {
         String value
     ) throws Exception {
         admin.incrementalAlterConfigs(Map.of(resource, List.of(
-            new AlterConfigOp(new ConfigEntry(key, value), AlterConfigOp.OpType.SET)
+                new AlterConfigOp(new ConfigEntry(key, value), AlterConfigOp.OpType.SET)
         ))).all().get();
         cluster.ensureConsistentMetadata();
     }
@@ -283,7 +283,7 @@ public class DynamicGroupConfigIntegrationTest {
         String key
     ) throws Exception {
         admin.incrementalAlterConfigs(Map.of(resource, List.of(
-            new AlterConfigOp(new ConfigEntry(key, ""), AlterConfigOp.OpType.DELETE)
+                new AlterConfigOp(new ConfigEntry(key, ""), AlterConfigOp.OpType.DELETE)
         ))).all().get();
         cluster.ensureConsistentMetadata();
     }

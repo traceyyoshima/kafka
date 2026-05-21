@@ -61,29 +61,29 @@ public class CurrentAssignmentBuilderTest {
             .setPreviousMemberEpoch(10)
             .setSubscribedTopicNames(List.of(topic1, topic2))
             .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(topicId1, 1, 2, 3),
-                mkTopicAssignment(topicId2, 4, 5, 6)), 5))
+                    mkTopicAssignment(topicId1, 1, 2, 3),
+                    mkTopicAssignment(topicId2, 4, 5, 6)), 5))
             .build();
 
         ConsumerGroupMember updatedMember = new CurrentAssignmentBuilder(member)
             .withMetadataImage(metadataImage)
             .withTargetAssignment(11, new Assignment(mkAssignment(
-                mkTopicAssignment(topicId1, 1, 2, 3),
-                mkTopicAssignment(topicId2, 4, 5, 6))))
+                    mkTopicAssignment(topicId1, 1, 2, 3),
+                    mkTopicAssignment(topicId2, 4, 5, 6))))
             .withCurrentPartitionEpoch((topicId, partitionId) -> 10)
             .build();
 
         assertEquals(
-            new ConsumerGroupMember.Builder("member")
+                new ConsumerGroupMember.Builder("member")
                 .setState(MemberState.STABLE)
                 .setMemberEpoch(11)
                 .setPreviousMemberEpoch(10)
                 .setSubscribedTopicNames(List.of(topic1, topic2))
                 .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                    mkTopicAssignment(topicId1, 1, 2, 3),
-                    mkTopicAssignment(topicId2, 4, 5, 6)), 5))
+                        mkTopicAssignment(topicId1, 1, 2, 3),
+                        mkTopicAssignment(topicId2, 4, 5, 6)), 5))
                 .build(),
-            updatedMember
+                updatedMember
         );
     }
 
@@ -105,33 +105,33 @@ public class CurrentAssignmentBuilderTest {
             .setPreviousMemberEpoch(10)
             .setSubscribedTopicNames(List.of(topic1, topic2))
             .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(topicId1, 1, 2, 3),
-                mkTopicAssignment(topicId2, 4, 5, 6)), 10))
+                    mkTopicAssignment(topicId1, 1, 2, 3),
+                    mkTopicAssignment(topicId2, 4, 5, 6)), 10))
             .build();
 
         ConsumerGroupMember updatedMember = new CurrentAssignmentBuilder(member)
             .withMetadataImage(metadataImage)
             .withTargetAssignment(11, new Assignment(mkAssignment(
-                mkTopicAssignment(topicId1, 1, 2, 3, 4),
-                mkTopicAssignment(topicId2, 4, 5, 6, 7))))
+                    mkTopicAssignment(topicId1, 1, 2, 3, 4),
+                    mkTopicAssignment(topicId2, 4, 5, 6, 7))))
             .withCurrentPartitionEpoch((topicId, partitionId) -> -1)
             .build();
 
         // Retained partitions keep their original epoch (10), new partitions get the new epoch (11)
         assertEquals(
-            new ConsumerGroupMember.Builder("member")
+                new ConsumerGroupMember.Builder("member")
                 .setState(MemberState.STABLE)
                 .setMemberEpoch(11)
                 .setPreviousMemberEpoch(10)
                 .setSubscribedTopicNames(List.of(topic1, topic2))
                 .setAssignedPartitions(mkAssignmentWithEpochs(
-                    mkTopicAssignmentWithEpochs(topicId1, 10, 1, 2, 3),
-                    mkTopicAssignmentWithEpochs(topicId1, 11, 4),
-                    mkTopicAssignmentWithEpochs(topicId2, 10, 4, 5, 6),
-                    mkTopicAssignmentWithEpochs(topicId2, 11, 7)
+                        mkTopicAssignmentWithEpochs(topicId1, 10, 1, 2, 3),
+                        mkTopicAssignmentWithEpochs(topicId1, 11, 4),
+                        mkTopicAssignmentWithEpochs(topicId2, 10, 4, 5, 6),
+                        mkTopicAssignmentWithEpochs(topicId2, 11, 7)
                 ))
                 .build(),
-            updatedMember
+                updatedMember
         );
     }
 
@@ -153,32 +153,32 @@ public class CurrentAssignmentBuilderTest {
             .setPreviousMemberEpoch(10)
             .setSubscribedTopicNames(List.of(topic1, topic2))
             .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(topicId1, 1, 2, 3),
-                mkTopicAssignment(topicId2, 4, 5, 6)), 10))
+                    mkTopicAssignment(topicId1, 1, 2, 3),
+                    mkTopicAssignment(topicId2, 4, 5, 6)), 10))
             .build();
 
         ConsumerGroupMember updatedMember = new CurrentAssignmentBuilder(member)
             .withMetadataImage(metadataImage)
             .withTargetAssignment(11, new Assignment(mkAssignment(
-                mkTopicAssignment(topicId1, 2, 3, 4),
-                mkTopicAssignment(topicId2, 5, 6, 7))))
+                    mkTopicAssignment(topicId1, 2, 3, 4),
+                    mkTopicAssignment(topicId2, 5, 6, 7))))
             .withCurrentPartitionEpoch((topicId, partitionId) -> -1)
             .build();
 
         assertEquals(
-            new ConsumerGroupMember.Builder("member")
+                new ConsumerGroupMember.Builder("member")
                 .setState(MemberState.UNREVOKED_PARTITIONS)
                 .setMemberEpoch(10)
                 .setPreviousMemberEpoch(10)
                 .setSubscribedTopicNames(List.of(topic1, topic2))
                 .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                    mkTopicAssignment(topicId1, 2, 3),
-                    mkTopicAssignment(topicId2, 5, 6)), 10))
+                        mkTopicAssignment(topicId1, 2, 3),
+                        mkTopicAssignment(topicId2, 5, 6)), 10))
                 .setPartitionsPendingRevocation(toAssignmentWithEpochs(mkAssignment(
-                    mkTopicAssignment(topicId1, 1),
-                    mkTopicAssignment(topicId2, 4)), 10))
+                        mkTopicAssignment(topicId1, 1),
+                        mkTopicAssignment(topicId2, 4)), 10))
                 .build(),
-            updatedMember
+                updatedMember
         );
     }
 
@@ -200,29 +200,29 @@ public class CurrentAssignmentBuilderTest {
             .setPreviousMemberEpoch(10)
             .setSubscribedTopicNames(List.of(topic1, topic2))
             .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(topicId1, 1, 2, 3),
-                mkTopicAssignment(topicId2, 4, 5, 6)), 10))
+                    mkTopicAssignment(topicId1, 1, 2, 3),
+                    mkTopicAssignment(topicId2, 4, 5, 6)), 10))
             .build();
 
         ConsumerGroupMember updatedMember = new CurrentAssignmentBuilder(member)
             .withMetadataImage(metadataImage)
             .withTargetAssignment(11, new Assignment(mkAssignment(
-                mkTopicAssignment(topicId1, 1, 2, 3, 4),
-                mkTopicAssignment(topicId2, 4, 5, 6, 7))))
+                    mkTopicAssignment(topicId1, 1, 2, 3, 4),
+                    mkTopicAssignment(topicId2, 4, 5, 6, 7))))
             .withCurrentPartitionEpoch((topicId, partitionId) -> 10)
             .build();
 
         assertEquals(
-            new ConsumerGroupMember.Builder("member")
+                new ConsumerGroupMember.Builder("member")
                 .setState(MemberState.UNRELEASED_PARTITIONS)
                 .setMemberEpoch(11)
                 .setPreviousMemberEpoch(10)
                 .setSubscribedTopicNames(List.of(topic1, topic2))
                 .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                    mkTopicAssignment(topicId1, 1, 2, 3),
-                    mkTopicAssignment(topicId2, 4, 5, 6)), 10))
+                        mkTopicAssignment(topicId1, 1, 2, 3),
+                        mkTopicAssignment(topicId2, 4, 5, 6)), 10))
                 .build(),
-            updatedMember
+                updatedMember
         );
     }
 
@@ -244,15 +244,15 @@ public class CurrentAssignmentBuilderTest {
             .setPreviousMemberEpoch(10)
             .setSubscribedTopicNames(List.of(topic1, topic2))
             .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(topicId1, 1, 2, 3),
-                mkTopicAssignment(topicId2, 4, 5, 6)), 10))
+                    mkTopicAssignment(topicId1, 1, 2, 3),
+                    mkTopicAssignment(topicId2, 4, 5, 6)), 10))
             .build();
 
         ConsumerGroupMember updatedMember = new CurrentAssignmentBuilder(member)
             .withMetadataImage(metadataImage)
             .withTargetAssignment(11, new Assignment(mkAssignment(
-                mkTopicAssignment(topicId1, 1, 2, 3),
-                mkTopicAssignment(topicId2, 4, 5, 7))))
+                    mkTopicAssignment(topicId1, 1, 2, 3),
+                    mkTopicAssignment(topicId2, 4, 5, 7))))
             .withCurrentPartitionEpoch((topicId, __) ->
                 topicId2.equals(topicId) ? 10 : -1
             )
@@ -261,16 +261,16 @@ public class CurrentAssignmentBuilderTest {
 
         // Retained partitions keep their original epoch (10)
         assertEquals(
-            new ConsumerGroupMember.Builder("member")
+                new ConsumerGroupMember.Builder("member")
                 .setState(MemberState.UNRELEASED_PARTITIONS)
                 .setMemberEpoch(11)
                 .setPreviousMemberEpoch(10)
                 .setSubscribedTopicNames(List.of(topic1, topic2))
                 .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                    mkTopicAssignment(topicId1, 1, 2, 3),
-                    mkTopicAssignment(topicId2, 4, 5)), 10))
+                        mkTopicAssignment(topicId1, 1, 2, 3),
+                        mkTopicAssignment(topicId2, 4, 5)), 10))
                 .build(),
-            updatedMember
+                updatedMember
         );
     }
 
@@ -292,40 +292,40 @@ public class CurrentAssignmentBuilderTest {
             .setPreviousMemberEpoch(10)
             .setSubscribedTopicNames(List.of(topic1, topic2))
             .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(topicId1, 2, 3),
-                mkTopicAssignment(topicId2, 5, 6)), 10))
+                    mkTopicAssignment(topicId1, 2, 3),
+                    mkTopicAssignment(topicId2, 5, 6)), 10))
             .setPartitionsPendingRevocation(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(topicId1, 1),
-                mkTopicAssignment(topicId2, 4)), 10))
+                    mkTopicAssignment(topicId1, 1),
+                    mkTopicAssignment(topicId2, 4)), 10))
             .build();
 
         ConsumerGroupMember updatedMember = new CurrentAssignmentBuilder(member)
             .withMetadataImage(metadataImage)
             .withTargetAssignment(11, new Assignment(mkAssignment(
-                mkTopicAssignment(topicId1, 2, 3),
-                mkTopicAssignment(topicId2, 5, 6))))
+                    mkTopicAssignment(topicId1, 2, 3),
+                    mkTopicAssignment(topicId2, 5, 6))))
             .withCurrentPartitionEpoch((topicId, partitionId) -> -1)
             .withOwnedTopicPartitions(Arrays.asList(
-                new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                    new ConsumerGroupHeartbeatRequestData.TopicPartitions()
                     .setTopicId(topicId1)
                     .setPartitions(Arrays.asList(2, 3)),
-                new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                    new ConsumerGroupHeartbeatRequestData.TopicPartitions()
                     .setTopicId(topicId2)
                     .setPartitions(Arrays.asList(5, 6))))
             .build();
 
         // Retained partitions keep their original epoch (10)
         assertEquals(
-            new ConsumerGroupMember.Builder("member")
+                new ConsumerGroupMember.Builder("member")
                 .setState(MemberState.STABLE)
                 .setMemberEpoch(11)
                 .setPreviousMemberEpoch(10)
                 .setSubscribedTopicNames(List.of(topic1, topic2))
                 .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                    mkTopicAssignment(topicId1, 2, 3),
-                    mkTopicAssignment(topicId2, 5, 6)), 10))
+                        mkTopicAssignment(topicId1, 2, 3),
+                        mkTopicAssignment(topicId2, 5, 6)), 10))
                 .build(),
-            updatedMember
+                updatedMember
         );
     }
 
@@ -347,48 +347,48 @@ public class CurrentAssignmentBuilderTest {
             .setPreviousMemberEpoch(10)
             .setSubscribedTopicNames(List.of(topic1, topic2))
             .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(topicId1, 2, 3),
-                mkTopicAssignment(topicId2, 5, 6)), 10))
+                    mkTopicAssignment(topicId1, 2, 3),
+                    mkTopicAssignment(topicId2, 5, 6)), 10))
             .setPartitionsPendingRevocation(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(topicId1, 1),
-                mkTopicAssignment(topicId2, 4)), 10))
+                    mkTopicAssignment(topicId1, 1),
+                    mkTopicAssignment(topicId2, 4)), 10))
             .build();
 
         CurrentAssignmentBuilder currentAssignmentBuilder = new CurrentAssignmentBuilder(member)
             .withMetadataImage(metadataImage)
             .withTargetAssignment(12, new Assignment(mkAssignment(
-                mkTopicAssignment(topicId1, 3),
-                mkTopicAssignment(topicId2, 6))))
+                    mkTopicAssignment(topicId1, 3),
+                    mkTopicAssignment(topicId2, 6))))
             .withCurrentPartitionEpoch((topicId, partitionId) -> -1);
 
         assertEquals(
-            member,
-            currentAssignmentBuilder
+                member,
+                currentAssignmentBuilder
                 .withOwnedTopicPartitions(null)
                 .build()
         );
 
         assertEquals(
-            member,
-            currentAssignmentBuilder
+                member,
+                currentAssignmentBuilder
                 .withOwnedTopicPartitions(Arrays.asList(
-                    new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                        new ConsumerGroupHeartbeatRequestData.TopicPartitions()
                         .setTopicId(topicId1)
                         .setPartitions(Arrays.asList(1, 2, 3)),
-                    new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                        new ConsumerGroupHeartbeatRequestData.TopicPartitions()
                         .setTopicId(topicId2)
                         .setPartitions(Arrays.asList(5, 6))))
                 .build()
         );
 
         assertEquals(
-            member,
-            currentAssignmentBuilder
+                member,
+                currentAssignmentBuilder
                 .withOwnedTopicPartitions(Arrays.asList(
-                    new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                        new ConsumerGroupHeartbeatRequestData.TopicPartitions()
                         .setTopicId(topicId1)
                         .setPartitions(Arrays.asList(2, 3)),
-                    new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                        new ConsumerGroupHeartbeatRequestData.TopicPartitions()
                         .setTopicId(topicId2)
                         .setPartitions(Arrays.asList(4, 5, 6))))
                 .build()
@@ -413,42 +413,42 @@ public class CurrentAssignmentBuilderTest {
             .setPreviousMemberEpoch(10)
             .setSubscribedTopicNames(List.of(topic1, topic2))
             .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(topicId1, 2, 3),
-                mkTopicAssignment(topicId2, 5, 6)), 10))
+                    mkTopicAssignment(topicId1, 2, 3),
+                    mkTopicAssignment(topicId2, 5, 6)), 10))
             .setPartitionsPendingRevocation(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(topicId1, 1),
-                mkTopicAssignment(topicId2, 4)), 10))
+                    mkTopicAssignment(topicId1, 1),
+                    mkTopicAssignment(topicId2, 4)), 10))
             .build();
 
         ConsumerGroupMember updatedMember = new CurrentAssignmentBuilder(member)
             .withMetadataImage(metadataImage)
             .withTargetAssignment(12, new Assignment(mkAssignment(
-                mkTopicAssignment(topicId1, 3),
-                mkTopicAssignment(topicId2, 6))))
+                    mkTopicAssignment(topicId1, 3),
+                    mkTopicAssignment(topicId2, 6))))
             .withCurrentPartitionEpoch((topicId, partitionId) -> -1)
             .withOwnedTopicPartitions(Arrays.asList(
-                new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                    new ConsumerGroupHeartbeatRequestData.TopicPartitions()
                     .setTopicId(topicId1)
                     .setPartitions(Arrays.asList(2, 3)),
-                new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                    new ConsumerGroupHeartbeatRequestData.TopicPartitions()
                     .setTopicId(topicId2)
                     .setPartitions(Arrays.asList(5, 6))))
             .build();
 
         assertEquals(
-            new ConsumerGroupMember.Builder("member")
+                new ConsumerGroupMember.Builder("member")
                 .setState(MemberState.UNREVOKED_PARTITIONS)
                 .setMemberEpoch(10)
                 .setPreviousMemberEpoch(10)
                 .setSubscribedTopicNames(List.of(topic1, topic2))
                 .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                    mkTopicAssignment(topicId1, 3),
-                    mkTopicAssignment(topicId2, 6)), 10))
+                        mkTopicAssignment(topicId1, 3),
+                        mkTopicAssignment(topicId2, 6)), 10))
                 .setPartitionsPendingRevocation(toAssignmentWithEpochs(mkAssignment(
-                    mkTopicAssignment(topicId1, 2),
-                    mkTopicAssignment(topicId2, 5)), 10))
+                        mkTopicAssignment(topicId1, 2),
+                        mkTopicAssignment(topicId2, 5)), 10))
                 .build(),
-            updatedMember
+                updatedMember
         );
     }
 
@@ -470,36 +470,36 @@ public class CurrentAssignmentBuilderTest {
             .setPreviousMemberEpoch(10)
             .setSubscribedTopicNames(List.of(topic1, topic2))
             .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(topicId1, 2, 3),
-                mkTopicAssignment(topicId2, 5, 6)), 11))
+                    mkTopicAssignment(topicId1, 2, 3),
+                    mkTopicAssignment(topicId2, 5, 6)), 11))
             .build();
 
         ConsumerGroupMember updatedMember = new CurrentAssignmentBuilder(member)
             .withMetadataImage(metadataImage)
             .withTargetAssignment(11, new Assignment(mkAssignment(
-                mkTopicAssignment(topicId1, 2, 3, 4),
-                mkTopicAssignment(topicId2, 5, 6, 7))))
+                    mkTopicAssignment(topicId1, 2, 3, 4),
+                    mkTopicAssignment(topicId2, 5, 6, 7))))
             .withCurrentPartitionEpoch((topicId, partitionId) -> 10)
             .withOwnedTopicPartitions(Arrays.asList(
-                new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                    new ConsumerGroupHeartbeatRequestData.TopicPartitions()
                     .setTopicId(topicId1)
                     .setPartitions(Arrays.asList(2, 3)),
-                new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                    new ConsumerGroupHeartbeatRequestData.TopicPartitions()
                     .setTopicId(topicId2)
                     .setPartitions(Arrays.asList(5, 6))))
             .build();
 
         assertEquals(
-            new ConsumerGroupMember.Builder("member")
+                new ConsumerGroupMember.Builder("member")
                 .setState(MemberState.UNRELEASED_PARTITIONS)
                 .setMemberEpoch(11)
                 .setPreviousMemberEpoch(11)
                 .setSubscribedTopicNames(List.of(topic1, topic2))
                 .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                    mkTopicAssignment(topicId1, 2, 3),
-                    mkTopicAssignment(topicId2, 5, 6)), 11))
+                        mkTopicAssignment(topicId1, 2, 3),
+                        mkTopicAssignment(topicId2, 5, 6)), 11))
                 .build(),
-            updatedMember
+                updatedMember
         );
     }
 
@@ -521,19 +521,19 @@ public class CurrentAssignmentBuilderTest {
             .setPreviousMemberEpoch(10)
             .setSubscribedTopicNames(List.of(topic1, topic2))
             .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(topicId1, 2, 3),
-                mkTopicAssignment(topicId2, 5, 6)), 10))
+                    mkTopicAssignment(topicId1, 2, 3),
+                    mkTopicAssignment(topicId2, 5, 6)), 10))
             .setPartitionsPendingRevocation(toAssignmentWithEpochs(mkAssignment(
-                // Partition 4 is pending revocation by the member but is back in the latest target
-                // assignment.
-                mkTopicAssignment(topicId1, 4)), 10))
+                    // Partition 4 is pending revocation by the member but is back in the latest target
+                    // assignment.
+                    mkTopicAssignment(topicId1, 4)), 10))
             .build();
 
         ConsumerGroupMember updatedMember = new CurrentAssignmentBuilder(member)
             .withMetadataImage(metadataImage)
             .withTargetAssignment(12, new Assignment(mkAssignment(
-                mkTopicAssignment(topicId1, 2, 3, 4),
-                mkTopicAssignment(topicId2, 5, 6, 7))))
+                    mkTopicAssignment(topicId1, 2, 3, 4),
+                    mkTopicAssignment(topicId2, 5, 6, 7))))
             .withCurrentPartitionEpoch((topicId, partitionId) -> {
                 if (topicId.equals(topicId1)) {
                     // Partitions 2 and 3 are in the member's current assignment.
@@ -555,10 +555,10 @@ public class CurrentAssignmentBuilderTest {
                 return -1;
             })
             .withOwnedTopicPartitions(Arrays.asList(
-                new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                    new ConsumerGroupHeartbeatRequestData.TopicPartitions()
                     .setTopicId(topicId1)
                     .setPartitions(Arrays.asList(2, 3)),
-                new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                    new ConsumerGroupHeartbeatRequestData.TopicPartitions()
                     .setTopicId(topicId2)
                     .setPartitions(Arrays.asList(5, 6))))
             .build();
@@ -566,19 +566,19 @@ public class CurrentAssignmentBuilderTest {
         // Retained partitions keep original epoch (10), partition 4 was pending revocation so gets new epoch (12),
         // new partition 7 also gets new epoch (12)
         assertEquals(
-            new ConsumerGroupMember.Builder("member")
+                new ConsumerGroupMember.Builder("member")
                 .setState(MemberState.STABLE)
                 .setMemberEpoch(12)
                 .setPreviousMemberEpoch(10)
                 .setSubscribedTopicNames(List.of(topic1, topic2))
                 .setAssignedPartitions(mkAssignmentWithEpochs(
-                    mkTopicAssignmentWithEpochs(topicId1, 10, 2, 3),
-                    mkTopicAssignmentWithEpochs(topicId1, 12, 4),
-                    mkTopicAssignmentWithEpochs(topicId2, 10, 5, 6),
-                    mkTopicAssignmentWithEpochs(topicId2, 12, 7)
+                        mkTopicAssignmentWithEpochs(topicId1, 10, 2, 3),
+                        mkTopicAssignmentWithEpochs(topicId1, 12, 4),
+                        mkTopicAssignmentWithEpochs(topicId2, 10, 5, 6),
+                        mkTopicAssignmentWithEpochs(topicId2, 12, 7)
                 ))
                 .build(),
-            updatedMember
+                updatedMember
         );
     }
 
@@ -600,29 +600,29 @@ public class CurrentAssignmentBuilderTest {
             .setPreviousMemberEpoch(11)
             .setSubscribedTopicNames(List.of(topic1, topic2))
             .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(topicId1, 2, 3),
-                mkTopicAssignment(topicId2, 5, 6)), 11))
+                    mkTopicAssignment(topicId1, 2, 3),
+                    mkTopicAssignment(topicId2, 5, 6)), 11))
             .build();
 
         ConsumerGroupMember updatedMember = new CurrentAssignmentBuilder(member)
             .withMetadataImage(metadataImage)
             .withTargetAssignment(12, new Assignment(mkAssignment(
-                mkTopicAssignment(topicId1, 2, 3),
-                mkTopicAssignment(topicId2, 5, 6))))
+                    mkTopicAssignment(topicId1, 2, 3),
+                    mkTopicAssignment(topicId2, 5, 6))))
             .withCurrentPartitionEpoch((topicId, partitionId) -> 10)
             .build();
 
         assertEquals(
-            new ConsumerGroupMember.Builder("member")
+                new ConsumerGroupMember.Builder("member")
                 .setState(MemberState.STABLE)
                 .setMemberEpoch(12)
                 .setPreviousMemberEpoch(11)
                 .setSubscribedTopicNames(List.of(topic1, topic2))
                 .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                    mkTopicAssignment(topicId1, 2, 3),
-                    mkTopicAssignment(topicId2, 5, 6)), 11))
+                        mkTopicAssignment(topicId1, 2, 3),
+                        mkTopicAssignment(topicId2, 5, 6)), 11))
                 .build(),
-            updatedMember
+                updatedMember
         );
     }
 
@@ -644,29 +644,29 @@ public class CurrentAssignmentBuilderTest {
             .setPreviousMemberEpoch(11)
             .setSubscribedTopicNames(List.of(topic1, topic2))
             .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(topicId1, 2, 3),
-                mkTopicAssignment(topicId2, 5, 6)), 11))
+                    mkTopicAssignment(topicId1, 2, 3),
+                    mkTopicAssignment(topicId2, 5, 6)), 11))
             .build();
 
         ConsumerGroupMember updatedMember = new CurrentAssignmentBuilder(member)
             .withMetadataImage(metadataImage)
             .withTargetAssignment(11, new Assignment(mkAssignment(
-                mkTopicAssignment(topicId1, 2, 3, 4),
-                mkTopicAssignment(topicId2, 5, 6, 7))))
+                    mkTopicAssignment(topicId1, 2, 3, 4),
+                    mkTopicAssignment(topicId2, 5, 6, 7))))
             .withCurrentPartitionEpoch((topicId, partitionId) -> -1)
             .build();
 
         assertEquals(
-            new ConsumerGroupMember.Builder("member")
+                new ConsumerGroupMember.Builder("member")
                 .setState(MemberState.STABLE)
                 .setMemberEpoch(11)
                 .setPreviousMemberEpoch(11)
                 .setSubscribedTopicNames(List.of(topic1, topic2))
                 .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                    mkTopicAssignment(topicId1, 2, 3, 4),
-                    mkTopicAssignment(topicId2, 5, 6, 7)), 11))
+                        mkTopicAssignment(topicId1, 2, 3, 4),
+                        mkTopicAssignment(topicId2, 5, 6, 7)), 11))
                 .build(),
-            updatedMember
+                updatedMember
         );
     }
 
@@ -688,15 +688,15 @@ public class CurrentAssignmentBuilderTest {
             .setPreviousMemberEpoch(11)
             .setSubscribedTopicNames(List.of(topic1, topic2))
             .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(topicId1, 2, 3),
-                mkTopicAssignment(topicId2, 5, 6)), 11))
+                    mkTopicAssignment(topicId1, 2, 3),
+                    mkTopicAssignment(topicId2, 5, 6)), 11))
             .build();
 
         ConsumerGroupMember updatedMember = new CurrentAssignmentBuilder(member)
             .withMetadataImage(metadataImage)
             .withTargetAssignment(11, new Assignment(mkAssignment(
-                mkTopicAssignment(topicId1, 2, 3, 4),
-                mkTopicAssignment(topicId2, 5, 6, 7))))
+                    mkTopicAssignment(topicId1, 2, 3, 4),
+                    mkTopicAssignment(topicId2, 5, 6, 7))))
             .withCurrentPartitionEpoch((topicId, partitionId) -> 10)
             .build();
 
@@ -721,32 +721,32 @@ public class CurrentAssignmentBuilderTest {
             .setPreviousMemberEpoch(11)
             .setSubscribedTopicNames(List.of(topic1, topic2))
             .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(topicId1, 2, 3),
-                mkTopicAssignment(topicId2, 5, 6)), 11))
+                    mkTopicAssignment(topicId1, 2, 3),
+                    mkTopicAssignment(topicId2, 5, 6)), 11))
             .build();
 
         ConsumerGroupMember updatedMember = new CurrentAssignmentBuilder(member)
             .withMetadataImage(metadataImage)
             .withTargetAssignment(12, new Assignment(mkAssignment(
-                mkTopicAssignment(topicId1, 3),
-                mkTopicAssignment(topicId2, 6))))
+                    mkTopicAssignment(topicId1, 3),
+                    mkTopicAssignment(topicId2, 6))))
             .withCurrentPartitionEpoch((topicId, partitionId) -> 10)
             .build();
 
         assertEquals(
-            new ConsumerGroupMember.Builder("member")
+                new ConsumerGroupMember.Builder("member")
                 .setState(MemberState.UNREVOKED_PARTITIONS)
                 .setMemberEpoch(11)
                 .setPreviousMemberEpoch(11)
                 .setSubscribedTopicNames(List.of(topic1, topic2))
                 .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                    mkTopicAssignment(topicId1, 3),
-                    mkTopicAssignment(topicId2, 6)), 11))
+                        mkTopicAssignment(topicId1, 3),
+                        mkTopicAssignment(topicId2, 6)), 11))
                 .setPartitionsPendingRevocation(toAssignmentWithEpochs(mkAssignment(
-                    mkTopicAssignment(topicId1, 2),
-                    mkTopicAssignment(topicId2, 5)), 11))
+                        mkTopicAssignment(topicId1, 2),
+                        mkTopicAssignment(topicId2, 5)), 11))
                 .build(),
-            updatedMember
+                updatedMember
         );
     }
 
@@ -768,11 +768,11 @@ public class CurrentAssignmentBuilderTest {
             .setPreviousMemberEpoch(11)
             .setSubscribedTopicNames(List.of(topic1, topic2))
             .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(topicId1, 3),
-                mkTopicAssignment(topicId2, 6)), 11))
+                    mkTopicAssignment(topicId1, 3),
+                    mkTopicAssignment(topicId2, 6)), 11))
             .setPartitionsPendingRevocation(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(topicId1, 2),
-                mkTopicAssignment(topicId2, 5)), 11))
+                    mkTopicAssignment(topicId1, 2),
+                    mkTopicAssignment(topicId2, 5)), 11))
             .build();
 
         // When the member is in an unknown state, the member is first to force
@@ -780,8 +780,8 @@ public class CurrentAssignmentBuilderTest {
         assertThrows(FencedMemberEpochException.class, () -> new CurrentAssignmentBuilder(member)
             .withMetadataImage(metadataImage)
             .withTargetAssignment(12, new Assignment(mkAssignment(
-                mkTopicAssignment(topicId1, 3),
-                mkTopicAssignment(topicId2, 6))))
+                    mkTopicAssignment(topicId1, 3),
+                    mkTopicAssignment(topicId2, 6))))
             .withCurrentPartitionEpoch((topicId, partitionId) -> 10)
             .build());
 
@@ -789,24 +789,24 @@ public class CurrentAssignmentBuilderTest {
         ConsumerGroupMember updatedMember = new CurrentAssignmentBuilder(member)
             .withMetadataImage(metadataImage)
             .withTargetAssignment(12, new Assignment(mkAssignment(
-                mkTopicAssignment(topicId1, 3),
-                mkTopicAssignment(topicId2, 6))))
+                    mkTopicAssignment(topicId1, 3),
+                    mkTopicAssignment(topicId2, 6))))
             .withCurrentPartitionEpoch((topicId, partitionId) -> 11)
             .withOwnedTopicPartitions(List.of())
             .build();
 
         // Retained partitions keep their original epoch (11)
         assertEquals(
-            new ConsumerGroupMember.Builder("member")
+                new ConsumerGroupMember.Builder("member")
                 .setState(MemberState.STABLE)
                 .setMemberEpoch(12)
                 .setPreviousMemberEpoch(11)
                 .setSubscribedTopicNames(List.of(topic1, topic2))
                 .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                    mkTopicAssignment(topicId1, 3),
-                    mkTopicAssignment(topicId2, 6)), 11))
+                        mkTopicAssignment(topicId1, 3),
+                        mkTopicAssignment(topicId2, 6)), 11))
                 .build(),
-            updatedMember
+                updatedMember
         );
     }
 
@@ -838,27 +838,27 @@ public class CurrentAssignmentBuilderTest {
             .setPreviousMemberEpoch(memberEpoch - 1)
             .setSubscribedTopicNames(List.of(topic2))
             .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                // Topic 1 is assigned, but no longer in the subscription.
-                mkTopicAssignment(topicId1, 1, 2, 3),
-                mkTopicAssignment(topicId2, 4, 5, 6)), memberEpoch))
+                    // Topic 1 is assigned, but no longer in the subscription.
+                    mkTopicAssignment(topicId1, 1, 2, 3),
+                    mkTopicAssignment(topicId2, 4, 5, 6)), memberEpoch))
             .build();
 
         ConsumerGroupMember updatedMember = new CurrentAssignmentBuilder(member)
             .withMetadataImage(metadataImage)
             .withTargetAssignment(targetAssignmentEpoch, new Assignment(mkAssignment(
-                mkTopicAssignment(topicId1, 1, 2, 3),
-                mkTopicAssignment(topicId2, 4, 5, 6))))
+                    mkTopicAssignment(topicId1, 1, 2, 3),
+                    mkTopicAssignment(topicId2, 4, 5, 6))))
             .withHasSubscriptionChanged(hasSubscriptionChanged)
             .withCurrentPartitionEpoch((topicId, partitionId) -> -1)
             .withOwnedTopicPartitions(Arrays.asList(
-                new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                    new ConsumerGroupHeartbeatRequestData.TopicPartitions()
                     .setTopicId(topicId2)
                     .setPartitions(Arrays.asList(4, 5, 6))))
             .build();
 
         // Retained partitions keep their original epoch (memberEpoch)
         assertEquals(
-            new ConsumerGroupMember.Builder("member")
+                new ConsumerGroupMember.Builder("member")
                 .setState(MemberState.STABLE)
                 .setMemberEpoch(expectedMemberEpoch)
                 // The previous member epoch is updated in all cases tested here,
@@ -867,9 +867,9 @@ public class CurrentAssignmentBuilderTest {
                 .setPreviousMemberEpoch(memberEpoch)
                 .setSubscribedTopicNames(List.of(topic2))
                 .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                    mkTopicAssignment(topicId2, 4, 5, 6)), memberEpoch))
+                        mkTopicAssignment(topicId2, 4, 5, 6)), memberEpoch))
                 .build(),
-            updatedMember
+                updatedMember
         );
     }
 
@@ -901,40 +901,40 @@ public class CurrentAssignmentBuilderTest {
             .setPreviousMemberEpoch(memberEpoch - 1)
             .setSubscribedTopicNames(List.of(topic2))
             .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                // Topic 1 is assigned, but no longer in the subscription.
-                mkTopicAssignment(topicId1, 1, 2, 3),
-                mkTopicAssignment(topicId2, 4, 5, 6)), memberEpoch))
+                    // Topic 1 is assigned, but no longer in the subscription.
+                    mkTopicAssignment(topicId1, 1, 2, 3),
+                    mkTopicAssignment(topicId2, 4, 5, 6)), memberEpoch))
             .build();
 
         ConsumerGroupMember updatedMember = new CurrentAssignmentBuilder(member)
             .withMetadataImage(metadataImage)
             .withTargetAssignment(targetAssignmentEpoch, new Assignment(mkAssignment(
-                mkTopicAssignment(topicId1, 1, 2, 3),
-                mkTopicAssignment(topicId2, 4, 5, 6))))
+                    mkTopicAssignment(topicId1, 1, 2, 3),
+                    mkTopicAssignment(topicId2, 4, 5, 6))))
             .withHasSubscriptionChanged(hasSubscriptionChanged)
             .withCurrentPartitionEpoch((topicId, partitionId) -> -1)
             .withOwnedTopicPartitions(Arrays.asList(
-                new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                    new ConsumerGroupHeartbeatRequestData.TopicPartitions()
                     .setTopicId(topicId1)
                     .setPartitions(Arrays.asList(1, 2, 3)),
-                new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                    new ConsumerGroupHeartbeatRequestData.TopicPartitions()
                     .setTopicId(topicId2)
                     .setPartitions(Arrays.asList(4, 5, 6))))
             .build();
 
         assertEquals(
-            new ConsumerGroupMember.Builder("member")
+                new ConsumerGroupMember.Builder("member")
                 .setState(MemberState.UNREVOKED_PARTITIONS)
                 .setMemberEpoch(expectedMemberEpoch)
                 // The previous member epoch is updated in all cases.
                 .setPreviousMemberEpoch(memberEpoch)
                 .setSubscribedTopicNames(List.of(topic2))
                 .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                    mkTopicAssignment(topicId2, 4, 5, 6)), expectedMemberEpoch))
+                        mkTopicAssignment(topicId2, 4, 5, 6)), expectedMemberEpoch))
                 .setPartitionsPendingRevocation(toAssignmentWithEpochs(mkAssignment(
-                    mkTopicAssignment(topicId1, 1, 2, 3)), memberEpoch))
+                        mkTopicAssignment(topicId1, 1, 2, 3)), memberEpoch))
                 .build(),
-            updatedMember
+                updatedMember
         );
     }
 
@@ -956,42 +956,42 @@ public class CurrentAssignmentBuilderTest {
             .setPreviousMemberEpoch(10)
             .setSubscribedTopicNames(List.of(topic2))
             .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(topicId1, 2, 3),
-                mkTopicAssignment(topicId2, 5, 6)), 10))
+                    mkTopicAssignment(topicId1, 2, 3),
+                    mkTopicAssignment(topicId2, 5, 6)), 10))
             .setPartitionsPendingRevocation(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(topicId1, 1),
-                mkTopicAssignment(topicId2, 4)), 10))
+                    mkTopicAssignment(topicId1, 1),
+                    mkTopicAssignment(topicId2, 4)), 10))
             .build();
 
         ConsumerGroupMember updatedMember = new CurrentAssignmentBuilder(member)
             .withMetadataImage(metadataImage)
             .withTargetAssignment(12, new Assignment(mkAssignment(
-                mkTopicAssignment(topicId1, 1, 3, 4),
-                mkTopicAssignment(topicId2, 6, 7))))
+                    mkTopicAssignment(topicId1, 1, 3, 4),
+                    mkTopicAssignment(topicId2, 6, 7))))
             .withHasSubscriptionChanged(true)
             .withCurrentPartitionEpoch((topicId, partitionId) -> -1)
             .withOwnedTopicPartitions(Arrays.asList(
-                new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                    new ConsumerGroupHeartbeatRequestData.TopicPartitions()
                     .setTopicId(topicId1)
                     .setPartitions(Arrays.asList(1, 2, 3)),
-                new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                    new ConsumerGroupHeartbeatRequestData.TopicPartitions()
                     .setTopicId(topicId2)
                     .setPartitions(Arrays.asList(4, 5, 6))))
             .build();
 
         assertEquals(
-            new ConsumerGroupMember.Builder("member")
+                new ConsumerGroupMember.Builder("member")
                 .setState(MemberState.UNREVOKED_PARTITIONS)
                 .setMemberEpoch(10)
                 .setPreviousMemberEpoch(10)
                 .setSubscribedTopicNames(List.of(topic2))
                 .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                    mkTopicAssignment(topicId2, 5, 6)), 10))
+                        mkTopicAssignment(topicId2, 5, 6)), 10))
                 .setPartitionsPendingRevocation(toAssignmentWithEpochs(mkAssignment(
-                    mkTopicAssignment(topicId1, 1, 2, 3),
-                    mkTopicAssignment(topicId2, 4)), 10))
+                        mkTopicAssignment(topicId1, 1, 2, 3),
+                        mkTopicAssignment(topicId2, 4)), 10))
                 .build(),
-            updatedMember
+                updatedMember
         );
     }
 
@@ -1014,40 +1014,40 @@ public class CurrentAssignmentBuilderTest {
             .setSubscribedTopicNames(List.of(fooTopic))
             .setSubscribedTopicRegex("bar*")
             .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(fooTopicId, 1, 2, 3),
-                mkTopicAssignment(barTopicId, 4, 5, 6)), 10))
+                    mkTopicAssignment(fooTopicId, 1, 2, 3),
+                    mkTopicAssignment(barTopicId, 4, 5, 6)), 10))
             .build();
 
         ConsumerGroupMember updatedMember = new CurrentAssignmentBuilder(member)
             .withMetadataImage(metadataImage)
             .withTargetAssignment(10, new Assignment(mkAssignment(
-                mkTopicAssignment(fooTopicId, 1, 2, 3),
-                mkTopicAssignment(barTopicId, 4, 5, 6))))
+                    mkTopicAssignment(fooTopicId, 1, 2, 3),
+                    mkTopicAssignment(barTopicId, 4, 5, 6))))
             .withHasSubscriptionChanged(true)
             .withResolvedRegularExpressions(Map.of())
             .withCurrentPartitionEpoch((topicId, partitionId) -> -1)
             .withOwnedTopicPartitions(Arrays.asList(
-                new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                    new ConsumerGroupHeartbeatRequestData.TopicPartitions()
                     .setTopicId(fooTopicId)
                     .setPartitions(Arrays.asList(1, 2, 3)),
-                new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                    new ConsumerGroupHeartbeatRequestData.TopicPartitions()
                     .setTopicId(barTopicId)
                     .setPartitions(Arrays.asList(4, 5, 6))))
             .build();
 
         assertEquals(
-            new ConsumerGroupMember.Builder("member")
+                new ConsumerGroupMember.Builder("member")
                 .setState(MemberState.UNREVOKED_PARTITIONS)
                 .setMemberEpoch(10)
                 .setPreviousMemberEpoch(10)
                 .setSubscribedTopicNames(List.of(fooTopic))
                 .setSubscribedTopicRegex("bar*")
                 .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                    mkTopicAssignment(fooTopicId, 1, 2, 3)), 10))
+                        mkTopicAssignment(fooTopicId, 1, 2, 3)), 10))
                 .setPartitionsPendingRevocation(toAssignmentWithEpochs(mkAssignment(
-                    mkTopicAssignment(barTopicId, 4, 5, 6)), 10))
+                        mkTopicAssignment(barTopicId, 4, 5, 6)), 10))
                 .build(),
-            updatedMember
+                updatedMember
         );
     }
 
@@ -1070,29 +1070,29 @@ public class CurrentAssignmentBuilderTest {
             .setSubscribedTopicNames(List.of())
             .setSubscribedTopicRegex("bar*")
             .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(fooTopicId, 1, 2, 3),
-                mkTopicAssignment(barTopicId, 4, 5, 6)), 10))
+                    mkTopicAssignment(fooTopicId, 1, 2, 3),
+                    mkTopicAssignment(barTopicId, 4, 5, 6)), 10))
             .build();
 
         ConsumerGroupMember updatedMember = new CurrentAssignmentBuilder(member)
             .withMetadataImage(metadataImage)
             .withTargetAssignment(10, new Assignment(mkAssignment(
-                mkTopicAssignment(fooTopicId, 1, 2, 3),
-                mkTopicAssignment(barTopicId, 4, 5, 6))))
+                    mkTopicAssignment(fooTopicId, 1, 2, 3),
+                    mkTopicAssignment(barTopicId, 4, 5, 6))))
             .withHasSubscriptionChanged(true)
             .withResolvedRegularExpressions(Map.of())
             .withCurrentPartitionEpoch((topicId, partitionId) -> -1)
             .withOwnedTopicPartitions(Arrays.asList(
-                new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                    new ConsumerGroupHeartbeatRequestData.TopicPartitions()
                     .setTopicId(fooTopicId)
                     .setPartitions(Arrays.asList(1, 2, 3)),
-                new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                    new ConsumerGroupHeartbeatRequestData.TopicPartitions()
                     .setTopicId(barTopicId)
                     .setPartitions(Arrays.asList(4, 5, 6))))
             .build();
 
         assertEquals(
-            new ConsumerGroupMember.Builder("member")
+                new ConsumerGroupMember.Builder("member")
                 .setState(MemberState.UNREVOKED_PARTITIONS)
                 .setMemberEpoch(10)
                 .setPreviousMemberEpoch(10)
@@ -1100,10 +1100,10 @@ public class CurrentAssignmentBuilderTest {
                 .setSubscribedTopicRegex("bar*")
                 .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(), 10))
                 .setPartitionsPendingRevocation(toAssignmentWithEpochs(mkAssignment(
-                    mkTopicAssignment(fooTopicId, 1, 2, 3),
-                    mkTopicAssignment(barTopicId, 4, 5, 6)), 10))
+                        mkTopicAssignment(fooTopicId, 1, 2, 3),
+                        mkTopicAssignment(barTopicId, 4, 5, 6)), 10))
                 .build(),
-            updatedMember
+                updatedMember
         );
     }
 
@@ -1126,45 +1126,45 @@ public class CurrentAssignmentBuilderTest {
             .setSubscribedTopicNames(List.of(fooTopic))
             .setSubscribedTopicRegex("bar*")
             .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(fooTopicId, 1, 2, 3),
-                mkTopicAssignment(barTopicId, 4, 5, 6)), 10))
+                    mkTopicAssignment(fooTopicId, 1, 2, 3),
+                    mkTopicAssignment(barTopicId, 4, 5, 6)), 10))
             .build();
 
         ConsumerGroupMember updatedMember = new CurrentAssignmentBuilder(member)
             .withMetadataImage(metadataImage)
             .withTargetAssignment(10, new Assignment(mkAssignment(
-                mkTopicAssignment(fooTopicId, 1, 2, 3),
-                mkTopicAssignment(barTopicId, 4, 5, 6))))
+                    mkTopicAssignment(fooTopicId, 1, 2, 3),
+                    mkTopicAssignment(barTopicId, 4, 5, 6))))
             .withHasSubscriptionChanged(true)
             .withResolvedRegularExpressions(Map.of(
-                "bar*", new ResolvedRegularExpression(
-                    Set.of("bar"),
-                    12345L,
-                    0L
+                    "bar*", new ResolvedRegularExpression(
+                        Set.of("bar"),
+                        12345L,
+                        0L
                 )
             ))
             .withCurrentPartitionEpoch((topicId, partitionId) -> -1)
             .withOwnedTopicPartitions(Arrays.asList(
-                new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                    new ConsumerGroupHeartbeatRequestData.TopicPartitions()
                     .setTopicId(fooTopicId)
                     .setPartitions(Arrays.asList(1, 2, 3)),
-                new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                    new ConsumerGroupHeartbeatRequestData.TopicPartitions()
                     .setTopicId(barTopicId)
                     .setPartitions(Arrays.asList(4, 5, 6))))
             .build();
 
         assertEquals(
-            new ConsumerGroupMember.Builder("member")
+                new ConsumerGroupMember.Builder("member")
                 .setState(MemberState.STABLE)
                 .setMemberEpoch(10)
                 .setPreviousMemberEpoch(10)
                 .setSubscribedTopicNames(List.of(fooTopic))
                 .setSubscribedTopicRegex("bar*")
                 .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                    mkTopicAssignment(fooTopicId, 1, 2, 3),
-                    mkTopicAssignment(barTopicId, 4, 5, 6)), 10))
+                        mkTopicAssignment(fooTopicId, 1, 2, 3),
+                        mkTopicAssignment(barTopicId, 4, 5, 6)), 10))
                 .build(),
-            updatedMember
+                updatedMember
         );
     }
 }

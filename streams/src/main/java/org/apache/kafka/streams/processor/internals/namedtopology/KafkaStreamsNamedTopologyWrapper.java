@@ -173,12 +173,12 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
 
         if (hasStartedOrFinishedShuttingDown()) {
             future.completeExceptionally(
-                new IllegalStateException("Cannot add a NamedTopology while the state is " + super.state)
+                    new IllegalStateException("Cannot add a NamedTopology while the state is " + super.state)
             );
         } else if (getTopologyByName(newTopology.name()).isPresent()) {
             future.completeExceptionally(
-                new IllegalArgumentException("Unable to add the new NamedTopology " + newTopology.name() +
-                                                   " as another of the same name already exists")
+                    new IllegalArgumentException("Unable to add the new NamedTopology " + newTopology.name() +
+                        " as another of the same name already exists")
             );
         } else {
             topologyMetadata.registerAndBuildNewTopology(future, newTopology.internalTopologyBuilder());
@@ -209,18 +209,18 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
 
         if (hasStartedOrFinishedShuttingDown()) {
             log.error("Attempted to remove topology {} from while the Kafka Streams was in state {}, "
-                          + "topologies cannot be modified if the application has begun or completed shutting down.",
+                    + "topologies cannot be modified if the application has begun or completed shutting down.",
                       topologyToRemove, state
             );
             removeTopologyFuture.completeExceptionally(
-                new IllegalStateException("Cannot remove a NamedTopology while the state is " + super.state)
+                    new IllegalStateException("Cannot remove a NamedTopology while the state is " + super.state)
             );
         } else if (getTopologyByName(topologyToRemove).isEmpty()) {
             log.error("Attempted to remove unknown topology {}. This application currently contains the"
-                          + "following topologies: {}.", topologyToRemove, topologyMetadata.namedTopologiesView()
+                    + "following topologies: {}.", topologyToRemove, topologyMetadata.namedTopologiesView()
             );
             removeTopologyFuture.completeExceptionally(
-                new UnknownTopologyException("Unable to remove topology", topologyToRemove)
+                    new UnknownTopologyException("Unable to remove topology", topologyToRemove)
             );
         }
 
@@ -237,7 +237,7 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
         topologyMetadata.unregisterTopology(removeTopologyFuture, topologyToRemove);
 
         final boolean skipResetForUnstartedApplication =
-            maybeCompleteFutureIfStillInCREATED(removeTopologyFuture, "removing topology " + topologyToRemove);
+                maybeCompleteFutureIfStillInCREATED(removeTopologyFuture, "removing topology " + topologyToRemove);
 
         if (resetOffsets && !skipResetForUnstartedApplication && !partitionsToReset.isEmpty()) {
             log.info("Resetting offsets for the following partitions of {} removed NamedTopology {}: {}",
@@ -245,9 +245,9 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
                      topologyToRemove, partitionsToReset
             );
             return new RemoveNamedTopologyResult(
-                removeTopologyFuture,
-                topologyToRemove,
-                () -> resetOffsets(partitionsToReset)
+                    removeTopologyFuture,
+                    topologyToRemove,
+                    () -> resetOffsets(partitionsToReset)
             );
         } else {
             return new RemoveNamedTopologyResult(removeTopologyFuture);
@@ -300,8 +300,8 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
         while (true) {
             try {
                 final DeleteConsumerGroupOffsetsResult deleteOffsetsResult = adminClient.deleteConsumerGroupOffsets(
-                    applicationConfigs.getString(StreamsConfig.APPLICATION_ID_CONFIG),
-                    partitionsToReset);
+                        applicationConfigs.getString(StreamsConfig.APPLICATION_ID_CONFIG),
+                        partitionsToReset);
                 deleteOffsetsResult.all().get();
                 log.info("Successfully completed resetting offsets.");
                 break;
@@ -313,7 +313,7 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
                 final Throwable error = ex.getCause() != null ? ex.getCause() : ex;
 
                 if (error instanceof GroupSubscribedToTopicException &&
-                    error.getMessage()
+                        error.getMessage()
                         .equals("Deleting offsets of a topic is forbidden while the consumer group is actively subscribed to it.")) {
                     log.debug("Offset reset failed, there may be other nodes which have not yet finished removing this topology", error);
                 } else if (error instanceof GroupIdNotFoundException) {
@@ -382,7 +382,7 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
             throw new UnknownTopologyException("Cannot get state store " + storeName, topologyName);
         } else if (!builder.hasStore(storeName)) {
             throw new UnknownStateStoreException(
-                "Cannot get state store " + storeName + " from NamedTopology " + topologyName +
+                    "Cannot get state store " + storeName + " from NamedTopology " + topologyName +
                     " because no such state store exists in this topology."
             );
         }
@@ -438,7 +438,7 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
         }
         final List<Task> allTopologyTasks = new ArrayList<>();
         processStreamThread(thread -> allTopologyTasks.addAll(
-            thread.readyOnlyAllTasks().stream()
+                thread.readyOnlyAllTasks().stream()
                 .filter(t -> topologyName.equals(t.id().topologyName()))
                 .collect(Collectors.toList())));
         return allLocalStorePartitionLags(allTopologyTasks);
@@ -450,7 +450,7 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
             return threads.stream().anyMatch(thread -> thread.hasAnyTaskForTopology(topologyName));
         }
     }
-    
+
     // VisibleForTesting
     public boolean areAllLocalTasksRunningForTopology(final String topologyName) {
         synchronized (threads) {

@@ -71,7 +71,7 @@ public class FenceProducersHandlerTest {
             .setProducerId(producerId));
 
         ApiResult<CoordinatorKey, ProducerIdAndEpoch> result = handler.handleSingleResponse(
-            node, key, response);
+                node, key, response);
 
         assertEquals(emptyList(), result.unmappedKeys);
         assertEquals(emptyMap(), result.failedKeys);

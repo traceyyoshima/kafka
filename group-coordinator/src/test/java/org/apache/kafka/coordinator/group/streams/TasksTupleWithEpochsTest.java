@@ -54,13 +54,13 @@ public class TasksTupleWithEpochsTest {
     @Test
     public void testReturnUnmodifiableTaskAssignments() {
         Map<String, Map<Integer, Integer>> activeTasks = Map.of(
-            SUBTOPOLOGY_1, Map.of(1, 10, 2, 11, 3, 12)
+                SUBTOPOLOGY_1, Map.of(1, 10, 2, 11, 3, 12)
         );
         Map<String, Set<Integer>> standbyTasks = mkTasksPerSubtopology(
-            mkTasks(SUBTOPOLOGY_2, 9, 8, 7)
+                mkTasks(SUBTOPOLOGY_2, 9, 8, 7)
         );
         Map<String, Set<Integer>> warmupTasks = mkTasksPerSubtopology(
-            mkTasks(SUBTOPOLOGY_3, 4, 5, 6)
+                mkTasks(SUBTOPOLOGY_3, 4, 5, 6)
         );
         TasksTupleWithEpochs tuple = new TasksTupleWithEpochs(activeTasks, standbyTasks, warmupTasks);
 
@@ -71,7 +71,6 @@ public class TasksTupleWithEpochsTest {
         assertEquals(warmupTasks, tuple.warmupTasks());
         assertThrows(UnsupportedOperationException.class, () -> tuple.warmupTasks().put("not allowed", Set.of()));
     }
-
 
     @Test
     public void testFromCurrentAssignmentRecord() {
@@ -102,29 +101,29 @@ public class TasksTupleWithEpochsTest {
             .setPartitions(Arrays.asList(7, 8, 9)));
 
         TasksTupleWithEpochs tuple = TasksTupleWithEpochs.fromCurrentAssignmentRecord(
-            LOG, GROUP_ID, activeTasks, standbyTasks, warmupTasks, 100
+                LOG, GROUP_ID, activeTasks, standbyTasks, warmupTasks, 100
         );
 
         assertEquals(
-            Map.of(
-                SUBTOPOLOGY_1, Map.of(1, 10, 2, 11, 3, 12),
-                SUBTOPOLOGY_2, Map.of(4, 20, 5, 21, 6, 22)
+                Map.of(
+                    SUBTOPOLOGY_1, Map.of(1, 10, 2, 11, 3, 12),
+                    SUBTOPOLOGY_2, Map.of(4, 20, 5, 21, 6, 22)
             ),
-            tuple.activeTasksWithEpochs()
+                tuple.activeTasksWithEpochs()
         );
         assertEquals(
-            mkTasksPerSubtopology(
-                mkTasks(SUBTOPOLOGY_1, 7, 8, 9),
-                mkTasks(SUBTOPOLOGY_2, 1, 2, 3)
+                mkTasksPerSubtopology(
+                    mkTasks(SUBTOPOLOGY_1, 7, 8, 9),
+                    mkTasks(SUBTOPOLOGY_2, 1, 2, 3)
             ),
-            tuple.standbyTasks()
+                tuple.standbyTasks()
         );
         assertEquals(
-            mkTasksPerSubtopology(
-                mkTasks(SUBTOPOLOGY_1, 4, 5, 6),
-                mkTasks(SUBTOPOLOGY_2, 7, 8, 9)
+                mkTasksPerSubtopology(
+                    mkTasks(SUBTOPOLOGY_1, 4, 5, 6),
+                    mkTasks(SUBTOPOLOGY_2, 7, 8, 9)
             ),
-            tuple.warmupTasks()
+                tuple.warmupTasks()
         );
     }
 
@@ -138,13 +137,13 @@ public class TasksTupleWithEpochsTest {
 
         int memberEpoch = 100;
         TasksTupleWithEpochs tuple = TasksTupleWithEpochs.fromCurrentAssignmentRecord(
-            LOG, GROUP_ID, activeTasks, List.of(), List.of(), memberEpoch
+                LOG, GROUP_ID, activeTasks, List.of(), List.of(), memberEpoch
         );
 
         // Should use member epoch as default
         assertEquals(
-            Map.of(SUBTOPOLOGY_1, Map.of(1, memberEpoch, 2, memberEpoch, 3, memberEpoch)),
-            tuple.activeTasksWithEpochs()
+                Map.of(SUBTOPOLOGY_1, Map.of(1, memberEpoch, 2, memberEpoch, 3, memberEpoch)),
+                tuple.activeTasksWithEpochs()
         );
     }
 
@@ -160,8 +159,8 @@ public class TasksTupleWithEpochsTest {
         try (LogCaptureAppender appender = LogCaptureAppender.createAndRegister(TasksTupleWithEpochs.class)) {
             TasksTupleWithEpochs tuple = TasksTupleWithEpochs.fromCurrentAssignmentRecord(LOG, GROUP_ID, activeTasks, List.of(), List.of(), 100);
             assertEquals(
-                Map.of(SUBTOPOLOGY_1, Map.of(1, 100, 2, 100, 3, 100)),
-                tuple.activeTasksWithEpochs()
+                    Map.of(SUBTOPOLOGY_1, Map.of(1, 100, 2, 100, 3, 100)),
+                    tuple.activeTasksWithEpochs()
             );
             assertEquals(1, appender.getMessages("ERROR").stream()
                 .filter(msg -> msg.contains("[GroupId " + GROUP_ID + "] Size of assignment epochs 2 is not equal to partitions 3 for subtopology 1."))
@@ -176,9 +175,9 @@ public class TasksTupleWithEpochsTest {
         assertEquals(TasksTupleWithEpochs.EMPTY, emptyTuple);
 
         TasksTupleWithEpochs nonEmptyTuple = new TasksTupleWithEpochs(
-            Map.of(SUBTOPOLOGY_1, Map.of(1, 10)),
-            Map.of(),
-            Map.of()
+                Map.of(SUBTOPOLOGY_1, Map.of(1, 10)),
+                Map.of(),
+                Map.of()
         );
         assertFalse(nonEmptyTuple.isEmpty());
     }
@@ -186,40 +185,40 @@ public class TasksTupleWithEpochsTest {
     @Test
     public void testMerge() {
         TasksTupleWithEpochs tuple1 = new TasksTupleWithEpochs(
-            Map.of(SUBTOPOLOGY_1, Map.of(1, 10, 2, 11)),
-            Map.of(SUBTOPOLOGY_2, Set.of(4, 5)),
-            Map.of(SUBTOPOLOGY_3, Set.of(7, 8))
+                Map.of(SUBTOPOLOGY_1, Map.of(1, 10, 2, 11)),
+                Map.of(SUBTOPOLOGY_2, Set.of(4, 5)),
+                Map.of(SUBTOPOLOGY_3, Set.of(7, 8))
         );
 
         TasksTupleWithEpochs tuple2 = new TasksTupleWithEpochs(
-            Map.of(
-                SUBTOPOLOGY_1, Map.of(3, 13), // Different partition in same subtopology
+                Map.of(
+                    SUBTOPOLOGY_1, Map.of(3, 13), // Different partition in same subtopology
                 SUBTOPOLOGY_2, Map.of(6, 26)  // Different subtopology
             ),
-            Map.of(SUBTOPOLOGY_2, Set.of(9, 10)),
-            Map.of(SUBTOPOLOGY_3, Set.of(11, 12))
+                Map.of(SUBTOPOLOGY_2, Set.of(9, 10)),
+                Map.of(SUBTOPOLOGY_3, Set.of(11, 12))
         );
 
         TasksTupleWithEpochs merged = tuple1.merge(tuple2);
 
         assertEquals(
-            Map.of(
-                SUBTOPOLOGY_1, Map.of(1, 10, 2, 11, 3, 13),
-                SUBTOPOLOGY_2, Map.of(6, 26)
+                Map.of(
+                    SUBTOPOLOGY_1, Map.of(1, 10, 2, 11, 3, 13),
+                    SUBTOPOLOGY_2, Map.of(6, 26)
             ),
-            merged.activeTasksWithEpochs()
+                merged.activeTasksWithEpochs()
         );
         assertEquals(
-            mkTasksPerSubtopology(
-                mkTasks(SUBTOPOLOGY_2, 4, 5, 9, 10)
+                mkTasksPerSubtopology(
+                    mkTasks(SUBTOPOLOGY_2, 4, 5, 9, 10)
             ),
-            merged.standbyTasks()
+                merged.standbyTasks()
         );
         assertEquals(
-            mkTasksPerSubtopology(
-                mkTasks(SUBTOPOLOGY_3, 7, 8, 11, 12)
+                mkTasksPerSubtopology(
+                    mkTasks(SUBTOPOLOGY_3, 7, 8, 11, 12)
             ),
-            merged.warmupTasks()
+                merged.warmupTasks()
         );
     }
 
@@ -227,15 +226,15 @@ public class TasksTupleWithEpochsTest {
     public void testMergeWithOverlappingActiveTasks() {
         // When merging overlapping active tasks, epochs from the second tuple take precedence
         TasksTupleWithEpochs tuple1 = new TasksTupleWithEpochs(
-            Map.of(SUBTOPOLOGY_1, Map.of(1, 10, 2, 11)),
-            Map.of(),
-            Map.of()
+                Map.of(SUBTOPOLOGY_1, Map.of(1, 10, 2, 11)),
+                Map.of(),
+                Map.of()
         );
 
         TasksTupleWithEpochs tuple2 = new TasksTupleWithEpochs(
-            Map.of(SUBTOPOLOGY_1, Map.of(1, 99, 3, 13)), // partition 1 overlaps with different epoch
+                Map.of(SUBTOPOLOGY_1, Map.of(1, 99, 3, 13)), // partition 1 overlaps with different epoch
             Map.of(),
-            Map.of()
+                Map.of()
         );
 
         TasksTupleWithEpochs merged = tuple1.merge(tuple2);
@@ -249,22 +248,22 @@ public class TasksTupleWithEpochsTest {
     @Test
     public void testToString() {
         TasksTupleWithEpochs tuple = new TasksTupleWithEpochs(
-            Map.of(
-                SUBTOPOLOGY_1, Map.of(1, 10, 2, 11),
-                SUBTOPOLOGY_2, Map.of(3, 20)
+                Map.of(
+                    SUBTOPOLOGY_1, Map.of(1, 10, 2, 11),
+                    SUBTOPOLOGY_2, Map.of(3, 20)
             ),
-            Map.of(SUBTOPOLOGY_2, Set.of(4, 5)),
-            Map.of(SUBTOPOLOGY_3, Set.of(6))
+                Map.of(SUBTOPOLOGY_2, Set.of(4, 5)),
+                Map.of(SUBTOPOLOGY_3, Set.of(6))
         );
 
         String result = tuple.toString();
-        
+
         // Verify the exact toString format
         assertEquals(
-            "(active=[1-1@10, 1-2@11, 2-3@20], " +
-            "standby=[2-4, 2-5], " +
-            "warmup=[3-6])",
-            result
+                "(active=[1-1@10, 1-2@11, 2-3@20], " +
+                "standby=[2-4, 2-5], " +
+                "warmup=[3-6])",
+                result
         );
     }
 }

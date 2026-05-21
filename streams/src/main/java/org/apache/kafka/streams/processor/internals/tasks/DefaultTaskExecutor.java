@@ -164,14 +164,14 @@ public class DefaultTaskExecutor implements TaskExecutor {
                 // TODO consolidate TimeoutException retries with general error handling
                 task.maybeInitTaskTimeoutOrThrow(now, timeoutException);
                 log.error(
-                    String.format(
-                        "Could not complete processing records for %s due to the following exception; will move to next task and retry later",
-                        task.id()),
-                    timeoutException
+                        String.format(
+                            "Could not complete processing records for %s due to the following exception; will move to next task and retry later",
+                            task.id()),
+                        timeoutException
                 );
             } catch (final TaskMigratedException e) {
                 log.info("Failed to process stream task {} since it got migrated to another thread already. " +
-                    "Will trigger a new rebalance and close all tasks as zombies together.", task.id());
+                        "Will trigger a new rebalance and close all tasks as zombies together.", task.id());
                 throw e;
             } catch (final StreamsException e) {
                 log.error(String.format("Failed to process stream task %s due to the following error:", task.id()), e);

@@ -103,9 +103,9 @@ public class KStreamRepartitionTest {
             final String topicName = repartitionOutputTopic(props, repartitionOperationName);
 
             final TestOutputTopic<Integer, String> testOutputTopic = driver.createOutputTopic(
-                topicName,
-                new IntegerDeserializer(),
-                new StringDeserializer()
+                    topicName,
+                    new IntegerDeserializer(),
+                    new StringDeserializer()
             );
 
             for (int i = 0; i < 2; i++) {
@@ -157,7 +157,7 @@ public class KStreamRepartitionTest {
                 TopologyException.class, () -> builder.build(props)
         );
         final String expectedErrorMessage = String.format("Following topics do not have the same " +
-                        "number of partitions: [%s]",
+                "number of partitions: [%s]",
                 new TreeMap<>(repartitionTopicsWithNumOfPartitions));
         assertNotNull(expected);
         assertTrue(expected.getMessage().contains(expectedErrorMessage));

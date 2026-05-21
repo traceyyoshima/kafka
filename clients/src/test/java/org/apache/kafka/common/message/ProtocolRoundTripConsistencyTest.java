@@ -158,13 +158,13 @@ public class ProtocolRoundTripConsistencyTest {
         struct.writeTo(serializedSchemaBuffer);
 
         assertEquals(message.size(cache, version), serializedMessageAccessor.buffer().position(),
-            "Buffer should be completely filled to message size.");
+                "Buffer should be completely filled to message size.");
         assertEquals(struct.sizeOf(), serializedSchemaBuffer.position(),
-            "Buffer should be completely filled to struct size.");
+                "Buffer should be completely filled to struct size.");
         assertEquals(serializedSchemaBuffer.position(), serializedMessageAccessor.buffer().position(),
-            "Generated and non-generated schema serializer should serialize to the same length.");
+                "Generated and non-generated schema serializer should serialize to the same length.");
         assertEquals(serializedSchemaBuffer, serializedMessageAccessor.buffer(),
-            "Generated and non-generated schema serializer should serialize to the same content.");
+                "Generated and non-generated schema serializer should serialize to the same content.");
 
         serializedMessageAccessor.flip();
         // Deserialize message

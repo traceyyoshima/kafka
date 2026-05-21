@@ -66,7 +66,6 @@ public class JsonConverterBenchmark {
                 .put("ts_ms", 1638362438000L)
                 .put("transaction", buildTransactionStruct());
 
-
         public String structJson = "{\n" +
                 "  \"schema\": {\n" +
                 "  \"type\": \"struct\",\n" +
@@ -325,6 +324,7 @@ public class JsonConverterBenchmark {
                     .field("transaction", buildTransactionSchema())
                     .build();
         }
+
         private static org.apache.kafka.connect.data.Schema buildValueSchema() {
 
             return SchemaBuilder.struct()
@@ -412,7 +412,6 @@ public class JsonConverterBenchmark {
 
             Struct transactionStruct = new Struct(buildTransactionSchema());
 
-
             transactionStruct.put("id", "transaction_id");
             transactionStruct.put("total_order", 1000L);
             transactionStruct.put("data_collection_order", 10000L);
@@ -420,7 +419,6 @@ public class JsonConverterBenchmark {
             return transactionStruct;
         }
     }
-
 
     @Setup(Level.Trial)
     public void setup(BenchmarkParams params)  {

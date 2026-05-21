@@ -91,7 +91,6 @@ public class DeveloperGuideTesting {
         testDriver.close();
     }
 
-
     @Test
     public void shouldFlushStoreForFirstInput() {
         inputTopic.pipeInput("a", 1L);

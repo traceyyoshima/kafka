@@ -54,18 +54,18 @@ public class TxnOffsetCommitResponseTest extends OffsetCommitResponseTest {
         TxnOffsetCommitResponseData data = new TxnOffsetCommitResponseData()
             .setThrottleTimeMs(throttleTimeMs)
             .setTopics(List.of(
-                new TxnOffsetCommitResponseTopic().setPartitions(List.of(
-                    new TxnOffsetCommitResponsePartition()
+                    new TxnOffsetCommitResponseTopic().setPartitions(List.of(
+                        new TxnOffsetCommitResponsePartition()
                         .setPartitionIndex(partitionOne)
                         .setErrorCode(errorOne.code()))),
-                new TxnOffsetCommitResponseTopic().setPartitions(List.of(
-                    new TxnOffsetCommitResponsePartition()
+                    new TxnOffsetCommitResponseTopic().setPartitions(List.of(
+                        new TxnOffsetCommitResponsePartition()
                         .setPartitionIndex(partitionTwo)
                         .setErrorCode(errorTwo.code())))));
 
         for (short version : ApiKeys.TXN_OFFSET_COMMIT.allVersions()) {
             TxnOffsetCommitResponse response = TxnOffsetCommitResponse.parse(
-                MessageUtil.toByteBufferAccessor(data, version), version);
+                    MessageUtil.toByteBufferAccessor(data, version), version);
             assertEquals(expectedErrorCounts, response.errorCounts());
             assertEquals(throttleTimeMs, response.throttleTimeMs());
             assertEquals(version >= 1, response.shouldClientThrottle(version));
@@ -85,21 +85,21 @@ public class TxnOffsetCommitResponseTest extends OffsetCommitResponseTest {
 
         var expected = new TxnOffsetCommitResponseData()
             .setTopics(List.of(
-                new TxnOffsetCommitResponseTopic()
+                    new TxnOffsetCommitResponseTopic()
                     .setTopicId(topicOneIdOrZero)
                     .setName(topicOne)
                     .setPartitions(List.of(
-                        new TxnOffsetCommitResponsePartition()
+                            new TxnOffsetCommitResponsePartition()
                             .setPartitionIndex(partitionOne)
                             .setErrorCode(errorOne.code()),
-                        new TxnOffsetCommitResponsePartition()
+                            new TxnOffsetCommitResponsePartition()
                             .setPartitionIndex(partitionTwo)
                             .setErrorCode(errorTwo.code()))),
-                new TxnOffsetCommitResponseTopic()
+                    new TxnOffsetCommitResponseTopic()
                     .setTopicId(topicTwoIdOrZero)
                     .setName(topicTwo)
                     .setPartitions(List.of(
-                        new TxnOffsetCommitResponsePartition()
+                            new TxnOffsetCommitResponsePartition()
                             .setPartitionIndex(partitionOne)
                             .setErrorCode(errorOne.code())))));
 
@@ -113,26 +113,26 @@ public class TxnOffsetCommitResponseTest extends OffsetCommitResponseTest {
 
         var builder = TxnOffsetCommitResponse.newBuilder(useTopicIds);
         builder.addPartitions(
-            topicOneIdOrZero,
-            topicOne,
-            List.of(
-                new TxnOffsetCommitRequestData.TxnOffsetCommitRequestPartition().setPartitionIndex(partitionOne),
-                new TxnOffsetCommitRequestData.TxnOffsetCommitRequestPartition().setPartitionIndex(partitionTwo)
+                topicOneIdOrZero,
+                topicOne,
+                List.of(
+                    new TxnOffsetCommitRequestData.TxnOffsetCommitRequestPartition().setPartitionIndex(partitionOne),
+                    new TxnOffsetCommitRequestData.TxnOffsetCommitRequestPartition().setPartitionIndex(partitionTwo)
             ),
-            TxnOffsetCommitRequestData.TxnOffsetCommitRequestPartition::partitionIndex,
-            errorOne
+                TxnOffsetCommitRequestData.TxnOffsetCommitRequestPartition::partitionIndex,
+                errorOne
         );
 
         var expected = new TxnOffsetCommitResponseData()
             .setTopics(List.of(
-                new TxnOffsetCommitResponseTopic()
+                    new TxnOffsetCommitResponseTopic()
                     .setTopicId(topicOneIdOrZero)
                     .setName(topicOne)
                     .setPartitions(List.of(
-                        new TxnOffsetCommitResponsePartition()
+                            new TxnOffsetCommitResponsePartition()
                             .setPartitionIndex(partitionOne)
                             .setErrorCode(errorOne.code()),
-                        new TxnOffsetCommitResponsePartition()
+                            new TxnOffsetCommitResponsePartition()
                             .setPartitionIndex(partitionTwo)
                             .setErrorCode(errorOne.code())))));
 
@@ -146,11 +146,11 @@ public class TxnOffsetCommitResponseTest extends OffsetCommitResponseTest {
 
         var newData = new TxnOffsetCommitResponseData()
             .setTopics(List.of(
-                new TxnOffsetCommitResponseTopic()
+                    new TxnOffsetCommitResponseTopic()
                     .setTopicId(topicOneIdOrZero)
                     .setName(topicOne)
                     .setPartitions(List.of(
-                        new TxnOffsetCommitResponsePartition()
+                            new TxnOffsetCommitResponsePartition()
                             .setPartitionIndex(partitionOne)
                             .setErrorCode(errorOne.code())))));
 
@@ -172,28 +172,28 @@ public class TxnOffsetCommitResponseTest extends OffsetCommitResponseTest {
 
         var newData = new TxnOffsetCommitResponseData()
             .setTopics(List.of(
-                new TxnOffsetCommitResponseTopic()
+                    new TxnOffsetCommitResponseTopic()
                     .setTopicId(topicTwoIdOrZero)
                     .setName(topicTwo)
                     .setPartitions(List.of(
-                        new TxnOffsetCommitResponsePartition()
+                            new TxnOffsetCommitResponsePartition()
                             .setPartitionIndex(partitionTwo)
                             .setErrorCode(errorTwo.code())))));
 
         var expected = new TxnOffsetCommitResponseData()
             .setTopics(List.of(
-                new TxnOffsetCommitResponseTopic()
+                    new TxnOffsetCommitResponseTopic()
                     .setTopicId(topicOneIdOrZero)
                     .setName(topicOne)
                     .setPartitions(List.of(
-                        new TxnOffsetCommitResponsePartition()
+                            new TxnOffsetCommitResponsePartition()
                             .setPartitionIndex(partitionOne)
                             .setErrorCode(errorOne.code()))),
-                new TxnOffsetCommitResponseTopic()
+                    new TxnOffsetCommitResponseTopic()
                     .setTopicId(topicTwoIdOrZero)
                     .setName(topicTwo)
                     .setPartitions(List.of(
-                        new TxnOffsetCommitResponsePartition()
+                            new TxnOffsetCommitResponsePartition()
                             .setPartitionIndex(partitionTwo)
                             .setErrorCode(errorTwo.code())))));
 
@@ -210,24 +210,24 @@ public class TxnOffsetCommitResponseTest extends OffsetCommitResponseTest {
 
         var newData = new TxnOffsetCommitResponseData()
             .setTopics(List.of(
-                new TxnOffsetCommitResponseTopic()
+                    new TxnOffsetCommitResponseTopic()
                     .setTopicId(topicOneIdOrZero)
                     .setName(topicOne)
                     .setPartitions(List.of(
-                        new TxnOffsetCommitResponsePartition()
+                            new TxnOffsetCommitResponsePartition()
                             .setPartitionIndex(partitionTwo)
                             .setErrorCode(errorTwo.code())))));
 
         var expected = new TxnOffsetCommitResponseData()
             .setTopics(List.of(
-                new TxnOffsetCommitResponseTopic()
+                    new TxnOffsetCommitResponseTopic()
                     .setTopicId(topicOneIdOrZero)
                     .setName(topicOne)
                     .setPartitions(List.of(
-                        new TxnOffsetCommitResponsePartition()
+                            new TxnOffsetCommitResponsePartition()
                             .setPartitionIndex(partitionOne)
                             .setErrorCode(errorOne.code()),
-                        new TxnOffsetCommitResponsePartition()
+                            new TxnOffsetCommitResponsePartition()
                             .setPartitionIndex(partitionTwo)
                             .setErrorCode(errorTwo.code())))));
 
@@ -239,6 +239,6 @@ public class TxnOffsetCommitResponseTest extends OffsetCommitResponseTest {
     public void testBuilderRejectsNullKey(boolean useTopicIds) {
         var builder = TxnOffsetCommitResponse.newBuilder(useTopicIds);
         assertThrows(IllegalArgumentException.class,
-            () -> builder.addPartition(useTopicIds ? null : Uuid.ZERO_UUID, useTopicIds ? topicOne : null, partitionOne, errorOne));
+                () -> builder.addPartition(useTopicIds ? null : Uuid.ZERO_UUID, useTopicIds ? topicOne : null, partitionOne, errorOne));
     }
 }

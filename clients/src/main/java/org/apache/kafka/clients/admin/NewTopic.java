@@ -130,7 +130,7 @@ public class NewTopic {
         if (replicasAssignments != null) {
             for (Entry<Integer, List<Integer>> entry : replicasAssignments.entrySet()) {
                 creatableTopic.assignments().add(
-                    new CreatableReplicaAssignment().
+                        new CreatableReplicaAssignment().
                         setPartitionIndex(entry.getKey()).
                         setBrokerIds(entry.getValue()));
             }
@@ -138,7 +138,7 @@ public class NewTopic {
         if (configs != null) {
             for (Entry<String, String> entry : configs.entrySet()) {
                 creatableTopic.configs().add(
-                    new CreatableTopicConfig().
+                        new CreatableTopicConfig().
                         setName(entry.getKey()).
                         setValue(entry.getValue()));
             }
@@ -162,10 +162,10 @@ public class NewTopic {
         if (o == null || getClass() != o.getClass()) return false;
         final NewTopic that = (NewTopic) o;
         return Objects.equals(name, that.name) &&
-            Objects.equals(numPartitions, that.numPartitions) &&
-            Objects.equals(replicationFactor, that.replicationFactor) &&
-            Objects.equals(replicasAssignments, that.replicasAssignments) &&
-            Objects.equals(configs, that.configs);
+                Objects.equals(numPartitions, that.numPartitions) &&
+                Objects.equals(replicationFactor, that.replicationFactor) &&
+                Objects.equals(replicasAssignments, that.replicasAssignments) &&
+                Objects.equals(configs, that.configs);
     }
 
     @Override

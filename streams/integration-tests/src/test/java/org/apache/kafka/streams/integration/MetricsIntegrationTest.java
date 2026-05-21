@@ -282,9 +282,9 @@ public class MetricsIntegrationTest {
 
         kafkaStreams.start();
         TestUtils.waitForCondition(
-            () -> kafkaStreams.state() == State.RUNNING,
-            timeout,
-            () -> "Kafka Streams application did not reach state RUNNING in " + timeout + " ms");
+                () -> kafkaStreams.state() == State.RUNNING,
+                timeout,
+                () -> "Kafka Streams application did not reach state RUNNING in " + timeout + " ms");
 
         verifyAliveStreamThreadsMetric();
         verifyStateMetric(State.RUNNING.name());
@@ -293,42 +293,42 @@ public class MetricsIntegrationTest {
     private void produceRecordsForTwoSegments(final Duration segmentInterval) {
         final MockTime mockTime = new MockTime(Math.max(segmentInterval.toMillis(), 60_000L));
         final Properties props = TestUtils.producerConfig(
-            CLUSTER.bootstrapServers(),
-            IntegerSerializer.class,
-            StringSerializer.class,
-            new Properties());
+                CLUSTER.bootstrapServers(),
+                IntegerSerializer.class,
+                StringSerializer.class,
+                new Properties());
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-            STREAM_INPUT,
-            Collections.singletonList(new KeyValue<>(1, "A")),
-            props,
-            mockTime.milliseconds()
+                STREAM_INPUT,
+                Collections.singletonList(new KeyValue<>(1, "A")),
+                props,
+                mockTime.milliseconds()
         );
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-            STREAM_INPUT,
-            Collections.singletonList(new KeyValue<>(1, "B")),
-            props,
-            mockTime.milliseconds()
+                STREAM_INPUT,
+                Collections.singletonList(new KeyValue<>(1, "B")),
+                props,
+                mockTime.milliseconds()
         );
     }
 
     private void produceRecordsForClosingWindow(final Duration windowSize) {
         final MockTime mockTime = new MockTime(windowSize.toMillis() + 1);
         final Properties props = TestUtils.producerConfig(
-            CLUSTER.bootstrapServers(),
-            IntegerSerializer.class,
-            StringSerializer.class,
-            new Properties());
+                CLUSTER.bootstrapServers(),
+                IntegerSerializer.class,
+                StringSerializer.class,
+                new Properties());
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-            STREAM_INPUT,
-            Collections.singletonList(new KeyValue<>(1, "A")),
-            props,
-            mockTime.milliseconds()
+                STREAM_INPUT,
+                Collections.singletonList(new KeyValue<>(1, "A")),
+                props,
+                mockTime.milliseconds()
         );
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-            STREAM_INPUT,
-            Collections.singletonList(new KeyValue<>(1, "B")),
-            props,
-            mockTime.milliseconds()
+                STREAM_INPUT,
+                Collections.singletonList(new KeyValue<>(1, "B")),
+                props,
+                mockTime.milliseconds()
         );
     }
 
@@ -338,9 +338,9 @@ public class MetricsIntegrationTest {
         IntegrationTestUtils.purgeLocalStreamsState(streamsConfiguration);
         final long timeout = 60000;
         TestUtils.waitForCondition(
-            () -> kafkaStreams.state() == State.NOT_RUNNING,
-            timeout,
-            () -> "Kafka Streams application did not reach state NOT_RUNNING in " + timeout + " ms");
+                () -> kafkaStreams.state() == State.NOT_RUNNING,
+                timeout,
+                () -> "Kafka Streams application did not reach state NOT_RUNNING in " + timeout + " ms");
     }
 
     @ParameterizedTest
@@ -396,8 +396,8 @@ public class MetricsIntegrationTest {
             .groupByKey()
             .windowedBy(TimeWindows.ofSizeWithNoGrace(windowSize))
             .aggregate(() -> 0L,
-                (aggKey, newValue, aggValue) -> aggValue,
-                Materialized.<Integer, Long, WindowStore<Bytes, byte[]>>as(TIME_WINDOWED_AGGREGATED_STREAM_STORE)
+                    (aggKey, newValue, aggValue) -> aggValue,
+                    Materialized.<Integer, Long, WindowStore<Bytes, byte[]>>as(TIME_WINDOWED_AGGREGATED_STREAM_STORE)
                     .withValueSerde(Serdes.Long())
                     .withRetention(windowSize))
             .suppress(Suppressed.untilWindowCloses(BufferConfig.unbounded()))
@@ -430,9 +430,9 @@ public class MetricsIntegrationTest {
             .groupByKey()
             .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(inactivityGap))
             .aggregate(() -> 0L,
-                (aggKey, newValue, aggValue) -> aggValue,
-                (aggKey, leftAggValue, rightAggValue) -> leftAggValue,
-                Materialized.<Integer, Long, SessionStore<Bytes, byte[]>>as(SESSION_AGGREGATED_STREAM_STORE)
+                    (aggKey, newValue, aggValue) -> aggValue,
+                    (aggKey, leftAggValue, rightAggValue) -> leftAggValue,
+                    Materialized.<Integer, Long, SessionStore<Bytes, byte[]>>as(SESSION_AGGREGATED_STREAM_STORE)
                     .withValueSerde(Serdes.Long())
                     .withRetention(inactivityGap))
             .toStream()
@@ -455,7 +455,7 @@ public class MetricsIntegrationTest {
     private void verifyAliveStreamThreadsMetric() {
         final List<Metric> metricsList = new ArrayList<Metric>(kafkaStreams.metrics().values()).stream()
             .filter(m -> m.metricName().name().equals(ALIVE_STREAM_THREADS) &&
-                m.metricName().group().equals(STREAM_CLIENT_NODE_METRICS))
+                    m.metricName().group().equals(STREAM_CLIENT_NODE_METRICS))
             .collect(Collectors.toList());
         assertThat(metricsList.size(), is(1));
         assertThat(metricsList.get(0).metricValue(), is(NUM_THREADS));
@@ -464,7 +464,7 @@ public class MetricsIntegrationTest {
     private void verifyStateMetric(final String state) {
         final List<Metric> metricsList = new ArrayList<Metric>(kafkaStreams.metrics().values()).stream()
             .filter(m -> m.metricName().name().equals(STATE) &&
-                m.metricName().group().equals(STREAM_CLIENT_NODE_METRICS))
+                    m.metricName().group().equals(STREAM_CLIENT_NODE_METRICS))
             .collect(Collectors.toList());
         assertThat(metricsList.size(), is(1));
         assertThat(metricsList.get(0).metricValue(), is(state));
@@ -474,7 +474,7 @@ public class MetricsIntegrationTest {
     private void verifyTopologyDescriptionMetric(final String topologyDescription) {
         final List<Metric> metricsList = new ArrayList<Metric>(kafkaStreams.metrics().values()).stream()
             .filter(m -> m.metricName().name().equals(TOPOLOGY_DESCRIPTION) &&
-                m.metricName().group().equals(STREAM_CLIENT_NODE_METRICS))
+                    m.metricName().group().equals(STREAM_CLIENT_NODE_METRICS))
             .collect(Collectors.toList());
         assertThat(metricsList.size(), is(1));
         assertThat(metricsList.get(0).metricValue(), is(topologyDescription));
@@ -483,7 +483,7 @@ public class MetricsIntegrationTest {
     private void verifyApplicationIdMetric() {
         final List<Metric> metricsList = new ArrayList<Metric>(kafkaStreams.metrics().values()).stream()
             .filter(m -> m.metricName().name().equals(APPLICATION_ID) &&
-                m.metricName().group().equals(STREAM_CLIENT_NODE_METRICS))
+                    m.metricName().group().equals(STREAM_CLIENT_NODE_METRICS))
             .collect(Collectors.toList());
         assertThat(metricsList.size(), is(1));
         assertThat(metricsList.get(0).metricValue(), is(appId));

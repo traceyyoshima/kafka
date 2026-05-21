@@ -59,14 +59,14 @@ import java.util.stream.Stream;
 
 public class ConnectPluginPath {
     public static final Object[] LIST_TABLE_COLUMNS = {
-        "pluginName",
-        "firstAlias",
-        "secondAlias",
-        "pluginVersion",
-        "pluginType",
-        "isLoadable",
-        "hasManifest",
-        "pluginLocation" // last because it is least important and most repetitive
+            "pluginName",
+            "firstAlias",
+            "secondAlias",
+            "pluginVersion",
+            "pluginType",
+            "isLoadable",
+            "hasManifest",
+            "pluginLocation" // last because it is least important and most repetitive
     };
     public static final String NO_ALIAS = "N/A";
 
@@ -112,8 +112,8 @@ public class ConnectPluginPath {
             .addParser("sync-manifests");
 
         ArgumentParser[] subparsers = new ArgumentParser[] {
-            listCommand,
-            syncManifestsCommand
+                listCommand,
+                syncManifestsCommand
         };
 
         for (ArgumentParser subparser : subparsers) {
@@ -225,11 +225,11 @@ public class ConnectPluginPath {
         @Override
         public String toString() {
             return "Config{" +
-                "command=" + command +
-                ", locations=" + locations +
-                ", dryRun=" + dryRun +
-                ", keepNotFound=" + keepNotFound +
-                '}';
+                    "command=" + command +
+                    ", locations=" + locations +
+                    ", dryRun=" + dryRun +
+                    ", keepNotFound=" + keepNotFound +
+                    '}';
         }
     }
 

@@ -63,7 +63,6 @@ public class KStreamKTableLeftJoinTest {
     private MockApiProcessor<Integer, String, Void, Void> processor;
     private StreamsBuilder builder;
 
-
     public void setUp(final boolean withHeaders) {
         builder = new StreamsBuilder();
 
@@ -100,9 +99,9 @@ public class KStreamKTableLeftJoinTest {
         final Random r = new Random(System.currentTimeMillis());
         for (int i = 0; i < messageCount; i++) {
             inputTableTopic.pipeInput(
-                expectedKeys[i],
-                valuePrefix + expectedKeys[i],
-                r.nextInt(Integer.MAX_VALUE));
+                    expectedKeys[i],
+                    valuePrefix + expectedKeys[i],
+                    r.nextInt(Integer.MAX_VALUE));
         }
     }
 
@@ -117,7 +116,7 @@ public class KStreamKTableLeftJoinTest {
     public void shouldRequireCopartitionedStreams(final boolean withHeaders) {
         setUp(withHeaders);
         final Collection<Set<String>> copartitionGroups =
-            TopologyWrapper.getInternalTopologyBuilder(builder.build()).copartitionGroups();
+                TopologyWrapper.getInternalTopologyBuilder(builder.build()).copartitionGroups();
 
         assertEquals(1, copartitionGroups.size());
         assertEquals(Set.of(streamTopic, tableTopic), copartitionGroups.iterator().next());
@@ -223,7 +222,7 @@ public class KStreamKTableLeftJoinTest {
 
         try (final LogCaptureAppender appender = LogCaptureAppender.createAndRegister(KStreamKTableJoinProcessor.class)) {
             final TestInputTopic<Integer, String> inputTopic =
-                driver.createInputTopic(streamTopic, new IntegerSerializer(), new StringSerializer());
+                    driver.createInputTopic(streamTopic, new IntegerSerializer(), new StringSerializer());
             inputTopic.pipeInput(null, "A", 0);
 
             processor.checkAndClearProcessResult(new KeyValueTimestamp<>(null, "A+null", 0));
@@ -232,15 +231,15 @@ public class KStreamKTableLeftJoinTest {
         }
 
         assertEquals(
-            0.0,
-            driver.metrics().get(
-                new MetricName(
-                    "dropped-records-total",
-                    "stream-task-metrics",
-                    "",
-                    mkMap(
-                        mkEntry("thread-id", Thread.currentThread().getName()),
-                        mkEntry("task-id", "0_0")
+                0.0,
+                driver.metrics().get(
+                    new MetricName(
+                        "dropped-records-total",
+                        "stream-task-metrics",
+                        "",
+                        mkMap(
+                            mkEntry("thread-id", Thread.currentThread().getName()),
+                            mkEntry("task-id", "0_0")
                     )
                 ))
                 .metricValue()
@@ -253,22 +252,22 @@ public class KStreamKTableLeftJoinTest {
         setUp(withHeaders);
         try (final LogCaptureAppender appender = LogCaptureAppender.createAndRegister(KStreamKTableJoinProcessor.class)) {
             final TestInputTopic<Integer, String> inputTopic =
-                driver.createInputTopic(streamTopic, new IntegerSerializer(), new StringSerializer());
+                    driver.createInputTopic(streamTopic, new IntegerSerializer(), new StringSerializer());
             inputTopic.pipeInput(1, null);
 
             assertTrue(appender.getMessages().contains("Skipping record due to null join key or value. topic=[streamTopic] partition=[0] offset=[0]"));
         }
 
         assertEquals(
-            1.0,
-            driver.metrics().get(
-                new MetricName(
-                    "dropped-records-total",
-                    "stream-task-metrics",
-                    "",
-                    mkMap(
-                        mkEntry("thread-id", Thread.currentThread().getName()),
-                        mkEntry("task-id", "0_0")
+                1.0,
+                driver.metrics().get(
+                    new MetricName(
+                        "dropped-records-total",
+                        "stream-task-metrics",
+                        "",
+                        mkMap(
+                            mkEntry("thread-id", Thread.currentThread().getName()),
+                            mkEntry("task-id", "0_0")
                     )
                 ))
                 .metricValue()

@@ -127,7 +127,6 @@ class KTableMapValues<KIn, VIn, VOut> implements KTableProcessorSupplier<KIn, VI
         return ValueTimestampHeaders.make(newValue, timestamp, headers);
     }
 
-
     private class KTableMapValuesProcessor implements Processor<KIn, Change<VIn>, KIn, Change<VOut>> {
         private ProcessorContext<KIn, Change<VOut>> context;
         private KeyValueStoreWrapper<KIn, VOut> store;
@@ -139,10 +138,10 @@ class KTableMapValues<KIn, VIn, VOut> implements KTableProcessorSupplier<KIn, VI
             if (queryableName != null) {
                 store = new KeyValueStoreWrapper<>(context, queryableName);
                 tupleForwarder = new TimestampedTupleForwarder<>(
-                    store.store(),
-                    context,
-                    store.isHeadersStore() ? new TimestampedCacheFlushListenerWithHeaders<>(context) : new TimestampedCacheFlushListener<>(context),
-                    sendOldValues);
+                        store.store(),
+                        context,
+                        store.isHeadersStore() ? new TimestampedCacheFlushListenerWithHeaders<>(context) : new TimestampedCacheFlushListener<>(context),
+                        sendOldValues);
             }
         }
 
@@ -172,7 +171,6 @@ class KTableMapValues<KIn, VIn, VOut> implements KTableProcessorSupplier<KIn, VI
                 : computeValue(key, change.oldValue);
         }
     }
-
 
     private class KTableMapValuesValueGetter implements KTableValueGetter<KIn, VOut> {
         private final KTableValueGetter<KIn, VIn> parentGetter;

@@ -80,7 +80,7 @@ public class PushTelemetryRequestTest {
         }
 
         return new PushTelemetryRequest.Builder(
-            new PushTelemetryRequestData()
+                new PushTelemetryRequestData()
                 .setMetrics(compressedData)
                 .setCompressionType(compressionType.id)).build();
     }

@@ -79,10 +79,10 @@ import static org.hamcrest.Matchers.is;
 @Tag("integration")
 public class HighAvailabilityTaskAssignorIntegrationTest {
     public static final EmbeddedKafkaCluster CLUSTER = new EmbeddedKafkaCluster(3,
-        new Properties(), mkMap(
-            mkEntry(0, mkMap(mkEntry(ServerConfigs.BROKER_RACK_CONFIG, AssignmentTestUtils.RACK_0))),
-            mkEntry(1, mkMap(mkEntry(ServerConfigs.BROKER_RACK_CONFIG, AssignmentTestUtils.RACK_1))),
-            mkEntry(2, mkMap(mkEntry(ServerConfigs.BROKER_RACK_CONFIG, AssignmentTestUtils.RACK_2)))
+            new Properties(), mkMap(
+                mkEntry(0, mkMap(mkEntry(ServerConfigs.BROKER_RACK_CONFIG, AssignmentTestUtils.RACK_0))),
+                mkEntry(1, mkMap(mkEntry(ServerConfigs.BROKER_RACK_CONFIG, AssignmentTestUtils.RACK_1))),
+                mkEntry(2, mkMap(mkEntry(ServerConfigs.BROKER_RACK_CONFIG, AssignmentTestUtils.RACK_2)))
     ));
 
     @BeforeAll
@@ -127,15 +127,15 @@ public class HighAvailabilityTaskAssignorIntegrationTest {
         final String appId = "appId_" + System.currentTimeMillis() + "_" + testId;
         final String inputTopic = "input" + testId;
         final Set<TopicPartition> inputTopicPartitions = Set.of(
-            new TopicPartition(inputTopic, 0),
-            new TopicPartition(inputTopic, 1)
+                new TopicPartition(inputTopic, 0),
+                new TopicPartition(inputTopic, 1)
         );
 
         final String storeName = "store" + testId;
         final String storeChangelog = appId + "-store" + testId + "-changelog";
         final Set<TopicPartition> changelogTopicPartitions = Set.of(
-            new TopicPartition(storeChangelog, 0),
-            new TopicPartition(storeChangelog, 1)
+                new TopicPartition(storeChangelog, 0),
+                new TopicPartition(storeChangelog, 1)
         );
 
         IntegrationTestUtils.cleanStateBeforeTest(CLUSTER, 2, 2, inputTopic, storeChangelog);
@@ -145,16 +145,16 @@ public class HighAvailabilityTaskAssignorIntegrationTest {
         final Map<Integer, Boolean> assignmentsStable = new ConcurrentHashMap<>();
         final AtomicBoolean assignmentStable = new AtomicBoolean(false);
         final AssignmentListener assignmentListener =
-            stable -> {
-                assignmentLock.lock();
-                try {
-                    final int thisAssignmentIndex = assignmentsCompleted.incrementAndGet();
-                    assignmentsStable.put(thisAssignmentIndex, stable);
-                    assignmentStable.set(stable);
-                } finally {
-                    assignmentLock.unlock();
-                }
-            };
+                stable -> {
+                    assignmentLock.lock();
+                    try {
+                        final int thisAssignmentIndex = assignmentsCompleted.incrementAndGet();
+                        assignmentsStable.put(thisAssignmentIndex, stable);
+                        assignmentStable.set(stable);
+                    } finally {
+                        assignmentLock.unlock();
+                    }
+                };
 
         final StreamsBuilder builder = new StreamsBuilder();
         builder.table(inputTopic, materializedFunction.apply(storeName));
@@ -171,16 +171,16 @@ public class HighAvailabilityTaskAssignorIntegrationTest {
 
             // sanity check: just make sure we actually wrote all the input records
             TestUtils.waitForCondition(
-                () -> getEndOffsetSum(inputTopicPartitions, consumer) == numberOfRecords,
-                120_000L,
-                () -> "Input records haven't all been written to the input topic: " + getEndOffsetSum(inputTopicPartitions, consumer)
+                    () -> getEndOffsetSum(inputTopicPartitions, consumer) == numberOfRecords,
+                    120_000L,
+                    () -> "Input records haven't all been written to the input topic: " + getEndOffsetSum(inputTopicPartitions, consumer)
             );
 
             // wait until all the input records are in the changelog
             TestUtils.waitForCondition(
-                () -> getEndOffsetSum(changelogTopicPartitions, consumer) == numberOfRecords,
-                120_000L,
-                () -> "Input records haven't all been written to the changelog: " + getEndOffsetSum(changelogTopicPartitions, consumer)
+                    () -> getEndOffsetSum(changelogTopicPartitions, consumer) == numberOfRecords,
+                    120_000L,
+                    () -> "Input records haven't all been written to the changelog: " + getEndOffsetSum(changelogTopicPartitions, consumer)
             );
 
             final AtomicLong instance1TotalRestored = new AtomicLong(-1);
@@ -200,8 +200,8 @@ public class HighAvailabilityTaskAssignorIntegrationTest {
                                             final long batchEndOffset,
                                             final long numRestored) {
                     instance1NumRestored.accumulateAndGet(
-                        numRestored,
-                        (prev, restored) -> prev == -1 ? restored : prev + restored
+                            numRestored,
+                            (prev, restored) -> prev == -1 ? restored : prev + restored
                     );
                 }
 
@@ -210,8 +210,8 @@ public class HighAvailabilityTaskAssignorIntegrationTest {
                                          final String storeName,
                                          final long totalRestored) {
                     instance1TotalRestored.accumulateAndGet(
-                        totalRestored,
-                        (prev, restored) -> prev == -1 ? restored : prev + restored
+                            totalRestored,
+                            (prev, restored) -> prev == -1 ? restored : prev + restored
                     );
                     restoreCompleteLatch.countDown();
                 }
@@ -219,33 +219,33 @@ public class HighAvailabilityTaskAssignorIntegrationTest {
             final int assignmentsBeforeScaleOut = assignmentsCompleted.get();
             kafkaStreams1.start();
             TestUtils.waitForCondition(
-                () -> {
-                    assignmentLock.lock();
-                    try {
-                        if (assignmentsCompleted.get() > assignmentsBeforeScaleOut) {
-                            assertFalseNoRetry(
-                                assignmentsStable.get(assignmentsBeforeScaleOut + 1),
-                                "the first assignment after adding a node should be unstable while we warm up the state."
+                    () -> {
+                        assignmentLock.lock();
+                        try {
+                            if (assignmentsCompleted.get() > assignmentsBeforeScaleOut) {
+                                assertFalseNoRetry(
+                                    assignmentsStable.get(assignmentsBeforeScaleOut + 1),
+                                    "the first assignment after adding a node should be unstable while we warm up the state."
                             );
-                            return true;
-                        } else {
-                            return false;
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        } finally {
+                            assignmentLock.unlock();
                         }
-                    } finally {
-                        assignmentLock.unlock();
-                    }
-                },
-                120_000L,
+                    },
+                    120_000L,
                     () -> "Never saw a first assignment after scale out: " + assignmentsCompleted.get()
             );
 
             TestUtils.waitForCondition(
-                assignmentStable::get,
-                120_000L,
+                    assignmentStable::get,
+                    120_000L,
                     () -> "Assignment hasn't become stable: " + assignmentsCompleted.get() +
-                    " Note, if this does fail, check and see if the new instance just failed to catch up within" +
-                    " the probing rebalance interval. A full minute should be long enough to read ~500 records" +
-                    " in any test environment, but you never know..."
+                            " Note, if this does fail, check and see if the new instance just failed to catch up within" +
+                            " the probing rebalance interval. A full minute should be long enough to read ~500 records" +
+                            " in any test environment, but you never know..."
             );
 
             restoreCompleteLatch.await();
@@ -261,11 +261,11 @@ public class HighAvailabilityTaskAssignorIntegrationTest {
         final String kilo = getKiloByteValue();
 
         final Properties producerProperties = mkProperties(
-            mkMap(
-                mkEntry(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
-                mkEntry(ProducerConfig.ACKS_CONFIG, "all"),
-                mkEntry(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName()),
-                mkEntry(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName())
+                mkMap(
+                    mkEntry(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
+                    mkEntry(ProducerConfig.ACKS_CONFIG, "all"),
+                    mkEntry(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName()),
+                    mkEntry(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName())
             )
         );
 
@@ -279,9 +279,9 @@ public class HighAvailabilityTaskAssignorIntegrationTest {
     private static Properties getConsumerProperties() {
         return mkProperties(
                 mkMap(
-                    mkEntry(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
-                    mkEntry(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName()),
-                    mkEntry(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName())
+                        mkEntry(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
+                        mkEntry(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName()),
+                        mkEntry(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName())
                 )
             );
     }
@@ -293,8 +293,8 @@ public class HighAvailabilityTaskAssignorIntegrationTest {
     private static void assertFalseNoRetry(final boolean assertion, final String message) {
         if (assertion) {
             throw new NoRetryException(
-                new AssertionError(
-                    message
+                    new AssertionError(
+                        message
                 )
             );
         }
@@ -305,23 +305,23 @@ public class HighAvailabilityTaskAssignorIntegrationTest {
                                                 final String rackAwareStrategy,
                                                 final String rack) {
         return mkObjectProperties(
-            mkMap(
-                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
-                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, appId),
-                mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
-                mkEntry(StreamsConfig.NUM_STANDBY_REPLICAS_CONFIG, "0"),
-                mkEntry(StreamsConfig.ACCEPTABLE_RECOVERY_LAG_CONFIG, "0"), // make the warmup catch up completely
+                mkMap(
+                    mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
+                    mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, appId),
+                    mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
+                    mkEntry(StreamsConfig.NUM_STANDBY_REPLICAS_CONFIG, "0"),
+                    mkEntry(StreamsConfig.ACCEPTABLE_RECOVERY_LAG_CONFIG, "0"), // make the warmup catch up completely
                 mkEntry(StreamsConfig.MAX_WARMUP_REPLICAS_CONFIG, "2"),
-                mkEntry(StreamsConfig.PROBING_REBALANCE_INTERVAL_MS_CONFIG, "60000"),
-                mkEntry(StreamsConfig.InternalConfig.ASSIGNMENT_LISTENER, configuredAssignmentListener),
-                mkEntry(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 100L),
-                mkEntry(StreamsConfig.InternalConfig.INTERNAL_TASK_ASSIGNOR_CLASS, HighAvailabilityTaskAssignor.class.getName()),
-                // Increasing the number of threads to ensure that a rebalance happens each time a consumer sends a rejoin (KAFKA-10455)
-                mkEntry(StreamsConfig.NUM_STREAM_THREADS_CONFIG, 40),
-                mkEntry(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.StringSerde.class.getName()),
-                mkEntry(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.StringSerde.class.getName()),
-                mkEntry(CommonClientConfigs.CLIENT_RACK_CONFIG, rack),
-                mkEntry(StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_CONFIG, rackAwareStrategy)
+                    mkEntry(StreamsConfig.PROBING_REBALANCE_INTERVAL_MS_CONFIG, "60000"),
+                    mkEntry(StreamsConfig.InternalConfig.ASSIGNMENT_LISTENER, configuredAssignmentListener),
+                    mkEntry(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 100L),
+                    mkEntry(StreamsConfig.InternalConfig.INTERNAL_TASK_ASSIGNOR_CLASS, HighAvailabilityTaskAssignor.class.getName()),
+                    // Increasing the number of threads to ensure that a rebalance happens each time a consumer sends a rejoin (KAFKA-10455)
+                    mkEntry(StreamsConfig.NUM_STREAM_THREADS_CONFIG, 40),
+                    mkEntry(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.StringSerde.class.getName()),
+                    mkEntry(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.StringSerde.class.getName()),
+                    mkEntry(CommonClientConfigs.CLIENT_RACK_CONFIG, rack),
+                    mkEntry(StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_CONFIG, rackAwareStrategy)
             )
         );
     }

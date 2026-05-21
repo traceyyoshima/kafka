@@ -196,17 +196,17 @@ public interface Authorizer extends Configurable, Closeable {
         // Filter out all the resource pattern corresponding to the RequestContext,
         // AclOperation, and ResourceType
         ResourcePatternFilter resourceTypeFilter = new ResourcePatternFilter(
-            resourceType, null, PatternType.ANY);
+                resourceType, null, PatternType.ANY);
         AclBindingFilter aclFilter = new AclBindingFilter(
-            resourceTypeFilter, AccessControlEntryFilter.ANY);
+                resourceTypeFilter, AccessControlEntryFilter.ANY);
 
         EnumMap<PatternType, Set<String>> denyPatterns =
-            new EnumMap<>(PatternType.class) {{
+                new EnumMap<>(PatternType.class) {{
                     put(PatternType.LITERAL, new HashSet<>());
                     put(PatternType.PREFIXED, new HashSet<>());
                 }};
         EnumMap<PatternType, Set<String>> allowPatterns =
-            new EnumMap<>(PatternType.class) {{
+                new EnumMap<>(PatternType.class) {{
                     put(PatternType.LITERAL, new HashSet<>());
                     put(PatternType.PREFIXED, new HashSet<>());
                 }};
@@ -214,8 +214,8 @@ public interface Authorizer extends Configurable, Closeable {
         boolean hasWildCardAllow = false;
 
         KafkaPrincipal principal = new KafkaPrincipal(
-            requestContext.principal().getPrincipalType(),
-            requestContext.principal().getName());
+                requestContext.principal().getPrincipalType(),
+                requestContext.principal().getName());
         String hostAddr = requestContext.clientAddress().getHostAddress();
 
         for (AclBinding binding : acls(aclFilter)) {

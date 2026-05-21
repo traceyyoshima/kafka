@@ -46,7 +46,7 @@ public final class FetchSnapshotResponse extends AbstractResponse {
         for (FetchSnapshotResponseData.TopicSnapshot topicResponse : data.topics()) {
             for (FetchSnapshotResponseData.PartitionSnapshot partitionResponse : topicResponse.partitions()) {
                 errors.compute(Errors.forCode(partitionResponse.errorCode()),
-                    (error, count) -> count == null ? 1 : count + 1);
+                        (error, count) -> count == null ? 1 : count + 1);
             }
         }
 

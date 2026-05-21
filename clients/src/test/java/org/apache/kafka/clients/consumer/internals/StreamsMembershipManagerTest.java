@@ -124,11 +124,11 @@ public class StreamsMembershipManagerTest {
     @BeforeEach
     public void setup() {
         membershipManager = new StreamsMembershipManager(
-            GROUP_ID,
-            streamsRebalanceData, subscriptionState, backgroundEventHandler,
-            new LogContext("test"),
-            time,
-            metrics
+                GROUP_ID,
+                streamsRebalanceData, subscriptionState, backgroundEventHandler,
+                new LogContext("test"),
+                time,
+                metrics
         );
         membershipManager.registerStateListener(memberStateListener);
         verifyInStateUnsubscribed(membershipManager);
@@ -152,15 +152,15 @@ public class StreamsMembershipManagerTest {
         final StreamsGroupHeartbeatResponse response = new StreamsGroupHeartbeatResponse(responseData);
 
         final IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> membershipManager.onHeartbeatSuccess(response)
+                IllegalArgumentException.class,
+                () -> membershipManager.onHeartbeatSuccess(response)
         );
 
         assertEquals(
-            "Unexpected error in Heartbeat response. Expected no error, but received: "
+                "Unexpected error in Heartbeat response. Expected no error, but received: "
                 + Errors.GROUP_AUTHORIZATION_FAILED.name()
                 + " with message: '" + errorMessage + "'",
-            exception.getMessage()
+                exception.getMessage()
         );
     }
 
@@ -186,13 +186,13 @@ public class StreamsMembershipManagerTest {
         final StreamsGroupHeartbeatResponse response = makeHeartbeatResponse(activeTasks, standbyTasks, warmupTasks);
 
         final IllegalStateException exception = assertThrows(
-            IllegalStateException.class,
-            () -> membershipManager.onHeartbeatSuccess(response)
+                IllegalStateException.class,
+                () -> membershipManager.onHeartbeatSuccess(response)
         );
 
         assertEquals(
-            "Invalid response data, task collections must be all null or all non-null: " + response.data(),
-            exception.getMessage()
+                "Invalid response data, task collections must be all null or all non-null: " + response.data(),
+                exception.getMessage()
         );
     }
 
@@ -208,7 +208,7 @@ public class StreamsMembershipManagerTest {
     public void testReconcilingEmptyToSingleActiveTask() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> activeTasks =
-            Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
+                Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
         joining();
 
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
@@ -216,7 +216,7 @@ public class StreamsMembershipManagerTest {
         final Set<TopicPartition> expectedFullPartitionsToAssign = Set.of(new TopicPartition(TOPIC_0, PARTITION_0));
         final Set<TopicPartition> expectedNewPartitionsToAssign = expectedFullPartitionsToAssign;
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecuted =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
         verifyInStateReconcilingBeforeOnTaskAssignedCallbackExecuted(expectedFullPartitionsToAssign, expectedNewPartitionsToAssign);
         completeAssignment(onTasksAssignedCallbackExecuted);
         verifyInStateAcknowledgingAfterOnTaskAssignedCallbackExecuted(expectedFullPartitionsToAssign);
@@ -227,10 +227,10 @@ public class StreamsMembershipManagerTest {
     public void testReconcilingActiveTaskToDifferentActiveTask() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> activeTasksSetup = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
         );
         final Set<StreamsRebalanceData.TaskId> activeTasks = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
         );
         when(subscriptionState.assignedPartitions())
             .thenReturn(Set.of())
@@ -238,24 +238,24 @@ public class StreamsMembershipManagerTest {
         joining();
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup, Set.of(), Set.of());
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup, Set.of(), Set.of());
         acknowledging(onTasksAssignedCallbackExecutedSetup);
 
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_1)));
 
         final CompletableFuture<Void> onTasksRevokedCallbackExecuted =
-            verifyOnTasksRevokedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup);
+                verifyOnTasksRevokedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup);
         final Set<TopicPartition> expectedPartitionsToRevoke = Set.of(new TopicPartition(TOPIC_0, PARTITION_0));
         final Set<TopicPartition> expectedFullPartitionsToAssign = Set.of(new TopicPartition(TOPIC_0, PARTITION_1));
         final Set<TopicPartition> expectedNewPartitionsToAssign = expectedFullPartitionsToAssign;
         verifyInStateReconcilingBeforeOnTaskRevokedCallbackExecuted(
-            expectedPartitionsToRevoke,
-            expectedFullPartitionsToAssign,
-            expectedNewPartitionsToAssign
+                expectedPartitionsToRevoke,
+                expectedFullPartitionsToAssign,
+                expectedNewPartitionsToAssign
         );
         onTasksRevokedCallbackExecuted.complete(null);
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecuted =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
         verifyInStateReconcilingBeforeOnTaskAssignedCallbackExecuted(expectedFullPartitionsToAssign, expectedNewPartitionsToAssign);
         completeAssignment(onTasksAssignedCallbackExecuted);
         verifyInStateAcknowledgingAfterOnTaskAssignedCallbackExecuted(expectedFullPartitionsToAssign);
@@ -265,11 +265,11 @@ public class StreamsMembershipManagerTest {
     public void testReconcilingSingleActiveTaskToAdditionalActiveTask() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> activeTasksSetup = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
         );
         final Set<StreamsRebalanceData.TaskId> activeTasks = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0),
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0),
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
         );
         when(subscriptionState.assignedPartitions())
             .thenReturn(Set.of())
@@ -277,16 +277,16 @@ public class StreamsMembershipManagerTest {
         joining();
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup, Set.of(), Set.of());
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup, Set.of(), Set.of());
         acknowledging(onTasksAssignedCallbackExecutedSetup);
 
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0, PARTITION_1)));
 
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecuted =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
         final Set<TopicPartition> expectedFullPartitionsToAssign = Set.of(
-            new TopicPartition(TOPIC_0, PARTITION_0),
-            new TopicPartition(TOPIC_0, PARTITION_1)
+                new TopicPartition(TOPIC_0, PARTITION_0),
+                new TopicPartition(TOPIC_0, PARTITION_1)
         );
         final Set<TopicPartition> expectedNewPartitionsToAssign = Set.of(new TopicPartition(TOPIC_0, PARTITION_1));
         verifyInStateReconcilingBeforeOnTaskAssignedCallbackExecuted(expectedFullPartitionsToAssign, expectedNewPartitionsToAssign);
@@ -299,14 +299,14 @@ public class StreamsMembershipManagerTest {
     public void testReconcilingMultipleActiveTaskToSingleActiveTask() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> activeTasksSetup = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0),
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0),
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
         );
         final Set<StreamsRebalanceData.TaskId> activeTasksToRevoke = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
         );
         final Set<StreamsRebalanceData.TaskId> activeTasks = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
         );
         when(subscriptionState.assignedPartitions())
             .thenReturn(Set.of())
@@ -314,25 +314,25 @@ public class StreamsMembershipManagerTest {
         joining();
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0, PARTITION_1)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup, Set.of(), Set.of());
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup, Set.of(), Set.of());
         acknowledging(onTasksAssignedCallbackExecutedSetup);
 
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_1)));
 
         final CompletableFuture<Void> onTasksRevokedCallbackExecuted =
-            verifyOnTasksRevokedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksToRevoke);
+                verifyOnTasksRevokedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksToRevoke);
         final Set<TopicPartition> expectedPartitionsToRevoke = Set.of(new TopicPartition(TOPIC_0, PARTITION_0));
         final Set<TopicPartition> expectedFullPartitionsToAssign = Set.of(new TopicPartition(TOPIC_0, PARTITION_1));
         final Set<TopicPartition> expectedNewPartitionsToAssign = Set.of();
         verifyInStateReconcilingBeforeOnTaskRevokedCallbackExecuted(
-            expectedPartitionsToRevoke,
-            expectedFullPartitionsToAssign,
-            expectedNewPartitionsToAssign
+                expectedPartitionsToRevoke,
+                expectedFullPartitionsToAssign,
+                expectedNewPartitionsToAssign
         );
         onTasksRevokedCallbackExecuted.complete(null);
         verifyInStateReconcilingBeforeOnTaskAssignedCallbackExecuted(expectedFullPartitionsToAssign, expectedNewPartitionsToAssign);
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecuted =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
         completeAssignment(onTasksAssignedCallbackExecuted);
         verifyInStateAcknowledgingAfterOnTaskAssignedCallbackExecuted(expectedFullPartitionsToAssign);
     }
@@ -340,25 +340,25 @@ public class StreamsMembershipManagerTest {
     @Test
     public void testReconcilingEmptyToMultipleActiveTaskOfDifferentSubtopologies() {
         setupStreamsReabalanceDataWithTwoSubtopologies(
-            SUBTOPOLOGY_ID_0, TOPIC_0,
-            SUBTOPOLOGY_ID_1, TOPIC_1
+                SUBTOPOLOGY_ID_0, TOPIC_0,
+                SUBTOPOLOGY_ID_1, TOPIC_1
         );
         final Set<StreamsRebalanceData.TaskId> activeTasks = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0),
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_1, PARTITION_0)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0),
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_1, PARTITION_0)
         );
         joining();
 
         reconcile(makeHeartbeatResponseWithActiveTasks(
-            SUBTOPOLOGY_ID_0, List.of(PARTITION_0),
-            SUBTOPOLOGY_ID_1, List.of(PARTITION_0))
+                SUBTOPOLOGY_ID_0, List.of(PARTITION_0),
+                SUBTOPOLOGY_ID_1, List.of(PARTITION_0))
         );
 
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecuted =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
         final Set<TopicPartition> expectedFullPartitionsToAssign = Set.of(
-            new TopicPartition(TOPIC_0, PARTITION_0),
-            new TopicPartition(TOPIC_1, PARTITION_0)
+                new TopicPartition(TOPIC_0, PARTITION_0),
+                new TopicPartition(TOPIC_1, PARTITION_0)
         );
         final Set<TopicPartition> expectedNewPartitionsToAssign = expectedFullPartitionsToAssign;
         verifyInStateReconcilingBeforeOnTaskAssignedCallbackExecuted(expectedFullPartitionsToAssign, expectedNewPartitionsToAssign);
@@ -371,10 +371,10 @@ public class StreamsMembershipManagerTest {
     public void testReconcilingActiveTaskToStandbyTask() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> activeTasksSetup = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
         );
         final Set<StreamsRebalanceData.TaskId> standbyTasks = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
         );
         when(subscriptionState.assignedPartitions())
             .thenReturn(Set.of())
@@ -383,32 +383,32 @@ public class StreamsMembershipManagerTest {
         joining();
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                activeTasksSetup,
-                Set.of(),
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    activeTasksSetup,
+                    Set.of(),
+                    Set.of()
             );
         acknowledging(onTasksAssignedCallbackExecutedSetup);
 
         reconcile(makeHeartbeatResponseWithStandbyTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_1)));
 
         final CompletableFuture<Void> onTasksRevokedCallbackExecuted =
-            verifyOnTasksRevokedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup);
+                verifyOnTasksRevokedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup);
         final Set<TopicPartition> expectedPartitionsToRevoke = Set.of(new TopicPartition(TOPIC_0, PARTITION_0));
         final Set<TopicPartition> expectedFullPartitionsToAssign = Set.of();
         final Set<TopicPartition> expectedNewPartitionsToAssign = expectedFullPartitionsToAssign;
         verifyInStateReconcilingBeforeOnTaskRevokedCallbackExecuted(
-            expectedPartitionsToRevoke,
-            expectedFullPartitionsToAssign,
-            expectedNewPartitionsToAssign
+                expectedPartitionsToRevoke,
+                expectedFullPartitionsToAssign,
+                expectedNewPartitionsToAssign
         );
         onTasksRevokedCallbackExecuted.complete(null);
         verifyInStateReconcilingBeforeOnTaskAssignedCallbackExecuted(expectedFullPartitionsToAssign, expectedNewPartitionsToAssign);
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecuted =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                Set.of(),
-                standbyTasks,
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    Set.of(),
+                    standbyTasks,
+                    Set.of()
             );
         completeAssignment(onTasksAssignedCallbackExecuted);
         verifyInStateAcknowledgingAfterOnTaskAssignedCallbackExecuted(expectedFullPartitionsToAssign);
@@ -418,10 +418,10 @@ public class StreamsMembershipManagerTest {
     public void testReconcilingActiveTaskToWarmupTask() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> activeTasksSetup = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
         );
         final Set<StreamsRebalanceData.TaskId> warmupTasks = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
         );
         when(subscriptionState.assignedPartitions())
             .thenReturn(Set.of())
@@ -430,32 +430,32 @@ public class StreamsMembershipManagerTest {
         joining();
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                activeTasksSetup,
-                Set.of(),
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    activeTasksSetup,
+                    Set.of(),
+                    Set.of()
             );
         acknowledging(onTasksAssignedCallbackExecutedSetup);
 
         reconcile(makeHeartbeatResponseWithWarmupTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_1)));
 
         final CompletableFuture<Void> onTasksRevokedCallbackExecuted =
-            verifyOnTasksRevokedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup);
+                verifyOnTasksRevokedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup);
         final Set<TopicPartition> expectedPartitionsToRevoke = Set.of(new TopicPartition(TOPIC_0, PARTITION_0));
         final Set<TopicPartition> expectedFullPartitionsToAssign = Set.of();
         final Set<TopicPartition> expectedNewPartitionsToAssign = expectedFullPartitionsToAssign;
         verifyInStateReconcilingBeforeOnTaskRevokedCallbackExecuted(
-            expectedPartitionsToRevoke,
-            expectedFullPartitionsToAssign,
-            expectedNewPartitionsToAssign
+                expectedPartitionsToRevoke,
+                expectedFullPartitionsToAssign,
+                expectedNewPartitionsToAssign
         );
         onTasksRevokedCallbackExecuted.complete(null);
         verifyInStateReconcilingBeforeOnTaskAssignedCallbackExecuted(expectedFullPartitionsToAssign, expectedNewPartitionsToAssign);
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecuted =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                Set.of(),
-                Set.of(),
-                warmupTasks
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    Set.of(),
+                    Set.of(),
+                    warmupTasks
             );
         completeAssignment(onTasksAssignedCallbackExecuted);
         verifyInStateAcknowledgingAfterOnTaskAssignedCallbackExecuted(expectedFullPartitionsToAssign);
@@ -464,16 +464,16 @@ public class StreamsMembershipManagerTest {
     @Test
     public void testReconcilingEmptyToSingleStandbyTask() {
         final Set<StreamsRebalanceData.TaskId> standbyTasks =
-            Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
+                Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
         joining();
 
         reconcile(makeHeartbeatResponseWithStandbyTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
 
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecuted =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                Set.of(),
-                standbyTasks,
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    Set.of(),
+                    standbyTasks,
+                    Set.of()
             );
         final Set<TopicPartition> expectedFullPartitionsToAssign = Set.of();
         final Set<TopicPartition> expectedNewPartitionsToAssign = expectedFullPartitionsToAssign;
@@ -486,18 +486,18 @@ public class StreamsMembershipManagerTest {
     @Test
     public void testReconcilingStandbyTaskToDifferentStandbyTask() {
         final Set<StreamsRebalanceData.TaskId> standbyTasksSetup = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
         );
         final Set<StreamsRebalanceData.TaskId> standbyTasks = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
         );
         joining();
         reconcile(makeHeartbeatResponseWithStandbyTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                Set.of(),
-                standbyTasksSetup,
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    Set.of(),
+                    standbyTasksSetup,
+                    Set.of()
             );
         acknowledging(onTasksAssignedCallbackExecutedSetup);
         Mockito.reset(subscriptionState);
@@ -506,10 +506,10 @@ public class StreamsMembershipManagerTest {
         reconcile(makeHeartbeatResponseWithStandbyTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_1)));
 
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecuted =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                Set.of(),
-                standbyTasks,
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    Set.of(),
+                    standbyTasks,
+                    Set.of()
             );
         final Set<TopicPartition> expectedFullPartitionsToAssign = Set.of();
         final Set<TopicPartition> expectedNewPartitionsToAssign = expectedFullPartitionsToAssign;
@@ -522,19 +522,19 @@ public class StreamsMembershipManagerTest {
     @Test
     public void testReconcilingSingleStandbyTaskToAdditionalStandbyTask() {
         final Set<StreamsRebalanceData.TaskId> standbyTasksSetup = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
         );
         final Set<StreamsRebalanceData.TaskId> standbyTasks = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0),
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0),
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
         );
         joining();
         reconcile(makeHeartbeatResponseWithStandbyTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                Set.of(),
-                standbyTasksSetup,
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    Set.of(),
+                    standbyTasksSetup,
+                    Set.of()
             );
         acknowledging(onTasksAssignedCallbackExecutedSetup);
         Mockito.reset(subscriptionState);
@@ -546,10 +546,10 @@ public class StreamsMembershipManagerTest {
         final Set<TopicPartition> expectedNewPartitionsToAssign = expectedFullPartitionsToAssign;
         verifyInStateReconcilingBeforeOnTaskAssignedCallbackExecuted(expectedFullPartitionsToAssign, expectedNewPartitionsToAssign);
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecuted =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                Set.of(),
-                standbyTasks,
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    Set.of(),
+                    standbyTasks,
+                    Set.of()
             );
         completeAssignment(onTasksAssignedCallbackExecuted);
         verifyInStateAcknowledgingAfterOnTaskAssignedCallbackExecuted(expectedFullPartitionsToAssign);
@@ -559,19 +559,19 @@ public class StreamsMembershipManagerTest {
     @Test
     public void testReconcilingMultipleStandbyTaskToSingleStandbyTask() {
         final Set<StreamsRebalanceData.TaskId> standbyTasksSetup = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0),
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0),
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
         );
         final Set<StreamsRebalanceData.TaskId> standbyTasks = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
         );
         joining();
         reconcile(makeHeartbeatResponseWithStandbyTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0, PARTITION_1)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                Set.of(),
-                standbyTasksSetup,
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    Set.of(),
+                    standbyTasksSetup,
+                    Set.of()
             );
         acknowledging(onTasksAssignedCallbackExecutedSetup);
         Mockito.reset(subscriptionState);
@@ -583,10 +583,10 @@ public class StreamsMembershipManagerTest {
         final Set<TopicPartition> expectedNewPartitionsToAssign = expectedFullPartitionsToAssign;
         verifyInStateReconcilingBeforeOnTaskAssignedCallbackExecuted(expectedFullPartitionsToAssign, expectedNewPartitionsToAssign);
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecuted =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                Set.of(),
-                standbyTasks,
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    Set.of(),
+                    standbyTasks,
+                    Set.of()
             );
         completeAssignment(onTasksAssignedCallbackExecuted);
         verifyInStateAcknowledgingAfterOnTaskAssignedCallbackExecuted(expectedFullPartitionsToAssign);
@@ -597,10 +597,10 @@ public class StreamsMembershipManagerTest {
     public void testReconcilingStandbyTaskToActiveTask() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> standbyTasksSetup = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
         );
         final Set<StreamsRebalanceData.TaskId> activeTasks = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
         );
         when(subscriptionState.assignedPartitions())
             .thenReturn(Set.of())
@@ -609,10 +609,10 @@ public class StreamsMembershipManagerTest {
         joining();
         reconcile(makeHeartbeatResponseWithStandbyTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                Set.of(),
-                standbyTasksSetup,
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    Set.of(),
+                    standbyTasksSetup,
+                    Set.of()
             );
         acknowledging(onTasksAssignedCallbackExecutedSetup);
 
@@ -622,7 +622,7 @@ public class StreamsMembershipManagerTest {
         final Set<TopicPartition> expectedNewPartitionsToAssign = expectedFullPartitionsToAssign;
         verifyInStateReconcilingBeforeOnTaskAssignedCallbackExecuted(expectedFullPartitionsToAssign, expectedNewPartitionsToAssign);
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecuted =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
         completeAssignment(onTasksAssignedCallbackExecuted);
         verifyInStateAcknowledgingAfterOnTaskAssignedCallbackExecuted(expectedFullPartitionsToAssign);
         verifyThatNoTasksHaveBeenRevoked();
@@ -631,18 +631,18 @@ public class StreamsMembershipManagerTest {
     @Test
     public void testReconcilingStandbyTaskToWarmupTask() {
         final Set<StreamsRebalanceData.TaskId> standbyTasksSetup = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
         );
         final Set<StreamsRebalanceData.TaskId> warmupTasks = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
         );
         joining();
         reconcile(makeHeartbeatResponseWithStandbyTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                Set.of(),
-                standbyTasksSetup,
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    Set.of(),
+                    standbyTasksSetup,
+                    Set.of()
             );
         acknowledging(onTasksAssignedCallbackExecutedSetup);
         Mockito.reset(subscriptionState);
@@ -651,10 +651,10 @@ public class StreamsMembershipManagerTest {
         reconcile(makeHeartbeatResponseWithWarmupTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_1)));
 
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecuted =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                Set.of(),
-                Set.of(),
-                warmupTasks
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    Set.of(),
+                    Set.of(),
+                    warmupTasks
             );
         final Set<TopicPartition> expectedFullPartitionsToAssign = Set.of();
         final Set<TopicPartition> expectedNewPartitionsToAssign = expectedFullPartitionsToAssign;
@@ -667,16 +667,16 @@ public class StreamsMembershipManagerTest {
     @Test
     public void testReconcilingEmptyToSingleWarmupTask() {
         final Set<StreamsRebalanceData.TaskId> warmupTasks =
-            Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
+                Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
         joining();
 
         reconcile(makeHeartbeatResponseWithWarmupTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
 
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecuted =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                Set.of(),
-                Set.of(),
-                warmupTasks
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    Set.of(),
+                    Set.of(),
+                    warmupTasks
             );
         final Set<TopicPartition> expectedFullPartitionsToAssign = Set.of();
         final Set<TopicPartition> expectedNewPartitionsToAssign = expectedFullPartitionsToAssign;
@@ -689,18 +689,18 @@ public class StreamsMembershipManagerTest {
     @Test
     public void testReconcilingWarmupTaskToDifferentWarmupTask() {
         final Set<StreamsRebalanceData.TaskId> warmupTasksSetup = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
         );
         final Set<StreamsRebalanceData.TaskId> warmupTasks = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
         );
         joining();
         reconcile(makeHeartbeatResponseWithWarmupTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                Set.of(),
-                Set.of(),
-                warmupTasksSetup
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    Set.of(),
+                    Set.of(),
+                    warmupTasksSetup
             );
         acknowledging(onTasksAssignedCallbackExecutedSetup);
         Mockito.reset(subscriptionState);
@@ -709,10 +709,10 @@ public class StreamsMembershipManagerTest {
         reconcile(makeHeartbeatResponseWithWarmupTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_1)));
 
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecuted =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                Set.of(),
-                Set.of(),
-                warmupTasks
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    Set.of(),
+                    Set.of(),
+                    warmupTasks
             );
         final Set<TopicPartition> expectedFullPartitionsToAssign = Set.of();
         final Set<TopicPartition> expectedNewPartitionsToAssign = expectedFullPartitionsToAssign;
@@ -725,19 +725,19 @@ public class StreamsMembershipManagerTest {
     @Test
     public void testReconcilingSingleWarmupTaskToAdditionalWarmupTask() {
         final Set<StreamsRebalanceData.TaskId> warmupTasksSetup = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
         );
         final Set<StreamsRebalanceData.TaskId> warmupTasks = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0),
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0),
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
         );
         joining();
         reconcile(makeHeartbeatResponseWithWarmupTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                Set.of(),
-                Set.of(),
-                warmupTasksSetup
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    Set.of(),
+                    Set.of(),
+                    warmupTasksSetup
             );
         acknowledging(onTasksAssignedCallbackExecutedSetup);
         Mockito.reset(subscriptionState);
@@ -746,10 +746,10 @@ public class StreamsMembershipManagerTest {
         reconcile(makeHeartbeatResponseWithWarmupTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0, PARTITION_1)));
 
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecuted =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                Set.of(),
-                Set.of(),
-                warmupTasks
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    Set.of(),
+                    Set.of(),
+                    warmupTasks
             );
         final Set<TopicPartition> expectedFullPartitionsToAssign = Set.of();
         final Set<TopicPartition> expectedNewPartitionsToAssign = expectedFullPartitionsToAssign;
@@ -762,19 +762,19 @@ public class StreamsMembershipManagerTest {
     @Test
     public void testReconcilingMultipleWarmupTaskToSingleWarmupTask() {
         final Set<StreamsRebalanceData.TaskId> warmupTasksSetup = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0),
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0),
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
         );
         final Set<StreamsRebalanceData.TaskId> warmupTasks = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
         );
         joining();
         reconcile(makeHeartbeatResponseWithWarmupTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0, PARTITION_1)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                Set.of(),
-                Set.of(),
-                warmupTasksSetup
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    Set.of(),
+                    Set.of(),
+                    warmupTasksSetup
             );
         acknowledging(onTasksAssignedCallbackExecutedSetup);
         Mockito.reset(subscriptionState);
@@ -783,10 +783,10 @@ public class StreamsMembershipManagerTest {
         reconcile(makeHeartbeatResponseWithWarmupTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_1)));
 
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecuted =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                Set.of(),
-                Set.of(),
-                warmupTasks
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    Set.of(),
+                    Set.of(),
+                    warmupTasks
             );
         final Set<TopicPartition> expectedFullPartitionsToAssign = Set.of();
         final Set<TopicPartition> expectedNewPartitionsToAssign = expectedFullPartitionsToAssign;
@@ -800,10 +800,10 @@ public class StreamsMembershipManagerTest {
     public void testReconcilingWarmupTaskToActiveTask() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> warmupTasksSetup = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
         );
         final Set<StreamsRebalanceData.TaskId> activeTasks = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
         );
         when(subscriptionState.assignedPartitions())
             .thenReturn(Set.of())
@@ -812,20 +812,20 @@ public class StreamsMembershipManagerTest {
         joining();
         reconcile(makeHeartbeatResponseWithWarmupTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                Set.of(),
-                Set.of(),
-                warmupTasksSetup
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    Set.of(),
+                    Set.of(),
+                    warmupTasksSetup
             );
         acknowledging(onTasksAssignedCallbackExecutedSetup);
 
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_1)));
 
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecuted =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                activeTasks,
-                Set.of(),
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    activeTasks,
+                    Set.of(),
+                    Set.of()
             );
         final Set<TopicPartition> expectedFullPartitionsToAssign = Set.of(new TopicPartition(TOPIC_0, PARTITION_1));
         final Set<TopicPartition> expectedNewPartitionsToAssign = expectedFullPartitionsToAssign;
@@ -838,18 +838,18 @@ public class StreamsMembershipManagerTest {
     @Test
     public void testReconcilingWarmupTaskToStandbyTask() {
         final Set<StreamsRebalanceData.TaskId> warmupTasksSetup = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
         );
         final Set<StreamsRebalanceData.TaskId> standbyTasks = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
         );
         joining();
         reconcile(makeHeartbeatResponseWithWarmupTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                Set.of(),
-                Set.of(),
-                warmupTasksSetup
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    Set.of(),
+                    Set.of(),
+                    warmupTasksSetup
             );
         acknowledging(onTasksAssignedCallbackExecutedSetup);
         Mockito.reset(subscriptionState);
@@ -858,10 +858,10 @@ public class StreamsMembershipManagerTest {
         reconcile(makeHeartbeatResponseWithStandbyTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_1)));
 
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecuted =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                Set.of(),
-                standbyTasks,
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    Set.of(),
+                    standbyTasks,
+                    Set.of()
             );
         final Set<TopicPartition> expectedFullPartitionsToAssign = Set.of();
         final Set<TopicPartition> expectedNewPartitionsToAssign = expectedFullPartitionsToAssign;
@@ -875,16 +875,16 @@ public class StreamsMembershipManagerTest {
     public void testReconcilingAndAssignmentCallbackFails() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> activeTasks =
-            Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
+                Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
         joining();
 
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
 
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecuted =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                activeTasks,
-                Set.of(),
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    activeTasks,
+                    Set.of(),
+                    Set.of()
             );
         final Set<TopicPartition> expectedFullPartitionsToAssign = Set.of(new TopicPartition(TOPIC_0, PARTITION_0));
         final Set<TopicPartition> expectedNewPartitionsToAssign = expectedFullPartitionsToAssign;
@@ -902,10 +902,10 @@ public class StreamsMembershipManagerTest {
     public void testReconcilingAndRevocationCallbackFails() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> activeTasksSetup = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
         );
         final Set<StreamsRebalanceData.TaskId> activeTasks = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
         );
         when(subscriptionState.assignedPartitions())
             .thenReturn(Set.of())
@@ -913,25 +913,25 @@ public class StreamsMembershipManagerTest {
         joining();
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                activeTasksSetup,
-                Set.of(),
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    activeTasksSetup,
+                    Set.of(),
+                    Set.of()
             );
         acknowledging(onTasksAssignedCallbackExecutedSetup);
 
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_1)));
 
         final CompletableFuture<Void> onTasksRevokedCallbackExecuted =
-            verifyOnTasksRevokedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup);
+                verifyOnTasksRevokedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup);
         final Set<TopicPartition> partitionsToAssignAtSetup = Set.of(new TopicPartition(TOPIC_0, PARTITION_0));
         final Set<TopicPartition> expectedPartitionsToRevoke = partitionsToAssignAtSetup;
         final Set<TopicPartition> expectedFullPartitionsToAssign = Set.of(new TopicPartition(TOPIC_0, PARTITION_1));
         final Set<TopicPartition> expectedNewPartitionsToAssign = expectedFullPartitionsToAssign;
         verifyInStateReconcilingBeforeOnTaskRevokedCallbackExecuted(
-            expectedPartitionsToRevoke,
-            expectedFullPartitionsToAssign,
-            expectedNewPartitionsToAssign
+                expectedPartitionsToRevoke,
+                expectedFullPartitionsToAssign,
+                expectedNewPartitionsToAssign
         );
 
         onTasksRevokedCallbackExecuted.completeExceptionally(new RuntimeException("KABOOM!"));
@@ -950,10 +950,10 @@ public class StreamsMembershipManagerTest {
     public void testReconcilingWhenReconciliationAbortedBeforeAssignmentDueToRejoin() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> activeTasksSetup = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
         );
         final Set<StreamsRebalanceData.TaskId> activeTasks = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
         );
         when(subscriptionState.assignedPartitions())
             .thenReturn(Set.of())
@@ -961,29 +961,29 @@ public class StreamsMembershipManagerTest {
         joining();
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                activeTasksSetup,
-                Set.of(),
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    activeTasksSetup,
+                    Set.of(),
+                    Set.of()
             );
         acknowledging(onTasksAssignedCallbackExecutedSetup);
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_1)));
         final CompletableFuture<Void> onTasksRevokedCallbackExecuted =
-            verifyOnTasksRevokedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup);
+                verifyOnTasksRevokedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup);
         final Set<TopicPartition> partitionsToAssignAtSetup = Set.of(new TopicPartition(TOPIC_0, PARTITION_0));
         final Set<TopicPartition> expectedPartitionsToRevoke = partitionsToAssignAtSetup;
         final Set<TopicPartition> expectedFullPartitionsToAssign = Set.of(new TopicPartition(TOPIC_0, PARTITION_1));
         final Set<TopicPartition> expectedNewPartitionsToAssign = expectedFullPartitionsToAssign;
         verifyInStateReconcilingBeforeOnTaskRevokedCallbackExecuted(
-            expectedPartitionsToRevoke,
-            expectedFullPartitionsToAssign,
-            expectedNewPartitionsToAssign
+                expectedPartitionsToRevoke,
+                expectedFullPartitionsToAssign,
+                expectedNewPartitionsToAssign
         );
 
         membershipManager.onPollTimerExpired();
         membershipManager.onHeartbeatRequestGenerated();
         final CompletableFuture<Void> onAllTasksLostCallbackExecuted =
-            verifyOnAllTasksLostCallbackNeededEventAddedToBackgroundEventHandler();
+                verifyOnAllTasksLostCallbackNeededEventAddedToBackgroundEventHandler();
         onAllTasksLostCallbackExecuted.complete(null);
         membershipManager.maybeRejoinStaleMember();
 
@@ -1001,10 +1001,10 @@ public class StreamsMembershipManagerTest {
     public void testReconcilingWhenReconciliationAbortedBeforeAssignmentDueToNotInReconciling() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> activeTasksSetup = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
         );
         final Set<StreamsRebalanceData.TaskId> activeTasks = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
         );
         when(subscriptionState.assignedPartitions())
             .thenReturn(Set.of())
@@ -1012,27 +1012,27 @@ public class StreamsMembershipManagerTest {
         joining();
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                activeTasksSetup,
-                Set.of(),
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    activeTasksSetup,
+                    Set.of(),
+                    Set.of()
             );
         acknowledging(onTasksAssignedCallbackExecutedSetup);
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_1)));
         final CompletableFuture<Void> onTasksRevokedCallbackExecuted =
-            verifyOnTasksRevokedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup);
+                verifyOnTasksRevokedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup);
         final Set<TopicPartition> partitionsToAssignAtSetup = Set.of(new TopicPartition(TOPIC_0, PARTITION_0));
         final Set<TopicPartition> expectedPartitionsToRevoke = partitionsToAssignAtSetup;
         final Set<TopicPartition> expectedFullPartitionsToAssign = Set.of(new TopicPartition(TOPIC_0, PARTITION_1));
         final Set<TopicPartition> expectedNewPartitionsToAssign = expectedFullPartitionsToAssign;
         verifyInStateReconcilingBeforeOnTaskRevokedCallbackExecuted(
-            expectedPartitionsToRevoke,
-            expectedFullPartitionsToAssign,
-            expectedNewPartitionsToAssign
+                expectedPartitionsToRevoke,
+                expectedFullPartitionsToAssign,
+                expectedNewPartitionsToAssign
         );
         membershipManager.transitionToFatal();
         final CompletableFuture<Void> onAllTasksLostCallbackExecuted =
-            verifyOnAllTasksLostCallbackNeededEventAddedToBackgroundEventHandler();
+                verifyOnAllTasksLostCallbackNeededEventAddedToBackgroundEventHandler();
         onAllTasksLostCallbackExecuted.complete(null);
 
         onTasksRevokedCallbackExecuted.complete(null);
@@ -1049,10 +1049,10 @@ public class StreamsMembershipManagerTest {
     public void testReconcilingWhenReconciliationAbortedAfterAssignmentDueToRejoin() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> activeTasksSetup = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
         );
         final Set<StreamsRebalanceData.TaskId> activeTasks = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
         );
         when(subscriptionState.assignedPartitions())
             .thenReturn(Set.of())
@@ -1060,36 +1060,36 @@ public class StreamsMembershipManagerTest {
         joining();
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                activeTasksSetup,
-                Set.of(),
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    activeTasksSetup,
+                    Set.of(),
+                    Set.of()
             );
         acknowledging(onTasksAssignedCallbackExecutedSetup);
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_1)));
         final CompletableFuture<Void> onTasksRevokedCallbackExecuted =
-            verifyOnTasksRevokedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup);
+                verifyOnTasksRevokedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup);
         final Set<TopicPartition> partitionsToAssignAtSetup = Set.of(new TopicPartition(TOPIC_0, PARTITION_0));
         final Set<TopicPartition> expectedPartitionsToRevoke = partitionsToAssignAtSetup;
         final Set<TopicPartition> expectedFullPartitionsToAssign = Set.of(new TopicPartition(TOPIC_0, PARTITION_1));
         final Set<TopicPartition> expectedNewPartitionsToAssign = expectedFullPartitionsToAssign;
         verifyInStateReconcilingBeforeOnTaskRevokedCallbackExecuted(
-            expectedPartitionsToRevoke,
-            expectedFullPartitionsToAssign,
-            expectedNewPartitionsToAssign
+                expectedPartitionsToRevoke,
+                expectedFullPartitionsToAssign,
+                expectedNewPartitionsToAssign
         );
         onTasksRevokedCallbackExecuted.complete(null);
         membershipManager.onPollTimerExpired();
         membershipManager.onHeartbeatRequestGenerated();
         final CompletableFuture<Void> onAllTasksLostCallbackExecuted =
-            verifyOnAllTasksLostCallbackNeededEventAddedToBackgroundEventHandler();
+                verifyOnAllTasksLostCallbackNeededEventAddedToBackgroundEventHandler();
         onAllTasksLostCallbackExecuted.complete(null);
         membershipManager.maybeRejoinStaleMember();
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecuted =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                activeTasks,
-                Set.of(),
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    activeTasks,
+                    Set.of(),
+                    Set.of()
             );
 
         completeAssignment(onTasksAssignedCallbackExecuted);
@@ -1101,10 +1101,10 @@ public class StreamsMembershipManagerTest {
     public void testReconcilingWhenReconciliationAbortedAfterAssignmentDueToNotInReconciling() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> activeTasksSetup = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
         );
         final Set<StreamsRebalanceData.TaskId> activeTasks = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_1)
         );
         when(subscriptionState.assignedPartitions())
             .thenReturn(Set.of())
@@ -1112,36 +1112,36 @@ public class StreamsMembershipManagerTest {
         joining();
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                activeTasksSetup,
-                Set.of(),
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    activeTasksSetup,
+                    Set.of(),
+                    Set.of()
             );
         acknowledging(onTasksAssignedCallbackExecutedSetup);
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_1)));
         final CompletableFuture<Void> onTasksRevokedCallbackExecuted =
-            verifyOnTasksRevokedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup);
+                verifyOnTasksRevokedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup);
         final Set<TopicPartition> partitionsToAssignAtSetup = Set.of(new TopicPartition(TOPIC_0, PARTITION_0));
         final Set<TopicPartition> expectedPartitionsToRevoke = partitionsToAssignAtSetup;
         final Set<TopicPartition> expectedFullPartitionsToAssign = Set.of(new TopicPartition(TOPIC_0, PARTITION_1));
         final Set<TopicPartition> expectedNewPartitionsToAssign = expectedFullPartitionsToAssign;
         verifyInStateReconcilingBeforeOnTaskRevokedCallbackExecuted(
-            expectedPartitionsToRevoke,
-            expectedFullPartitionsToAssign,
-            expectedNewPartitionsToAssign
+                expectedPartitionsToRevoke,
+                expectedFullPartitionsToAssign,
+                expectedNewPartitionsToAssign
         );
         onTasksRevokedCallbackExecuted.complete(null);
         membershipManager.transitionToFatal();
         final CompletableFuture<Void> onAllTasksLostCallbackExecuted =
-            verifyOnAllTasksLostCallbackNeededEventAddedToBackgroundEventHandler();
+                verifyOnAllTasksLostCallbackNeededEventAddedToBackgroundEventHandler();
 
         onAllTasksLostCallbackExecuted.complete(null);
 
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecuted =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                activeTasks,
-                Set.of(),
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    activeTasks,
+                    Set.of(),
+                    Set.of()
             );
         completeAssignment(onTasksAssignedCallbackExecuted);
 
@@ -1162,17 +1162,17 @@ public class StreamsMembershipManagerTest {
     public void testIgnoreLeaveResponseWhenNotLeavingGroup() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> activeTasks =
-            Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
+                Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
         joining();
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
         acknowledging(onTasksAssignedCallbackExecutedSetup);
         stable();
 
         CompletableFuture<Void> leaveResult = membershipManager.leaveGroup();
         final CompletableFuture<Void> onTasksRevokedCallbackExecutedSetup =
-            verifyOnTasksRevokedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks);
+                verifyOnTasksRevokedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks);
         onTasksRevokedCallbackExecutedSetup.complete(null);
 
         // Send leave request, transitioning to UNSUBSCRIBED state
@@ -1181,7 +1181,7 @@ public class StreamsMembershipManagerTest {
 
         // Receive a previous heartbeat response, which should be ignored
         membershipManager.onHeartbeatSuccess(new StreamsGroupHeartbeatResponse(
-            new StreamsGroupHeartbeatResponseData()
+                new StreamsGroupHeartbeatResponseData()
                 .setErrorCode(Errors.NONE.code())
                 .setMemberId(membershipManager.memberId())
                 .setMemberEpoch(MEMBER_EPOCH)
@@ -1190,7 +1190,7 @@ public class StreamsMembershipManagerTest {
 
         // Receive a leave heartbeat response, which should unblock the consumer
         membershipManager.onHeartbeatSuccess(new StreamsGroupHeartbeatResponse(
-            new StreamsGroupHeartbeatResponseData()
+                new StreamsGroupHeartbeatResponseData()
                 .setErrorCode(Errors.NONE.code())
                 .setMemberId(membershipManager.memberId())
                 .setMemberEpoch(LEAVE_GROUP_MEMBER_EPOCH)
@@ -1202,7 +1202,7 @@ public class StreamsMembershipManagerTest {
         membershipManager.onConsumerPoll();
 
         membershipManager.onHeartbeatSuccess(new StreamsGroupHeartbeatResponse(
-            new StreamsGroupHeartbeatResponseData()
+                new StreamsGroupHeartbeatResponseData()
                 .setErrorCode(Errors.NONE.code())
                 .setMemberId(membershipManager.memberId())
                 .setMemberEpoch(LEAVE_GROUP_MEMBER_EPOCH)
@@ -1254,21 +1254,21 @@ public class StreamsMembershipManagerTest {
     public void testLeaveGroupWhenInGroupWithAssignment() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> activeTasks =
-            Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
+                Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
         joining();
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                activeTasks,
-                Set.of(),
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    activeTasks,
+                    Set.of(),
+                    Set.of()
             );
         acknowledging(onTasksAssignedCallbackExecutedSetup);
 
         final CompletableFuture<Void> onGroupLeft = membershipManager.leaveGroup();
 
         final CompletableFuture<Void> onTasksRevokedCallbackExecuted =
-            verifyOnTasksRevokedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks);
+                verifyOnTasksRevokedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks);
         assertFalse(onGroupLeft.isDone());
         verify(subscriptionState, never()).unsubscribe();
         verifyInStatePrepareLeaving(membershipManager);
@@ -1303,14 +1303,14 @@ public class StreamsMembershipManagerTest {
     public void testLeaveGroupOnCloseWhenInGroupWithAssignment() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> activeTasks =
-            Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
+                Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
         joining();
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                activeTasks,
-                Set.of(),
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    activeTasks,
+                    Set.of(),
+                    Set.of()
             );
 
         acknowledging(onTasksAssignedCallbackExecutedSetup);
@@ -1352,21 +1352,21 @@ public class StreamsMembershipManagerTest {
     public void testLeaveGroupDuringReconciliationThenRejoin() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> activeTasks =
-            Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
+                Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
         when(subscriptionState.assignedPartitions()).thenReturn(Set.of());
         joining();
 
         // Start reconciliation - assignment event is pending
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent pendingAssignmentEvent =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
 
         // Call leaveGroup while reconciliation is in progress
         membershipManager.leaveGroup();
 
         // Complete the pending assignment event exceptionally (simulating unsubscribe skipping it)
         pendingAssignmentEvent.future().completeExceptionally(
-            new KafkaException("Assignment event skipped because consumer is unsubscribing"));
+                new KafkaException("Assignment event skipped because consumer is unsubscribing"));
 
         // Complete leave and rejoin
         membershipManager.onHeartbeatRequestGenerated();
@@ -1383,15 +1383,15 @@ public class StreamsMembershipManagerTest {
     public void testOnHeartbeatRequestSkippedWhenInLeaving() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, "topic");
         final Set<StreamsRebalanceData.TaskId> activeTasksSetup = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
         );
         joining();
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                activeTasksSetup,
-                Set.of(),
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    activeTasksSetup,
+                    Set.of(),
+                    Set.of()
             );
         acknowledging(onTasksAssignedCallbackExecutedSetup);
         CompletableFuture<Void> future = leaving();
@@ -1408,23 +1408,23 @@ public class StreamsMembershipManagerTest {
     public void testOnHeartbeatSuccessWhenInLeaving() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, "topic");
         final Set<StreamsRebalanceData.TaskId> activeTasksSetup = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
         );
         joining();
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-                activeTasksSetup,
-                Set.of(),
-                Set.of()
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
+                    activeTasksSetup,
+                    Set.of(),
+                    Set.of()
             );
 
         acknowledging(onTasksAssignedCallbackExecutedSetup);
         CompletableFuture<Void> future = leaving();
 
         membershipManager.onHeartbeatSuccess(makeHeartbeatResponseWithActiveTasks(
-            SUBTOPOLOGY_ID_0, List.of(PARTITION_0),
-            membershipManager.memberEpoch() + 1
+                SUBTOPOLOGY_ID_0, List.of(PARTITION_0),
+                membershipManager.memberEpoch() + 1
         ));
 
         verifyInStateLeaving(membershipManager);
@@ -1437,8 +1437,8 @@ public class StreamsMembershipManagerTest {
     @Test
     public void testOnHeartbeatSuccessWhenInUnsubscribeLeaveNotInProgress() {
         membershipManager.onHeartbeatSuccess(makeHeartbeatResponseWithActiveTasks(
-            SUBTOPOLOGY_ID_0, List.of(PARTITION_0),
-            MEMBER_EPOCH
+                SUBTOPOLOGY_ID_0, List.of(PARTITION_0),
+                MEMBER_EPOCH
         ));
 
         verify(memberStateListener, never()).onMemberEpochUpdated(Optional.of(MEMBER_EPOCH), membershipManager.memberId());
@@ -1450,8 +1450,8 @@ public class StreamsMembershipManagerTest {
         fenced();
 
         membershipManager.onHeartbeatSuccess(makeHeartbeatResponseWithActiveTasks(
-            SUBTOPOLOGY_ID_0, List.of(PARTITION_0),
-            MEMBER_EPOCH
+                SUBTOPOLOGY_ID_0, List.of(PARTITION_0),
+                MEMBER_EPOCH
         ));
 
         verify(memberStateListener, never()).onMemberEpochUpdated(Optional.of(MEMBER_EPOCH), membershipManager.memberId());
@@ -1462,8 +1462,8 @@ public class StreamsMembershipManagerTest {
         membershipManager.transitionToFatal();
 
         membershipManager.onHeartbeatSuccess(makeHeartbeatResponseWithActiveTasks(
-            SUBTOPOLOGY_ID_0, List.of(PARTITION_0),
-            MEMBER_EPOCH
+                SUBTOPOLOGY_ID_0, List.of(PARTITION_0),
+                MEMBER_EPOCH
         ));
 
         verify(memberStateListener, never()).onMemberEpochUpdated(Optional.of(MEMBER_EPOCH), membershipManager.memberId());
@@ -1485,7 +1485,7 @@ public class StreamsMembershipManagerTest {
         joining();
         reconcile(makeHeartbeatResponseWithActiveTasks(List.of(), MEMBER_EPOCH));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecuted =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(Set.of(), Set.of(), Set.of());
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(Set.of(), Set.of(), Set.of());
         completeAssignment(onTasksAssignedCallbackExecuted);
         membershipManager.onHeartbeatRequestGenerated();
 
@@ -1499,11 +1499,11 @@ public class StreamsMembershipManagerTest {
     public void testOnPollTimerExpired() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> activeTasks =
-            Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
+                Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
         joining();
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
         acknowledging(onTasksAssignedCallbackExecutedSetup);
 
         membershipManager.onPollTimerExpired();
@@ -1532,11 +1532,11 @@ public class StreamsMembershipManagerTest {
     public void testOnHeartbeatRequestGeneratedWhenInAcknowleding() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> activeTasks =
-            Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
+                Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
         joining();
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
         acknowledging(onTasksAssignedCallbackExecutedSetup);
 
         membershipManager.onHeartbeatRequestGenerated();
@@ -1548,11 +1548,11 @@ public class StreamsMembershipManagerTest {
     public void testOnHeartbeatRequestGeneratedWhenInAcknowledgingAndNewTargetAssignment() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> activeTasks =
-            Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
+                Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
         joining();
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_1)));
         acknowledging(onTasksAssignedCallbackExecutedSetup);
 
@@ -1579,7 +1579,7 @@ public class StreamsMembershipManagerTest {
         membershipManager.onHeartbeatRequestGenerated();
 
         final CompletableFuture<Void> onAllTasksLostCallbackExecuted =
-            verifyOnAllTasksLostCallbackNeededEventAddedToBackgroundEventHandler();
+                verifyOnAllTasksLostCallbackNeededEventAddedToBackgroundEventHandler();
         verifyInStateStale(membershipManager);
         verify(subscriptionState, never()).assignFromSubscribed(Set.of());
         onAllTasksLostCallbackExecuted.complete(null);
@@ -1603,8 +1603,8 @@ public class StreamsMembershipManagerTest {
     @ValueSource(booleans = {true, false})
     public void testOnHeartbeatFailure(boolean retriable) {
         final MetricName failedRebalanceTotalMetricName = metrics.metricName(
-            "failed-rebalance-total",
-            CONSUMER_METRIC_GROUP_PREFIX + COORDINATOR_METRICS_SUFFIX
+                "failed-rebalance-total",
+                CONSUMER_METRIC_GROUP_PREFIX + COORDINATOR_METRICS_SUFFIX
         );
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         joining();
@@ -1643,11 +1643,11 @@ public class StreamsMembershipManagerTest {
     public void testOnFencedWhenInAcknowledging() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> activeTasks =
-            Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
+                Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
         joining();
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
         acknowledging(onTasksAssignedCallbackExecutedSetup);
 
         testOnFencedWhenInJoiningOrReconcilingOrAcknowledgingOrStable();
@@ -1657,11 +1657,11 @@ public class StreamsMembershipManagerTest {
     public void testOnFencedWhenInStable() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> activeTasks =
-            Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
+                Set.of(new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0));
         joining();
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasks, Set.of(), Set.of());
         acknowledging(onTasksAssignedCallbackExecutedSetup);
         stable();
 
@@ -1672,7 +1672,7 @@ public class StreamsMembershipManagerTest {
         membershipManager.onFenced();
 
         final CompletableFuture<Void> onAllTasksLostCallbackExecuted =
-            verifyOnAllTasksLostCallbackNeededEventAddedToBackgroundEventHandler();
+                verifyOnAllTasksLostCallbackNeededEventAddedToBackgroundEventHandler();
 
         verifyInStateFenced(membershipManager);
         assertEquals(StreamsGroupHeartbeatRequest.JOIN_GROUP_MEMBER_EPOCH, membershipManager.memberEpoch());
@@ -1744,12 +1744,12 @@ public class StreamsMembershipManagerTest {
     public void testTransitionToFatalWhenInReconciling() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> activeTasksSetup = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
         );
         joining();
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup, Set.of(), Set.of());
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup, Set.of(), Set.of());
         acknowledging(onTasksAssignedCallbackExecutedSetup);
         stable();
 
@@ -1760,12 +1760,12 @@ public class StreamsMembershipManagerTest {
     public void testTransitionToFatalWhenInAcknowledging() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> activeTasksSetup = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
         );
         joining();
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup, Set.of(), Set.of());
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup, Set.of(), Set.of());
         acknowledging(onTasksAssignedCallbackExecutedSetup);
 
         testTransitionToFatalWhenInJoiningOrReconcilingOrAcknowledgingOrStable();
@@ -1775,12 +1775,12 @@ public class StreamsMembershipManagerTest {
     public void testTransitionToFatalWhenInStable() {
         setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(SUBTOPOLOGY_ID_0, TOPIC_0);
         final Set<StreamsRebalanceData.TaskId> activeTasksSetup = Set.of(
-            new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
+                new StreamsRebalanceData.TaskId(SUBTOPOLOGY_ID_0, PARTITION_0)
         );
         joining();
         reconcile(makeHeartbeatResponseWithActiveTasks(SUBTOPOLOGY_ID_0, List.of(PARTITION_0)));
         final StreamsTasksAssignedEvent onTasksAssignedCallbackExecutedSetup =
-            verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup, Set.of(), Set.of());
+                verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(activeTasksSetup, Set.of(), Set.of());
         acknowledging(onTasksAssignedCallbackExecutedSetup);
         stable();
 
@@ -1791,7 +1791,7 @@ public class StreamsMembershipManagerTest {
         membershipManager.transitionToFatal();
 
         final CompletableFuture<Void> onAllTasksLostCallbackExecuted =
-            verifyOnAllTasksLostCallbackNeededEventAddedToBackgroundEventHandler();
+                verifyOnAllTasksLostCallbackNeededEventAddedToBackgroundEventHandler();
 
         verify(subscriptionState, never()).assignFromSubscribed(Set.of());
         onAllTasksLostCallbackExecuted.complete(null);
@@ -1862,8 +1862,8 @@ public class StreamsMembershipManagerTest {
     public void testOnTasksAssignedCallbackCompleted() {
         final CompletableFuture<Void> future = new CompletableFuture<>();
         final StreamsOnTasksAssignedCallbackCompletedEvent event = new StreamsOnTasksAssignedCallbackCompletedEvent(
-            future,
-            Optional.empty()
+                future,
+                Optional.empty()
         );
 
         membershipManager.onTasksAssignedCallbackCompleted(event);
@@ -1878,8 +1878,8 @@ public class StreamsMembershipManagerTest {
         final String errorMessage = "KABOOM!";
         final CompletableFuture<Void> future = new CompletableFuture<>();
         final StreamsOnTasksAssignedCallbackCompletedEvent event = new StreamsOnTasksAssignedCallbackCompletedEvent(
-            future,
-            Optional.of(new KafkaException(errorMessage))
+                future,
+                Optional.of(new KafkaException(errorMessage))
         );
 
         membershipManager.onTasksAssignedCallbackCompleted(event);
@@ -1902,8 +1902,8 @@ public class StreamsMembershipManagerTest {
     public void testOnTasksRevokedCallbackCompleted() {
         final CompletableFuture<Void> future = new CompletableFuture<>();
         final StreamsOnTasksRevokedCallbackCompletedEvent event = new StreamsOnTasksRevokedCallbackCompletedEvent(
-            future,
-            Optional.empty()
+                future,
+                Optional.empty()
         );
 
         membershipManager.onTasksRevokedCallbackCompleted(event);
@@ -1918,8 +1918,8 @@ public class StreamsMembershipManagerTest {
         final String errorMessage = "KABOOM!";
         final CompletableFuture<Void> future = new CompletableFuture<>();
         final StreamsOnTasksRevokedCallbackCompletedEvent event = new StreamsOnTasksRevokedCallbackCompletedEvent(
-            future,
-            Optional.of(new KafkaException(errorMessage))
+                future,
+                Optional.of(new KafkaException(errorMessage))
         );
 
         membershipManager.onTasksRevokedCallbackCompleted(event);
@@ -1936,8 +1936,8 @@ public class StreamsMembershipManagerTest {
     public void testOnAllTasksLostCallbackCompleted() {
         final CompletableFuture<Void> future = new CompletableFuture<>();
         final StreamsOnAllTasksLostCallbackCompletedEvent event = new StreamsOnAllTasksLostCallbackCompletedEvent(
-            future,
-            Optional.empty()
+                future,
+                Optional.empty()
         );
 
         membershipManager.onAllTasksLostCallbackCompleted(event);
@@ -1952,8 +1952,8 @@ public class StreamsMembershipManagerTest {
         final String errorMessage = "KABOOM!";
         final CompletableFuture<Void> future = new CompletableFuture<>();
         final StreamsOnAllTasksLostCallbackCompletedEvent event = new StreamsOnAllTasksLostCallbackCompletedEvent(
-            future,
-            Optional.of(new KafkaException(errorMessage))
+                future,
+                Optional.of(new KafkaException(errorMessage))
         );
 
         membershipManager.onAllTasksLostCallbackCompleted(event);
@@ -1972,7 +1972,7 @@ public class StreamsMembershipManagerTest {
         membershipManager.onPollTimerExpired();
         membershipManager.onHeartbeatRequestGenerated();
         final CompletableFuture<Void> onAllTasksLostCallbackExecuted =
-            verifyOnAllTasksLostCallbackNeededEventAddedToBackgroundEventHandler();
+                verifyOnAllTasksLostCallbackNeededEventAddedToBackgroundEventHandler();
         verifyInStateStale(membershipManager);
 
         membershipManager.maybeRejoinStaleMember();
@@ -2001,7 +2001,7 @@ public class StreamsMembershipManagerTest {
         membershipManager.registerStateListener(listener1);
         membershipManager.registerStateListener(listener2);
         final Exception exception =
-            assertThrows(IllegalArgumentException.class, () -> membershipManager.registerStateListener(listener1));
+                assertThrows(IllegalArgumentException.class, () -> membershipManager.registerStateListener(listener1));
         assertEquals("Listener is already registered.", exception.getMessage());
     }
 
@@ -2030,27 +2030,27 @@ public class StreamsMembershipManagerTest {
         joining();
 
         final List<StreamsGroupHeartbeatResponseData.Status> statuses = List.of(
-            new StreamsGroupHeartbeatResponseData.Status()
+                new StreamsGroupHeartbeatResponseData.Status()
                 .setStatusCode(StreamsGroupHeartbeatResponse.Status.MISSING_SOURCE_TOPICS.code())
                 .setStatusDetail("One or more source topics are missing.")
         );
 
         final StreamsGroupHeartbeatResponse response = makeHeartbeatResponse(
-            List.of(),
-            List.of(),
-            List.of(),
-            MEMBER_EPOCH,
-            statuses
+                List.of(),
+                List.of(),
+                List.of(),
+                MEMBER_EPOCH,
+                statuses
         );
 
         membershipManager.onHeartbeatSuccess(response);
         membershipManager.poll(time.milliseconds());
 
         final StreamsTasksAssignedEvent tasksAssignedEvent = verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-            Set.of(),
-            Set.of(),
-            Set.of(),
-            false
+                Set.of(),
+                Set.of(),
+                Set.of(),
+                false
         );
 
         completeAssignment(tasksAssignedEvent);
@@ -2062,27 +2062,27 @@ public class StreamsMembershipManagerTest {
         joining();
 
         final List<StreamsGroupHeartbeatResponseData.Status> statuses = List.of(
-            new StreamsGroupHeartbeatResponseData.Status()
+                new StreamsGroupHeartbeatResponseData.Status()
                 .setStatusCode(StreamsGroupHeartbeatResponse.Status.MISSING_INTERNAL_TOPICS.code())
                 .setStatusDetail("One or more internal topics are missing.")
         );
 
         final StreamsGroupHeartbeatResponse response = makeHeartbeatResponse(
-            List.of(),
-            List.of(),
-            List.of(),
-            MEMBER_EPOCH,
-            statuses
+                List.of(),
+                List.of(),
+                List.of(),
+                MEMBER_EPOCH,
+                statuses
         );
 
         membershipManager.onHeartbeatSuccess(response);
         membershipManager.poll(time.milliseconds());
 
         final StreamsTasksAssignedEvent tasksAssignedEvent = verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-            Set.of(),
-            Set.of(),
-            Set.of(),
-            false
+                Set.of(),
+                Set.of(),
+                Set.of(),
+                false
         );
 
         completeAssignment(tasksAssignedEvent);
@@ -2094,27 +2094,27 @@ public class StreamsMembershipManagerTest {
         joining();
 
         final List<StreamsGroupHeartbeatResponseData.Status> statuses = List.of(
-            new StreamsGroupHeartbeatResponseData.Status()
+                new StreamsGroupHeartbeatResponseData.Status()
                 .setStatusCode(StreamsGroupHeartbeatResponse.Status.INCORRECTLY_PARTITIONED_TOPICS.code())
                 .setStatusDetail("One or more topics expected to be copartitioned are not copartitioned.")
         );
 
         final StreamsGroupHeartbeatResponse response = makeHeartbeatResponse(
-            List.of(),
-            List.of(),
-            List.of(),
-            MEMBER_EPOCH,
-            statuses
+                List.of(),
+                List.of(),
+                List.of(),
+                MEMBER_EPOCH,
+                statuses
         );
 
         membershipManager.onHeartbeatSuccess(response);
         membershipManager.poll(time.milliseconds());
 
         final StreamsTasksAssignedEvent tasksAssignedEvent = verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-            Set.of(),
-            Set.of(),
-            Set.of(),
-            false
+                Set.of(),
+                Set.of(),
+                Set.of(),
+                false
         );
 
         completeAssignment(tasksAssignedEvent);
@@ -2126,27 +2126,27 @@ public class StreamsMembershipManagerTest {
         joining();
 
         final List<StreamsGroupHeartbeatResponseData.Status> statuses = List.of(
-            new StreamsGroupHeartbeatResponseData.Status()
+                new StreamsGroupHeartbeatResponseData.Status()
                 .setStatusCode(StreamsGroupHeartbeatResponse.Status.ASSIGNMENT_DELAYED.code())
                 .setStatusDetail("Assignment delayed due to the configured initial rebalance delay.")
         );
 
         final StreamsGroupHeartbeatResponse response = makeHeartbeatResponse(
-            List.of(),
-            List.of(),
-            List.of(),
-            MEMBER_EPOCH,
-            statuses
+                List.of(),
+                List.of(),
+                List.of(),
+                MEMBER_EPOCH,
+                statuses
         );
 
         membershipManager.onHeartbeatSuccess(response);
         membershipManager.poll(time.milliseconds());
 
         final StreamsTasksAssignedEvent tasksAssignedEvent = verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-            Set.of(),
-            Set.of(),
-            Set.of(),
-            false
+                Set.of(),
+                Set.of(),
+                Set.of(),
+                false
         );
 
         completeAssignment(tasksAssignedEvent);
@@ -2158,21 +2158,21 @@ public class StreamsMembershipManagerTest {
         joining();
 
         final StreamsGroupHeartbeatResponse response = makeHeartbeatResponse(
-            List.of(),
-            List.of(),
-            List.of(),
-            MEMBER_EPOCH,
-            null
+                List.of(),
+                List.of(),
+                List.of(),
+                MEMBER_EPOCH,
+                null
         );
 
         membershipManager.onHeartbeatSuccess(response);
         membershipManager.poll(time.milliseconds());
 
         final StreamsTasksAssignedEvent tasksAssignedEvent = verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-            Set.of(),
-            Set.of(),
-            Set.of(),
-            true
+                Set.of(),
+                Set.of(),
+                Set.of(),
+                true
         );
 
         completeAssignment(tasksAssignedEvent);
@@ -2184,27 +2184,27 @@ public class StreamsMembershipManagerTest {
         joining();
 
         final List<StreamsGroupHeartbeatResponseData.Status> statuses = List.of(
-            new StreamsGroupHeartbeatResponseData.Status()
+                new StreamsGroupHeartbeatResponseData.Status()
                 .setStatusCode(StreamsGroupHeartbeatResponse.Status.STALE_TOPOLOGY.code())
                 .setStatusDetail("The topology epoch supplied is inconsistent with the topology for this streams group.")
         );
 
         final StreamsGroupHeartbeatResponse response = makeHeartbeatResponse(
-            List.of(),
-            List.of(),
-            List.of(),
-            MEMBER_EPOCH,
-            statuses
+                List.of(),
+                List.of(),
+                List.of(),
+                MEMBER_EPOCH,
+                statuses
         );
 
         membershipManager.onHeartbeatSuccess(response);
         membershipManager.poll(time.milliseconds());
 
         final StreamsTasksAssignedEvent tasksAssignedEvent = verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-            Set.of(),
-            Set.of(),
-            Set.of(),
-            true
+                Set.of(),
+                Set.of(),
+                Set.of(),
+                true
         );
 
         completeAssignment(tasksAssignedEvent);
@@ -2216,46 +2216,46 @@ public class StreamsMembershipManagerTest {
         joining();
 
         final StreamsGroupHeartbeatResponse responseWithTasks = makeHeartbeatResponse(
-            List.of(),
-            List.of(),
-            List.of(),
-            MEMBER_EPOCH,
-            null
+                List.of(),
+                List.of(),
+                List.of(),
+                MEMBER_EPOCH,
+                null
         );
 
         membershipManager.onHeartbeatSuccess(responseWithTasks);
         membershipManager.poll(time.milliseconds());
 
         final StreamsTasksAssignedEvent tasksAssignedEvent1 = verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-            Set.of(),
-            Set.of(),
-            Set.of(),
-            true
+                Set.of(),
+                Set.of(),
+                Set.of(),
+                true
         );
         completeAssignment(tasksAssignedEvent1);
 
         final List<StreamsGroupHeartbeatResponseData.Status> statuses = List.of(
-            new StreamsGroupHeartbeatResponseData.Status()
+                new StreamsGroupHeartbeatResponseData.Status()
                 .setStatusCode(StreamsGroupHeartbeatResponse.Status.ASSIGNMENT_DELAYED.code())
                 .setStatusDetail("Assignment delayed due to the configured initial rebalance delay.")
         );
 
         final StreamsGroupHeartbeatResponse responseWithoutTasks = makeHeartbeatResponse(
-            null,
-            null,
-            null,
-            MEMBER_EPOCH,
-            statuses
+                null,
+                null,
+                null,
+                MEMBER_EPOCH,
+                statuses
         );
 
         membershipManager.onHeartbeatSuccess(responseWithoutTasks);
         membershipManager.poll(time.milliseconds());
 
         final StreamsTasksAssignedEvent tasksAssignedEvent2 = verifyOnTasksAssignedCallbackNeededEventAddedToBackgroundEventHandler(
-            Set.of(),
-            Set.of(),
-            Set.of(),
-            false
+                Set.of(),
+                Set.of(),
+                Set.of(),
+                false
         );
         completeAssignment(tasksAssignedEvent2);
     }
@@ -2388,8 +2388,8 @@ public class StreamsMembershipManagerTest {
         verify(backgroundEventHandler).add(onTasksRevokedCallbackNeededEventCaptor.capture());
         final StreamsOnTasksRevokedCallbackNeededEvent onTasksRevokedCallbackNeededEvent = onTasksRevokedCallbackNeededEventCaptor.getValue();
         assertEquals(
-            activeTasksToRevoke,
-            onTasksRevokedCallbackNeededEvent.activeTasksToRevoke()
+                activeTasksToRevoke,
+                onTasksRevokedCallbackNeededEvent.activeTasksToRevoke()
         );
         return onTasksRevokedCallbackNeededEvent.future();
     }
@@ -2415,14 +2415,14 @@ public class StreamsMembershipManagerTest {
     private void setupStreamsRebalanceDataWithOneSubtopologyOneSourceTopic(final String subtopologyId,
                                                                            final String topicName) {
         lenient().when(streamsRebalanceData.subtopologies()).thenReturn(
-            Map.of(
-                subtopologyId,
-                new StreamsRebalanceData.Subtopology(
-                    Set.of(topicName),
-                    Set.of(),
-                    Map.of(),
-                    Map.of(),
-                    List.of()
+                Map.of(
+                    subtopologyId,
+                    new StreamsRebalanceData.Subtopology(
+                        Set.of(topicName),
+                        Set.of(),
+                        Map.of(),
+                        Map.of(),
+                        List.of()
                 )
             )
         );
@@ -2433,22 +2433,22 @@ public class StreamsMembershipManagerTest {
                                                                 final String subtopologyId2,
                                                                 final String topicName2) {
         lenient().when(streamsRebalanceData.subtopologies()).thenReturn(
-            Map.of(
-                subtopologyId1,
-                new StreamsRebalanceData.Subtopology(
-                    Set.of(topicName1),
-                    Set.of(),
-                    Map.of(),
-                    Map.of(),
-                    List.of()
+                Map.of(
+                    subtopologyId1,
+                    new StreamsRebalanceData.Subtopology(
+                        Set.of(topicName1),
+                        Set.of(),
+                        Map.of(),
+                        Map.of(),
+                        List.of()
                 ),
-                subtopologyId2,
-                new StreamsRebalanceData.Subtopology(
-                    Set.of(topicName2),
-                    Set.of(),
-                    Map.of(),
-                    Map.of(),
-                    List.of()
+                    subtopologyId2,
+                    new StreamsRebalanceData.Subtopology(
+                        Set.of(topicName2),
+                        Set.of(),
+                        Map.of(),
+                        Map.of(),
+                        List.of()
                 )
             )
         );
@@ -2457,11 +2457,11 @@ public class StreamsMembershipManagerTest {
     private StreamsGroupHeartbeatResponse makeHeartbeatResponseWithActiveTasks(final String subtopologyId,
                                                                                final List<Integer> partitions) {
         return makeHeartbeatResponseWithActiveTasks(List.of(
-            new StreamsGroupHeartbeatResponseData.TaskIds()
+                new StreamsGroupHeartbeatResponseData.TaskIds()
                 .setSubtopologyId(subtopologyId)
                 .setPartitions(partitions)
             ),
-            MEMBER_EPOCH
+                MEMBER_EPOCH
         );
     }
 
@@ -2469,39 +2469,39 @@ public class StreamsMembershipManagerTest {
                                                                                final List<Integer> partitions,
                                                                                final int memberEpoch) {
         return makeHeartbeatResponseWithActiveTasks(List.of(
-            new StreamsGroupHeartbeatResponseData.TaskIds()
+                new StreamsGroupHeartbeatResponseData.TaskIds()
                 .setSubtopologyId(subtopologyId)
                 .setPartitions(partitions)
             ),
-            memberEpoch
+                memberEpoch
         );
     }
 
     private StreamsGroupHeartbeatResponse makeHeartbeatResponseWithStandbyTasks(final String subtopologyId,
                                                                                 final List<Integer> partitions) {
         return makeHeartbeatResponse(
-            List.of(),
-            List.of(
-                new StreamsGroupHeartbeatResponseData.TaskIds()
+                List.of(),
+                List.of(
+                    new StreamsGroupHeartbeatResponseData.TaskIds()
                     .setSubtopologyId(subtopologyId)
                     .setPartitions(partitions)
             ),
-            List.of(),
-            MEMBER_EPOCH
+                List.of(),
+                MEMBER_EPOCH
         );
     }
 
     private StreamsGroupHeartbeatResponse makeHeartbeatResponseWithWarmupTasks(final String subtopologyId,
                                                                                final List<Integer> partitions) {
         return makeHeartbeatResponse(
-            List.of(),
-            List.of(),
-            List.of(
-                new StreamsGroupHeartbeatResponseData.TaskIds()
+                List.of(),
+                List.of(),
+                List.of(
+                    new StreamsGroupHeartbeatResponseData.TaskIds()
                     .setSubtopologyId(subtopologyId)
                     .setPartitions(partitions)
             ),
-            MEMBER_EPOCH
+                MEMBER_EPOCH
         );
     }
 
@@ -2510,13 +2510,13 @@ public class StreamsMembershipManagerTest {
                                                                                final String subtopologyId1,
                                                                                final List<Integer> partitions1) {
         return makeHeartbeatResponseWithActiveTasks(List.of(
-            new StreamsGroupHeartbeatResponseData.TaskIds()
+                new StreamsGroupHeartbeatResponseData.TaskIds()
                 .setSubtopologyId(subtopologyId0)
                 .setPartitions(partitions0),
-            new StreamsGroupHeartbeatResponseData.TaskIds()
+                new StreamsGroupHeartbeatResponseData.TaskIds()
                 .setSubtopologyId(subtopologyId1)
                 .setPartitions(partitions1)),
-            MEMBER_EPOCH
+                MEMBER_EPOCH
         );
     }
 
@@ -2567,10 +2567,10 @@ public class StreamsMembershipManagerTest {
                                                                final Set<StreamsRebalanceData.TaskId> warmupTasks,
                                                                final boolean isGroupReady) {
         return new StreamsRebalanceData.Assignment(
-            activeTasks,
-            standbyTasks,
-            warmupTasks,
-            isGroupReady
+                activeTasks,
+                standbyTasks,
+                warmupTasks,
+                isGroupReady
         );
     }
 

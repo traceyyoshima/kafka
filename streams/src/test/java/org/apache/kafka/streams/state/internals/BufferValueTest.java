@@ -154,7 +154,7 @@ public class BufferValueTest {
         final byte[] serializedContext = context.serialize();
         final byte[] priorValue = {(byte) 5};
         final ByteBuffer serialValue =
-            ByteBuffer
+                ByteBuffer
                 .allocate(serializedContext.length + Integer.BYTES * 3 + priorValue.length)
                 .put(serializedContext).putInt(1).put(priorValue).putInt(-1).putInt(-1);
         serialValue.position(0);
@@ -169,7 +169,7 @@ public class BufferValueTest {
         final byte[] serializedContext = context.serialize();
         final byte[] oldValue = {(byte) 5};
         final ByteBuffer serialValue =
-            ByteBuffer
+                ByteBuffer
                 .allocate(serializedContext.length + Integer.BYTES * 3 + oldValue.length)
                 .put(serializedContext).putInt(-1).putInt(1).put(oldValue).putInt(-1);
         serialValue.position(0);
@@ -183,7 +183,7 @@ public class BufferValueTest {
         final byte[] serializedContext = context.serialize();
         final byte[] newValue = {(byte) 5};
         final ByteBuffer serialValue =
-            ByteBuffer
+                ByteBuffer
                 .allocate(serializedContext.length + Integer.BYTES * 3 + newValue.length)
                 .put(serializedContext).putInt(-1).putInt(-1).putInt(1).put(newValue);
         serialValue.position(0);
@@ -197,7 +197,7 @@ public class BufferValueTest {
         final byte[] serializedContext = context.serialize();
         final byte[] duplicate = {(byte) 5};
         final ByteBuffer serialValue =
-            ByteBuffer
+                ByteBuffer
                 .allocate(serializedContext.length + Integer.BYTES * 3 + duplicate.length)
                 .put(serializedContext).putInt(1).put(duplicate).putInt(-2).putInt(-1);
         serialValue.position(0);

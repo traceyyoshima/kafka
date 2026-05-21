@@ -85,8 +85,8 @@ public class ConnectorConfig extends AbstractConfig {
     public static final String CONNECTOR_CLASS_CONFIG = "connector.class";
     private static final String CONNECTOR_CLASS_DOC =
             "Name or alias of the class for this connector. Must be a subclass of org.apache.kafka.connect.connector.Connector. " +
-                    "If the connector is org.apache.kafka.connect.file.FileStreamSinkConnector, you can either specify this full name, " +
-                    " or use \"FileStreamSink\" or \"FileStreamSinkConnector\" to make the configuration a bit shorter";
+            "If the connector is org.apache.kafka.connect.file.FileStreamSinkConnector, you can either specify this full name, " +
+            " or use \"FileStreamSink\" or \"FileStreamSinkConnector\" to make the configuration a bit shorter";
     private static final String CONNECTOR_CLASS_DISPLAY = "Connector class";
 
     public static final String CONNECTOR_VERSION = "connector." + WorkerConfig.PLUGIN_VERSION_SUFFIX;
@@ -106,7 +106,6 @@ public class ConnectorConfig extends AbstractConfig {
     private static final String KEY_CONVERTER_VERSION_DOC = "Version of the key converter.";
     private static final String KEY_CONVERTER_VERSION_DISPLAY = "Key converter version";
     private static final ConfigDef.Validator KEY_CONVERTER_VERSION_VALIDATOR = new PluginVersionValidator();
-
 
     public static final String VALUE_CONVERTER_CLASS_CONFIG = WorkerConfig.VALUE_CONVERTER_CLASS_CONFIG;
     public static final String VALUE_CONVERTER_CLASS_DOC = WorkerConfig.VALUE_CONVERTER_CLASS_DOC;
@@ -144,10 +143,10 @@ public class ConnectorConfig extends AbstractConfig {
     public static final String TASKS_MAX_ENFORCE_CONFIG = "tasks.max.enforce";
     private static final String TASKS_MAX_ENFORCE_DOC =
             "(Deprecated) Whether to enforce that the tasks.max property is respected by the connector. "
-                    + "By default, connectors that generate too many tasks will fail, and existing sets of tasks that exceed the tasks.max property will also be failed. "
-                    + "If this property is set to false, then connectors will be allowed to generate more than the maximum number of tasks, and existing sets of "
-                    + "tasks that exceed the tasks.max property will be allowed to run. "
-                    + "This property is deprecated and will be removed in an upcoming major release.";
+            + "By default, connectors that generate too many tasks will fail, and existing sets of tasks that exceed the tasks.max property will also be failed. "
+            + "If this property is set to false, then connectors will be allowed to generate more than the maximum number of tasks, and existing sets of "
+            + "tasks that exceed the tasks.max property will be allowed to run. "
+            + "This property is deprecated and will be removed in an upcoming major release.";
     public static final boolean TASKS_MAX_ENFORCE_DEFAULT = true;
     private static final String TASKS_MAX_ENFORCE_DISPLAY = "Enforce tasks max";
 
@@ -205,7 +204,6 @@ public class ConnectorConfig extends AbstractConfig {
             "For source records, the key and value (and their schemas), all headers, and the timestamp, Kafka topic, Kafka partition, source partition, " +
             "and source offset will be logged. " +
             "This is 'false' by default, which will prevent record keys, values, and headers from being written to log files.";
-
 
     public static final String CONNECTOR_CLIENT_PRODUCER_OVERRIDES_PREFIX = "producer.override.";
     public static final String CONNECTOR_CLIENT_CONSUMER_OVERRIDES_PREFIX = "consumer.override.";
@@ -291,14 +289,14 @@ public class ConnectorConfig extends AbstractConfig {
 
     private static ConfigDef.CompositeValidator aliasValidator(String kind) {
         return ConfigDef.CompositeValidator.of(new ConfigDef.NonNullValidator(), ConfigDef.LambdaValidator.with(
-            (name, value) -> {
-                @SuppressWarnings("unchecked")
-                final List<String> aliases = (List<String>) value;
-                if (aliases.size() > new HashSet<>(aliases).size()) {
-                    throw new ConfigException(name, value, "Duplicate alias provided.");
-                }
-            },
-            () -> "unique " + kind + " aliases"));
+                (name, value) -> {
+                    @SuppressWarnings("unchecked")
+                    final List<String> aliases = (List<String>) value;
+                    if (aliases.size() > new HashSet<>(aliases).size()) {
+                        throw new ConfigException(name, value, "Duplicate alias provided.");
+                    }
+                },
+                () -> "unique " + kind + " aliases"));
     }
 
     public ConnectorConfig(Plugins plugins) {
@@ -385,21 +383,21 @@ public class ConnectorConfig extends AbstractConfig {
                     predicate.configure(originalsWithPrefix(predicatePrefix));
                     Plugin<Predicate<R>> predicatePlugin = metrics.wrap(predicate, connectorTaskId, predicateAlias);
                     transformations.add(new TransformationStage<>(
-                        predicatePlugin,
-                        predicateAlias,
-                        plugins.pluginVersion(predicate.getClass().getName(), predicate.getClass().getClassLoader(), PluginType.PREDICATE),
-                        negate != null && Boolean.parseBoolean(negate.toString()),
-                        transformationPlugin,
-                        alias,
-                        plugins.pluginVersion(transformation.getClass().getName(), transformation.getClass().getClassLoader(), PluginType.TRANSFORMATION),
-                        plugins.safeLoaderSwapper())
+                            predicatePlugin,
+                            predicateAlias,
+                            plugins.pluginVersion(predicate.getClass().getName(), predicate.getClass().getClassLoader(), PluginType.PREDICATE),
+                            negate != null && Boolean.parseBoolean(negate.toString()),
+                            transformationPlugin,
+                            alias,
+                            plugins.pluginVersion(transformation.getClass().getName(), transformation.getClass().getClassLoader(), PluginType.TRANSFORMATION),
+                            plugins.safeLoaderSwapper())
                     );
                 } else {
                     transformations.add(new TransformationStage<>(
-                        transformationPlugin,
-                        alias,
-                        plugins.pluginVersion(transformation.getClass().getName(), transformation.getClass().getClassLoader(), PluginType.TRANSFORMATION),
-                        plugins.safeLoaderSwapper())
+                            transformationPlugin,
+                            alias,
+                            plugins.pluginVersion(transformation.getClass().getName(), transformation.getClass().getClassLoader(), PluginType.TRANSFORMATION),
+                            plugins.safeLoaderSwapper())
                     );
                 }
             } catch (Exception e) {

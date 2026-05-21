@@ -83,18 +83,18 @@ public class KafkaNetworkChannelTest {
         }
 
         @Override
-        public void update(Time time, MockClient.MetadataUpdate update) { }
+        public void update(Time time, MockClient.MetadataUpdate update) {}
     }
 
     private static final List<ApiKeys> RAFT_APIS = List.of(
-        ApiKeys.VOTE,
-        ApiKeys.BEGIN_QUORUM_EPOCH,
-        ApiKeys.END_QUORUM_EPOCH,
-        ApiKeys.FETCH,
-        ApiKeys.FETCH_SNAPSHOT,
-        ApiKeys.UPDATE_RAFT_VOTER,
-        ApiKeys.ADD_RAFT_VOTER,
-        ApiKeys.REMOVE_RAFT_VOTER
+            ApiKeys.VOTE,
+            ApiKeys.BEGIN_QUORUM_EPOCH,
+            ApiKeys.END_QUORUM_EPOCH,
+            ApiKeys.FETCH,
+            ApiKeys.FETCH_SNAPSHOT,
+            ApiKeys.UPDATE_RAFT_VOTER,
+            ApiKeys.ADD_RAFT_VOTER,
+            ApiKeys.REMOVE_RAFT_VOTER
     );
 
     private final int requestTimeoutMs = 30000;
@@ -103,11 +103,11 @@ public class KafkaNetworkChannelTest {
     private final TopicPartition topicPartition = new TopicPartition("topic", 0);
     private final Uuid topicId = Uuid.randomUuid();
     private final KafkaNetworkChannel channel = new KafkaNetworkChannel(
-        time,
-        ListenerName.normalised("NAME"),
-        client,
-        requestTimeoutMs,
-        "test-raft"
+            time,
+            ListenerName.normalised("NAME"),
+            client,
+            requestTimeoutMs,
+            "test-raft"
     );
 
     private Node nodeWithId(boolean withId) {
@@ -239,10 +239,10 @@ public class KafkaNetworkChannelTest {
         long createdTimeMs = time.milliseconds();
         ApiMessage apiRequest = buildTestRequest(apiKey);
         RaftRequest.Outbound request = new RaftRequest.Outbound(
-            correlationId,
-            apiRequest,
-            destination,
-            createdTimeMs
+                correlationId,
+                apiRequest,
+                destination,
+                createdTimeMs
         );
         channel.send(request);
         return request;
@@ -281,11 +281,11 @@ public class KafkaNetworkChannelTest {
 
             case END_QUORUM_EPOCH:
                 return EndQuorumEpochRequest.singletonRequest(
-                    topicPartition,
-                    clusterId,
-                    leaderId,
-                    leaderEpoch,
-                    List.of(2)
+                        topicPartition,
+                        clusterId,
+                        leaderId,
+                        leaderEpoch,
+                        List.of(2)
                 );
 
             case VOTE:
@@ -294,7 +294,7 @@ public class KafkaNetworkChannelTest {
 
             case FETCH:
                 FetchRequestData request = RaftUtil.singletonFetchRequest(topicPartition, topicId, fetchPartition ->
-                    fetchPartition
+                        fetchPartition
                         .setCurrentLeaderEpoch(5)
                         .setFetchOffset(333)
                         .setLastFetchedEpoch(5)
@@ -304,37 +304,37 @@ public class KafkaNetworkChannelTest {
 
             case FETCH_SNAPSHOT:
                 return RaftUtil.singletonFetchSnapshotRequest(
-                    clusterId,
-                    ReplicaKey.of(1, ReplicaKey.NO_DIRECTORY_ID),
-                    topicPartition,
-                    5,
-                    new OffsetAndEpoch(323, 4),
-                    1024,
-                    10
+                        clusterId,
+                        ReplicaKey.of(1, ReplicaKey.NO_DIRECTORY_ID),
+                        topicPartition,
+                        5,
+                        new OffsetAndEpoch(323, 4),
+                        1024,
+                        10
                 );
 
             case UPDATE_RAFT_VOTER:
                 return RaftUtil.updateVoterRequest(
-                    clusterId,
-                    ReplicaKey.of(1, ReplicaKey.NO_DIRECTORY_ID),
-                    5,
-                    new SupportedVersionRange((short) 1, (short) 1),
-                    Endpoints.empty()
+                        clusterId,
+                        ReplicaKey.of(1, ReplicaKey.NO_DIRECTORY_ID),
+                        5,
+                        new SupportedVersionRange((short) 1, (short) 1),
+                        Endpoints.empty()
                 );
 
             case ADD_RAFT_VOTER:
                 return RaftUtil.addVoterRequest(
-                    clusterId,
-                    requestTimeoutMs,
-                    ReplicaKey.of(1, ReplicaKey.NO_DIRECTORY_ID),
-                    Endpoints.empty(),
-                    true
+                        clusterId,
+                        requestTimeoutMs,
+                        ReplicaKey.of(1, ReplicaKey.NO_DIRECTORY_ID),
+                        Endpoints.empty(),
+                        true
                 );
 
             case REMOVE_RAFT_VOTER:
                 return RaftUtil.removeVoterRequest(
-                    clusterId,
-                    ReplicaKey.of(1, ReplicaKey.NO_DIRECTORY_ID)
+                        clusterId,
+                        ReplicaKey.of(1, ReplicaKey.NO_DIRECTORY_ID)
                 );
 
             default:
@@ -349,12 +349,12 @@ public class KafkaNetworkChannelTest {
             case VOTE -> new VoteResponseData()
                 .setErrorCode(error.code())
                 .setTopics(
-                    List.of(
-                        new VoteResponseData.TopicData()
+                        List.of(
+                            new VoteResponseData.TopicData()
                             .setTopicName(topicPartition.topic())
                             .setPartitions(
-                                List.of(
-                                    new VoteResponseData.PartitionData()
+                                    List.of(
+                                        new VoteResponseData.PartitionData()
                                         .setErrorCode(Errors.NONE.code())
                                         .setLeaderId(1)
                                         .setLeaderEpoch(5)

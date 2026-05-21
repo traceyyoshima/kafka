@@ -100,7 +100,6 @@ public class StreamJoinedStoreFactory<K, V1, V2> extends AbstractConfigurableSto
                 valueSerde
         );
 
-
         if (joinedInternal.loggingEnabled()) {
             builder.withLoggingEnabled(logConfig);
         } else {

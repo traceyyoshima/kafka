@@ -33,10 +33,10 @@ public class RetryTest extends OAuthBearerTest {
     @Test
     public void test() throws ExecutionException {
         Exception[] attempts = new Exception[] {
-            new IOException("pretend connect error"),
-            new IOException("pretend timeout error"),
-            new IOException("pretend read error"),
-            null    // success!
+                new IOException("pretend connect error"),
+                new IOException("pretend timeout error"),
+                new IOException("pretend read error"),
+                null    // success!
         };
         long retryWaitMs = 1000;
         long maxWaitMs = 10000;
@@ -56,10 +56,10 @@ public class RetryTest extends OAuthBearerTest {
     @Test
     public void testIOExceptionFailure() {
         Exception[] attempts = new Exception[] {
-            new IOException("pretend connect error"),
-            new IOException("pretend timeout error"),
-            new IOException("pretend read error"),
-            new IOException("pretend another read error"),
+                new IOException("pretend connect error"),
+                new IOException("pretend timeout error"),
+                new IOException("pretend read error"),
+                new IOException("pretend another read error"),
         };
         long retryWaitMs = 1000;
         long maxWaitMs = 1000 + 2000 + 3999;
@@ -77,9 +77,9 @@ public class RetryTest extends OAuthBearerTest {
     @Test
     public void testRuntimeExceptionFailureOnLastAttempt() {
         Exception[] attempts = new Exception[] {
-            new IOException("pretend connect error"),
-            new IOException("pretend timeout error"),
-            new NullPointerException("pretend JSON node /userId in response is null")
+                new IOException("pretend connect error"),
+                new IOException("pretend timeout error"),
+                new NullPointerException("pretend JSON node /userId in response is null")
         };
         long retryWaitMs = 1000;
         long maxWaitMs = 10000;
@@ -99,8 +99,8 @@ public class RetryTest extends OAuthBearerTest {
     @Test
     public void testRuntimeExceptionFailureOnFirstAttempt() {
         Exception[] attempts = new Exception[] {
-            new NullPointerException("pretend JSON node /userId in response is null"),
-            null
+                new NullPointerException("pretend JSON node /userId in response is null"),
+                null
         };
         long retryWaitMs = 1000;
         long maxWaitMs = 10000;
@@ -118,9 +118,9 @@ public class RetryTest extends OAuthBearerTest {
     @Test
     public void testUseMaxTimeout() {
         Exception[] attempts = new Exception[] {
-            new IOException("pretend connect error"),
-            new IOException("pretend timeout error"),
-            new IOException("pretend read error")
+                new IOException("pretend connect error"),
+                new IOException("pretend timeout error"),
+                new IOException("pretend read error")
         };
         long retryWaitMs = 5000;
         long maxWaitMs = 5000;

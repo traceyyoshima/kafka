@@ -46,8 +46,8 @@ public class ReadShareGroupStateResponse extends AbstractResponse {
     public Map<Errors, Integer> errorCounts() {
         Map<Errors, Integer> counts = new EnumMap<>(Errors.class);
         data.results().forEach(
-            result -> result.partitions().forEach(
-                partitionResult -> updateErrorCounts(counts, Errors.forCode(partitionResult.errorCode()))
+                result -> result.partitions().forEach(
+                    partitionResult -> updateErrorCounts(counts, Errors.forCode(partitionResult.errorCode()))
             )
         );
         return counts;
@@ -65,7 +65,7 @@ public class ReadShareGroupStateResponse extends AbstractResponse {
 
     public static ReadShareGroupStateResponse parse(Readable readable, short version) {
         return new ReadShareGroupStateResponse(
-            new ReadShareGroupStateResponseData(readable, version)
+                new ReadShareGroupStateResponseData(readable, version)
         );
     }
 
@@ -78,10 +78,10 @@ public class ReadShareGroupStateResponse extends AbstractResponse {
     ) {
         return new ReadShareGroupStateResponseData()
             .setResults(List.of(
-                new ReadShareGroupStateResponseData.ReadStateResult()
+                    new ReadShareGroupStateResponseData.ReadStateResult()
                     .setTopicId(topicId)
                     .setPartitions(List.of(
-                        new ReadShareGroupStateResponseData.PartitionResult()
+                            new ReadShareGroupStateResponseData.PartitionResult()
                             .setPartition(partition)
                             .setStartOffset(startOffset)
                             .setStateEpoch(stateEpoch)
@@ -92,7 +92,7 @@ public class ReadShareGroupStateResponse extends AbstractResponse {
 
     public static ReadShareGroupStateResponseData toErrorResponseData(Uuid topicId, int partitionId, Errors error, String errorMessage) {
         return new ReadShareGroupStateResponseData().setResults(
-            List.of(new ReadShareGroupStateResponseData.ReadStateResult()
+                List.of(new ReadShareGroupStateResponseData.ReadStateResult()
                 .setTopicId(topicId)
                 .setPartitions(List.of(new ReadShareGroupStateResponseData.PartitionResult()
                     .setPartition(partitionId)
@@ -118,7 +118,7 @@ public class ReadShareGroupStateResponse extends AbstractResponse {
         request.topics().forEach(topicData -> {
             List<ReadShareGroupStateResponseData.PartitionResult> partitionResults = new ArrayList<>();
             topicData.partitions().forEach(partitionData -> partitionResults.add(
-                toErrorResponsePartitionResult(partitionData.partition(), error, error.message()))
+                    toErrorResponsePartitionResult(partitionData.partition(), error, error.message()))
             );
             readStateResults.add(toResponseReadStateResult(topicData.topicId(), partitionResults));
         });

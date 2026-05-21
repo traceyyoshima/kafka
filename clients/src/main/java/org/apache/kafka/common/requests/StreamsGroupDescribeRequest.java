@@ -60,8 +60,8 @@ public class StreamsGroupDescribeRequest extends AbstractRequest {
             .setThrottleTimeMs(throttleTimeMs);
         // Set error for each group
         this.data.groupIds().forEach(
-            groupId -> data.groups().add(
-                new StreamsGroupDescribeResponseData.DescribedGroup()
+                groupId -> data.groups().add(
+                    new StreamsGroupDescribeResponseData.DescribedGroup()
                     .setGroupId(groupId)
                     .setErrorCode(Errors.forException(e).code())
             )
@@ -76,8 +76,8 @@ public class StreamsGroupDescribeRequest extends AbstractRequest {
 
     public static StreamsGroupDescribeRequest parse(Readable readable, short version) {
         return new StreamsGroupDescribeRequest(
-            new StreamsGroupDescribeRequestData(readable, version),
-            version
+                new StreamsGroupDescribeRequestData(readable, version),
+                version
         );
     }
 

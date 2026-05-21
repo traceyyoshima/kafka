@@ -55,10 +55,10 @@ public class ElectLeadersRequest extends AbstractRequest {
         @Override
         public String toString() {
             return "ElectLeadersRequest("
-                + "electionType=" + electionType
-                + ", topicPartitions=" + ((topicPartitions == null) ? "null" : MessageUtil.deepToString(topicPartitions.iterator()))
-                + ", timeoutMs=" + timeoutMs
-                + ")";
+                    + "electionType=" + electionType
+                    + ", topicPartitions=" + ((topicPartitions == null) ? "null" : MessageUtil.deepToString(topicPartitions.iterator()))
+                    + ", timeoutMs=" + timeoutMs
+                    + ")";
         }
 
         private ElectLeadersRequestData toRequestData(short version) {
@@ -87,7 +87,6 @@ public class ElectLeadersRequest extends AbstractRequest {
             return data;
         }
     }
-
 
     public Set<TopicPartition> topicPartitions() {
         if (this.data.topicPartitions() == null) {

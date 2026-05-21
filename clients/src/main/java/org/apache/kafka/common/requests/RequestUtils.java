@@ -87,11 +87,11 @@ public final class RequestUtils {
 
     public static boolean isFatalException(Throwable e) {
         return e instanceof AuthenticationException ||
-            e instanceof AuthorizationException ||
-            e instanceof MismatchedEndpointTypeException ||
-            e instanceof SecurityDisabledException ||
-            e instanceof UnsupportedVersionException ||
-            e instanceof UnsupportedEndpointTypeException ||
-            e instanceof UnsupportedForMessageFormatException;
+                e instanceof AuthorizationException ||
+                e instanceof MismatchedEndpointTypeException ||
+                e instanceof SecurityDisabledException ||
+                e instanceof UnsupportedVersionException ||
+                e instanceof UnsupportedEndpointTypeException ||
+                e instanceof UnsupportedForMessageFormatException;
     }
 }

@@ -37,7 +37,7 @@ public class Printed<K, V> implements NamedOperation<Printed<K, V>> {
     protected String label;
     protected String processorName;
     protected KeyValueMapper<? super K, ? super V, String> mapper =
-        (KeyValueMapper<K, V, String>) (key, value) -> String.format("%s, %s", key, value);
+            (KeyValueMapper<K, V, String>) (key, value) -> String.format("%s, %s", key, value);
 
     private Printed(final OutputStream outputStream) {
         this.outputStream = outputStream;

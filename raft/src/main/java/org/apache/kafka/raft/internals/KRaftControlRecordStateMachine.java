@@ -221,11 +221,11 @@ public final class KRaftControlRecordStateMachine {
         long fixedNextOffset = nextOffset;
         if (offset >= fixedNextOffset) {
             throw new IllegalArgumentException(
-                String.format(
-                    "Attempting the read a value at an offset (%d) which is greater than or " +
-                    "equal to the largest known offset (%d)",
-                    offset,
-                    fixedNextOffset - 1
+                    String.format(
+                        "Attempting the read a value at an offset (%d) which is greater than or " +
+                        "equal to the largest known offset (%d)",
+                        offset,
+                        fixedNextOffset - 1
                 )
             );
         }
@@ -234,9 +234,9 @@ public final class KRaftControlRecordStateMachine {
     private void maybeLoadLog() {
         while (log.endOffset().offset() > nextOffset) {
             LogFetchInfo info = log.read(
-                nextOffset,
-                Isolation.UNCOMMITTED,
-                Integer.MAX_VALUE
+                    nextOffset,
+                    Isolation.UNCOMMITTED,
+                    Integer.MAX_VALUE
             );
             try (RecordsIterator<?> iterator = new RecordsIterator<>(
                     info.records,
@@ -278,10 +278,10 @@ public final class KRaftControlRecordStateMachine {
                 )
             ) {
                 logger.info(
-                    "Loading snapshot ({}) since log start offset ({}) is greater than the internal listener's next offset ({})",
-                    reader.snapshotId(),
-                    log.startOffset(),
-                    nextOffset
+                        "Loading snapshot ({}) since log start offset ({}) is greater than the internal listener's next offset ({})",
+                        reader.snapshotId(),
+                        log.startOffset(),
+                        nextOffset
                 );
                 OptionalLong currentOffset = OptionalLong.of(reader.lastContainedLogOffset());
                 while (reader.hasNext()) {
@@ -317,13 +317,13 @@ public final class KRaftControlRecordStateMachine {
 
                 case KRAFT_VERSION:
                     KRaftVersion kraftVersion = KRaftVersion.fromFeatureLevel(
-                        ((KRaftVersionRecord) record.message()).kRaftVersion()
+                            ((KRaftVersionRecord) record.message()).kRaftVersion()
                     );
                     logger.info(
-                        "Latest {} is {} at offset {}",
-                        KRaftVersion.FEATURE_NAME,
-                        kraftVersion,
-                        currentOffset
+                            "Latest {} is {} at offset {}",
+                            KRaftVersion.FEATURE_NAME,
+                            kraftVersion,
+                            currentOffset
                     );
                     synchronized (kraftVersionHistory) {
                         kraftVersionHistory.addAt(currentOffset, kraftVersion);

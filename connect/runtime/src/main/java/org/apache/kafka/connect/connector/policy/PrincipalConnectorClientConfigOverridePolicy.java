@@ -39,7 +39,7 @@ public class PrincipalConnectorClientConfigOverridePolicy extends AbstractConnec
     private static final Logger log = LoggerFactory.getLogger(PrincipalConnectorClientConfigOverridePolicy.class);
 
     private static final Set<String> ALLOWED_CONFIG =
-        Stream.of(SaslConfigs.SASL_JAAS_CONFIG, SaslConfigs.SASL_MECHANISM, CommonClientConfigs.SECURITY_PROTOCOL_CONFIG).
+            Stream.of(SaslConfigs.SASL_JAAS_CONFIG, SaslConfigs.SASL_MECHANISM, CommonClientConfigs.SECURITY_PROTOCOL_CONFIG).
             collect(Collectors.toSet());
 
     @Override

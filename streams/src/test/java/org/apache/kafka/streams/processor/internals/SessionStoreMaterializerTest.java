@@ -70,7 +70,7 @@ public class SessionStoreMaterializerTest {
     private StreamsConfig streamsConfig;
 
     private final SessionStore<Bytes, byte[]> innerSessionStore =
-        new InMemorySessionStore(STORE_NAME, 60000L, "metricScope");
+            new InMemorySessionStore(STORE_NAME, 60000L, "metricScope");
 
     private SessionWindows windows;
     private EmitStrategy emitStrategy;
@@ -84,9 +84,9 @@ public class SessionStoreMaterializerTest {
             .when(streamsConfig).originals();
         doReturn(new BuiltInDslStoreSuppliers.RocksDBDslStoreSuppliers())
                 .when(streamsConfig).getConfiguredInstance(
-                    StreamsConfig.DSL_STORE_SUPPLIERS_CLASS_CONFIG,
-                    DslStoreSuppliers.class,
-                    emptyMap()
+                        StreamsConfig.DSL_STORE_SUPPLIERS_CLASS_CONFIG,
+                        DslStoreSuppliers.class,
+                        emptyMap()
             );
         lenient().doReturn("timestamped")
                 .when(streamsConfig).getString(StreamsConfig.DSL_STORE_FORMAT_CONFIG);
@@ -122,7 +122,7 @@ public class SessionStoreMaterializerTest {
     @Test
     public void shouldCreateHeadersBuilderWithCachingAndLoggingEnabledByDefault() {
         final MaterializedInternal<String, String, SessionStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.as("store"), nameProvider, STORE_PREFIX);
+                new MaterializedInternal<>(Materialized.as("store"), nameProvider, STORE_PREFIX);
 
         final SessionStore<String, String> store = getSessionStore(materialized);
         final WrappedStateStore<?, ?, ?> caching = (WrappedStateStore<?, ?, ?>) ((WrappedStateStore<?, ?, ?>) store).wrapped();
@@ -136,7 +136,7 @@ public class SessionStoreMaterializerTest {
     @Test
     public void shouldCreateHeadersBuilderWithCachingDisabled() {
         final MaterializedInternal<String, String, SessionStore<Bytes, byte[]>> materialized = new MaterializedInternal<>(
-            Materialized.<String, String, SessionStore<Bytes, byte[]>>as("store").withCachingDisabled(), nameProvider, STORE_PREFIX
+                Materialized.<String, String, SessionStore<Bytes, byte[]>>as("store").withCachingDisabled(), nameProvider, STORE_PREFIX
         );
 
         final SessionStore<String, String> store = getSessionStore(materialized);
@@ -149,7 +149,7 @@ public class SessionStoreMaterializerTest {
     @Test
     public void shouldCreateHeadersBuilderWithLoggingDisabled() {
         final MaterializedInternal<String, String, SessionStore<Bytes, byte[]>> materialized = new MaterializedInternal<>(
-            Materialized.<String, String, SessionStore<Bytes, byte[]>>as("store").withLoggingDisabled(), nameProvider, STORE_PREFIX
+                Materialized.<String, String, SessionStore<Bytes, byte[]>>as("store").withLoggingDisabled(), nameProvider, STORE_PREFIX
         );
 
         final SessionStore<String, String> store = getSessionStore(materialized);
@@ -163,7 +163,7 @@ public class SessionStoreMaterializerTest {
     @Test
     public void shouldCreateHeadersBuilderWithCachingAndLoggingDisabled() {
         final MaterializedInternal<String, String, SessionStore<Bytes, byte[]>> materialized = new MaterializedInternal<>(
-            Materialized.<String, String, SessionStore<Bytes, byte[]>>as("store").withCachingDisabled().withLoggingDisabled(), nameProvider, STORE_PREFIX
+                Materialized.<String, String, SessionStore<Bytes, byte[]>>as("store").withCachingDisabled().withLoggingDisabled(), nameProvider, STORE_PREFIX
         );
 
         final SessionStore<String, String> store = getSessionStore(materialized);
@@ -177,7 +177,7 @@ public class SessionStoreMaterializerTest {
     @Test
     public void shouldCreateHeadersStoreWithProvidedSupplierAndCachingAndLoggingEnabledByDefault() {
         final MaterializedInternal<String, String, SessionStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.as(new HeadersStoreSupplier()), nameProvider, STORE_PREFIX);
+                new MaterializedInternal<>(Materialized.as(new HeadersStoreSupplier()), nameProvider, STORE_PREFIX);
 
         final SessionStoreWithHeaders<String, String> store = getHeadersStore(materialized);
 
@@ -192,7 +192,7 @@ public class SessionStoreMaterializerTest {
     @Test
     public void shouldCreateHeadersStoreWithProvidedSupplierAndCachingDisabled() {
         final MaterializedInternal<String, String, SessionStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.<String, String>as(new HeadersStoreSupplier()).withCachingDisabled(), nameProvider, STORE_PREFIX);
+                new MaterializedInternal<>(Materialized.<String, String>as(new HeadersStoreSupplier()).withCachingDisabled(), nameProvider, STORE_PREFIX);
 
         final SessionStoreWithHeaders<String, String> store = getHeadersStore(materialized);
 
@@ -205,7 +205,7 @@ public class SessionStoreMaterializerTest {
     @Test
     public void shouldCreateHeadersStoreWithProvidedSupplierAndLoggingDisabled() {
         final MaterializedInternal<String, String, SessionStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.<String, String>as(new HeadersStoreSupplier()).withLoggingDisabled(), nameProvider, STORE_PREFIX);
+                new MaterializedInternal<>(Materialized.<String, String>as(new HeadersStoreSupplier()).withLoggingDisabled(), nameProvider, STORE_PREFIX);
 
         final SessionStoreWithHeaders<String, String> store = getHeadersStore(materialized);
 
@@ -219,7 +219,7 @@ public class SessionStoreMaterializerTest {
     @Test
     public void shouldCreateHeadersStoreWithProvidedSupplierAndCachingAndLoggingDisabled() {
         final MaterializedInternal<String, String, SessionStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.<String, String>as(new HeadersStoreSupplier()).withCachingDisabled().withLoggingDisabled(), nameProvider, STORE_PREFIX);
+                new MaterializedInternal<>(Materialized.<String, String>as(new HeadersStoreSupplier()).withCachingDisabled().withLoggingDisabled(), nameProvider, STORE_PREFIX);
 
         final SessionStoreWithHeaders<String, String> store = getHeadersStore(materialized);
 
@@ -235,7 +235,7 @@ public class SessionStoreMaterializerTest {
         emitStrategy = EmitStrategy.onWindowClose();
 
         final MaterializedInternal<String, String, SessionStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.<String, String, SessionStore<Bytes, byte[]>>as("store")
+                new MaterializedInternal<>(Materialized.<String, String, SessionStore<Bytes, byte[]>>as("store")
                 .withCachingDisabled(), nameProvider, STORE_PREFIX);
 
         final SessionStore<String, String> store = getSessionStore(materialized);
@@ -250,7 +250,7 @@ public class SessionStoreMaterializerTest {
         emitStrategy = EmitStrategy.onWindowClose();
 
         final MaterializedInternal<String, String, SessionStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.as("store"), nameProvider, STORE_PREFIX);
+                new MaterializedInternal<>(Materialized.as("store"), nameProvider, STORE_PREFIX);
 
         final SessionStore<String, String> store = getSessionStore(materialized);
 
@@ -264,7 +264,7 @@ public class SessionStoreMaterializerTest {
         emitStrategy = EmitStrategy.onWindowClose();
 
         final MaterializedInternal<String, String, SessionStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.<String, String>as(new HeadersStoreSupplier())
+                new MaterializedInternal<>(Materialized.<String, String>as(new HeadersStoreSupplier())
                 .withCachingDisabled(), nameProvider, STORE_PREFIX);
 
         final SessionStoreWithHeaders<String, String> store = getHeadersStore(materialized);
@@ -279,7 +279,7 @@ public class SessionStoreMaterializerTest {
         emitStrategy = EmitStrategy.onWindowClose();
 
         final MaterializedInternal<String, String, SessionStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.as(new HeadersStoreSupplier()), nameProvider, STORE_PREFIX);
+                new MaterializedInternal<>(Materialized.as(new HeadersStoreSupplier()), nameProvider, STORE_PREFIX);
 
         final SessionStoreWithHeaders<String, String> store = getHeadersStore(materialized);
 
@@ -293,7 +293,7 @@ public class SessionStoreMaterializerTest {
         final MaterializedInternal<String, String, SessionStore<Bytes, byte[]>> materialized
     ) {
         final SessionStoreMaterializer<String, String> materializer =
-            new SessionStoreMaterializer<>(materialized, windows, emitStrategy);
+                new SessionStoreMaterializer<>(materialized, windows, emitStrategy);
         materializer.configure(streamsConfig);
         return (SessionStore<String, String>) materializer.builder().build();
     }
@@ -303,7 +303,7 @@ public class SessionStoreMaterializerTest {
         final MaterializedInternal<String, String, SessionStore<Bytes, byte[]>> materialized
     ) {
         final SessionStoreMaterializer<String, String> materializer =
-            new SessionStoreMaterializer<>(materialized, windows, emitStrategy);
+                new SessionStoreMaterializer<>(materialized, windows, emitStrategy);
         materializer.configure(streamsConfig);
         return (SessionStoreWithHeaders<String, String>) materializer.builder().build();
     }

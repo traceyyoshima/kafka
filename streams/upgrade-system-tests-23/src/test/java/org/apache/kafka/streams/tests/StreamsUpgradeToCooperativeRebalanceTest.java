@@ -72,8 +72,7 @@ public class StreamsUpgradeToCooperativeRebalanceTest {
                         System.out.flush();
                     }
                 }
-            }
-            ).to(sinkTopic);
+            }).to(sinkTopic);
 
         final KafkaStreams streams = new KafkaStreams(builder.build(), config);
 
@@ -98,7 +97,6 @@ public class StreamsUpgradeToCooperativeRebalanceTest {
                 System.out.println("Starting a REBALANCE");
             }
         });
-
 
         streams.start();
 

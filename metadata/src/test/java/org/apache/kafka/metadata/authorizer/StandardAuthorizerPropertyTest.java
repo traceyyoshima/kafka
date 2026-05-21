@@ -56,9 +56,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StandardAuthorizerPropertyTest {
 
-    @Target({ ElementType.ANNOTATION_TYPE, ElementType.PARAMETER, ElementType.TYPE_USE })
+    @Target({ElementType.ANNOTATION_TYPE, ElementType.PARAMETER, ElementType.TYPE_USE})
     @Retention(RetentionPolicy.RUNTIME)
-    @AlphaChars @NumericChars @Chars({ '_', '-', '.' })
+    @AlphaChars @NumericChars @Chars({'_', '-', '.'})
     public @interface ValidTopicChars { }
 
     @Property(tries = 5000)
@@ -79,10 +79,10 @@ public class StandardAuthorizerPropertyTest {
         addRandomPrefixAllowAcls(authorizer, topic, randomSuffixes);
 
         assertAuthorizationResult(
-            authorizer,
-            AuthorizationResult.DENIED,
-            AclOperation.WRITE,
-            new ResourcePattern(ResourceType.TOPIC, topic, PatternType.LITERAL)
+                authorizer,
+                AuthorizationResult.DENIED,
+                AclOperation.WRITE,
+                new ResourcePattern(ResourceType.TOPIC, topic, PatternType.LITERAL)
         );
     }
 
@@ -102,10 +102,10 @@ public class StandardAuthorizerPropertyTest {
         addRandomPrefixAllowAcls(authorizer, topic, randomSuffixes);
 
         assertAuthorizationResult(
-            authorizer,
-            AuthorizationResult.DENIED,
-            AclOperation.WRITE,
-            new ResourcePattern(ResourceType.TOPIC, topic, PatternType.LITERAL)
+                authorizer,
+                AuthorizationResult.DENIED,
+                AclOperation.WRITE,
+                new ResourcePattern(ResourceType.TOPIC, topic, PatternType.LITERAL)
         );
     }
 
@@ -128,10 +128,10 @@ public class StandardAuthorizerPropertyTest {
         addRandomNonMatchingPrefixDenyAcls(authorizer, topic, randomSuffixes);
 
         assertAuthorizationResult(
-            authorizer,
-            AuthorizationResult.ALLOWED,
-            AclOperation.WRITE,
-            new ResourcePattern(ResourceType.TOPIC, topic, PatternType.LITERAL)
+                authorizer,
+                AuthorizationResult.ALLOWED,
+                AclOperation.WRITE,
+                new ResourcePattern(ResourceType.TOPIC, topic, PatternType.LITERAL)
         );
     }
 
@@ -152,10 +152,10 @@ public class StandardAuthorizerPropertyTest {
         addRandomNonMatchingPrefixDenyAcls(authorizer, topic, randomSuffixes);
 
         assertAuthorizationResult(
-            authorizer,
-            AuthorizationResult.ALLOWED,
-            AclOperation.WRITE,
-            new ResourcePattern(ResourceType.TOPIC, topic, PatternType.LITERAL)
+                authorizer,
+                AuthorizationResult.ALLOWED,
+                AclOperation.WRITE,
+                new ResourcePattern(ResourceType.TOPIC, topic, PatternType.LITERAL)
         );
     }
 
@@ -174,8 +174,8 @@ public class StandardAuthorizerPropertyTest {
     ) throws Exception {
         Action action = new Action(operation, pattern, 1, false, false);
         List<AuthorizationResult> results = authorizer.authorize(
-            newRequestContext(),
-            List.of(action)
+                newRequestContext(),
+                List.of(action)
         );
 
         assertEquals(1, results.size());
@@ -196,11 +196,11 @@ public class StandardAuthorizerPropertyTest {
         AuthorizationResult result
     ) {
         System.out.println("Assertion FAILED: Operation " + operation + " on " +
-            resourcePattern + " is " + result + ". Current ACLS:");
+                resourcePattern + " is " + result + ". Current ACLS:");
 
         Iterable<AclBinding> allAcls = authorizer.acls(new AclBindingFilter(
-            new ResourcePatternFilter(ResourceType.ANY, null, PatternType.ANY),
-            new AccessControlEntryFilter(null, null, AclOperation.ANY, AclPermissionType.ANY)
+                new ResourcePatternFilter(ResourceType.ANY, null, PatternType.ANY),
+                new AccessControlEntryFilter(null, null, AclOperation.ANY, AclPermissionType.ANY)
         ));
 
         allAcls.forEach(System.out::println);
@@ -218,13 +218,13 @@ public class StandardAuthorizerPropertyTest {
         AclPermissionType permissionType
     ) {
         return new StandardAcl(
-            ResourceType.TOPIC,
-            resourceName,
-            patternType,
-            "User:*",
-            "*",
-            AclOperation.WRITE,
-            permissionType
+                ResourceType.TOPIC,
+                resourceName,
+                patternType,
+                "User:*",
+                "*",
+                AclOperation.WRITE,
+                permissionType
         );
     }
 
@@ -246,11 +246,11 @@ public class StandardAuthorizerPropertyTest {
         Set<String> randomSuffixes
     ) {
         addRandomPrefixRules(
-            authorizer,
-            topic,
-            randomSuffixes,
-            AclPermissionType.DENY,
-            pattern -> !pattern.isEmpty() && !isPrefix(topic, pattern)
+                authorizer,
+                topic,
+                randomSuffixes,
+                AclPermissionType.DENY,
+                pattern -> !pattern.isEmpty() && !isPrefix(topic, pattern)
         );
     }
 
@@ -260,14 +260,14 @@ public class StandardAuthorizerPropertyTest {
         Set<String> randomSuffixes
     ) {
         addRandomPrefixRules(
-            authorizer,
-            topic,
-            randomSuffixes,
-            AclPermissionType.ALLOW,
-            pattern -> !pattern.isEmpty()
+                authorizer,
+                topic,
+                randomSuffixes,
+                AclPermissionType.ALLOW,
+                pattern -> !pattern.isEmpty()
         );
     }
-    
+
     private void addRandomPrefixRules(
         StandardAuthorizer authorizer,
         String topic,
@@ -289,11 +289,11 @@ public class StandardAuthorizerPropertyTest {
 
         for (String randomResourcePattern : prefixPatterns) {
             authorizer.addAcl(Uuid.randomUuid(), buildTopicWriteAcl(
-                randomResourcePattern,
-                PatternType.PREFIXED,
-                permissionType
+                    randomResourcePattern,
+                    PatternType.PREFIXED,
+                    permissionType
             ));
-        }        
+        }
     }
 
 }

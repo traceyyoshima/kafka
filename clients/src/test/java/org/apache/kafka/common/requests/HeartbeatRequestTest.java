@@ -28,7 +28,7 @@ public class HeartbeatRequestTest {
     @Test
     public void testRequestVersionCompatibilityFailBuild() {
         assertThrows(UnsupportedVersionException.class, () -> new HeartbeatRequest.Builder(
-            new HeartbeatRequestData()
+                new HeartbeatRequestData()
                 .setGroupId("groupId")
                 .setMemberId("consumerId")
                 .setGroupInstanceId("groupInstanceId")

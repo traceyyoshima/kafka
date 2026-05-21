@@ -41,7 +41,7 @@ public class ProtoUtilsTest {
                 default:
                     if (key.forwardable)
                         assertTrue(key.requiresDelayedAllocation,
-                            key + " should require delayed allocation since it is forwardable");
+                                key + " should require delayed allocation since it is forwardable");
                     else
                         assertFalse(key.requiresDelayedAllocation, key + " should not require delayed allocation");
                     break;

@@ -155,12 +155,12 @@ public class SimpleExampleMessageTest {
     public void testMyTaggedIntArray() {
         // Verify that the tagged int array reads as empty when not set.
         testRoundTrip(new SimpleExampleMessageData(),
-            message -> assertEquals(Collections.emptyList(), message.myTaggedIntArray()));
+                message -> assertEquals(Collections.emptyList(), message.myTaggedIntArray()));
 
         // Verify that we can set a tagged array of ints.
         testRoundTrip(new SimpleExampleMessageData().
                 setMyTaggedIntArray(Arrays.asList(1, 2, 3)),
-            message -> assertEquals(Arrays.asList(1, 2, 3), message.myTaggedIntArray()));
+                message -> assertEquals(Arrays.asList(1, 2, 3), message.myTaggedIntArray()));
     }
 
     @Test
@@ -170,17 +170,17 @@ public class SimpleExampleMessageTest {
 
         // Verify that we can set and retrieve a string for the tagged field.
         testRoundTrip(new SimpleExampleMessageData().setMyNullableString("foobar"),
-            message -> assertEquals("foobar", message.myNullableString()));
+                message -> assertEquals("foobar", message.myNullableString()));
     }
 
     @Test
     public void testMyInt16() {
         // Verify that the tagged field reads as 123 when not set.
         testRoundTrip(new SimpleExampleMessageData(),
-            message -> assertEquals((short) 123, message.myInt16()));
+                message -> assertEquals((short) 123, message.myInt16()));
 
         testRoundTrip(new SimpleExampleMessageData().setMyInt16((short) 456),
-            message -> assertEquals((short) 456, message.myInt16()));
+                message -> assertEquals((short) 456, message.myInt16()));
     }
 
     @Test
@@ -199,30 +199,30 @@ public class SimpleExampleMessageTest {
     public void testMyUint16() {
         // Verify that the uint16 field reads as 33000 when not set.
         testRoundTrip(new SimpleExampleMessageData(),
-            message -> assertEquals(33000, message.myUint16()));
+                message -> assertEquals(33000, message.myUint16()));
 
         testRoundTrip(new SimpleExampleMessageData().setMyUint16(123),
-            message -> assertEquals(123, message.myUint16()));
+                message -> assertEquals(123, message.myUint16()));
         testRoundTrip(new SimpleExampleMessageData().setMyUint16(60000),
-            message -> assertEquals(60000, message.myUint16()));
+                message -> assertEquals(60000, message.myUint16()));
     }
 
     @Test
     public void testMyString() {
         // Verify that the tagged field reads as empty when not set.
         testRoundTrip(new SimpleExampleMessageData(),
-            message -> assertEquals("", message.myString()));
+                message -> assertEquals("", message.myString()));
 
         testRoundTrip(new SimpleExampleMessageData().setMyString("abc"),
-            message -> assertEquals("abc", message.myString()));
+                message -> assertEquals("abc", message.myString()));
     }
 
     @Test
     public void testMyBytes() {
         assertThrows(RuntimeException.class,
-            () -> new SimpleExampleMessageData().setMyUint16(-1));
+                () -> new SimpleExampleMessageData().setMyUint16(-1));
         assertThrows(RuntimeException.class,
-            () -> new SimpleExampleMessageData().setMyUint16(UNSIGNED_SHORT_MAX + 1));
+                () -> new SimpleExampleMessageData().setMyUint16(UNSIGNED_SHORT_MAX + 1));
 
         assertThrows(RuntimeException.class,
                 () -> new SimpleExampleMessageData().setMyUint32(-1));
@@ -231,12 +231,12 @@ public class SimpleExampleMessageTest {
 
         // Verify that the tagged field reads as empty when not set.
         testRoundTrip(new SimpleExampleMessageData(),
-            message -> assertArrayEquals(new byte[0], message.myBytes()));
+                message -> assertArrayEquals(new byte[0], message.myBytes()));
 
         testRoundTrip(new SimpleExampleMessageData().
                 setMyBytes(new byte[] {0x43, 0x66}),
-            message -> assertArrayEquals(new byte[] {0x43, 0x66},
-                message.myBytes()));
+                message -> assertArrayEquals(new byte[] {0x43, 0x66},
+                    message.myBytes()));
 
         testRoundTrip(new SimpleExampleMessageData().setMyBytes(null), message -> assertNull(message.myBytes()));
     }
@@ -244,41 +244,41 @@ public class SimpleExampleMessageTest {
     @Test
     public void testTaggedUuid() {
         testRoundTrip(new SimpleExampleMessageData(),
-            message -> assertEquals(
-                Uuid.fromString("H3KKO4NTRPaCWtEmm3vW7A"),
-                message.taggedUuid()));
+                message -> assertEquals(
+                    Uuid.fromString("H3KKO4NTRPaCWtEmm3vW7A"),
+                    message.taggedUuid()));
 
         Uuid randomUuid = Uuid.randomUuid();
         testRoundTrip(new SimpleExampleMessageData().
                 setTaggedUuid(randomUuid),
-            message -> assertEquals(
-                randomUuid,
-                message.taggedUuid()));
+                message -> assertEquals(
+                    randomUuid,
+                    message.taggedUuid()));
     }
 
     @Test
     public void testTaggedLong() {
         testRoundTrip(new SimpleExampleMessageData(),
-            message -> assertEquals(0xcafcacafcacafcaL,
-                message.taggedLong()));
+                message -> assertEquals(0xcafcacafcacafcaL,
+                    message.taggedLong()));
 
         testRoundTrip(new SimpleExampleMessageData().
                 setMyString("blah").
                 setMyTaggedIntArray(Collections.singletonList(4)).
                 setTaggedLong(0x123443211234432L),
-            message -> assertEquals(0x123443211234432L,
-                message.taggedLong()));
+                message -> assertEquals(0x123443211234432L,
+                    message.taggedLong()));
     }
 
     @Test
     public void testMyStruct() {
         // Verify that we can set and retrieve a nullable struct object.
         SimpleExampleMessageData.MyStruct myStruct =
-            new SimpleExampleMessageData.MyStruct().setStructId(10).setArrayInStruct(
-                Collections.singletonList(new SimpleExampleMessageData.StructArray().setArrayFieldId(20))
+                new SimpleExampleMessageData.MyStruct().setStructId(10).setArrayInStruct(
+                    Collections.singletonList(new SimpleExampleMessageData.StructArray().setArrayFieldId(20))
             );
         testRoundTrip(new SimpleExampleMessageData().setMyStruct(myStruct),
-            message -> assertEquals(myStruct, message.myStruct()), (short) 2);
+                message -> assertEquals(myStruct, message.myStruct()), (short) 2);
     }
 
     @Test
@@ -287,7 +287,7 @@ public class SimpleExampleMessageTest {
                 new SimpleExampleMessageData.MyStruct().setStructId(10);
         // Check serialization throws exception for unsupported version
         assertThrows(UnsupportedVersionException.class,
-            () -> testRoundTrip(new SimpleExampleMessageData().setMyStruct(myStruct), (short) 1));
+                () -> testRoundTrip(new SimpleExampleMessageData().setMyStruct(myStruct), (short) 1));
     }
 
     /**
@@ -299,15 +299,15 @@ public class SimpleExampleMessageTest {
     public void testMyTaggedStruct() {
         // Verify that we can set and retrieve a nullable struct object.
         SimpleExampleMessageData.TaggedStruct myStruct =
-            new SimpleExampleMessageData.TaggedStruct().setStructId("abc");
+                new SimpleExampleMessageData.TaggedStruct().setStructId("abc");
         testRoundTrip(new SimpleExampleMessageData().setMyTaggedStruct(myStruct),
-            message -> assertEquals(myStruct, message.myTaggedStruct()), (short) 2);
+                message -> assertEquals(myStruct, message.myTaggedStruct()), (short) 2);
 
         // Not setting field works for both version 1 and version 2 protocol
         testRoundTrip(new SimpleExampleMessageData().setMyString("abc"),
-            message -> assertEquals("abc", message.myString()), (short) 1);
+                message -> assertEquals("abc", message.myString()), (short) 1);
         testRoundTrip(new SimpleExampleMessageData().setMyString("abc"),
-            message -> assertEquals("abc", message.myString()), (short) 2);
+                message -> assertEquals("abc", message.myString()), (short) 2);
     }
 
     @Test
@@ -329,7 +329,7 @@ public class SimpleExampleMessageTest {
     }
 
     private void testRoundTrip(SimpleExampleMessageData message, short version) {
-        testRoundTrip(message, m -> { }, version);
+        testRoundTrip(message, m -> {}, version);
     }
 
     private void testRoundTrip(SimpleExampleMessageData message,
@@ -371,9 +371,9 @@ public class SimpleExampleMessageTest {
             .setTaggedLongFlexibleVersionSubset(15L);
 
         testRoundTrip(
-            message,
-            msg -> assertEquals(15, msg.taggedLongFlexibleVersionSubset),
-            (short) 2
+                message,
+                msg -> assertEquals(15, msg.taggedLongFlexibleVersionSubset),
+                (short) 2
         );
 
         SimpleExampleMessageData deserialized = roundTripSerde(message, (short) 1);

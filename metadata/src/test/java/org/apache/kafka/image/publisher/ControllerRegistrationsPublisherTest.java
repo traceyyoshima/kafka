@@ -78,10 +78,10 @@ public class ControllerRegistrationsPublisherTest {
         ControllerRegistrationsPublisher publisher = new ControllerRegistrationsPublisher();
         if (fromSnapshot) {
             publisher.onMetadataUpdate(TEST_DELTA, TEST_IMAGE,
-                new SnapshotManifest(new MetadataProvenance(100L, 10, 2000L, true), 100L));
+                    new SnapshotManifest(new MetadataProvenance(100L, 10, 2000L, true), 100L));
         } else {
             publisher.onMetadataUpdate(TEST_DELTA, TEST_IMAGE,
-                LogDeltaManifest.newBuilder().
+                    LogDeltaManifest.newBuilder().
                     provenance(PROVENANCE).
                     leaderAndEpoch(new LeaderAndEpoch(OptionalInt.of(1), 200)).
                     numBatches(3).

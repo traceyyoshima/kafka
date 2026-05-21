@@ -97,14 +97,14 @@ public class ClientsTestUtils {
         long timestampIncrement
     ) throws InterruptedException {
         consumeAndVerifyRecords(
-            consumer,
-            tp,
-            numRecords,
-            Integer.MAX_VALUE,
-            startingOffset,
-            startingKeyAndValueIndex,
-            startingTimestamp,
-            timestampIncrement
+                consumer,
+                tp,
+                numRecords,
+                Integer.MAX_VALUE,
+                startingOffset,
+                startingKeyAndValueIndex,
+                startingTimestamp,
+                timestampIncrement
         );
     }
 
@@ -129,7 +129,7 @@ public class ClientsTestUtils {
         Consumer<byte[], byte[]> consumer,
         Duration timeout,
         Supplier<Boolean> testCondition,
-        long waitTimeMs, 
+        long waitTimeMs,
         String msg
     ) throws InterruptedException {
         TestUtils.waitForCondition(() -> {
@@ -152,7 +152,7 @@ public class ClientsTestUtils {
             assertEquals(tp.partition(), record.partition());
 
             assertTrue(record.timestamp() >= startingTimestamp && record.timestamp() <= now,
-                "Got unexpected timestamp " + record.timestamp() + ". Timestamp should be between [" + startingTimestamp + ", " + now + "]");
+                    "Got unexpected timestamp " + record.timestamp() + ". Timestamp should be between [" + startingTimestamp + ", " + now + "]");
 
             assertEquals(i, record.offset());
             assertEquals(KEY_PREFIX + i, new String(record.key()));
@@ -296,11 +296,11 @@ public class ClientsTestUtils {
     ) {
         var timestamp = startingTimestamp + numRecord * (timestampIncrement > 0 ? timestampIncrement : 1);
         var record = new ProducerRecord<>(
-            tp.topic(),
-            tp.partition(),
-            timestamp,
-            (KEY_PREFIX + numRecord).getBytes(),
-            (VALUE_PREFIX + numRecord).getBytes()
+                tp.topic(),
+                tp.partition(),
+                timestamp,
+                (KEY_PREFIX + numRecord).getBytes(),
+                (VALUE_PREFIX + numRecord).getBytes()
         );
         producer.send(record);
         return record;
@@ -343,7 +343,6 @@ public class ClientsTestUtils {
         sendAndAwaitAsyncCommit(consumer, Optional.empty());
         assertEquals(initialRevokeCalls, rebalanceListener.callsToRevoked);
     }
-
 
     public static void waitForPollThrowException(
         Consumer<byte[], byte[]> consumer,
@@ -397,8 +396,8 @@ public class ClientsTestUtils {
         ) throws InterruptedException {
             var numRecords = 100;
             Map<String, Object> producerConfig = Map.of(
-                KEY_SERIALIZER_CLASS_CONFIG, TestClusterResourceListenerSerializer.class,
-                VALUE_SERIALIZER_CLASS_CONFIG, TestClusterResourceListenerSerializer.class
+                    KEY_SERIALIZER_CLASS_CONFIG, TestClusterResourceListenerSerializer.class,
+                    VALUE_SERIALIZER_CLASS_CONFIG, TestClusterResourceListenerSerializer.class
             );
             Map<String, Object> consumerConfigOverrides = new HashMap<>(consumerConfig);
             consumerConfigOverrides.put(KEY_DESERIALIZER_CLASS_CONFIG, TestClusterResourceListenerDeserializer.class);
@@ -454,8 +453,8 @@ public class ClientsTestUtils {
         Optional<Map<TopicPartition, OffsetAndMetadata>> offsetsOpt
     ) {
         offsetsOpt.ifPresentOrElse(
-            offsets -> consumer.commitAsync(offsets, callback),
-            () -> consumer.commitAsync(callback)
+                offsets -> consumer.commitAsync(offsets, callback),
+                () -> consumer.commitAsync(callback)
         );
     }
 
@@ -472,7 +471,7 @@ public class ClientsTestUtils {
         public byte[] serialize(String topic, byte[] data) {
             return data;
         }
-        
+
         public static void resetCount() {
             UPDATE_PRODUCER_COUNT.set(0);
         }

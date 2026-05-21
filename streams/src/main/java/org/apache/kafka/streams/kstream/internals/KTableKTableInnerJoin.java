@@ -77,9 +77,9 @@ class KTableKTableInnerJoin<K, V1, V2, VOut> extends KTableKTableAbstractJoin<K,
         public void init(final ProcessorContext<K, Change<VOut>> context) {
             super.init(context);
             droppedRecordsSensor = droppedRecordsSensor(
-                Thread.currentThread().getName(),
-                context.taskId().toString(),
-                (StreamsMetricsImpl) context.metrics()
+                    Thread.currentThread().getName(),
+                    context.taskId().toString(),
+                    (StreamsMetricsImpl) context.metrics()
             );
             valueGetter.init(context);
         }
@@ -91,13 +91,13 @@ class KTableKTableInnerJoin<K, V1, V2, VOut> extends KTableKTableAbstractJoin<K,
                 if (context().recordMetadata().isPresent()) {
                     final RecordMetadata recordMetadata = context().recordMetadata().get();
                     LOG.warn(
-                        "Skipping record due to null key. "
+                            "Skipping record due to null key. "
                             + "topic=[{}] partition=[{}] offset=[{}]",
-                        recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
+                            recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
                     );
                 } else {
                     LOG.warn(
-                        "Skipping record due to null key. Topic, partition, and offset not known."
+                            "Skipping record due to null key. Topic, partition, and offset not known."
                     );
                 }
                 droppedRecordsSensor.record();
@@ -168,9 +168,9 @@ class KTableKTableInnerJoin<K, V1, V2, VOut> extends KTableKTableAbstractJoin<K,
 
                 if (value2 != null) {
                     return ValueTimestampHeaders.make(
-                        joiner.apply(value1, value2),
-                        Math.max(valueTimestampHeader1.timestamp(), valueTimestampHeader2.timestamp()),
-                        new RecordHeaders());
+                            joiner.apply(value1, value2),
+                            Math.max(valueTimestampHeader1.timestamp(), valueTimestampHeader2.timestamp()),
+                            new RecordHeaders());
                 } else {
                     return null;
                 }

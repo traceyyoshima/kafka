@@ -293,7 +293,7 @@ public class OffsetSyncStoreTest {
                 int expiredSyncs = lastCount - count + 1;
                 assertTrue(expiredSyncs <= maximumExpirations,
                         "Store expired too many syncs: " + expiredSyncs + " > " + maximumExpirations
-                                + " after receiving offset " + offset);
+                        + " after receiving offset " + offset);
                 lastCount = count;
             }
         }
@@ -332,8 +332,8 @@ public class OffsetSyncStoreTest {
                 assertTrue(
                         iUpstream >= iUpstreamLowerBound,
                         "Invariant C(" + i + "," + j + "): Upstream offset " + iUpstream + " at position " + i
-                                + " should be at least " + iUpstreamLowerBound
-                                + " (" + jUpstream + " + 2^" + exponent + ")"
+                        + " should be at least " + iUpstreamLowerBound
+                        + " (" + jUpstream + " + 2^" + exponent + ")"
                 );
                 long iUpstreamUpperBound = jUpstream + (1L << j) - (1L << i);
                 if (iUpstreamUpperBound < 0)
@@ -341,8 +341,8 @@ public class OffsetSyncStoreTest {
                 assertTrue(
                         iUpstream <= iUpstreamUpperBound,
                         "Invariant B(" + i + "," + j + "): Upstream offset " + iUpstream + " at position " + i
-                                + " should be no greater than " + iUpstreamUpperBound
-                                + " (" + jUpstream + " + 2^" + j + " - 2^" + i + ")"
+                        + " should be no greater than " + iUpstreamUpperBound
+                        + " (" + jUpstream + " + 2^" + j + " - 2^" + i + ")"
 
                 );
             }

@@ -75,7 +75,6 @@ public class RPCProducerIdManager implements ProducerIdManager {
         this.logPrefix = "[RPC ProducerId Manager " + brokerId + "]: ";
     }
 
-
     @Override
     public long generateProducerId() {
         var iteration = 0;
@@ -209,7 +208,7 @@ public class RPCProducerIdManager implements ProducerIdManager {
         }
         return false;
     }
-    
+
     private void clearRequestInFlight(long newBackoffDeadlineMs) {
         // KAFKA-20114 - Update the backoff before clearing requestInFlight. maybeRequestNextBlock
         // relies on this ordering when it acquires requestInFlight before reading the deadline.

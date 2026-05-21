@@ -47,9 +47,9 @@ public class KTableKTableRightJoinTest {
 
         @SuppressWarnings("unchecked")
         final Processor<String, Change<String>, String, Change<Object>> join = new KTableKTableRightJoin<>(
-            (KTableImpl<String, String, String>) builder.table("left", Consumed.with(Serdes.String(), Serdes.String())),
-            (KTableImpl<String, String, String>) builder.table("right", Consumed.with(Serdes.String(), Serdes.String())),
-            null
+                (KTableImpl<String, String, String>) builder.table("left", Consumed.with(Serdes.String(), Serdes.String())),
+                (KTableImpl<String, String, String>) builder.table("right", Consumed.with(Serdes.String(), Serdes.String())),
+                null
         ).get();
 
         setDslStoreFormat(withHeaders);
@@ -62,11 +62,11 @@ public class KTableKTableRightJoinTest {
             join.process(new Record<>(null, new Change<>("new", "old"), 0));
 
             assertThat(
-                appender.getEvents().stream()
+                    appender.getEvents().stream()
                     .filter(e -> e.getLevel().equals("WARN"))
                     .map(Event::getMessage)
                     .collect(Collectors.toList()),
-                hasItem("Skipping record due to null key. topic=[left] partition=[-1] offset=[-2]")
+                    hasItem("Skipping record due to null key. topic=[left] partition=[-1] offset=[-2]")
             );
         }
     }

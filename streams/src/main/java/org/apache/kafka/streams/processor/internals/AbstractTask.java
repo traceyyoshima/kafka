@@ -159,10 +159,10 @@ public abstract class AbstractTask implements Task {
             deadlineMs = currentWallClockMs + config.taskTimeoutMs;
         } else if (currentWallClockMs > deadlineMs) {
             final String errorMessage = String.format(
-                "Task %s did not make progress within %d ms. Adjust `%s` if needed.",
-                id,
-                currentWallClockMs - deadlineMs + config.taskTimeoutMs,
-                StreamsConfig.TASK_TIMEOUT_MS_CONFIG
+                    "Task %s did not make progress within %d ms. Adjust `%s` if needed.",
+                    id,
+                    currentWallClockMs - deadlineMs + config.taskTimeoutMs,
+                    StreamsConfig.TASK_TIMEOUT_MS_CONFIG
             );
 
             if (cause != null) {
@@ -174,16 +174,16 @@ public abstract class AbstractTask implements Task {
 
         if (cause != null) {
             log.debug(
-                String.format(
-                    "Task did not make progress. Remaining time to deadline %d; retrying.",
-                    deadlineMs - currentWallClockMs
+                    String.format(
+                        "Task did not make progress. Remaining time to deadline %d; retrying.",
+                        deadlineMs - currentWallClockMs
                 ),
-                cause
+                    cause
             );
         } else {
             log.debug(
-                "Task did not make progress. Remaining time to deadline {}; retrying.",
-                deadlineMs - currentWallClockMs
+                    "Task did not make progress. Remaining time to deadline {}; retrying.",
+                    deadlineMs - currentWallClockMs
             );
         }
 

@@ -71,11 +71,11 @@ public class ChangeLoggingTimestampedKeyValueBytesStoreTest {
 
     private InternalMockProcessorContext<String, Long> mockContext() {
         return new InternalMockProcessorContext<>(
-            TestUtils.tempDirectory(),
-            Serdes.String(),
-            Serdes.Long(),
-            collector,
-            new ThreadCache(new LogContext("testCache "), 0, new MockStreamsMetrics(new Metrics()))
+                TestUtils.tempDirectory(),
+                Serdes.String(),
+                Serdes.Long(),
+                collector,
+                new ThreadCache(new LogContext("testCache "), 0, new MockStreamsMetrics(new Metrics()))
         );
     }
 

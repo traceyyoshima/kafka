@@ -69,11 +69,11 @@ public class ClientStateTest {
     @Test
     public void previousStateConstructorShouldCreateAValidObject() {
         final ClientState clientState = new ClientState(
-            Set.of(TASK_0_0, TASK_0_1),
-            Set.of(TASK_0_2, TASK_0_3),
-            mkMap(mkEntry(TASK_0_0, 5L), mkEntry(TASK_0_2, -1L)),
-            EMPTY_CLIENT_TAGS,
-            4
+                Set.of(TASK_0_0, TASK_0_1),
+                Set.of(TASK_0_2, TASK_0_3),
+                mkMap(mkEntry(TASK_0_0, 5L), mkEntry(TASK_0_2, -1L)),
+                EMPTY_CLIENT_TAGS,
+                4
         );
 
         // all the "next assignment" fields should be empty
@@ -366,14 +366,14 @@ public class ClientStateTest {
         client.addOwnedPartitions(Set.of(TP_0_1, TP_1_1), "c1");
         client.addOwnedPartitions(Set.of(TP_0_2, TP_1_2), "c2");
         client.initializePrevTasks(
-            mkMap(
-                mkEntry(TP_0_0, TASK_0_0),
-                mkEntry(TP_0_1, TASK_0_1),
-                mkEntry(TP_0_2, TASK_0_2),
-                mkEntry(TP_1_0, TASK_0_0),
-                mkEntry(TP_1_1, TASK_0_1),
-                mkEntry(TP_1_2, TASK_0_2)),
-            false
+                mkMap(
+                    mkEntry(TP_0_0, TASK_0_0),
+                    mkEntry(TP_0_1, TASK_0_1),
+                    mkEntry(TP_0_2, TASK_0_2),
+                    mkEntry(TP_1_0, TASK_0_0),
+                    mkEntry(TP_1_1, TASK_0_1),
+                    mkEntry(TP_1_2, TASK_0_2)),
+                false
         );
 
         client.addPreviousTasksAndOffsetSums("c1", mkMap(
@@ -431,8 +431,8 @@ public class ClientStateTest {
     @Test
     public void shouldAddTasksInOffsetSumsMapToPrevStandbyTasks() {
         final Map<TaskId, Long> taskOffsetSums = mkMap(
-            mkEntry(TASK_0_1, 0L),
-            mkEntry(TASK_0_2, 100L)
+                mkEntry(TASK_0_1, 0L),
+                mkEntry(TASK_0_2, 100L)
         );
         client.addPreviousTasksAndOffsetSums("c1", taskOffsetSums);
         client.initializePrevTasks(Collections.emptyMap(), false);
@@ -444,12 +444,12 @@ public class ClientStateTest {
     @Test
     public void shouldComputeTaskLags() {
         final Map<TaskId, Long> taskOffsetSums = mkMap(
-            mkEntry(TASK_0_1, 0L),
-            mkEntry(TASK_0_2, 100L)
+                mkEntry(TASK_0_1, 0L),
+                mkEntry(TASK_0_2, 100L)
         );
         final Map<TaskId, Long> allTaskEndOffsetSums = mkMap(
-            mkEntry(TASK_0_1, 500L),
-            mkEntry(TASK_0_2, 100L)
+                mkEntry(TASK_0_1, 500L),
+                mkEntry(TASK_0_2, 100L)
         );
         client.addPreviousTasksAndOffsetSums("c1", taskOffsetSums);
         client.computeTaskLags(null, allTaskEndOffsetSums);
@@ -461,8 +461,8 @@ public class ClientStateTest {
     @Test
     public void shouldNotTryToLookupTasksThatWerePreviouslyAssignedButNoLongerExist() {
         final Map<TaskId, Long> clientReportedTaskEndOffsetSums = mkMap(
-            mkEntry(NAMED_TASK_T0_0_0, 500L),
-            mkEntry(NAMED_TASK_T1_0_0, 500L)
+                mkEntry(NAMED_TASK_T0_0_0, 500L),
+                mkEntry(NAMED_TASK_T1_0_0, 500L)
             );
         final Map<TaskId, Long> allTaskEndOffsetSumsComputedByAssignor = Collections.singletonMap(NAMED_TASK_T0_0_0, 500L);
         client.addPreviousTasksAndOffsetSums("c1", clientReportedTaskEndOffsetSums);

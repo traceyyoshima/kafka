@@ -983,7 +983,7 @@ public class KafkaRaftLogTest {
         assertTrue(log.maybeClean());
         assertEquals(1, log.snapshotCount(), "Expected only one snapshot after cleaning");
         assertOptional(log.latestSnapshotId(), snapshotId ->
-            assertEquals(600, snapshotId.offset())
+                assertEquals(600, snapshotId.offset())
         );
         assertEquals(600, log.startOffset());
     }
@@ -1025,7 +1025,7 @@ public class KafkaRaftLogTest {
         assertOptional(log.latestSnapshotId(), snapshotId -> {
             assertEquals(2000, snapshotId.offset(), "Unexpected offset for latest snapshot");
             assertOptional(log.readSnapshot(snapshotId), reader ->
-                assertTrue(reader.sizeInBytes() + log.log().size() > config.retentionMaxBytes())
+                    assertTrue(reader.sizeInBytes() + log.log().size() > config.retentionMaxBytes())
             );
         });
     }
@@ -1082,18 +1082,17 @@ public class KafkaRaftLogTest {
         );
     }
 
-
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     public void testReadRespectsMaxSizeInBytes(int expectedBatches) throws IOException {
         // 5 records are written in batches of 101 bytes each (at time of writing).
         int magicMaxBatchSizeBytes = 101;
         MetadataLogConfig config = createMetadataLogConfig(
-            10240,
-            10 * 1000,
-            10240,
-            60 * 1000,
-            magicMaxBatchSizeBytes
+                10240,
+                10 * 1000,
+                10240,
+                60 * 1000,
+                magicMaxBatchSizeBytes
         );
         KafkaRaftLog log = buildMetadataLog(tempDir, mockTime, config);
         int recordsPerBatch = 5;
@@ -1103,9 +1102,9 @@ public class KafkaRaftLogTest {
         append(log, recordsPerBatch, 1);
 
         LogFetchInfo info = log.read(
-            0,
-            Isolation.UNCOMMITTED,
-            magicMaxBatchSizeBytes * expectedBatches
+                0,
+                Isolation.UNCOMMITTED,
+                magicMaxBatchSizeBytes * expectedBatches
         );
         assertEquals(expectedBatches * magicMaxBatchSizeBytes, info.records.sizeInBytes());
         // Asserts that we have exactly B * R records. Further there must be B batches of SimpleRecords each with a value of
@@ -1124,11 +1123,11 @@ public class KafkaRaftLogTest {
         // 5 records are written in batches of 141 bytes each (at time of writing).
         int magicMaxBatchSizeBytes = 141;
         MetadataLogConfig config = createMetadataLogConfig(
-            10240,
-            10 * 1000,
-            10240,
-            60 * 1000,
-            magicMaxBatchSizeBytes
+                10240,
+                10 * 1000,
+                10240,
+                60 * 1000,
+                magicMaxBatchSizeBytes
         );
         KafkaRaftLog log = buildMetadataLog(tempDir, mockTime, config);
         int numberOfRecordsPerBatch = 10;
@@ -1138,9 +1137,9 @@ public class KafkaRaftLogTest {
         // Set to be larger than 1 batch but smaller than 2.
         int magicMaxTotalBytes = 200;
         Records records = log.read(
-            0,
-            Isolation.UNCOMMITTED,
-            magicMaxTotalBytes
+                0,
+                Isolation.UNCOMMITTED,
+                magicMaxTotalBytes
         ).records;
         // MockLog#read returns data in batches and will return an additional batch if one of them
         // exceeds maxTotalBytes.
@@ -1153,11 +1152,11 @@ public class KafkaRaftLogTest {
         // 5 records are written in batches of 141 bytes each (at time of writing).
         int magicMaxBatchSizeBytes = 141;
         MetadataLogConfig config = createMetadataLogConfig(
-            10240,
-            10 * 1000,
-            10240,
-            60 * 1000,
-            magicMaxBatchSizeBytes
+                10240,
+                10 * 1000,
+                10240,
+                60 * 1000,
+                magicMaxBatchSizeBytes
         );
         KafkaRaftLog log = buildMetadataLog(tempDir, mockTime, config);
         append(log, numberOfRecordsPerBatch, 5);
@@ -1166,16 +1165,16 @@ public class KafkaRaftLogTest {
         // Meaning we will read only the first batch and not the second.
         int magicMaxTotalBytes = 1;
         Records records = log.read(
-            0,
-            Isolation.UNCOMMITTED,
-            magicMaxTotalBytes
+                0,
+                Isolation.UNCOMMITTED,
+                magicMaxTotalBytes
         ).records;
         assertTrue(
-            records.sizeInBytes() > magicMaxTotalBytes,
-            String.format(
-                "Expected records size (%d) > maxTotalBytes (%d) since one whole batch must be returned",
-                records.sizeInBytes(),
-                magicMaxTotalBytes
+                records.sizeInBytes() > magicMaxTotalBytes,
+                String.format(
+                    "Expected records size (%d) > maxTotalBytes (%d) since one whole batch must be returned",
+                    records.sizeInBytes(),
+                    magicMaxTotalBytes
             )
         );
         int recordCount = 0;
@@ -1210,6 +1209,7 @@ public class KafkaRaftLogTest {
         public int recordSize(byte[] data, ObjectSerializationCache serializationCache) {
             return data.length;
         }
+
         @Override
         public void write(byte[] data, ObjectSerializationCache serializationCache, Writable out) {
             out.writeByteArray(data);
@@ -1273,13 +1273,13 @@ public class KafkaRaftLogTest {
             records[i] = new SimpleRecord(String.valueOf(i).getBytes(StandardCharsets.UTF_8));
         }
         log.appendAsLeader(
-            MemoryRecords.withRecords(
+                MemoryRecords.withRecords(
                     log.endOffset().offset(),
                     Compression.NONE,
                     epoch,
                     records
             ),
-            epoch
+                epoch
         );
     }
 

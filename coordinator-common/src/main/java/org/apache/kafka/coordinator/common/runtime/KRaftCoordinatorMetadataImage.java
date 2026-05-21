@@ -79,7 +79,7 @@ public class KRaftCoordinatorMetadataImage implements CoordinatorMetadataImage {
         // Note: supportedConfigChecker is not set because CoordinatorMetadataDelta only exposes topic-related methods.
         // No ConfigRecord replay happens through this path, so the checker is never invoked.
         return new KRaftCoordinatorMetadataDelta(
-            new MetadataDelta.Builder()
+                new MetadataDelta.Builder()
                 .setImage(metadataImage)
                 .build()
         );

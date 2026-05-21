@@ -94,10 +94,10 @@ public class NamedTopologyTest {
         builder3.stream("stream-3").selectKey((k, v) -> v).groupByKey().count().toStream().to("output-3");
 
         streams.start(
-            asList(
-                builder1.build(),
-                builder2.build(),
-                builder3.build())
+                asList(
+                    builder1.build(),
+                    builder2.build(),
+                    builder3.build())
         );
     }
 
@@ -143,10 +143,10 @@ public class NamedTopologyTest {
         builder2.stream("stream");
 
         assertThrows(
-            TopologyException.class,
-            () -> streams.start(asList(
-                builder1.build(),
-                builder2.build()))
+                TopologyException.class,
+                () -> streams.start(asList(
+                    builder1.build(),
+                    builder2.build()))
         );
     }
 
@@ -160,8 +160,8 @@ public class NamedTopologyTest {
         streams.addNamedTopology(builder1.build());
 
         final ExecutionException exception = assertThrows(
-            ExecutionException.class,
-            () -> streams.addNamedTopology(builder2.build()).all().get()
+                ExecutionException.class,
+                () -> streams.addNamedTopology(builder2.build()).all().get()
         );
 
         assertThat(exception.getCause().getClass(), equalTo(TopologyException.class));
@@ -171,12 +171,12 @@ public class NamedTopologyTest {
     public void shouldThrowTopologyExceptionWhenAddingNamedTopologyReadingFromSameInputTopicBeforeStart() {
         builder1.stream("stream");
         builder2.stream("stream");
-        
+
         streams.addNamedTopology(builder1.build());
 
         final ExecutionException exception = assertThrows(
-            ExecutionException.class,
-            () -> streams.addNamedTopology(builder2.build()).all().get()
+                ExecutionException.class,
+                () -> streams.addNamedTopology(builder2.build()).all().get()
         );
 
         assertThat(exception.getCause().getClass(), equalTo(TopologyException.class));
@@ -188,10 +188,10 @@ public class NamedTopologyTest {
         builder2.table("table");
 
         assertThrows(
-            TopologyException.class,
-            () -> streams.start(asList(
-                builder1.build(),
-                builder2.build()))
+                TopologyException.class,
+                () -> streams.start(asList(
+                    builder1.build(),
+                    builder2.build()))
         );
     }
 
@@ -201,10 +201,10 @@ public class NamedTopologyTest {
         builder2.table("input");
 
         assertThrows(
-            TopologyException.class,
-            () -> streams.start(asList(
-                builder1.build(),
-                builder2.build()))
+                TopologyException.class,
+                () -> streams.start(asList(
+                    builder1.build(),
+                    builder2.build()))
         );
     }
 
@@ -214,10 +214,10 @@ public class NamedTopologyTest {
         builder2.stream(asList("unique-input", "stream"));
 
         assertThrows(
-            TopologyException.class,
-            () -> streams.start(asList(
-                builder1.build(),
-                builder2.build()))
+                TopologyException.class,
+                () -> streams.start(asList(
+                    builder1.build(),
+                    builder2.build()))
         );
     }
 
@@ -227,10 +227,10 @@ public class NamedTopologyTest {
         builder2.stream(Pattern.compile("some-regex"));
 
         assertThrows(
-            TopologyException.class,
-            () -> streams.start(asList(
-                builder1.build(),
-                builder2.build()))
+                TopologyException.class,
+                () -> streams.start(asList(
+                    builder1.build(),
+                    builder2.build()))
         );
     }
 
@@ -239,8 +239,8 @@ public class NamedTopologyTest {
         streams.addNamedTopology(builder1.build());
         streams.start();
         assertThrows(
-            UnknownTopologyException.class,
-            () -> streams.allLocalStorePartitionLagsForTopology(UNKNOWN_TOPOLOGY)
+                UnknownTopologyException.class,
+                () -> streams.allLocalStorePartitionLagsForTopology(UNKNOWN_TOPOLOGY)
         );
     }
 
@@ -249,8 +249,8 @@ public class NamedTopologyTest {
         streams.addNamedTopology(builder1.build());
         streams.start();
         assertThrows(
-            UnknownTopologyException.class,
-            () -> streams.queryMetadataForKey("store", "A", new StringSerializer(), UNKNOWN_TOPOLOGY)
+                UnknownTopologyException.class,
+                () -> streams.queryMetadataForKey("store", "A", new StringSerializer(), UNKNOWN_TOPOLOGY)
         );
     }
 
@@ -259,8 +259,8 @@ public class NamedTopologyTest {
         streams.addNamedTopology(builder1.build());
         streams.start();
         assertThrows(
-            UnknownStateStoreException.class,
-            () -> streams.queryMetadataForKey(UNKNOWN_STORE, "A", new StringSerializer(), "topology-1")
+                UnknownStateStoreException.class,
+                () -> streams.queryMetadataForKey(UNKNOWN_STORE, "A", new StringSerializer(), "topology-1")
         );
     }
 
@@ -269,8 +269,8 @@ public class NamedTopologyTest {
         streams.addNamedTopology(builder1.build());
         streams.start();
         assertThrows(
-            UnknownTopologyException.class,
-            () -> streams.streamsMetadataForStore("store", UNKNOWN_TOPOLOGY)
+                UnknownTopologyException.class,
+                () -> streams.streamsMetadataForStore("store", UNKNOWN_TOPOLOGY)
         );
     }
 
@@ -279,8 +279,8 @@ public class NamedTopologyTest {
         streams.addNamedTopology(builder1.build());
         streams.start();
         assertThrows(
-            UnknownStateStoreException.class,
-            () -> streams.streamsMetadataForStore(UNKNOWN_STORE, "topology-1")
+                UnknownStateStoreException.class,
+                () -> streams.streamsMetadataForStore(UNKNOWN_STORE, "topology-1")
         );
     }
 
@@ -289,12 +289,12 @@ public class NamedTopologyTest {
         streams.addNamedTopology(builder1.build());
         streams.start();
         assertThrows(
-            UnknownTopologyException.class,
-            () -> streams.store(
-                NamedTopologyStoreQueryParameters.fromNamedTopologyAndStoreNameAndType(
-                    UNKNOWN_TOPOLOGY,
-                    "store",
-                    keyValueStore()
+                UnknownTopologyException.class,
+                () -> streams.store(
+                    NamedTopologyStoreQueryParameters.fromNamedTopologyAndStoreNameAndType(
+                        UNKNOWN_TOPOLOGY,
+                        "store",
+                        keyValueStore()
                 ))
         );
     }
@@ -304,12 +304,12 @@ public class NamedTopologyTest {
         streams.addNamedTopology(builder1.build());
         streams.start();
         assertThrows(
-            UnknownStateStoreException.class,
-            () -> streams.store(
-                NamedTopologyStoreQueryParameters.fromNamedTopologyAndStoreNameAndType(
-                    "topology-1",
-                    UNKNOWN_STORE,
-                    keyValueStore()
+                UnknownStateStoreException.class,
+                () -> streams.store(
+                    NamedTopologyStoreQueryParameters.fromNamedTopologyAndStoreNameAndType(
+                        "topology-1",
+                        UNKNOWN_STORE,
+                        keyValueStore()
                 ))
         );
     }
@@ -320,9 +320,9 @@ public class NamedTopologyTest {
         streams.start(builder1.build());
 
         assertThat(
-            streams.getFullTopologyDescription(),
-            equalTo(
-                "Topology: topology-1:\n"
+                streams.getFullTopologyDescription(),
+                equalTo(
+                    "Topology: topology-1:\n"
                     + "   Sub-topology: 0\n"
                     + "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-1])\n"
                     + "      --> none\n"
@@ -345,16 +345,16 @@ public class NamedTopologyTest {
         builder3.stream("stream-3").filter((k, v) -> !k.equals(v)).to("output-3");
 
         streams.start(
-            asList(
-                builder1.build(),
-                builder2.build(),
-                builder3.build())
+                asList(
+                    builder1.build(),
+                    builder2.build(),
+                    builder3.build())
         );
 
         assertThat(
-            streams.getFullTopologyDescription(),
-            equalTo(
-                     "Topology: topology-1:\n"
+                streams.getFullTopologyDescription(),
+                equalTo(
+                    "Topology: topology-1:\n"
                     + "   Sub-topology: 0\n"
                     + "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-1])\n"
                     + "      --> none\n"

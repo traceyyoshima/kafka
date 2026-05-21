@@ -65,7 +65,7 @@ public class KTableKTableForeignKeyJoinMaterializationIntegrationTest {
     @BeforeEach
     public void before() {
         streamsConfig = mkProperties(mkMap(
-            mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath())
+                mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath())
         ));
     }
 
@@ -82,13 +82,13 @@ public class KTableKTableForeignKeyJoinMaterializationIntegrationTest {
             left.pipeInput("lhs1", "lhsValue1|rhs1");
 
             assertThat(
-                outputTopic.readKeyValuesToMap(),
-                is(emptyMap())
+                    outputTopic.readKeyValuesToMap(),
+                    is(emptyMap())
             );
             if (materialized && queryable) {
                 assertThat(
-                    asMap(store),
-                    is(emptyMap())
+                        asMap(store),
+                        is(emptyMap())
                 );
             }
 
@@ -102,18 +102,18 @@ public class KTableKTableForeignKeyJoinMaterializationIntegrationTest {
                     // for sure that there has never been a previous result. (Because the "old" and "new" values
                     // are both null, and the underlying store is also missing the record in question).
                     assertThat(
-                        outputTopic.readKeyValuesToMap(),
-                        is(emptyMap())
+                            outputTopic.readKeyValuesToMap(),
+                            is(emptyMap())
                     );
 
                     assertThat(
-                        asMap(store),
-                        is(emptyMap())
+                            asMap(store),
+                            is(emptyMap())
                     );
                 } else {
                     assertThat(
-                        outputTopic.readKeyValuesToMap(),
-                        is(mkMap(mkEntry("lhs1", null)))
+                            outputTopic.readKeyValuesToMap(),
+                            is(mkMap(mkEntry("lhs1", null)))
                     );
                 }
             }
@@ -122,13 +122,13 @@ public class KTableKTableForeignKeyJoinMaterializationIntegrationTest {
             left.pipeInput("lhs1", (String) null);
             {
                 assertThat(
-                    outputTopic.readKeyValuesToMap(),
-                    is(emptyMap())
+                        outputTopic.readKeyValuesToMap(),
+                        is(emptyMap())
                 );
                 if (materialized && queryable) {
                     assertThat(
-                        asMap(store),
-                        is(emptyMap())
+                            asMap(store),
+                            is(emptyMap())
                     );
                 }
             }
@@ -163,16 +163,16 @@ public class KTableKTableForeignKeyJoinMaterializationIntegrationTest {
         final KTable<String, String> joinResult;
         if (materialized) {
             joinResult = left.join(
-                right,
-                extractor,
-                joiner,
-                materializedStore
+                    right,
+                    extractor,
+                    joiner,
+                    materializedStore
             );
         } else {
             joinResult = left.join(
-                right,
-                extractor,
-                joiner
+                    right,
+                    extractor,
+                    joiner
             );
         }
 

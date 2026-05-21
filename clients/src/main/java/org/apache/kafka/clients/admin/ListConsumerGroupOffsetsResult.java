@@ -71,18 +71,18 @@ public class ListConsumerGroupOffsetsResult {
      */
     public KafkaFuture<Map<String, Map<TopicPartition, OffsetAndMetadata>>> all() {
         return KafkaFuture.allOf(futures.values().toArray(new KafkaFuture<?>[0])).thenApply(
-            nil -> {
-                Map<String, Map<TopicPartition, OffsetAndMetadata>> listedConsumerGroupOffsets = new HashMap<>(futures.size());
-                futures.forEach((key, future) -> {
-                    try {
-                        listedConsumerGroupOffsets.put(key, future.get());
-                    } catch (InterruptedException | ExecutionException e) {
-                        // This should be unreachable, since the KafkaFuture#allOf already ensured
-                        // that all of the futures completed successfully.
-                        throw new RuntimeException(e);
-                    }
+                nil -> {
+                    Map<String, Map<TopicPartition, OffsetAndMetadata>> listedConsumerGroupOffsets = new HashMap<>(futures.size());
+                    futures.forEach((key, future) -> {
+                        try {
+                            listedConsumerGroupOffsets.put(key, future.get());
+                        } catch (InterruptedException | ExecutionException e) {
+                            // This should be unreachable, since the KafkaFuture#allOf already ensured
+                            // that all of the futures completed successfully.
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    return listedConsumerGroupOffsets;
                 });
-                return listedConsumerGroupOffsets;
-            });
     }
 }

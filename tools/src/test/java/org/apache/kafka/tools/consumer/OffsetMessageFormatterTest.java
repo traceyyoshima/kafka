@@ -56,10 +56,10 @@ public class OffsetMessageFormatterTest extends CoordinatorRecordMessageFormatte
     @Override
     protected Stream<Arguments> parameters() {
         return Stream.of(
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, OFFSET_COMMIT_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, OFFSET_COMMIT_VALUE).array(),
-                """
+                Arguments.of(
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 0, OFFSET_COMMIT_KEY).array(),
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 0, OFFSET_COMMIT_VALUE).array(),
+                    """
                     {"key":{"type":0,"data":{"group":"group-id","topic":"foo","partition":1}},
                      "value":{"version":0,
                               "data":{"offset":100,
@@ -67,10 +67,10 @@ public class OffsetMessageFormatterTest extends CoordinatorRecordMessageFormatte
                                       "commitTimestamp":1234}}}
                 """
             ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 1, OFFSET_COMMIT_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, OFFSET_COMMIT_VALUE).array(),
-                """
+                Arguments.of(
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 1, OFFSET_COMMIT_KEY).array(),
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 0, OFFSET_COMMIT_VALUE).array(),
+                    """
                     {"key":{"type":1,"data":{"group":"group-id","topic":"foo","partition":1}},
                      "value":{"version":0,
                               "data":{"offset":100,
@@ -78,10 +78,10 @@ public class OffsetMessageFormatterTest extends CoordinatorRecordMessageFormatte
                                       "commitTimestamp":1234}}}
                 """
             ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 1, OFFSET_COMMIT_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 1, OFFSET_COMMIT_VALUE).array(),
-                """
+                Arguments.of(
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 1, OFFSET_COMMIT_KEY).array(),
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 1, OFFSET_COMMIT_VALUE).array(),
+                    """
                     {"key":{"type":1,"data":{"group":"group-id","topic":"foo","partition":1}},
                      "value":{"version":1,
                               "data":{"offset":100,
@@ -90,10 +90,10 @@ public class OffsetMessageFormatterTest extends CoordinatorRecordMessageFormatte
                                       "expireTimestamp":5678}}}
                 """
             ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 1, OFFSET_COMMIT_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 2, OFFSET_COMMIT_VALUE).array(),
-                """
+                Arguments.of(
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 1, OFFSET_COMMIT_KEY).array(),
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 2, OFFSET_COMMIT_VALUE).array(),
+                    """
                     {"key":{"type":1,"data":{"group":"group-id","topic":"foo","partition":1}},
                      "value":{"version":2,
                               "data":{"offset":100,
@@ -101,10 +101,10 @@ public class OffsetMessageFormatterTest extends CoordinatorRecordMessageFormatte
                                       "commitTimestamp":1234}}}
                 """
             ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 1, OFFSET_COMMIT_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 3, OFFSET_COMMIT_VALUE).array(),
-                """
+                Arguments.of(
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 1, OFFSET_COMMIT_KEY).array(),
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 3, OFFSET_COMMIT_VALUE).array(),
+                    """
                     {"key":{"type":1,"data":{"group":"group-id","topic":"foo","partition":1}},
                      "value":{"version":3,
                               "data":{"offset":100,
@@ -113,10 +113,10 @@ public class OffsetMessageFormatterTest extends CoordinatorRecordMessageFormatte
                                       "commitTimestamp":1234}}}
                 """
             ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 1, OFFSET_COMMIT_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 4, OFFSET_COMMIT_VALUE).array(),
-                """
+                Arguments.of(
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 1, OFFSET_COMMIT_KEY).array(),
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 4, OFFSET_COMMIT_VALUE).array(),
+                    """
                     {"key":{"type":1,"data":{"group":"group-id","topic":"foo","partition":1}},
                      "value":{"version":4,
                               "data":{"offset":100,
@@ -126,28 +126,28 @@ public class OffsetMessageFormatterTest extends CoordinatorRecordMessageFormatte
                                       "topicId":"MKXx1fIkQy2J9jXHhK8m1w"}}}
                 """
             ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 1, OFFSET_COMMIT_KEY).array(),
-                null,
-                """
+                Arguments.of(
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 1, OFFSET_COMMIT_KEY).array(),
+                    null,
+                    """
                   {"key":{"type":1,"data":{"group":"group-id","topic":"foo","partition":1}},"value":null}
                 """
             ),
-            Arguments.of(
-                null,
-                MessageUtil.toVersionPrefixedByteBuffer((short) 1, OFFSET_COMMIT_VALUE).array(),
-                ""
+                Arguments.of(
+                    null,
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 1, OFFSET_COMMIT_VALUE).array(),
+                    ""
             ),
-            Arguments.of(null, null, ""),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 2, GROUP_METADATA_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 2, GROUP_METADATA_VALUE).array(),
-                ""
+                Arguments.of(null, null, ""),
+                Arguments.of(
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 2, GROUP_METADATA_KEY).array(),
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 2, GROUP_METADATA_VALUE).array(),
+                    ""
             ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer(Short.MAX_VALUE, GROUP_METADATA_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 2, GROUP_METADATA_VALUE).array(),
-                ""
+                Arguments.of(
+                    MessageUtil.toVersionPrefixedByteBuffer(Short.MAX_VALUE, GROUP_METADATA_KEY).array(),
+                    MessageUtil.toVersionPrefixedByteBuffer((short) 2, GROUP_METADATA_VALUE).array(),
+                    ""
             )
         );
     }

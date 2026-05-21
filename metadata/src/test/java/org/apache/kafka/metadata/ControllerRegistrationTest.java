@@ -48,31 +48,31 @@ public class ControllerRegistrationTest {
     }
 
     private static final List<ControllerRegistration> REGISTRATIONS = List.of(
-        new ControllerRegistration.Builder().
+            new ControllerRegistration.Builder().
             setId(0).
             setIncarnationId(Uuid.fromString("ycRmGrOFQru7HXf6fOybZQ")).
             setZkMigrationReady(true).
             setListeners(doubleMap(
-                "PLAINTEXT", new Endpoint("PLAINTEXT", SecurityProtocol.PLAINTEXT, "localhost", 9107),
-                "SSL", new Endpoint("SSL", SecurityProtocol.SSL, "localhost", 9207))).
+                    "PLAINTEXT", new Endpoint("PLAINTEXT", SecurityProtocol.PLAINTEXT, "localhost", 9107),
+                    "SSL", new Endpoint("SSL", SecurityProtocol.SSL, "localhost", 9207))).
             setSupportedFeatures(Map.of(MetadataVersion.FEATURE_NAME, VersionRange.of(1, 10))).
             build(),
-        new ControllerRegistration.Builder().
+            new ControllerRegistration.Builder().
             setId(1).
             setIncarnationId(Uuid.fromString("ubT_wuD6R3uopZ_lV76dQg")).
             setZkMigrationReady(true).
             setListeners(doubleMap(
-                "PLAINTEXT", new Endpoint("PLAINTEXT", SecurityProtocol.PLAINTEXT, "localhost", 9108),
-                "SSL", new Endpoint("SSL", SecurityProtocol.SSL, "localhost", 9208))).
+                    "PLAINTEXT", new Endpoint("PLAINTEXT", SecurityProtocol.PLAINTEXT, "localhost", 9108),
+                    "SSL", new Endpoint("SSL", SecurityProtocol.SSL, "localhost", 9208))).
             setSupportedFeatures(Map.of(MetadataVersion.FEATURE_NAME, VersionRange.of(1, 10))).
             build(),
-        new ControllerRegistration.Builder().
+            new ControllerRegistration.Builder().
             setId(2).
             setIncarnationId(Uuid.fromString("muQS341gRIeNh9Ps7reDSw")).
             setZkMigrationReady(false).
             setListeners(doubleMap(
-                "PLAINTEXT", new Endpoint("PLAINTEXT", SecurityProtocol.PLAINTEXT, "localhost", 9109),
-                "SSL", new Endpoint("SSL", SecurityProtocol.SSL, "localhost", 9209))).
+                    "PLAINTEXT", new Endpoint("PLAINTEXT", SecurityProtocol.PLAINTEXT, "localhost", 9109),
+                    "SSL", new Endpoint("SSL", SecurityProtocol.SSL, "localhost", 9209))).
             setSupportedFeatures(Map.of(MetadataVersion.FEATURE_NAME, VersionRange.of(1, 10))).
             build()
     );
@@ -98,13 +98,13 @@ public class ControllerRegistrationTest {
     @Test
     public void testToString() {
         assertEquals("ControllerRegistration(id=1, " +
-            "incarnationId=ubT_wuD6R3uopZ_lV76dQg, " +
-            "zkMigrationReady=true, " +
-            "listeners=[" +
-            "Endpoint(listenerName='PLAINTEXT', securityProtocol=PLAINTEXT, host='localhost', port=9108), " +
-            "Endpoint(listenerName='SSL', securityProtocol=SSL, host='localhost', port=9208)]" +
-            ", supportedFeatures={metadata.version: 1-10})",
-            REGISTRATIONS.get(1).toString());
+                "incarnationId=ubT_wuD6R3uopZ_lV76dQg, " +
+                "zkMigrationReady=true, " +
+                "listeners=[" +
+                "Endpoint(listenerName='PLAINTEXT', securityProtocol=PLAINTEXT, host='localhost', port=9108), " +
+                "Endpoint(listenerName='SSL', securityProtocol=SSL, host='localhost', port=9208)]" +
+                ", supportedFeatures={metadata.version: 1-10})",
+                REGISTRATIONS.get(1).toString());
     }
 
     @Test
@@ -118,7 +118,7 @@ public class ControllerRegistrationTest {
         ApiMessageAndVersion messageAndVersion = registration.
             toRecord(new ImageWriterOptions.Builder(MetadataVersion.latestProduction()).build());
         ControllerRegistration registration2 = new ControllerRegistration.Builder(
-            (RegisterControllerRecord) messageAndVersion.message()).build();
+                (RegisterControllerRecord) messageAndVersion.message()).build();
         assertEquals(registration, registration2);
         ApiMessageAndVersion messageAndVersion2 = registration2.
             toRecord(new ImageWriterOptions.Builder(MetadataVersion.latestProduction()).build());
@@ -129,8 +129,8 @@ public class ControllerRegistrationTest {
     public void testToNode() {
         assertEquals(Optional.empty(), REGISTRATIONS.get(0).node("NONEXISTENT"));
         assertEquals(Optional.of(new Node(0, "localhost", 9107, null)),
-            REGISTRATIONS.get(0).node("PLAINTEXT"));
+                REGISTRATIONS.get(0).node("PLAINTEXT"));
         assertEquals(Optional.of(new Node(0, "localhost", 9207, null)),
-            REGISTRATIONS.get(0).node("SSL"));
+                REGISTRATIONS.get(0).node("SSL"));
     }
 }

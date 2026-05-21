@@ -130,7 +130,7 @@ public class ClusterTestExtensionsTest {
     @ClusterTemplate("generate1")
     public void testClusterTemplate() {
         assertEquals(Type.KRAFT, clusterInstance.type(),
-            "generate1 provided a KRAFT cluster, so we should see that here");
+                "generate1 provided a KRAFT cluster, so we should see that here");
         assertEquals("bar", clusterInstance.config().serverProperties().get("foo"));
         assertEquals(List.of("Generated Test"), clusterInstance.config().tags());
     }
@@ -193,7 +193,7 @@ public class ClusterTestExtensionsTest {
         try (Admin admin = clusterInstance.admin()) {
             DescribeLogDirsResult result = admin.describeLogDirs(clusterInstance.brokerIds());
             result.allDescriptions().get().forEach((brokerId, logDirDescriptionMap) ->
-                assertEquals(clusterInstance.config().numDisksPerBroker(), logDirDescriptionMap.size()));
+                    assertEquals(clusterInstance.config().numDisksPerBroker(), logDirDescriptionMap.size()));
         }
         for (Map.Entry<Integer, KafkaBroker> entry : clusterInstance.brokers().entrySet()) {
             int brokerId = entry.getKey();
@@ -245,8 +245,6 @@ public class ClusterTestExtensionsTest {
         assertEquals(Set.of(CLASSIC), clusterInstance.supportedGroupProtocols());
     }
 
-
-
     @ClusterTest(types = {Type.CO_KRAFT, Type.KRAFT}, brokers = 3)
     public void testCreateTopic(ClusterInstance clusterInstance) throws Exception {
         String topicName = "test";
@@ -288,14 +286,13 @@ public class ClusterTestExtensionsTest {
         Assertions.assertTrue(clusterInstance.brokers().containsKey(0));
     }
 
-
     @ClusterTest(
-        types = {Type.CO_KRAFT, Type.KRAFT},
-        brokers = 4,
-        serverProperties = {
-            @ClusterConfigProperty(key = "log.initial.task.delay.ms", value = "100"),
-            @ClusterConfigProperty(key = "log.segment.delete.delay.ms", value = "1000")
-        }
+            types = {Type.CO_KRAFT, Type.KRAFT},
+            brokers = 4,
+            serverProperties = {
+                @ClusterConfigProperty(key = "log.initial.task.delay.ms", value = "100"),
+                @ClusterConfigProperty(key = "log.segment.delete.delay.ms", value = "1000")
+            }
     )
     public void testVerifyTopicDeletion(ClusterInstance clusterInstance) throws Exception {
         try (Admin admin = clusterInstance.admin()) {
@@ -317,12 +314,12 @@ public class ClusterTestExtensionsTest {
         String value = "value";
         try (Admin adminClient = cluster.admin();
              Producer<String, String> producer = cluster.producer(Map.of(
-                 ACKS_CONFIG, "all",
-                 KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName(),
-                 VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName()));
+                     ACKS_CONFIG, "all",
+                     KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName(),
+                     VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName()));
              Consumer<String, String> consumer = cluster.consumer(Map.of(
-                 KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName(),
-                 VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName()))
+                     KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName(),
+                     VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName()))
         ) {
             adminClient.createTopics(Set.of(new NewTopic(topic, 1, (short) 1)));
             assertNotNull(producer);
@@ -381,8 +378,8 @@ public class ClusterTestExtensionsTest {
         final String topicName = "topic";
         try (Admin admin = cluster.admin();
              Producer<String, String> producer = cluster.producer(Map.of(
-                 ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName(),
-                 ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName()))) {
+                     ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName(),
+                     ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName()))) {
             admin.createTopics(List.of(new NewTopic(topicName, 1, (short) 1))).all().get();
 
             cluster.waitTopicCreation(topicName, 1);
@@ -413,13 +410,13 @@ public class ClusterTestExtensionsTest {
     }
 
     @ClusterTest(
-        types = {Type.KRAFT, Type.CO_KRAFT},
-        brokerSecurityProtocol = SecurityProtocol.SASL_PLAINTEXT,
-        controllerSecurityProtocol = SecurityProtocol.SASL_PLAINTEXT,
-        serverProperties = {
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1")
-        }
+            types = {Type.KRAFT, Type.CO_KRAFT},
+            brokerSecurityProtocol = SecurityProtocol.SASL_PLAINTEXT,
+            controllerSecurityProtocol = SecurityProtocol.SASL_PLAINTEXT,
+            serverProperties = {
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1")
+            }
     )
     public void testSaslPlaintext(ClusterInstance clusterInstance) throws CancellationException, ExecutionException, InterruptedException {
         assertEquals(SecurityProtocol.SASL_PLAINTEXT, clusterInstance.config().brokerSecurityProtocol());
@@ -444,23 +441,23 @@ public class ClusterTestExtensionsTest {
 
         // client with non-admin credentials
         Map<String, Object> nonAdminConfig = Map.of(
-            SaslConfigs.SASL_JAAS_CONFIG,
-            String.format(
-                "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"%s\" password=\"%s\";",
-                JaasUtils.KAFKA_PLAIN_USER1, JaasUtils.KAFKA_PLAIN_USER1_PASSWORD
+                SaslConfigs.SASL_JAAS_CONFIG,
+                String.format(
+                    "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"%s\" password=\"%s\";",
+                    JaasUtils.KAFKA_PLAIN_USER1, JaasUtils.KAFKA_PLAIN_USER1_PASSWORD
             )
         );
         try (Admin admin = clusterInstance.admin(nonAdminConfig)) {
             ExecutionException exception = assertThrows(
-                ExecutionException.class,
-                () -> admin.describeAcls(AclBindingFilter.ANY).values().get()
+                    ExecutionException.class,
+                    () -> admin.describeAcls(AclBindingFilter.ANY).values().get()
             );
             assertInstanceOf(ClusterAuthorizationException.class, exception.getCause());
         }
         try (Producer<byte[], byte[]> producer = clusterInstance.producer(nonAdminConfig)) {
             ExecutionException exception = assertThrows(
-                ExecutionException.class,
-                () -> producer.send(new ProducerRecord<>(topic, Utils.utf8("key"), Utils.utf8("value"))).get()
+                    ExecutionException.class,
+                    () -> producer.send(new ProducerRecord<>(topic, Utils.utf8("key"), Utils.utf8("value"))).get()
             );
             assertInstanceOf(TopicAuthorizationException.class, exception.getCause());
         }
@@ -482,23 +479,23 @@ public class ClusterTestExtensionsTest {
 
         // client with unknown credentials
         Map<String, Object> unknownUserConfig = Map.of(
-            SaslConfigs.SASL_JAAS_CONFIG,
-            String.format(
-                "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"%s\" password=\"%s\";",
-                "unknown", "unknown"
+                SaslConfigs.SASL_JAAS_CONFIG,
+                String.format(
+                    "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"%s\" password=\"%s\";",
+                    "unknown", "unknown"
             )
         );
         try (Admin admin = clusterInstance.admin(unknownUserConfig)) {
             ExecutionException exception = assertThrows(
-                ExecutionException.class,
-                () -> admin.describeAcls(AclBindingFilter.ANY).values().get()
+                    ExecutionException.class,
+                    () -> admin.describeAcls(AclBindingFilter.ANY).values().get()
             );
             assertInstanceOf(SaslAuthenticationException.class, exception.getCause());
         }
         try (Producer<byte[], byte[]> producer = clusterInstance.producer(unknownUserConfig)) {
             ExecutionException exception = assertThrows(
-                ExecutionException.class,
-                () -> producer.send(new ProducerRecord<>(topic, Utils.utf8("key"), Utils.utf8("value"))).get()
+                    ExecutionException.class,
+                    () -> producer.send(new ProducerRecord<>(topic, Utils.utf8("key"), Utils.utf8("value"))).get()
             );
             assertInstanceOf(SaslAuthenticationException.class, exception.getCause());
         }
@@ -520,13 +517,13 @@ public class ClusterTestExtensionsTest {
     }
 
     @ClusterTest(
-        types = {Type.KRAFT, Type.CO_KRAFT},
-        brokerSecurityProtocol = SecurityProtocol.SASL_PLAINTEXT,
-        controllerSecurityProtocol = SecurityProtocol.SASL_PLAINTEXT,
-        serverProperties = {
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1")
-        }
+            types = {Type.KRAFT, Type.CO_KRAFT},
+            brokerSecurityProtocol = SecurityProtocol.SASL_PLAINTEXT,
+            controllerSecurityProtocol = SecurityProtocol.SASL_PLAINTEXT,
+            serverProperties = {
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1")
+            }
     )
     public void testSaslPlaintextWithController(ClusterInstance clusterInstance) throws CancellationException, ExecutionException, InterruptedException {
         assertSecurityProtocol(clusterInstance, SecurityProtocol.SASL_PLAINTEXT, "Expected broker to have SASL_PLAINTEXT data-plane listener");
@@ -534,13 +531,13 @@ public class ClusterTestExtensionsTest {
     }
 
     @ClusterTest(
-        types = {Type.KRAFT, Type.CO_KRAFT},
-        brokerSecurityProtocol = SecurityProtocol.SASL_SSL,
-        controllerSecurityProtocol = SecurityProtocol.SASL_SSL,
-        serverProperties = {
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1")
-        }
+            types = {Type.KRAFT, Type.CO_KRAFT},
+            brokerSecurityProtocol = SecurityProtocol.SASL_SSL,
+            controllerSecurityProtocol = SecurityProtocol.SASL_SSL,
+            serverProperties = {
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1")
+            }
     )
     public void testSaslSslWithController(ClusterInstance clusterInstance) throws CancellationException, ExecutionException, InterruptedException {
         assertSecurityProtocol(clusterInstance, SecurityProtocol.SASL_SSL, "Expected broker to have SASL_SSL data-plane listener");
@@ -565,32 +562,32 @@ public class ClusterTestExtensionsTest {
 
         // client with non-admin credentials
         Map<String, Object> nonAdminConfig = Map.of(
-            SaslConfigs.SASL_JAAS_CONFIG,
-            String.format(
-                "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"%s\" password=\"%s\";",
-                JaasUtils.KAFKA_PLAIN_USER1, JaasUtils.KAFKA_PLAIN_USER1_PASSWORD
+                SaslConfigs.SASL_JAAS_CONFIG,
+                String.format(
+                    "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"%s\" password=\"%s\";",
+                    JaasUtils.KAFKA_PLAIN_USER1, JaasUtils.KAFKA_PLAIN_USER1_PASSWORD
             )
         );
         try (Admin admin = clusterInstance.admin(nonAdminConfig, true)) {
             ExecutionException exception = assertThrows(
-                ExecutionException.class,
-                () -> admin.describeAcls(AclBindingFilter.ANY).values().get()
+                    ExecutionException.class,
+                    () -> admin.describeAcls(AclBindingFilter.ANY).values().get()
             );
             assertInstanceOf(ClusterAuthorizationException.class, exception.getCause());
         }
 
         // client with unknown credentials
         Map<String, Object> unknownUserConfig = Map.of(
-            SaslConfigs.SASL_JAAS_CONFIG,
-            String.format(
-                "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"%s\" password=\"%s\";",
-                "unknown", "unknown"
+                SaslConfigs.SASL_JAAS_CONFIG,
+                String.format(
+                    "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"%s\" password=\"%s\";",
+                    "unknown", "unknown"
             )
         );
         try (Admin admin = clusterInstance.admin(unknownUserConfig)) {
             ExecutionException exception = assertThrows(
-                ExecutionException.class,
-                () -> admin.describeAcls(AclBindingFilter.ANY).values().get()
+                    ExecutionException.class,
+                    () -> admin.describeAcls(AclBindingFilter.ANY).values().get()
             );
             assertInstanceOf(SaslAuthenticationException.class, exception.getCause());
         }

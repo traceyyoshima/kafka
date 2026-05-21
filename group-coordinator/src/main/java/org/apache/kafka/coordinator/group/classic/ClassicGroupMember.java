@@ -129,15 +129,15 @@ public class ClassicGroupMember {
         JoinGroupRequestProtocolCollection supportedProtocols
     ) {
         this(
-            memberId,
-            groupInstanceId,
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            supportedProtocols,
-            EMPTY_ASSIGNMENT
+                memberId,
+                groupInstanceId,
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                supportedProtocols,
+                EMPTY_ASSIGNMENT
         );
     }
 
@@ -195,7 +195,7 @@ public class ClassicGroupMember {
         }
 
         throw new IllegalArgumentException("Member does not support protocol " +
-            protocolName);
+                protocolName);
     }
 
     /**
@@ -420,16 +420,16 @@ public class ClassicGroupMember {
     @Override
     public String toString() {
         return "ClassicGroupMember(" +
-            "memberId='" + memberId + '\'' +
-            ", groupInstanceId='" + groupInstanceId.orElse("") + '\'' +
-            ", clientId='" + clientId + '\'' +
-            ", clientHost='" + clientHost + '\'' +
-            ", rebalanceTimeoutMs=" + rebalanceTimeoutMs +
-            ", sessionTimeoutMs=" + sessionTimeoutMs +
-            ", protocolType='" + protocolType + '\'' +
-            ", supportedProtocols=" + supportedProtocols.stream()
+                "memberId='" + memberId + '\'' +
+                ", groupInstanceId='" + groupInstanceId.orElse("") + '\'' +
+                ", clientId='" + clientId + '\'' +
+                ", clientHost='" + clientHost + '\'' +
+                ", rebalanceTimeoutMs=" + rebalanceTimeoutMs +
+                ", sessionTimeoutMs=" + sessionTimeoutMs +
+                ", protocolType='" + protocolType + '\'' +
+                ", supportedProtocols=" + supportedProtocols.stream()
                 .map(JoinGroupRequestProtocol::name)
                 .toList() +
-            ')';
+                ')';
     }
 }

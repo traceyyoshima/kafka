@@ -56,11 +56,11 @@ public class CandidateState implements NomineeState {
     ) {
         if (!voters.isVoter(ReplicaKey.of(localId, localDirectoryId))) {
             throw new IllegalArgumentException(
-                String.format(
-                    "Local replica (%d, %s) must be in the set of voters %s",
-                    localId,
-                    localDirectoryId,
-                    voters
+                    String.format(
+                        "Local replica (%d, %s) must be in the set of voters %s",
+                        localId,
+                        localDirectoryId,
+                        voters
                 )
             );
         }
@@ -86,7 +86,7 @@ public class CandidateState implements NomineeState {
     public boolean recordGrantedVote(int remoteNodeId) {
         if (epochElection().isRejectedVoter(remoteNodeId)) {
             throw new IllegalArgumentException("Attempt to grant vote from node " + remoteNodeId +
-                " which previously rejected our request");
+                    " which previously rejected our request");
         }
         return epochElection().recordVote(remoteNodeId, true);
     }
@@ -95,7 +95,7 @@ public class CandidateState implements NomineeState {
     public boolean recordRejectedVote(int remoteNodeId) {
         if (epochElection().isGrantedVoter(remoteNodeId)) {
             throw new IllegalArgumentException("Attempt to reject vote from node " + remoteNodeId +
-                " which previously granted our request");
+                    " which previously granted our request");
         }
         return epochElection().recordVote(remoteNodeId, false);
     }
@@ -115,9 +115,9 @@ public class CandidateState implements NomineeState {
     @Override
     public ElectionState election() {
         return ElectionState.withVotedCandidate(
-            epoch,
-            ReplicaKey.of(localId, localDirectoryId),
-            epochElection.voterIds()
+                epoch,
+                ReplicaKey.of(localId, localDirectoryId),
+                epochElection.voterIds()
         );
     }
 
@@ -148,12 +148,12 @@ public class CandidateState implements NomineeState {
         // Reject standard vote requests even if replicaId = localId, although the replica votes for
         // itself, this vote is implicit and not "granted".
         log.debug(
-            "Rejecting Vote request (preVote={}) from replica ({}) since we are in CandidateState in epoch {} " +
+                "Rejecting Vote request (preVote={}) from replica ({}) since we are in CandidateState in epoch {} " +
                 "and the replica's log is up-to-date={}",
-            isPreVote,
-            replicaKey,
-            epoch,
-            isLogUpToDate
+                isPreVote,
+                replicaKey,
+                epoch,
+                isLogUpToDate
         );
         return false;
     }
@@ -161,14 +161,14 @@ public class CandidateState implements NomineeState {
     @Override
     public String toString() {
         return String.format(
-            "CandidateState(localId=%d, localDirectoryId=%s, epoch=%d, epochElection=%s, " +
-            "highWatermark=%s, electionTimeoutMs=%d)",
-            localId,
-            localDirectoryId,
-            epoch,
-            epochElection(),
-            highWatermark,
-            electionTimeoutMs
+                "CandidateState(localId=%d, localDirectoryId=%s, epoch=%d, epochElection=%s, " +
+                "highWatermark=%s, electionTimeoutMs=%d)",
+                localId,
+                localDirectoryId,
+                epoch,
+                epochElection(),
+                highWatermark,
+                electionTimeoutMs
         );
     }
 

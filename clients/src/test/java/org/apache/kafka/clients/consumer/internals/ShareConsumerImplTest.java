@@ -238,8 +238,8 @@ public class ShareConsumerImplTest {
 
         try (LogCaptureAppender appender = LogCaptureAppender.createAndRegister()) {
             KafkaException ce = assertThrows(
-                KafkaException.class,
-                () -> newConsumer(config));
+                    KafkaException.class,
+                    () -> newConsumer(config));
             assertTrue(ce.getMessage().contains("Failed to construct Kafka share consumer"), "Unexpected exception message: " + ce.getMessage());
             assertTrue(ce.getCause().getMessage().contains("Class an.invalid.class cannot be found"), "Unexpected cause: " + ce.getCause());
 
@@ -285,7 +285,7 @@ public class ShareConsumerImplTest {
         final ShareInFlightBatch<String, String> batch = new ShareInFlightBatch<>(0, tip, DEFAULT_ACQUISITION_LOCK_TIMEOUT_MS);
         // Add GAP without adding any records
         batch.addGap(1);
-        
+
         final ShareFetch<String, String> fetchWithOnlyGap = ShareFetch.empty();
         fetchWithOnlyGap.add(tip, batch);
         doReturn(fetchWithOnlyGap).when(fetchCollector).collect(any(ShareFetchBuffer.class));
@@ -298,11 +298,11 @@ public class ShareConsumerImplTest {
                 return false;
             }
             ShareAcknowledgeAsyncEvent shareAcknowledgeAsyncEvent = (ShareAcknowledgeAsyncEvent) event;
-            
+
             // Acknowledgements map should contain the GAP for offset 1
             Map<TopicIdPartition, NodeAcknowledgements> controlRecordAcks = shareAcknowledgeAsyncEvent.acknowledgementsMap();
             return controlRecordAcks.containsKey(tip) &&
-                   controlRecordAcks.get(tip).acknowledgements().get(1L) == null; // Null indicates GAP
+                    controlRecordAcks.get(tip).acknowledgements().get(1L) == null; // Null indicates GAP
         }));
     }
 
@@ -453,12 +453,12 @@ public class ShareConsumerImplTest {
 
         // Second poll should fail because records weren't acknowledged
         IllegalStateException exception = assertThrows(
-            IllegalStateException.class,
-            () -> consumer.poll(Duration.ofMillis(100))
+                IllegalStateException.class,
+                () -> consumer.poll(Duration.ofMillis(100))
         );
         assertTrue(
-            exception.getMessage().contains("All records must be acknowledged in explicit acknowledgement mode."),
-            "Unexpected error message: " + exception.getMessage()
+                exception.getMessage().contains("All records must be acknowledged in explicit acknowledgement mode."),
+                "Unexpected error message: " + exception.getMessage()
         );
         assertEquals(DEFAULT_ACQUISITION_LOCK_TIMEOUT_MS, consumer.acquisitionLockTimeoutMs());
 
@@ -466,24 +466,24 @@ public class ShareConsumerImplTest {
         Iterator<ConsumerRecord<String, String>> iterator = records.iterator();
         consumer.acknowledge(iterator.next());
         exception = assertThrows(
-            IllegalStateException.class,
-            () -> consumer.poll(Duration.ofMillis(100))
+                IllegalStateException.class,
+                () -> consumer.poll(Duration.ofMillis(100))
         );
         assertTrue(
-            exception.getMessage().contains("All records must be acknowledged in explicit acknowledgement mode."),
-            "Unexpected error message: " + exception.getMessage()
+                exception.getMessage().contains("All records must be acknowledged in explicit acknowledgement mode."),
+                "Unexpected error message: " + exception.getMessage()
         );
 
         // Verify that after acknowledging all records, poll succeeds
         consumer.acknowledge(iterator.next());
-        
+
         // Set up second fetch to return new records
         ShareFetch<String, String> secondFetch = ShareFetch.empty();
         ShareInFlightBatch<String, String> newBatch = new ShareInFlightBatch<>(2, tip, DEFAULT_ACQUISITION_LOCK_TIMEOUT_MS);
         newBatch.addRecord(new ConsumerRecord<>(topic, partition, 2, "key3", "value3"));
         newBatch.addRecord(new ConsumerRecord<>(topic, partition, 3, "key4", "value4"));
         secondFetch.add(tip, newBatch);
-        
+
         // Reset mock to return new records
         doReturn(secondFetch)
             .when(fetchCollector)
@@ -499,11 +499,11 @@ public class ShareConsumerImplTest {
         // Set up consumer with explicit acknowledgement mode
         SubscriptionState subscriptions = new SubscriptionState(new LogContext(), AutoOffsetResetStrategy.NONE);
         consumer = newConsumer(
-            mock(ShareFetchBuffer.class),
-            subscriptions,
-            "group-id",
-            "client-id",
-            "explicit");
+                mock(ShareFetchBuffer.class),
+                subscriptions,
+                "group-id",
+                "client-id",
+                "explicit");
 
         // Set up test data
         String topic = "test-topic";
@@ -631,7 +631,7 @@ public class ShareConsumerImplTest {
         consumer.setAcknowledgementCommitCallback(callback);
         verify(applicationEventHandler).add(argThat(event ->
             event instanceof ShareAcknowledgementCommitCallbackRegistrationEvent &&
-            ((ShareAcknowledgementCommitCallbackRegistrationEvent) event).isCallbackRegistered()
+                ((ShareAcknowledgementCommitCallbackRegistrationEvent) event).isCallbackRegistered()
         ));
 
         consumer.setAcknowledgementCommitCallback(callback);
@@ -866,7 +866,7 @@ public class ShareConsumerImplTest {
 
         // Complete the acknowledge on close event successfully
         completeShareAcknowledgeOnCloseApplicationEventSuccessfully();
-        
+
         // Complete the unsubscribe event successfully
         completeShareUnsubscribeApplicationEventSuccessfully(subscriptions);
 
@@ -1010,19 +1010,19 @@ public class ShareConsumerImplTest {
 
         // Make sure the meta-metric is present and has an entry.
         assertTrue(
-            countMetricNameOpt.isPresent(),
-            "The \"count\" meta-metric was unexpectedly missing from the Consumer metrics"
+                countMetricNameOpt.isPresent(),
+                "The \"count\" meta-metric was unexpectedly missing from the Consumer metrics"
         );
         MetricName countMetricName = countMetricNameOpt.get();
         assertNotNull(
-            metrics.remove(countMetricName),
-            "The \"count\" meta-metric key was removed from the Consumer metrics map, but it unexpectedly had no entry"
+                metrics.remove(countMetricName),
+                "The \"count\" meta-metric key was removed from the Consumer metrics map, but it unexpectedly had no entry"
         );
 
         if (metricsShouldBePresent) {
             assertFalse(
-                metrics.isEmpty(),
-                "The consumer should have created metrics, but they are unexpectedly empty"
+                    metrics.isEmpty(),
+                    "The consumer should have created metrics, but they are unexpectedly empty"
             );
         } else {
             List<String> expected = List.of();
@@ -1031,9 +1031,9 @@ public class ShareConsumerImplTest {
                 .sorted()
                 .collect(Collectors.toList());
             assertEquals(
-                expected,
-                actual,
-                "The consumer should have removed its metrics on close(), but there are metrics remaining"
+                    expected,
+                    actual,
+                    "The consumer should have removed its metrics on close(), but there are metrics remaining"
             );
         }
     }
@@ -1050,13 +1050,13 @@ public class ShareConsumerImplTest {
     @Test
     public void testConstructorFailsOnNetworkClientConstructorFailure() {
         Map<String, Object> configs = Map.of(
-            ConsumerConfig.GROUP_ID_CONFIG, "invalid-login-test-group",
-            ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName(),
-            ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName(),
-            CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, "localhost:9999",
-            CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_PLAINTEXT.name,
-            SaslConfigs.SASL_MECHANISM, "PLAIN",
-            SaslConfigs.SASL_JAAS_CONFIG, "org.example.InvalidLoginModule required ;"
+                ConsumerConfig.GROUP_ID_CONFIG, "invalid-login-test-group",
+                ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName(),
+                ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName(),
+                CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, "localhost:9999",
+                CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_PLAINTEXT.name,
+                SaslConfigs.SASL_MECHANISM, "PLAIN",
+                SaslConfigs.SASL_JAAS_CONFIG, "org.example.InvalidLoginModule required ;"
         );
 
         KafkaException e = assertThrows(KafkaException.class, () -> {

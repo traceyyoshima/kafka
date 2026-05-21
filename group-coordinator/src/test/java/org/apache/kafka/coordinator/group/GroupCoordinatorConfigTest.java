@@ -73,12 +73,12 @@ public class GroupCoordinatorConfigTest {
         // The full class name of the assignors is part of our public api. Hence,
         // we should ensure that they are not changed by mistake.
         assertEquals(
-            "org.apache.kafka.coordinator.group.assignor.UniformAssignor",
-            UniformAssignor.class.getName()
+                "org.apache.kafka.coordinator.group.assignor.UniformAssignor",
+                UniformAssignor.class.getName()
         );
         assertEquals(
-            "org.apache.kafka.coordinator.group.assignor.RangeAssignor",
-            RangeAssignor.class.getName()
+                "org.apache.kafka.coordinator.group.assignor.RangeAssignor",
+                RangeAssignor.class.getName()
         );
     }
 
@@ -134,8 +134,8 @@ public class GroupCoordinatorConfigTest {
         // The full class name of the assignors is part of our public api. Hence,
         // we should ensure that they are not changed by mistake.
         assertEquals(
-            "org.apache.kafka.coordinator.group.assignor.SimpleAssignor",
-            SimpleAssignor.class.getName()
+                "org.apache.kafka.coordinator.group.assignor.SimpleAssignor",
+                SimpleAssignor.class.getName()
         );
     }
 
@@ -168,7 +168,7 @@ public class GroupCoordinatorConfigTest {
         // Test must contain only one assignor.
         configs.put(GroupCoordinatorConfig.SHARE_GROUP_ASSIGNORS_CONFIG, "simple, " + CustomAssignor.class.getName());
         assertEquals("group.share.assignors must contain exactly one assignor, but found 2",
-            assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
     }
 
     @Test
@@ -317,12 +317,12 @@ public class GroupCoordinatorConfigTest {
         configs.clear();
         configs.put(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNORS_CONFIG, Object.class.getName());
         assertEquals("java.lang.Object is not an instance of org.apache.kafka.coordinator.group.api.assignor.ConsumerGroupPartitionAssignor",
-            assertThrows(KafkaException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(KafkaException.class, () -> createConfig(configs)).getMessage());
 
         configs.clear();
         configs.put(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNORS_CONFIG, "foo");
         assertEquals("Class foo cannot be found",
-            assertThrows(KafkaException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(KafkaException.class, () -> createConfig(configs)).getMessage());
 
         configs.clear();
         configs.put(GroupCoordinatorConfig.CONSUMER_GROUP_MIGRATION_POLICY_CONFIG, "foobar");
@@ -363,13 +363,13 @@ public class GroupCoordinatorConfigTest {
         // must be positive
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_SESSION_TIMEOUT_MS_CONFIG, 0);
         assertEquals("Invalid value 0 for configuration group.streams.session.timeout.ms: Value must be at least 1",
-            assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
 
         // cannot be smaller than MIN
         configs.clear();
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_SESSION_TIMEOUT_MS_CONFIG, GroupCoordinatorConfig.STREAMS_GROUP_MIN_SESSION_TIMEOUT_MS_DEFAULT - 1);
         assertEquals("group.streams.session.timeout.ms must be greater than or equal to group.streams.min.session.timeout.ms",
-            assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
 
         // can be MIN
         configs.clear();
@@ -384,8 +384,7 @@ public class GroupCoordinatorConfigTest {
         // cannot be larger than MAX
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_SESSION_TIMEOUT_MS_CONFIG, GroupCoordinatorConfig.STREAMS_GROUP_MAX_SESSION_TIMEOUT_MS_DEFAULT + 1);
         assertEquals("group.streams.session.timeout.ms must be less than or equal to group.streams.max.session.timeout.ms",
-            assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
-
+                assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
 
         // group.streams.min.session.timeout.ms
 
@@ -393,7 +392,7 @@ public class GroupCoordinatorConfigTest {
         configs.clear();
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG, 0);
         assertEquals("Invalid value 0 for configuration group.streams.min.session.timeout.ms: Value must be at least 1",
-            assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
 
         // can be MAX (implies `MAX can be MIN`)
         configs.clear();
@@ -406,7 +405,7 @@ public class GroupCoordinatorConfigTest {
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_SESSION_TIMEOUT_MS_CONFIG, GroupCoordinatorConfig.STREAMS_GROUP_MAX_SESSION_TIMEOUT_MS_DEFAULT + 1); // required
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG, GroupCoordinatorConfig.STREAMS_GROUP_MAX_SESSION_TIMEOUT_MS_DEFAULT + 1); // when
         assertEquals("group.streams.max.session.timeout.ms must be greater than or equal to group.streams.min.session.timeout.ms",
-            assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
 
         // other case for `streams.group.min.session.timeout.ms` are covered in section `session.timeout.ms` above
 
@@ -417,7 +416,7 @@ public class GroupCoordinatorConfigTest {
         configs.clear();
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_MAX_SESSION_TIMEOUT_MS_CONFIG, 0);
         assertEquals("Invalid value 0 for configuration group.streams.max.session.timeout.ms: Value must be at least 1",
-            assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
 
         // other case for `streams.group.max.session.timeout.ms` are covered in sections `session.timeout.ms` and `streams.group.min.session.timeout.ms` above
     }
@@ -430,13 +429,13 @@ public class GroupCoordinatorConfigTest {
         // must be positive
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, 0);
         assertEquals("Invalid value 0 for configuration group.streams.heartbeat.interval.ms: Value must be at least 1",
-            assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
 
         // cannot be smaller than MIN
         configs.clear();
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, GroupCoordinatorConfig.STREAMS_GROUP_MIN_HEARTBEAT_INTERVAL_MS_DEFAULT - 1);
         assertEquals("group.streams.heartbeat.interval.ms must be greater than or equal to group.streams.min.heartbeat.interval.ms",
-            assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
 
         // can be MIN
         configs.clear();
@@ -452,7 +451,7 @@ public class GroupCoordinatorConfigTest {
         configs.clear();
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, GroupCoordinatorConfig.STREAMS_GROUP_MAX_HEARTBEAT_INTERVAL_MS_DEFAULT + 1);
         assertEquals("group.streams.heartbeat.interval.ms must be less than or equal to group.streams.max.heartbeat.interval.ms",
-            assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
 
         // can be smaller than session timeout
         configs.clear();
@@ -465,8 +464,7 @@ public class GroupCoordinatorConfigTest {
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_MAX_HEARTBEAT_INTERVAL_MS_CONFIG, GroupCoordinatorConfig.STREAMS_GROUP_SESSION_TIMEOUT_MS_DEFAULT); // required
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, GroupCoordinatorConfig.STREAMS_GROUP_SESSION_TIMEOUT_MS_DEFAULT);
         assertEquals("group.streams.heartbeat.interval.ms must be less than group.streams.session.timeout.ms",
-            assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
-
+                assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
 
         // group.streams.min.heartbeat.interval.ms
 
@@ -474,7 +472,7 @@ public class GroupCoordinatorConfigTest {
         configs.clear();
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG, 0);
         assertEquals("Invalid value 0 for configuration group.streams.min.heartbeat.interval.ms: Value must be at least 1",
-            assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
 
         // can be MAX (implies `MAX can be MIN`)
         configs.clear();
@@ -487,7 +485,7 @@ public class GroupCoordinatorConfigTest {
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, GroupCoordinatorConfig.STREAMS_GROUP_MAX_HEARTBEAT_INTERVAL_MS_DEFAULT + 1); // required
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG, GroupCoordinatorConfig.STREAMS_GROUP_MAX_HEARTBEAT_INTERVAL_MS_DEFAULT + 1); // when
         assertEquals("group.streams.max.heartbeat.interval.ms must be greater than or equal to group.streams.min.heartbeat.interval.ms",
-            assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
 
         // other case for `streams.group.min.heartbeat.interval.ms` covered in `session.timeout.ms` section
 
@@ -498,7 +496,7 @@ public class GroupCoordinatorConfigTest {
         configs.clear();
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_MAX_HEARTBEAT_INTERVAL_MS_CONFIG, 0);
         assertEquals("Invalid value 0 for configuration group.streams.max.heartbeat.interval.ms: Value must be at least 1",
-            assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
 
         // other case for `streams.group.max.heartbeat.interval.ms` covered in `session.timeout.ms` and `streams.group.mix.heartbeat.interval.ms` section
     }
@@ -511,8 +509,7 @@ public class GroupCoordinatorConfigTest {
         // must be positive
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_MAX_SIZE_CONFIG, 0);
         assertEquals("Invalid value 0 for configuration group.streams.max.size: Value must be at least 1",
-            assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
-
+                assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
 
         // group.streams.num.standby.replicas
 
@@ -520,7 +517,7 @@ public class GroupCoordinatorConfigTest {
         configs.clear();
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_NUM_STANDBY_REPLICAS_CONFIG, -1);
         assertEquals("Invalid value -1 for configuration group.streams.num.standby.replicas: Value must be at least 0",
-            assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
 
         // can be MAX
         configs.clear();
@@ -531,8 +528,7 @@ public class GroupCoordinatorConfigTest {
         configs.clear();
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_NUM_STANDBY_REPLICAS_CONFIG, GroupCoordinatorConfig.STREAMS_GROUP_MAX_STANDBY_REPLICAS_DEFAULT + 1);
         assertEquals("group.streams.num.standby.replicas must be less than or equal to group.streams.max.standby.replicas",
-            assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
-
+                assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
 
         // group.streams.max.num.standby.replicas
 
@@ -540,8 +536,7 @@ public class GroupCoordinatorConfigTest {
         configs.clear();
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_MAX_STANDBY_REPLICAS_CONFIG, -1);
         assertEquals("Invalid value -1 for configuration group.streams.max.standby.replicas: Value must be at least 0",
-            assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
-
+                assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
 
         // group.streams.initial.rebalance.delay.ms
 
@@ -549,7 +544,7 @@ public class GroupCoordinatorConfigTest {
         configs.clear();
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, -1);
         assertEquals("Invalid value -1 for configuration group.streams.initial.rebalance.delay.ms: Value must be at least 0",
-            assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
 
         // group.streams.task.offset.interval.ms
 
@@ -557,19 +552,18 @@ public class GroupCoordinatorConfigTest {
         configs.clear();
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_TASK_OFFSET_INTERVAL_MS_CONFIG, 0);
         assertEquals("Invalid value 0 for configuration group.streams.task.offset.interval.ms: Value must be at least 1",
-            assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
 
         // cannot be smaller than MIN
         configs.clear();
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_TASK_OFFSET_INTERVAL_MS_CONFIG, GroupCoordinatorConfig.STREAMS_GROUP_MIN_TASK_OFFSET_INTERVAL_MS_DEFAULT - 1);
         assertEquals("group.streams.task.offset.interval.ms must be greater than or equal to group.streams.min.task.offset.interval.ms",
-            assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
 
         // can be MIN
         configs.clear();
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_TASK_OFFSET_INTERVAL_MS_CONFIG, GroupCoordinatorConfig.STREAMS_GROUP_MIN_TASK_OFFSET_INTERVAL_MS_DEFAULT);
         createConfig(configs);
-
 
         // group.streams.num.warmup.replicas
 
@@ -577,7 +571,7 @@ public class GroupCoordinatorConfigTest {
         configs.clear();
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_NUM_WARMUP_REPLICAS_CONFIG, -1);
         assertEquals("Invalid value -1 for configuration group.streams.num.warmup.replicas: Value must be at least 0",
-            assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
 
         // can be MAX
         configs.clear();
@@ -588,8 +582,7 @@ public class GroupCoordinatorConfigTest {
         configs.clear();
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_NUM_WARMUP_REPLICAS_CONFIG, GroupCoordinatorConfig.STREAMS_GROUP_MAX_WARMUP_REPLICAS_DEFAULT + 1);
         assertEquals("group.streams.num.warmup.replicas must be less than or equal to group.streams.max.warmup.replicas",
-            assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
-
+                assertThrows(IllegalArgumentException.class, () -> createConfig(configs)).getMessage());
 
         // group.streams.max.warmup.replicas
 
@@ -597,30 +590,30 @@ public class GroupCoordinatorConfigTest {
         configs.clear();
         configs.put(GroupCoordinatorConfig.STREAMS_GROUP_MAX_WARMUP_REPLICAS_CONFIG, -1);
         assertEquals("Invalid value -1 for configuration group.streams.max.warmup.replicas: Value must be at least 0",
-            assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
+                assertThrows(ConfigException.class, () -> createConfig(configs)).getMessage());
     }
 
     @Test
     public void testClampDynamicConfigs() {
         Map<String, String> consumerProps = Map.of(
-            GroupCoordinatorConfig.CONSUMER_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG, "30000",
-            GroupCoordinatorConfig.CONSUMER_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_CONFIG, "60000"
+                GroupCoordinatorConfig.CONSUMER_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG, "30000",
+                GroupCoordinatorConfig.CONSUMER_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_CONFIG, "60000"
         );
         testClampDynamicConfig(consumerProps, GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, "30000", "15000");
         testClampDynamicConfig(consumerProps, GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, "45000", "45000");
         testClampDynamicConfig(consumerProps, GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, "60000", "90000");
 
         Map<String, String> shareProps = Map.of(
-            GroupCoordinatorConfig.SHARE_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG, "30000",
-            GroupCoordinatorConfig.SHARE_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_CONFIG, "60000"
+                GroupCoordinatorConfig.SHARE_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG, "30000",
+                GroupCoordinatorConfig.SHARE_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_CONFIG, "60000"
         );
         testClampDynamicConfig(shareProps, GroupCoordinatorConfig.SHARE_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, "30000", "15000");
         testClampDynamicConfig(shareProps, GroupCoordinatorConfig.SHARE_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, "45000", "45000");
         testClampDynamicConfig(shareProps, GroupCoordinatorConfig.SHARE_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, "60000", "90000");
 
         Map<String, String> streamsProps = Map.of(
-            GroupCoordinatorConfig.STREAMS_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG, "30000",
-            GroupCoordinatorConfig.STREAMS_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_CONFIG, "60000"
+                GroupCoordinatorConfig.STREAMS_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG, "30000",
+                GroupCoordinatorConfig.STREAMS_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_CONFIG, "60000"
         );
         testClampDynamicConfig(streamsProps, GroupCoordinatorConfig.STREAMS_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, "30000", "15000");
         testClampDynamicConfig(streamsProps, GroupCoordinatorConfig.STREAMS_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, "45000", "45000");
@@ -657,10 +650,10 @@ public class GroupCoordinatorConfigTest {
         int offsetsRetentionMinutes
     ) {
         return createGroupCoordinatorConfig(
-            offsetMetadataMaxSize,
-            offsetsRetentionCheckIntervalMs,
-            offsetsRetentionMinutes,
-            Map.of()
+                offsetMetadataMaxSize,
+                offsetsRetentionCheckIntervalMs,
+                offsetsRetentionMinutes,
+                Map.of()
         );
     }
 
@@ -708,7 +701,7 @@ public class GroupCoordinatorConfigTest {
         GroupCoordinatorConfig config = createConfig(configs);
         assertEquals(3000, config.streamsGroupInitialRebalanceDelayMs());
         assertEquals(GroupCoordinatorConfig.STREAMS_GROUP_INITIAL_REBALANCE_DELAY_MS_DEFAULT,
-            config.streamsGroupInitialRebalanceDelayMs());
+                config.streamsGroupInitialRebalanceDelayMs());
     }
 
     @Test
@@ -725,7 +718,7 @@ public class GroupCoordinatorConfigTest {
         GroupCoordinatorConfig config = createConfig(configs);
         assertEquals(60000, config.streamsGroupTaskOffsetIntervalMs());
         assertEquals(GroupCoordinatorConfig.STREAMS_GROUP_TASK_OFFSET_INTERVAL_MS_DEFAULT,
-            config.streamsGroupTaskOffsetIntervalMs());
+                config.streamsGroupTaskOffsetIntervalMs());
     }
 
     @Test
@@ -742,7 +735,7 @@ public class GroupCoordinatorConfigTest {
         GroupCoordinatorConfig config = createConfig(configs);
         assertEquals(15000, config.streamsGroupMinTaskOffsetIntervalMs());
         assertEquals(GroupCoordinatorConfig.STREAMS_GROUP_MIN_TASK_OFFSET_INTERVAL_MS_DEFAULT,
-            config.streamsGroupMinTaskOffsetIntervalMs());
+                config.streamsGroupMinTaskOffsetIntervalMs());
     }
 
     @Test
@@ -759,7 +752,7 @@ public class GroupCoordinatorConfigTest {
         GroupCoordinatorConfig config = createConfig(configs);
         assertEquals(2, config.streamsGroupNumWarmupReplicas());
         assertEquals(GroupCoordinatorConfig.STREAMS_GROUP_NUM_WARMUP_REPLICAS_DEFAULT,
-            config.streamsGroupNumWarmupReplicas());
+                config.streamsGroupNumWarmupReplicas());
     }
 
     @Test
@@ -776,7 +769,7 @@ public class GroupCoordinatorConfigTest {
         GroupCoordinatorConfig config = createConfig(configs);
         assertEquals(20, config.streamsGroupMaxWarmupReplicas());
         assertEquals(GroupCoordinatorConfig.STREAMS_GROUP_MAX_WARMUP_REPLICAS_DEFAULT,
-            config.streamsGroupMaxWarmupReplicas());
+                config.streamsGroupMaxWarmupReplicas());
     }
 
     @Test
@@ -793,7 +786,7 @@ public class GroupCoordinatorConfigTest {
         GroupCoordinatorConfig config = createConfig(configs);
         assertEquals(false, config.errorsDLQAutoCreateTopicsEnable());
         assertEquals(GroupCoordinatorConfig.ERRORS_DEADLETTERQUEUE_AUTO_CREATE_TOPICS_ENABLE_DEFAULT,
-            config.errorsDLQAutoCreateTopicsEnable());
+                config.errorsDLQAutoCreateTopicsEnable());
     }
 
     @Test
@@ -810,7 +803,7 @@ public class GroupCoordinatorConfigTest {
         GroupCoordinatorConfig config = createConfig(configs);
         assertEquals("dlq.", config.errorsDLQTopicNamePrefix());
         assertEquals(GroupCoordinatorConfig.ERRORS_DEADLETTERQUEUE_TOPIC_NAME_PREFIX_DEFAULT,
-            config.errorsDLQTopicNamePrefix());
+                config.errorsDLQTopicNamePrefix());
     }
 
     @Test
@@ -823,9 +816,9 @@ public class GroupCoordinatorConfigTest {
 
     public static GroupCoordinatorConfig createConfig(Map<String, Object> configs) {
         return new GroupCoordinatorConfig(new AbstractConfig(
-            GroupCoordinatorConfig.CONFIG_DEF,
-            configs,
-            false
+                GroupCoordinatorConfig.CONFIG_DEF,
+                configs,
+                false
         ));
     }
 }

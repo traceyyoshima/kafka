@@ -66,6 +66,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class WindowStoreFetchTest {
     private enum StoreType { InMemory, RocksDB, Timed }
+
     private static final String STORE_NAME = "store";
     private static final int DATA_SIZE = 5;
     private static final long WINDOW_SIZE = 500L;
@@ -87,9 +88,9 @@ public class WindowStoreFetchTest {
     private String innerLowBetween;
     private String innerHighBetween;
 
-    public void setup(final StoreType storeType, 
-                      final boolean enableLogging, 
-                      final boolean enableCaching, 
+    public void setup(final StoreType storeType,
+                      final boolean enableLogging,
+                      final boolean enableCaching,
                       final boolean forward) {
         this.storeType = storeType;
         this.enableLogging = enableLogging;
@@ -258,20 +259,20 @@ public class WindowStoreFetchTest {
         final Supplier<WindowBytesStoreSupplier> createStore = () -> {
             if (type == StoreType.InMemory) {
                 return Stores.inMemoryWindowStore(STORE_NAME, Duration.ofMillis(RETENTION_MS),
-                    Duration.ofMillis(WINDOW_SIZE),
-                    false);
+                        Duration.ofMillis(WINDOW_SIZE),
+                        false);
             } else if (type == StoreType.RocksDB) {
                 return Stores.persistentWindowStore(STORE_NAME, Duration.ofMillis(RETENTION_MS),
-                    Duration.ofMillis(WINDOW_SIZE),
-                    false);
+                        Duration.ofMillis(WINDOW_SIZE),
+                        false);
             } else if (type == StoreType.Timed) {
                 return Stores.persistentTimestampedWindowStore(STORE_NAME, Duration.ofMillis(RETENTION_MS),
-                    Duration.ofMillis(WINDOW_SIZE),
-                    false);
+                        Duration.ofMillis(WINDOW_SIZE),
+                        false);
             } else {
                 return Stores.inMemoryWindowStore(STORE_NAME, Duration.ofMillis(RETENTION_MS),
-                    Duration.ofMillis(WINDOW_SIZE),
-                    false);
+                        Duration.ofMillis(WINDOW_SIZE),
+                        false);
             }
         };
 

@@ -101,8 +101,8 @@ public final class QuorumFeatures {
         short newVersion
     ) {
         return reasonNotSupported(newVersion,
-            "Local controller " + nodeId,
-            localSupportedFeature(featureName));
+                "Local controller " + nodeId,
+                localSupportedFeature(featureName));
     }
 
     @Override
@@ -115,8 +115,8 @@ public final class QuorumFeatures {
         if (o == null || !(o.getClass().equals(QuorumFeatures.class))) return false;
         QuorumFeatures other = (QuorumFeatures) o;
         return nodeId == other.nodeId &&
-            localSupportedFeatures.equals(other.localSupportedFeatures) &&
-            quorumNodeIds.equals(other.quorumNodeIds);
+                localSupportedFeatures.equals(other.localSupportedFeatures) &&
+                quorumNodeIds.equals(other.quorumNodeIds);
     }
 
     @Override
@@ -128,9 +128,9 @@ public final class QuorumFeatures {
         quorumNodeIds.forEach(id -> nodeIds.add("" + id));
         nodeIds.sort(String::compareTo);
         return "QuorumFeatures" +
-            "(nodeId=" + nodeId +
-            ", localSupportedFeatures={" + features + "}" +
-            ", quorumNodeIds=[" + nodeIds + "]" +
-            ")";
+                "(nodeId=" + nodeId +
+                ", localSupportedFeatures={" + features + "}" +
+                ", quorumNodeIds=[" + nodeIds + "]" +
+                ")";
     }
 }

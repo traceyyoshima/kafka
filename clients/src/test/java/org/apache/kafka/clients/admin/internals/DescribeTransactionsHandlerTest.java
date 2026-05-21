@@ -66,22 +66,22 @@ public class DescribeTransactionsHandlerTest {
         DescribeTransactionsHandler handler = new DescribeTransactionsHandler(logContext);
 
         DescribeTransactionsResponseData.TransactionState transactionState1 =
-            sampleTransactionState1(transactionalId1);
+                sampleTransactionState1(transactionalId1);
         DescribeTransactionsResponseData.TransactionState transactionState2 =
-            sampleTransactionState2(transactionalId2);
+                sampleTransactionState2(transactionalId2);
 
         Set<CoordinatorKey> keys = coordinatorKeys(transactionalIds);
         DescribeTransactionsResponse response = new DescribeTransactionsResponse(new DescribeTransactionsResponseData()
             .setTransactionStates(asList(transactionState1, transactionState2)));
 
         ApiResult<CoordinatorKey, TransactionDescription> result = handler.handleResponse(
-            node, keys, response);
+                node, keys, response);
 
         assertEquals(keys, result.completedKeys.keySet());
         assertMatchingTransactionState(node.id(), transactionState1,
-            result.completedKeys.get(CoordinatorKey.byTransactionalId(transactionalId1)));
+                result.completedKeys.get(CoordinatorKey.byTransactionalId(transactionalId1)));
         assertMatchingTransactionState(node.id(), transactionState2,
-            result.completedKeys.get(CoordinatorKey.byTransactionalId(transactionalId2)));
+                result.completedKeys.get(CoordinatorKey.byTransactionalId(transactionalId2)));
     }
 
     @Test
@@ -178,10 +178,10 @@ public class DescribeTransactionsHandlerTest {
             .setTransactionStartTimeMs(1599151791L)
             .setTransactionTimeoutMs(10000)
             .setTopics(new DescribeTransactionsResponseData.TopicDataCollection(asList(
-                new DescribeTransactionsResponseData.TopicData()
+                    new DescribeTransactionsResponseData.TopicData()
                     .setTopic("foo")
                     .setPartitions(asList(1, 3, 5)),
-                new DescribeTransactionsResponseData.TopicData()
+                    new DescribeTransactionsResponseData.TopicData()
                     .setTopic("bar")
                     .setPartitions(asList(1, 3, 5))
             )));

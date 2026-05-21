@@ -76,7 +76,7 @@ public class RepartitionTopics {
 
         if (!missingSourceTopicsForTopology.isEmpty()) {
             throw new IllegalStateException(String.format("Missing source topics: %s",
-                String.join(", ", missingSourceTopicsForTopology)));
+                    String.join(", ", missingSourceTopicsForTopology)));
         }
 
         final Map<String, Integer> repartitionTopicPartitionCount = computeRepartitionTopicPartitionCount();
@@ -84,7 +84,7 @@ public class RepartitionTopics {
         for (final Subtopology subtopology : subtopologies) {
             if (subtopology.repartitionSourceTopics().stream().anyMatch(repartitionTopic -> !repartitionTopicPartitionCount.containsKey(repartitionTopic.name()))) {
                 throw new StreamsInvalidTopologyException("Failed to compute number of partitions for all repartition topics, because "
-                    + "a repartition source topic is never used as a sink topic.");
+                        + "a repartition source topic is never used as a sink topic.");
             }
         }
 
@@ -124,18 +124,18 @@ public class RepartitionTopics {
                 for (final String repartitionSinkTopic : subtopology.repartitionSinkTopics()) {
                     if (!repartitionTopicPartitionCounts.containsKey(repartitionSinkTopic)) {
                         final Integer numPartitions = computePartitionCount(
-                            repartitionTopicPartitionCounts,
-                            subtopology
+                                repartitionTopicPartitionCounts,
+                                subtopology
                         );
 
                         if (numPartitions == null) {
                             partitionCountNeeded = true;
                             log.trace("Unable to determine number of partitions for {}, another iteration is needed",
-                                repartitionSinkTopic);
+                                    repartitionSinkTopic);
                         } else {
                             log.trace("Determined number of partitions for {} to be {}",
-                                repartitionSinkTopic,
-                                numPartitions);
+                                    repartitionSinkTopic,
+                                    numPartitions);
                             repartitionTopicPartitionCounts.put(repartitionSinkTopic, numPartitions);
                             progressMadeThisIteration = true;
                         }
@@ -144,7 +144,7 @@ public class RepartitionTopics {
             }
             if (!progressMadeThisIteration && partitionCountNeeded) {
                 throw new StreamsInvalidTopologyException("Failed to compute number of partitions for all " +
-                    "repartition topics. There may be loops in the topology that cannot be resolved.");
+                        "repartition topics. There may be loops in the topology that cannot be resolved.");
             }
         } while (partitionCountNeeded);
 

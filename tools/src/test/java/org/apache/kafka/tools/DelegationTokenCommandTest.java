@@ -109,7 +109,6 @@ public class DelegationTokenCommandTest {
         return new DelegationTokenCommand.DelegationTokenCommandOptions(args);
     }
 
-
     @Test
     public void testCheckArgsMissingRequiredArgs() {
         Exit.setExitProcedure((exitCode, message) -> {

@@ -84,7 +84,6 @@ public class NodeApiVersions {
         return new NodeApiVersions(apiVersions, Collections.emptyList(), Collections.emptyList(), -1);
     }
 
-
     /**
      * Create a NodeApiVersions object with a single ApiKey. It is mainly used in tests.
      *
@@ -151,7 +150,7 @@ public class NodeApiVersions {
             throw new UnsupportedVersionException("The node does not support " + apiKey);
         ApiVersion supportedVersion = supportedVersions.get(apiKey);
         Optional<ApiVersion> intersectVersion = ApiVersionsResponse.intersect(supportedVersion,
-            new ApiVersion()
+                new ApiVersion()
                 .setApiKey(apiKey.id)
                 .setMinVersion(oldestAllowedVersion)
                 .setMaxVersion(latestAllowedVersion));
@@ -160,8 +159,8 @@ public class NodeApiVersions {
             return intersectVersion.get().maxVersion();
         else
             throw new UnsupportedVersionException("The node does not support " + apiKey +
-                " with version in range [" + oldestAllowedVersion + "," + latestAllowedVersion + "]. The supported" +
-                " range is [" + supportedVersion.minVersion() + "," + supportedVersion.maxVersion() + "].");
+                    " with version in range [" + oldestAllowedVersion + "," + latestAllowedVersion + "]. The supported" +
+                    " range is [" + supportedVersion.minVersion() + "," + supportedVersion.maxVersion() + "].");
     }
 
     /**

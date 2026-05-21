@@ -66,7 +66,7 @@ public class TopicMetadataFetcherTest {
     private final TopicPartition tp0 = new TopicPartition(topicName, 0);
     private final int validLeaderEpoch = 0;
     private final MetadataResponse initialUpdateResponse =
-        RequestTestUtils.metadataUpdateWithIds(1, singletonMap(topicName, 4), topicIds);
+            RequestTestUtils.metadataUpdateWithIds(1, singletonMap(topicName, 4), topicIds);
 
     private MockTime time = new MockTime(1);
     private SubscriptionState subscriptions;
@@ -86,8 +86,8 @@ public class TopicMetadataFetcherTest {
 
         // A dummy metadata update to ensure valid leader epoch.
         metadata.updateWithCurrentRequestVersion(RequestTestUtils.metadataUpdateWithIds("dummy", 1,
-            Collections.emptyMap(), singletonMap(topicName, 4),
-            tp -> validLeaderEpoch, topicIds), false, 0L);
+                Collections.emptyMap(), singletonMap(topicName, 4),
+                tp -> validLeaderEpoch, topicIds), false, 0L);
     }
 
     @AfterEach
@@ -182,29 +182,29 @@ public class TopicMetadataFetcherTest {
             List<MetadataResponse.PartitionMetadata> altPartitions = new ArrayList<>();
             for (MetadataResponse.PartitionMetadata p : partitions) {
                 altPartitions.add(new MetadataResponse.PartitionMetadata(
-                    p.error,
-                    p.topicPartition,
-                    Optional.empty(), //no leader
+                        p.error,
+                        p.topicPartition,
+                        Optional.empty(), //no leader
                     Optional.empty(),
-                    p.replicaIds,
-                    p.inSyncReplicaIds,
-                    p.offlineReplicaIds
+                        p.replicaIds,
+                        p.inSyncReplicaIds,
+                        p.offlineReplicaIds
                 ));
             }
             MetadataResponse.TopicMetadata alteredTopic = new MetadataResponse.TopicMetadata(
-                item.error(),
-                item.topic(),
-                item.isInternal(),
-                altPartitions
+                    item.error(),
+                    item.topic(),
+                    item.isInternal(),
+                    altPartitions
             );
             altTopics.add(alteredTopic);
         }
         Node controller = originalResponse.controller();
         MetadataResponse altered = RequestTestUtils.metadataResponse(
-            originalResponse.brokers(),
-            originalResponse.clusterId(),
-            controller != null ? controller.id() : MetadataResponse.NO_CONTROLLER_ID,
-            altTopics);
+                originalResponse.brokers(),
+                originalResponse.clusterId(),
+                controller != null ? controller.id() : MetadataResponse.NO_CONTROLLER_ID,
+                altTopics);
 
         client.prepareResponse(altered);
 

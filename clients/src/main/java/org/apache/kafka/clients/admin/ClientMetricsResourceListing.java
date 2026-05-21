@@ -46,7 +46,7 @@ public class ClientMetricsResourceListing {
     @Override
     public String toString() {
         return "ClientMetricsResourceListing(" +
-            "name='" + name +
-            ')';
+                "name='" + name +
+                ')';
     }
 }

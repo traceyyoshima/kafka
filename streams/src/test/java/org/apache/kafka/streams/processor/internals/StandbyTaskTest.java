@@ -105,8 +105,8 @@ public class StandbyTaskTest {
     private final MockKeyValueStore store2 = new MockKeyValueStoreBuilder(storeName2, true).build();
 
     private final ProcessorTopology topology = ProcessorTopologyFactories.withLocalStores(
-        asList(store1, store2),
-        mkMap(mkEntry(storeName1, storeChangelogTopicName1), mkEntry(storeName2, storeChangelogTopicName2))
+            asList(store1, store2),
+            mkMap(mkEntry(storeName1, storeChangelogTopicName1), mkEntry(storeName2, storeChangelogTopicName2))
     );
 
     private final MockTime time = new MockTime();
@@ -120,18 +120,18 @@ public class StandbyTaskTest {
 
     private StreamsConfig createConfig(final File baseDir) throws IOException {
         return new StreamsConfig(mkProperties(mkMap(
-            mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, applicationId),
-            mkEntry(StreamsConfig.METRICS_RECORDING_LEVEL_CONFIG, DEBUG.name),
-            mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:2171"),
-            mkEntry(StreamsConfig.BUFFERED_RECORDS_PER_PARTITION_CONFIG, "3"),
-            mkEntry(StreamsConfig.STATE_DIR_CONFIG, baseDir.getCanonicalPath()),
-            mkEntry(StreamsConfig.DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_CONFIG, MockTimestampExtractor.class.getName())
+                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, applicationId),
+                mkEntry(StreamsConfig.METRICS_RECORDING_LEVEL_CONFIG, DEBUG.name),
+                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:2171"),
+                mkEntry(StreamsConfig.BUFFERED_RECORDS_PER_PARTITION_CONFIG, "3"),
+                mkEntry(StreamsConfig.STATE_DIR_CONFIG, baseDir.getCanonicalPath()),
+                mkEntry(StreamsConfig.DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_CONFIG, MockTimestampExtractor.class.getName())
         )));
     }
 
     private final MockRestoreConsumer<Integer, Integer> restoreStateConsumer = new MockRestoreConsumer<>(
-        new IntegerSerializer(),
-        new IntegerSerializer()
+            new IntegerSerializer(),
+            new IntegerSerializer()
     );
 
     @Mock
@@ -144,15 +144,15 @@ public class StandbyTaskTest {
 
         restoreStateConsumer.reset();
         restoreStateConsumer.updatePartitions(storeChangelogTopicName1, asList(
-            new PartitionInfo(storeChangelogTopicName1, 0, Node.noNode(), new Node[0], new Node[0]),
-            new PartitionInfo(storeChangelogTopicName1, 1, Node.noNode(), new Node[0], new Node[0]),
-            new PartitionInfo(storeChangelogTopicName1, 2, Node.noNode(), new Node[0], new Node[0])
+                new PartitionInfo(storeChangelogTopicName1, 0, Node.noNode(), new Node[0], new Node[0]),
+                new PartitionInfo(storeChangelogTopicName1, 1, Node.noNode(), new Node[0], new Node[0]),
+                new PartitionInfo(storeChangelogTopicName1, 2, Node.noNode(), new Node[0], new Node[0])
         ));
 
         restoreStateConsumer.updatePartitions(storeChangelogTopicName2, asList(
-            new PartitionInfo(storeChangelogTopicName2, 0, Node.noNode(), new Node[0], new Node[0]),
-            new PartitionInfo(storeChangelogTopicName2, 1, Node.noNode(), new Node[0], new Node[0]),
-            new PartitionInfo(storeChangelogTopicName2, 2, Node.noNode(), new Node[0], new Node[0])
+                new PartitionInfo(storeChangelogTopicName2, 0, Node.noNode(), new Node[0], new Node[0]),
+                new PartitionInfo(storeChangelogTopicName2, 1, Node.noNode(), new Node[0], new Node[0]),
+                new PartitionInfo(storeChangelogTopicName2, 2, Node.noNode(), new Node[0], new Node[0])
         ));
         baseDir = TestUtils.tempDirectory();
         config = createConfig(baseDir);
@@ -374,9 +374,9 @@ public class StandbyTaskTest {
         final MetricName metricName = setupCloseTaskMetric();
 
         config = new StreamsConfig(mkProperties(mkMap(
-            mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, applicationId),
-            mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:2171"),
-            mkEntry(StreamsConfig.PROCESSING_GUARANTEE_CONFIG, StreamsConfig.EXACTLY_ONCE_V2)
+                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, applicationId),
+                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:2171"),
+                mkEntry(StreamsConfig.PROCESSING_GUARANTEE_CONFIG, StreamsConfig.EXACTLY_ONCE_V2)
         )));
 
         task = createStandbyTask();
@@ -396,10 +396,10 @@ public class StandbyTaskTest {
         when(stateManager.hasCorruptedStores()).thenReturn(false);
 
         config = new StreamsConfig(mkProperties(mkMap(
-            mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, applicationId),
-            mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:2171"),
-            mkEntry(StreamsConfig.PROCESSING_GUARANTEE_CONFIG, StreamsConfig.EXACTLY_ONCE_V2),
-            mkEntry(StreamsConfig.TRANSACTIONAL_STATE_STORES_CONFIG, "true")
+                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, applicationId),
+                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:2171"),
+                mkEntry(StreamsConfig.PROCESSING_GUARANTEE_CONFIG, StreamsConfig.EXACTLY_ONCE_V2),
+                mkEntry(StreamsConfig.TRANSACTIONAL_STATE_STORES_CONFIG, "true")
         )));
 
         task = createStandbyTask();
@@ -457,8 +457,8 @@ public class StandbyTaskTest {
         task.maybeInitTaskTimeoutOrThrow(Duration.ofMinutes(5).toMillis(), null);
 
         final StreamsException thrown = assertThrows(
-            StreamsException.class,
-            () -> task.maybeInitTaskTimeoutOrThrow(Duration.ofMinutes(5).plus(Duration.ofMillis(1L)).toMillis(), null)
+                StreamsException.class,
+                () -> task.maybeInitTaskTimeoutOrThrow(Duration.ofMinutes(5).plus(Duration.ofMillis(1L)).toMillis(), null)
         );
 
         assertThat(thrown.getCause(), isA(TimeoutException.class));
@@ -500,12 +500,12 @@ public class StandbyTaskTest {
                                   final String taskId) {
         final String descriptionIsNotVerified = "";
         return metrics.metrics().get(metrics.metricName(
-            String.format(nameFormat, operation),
-            "stream-task-metrics",
-            descriptionIsNotVerified,
-            mkMap(
-                mkEntry("task-id", taskId),
-                mkEntry(THREAD_ID_TAG, Thread.currentThread().getName())
+                String.format(nameFormat, operation),
+                "stream-task-metrics",
+                descriptionIsNotVerified,
+                mkMap(
+                    mkEntry("task-id", taskId),
+                    mkEntry(THREAD_ID_TAG, Thread.currentThread().getName())
             )
         ));
     }
@@ -513,29 +513,29 @@ public class StandbyTaskTest {
     private StandbyTask createStandbyTask() {
 
         final ThreadCache cache = new ThreadCache(
-            new LogContext(String.format("stream-thread [%s] ", Thread.currentThread().getName())),
-            0,
-            streamsMetrics
+                new LogContext(String.format("stream-thread [%s] ", Thread.currentThread().getName())),
+                0,
+                streamsMetrics
         );
 
         final InternalProcessorContext<?, ?> context = new ProcessorContextImpl(
-            taskId,
-            config,
-            stateManager,
-            streamsMetrics,
-            cache
+                taskId,
+                config,
+                stateManager,
+                streamsMetrics,
+                cache
         );
 
         return new StandbyTask(
-            taskId,
-            Collections.singleton(partition),
-            topology,
-            new TopologyConfig(config).getTaskConfig(),
-            streamsMetrics,
-            stateManager,
-            stateDirectory,
-            cache,
-            context);
+                taskId,
+                Collections.singleton(partition),
+                topology,
+                new TopologyConfig(config).getTaskConfig(),
+                streamsMetrics,
+                stateManager,
+                stateDirectory,
+                cache,
+                context);
     }
 
     private MetricName setupCloseTaskMetric() {

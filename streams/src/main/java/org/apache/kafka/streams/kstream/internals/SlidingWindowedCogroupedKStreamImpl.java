@@ -78,20 +78,20 @@ public class SlidingWindowedCogroupedKStreamImpl<K, V> extends AbstractStream<K,
         Objects.requireNonNull(named, "named can't be null");
         Objects.requireNonNull(materialized, "materialized can't be null");
         final MaterializedInternal<K, V, WindowStore<Bytes, byte[]>> materializedInternal = new MaterializedInternal<>(
-            materialized,
-            builder,
-            CogroupedKStreamImpl.AGGREGATE_NAME);
+                materialized,
+                builder,
+                CogroupedKStreamImpl.AGGREGATE_NAME);
         return aggregateBuilder.build(
-            groupPatterns,
-            initializer,
-            new NamedInternal(named),
-            new SlidingWindowStoreMaterializer<>(materializedInternal, windows, EmitStrategy.onWindowUpdate()),
-            materializedInternal.keySerde() != null ?
+                groupPatterns,
+                initializer,
+                new NamedInternal(named),
+                new SlidingWindowStoreMaterializer<>(materializedInternal, windows, EmitStrategy.onWindowUpdate()),
+                materializedInternal.keySerde() != null ?
                 new FullTimeWindowedSerde<>(materializedInternal.keySerde(), windows.timeDifferenceMs())
                 : null,
-            materializedInternal.valueSerde(),
-            materializedInternal.queryableStoreName(),
-            windows);
+                materializedInternal.valueSerde(),
+                materializedInternal.queryableStoreName(),
+                windows);
     }
 
 }

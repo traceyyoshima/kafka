@@ -76,7 +76,7 @@ public class AclBindingFilter {
         if (o == null || getClass() != o.getClass()) return false;
         AclBindingFilter that = (AclBindingFilter) o;
         return Objects.equals(patternFilter, that.patternFilter) &&
-            Objects.equals(entryFilter, that.entryFilter);
+                Objects.equals(entryFilter, that.entryFilter);
     }
 
     /**

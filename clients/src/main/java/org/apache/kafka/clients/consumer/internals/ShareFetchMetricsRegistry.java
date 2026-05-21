@@ -92,7 +92,6 @@ public class ShareFetchMetricsRegistry {
         this.fetchRequestTotal = new MetricNameTemplate("fetch-total", groupName,
                 "The total number of fetch requests.", tags);
 
-
         this.fetchThrottleTimeAvg = new MetricNameTemplate("fetch-throttle-time-avg", groupName,
                 "The average throttle time in ms", tags);
         this.fetchThrottleTimeMax = new MetricNameTemplate("fetch-throttle-time-max", groupName,

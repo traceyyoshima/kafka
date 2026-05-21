@@ -61,25 +61,25 @@ public class ClientQuotasImageNodeTest {
     @Test
     public void clientIdEntityRoundTrip() {
         entityToStringRoundTrip(new ClientQuotaEntity(Map.of("client-id", "foo")),
-            "clientId(foo)");
+                "clientId(foo)");
     }
 
     @Test
     public void defaultClientIdEntityRoundTrip() {
         entityToStringRoundTrip(new ClientQuotaEntity(Map.of("client-id", "")),
-            "clientId()");
+                "clientId()");
     }
 
     @Test
     public void userEntityRoundTrip() {
         entityToStringRoundTrip(new ClientQuotaEntity(Map.of("user", "my-user-name")),
-            "user(my-user-name)");
+                "user(my-user-name)");
     }
 
     @Test
     public void defaultUserEntityRoundTrip() {
         entityToStringRoundTrip(new ClientQuotaEntity(Map.of("user", "")),
-            "user()");
+                "user()");
     }
 
     @Test
@@ -88,25 +88,25 @@ public class ClientQuotasImageNodeTest {
         entityMap.put("user", "bob");
         entityMap.put("client-id", "reports12345");
         entityToStringRoundTrip(new ClientQuotaEntity(entityMap),
-            "clientId(reports12345)_user(bob)");
+                "clientId(reports12345)_user(bob)");
     }
 
     @Test
     public void ipEntityRoundTrip() {
         entityToStringRoundTrip(new ClientQuotaEntity(Map.of("ip", "127.0.0.1")),
-            "ip(127.0.0.1)");
+                "ip(127.0.0.1)");
     }
 
     @Test
     public void defaultIpEntityRoundTrip() {
         entityToStringRoundTrip(new ClientQuotaEntity(Map.of("ip", "")),
-            "ip()");
+                "ip()");
     }
 
     @Test
     public void testUserEntityWithBackslashesInNameRoundTrip() {
         entityToStringRoundTrip(new ClientQuotaEntity(Map.of("user", "foo\\bar")),
-            "user(foo\\\\bar)");
+                "user(foo\\\\bar)");
     }
 
     @Test
@@ -118,7 +118,7 @@ public class ClientQuotasImageNodeTest {
     @Test
     public void testErrorOnInvalidEmptyEntityName() {
         assertEquals("Invalid empty entity",
-            assertThrows(RuntimeException.class, () -> ClientQuotasImageNode.
+                assertThrows(RuntimeException.class, () -> ClientQuotasImageNode.
                 clientQuotaEntityToString(new ClientQuotaEntity(Map.of()))).
                     getMessage());
     }
@@ -126,7 +126,7 @@ public class ClientQuotasImageNodeTest {
     @Test
     public void testErrorOnInvalidEntityType() {
         assertEquals("Invalid entity type foobar",
-            assertThrows(RuntimeException.class, () -> ClientQuotasImageNode.
+                assertThrows(RuntimeException.class, () -> ClientQuotasImageNode.
                 clientQuotaEntityToString(new ClientQuotaEntity(Map.of("foobar", "baz")))).
                     getMessage());
     }

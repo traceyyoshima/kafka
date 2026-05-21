@@ -61,16 +61,16 @@ public class TaskAssignmentTestUtil {
     public static Map.Entry<String, Set<Integer>> mkTasks(String subtopologyId,
                                                           Integer... tasks) {
         return new AbstractMap.SimpleEntry<>(
-            subtopologyId,
-            new HashSet<>(List.of(tasks))
+                subtopologyId,
+                new HashSet<>(List.of(tasks))
         );
     }
 
     public static Map.Entry<String, Map<Integer, Integer>> mkTasksWithEpochs(String subtopologyId,
                                                                              Map<Integer, Integer> tasks) {
         return new AbstractMap.SimpleEntry<>(
-            subtopologyId,
-            tasks
+                subtopologyId,
+                tasks
         );
     }
 

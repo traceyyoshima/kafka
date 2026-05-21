@@ -61,10 +61,10 @@ public class DescribeQuorumRequest extends AbstractRequest {
     public static DescribeQuorumRequestData singletonRequest(TopicPartition topicPartition) {
         return new DescribeQuorumRequestData()
             .setTopics(List.of(
-                new DescribeQuorumRequestData.TopicData()
+                    new DescribeQuorumRequestData.TopicData()
                     .setTopicName(topicPartition.topic())
                     .setPartitions(List.of(
-                        new DescribeQuorumRequestData.PartitionData()
+                            new DescribeQuorumRequestData.PartitionData()
                             .setPartitionIndex(topicPartition.partition()))
             )));
     }
@@ -86,10 +86,10 @@ public class DescribeQuorumRequest extends AbstractRequest {
         List<DescribeQuorumResponseData.TopicData> topicResponses = new ArrayList<>();
         for (DescribeQuorumRequestData.TopicData topic : data.topics()) {
             topicResponses.add(
-                new DescribeQuorumResponseData.TopicData()
+                    new DescribeQuorumResponseData.TopicData()
                     .setTopicName(topic.topicName())
                     .setPartitions(topic.partitions().stream().map(
-                        requestPartition -> new DescribeQuorumResponseData.PartitionData()
+                            requestPartition -> new DescribeQuorumResponseData.PartitionData()
                                                 .setPartitionIndex(requestPartition.partitionIndex())
                                                 .setErrorCode(errorCode)
                                                 .setErrorMessage(errorMessage)

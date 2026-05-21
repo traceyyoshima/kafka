@@ -76,7 +76,7 @@ public class MockProcessorContextTest {
             }
 
             @Override
-            public void close() { }
+            public void close() {}
         };
 
         final MockProcessorContext context = new MockProcessorContext();
@@ -112,7 +112,7 @@ public class MockProcessorContextTest {
             }
 
             @Override
-            public void close() { }
+            public void close() {}
         };
 
         final MockProcessorContext context = new MockProcessorContext();
@@ -156,7 +156,7 @@ public class MockProcessorContextTest {
             }
 
             @Override
-            public void close() { }
+            public void close() {}
         };
 
         final MockProcessorContext context = new MockProcessorContext();
@@ -225,7 +225,7 @@ public class MockProcessorContextTest {
             }
 
             @Override
-            public void close() { }
+            public void close() {}
         };
 
         final MockProcessorContext context = new MockProcessorContext();
@@ -266,13 +266,13 @@ public class MockProcessorContextTest {
             }
 
             @Override
-            public void close() { }
+            public void close() {}
         };
 
         final StoreBuilder<KeyValueStore<String, Long>> storeBuilder = Stores.keyValueStoreBuilder(
-            Stores.inMemoryKeyValueStore("my-state"),
-            Serdes.String(),
-            Serdes.Long()).withLoggingDisabled();
+                Stores.inMemoryKeyValueStore("my-state"),
+                Serdes.String(),
+                Serdes.Long()).withLoggingDisabled();
 
         final KeyValueStore<String, Long> store = storeBuilder.build();
 
@@ -286,12 +286,11 @@ public class MockProcessorContextTest {
         when(mockInternalProcessorContext.getStateStore(anyString())).thenAnswer(invocation -> {
                 final String name = invocation.getArgument(0);
                 return stateStores.get(name);
-            }
-        );
+        });
         when(mockInternalProcessorContext.metrics()).thenReturn(new StreamsMetricsImpl(
-            new Metrics(new MetricConfig()),
-            Thread.currentThread().getName(),
-            Time.SYSTEM
+                new Metrics(new MetricConfig()),
+                Thread.currentThread().getName(),
+                Time.SYSTEM
         ));
         when(mockInternalProcessorContext.taskId()).thenReturn(new TaskId(1, 1));
 
@@ -337,7 +336,7 @@ public class MockProcessorContextTest {
             }
 
             @Override
-            public void close() { }
+            public void close() {}
         };
 
         final MockProcessorContext context = new MockProcessorContext(config);
@@ -414,9 +413,9 @@ public class MockProcessorContextTest {
             @Override
             public void init(final ProcessorContext context) {
                 context.schedule(
-                    Duration.ofSeconds(1L),
-                    PunctuationType.WALL_CLOCK_TIME,
-                    timestamp -> context.commit()
+                        Duration.ofSeconds(1L),
+                        PunctuationType.WALL_CLOCK_TIME,
+                        timestamp -> context.commit()
                 );
             }
 
@@ -426,7 +425,7 @@ public class MockProcessorContextTest {
             }
 
             @Override
-            public void close() { }
+            public void close() {}
         };
 
         final MockProcessorContext context = new MockProcessorContext();
@@ -463,7 +462,7 @@ public class MockProcessorContextTest {
             }
 
             @Override
-            public void close() { }
+            public void close() {}
         };
 
         final MockProcessorContext context = new MockProcessorContext();

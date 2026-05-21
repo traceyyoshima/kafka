@@ -50,16 +50,16 @@ public final class Commands {
     static {
         TreeMap<String, Type> typesMap = new TreeMap<>();
         for (Type type : List.of(
-            CatCommandHandler.TYPE,
-            CdCommandHandler.TYPE,
-            ExitCommandHandler.TYPE,
-            FindCommandHandler.TYPE,
-            HelpCommandHandler.TYPE,
-            HistoryCommandHandler.TYPE,
-            LsCommandHandler.TYPE,
-            ManCommandHandler.TYPE,
-            PwdCommandHandler.TYPE,
-            TreeCommandHandler.TYPE
+                CatCommandHandler.TYPE,
+                CdCommandHandler.TYPE,
+                ExitCommandHandler.TYPE,
+                FindCommandHandler.TYPE,
+                HelpCommandHandler.TYPE,
+                HistoryCommandHandler.TYPE,
+                LsCommandHandler.TYPE,
+                ManCommandHandler.TYPE,
+                PwdCommandHandler.TYPE,
+                TreeCommandHandler.TYPE
         )) {
             typesMap.put(type.name(), type);
         }
@@ -85,10 +85,15 @@ public final class Commands {
      */
     public interface Type {
         String name();
+
         String description();
+
         boolean shellOnly();
+
         void addArguments(ArgumentParser parser);
+
         Handler createHandler(Namespace namespace);
+
         void completeNext(
             MetadataShellState nodeManager,
             List<String> nextWords,
@@ -151,7 +156,7 @@ public final class Commands {
         String command = namespace.get("command");
         if (!command.equals(trimmedArguments.get(0))) {
             return new ErroneousCommandHandler("invalid choice: '" +
-                trimmedArguments.get(0) + "': did you mean '" + command + "'?");
+                    trimmedArguments.get(0) + "': did you mean '" + command + "'?");
         }
         Type type = TYPES.get(command);
         if (type == null) {

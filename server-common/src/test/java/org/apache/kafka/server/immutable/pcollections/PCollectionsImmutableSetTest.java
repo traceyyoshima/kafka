@@ -224,7 +224,6 @@ public class PCollectionsImmutableSetTest {
             .doFunctionDelegationCheck();
     }
 
-
     @Test
     public void testDelegationOfStream() {
         new PCollectionsHashSetWrapperDelegationChecker<>()
@@ -263,7 +262,7 @@ public class PCollectionsImmutableSetTest {
         new PCollectionsHashSetWrapperDelegationChecker<>()
             .defineMockConfigurationForFunctionInvocation(MapPSet::toString, mockFunctionReturnValue)
             .defineWrapperFunctionInvocationAndMockReturnValueTransformation(PCollectionsImmutableSet::toString,
-                text -> "PCollectionsImmutableSet{underlying=" + text + "}")
+                    text -> "PCollectionsImmutableSet{underlying=" + text + "}")
             .doFunctionDelegationCheck();
     }
 }

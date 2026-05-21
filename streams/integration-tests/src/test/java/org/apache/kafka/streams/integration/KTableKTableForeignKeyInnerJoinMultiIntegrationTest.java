@@ -132,15 +132,15 @@ public class KTableKTableForeignKeyInnerJoinMultiIntegrationTest {
         CLUSTER.createTopic(OUTPUT, 11, 1);
 
         final List<KeyValue<Integer, Float>> table1 = asList(
-            new KeyValue<>(1, 1.33f),
-            new KeyValue<>(2, 2.22f),
-            new KeyValue<>(3, -1.22f), //Won't be joined in yet.
+                new KeyValue<>(1, 1.33f),
+                new KeyValue<>(2, 2.22f),
+                new KeyValue<>(3, -1.22f), //Won't be joined in yet.
             new KeyValue<>(4, -2.22f)  //Won't be joined in at all.
         );
 
         //Partitions pre-computed using the default Murmur2 hash, just to ensure that all 3 partitions will be exercised.
         final List<KeyValue<String, Long>> table2 = asList(
-            new KeyValue<>("0", 0L),  //partition 2
+                new KeyValue<>("0", 0L),  //partition 2
             new KeyValue<>("1", 10L), //partition 0
             new KeyValue<>("2", 20L), //partition 2
             new KeyValue<>("3", 30L), //partition 2
@@ -206,9 +206,9 @@ public class KTableKTableForeignKeyInnerJoinMultiIntegrationTest {
         startApplicationAndWaitUntilRunning(kafkaStreamsList, ofSeconds(120));
 
         final Set<KeyValue<Integer, String>> result = new HashSet<>(IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(
-            CONSUMER_CONFIG,
-            OUTPUT,
-            expectedResult.size()));
+                CONSUMER_CONFIG,
+                OUTPUT,
+                expectedResult.size()));
 
         assertEquals(expectedResult, result);
     }
@@ -232,19 +232,19 @@ public class KTableKTableForeignKeyInnerJoinMultiIntegrationTest {
         final StreamsBuilder builder = new StreamsBuilder();
 
         final KTable<Integer, Float> table1 = builder.table(
-            TABLE_1,
-            Consumed.with(serdeScope.decorateSerde(Serdes.Integer(), streamsConfig, true),
-                          serdeScope.decorateSerde(Serdes.Float(), streamsConfig, false))
+                TABLE_1,
+                Consumed.with(serdeScope.decorateSerde(Serdes.Integer(), streamsConfig, true),
+                    serdeScope.decorateSerde(Serdes.Float(), streamsConfig, false))
         );
         final KTable<String, Long> table2 = builder.table(
-            TABLE_2,
-            Consumed.with(serdeScope.decorateSerde(Serdes.String(), streamsConfig, true),
-                          serdeScope.decorateSerde(Serdes.Long(), streamsConfig, false))
+                TABLE_2,
+                Consumed.with(serdeScope.decorateSerde(Serdes.String(), streamsConfig, true),
+                    serdeScope.decorateSerde(Serdes.Long(), streamsConfig, false))
         );
         final KTable<Integer, String> table3 = builder.table(
-            TABLE_3,
-            Consumed.with(serdeScope.decorateSerde(Serdes.Integer(), streamsConfig, true),
-                          serdeScope.decorateSerde(Serdes.String(), streamsConfig, false))
+                TABLE_3,
+                Consumed.with(serdeScope.decorateSerde(Serdes.Integer(), streamsConfig, true),
+                    serdeScope.decorateSerde(Serdes.String(), streamsConfig, false))
         );
 
         final Materialized<Integer, String, KeyValueStore<Bytes, byte[]>> materialized;

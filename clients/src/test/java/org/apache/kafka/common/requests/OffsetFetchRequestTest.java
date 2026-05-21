@@ -38,18 +38,18 @@ public class OffsetFetchRequestTest {
     public void testWithMultipleGroups(short version) {
         var data = new OffsetFetchRequestData()
             .setGroups(List.of(
-                new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                    new OffsetFetchRequestData.OffsetFetchRequestGroup()
                     .setGroupId("grp1")
                     .setTopics(List.of(
-                        new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                            new OffsetFetchRequestData.OffsetFetchRequestTopics()
                             .setName("foo")
                             .setTopicId(Uuid.randomUuid())
                             .setPartitionIndexes(List.of(0, 1, 2))
                     )),
-                new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                    new OffsetFetchRequestData.OffsetFetchRequestGroup()
                     .setGroupId("grp2")
                     .setTopics(List.of(
-                        new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                            new OffsetFetchRequestData.OffsetFetchRequestTopics()
                             .setName("bar")
                             .setTopicId(Uuid.randomUuid())
                             .setPartitionIndexes(List.of(0, 1, 2))
@@ -68,19 +68,19 @@ public class OffsetFetchRequestTest {
     @ApiKeyVersionsSource(apiKey = ApiKeys.OFFSET_FETCH)
     public void testThrowOnFetchStableOffsetsUnsupported(short version) {
         var builder = OffsetFetchRequest.Builder.forTopicIdsOrNames(
-            new OffsetFetchRequestData()
+                new OffsetFetchRequestData()
                 .setRequireStable(true)
                 .setGroups(List.of(
-                    new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                        new OffsetFetchRequestData.OffsetFetchRequestGroup()
                         .setGroupId("grp1")
                         .setTopics(List.of(
-                            new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                                new OffsetFetchRequestData.OffsetFetchRequestTopics()
                                 .setName("foo")
                                 .setTopicId(Uuid.randomUuid())
                                 .setPartitionIndexes(List.of(0, 1, 2))
                         ))
                 )),
-            true
+                true
         );
 
         if (version < 7) {
@@ -95,10 +95,10 @@ public class OffsetFetchRequestTest {
     public void testSingleGroup(short version) {
         var data = new OffsetFetchRequestData()
             .setGroups(List.of(
-                new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                    new OffsetFetchRequestData.OffsetFetchRequestGroup()
                     .setGroupId("grp1")
                     .setTopics(List.of(
-                        new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                            new OffsetFetchRequestData.OffsetFetchRequestTopics()
                             .setName("foo")
                             .setTopicId(Uuid.randomUuid())
                             .setPartitionIndexes(List.of(0, 1, 2))
@@ -110,7 +110,7 @@ public class OffsetFetchRequestTest {
             var expectedRequest = new OffsetFetchRequestData()
                 .setGroupId("grp1")
                 .setTopics(List.of(
-                    new OffsetFetchRequestData.OffsetFetchRequestTopic()
+                        new OffsetFetchRequestData.OffsetFetchRequestTopic()
                         .setName("foo")
                         .setPartitionIndexes(List.of(0, 1, 2))
                 ));
@@ -125,7 +125,7 @@ public class OffsetFetchRequestTest {
     public void testSingleGroupWithAllTopics(short version) {
         var data = new OffsetFetchRequestData()
             .setGroups(List.of(
-                new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                    new OffsetFetchRequestData.OffsetFetchRequestGroup()
                     .setGroupId("grp1")
                     .setTopics(null)
             ));
@@ -147,34 +147,34 @@ public class OffsetFetchRequestTest {
     @ApiKeyVersionsSource(apiKey = ApiKeys.OFFSET_FETCH)
     public void testGetErrorResponse(short version) {
         var request = OffsetFetchRequest.Builder.forTopicIdsOrNames(
-            new OffsetFetchRequestData()
+                new OffsetFetchRequestData()
                 .setGroups(List.of(
-                    new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                        new OffsetFetchRequestData.OffsetFetchRequestGroup()
                         .setGroupId("grp1")
                         .setTopics(List.of(
-                            new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                                new OffsetFetchRequestData.OffsetFetchRequestTopics()
                                 .setName("foo")
                                 .setTopicId(Uuid.randomUuid())
                                 .setPartitionIndexes(List.of(0, 1))
                         ))
                 )),
-            false
+                false
         ).build(version);
 
         if (version < 2) {
             var expectedResponse = new OffsetFetchResponseData()
                 .setThrottleTimeMs(1000)
                 .setTopics(List.of(
-                    new OffsetFetchResponseData.OffsetFetchResponseTopic()
+                        new OffsetFetchResponseData.OffsetFetchResponseTopic()
                         .setName("foo")
                         .setPartitions(List.of(
-                            new OffsetFetchResponseData.OffsetFetchResponsePartition()
+                                new OffsetFetchResponseData.OffsetFetchResponsePartition()
                                 .setPartitionIndex(0)
                                 .setErrorCode(Errors.INVALID_GROUP_ID.code())
                                 .setCommittedOffset(OffsetFetchResponse.INVALID_OFFSET)
                                 .setMetadata(OffsetFetchResponse.NO_METADATA)
                                 .setCommittedLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH),
-                            new OffsetFetchResponseData.OffsetFetchResponsePartition()
+                                new OffsetFetchResponseData.OffsetFetchResponsePartition()
                                 .setPartitionIndex(1)
                                 .setErrorCode(Errors.INVALID_GROUP_ID.code())
                                 .setCommittedOffset(OffsetFetchResponse.INVALID_OFFSET)
@@ -192,7 +192,7 @@ public class OffsetFetchRequestTest {
             var expectedResponse = new OffsetFetchResponseData()
                 .setThrottleTimeMs(1000)
                 .setGroups(List.of(
-                    new OffsetFetchResponseData.OffsetFetchResponseGroup()
+                        new OffsetFetchResponseData.OffsetFetchResponseGroup()
                         .setGroupId("grp1")
                         .setErrorCode(Errors.INVALID_GROUP_ID.code())
                 ));
@@ -204,26 +204,26 @@ public class OffsetFetchRequestTest {
     @ApiKeyVersionsSource(apiKey = ApiKeys.OFFSET_FETCH)
     public void testGroups(short version) {
         var request = OffsetFetchRequest.Builder.forTopicIdsOrNames(
-            new OffsetFetchRequestData()
+                new OffsetFetchRequestData()
                 .setGroups(List.of(
-                    new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                        new OffsetFetchRequestData.OffsetFetchRequestGroup()
                         .setGroupId("grp1")
                         .setTopics(List.of(
-                            new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                                new OffsetFetchRequestData.OffsetFetchRequestTopics()
                                 .setName("foo")
                                 .setTopicId(Uuid.randomUuid())
                                 .setPartitionIndexes(List.of(0, 1, 2))
                         ))
                 )),
-            false
+                false
         ).build(version);
 
         if (version < 8) {
             var expectedGroups = List.of(
-                new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                    new OffsetFetchRequestData.OffsetFetchRequestGroup()
                     .setGroupId("grp1")
                     .setTopics(List.of(
-                        new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                            new OffsetFetchRequestData.OffsetFetchRequestTopics()
                             .setName("foo")
                             .setPartitionIndexes(List.of(0, 1, 2))
                     ))
@@ -238,18 +238,18 @@ public class OffsetFetchRequestTest {
     @ApiKeyVersionsSource(apiKey = ApiKeys.OFFSET_FETCH, fromVersion = 2)
     public void testGroupsWithAllTopics(short version) {
         var request = OffsetFetchRequest.Builder.forTopicIdsOrNames(
-            new OffsetFetchRequestData()
+                new OffsetFetchRequestData()
                 .setGroups(List.of(
-                    new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                        new OffsetFetchRequestData.OffsetFetchRequestGroup()
                         .setGroupId("grp1")
                         .setTopics(null)
                 )),
-            false
+                false
         ).build(version);
 
         if (version < 8) {
             var expectedGroups = List.of(
-                new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                    new OffsetFetchRequestData.OffsetFetchRequestGroup()
                     .setGroupId("grp1")
                     .setTopics(null)
             );

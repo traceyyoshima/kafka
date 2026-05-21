@@ -136,7 +136,7 @@ public final class SnapshotWriterReaderTest {
         try (SnapshotWriter<String> snapshot = context.client.createSnapshot(id, 0).get()) {
             assertEquals(id, snapshot.snapshotId());
             expected.forEach(batch ->
-                assertDoesNotThrow(() -> snapshot.append(batch))
+                    assertDoesNotThrow(() -> snapshot.append(batch))
             );
         }
 
@@ -163,7 +163,7 @@ public final class SnapshotWriterReaderTest {
         try (SnapshotWriter<String> snapshot = context.client.createSnapshot(id, 0).get()) {
             assertEquals(id, snapshot.snapshotId());
             expected.forEach(batch ->
-                assertDoesNotThrow(() -> snapshot.append(batch))
+                    assertDoesNotThrow(() -> snapshot.append(batch))
             );
 
             snapshot.freeze();
@@ -192,12 +192,12 @@ public final class SnapshotWriterReaderTest {
         int maxBatchSize
     ) {
         return RecordsSnapshotReader.of(
-            context.log.readSnapshot(snapshotId).get(),
-            context.serde,
-            BufferSupplier.create(),
-            maxBatchSize,
-            true,
-            new LogContext()
+                context.log.readSnapshot(snapshotId).get(),
+                context.serde,
+                BufferSupplier.create(),
+                maxBatchSize,
+                true,
+                new LogContext()
         );
     }
 
@@ -250,14 +250,14 @@ public final class SnapshotWriterReaderTest {
 
     public static void assertDataSnapshot(List<List<String>> batches, RawSnapshotReader reader) {
         assertDataSnapshot(
-            batches,
-            RecordsSnapshotReader.of(
-                reader,
-                new StringSerde(),
-                BufferSupplier.create(),
-                Integer.MAX_VALUE,
-                true,
-                new LogContext()
+                batches,
+                RecordsSnapshotReader.of(
+                    reader,
+                    new StringSerde(),
+                    BufferSupplier.create(),
+                    Integer.MAX_VALUE,
+                    true,
+                    new LogContext()
             )
         );
     }

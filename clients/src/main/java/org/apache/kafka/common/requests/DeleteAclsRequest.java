@@ -84,9 +84,9 @@ public class DeleteAclsRequest extends AbstractRequest {
 
         final boolean unknown = data.filters().stream().anyMatch(filter ->
                 filter.patternTypeFilter() == PatternType.UNKNOWN.code()
-                        || filter.resourceTypeFilter() == ResourceType.UNKNOWN.code()
-                        || filter.operation() == AclOperation.UNKNOWN.code()
-                        || filter.permissionType() == AclPermissionType.UNKNOWN.code()
+                || filter.resourceTypeFilter() == ResourceType.UNKNOWN.code()
+                || filter.operation() == AclOperation.UNKNOWN.code()
+                || filter.permissionType() == AclPermissionType.UNKNOWN.code()
         );
 
         if (unknown) {
@@ -107,7 +107,7 @@ public class DeleteAclsRequest extends AbstractRequest {
     public AbstractResponse getErrorResponse(int throttleTimeMs, Throwable throwable) {
         ApiError apiError = ApiError.fromThrowable(throwable);
         List<DeleteAclsFilterResult> filterResults = Collections.nCopies(data.filters().size(),
-            new DeleteAclsResponseData.DeleteAclsFilterResult()
+                new DeleteAclsResponseData.DeleteAclsFilterResult()
                 .setErrorCode(apiError.error().code())
                 .setErrorMessage(apiError.message()));
         return new DeleteAclsResponse(new DeleteAclsResponseData()
@@ -132,14 +132,14 @@ public class DeleteAclsRequest extends AbstractRequest {
 
     private static AclBindingFilter aclBindingFilter(DeleteAclsFilter filter) {
         ResourcePatternFilter patternFilter = new ResourcePatternFilter(
-            ResourceType.fromCode(filter.resourceTypeFilter()),
-            filter.resourceNameFilter(),
-            PatternType.fromCode(filter.patternTypeFilter()));
+                ResourceType.fromCode(filter.resourceTypeFilter()),
+                filter.resourceNameFilter(),
+                PatternType.fromCode(filter.patternTypeFilter()));
         AccessControlEntryFilter entryFilter = new AccessControlEntryFilter(
-            filter.principalFilter(),
-            filter.hostFilter(),
-            AclOperation.fromCode(filter.operation()),
-            AclPermissionType.fromCode(filter.permissionType()));
+                filter.principalFilter(),
+                filter.hostFilter(),
+                AclOperation.fromCode(filter.operation()),
+                AclPermissionType.fromCode(filter.permissionType()));
         return new AclBindingFilter(patternFilter, entryFilter);
     }
 }

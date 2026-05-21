@@ -114,7 +114,6 @@ public class KTableFilter<KIn, VIn> implements KTableProcessorSupplier<KIn, VIn,
         return newValueTimestampHeaders;
     }
 
-
     private class KTableFilterProcessor implements Processor<KIn, Change<VIn>, KIn, Change<VIn>> {
         private ProcessorContext<KIn, Change<VIn>> context;
         private KeyValueStoreWrapper<KIn, VIn> store;
@@ -126,10 +125,10 @@ public class KTableFilter<KIn, VIn> implements KTableProcessorSupplier<KIn, VIn,
             if (queryableName != null) {
                 store = new KeyValueStoreWrapper<>(context, queryableName);
                 tupleForwarder = new TimestampedTupleForwarder<>(
-                    store.store(),
-                    context,
-                    store.isHeadersStore() ? new TimestampedCacheFlushListenerWithHeaders<>(context) : new TimestampedCacheFlushListener<>(context),
-                    sendOldValues);
+                        store.store(),
+                        context,
+                        store.isHeadersStore() ? new TimestampedCacheFlushListenerWithHeaders<>(context) : new TimestampedCacheFlushListener<>(context),
+                        sendOldValues);
             }
         }
 
@@ -190,7 +189,6 @@ public class KTableFilter<KIn, VIn> implements KTableProcessorSupplier<KIn, VIn,
             };
         }
     }
-
 
     private class KTableFilterValueGetter implements KTableValueGetter<KIn, VIn> {
         private final KTableValueGetter<KIn, VIn> parentGetter;

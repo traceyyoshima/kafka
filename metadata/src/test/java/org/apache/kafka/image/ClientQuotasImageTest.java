@@ -84,18 +84,18 @@ public class ClientQuotasImageTest {
     @ValueSource(strings = {ClientQuotaEntity.USER, ClientQuotaEntity.CLIENT_ID, ClientQuotaEntity.IP})
     public void testDescribeWithNonStrictExactMatch(String entityType) {
         Map<ClientQuotaEntity, ClientQuotaImage> entities = Map.of(
-            new ClientQuotaEntity(Map.of(ClientQuotaEntity.USER, "foo", ClientQuotaEntity.CLIENT_ID, "baz")), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 100.0)),
-            new ClientQuotaEntity(Map.of(ClientQuotaEntity.USER, "bar", ClientQuotaEntity.CLIENT_ID, "baz")), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 200.0)),
-            new ClientQuotaEntity(Map.of(ClientQuotaEntity.CLIENT_ID, "foo", ClientQuotaEntity.USER, "baz")), new ClientQuotaImage(Map.of(QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, 100.0)),
-            new ClientQuotaEntity(Map.of(ClientQuotaEntity.CLIENT_ID, "bar", ClientQuotaEntity.USER, "baz")), new ClientQuotaImage(Map.of(QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, 200.0)),
-            new ClientQuotaEntity(Map.of(ClientQuotaEntity.IP, "foo", ClientQuotaEntity.USER, "baz")), new ClientQuotaImage(Map.of(QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, 10.0)),
-            new ClientQuotaEntity(Map.of(ClientQuotaEntity.IP, "bar", ClientQuotaEntity.USER, "baz")), new ClientQuotaImage(Map.of(QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, 20.0))
+                new ClientQuotaEntity(Map.of(ClientQuotaEntity.USER, "foo", ClientQuotaEntity.CLIENT_ID, "baz")), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 100.0)),
+                new ClientQuotaEntity(Map.of(ClientQuotaEntity.USER, "bar", ClientQuotaEntity.CLIENT_ID, "baz")), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 200.0)),
+                new ClientQuotaEntity(Map.of(ClientQuotaEntity.CLIENT_ID, "foo", ClientQuotaEntity.USER, "baz")), new ClientQuotaImage(Map.of(QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, 100.0)),
+                new ClientQuotaEntity(Map.of(ClientQuotaEntity.CLIENT_ID, "bar", ClientQuotaEntity.USER, "baz")), new ClientQuotaImage(Map.of(QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, 200.0)),
+                new ClientQuotaEntity(Map.of(ClientQuotaEntity.IP, "foo", ClientQuotaEntity.USER, "baz")), new ClientQuotaImage(Map.of(QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, 10.0)),
+                new ClientQuotaEntity(Map.of(ClientQuotaEntity.IP, "bar", ClientQuotaEntity.USER, "baz")), new ClientQuotaImage(Map.of(QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, 20.0))
         );
         ClientQuotasImage image = new ClientQuotasImage(entities);
 
         DescribeClientQuotasRequestData request = new DescribeClientQuotasRequestData()
             .setComponents(List.of(
-                new DescribeClientQuotasRequestData.ComponentData()
+                    new DescribeClientQuotasRequestData.ComponentData()
                     .setEntityType(entityType)
                     .setMatchType(MATCH_TYPE_EXACT)
                     .setMatch("foo")));
@@ -110,7 +110,7 @@ public class ClientQuotasImageTest {
 
         request = new DescribeClientQuotasRequestData()
             .setComponents(List.of(
-                new DescribeClientQuotasRequestData.ComponentData()
+                    new DescribeClientQuotasRequestData.ComponentData()
                     .setEntityType(entityType)
                     .setMatchType(MATCH_TYPE_EXACT)
                     .setMatch("nonexistent")));
@@ -121,9 +121,9 @@ public class ClientQuotasImageTest {
     @Test
     public void testDescribeWithStrictMode() {
         Map<ClientQuotaEntity, ClientQuotaImage> entities = Map.of(
-            new ClientQuotaEntity(Map.of(ClientQuotaEntity.USER, "foo", ClientQuotaEntity.CLIENT_ID, "id1")), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 100.0)),
-            new ClientQuotaEntity(Map.of(ClientQuotaEntity.USER, "foo", ClientQuotaEntity.CLIENT_ID, "id1", ClientQuotaEntity.IP, "ip")), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 200.0)),
-            new ClientQuotaEntity(Map.of(ClientQuotaEntity.USER, "bar", ClientQuotaEntity.CLIENT_ID, "id2")), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 300.0))
+                new ClientQuotaEntity(Map.of(ClientQuotaEntity.USER, "foo", ClientQuotaEntity.CLIENT_ID, "id1")), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 100.0)),
+                new ClientQuotaEntity(Map.of(ClientQuotaEntity.USER, "foo", ClientQuotaEntity.CLIENT_ID, "id1", ClientQuotaEntity.IP, "ip")), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 200.0)),
+                new ClientQuotaEntity(Map.of(ClientQuotaEntity.USER, "bar", ClientQuotaEntity.CLIENT_ID, "id2")), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 300.0))
         );
         ClientQuotasImage image = new ClientQuotasImage(entities);
 
@@ -131,11 +131,11 @@ public class ClientQuotasImageTest {
         DescribeClientQuotasRequestData allExactMatchRequest = new DescribeClientQuotasRequestData()
             .setStrict(true)
             .setComponents(List.of(
-                new DescribeClientQuotasRequestData.ComponentData()
+                    new DescribeClientQuotasRequestData.ComponentData()
                     .setEntityType(ClientQuotaEntity.USER)
                     .setMatchType(MATCH_TYPE_EXACT)
                     .setMatch("foo"),
-                new DescribeClientQuotasRequestData.ComponentData()
+                    new DescribeClientQuotasRequestData.ComponentData()
                     .setEntityType(ClientQuotaEntity.CLIENT_ID)
                     .setMatchType(MATCH_TYPE_EXACT)
                     .setMatch("id1")
@@ -154,11 +154,11 @@ public class ClientQuotasImageTest {
         DescribeClientQuotasRequestData allTypeMatchRequest = new DescribeClientQuotasRequestData()
             .setStrict(true)
             .setComponents(List.of(
-                new DescribeClientQuotasRequestData.ComponentData()
+                    new DescribeClientQuotasRequestData.ComponentData()
                     .setEntityType(ClientQuotaEntity.USER)
                     .setMatchType(MATCH_TYPE_SPECIFIED)
                     .setMatch(null),
-                new DescribeClientQuotasRequestData.ComponentData()
+                    new DescribeClientQuotasRequestData.ComponentData()
                     .setEntityType(ClientQuotaEntity.CLIENT_ID)
                     .setMatchType(MATCH_TYPE_SPECIFIED)
                     .setMatch(null)
@@ -175,11 +175,11 @@ public class ClientQuotasImageTest {
         DescribeClientQuotasRequestData exactAndMatchTypeRequest = new DescribeClientQuotasRequestData()
             .setStrict(true)
             .setComponents(List.of(
-                new DescribeClientQuotasRequestData.ComponentData()
+                    new DescribeClientQuotasRequestData.ComponentData()
                     .setEntityType(ClientQuotaEntity.USER)
                     .setMatchType(MATCH_TYPE_EXACT)
                     .setMatch("foo"),
-                new DescribeClientQuotasRequestData.ComponentData()
+                    new DescribeClientQuotasRequestData.ComponentData()
                     .setEntityType(ClientQuotaEntity.CLIENT_ID)
                     .setMatchType(MATCH_TYPE_SPECIFIED)
                     .setMatch(null)
@@ -198,14 +198,14 @@ public class ClientQuotasImageTest {
     @Test
     public void testDescribeWithNonStrictTypeMatch() {
         Map<ClientQuotaEntity, ClientQuotaImage> entities = Map.of(
-            new ClientQuotaEntity(Map.of(ClientQuotaEntity.USER, "foo", ClientQuotaEntity.CLIENT_ID, "id")), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 100.0)),
-            new ClientQuotaEntity(Map.of(ClientQuotaEntity.USER, "bar", ClientQuotaEntity.IP, "ip")), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 200.0)),
-            new ClientQuotaEntity(Map.of(ClientQuotaEntity.IP, "ip", ClientQuotaEntity.CLIENT_ID, "id")), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 200.0))
+                new ClientQuotaEntity(Map.of(ClientQuotaEntity.USER, "foo", ClientQuotaEntity.CLIENT_ID, "id")), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 100.0)),
+                new ClientQuotaEntity(Map.of(ClientQuotaEntity.USER, "bar", ClientQuotaEntity.IP, "ip")), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 200.0)),
+                new ClientQuotaEntity(Map.of(ClientQuotaEntity.IP, "ip", ClientQuotaEntity.CLIENT_ID, "id")), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 200.0))
         );
         ClientQuotasImage image = new ClientQuotasImage(entities);
         DescribeClientQuotasRequestData request = new DescribeClientQuotasRequestData()
             .setComponents(List.of(
-                new DescribeClientQuotasRequestData.ComponentData()
+                    new DescribeClientQuotasRequestData.ComponentData()
                     .setEntityType(ClientQuotaEntity.USER)
                     .setMatchType(MATCH_TYPE_SPECIFIED)
                     .setMatch(null)
@@ -224,14 +224,14 @@ public class ClientQuotasImageTest {
         Map<String, String> defaultEntity = new HashMap<>();
         defaultEntity.put(entityType, null);
         Map<ClientQuotaEntity, ClientQuotaImage> entities = Map.of(
-            new ClientQuotaEntity(defaultEntity), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 100.0)),
-            new ClientQuotaEntity(Map.of(entityType, "foo")), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 200.0))
+                new ClientQuotaEntity(defaultEntity), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 100.0)),
+                new ClientQuotaEntity(Map.of(entityType, "foo")), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 200.0))
         );
         ClientQuotasImage image = new ClientQuotasImage(entities);
 
         DescribeClientQuotasRequestData request = new DescribeClientQuotasRequestData()
             .setComponents(List.of(
-                new DescribeClientQuotasRequestData.ComponentData()
+                    new DescribeClientQuotasRequestData.ComponentData()
                     .setEntityType(entityType)
                     .setMatchType(MATCH_TYPE_DEFAULT)
                     .setMatch(null)
@@ -250,7 +250,7 @@ public class ClientQuotasImageTest {
 
         DescribeClientQuotasRequestData request = new DescribeClientQuotasRequestData()
             .setComponents(List.of(
-                new DescribeClientQuotasRequestData.ComponentData()
+                    new DescribeClientQuotasRequestData.ComponentData()
                     .setEntityType(entityType)
                     .setMatchType(MATCH_TYPE_DEFAULT)
                     .setMatch(null)
@@ -263,9 +263,9 @@ public class ClientQuotasImageTest {
     @Test
     public void testDescribeNonStrictEmptyRequest() {
         Map<ClientQuotaEntity, ClientQuotaImage> entities = Map.of(
-            new ClientQuotaEntity(Map.of(ClientQuotaEntity.USER, "foo")), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 100.0)),
-            new ClientQuotaEntity(Map.of(ClientQuotaEntity.CLIENT_ID, "bar")), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 200.0)),
-            new ClientQuotaEntity(Map.of(ClientQuotaEntity.IP, "baz")), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 300.0))
+                new ClientQuotaEntity(Map.of(ClientQuotaEntity.USER, "foo")), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 100.0)),
+                new ClientQuotaEntity(Map.of(ClientQuotaEntity.CLIENT_ID, "bar")), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 200.0)),
+                new ClientQuotaEntity(Map.of(ClientQuotaEntity.IP, "baz")), new ClientQuotaImage(Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 300.0))
         );
         ClientQuotasImage image = new ClientQuotasImage(entities);
         DescribeClientQuotasRequestData request = new DescribeClientQuotasRequestData()
@@ -280,7 +280,7 @@ public class ClientQuotasImageTest {
     public void testDescribeWithEmptyEntityType() {
         DescribeClientQuotasRequestData request = new DescribeClientQuotasRequestData()
             .setComponents(List.of(
-                new DescribeClientQuotasRequestData.ComponentData()
+                    new DescribeClientQuotasRequestData.ComponentData()
                     .setEntityType("")
                     .setMatchType(MATCH_TYPE_EXACT)
                     .setMatch("foo")));
@@ -293,11 +293,11 @@ public class ClientQuotasImageTest {
     public void testDescribeWithDuplicateEntityType() {
         DescribeClientQuotasRequestData request = new DescribeClientQuotasRequestData()
             .setComponents(List.of(
-                new DescribeClientQuotasRequestData.ComponentData()
+                    new DescribeClientQuotasRequestData.ComponentData()
                     .setEntityType(ClientQuotaEntity.USER)
                     .setMatchType(MATCH_TYPE_EXACT)
                     .setMatch("foo"),
-                new DescribeClientQuotasRequestData.ComponentData()
+                    new DescribeClientQuotasRequestData.ComponentData()
                     .setEntityType(ClientQuotaEntity.USER)
                     .setMatchType(MATCH_TYPE_SPECIFIED)));
 
@@ -309,7 +309,7 @@ public class ClientQuotasImageTest {
     public void testDescribeWithExactMatchNullMatch() {
         DescribeClientQuotasRequestData request = new DescribeClientQuotasRequestData()
             .setComponents(List.of(
-                new DescribeClientQuotasRequestData.ComponentData()
+                    new DescribeClientQuotasRequestData.ComponentData()
                     .setEntityType(ClientQuotaEntity.USER)
                     .setMatchType(MATCH_TYPE_EXACT)
                     .setMatch(null)));
@@ -322,7 +322,7 @@ public class ClientQuotasImageTest {
     public void testDescribeWithDefaultMatchNonNullMatch() {
         DescribeClientQuotasRequestData request = new DescribeClientQuotasRequestData()
             .setComponents(List.of(
-                new DescribeClientQuotasRequestData.ComponentData()
+                    new DescribeClientQuotasRequestData.ComponentData()
                     .setEntityType(ClientQuotaEntity.USER)
                     .setMatchType(MATCH_TYPE_DEFAULT)
                     .setMatch("foo")));
@@ -335,7 +335,7 @@ public class ClientQuotasImageTest {
     public void testDescribeWithSpecifiedMatchNonNullMatch() {
         DescribeClientQuotasRequestData request = new DescribeClientQuotasRequestData()
             .setComponents(List.of(
-                new DescribeClientQuotasRequestData.ComponentData()
+                    new DescribeClientQuotasRequestData.ComponentData()
                     .setEntityType(ClientQuotaEntity.USER)
                     .setMatchType(MATCH_TYPE_SPECIFIED)
                     .setMatch("foo")));
@@ -348,7 +348,7 @@ public class ClientQuotasImageTest {
     public void testDescribeWithUnknownMatchType() {
         DescribeClientQuotasRequestData request = new DescribeClientQuotasRequestData()
             .setComponents(List.of(
-                new DescribeClientQuotasRequestData.ComponentData()
+                    new DescribeClientQuotasRequestData.ComponentData()
                     .setEntityType(ClientQuotaEntity.USER)
                     .setMatchType((byte) 99)));
 
@@ -361,11 +361,11 @@ public class ClientQuotasImageTest {
     public void testDescribeWithIpAndOtherTypeCombination(String entityType) {
         DescribeClientQuotasRequestData request = new DescribeClientQuotasRequestData()
             .setComponents(List.of(
-                new DescribeClientQuotasRequestData.ComponentData()
+                    new DescribeClientQuotasRequestData.ComponentData()
                     .setEntityType(ClientQuotaEntity.IP)
                     .setMatchType(MATCH_TYPE_EXACT)
                     .setMatch("127.0.0.1"),
-                new DescribeClientQuotasRequestData.ComponentData()
+                    new DescribeClientQuotasRequestData.ComponentData()
                     .setEntityType(entityType)
                     .setMatchType(MATCH_TYPE_EXACT)
                     .setMatch("foo")));
@@ -385,8 +385,8 @@ public class ClientQuotasImageTest {
     private static void testToImage(ClientQuotasImage image, List<ApiMessageAndVersion> fromRecords) {
         // test from empty image stopping each of the various intermediate images along the way
         new RecordTestUtils.TestThroughAllIntermediateImagesLeadingToFinalImageHelper<>(
-            () -> ClientQuotasImage.EMPTY,
-            ClientQuotasDelta::new
+                () -> ClientQuotasImage.EMPTY,
+                ClientQuotasDelta::new
         ).test(image, fromRecords);
     }
 

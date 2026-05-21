@@ -73,6 +73,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public final class MockRaftClient implements RaftClient<ApiMessageAndVersion>, AutoCloseable {
     interface LocalBatch {
         int epoch();
+
         int size();
     }
 
@@ -136,8 +137,8 @@ public final class MockRaftClient implements RaftClient<ApiMessageAndVersion>, A
             if (!(o instanceof LocalRecordBatch other)) return false;
 
             return leaderEpoch == other.leaderEpoch &&
-                appendTimestamp == other.appendTimestamp &&
-                Objects.equals(records, other.records);
+                    appendTimestamp == other.appendTimestamp &&
+                    Objects.equals(records, other.records);
         }
 
         @Override
@@ -148,10 +149,10 @@ public final class MockRaftClient implements RaftClient<ApiMessageAndVersion>, A
         @Override
         public String toString() {
             return String.format(
-                "LocalRecordBatch(leaderEpoch=%s, appendTimestamp=%s, records=%s)",
-                leaderEpoch,
-                appendTimestamp,
-                records
+                    "LocalRecordBatch(leaderEpoch=%s, appendTimestamp=%s, records=%s)",
+                    leaderEpoch,
+                    appendTimestamp,
+                    records
             );
         }
     }
@@ -203,7 +204,7 @@ public final class MockRaftClient implements RaftClient<ApiMessageAndVersion>, A
         synchronized void registerRaftClient(MockRaftClient raftClient) {
             if (raftClients.put(raftClient.nodeId, raftClient) != null) {
                 throw new RuntimeException("Can't have multiple MockRaftClients " +
-                    "with id " + raftClient.nodeId());
+                        "with id " + raftClient.nodeId());
             }
             electLeaderIfNeeded();
         }
@@ -211,7 +212,7 @@ public final class MockRaftClient implements RaftClient<ApiMessageAndVersion>, A
         synchronized void unregisterRaftClient(MockRaftClient raftClient) {
             if (!raftClients.remove(raftClient.nodeId, raftClient)) {
                 throw new RuntimeException("MockRaftClient " + raftClient.nodeId() +
-                    " was not found.");
+                        " was not found.");
             }
         }
 
@@ -314,9 +315,9 @@ public final class MockRaftClient implements RaftClient<ApiMessageAndVersion>, A
         synchronized void addSnapshot(RawSnapshotReader newSnapshot) {
             if (newSnapshot.snapshotId().offset() - 1 > prevOffset) {
                 log.error(
-                    "Ignored attempt to add a snapshot {} that is greater than the latest offset {}",
-                    newSnapshot,
-                    prevOffset
+                        "Ignored attempt to add a snapshot {} that is greater than the latest offset {}",
+                        newSnapshot,
+                        prevOffset
                 );
             } else {
                 snapshots.put(newSnapshot.snapshotId().offset() - 1, newSnapshot);
@@ -477,13 +478,13 @@ public final class MockRaftClient implements RaftClient<ApiMessageAndVersion>, A
                             if (snapshot.isPresent()) {
                                 log.trace("Node {}: handling snapshot with id {}.", nodeId, snapshot.get().snapshotId());
                                 listenerData.handleLoadSnapshot(
-                                    RecordsSnapshotReader.of(
-                                        snapshot.get(),
-                                        MetadataRecordSerde.INSTANCE,
-                                        BufferSupplier.create(),
-                                        Integer.MAX_VALUE,
-                                        true,
-                                        logContext
+                                        RecordsSnapshotReader.of(
+                                            snapshot.get(),
+                                            MetadataRecordSerde.INSTANCE,
+                                            BufferSupplier.create(),
+                                            Integer.MAX_VALUE,
+                                            true,
+                                            logContext
                                     )
                                 );
                             }
@@ -492,24 +493,24 @@ public final class MockRaftClient implements RaftClient<ApiMessageAndVersion>, A
                         Entry<Long, LocalBatch> entry = shared.nextBatch(listenerData.offset());
                         if (entry == null) {
                             log.trace("Node {}: reached the end of the log after finding " +
-                                "{} entries.", nodeId, numEntriesFound);
+                                    "{} entries.", nodeId, numEntriesFound);
                             break;
                         }
                         long entryOffset = entry.getKey();
                         if (entryOffset > maxReadOffset) {
                             log.trace("Node {}: after {} entries, not reading the next " +
-                                "entry because its offset is {}, and maxReadOffset is {}.",
-                                nodeId, numEntriesFound, entryOffset, maxReadOffset);
+                                    "entry because its offset is {}, and maxReadOffset is {}.",
+                                    nodeId, numEntriesFound, entryOffset, maxReadOffset);
                             break;
                         }
                         if (entry.getValue() instanceof LeaderChangeBatch batch) {
                             log.trace("Node {}: handling LeaderChange to {}.",
-                                nodeId, batch.newLeader);
+                                    nodeId, batch.newLeader);
                             // Only notify the listener if it equals the shared leader state
                             LeaderAndEpoch sharedLeader = shared.leaderAndEpoch();
                             if (batch.newLeader.equals(sharedLeader)) {
                                 log.debug("Node {}: Executing handleLeaderChange {}",
-                                    nodeId, sharedLeader);
+                                        nodeId, sharedLeader);
                                 if (batch.newLeader.epoch() > leader.epoch()) {
                                     leader = batch.newLeader;
                                 }
@@ -521,25 +522,25 @@ public final class MockRaftClient implements RaftClient<ApiMessageAndVersion>, A
                             }
                         } else if (entry.getValue() instanceof LocalRecordBatch batch) {
                             log.trace("Node {}: handling LocalRecordBatch with offset {}.",
-                                nodeId, entryOffset);
+                                    nodeId, entryOffset);
                             ObjectSerializationCache objectCache = new ObjectSerializationCache();
 
                             listenerData.handleCommit(
-                                MemoryBatchReader.of(
-                                    List.of(
-                                        Batch.data(
-                                            entryOffset - batch.records.size() + 1,
-                                            batch.leaderEpoch,
-                                            batch.appendTimestamp,
-                                            batch
+                                    MemoryBatchReader.of(
+                                        List.of(
+                                            Batch.data(
+                                                entryOffset - batch.records.size() + 1,
+                                                batch.leaderEpoch,
+                                                batch.appendTimestamp,
+                                                batch
                                                 .records
                                                 .stream()
                                                 .mapToInt(record -> messageSize(record, objectCache))
                                                 .sum(),
-                                            batch.records
+                                                batch.records
                                         )
                                     ),
-                                    reader -> { }
+                                        reader -> {}
                                 )
                             );
                         }
@@ -617,7 +618,7 @@ public final class MockRaftClient implements RaftClient<ApiMessageAndVersion>, A
         eventQueue.append(() -> {
             if (shutdown) {
                 log.info("Node {}: can't register because raft client has " +
-                    "already been shut down.", nodeId);
+                        "already been shut down.", nodeId);
                 future.complete(null);
             } else {
                 int id = System.identityHashCode(listener);
@@ -683,7 +684,7 @@ public final class MockRaftClient implements RaftClient<ApiMessageAndVersion>, A
     }
 
     @Override
-    public void schedulePreparedAppend() { }
+    public void schedulePreparedAppend() {}
 
     @Override
     public void resign(int epoch) {
@@ -725,7 +726,7 @@ public final class MockRaftClient implements RaftClient<ApiMessageAndVersion>, A
         long lastContainedLogTimestamp
     ) {
         return Optional.of(
-            new RecordsSnapshotWriter.Builder()
+                new RecordsSnapshotWriter.Builder()
                 .setLastContainedLogTimestamp(lastContainedLogTimestamp)
                 .setTime(new MockTime())
                 .setRawSnapshotWriter(createNewSnapshot(snapshotId))
@@ -735,8 +736,8 @@ public final class MockRaftClient implements RaftClient<ApiMessageAndVersion>, A
 
     private RawSnapshotWriter createNewSnapshot(OffsetAndEpoch snapshotId) {
         return new MockRawSnapshotWriter(
-            snapshotId,
-            buffer -> shared.addSnapshot(new MockRawSnapshotReader(snapshotId, buffer))
+                snapshotId,
+                buffer -> shared.addSnapshot(new MockRawSnapshotReader(snapshotId, buffer))
         );
     }
 
@@ -768,7 +769,7 @@ public final class MockRaftClient implements RaftClient<ApiMessageAndVersion>, A
     public List<RaftClient.Listener<ApiMessageAndVersion>> listeners() {
         final CompletableFuture<List<RaftClient.Listener<ApiMessageAndVersion>>> future = new CompletableFuture<>();
         eventQueue.append(() ->
-            future.complete(listeners.values().stream().map(l -> l.listener).toList())
+                future.complete(listeners.values().stream().map(l -> l.listener).toList())
         );
         try {
             return future.get();

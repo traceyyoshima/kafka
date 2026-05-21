@@ -34,12 +34,12 @@ public class ConfiguredSubtopologyTest {
     @Test
     public void testConstructorWithNullSourceTopics() {
         assertThrows(NullPointerException.class,
-            () -> new ConfiguredSubtopology(
-                2,
-                null,
-                Map.of(),
-                Set.of(),
-                Map.of()
+                () -> new ConfiguredSubtopology(
+                    2,
+                    null,
+                    Map.of(),
+                    Set.of(),
+                    Map.of()
             )
         );
     }
@@ -47,12 +47,12 @@ public class ConfiguredSubtopologyTest {
     @Test
     public void testConstructorWithNullRepartitionSourceTopics() {
         assertThrows(NullPointerException.class,
-            () -> new ConfiguredSubtopology(
-                2,
-                Set.of(),
-                null,
-                Set.of(),
-                Map.of()
+                () -> new ConfiguredSubtopology(
+                    2,
+                    Set.of(),
+                    null,
+                    Set.of(),
+                    Map.of()
             )
         );
     }
@@ -60,12 +60,12 @@ public class ConfiguredSubtopologyTest {
     @Test
     public void testConstructorWithNullRepartitionSinkTopics() {
         assertThrows(NullPointerException.class,
-            () -> new ConfiguredSubtopology(
-                2,
-                Set.of(),
-                Map.of(),
-                null,
-                Map.of()
+                () -> new ConfiguredSubtopology(
+                    2,
+                    Set.of(),
+                    Map.of(),
+                    null,
+                    Map.of()
             )
         );
     }
@@ -73,12 +73,12 @@ public class ConfiguredSubtopologyTest {
     @Test
     public void testConstructorWithNullStateChangelogTopics() {
         assertThrows(NullPointerException.class,
-            () -> new ConfiguredSubtopology(
-                2,
-                Set.of(),
-                Map.of(),
-                Set.of(),
-                null
+                () -> new ConfiguredSubtopology(
+                    2,
+                    Set.of(),
+                    Map.of(),
+                    Set.of(),
+                    null
             )
         );
     }
@@ -86,12 +86,12 @@ public class ConfiguredSubtopologyTest {
     @Test
     public void testConstructorWithNegativeTaskCount() {
         assertThrows(IllegalArgumentException.class,
-            () -> new ConfiguredSubtopology(
-                -1,
-                Set.of(),
-                Map.of(),
-                Set.of(),
-                Map.of()
+                () -> new ConfiguredSubtopology(
+                    -1,
+                    Set.of(),
+                    Map.of(),
+                    Set.of(),
+                    Map.of()
             )
         );
     }
@@ -107,7 +107,7 @@ public class ConfiguredSubtopologyTest {
         Map<String, ConfiguredInternalTopic> repartitionSourceTopics = Map.of("repartitionSourceTopic1", internalTopicMock);
         Map<String, ConfiguredInternalTopic> stateChangelogTopics = Map.of("stateChangelogTopic1", internalTopicMock);
         ConfiguredSubtopology configuredSubtopology = new ConfiguredSubtopology(
-            1, sourceTopics, repartitionSourceTopics, repartitionSinkTopics, stateChangelogTopics);
+                1, sourceTopics, repartitionSourceTopics, repartitionSinkTopics, stateChangelogTopics);
 
         StreamsGroupDescribeResponseData.Subtopology subtopology = configuredSubtopology.asStreamsGroupDescribeSubtopology(subtopologyId);
 

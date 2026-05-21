@@ -109,14 +109,14 @@ public final class Batch<T> implements Iterable<T> {
     @Override
     public String toString() {
         return "Batch(" +
-            "baseOffset=" + baseOffset +
-            ", epoch=" + epoch +
-            ", appendTimestamp=" + appendTimestamp +
-            ", sizeInBytes=" + sizeInBytes +
-            ", lastOffset=" + lastOffset +
-            ", records=" + records +
-            ", controlRecords=" + controlRecords +
-            ')';
+                "baseOffset=" + baseOffset +
+                ", epoch=" + epoch +
+                ", appendTimestamp=" + appendTimestamp +
+                ", sizeInBytes=" + sizeInBytes +
+                ", lastOffset=" + lastOffset +
+                ", records=" + records +
+                ", controlRecords=" + controlRecords +
+                ')';
     }
 
     @Override
@@ -125,24 +125,24 @@ public final class Batch<T> implements Iterable<T> {
         if (o == null || getClass() != o.getClass()) return false;
         Batch<?> batch = (Batch<?>) o;
         return baseOffset == batch.baseOffset &&
-            epoch == batch.epoch &&
-            appendTimestamp == batch.appendTimestamp &&
-            sizeInBytes == batch.sizeInBytes &&
-            lastOffset == batch.lastOffset &&
-            Objects.equals(records, batch.records) &&
-            Objects.equals(controlRecords, batch.controlRecords);
+                epoch == batch.epoch &&
+                appendTimestamp == batch.appendTimestamp &&
+                sizeInBytes == batch.sizeInBytes &&
+                lastOffset == batch.lastOffset &&
+                Objects.equals(records, batch.records) &&
+                Objects.equals(controlRecords, batch.controlRecords);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
-            baseOffset,
-            epoch,
-            appendTimestamp,
-            sizeInBytes,
-            lastOffset,
-            records,
-            controlRecords
+                baseOffset,
+                epoch,
+                appendTimestamp,
+                sizeInBytes,
+                lastOffset,
+                records,
+                controlRecords
         );
     }
 
@@ -166,22 +166,22 @@ public final class Batch<T> implements Iterable<T> {
     ) {
         if (records.isEmpty()) {
             throw new IllegalArgumentException(
-                String.format(
-                    "Control batch must contain at least one record; baseOffset = %d; epoch = %d",
-                    baseOffset,
-                    epoch
+                    String.format(
+                        "Control batch must contain at least one record; baseOffset = %d; epoch = %d",
+                        baseOffset,
+                        epoch
                 )
             );
         }
 
         return new Batch<>(
-            baseOffset,
-            epoch,
-            appendTimestamp,
-            sizeInBytes,
-            baseOffset + records.size() - 1,
-            List.of(),
-            records
+                baseOffset,
+                epoch,
+                appendTimestamp,
+                sizeInBytes,
+                baseOffset + records.size() - 1,
+                List.of(),
+                records
         );
     }
 
@@ -203,22 +203,22 @@ public final class Batch<T> implements Iterable<T> {
     ) {
         if (records.isEmpty()) {
             throw new IllegalArgumentException(
-                String.format(
-                    "Batch must contain at least one record; baseOffset = %d; epoch = %d",
-                    baseOffset,
-                    epoch
+                    String.format(
+                        "Batch must contain at least one record; baseOffset = %d; epoch = %d",
+                        baseOffset,
+                        epoch
                 )
             );
         }
 
         return new Batch<>(
-            baseOffset,
-            epoch,
-            appendTimestamp,
-            sizeInBytes,
-            baseOffset + records.size() - 1,
-            records,
-            List.of()
+                baseOffset,
+                epoch,
+                appendTimestamp,
+                sizeInBytes,
+                baseOffset + records.size() - 1,
+                records,
+                List.of()
         );
     }
 }

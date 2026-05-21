@@ -71,7 +71,7 @@ public class OffsetCommitResponse extends AbstractResponse {
             String topicName = topicPartition.topic();
 
             OffsetCommitResponseTopic topic = responseTopicDataMap.getOrDefault(
-                topicName, new OffsetCommitResponseTopic().setName(topicName));
+                    topicName, new OffsetCommitResponseTopic().setName(topicName));
 
             topic.partitions().add(new OffsetCommitResponsePartition()
                                        .setErrorCode(entry.getValue().code())
@@ -175,7 +175,7 @@ public class OffsetCommitResponse extends AbstractResponse {
         ) {
             final OffsetCommitResponseTopic topicResponse = getOrCreate(topicId, topicName);
             partitions.forEach(partition ->
-                topicResponse.partitions().add(new OffsetCommitResponsePartition()
+                    topicResponse.partitions().add(new OffsetCommitResponsePartition()
                     .setPartitionIndex(partitionIndex.apply(partition))
                     .setErrorCode(error.code()))
             );

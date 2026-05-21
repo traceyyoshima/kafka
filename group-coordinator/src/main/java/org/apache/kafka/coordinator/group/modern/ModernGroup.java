@@ -278,9 +278,9 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
      */
     public void updateTargetAssignment(String memberId, Assignment newTargetAssignment) {
         updateInvertedTargetAssignment(
-            memberId,
-            targetAssignment.getOrDefault(memberId, new Assignment(Map.of())),
-            newTargetAssignment
+                memberId,
+                targetAssignment.getOrDefault(memberId, new Assignment(Map.of())),
+                newTargetAssignment
         );
         targetAssignment.put(memberId, newTargetAssignment);
     }
@@ -307,7 +307,7 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
             Set<Integer> newPartitions = newTargetAssignment.partitions().getOrDefault(topicId, Set.of());
 
             TimelineHashMap<Integer, String> topicPartitionAssignment = invertedTargetAssignment.computeIfAbsent(
-                topicId, k -> new TimelineHashMap<>(snapshotRegistry, Math.max(oldPartitions.size(), newPartitions.size()))
+                    topicId, k -> new TimelineHashMap<>(snapshotRegistry, Math.max(oldPartitions.size(), newPartitions.size()))
             );
 
             // Remove partitions that aren't present in the new assignment only if the partition is currently
@@ -342,9 +342,9 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
      */
     public void removeTargetAssignment(String memberId) {
         updateInvertedTargetAssignment(
-            memberId,
-            targetAssignment.getOrDefault(memberId, Assignment.EMPTY),
-            Assignment.EMPTY
+                memberId,
+                targetAssignment.getOrDefault(memberId, Assignment.EMPTY),
+                Assignment.EMPTY
         );
         targetAssignment.remove(memberId);
     }
@@ -380,8 +380,8 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
         Map<String, Long> topicHash = subscribedTopicNames.keySet().stream()
             .filter(topicName -> metadataImage.topicMetadata(topicName).isPresent())
             .collect(Collectors.toMap(
-                topicName -> topicName,
-                topicName -> topicHashCache.computeIfAbsent(topicName, k -> Utils.computeTopicHash(k, metadataImage))));
+                    topicName -> topicName,
+                    topicName -> topicHashCache.computeIfAbsent(topicName, k -> Utils.computeTopicHash(k, metadataImage))));
         return Utils.computeGroupHash(topicHash);
     }
 
@@ -461,13 +461,13 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
     ) {
         if (oldMember != null) {
             oldMember.subscribedTopicNames().forEach(topicName ->
-                subscribedTopicCount.compute(topicName, SubscriptionCount::decNameCount)
+                    subscribedTopicCount.compute(topicName, SubscriptionCount::decNameCount)
             );
         }
 
         if (newMember != null) {
             newMember.subscribedTopicNames().forEach(topicName ->
-                subscribedTopicCount.compute(topicName, SubscriptionCount::incNameCount)
+                    subscribedTopicCount.compute(topicName, SubscriptionCount::incNameCount)
             );
         }
     }
@@ -486,9 +486,9 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
     ) {
         Map<String, SubscriptionCount> subscribedTopicNames = new HashMap<>(this.subscribedTopicNames);
         maybeUpdateSubscribedTopicNames(
-            subscribedTopicNames,
-            oldMember,
-            newMember
+                subscribedTopicNames,
+                oldMember,
+                newMember
         );
         return subscribedTopicNames;
     }
@@ -506,10 +506,10 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
         Map<String, SubscriptionCount> subscribedTopicNames = new HashMap<>(this.subscribedTopicNames);
         if (removedMembers != null) {
             removedMembers.forEach(removedMember ->
-                maybeUpdateSubscribedTopicNames(
-                    subscribedTopicNames,
-                    removedMember,
-                    null
+                    maybeUpdateSubscribedTopicNames(
+                        subscribedTopicNames,
+                        removedMember,
+                        null
                 )
             );
         }

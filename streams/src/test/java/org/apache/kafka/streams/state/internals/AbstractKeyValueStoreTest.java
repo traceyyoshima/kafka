@@ -56,6 +56,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public abstract class AbstractKeyValueStoreTest {
 
     protected abstract <K, V> KeyValueStore<K, V> createKeyValueStore(final StateStoreContext context);
+
     protected InternalMockProcessorContext<?, ?> context;
     protected KeyValueStore<Integer, String> store;
     protected KeyValueStoreTestDriver<Integer, String> driver;
@@ -500,7 +501,7 @@ public abstract class AbstractKeyValueStoreTest {
 
         final List<KeyValue<Integer, String>> allReturned = toListAndCloseIterator(store.all());
         final List<KeyValue<Integer, String>> expectedReturned =
-            Arrays.asList(KeyValue.pair(1, "one"), KeyValue.pair(2, "two"));
+                Arrays.asList(KeyValue.pair(1, "one"), KeyValue.pair(2, "two"));
 
         assertThat(allReturned, equalTo(expectedReturned));
     }
@@ -515,7 +516,7 @@ public abstract class AbstractKeyValueStoreTest {
 
         final List<KeyValue<Integer, String>> allReturned = toListAndCloseIterator(store.reverseAll());
         final List<KeyValue<Integer, String>> expectedReturned =
-            Arrays.asList(KeyValue.pair(2, "two"), KeyValue.pair(1, "one"));
+                Arrays.asList(KeyValue.pair(2, "two"), KeyValue.pair(1, "one"));
 
         assertThat(allReturned, equalTo(expectedReturned));
     }
@@ -579,11 +580,11 @@ public abstract class AbstractKeyValueStoreTest {
 
             final List<String> messages = appender.getMessages();
             assertThat(
-                messages,
-                hasItem("Returning empty iterator for fetch with invalid key range: from > to." +
-                    " This may be due to range arguments set in the wrong order, " +
-                    "or serdes that don't preserve ordering when lexicographically comparing the serialized bytes." +
-                    " Note that the built-in numerical serdes do not follow this for negative numbers")
+                    messages,
+                    hasItem("Returning empty iterator for fetch with invalid key range: from > to." +
+                        " This may be due to range arguments set in the wrong order, " +
+                        "or serdes that don't preserve ordering when lexicographically comparing the serialized bytes." +
+                        " Note that the built-in numerical serdes do not follow this for negative numbers")
             );
         }
     }
@@ -597,11 +598,11 @@ public abstract class AbstractKeyValueStoreTest {
 
             final List<String> messages = appender.getMessages();
             assertThat(
-                messages,
-                hasItem("Returning empty iterator for fetch with invalid key range: from > to." +
-                    " This may be due to range arguments set in the wrong order, " +
-                    "or serdes that don't preserve ordering when lexicographically comparing the serialized bytes." +
-                    " Note that the built-in numerical serdes do not follow this for negative numbers")
+                    messages,
+                    hasItem("Returning empty iterator for fetch with invalid key range: from > to." +
+                        " This may be due to range arguments set in the wrong order, " +
+                        "or serdes that don't preserve ordering when lexicographically comparing the serialized bytes." +
+                        " Note that the built-in numerical serdes do not follow this for negative numbers")
             );
         }
     }
@@ -615,11 +616,11 @@ public abstract class AbstractKeyValueStoreTest {
 
             final List<String> messages = appender.getMessages();
             assertThat(
-                messages,
-                hasItem("Returning empty iterator for fetch with invalid key range: from > to." +
-                    " This may be due to range arguments set in the wrong order, " +
-                    "or serdes that don't preserve ordering when lexicographically comparing the serialized bytes." +
-                    " Note that the built-in numerical serdes do not follow this for negative numbers")
+                    messages,
+                    hasItem("Returning empty iterator for fetch with invalid key range: from > to." +
+                        " This may be due to range arguments set in the wrong order, " +
+                        "or serdes that don't preserve ordering when lexicographically comparing the serialized bytes." +
+                        " Note that the built-in numerical serdes do not follow this for negative numbers")
             );
         }
     }
@@ -633,11 +634,11 @@ public abstract class AbstractKeyValueStoreTest {
 
             final List<String> messages = appender.getMessages();
             assertThat(
-                messages,
-                hasItem("Returning empty iterator for fetch with invalid key range: from > to." +
-                    " This may be due to range arguments set in the wrong order, " +
-                    "or serdes that don't preserve ordering when lexicographically comparing the serialized bytes." +
-                    " Note that the built-in numerical serdes do not follow this for negative numbers")
+                    messages,
+                    hasItem("Returning empty iterator for fetch with invalid key range: from > to." +
+                        " This may be due to range arguments set in the wrong order, " +
+                        "or serdes that don't preserve ordering when lexicographically comparing the serialized bytes." +
+                        " Note that the built-in numerical serdes do not follow this for negative numbers")
             );
         }
     }
@@ -660,5 +661,5 @@ public abstract class AbstractKeyValueStoreTest {
                 iter.next();
             }
         }
-    }                  
+    }
 }

@@ -39,8 +39,8 @@ import java.util.NoSuchElementException;
  */
 @SuppressWarnings("unchecked")
 public class ListValueStore
-    extends WrappedStateStore<KeyValueStore<Bytes, byte[]>, Bytes, byte[]>
-    implements KeyValueStore<Bytes, byte[]> {
+        extends WrappedStateStore<KeyValueStore<Bytes, byte[]>, Bytes, byte[]>
+        implements KeyValueStore<Bytes, byte[]> {
 
     private static final Serde<List<byte[]>> LIST_SERDE = Serdes.ListSerde(ArrayList.class, Serdes.ByteArray());
 
@@ -123,7 +123,7 @@ public class ListValueStore
     }
 
     private static class ValueListIterator extends AbstractIterator<KeyValue<Bytes, byte[]>>
-        implements KeyValueIterator<Bytes, byte[]> {
+            implements KeyValueIterator<Bytes, byte[]> {
 
         private final KeyValueIterator<Bytes, byte[]> bytesIterator;
         private final List<byte[]> currList = new ArrayList<>();

@@ -250,26 +250,26 @@ public class GroupCoordinatorService implements GroupCoordinator {
             LogContext logContext = new LogContext(String.format("[%s] ", logPrefix));
 
             CoordinatorShardBuilderSupplier<GroupCoordinatorShard, CoordinatorRecord> supplier = () ->
-                new GroupCoordinatorShard.Builder(config, groupConfigManager)
+                    new GroupCoordinatorShard.Builder(config, groupConfigManager)
                     .withAuthorizerPlugin(authorizerPlugin);
 
             CoordinatorEventProcessor processor = new MultiThreadedEventProcessor(
-                logContext,
-                "group-coordinator-event-processor-",
-                config.numThreads(),
-                time,
-                coordinatorRuntimeMetrics
+                    logContext,
+                    "group-coordinator-event-processor-",
+                    config.numThreads(),
+                    time,
+                    coordinatorRuntimeMetrics
             );
 
             ExecutorService executorService = new CoordinatorBackgroundThreadPoolExecutor(
-                "group-coordinator-background-",
-                config.numBackgroundThreads(),
-                time,
-                coordinatorRuntimeMetrics
+                    "group-coordinator-background-",
+                    config.numBackgroundThreads(),
+                    time,
+                    coordinatorRuntimeMetrics
             );
 
             CoordinatorRuntime<GroupCoordinatorShard, CoordinatorRecord> runtime =
-                new CoordinatorRuntime.Builder<GroupCoordinatorShard, CoordinatorRecord>()
+                    new CoordinatorRuntime.Builder<GroupCoordinatorShard, CoordinatorRecord>()
                     .withTime(time)
                     .withTimer(timer)
                     .withLogPrefix(logPrefix)
@@ -289,14 +289,14 @@ public class GroupCoordinatorService implements GroupCoordinator {
                     .build();
 
             return new GroupCoordinatorService(
-                logContext,
-                config,
-                runtime,
-                groupCoordinatorMetrics,
-                groupConfigManager,
-                persister,
-                timer,
-                partitionMetadataClient
+                    logContext,
+                    config,
+                    runtime,
+                    groupCoordinatorMetrics,
+                    groupConfigManager,
+                    persister,
+                    timer,
+                    partitionMetadataClient
             );
         }
     }
@@ -440,8 +440,8 @@ public class GroupCoordinatorService implements GroupCoordinator {
         int apiVersion
     ) throws InvalidRequestException, UnsupportedAssignorException {
         if (apiVersion >= CONSUMER_GENERATED_MEMBER_ID_REQUIRED_VERSION ||
-            request.memberEpoch() > 0 ||
-            request.memberEpoch() == LEAVE_GROUP_MEMBER_EPOCH
+                request.memberEpoch() > 0 ||
+                request.memberEpoch() == LEAVE_GROUP_MEMBER_EPOCH
         ) {
             throwIfEmptyString(request.memberId(), "MemberId can't be empty.");
         }
@@ -461,7 +461,7 @@ public class GroupCoordinatorService implements GroupCoordinator {
             // means that they are not subscribed to any topics, but they are part of the group.
             if (request.subscribedTopicNames() == null && request.subscribedTopicRegex() == null) {
                 throw new InvalidRequestException("Either SubscribedTopicNames or SubscribedTopicRegex must" +
-                    " be non-null when (re-)joining.");
+                        " be non-null when (re-)joining.");
             }
         } else if (request.memberEpoch() == LEAVE_GROUP_STATIC_MEMBER_EPOCH) {
             throwIfNull(request.instanceId(), "InstanceId can't be null.");
@@ -471,8 +471,8 @@ public class GroupCoordinatorService implements GroupCoordinator {
 
         if (request.serverAssignor() != null && !consumerGroupAssignors.contains(request.serverAssignor())) {
             throw new UnsupportedAssignorException("ServerAssignor " + request.serverAssignor()
-                + " is not supported. Supported assignors: " + String.join(", ", consumerGroupAssignors)
-                + ".");
+                    + " is not supported. Supported assignors: " + String.join(", ", consumerGroupAssignors)
+                    + ".");
         }
     }
 
@@ -501,17 +501,17 @@ public class GroupCoordinatorService implements GroupCoordinator {
         }
 
         return runtime.scheduleWriteOperation(
-            "consumer-group-heartbeat",
-            topicPartitionFor(request.groupId()),
-            coordinator -> coordinator.consumerGroupHeartbeat(context, request)
+                "consumer-group-heartbeat",
+                topicPartitionFor(request.groupId()),
+                coordinator -> coordinator.consumerGroupHeartbeat(context, request)
         ).exceptionally(exception -> handleOperationException(
-            "consumer-group-heartbeat",
-            request,
-            exception,
-            (error, message) -> new ConsumerGroupHeartbeatResponseData()
+                "consumer-group-heartbeat",
+                request,
+                exception,
+                (error, message) -> new ConsumerGroupHeartbeatResponseData()
                 .setErrorCode(error.code())
                 .setErrorMessage(message),
-            log
+                log
         ));
     }
 
@@ -522,8 +522,8 @@ public class GroupCoordinatorService implements GroupCoordinator {
             for (StreamsGroupHeartbeatRequestData.TopicInfo topicInfo: subtopology.stateChangelogTopics()) {
                 if (topicInfo.partitions() != 0) {
                     throw new StreamsInvalidTopologyException(String.format(
-                        "Changelog topic %s must have an undefined partition count, but it is set to %d.",
-                        topicInfo.name(), topicInfo.partitions()
+                            "Changelog topic %s must have an undefined partition count, but it is set to %d.",
+                            topicInfo.name(), topicInfo.partitions()
                     ));
                 }
             }
@@ -560,7 +560,7 @@ public class GroupCoordinatorService implements GroupCoordinator {
             throwIfNull(request.instanceId(), "InstanceId can't be null.");
         } else if (request.memberEpoch() < LEAVE_GROUP_STATIC_MEMBER_EPOCH) {
             throw new InvalidRequestException(String.format("MemberEpoch is %d, but must be greater than or equal to -2.",
-                request.memberEpoch()));
+                    request.memberEpoch()));
         }
 
         if (request.activeTasks() != null || request.standbyTasks() != null || request.warmupTasks() != null) {
@@ -605,9 +605,9 @@ public class GroupCoordinatorService implements GroupCoordinator {
     ) {
         if (!isActive.get()) {
             return CompletableFuture.completedFuture(
-                new StreamsGroupHeartbeatResult(
-                    new StreamsGroupHeartbeatResponseData().setErrorCode(Errors.COORDINATOR_NOT_AVAILABLE.code()),
-                    Map.of()
+                    new StreamsGroupHeartbeatResult(
+                        new StreamsGroupHeartbeatResponseData().setErrorCode(Errors.COORDINATOR_NOT_AVAILABLE.code()),
+                        Map.of()
                 )
             );
         }
@@ -618,31 +618,31 @@ public class GroupCoordinatorService implements GroupCoordinator {
         } catch (Throwable ex) {
             ApiError apiError = ApiError.fromThrowable(ex);
             return CompletableFuture.completedFuture(
-                new StreamsGroupHeartbeatResult(
-                    new StreamsGroupHeartbeatResponseData()
+                    new StreamsGroupHeartbeatResult(
+                        new StreamsGroupHeartbeatResponseData()
                         .setErrorCode(apiError.error().code())
                         .setErrorMessage(apiError.message()),
-                    Map.of()
+                        Map.of()
                 )
             );
         }
 
         return runtime.scheduleWriteOperation(
-            "streams-group-heartbeat",
-            topicPartitionFor(request.groupId()),
-            coordinator -> coordinator.streamsGroupHeartbeat(context, request)
+                "streams-group-heartbeat",
+                topicPartitionFor(request.groupId()),
+                coordinator -> coordinator.streamsGroupHeartbeat(context, request)
         ).exceptionally(exception -> handleOperationException(
-            "streams-group-heartbeat",
-            request,
-            exception,
-            (error, message) ->
+                "streams-group-heartbeat",
+                request,
+                exception,
+                (error, message) ->
                 new StreamsGroupHeartbeatResult(
-                    new StreamsGroupHeartbeatResponseData()
+                        new StreamsGroupHeartbeatResponseData()
                         .setErrorCode(error.code())
                         .setErrorMessage(message),
-                    Map.of()
+                        Map.of()
                 ),
-            log
+                log
         ));
     }
 
@@ -693,9 +693,9 @@ public class GroupCoordinatorService implements GroupCoordinator {
         }
 
         return runtime.scheduleWriteOperation(
-            "share-group-heartbeat",
-            topicPartitionFor(request.groupId()),
-            coordinator -> coordinator.shareGroupHeartbeat(context, request)
+                "share-group-heartbeat",
+                topicPartitionFor(request.groupId()),
+                coordinator -> coordinator.shareGroupHeartbeat(context, request)
         ).thenCompose(result -> {
             if (result.getValue().isPresent()) {
                 // Adding to timer makes this call async with respect to the heartbeat.
@@ -713,13 +713,13 @@ public class GroupCoordinatorService implements GroupCoordinator {
             }
             return CompletableFuture.completedFuture(result.getKey());
         }).exceptionally(exception -> handleOperationException(
-            "share-group-heartbeat",
-            request,
-            exception,
-            (error, message) -> new ShareGroupHeartbeatResponseData()
+                "share-group-heartbeat",
+                request,
+                exception,
+                (error, message) -> new ShareGroupHeartbeatResponseData()
                 .setErrorCode(error.code())
                 .setErrorMessage(message),
-            log
+                log
         ));
     }
 
@@ -747,12 +747,12 @@ public class GroupCoordinatorService implements GroupCoordinator {
 
             });
     }
-    
+
     private AlterShareGroupOffsetsResponseData buildErrorResponse(AlterShareGroupOffsetsResponseData response, InitializeShareGroupStateResult result) {
         AlterShareGroupOffsetsResponseData data = new AlterShareGroupOffsetsResponseData();
         Map<Uuid, Map<Integer, PartitionErrorData>> topicPartitionErrorsMap = result.getErrors();
         data.setResponses(
-            new AlterShareGroupOffsetsResponseData.AlterShareGroupOffsetsResponseTopicCollection(response.responses().stream()
+                new AlterShareGroupOffsetsResponseData.AlterShareGroupOffsetsResponseTopicCollection(response.responses().stream()
                 .map(topic -> {
                     AlterShareGroupOffsetsResponseData.AlterShareGroupOffsetsResponseTopic topicData = new AlterShareGroupOffsetsResponseData.AlterShareGroupOffsetsResponseTopic()
                         .setTopicName(topic.topicName())
@@ -764,7 +764,7 @@ public class GroupCoordinatorService implements GroupCoordinator {
                         }
                         AlterShareGroupOffsetsResponseData.AlterShareGroupOffsetsResponsePartition partitionData;
                         Map<Integer, PartitionErrorData> partitionErrors =
-                            Optional.ofNullable(topicPartitionErrorsMap)
+                                Optional.ofNullable(topicPartitionErrorsMap)
                                 .map(map -> map.get(topic.topicId()))
                                 .orElse(Map.of());
                         PartitionErrorData error = partitionErrors.get(partition.partitionIndex());
@@ -794,7 +794,7 @@ public class GroupCoordinatorService implements GroupCoordinator {
             .setErrorMessage(exp.getMessage())
             .setResponses(response.responses());
         data.setResponses(
-            new AlterShareGroupOffsetsResponseData.AlterShareGroupOffsetsResponseTopicCollection(response.responses().stream()
+                new AlterShareGroupOffsetsResponseData.AlterShareGroupOffsetsResponseTopicCollection(response.responses().stream()
                 .map(topic -> {
                     AlterShareGroupOffsetsResponseData.AlterShareGroupOffsetsResponseTopic topicData = new AlterShareGroupOffsetsResponseData.AlterShareGroupOffsetsResponseTopic()
                         .setTopicName(topic.topicName())
@@ -851,8 +851,8 @@ public class GroupCoordinatorService implements GroupCoordinator {
         Map<Uuid, Set<Integer>> topicPartitionMap = new HashMap<>();
         for (TopicData<PartitionErrorData> topicData : persisterInitializeResult.topicsData()) {
             topicPartitionMap.put(
-                topicData.topicId(),
-                topicData.partitions().stream().map(PartitionErrorData::partition).collect(Collectors.toSet())
+                    topicData.topicId(),
+                    topicData.partitions().stream().map(PartitionErrorData::partition).collect(Collectors.toSet())
             );
         }
 
@@ -872,9 +872,9 @@ public class GroupCoordinatorService implements GroupCoordinator {
         Map<Uuid, Set<Integer>> topicPartitionMap
     ) {
         return runtime.scheduleWriteOperation(
-            "uninitialize-share-group-state",
-            topicPartitionFor(groupId),
-            coordinator -> coordinator.uninitializeShareGroupState(groupId, topicPartitionMap)
+                "uninitialize-share-group-state",
+                topicPartitionFor(groupId),
+                coordinator -> coordinator.uninitializeShareGroupState(groupId, topicPartitionMap)
         ).thenApply(__ -> new ShareGroupHeartbeatResponseData()
             .setErrorCode(error.code())
             .setErrorMessage(error.message())
@@ -893,9 +893,9 @@ public class GroupCoordinatorService implements GroupCoordinator {
         ShareGroupHeartbeatResponseData defaultResponse
     ) {
         return runtime.scheduleWriteOperation(
-            "initialize-share-group-state",
-            topicPartitionFor(groupId),
-            coordinator -> coordinator.initializeShareGroupState(groupId, topicPartitionMap)
+                "initialize-share-group-state",
+                topicPartitionFor(groupId),
+                coordinator -> coordinator.initializeShareGroupState(groupId, topicPartitionMap)
         ).handle((__, exp) -> {
             if (exp == null) {
                 return CompletableFuture.completedFuture(defaultResponse);
@@ -930,7 +930,7 @@ public class GroupCoordinatorService implements GroupCoordinator {
         }
 
         if (request.sessionTimeoutMs() < config.classicGroupMinSessionTimeoutMs() ||
-            request.sessionTimeoutMs() > config.classicGroupMaxSessionTimeoutMs()) {
+                request.sessionTimeoutMs() > config.classicGroupMaxSessionTimeoutMs()) {
             return CompletableFuture.completedFuture(new JoinGroupResponseData()
                 .setMemberId(request.memberId())
                 .setErrorCode(Errors.INVALID_SESSION_TIMEOUT.code())
@@ -940,17 +940,17 @@ public class GroupCoordinatorService implements GroupCoordinator {
         CompletableFuture<JoinGroupResponseData> responseFuture = new CompletableFuture<>();
 
         runtime.scheduleWriteOperation(
-            "classic-group-join",
-            topicPartitionFor(request.groupId()),
-            coordinator -> coordinator.classicGroupJoin(context, request, responseFuture)
+                "classic-group-join",
+                topicPartitionFor(request.groupId()),
+                coordinator -> coordinator.classicGroupJoin(context, request, responseFuture)
         ).exceptionally(exception -> {
             if (!responseFuture.isDone()) {
                 responseFuture.complete(handleOperationException(
-                    "classic-group-join",
-                    request,
-                    exception,
-                    (error, __) -> new JoinGroupResponseData().setErrorCode(error.code()),
-                    log
+                        "classic-group-join",
+                        request,
+                        exception,
+                        (error, __) -> new JoinGroupResponseData().setErrorCode(error.code()),
+                        log
                 ));
             }
             return null;
@@ -983,17 +983,17 @@ public class GroupCoordinatorService implements GroupCoordinator {
         CompletableFuture<SyncGroupResponseData> responseFuture = new CompletableFuture<>();
 
         runtime.scheduleWriteOperation(
-            "classic-group-sync",
-            topicPartitionFor(request.groupId()),
-            coordinator -> coordinator.classicGroupSync(context, request, responseFuture)
+                "classic-group-sync",
+                topicPartitionFor(request.groupId()),
+                coordinator -> coordinator.classicGroupSync(context, request, responseFuture)
         ).exceptionally(exception -> {
             if (!responseFuture.isDone()) {
                 responseFuture.complete(handleOperationException(
-                    "classic-group-sync",
-                    request,
-                    exception,
-                    (error, __) -> new SyncGroupResponseData().setErrorCode(error.code()),
-                    log
+                        "classic-group-sync",
+                        request,
+                        exception,
+                        (error, __) -> new SyncGroupResponseData().setErrorCode(error.code()),
+                        log
                 ));
             }
             return null;
@@ -1023,24 +1023,24 @@ public class GroupCoordinatorService implements GroupCoordinator {
         }
 
         return runtime.scheduleWriteOperation(
-            "classic-group-heartbeat",
-            topicPartitionFor(request.groupId()),
-            coordinator -> coordinator.classicGroupHeartbeat(context, request)
+                "classic-group-heartbeat",
+                topicPartitionFor(request.groupId()),
+                coordinator -> coordinator.classicGroupHeartbeat(context, request)
         ).exceptionally(exception -> handleOperationException(
-            "classic-group-heartbeat",
-            request,
-            exception,
-            (error, __) -> {
-                if (error == Errors.COORDINATOR_LOAD_IN_PROGRESS) {
-                    // The group is still loading, so blindly respond
-                    return new HeartbeatResponseData()
+                "classic-group-heartbeat",
+                request,
+                exception,
+                (error, __) -> {
+                    if (error == Errors.COORDINATOR_LOAD_IN_PROGRESS) {
+                        // The group is still loading, so blindly respond
+                        return new HeartbeatResponseData()
                         .setErrorCode(Errors.NONE.code());
-                } else {
-                    return new HeartbeatResponseData()
+                    } else {
+                        return new HeartbeatResponseData()
                         .setErrorCode(error.code());
-                }
-            },
-            log
+                    }
+                },
+                log
         ));
     }
 
@@ -1065,30 +1065,30 @@ public class GroupCoordinatorService implements GroupCoordinator {
         }
 
         return runtime.scheduleWriteOperation(
-            "classic-group-leave",
-            topicPartitionFor(request.groupId()),
-            coordinator -> coordinator.classicGroupLeave(context, request)
+                "classic-group-leave",
+                topicPartitionFor(request.groupId()),
+                coordinator -> coordinator.classicGroupLeave(context, request)
         ).exceptionally(exception -> handleOperationException(
-            "classic-group-leave",
-            request,
-            exception,
-            (error, __) -> {
-                if (error == Errors.UNKNOWN_MEMBER_ID) {
-                    // Group was not found.
-                    List<LeaveGroupResponseData.MemberResponse> memberResponses = request.members().stream()
+                "classic-group-leave",
+                request,
+                exception,
+                (error, __) -> {
+                    if (error == Errors.UNKNOWN_MEMBER_ID) {
+                        // Group was not found.
+                        List<LeaveGroupResponseData.MemberResponse> memberResponses = request.members().stream()
                          .map(member -> new LeaveGroupResponseData.MemberResponse()
                              .setMemberId(member.memberId())
                              .setGroupInstanceId(member.groupInstanceId())
                              .setErrorCode(Errors.UNKNOWN_MEMBER_ID.code()))
                          .toList();
-                    return new LeaveGroupResponseData()
+                        return new LeaveGroupResponseData()
                         .setMembers(memberResponses);
-                } else {
-                    return new LeaveGroupResponseData()
+                    } else {
+                        return new LeaveGroupResponseData()
                         .setErrorCode(error.code());
-                }
-            },
-            log
+                    }
+                },
+                log
         ));
     }
 
@@ -1107,33 +1107,33 @@ public class GroupCoordinatorService implements GroupCoordinator {
         }
 
         final List<CompletableFuture<List<ListGroupsResponseData.ListedGroup>>> futures = FutureUtils.mapExceptionally(
-            runtime.scheduleReadAllOperation(
-                "list-groups",
-                (coordinator, lastCommittedOffset) -> coordinator.listGroups(
-                    request.statesFilter(),
-                    request.typesFilter(),
-                    lastCommittedOffset
+                runtime.scheduleReadAllOperation(
+                    "list-groups",
+                    (coordinator, lastCommittedOffset) -> coordinator.listGroups(
+                        request.statesFilter(),
+                        request.typesFilter(),
+                        lastCommittedOffset
                 )
             ),
-            exception -> {
-                exception = Errors.maybeUnwrapException(exception);
-                if (exception instanceof NotCoordinatorException) {
-                    return List.of();
-                } else {
-                    throw new CompletionException(exception);
+                exception -> {
+                    exception = Errors.maybeUnwrapException(exception);
+                    if (exception instanceof NotCoordinatorException) {
+                        return List.of();
+                    } else {
+                        throw new CompletionException(exception);
+                    }
                 }
-            }
         );
 
         return FutureUtils
             .combineFutures(futures, ArrayList::new, List::addAll)
             .thenApply(groups -> new ListGroupsResponseData().setGroups(groups))
             .exceptionally(exception -> handleOperationException(
-                "list-groups",
-                request,
-                exception,
-                (error, __) -> new ListGroupsResponseData().setErrorCode(error.code()),
-                log
+                    "list-groups",
+                    request,
+                    exception,
+                    (error, __) -> new ListGroupsResponseData().setErrorCode(error.code()),
+                    log
             ));
     }
 
@@ -1147,13 +1147,13 @@ public class GroupCoordinatorService implements GroupCoordinator {
     ) {
         if (!isActive.get()) {
             return CompletableFuture.completedFuture(ConsumerGroupDescribeRequest.getErrorDescribedGroupList(
-                groupIds,
-                Errors.COORDINATOR_NOT_AVAILABLE
+                    groupIds,
+                    Errors.COORDINATOR_NOT_AVAILABLE
             ));
         }
 
         final List<CompletableFuture<List<ConsumerGroupDescribeResponseData.DescribedGroup>>> futures =
-            new ArrayList<>(groupIds.size());
+                new ArrayList<>(groupIds.size());
         final Map<TopicPartition, List<String>> groupsByTopicPartition = new HashMap<>();
         groupIds.forEach(groupId -> {
             if (isGroupIdNotEmpty(groupId)) {
@@ -1162,7 +1162,7 @@ public class GroupCoordinatorService implements GroupCoordinator {
                     .add(groupId);
             } else {
                 futures.add(CompletableFuture.completedFuture(List.of(
-                    new ConsumerGroupDescribeResponseData.DescribedGroup()
+                        new ConsumerGroupDescribeResponseData.DescribedGroup()
                         .setGroupId("")
                         .setErrorCode(Errors.INVALID_GROUP_ID.code())
                 )));
@@ -1171,16 +1171,16 @@ public class GroupCoordinatorService implements GroupCoordinator {
 
         groupsByTopicPartition.forEach((topicPartition, groupList) -> {
             CompletableFuture<List<ConsumerGroupDescribeResponseData.DescribedGroup>> future =
-                runtime.scheduleReadOperation(
-                    "consumer-group-describe",
-                    topicPartition,
-                    (coordinator, lastCommittedOffset) -> coordinator.consumerGroupDescribe(groupList, lastCommittedOffset)
+                    runtime.scheduleReadOperation(
+                        "consumer-group-describe",
+                        topicPartition,
+                        (coordinator, lastCommittedOffset) -> coordinator.consumerGroupDescribe(groupList, lastCommittedOffset)
                 ).exceptionally(exception -> handleOperationException(
-                    "consumer-group-describe",
-                    groupList,
-                    exception,
-                    (error, __) -> ConsumerGroupDescribeRequest.getErrorDescribedGroupList(groupList, error),
-                    log
+                        "consumer-group-describe",
+                        groupList,
+                        exception,
+                        (error, __) -> ConsumerGroupDescribeRequest.getErrorDescribedGroupList(groupList, error),
+                        log
                 ));
 
             futures.add(future);
@@ -1199,13 +1199,13 @@ public class GroupCoordinatorService implements GroupCoordinator {
     ) {
         if (!isActive.get()) {
             return CompletableFuture.completedFuture(StreamsGroupDescribeRequest.getErrorDescribedGroupList(
-                groupIds,
-                Errors.COORDINATOR_NOT_AVAILABLE
+                    groupIds,
+                    Errors.COORDINATOR_NOT_AVAILABLE
             ));
         }
 
         final List<CompletableFuture<List<StreamsGroupDescribeResponseData.DescribedGroup>>> futures =
-            new ArrayList<>(groupIds.size());
+                new ArrayList<>(groupIds.size());
         final Map<TopicPartition, List<String>> groupsByTopicPartition = new HashMap<>();
         groupIds.forEach(groupId -> {
             if (isGroupIdNotEmpty(groupId)) {
@@ -1214,7 +1214,7 @@ public class GroupCoordinatorService implements GroupCoordinator {
                     .add(groupId);
             } else {
                 futures.add(CompletableFuture.completedFuture(List.of(
-                    new StreamsGroupDescribeResponseData.DescribedGroup()
+                        new StreamsGroupDescribeResponseData.DescribedGroup()
                         .setGroupId("")
                         .setErrorCode(Errors.INVALID_GROUP_ID.code())
                 )));
@@ -1223,16 +1223,16 @@ public class GroupCoordinatorService implements GroupCoordinator {
 
         groupsByTopicPartition.forEach((topicPartition, groupList) -> {
             CompletableFuture<List<StreamsGroupDescribeResponseData.DescribedGroup>> future =
-                runtime.scheduleReadOperation(
-                    "streams-group-describe",
-                    topicPartition,
-                    (coordinator, lastCommittedOffset) -> coordinator.streamsGroupDescribe(groupList, lastCommittedOffset)
+                    runtime.scheduleReadOperation(
+                        "streams-group-describe",
+                        topicPartition,
+                        (coordinator, lastCommittedOffset) -> coordinator.streamsGroupDescribe(groupList, lastCommittedOffset)
                 ).exceptionally(exception -> handleOperationException(
-                    "streams-group-describe",
-                    groupList,
-                    exception,
-                    (error, __) -> StreamsGroupDescribeRequest.getErrorDescribedGroupList(groupList, error),
-                    log
+                        "streams-group-describe",
+                        groupList,
+                        exception,
+                        (error, __) -> StreamsGroupDescribeRequest.getErrorDescribedGroupList(groupList, error),
+                        log
                 ));
 
             futures.add(future);
@@ -1240,7 +1240,7 @@ public class GroupCoordinatorService implements GroupCoordinator {
 
         return FutureUtils.combineFutures(futures, ArrayList::new, List::addAll);
     }
-    
+
     /**
      * See {@link GroupCoordinator#shareGroupDescribe(AuthorizableRequestContext, List)}.
      */
@@ -1251,13 +1251,13 @@ public class GroupCoordinatorService implements GroupCoordinator {
     ) {
         if (!isActive.get()) {
             return CompletableFuture.completedFuture(ShareGroupDescribeRequest.getErrorDescribedGroupList(
-                groupIds,
-                Errors.COORDINATOR_NOT_AVAILABLE
+                    groupIds,
+                    Errors.COORDINATOR_NOT_AVAILABLE
             ));
         }
 
         final List<CompletableFuture<List<ShareGroupDescribeResponseData.DescribedGroup>>> futures =
-            new ArrayList<>(groupIds.size());
+                new ArrayList<>(groupIds.size());
         final Map<TopicPartition, List<String>> groupsByTopicPartition = new HashMap<>();
         groupIds.forEach(groupId -> {
             if (isGroupIdNotEmpty(groupId)) {
@@ -1266,7 +1266,7 @@ public class GroupCoordinatorService implements GroupCoordinator {
                     .add(groupId);
             } else {
                 futures.add(CompletableFuture.completedFuture(List.of(
-                    new ShareGroupDescribeResponseData.DescribedGroup()
+                        new ShareGroupDescribeResponseData.DescribedGroup()
                         .setGroupId("")
                         .setErrorCode(Errors.INVALID_GROUP_ID.code())
                 )));
@@ -1275,16 +1275,16 @@ public class GroupCoordinatorService implements GroupCoordinator {
 
         groupsByTopicPartition.forEach((topicPartition, groupList) -> {
             CompletableFuture<List<ShareGroupDescribeResponseData.DescribedGroup>> future =
-                runtime.scheduleReadOperation(
-                    "share-group-describe",
-                    topicPartition,
-                    (coordinator, lastCommittedOffset) -> coordinator.shareGroupDescribe(groupList, lastCommittedOffset)
+                    runtime.scheduleReadOperation(
+                        "share-group-describe",
+                        topicPartition,
+                        (coordinator, lastCommittedOffset) -> coordinator.shareGroupDescribe(groupList, lastCommittedOffset)
                 ).exceptionally(exception -> handleOperationException(
-                    "share-group-describe",
-                    groupList,
-                    exception,
-                    (error, __) -> ShareGroupDescribeRequest.getErrorDescribedGroupList(groupList, error),
-                    log
+                        "share-group-describe",
+                        groupList,
+                        exception,
+                        (error, __) -> ShareGroupDescribeRequest.getErrorDescribedGroupList(groupList, error),
+                        log
                 ));
 
             futures.add(future);
@@ -1305,7 +1305,7 @@ public class GroupCoordinatorService implements GroupCoordinator {
         if (!isActive.get() || metadataImage == null) {
             return CompletableFuture.completedFuture(AlterShareGroupOffsetsRequest.getErrorResponseData(Errors.COORDINATOR_NOT_AVAILABLE));
         }
-        
+
         if (groupId == null || groupId.isEmpty()) {
             return CompletableFuture.completedFuture(AlterShareGroupOffsetsRequest.getErrorResponseData(Errors.INVALID_GROUP_ID));
         }
@@ -1315,17 +1315,17 @@ public class GroupCoordinatorService implements GroupCoordinator {
         }
 
         return runtime.scheduleWriteOperation(
-            "share-group-offsets-alter",
-            topicPartitionFor(groupId),
-            coordinator -> coordinator.alterShareGroupOffsets(groupId, request)
+                "share-group-offsets-alter",
+                topicPartitionFor(groupId),
+                coordinator -> coordinator.alterShareGroupOffsets(groupId, request)
         ).thenCompose(result ->
-            persisterInitialize(result.getValue(), result.getKey())
+                persisterInitialize(result.getValue(), result.getKey())
         ).exceptionally(exception -> handleOperationException(
-            "share-group-offsets-alter",
-            request,
-            exception,
-            AlterShareGroupOffsetsRequest::getErrorResponseData,
-            log
+                "share-group-offsets-alter",
+                request,
+                exception,
+                AlterShareGroupOffsetsRequest::getErrorResponseData,
+                log
         ));
     }
 
@@ -1339,19 +1339,19 @@ public class GroupCoordinatorService implements GroupCoordinator {
     ) {
         if (!isActive.get()) {
             return CompletableFuture.completedFuture(DescribeGroupsRequest.getErrorDescribedGroupList(
-                groupIds,
-                Errors.COORDINATOR_NOT_AVAILABLE
+                    groupIds,
+                    Errors.COORDINATOR_NOT_AVAILABLE
             ));
         }
 
         final List<CompletableFuture<List<DescribeGroupsResponseData.DescribedGroup>>> futures =
-            new ArrayList<>(groupIds.size());
+                new ArrayList<>(groupIds.size());
         final Map<TopicPartition, List<String>> groupsByTopicPartition = new HashMap<>();
         groupIds.forEach(groupId -> {
             // For backwards compatibility, we support DescribeGroups for the empty group id.
             if (groupId == null) {
                 futures.add(CompletableFuture.completedFuture(List.of(
-                    new DescribeGroupsResponseData.DescribedGroup()
+                        new DescribeGroupsResponseData.DescribedGroup()
                         .setGroupId("")
                         .setErrorCode(Errors.INVALID_GROUP_ID.code())
                 )));
@@ -1365,16 +1365,16 @@ public class GroupCoordinatorService implements GroupCoordinator {
 
         groupsByTopicPartition.forEach((topicPartition, groupList) -> {
             CompletableFuture<List<DescribeGroupsResponseData.DescribedGroup>> future =
-                runtime.scheduleReadOperation(
-                    "describe-groups",
-                    topicPartition,
-                    (coordinator, lastCommittedOffset) -> coordinator.describeGroups(context, groupList, lastCommittedOffset)
+                    runtime.scheduleReadOperation(
+                        "describe-groups",
+                        topicPartition,
+                        (coordinator, lastCommittedOffset) -> coordinator.describeGroups(context, groupList, lastCommittedOffset)
                 ).exceptionally(exception -> handleOperationException(
-                    "describe-groups",
-                    groupList,
-                    exception,
-                    (error, __) -> DescribeGroupsRequest.getErrorDescribedGroupList(groupList, error),
-                    log
+                        "describe-groups",
+                        groupList,
+                        exception,
+                        (error, __) -> DescribeGroupsRequest.getErrorDescribedGroupList(groupList, error),
+                        log
                 ));
 
             futures.add(future);
@@ -1394,21 +1394,21 @@ public class GroupCoordinatorService implements GroupCoordinator {
     ) {
         if (!isActive.get()) {
             return CompletableFuture.completedFuture(DeleteGroupsRequest.getErrorResultCollection(
-                groupIds,
-                Errors.COORDINATOR_NOT_AVAILABLE
+                    groupIds,
+                    Errors.COORDINATOR_NOT_AVAILABLE
             ));
         }
 
         final List<CompletableFuture<DeleteGroupsResponseData.DeletableGroupResultCollection>> futures =
-            new ArrayList<>(groupIds.size());
+                new ArrayList<>(groupIds.size());
 
         final Map<TopicPartition, List<String>> groupsByTopicPartition = new HashMap<>();
         groupIds.forEach(groupId -> {
             // For backwards compatibility, we support DeleteGroups for the empty group id.
             if (groupId == null) {
                 futures.add(CompletableFuture.completedFuture(DeleteGroupsRequest.getErrorResultCollection(
-                    Collections.singletonList(null),
-                    Errors.INVALID_GROUP_ID
+                        Collections.singletonList(null),
+                        Errors.INVALID_GROUP_ID
                 )));
             } else {
                 final TopicPartition topicPartition = topicPartitionFor(groupId);
@@ -1449,9 +1449,9 @@ public class GroupCoordinatorService implements GroupCoordinator {
         });
 
         return FutureUtils.combineFutures(futures, DeleteGroupsResponseData.DeletableGroupResultCollection::new,
-            // We don't use res.addAll(future.join()) because DeletableGroupResultCollection is an ImplicitLinkedHashMultiCollection,
-            // which has requirements for adding elements (see ImplicitLinkedHashCollection.java#add).
-            (accumulator, newResults) -> newResults.forEach(result -> accumulator.add(result.duplicate())));
+                // We don't use res.addAll(future.join()) because DeletableGroupResultCollection is an ImplicitLinkedHashMultiCollection,
+                // which has requirements for adding elements (see ImplicitLinkedHashCollection.java#add).
+                (accumulator, newResults) -> newResults.forEach(result -> accumulator.add(result.duplicate())));
     }
 
     /**
@@ -1474,7 +1474,7 @@ public class GroupCoordinatorService implements GroupCoordinator {
                 log.error("Error deleting share group {} due to error {}", groupId, error);
                 errGroupIds.add(groupId);
                 deletableGroupResults.add(
-                    new DeleteGroupsResponseData.DeletableGroupResult()
+                        new DeleteGroupsResponseData.DeletableGroupResult()
                         .setGroupId(groupId)
                         .setErrorCode(error.code())
                 );
@@ -1497,15 +1497,15 @@ public class GroupCoordinatorService implements GroupCoordinator {
         List<String> groupIds
     ) {
         return runtime.scheduleWriteOperation(
-            "delete-groups",
-            topicPartition,
-            coordinator -> coordinator.deleteGroups(context, groupIds)
+                "delete-groups",
+                topicPartition,
+                coordinator -> coordinator.deleteGroups(context, groupIds)
         ).exceptionally(exception -> handleOperationException(
-            "delete-groups",
-            groupIds,
-            exception,
-            (error, __) -> DeleteGroupsRequest.getErrorResultCollection(groupIds, error),
-            log
+                "delete-groups",
+                groupIds,
+                exception,
+                (error, __) -> DeleteGroupsRequest.getErrorResultCollection(groupIds, error),
+                log
         ));
     }
 
@@ -1515,21 +1515,21 @@ public class GroupCoordinatorService implements GroupCoordinator {
     ) {
         // topicPartition refers to internal topic __consumer_offsets.
         return runtime.scheduleWriteOperation(
-            "delete-share-groups",
-            topicPartition,
-            coordinator -> coordinator.sharePartitionDeleteRequests(groupList)
+                "delete-share-groups",
+                topicPartition,
+                coordinator -> coordinator.sharePartitionDeleteRequests(groupList)
         ).thenCompose(
-            this::performShareGroupsDeletion
+                this::performShareGroupsDeletion
         ).exceptionally(exception -> handleOperationException(
-            "delete-share-groups",
-            groupList,
-            exception,
-            (error, __) -> {
-                Map<String, Errors> errors = new HashMap<>();
-                groupList.forEach(group -> errors.put(group, error));
-                return errors;
-            },
-            log
+                "delete-share-groups",
+                groupList,
+                exception,
+                (error, __) -> {
+                    Map<String, Errors> errors = new HashMap<>();
+                    groupList.forEach(group -> errors.put(group, error));
+                    return errors;
+                },
+                log
         ));
     }
 
@@ -1566,8 +1566,8 @@ public class GroupCoordinatorService implements GroupCoordinator {
                 log.error("Unable to delete share group partition(s) - {} using request {}", groupId, deleteRequest, exception);
                 List<TopicData<PartitionErrorData>> respTopicData = deleteRequest.groupTopicPartitionData().topicsData().stream()
                     .map(reqTopicData -> new TopicData<>(
-                        reqTopicData.topicId(),
-                        reqTopicData.partitions().stream()
+                            reqTopicData.topicId(),
+                            reqTopicData.partitions().stream()
                             .map(reqPartData -> {
                                 Errors err = Errors.forException(exception);
                                 return PartitionFactory.newPartitionErrorData(reqPartData.partition(), err.code(), err.message());
@@ -1618,18 +1618,18 @@ public class GroupCoordinatorService implements GroupCoordinator {
     ) {
         if (!isActive.get()) {
             return CompletableFuture.completedFuture(OffsetFetchResponse.groupError(
-                request,
-                Errors.COORDINATOR_NOT_AVAILABLE,
-                context.requestVersion()
+                    request,
+                    Errors.COORDINATOR_NOT_AVAILABLE,
+                    context.requestVersion()
             ));
         }
 
         // For backwards compatibility, we support fetch commits for the empty group id.
         if (request.groupId() == null) {
             return CompletableFuture.completedFuture(OffsetFetchResponse.groupError(
-                request,
-                Errors.INVALID_GROUP_ID,
-                context.requestVersion()
+                    request,
+                    Errors.INVALID_GROUP_ID,
+                    context.requestVersion()
             ));
         }
 
@@ -1645,23 +1645,23 @@ public class GroupCoordinatorService implements GroupCoordinator {
         // the pending offsets are committed. Otherwise, we use a read operation.
         if (requireStable) {
             return runtime.scheduleWriteOperation(
-                name,
-                topicPartitionFor(request.groupId()),
-                coordinator -> new CoordinatorResult<>(
-                    List.of(),
-                    coordinator.fetchOffsets(request, Long.MAX_VALUE)
+                    name,
+                    topicPartitionFor(request.groupId()),
+                    coordinator -> new CoordinatorResult<>(
+                        List.of(),
+                        coordinator.fetchOffsets(request, Long.MAX_VALUE)
                 )
             ).exceptionally(exception -> handleOffsetFetchException(
-                name,
-                context,
-                request,
-                exception
+                    name,
+                    context,
+                    request,
+                    exception
             ));
         } else {
             return runtime.scheduleReadOperation(
-                name,
-                topicPartitionFor(request.groupId()),
-                (coordinator, offset) -> coordinator.fetchOffsets(request, offset)
+                    name,
+                    topicPartitionFor(request.groupId()),
+                    (coordinator, offset) -> coordinator.fetchOffsets(request, offset)
             );
         }
     }
@@ -1676,12 +1676,12 @@ public class GroupCoordinatorService implements GroupCoordinator {
     ) {
         if (!isActive.get()) {
             return CompletableFuture.completedFuture(
-                DescribeShareGroupOffsetsRequest.getErrorDescribedGroup(requestData.groupId(), Errors.COORDINATOR_NOT_AVAILABLE));
+                    DescribeShareGroupOffsetsRequest.getErrorDescribedGroup(requestData.groupId(), Errors.COORDINATOR_NOT_AVAILABLE));
         }
 
         if (metadataImage == null) {
             return CompletableFuture.completedFuture(
-                DescribeShareGroupOffsetsRequest.getErrorDescribedGroup(requestData.groupId(), Errors.COORDINATOR_NOT_AVAILABLE));
+                    DescribeShareGroupOffsetsRequest.getErrorDescribedGroup(requestData.groupId(), Errors.COORDINATOR_NOT_AVAILABLE));
         }
 
         Map<Uuid, String> requestTopicIdToNameMapping = new HashMap<>();
@@ -1695,8 +1695,8 @@ public class GroupCoordinatorService implements GroupCoordinator {
                 readStateSummaryData.add(new ReadShareGroupStateSummaryRequestData.ReadStateSummaryData()
                     .setTopicId(topicId)
                     .setPartitions(
-                        topic.partitions().stream().map(
-                            partitionIndex -> new ReadShareGroupStateSummaryRequestData.PartitionData().setPartition(partitionIndex)
+                            topic.partitions().stream().map(
+                                partitionIndex -> new ReadShareGroupStateSummaryRequestData.PartitionData().setPartition(partitionIndex)
                         ).toList()
                     ));
             } else {
@@ -1707,7 +1707,7 @@ public class GroupCoordinatorService implements GroupCoordinator {
                     .setTopicName(topic.topicName())
                     .setTopicId(Uuid.ZERO_UUID)
                     .setPartitions(topic.partitions().stream().map(
-                        partition -> new DescribeShareGroupOffsetsResponseData.DescribeShareGroupOffsetsResponsePartition()
+                            partition -> new DescribeShareGroupOffsetsResponseData.DescribeShareGroupOffsetsResponsePartition()
                             .setPartitionIndex(partition)
                             .setStartOffset(PartitionFactory.UNINITIALIZED_START_OFFSET)
                     ).toList()));
@@ -1717,7 +1717,7 @@ public class GroupCoordinatorService implements GroupCoordinator {
         // If the request for the persister is empty, just complete the operation right away.
         if (readStateSummaryData.isEmpty()) {
             return CompletableFuture.completedFuture(
-                new DescribeShareGroupOffsetsResponseData.DescribeShareGroupOffsetsResponseGroup()
+                    new DescribeShareGroupOffsetsResponseData.DescribeShareGroupOffsetsResponseGroup()
                     .setGroupId(requestData.groupId())
                     .setTopics(describeShareGroupOffsetsResponseTopicList));
         }
@@ -1739,18 +1739,18 @@ public class GroupCoordinatorService implements GroupCoordinator {
     ) {
         if (!isActive.get()) {
             return CompletableFuture.completedFuture(
-                DescribeShareGroupOffsetsRequest.getErrorDescribedGroup(requestData.groupId(), Errors.COORDINATOR_NOT_AVAILABLE));
+                    DescribeShareGroupOffsetsRequest.getErrorDescribedGroup(requestData.groupId(), Errors.COORDINATOR_NOT_AVAILABLE));
         }
 
         if (metadataImage == null) {
             return CompletableFuture.completedFuture(
-                DescribeShareGroupOffsetsRequest.getErrorDescribedGroup(requestData.groupId(), Errors.COORDINATOR_NOT_AVAILABLE));
+                    DescribeShareGroupOffsetsRequest.getErrorDescribedGroup(requestData.groupId(), Errors.COORDINATOR_NOT_AVAILABLE));
         }
 
         return runtime.scheduleReadOperation(
-            "share-group-initialized-partitions",
-            topicPartitionFor(requestData.groupId()),
-            (coordinator, offset) -> coordinator.initializedShareGroupPartitions(requestData.groupId())
+                "share-group-initialized-partitions",
+                topicPartitionFor(requestData.groupId()),
+                (coordinator, offset) -> coordinator.initializedShareGroupPartitions(requestData.groupId())
         ).thenCompose(topicPartitionMap -> {
             Map<Uuid, String> requestTopicIdToNameMapping = new HashMap<>();
             List<DescribeShareGroupOffsetsResponseData.DescribeShareGroupOffsetsResponseTopic> describeShareGroupOffsetsResponseTopicList = new ArrayList<>(topicPartitionMap.size());
@@ -1762,8 +1762,8 @@ public class GroupCoordinatorService implements GroupCoordinator {
                     readSummaryRequestData.topics().add(new ReadShareGroupStateSummaryRequestData.ReadStateSummaryData()
                         .setTopicId(topicId)
                         .setPartitions(
-                            partitionSet.stream().map(
-                                partitionIndex -> new ReadShareGroupStateSummaryRequestData.PartitionData().setPartition(partitionIndex)
+                                partitionSet.stream().map(
+                                    partitionIndex -> new ReadShareGroupStateSummaryRequestData.PartitionData().setPartition(partitionIndex)
                             ).toList()
                         ));
                 });
@@ -1780,7 +1780,7 @@ public class GroupCoordinatorService implements GroupCoordinator {
         // If the request for the persister is empty, just complete the operation right away.
         if (readSummaryRequestData.topics().isEmpty()) {
             return CompletableFuture.completedFuture(
-                new DescribeShareGroupOffsetsResponseData.DescribeShareGroupOffsetsResponseGroup()
+                    new DescribeShareGroupOffsetsResponseData.DescribeShareGroupOffsetsResponseGroup()
                     .setGroupId(readSummaryRequestData.groupId())
                     .setTopics(describeShareGroupOffsetsResponseTopicList));
         }
@@ -1801,11 +1801,11 @@ public class GroupCoordinatorService implements GroupCoordinator {
 
                 // Now compute lag for each partition and build the final response.
                 computeShareGroupLagAndBuildResponse(
-                    result,
-                    requestTopicIdToNameMapping,
-                    describeShareGroupOffsetsResponseTopicList,
-                    future,
-                    readSummaryRequestData.groupId()
+                        result,
+                        requestTopicIdToNameMapping,
+                        describeShareGroupOffsetsResponseTopicList,
+                        future,
+                        readSummaryRequestData.groupId()
                 );
             });
         return future;
@@ -1832,11 +1832,11 @@ public class GroupCoordinatorService implements GroupCoordinator {
 
         // Fetch latest offsets for all partitions that need lag computation.
         Map<TopicPartition, CompletableFuture<PartitionMetadataClient.OffsetResponse>> partitionLatestOffsets =
-            partitionsToComputeLag.isEmpty() ? Map.of() : partitionMetadataClient.listLatestOffsets(partitionsToComputeLag);
+                partitionsToComputeLag.isEmpty() ? Map.of() : partitionMetadataClient.listLatestOffsets(partitionsToComputeLag);
 
         // Final response object to be built. It will include lag information computed from partitionMetadataClient.
         DescribeShareGroupOffsetsResponseData.DescribeShareGroupOffsetsResponseGroup responseGroup =
-            new DescribeShareGroupOffsetsResponseData.DescribeShareGroupOffsetsResponseGroup()
+                new DescribeShareGroupOffsetsResponseData.DescribeShareGroupOffsetsResponseGroup()
                 .setGroupId(groupId);
 
         // List of response topics to be set in the response group.
@@ -1855,7 +1855,7 @@ public class GroupCoordinatorService implements GroupCoordinator {
                 readSummaryResult.topicsData().forEach(topicData -> {
                     // Build response for each topic.
                     DescribeShareGroupOffsetsResponseData.DescribeShareGroupOffsetsResponseTopic topic =
-                        new DescribeShareGroupOffsetsResponseData.DescribeShareGroupOffsetsResponseTopic()
+                            new DescribeShareGroupOffsetsResponseData.DescribeShareGroupOffsetsResponseTopic()
                             .setTopicId(topicData.topicId())
                             .setTopicName(requestTopicIdToNameMapping.get(topicData.topicId()));
 
@@ -1919,8 +1919,8 @@ public class GroupCoordinatorService implements GroupCoordinator {
         // 3. The start offset is initialized.
         // 4. The delivery complete count is initialized.
         return partitionData.errorCode() == Errors.NONE.code() &&
-            partitionData.startOffset() != PartitionFactory.UNINITIALIZED_START_OFFSET &&
-            partitionData.deliveryCompleteCount() != PartitionFactory.UNINITIALIZED_DELIVERY_COMPLETE_COUNT;
+                partitionData.startOffset() != PartitionFactory.UNINITIALIZED_START_OFFSET &&
+                partitionData.deliveryCompleteCount() != PartitionFactory.UNINITIALIZED_DELIVERY_COMPLETE_COUNT;
     }
 
     /**
@@ -1947,16 +1947,16 @@ public class GroupCoordinatorService implements GroupCoordinator {
         }
 
         return runtime.scheduleWriteOperation(
-            "initiate-delete-share-group-offsets",
-            topicPartitionFor(groupId),
-            coordinator -> coordinator.initiateDeleteShareGroupOffsets(groupId, requestData)
+                "initiate-delete-share-group-offsets",
+                topicPartitionFor(groupId),
+                coordinator -> coordinator.initiateDeleteShareGroupOffsets(groupId, requestData)
         ).thenCompose(resultHolder -> deleteShareGroupOffsetsState(groupId, resultHolder)
         ).exceptionally(exception -> handleOperationException(
-            "initiate-delete-share-group-offsets",
-            groupId,
-            exception,
-            DeleteShareGroupOffsetsRequest::getErrorDeleteResponseData,
-            log
+                "initiate-delete-share-group-offsets",
+                groupId,
+                exception,
+                DeleteShareGroupOffsetsRequest::getErrorDeleteResponseData,
+                log
         ));
     }
 
@@ -1967,25 +1967,25 @@ public class GroupCoordinatorService implements GroupCoordinator {
         if (resultHolder == null) {
             log.error("Failed to retrieve deleteState request parameters from group coordinator for the group {}", groupId);
             return CompletableFuture.completedFuture(
-                DeleteShareGroupOffsetsRequest.getErrorDeleteResponseData(Errors.UNKNOWN_SERVER_ERROR)
+                    DeleteShareGroupOffsetsRequest.getErrorDeleteResponseData(Errors.UNKNOWN_SERVER_ERROR)
             );
         }
 
         if (resultHolder.topLevelErrorCode() != Errors.NONE.code()) {
             return CompletableFuture.completedFuture(
-                DeleteShareGroupOffsetsRequest.getErrorDeleteResponseData(
-                    resultHolder.topLevelErrorCode(),
-                    resultHolder.topLevelErrorMessage()
+                    DeleteShareGroupOffsetsRequest.getErrorDeleteResponseData(
+                        resultHolder.topLevelErrorCode(),
+                        resultHolder.topLevelErrorMessage()
                 )
             );
         }
 
         List<DeleteShareGroupOffsetsResponseData.DeleteShareGroupOffsetsResponseTopic> errorTopicResponseList =
-            resultHolder.errorTopicResponseList() == null ? new ArrayList<>() : new ArrayList<>(resultHolder.errorTopicResponseList());
+                resultHolder.errorTopicResponseList() == null ? new ArrayList<>() : new ArrayList<>(resultHolder.errorTopicResponseList());
 
         if (resultHolder.deleteStateRequestParameters() == null) {
             return CompletableFuture.completedFuture(
-                new DeleteShareGroupOffsetsResponseData()
+                    new DeleteShareGroupOffsetsResponseData()
                     .setResponses(errorTopicResponseList)
             );
         }
@@ -2007,7 +2007,7 @@ public class GroupCoordinatorService implements GroupCoordinator {
             log.error("Result is null for the delete share group state");
             Exception exception = new IllegalStateException("Result is null for the delete share group state");
             return CompletableFuture.completedFuture(
-                DeleteShareGroupOffsetsRequest.getErrorDeleteResponseData(Errors.forException(exception))
+                    DeleteShareGroupOffsetsRequest.getErrorDeleteResponseData(Errors.forException(exception))
             );
         }
         Map<Uuid, String> successTopics = new HashMap<>();
@@ -2020,7 +2020,7 @@ public class GroupCoordinatorService implements GroupCoordinator {
 
             if (errItem.isPresent()) {
                 errorTopicResponses.add(
-                    new DeleteShareGroupOffsetsResponseData.DeleteShareGroupOffsetsResponseTopic()
+                        new DeleteShareGroupOffsetsResponseData.DeleteShareGroupOffsetsResponseTopic()
                         .setTopicId(topicData.topicId())
                         .setTopicName(topicName)
                         .setErrorMessage(Errors.forCode(errItem.get().errorCode()).message())
@@ -2028,8 +2028,8 @@ public class GroupCoordinatorService implements GroupCoordinator {
                 );
             } else {
                 successTopics.put(
-                    topicData.topicId(),
-                    topicName
+                        topicData.topicId(),
+                        topicName
                 );
             }
         });
@@ -2037,7 +2037,7 @@ public class GroupCoordinatorService implements GroupCoordinator {
         // If there are no topics for which persister delete state request succeeded, then we can return directly from here
         if (successTopics.isEmpty()) {
             return CompletableFuture.completedFuture(
-                new DeleteShareGroupOffsetsResponseData()
+                    new DeleteShareGroupOffsetsResponseData()
                     .setResponses(errorTopicResponses)
             );
         }
@@ -2051,15 +2051,15 @@ public class GroupCoordinatorService implements GroupCoordinator {
         List<DeleteShareGroupOffsetsResponseData.DeleteShareGroupOffsetsResponseTopic> errorTopicResponses
     ) {
         return runtime.scheduleWriteOperation(
-            "complete-delete-share-group-offsets",
-            topicPartitionFor(groupId),
-            coordinator -> coordinator.completeDeleteShareGroupOffsets(groupId, successTopics, errorTopicResponses)
+                "complete-delete-share-group-offsets",
+                topicPartitionFor(groupId),
+                coordinator -> coordinator.completeDeleteShareGroupOffsets(groupId, successTopics, errorTopicResponses)
         ).exceptionally(exception -> handleOperationException(
-            "complete-delete-share-group-offsets",
-            groupId,
-            exception,
-            (error, __) -> DeleteShareGroupOffsetsRequest.getErrorDeleteResponseData(error),
-            log
+                "complete-delete-share-group-offsets",
+                groupId,
+                exception,
+                (error, __) -> DeleteShareGroupOffsetsRequest.getErrorDeleteResponseData(error),
+                log
         ));
     }
 
@@ -2074,29 +2074,29 @@ public class GroupCoordinatorService implements GroupCoordinator {
     ) {
         if (!isActive.get()) {
             return CompletableFuture.completedFuture(OffsetCommitRequest.getErrorResponse(
-                request,
-                Errors.COORDINATOR_NOT_AVAILABLE
+                    request,
+                    Errors.COORDINATOR_NOT_AVAILABLE
             ));
         }
 
         // For backwards compatibility, we support offset commits for the empty groupId.
         if (request.groupId() == null) {
             return CompletableFuture.completedFuture(OffsetCommitRequest.getErrorResponse(
-                request,
-                Errors.INVALID_GROUP_ID
+                    request,
+                    Errors.INVALID_GROUP_ID
             ));
         }
 
         return runtime.scheduleWriteOperation(
-            "commit-offset",
-            topicPartitionFor(request.groupId()),
-            coordinator -> coordinator.commitOffset(context, request)
+                "commit-offset",
+                topicPartitionFor(request.groupId()),
+                coordinator -> coordinator.commitOffset(context, request)
         ).exceptionally(exception -> handleOperationException(
-            "commit-offset",
-            request,
-            exception,
-            (error, __) -> OffsetCommitRequest.getErrorResponse(request, error),
-            log
+                "commit-offset",
+                request,
+                exception,
+                (error, __) -> OffsetCommitRequest.getErrorResponse(request, error),
+                log
         ));
     }
 
@@ -2111,32 +2111,32 @@ public class GroupCoordinatorService implements GroupCoordinator {
     ) {
         if (!isActive.get()) {
             return CompletableFuture.completedFuture(TxnOffsetCommitRequest.getErrorResponse(
-                request,
-                Errors.COORDINATOR_NOT_AVAILABLE
+                    request,
+                    Errors.COORDINATOR_NOT_AVAILABLE
             ));
         }
 
         if (!isGroupIdNotEmpty(request.groupId())) {
             return CompletableFuture.completedFuture(TxnOffsetCommitRequest.getErrorResponse(
-                request,
-                Errors.INVALID_GROUP_ID
+                    request,
+                    Errors.INVALID_GROUP_ID
             ));
         }
 
         return runtime.scheduleTransactionalWriteOperation(
-            "txn-commit-offset",
-            topicPartitionFor(request.groupId()),
-            request.transactionalId(),
-            request.producerId(),
-            request.producerEpoch(),
-            coordinator -> coordinator.commitTransactionalOffset(context, request),
-            context.requestVersion()
+                "txn-commit-offset",
+                topicPartitionFor(request.groupId()),
+                request.transactionalId(),
+                request.producerId(),
+                request.producerEpoch(),
+                coordinator -> coordinator.commitTransactionalOffset(context, request),
+                context.requestVersion()
         ).exceptionally(exception -> handleOperationException(
-            "txn-commit-offset",
-            request,
-            exception,
-            (error, __) -> TxnOffsetCommitRequest.getErrorResponse(request, error),
-            log
+                "txn-commit-offset",
+                request,
+                exception,
+                (error, __) -> TxnOffsetCommitRequest.getErrorResponse(request, error),
+                log
         ));
     }
 
@@ -2162,15 +2162,15 @@ public class GroupCoordinatorService implements GroupCoordinator {
         }
 
         return runtime.scheduleWriteOperation(
-            "delete-offsets",
-            topicPartitionFor(request.groupId()),
-            coordinator -> coordinator.deleteOffsets(context, request)
+                "delete-offsets",
+                topicPartitionFor(request.groupId()),
+                coordinator -> coordinator.deleteOffsets(context, request)
         ).exceptionally(exception -> handleOperationException(
-            "delete-offsets",
-            request,
-            exception,
-            (error, __) -> new OffsetDeleteResponseData().setErrorCode(error.code()),
-            log
+                "delete-offsets",
+                request,
+                exception,
+                (error, __) -> new OffsetDeleteResponseData().setErrorCode(error.code()),
+                log
         ));
     }
 
@@ -2192,18 +2192,18 @@ public class GroupCoordinatorService implements GroupCoordinator {
 
         if (!tp.topic().equals(Topic.GROUP_METADATA_TOPIC_NAME)) {
             return CompletableFuture.failedFuture(new IllegalStateException(
-                "Completing a transaction for " + tp + " is not expected"
+                    "Completing a transaction for " + tp + " is not expected"
             ));
         }
 
         return runtime.scheduleTransactionCompletion(
-            "write-txn-marker",
-            tp,
-            producerId,
-            producerEpoch,
-            coordinatorEpoch,
-            result,
-            transactionVersion
+                "write-txn-marker",
+                tp,
+                producerId,
+                producerEpoch,
+                coordinatorEpoch,
+                result,
+                transactionVersion
         );
     }
 
@@ -2217,8 +2217,8 @@ public class GroupCoordinatorService implements GroupCoordinator {
     ) {
         throwIfNotActive();
         runtime.scheduleLoadOperation(
-            new TopicPartition(Topic.GROUP_METADATA_TOPIC_NAME, groupMetadataPartitionIndex),
-            groupMetadataPartitionLeaderEpoch
+                new TopicPartition(Topic.GROUP_METADATA_TOPIC_NAME, groupMetadataPartitionIndex),
+                groupMetadataPartitionLeaderEpoch
         );
     }
 
@@ -2232,8 +2232,8 @@ public class GroupCoordinatorService implements GroupCoordinator {
     ) {
         throwIfNotActive();
         runtime.scheduleUnloadOperation(
-            new TopicPartition(Topic.GROUP_METADATA_TOPIC_NAME, groupMetadataPartitionIndex),
-            groupMetadataPartitionLeaderEpoch
+                new TopicPartition(Topic.GROUP_METADATA_TOPIC_NAME, groupMetadataPartitionIndex),
+                groupMetadataPartitionLeaderEpoch
         );
     }
 
@@ -2283,16 +2283,16 @@ public class GroupCoordinatorService implements GroupCoordinator {
         if (!deletedTopics.isEmpty()) {
             // Schedule offset deletion.
             futures.addAll(
-                FutureUtils.mapExceptionally(
-                    runtime.scheduleWriteAllOperation(
-                        "on-topics-deleted",
-                        coordinator -> coordinator.onTopicsDeleted(deletedTopics)
+                    FutureUtils.mapExceptionally(
+                        runtime.scheduleWriteAllOperation(
+                            "on-topics-deleted",
+                            coordinator -> coordinator.onTopicsDeleted(deletedTopics)
                     ),
-                    exception -> {
-                        log.error("Could not delete offsets for deleted topics {} due to: {}.",
-                            deletedTopics, exception.getMessage(), exception);
-                        return null;
-                    }
+                        exception -> {
+                            log.error("Could not delete offsets for deleted topics {} due to: {}.",
+                                deletedTopics, exception.getMessage(), exception);
+                            return null;
+                        }
                 )
             );
         }
@@ -2300,15 +2300,15 @@ public class GroupCoordinatorService implements GroupCoordinator {
         if (!deletedTopicIds.isEmpty()) {
             // Schedule share group state cleanup.
             futures.addAll(
-                FutureUtils.mapExceptionally(
-                    runtime.scheduleWriteAllOperation(
-                        "maybe-cleanup-share-group-state",
-                        coordinator -> coordinator.maybeCleanupShareGroupState(deletedTopicIds)
+                    FutureUtils.mapExceptionally(
+                        runtime.scheduleWriteAllOperation(
+                            "maybe-cleanup-share-group-state",
+                            coordinator -> coordinator.maybeCleanupShareGroupState(deletedTopicIds)
                     ),
-                    exception -> {
-                        log.error("Unable to cleanup state for the deleted topics {}", deletedTopicIds, exception);
-                        return null;
-                    }
+                        exception -> {
+                            log.error("Unable to cleanup state for the deleted topics {}", deletedTopicIds, exception);
+                            return null;
+                        }
                 )
             );
         }
@@ -2415,18 +2415,18 @@ public class GroupCoordinatorService implements GroupCoordinator {
                     // COORDINATOR_NOT_AVAILABLE is also not handled by consumers on versions prior to
                     // 3.9.
                 OffsetFetchResponse.groupError(
-                            request,
-                            Errors.NOT_COORDINATOR,
-                            context.requestVersion()
+                        request,
+                        Errors.NOT_COORDINATOR,
+                        context.requestVersion()
                 );
             default -> handleOperationException(
                     operationName,
                     request,
                     exception,
                     (error, __) -> OffsetFetchResponse.groupError(
-                        request,
-                        error,
-                        context.requestVersion()
+                            request,
+                            error,
+                            context.requestVersion()
                     ),
                     log
             );

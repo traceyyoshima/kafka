@@ -61,8 +61,8 @@ public class Record<K, V> {
         this.value = value;
         if (timestamp < 0) {
             throw new StreamsException(
-                "Malformed Record",
-                new IllegalArgumentException("Timestamp may not be negative. Got: " + timestamp)
+                    "Malformed Record",
+                    new IllegalArgumentException("Timestamp may not be negative. Got: " + timestamp)
             );
         }
         this.timestamp = timestamp;
@@ -168,11 +168,11 @@ public class Record<K, V> {
     @Override
     public String toString() {
         return "Record{" +
-            "key=" + key +
-            ", value=" + value +
-            ", timestamp=" + timestamp +
-            ", headers=" + headers +
-            '}';
+                "key=" + key +
+                ", value=" + value +
+                ", timestamp=" + timestamp +
+                ", headers=" + headers +
+                '}';
     }
 
     @Override
@@ -181,9 +181,9 @@ public class Record<K, V> {
         if (o == null || getClass() != o.getClass()) return false;
         final Record<?, ?> record = (Record<?, ?>) o;
         return timestamp == record.timestamp &&
-            Objects.equals(key, record.key) &&
-            Objects.equals(value, record.value) &&
-            Objects.equals(headers, record.headers);
+                Objects.equals(key, record.key) &&
+                Objects.equals(value, record.value) &&
+                Objects.equals(headers, record.headers);
     }
 
     @Override

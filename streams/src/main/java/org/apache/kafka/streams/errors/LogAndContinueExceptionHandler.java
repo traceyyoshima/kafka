@@ -39,12 +39,12 @@ public class LogAndContinueExceptionHandler implements DeserializationExceptionH
                                 final ConsumerRecord<byte[], byte[]> record,
                                 final Exception exception) {
         log.warn(
-            "Exception caught during Deserialization, taskId: {}, topic: {}, partition: {}, offset: {}",
-            context.taskId(),
-            record.topic(),
-            record.partition(),
-            record.offset(),
-            exception
+                "Exception caught during Deserialization, taskId: {}, topic: {}, partition: {}, offset: {}",
+                context.taskId(),
+                record.topic(),
+                record.partition(),
+                record.offset(),
+                exception
         );
 
         return Response.resume(maybeBuildDeadLetterQueueRecords(deadLetterQueueTopic, context.sourceRawKey(), context.sourceRawValue(), context, exception));

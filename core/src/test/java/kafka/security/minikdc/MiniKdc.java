@@ -202,7 +202,6 @@ public class MiniKdc {
         return properties;
     }
 
-
     public void start() throws Exception {
         if (kdc != null) {
             throw new IllegalStateException("KDC already started");
@@ -222,17 +221,17 @@ public class MiniKdc {
         miniKdc.createPrincipal(keytabFile, principals);
         String infoMessage = String.format(
                 "\n" +
-                        "Standalone MiniKdc Running\n" +
-                        "---------------------------------------------------\n" +
-                        "  Realm           : %s\n" +
-                        "  Running at      : %s:%d\n" +
-                        "  krb5conf        : %s\n" +
-                        "\n" +
-                        "  created keytab  : %s\n" +
-                        "  with principals : %s\n" +
-                        "\n" +
-                        "Hit <CTRL-C> or kill <PID> to stop it\n" +
-                        "---------------------------------------------------\n",
+                "Standalone MiniKdc Running\n" +
+                "---------------------------------------------------\n" +
+                "  Realm           : %s\n" +
+                "  Running at      : %s:%d\n" +
+                "  krb5conf        : %s\n" +
+                "\n" +
+                "  created keytab  : %s\n" +
+                "  with principals : %s\n" +
+                "\n" +
+                "Hit <CTRL-C> or kill <PID> to stop it\n" +
+                "---------------------------------------------------\n",
                 miniKdc.getRealm(), miniKdc.getHost(), miniKdc.getPort(), miniKdc.getKrb5conf().getAbsolutePath(),
                 keytabFile.getAbsolutePath(), String.join(", ", principals)
         );

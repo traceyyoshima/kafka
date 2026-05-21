@@ -49,11 +49,11 @@ public class ProcessorContextTest {
         doReturn(TaskType.ACTIVE).when(stateManager).taskType();
 
         context = new ProcessorContextImpl(
-            mock(TaskId.class),
-            streamsConfig,
-            stateManager,
-            mock(StreamsMetricsImpl.class),
-            mock(ThreadCache.class)
+                mock(TaskId.class),
+                streamsConfig,
+                stateManager,
+                mock(StreamsMetricsImpl.class),
+                mock(ThreadCache.class)
         );
         ((InternalProcessorContext) context).transitionToActive(mock(StreamTask.class), null, null);
     }

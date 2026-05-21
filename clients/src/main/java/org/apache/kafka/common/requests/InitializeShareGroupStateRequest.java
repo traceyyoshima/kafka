@@ -59,7 +59,7 @@ public class InitializeShareGroupStateRequest extends AbstractRequest {
     public InitializeShareGroupStateResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         List<InitializeShareGroupStateResponseData.InitializeStateResult> results = new ArrayList<>();
         data.topics().forEach(
-            topicResult -> results.add(new InitializeShareGroupStateResponseData.InitializeStateResult()
+                topicResult -> results.add(new InitializeShareGroupStateResponseData.InitializeStateResult()
                 .setTopicId(topicResult.topicId())
                 .setPartitions(topicResult.partitions().stream()
                     .map(partitionData -> new InitializeShareGroupStateResponseData.PartitionResult()
@@ -77,8 +77,8 @@ public class InitializeShareGroupStateRequest extends AbstractRequest {
 
     public static InitializeShareGroupStateRequest parse(Readable readable, short version) {
         return new InitializeShareGroupStateRequest(
-            new InitializeShareGroupStateRequestData(readable, version),
-            version
+                new InitializeShareGroupStateRequestData(readable, version),
+                version
         );
     }
 }

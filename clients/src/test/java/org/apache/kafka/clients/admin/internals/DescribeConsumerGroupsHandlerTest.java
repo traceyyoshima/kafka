@@ -73,17 +73,17 @@ public class DescribeConsumerGroupsHandlerTest {
     private final String groupId1 = "group-id1";
     private final String groupId2 = "group-id2";
     private final Set<String> groupIds = new LinkedHashSet<>(Arrays.asList(
-        groupId1,
-        groupId2
+            groupId1,
+            groupId2
     ));
     private final Set<CoordinatorKey> keys = new LinkedHashSet<>(Arrays.asList(
-        CoordinatorKey.byGroupId(groupId1),
-        CoordinatorKey.byGroupId(groupId2)
+            CoordinatorKey.byGroupId(groupId1),
+            CoordinatorKey.byGroupId(groupId2)
     ));
     private final Node coordinator = new Node(1, "host", 1234);
     private final Set<TopicPartition> tps = Set.of(
-        new TopicPartition("foo", 0),
-        new TopicPartition("bar",  1)
+            new TopicPartition("foo", 0),
+            new TopicPartition("bar",  1)
     );
 
     @ParameterizedTest
@@ -96,9 +96,9 @@ public class DescribeConsumerGroupsHandlerTest {
         Collection<AdminApiHandler.RequestAndKeys<CoordinatorKey>> requestAndKeys = handler.buildRequest(1, keys);
         assertEquals(1, requestAndKeys.size());
         assertRequestAndKeys(
-            requestAndKeys.iterator().next(),
-            keys,
-            new ConsumerGroupDescribeRequestData()
+                requestAndKeys.iterator().next(),
+                keys,
+                new ConsumerGroupDescribeRequestData()
                 .setGroupIds(new ArrayList<>(groupIds))
                 .setIncludeAuthorizedOperations(includeAuthorizedOperations)
         );
@@ -107,14 +107,14 @@ public class DescribeConsumerGroupsHandlerTest {
         // and a GROUP_ID_NOT_FOUND for the second one. The GROUP_ID_NOT_FOUND
         // means that the group must be described with the classic API.
         handler.handleResponse(
-            coordinator,
-            keys,
-            new ConsumerGroupDescribeResponse(new ConsumerGroupDescribeResponseData()
+                coordinator,
+                keys,
+                new ConsumerGroupDescribeResponse(new ConsumerGroupDescribeResponseData()
                 .setGroups(Arrays.asList(
-                    new ConsumerGroupDescribeResponseData.DescribedGroup()
+                        new ConsumerGroupDescribeResponseData.DescribedGroup()
                         .setGroupId(groupId1)
                         .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code()),
-                    new ConsumerGroupDescribeResponseData.DescribedGroup()
+                        new ConsumerGroupDescribeResponseData.DescribedGroup()
                         .setGroupId(groupId2)
                         .setErrorCode(Errors.GROUP_ID_NOT_FOUND.code())
                 ))
@@ -129,17 +129,17 @@ public class DescribeConsumerGroupsHandlerTest {
         Iterator<AdminApiHandler.RequestAndKeys<CoordinatorKey>> iterator = requestAndKeys.iterator();
 
         assertRequestAndKeys(
-            iterator.next(),
-            Collections.singleton(CoordinatorKey.byGroupId(groupId1)),
-            new ConsumerGroupDescribeRequestData()
+                iterator.next(),
+                Collections.singleton(CoordinatorKey.byGroupId(groupId1)),
+                new ConsumerGroupDescribeRequestData()
                 .setGroupIds(Collections.singletonList(groupId1))
                 .setIncludeAuthorizedOperations(includeAuthorizedOperations)
         );
 
         assertRequestAndKeys(
-            iterator.next(),
-            Collections.singleton(CoordinatorKey.byGroupId(groupId2)),
-            new DescribeGroupsRequestData()
+                iterator.next(),
+                Collections.singleton(CoordinatorKey.byGroupId(groupId2)),
+                new DescribeGroupsRequestData()
                 .setGroups(Collections.singletonList(groupId2))
                 .setIncludeAuthorizedOperations(includeAuthorizedOperations)
         );
@@ -155,55 +155,55 @@ public class DescribeConsumerGroupsHandlerTest {
     public void testSuccessfulHandleConsumerGroupResponse() {
         DescribeConsumerGroupsHandler handler = new DescribeConsumerGroupsHandler(false, logContext);
         Collection<MemberDescription> members = List.of(
-            new MemberDescription(
-                "memberId",
-                Optional.of("instanceId"),
-                Optional.of("rackId"),
-                "clientId",
-                "host",
-                new MemberAssignment(Set.of(
-                    new TopicPartition("foo", 0)
+                new MemberDescription(
+                    "memberId",
+                    Optional.of("instanceId"),
+                    Optional.of("rackId"),
+                    "clientId",
+                    "host",
+                    new MemberAssignment(Set.of(
+                        new TopicPartition("foo", 0)
                 )),
-                Optional.of(new MemberAssignment(Set.of(
-                    new TopicPartition("foo", 1)
+                    Optional.of(new MemberAssignment(Set.of(
+                        new TopicPartition("foo", 1)
                 ))),
-                Optional.of(10),
-                Optional.of(true)
+                    Optional.of(10),
+                    Optional.of(true)
             ),
-            new MemberDescription(
-                "memberId-classic",
-                Optional.of("instanceId-classic"),
-                Optional.empty(),
-                "clientId-classic",
-                "host",
-                new MemberAssignment(Set.of(
-                    new TopicPartition("bar", 0)
+                new MemberDescription(
+                    "memberId-classic",
+                    Optional.of("instanceId-classic"),
+                    Optional.empty(),
+                    "clientId-classic",
+                    "host",
+                    new MemberAssignment(Set.of(
+                        new TopicPartition("bar", 0)
                 )),
-                Optional.of(new MemberAssignment(Set.of(
-                    new TopicPartition("bar", 1)
+                    Optional.of(new MemberAssignment(Set.of(
+                        new TopicPartition("bar", 1)
                 ))),
-                Optional.of(9),
-                Optional.of(false)
+                    Optional.of(9),
+                    Optional.of(false)
             ));
         ConsumerGroupDescription expected = new ConsumerGroupDescription(
-            groupId1,
-            false,
-            members,
-            "range",
-            GroupType.CONSUMER,
-            GroupState.STABLE,
-            coordinator,
-            Collections.emptySet(),
-            Optional.of(10),
-            Optional.of(10)
+                groupId1,
+                false,
+                members,
+                "range",
+                GroupType.CONSUMER,
+                GroupState.STABLE,
+                coordinator,
+                Collections.emptySet(),
+                Optional.of(10),
+                Optional.of(10)
         );
         AdminApiHandler.ApiResult<CoordinatorKey, ConsumerGroupDescription> result = handler.handleResponse(
-            coordinator,
-            Collections.singleton(CoordinatorKey.byGroupId(groupId1)),
-            new ConsumerGroupDescribeResponse(
-                new ConsumerGroupDescribeResponseData()
+                coordinator,
+                Collections.singleton(CoordinatorKey.byGroupId(groupId1)),
+                new ConsumerGroupDescribeResponse(
+                    new ConsumerGroupDescribeResponseData()
                     .setGroups(Collections.singletonList(
-                        new ConsumerGroupDescribeResponseData.DescribedGroup()
+                            new ConsumerGroupDescribeResponseData.DescribedGroup()
                             .setGroupId(groupId1)
                             .setGroupState("Stable")
                             .setGroupEpoch(10)
@@ -211,7 +211,7 @@ public class DescribeConsumerGroupsHandlerTest {
                             .setAssignorName("range")
                             .setAuthorizedOperations(Utils.to32BitField(emptySet()))
                             .setMembers(List.of(
-                                new ConsumerGroupDescribeResponseData.Member()
+                                    new ConsumerGroupDescribeResponseData.Member()
                                     .setMemberId("memberId")
                                     .setInstanceId("instanceId")
                                     .setClientHost("host")
@@ -222,20 +222,20 @@ public class DescribeConsumerGroupsHandlerTest {
                                     .setSubscribedTopicRegex("regex")
                                     .setAssignment(new ConsumerGroupDescribeResponseData.Assignment()
                                         .setTopicPartitions(List.of(
-                                            new ConsumerGroupDescribeResponseData.TopicPartitions()
+                                                new ConsumerGroupDescribeResponseData.TopicPartitions()
                                                 .setTopicId(Uuid.randomUuid())
                                                 .setTopicName("foo")
                                                 .setPartitions(Collections.singletonList(0))
                                         )))
                                     .setTargetAssignment(new ConsumerGroupDescribeResponseData.Assignment()
                                         .setTopicPartitions(List.of(
-                                            new ConsumerGroupDescribeResponseData.TopicPartitions()
+                                                new ConsumerGroupDescribeResponseData.TopicPartitions()
                                                 .setTopicId(Uuid.randomUuid())
                                                 .setTopicName("foo")
                                                 .setPartitions(Collections.singletonList(1))
                                         )))
                                     .setMemberType((byte) 1),
-                                new ConsumerGroupDescribeResponseData.Member()
+                                    new ConsumerGroupDescribeResponseData.Member()
                                     .setMemberId("memberId-classic")
                                     .setInstanceId("instanceId-classic")
                                     .setClientHost("host")
@@ -246,14 +246,14 @@ public class DescribeConsumerGroupsHandlerTest {
                                     .setSubscribedTopicRegex("regex")
                                     .setAssignment(new ConsumerGroupDescribeResponseData.Assignment()
                                         .setTopicPartitions(List.of(
-                                            new ConsumerGroupDescribeResponseData.TopicPartitions()
+                                                new ConsumerGroupDescribeResponseData.TopicPartitions()
                                                 .setTopicId(Uuid.randomUuid())
                                                 .setTopicName("bar")
                                                 .setPartitions(Collections.singletonList(0))
                                         )))
                                     .setTargetAssignment(new ConsumerGroupDescribeResponseData.Assignment()
                                         .setTopicPartitions(List.of(
-                                            new ConsumerGroupDescribeResponseData.TopicPartitions()
+                                                new ConsumerGroupDescribeResponseData.TopicPartitions()
                                                 .setTopicId(Uuid.randomUuid())
                                                 .setTopicName("bar")
                                                 .setPartitions(Collections.singletonList(1))
@@ -331,9 +331,9 @@ public class DescribeConsumerGroupsHandlerTest {
 
     private ConsumerGroupDescribeResponse buildConsumerGroupDescribeResponse(Errors error) {
         return new ConsumerGroupDescribeResponse(
-            new ConsumerGroupDescribeResponseData()
+                new ConsumerGroupDescribeResponseData()
                 .setGroups(Collections.singletonList(
-                    new ConsumerGroupDescribeResponseData.DescribedGroup()
+                        new ConsumerGroupDescribeResponseData.DescribedGroup()
                         .setGroupId(groupId1)
                         .setErrorCode(error.code())
                 ))

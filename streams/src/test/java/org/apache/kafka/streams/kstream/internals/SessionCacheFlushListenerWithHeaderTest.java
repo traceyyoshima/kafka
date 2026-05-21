@@ -41,18 +41,18 @@ public class SessionCacheFlushListenerWithHeaderTest {
         @SuppressWarnings("unchecked")
         final InternalProcessorContext<Windowed<String>, Change<String>> context = mock(InternalProcessorContext.class);
         doNothing().when(context).forward(
-            new Record<>(
-                new Windowed<>("key", new SessionWindow(21L, 73L)),
-                new Change<>("newValue", "oldValue"),
-                73L));
+                new Record<>(
+                    new Windowed<>("key", new SessionWindow(21L, 73L)),
+                    new Change<>("newValue", "oldValue"),
+                    73L));
 
         new SessionCacheFlushListenerWithHeader<>(context).apply(
-            new Record<>(
-                new Windowed<>("key", new SessionWindow(21L, 73L)),
-                new Change<>(
-                    AggregationWithHeaders.make("newValue", new RecordHeaders()),
-                    AggregationWithHeaders.make("oldValue", new RecordHeaders())),
-                42L));
+                new Record<>(
+                    new Windowed<>("key", new SessionWindow(21L, 73L)),
+                    new Change<>(
+                        AggregationWithHeaders.make("newValue", new RecordHeaders()),
+                        AggregationWithHeaders.make("oldValue", new RecordHeaders())),
+                    42L));
 
         verify(context, times(2)).setCurrentNode(null);
     }

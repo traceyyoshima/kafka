@@ -28,7 +28,7 @@ public class SamplePredicate implements Predicate<SourceRecord> {
     private boolean testResult;
     boolean closed = false;
 
-    public SamplePredicate() { }
+    public SamplePredicate() {}
 
     public SamplePredicate(boolean testResult) {
         this.testResult = testResult;
@@ -56,6 +56,6 @@ public class SamplePredicate implements Predicate<SourceRecord> {
     }
 
     @Override
-    public void configure(Map<String, ?> configs) { }
+    public void configure(Map<String, ?> configs) {}
 
 }

@@ -99,13 +99,13 @@ public class IQv2VersionedStoreIntegrationTest {
     public static void beforeAll() throws Exception {
         CLUSTER.start();
     }
-    
+
     @BeforeEach
     public void beforeEach() throws Exception {
         // Delete and recreate the topic to ensure clean state for each test
         CLUSTER.deleteTopic(INPUT_TOPIC_NAME);
         CLUSTER.createTopic(INPUT_TOPIC_NAME, 1, 1);
-        
+
         // Set up fresh test data
         final Properties producerProps = new Properties();
         producerProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers());
@@ -124,7 +124,7 @@ public class IQv2VersionedStoreIntegrationTest {
         this.groupProtocol = groupProtocol;
         final StreamsBuilder builder = new StreamsBuilder();
         builder.table(INPUT_TOPIC_NAME,
-            Materialized.as(Stores.persistentVersionedKeyValueStore(STORE_NAME, HISTORY_RETENTION, SEGMENT_INTERVAL)));
+                Materialized.as(Stores.persistentVersionedKeyValueStore(STORE_NAME, HISTORY_RETENTION, SEGMENT_INTERVAL)));
         final Properties configs = new Properties();
         final String safeTestName = safeUniqueTestName(testInfo);
         configs.put(StreamsConfig.APPLICATION_ID_CONFIG, "app-" + safeTestName);
@@ -150,8 +150,8 @@ public class IQv2VersionedStoreIntegrationTest {
 
     private static Stream<Arguments> groupProtocolParameters() {
         return Stream.of(
-            Arguments.of("classic", "CLASSIC protocol"),
-            Arguments.of("streams", "STREAMS protocol")
+                Arguments.of("classic", "CLASSIC protocol"),
+                Arguments.of("streams", "STREAMS protocol")
         );
     }
 
@@ -160,7 +160,7 @@ public class IQv2VersionedStoreIntegrationTest {
     public void verifyStore(final String groupProtocol, final String testName, final TestInfo testInfo) throws Exception {
         // Set up streams
         setup(groupProtocol, testInfo);
-        
+
         /* Test Versioned Key Queries */
         // retrieve the latest value
         shouldHandleVersionedKeyQuery(Optional.empty(), RECORD_VALUES[3], RECORD_TIMESTAMPS[3], Optional.empty());

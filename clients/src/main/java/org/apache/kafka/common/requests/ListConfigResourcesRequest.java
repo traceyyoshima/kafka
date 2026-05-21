@@ -78,7 +78,7 @@ public class ListConfigResourcesRequest extends AbstractRequest {
 
     public static ListConfigResourcesRequest parse(Readable readable, short version) {
         return new ListConfigResourcesRequest(new ListConfigResourcesRequestData(
-            readable, version), version);
+                readable, version), version);
     }
 
     @Override
@@ -96,11 +96,11 @@ public class ListConfigResourcesRequest extends AbstractRequest {
         return version() == 0 ?
             Set.of(ConfigResource.Type.CLIENT_METRICS.id()) :
             Set.of(
-                ConfigResource.Type.TOPIC.id(),
-                ConfigResource.Type.BROKER.id(),
-                ConfigResource.Type.BROKER_LOGGER.id(),
-                ConfigResource.Type.CLIENT_METRICS.id(),
-                ConfigResource.Type.GROUP.id()
+                    ConfigResource.Type.TOPIC.id(),
+                    ConfigResource.Type.BROKER.id(),
+                    ConfigResource.Type.BROKER_LOGGER.id(),
+                    ConfigResource.Type.CLIENT_METRICS.id(),
+                    ConfigResource.Type.GROUP.id()
             );
     }
 }

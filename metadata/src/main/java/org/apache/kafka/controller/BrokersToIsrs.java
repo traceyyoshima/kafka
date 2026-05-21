@@ -103,7 +103,7 @@ public class BrokersToIsrs {
      * Partitions with no isr members appear in this map under id NO_LEADER.
      */
     private final TimelineHashMap<Integer, TimelineHashMap<Uuid, int[]>> isrMembers;
-    
+
     BrokersToIsrs(SnapshotRegistry snapshotRegistry) {
         this.snapshotRegistry = snapshotRegistry;
         this.isrMembers = new TimelineHashMap<>(snapshotRegistry, 0);
@@ -211,12 +211,12 @@ public class BrokersToIsrs {
         TimelineHashMap<Uuid, int[]> topicMap = isrMembers.get(brokerId);
         if (topicMap == null) {
             throw new RuntimeException("Broker " + brokerId + " has no isrMembers " +
-                "entry, so we can't change " + topicId + ":" + partition);
+                    "entry, so we can't change " + topicId + ":" + partition);
         }
         int[] partitions = topicMap.get(topicId);
         if (partitions == null) {
             throw new RuntimeException("Broker " + brokerId + " has no " +
-                "entry in isrMembers for topic " + topicId);
+                    "entry in isrMembers for topic " + topicId);
         }
         int[] newPartitions = new int[partitions.length];
         int target = wasLeader ? partition | LEADER_FLAG : partition;
@@ -238,17 +238,17 @@ public class BrokersToIsrs {
         TimelineHashMap<Uuid, int[]> topicMap = isrMembers.get(brokerId);
         if (topicMap == null) {
             throw new RuntimeException("Broker " + brokerId + " has no isrMembers " +
-                "entry, so we can't remove " + topicId + ":" + removedPartition);
+                    "entry, so we can't remove " + topicId + ":" + removedPartition);
         }
         int[] partitions = topicMap.get(topicId);
         if (partitions == null) {
             throw new RuntimeException("Broker " + brokerId + " has no " +
-                "entry in isrMembers for topic " + topicId);
+                    "entry in isrMembers for topic " + topicId);
         }
         if (partitions.length == 1) {
             if (partitions[0] != removedPartition) {
                 throw new RuntimeException("Broker " + brokerId + " has no " +
-                    "entry in isrMembers for " + topicId + ":" + removedPartition);
+                        "entry in isrMembers for " + topicId + ":" + removedPartition);
             }
             topicMap.remove(topicId);
             if (topicMap.isEmpty()) {

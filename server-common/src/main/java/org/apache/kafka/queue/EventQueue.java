@@ -44,9 +44,9 @@ public interface EventQueue extends AutoCloseable {
 
     class NoDeadlineFunction implements UnaryOperator<OptionalLong> {
         public static final NoDeadlineFunction INSTANCE = new NoDeadlineFunction();
-        
+
         private NoDeadlineFunction() {
-            
+
         }
 
         @Override
@@ -89,11 +89,11 @@ public interface EventQueue extends AutoCloseable {
 
     class VoidEvent implements Event {
         public static final VoidEvent INSTANCE = new VoidEvent();
-        
+
         private VoidEvent() {
-            
+
         }
-        
+
         @Override
         public void run() throws Exception {
         }
@@ -219,7 +219,7 @@ public interface EventQueue extends AutoCloseable {
      * This method is used during unit tests where MockTime is in use.
      * It is used to alert the queue that the mock time has changed.
      */
-    default void wakeup() { }
+    default void wakeup() {}
 
     /**
      * Synchronously close the event queue and wait for any threads to be joined.

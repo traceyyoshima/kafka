@@ -258,8 +258,7 @@ public class DefaultAlterPartitionManager implements AlterPartitionManager {
                             } else {
                                 errorResponses.put(tp, apiError);
                             }
-                        }
-                        ));
+                        }));
                 // Iterate across the items we sent rather than what we received to ensure we run the callback even if a
                 // partition was somehow erroneously excluded from the response. Note that these callbacks are run from
                 // the leaderIsrUpdateLock write lock in Partition#sendAlterPartitionRequest

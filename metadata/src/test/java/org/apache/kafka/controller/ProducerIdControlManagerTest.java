@@ -47,15 +47,15 @@ public class ProducerIdControlManagerTest {
         FeatureControlManager featureControl = new FeatureControlManager.Builder().
             setSnapshotRegistry(snapshotRegistry).
             setQuorumFeatures(new QuorumFeatures(0,
-                QuorumFeatures.defaultSupportedFeatureMap(true),
-                List.of(0))).
+                    QuorumFeatures.defaultSupportedFeatureMap(true),
+                    List.of(0))).
             build();
         ClusterControlManager clusterControl = new ClusterControlManager.Builder().
             setTime(time).
             setSnapshotRegistry(snapshotRegistry).
             setSessionTimeoutNs(1000).
             setFeatureControlManager(featureControl).
-            setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> { }).
+            setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> {}).
             build();
 
         clusterControl.activate();
@@ -78,7 +78,7 @@ public class ProducerIdControlManagerTest {
     @Test
     public void testInitialResult() {
         ControllerResult<ProducerIdsBlock> result =
-            producerIdControlManager.generateNextProducerId(1, 100);
+                producerIdControlManager.generateNextProducerId(1, 100);
         assertEquals(0, result.response().firstProducerId());
         assertEquals(1000, result.response().size());
         ProducerIdsRecord record = (ProducerIdsRecord) result.records().get(0).message();
@@ -88,36 +88,36 @@ public class ProducerIdControlManagerTest {
     @Test
     public void testMonotonic() {
         producerIdControlManager.replay(
-            new ProducerIdsRecord()
+                new ProducerIdsRecord()
                 .setBrokerId(1)
                 .setBrokerEpoch(100)
                 .setNextProducerId(42));
 
         ProducerIdsBlock range =
-            producerIdControlManager.generateNextProducerId(1, 100).response();
+                producerIdControlManager.generateNextProducerId(1, 100).response();
         assertEquals(42, range.firstProducerId());
 
         // Can't go backwards in Producer IDs
         assertThrows(RuntimeException.class, () ->
-            producerIdControlManager.replay(
-                new ProducerIdsRecord()
+                producerIdControlManager.replay(
+                    new ProducerIdsRecord()
                     .setBrokerId(1)
                     .setBrokerEpoch(100)
                     .setNextProducerId(40)),
-            "Producer ID range must only increase");
+                "Producer ID range must only increase");
         assertThrows(RuntimeException.class, () ->
-            producerIdControlManager.replay(
-                new ProducerIdsRecord()
+                producerIdControlManager.replay(
+                    new ProducerIdsRecord()
                     .setBrokerId(2)
                     .setBrokerEpoch(100)
                     .setNextProducerId(42)),
-            "Producer ID range must only increase");
+                "Producer ID range must only increase");
         range = producerIdControlManager.generateNextProducerId(3, 100).response();
         assertEquals(42, range.firstProducerId());
 
         // Gaps in the ID range are okay.
         producerIdControlManager.replay(
-            new ProducerIdsRecord()
+                new ProducerIdsRecord()
                 .setBrokerId(1)
                 .setBrokerEpoch(100)
                 .setNextProducerId(50));
@@ -128,22 +128,22 @@ public class ProducerIdControlManagerTest {
     @Test
     public void testUnknownBrokerOrEpoch() {
         assertThrows(StaleBrokerEpochException.class, () ->
-            producerIdControlManager.generateNextProducerId(99, 0));
+                producerIdControlManager.generateNextProducerId(99, 0));
 
         assertThrows(StaleBrokerEpochException.class, () ->
-            producerIdControlManager.generateNextProducerId(1, 99));
+                producerIdControlManager.generateNextProducerId(1, 99));
     }
 
     @Test
     public void testMaxValue() {
         producerIdControlManager.replay(
-            new ProducerIdsRecord()
+                new ProducerIdsRecord()
                 .setBrokerId(1)
                 .setBrokerEpoch(100)
                 .setNextProducerId(Long.MAX_VALUE - 1));
 
         assertThrows(UnknownServerException.class, () ->
-            producerIdControlManager.generateNextProducerId(1, 100));
+                producerIdControlManager.generateNextProducerId(1, 100));
     }
 
     @Test
@@ -157,8 +157,8 @@ public class ProducerIdControlManagerTest {
     static void generateProducerIds(
             ProducerIdControlManager producerIdControlManager, int brokerId, long brokerEpoch) {
         ControllerResult<ProducerIdsBlock> result =
-            producerIdControlManager.generateNextProducerId(brokerId, brokerEpoch);
+                producerIdControlManager.generateNextProducerId(brokerId, brokerEpoch);
         result.records().forEach(apiMessageAndVersion ->
-            producerIdControlManager.replay((ProducerIdsRecord) apiMessageAndVersion.message()));
+                producerIdControlManager.replay((ProducerIdsRecord) apiMessageAndVersion.message()));
     }
 }

@@ -512,7 +512,7 @@ public class WorkerSinkTaskTest {
                     rebalanceListener.getValue().onPartitionsRevoked(INITIAL_ASSIGNMENT);
                     rebalanceListener.getValue().onPartitionsAssigned(List.of());
                     return new ConsumerRecords<>(Map.of(TOPIC_PARTITION3, List.of(newRecord)),
-                        Map.of(TOPIC_PARTITION3, new OffsetAndMetadata(FIRST_OFFSET + 1, Optional.empty(), "")));
+                            Map.of(TOPIC_PARTITION3, new OffsetAndMetadata(FIRST_OFFSET + 1, Optional.empty(), "")));
                 });
         expectConversionAndTransformation(null, new RecordHeaders());
 
@@ -1041,7 +1041,7 @@ public class WorkerSinkTaskTest {
         // of those sleeps were 10 seconds.
         // KAFKA-8229
         assertEquals(previousCommitValue +
-                        (WorkerConfig.OFFSET_COMMIT_INTERVAL_MS_DEFAULT - 10000L * 2),
+                (WorkerConfig.OFFSET_COMMIT_INTERVAL_MS_DEFAULT - 10000L * 2),
                 workerTask.getNextCommit(),
                 "Should have only advanced by 40 seconds");
 
@@ -1234,7 +1234,7 @@ public class WorkerSinkTaskTest {
 
         // Delay the result of trying to commit offsets to Kafka via the consumer.commitAsync method.
         ArgumentCaptor<OffsetCommitCallback> offsetCommitCallbackArgumentCaptor =
-            ArgumentCaptor.forClass(OffsetCommitCallback.class);
+                ArgumentCaptor.forClass(OffsetCommitCallback.class);
         verify(consumer).commitAsync(eq(workerCurrentOffsets), offsetCommitCallbackArgumentCaptor.capture());
 
         final OffsetCommitCallback callback = offsetCommitCallbackArgumentCaptor.getValue();
@@ -1411,7 +1411,7 @@ public class WorkerSinkTaskTest {
 
         doAnswer(invocation -> {
             final Map<TopicPartition, OffsetAndMetadata> offsets = invocation.getArgument(0);
-            final OffsetCommitCallback callback =  invocation.getArgument(1);
+            final OffsetCommitCallback callback = invocation.getArgument(1);
             asyncCallbackRunner.set(() -> {
                 callback.onComplete(offsets, null);
                 asyncCallbackRan.set(true);
@@ -1953,7 +1953,7 @@ public class WorkerSinkTaskTest {
             for (int i = 0; i < numMessages; i++) {
                 offset = FIRST_OFFSET + recordsReturnedTp1 + i;
                 records.add(new ConsumerRecord<>(TOPIC, PARTITION, offset, timestamp, timestampType,
-                    0, 0, RAW_KEY, RAW_VALUE, headers, Optional.empty()));
+                        0, 0, RAW_KEY, RAW_VALUE, headers, Optional.empty()));
             }
             recordsReturnedTp1 += numMessages;
             final TopicPartition tp = new TopicPartition(TOPIC, PARTITION);
@@ -1995,14 +1995,14 @@ public class WorkerSinkTaskTest {
                     SinkRecord origRecord = invocation.getArgument(1);
                     return topicPrefix != null && !topicPrefix.isEmpty()
                             ? origRecord.newRecord(
-                            topicPrefix + origRecord.topic(),
-                            origRecord.kafkaPartition(),
-                            origRecord.keySchema(),
-                            origRecord.key(),
-                            origRecord.valueSchema(),
-                            origRecord.value(),
-                            origRecord.timestamp(),
-                            origRecord.headers()
+                                    topicPrefix + origRecord.topic(),
+                                    origRecord.kafkaPartition(),
+                                    origRecord.keySchema(),
+                                    origRecord.key(),
+                                    origRecord.valueSchema(),
+                                    origRecord.value(),
+                                    origRecord.timestamp(),
+                                    origRecord.headers()
                     ) : origRecord;
                 });
     }

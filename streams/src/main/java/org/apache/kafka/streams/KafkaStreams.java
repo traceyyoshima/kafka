@@ -314,9 +314,9 @@ public class KafkaStreams implements AutoCloseable {
                         }
                     } else {
                         log.debug(
-                            "Cannot transit to {} within {}ms",
-                            Arrays.stream(targetStates).map(State::toString).collect(Collectors.joining(" or ")),
-                            waitMs
+                                "Cannot transit to {} within {}ms",
+                                Arrays.stream(targetStates).map(State::toString).collect(Collectors.joining(" or ")),
+                                waitMs
                         );
                         return false;
                     }
@@ -443,7 +443,6 @@ public class KafkaStreams implements AutoCloseable {
         }
     }
 
-
     /**
      * Set the handler invoked when an internal {@link StreamsConfig#NUM_STREAM_THREADS_CONFIG stream thread}
      * throws an unexpected exception.
@@ -464,19 +463,19 @@ public class KafkaStreams implements AutoCloseable {
             if (state.hasNotStarted()) {
                 Objects.requireNonNull(userStreamsUncaughtExceptionHandler);
                 streamsUncaughtExceptionHandler =
-                    (exception, skipThreadReplacement) ->
-                        handleStreamsUncaughtException(exception, userStreamsUncaughtExceptionHandler, skipThreadReplacement);
+                        (exception, skipThreadReplacement) ->
+                                handleStreamsUncaughtException(exception, userStreamsUncaughtExceptionHandler, skipThreadReplacement);
                 processStreamThread(thread -> thread.setStreamsUncaughtExceptionHandler(streamsUncaughtExceptionHandler));
                 if (globalStreamThread != null) {
                     globalStreamThread.setUncaughtExceptionHandler(
-                        exception -> handleStreamsUncaughtException(exception, userStreamsUncaughtExceptionHandler, false)
+                            exception -> handleStreamsUncaughtException(exception, userStreamsUncaughtExceptionHandler, false)
                     );
                 }
-                processStreamThread(thread -> thread.setUncaughtExceptionHandler((t, e) -> { }
+                processStreamThread(thread -> thread.setUncaughtExceptionHandler((t, e) -> {}
                 ));
             } else {
                 throw new IllegalStateException("Can only set UncaughtExceptionHandler before calling start(). " +
-                    "Current state is: " + state);
+                        "Current state is: " + state);
             }
         }
     }
@@ -516,10 +515,10 @@ public class KafkaStreams implements AutoCloseable {
                 break;
             case SHUTDOWN_CLIENT:
                 log.error(
-                    "Encountered the following exception during processing and the registered exception handler " +
+                        "Encountered the following exception during processing and the registered exception handler " +
                         "opted to {}. The streams client is going to shut down now.",
-                    action,
-                    throwable
+                        action,
+                        throwable
                 );
                 closeToError();
                 break;
@@ -560,7 +559,7 @@ public class KafkaStreams implements AutoCloseable {
                 delegatingStateRestoreListener.setUserStateRestoreListener(globalStateRestoreListener);
             } else {
                 throw new IllegalStateException("Can only set GlobalStateRestoreListener before calling start(). " +
-                    "Current state is: " + state);
+                        "Current state is: " + state);
             }
         }
     }
@@ -643,7 +642,6 @@ public class KafkaStreams implements AutoCloseable {
 
             setState(State.RUNNING);
         }
-
 
         @Override
         public synchronized void onChange(final Thread thread,
@@ -982,9 +980,9 @@ public class KafkaStreams implements AutoCloseable {
         metrics.addReporter(reporter);
 
         streamsMetrics = new StreamsMetricsImpl(
-            metrics,
-            clientId,
-            time
+                metrics,
+                clientId,
+                time
         );
 
         ClientMetrics.addVersionMetric(streamsMetrics);
@@ -998,9 +996,9 @@ public class KafkaStreams implements AutoCloseable {
         ClientMetrics.addNumAliveStreamThreadMetric(streamsMetrics, (metricsConfig, now) -> numLiveStreamThreads());
 
         streamsMetadataState = new StreamsMetadataState(
-            this.topologyMetadata,
-            parseHostInfo(applicationConfigs.getString(StreamsConfig.APPLICATION_SERVER_CONFIG)),
-            logContext
+                this.topologyMetadata,
+                parseHostInfo(applicationConfigs.getString(StreamsConfig.APPLICATION_SERVER_CONFIG)),
+                logContext
         );
         streamsUncaughtExceptionHandler = (throwable, skipThreadReplacement) -> handleStreamsUncaughtException(throwable, t -> SHUTDOWN_CLIENT, skipThreadReplacement);
         delegatingStateRestoreListener = new DelegatingStateRestoreListener();
@@ -1014,16 +1012,16 @@ public class KafkaStreams implements AutoCloseable {
         if (hasGlobalTopology) {
             final String globalThreadId = clientId + "-GlobalStreamThread";
             globalStreamThread = new GlobalStreamThread(
-                topologyMetadata.globalTaskTopology(),
-                applicationConfigs,
-                clientSupplier.getGlobalConsumer(applicationConfigs.getGlobalConsumerConfigs(clientId)),
-                stateDirectory,
-                cacheSizePerThread,
-                streamsMetrics,
-                time,
-                globalThreadId,
-                delegatingStateRestoreListener,
-                exception -> handleStreamsUncaughtException(exception, t -> SHUTDOWN_CLIENT, false)
+                    topologyMetadata.globalTaskTopology(),
+                    applicationConfigs,
+                    clientSupplier.getGlobalConsumer(applicationConfigs.getGlobalConsumerConfigs(clientId)),
+                    stateDirectory,
+                    cacheSizePerThread,
+                    streamsMetrics,
+                    time,
+                    globalThreadId,
+                    delegatingStateRestoreListener,
+                    exception -> handleStreamsUncaughtException(exception, t -> SHUTDOWN_CLIENT, false)
             );
             globalThreadState = globalStreamThread.state();
         }
@@ -1037,8 +1035,8 @@ public class KafkaStreams implements AutoCloseable {
         }
 
         queryableStoreProvider = new QueryableStoreProvider(
-            globalStateStoreProvider,
-            applicationConfigs::defaultInteractiveQueryIsolationLevel);
+                globalStateStoreProvider,
+                applicationConfigs::defaultInteractiveQueryIsolationLevel);
         for (int i = 1; i <= numStreamThreads; i++) {
             createAndAddStreamThread(cacheSizePerThread, i);
         }
@@ -1058,29 +1056,29 @@ public class KafkaStreams implements AutoCloseable {
             }
             if (!(clientSupplier instanceof DefaultKafkaClientSupplier)) {
                 log.warn("A non-default kafka client supplier was supplied. Note that supplying a custom main consumer" +
-                    " is not supported with the STREAMS protocol.");
+                        " is not supported with the STREAMS protocol.");
             }
         }
     }
 
     private StreamThread createAndAddStreamThread(final long cacheSizePerThread, final int threadIdx) {
         final StreamThread streamThread = StreamThread.create(
-            topologyMetadata,
-            applicationConfigs,
-            clientSupplier,
-            adminClient,
-            processId,
-            clientId,
-            streamsMetrics,
-            time,
-            streamsMetadataState,
-            cacheSizePerThread,
-            stateDirectory,
-            delegatingStateRestoreListener,
-            delegatingStandbyUpdateListener,
-            threadIdx,
-            KafkaStreams.this::closeToError,
-            streamsUncaughtExceptionHandler
+                topologyMetadata,
+                applicationConfigs,
+                clientSupplier,
+                adminClient,
+                processId,
+                clientId,
+                streamsMetrics,
+                time,
+                streamsMetadataState,
+                cacheSizePerThread,
+                stateDirectory,
+                delegatingStateRestoreListener,
+                delegatingStandbyUpdateListener,
+                threadIdx,
+                KafkaStreams.this::closeToError,
+                streamsUncaughtExceptionHandler
         );
         streamStateListener.registerStreamThread(streamThread);
         streamThread.setStateListener(streamStateListener);
@@ -1214,7 +1212,7 @@ public class KafkaStreams implements AutoCloseable {
                             }
                         } else {
                             log.info("{} is the last remaining thread and must remove itself, therefore we cannot wait "
-                                + "for it to complete shutdown as this will result in deadlock.", streamThread.getName());
+                                    + "for it to complete shutdown as this will result in deadlock.", streamThread.getName());
                         }
 
                         final long cacheSizePerThread = cacheSizePerThread(numLiveStreamThreads());
@@ -1420,10 +1418,10 @@ public class KafkaStreams implements AutoCloseable {
             final long recordingInterval = 1;
             if (rocksDBMetricsRecordingService != null) {
                 rocksDBMetricsRecordingService.scheduleAtFixedRate(
-                    streamsMetrics.rocksDBMetricsRecordingTrigger(),
-                    recordingDelay,
-                    recordingInterval,
-                    TimeUnit.MINUTES
+                        streamsMetrics.rocksDBMetricsRecordingTrigger(),
+                        recordingDelay,
+                        recordingInterval,
+                        TimeUnit.MINUTES
                 );
             }
         } else {
@@ -1480,7 +1478,7 @@ public class KafkaStreams implements AutoCloseable {
             // notify all the threads to stop; avoid deadlocks by stopping any
             // further state reports from the thread since we're shutting down
             int numStreamThreads = processStreamThread(
-                streamThread -> streamThread.shutdown(operation)
+                    streamThread -> streamThread.shutdown(operation)
             );
 
             log.info("Shutting down {} stream threads", numStreamThreads);
@@ -1570,7 +1568,7 @@ public class KafkaStreams implements AutoCloseable {
             }
 
             throw new IllegalStateException("If transitioning to PENDING_SHUTDOWN fails, the state should be either in "
-                + "PENDING_SHUTDOWN, PENDING_ERROR, ERROR, or NOT_RUNNING");
+                    + "PENDING_SHUTDOWN, PENDING_ERROR, ERROR, or NOT_RUNNING");
         }
 
         final Thread shutdownThread = shutdownHelper(false, timeoutMs, operation);
@@ -1775,7 +1773,7 @@ public class KafkaStreams implements AutoCloseable {
         final String storeName = storeQueryParameters.storeName();
         if (!topologyMetadata.hasStore(storeName)) {
             throw new UnknownStateStoreException(
-                "Cannot get state store " + storeName + " because no such store is registered in the topology."
+                    "Cannot get state store " + storeName + " because no such store is registered in the topology."
             );
         }
         return queryableStoreProvider.store(storeQueryParameters);
@@ -1902,11 +1900,11 @@ public class KafkaStreams implements AutoCloseable {
         // (3a) collect consumers and producer from StreamsThread
         for (final Map.Entry<String, KafkaFuture<Uuid>> clientFuture : clientFutures.entrySet()) {
             final Uuid instanceId = getOrThrowException(
-                clientFuture.getValue(),
-                remainingTime.remainingMs(),
-                () -> String.format(
-                    "Could not retrieve consumer/producer instance id for %s.",
-                    clientFuture.getKey()
+                    clientFuture.getValue(),
+                    remainingTime.remainingMs(),
+                    () -> String.format(
+                        "Could not retrieve consumer/producer instance id for %s.",
+                        clientFuture.getKey()
                 )
             );
             remainingTime.update(time.milliseconds());
@@ -1933,17 +1931,17 @@ public class KafkaStreams implements AutoCloseable {
         // (3b) collect from GlobalThread
         if (globalThreadFuture != null) {
             final Uuid instanceId = getOrThrowException(
-                globalThreadFuture,
-                remainingTime.remainingMs(),
-                () -> "Could not retrieve global consumer client instance id."
+                    globalThreadFuture,
+                    remainingTime.remainingMs(),
+                    () -> "Could not retrieve global consumer client instance id."
             );
             remainingTime.update(time.milliseconds());
 
             // could be `null` if telemetry is disabled on the client itself
             if (instanceId != null) {
                 clientInstanceIds.addConsumerInstanceId(
-                    globalStreamThread.getName() + "-global-consumer",
-                    instanceId
+                        globalStreamThread.getName() + "-global-consumer",
+                        instanceId
                 );
             } else {
                 log.debug("Telemetry is disabled for the global consumer.");
@@ -2067,19 +2065,19 @@ public class KafkaStreams implements AutoCloseable {
         final String storeName = request.getStoreName();
         if (!topologyMetadata.hasStore(storeName)) {
             throw new UnknownStateStoreException(
-                "Cannot get state store "
+                    "Cannot get state store "
                     + storeName
                     + " because no such store is registered in the topology."
             );
         }
         if (state().hasNotStarted()) {
             throw new StreamsNotStartedException(
-                "KafkaStreams has not been started, you can retry after calling start()."
+                    "KafkaStreams has not been started, you can retry after calling start()."
             );
         }
         if (state().isShuttingDown() || state.hasCompletedShutdown()) {
             throw new StreamsStoppedException(
-                "KafkaStreams has been stopped (" + state + ")."
+                    "KafkaStreams has been stopped (" + state + ")."
                     + " This instance can no longer serve queries."
             );
         }
@@ -2089,9 +2087,9 @@ public class KafkaStreams implements AutoCloseable {
         if (globalStateStores.containsKey(storeName)) {
             // See KAFKA-13523
             result.setGlobalResult(
-                QueryResult.forFailure(
-                    FailureReason.UNKNOWN_QUERY_TYPE,
-                    "Global stores do not yet support the KafkaStreams#query API. Use KafkaStreams#store instead."
+                    QueryResult.forFailure(
+                        FailureReason.UNKNOWN_QUERY_TYPE,
+                        "Global stores do not yet support the KafkaStreams#query API. Use KafkaStreams#store instead."
                 )
             );
         } else {
@@ -2107,13 +2105,13 @@ public class KafkaStreams implements AutoCloseable {
                             final StreamThread.State state = thread.state();
                             final boolean active = task.isActive();
                             if (request.isRequireActive()
-                                && (state != StreamThread.State.RUNNING || !active)) {
+                                    && (state != StreamThread.State.RUNNING || !active)) {
 
                                 result.addResult(
-                                    partition,
-                                    QueryResult.forFailure(
-                                        FailureReason.NOT_ACTIVE,
-                                        "Query requires a running active task,"
+                                        partition,
+                                        QueryResult.forFailure(
+                                            FailureReason.NOT_ACTIVE,
+                                            "Query requires a running active task,"
                                             + " but partition was in state "
                                             + state + " and was "
                                             + (active ? "active" : "not active") + "."
@@ -2121,23 +2119,22 @@ public class KafkaStreams implements AutoCloseable {
                                 );
                             } else {
                                 final QueryResult<R> r = store.query(
-                                    request.getQuery(),
-                                    request.isRequireActive()
+                                        request.getQuery(),
+                                        request.isRequireActive()
                                         ? PositionBound.unbounded()
                                         : request.getPositionBound(),
-                                    new QueryConfig(
-                                        request.executionInfoEnabled(),
-                                        request.isolationLevel()
+                                        new QueryConfig(
+                                            request.executionInfoEnabled(),
+                                            request.isolationLevel()
                                             .orElseGet(applicationConfigs::defaultInteractiveQueryIsolationLevel))
                                 );
                                 result.addResult(partition, r);
                             }
 
-
                             // optimization: if we have handled all the requested partitions,
                             // we can return right away.
                             if (!request.isAllPartitions()
-                                && result.getPartitionResults().keySet().containsAll(request.getPartitions())) {
+                                    && result.getPartitionResults().keySet().containsAll(request.getPartitions())) {
                                 return result;
                             }
                         }
@@ -2150,8 +2147,8 @@ public class KafkaStreams implements AutoCloseable {
             for (final Integer partition : request.getPartitions()) {
                 if (!result.getPartitionResults().containsKey(partition)) {
                     result.addResult(partition, QueryResult.forFailure(
-                        FailureReason.NOT_PRESENT,
-                        "The requested partition was not present at the time of the query."
+                            FailureReason.NOT_PRESENT,
+                            "The requested partition was not present at the time of the query."
                     ));
                 }
             }

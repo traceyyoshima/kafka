@@ -103,10 +103,10 @@ public class Metadata implements Closeable {
                     ClusterResourceListeners clusterResourceListeners) {
         this.log = logContext.logger(Metadata.class);
         this.refreshBackoff = new ExponentialBackoff(
-            refreshBackoffMs,
-            CommonClientConfigs.RETRY_BACKOFF_EXP_BASE,
-            refreshBackoffMaxMs,
-            CommonClientConfigs.RETRY_BACKOFF_JITTER);
+                refreshBackoffMs,
+                CommonClientConfigs.RETRY_BACKOFF_EXP_BASE,
+                refreshBackoffMaxMs,
+                CommonClientConfigs.RETRY_BACKOFF_JITTER);
         this.metadataExpireMs = metadataExpireMs;
         this.lastRefreshMs = 0L;
         this.lastSuccessfulRefreshMs = 0L;
@@ -411,13 +411,13 @@ public class Metadata implements Closeable {
 
             MetadataResponse.PartitionMetadata existingMetadata = this.metadataSnapshot.partitionMetadata(partition).get();
             MetadataResponse.PartitionMetadata updatedMetadata = new MetadataResponse.PartitionMetadata(
-                existingMetadata.error,
-                partition,
-                newLeader.leaderId,
-                newLeader.epoch,
-                existingMetadata.replicaIds,
-                existingMetadata.inSyncReplicaIds,
-                existingMetadata.offlineReplicaIds
+                    existingMetadata.error,
+                    partition,
+                    newLeader.leaderId,
+                    newLeader.epoch,
+                    existingMetadata.replicaIds,
+                    existingMetadata.inSyncReplicaIds,
+                    existingMetadata.offlineReplicaIds
             );
             updatePartitionMetadata.add(updatedMetadata);
 
@@ -439,20 +439,20 @@ public class Metadata implements Closeable {
 
         if (log.isDebugEnabled()) {
             updatePartitionMetadata.forEach(
-                partMetadata -> log.debug("For {} updating leader information, updated metadata is {}.", partMetadata.topicPartition, partMetadata)
+                    partMetadata -> log.debug("For {} updating leader information, updated metadata is {}.", partMetadata.topicPartition, partMetadata)
             );
         }
 
         // Fetch responses can include partition level leader changes, when this happens, we perform a partial
         // metadata update, by keeping the unchanged partition and update the changed partitions.
         this.metadataSnapshot = metadataSnapshot.mergeWith(
-            metadataSnapshot.clusterResource().clusterId(),
-            newNodes,
-            updatePartitionMetadata,
-            Collections.emptySet(), Collections.emptySet(), Collections.emptySet(),
-            metadataSnapshot.cluster().controller(),
-            topicIdsForUpdatedTopics,
-            (topic, isInternal) -> true);
+                metadataSnapshot.clusterResource().clusterId(),
+                newNodes,
+                updatePartitionMetadata,
+                Collections.emptySet(), Collections.emptySet(), Collections.emptySet(),
+                metadataSnapshot.cluster().controller(),
+                topicIdsForUpdatedTopics,
+                (topic, isInternal) -> true);
         clusterResourceListeners.onUpdate(metadataSnapshot.clusterResource());
 
         return updatePartitionMetadata.stream()
@@ -543,11 +543,11 @@ public class Metadata implements Closeable {
         Map<Integer, Node> nodes = metadataResponse.brokersById();
         if (isPartialUpdate)
             return this.metadataSnapshot.mergeWith(metadataResponse.clusterId(), nodes, partitions,
-                unauthorizedTopics, invalidTopics, internalTopics, metadataResponse.controller(), topicIds,
-                (topic, isInternal) -> !topics.contains(topic) && retainTopic(topic, isInternal, nowMs));
+                    unauthorizedTopics, invalidTopics, internalTopics, metadataResponse.controller(), topicIds,
+                    (topic, isInternal) -> !topics.contains(topic) && retainTopic(topic, isInternal, nowMs));
         else
             return new MetadataSnapshot(metadataResponse.clusterId(), nodes, partitions,
-                unauthorizedTopics, invalidTopics, internalTopics, metadataResponse.controller(), topicIds);
+                    unauthorizedTopics, invalidTopics, internalTopics, metadataResponse.controller(), topicIds);
     }
 
     /**
@@ -846,9 +846,9 @@ public class Metadata implements Closeable {
         @Override
         public String toString() {
             return "LeaderIdAndEpoch{" +
-                "leaderId=" + leaderId.map(Number::toString).orElse("absent") +
-                ", epoch=" + epoch.map(Number::toString).orElse("absent") +
-                '}';
+                    "leaderId=" + leaderId.map(Number::toString).orElse("absent") +
+                    ", epoch=" + epoch.map(Number::toString).orElse("absent") +
+                    '}';
         }
     }
 }

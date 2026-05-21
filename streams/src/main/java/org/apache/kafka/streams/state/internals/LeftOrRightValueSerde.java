@@ -22,12 +22,12 @@ import org.apache.kafka.streams.kstream.internals.WrappingNullableSerde;
 public class LeftOrRightValueSerde<V1, V2> extends WrappingNullableSerde<LeftOrRightValue<V1, V2>, Void, Object> {
     public LeftOrRightValueSerde(final Serde<V1> leftValueSerde, final Serde<V2> rightValueSerde) {
         super(
-            new LeftOrRightValueSerializer<>(
-                leftValueSerde != null ? leftValueSerde.serializer() : null,
-                rightValueSerde != null ? rightValueSerde.serializer() : null),
-            new LeftOrRightValueDeserializer<>(
-                leftValueSerde != null ? leftValueSerde.deserializer() : null,
-                rightValueSerde != null ? rightValueSerde.deserializer() : null)
+                new LeftOrRightValueSerializer<>(
+                    leftValueSerde != null ? leftValueSerde.serializer() : null,
+                    rightValueSerde != null ? rightValueSerde.serializer() : null),
+                new LeftOrRightValueDeserializer<>(
+                    leftValueSerde != null ? leftValueSerde.deserializer() : null,
+                    rightValueSerde != null ? rightValueSerde.deserializer() : null)
         );
     }
 }

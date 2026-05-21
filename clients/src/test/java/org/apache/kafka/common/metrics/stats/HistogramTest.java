@@ -138,11 +138,11 @@ public class HistogramTest {
             double fromBin = scheme.fromBin(bin);
             int binAgain = scheme.toBin(fromBin + EPS);
             assertEquals(bin, binAgain, "unbinning and rebinning the bin " + bin
-                         + " gave a different result ("
-                         + fromBin
-                         + " was placed in bin "
-                         + binAgain
-                         + " )");
+                    + " gave a different result ("
+                    + fromBin
+                    + " was placed in bin "
+                    + binAgain
+                    + " )");
         }
     }
 

@@ -82,8 +82,8 @@ public class LogicalKeyValueSegment implements Segment, VersionedStoreSegment {
     public synchronized void destroy() {
         if (id < 0) {
             throw new IllegalStateException("Negative segment ID indicates a reserved segment, "
-                + "which should not be destroyed. Reserved segments are cleaned up only when "
-                + "an entire store is closed, via the close() method rather than destroy().");
+                    + "which should not be destroyed. Reserved segments are cleaned up only when "
+                    + "an entire store is closed, via the close() method rather than destroy().");
         }
 
         final Bytes keyPrefix = prefixKeyFormatter.prefix();
@@ -96,30 +96,30 @@ public class LogicalKeyValueSegment implements Segment, VersionedStoreSegment {
     @Override
     public synchronized void deleteRange(final Bytes keyFrom, final Bytes keyTo) {
         physicalStore.deleteRange(
-            prefixKeyFormatter.addPrefix(keyFrom),
-            prefixKeyFormatter.addPrefix(keyTo));
+                prefixKeyFormatter.addPrefix(keyFrom),
+                prefixKeyFormatter.addPrefix(keyTo));
     }
 
     @Override
     public synchronized void put(final Bytes key, final byte[] value) {
         physicalStore.put(
-            prefixKeyFormatter.addPrefix(key),
-            value);
+                prefixKeyFormatter.addPrefix(key),
+                value);
     }
 
     @Override
     public synchronized byte[] putIfAbsent(final Bytes key, final byte[] value) {
         return physicalStore.putIfAbsent(
-            prefixKeyFormatter.addPrefix(key),
-            value);
+                prefixKeyFormatter.addPrefix(key),
+                value);
     }
 
     @Override
     public synchronized void putAll(final List<KeyValue<Bytes, byte[]>> entries) {
         physicalStore.putAll(entries.stream()
             .map(kv -> new KeyValue<>(
-                prefixKeyFormatter.addPrefix(kv.key),
-                kv.value))
+                    prefixKeyFormatter.addPrefix(kv.key),
+                    kv.value))
             .collect(Collectors.toList()));
     }
 
@@ -216,24 +216,24 @@ public class LogicalKeyValueSegment implements Segment, VersionedStoreSegment {
             ? incrementWithoutOverflow(prefixKeyFormatter.prefix())
             : prefixKeyFormatter.addPrefix(to);
         final KeyValueIterator<Bytes, byte[]> iteratorWithKeyPrefixes = physicalStore.range(
-            fromBound,
-            toBound,
-            openIterators);
+                fromBound,
+                toBound,
+                openIterators);
         return new StrippedPrefixKeyValueIteratorAdapter(
-            iteratorWithKeyPrefixes,
-            prefixKeyFormatter::removePrefix,
-            prefixKeyFormatter::startsWithPrefix);
+                iteratorWithKeyPrefixes,
+                prefixKeyFormatter::removePrefix,
+                prefixKeyFormatter::startsWithPrefix);
     }
 
     @Override
     public synchronized KeyValueIterator<Bytes, byte[]> all() {
         final KeyValueIterator<Bytes, byte[]> iteratorWithKeyPrefixes = physicalStore.prefixScan(
-            prefixKeyFormatter.prefix(),
-            new BytesSerializer(),
-            openIterators);
+                prefixKeyFormatter.prefix(),
+                new BytesSerializer(),
+                openIterators);
         return new StrippedPrefixKeyValueIteratorAdapter(
-            iteratorWithKeyPrefixes,
-            prefixKeyFormatter::removePrefix);
+                iteratorWithKeyPrefixes,
+                prefixKeyFormatter::removePrefix);
     }
 
     @Override
@@ -244,10 +244,10 @@ public class LogicalKeyValueSegment implements Segment, VersionedStoreSegment {
     @Override
     public void addToBatch(final KeyValue<byte[], byte[]> record, final WriteBatchInterface batch) throws RocksDBException {
         physicalStore.addToBatch(
-            new KeyValue<>(
-                prefixKeyFormatter.addPrefix(record.key),
-                record.value),
-            batch);
+                new KeyValue<>(
+                    prefixKeyFormatter.addPrefix(record.key),
+                    record.value),
+                batch);
     }
 
     @Override
@@ -338,8 +338,8 @@ public class LogicalKeyValueSegment implements Segment, VersionedStoreSegment {
         public KeyValue<Bytes, byte[]> next() {
             final KeyValue<Bytes, byte[]> nextWithKeyPrefix = iteratorWithKeyPrefixes.next();
             final KeyValue<Bytes, byte[]> next = new KeyValue<>(
-                prefixRemover.apply(nextWithKeyPrefix.key),
-                nextWithKeyPrefix.value);
+                    prefixRemover.apply(nextWithKeyPrefix.key),
+                    nextWithKeyPrefix.value);
             pruneNonPrefixedElements();
             return next;
         }
@@ -361,7 +361,7 @@ public class LogicalKeyValueSegment implements Segment, VersionedStoreSegment {
 
         private void pruneNonPrefixedElements() {
             while (iteratorWithKeyPrefixes.hasNext()
-                && !prefixChecker.apply(iteratorWithKeyPrefixes.peekNextKey())) {
+                    && !prefixChecker.apply(iteratorWithKeyPrefixes.peekNextKey())) {
                 iteratorWithKeyPrefixes.next();
             }
         }

@@ -37,7 +37,6 @@ public interface WorkerRebalanceListener {
      */
     void onRevoked(String leader, Collection<String> connectors, Collection<ConnectorTaskId> tasks);
 
-
     /**
      * Invoked when a worker experiences a poll timeout expiry.
      */

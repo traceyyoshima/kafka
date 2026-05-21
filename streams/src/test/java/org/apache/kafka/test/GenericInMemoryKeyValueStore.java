@@ -38,8 +38,8 @@ import java.util.TreeMap;
  *  need a basic KeyValueStore for arbitrary types and don't have/want to write a serde
  */
 public class GenericInMemoryKeyValueStore<K extends Comparable, V>
-    extends WrappedStateStore<StateStore, K, V>
-    implements KeyValueStore<K, V> {
+        extends WrappedStateStore<StateStore, K, V>
+        implements KeyValueStore<K, V> {
 
     private final String name;
     private final NavigableMap<K, V> map;

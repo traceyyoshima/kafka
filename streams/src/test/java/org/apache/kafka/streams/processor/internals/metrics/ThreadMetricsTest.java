@@ -49,24 +49,23 @@ public class ThreadMetricsTest {
     private final StreamsMetricsImpl streamsMetrics = mock(StreamsMetricsImpl.class);
     private final Map<String, String> tagMap = Collections.singletonMap("hello", "world");
 
-
     @Test
     public void shouldGetProcessRatioSensor() {
         final String operation = "process-ratio";
         final String ratioDescription = "The ratio, over a rolling measurement window, of the time this thread spent " +
-            "processing active tasks to the total elapsed time in that window.";
+                "processing active tasks to the total elapsed time in that window.";
         when(streamsMetrics.threadLevelSensor(THREAD_ID, operation, RecordingLevel.INFO)).thenReturn(expectedSensor);
         when(streamsMetrics.threadLevelTagMap(THREAD_ID)).thenReturn(tagMap);
 
         try (final MockedStatic<StreamsMetricsImpl> streamsMetricsStaticMock = mockStatic(StreamsMetricsImpl.class)) {
             final Sensor sensor = ThreadMetrics.processRatioSensor(THREAD_ID, streamsMetrics);
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addValueMetricToSensor(
-                    expectedSensor,
-                    THREAD_LEVEL_GROUP,
-                    tagMap,
-                    operation,
-                    ratioDescription
+                    () -> StreamsMetricsImpl.addValueMetricToSensor(
+                        expectedSensor,
+                        THREAD_LEVEL_GROUP,
+                        tagMap,
+                        operation,
+                        ratioDescription
                 )
             );
             assertThat(sensor, is(expectedSensor));
@@ -84,13 +83,13 @@ public class ThreadMetricsTest {
         try (final MockedStatic<StreamsMetricsImpl> streamsMetricsStaticMock = mockStatic(StreamsMetricsImpl.class)) {
             final Sensor sensor = ThreadMetrics.processRecordsSensor(THREAD_ID, streamsMetrics);
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addAvgAndMaxToSensor(
-                    expectedSensor,
-                    THREAD_LEVEL_GROUP,
-                    tagMap,
-                    operation,
-                    avgDescription,
-                    maxDescription
+                    () -> StreamsMetricsImpl.addAvgAndMaxToSensor(
+                        expectedSensor,
+                        THREAD_LEVEL_GROUP,
+                        tagMap,
+                        operation,
+                        avgDescription,
+                        maxDescription
                 )
             );
             assertThat(sensor, is(expectedSensor));
@@ -108,13 +107,13 @@ public class ThreadMetricsTest {
         try (final MockedStatic<StreamsMetricsImpl> streamsMetricsStaticMock = mockStatic(StreamsMetricsImpl.class)) {
             final Sensor sensor = ThreadMetrics.processLatencySensor(THREAD_ID, streamsMetrics);
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addAvgAndMaxToSensor(
-                    expectedSensor,
-                    THREAD_LEVEL_GROUP,
-                    tagMap,
-                    operationLatency,
-                    avgLatencyDescription,
-                    maxLatencyDescription
+                    () -> StreamsMetricsImpl.addAvgAndMaxToSensor(
+                        expectedSensor,
+                        THREAD_LEVEL_GROUP,
+                        tagMap,
+                        operationLatency,
+                        avgLatencyDescription,
+                        maxLatencyDescription
                 )
             );
             assertThat(sensor, is(expectedSensor));
@@ -133,13 +132,13 @@ public class ThreadMetricsTest {
         try (final MockedStatic<StreamsMetricsImpl> streamsMetricsStaticMock = mockStatic(StreamsMetricsImpl.class)) {
             final Sensor sensor = ThreadMetrics.processRateSensor(THREAD_ID, streamsMetrics);
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addRateOfSumAndSumMetricsToSensor(
-                    expectedSensor,
-                    THREAD_LEVEL_GROUP,
-                    tagMap,
-                    operation,
-                    rateDescription,
-                    totalDescription
+                    () -> StreamsMetricsImpl.addRateOfSumAndSumMetricsToSensor(
+                        expectedSensor,
+                        THREAD_LEVEL_GROUP,
+                        tagMap,
+                        operation,
+                        rateDescription,
+                        totalDescription
                 )
             );
             assertThat(sensor, is(expectedSensor));
@@ -150,19 +149,19 @@ public class ThreadMetricsTest {
     public void shouldGetPollRatioSensor() {
         final String operation = "poll-ratio";
         final String ratioDescription = "The ratio, over a rolling measurement window, of the time this thread " +
-            "spent polling records from the consumer to the total elapsed time in that window.";
+                "spent polling records from the consumer to the total elapsed time in that window.";
         when(streamsMetrics.threadLevelSensor(THREAD_ID, operation, RecordingLevel.INFO)).thenReturn(expectedSensor);
         when(streamsMetrics.threadLevelTagMap(THREAD_ID)).thenReturn(tagMap);
 
         try (final MockedStatic<StreamsMetricsImpl> streamsMetricsStaticMock = mockStatic(StreamsMetricsImpl.class)) {
             final Sensor sensor = ThreadMetrics.pollRatioSensor(THREAD_ID, streamsMetrics);
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addValueMetricToSensor(
-                    expectedSensor,
-                    THREAD_LEVEL_GROUP,
-                    tagMap,
-                    operation,
-                    ratioDescription
+                    () -> StreamsMetricsImpl.addValueMetricToSensor(
+                        expectedSensor,
+                        THREAD_LEVEL_GROUP,
+                        tagMap,
+                        operation,
+                        ratioDescription
                 )
             );
             assertThat(sensor, is(expectedSensor));
@@ -180,13 +179,13 @@ public class ThreadMetricsTest {
         try (final MockedStatic<StreamsMetricsImpl> streamsMetricsStaticMock = mockStatic(StreamsMetricsImpl.class)) {
             final Sensor sensor = ThreadMetrics.pollRecordsSensor(THREAD_ID, streamsMetrics);
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addAvgAndMaxToSensor(
-                    expectedSensor,
-                    THREAD_LEVEL_GROUP,
-                    tagMap,
-                    operation,
-                    avgDescription,
-                    maxDescription
+                    () -> StreamsMetricsImpl.addAvgAndMaxToSensor(
+                        expectedSensor,
+                        THREAD_LEVEL_GROUP,
+                        tagMap,
+                        operation,
+                        avgDescription,
+                        maxDescription
                 )
             );
             assertThat(sensor, is(expectedSensor));
@@ -207,23 +206,23 @@ public class ThreadMetricsTest {
         try (final MockedStatic<StreamsMetricsImpl> streamsMetricsStaticMock = mockStatic(StreamsMetricsImpl.class)) {
             final Sensor sensor = ThreadMetrics.pollSensor(THREAD_ID, streamsMetrics);
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addInvocationRateAndCountToSensor(
-                    expectedSensor,
-                    THREAD_LEVEL_GROUP,
-                    tagMap,
-                    operation,
-                    rateDescription,
-                    totalDescription
+                    () -> StreamsMetricsImpl.addInvocationRateAndCountToSensor(
+                        expectedSensor,
+                        THREAD_LEVEL_GROUP,
+                        tagMap,
+                        operation,
+                        rateDescription,
+                        totalDescription
                 )
             );
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addAvgAndMaxToSensor(
-                    expectedSensor,
-                    THREAD_LEVEL_GROUP,
-                    tagMap,
-                    operationLatency,
-                    avgLatencyDescription,
-                    maxLatencyDescription
+                    () -> StreamsMetricsImpl.addAvgAndMaxToSensor(
+                        expectedSensor,
+                        THREAD_LEVEL_GROUP,
+                        tagMap,
+                        operationLatency,
+                        avgLatencyDescription,
+                        maxLatencyDescription
                 )
             );
             assertThat(sensor, is(expectedSensor));
@@ -244,23 +243,23 @@ public class ThreadMetricsTest {
         try (final MockedStatic<StreamsMetricsImpl> streamsMetricsStaticMock = mockStatic(StreamsMetricsImpl.class)) {
             final Sensor sensor = ThreadMetrics.commitSensor(THREAD_ID, streamsMetrics);
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addInvocationRateAndCountToSensor(
-                    expectedSensor,
-                    THREAD_LEVEL_GROUP,
-                    tagMap,
-                    operation,
-                    rateDescription,
-                    totalDescription
+                    () -> StreamsMetricsImpl.addInvocationRateAndCountToSensor(
+                        expectedSensor,
+                        THREAD_LEVEL_GROUP,
+                        tagMap,
+                        operation,
+                        rateDescription,
+                        totalDescription
                 )
             );
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addAvgAndMaxToSensor(
-                    expectedSensor,
-                    THREAD_LEVEL_GROUP,
-                    tagMap,
-                    operationLatency,
-                    avgLatencyDescription,
-                    maxLatencyDescription
+                    () -> StreamsMetricsImpl.addAvgAndMaxToSensor(
+                        expectedSensor,
+                        THREAD_LEVEL_GROUP,
+                        tagMap,
+                        operationLatency,
+                        avgLatencyDescription,
+                        maxLatencyDescription
                 )
             );
             assertThat(sensor, is(expectedSensor));
@@ -271,19 +270,19 @@ public class ThreadMetricsTest {
     public void shouldGetCommitRatioSensor() {
         final String operation = "commit-ratio";
         final String ratioDescription = "The ratio, over a rolling measurement window, of the time this thread spent " +
-            "committing all tasks to the total elapsed time in that window.";
+                "committing all tasks to the total elapsed time in that window.";
         when(streamsMetrics.threadLevelSensor(THREAD_ID, operation, RecordingLevel.INFO)).thenReturn(expectedSensor);
         when(streamsMetrics.threadLevelTagMap(THREAD_ID)).thenReturn(tagMap);
 
         try (final MockedStatic<StreamsMetricsImpl> streamsMetricsStaticMock = mockStatic(StreamsMetricsImpl.class)) {
             final Sensor sensor = ThreadMetrics.commitRatioSensor(THREAD_ID, streamsMetrics);
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addValueMetricToSensor(
-                    expectedSensor,
-                    THREAD_LEVEL_GROUP,
-                    tagMap,
-                    operation,
-                    ratioDescription
+                    () -> StreamsMetricsImpl.addValueMetricToSensor(
+                        expectedSensor,
+                        THREAD_LEVEL_GROUP,
+                        tagMap,
+                        operation,
+                        ratioDescription
                 )
             );
             assertThat(sensor, is(expectedSensor));
@@ -304,23 +303,23 @@ public class ThreadMetricsTest {
         try (final MockedStatic<StreamsMetricsImpl> streamsMetricsStaticMock = mockStatic(StreamsMetricsImpl.class)) {
             final Sensor sensor = ThreadMetrics.punctuateSensor(THREAD_ID, streamsMetrics);
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addInvocationRateAndCountToSensor(
-                    expectedSensor,
-                    THREAD_LEVEL_GROUP,
-                    tagMap,
-                    operation,
-                    rateDescription,
-                    totalDescription
+                    () -> StreamsMetricsImpl.addInvocationRateAndCountToSensor(
+                        expectedSensor,
+                        THREAD_LEVEL_GROUP,
+                        tagMap,
+                        operation,
+                        rateDescription,
+                        totalDescription
                 )
             );
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addAvgAndMaxToSensor(
-                    expectedSensor,
-                    THREAD_LEVEL_GROUP,
-                    tagMap,
-                    operationLatency,
-                    avgLatencyDescription,
-                    maxLatencyDescription
+                    () -> StreamsMetricsImpl.addAvgAndMaxToSensor(
+                        expectedSensor,
+                        THREAD_LEVEL_GROUP,
+                        tagMap,
+                        operationLatency,
+                        avgLatencyDescription,
+                        maxLatencyDescription
                 )
             );
             assertThat(sensor, is(expectedSensor));
@@ -331,19 +330,19 @@ public class ThreadMetricsTest {
     public void shouldGetPunctuateRatioSensor() {
         final String operation = "punctuate-ratio";
         final String ratioDescription = "The ratio, over a rolling measurement window, of the time this thread spent " +
-            "punctuating active tasks to the total elapsed time in that window.";
+                "punctuating active tasks to the total elapsed time in that window.";
         when(streamsMetrics.threadLevelSensor(THREAD_ID, operation, RecordingLevel.INFO)).thenReturn(expectedSensor);
         when(streamsMetrics.threadLevelTagMap(THREAD_ID)).thenReturn(tagMap);
 
         try (final MockedStatic<StreamsMetricsImpl> streamsMetricsStaticMock = mockStatic(StreamsMetricsImpl.class)) {
             final Sensor sensor = ThreadMetrics.punctuateRatioSensor(THREAD_ID, streamsMetrics);
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addValueMetricToSensor(
-                    expectedSensor,
-                    THREAD_LEVEL_GROUP,
-                    tagMap,
-                    operation,
-                    ratioDescription
+                    () -> StreamsMetricsImpl.addValueMetricToSensor(
+                        expectedSensor,
+                        THREAD_LEVEL_GROUP,
+                        tagMap,
+                        operation,
+                        ratioDescription
                 )
             );
             assertThat(sensor, is(expectedSensor));
@@ -361,13 +360,13 @@ public class ThreadMetricsTest {
         try (final MockedStatic<StreamsMetricsImpl> streamsMetricsStaticMock = mockStatic(StreamsMetricsImpl.class)) {
             final Sensor sensor = ThreadMetrics.createTaskSensor(THREAD_ID, streamsMetrics);
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addInvocationRateAndCountToSensor(
-                    expectedSensor,
-                    THREAD_LEVEL_GROUP,
-                    tagMap,
-                    operation,
-                    rateDescription,
-                    totalDescription
+                    () -> StreamsMetricsImpl.addInvocationRateAndCountToSensor(
+                        expectedSensor,
+                        THREAD_LEVEL_GROUP,
+                        tagMap,
+                        operation,
+                        rateDescription,
+                        totalDescription
                 )
             );
             assertThat(sensor, is(expectedSensor));
@@ -385,13 +384,13 @@ public class ThreadMetricsTest {
         try (final MockedStatic<StreamsMetricsImpl> streamsMetricsStaticMock = mockStatic(StreamsMetricsImpl.class)) {
             final Sensor sensor = ThreadMetrics.closeTaskSensor(THREAD_ID, streamsMetrics);
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addInvocationRateAndCountToSensor(
-                    expectedSensor,
-                    THREAD_LEVEL_GROUP,
-                    tagMap,
-                    operation,
-                    rateDescription,
-                    totalDescription
+                    () -> StreamsMetricsImpl.addInvocationRateAndCountToSensor(
+                        expectedSensor,
+                        THREAD_LEVEL_GROUP,
+                        tagMap,
+                        operation,
+                        rateDescription,
+                        totalDescription
                 )
             );
             assertThat(sensor, is(expectedSensor));
@@ -405,17 +404,17 @@ public class ThreadMetricsTest {
 
         // When:
         ThreadMetrics.addThreadStartTimeMetric(
-            "bongo",
-            streamsMetrics,
-            startTime
+                "bongo",
+                streamsMetrics,
+                startTime
         );
 
         // Then:
         verify(streamsMetrics).addThreadLevelImmutableMetric(
-            "thread-start-time",
-            "The time that the thread was started",
-            "bongo",
-            startTime
+                "thread-start-time",
+                "The time that the thread was started",
+                "bongo",
+                startTime
         );
     }
 
@@ -452,7 +451,6 @@ public class ThreadMetricsTest {
                 threadStateProvider
         );
     }
-    
 
     @Test
     public void shouldAddTotalBlockedTimeMetric() {
@@ -463,18 +461,18 @@ public class ThreadMetricsTest {
 
         // When:
         ThreadMetrics.addThreadBlockedTimeMetric(
-            "burger",
-            blockedTime,
-            streamsMetrics
+                "burger",
+                blockedTime,
+                streamsMetrics
         );
 
         // Then:
         final ArgumentCaptor<Gauge<Double>> captor = gaugeCaptor();
         verify(streamsMetrics).addThreadLevelMutableMetric(
-            eq("blocked-time-ns-total"),
-            eq("The total time the thread spent blocked on kafka in nanoseconds"),
-            eq("burger"),
-            captor.capture()
+                eq("blocked-time-ns-total"),
+                eq("The total time the thread spent blocked on kafka in nanoseconds"),
+                eq("burger"),
+                captor.capture()
         );
         assertThat(captor.getValue().value(null, 678L), is(startTime));
     }

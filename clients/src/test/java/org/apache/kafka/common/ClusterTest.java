@@ -34,10 +34,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class ClusterTest {
 
     private static final Node[] NODES = new Node[] {
-        new Node(0, "localhost", 99),
-        new Node(1, "localhost", 100),
-        new Node(2, "localhost", 101),
-        new Node(11, "localhost", 102)
+            new Node(0, "localhost", 99),
+            new Node(1, "localhost", 100),
+            new Node(2, "localhost", 101),
+            new Node(11, "localhost", 102)
     };
 
     private static final String TOPIC_A = "topicA";
@@ -51,8 +51,8 @@ public class ClusterTest {
         String ipAddress = "140.211.11.105";
         String hostName = "www.example.com";
         Cluster cluster = Cluster.bootstrap(Arrays.asList(
-            new InetSocketAddress(ipAddress, 9002),
-            new InetSocketAddress(hostName, 9002)
+                new InetSocketAddress(ipAddress, 9002),
+                new InetSocketAddress(hostName, 9002)
         ));
         Set<String> expectedHosts = Set.of(ipAddress, hostName);
         Set<String> actualHosts = new HashSet<>();
@@ -64,19 +64,19 @@ public class ClusterTest {
     @Test
     public void testReturnUnmodifiableCollections() {
         List<PartitionInfo> allPartitions = asList(new PartitionInfo(TOPIC_A, 0, NODES[0], NODES, NODES),
-            new PartitionInfo(TOPIC_A, 1, null, NODES, NODES),
-            new PartitionInfo(TOPIC_A, 2, NODES[2], NODES, NODES),
-            new PartitionInfo(TOPIC_B, 0, null, NODES, NODES),
-            new PartitionInfo(TOPIC_B, 1, NODES[0], NODES, NODES),
-            new PartitionInfo(TOPIC_C, 0, null, NODES, NODES),
-            new PartitionInfo(TOPIC_D, 0, NODES[1], NODES, NODES),
-            new PartitionInfo(TOPIC_E, 0, NODES[0], NODES, NODES)
+                new PartitionInfo(TOPIC_A, 1, null, NODES, NODES),
+                new PartitionInfo(TOPIC_A, 2, NODES[2], NODES, NODES),
+                new PartitionInfo(TOPIC_B, 0, null, NODES, NODES),
+                new PartitionInfo(TOPIC_B, 1, NODES[0], NODES, NODES),
+                new PartitionInfo(TOPIC_C, 0, null, NODES, NODES),
+                new PartitionInfo(TOPIC_D, 0, NODES[1], NODES, NODES),
+                new PartitionInfo(TOPIC_E, 0, NODES[0], NODES, NODES)
         );
         Set<String> unauthorizedTopics = Set.of(TOPIC_C);
         Set<String> invalidTopics = Set.of(TOPIC_D);
         Set<String> internalTopics = Set.of(TOPIC_E);
         Cluster cluster = new Cluster("clusterId", asList(NODES), allPartitions, unauthorizedTopics,
-            invalidTopics, internalTopics, NODES[1]);
+                invalidTopics, internalTopics, NODES[1]);
 
         assertThrows(UnsupportedOperationException.class, () -> cluster.invalidTopics().add("foo"));
         assertThrows(UnsupportedOperationException.class, () -> cluster.internalTopics().add("foo"));
@@ -84,11 +84,11 @@ public class ClusterTest {
         assertThrows(UnsupportedOperationException.class, () -> cluster.topics().add("foo"));
         assertThrows(UnsupportedOperationException.class, () -> cluster.nodes().add(NODES[3]));
         assertThrows(UnsupportedOperationException.class, () -> cluster.partitionsForTopic(TOPIC_A).add(
-            new PartitionInfo(TOPIC_A, 3, NODES[0], NODES, NODES)));
+                new PartitionInfo(TOPIC_A, 3, NODES[0], NODES, NODES)));
         assertThrows(UnsupportedOperationException.class, () -> cluster.availablePartitionsForTopic(TOPIC_B).add(
-            new PartitionInfo(TOPIC_B, 2, NODES[0], NODES, NODES)));
+                new PartitionInfo(TOPIC_B, 2, NODES[0], NODES, NODES)));
         assertThrows(UnsupportedOperationException.class, () -> cluster.partitionsForNode(NODES[1].id()).add(
-            new PartitionInfo(TOPIC_B, 2, NODES[1], NODES, NODES)));
+                new PartitionInfo(TOPIC_B, 2, NODES[1], NODES, NODES)));
     }
 
     @Test
@@ -106,28 +106,28 @@ public class ClusterTest {
         Set<String> internalTopics1 = Collections.singleton("topic3");
         Set<String> internalTopics2 = Collections.singleton("topic4");
         Node controller1 = new Node(2, "host2", 100);
-        Node controller2 = new Node(3, "host3", 100); 
+        Node controller2 = new Node(3, "host3", 100);
         Map<String, Uuid> topicIds1 = Collections.singletonMap("topic1", Uuid.randomUuid());
         Map<String, Uuid> topicIds2 = Collections.singletonMap("topic2", Uuid.randomUuid());
 
         Cluster cluster1 = new Cluster(clusterId1, Collections.singletonList(node0), partitions1,
-            unauthorizedTopics1, invalidTopics1, internalTopics1, controller1, topicIds1);
+                unauthorizedTopics1, invalidTopics1, internalTopics1, controller1, topicIds1);
         Cluster differentTopicIds = new Cluster(clusterId1, Collections.singletonList(node0), partitions1,
-            unauthorizedTopics1, invalidTopics1, internalTopics1, controller1, topicIds2);
+                unauthorizedTopics1, invalidTopics1, internalTopics1, controller1, topicIds2);
         Cluster differentController = new Cluster(clusterId1, Collections.singletonList(node0), partitions1,
-            unauthorizedTopics1, invalidTopics1, internalTopics1, controller2, topicIds1);
+                unauthorizedTopics1, invalidTopics1, internalTopics1, controller2, topicIds1);
         Cluster differentInternalTopics = new Cluster(clusterId1, Collections.singletonList(node0), partitions1,
-            unauthorizedTopics1, invalidTopics1, internalTopics2, controller1, topicIds1);
+                unauthorizedTopics1, invalidTopics1, internalTopics2, controller1, topicIds1);
         Cluster differentInvalidTopics = new Cluster(clusterId1, Collections.singletonList(node0), partitions1,
-            unauthorizedTopics1, invalidTopics2, internalTopics1, controller1, topicIds1);
+                unauthorizedTopics1, invalidTopics2, internalTopics1, controller1, topicIds1);
         Cluster differentUnauthorizedTopics = new Cluster(clusterId1, Collections.singletonList(node0), partitions1,
-            unauthorizedTopics2, invalidTopics1, internalTopics1, controller1, topicIds1);
+                unauthorizedTopics2, invalidTopics1, internalTopics1, controller1, topicIds1);
         Cluster differentPartitions = new Cluster(clusterId1, Collections.singletonList(node0), partitions2,
-            unauthorizedTopics1, invalidTopics1, internalTopics1, controller1, topicIds1);
+                unauthorizedTopics1, invalidTopics1, internalTopics1, controller1, topicIds1);
         Cluster differentNodes = new Cluster(clusterId1, Arrays.asList(node0, node1), partitions1,
-            unauthorizedTopics1, invalidTopics1, internalTopics1, controller1, topicIds1);
+                unauthorizedTopics1, invalidTopics1, internalTopics1, controller1, topicIds1);
         Cluster differentClusterId = new Cluster(clusterId2, Collections.singletonList(node0), partitions1,
-            unauthorizedTopics1, invalidTopics1, internalTopics1, controller1, topicIds1);
+                unauthorizedTopics1, invalidTopics1, internalTopics1, controller1, topicIds1);
 
         assertNotEquals(cluster1, differentTopicIds);
         assertNotEquals(cluster1, differentController);
@@ -156,9 +156,9 @@ public class ClusterTest {
         Map<String, Uuid> topicIds1duplicate = Collections.singletonMap("topic1", topicId1);
 
         Cluster cluster1 = new Cluster(clusterId1, Collections.singletonList(node1), partitions1, unauthorizedTopics1,
-            invalidTopics1, internalTopics1, controller1, topicIds1);
+                invalidTopics1, internalTopics1, controller1, topicIds1);
         Cluster cluster1duplicate = new Cluster(clusterId1, Collections.singletonList(node1duplicate), partitions1duplicate,
-            unauthorizedTopics1, invalidTopics1, internalTopics1, controller1duplicate, topicIds1duplicate);
+                unauthorizedTopics1, invalidTopics1, internalTopics1, controller1duplicate, topicIds1duplicate);
         assertEquals(cluster1, cluster1duplicate);
     }
 }

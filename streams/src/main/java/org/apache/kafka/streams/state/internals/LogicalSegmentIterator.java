@@ -42,8 +42,6 @@ public class LogicalSegmentIterator implements VersionedRecordIterator<byte[]> {
     private LogicalKeyValueSegment snapshotOwner = null;
     private Snapshot snapshot = null;
 
-
-
     public LogicalSegmentIterator(final ListIterator<LogicalKeyValueSegment> segmentIterator,
                                   final Bytes key,
                                   final Long fromTime,

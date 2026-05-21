@@ -30,9 +30,9 @@ public class CommandUtilsTest {
     @Test
     public void testSplitPath() {
         assertEquals(List.of("alpha", "beta"),
-            CommandUtils.splitPath("/alpha/beta"));
+                CommandUtils.splitPath("/alpha/beta"));
         assertEquals(List.of("alpha", "beta"),
-            CommandUtils.splitPath("//alpha/beta/"));
+                CommandUtils.splitPath("//alpha/beta/"));
     }
 
     @Test

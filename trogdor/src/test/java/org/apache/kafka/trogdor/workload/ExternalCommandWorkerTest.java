@@ -60,11 +60,11 @@ public class ExternalCommandWorkerTest {
 
         ExternalCommandWorker build() {
             ExternalCommandSpec spec = new ExternalCommandSpec(0,
-                30000,
-                "node0",
-                List.of(command),
-                workload,
-                Optional.of(shutdownGracePeriodMs));
+                    30000,
+                    "node0",
+                    List.of(command),
+                    workload,
+                    Optional.of(shutdownGracePeriodMs));
             return new ExternalCommandWorker(id, spec);
         }
 
@@ -86,7 +86,7 @@ public class ExternalCommandWorkerTest {
     public void testProcessWithNormalExit() throws Exception {
         if (OperatingSystem.IS_WINDOWS) return;
         ExternalCommandWorker worker =
-            new ExternalCommandWorkerBuilder("trueTask").command("true").build();
+                new ExternalCommandWorkerBuilder("trueTask").command("true").build();
         KafkaFutureImpl<String> doneFuture = new KafkaFutureImpl<>();
         worker.start(null, new AgentWorkerStatusTracker(), doneFuture);
         assertEquals("", doneFuture.get());
@@ -100,7 +100,7 @@ public class ExternalCommandWorkerTest {
     public void testProcessWithFailedExit() throws Exception {
         if (OperatingSystem.IS_WINDOWS) return;
         ExternalCommandWorker worker =
-            new ExternalCommandWorkerBuilder("falseTask").command("false").build();
+                new ExternalCommandWorkerBuilder("falseTask").command("false").build();
         KafkaFutureImpl<String> doneFuture = new KafkaFutureImpl<>();
         worker.start(null, new AgentWorkerStatusTracker(), doneFuture);
         assertEquals("exited with return code 1", doneFuture.get());
@@ -115,7 +115,7 @@ public class ExternalCommandWorkerTest {
     @Test
     public void testProcessNotFound() throws Exception {
         ExternalCommandWorker worker =
-            new ExternalCommandWorkerBuilder("notFoundTask").
+                new ExternalCommandWorkerBuilder("notFoundTask").
                 command("/dev/null/non/existent/script/path").build();
         KafkaFutureImpl<String> doneFuture = new KafkaFutureImpl<>();
         worker.start(null, new AgentWorkerStatusTracker(), doneFuture);
@@ -131,7 +131,7 @@ public class ExternalCommandWorkerTest {
     public void testProcessStop() throws Exception {
         if (OperatingSystem.IS_WINDOWS) return;
         ExternalCommandWorker worker =
-            new ExternalCommandWorkerBuilder("testStopTask").
+                new ExternalCommandWorkerBuilder("testStopTask").
                 command("sleep", "3600000").build();
         KafkaFutureImpl<String> doneFuture = new KafkaFutureImpl<>();
         worker.start(null, new AgentWorkerStatusTracker(), doneFuture);
@@ -152,21 +152,21 @@ public class ExternalCommandWorkerTest {
             tempFile = TestUtils.tempFile();
             try (OutputStream stream = Files.newOutputStream(tempFile.toPath())) {
                 for (String line : new String[] {
-                    "echo hello world\n",
-                    "# Test that the initial message is sent correctly.\n",
-                    "read -r line\n",
-                    "[[ $line == '{\"id\":\"testForceKillTask\",\"workload\":{\"foo\":\"value1\",\"bar\":123}}' ]] || exit 0\n",
-                    "\n",
-                    "# Ignore SIGTERM signals.  This ensures that we test SIGKILL delivery.\n",
-                    "trap 'echo SIGTERM' SIGTERM\n",
-                    "\n",
-                    "# Update the process status.  This will also unblock the junit test.\n",
-                    "# It is important that we do this after we disabled SIGTERM, to ensure\n",
-                    "# that we are testing SIGKILL.\n",
-                    "echo '{\"status\": \"green\", \"log\": \"my log message.\"}'\n",
-                    "\n",
-                    "# Wait for the SIGKILL.\n",
-                    "while true; do sleep 0.01; done\n"}) {
+                        "echo hello world\n",
+                        "# Test that the initial message is sent correctly.\n",
+                        "read -r line\n",
+                        "[[ $line == '{\"id\":\"testForceKillTask\",\"workload\":{\"foo\":\"value1\",\"bar\":123}}' ]] || exit 0\n",
+                        "\n",
+                        "# Ignore SIGTERM signals.  This ensures that we test SIGKILL delivery.\n",
+                        "trap 'echo SIGTERM' SIGTERM\n",
+                        "\n",
+                        "# Update the process status.  This will also unblock the junit test.\n",
+                        "# It is important that we do this after we disabled SIGTERM, to ensure\n",
+                        "# that we are testing SIGKILL.\n",
+                        "echo '{\"status\": \"green\", \"log\": \"my log message.\"}'\n",
+                        "\n",
+                        "# Wait for the SIGKILL.\n",
+                        "while true; do sleep 0.01; done\n"}) {
                     stream.write(line.getBytes(StandardCharsets.UTF_8));
                 }
             }

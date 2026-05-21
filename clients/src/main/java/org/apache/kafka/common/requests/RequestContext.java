@@ -55,15 +55,15 @@ public class RequestContext implements AuthorizableRequestContext {
                           ClientInformation clientInformation,
                           boolean fromPrivilegedListener) {
         this(header,
-            connectionId,
-            clientAddress,
-            Optional.empty(),
-            principal,
-            listenerName,
-            securityProtocol,
-            clientInformation,
-            fromPrivilegedListener,
-            Optional.empty());
+                connectionId,
+                clientAddress,
+                Optional.empty(),
+                principal,
+                listenerName,
+                securityProtocol,
+                clientInformation,
+                fromPrivilegedListener,
+                Optional.empty());
     }
 
     public RequestContext(RequestHeader header,
@@ -76,15 +76,15 @@ public class RequestContext implements AuthorizableRequestContext {
         ClientInformation clientInformation,
         boolean fromPrivilegedListener) {
         this(header,
-            connectionId,
-            clientAddress,
-            clientPort,
-            principal,
-            listenerName,
-            securityProtocol,
-            clientInformation,
-            fromPrivilegedListener,
-            Optional.empty());
+                connectionId,
+                clientAddress,
+                clientPort,
+                principal,
+                listenerName,
+                securityProtocol,
+                clientInformation,
+                fromPrivilegedListener,
+                Optional.empty());
     }
 
     public RequestContext(RequestHeader header,
@@ -209,15 +209,15 @@ public class RequestContext implements AuthorizableRequestContext {
     @Override
     public String toString() {
         return "RequestContext(" +
-            "header=" + header +
-            ", connectionId='" + connectionId + '\'' +
-            ", clientAddress=" + clientAddress +
-            ", principal=" + principal +
-            ", listenerName=" + listenerName +
-            ", securityProtocol=" + securityProtocol +
-            ", clientInformation=" + clientInformation +
-            ", fromPrivilegedListener=" + fromPrivilegedListener +
-            ", principalSerde=" + principalSerde +
-            ')';
+                "header=" + header +
+                ", connectionId='" + connectionId + '\'' +
+                ", clientAddress=" + clientAddress +
+                ", principal=" + principal +
+                ", listenerName=" + listenerName +
+                ", securityProtocol=" + securityProtocol +
+                ", clientInformation=" + clientInformation +
+                ", fromPrivilegedListener=" + fromPrivilegedListener +
+                ", principalSerde=" + principalSerde +
+                ')';
     }
 }

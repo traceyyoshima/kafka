@@ -243,7 +243,6 @@ public class MemoryRecordsBuilder implements AutoCloseable {
         return builtRecords;
     }
 
-
     /**
      * There are three cases of finding max timestamp to return:
      * 1) version 0: The max timestamp is NO_TIMESTAMP (-1)
@@ -356,7 +355,6 @@ public class MemoryRecordsBuilder implements AutoCloseable {
         this.baseSequence = baseSequence;
         this.isTransactional = isTransactional;
     }
-
 
     public void close() {
         if (aborted)
@@ -550,7 +548,7 @@ public class MemoryRecordsBuilder implements AutoCloseable {
             throw new IllegalArgumentException("Cannot append record with unknown control record type " + typeId);
 
         appendWithOffset(offset, true, record.timestamp(),
-            record.key(), record.value(), record.headers());
+                record.key(), record.value(), record.headers());
     }
 
     /**
@@ -629,41 +627,41 @@ public class MemoryRecordsBuilder implements AutoCloseable {
             throw new IllegalArgumentException("Partition leader epoch must be valid, but get " + partitionLeaderEpoch);
         }
         appendControlRecord(
-            timestamp,
-            ControlRecordType.LEADER_CHANGE,
-            MessageUtil.toByteBufferAccessor(leaderChangeMessage, ControlRecordUtils.LEADER_CHANGE_CURRENT_VERSION).buffer()
+                timestamp,
+                ControlRecordType.LEADER_CHANGE,
+                MessageUtil.toByteBufferAccessor(leaderChangeMessage, ControlRecordUtils.LEADER_CHANGE_CURRENT_VERSION).buffer()
         );
     }
 
     public void appendSnapshotHeaderMessage(long timestamp, SnapshotHeaderRecord snapshotHeaderRecord) {
         appendControlRecord(
-            timestamp,
-            ControlRecordType.SNAPSHOT_HEADER,
-            MessageUtil.toByteBufferAccessor(snapshotHeaderRecord, ControlRecordUtils.SNAPSHOT_HEADER_CURRENT_VERSION).buffer()
+                timestamp,
+                ControlRecordType.SNAPSHOT_HEADER,
+                MessageUtil.toByteBufferAccessor(snapshotHeaderRecord, ControlRecordUtils.SNAPSHOT_HEADER_CURRENT_VERSION).buffer()
         );
     }
 
     public void appendSnapshotFooterMessage(long timestamp, SnapshotFooterRecord snapshotHeaderRecord) {
         appendControlRecord(
-            timestamp,
-            ControlRecordType.SNAPSHOT_FOOTER,
-            MessageUtil.toByteBufferAccessor(snapshotHeaderRecord, ControlRecordUtils.SNAPSHOT_FOOTER_CURRENT_VERSION).buffer()
+                timestamp,
+                ControlRecordType.SNAPSHOT_FOOTER,
+                MessageUtil.toByteBufferAccessor(snapshotHeaderRecord, ControlRecordUtils.SNAPSHOT_FOOTER_CURRENT_VERSION).buffer()
         );
     }
 
     public void appendKRaftVersionMessage(long timestamp, KRaftVersionRecord kraftVersionRecord) {
         appendControlRecord(
-            timestamp,
-            ControlRecordType.KRAFT_VERSION,
-            MessageUtil.toByteBufferAccessor(kraftVersionRecord, ControlRecordUtils.KRAFT_VERSION_CURRENT_VERSION).buffer()
+                timestamp,
+                ControlRecordType.KRAFT_VERSION,
+                MessageUtil.toByteBufferAccessor(kraftVersionRecord, ControlRecordUtils.KRAFT_VERSION_CURRENT_VERSION).buffer()
         );
     }
 
     public void appendVotersMessage(long timestamp, VotersRecord votersRecord) {
         appendControlRecord(
-            timestamp,
-            ControlRecordType.KRAFT_VOTERS,
-            MessageUtil.toByteBufferAccessor(votersRecord, ControlRecordUtils.KRAFT_VOTERS_CURRENT_VERSION).buffer()
+                timestamp,
+                ControlRecordType.KRAFT_VOTERS,
+                MessageUtil.toByteBufferAccessor(votersRecord, ControlRecordUtils.KRAFT_VOTERS_CURRENT_VERSION).buffer()
         );
     }
 
@@ -701,17 +699,17 @@ public class MemoryRecordsBuilder implements AutoCloseable {
                 baseTimestamp = timestamp;
 
             int sizeInBytes = DefaultRecord.writeTo(appendStream,
-                offsetDelta,
-                timestamp - baseTimestamp,
-                record.key(),
-                record.value(),
-                record.headers());
+                    offsetDelta,
+                    timestamp - baseTimestamp,
+                    record.key(),
+                    record.value(),
+                    record.headers());
             recordWritten(offset, timestamp, sizeInBytes);
         } else {
             LegacyRecord legacyRecord = LegacyRecord.create(magic,
-                record.timestamp(),
-                Utils.toNullableArray(record.key()),
-                Utils.toNullableArray(record.value()));
+                    record.timestamp(),
+                    Utils.toNullableArray(record.key()),
+                    Utils.toNullableArray(record.value()));
             appendUncheckedWithOffset(offset, legacyRecord);
         }
     }

@@ -97,23 +97,23 @@ public class FileQuorumStateStore implements QuorumStateStore {
 
             if (!(readNode instanceof ObjectNode dataObject)) {
                 throw new IOException("Deserialized node " + readNode +
-                    " is not an object node");
+                        " is not an object node");
             }
 
             JsonNode dataVersionNode = dataObject.get(DATA_VERSION);
             if (dataVersionNode == null) {
                 throw new IOException("Deserialized node " + readNode +
-                    " does not have " + DATA_VERSION + " field");
+                        " does not have " + DATA_VERSION + " field");
             }
 
             final short dataVersion = dataVersionNode.shortValue();
             if (dataVersion < LOWEST_SUPPORTED_VERSION || dataVersion > HIGHEST_SUPPORTED_VERSION) {
                 throw new IllegalStateException(
-                    String.format(
-                        "data_version (%d) is not within the min (%d) and max (%d) supported version",
-                        dataVersion,
-                        LOWEST_SUPPORTED_VERSION,
-                        HIGHEST_SUPPORTED_VERSION
+                        String.format(
+                            "data_version (%d) is not within the min (%d) and max (%d) supported version",
+                            dataVersion,
+                            LOWEST_SUPPORTED_VERSION,
+                            HIGHEST_SUPPORTED_VERSION
                     )
                 );
             }
@@ -121,7 +121,7 @@ public class FileQuorumStateStore implements QuorumStateStore {
             return QuorumStateDataJsonConverter.read(dataObject, dataVersion);
         } catch (IOException e) {
             throw new UncheckedIOException(
-                String.format("Error while reading the Quorum status from the file %s", file), e);
+                    String.format("Error while reading the Quorum status from the file %s", file), e);
         }
     }
 
@@ -142,9 +142,9 @@ public class FileQuorumStateStore implements QuorumStateStore {
         short quorumStateVersion = kraftVersion.quorumStateVersion();
 
         writeElectionStateToFile(
-            stateFile,
-            latest.toQuorumStateData(quorumStateVersion),
-            quorumStateVersion
+                stateFile,
+                latest.toQuorumStateData(quorumStateVersion),
+                quorumStateVersion
         );
     }
 
@@ -156,10 +156,10 @@ public class FileQuorumStateStore implements QuorumStateStore {
     private void writeElectionStateToFile(final File stateFile, QuorumStateData state, short version) {
         if (version > HIGHEST_SUPPORTED_VERSION) {
             throw new IllegalArgumentException(
-                String.format(
-                    "Quorum state data version (%d) is greater than the supported version (%d)",
-                    version,
-                    HIGHEST_SUPPORTED_VERSION
+                    String.format(
+                        "Quorum state data version (%d) is greater than the supported version (%d)",
+                        version,
+                        HIGHEST_SUPPORTED_VERSION
                 )
             );
         }
@@ -171,7 +171,7 @@ public class FileQuorumStateStore implements QuorumStateStore {
         try {
             try (final FileOutputStream fileOutputStream = new FileOutputStream(temp);
                  final BufferedWriter writer = new BufferedWriter(
-                     new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8)
+                         new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8)
                  )
             ) {
                 ObjectNode jsonState = (ObjectNode) QuorumStateDataJsonConverter.write(state, version);
@@ -183,11 +183,11 @@ public class FileQuorumStateStore implements QuorumStateStore {
             Utils.atomicMoveWithFallback(temp.toPath(), stateFile.toPath());
         } catch (IOException e) {
             throw new UncheckedIOException(
-                String.format(
-                    "Error while writing the Quorum status from the file %s",
-                    stateFile.getAbsolutePath()
+                    String.format(
+                        "Error while writing the Quorum status from the file %s",
+                        stateFile.getAbsolutePath()
                 ),
-                e
+                    e
             );
         } finally {
             // cleanup the temp file when the write finishes (either success or fail).
@@ -214,7 +214,7 @@ public class FileQuorumStateStore implements QuorumStateStore {
             Files.deleteIfExists(file.toPath());
         } catch (IOException e) {
             throw new UncheckedIOException(
-                String.format("Error while deleting file %s", file.getAbsoluteFile()), e);
+                    String.format("Error while deleting file %s", file.getAbsoluteFile()), e);
         }
     }
 }

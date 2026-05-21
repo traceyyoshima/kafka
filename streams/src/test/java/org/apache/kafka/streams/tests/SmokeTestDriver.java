@@ -72,22 +72,23 @@ public class SmokeTestDriver extends SmokeTestUtil {
     private static final long CREATE_TIME_SHIFT_MS = Duration.ofDays(2).toMillis();
 
     private static final String[] NUMERIC_VALUE_TOPICS = {
-        "data",
-        "echo",
-        "max",
-        "min", "min-suppressed", "min-raw",
-        "dif",
-        "sum",
-        "sws-raw", "sws-suppressed",
-        "cnt",
-        "avg",
-        "tagg"
+            "data",
+            "echo",
+            "max",
+            "min", "min-suppressed", "min-raw",
+            "dif",
+            "sum",
+            "sws-raw", "sws-suppressed",
+            "cnt",
+            "avg",
+            "tagg"
     };
     private static final String[] STRING_VALUE_TOPICS = {
-        "fk"
+            "fk"
     };
 
     private static final String[] TOPICS = new String[NUMERIC_VALUE_TOPICS.length + STRING_VALUE_TOPICS.length];
+
     static {
         System.arraycopy(NUMERIC_VALUE_TOPICS, 0, TOPICS, 0, NUMERIC_VALUE_TOPICS.length);
         System.arraycopy(STRING_VALUE_TOPICS, 0, TOPICS, NUMERIC_VALUE_TOPICS.length, STRING_VALUE_TOPICS.length);
@@ -146,23 +147,23 @@ public class SmokeTestDriver extends SmokeTestUtil {
                 final int value = data[index].next();
 
                 final ProducerRecord<byte[], byte[]> record =
-                    new ProducerRecord<>(
-                        "data",
-                        null,
-                        System.currentTimeMillis() - CREATE_TIME_SHIFT_MS,
-                        stringSerde.serializer().serialize("", key),
-                        intSerde.serializer().serialize("", value)
+                        new ProducerRecord<>(
+                            "data",
+                            null,
+                            System.currentTimeMillis() - CREATE_TIME_SHIFT_MS,
+                            stringSerde.serializer().serialize("", key),
+                            intSerde.serializer().serialize("", value)
                     );
 
                 producer.send(record);
 
                 final ProducerRecord<byte[], byte[]> fkRecord =
-                    new ProducerRecord<>(
-                        "fk",
-                        null,
-                        System.currentTimeMillis() - CREATE_TIME_SHIFT_MS,
-                        intSerde.serializer().serialize("", value),
-                        stringSerde.serializer().serialize("", key)
+                        new ProducerRecord<>(
+                            "fk",
+                            null,
+                            System.currentTimeMillis() - CREATE_TIME_SHIFT_MS,
+                            intSerde.serializer().serialize("", value),
+                            stringSerde.serializer().serialize("", key)
                     );
                 producer.send(fkRecord);
 
@@ -180,7 +181,6 @@ public class SmokeTestDriver extends SmokeTestUtil {
                                                      final int maxRecordsPerKey,
                                                      final Duration timeToSpend) {
         final Properties producerProps = generatorProperties(kafka);
-
 
         int numRecordsProduced = 0;
 
@@ -211,23 +211,23 @@ public class SmokeTestDriver extends SmokeTestUtil {
                 } else {
 
                     final ProducerRecord<byte[], byte[]> record =
-                        new ProducerRecord<>(
-                            "data",
-                            null,
-                            System.currentTimeMillis() - CREATE_TIME_SHIFT_MS,
-                            stringSerde.serializer().serialize("", key),
-                            intSerde.serializer().serialize("", value)
+                            new ProducerRecord<>(
+                                "data",
+                                null,
+                                System.currentTimeMillis() - CREATE_TIME_SHIFT_MS,
+                                stringSerde.serializer().serialize("", key),
+                                intSerde.serializer().serialize("", value)
                         );
 
                     producer.send(record, new TestCallback(record, dataNeedRetry));
 
                     final ProducerRecord<byte[], byte[]> fkRecord =
-                        new ProducerRecord<>(
-                            "fk",
-                            null,
-                            System.currentTimeMillis() - CREATE_TIME_SHIFT_MS,
-                            intSerde.serializer().serialize("", value),
-                            stringSerde.serializer().serialize("", key)
+                            new ProducerRecord<>(
+                                "fk",
+                                null,
+                                System.currentTimeMillis() - CREATE_TIME_SHIFT_MS,
+                                intSerde.serializer().serialize("", value),
+                                stringSerde.serializer().serialize("", key)
                         );
 
                     producer.send(fkRecord, new TestCallback(fkRecord, fkNeedRetry));
@@ -246,14 +246,14 @@ public class SmokeTestDriver extends SmokeTestUtil {
             retry(producer, fkNeedRetry, intSerde);
 
             flush(producer,
-                "data",
-                stringSerde.serializer().serialize("", "flush"),
-                intSerde.serializer().serialize("", 0)
+                    "data",
+                    stringSerde.serializer().serialize("", "flush"),
+                    intSerde.serializer().serialize("", 0)
             );
             flush(producer,
-                "fk",
-                intSerde.serializer().serialize("", 0),
-                stringSerde.serializer().serialize("", "flush")
+                    "fk",
+                    intSerde.serializer().serialize("", 0),
+                    stringSerde.serializer().serialize("", "flush")
             );
 
         }
@@ -289,11 +289,11 @@ public class SmokeTestDriver extends SmokeTestUtil {
         final List<PartitionInfo> partitions = producer.partitionsFor(topic);
         for (final PartitionInfo partition : partitions) {
             producer.send(new ProducerRecord<>(
-                partition.topic(),
-                partition.partition(),
-                System.currentTimeMillis(),
-                keyBytes,
-                valBytes
+                    partition.topic(),
+                    partition.partition(),
+                    System.currentTimeMillis(),
+                    keyBytes,
+                    valBytes
             ));
         }
     }
@@ -417,7 +417,7 @@ public class SmokeTestDriver extends SmokeTestUtil {
         consumer.assign(partitions);
         consumer.seekToBeginning(partitions);
         final Map<String, AtomicInteger> processed =
-            Stream.of(NUMERIC_VALUE_TOPICS)
+                Stream.of(NUMERIC_VALUE_TOPICS)
                   .collect(Collectors.toMap(t -> t, t -> new AtomicInteger(0)));
 
         int retry = 0;
@@ -540,8 +540,8 @@ public class SmokeTestDriver extends SmokeTestUtil {
                 .entrySet()
                 .stream()
                 .map(entry -> mkEntry(
-                    entry.getKey(),
-                    entry.getValue().stream().map(ConsumerRecord::value).collect(Collectors.toSet()))
+                        entry.getKey(),
+                        entry.getValue().stream().map(ConsumerRecord::value).collect(Collectors.toSet()))
                 )
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)) : Collections.emptyMap();
     }
@@ -605,11 +605,11 @@ public class SmokeTestDriver extends SmokeTestUtil {
                 } else {
                     if (eosEnabled) {
                         resultStream.printf("fail: resultCount=%d expectedCount=%s%n\tresult=%s%n\texpected=%s%n",
-                            outputEvents.size(), inputData.size(), outputEvents.keySet(), inputData.keySet());
+                                outputEvents.size(), inputData.size(), outputEvents.keySet(), inputData.keySet());
                         return false;
                     } else {
                         resultStream.printf("duplicated detected (ok for ALOS): resultCount=%d expectedCount=%s%n\tresult=%s%n\texpected=%s%n",
-                            outputEvents.size(), inputData.size(), outputEvents.keySet(), inputData.keySet());
+                                outputEvents.size(), inputData.size(), outputEvents.keySet(), inputData.keySet());
                     }
                 }
             }
@@ -624,13 +624,13 @@ public class SmokeTestDriver extends SmokeTestUtil {
                     if (printResults) {
                         resultStream.printf("\t inputEvents=%n%s%n\t" +
                                 "echoEvents=%n%s%n\tmaxEvents=%n%s%n\tminEvents=%n%s%n\tdifEvents=%n%s%n\tcntEvents=%n%s%n\ttaggEvents=%n%s%n",
-                            indent("\t\t", observedInputEvents.getOrDefault(key, new LinkedList<>())),
-                            indent("\t\t", events.getOrDefault("echo", emptyMap()).getOrDefault(key, new LinkedList<>())),
-                            indent("\t\t", events.getOrDefault("max", emptyMap()).getOrDefault(key, new LinkedList<>())),
-                            indent("\t\t", events.getOrDefault("min", emptyMap()).getOrDefault(key, new LinkedList<>())),
-                            indent("\t\t", events.getOrDefault("dif", emptyMap()).getOrDefault(key, new LinkedList<>())),
-                            indent("\t\t", events.getOrDefault("cnt", emptyMap()).getOrDefault(key, new LinkedList<>())),
-                            indent("\t\t", events.getOrDefault("tagg", emptyMap()).getOrDefault(key, new LinkedList<>())));
+                                indent("\t\t", observedInputEvents.getOrDefault(key, new LinkedList<>())),
+                                indent("\t\t", events.getOrDefault("echo", emptyMap()).getOrDefault(key, new LinkedList<>())),
+                                indent("\t\t", events.getOrDefault("max", emptyMap()).getOrDefault(key, new LinkedList<>())),
+                                indent("\t\t", events.getOrDefault("min", emptyMap()).getOrDefault(key, new LinkedList<>())),
+                                indent("\t\t", events.getOrDefault("dif", emptyMap()).getOrDefault(key, new LinkedList<>())),
+                                indent("\t\t", events.getOrDefault("cnt", emptyMap()).getOrDefault(key, new LinkedList<>())),
+                                indent("\t\t", events.getOrDefault("tagg", emptyMap()).getOrDefault(key, new LinkedList<>())));
 
                         if (!Set.of("echo", "max", "min", "dif", "cnt", "tagg").contains(topic))
                             resultStream.printf("%sEvents=%n%s%n", topic, indent("\t\t", entry.getValue()));
@@ -672,8 +672,8 @@ public class SmokeTestDriver extends SmokeTestUtil {
 
                 if (printResults)
                     resultStream.printf("\tresultEvents:%n%s%n\tinputEvents:%n%s%n",
-                        indent("\t\t", events.get(unsuppressedTopic).get(key)),
-                        indent("\t\t", events.get("data").get(unwindowedKey)));
+                            indent("\t\t", events.get(unsuppressedTopic).get(key)),
+                            indent("\t\t", events.get("data").get(unwindowedKey)));
 
                 return false;
             }
@@ -701,7 +701,6 @@ public class SmokeTestDriver extends SmokeTestUtil {
         final int max = getMax(key).intValue();
         return ((long) min + max) / 2.0;
     }
-
 
     private static boolean verifyTAgg(final PrintStream resultStream,
                                       final Map<String, Set<Integer>> allData,

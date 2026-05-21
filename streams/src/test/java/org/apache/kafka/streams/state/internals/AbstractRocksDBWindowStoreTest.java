@@ -75,13 +75,13 @@ public abstract class AbstractRocksDBWindowStoreTest extends AbstractWindowBytes
         switch (storeType()) {
             case RocksDBWindowStore: {
                 return Stores.windowStoreBuilder(
-                                Stores.persistentWindowStore(
+                        Stores.persistentWindowStore(
                                         STORE_NAME,
                                         ofMillis(retentionPeriod),
                                         ofMillis(windowSize),
                                         retainDuplicates),
-                                keySerde,
-                                valueSerde)
+                        keySerde,
+                        valueSerde)
                         .build();
             }
             case RocksDBTimeOrderedWindowStoreWithIndex: {

@@ -106,7 +106,7 @@ public class OffsetsForLeaderEpochRequest extends AbstractRequest {
             OffsetForLeaderTopicResult topicData = new OffsetForLeaderTopicResult()
                 .setTopic(topic.topic());
             topic.partitions().forEach(partition ->
-                topicData.partitions().add(new EpochEndOffset()
+                    topicData.partitions().add(new EpochEndOffset()
                     .setPartition(partition.partition())
                     .setErrorCode(error.code())
                     .setLeaderEpoch(UNDEFINED_EPOCH)

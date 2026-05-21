@@ -57,7 +57,6 @@ public class StreamsNamedRepartitionTest {
         final String aggregationTopic = (String) (Objects.requireNonNull(streamsProperties.remove("aggregation.topic")));
         final boolean addOperators = Boolean.parseBoolean(Objects.requireNonNull((String) streamsProperties.remove("add.operations")));
 
-
         final Initializer<Integer> initializer = () -> 0;
         final Aggregator<String, String, Integer> aggregator = (k, v, agg) -> agg + Integer.parseInt(v);
 
@@ -91,12 +90,10 @@ public class StreamsNamedRepartitionTest {
         config.setProperty(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         config.setProperty(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
 
-
         config.putAll(streamsProperties);
 
         final Topology topology = builder.build(config);
         final KafkaStreams streams = new KafkaStreams(topology, config);
-
 
         streams.setStateListener((newState, oldState) -> {
             if (oldState == State.REBALANCING && newState == State.RUNNING) {

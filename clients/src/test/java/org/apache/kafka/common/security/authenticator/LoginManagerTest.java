@@ -147,7 +147,6 @@ public class LoginManagerTest {
         assertSame(dynamicLogin1, LoginManager.acquireLoginManager(dynamicContext, "PLAIN", DefaultLogin.class, new HashMap<>(configs1)));
         assertSame(dynamicLogin1, LoginManager.acquireLoginManager(dynamicContext, "PLAIN", DefaultLogin.class, configs3));
 
-
         JaasContext staticContext = JaasContext.loadClientContext(Collections.emptyMap());
         LoginManager staticLogin1 = LoginManager.acquireLoginManager(staticContext, "SCRAM-SHA-256", DefaultLogin.class, configs1);
         LoginManager staticLogin2 = LoginManager.acquireLoginManager(staticContext, "SCRAM-SHA-256", DefaultLogin.class, configs2);

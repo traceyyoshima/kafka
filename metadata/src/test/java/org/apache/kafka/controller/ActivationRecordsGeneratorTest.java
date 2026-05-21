@@ -40,12 +40,12 @@ public class ActivationRecordsGeneratorTest {
     @Test
     public void testActivationMessageForEmptyLog() {
         ControllerResult<Void> result = ActivationRecordsGenerator.recordsForEmptyLog(
-            logMsg -> assertEquals("Performing controller activation. The metadata log appears to be empty. " +
-                "Appending 1 bootstrap record(s) at metadata.version 3.3-IV3 from bootstrap source 'test'.", logMsg),
-            -1L,
-            BootstrapMetadata.fromVersion(MetadataVersion.MINIMUM_VERSION, "test"),
-            MetadataVersion.MINIMUM_VERSION,
-            2
+                logMsg -> assertEquals("Performing controller activation. The metadata log appears to be empty. " +
+                    "Appending 1 bootstrap record(s) at metadata.version 3.3-IV3 from bootstrap source 'test'.", logMsg),
+                -1L,
+                BootstrapMetadata.fromVersion(MetadataVersion.MINIMUM_VERSION, "test"),
+                MetadataVersion.MINIMUM_VERSION,
+                2
         );
         assertTrue(result.isAtomic());
         assertEquals(1, result.records().size());
@@ -54,13 +54,13 @@ public class ActivationRecordsGeneratorTest {
     @Test
     public void testActivationMessageForEmptyLogAtMv3_4() {
         ControllerResult<Void> result = ActivationRecordsGenerator.recordsForEmptyLog(
-            logMsg -> assertEquals("Performing controller activation. The metadata log appears to be empty. " +
-                "Appending 1 bootstrap record(s) at metadata.version 3.4-IV0 from bootstrap " +
-                "source 'test'.", logMsg),
-            -1L,
-            BootstrapMetadata.fromVersion(MetadataVersion.IBP_3_4_IV0, "test"),
-            MetadataVersion.IBP_3_4_IV0,
-            2
+                logMsg -> assertEquals("Performing controller activation. The metadata log appears to be empty. " +
+                    "Appending 1 bootstrap record(s) at metadata.version 3.4-IV0 from bootstrap " +
+                    "source 'test'.", logMsg),
+                -1L,
+                BootstrapMetadata.fromVersion(MetadataVersion.IBP_3_4_IV0, "test"),
+                MetadataVersion.IBP_3_4_IV0,
+                2
         );
         assertTrue(result.isAtomic());
         assertEquals(1, result.records().size());
@@ -69,13 +69,13 @@ public class ActivationRecordsGeneratorTest {
     @Test
     public void testActivationMessageForEmptyLogAtMv3_6() {
         ControllerResult<Void> result = ActivationRecordsGenerator.recordsForEmptyLog(
-            logMsg -> assertEquals("Performing controller activation. The metadata log appears to be empty. " +
-                "Appending 1 bootstrap record(s) in metadata transaction at metadata.version 3.6-IV1 from bootstrap " +
-                "source 'test'.", logMsg),
-            -1L,
-            BootstrapMetadata.fromVersion(MetadataVersion.IBP_3_6_IV1, "test"),
-            MetadataVersion.IBP_3_6_IV1,
-            2
+                logMsg -> assertEquals("Performing controller activation. The metadata log appears to be empty. " +
+                    "Appending 1 bootstrap record(s) in metadata transaction at metadata.version 3.6-IV1 from bootstrap " +
+                    "source 'test'.", logMsg),
+                -1L,
+                BootstrapMetadata.fromVersion(MetadataVersion.IBP_3_6_IV1, "test"),
+                MetadataVersion.IBP_3_6_IV1,
+                2
         );
         assertFalse(result.isAtomic());
         assertEquals(3, result.records().size());
@@ -84,13 +84,13 @@ public class ActivationRecordsGeneratorTest {
     @Test
     public void testActivationMessageForEmptyLogAtMv3_6WithTransaction() {
         ControllerResult<Void> result = ActivationRecordsGenerator.recordsForEmptyLog(
-            logMsg -> assertEquals("Performing controller activation. Aborting partial bootstrap records " +
-                "transaction at offset 0. Re-appending 1 bootstrap record(s) in new metadata transaction at " +
-                "metadata.version 3.6-IV1 from bootstrap source 'test'.", logMsg),
-            0L,
-            BootstrapMetadata.fromVersion(MetadataVersion.IBP_3_6_IV1, "test"),
-            MetadataVersion.IBP_3_6_IV1,
-            2
+                logMsg -> assertEquals("Performing controller activation. Aborting partial bootstrap records " +
+                    "transaction at offset 0. Re-appending 1 bootstrap record(s) in new metadata transaction at " +
+                    "metadata.version 3.6-IV1 from bootstrap source 'test'.", logMsg),
+                0L,
+                BootstrapMetadata.fromVersion(MetadataVersion.IBP_3_6_IV1, "test"),
+                MetadataVersion.IBP_3_6_IV1,
+                2
         );
         assertFalse(result.isAtomic());
         assertEquals(4, result.records().size());
@@ -99,15 +99,15 @@ public class ActivationRecordsGeneratorTest {
     @Test
     public void testActivationMessageForEmptyLogAtMv4_0WithTransactionAndElr() {
         ControllerResult<Void> result = ActivationRecordsGenerator.recordsForEmptyLog(
-            logMsg -> assertEquals("Performing controller activation. Aborting partial bootstrap records " +
-                "transaction at offset 0. Re-appending 2 bootstrap record(s) in new metadata transaction at " +
-                "metadata.version 4.0-IV1 from bootstrap source 'test'.", logMsg),
-            0L,
-            BootstrapMetadata.fromVersion(MetadataVersion.IBP_4_0_IV1, "test").copyWithFeatureRecord(
-                EligibleLeaderReplicasVersion.FEATURE_NAME,
-                EligibleLeaderReplicasVersion.ELRV_1.featureLevel()),
-            MetadataVersion.IBP_4_0_IV1,
-            2
+                logMsg -> assertEquals("Performing controller activation. Aborting partial bootstrap records " +
+                    "transaction at offset 0. Re-appending 2 bootstrap record(s) in new metadata transaction at " +
+                    "metadata.version 4.0-IV1 from bootstrap source 'test'.", logMsg),
+                0L,
+                BootstrapMetadata.fromVersion(MetadataVersion.IBP_4_0_IV1, "test").copyWithFeatureRecord(
+                    EligibleLeaderReplicasVersion.FEATURE_NAME,
+                    EligibleLeaderReplicasVersion.ELRV_1.featureLevel()),
+                MetadataVersion.IBP_4_0_IV1,
+                2
         );
         assertFalse(result.isAtomic());
         assertEquals(6, result.records().size());

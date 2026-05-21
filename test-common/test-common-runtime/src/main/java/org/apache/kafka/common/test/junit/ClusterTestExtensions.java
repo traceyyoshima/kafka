@@ -134,8 +134,8 @@ public class ClusterTestExtensions implements TestTemplateInvocationContextProvi
     private boolean isClusterTest(ExtensionContext context) {
         Method method = context.getRequiredTestMethod();
         return method.getDeclaredAnnotation(ClusterTemplate.class) != null ||
-            method.getDeclaredAnnotation(ClusterTest.class) != null ||
-            method.getDeclaredAnnotation(ClusterTests.class) != null;
+                method.getDeclaredAnnotation(ClusterTest.class) != null ||
+                method.getDeclaredAnnotation(ClusterTests.class) != null;
     }
 
     @Override
@@ -168,7 +168,7 @@ public class ClusterTestExtensions implements TestTemplateInvocationContextProvi
     public void beforeEach(ExtensionContext context) {
         if (isClusterTest(context)) {
             DetectThreadLeak detectThreadLeak = DetectThreadLeak.of(thread ->
-                SKIPPED_THREAD_PREFIX.stream().noneMatch(prefix -> thread.getName().startsWith(prefix)));
+                    SKIPPED_THREAD_PREFIX.stream().noneMatch(prefix -> thread.getName().startsWith(prefix)));
             getStore(context).put(DETECT_THREAD_LEAK_KEY, detectThreadLeak);
         }
     }
@@ -182,7 +182,7 @@ public class ClusterTestExtensions implements TestTemplateInvocationContextProvi
             }
             List<Thread> threads = detectThreadLeak.newThreads();
             assertTrue(threads.isEmpty(), "Thread leak detected: " +
-                threads.stream().map(Thread::getName).collect(Collectors.joining(", ")));
+                    threads.stream().map(Thread::getName).collect(Collectors.joining(", ")));
         }
     }
 
@@ -274,7 +274,7 @@ public class ClusterTestExtensions implements TestTemplateInvocationContextProvi
         Map<Integer, Map<String, String>> perServerProperties = Stream.concat(Arrays.stream(defaults.serverProperties()), Arrays.stream(clusterTest.serverProperties()))
             .filter(e -> e.id() != -1)
             .collect(Collectors.groupingBy(ClusterConfigProperty::id, Collectors.mapping(Function.identity(),
-                Collectors.toMap(ClusterConfigProperty::key, ClusterConfigProperty::value, (a, b) -> b))));
+                    Collectors.toMap(ClusterConfigProperty::key, ClusterConfigProperty::value, (a, b) -> b))));
 
         Map<Feature, Short> features = Arrays.stream(clusterTest.features())
             .collect(Collectors.toMap(ClusterFeature::feature, ClusterFeature::version));

@@ -101,7 +101,7 @@ public class MirrorConnectorConfigTest {
         expectedProducerProps.put("acks", "1");
         expectedProducerProps.put("client.id", "source1->target2|ConnectorName|test");
         assertEquals(expectedProducerProps, connectorProducerProps,
-                MirrorConnectorConfig.PRODUCER_CLIENT_PREFIX  + " source product config not matching");
+                MirrorConnectorConfig.PRODUCER_CLIENT_PREFIX + " source product config not matching");
     }
 
     @Test
@@ -121,7 +121,7 @@ public class MirrorConnectorConfigTest {
     public void testSourceAdminConfig() {
         Map<String, String> connectorProps = makeProps(
                 MirrorConnectorConfig.ADMIN_CLIENT_PREFIX +
-                        "connections.max.idle.ms", "10000"
+                "connections.max.idle.ms", "10000"
         );
         MirrorConnectorConfig config = new TestMirrorConnectorConfig(connectorProps);
         Map<String, Object> connectorAdminProps = config.sourceAdminConfig("test");
@@ -148,7 +148,7 @@ public class MirrorConnectorConfigTest {
     public void testTargetAdminConfig() {
         Map<String, String> connectorProps = makeProps(
                 MirrorConnectorConfig.ADMIN_CLIENT_PREFIX +
-                        "connections.max.idle.ms", "10000"
+                "connections.max.idle.ms", "10000"
         );
         MirrorConnectorConfig config = new TestMirrorConnectorConfig(connectorProps);
         Map<String, Object> connectorAdminProps = config.targetAdminConfig("test");

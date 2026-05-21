@@ -31,7 +31,6 @@ public class DeleteConsumerGroupOffsetsResult {
     private final KafkaFuture<Map<TopicPartition, Errors>> future;
     private final Set<TopicPartition> partitions;
 
-
     DeleteConsumerGroupOffsetsResult(KafkaFuture<Map<TopicPartition, Errors>> future, Set<TopicPartition> partitions) {
         this.future = future;
         this.partitions = partitions;
@@ -82,7 +81,7 @@ public class DeleteConsumerGroupOffsetsResult {
                                                TopicPartition partition,
                                                KafkaFutureImpl<Void> result) {
         Throwable exception = KafkaAdminClient.getSubLevelError(partitionLevelErrors, partition,
-            "Offset deletion result for partition \"" + partition + "\" was not included in the response");
+                "Offset deletion result for partition \"" + partition + "\" was not included in the response");
         if (exception != null) {
             result.completeExceptionally(exception);
             return true;

@@ -305,7 +305,7 @@ public class SslFactory implements Reconfigurable, Closeable {
             List<CertificateEntries> entries = new ArrayList<>();
             while (aliases.hasMoreElements()) {
                 String alias = aliases.nextElement();
-                Certificate cert  = keystore.getCertificate(alias);
+                Certificate cert = keystore.getCertificate(alias);
                 if (cert instanceof X509Certificate)
                     entries.add(new CertificateEntries(alias, (X509Certificate) cert));
             }
@@ -328,7 +328,7 @@ public class SslFactory implements Reconfigurable, Closeable {
         private static void ensureCompatibleDNs(List<CertificateEntries> newEntries, List<CertificateEntries> oldEntries) {
             if (newEntries.size() != oldEntries.size()) {
                 throw new ConfigException(String.format("Keystore entries do not match, existing store contains %d entries, new store contains %d entries",
-                    oldEntries.size(), newEntries.size()));
+                        oldEntries.size(), newEntries.size()));
             }
 
             for (int i = 0; i < newEntries.size(); i++) {
@@ -343,8 +343,8 @@ public class SslFactory implements Reconfigurable, Closeable {
                 // also compare Principal.getName which compares the RFC2253 name. If either matches, allow dynamic update.
                 if (!Objects.equals(newPrincipal, oldPrincipal) && !newPrincipal.getName().equalsIgnoreCase(oldPrincipal.getName())) {
                     throw new ConfigException(String.format("Keystore DistinguishedName does not match: " +
-                        " existing={alias=%s, DN=%s}, new={alias=%s, DN=%s}",
-                        oldEntry.alias, oldEntry.subjectPrincipal, newEntry.alias, newEntry.subjectPrincipal));
+                            " existing={alias=%s, DN=%s}, new={alias=%s, DN=%s}",
+                            oldEntry.alias, oldEntry.subjectPrincipal, newEntry.alias, newEntry.subjectPrincipal));
                 }
             }
         }
@@ -352,7 +352,7 @@ public class SslFactory implements Reconfigurable, Closeable {
         private static void ensureCompatibleSANs(List<CertificateEntries> newEntries, List<CertificateEntries> oldEntries) {
             if (newEntries.size() != oldEntries.size()) {
                 throw new ConfigException(String.format("Keystore entries do not match, existing store contains %d entries, new store contains %d entries",
-                    oldEntries.size(), newEntries.size()));
+                        oldEntries.size(), newEntries.size()));
             }
 
             for (int i = 0; i < newEntries.size(); i++) {
@@ -362,7 +362,7 @@ public class SslFactory implements Reconfigurable, Closeable {
                 if (!newEntry.subjectAltNames.containsAll(oldEntry.subjectAltNames)) {
                     throw new ConfigException(String.format("Keystore SubjectAltNames do not match: " +
                             " existing={alias=%s, SAN=%s}, new={alias=%s, SAN=%s}",
-                        oldEntry.alias, oldEntry.subjectAltNames, newEntry.alias, newEntry.subjectAltNames));
+                            oldEntry.alias, oldEntry.subjectAltNames, newEntry.alias, newEntry.subjectAltNames));
                 }
             }
         }
@@ -450,6 +450,7 @@ public class SslFactory implements Reconfigurable, Closeable {
         void beginHandshake() throws SSLException {
             sslEngine.beginHandshake();
         }
+
         void handshake(SslEngineValidator peerValidator) throws SSLException {
             SSLEngineResult.HandshakeStatus handshakeStatus = sslEngine.getHandshakeStatus();
             while (true) {

@@ -124,12 +124,12 @@ public class ConsumerNetworkThread extends KafkaThread implements Closeable {
         try {
             if (!initializationLatch.await(timeoutMs, TimeUnit.MILLISECONDS)) {
                 maybeSetInitializationError(
-                    new TimeoutException("Consumer network thread resource initialization timed out after " + timeoutMs + " ms")
+                        new TimeoutException("Consumer network thread resource initialization timed out after " + timeoutMs + " ms")
                 );
             }
         } catch (InterruptedException e) {
             maybeSetInitializationError(
-                new InterruptException("Consumer network thread resource initialization was interrupted", e)
+                    new InterruptException("Consumer network thread resource initialization was interrupted", e)
             );
         }
 
@@ -401,8 +401,8 @@ public class ConsumerNetworkThread extends KafkaThread implements Closeable {
 
         if (networkClientDelegate.hasAnyPendingRequests()) {
             log.warn("Close timeout of {} ms expired before the consumer network thread was able " +
-                "to complete pending requests. Inflight request count: {}, Unsent request count: {}",
-                timer.timeoutMs(), networkClientDelegate.inflightRequestCount(), networkClientDelegate.unsentRequests().size());
+                    "to complete pending requests. Inflight request count: {}, Unsent request count: {}",
+                    timer.timeoutMs(), networkClientDelegate.inflightRequestCount(), networkClientDelegate.unsentRequests().size());
         }
     }
 

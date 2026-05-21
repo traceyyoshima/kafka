@@ -80,14 +80,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @ClusterTestDefaults(
-    types = {Type.CO_KRAFT},
-    serverProperties = {
-        @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, value = "1000"),
-        @ClusterConfigProperty(key = CONSUMER_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
-        @ClusterConfigProperty(key = CONSUMER_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
-    }
+        types = {Type.CO_KRAFT},
+        serverProperties = {
+            @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+            @ClusterConfigProperty(key = OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1"),
+            @ClusterConfigProperty(key = GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, value = "1000"),
+            @ClusterConfigProperty(key = CONSUMER_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
+            @ClusterConfigProperty(key = CONSUMER_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
+        }
 )
 public class DescribeConsumerGroupTest {
     private static final String TOPIC_PREFIX = "test.topic.";
@@ -136,7 +136,7 @@ public class DescribeConsumerGroupTest {
                 fail("Expected the group '" + missingGroup + "' to throw GroupIdNotFoundException");
             } catch (ExecutionException ee) {
                 assertInstanceOf(GroupIdNotFoundException.class, ee.getCause(),
-                    "Expected the group '" + missingGroup + "' to throw GroupIdNotFoundException");
+                        "Expected the group '" + missingGroup + "' to throw GroupIdNotFoundException");
             }
         }
     }
@@ -157,7 +157,7 @@ public class DescribeConsumerGroupTest {
                 fail("Expected the group '" + missingGroup + "' to throw GroupIdNotFoundException");
             } catch (ExecutionException ee) {
                 assertInstanceOf(GroupIdNotFoundException.class, ee.getCause(),
-                    "Expected the group '" + missingGroup + "' to throw GroupIdNotFoundException");
+                        "Expected the group '" + missingGroup + "' to throw GroupIdNotFoundException");
             }
         }
     }
@@ -211,13 +211,13 @@ public class DescribeConsumerGroupTest {
                         List<String> expectedValues;
                         if (describeType.contains("--verbose")) {
                             expectedValues = List.of(group, topic, "0", "-", "1", "1", "0", memberDescription.consumerId(),
-                                memberDescription.host(), memberDescription.clientId());
+                                    memberDescription.host(), memberDescription.clientId());
                         } else {
                             expectedValues = List.of(group, topic, "0", "1", "1", "0", memberDescription.consumerId(),
-                                memberDescription.host(), memberDescription.clientId());
+                                    memberDescription.host(), memberDescription.clientId());
                         }
                         return checkArgsHeaderOutput(cgcArgs, lines[0]) &&
-                            Arrays.stream(lines[1].trim().split("\\s+")).toList().equals(expectedValues);
+                                Arrays.stream(lines[1].trim().split("\\s+")).toList().equals(expectedValues);
                     }, "Expected a data row and no error in describe results with describe type " + String.join(" ", describeType) + ".");
                 }
             }
@@ -255,15 +255,15 @@ public class DescribeConsumerGroupTest {
                         List<String> expectedValues;
                         if (describeType.contains("--verbose")) {
                             expectedValues = List.of(group, memberDescription.consumerId(), memberDescription.host(),
-                                memberDescription.clientId(), "3", isConsumer ? memberDescription.memberEpoch().get().toString() : "-",
-                                topicAssignment, isConsumer ? consumerGroupDescription.targetAssignmentEpoch().get().toString() : "-",
-                                isConsumer ? topicAssignment : "-");
+                                    memberDescription.clientId(), "3", isConsumer ? memberDescription.memberEpoch().get().toString() : "-",
+                                    topicAssignment, isConsumer ? consumerGroupDescription.targetAssignmentEpoch().get().toString() : "-",
+                                    isConsumer ? topicAssignment : "-");
                         } else {
                             expectedValues = List.of(group, memberDescription.consumerId(), memberDescription.host(),
-                                memberDescription.clientId(), "3");
+                                    memberDescription.clientId(), "3");
                         }
                         return checkArgsHeaderOutput(cgcArgs, lines[0]) &&
-                            Arrays.stream(lines[1].trim().split("\\s+")).toList().equals(expectedValues);
+                                Arrays.stream(lines[1].trim().split("\\s+")).toList().equals(expectedValues);
                     }, "Expected a data row and no error in describe results with describe type " + String.join(" ", describeType) + ".");
                 }
             }
@@ -284,12 +284,12 @@ public class DescribeConsumerGroupTest {
         ) {
             // Make sure the classic consumer is stable before starting another consumer.
             TestUtils.waitForCondition(
-                () -> {
-                    ConsumerGroupDescription consumerGroupDescription = admin.describeConsumerGroups(Set.of(group)).describedGroups().get(group).get();
-                    MemberDescription memberDescription = consumerGroupDescription.members().iterator().next();
-                    return !memberDescription.assignment().topicPartitions().isEmpty();
-                },
-                "Expected the classic consumer to join the group."
+                    () -> {
+                        ConsumerGroupDescription consumerGroupDescription = admin.describeConsumerGroups(Set.of(group)).describedGroups().get(group).get();
+                        MemberDescription memberDescription = consumerGroupDescription.members().iterator().next();
+                        return !memberDescription.assignment().topicPartitions().isEmpty();
+                    },
+                    "Expected the classic consumer to join the group."
             );
 
             try (AutoCloseable consumerConsumer = consumerGroupClosable(GroupProtocol.CONSUMER, group, topic, Map.of(ConsumerConfig.CLIENT_ID_CONFIG, consumerClientId));
@@ -350,13 +350,13 @@ public class DescribeConsumerGroupTest {
                         String coordinatorId = "(" + consumerGroupDescription.coordinator().idString() + ")";
                         if (describeType.contains("--verbose")) {
                             expectedValues = List.of(group, coordinatorAddress, coordinatorId, consumerGroupDescription.partitionAssignor(), GroupState.STABLE.toString(),
-                                isConsumer ? consumerGroupDescription.groupEpoch().get().toString() : "-",
-                                isConsumer ? consumerGroupDescription.targetAssignmentEpoch().get().toString() : "-", "1");
+                                    isConsumer ? consumerGroupDescription.groupEpoch().get().toString() : "-",
+                                    isConsumer ? consumerGroupDescription.targetAssignmentEpoch().get().toString() : "-", "1");
                         } else {
                             expectedValues = List.of(group, coordinatorAddress, coordinatorId, consumerGroupDescription.partitionAssignor(), GroupState.STABLE.toString(), "1");
                         }
                         return checkArgsHeaderOutput(cgcArgs, lines[0]) &&
-                            Arrays.stream(lines[1].trim().split("\\s+")).toList().equals(expectedValues);
+                                Arrays.stream(lines[1].trim().split("\\s+")).toList().equals(expectedValues);
                     }, "Expected two data rows and no error in describe results with describe type " + String.join(" ", describeType) + ".");
                 }
             }
@@ -391,8 +391,8 @@ public class DescribeConsumerGroupTest {
                             Entry<String, String> res = ToolsTestUtils.grabConsoleOutputAndError(describeGroups(service));
                             long numLines = Arrays.stream(res.getKey().trim().split("\n")).filter(line -> !line.isEmpty()).count();
                             return (numLines == expectedNumLines) &&
-                                res.getValue().isEmpty() &&
-                                checkArgsHeaderOutput(cgcArgs, res.getKey().trim().split("\n")[0]);
+                                    res.getValue().isEmpty() &&
+                                    checkArgsHeaderOutput(cgcArgs, res.getKey().trim().split("\n")[0]);
                         }, "Expected a data row and no error in describe results with describe type " + String.join(" ", describeType) + ".");
                     }
                 }
@@ -429,8 +429,8 @@ public class DescribeConsumerGroupTest {
                             Entry<String, String> res = ToolsTestUtils.grabConsoleOutputAndError(describeGroups(service));
                             long numLines = Arrays.stream(res.getKey().trim().split("\n")).filter(line -> !line.isEmpty()).count();
                             return (numLines == expectedNumLines) &&
-                                res.getValue().isEmpty() &&
-                                checkArgsHeaderOutput(cgcArgs, res.getKey().trim().split("\n")[0]);
+                                    res.getValue().isEmpty() &&
+                                    checkArgsHeaderOutput(cgcArgs, res.getKey().trim().split("\n")[0]);
                         }, "Expected a data row and no error in describe results with describe type " + String.join(" ", describeType) + ".");
                     }
                 }
@@ -591,10 +591,10 @@ public class DescribeConsumerGroupTest {
                     TestUtils.waitForCondition(() -> {
                         Entry<String, String> res = ToolsTestUtils.grabConsoleOutputAndError(describeGroups(service));
                         return res.getKey().trim().split("\n").length == 2 &&
-                            res.getValue().isEmpty() &&
-                            checkArgsHeaderOutput(cgcArgs, res.getKey().trim().split("\n")[0]);
+                                res.getValue().isEmpty() &&
+                                checkArgsHeaderOutput(cgcArgs, res.getKey().trim().split("\n")[0]);
                     }, "Expected describe group results with one data row for describe type '" + String.join(" ", describeType) + "'");
-                    
+
                     protocolConsumerGroupExecutor.close();
                     TestUtils.waitForCondition(
                             () -> ToolsTestUtils.grabConsoleError(describeGroups(service)).contains("Consumer group '" + group + "' has no active members."),
@@ -720,8 +720,8 @@ public class DescribeConsumerGroupTest {
                         Entry<String, String> res = ToolsTestUtils.grabConsoleOutputAndError(describeGroups(service));
                         int expectedNumRows = DESCRIBE_TYPE_MEMBERS.contains(describeType) ? 3 : 2;
                         return res.getValue().isEmpty() &&
-                            res.getKey().trim().split("\n").length == expectedNumRows &&
-                            checkArgsHeaderOutput(cgcArgs, res.getKey().trim().split("\n")[0]);
+                                res.getKey().trim().split("\n").length == expectedNumRows &&
+                                checkArgsHeaderOutput(cgcArgs, res.getKey().trim().split("\n")[0]);
                     }, "Expected a single data row in describe group result with describe type '" + String.join(" ", describeType) + "'");
                 }
             }
@@ -775,7 +775,7 @@ public class DescribeConsumerGroupTest {
 
                 Entry<Optional<GroupState>, Optional<Collection<MemberAssignmentState>>> res = service.collectGroupMembers(group);
                 assertTrue(res.getKey().map(s -> s.equals(GroupState.STABLE)).orElse(false)
-                                && res.getValue().map(c -> c.stream().anyMatch(s -> !s.assignment().isEmpty())).orElse(false),
+                        && res.getValue().map(c -> c.stream().anyMatch(s -> !s.assignment().isEmpty())).orElse(false),
                         "Expected additional columns in verbose version of describe members");
             }
         }
@@ -820,8 +820,8 @@ public class DescribeConsumerGroupTest {
                         Entry<String, String> res = ToolsTestUtils.grabConsoleOutputAndError(describeGroups(service));
                         int expectedNumRows = DESCRIBE_TYPE_STATE.contains(describeType) ? 2 : 3;
                         return res.getValue().isEmpty() &&
-                            res.getKey().trim().split("\n").length == expectedNumRows &&
-                            checkArgsHeaderOutput(cgcArgs, res.getKey().trim().split("\n")[0]);
+                                res.getKey().trim().split("\n").length == expectedNumRows &&
+                                checkArgsHeaderOutput(cgcArgs, res.getKey().trim().split("\n")[0]);
                     }, "Expected a single data row in describe group result with describe type '" + String.join(" ", describeType) + "'");
                 }
             }
@@ -1110,10 +1110,9 @@ public class DescribeConsumerGroupTest {
         }
     }
 
-
     @Test
     public void testDescribeWithUnrecognizedNewConsumerOption() {
-        String group = GROUP_PREFIX +  "unrecognized";
+        String group = GROUP_PREFIX + "unrecognized";
         String[] cgcArgs = new String[]{"--new-consumer", "--bootstrap-server", "localhost:9092", "--describe", "--group", group};
         assertThrows(joptsimple.OptionException.class, () -> ConsumerGroupCommandOptions.fromArgs(cgcArgs));
     }
@@ -1300,12 +1299,12 @@ public class DescribeConsumerGroupTest {
 
     private void sendRecords(String topic, int partition, int recordsCount) {
         try (KafkaProducer<String, String> producer = new KafkaProducer<>(Map.of(
-            ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, clusterInstance.bootstrapServers(),
-            ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName(),
-            ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName()
+                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, clusterInstance.bootstrapServers(),
+                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName(),
+                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName()
         ))) {
             IntStream.range(0, recordsCount).forEach(i ->
-                producer.send(new org.apache.kafka.clients.producer.ProducerRecord<>(topic, partition, Integer.toString(i), Integer.toString(i))));
+                    producer.send(new org.apache.kafka.clients.producer.ProducerRecord<>(topic, partition, Integer.toString(i), Integer.toString(i))));
             producer.flush();
         }
     }

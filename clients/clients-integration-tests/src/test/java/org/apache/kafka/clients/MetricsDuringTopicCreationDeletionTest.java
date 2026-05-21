@@ -59,17 +59,17 @@ public class MetricsDuringTopicCreationDeletionTest {
      * Checking all metrics we care in a single test is faster though it would be more elegant to have 3 @Test methods
      */
     @ClusterTest(
-        types = {Type.KRAFT},
-        brokers = 1,
-        serverProperties = {
-            @ClusterConfigProperty(key = ServerConfigs.DELETE_TOPIC_ENABLE_CONFIG, value = "true"),
-            @ClusterConfigProperty(key = "log.initial.task.delay.ms", value = "100"),
-            @ClusterConfigProperty(key = "log.segment.delete.delay.ms", value = "1000"),
-            @ClusterConfigProperty(key = ServerLogConfigs.AUTO_CREATE_TOPICS_ENABLE_CONFIG, value = "false"),
-            // speed up the test for UnderReplicatedPartitions, which relies on the ISR expiry thread to execute concurrently with topic creation
-            // But the replica.lag.time.max.ms value still need to consider the slow testing environment
-            @ClusterConfigProperty(key = ReplicationConfigs.REPLICA_LAG_TIME_MAX_MS_CONFIG, value = "4000")
-        }
+            types = {Type.KRAFT},
+            brokers = 1,
+            serverProperties = {
+                @ClusterConfigProperty(key = ServerConfigs.DELETE_TOPIC_ENABLE_CONFIG, value = "true"),
+                @ClusterConfigProperty(key = "log.initial.task.delay.ms", value = "100"),
+                @ClusterConfigProperty(key = "log.segment.delete.delay.ms", value = "1000"),
+                @ClusterConfigProperty(key = ServerLogConfigs.AUTO_CREATE_TOPICS_ENABLE_CONFIG, value = "false"),
+                // speed up the test for UnderReplicatedPartitions, which relies on the ISR expiry thread to execute concurrently with topic creation
+                // But the replica.lag.time.max.ms value still need to consider the slow testing environment
+                @ClusterConfigProperty(key = ReplicationConfigs.REPLICA_LAG_TIME_MAX_MS_CONFIG, value = "4000")
+            }
     )
     public void testMetricsDuringTopicCreateDelete() throws Exception {
 
@@ -84,8 +84,8 @@ public class MetricsDuringTopicCreationDeletionTest {
                 int underReplicatedPartitionsCount = getGauge("UnderReplicatedPartitions").value();
 
                 if (offlinePartitionsCount != initialOfflinePartitionsCount ||
-                    preferredReplicaImbalanceCount != initialPreferredReplicaImbalanceCount ||
-                    underReplicatedPartitionsCount != initialUnderReplicatedPartitionsCount) {
+                        preferredReplicaImbalanceCount != initialPreferredReplicaImbalanceCount ||
+                        underReplicatedPartitionsCount != initialUnderReplicatedPartitionsCount) {
                     running = false;
                 }
 
@@ -112,11 +112,11 @@ public class MetricsDuringTopicCreationDeletionTest {
         final int finalUnderReplicatedPartitionsCount = getGauge("UnderReplicatedPartitions").value();
 
         assertEquals(initialOfflinePartitionsCount, finalOfflinePartitionsCount,
-            "Expect offlinePartitionsCount to be " + initialOfflinePartitionsCount + ", but got: " + finalOfflinePartitionsCount);
+                "Expect offlinePartitionsCount to be " + initialOfflinePartitionsCount + ", but got: " + finalOfflinePartitionsCount);
         assertEquals(initialPreferredReplicaImbalanceCount, finalPreferredReplicaImbalanceCount,
-            "Expect PreferredReplicaImbalanceCount to be " + initialPreferredReplicaImbalanceCount + ", but got: " + finalPreferredReplicaImbalanceCount);
+                "Expect PreferredReplicaImbalanceCount to be " + initialPreferredReplicaImbalanceCount + ", but got: " + finalPreferredReplicaImbalanceCount);
         assertEquals(initialUnderReplicatedPartitionsCount, finalUnderReplicatedPartitionsCount,
-            "Expect UnderReplicatedPartitionCount to be " + initialUnderReplicatedPartitionsCount + ", but got: " + finalUnderReplicatedPartitionsCount);
+                "Expect UnderReplicatedPartitionCount to be " + initialUnderReplicatedPartitionsCount + ", but got: " + finalUnderReplicatedPartitionsCount);
     }
 
     private void createAndDeleteTopics() {
@@ -125,14 +125,14 @@ public class MetricsDuringTopicCreationDeletionTest {
                 if (!running) return;
                 try {
                     clusterInstance.createTopic(topic, PARTITION_NUM, REPLICATION_FACTOR);
-                } catch (Exception ignored) { }
+                } catch (Exception ignored) {}
             }
 
             for (String topic : topics) {
                 if (!running) return;
                 try {
                     clusterInstance.deleteTopic(topic);
-                } catch (Exception ignored) { }
+                } catch (Exception ignored) {}
             }
         }
     }

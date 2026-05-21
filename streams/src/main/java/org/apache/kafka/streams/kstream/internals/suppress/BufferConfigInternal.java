@@ -33,9 +33,9 @@ public abstract class BufferConfigInternal<BC extends Suppressed.BufferConfig<BC
     @Override
     public Suppressed.StrictBufferConfig withNoBound() {
         return new StrictBufferConfigImpl(
-            Long.MAX_VALUE,
-            Long.MAX_VALUE,
-            SHUT_DOWN, // doesn't matter, given the bounds
+                Long.MAX_VALUE,
+                Long.MAX_VALUE,
+                SHUT_DOWN, // doesn't matter, given the bounds
             logConfig()
         );
     }

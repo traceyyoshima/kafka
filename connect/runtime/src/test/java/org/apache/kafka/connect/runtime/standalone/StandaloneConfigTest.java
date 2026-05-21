@@ -59,8 +59,8 @@ public class StandaloneConfigTest {
     private static Map<String, String> withStringValues(Map<String, ?> inputs, String prefix) {
         return ConfigDef.convertToStringMapWithPasswordValues(inputs).entrySet().stream()
             .collect(Collectors.toMap(
-                entry -> prefix + entry.getKey(),
-                Map.Entry::getValue
+                    entry -> prefix + entry.getKey(),
+                    Map.Entry::getValue
             ));
     }
 

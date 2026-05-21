@@ -125,10 +125,10 @@ public class KafkaRaftLog implements RaftLog {
 
         try {
             FetchDataInfo fetchInfo = log.read(
-                startOffset,
-                maxTotalBatchBytes,
-                isolation,
-                true
+                    startOffset,
+                    maxTotalBatchBytes,
+                    isolation,
+                    true
             );
             return new LogFetchInfo(
                     fetchInfo.records,
@@ -364,9 +364,9 @@ public class KafkaRaftLog implements RaftLog {
           follower will be unable to append it since (X - M) < (X).
          */
         long baseOffset = read(
-            snapshotId.offset(),
-            Isolation.COMMITTED,
-            1 // maxTotalBatchBytes - ensures that we only fetch one batch.
+                snapshotId.offset(),
+                Isolation.COMMITTED,
+                1 // maxTotalBatchBytes - ensures that we only fetch one batch.
         ).startOffsetMetadata.offset();
 
         if (snapshotId.offset() != baseOffset) {
@@ -519,7 +519,7 @@ public class KafkaRaftLog implements RaftLog {
      */
     private Optional<Long> readSnapshotTimestamp(OffsetAndEpoch snapshotId) {
         return readSnapshot(snapshotId).map(reader ->
-            Snapshots.lastContainedLogTimestamp(reader, new LogContext(logIdent))
+                Snapshots.lastContainedLogTimestamp(reader, new LogContext(logIdent))
         );
     }
 
@@ -589,14 +589,14 @@ public class KafkaRaftLog implements RaftLog {
 
         // Keep deleting snapshots as long as the
         Function<OffsetAndEpoch, Optional<SnapshotDeletionReason>> shouldClean = snapshotId ->
-            readSnapshotTimestamp(snapshotId).flatMap(timestamp -> {
-                long now = time.milliseconds();
-                if (now - timestamp > config.retentionMillis()) {
-                    return Optional.of(new RetentionMsBreach(now, timestamp, config.retentionMillis()));
-                } else {
-                    return Optional.empty();
-                }
-            });
+                readSnapshotTimestamp(snapshotId).flatMap(timestamp -> {
+                    long now = time.milliseconds();
+                    if (now - timestamp > config.retentionMillis()) {
+                        return Optional.of(new RetentionMsBreach(now, timestamp, config.retentionMillis()));
+                    } else {
+                        return Optional.empty();
+                    }
+                });
 
         return cleanSnapshots(shouldClean);
     }

@@ -92,7 +92,7 @@ public class Topology {
         }
 
         return new AutoOffsetResetInternal(
-            resetPolicy == AutoOffsetReset.EARLIEST
+                resetPolicy == AutoOffsetReset.EARLIEST
                 ? org.apache.kafka.streams.AutoOffsetReset.earliest()
                 : org.apache.kafka.streams.AutoOffsetReset.latest()
         );
@@ -171,12 +171,12 @@ public class Topology {
                                            final String name,
                                            final String... topics) {
         internalTopologyBuilder.addSource(
-            offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
-            name,
-            null,
-            null,
-            null,
-            topics
+                offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
+                name,
+                null,
+                null,
+                null,
+                topics
         );
         return this;
     }
@@ -199,12 +199,12 @@ public class Topology {
                                            final String name,
                                            final Pattern topicPattern) {
         internalTopologyBuilder.addSource(
-            offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
-            name,
-            null,
-            null,
-            null,
-            topicPattern
+                offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
+                name,
+                null,
+                null,
+                null,
+                topicPattern
         );
         return this;
     }
@@ -249,12 +249,12 @@ public class Topology {
                                            final String name,
                                            final String... topics) {
         internalTopologyBuilder.addSource(
-            offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
-            name,
-            timestampExtractor,
-            null,
-            null,
-            topics
+                offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
+                name,
+                timestampExtractor,
+                null,
+                null,
+                topics
         );
         return this;
     }
@@ -279,12 +279,12 @@ public class Topology {
                                            final String name,
                                            final Pattern topicPattern) {
         internalTopologyBuilder.addSource(
-            offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
-            name,
-            timestampExtractor,
-            null,
-            null,
-            topicPattern
+                offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
+                name,
+                timestampExtractor,
+                null,
+                null,
+                topicPattern
         );
         return this;
     }
@@ -333,12 +333,12 @@ public class Topology {
                                                   final Deserializer<V> valueDeserializer,
                                                   final String... topics) {
         internalTopologyBuilder.addSource(
-            offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
-            name,
-            null,
-            keyDeserializer,
-            valueDeserializer,
-            topics
+                offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
+                name,
+                null,
+                keyDeserializer,
+                valueDeserializer,
+                topics
         );
         return this;
     }
@@ -365,12 +365,12 @@ public class Topology {
                                                   final Deserializer<V> valueDeserializer,
                                                   final Pattern topicPattern) {
         internalTopologyBuilder.addSource(
-            offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
-            name,
-            null,
-            keyDeserializer,
-            valueDeserializer,
-            topicPattern
+                offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
+                name,
+                null,
+                keyDeserializer,
+                valueDeserializer,
+                topicPattern
         );
         return this;
     }
@@ -399,12 +399,12 @@ public class Topology {
                                                   final Deserializer<V> valueDeserializer,
                                                   final String... topics) {
         internalTopologyBuilder.addSource(
-            offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
-            name,
-            timestampExtractor,
-            keyDeserializer,
-            valueDeserializer,
-            topics
+                offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
+                name,
+                timestampExtractor,
+                keyDeserializer,
+                valueDeserializer,
+                topics
         );
         return this;
     }
@@ -433,12 +433,12 @@ public class Topology {
                                                   final Deserializer<V> valueDeserializer,
                                                   final Pattern topicPattern) {
         internalTopologyBuilder.addSource(
-            offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
-            name,
-            timestampExtractor,
-            keyDeserializer,
-            valueDeserializer,
-            topicPattern
+                offsetReset == null ? null : new AutoOffsetResetInternal(offsetReset),
+                name,
+                timestampExtractor,
+                keyDeserializer,
+                valueDeserializer,
+                topicPattern
         );
         return this;
     }
@@ -790,14 +790,14 @@ public class Topology {
         final ProcessorSupplier<K, V, Void, Void> stateUpdateSupplier
     ) {
         return addReadOnlyStateStore(
-            storeBuilder,
-            sourceName,
-            null,
-            keyDeserializer,
-            valueDeserializer,
-            topic,
-            processorName,
-            stateUpdateSupplier
+                storeBuilder,
+                sourceName,
+                null,
+                keyDeserializer,
+                valueDeserializer,
+                topic,
+                processorName,
+                stateUpdateSupplier
         );
     }
 
@@ -815,12 +815,12 @@ public class Topology {
         final ProcessorSupplier<K, V, Void, Void> stateUpdateSupplier
     ) {
         internalTopologyBuilder.addSource(
-            new AutoOffsetResetInternal(org.apache.kafka.streams.AutoOffsetReset.earliest()),
-            sourceName,
-            timestampExtractor,
-            keyDeserializer,
-            valueDeserializer,
-            topic
+                new AutoOffsetResetInternal(org.apache.kafka.streams.AutoOffsetReset.earliest()),
+                sourceName,
+                timestampExtractor,
+                keyDeserializer,
+                valueDeserializer,
+                topic
         );
         internalTopologyBuilder.addProcessor(processorName, stateUpdateSupplier, sourceName);
         internalTopologyBuilder.addStateStore(storeBuilder, processorName);
@@ -831,7 +831,6 @@ public class Topology {
 
         return this;
     }
-
 
     /**
      * Adds a global {@link StateStore state store} to the topology.
@@ -908,14 +907,14 @@ public class Topology {
         Objects.requireNonNull(stateUpdateSupplier, "stateUpdateSupplier cannot be null");
 
         internalTopologyBuilder.addGlobalStore(
-            sourceName,
-            null,
-            keyDeserializer,
-            valueDeserializer,
-            topic,
-            processorName,
-            new StoreDelegatingProcessorSupplier<>(stateUpdateSupplier, Set.of(storeBuilder)),
-            true
+                sourceName,
+                null,
+                keyDeserializer,
+                valueDeserializer,
+                topic,
+                processorName,
+                new StoreDelegatingProcessorSupplier<>(stateUpdateSupplier, Set.of(storeBuilder)),
+                true
         );
         return this;
     }
@@ -934,14 +933,14 @@ public class Topology {
         final ProcessorSupplier<K, V, Void, Void> stateUpdateSupplier
     ) {
         internalTopologyBuilder.addGlobalStore(
-            sourceName,
-            timestampExtractor,
-            keyDeserializer,
-            valueDeserializer,
-            topic,
-            processorName,
-            new StoreDelegatingProcessorSupplier<>(stateUpdateSupplier, Set.of(storeBuilder)),
-            true
+                sourceName,
+                timestampExtractor,
+                keyDeserializer,
+                valueDeserializer,
+                topic,
+                processorName,
+                new StoreDelegatingProcessorSupplier<>(stateUpdateSupplier, Set.of(storeBuilder)),
+                true
         );
         return this;
     }

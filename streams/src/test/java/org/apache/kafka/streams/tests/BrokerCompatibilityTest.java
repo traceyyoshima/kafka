@@ -79,7 +79,6 @@ public class BrokerCompatibilityTest {
         streamsProperties.put(StreamsConfig.REQUEST_TIMEOUT_MS_CONFIG, timeout + 1);
         final Serde<String> stringSerde = Serdes.String();
 
-
         final StreamsBuilder builder = new StreamsBuilder();
         builder.<String, String>stream(SOURCE_TOPIC).groupByKey(Grouped.with(stringSerde, stringSerde))
             .count()

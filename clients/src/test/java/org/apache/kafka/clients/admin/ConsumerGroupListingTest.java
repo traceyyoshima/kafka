@@ -30,9 +30,9 @@ public class ConsumerGroupListingTest {
     public void testState() {
         for (ConsumerGroupState consumerGroupState : ConsumerGroupState.values()) {
             ConsumerGroupListing listing = new ConsumerGroupListing(
-                "groupId",
-                false,
-                Optional.of(consumerGroupState)
+                    "groupId",
+                    false,
+                    Optional.of(consumerGroupState)
             );
             assertEquals(consumerGroupState, listing.state().get());
         }

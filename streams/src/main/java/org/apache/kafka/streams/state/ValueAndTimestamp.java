@@ -97,7 +97,7 @@ public final class ValueAndTimestamp<V> {
         }
         final ValueAndTimestamp<?> that = (ValueAndTimestamp<?>) o;
         return timestamp == that.timestamp &&
-            Objects.equals(value, that.value);
+                Objects.equals(value, that.value);
     }
 
     @Override

@@ -263,21 +263,21 @@ public class NetworkClientDelegateTest {
             long timeMs = time.milliseconds();
             networkClientDelegate.poll(0, timeMs);
             assertEquals(
-                0,
-                (double) metrics.metric(
-                    metrics.metricName("unsent-requests-queue-size", groupName)
+                    0,
+                    (double) metrics.metric(
+                        metrics.metricName("unsent-requests-queue-size", groupName)
                 ).metricValue()
             );
             assertEquals(
-                10,
-                (double) metrics.metric(
-                    metrics.metricName("unsent-requests-queue-time-avg", groupName)
+                    10,
+                    (double) metrics.metric(
+                        metrics.metricName("unsent-requests-queue-time-avg", groupName)
                 ).metricValue()
             );
             assertEquals(
-                10,
-                (double) metrics.metric(
-                    metrics.metricName("unsent-requests-queue-time-max", groupName)
+                    10,
+                    (double) metrics.metric(
+                        metrics.metricName("unsent-requests-queue-time-max", groupName)
                 ).metricValue()
             );
         }
@@ -358,13 +358,13 @@ public class NetworkClientDelegateTest {
                     .setKey(GROUP_ID)
                     .setKeyType(FindCoordinatorRequest.CoordinatorType.GROUP.id())
                 ),
-            Optional.empty()
+                Optional.empty()
         );
     }
 
     public void prepareFindCoordinatorResponse(Errors error) {
         FindCoordinatorResponse findCoordinatorResponse =
-            FindCoordinatorResponse.prepareResponse(error, GROUP_ID, mockNode());
+                FindCoordinatorResponse.prepareResponse(error, GROUP_ID, mockNode());
         client.prepareResponse(findCoordinatorResponse);
     }
 

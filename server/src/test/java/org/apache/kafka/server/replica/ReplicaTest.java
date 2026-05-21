@@ -62,17 +62,17 @@ public class ReplicaTest {
     ) {
         ReplicaState replicaState = replica.stateSnapshot();
         assertEquals(logStartOffset, replicaState.logStartOffset(),
-            "Unexpected Log Start Offset");
+                "Unexpected Log Start Offset");
         assertEquals(logEndOffset, replicaState.logEndOffset(),
-            "Unexpected Log End Offset");
+                "Unexpected Log End Offset");
         assertEquals(lastCaughtUpTimeMs, replicaState.lastCaughtUpTimeMs(),
-            "Unexpected Last Caught Up Time");
+                "Unexpected Last Caught Up Time");
         assertEquals(lastFetchLeaderLogEndOffset, replicaState.lastFetchLeaderLogEndOffset(),
-            "Unexpected Last Fetch Leader Log End Offset");
+                "Unexpected Last Fetch Leader Log End Offset");
         assertEquals(lastFetchTimeMs, replicaState.lastFetchTimeMs(),
-            "Unexpected Last Fetch Time");
+                "Unexpected Last Fetch Time");
         assertEquals(brokerEpoch, replicaState.brokerEpoch(),
-            "Broker Epoch Mismatch");
+                "Broker Epoch Mismatch");
     }
 
     private void assertReplicaState(
@@ -83,7 +83,7 @@ public class ReplicaTest {
         long lastFetchTimeMs
     ) {
         assertReplicaState(logStartOffset, logEndOffset, lastCaughtUpTimeMs, lastFetchLeaderLogEndOffset,
-            lastFetchTimeMs, Optional.of(1L));
+                lastFetchTimeMs, Optional.of(1L));
     }
 
     private long updateFetchState(
@@ -93,11 +93,11 @@ public class ReplicaTest {
     ) {
         long currentTimeMs = time.milliseconds();
         replica.updateFetchStateOrThrow(
-            new LogOffsetMetadata(followerFetchOffset),
-            followerStartOffset,
-            currentTimeMs,
-            leaderEndOffset,
-            1L
+                new LogOffsetMetadata(followerFetchOffset),
+                followerStartOffset,
+                currentTimeMs,
+                leaderEndOffset,
+                1L
         );
         return currentTimeMs;
     }
@@ -109,170 +109,170 @@ public class ReplicaTest {
     ) {
         long currentTimeMs = time.milliseconds();
         replica.resetReplicaState(
-            currentTimeMs,
-            leaderEndOffset,
-            isNewLeader,
-            isFollowerInSync
+                currentTimeMs,
+                leaderEndOffset,
+                isNewLeader,
+                isFollowerInSync
         );
         return currentTimeMs;
     }
 
     private boolean isCaughtUp(long leaderEndOffset) {
         return replica.stateSnapshot().isCaughtUp(
-            leaderEndOffset,
-            time.milliseconds(),
-            REPLICA_LAG_TIME_MAX_MS
+                leaderEndOffset,
+                time.milliseconds(),
+                REPLICA_LAG_TIME_MAX_MS
         );
     }
 
     @Test
     public void testInitialState() {
         assertReplicaState(
-            UnifiedLog.UNKNOWN_OFFSET,
-            UnifiedLog.UNKNOWN_OFFSET,
-            0L,
-            0L,
-            0L,
-            Optional.empty()
+                UnifiedLog.UNKNOWN_OFFSET,
+                UnifiedLog.UNKNOWN_OFFSET,
+                0L,
+                0L,
+                0L,
+                Optional.empty()
         );
     }
 
     @Test
     public void testUpdateFetchState() {
         long fetchTimeMs1 = updateFetchState(
-            5L,
-            1L,
-            10L
+                5L,
+                1L,
+                10L
         );
 
         assertReplicaState(
-            1L,
-            5L,
-            0L,
-            10L,
-            fetchTimeMs1
+                1L,
+                5L,
+                0L,
+                10L,
+                fetchTimeMs1
         );
 
         long fetchTimeMs2 = updateFetchState(
-            10L,
-            2L,
-            15L
+                10L,
+                2L,
+                15L
         );
 
         assertReplicaState(
-            2L,
-            10L,
-            fetchTimeMs1,
-            15L,
-            fetchTimeMs2
+                2L,
+                10L,
+                fetchTimeMs1,
+                15L,
+                fetchTimeMs2
         );
 
         long fetchTimeMs3 = updateFetchState(
-            15L,
-            3L,
-            15L
+                15L,
+                3L,
+                15L
         );
 
         assertReplicaState(
-            3L,
-            15L,
-            fetchTimeMs3,
-            15L,
-            fetchTimeMs3
+                3L,
+                15L,
+                fetchTimeMs3,
+                15L,
+                fetchTimeMs3
         );
     }
 
     @Test
     public void testResetReplicaStateWhenLeaderIsReelectedAndReplicaIsInSync() {
         updateFetchState(
-            10L,
-            1L,
-            10L
+                10L,
+                1L,
+                10L
         );
 
         long resetTimeMs1 = resetReplicaState(
-            11L,
-            false,
-            true
+                11L,
+                false,
+                true
         );
 
         assertReplicaState(
-            1L,
-            10L,
-            resetTimeMs1,
-            11L,
-            resetTimeMs1
+                1L,
+                10L,
+                resetTimeMs1,
+                11L,
+                resetTimeMs1
         );
     }
 
     @Test
     public void testResetReplicaStateWhenLeaderIsReelectedAndReplicaIsNotInSync() {
         updateFetchState(
-            10L,
-            1L,
-            10L
+                10L,
+                1L,
+                10L
         );
 
         resetReplicaState(
-            11L,
-            false,
-            false
+                11L,
+                false,
+                false
         );
 
         assertReplicaState(
-            1L,
-            10L,
-            0L,
-            11L,
-            0L
+                1L,
+                10L,
+                0L,
+                11L,
+                0L
         );
     }
 
     @Test
     public void testResetReplicaStateWhenNewLeaderIsElectedAndReplicaIsInSync() {
         updateFetchState(
-            10L,
-            1L,
-            10L
+                10L,
+                1L,
+                10L
         );
 
         long resetTimeMs1 = resetReplicaState(
-            11L,
-            true,
-            true
+                11L,
+                true,
+                true
         );
 
         assertReplicaState(
-            UnifiedLog.UNKNOWN_OFFSET,
-            UnifiedLog.UNKNOWN_OFFSET,
-            resetTimeMs1,
-            UnifiedLog.UNKNOWN_OFFSET,
-            0L,
-            Optional.empty()
+                UnifiedLog.UNKNOWN_OFFSET,
+                UnifiedLog.UNKNOWN_OFFSET,
+                resetTimeMs1,
+                UnifiedLog.UNKNOWN_OFFSET,
+                0L,
+                Optional.empty()
         );
     }
 
     @Test
     public void testResetReplicaStateWhenNewLeaderIsElectedAndReplicaIsNotInSync() {
         updateFetchState(
-            10L,
-            1L,
-            10L
+                10L,
+                1L,
+                10L
         );
 
         resetReplicaState(
-            11L,
-            true,
-            false
+                11L,
+                true,
+                false
         );
 
         assertReplicaState(
-            UnifiedLog.UNKNOWN_OFFSET,
-            UnifiedLog.UNKNOWN_OFFSET,
-            0L,
-            UnifiedLog.UNKNOWN_OFFSET,
-            0L,
-            Optional.empty()
+                UnifiedLog.UNKNOWN_OFFSET,
+                UnifiedLog.UNKNOWN_OFFSET,
+                0L,
+                UnifiedLog.UNKNOWN_OFFSET,
+                0L,
+                Optional.empty()
         );
     }
 
@@ -281,9 +281,9 @@ public class ReplicaTest {
         assertFalse(isCaughtUp(10L));
 
         updateFetchState(
-            10L,
-            1L,
-            10L
+                10L,
+                1L,
+                10L
         );
 
         assertTrue(isCaughtUp(10L));
@@ -298,17 +298,17 @@ public class ReplicaTest {
         assertFalse(isCaughtUp(10L));
 
         updateFetchState(
-            5L,
-            1L,
-            10L
+                5L,
+                1L,
+                10L
         );
 
         assertFalse(isCaughtUp(10L));
 
         updateFetchState(
-            10L,
-            1L,
-            15L
+                10L,
+                1L,
+                15L
         );
 
         assertTrue(isCaughtUp(16L));
@@ -325,27 +325,27 @@ public class ReplicaTest {
 
         Replica replica = new Replica(BROKER_ID, PARTITION, metadataCache);
         replica.updateFetchStateOrThrow(
-            new LogOffsetMetadata(5L),
-            1L,
-            1,
-            10L,
-            2L
+                new LogOffsetMetadata(5L),
+                1L,
+                1,
+                10L,
+                2L
         );
 
         assertThrows(NotLeaderOrFollowerException.class, () -> replica.updateFetchStateOrThrow(
-            new LogOffsetMetadata(5L),
-            2L,
-            3,
-            10L,
-            1L
+                new LogOffsetMetadata(5L),
+                2L,
+                3,
+                10L,
+                1L
         ));
 
         replica.updateFetchStateOrThrow(
-            new LogOffsetMetadata(5L),
-            2L,
-            4,
-            10L,
-            -1L
+                new LogOffsetMetadata(5L),
+                2L,
+                4,
+                10L,
+                -1L
         );
     }
 }

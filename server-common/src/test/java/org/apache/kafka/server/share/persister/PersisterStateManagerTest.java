@@ -100,7 +100,7 @@ class PersisterStateManagerTest {
         private Time time = MOCK_TIME;
         private Timer timer = MOCK_TIMER;
         private ShareCoordinatorMetadataCacheHelper cacheHelper = CACHE_HELPER;
-        private int requestTimeoutMs =  Math.toIntExact(CommonClientConfigs.DEFAULT_SOCKET_CONNECTION_SETUP_TIMEOUT_MAX_MS);
+        private int requestTimeoutMs = Math.toIntExact(CommonClientConfigs.DEFAULT_SOCKET_CONNECTION_SETUP_TIMEOUT_MAX_MS);
 
         private PersisterStateManagerBuilder withKafkaClient(KafkaClient client) {
             this.client = client;
@@ -272,7 +272,7 @@ class PersisterStateManagerTest {
     @BeforeEach
     public void setUp() {
         mockTimer = new SystemTimerReaper("persisterStateManagerTestTimer",
-            new SystemTimer("persisterStateManagerTestTimer"));
+                new SystemTimer("persisterStateManagerTestTimer"));
     }
 
     @AfterEach
@@ -295,10 +295,10 @@ class PersisterStateManagerTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setKey(coordinatorKey)
                             .setErrorCode(Errors.UNKNOWN_SERVER_ERROR.code())
                             .setHost(Node.noNode().host())
@@ -306,7 +306,7 @@ class PersisterStateManagerTest {
                             .setPort(Node.noNode().port())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         ShareCoordinatorMetadataCacheHelper cacheHelper = getDefaultCacheHelper(suppliedNode);
@@ -322,14 +322,14 @@ class PersisterStateManagerTest {
         CompletableFuture<TestStateHandler.TestHandlerResponse> future = new CompletableFuture<>();
 
         TestStateHandler handler = spy(new TestStateHandler(
-            stateManager,
-            groupId,
-            topicId,
-            partition,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS
+                stateManager,
+                groupId,
+                topicId,
+                partition,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS
         ) {
             @Override
             protected AbstractRequest.Builder<? extends AbstractRequest> requestBuilder() {
@@ -372,8 +372,8 @@ class PersisterStateManagerTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            null,
-            suppliedNode
+                null,
+                suppliedNode
         );
 
         ShareCoordinatorMetadataCacheHelper cacheHelper = getDefaultCacheHelper(suppliedNode);
@@ -389,14 +389,14 @@ class PersisterStateManagerTest {
         CompletableFuture<TestStateHandler.TestHandlerResponse> future = new CompletableFuture<>();
 
         TestStateHandler handler = spy(new TestStateHandler(
-            stateManager,
-            groupId,
-            topicId,
-            partition,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS
+                stateManager,
+                groupId,
+                topicId,
+                partition,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS
         ) {
             @Override
             protected AbstractRequest.Builder<? extends AbstractRequest> requestBuilder() {
@@ -449,14 +449,14 @@ class PersisterStateManagerTest {
         CompletableFuture<TestStateHandler.TestHandlerResponse> future = new CompletableFuture<>();
 
         TestStateHandler handler = spy(new TestStateHandler(
-            stateManager,
-            groupId,
-            topicId,
-            partition,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS
+                stateManager,
+                groupId,
+                topicId,
+                partition,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS
         ) {
             @Override
             protected AbstractRequest.Builder<? extends AbstractRequest> requestBuilder() {
@@ -499,10 +499,10 @@ class PersisterStateManagerTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setKey(coordinatorKey)
                             .setErrorCode(Errors.COORDINATOR_NOT_AVAILABLE.code())
                             .setHost(Node.noNode().host())
@@ -510,16 +510,16 @@ class PersisterStateManagerTest {
                             .setPort(Node.noNode().port())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setKey(coordinatorKey)
                             .setErrorCode(Errors.COORDINATOR_NOT_AVAILABLE.code())
                             .setHost(Node.noNode().host())
@@ -527,7 +527,7 @@ class PersisterStateManagerTest {
                             .setPort(Node.noNode().port())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         ShareCoordinatorMetadataCacheHelper cacheHelper = getDefaultCacheHelper(suppliedNode);
@@ -545,14 +545,14 @@ class PersisterStateManagerTest {
         int maxAttempts = 2;
 
         TestStateHandler handler = spy(new TestStateHandler(
-            stateManager,
-            groupId,
-            topicId,
-            partition,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            maxAttempts
+                stateManager,
+                groupId,
+                topicId,
+                partition,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                maxAttempts
         ) {
             @Override
             protected AbstractRequest.Builder<? extends AbstractRequest> requestBuilder() {
@@ -596,17 +596,17 @@ class PersisterStateManagerTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(1)
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> {
@@ -617,12 +617,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new ReadShareGroupStateResponse(
-            new ReadShareGroupStateResponseData()
+                new ReadShareGroupStateResponseData()
                 .setResults(List.of(
-                    new ReadShareGroupStateResponseData.ReadStateResult()
+                        new ReadShareGroupStateResponseData.ReadStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new ReadShareGroupStateResponseData.PartitionResult()
+                                new ReadShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -646,15 +646,15 @@ class PersisterStateManagerTest {
         CompletableFuture<ReadShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.ReadStateHandler handler = spy(stateManager.new ReadStateHandler(
-            groupId,
-            topicId,
-            partition,
-            0,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS,
-            null
+                groupId,
+                topicId,
+                partition,
+                0,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS,
+                null
         ));
 
         stateManager.enqueue(handler);
@@ -686,8 +686,8 @@ class PersisterStateManagerTest {
         Uuid topicId = Uuid.randomUuid();
         int partition = 10;
         List<PersisterStateBatch> stateBatches = List.of(
-            new PersisterStateBatch(0, 9, (byte) 0, (short) 1),
-            new PersisterStateBatch(10, 19, (byte) 1, (short) 1)
+                new PersisterStateBatch(0, 9, (byte) 0, (short) 1),
+                new PersisterStateBatch(10, 19, (byte) 1, (short) 1)
         );
 
         Node suppliedNode = new Node(0, HOST, PORT);
@@ -698,17 +698,17 @@ class PersisterStateManagerTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(1)
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> {
@@ -719,12 +719,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new WriteShareGroupStateResponse(
-            new WriteShareGroupStateResponseData()
+                new WriteShareGroupStateResponseData()
                 .setResults(List.of(
-                    new WriteShareGroupStateResponseData.WriteStateResult()
+                        new WriteShareGroupStateResponseData.WriteStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new WriteShareGroupStateResponseData.PartitionResult()
+                                new WriteShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -745,18 +745,18 @@ class PersisterStateManagerTest {
         CompletableFuture<WriteShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.WriteStateHandler handler = spy(stateManager.new WriteStateHandler(
-            groupId,
-            topicId,
-            partition,
-            0,
-            0,
-            0,
-            0,
-            stateBatches,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS
+                groupId,
+                topicId,
+                partition,
+                0,
+                0,
+                0,
+                0,
+                stateBatches,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS
         ));
 
         stateManager.enqueue(handler);
@@ -798,8 +798,8 @@ class PersisterStateManagerTest {
         Uuid topicId = Uuid.randomUuid();
         int partition = 10;
         List<PersisterStateBatch> stateBatches = List.of(
-            new PersisterStateBatch(0, 9, (byte) 0, (short) 1),
-            new PersisterStateBatch(10, 19, (byte) 1, (short) 1)
+                new PersisterStateBatch(0, 9, (byte) 0, (short) 1),
+                new PersisterStateBatch(10, 19, (byte) 1, (short) 1)
         );
 
         Node suppliedNode = new Node(0, HOST, PORT);
@@ -810,30 +810,30 @@ class PersisterStateManagerTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setErrorCode(Errors.NOT_COORDINATOR.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(1)
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> {
@@ -844,12 +844,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new WriteShareGroupStateResponse(
-            new WriteShareGroupStateResponseData()
+                new WriteShareGroupStateResponseData()
                 .setResults(List.of(
-                    new WriteShareGroupStateResponseData.WriteStateResult()
+                        new WriteShareGroupStateResponseData.WriteStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new WriteShareGroupStateResponseData.PartitionResult()
+                                new WriteShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -870,18 +870,18 @@ class PersisterStateManagerTest {
         CompletableFuture<WriteShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.WriteStateHandler handler = spy(stateManager.new WriteStateHandler(
-            groupId,
-            topicId,
-            partition,
-            0,
-            0,
-            0,
-            0,
-            stateBatches,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS
+                groupId,
+                topicId,
+                partition,
+                0,
+                0,
+                0,
+                0,
+                stateBatches,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS
         ));
 
         stateManager.enqueue(handler);
@@ -919,8 +919,8 @@ class PersisterStateManagerTest {
         Uuid topicId = Uuid.randomUuid();
         int partition = 10;
         List<PersisterStateBatch> stateBatches = List.of(
-            new PersisterStateBatch(0, 9, (byte) 0, (short) 1),
-            new PersisterStateBatch(10, 19, (byte) 1, (short) 1)
+                new PersisterStateBatch(0, 9, (byte) 0, (short) 1),
+                new PersisterStateBatch(10, 19, (byte) 1, (short) 1)
         );
 
         Node suppliedNode = new Node(0, HOST, PORT);
@@ -931,30 +931,30 @@ class PersisterStateManagerTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setErrorCode(Errors.COORDINATOR_NOT_AVAILABLE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(1)
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> {
@@ -965,12 +965,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new WriteShareGroupStateResponse(
-            new WriteShareGroupStateResponseData()
+                new WriteShareGroupStateResponseData()
                 .setResults(List.of(
-                    new WriteShareGroupStateResponseData.WriteStateResult()
+                        new WriteShareGroupStateResponseData.WriteStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new WriteShareGroupStateResponseData.PartitionResult()
+                                new WriteShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -991,18 +991,18 @@ class PersisterStateManagerTest {
         CompletableFuture<WriteShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.WriteStateHandler handler = spy(stateManager.new WriteStateHandler(
-            groupId,
-            topicId,
-            partition,
-            0,
-            0,
-            0,
-            0,
-            stateBatches,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS
+                groupId,
+                topicId,
+                partition,
+                0,
+                0,
+                0,
+                0,
+                stateBatches,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS
         ));
 
         stateManager.enqueue(handler);
@@ -1044,8 +1044,8 @@ class PersisterStateManagerTest {
         Uuid topicId = Uuid.randomUuid();
         int partition = 10;
         List<PersisterStateBatch> stateBatches = List.of(
-            new PersisterStateBatch(0, 9, (byte) 0, (short) 1),
-            new PersisterStateBatch(10, 19, (byte) 1, (short) 1)
+                new PersisterStateBatch(0, 9, (byte) 0, (short) 1),
+                new PersisterStateBatch(10, 19, (byte) 1, (short) 1)
         );
 
         Node coordinatorNode = new Node(1, HOST, PORT);
@@ -1058,12 +1058,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new WriteShareGroupStateResponse(
-            new WriteShareGroupStateResponseData()
+                new WriteShareGroupStateResponseData()
                 .setResults(List.of(
-                    new WriteShareGroupStateResponseData.WriteStateResult()
+                        new WriteShareGroupStateResponseData.WriteStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new WriteShareGroupStateResponseData.PartitionResult()
+                                new WriteShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -1084,18 +1084,18 @@ class PersisterStateManagerTest {
         CompletableFuture<WriteShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.WriteStateHandler handler = spy(stateManager.new WriteStateHandler(
-            groupId,
-            topicId,
-            partition,
-            0,
-            0,
-            0,
-            0,
-            stateBatches,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS
+                groupId,
+                topicId,
+                partition,
+                0,
+                0,
+                0,
+                0,
+                stateBatches,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS
         ));
 
         stateManager.enqueue(handler);
@@ -1138,8 +1138,8 @@ class PersisterStateManagerTest {
         Uuid topicId = Uuid.randomUuid();
         int partition = 10;
         List<PersisterStateBatch> stateBatches = List.of(
-            new PersisterStateBatch(0, 9, (byte) 0, (short) 1),
-            new PersisterStateBatch(10, 19, (byte) 1, (short) 1)
+                new PersisterStateBatch(0, 9, (byte) 0, (short) 1),
+                new PersisterStateBatch(10, 19, (byte) 1, (short) 1)
         );
 
         Node coordinatorNode = new Node(1, HOST, PORT);
@@ -1152,12 +1152,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new WriteShareGroupStateResponse(
-            new WriteShareGroupStateResponseData()
+                new WriteShareGroupStateResponseData()
                 .setResults(List.of(
-                    new WriteShareGroupStateResponseData.WriteStateResult()
+                        new WriteShareGroupStateResponseData.WriteStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new WriteShareGroupStateResponseData.PartitionResult()
+                                new WriteShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code())
                                 .setErrorMessage("")
@@ -1173,12 +1173,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new WriteShareGroupStateResponse(
-            new WriteShareGroupStateResponseData()
+                new WriteShareGroupStateResponseData()
                 .setResults(List.of(
-                    new WriteShareGroupStateResponseData.WriteStateResult()
+                        new WriteShareGroupStateResponseData.WriteStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new WriteShareGroupStateResponseData.PartitionResult()
+                                new WriteShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -1199,18 +1199,18 @@ class PersisterStateManagerTest {
         CompletableFuture<WriteShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.WriteStateHandler handler = spy(stateManager.new WriteStateHandler(
-            groupId,
-            topicId,
-            partition,
-            0,
-            0,
-            0,
-            0,
-            stateBatches,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS
+                groupId,
+                topicId,
+                partition,
+                0,
+                0,
+                0,
+                0,
+                stateBatches,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS
         ));
 
         stateManager.enqueue(handler);
@@ -1253,8 +1253,8 @@ class PersisterStateManagerTest {
         Uuid topicId = Uuid.randomUuid();
         int partition = 10;
         List<PersisterStateBatch> stateBatches = List.of(
-            new PersisterStateBatch(0, 9, (byte) 0, (short) 1),
-            new PersisterStateBatch(10, 19, (byte) 1, (short) 1)
+                new PersisterStateBatch(0, 9, (byte) 0, (short) 1),
+                new PersisterStateBatch(10, 19, (byte) 1, (short) 1)
         );
 
         Node coordinatorNode = new Node(1, HOST, PORT);
@@ -1267,12 +1267,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new WriteShareGroupStateResponse(
-            new WriteShareGroupStateResponseData()
+                new WriteShareGroupStateResponseData()
                 .setResults(List.of(
-                    new WriteShareGroupStateResponseData.WriteStateResult()
+                        new WriteShareGroupStateResponseData.WriteStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new WriteShareGroupStateResponseData.PartitionResult()
+                                new WriteShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code())
                                 .setErrorMessage("")
@@ -1288,12 +1288,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new WriteShareGroupStateResponse(
-            new WriteShareGroupStateResponseData()
+                new WriteShareGroupStateResponseData()
                 .setResults(List.of(
-                    new WriteShareGroupStateResponseData.WriteStateResult()
+                        new WriteShareGroupStateResponseData.WriteStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new WriteShareGroupStateResponseData.PartitionResult()
+                                new WriteShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code())
                                 .setErrorMessage("")
@@ -1309,12 +1309,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new WriteShareGroupStateResponse(
-            new WriteShareGroupStateResponseData()
+                new WriteShareGroupStateResponseData()
                 .setResults(List.of(
-                    new WriteShareGroupStateResponseData.WriteStateResult()
+                        new WriteShareGroupStateResponseData.WriteStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new WriteShareGroupStateResponseData.PartitionResult()
+                                new WriteShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -1335,18 +1335,18 @@ class PersisterStateManagerTest {
         CompletableFuture<WriteShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.WriteStateHandler handler = spy(stateManager.new WriteStateHandler(
-            groupId,
-            topicId,
-            partition,
-            0,
-            0,
-            0,
-            0,
-            stateBatches,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            2
+                groupId,
+                topicId,
+                partition,
+                0,
+                0,
+                0,
+                0,
+                stateBatches,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                2
         ));
 
         stateManager.enqueue(handler);
@@ -1389,8 +1389,8 @@ class PersisterStateManagerTest {
         Uuid topicId = Uuid.randomUuid();
         int partition = 10;
         List<PersisterStateBatch> stateBatches = List.of(
-            new PersisterStateBatch(0, 9, (byte) 0, (short) 1),
-            new PersisterStateBatch(10, 19, (byte) 1, (short) 1)
+                new PersisterStateBatch(0, 9, (byte) 0, (short) 1),
+                new PersisterStateBatch(10, 19, (byte) 1, (short) 1)
         );
 
         Node coordinatorNode = new Node(1, HOST, PORT);
@@ -1409,18 +1409,18 @@ class PersisterStateManagerTest {
         CompletableFuture<WriteShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.WriteStateHandler handler = spy(stateManager.new WriteStateHandler(
-            groupId,
-            topicId,
-            partition,
-            0,
-            0,
-            0,
-            0,
-            stateBatches,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            2
+                groupId,
+                topicId,
+                partition,
+                0,
+                0,
+                0,
+                0,
+                stateBatches,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                2
         ));
 
         stateManager.enqueue(handler);
@@ -1460,8 +1460,8 @@ class PersisterStateManagerTest {
         Uuid topicId = Uuid.randomUuid();
         int partition = 10;
         List<PersisterStateBatch> stateBatches = List.of(
-            new PersisterStateBatch(0, 9, (byte) 0, (short) 1),
-            new PersisterStateBatch(10, 19, (byte) 1, (short) 1)
+                new PersisterStateBatch(0, 9, (byte) 0, (short) 1),
+                new PersisterStateBatch(10, 19, (byte) 1, (short) 1)
         );
 
         Node coordinatorNode = new Node(1, HOST, PORT);
@@ -1474,12 +1474,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new WriteShareGroupStateResponse(
-            new WriteShareGroupStateResponseData()
+                new WriteShareGroupStateResponseData()
                 .setResults(List.of(
-                    new WriteShareGroupStateResponseData.WriteStateResult()
+                        new WriteShareGroupStateResponseData.WriteStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new WriteShareGroupStateResponseData.PartitionResult()
+                                new WriteShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -1511,18 +1511,18 @@ class PersisterStateManagerTest {
         List<PersisterStateManager.WriteStateHandler> handlers = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             PersisterStateManager.WriteStateHandler handler = spy(stateManager.new WriteStateHandler(
-                groupId,
-                topicId,
-                partition,
-                0,
-                0,
-                0,
-                0,
-                stateBatches,
-                future,
-                REQUEST_BACKOFF_MS,
-                REQUEST_BACKOFF_MAX_MS,
-                MAX_RPC_RETRY_ATTEMPTS
+                    groupId,
+                    topicId,
+                    partition,
+                    0,
+                    0,
+                    0,
+                    0,
+                    stateBatches,
+                    future,
+                    REQUEST_BACKOFF_MS,
+                    REQUEST_BACKOFF_MAX_MS,
+                    MAX_RPC_RETRY_ATTEMPTS
             ));
             handlers.add(handler);
             stateManager.enqueue(handler);
@@ -1550,17 +1550,17 @@ class PersisterStateManagerTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(1)
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> {
@@ -1571,12 +1571,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new ReadShareGroupStateResponse(
-            new ReadShareGroupStateResponseData()
+                new ReadShareGroupStateResponseData()
                 .setResults(List.of(
-                    new ReadShareGroupStateResponseData.ReadStateResult()
+                        new ReadShareGroupStateResponseData.ReadStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new ReadShareGroupStateResponseData.PartitionResult()
+                                new ReadShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -1600,15 +1600,15 @@ class PersisterStateManagerTest {
         CompletableFuture<ReadShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.ReadStateHandler handler = spy(stateManager.new ReadStateHandler(
-            groupId,
-            topicId,
-            partition,
-            0,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS,
-            null
+                groupId,
+                topicId,
+                partition,
+                0,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS,
+                null
         ));
 
         stateManager.enqueue(handler);
@@ -1660,17 +1660,17 @@ class PersisterStateManagerTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(1)
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> {
@@ -1681,12 +1681,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new ReadShareGroupStateResponse(
-            new ReadShareGroupStateResponseData()
+                new ReadShareGroupStateResponseData()
                 .setResults(List.of(
-                    new ReadShareGroupStateResponseData.ReadStateResult()
+                        new ReadShareGroupStateResponseData.ReadStateResult()
                         .setTopicId(Uuid.randomUuid())
                         .setPartitions(List.of(
-                            new ReadShareGroupStateResponseData.PartitionResult()
+                                new ReadShareGroupStateResponseData.PartitionResult()
                                 .setPartition(500)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -1710,15 +1710,15 @@ class PersisterStateManagerTest {
         CompletableFuture<ReadShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.ReadStateHandler handler = spy(stateManager.new ReadStateHandler(
-            groupId,
-            topicId,
-            partition,
-            0,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS,
-            null
+                groupId,
+                topicId,
+                partition,
+                0,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS,
+                null
         ));
 
         stateManager.enqueue(handler);
@@ -1767,30 +1767,30 @@ class PersisterStateManagerTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setErrorCode(Errors.NOT_COORDINATOR.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(1)
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> {
@@ -1801,12 +1801,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new ReadShareGroupStateResponse(
-            new ReadShareGroupStateResponseData()
+                new ReadShareGroupStateResponseData()
                 .setResults(List.of(
-                    new ReadShareGroupStateResponseData.ReadStateResult()
+                        new ReadShareGroupStateResponseData.ReadStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new ReadShareGroupStateResponseData.PartitionResult()
+                                new ReadShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -1830,15 +1830,15 @@ class PersisterStateManagerTest {
         CompletableFuture<ReadShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.ReadStateHandler handler = spy(stateManager.new ReadStateHandler(
-            groupId,
-            topicId,
-            partition,
-            0,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS,
-            null
+                groupId,
+                topicId,
+                partition,
+                0,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS,
+                null
         ));
 
         stateManager.enqueue(handler);
@@ -1884,30 +1884,30 @@ class PersisterStateManagerTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setErrorCode(Errors.NOT_COORDINATOR.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(1)
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> {
@@ -1918,12 +1918,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new ReadShareGroupStateResponse(
-            new ReadShareGroupStateResponseData()
+                new ReadShareGroupStateResponseData()
                 .setResults(List.of(
-                    new ReadShareGroupStateResponseData.ReadStateResult()
+                        new ReadShareGroupStateResponseData.ReadStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new ReadShareGroupStateResponseData.PartitionResult()
+                                new ReadShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -1947,15 +1947,15 @@ class PersisterStateManagerTest {
         CompletableFuture<ReadShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.ReadStateHandler handler = spy(stateManager.new ReadStateHandler(
-            groupId,
-            topicId,
-            partition,
-            0,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS,
-            null
+                groupId,
+                topicId,
+                partition,
+                0,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS,
+                null
         ));
 
         stateManager.enqueue(handler);
@@ -2009,12 +2009,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new ReadShareGroupStateResponse(
-            new ReadShareGroupStateResponseData()
+                new ReadShareGroupStateResponseData()
                 .setResults(List.of(
-                    new ReadShareGroupStateResponseData.ReadStateResult()
+                        new ReadShareGroupStateResponseData.ReadStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new ReadShareGroupStateResponseData.PartitionResult()
+                                new ReadShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -2038,15 +2038,15 @@ class PersisterStateManagerTest {
         CompletableFuture<ReadShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.ReadStateHandler handler = spy(stateManager.new ReadStateHandler(
-            groupId,
-            topicId,
-            partition,
-            0,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS,
-            null
+                groupId,
+                topicId,
+                partition,
+                0,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS,
+                null
         ));
 
         stateManager.enqueue(handler);
@@ -2101,12 +2101,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new ReadShareGroupStateResponse(
-            new ReadShareGroupStateResponseData()
+                new ReadShareGroupStateResponseData()
                 .setResults(List.of(
-                    new ReadShareGroupStateResponseData.ReadStateResult()
+                        new ReadShareGroupStateResponseData.ReadStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new ReadShareGroupStateResponseData.PartitionResult()
+                                new ReadShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.COORDINATOR_NOT_AVAILABLE.code())
                                 .setErrorMessage("")
@@ -2125,12 +2125,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new ReadShareGroupStateResponse(
-            new ReadShareGroupStateResponseData()
+                new ReadShareGroupStateResponseData()
                 .setResults(List.of(
-                    new ReadShareGroupStateResponseData.ReadStateResult()
+                        new ReadShareGroupStateResponseData.ReadStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new ReadShareGroupStateResponseData.PartitionResult()
+                                new ReadShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -2154,15 +2154,15 @@ class PersisterStateManagerTest {
         CompletableFuture<ReadShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.ReadStateHandler handler = spy(stateManager.new ReadStateHandler(
-            groupId,
-            topicId,
-            partition,
-            0,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS,
-            null
+                groupId,
+                topicId,
+                partition,
+                0,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS,
+                null
         ));
 
         stateManager.enqueue(handler);
@@ -2217,12 +2217,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new ReadShareGroupStateResponse(
-            new ReadShareGroupStateResponseData()
+                new ReadShareGroupStateResponseData()
                 .setResults(List.of(
-                    new ReadShareGroupStateResponseData.ReadStateResult()
+                        new ReadShareGroupStateResponseData.ReadStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new ReadShareGroupStateResponseData.PartitionResult()
+                                new ReadShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.COORDINATOR_NOT_AVAILABLE.code())
                                 .setErrorMessage("")
@@ -2241,12 +2241,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new ReadShareGroupStateResponse(
-            new ReadShareGroupStateResponseData()
+                new ReadShareGroupStateResponseData()
                 .setResults(List.of(
-                    new ReadShareGroupStateResponseData.ReadStateResult()
+                        new ReadShareGroupStateResponseData.ReadStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new ReadShareGroupStateResponseData.PartitionResult()
+                                new ReadShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code())
                                 .setErrorMessage("")
@@ -2270,15 +2270,15 @@ class PersisterStateManagerTest {
         CompletableFuture<ReadShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.ReadStateHandler handler = spy(stateManager.new ReadStateHandler(
-            groupId,
-            topicId,
-            partition,
-            0,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            2,
-            null
+                groupId,
+                topicId,
+                partition,
+                0,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                2,
+                null
         ));
 
         stateManager.enqueue(handler);
@@ -2337,15 +2337,15 @@ class PersisterStateManagerTest {
         CompletableFuture<ReadShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.ReadStateHandler handler = spy(stateManager.new ReadStateHandler(
-            groupId,
-            topicId,
-            partition,
-            0,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            2,
-            null
+                groupId,
+                topicId,
+                partition,
+                0,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                2,
+                null
         ));
 
         stateManager.enqueue(handler);
@@ -2393,17 +2393,17 @@ class PersisterStateManagerTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(1)
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> {
@@ -2414,12 +2414,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new ReadShareGroupStateSummaryResponse(
-            new ReadShareGroupStateSummaryResponseData()
+                new ReadShareGroupStateSummaryResponseData()
                 .setResults(List.of(
-                    new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
+                        new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new ReadShareGroupStateSummaryResponseData.PartitionResult()
+                                new ReadShareGroupStateSummaryResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -2442,15 +2442,15 @@ class PersisterStateManagerTest {
         CompletableFuture<ReadShareGroupStateSummaryResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.ReadStateSummaryHandler handler = spy(stateManager.new ReadStateSummaryHandler(
-            groupId,
-            topicId,
-            partition,
-            0,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS,
-            null
+                groupId,
+                topicId,
+                partition,
+                0,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS,
+                null
         ));
 
         stateManager.enqueue(handler);
@@ -2502,17 +2502,17 @@ class PersisterStateManagerTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(1)
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> {
@@ -2523,12 +2523,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new ReadShareGroupStateSummaryResponse(
-            new ReadShareGroupStateSummaryResponseData()
+                new ReadShareGroupStateSummaryResponseData()
                 .setResults(List.of(
-                    new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
+                        new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
                         .setTopicId(Uuid.randomUuid())
                         .setPartitions(List.of(
-                            new ReadShareGroupStateSummaryResponseData.PartitionResult()
+                                new ReadShareGroupStateSummaryResponseData.PartitionResult()
                                 .setPartition(500)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -2551,15 +2551,15 @@ class PersisterStateManagerTest {
         CompletableFuture<ReadShareGroupStateSummaryResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.ReadStateSummaryHandler handler = spy(stateManager.new ReadStateSummaryHandler(
-            groupId,
-            topicId,
-            partition,
-            0,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS,
-            null
+                groupId,
+                topicId,
+                partition,
+                0,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS,
+                null
         ));
 
         stateManager.enqueue(handler);
@@ -2608,30 +2608,30 @@ class PersisterStateManagerTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setErrorCode(Errors.NOT_COORDINATOR.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(1)
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> {
@@ -2642,12 +2642,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new ReadShareGroupStateSummaryResponse(
-            new ReadShareGroupStateSummaryResponseData()
+                new ReadShareGroupStateSummaryResponseData()
                 .setResults(List.of(
-                    new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
+                        new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new ReadShareGroupStateSummaryResponseData.PartitionResult()
+                                new ReadShareGroupStateSummaryResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -2670,15 +2670,15 @@ class PersisterStateManagerTest {
         CompletableFuture<ReadShareGroupStateSummaryResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.ReadStateSummaryHandler handler = spy(stateManager.new ReadStateSummaryHandler(
-            groupId,
-            topicId,
-            partition,
-            0,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS,
-            null
+                groupId,
+                topicId,
+                partition,
+                0,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS,
+                null
         ));
 
         stateManager.enqueue(handler);
@@ -2724,30 +2724,30 @@ class PersisterStateManagerTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setErrorCode(Errors.NOT_COORDINATOR.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(1)
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> {
@@ -2758,12 +2758,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new ReadShareGroupStateSummaryResponse(
-            new ReadShareGroupStateSummaryResponseData()
+                new ReadShareGroupStateSummaryResponseData()
                 .setResults(List.of(
-                    new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
+                        new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new ReadShareGroupStateSummaryResponseData.PartitionResult()
+                                new ReadShareGroupStateSummaryResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -2786,15 +2786,15 @@ class PersisterStateManagerTest {
         CompletableFuture<ReadShareGroupStateSummaryResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.ReadStateSummaryHandler handler = spy(stateManager.new ReadStateSummaryHandler(
-            groupId,
-            topicId,
-            partition,
-            0,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS,
-            null
+                groupId,
+                topicId,
+                partition,
+                0,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS,
+                null
         ));
 
         stateManager.enqueue(handler);
@@ -2848,12 +2848,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new ReadShareGroupStateSummaryResponse(
-            new ReadShareGroupStateSummaryResponseData()
+                new ReadShareGroupStateSummaryResponseData()
                 .setResults(List.of(
-                    new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
+                        new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new ReadShareGroupStateSummaryResponseData.PartitionResult()
+                                new ReadShareGroupStateSummaryResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -2876,15 +2876,15 @@ class PersisterStateManagerTest {
         CompletableFuture<ReadShareGroupStateSummaryResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.ReadStateSummaryHandler handler = spy(stateManager.new ReadStateSummaryHandler(
-            groupId,
-            topicId,
-            partition,
-            0,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS,
-            null
+                groupId,
+                topicId,
+                partition,
+                0,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS,
+                null
         ));
 
         stateManager.enqueue(handler);
@@ -2939,12 +2939,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new ReadShareGroupStateSummaryResponse(
-            new ReadShareGroupStateSummaryResponseData()
+                new ReadShareGroupStateSummaryResponseData()
                 .setResults(List.of(
-                    new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
+                        new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new ReadShareGroupStateSummaryResponseData.PartitionResult()
+                                new ReadShareGroupStateSummaryResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.COORDINATOR_NOT_AVAILABLE.code())
                                 .setErrorMessage("")
@@ -2962,12 +2962,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new ReadShareGroupStateSummaryResponse(
-            new ReadShareGroupStateSummaryResponseData()
+                new ReadShareGroupStateSummaryResponseData()
                 .setResults(List.of(
-                    new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
+                        new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new ReadShareGroupStateSummaryResponseData.PartitionResult()
+                                new ReadShareGroupStateSummaryResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -2990,15 +2990,15 @@ class PersisterStateManagerTest {
         CompletableFuture<ReadShareGroupStateSummaryResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.ReadStateSummaryHandler handler = spy(stateManager.new ReadStateSummaryHandler(
-            groupId,
-            topicId,
-            partition,
-            0,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS,
-            null
+                groupId,
+                topicId,
+                partition,
+                0,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS,
+                null
         ));
 
         stateManager.enqueue(handler);
@@ -3053,12 +3053,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new ReadShareGroupStateSummaryResponse(
-            new ReadShareGroupStateSummaryResponseData()
+                new ReadShareGroupStateSummaryResponseData()
                 .setResults(List.of(
-                    new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
+                        new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new ReadShareGroupStateSummaryResponseData.PartitionResult()
+                                new ReadShareGroupStateSummaryResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.COORDINATOR_NOT_AVAILABLE.code())
                                 .setErrorMessage("")
@@ -3076,12 +3076,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new ReadShareGroupStateSummaryResponse(
-            new ReadShareGroupStateSummaryResponseData()
+                new ReadShareGroupStateSummaryResponseData()
                 .setResults(List.of(
-                    new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
+                        new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new ReadShareGroupStateSummaryResponseData.PartitionResult()
+                                new ReadShareGroupStateSummaryResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code())
                                 .setErrorMessage("")
@@ -3104,15 +3104,15 @@ class PersisterStateManagerTest {
         CompletableFuture<ReadShareGroupStateSummaryResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.ReadStateSummaryHandler handler = spy(stateManager.new ReadStateSummaryHandler(
-            groupId,
-            topicId,
-            partition,
-            0,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            2,
-            null
+                groupId,
+                topicId,
+                partition,
+                0,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                2,
+                null
         ));
 
         stateManager.enqueue(handler);
@@ -3171,15 +3171,15 @@ class PersisterStateManagerTest {
         CompletableFuture<ReadShareGroupStateSummaryResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.ReadStateSummaryHandler handler = spy(stateManager.new ReadStateSummaryHandler(
-            groupId,
-            topicId,
-            partition,
-            0,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            2,
-            null
+                groupId,
+                topicId,
+                partition,
+                0,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                2,
+                null
         ));
 
         stateManager.enqueue(handler);
@@ -3227,17 +3227,17 @@ class PersisterStateManagerTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(1)
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> {
@@ -3248,12 +3248,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new DeleteShareGroupStateResponse(
-            new DeleteShareGroupStateResponseData()
+                new DeleteShareGroupStateResponseData()
                 .setResults(List.of(
-                    new DeleteShareGroupStateResponseData.DeleteStateResult()
+                        new DeleteShareGroupStateResponseData.DeleteStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new DeleteShareGroupStateResponseData.PartitionResult()
+                                new DeleteShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -3274,13 +3274,13 @@ class PersisterStateManagerTest {
         CompletableFuture<DeleteShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.DeleteStateHandler handler = spy(stateManager.new DeleteStateHandler(
-            groupId,
-            topicId,
-            partition,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS
+                groupId,
+                topicId,
+                partition,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS
         ));
 
         stateManager.enqueue(handler);
@@ -3330,30 +3330,30 @@ class PersisterStateManagerTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setErrorCode(Errors.NOT_COORDINATOR.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(1)
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> {
@@ -3364,12 +3364,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new DeleteShareGroupStateResponse(
-            new DeleteShareGroupStateResponseData()
+                new DeleteShareGroupStateResponseData()
                 .setResults(List.of(
-                    new DeleteShareGroupStateResponseData.DeleteStateResult()
+                        new DeleteShareGroupStateResponseData.DeleteStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new DeleteShareGroupStateResponseData.PartitionResult()
+                                new DeleteShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -3390,13 +3390,13 @@ class PersisterStateManagerTest {
         CompletableFuture<DeleteShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.DeleteStateHandler handler = spy(stateManager.new DeleteStateHandler(
-            groupId,
-            topicId,
-            partition,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS
+                groupId,
+                topicId,
+                partition,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS
         ));
 
         stateManager.enqueue(handler);
@@ -3442,30 +3442,30 @@ class PersisterStateManagerTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setErrorCode(Errors.COORDINATOR_NOT_AVAILABLE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(1)
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> {
@@ -3476,12 +3476,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new DeleteShareGroupStateResponse(
-            new DeleteShareGroupStateResponseData()
+                new DeleteShareGroupStateResponseData()
                 .setResults(List.of(
-                    new DeleteShareGroupStateResponseData.DeleteStateResult()
+                        new DeleteShareGroupStateResponseData.DeleteStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new DeleteShareGroupStateResponseData.PartitionResult()
+                                new DeleteShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -3502,13 +3502,13 @@ class PersisterStateManagerTest {
         CompletableFuture<DeleteShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.DeleteStateHandler handler = spy(stateManager.new DeleteStateHandler(
-            groupId,
-            topicId,
-            partition,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS
+                groupId,
+                topicId,
+                partition,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS
         ));
 
         stateManager.enqueue(handler);
@@ -3560,12 +3560,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new DeleteShareGroupStateResponse(
-            new DeleteShareGroupStateResponseData()
+                new DeleteShareGroupStateResponseData()
                 .setResults(List.of(
-                    new DeleteShareGroupStateResponseData.DeleteStateResult()
+                        new DeleteShareGroupStateResponseData.DeleteStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new DeleteShareGroupStateResponseData.PartitionResult()
+                                new DeleteShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -3586,13 +3586,13 @@ class PersisterStateManagerTest {
         CompletableFuture<DeleteShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.DeleteStateHandler handler = spy(stateManager.new DeleteStateHandler(
-            groupId,
-            topicId,
-            partition,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS
+                groupId,
+                topicId,
+                partition,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS
         ));
 
         stateManager.enqueue(handler);
@@ -3645,12 +3645,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new DeleteShareGroupStateResponse(
-            new DeleteShareGroupStateResponseData()
+                new DeleteShareGroupStateResponseData()
                 .setResults(List.of(
-                    new DeleteShareGroupStateResponseData.DeleteStateResult()
+                        new DeleteShareGroupStateResponseData.DeleteStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new DeleteShareGroupStateResponseData.PartitionResult()
+                                new DeleteShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code())
                                 .setErrorMessage("")
@@ -3666,12 +3666,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new DeleteShareGroupStateResponse(
-            new DeleteShareGroupStateResponseData()
+                new DeleteShareGroupStateResponseData()
                 .setResults(List.of(
-                    new DeleteShareGroupStateResponseData.DeleteStateResult()
+                        new DeleteShareGroupStateResponseData.DeleteStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new DeleteShareGroupStateResponseData.PartitionResult()
+                                new DeleteShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -3692,13 +3692,13 @@ class PersisterStateManagerTest {
         CompletableFuture<DeleteShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.DeleteStateHandler handler = spy(stateManager.new DeleteStateHandler(
-            groupId,
-            topicId,
-            partition,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS
+                groupId,
+                topicId,
+                partition,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS
         ));
 
         stateManager.enqueue(handler);
@@ -3751,12 +3751,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new DeleteShareGroupStateResponse(
-            new DeleteShareGroupStateResponseData()
+                new DeleteShareGroupStateResponseData()
                 .setResults(List.of(
-                    new DeleteShareGroupStateResponseData.DeleteStateResult()
+                        new DeleteShareGroupStateResponseData.DeleteStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new DeleteShareGroupStateResponseData.PartitionResult()
+                                new DeleteShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code())
                                 .setErrorMessage("")
@@ -3772,12 +3772,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new DeleteShareGroupStateResponse(
-            new DeleteShareGroupStateResponseData()
+                new DeleteShareGroupStateResponseData()
                 .setResults(List.of(
-                    new DeleteShareGroupStateResponseData.DeleteStateResult()
+                        new DeleteShareGroupStateResponseData.DeleteStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new DeleteShareGroupStateResponseData.PartitionResult()
+                                new DeleteShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code())
                                 .setErrorMessage("")
@@ -3793,12 +3793,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new DeleteShareGroupStateResponse(
-            new DeleteShareGroupStateResponseData()
+                new DeleteShareGroupStateResponseData()
                 .setResults(List.of(
-                    new DeleteShareGroupStateResponseData.DeleteStateResult()
+                        new DeleteShareGroupStateResponseData.DeleteStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new DeleteShareGroupStateResponseData.PartitionResult()
+                                new DeleteShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -3819,13 +3819,13 @@ class PersisterStateManagerTest {
         CompletableFuture<DeleteShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.DeleteStateHandler handler = spy(stateManager.new DeleteStateHandler(
-            groupId,
-            topicId,
-            partition,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            2
+                groupId,
+                topicId,
+                partition,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                2
         ));
 
         stateManager.enqueue(handler);
@@ -3878,12 +3878,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new DeleteShareGroupStateResponse(
-            new DeleteShareGroupStateResponseData()
+                new DeleteShareGroupStateResponseData()
                 .setResults(List.of(
-                    new DeleteShareGroupStateResponseData.DeleteStateResult()
+                        new DeleteShareGroupStateResponseData.DeleteStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new DeleteShareGroupStateResponseData.PartitionResult()
+                                new DeleteShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -3915,13 +3915,13 @@ class PersisterStateManagerTest {
         List<PersisterStateManager.DeleteStateHandler> handlers = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             PersisterStateManager.DeleteStateHandler handler = spy(stateManager.new DeleteStateHandler(
-                groupId,
-                topicId,
-                partition,
-                future,
-                REQUEST_BACKOFF_MS,
-                REQUEST_BACKOFF_MAX_MS,
-                MAX_RPC_RETRY_ATTEMPTS
+                    groupId,
+                    topicId,
+                    partition,
+                    future,
+                    REQUEST_BACKOFF_MS,
+                    REQUEST_BACKOFF_MAX_MS,
+                    MAX_RPC_RETRY_ATTEMPTS
             ));
             handlers.add(handler);
             stateManager.enqueue(handler);
@@ -3957,13 +3957,13 @@ class PersisterStateManagerTest {
         CompletableFuture<DeleteShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.DeleteStateHandler handler = spy(stateManager.new DeleteStateHandler(
-            groupId,
-            topicId,
-            partition,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            2
+                groupId,
+                topicId,
+                partition,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                2
         ));
 
         stateManager.enqueue(handler);
@@ -4013,17 +4013,17 @@ class PersisterStateManagerTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(1)
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> {
@@ -4034,12 +4034,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new InitializeShareGroupStateResponse(
-            new InitializeShareGroupStateResponseData()
+                new InitializeShareGroupStateResponseData()
                 .setResults(List.of(
-                    new InitializeShareGroupStateResponseData.InitializeStateResult()
+                        new InitializeShareGroupStateResponseData.InitializeStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new InitializeShareGroupStateResponseData.PartitionResult()
+                                new InitializeShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -4060,15 +4060,15 @@ class PersisterStateManagerTest {
         CompletableFuture<InitializeShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.InitializeStateHandler handler = spy(stateManager.new InitializeStateHandler(
-            groupId,
-            topicId,
-            partition,
-            stateEpoch,
-            startOffset,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS
+                groupId,
+                topicId,
+                partition,
+                stateEpoch,
+                startOffset,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS
         ));
 
         stateManager.enqueue(handler);
@@ -4120,30 +4120,30 @@ class PersisterStateManagerTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setErrorCode(Errors.NOT_COORDINATOR.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(1)
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> {
@@ -4154,12 +4154,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new InitializeShareGroupStateResponse(
-            new InitializeShareGroupStateResponseData()
+                new InitializeShareGroupStateResponseData()
                 .setResults(List.of(
-                    new InitializeShareGroupStateResponseData.InitializeStateResult()
+                        new InitializeShareGroupStateResponseData.InitializeStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new InitializeShareGroupStateResponseData.PartitionResult()
+                                new InitializeShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -4180,15 +4180,15 @@ class PersisterStateManagerTest {
         CompletableFuture<InitializeShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.InitializeStateHandler handler = spy(stateManager.new InitializeStateHandler(
-            groupId,
-            topicId,
-            partition,
-            stateEpoch,
-            startOffset,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS
+                groupId,
+                topicId,
+                partition,
+                stateEpoch,
+                startOffset,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS
         ));
 
         stateManager.enqueue(handler);
@@ -4236,30 +4236,30 @@ class PersisterStateManagerTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setErrorCode(Errors.COORDINATOR_NOT_AVAILABLE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(1)
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> {
@@ -4270,12 +4270,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new InitializeShareGroupStateResponse(
-            new InitializeShareGroupStateResponseData()
+                new InitializeShareGroupStateResponseData()
                 .setResults(List.of(
-                    new InitializeShareGroupStateResponseData.InitializeStateResult()
+                        new InitializeShareGroupStateResponseData.InitializeStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new InitializeShareGroupStateResponseData.PartitionResult()
+                                new InitializeShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -4296,15 +4296,15 @@ class PersisterStateManagerTest {
         CompletableFuture<InitializeShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.InitializeStateHandler handler = spy(stateManager.new InitializeStateHandler(
-            groupId,
-            topicId,
-            partition,
-            stateEpoch,
-            startOffset,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS
+                groupId,
+                topicId,
+                partition,
+                stateEpoch,
+                startOffset,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS
         ));
 
         stateManager.enqueue(handler);
@@ -4358,12 +4358,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new InitializeShareGroupStateResponse(
-            new InitializeShareGroupStateResponseData()
+                new InitializeShareGroupStateResponseData()
                 .setResults(List.of(
-                    new InitializeShareGroupStateResponseData.InitializeStateResult()
+                        new InitializeShareGroupStateResponseData.InitializeStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new InitializeShareGroupStateResponseData.PartitionResult()
+                                new InitializeShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -4384,15 +4384,15 @@ class PersisterStateManagerTest {
         CompletableFuture<InitializeShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.InitializeStateHandler handler = spy(stateManager.new InitializeStateHandler(
-            groupId,
-            topicId,
-            partition,
-            stateEpoch,
-            startOffset,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS
+                groupId,
+                topicId,
+                partition,
+                stateEpoch,
+                startOffset,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS
         ));
 
         stateManager.enqueue(handler);
@@ -4447,12 +4447,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new InitializeShareGroupStateResponse(
-            new InitializeShareGroupStateResponseData()
+                new InitializeShareGroupStateResponseData()
                 .setResults(List.of(
-                    new InitializeShareGroupStateResponseData.InitializeStateResult()
+                        new InitializeShareGroupStateResponseData.InitializeStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new InitializeShareGroupStateResponseData.PartitionResult()
+                                new InitializeShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code())
                                 .setErrorMessage("")
@@ -4468,12 +4468,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new InitializeShareGroupStateResponse(
-            new InitializeShareGroupStateResponseData()
+                new InitializeShareGroupStateResponseData()
                 .setResults(List.of(
-                    new InitializeShareGroupStateResponseData.InitializeStateResult()
+                        new InitializeShareGroupStateResponseData.InitializeStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new InitializeShareGroupStateResponseData.PartitionResult()
+                                new InitializeShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -4494,15 +4494,15 @@ class PersisterStateManagerTest {
         CompletableFuture<InitializeShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.InitializeStateHandler handler = spy(stateManager.new InitializeStateHandler(
-            groupId,
-            topicId,
-            partition,
-            stateEpoch,
-            startOffset,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS
+                groupId,
+                topicId,
+                partition,
+                stateEpoch,
+                startOffset,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS
         ));
 
         stateManager.enqueue(handler);
@@ -4557,12 +4557,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new InitializeShareGroupStateResponse(
-            new InitializeShareGroupStateResponseData()
+                new InitializeShareGroupStateResponseData()
                 .setResults(List.of(
-                    new InitializeShareGroupStateResponseData.InitializeStateResult()
+                        new InitializeShareGroupStateResponseData.InitializeStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new InitializeShareGroupStateResponseData.PartitionResult()
+                                new InitializeShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code())
                                 .setErrorMessage("")
@@ -4578,12 +4578,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new InitializeShareGroupStateResponse(
-            new InitializeShareGroupStateResponseData()
+                new InitializeShareGroupStateResponseData()
                 .setResults(List.of(
-                    new InitializeShareGroupStateResponseData.InitializeStateResult()
+                        new InitializeShareGroupStateResponseData.InitializeStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new InitializeShareGroupStateResponseData.PartitionResult()
+                                new InitializeShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code())
                                 .setErrorMessage("")
@@ -4599,12 +4599,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new InitializeShareGroupStateResponse(
-            new InitializeShareGroupStateResponseData()
+                new InitializeShareGroupStateResponseData()
                 .setResults(List.of(
-                    new InitializeShareGroupStateResponseData.InitializeStateResult()
+                        new InitializeShareGroupStateResponseData.InitializeStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new InitializeShareGroupStateResponseData.PartitionResult()
+                                new InitializeShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -4625,15 +4625,15 @@ class PersisterStateManagerTest {
         CompletableFuture<InitializeShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.InitializeStateHandler handler = spy(stateManager.new InitializeStateHandler(
-            groupId,
-            topicId,
-            partition,
-            stateEpoch,
-            startOffset,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            2
+                groupId,
+                topicId,
+                partition,
+                stateEpoch,
+                startOffset,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                2
         ));
 
         stateManager.enqueue(handler);
@@ -4688,12 +4688,12 @@ class PersisterStateManagerTest {
 
             return requestGroupId.equals(groupId) && requestTopicId == topicId && requestPartition == partition;
         }, new InitializeShareGroupStateResponse(
-            new InitializeShareGroupStateResponseData()
+                new InitializeShareGroupStateResponseData()
                 .setResults(List.of(
-                    new InitializeShareGroupStateResponseData.InitializeStateResult()
+                        new InitializeShareGroupStateResponseData.InitializeStateResult()
                         .setTopicId(topicId)
                         .setPartitions(List.of(
-                            new InitializeShareGroupStateResponseData.PartitionResult()
+                                new InitializeShareGroupStateResponseData.PartitionResult()
                                 .setPartition(partition)
                                 .setErrorCode(Errors.NONE.code())
                                 .setErrorMessage("")
@@ -4725,15 +4725,15 @@ class PersisterStateManagerTest {
         List<PersisterStateManager.InitializeStateHandler> handlers = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             PersisterStateManager.InitializeStateHandler handler = spy(stateManager.new InitializeStateHandler(
-                groupId,
-                topicId,
-                partition,
-                stateEpoch,
-                startOffset,
-                future,
-                REQUEST_BACKOFF_MS,
-                REQUEST_BACKOFF_MAX_MS,
-                MAX_RPC_RETRY_ATTEMPTS
+                    groupId,
+                    topicId,
+                    partition,
+                    stateEpoch,
+                    startOffset,
+                    future,
+                    REQUEST_BACKOFF_MS,
+                    REQUEST_BACKOFF_MAX_MS,
+                    MAX_RPC_RETRY_ATTEMPTS
             ));
             handlers.add(handler);
             stateManager.enqueue(handler);
@@ -4769,15 +4769,15 @@ class PersisterStateManagerTest {
         CompletableFuture<InitializeShareGroupStateResponse> future = new CompletableFuture<>();
 
         PersisterStateManager.InitializeStateHandler handler = spy(stateManager.new InitializeStateHandler(
-            groupId,
-            topicId,
-            partition,
-            0,
-            0L,
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            2
+                groupId,
+                topicId,
+                partition,
+                0,
+                0L,
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                2
         ));
 
         stateManager.enqueue(handler);
@@ -4854,13 +4854,13 @@ class PersisterStateManagerTest {
         @Override
         public String toString() {
             return "(" +
-                "hasResponse:" + hasResponse + ", " +
-                "wasDisconnected:" + wasDisconnected + ", " +
-                "wasTimedOut:" + wasTimedOut + ", " +
-                "authException:" + authException + ", " +
-                "versionMismatch:" + versionMismatch + ", " +
-                "expErr:" + (exp.isPresent() ? exp.get() : "<empty>") +
-                ")";
+                    "hasResponse:" + hasResponse + ", " +
+                    "wasDisconnected:" + wasDisconnected + ", " +
+                    "wasTimedOut:" + wasTimedOut + ", " +
+                    "authException:" + authException + ", " +
+                    "versionMismatch:" + versionMismatch + ", " +
+                    "expErr:" + (exp.isPresent() ? exp.get() : "<empty>") +
+                    ")";
         }
     }
 
@@ -4913,14 +4913,14 @@ class PersisterStateManagerTest {
         CompletableFuture<TestStateHandler.TestHandlerResponse> future = new CompletableFuture<>();
 
         TestStateHandler handler = spy(new TestStateHandler(
-            psm,
-            key.groupId(),
-            key.topicId(),
-            key.partition(),
-            future,
-            REQUEST_BACKOFF_MS,
-            REQUEST_BACKOFF_MAX_MS,
-            MAX_RPC_RETRY_ATTEMPTS
+                psm,
+                key.groupId(),
+                key.topicId(),
+                key.partition(),
+                future,
+                REQUEST_BACKOFF_MS,
+                REQUEST_BACKOFF_MAX_MS,
+                MAX_RPC_RETRY_ATTEMPTS
         ) {
             @Override
             protected AbstractRequest.Builder<? extends AbstractRequest> requestBuilder() {

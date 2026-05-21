@@ -52,9 +52,9 @@ public class StringFormatterTest {
                 "ANIMAL  NUMBER INDEX %n" +
                 "lion    1      12345 %n" +
                 "manatee 50     1     %n"),
-            StringFormatter.prettyPrintGrid(
-                List.of(List.of("ANIMAL", "NUMBER", "INDEX"),
-                    List.of("lion", "1", "12345"),
-                    List.of("manatee", "50", "1"))));
+                StringFormatter.prettyPrintGrid(
+                    List.of(List.of("ANIMAL", "NUMBER", "INDEX"),
+                        List.of("lion", "1", "12345"),
+                        List.of("manatee", "50", "1"))));
     }
 }

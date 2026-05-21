@@ -41,16 +41,16 @@ public class GroupCoordinatorRecordSerdeTest {
     public void testSerializeKey() {
         GroupCoordinatorRecordSerde serializer = new GroupCoordinatorRecordSerde();
         CoordinatorRecord record = CoordinatorRecord.record(
-            new ConsumerGroupMetadataKey().setGroupId("group"),
-            new ApiMessageAndVersion(
-                new ConsumerGroupMetadataValue().setEpoch(10),
-                (short) 0
+                new ConsumerGroupMetadataKey().setGroupId("group"),
+                new ApiMessageAndVersion(
+                    new ConsumerGroupMetadataValue().setEpoch(10),
+                    (short) 0
             )
         );
 
         assertArrayEquals(
-            MessageUtil.toVersionPrefixedBytes(record.key().apiKey(), record.key()),
-            serializer.serializeKey(record)
+                MessageUtil.toVersionPrefixedBytes(record.key().apiKey(), record.key()),
+                serializer.serializeKey(record)
         );
     }
 
@@ -58,16 +58,16 @@ public class GroupCoordinatorRecordSerdeTest {
     public void testSerializeValue() {
         GroupCoordinatorRecordSerde serializer = new GroupCoordinatorRecordSerde();
         CoordinatorRecord record = CoordinatorRecord.record(
-            new ConsumerGroupMetadataKey().setGroupId("group"),
-            new ApiMessageAndVersion(
-                new ConsumerGroupMetadataValue().setEpoch(10),
-                (short) 0
+                new ConsumerGroupMetadataKey().setGroupId("group"),
+                new ApiMessageAndVersion(
+                    new ConsumerGroupMetadataValue().setEpoch(10),
+                    (short) 0
             )
         );
 
         assertArrayEquals(
-            MessageUtil.toVersionPrefixedBytes(record.value().version(), record.value().message()),
-            serializer.serializeValue(record)
+                MessageUtil.toVersionPrefixedBytes(record.value().version(), record.value().message()),
+                serializer.serializeValue(record)
         );
     }
 
@@ -75,7 +75,7 @@ public class GroupCoordinatorRecordSerdeTest {
     public void testSerializeNullValue() {
         GroupCoordinatorRecordSerde serializer = new GroupCoordinatorRecordSerde();
         CoordinatorRecord record = CoordinatorRecord.tombstone(
-            new ConsumerGroupMetadataKey().setGroupId("group")
+                new ConsumerGroupMetadataKey().setGroupId("group")
         );
 
         assertNull(serializer.serializeValue(record));
@@ -89,8 +89,8 @@ public class GroupCoordinatorRecordSerdeTest {
         ByteBuffer keyBuffer = MessageUtil.toCoordinatorTypePrefixedByteBuffer(key);
 
         ApiMessageAndVersion value = new ApiMessageAndVersion(
-            new ConsumerGroupMetadataValue().setEpoch(10),
-            (short) 0
+                new ConsumerGroupMetadataValue().setEpoch(10),
+                (short) 0
         );
         ByteBuffer valueBuffer = MessageUtil.toVersionPrefixedByteBuffer(value.version(), value.message());
 
@@ -122,8 +122,8 @@ public class GroupCoordinatorRecordSerdeTest {
         ByteBuffer valueBuffer = ByteBuffer.allocate(64);
 
         Deserializer.UnknownRecordTypeException ex =
-            assertThrows(Deserializer.UnknownRecordTypeException.class,
-                () -> serde.deserialize(keyBuffer, valueBuffer));
+                assertThrows(Deserializer.UnknownRecordTypeException.class,
+                    () -> serde.deserialize(keyBuffer, valueBuffer));
         assertEquals((short) 255, ex.unknownType());
     }
 
@@ -135,8 +135,8 @@ public class GroupCoordinatorRecordSerdeTest {
         ByteBuffer valueBuffer = ByteBuffer.allocate(64);
 
         RuntimeException ex =
-            assertThrows(RuntimeException.class,
-                () -> serde.deserialize(keyBuffer, valueBuffer));
+                assertThrows(RuntimeException.class,
+                    () -> serde.deserialize(keyBuffer, valueBuffer));
         assertEquals("Could not read version from key's buffer.", ex.getMessage());
     }
 
@@ -145,16 +145,16 @@ public class GroupCoordinatorRecordSerdeTest {
         GroupCoordinatorRecordSerde serde = new GroupCoordinatorRecordSerde();
 
         ApiMessageAndVersion key = new ApiMessageAndVersion(
-            new ConsumerGroupMetadataKey().setGroupId("foo"),
-            (short) 3
+                new ConsumerGroupMetadataKey().setGroupId("foo"),
+                (short) 3
         );
         ByteBuffer keyBuffer = MessageUtil.toVersionPrefixedByteBuffer(key.version(), key.message());
 
         ByteBuffer valueBuffer = ByteBuffer.allocate(0);
 
         RuntimeException ex =
-            assertThrows(RuntimeException.class,
-                () -> serde.deserialize(keyBuffer, valueBuffer));
+                assertThrows(RuntimeException.class,
+                    () -> serde.deserialize(keyBuffer, valueBuffer));
         assertEquals("Could not read version from value's buffer.", ex.getMessage());
     }
 
@@ -171,10 +171,10 @@ public class GroupCoordinatorRecordSerdeTest {
         valueBuffer.rewind();
 
         RuntimeException ex =
-            assertThrows(RuntimeException.class,
-                () -> serde.deserialize(keyBuffer, valueBuffer));
+                assertThrows(RuntimeException.class,
+                    () -> serde.deserialize(keyBuffer, valueBuffer));
         assertTrue(ex.getMessage().startsWith("Could not read record with version 3 from key's buffer due to"),
-            ex.getMessage());
+                ex.getMessage());
     }
 
     @Test
@@ -182,8 +182,8 @@ public class GroupCoordinatorRecordSerdeTest {
         GroupCoordinatorRecordSerde serde = new GroupCoordinatorRecordSerde();
 
         ApiMessageAndVersion key = new ApiMessageAndVersion(
-            new ConsumerGroupMetadataKey().setGroupId("foo"),
-            (short) 3
+                new ConsumerGroupMetadataKey().setGroupId("foo"),
+                (short) 3
         );
         ByteBuffer keyBuffer = MessageUtil.toVersionPrefixedByteBuffer(key.version(), key.message());
 
@@ -192,10 +192,10 @@ public class GroupCoordinatorRecordSerdeTest {
         valueBuffer.rewind();
 
         RuntimeException ex =
-            assertThrows(RuntimeException.class,
-                () -> serde.deserialize(keyBuffer, valueBuffer));
+                assertThrows(RuntimeException.class,
+                    () -> serde.deserialize(keyBuffer, valueBuffer));
         assertTrue(ex.getMessage().startsWith("Could not read record with version 0 from value's buffer due to"),
-            ex.getMessage());
+                ex.getMessage());
     }
 
     @Test
@@ -210,8 +210,8 @@ public class GroupCoordinatorRecordSerdeTest {
         valueBuffer1.rewind();
 
         Deserializer.UnknownRecordVersionException ex =
-            assertThrows(Deserializer.UnknownRecordVersionException.class,
-                () -> serde.deserialize(keyBuffer, valueBuffer1));
+                assertThrows(Deserializer.UnknownRecordVersionException.class,
+                    () -> serde.deserialize(keyBuffer, valueBuffer1));
         assertEquals(key.apiKey(), ex.type());
         assertEquals(ConsumerGroupMetadataValue.HIGHEST_SUPPORTED_VERSION + 1, ex.unknownVersion());
 
@@ -221,7 +221,7 @@ public class GroupCoordinatorRecordSerdeTest {
         valueBuffer2.rewind();
 
         ex = assertThrows(Deserializer.UnknownRecordVersionException.class,
-            () -> serde.deserialize(keyBuffer, valueBuffer2));
+                () -> serde.deserialize(keyBuffer, valueBuffer2));
         assertEquals(key.apiKey(), ex.type());
         assertEquals(ConsumerGroupMetadataValue.LOWEST_SUPPORTED_VERSION - 1, ex.unknownVersion());
     }
@@ -243,8 +243,8 @@ public class GroupCoordinatorRecordSerdeTest {
             ApiMessageAndVersion valMessageAndVersion = new ApiMessageAndVersion(val, version);
 
             CoordinatorRecord record = serde.deserialize(
-                MessageUtil.toCoordinatorTypePrefixedByteBuffer(key),
-                MessageUtil.toVersionPrefixedByteBuffer(version, val)
+                    MessageUtil.toCoordinatorTypePrefixedByteBuffer(key),
+                    MessageUtil.toVersionPrefixedByteBuffer(version, val)
             );
 
             assertEquals(key, record.key());

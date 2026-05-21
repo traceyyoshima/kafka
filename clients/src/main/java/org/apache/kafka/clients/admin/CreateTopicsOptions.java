@@ -53,7 +53,6 @@ public class CreateTopicsOptions extends AbstractOptions<CreateTopicsOptions> {
         return validateOnly;
     }
 
-
     /**
      * Set to true if quota violation should be automatically retried.
      */

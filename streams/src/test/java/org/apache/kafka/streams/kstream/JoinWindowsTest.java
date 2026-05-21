@@ -149,71 +149,71 @@ public class JoinWindowsTest {
     @Test
     public void equalsAndHashcodeShouldBeValidForPositiveCases() {
         verifyEquality(
-            JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(3)),
-            JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(3))
+                JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(3)),
+                JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(3))
         );
 
         verifyEquality(
-            JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(2)),
-            JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(2))
+                JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(2)),
+                JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(2))
         );
 
         verifyEquality(
-            JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(3)).after(ofMillis(2)),
-            JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(3)).after(ofMillis(2))
+                JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(3)).after(ofMillis(2)),
+                JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(3)).after(ofMillis(2))
         );
 
         verifyEquality(
-            JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(3)).before(ofMillis(2)),
-            JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(3)).before(ofMillis(2))
+                JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(3)).before(ofMillis(2)),
+                JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(3)).before(ofMillis(2))
         );
 
         verifyEquality(
-            JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(2)).after(ofMillis(4)),
-            JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(2)).after(ofMillis(4))
+                JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(2)).after(ofMillis(4)),
+                JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(2)).after(ofMillis(4))
         );
 
         verifyEquality(
-            JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(2)).before(ofMillis(4)),
-            JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(2)).before(ofMillis(4))
+                JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(2)).before(ofMillis(4)),
+                JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(2)).before(ofMillis(4))
         );
     }
 
     @Test
     public void equalsAndHashcodeShouldBeValidForNegativeCases() {
         verifyInEquality(
-            JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(9)),
-            JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(3))
+                JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(9)),
+                JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(3))
         );
 
         verifyInEquality(
-            JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(9)),
-            JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(2))
+                JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(9)),
+                JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(2))
         );
 
         verifyInEquality(
-            JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(3)).after(ofMillis(9)),
-            JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(3)).after(ofMillis(2))
+                JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(3)).after(ofMillis(9)),
+                JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(3)).after(ofMillis(2))
         );
 
         verifyInEquality(
-            JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(3)).before(ofMillis(9)),
-            JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(3)).before(ofMillis(2))
+                JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(3)).before(ofMillis(9)),
+                JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(3)).before(ofMillis(2))
         );
 
         verifyInEquality(
-            JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(3)).before(ofMillis(9)).after(ofMillis(2)),
-            JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(3)).before(ofMillis(1)).after(ofMillis(2))
+                JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(3)).before(ofMillis(9)).after(ofMillis(2)),
+                JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(3)).before(ofMillis(1)).after(ofMillis(2))
         );
 
         verifyInEquality(
-            JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(3)).before(ofMillis(1)).after(ofMillis(9)),
-            JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(3)).before(ofMillis(1)).after(ofMillis(2))
+                JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(3)).before(ofMillis(1)).after(ofMillis(9)),
+                JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(3)).before(ofMillis(1)).after(ofMillis(2))
         );
 
         verifyInEquality(
-            JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(9)).before(ofMillis(1)).after(ofMillis(2)),
-            JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(3)).before(ofMillis(1)).after(ofMillis(2))
+                JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(9)).before(ofMillis(1)).after(ofMillis(2)),
+                JoinWindows.ofTimeDifferenceAndGrace(ofMillis(3), ofMillis(3)).before(ofMillis(1)).after(ofMillis(2))
         );
     }
 }

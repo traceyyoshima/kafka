@@ -51,9 +51,9 @@ public class KStreamPrintTest {
         byteOutStream = new ByteArrayOutputStream();
 
         final KStreamPrint<Integer, String> kStreamPrint = new KStreamPrint<>(new PrintForeachAction<>(
-            byteOutStream,
-            (key, value) -> String.format("%d, %s", key, value),
-            "test-stream"));
+                byteOutStream,
+                (key, value) -> String.format("%d, %s", key, value),
+                "test-stream"));
 
         printProcessor = kStreamPrint.get();
 
@@ -69,10 +69,10 @@ public class KStreamPrintTest {
                 new KeyValue<>(3, "three"));
 
         final String[] expectedResult = {
-            "[test-stream]: 0, zero",
-            "[test-stream]: 1, one",
-            "[test-stream]: 2, two",
-            "[test-stream]: 3, three"};
+                "[test-stream]: 0, zero",
+                "[test-stream]: 1, one",
+                "[test-stream]: 2, two",
+                "[test-stream]: 3, three"};
 
         for (final KeyValue<Integer, String> record: inputRecords) {
             final Record<Integer, String> r = new Record<>(record.key, record.value, 0L);

@@ -113,9 +113,9 @@ public class TimestampedWindowStoreWithHeadersSerializerSideEffectTest {
             } else {
                 // Put with timestamp and headers
                 store.put(
-                    record.key(),
-                    ValueTimestampHeaders.make(record.value(), record.timestamp(), record.headers()),
-                    windowStartTimestamp
+                        record.key(),
+                        ValueTimestampHeaders.make(record.value(), record.timestamp(), record.headers()),
+                        windowStartTimestamp
                 );
             }
 
@@ -129,14 +129,14 @@ public class TimestampedWindowStoreWithHeadersSerializerSideEffectTest {
 
         // Create a timestamped window store with headers using our custom serializer
         builder.addStateStore(
-            Stores.timestampedWindowStoreWithHeadersBuilder(
-                Stores.persistentTimestampedWindowStore(
-                    STORE_NAME,
-                    Duration.ofMillis(WINDOW_SIZE_MS),
-                    Duration.ofMillis(WINDOW_SIZE_MS),
-                    false
+                Stores.timestampedWindowStoreWithHeadersBuilder(
+                    Stores.persistentTimestampedWindowStore(
+                        STORE_NAME,
+                        Duration.ofMillis(WINDOW_SIZE_MS),
+                        Duration.ofMillis(WINDOW_SIZE_MS),
+                        false
                 ),
-                new HeaderAddingSerde(),  // Custom key serializer that adds headers
+                    new HeaderAddingSerde(),  // Custom key serializer that adds headers
                 Serdes.String()
             )
         );
@@ -155,24 +155,24 @@ public class TimestampedWindowStoreWithHeadersSerializerSideEffectTest {
 
         try (TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
             final TestInputTopic<String, String> inputTopic = driver.createInputTopic(
-                INPUT_TOPIC,
-                Serdes.String().serializer(),
-                Serdes.String().serializer()
+                    INPUT_TOPIC,
+                    Serdes.String().serializer(),
+                    Serdes.String().serializer()
             );
 
             final String changelogTopic = "test-window-app-" + STORE_NAME + "-changelog";
             final TestOutputTopic<String, String> changelogOutputTopic =
-                driver.createOutputTopic(
-                    changelogTopic,
-                    Serdes.String().deserializer(),
-                    Serdes.String().deserializer()
+                    driver.createOutputTopic(
+                        changelogTopic,
+                        Serdes.String().deserializer(),
+                        Serdes.String().deserializer()
                 );
 
             final TestOutputTopic<String, String> outputTopic =
-                driver.createOutputTopic(
-                    OUTPUT_TOPIC,
-                    Serdes.String().deserializer(),
-                    Serdes.String().deserializer()
+                    driver.createOutputTopic(
+                        OUTPUT_TOPIC,
+                        Serdes.String().deserializer(),
+                        Serdes.String().deserializer()
                 );
 
             inputTopic.pipeInput("key1", "value1", 1000L);
@@ -192,7 +192,7 @@ public class TimestampedWindowStoreWithHeadersSerializerSideEffectTest {
             assertEquals("value1", putOutputRecord.value());
             final Header outputMetadataHeader = putOutputRecord.headers().lastHeader("serializer-metadata");
             assertNotNull(outputMetadataHeader,
-                "Output record SHOULD contain serializer-metadata header for normal put operations");
+                    "Output record SHOULD contain serializer-metadata header for normal put operations");
             assertEquals("window-test-value", new String(outputMetadataHeader.value(), StandardCharsets.UTF_8));
 
             inputTopic.pipeInput("key1", "put(null)", 1000L);

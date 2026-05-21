@@ -51,11 +51,11 @@ public class PluginRecommenderTest {
     public void testConnectorVersionRecommenders() {
         PluginsRecommenders recommender = new PluginsRecommenders(MULTI_VERSION_PLUGINS);
         for (String connectorClass : List.of(
-            VersionedPluginBuilder.VersionedTestPlugin.SINK_CONNECTOR.className(),
-            VersionedPluginBuilder.VersionedTestPlugin.SOURCE_CONNECTOR.className())
+                VersionedPluginBuilder.VersionedTestPlugin.SINK_CONNECTOR.className(),
+                VersionedPluginBuilder.VersionedTestPlugin.SOURCE_CONNECTOR.className())
         ) {
             Set<String> versions = recommender.connectorPluginVersionRecommender().validValues(
-                ConnectorConfig.CONNECTOR_CLASS_CONFIG, Map.of(ConnectorConfig.CONNECTOR_CLASS_CONFIG, connectorClass)
+                    ConnectorConfig.CONNECTOR_CLASS_CONFIG, Map.of(ConnectorConfig.CONNECTOR_CLASS_CONFIG, connectorClass)
             ).stream().map(Object::toString).collect(Collectors.toSet());
             Set<String> allVersions = allVersionsOf(connectorClass);
             Assertions.assertEquals(allVersions.size(), versions.size());

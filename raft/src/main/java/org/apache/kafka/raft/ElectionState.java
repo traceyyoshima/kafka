@@ -134,12 +134,12 @@ public final class ElectionState {
             data.setCurrentVoters(dataVoters);
         } else if (version == 1) {
             data.setVotedDirectoryId(
-                votedKey.flatMap(ReplicaKey::directoryId).orElse(ReplicaKey.NO_DIRECTORY_ID)
+                    votedKey.flatMap(ReplicaKey::directoryId).orElse(ReplicaKey.NO_DIRECTORY_ID)
             );
         } else {
             throw new IllegalStateException(
-                String.format(
-                    "File quorum state store doesn't handle supported version %d", version
+                    String.format(
+                        "File quorum state store doesn't handle supported version %d", version
                 )
             );
         }
@@ -150,11 +150,11 @@ public final class ElectionState {
     @Override
     public String toString() {
         return String.format(
-            "Election(epoch=%d, leaderId=%s, votedKey=%s, voters=%s)",
-            epoch,
-            leaderId,
-            votedKey,
-            voters
+                "Election(epoch=%d, leaderId=%s, votedKey=%s, voters=%s)",
+                epoch,
+                leaderId,
+                votedKey,
+                voters
         );
     }
 
@@ -208,10 +208,10 @@ public final class ElectionState {
             Optional.of(ReplicaKey.of(data.votedId(), data.votedDirectoryId()));
 
         return new ElectionState(
-            data.leaderEpoch(),
-            data.leaderId() == UNKNOWN_LEADER_ID ? OptionalInt.empty() : OptionalInt.of(data.leaderId()),
-            votedKey,
-            data.currentVoters().stream().map(QuorumStateData.Voter::voterId).collect(Collectors.toSet())
+                data.leaderEpoch(),
+                data.leaderId() == UNKNOWN_LEADER_ID ? OptionalInt.empty() : OptionalInt.of(data.leaderId()),
+                votedKey,
+                data.currentVoters().stream().map(QuorumStateData.Voter::voterId).collect(Collectors.toSet())
         );
     }
 }

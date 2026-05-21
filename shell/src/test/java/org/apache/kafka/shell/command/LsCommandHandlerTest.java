@@ -37,17 +37,17 @@ public class LsCommandHandlerTest {
     @Test
     public void testCalculateColumnSchema() {
         assertEquals(new ColumnSchema(1, 3),
-            LsCommandHandler.calculateColumnSchema(OptionalInt.empty(),
-                List.of("abc", "def", "ghi")));
+                LsCommandHandler.calculateColumnSchema(OptionalInt.empty(),
+                    List.of("abc", "def", "ghi")));
         assertEquals(new ColumnSchema(1, 2),
-            LsCommandHandler.calculateColumnSchema(OptionalInt.of(0),
-                List.of("abc", "def")));
+                LsCommandHandler.calculateColumnSchema(OptionalInt.of(0),
+                    List.of("abc", "def")));
         assertEquals(new ColumnSchema(3, 1).setColumnWidths(3, 8, 6),
-            LsCommandHandler.calculateColumnSchema(OptionalInt.of(80),
-                List.of("a", "abcdef", "beta")));
+                LsCommandHandler.calculateColumnSchema(OptionalInt.of(80),
+                    List.of("a", "abcdef", "beta")));
         assertEquals(new ColumnSchema(2, 3).setColumnWidths(10, 7),
-            LsCommandHandler.calculateColumnSchema(OptionalInt.of(18),
-                List.of("alphabet", "beta", "gamma", "theta", "zeta")));
+                LsCommandHandler.calculateColumnSchema(OptionalInt.of(18),
+                    List.of("alphabet", "beta", "gamma", "theta", "zeta")));
     }
 
     @Test
@@ -56,12 +56,12 @@ public class LsCommandHandlerTest {
             try (PrintWriter writer = new PrintWriter(new OutputStreamWriter(
                     stream, StandardCharsets.UTF_8))) {
                 LsCommandHandler.printEntries(writer, "", OptionalInt.of(18),
-                    List.of("alphabet", "beta", "gamma", "theta", "zeta"));
+                        List.of("alphabet", "beta", "gamma", "theta", "zeta"));
             }
             assertEquals(String.join(String.format("%n"), List.of(
-                "alphabet  theta",
-                "beta      zeta",
-                "gamma")), stream.toString().trim());
+                    "alphabet  theta",
+                    "beta      zeta",
+                    "gamma")), stream.toString().trim());
         }
     }
 
@@ -71,26 +71,26 @@ public class LsCommandHandlerTest {
             try (PrintWriter writer = new PrintWriter(new OutputStreamWriter(
                     stream, StandardCharsets.UTF_8))) {
                 LsCommandHandler.printTargets(writer, OptionalInt.of(18),
-                    List.of("foo", "foobarbaz", "quux"), List.of(
-                        new TargetDirectory("/some/dir",
-                            List.of("supercalifragalistic")),
-                        new TargetDirectory("/some/other/dir",
-                            List.of("capability", "delegation", "elephant",
-                                "fungible", "green"))));
+                        List.of("foo", "foobarbaz", "quux"), List.of(
+                            new TargetDirectory("/some/dir",
+                                List.of("supercalifragalistic")),
+                            new TargetDirectory("/some/other/dir",
+                                List.of("capability", "delegation", "elephant",
+                                    "fungible", "green"))));
             }
             assertEquals(String.join(String.format("%n"), List.of(
-                "foo        quux",
-                "foobarbaz  ",
-                "",
-                "/some/dir:",
-                "supercalifragalistic",
-                "",
-                "/some/other/dir:",
-                "capability",
-                "delegation",
-                "elephant",
-                "fungible",
-                "green")), stream.toString().trim());
+                    "foo        quux",
+                    "foobarbaz  ",
+                    "",
+                    "/some/dir:",
+                    "supercalifragalistic",
+                    "",
+                    "/some/other/dir:",
+                    "capability",
+                    "delegation",
+                    "elephant",
+                    "fungible",
+                    "green")), stream.toString().trim());
         }
     }
 }

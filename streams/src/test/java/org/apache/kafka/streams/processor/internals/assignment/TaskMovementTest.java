@@ -71,14 +71,14 @@ public class TaskMovementTest {
         final ClientState client3 = getClientStateWithActiveAssignment(Set.of(TASK_0_2, TASK_1_2), allTasks, allTasks);
 
         assertThat(
-            assignActiveTaskMovements(
-                tasksToCaughtUpClients,
-                tasksToClientByLag,
-                getClientStatesMap(client1, client2, client3),
-                new TreeMap<>(),
-                new AtomicInteger(maxWarmupReplicas)
+                assignActiveTaskMovements(
+                    tasksToCaughtUpClients,
+                    tasksToClientByLag,
+                    getClientStatesMap(client1, client2, client3),
+                    new TreeMap<>(),
+                    new AtomicInteger(maxWarmupReplicas)
             ),
-            is(0)
+                is(0)
         );
     }
 
@@ -92,30 +92,30 @@ public class TaskMovementTest {
         final ClientState client3 = getClientStateWithActiveAssignment(Set.of(TASK_0_2, TASK_1_2), Set.of(), allTasks);
 
         final Map<TaskId, SortedSet<ProcessId>> tasksToCaughtUpClients = mkMap(
-            mkEntry(TASK_0_0, emptySortedSet()),
-            mkEntry(TASK_0_1, emptySortedSet()),
-            mkEntry(TASK_0_2, emptySortedSet()),
-            mkEntry(TASK_1_0, emptySortedSet()),
-            mkEntry(TASK_1_1, emptySortedSet()),
-            mkEntry(TASK_1_2, emptySortedSet())
+                mkEntry(TASK_0_0, emptySortedSet()),
+                mkEntry(TASK_0_1, emptySortedSet()),
+                mkEntry(TASK_0_2, emptySortedSet()),
+                mkEntry(TASK_1_0, emptySortedSet()),
+                mkEntry(TASK_1_1, emptySortedSet()),
+                mkEntry(TASK_1_2, emptySortedSet())
         );
         final Map<TaskId, SortedSet<ProcessId>> tasksToClientByLag = mkMap(
-            mkEntry(TASK_0_0, mkOrderedSet(PID_1, PID_2, PID_3)),
-            mkEntry(TASK_0_1, mkOrderedSet(PID_1, PID_2, PID_3)),
-            mkEntry(TASK_0_2, mkOrderedSet(PID_1, PID_2, PID_3)),
-            mkEntry(TASK_1_0, mkOrderedSet(PID_1, PID_2, PID_3)),
-            mkEntry(TASK_1_1, mkOrderedSet(PID_1, PID_2, PID_3)),
-            mkEntry(TASK_1_2, mkOrderedSet(PID_1, PID_2, PID_3))
+                mkEntry(TASK_0_0, mkOrderedSet(PID_1, PID_2, PID_3)),
+                mkEntry(TASK_0_1, mkOrderedSet(PID_1, PID_2, PID_3)),
+                mkEntry(TASK_0_2, mkOrderedSet(PID_1, PID_2, PID_3)),
+                mkEntry(TASK_1_0, mkOrderedSet(PID_1, PID_2, PID_3)),
+                mkEntry(TASK_1_1, mkOrderedSet(PID_1, PID_2, PID_3)),
+                mkEntry(TASK_1_2, mkOrderedSet(PID_1, PID_2, PID_3))
         );
         assertThat(
-            assignActiveTaskMovements(
-                tasksToCaughtUpClients,
-                tasksToClientByLag,
-                getClientStatesMap(client1, client2, client3),
-                new TreeMap<>(),
-                new AtomicInteger(maxWarmupReplicas)
+                assignActiveTaskMovements(
+                    tasksToCaughtUpClients,
+                    tasksToClientByLag,
+                    getClientStatesMap(client1, client2, client3),
+                    new TreeMap<>(),
+                    new AtomicInteger(maxWarmupReplicas)
             ),
-            is(0)
+                is(0)
         );
     }
 
@@ -129,26 +129,26 @@ public class TaskMovementTest {
         final Map<ProcessId, ClientState> clientStates = getClientStatesMap(client1, client2, client3);
 
         final Map<TaskId, SortedSet<ProcessId>> tasksToCaughtUpClients = mkMap(
-            mkEntry(TASK_0_0, mkSortedSet(PID_1)),
-            mkEntry(TASK_0_1, mkSortedSet(PID_3)),
-            mkEntry(TASK_0_2, mkSortedSet(PID_2))
+                mkEntry(TASK_0_0, mkSortedSet(PID_1)),
+                mkEntry(TASK_0_1, mkSortedSet(PID_3)),
+                mkEntry(TASK_0_2, mkSortedSet(PID_2))
         );
         final Map<TaskId, SortedSet<ProcessId>> tasksToClientByLag = mkMap(
-            mkEntry(TASK_0_0, mkOrderedSet(PID_1, PID_2, PID_3)),
-            mkEntry(TASK_0_1, mkOrderedSet(PID_3, PID_1, PID_2)),
-            mkEntry(TASK_0_2, mkOrderedSet(PID_2, PID_1, PID_3))
+                mkEntry(TASK_0_0, mkOrderedSet(PID_1, PID_2, PID_3)),
+                mkEntry(TASK_0_1, mkOrderedSet(PID_3, PID_1, PID_2)),
+                mkEntry(TASK_0_2, mkOrderedSet(PID_2, PID_1, PID_3))
         );
 
         assertThat(
-            "should have assigned movements",
-            assignActiveTaskMovements(
-                tasksToCaughtUpClients,
-                tasksToClientByLag,
-                clientStates,
-                new TreeMap<>(),
-                new AtomicInteger(maxWarmupReplicas)
+                "should have assigned movements",
+                assignActiveTaskMovements(
+                    tasksToCaughtUpClients,
+                    tasksToClientByLag,
+                    clientStates,
+                    new TreeMap<>(),
+                    new AtomicInteger(maxWarmupReplicas)
             ),
-            is(2)
+                is(2)
         );
         // The active tasks have changed to the ones that each client is caught up on
         assertThat(client1, hasProperty("activeTasks", ClientState::activeTasks, Set.of(TASK_0_0)));
@@ -218,26 +218,26 @@ public class TaskMovementTest {
         final Map<ProcessId, ClientState> clientStates = getClientStatesMap(client1, client2, client3);
 
         final Map<TaskId, SortedSet<ProcessId>> tasksToCaughtUpClients = mkMap(
-            mkEntry(TASK_0_0, mkSortedSet(PID_1)),
-            mkEntry(TASK_0_1, mkSortedSet(PID_3)),
-            mkEntry(TASK_0_2, mkSortedSet(PID_2))
+                mkEntry(TASK_0_0, mkSortedSet(PID_1)),
+                mkEntry(TASK_0_1, mkSortedSet(PID_3)),
+                mkEntry(TASK_0_2, mkSortedSet(PID_2))
         );
         final Map<TaskId, SortedSet<ProcessId>> tasksToClientByLag = mkMap(
-            mkEntry(TASK_0_0, mkOrderedSet(PID_1, PID_2, PID_3)),
-            mkEntry(TASK_0_1, mkOrderedSet(PID_3, PID_1, PID_2)),
-            mkEntry(TASK_0_2, mkOrderedSet(PID_2, PID_1, PID_3))
+                mkEntry(TASK_0_0, mkOrderedSet(PID_1, PID_2, PID_3)),
+                mkEntry(TASK_0_1, mkOrderedSet(PID_3, PID_1, PID_2)),
+                mkEntry(TASK_0_2, mkOrderedSet(PID_2, PID_1, PID_3))
         );
 
         assertThat(
-            "should have assigned movements",
-            assignActiveTaskMovements(
-                tasksToCaughtUpClients,
-                tasksToClientByLag,
-                clientStates,
-                new TreeMap<>(),
-                new AtomicInteger(maxWarmupReplicas)
+                "should have assigned movements",
+                assignActiveTaskMovements(
+                    tasksToCaughtUpClients,
+                    tasksToClientByLag,
+                    clientStates,
+                    new TreeMap<>(),
+                    new AtomicInteger(maxWarmupReplicas)
             ),
-            is(2)
+                is(2)
         );
         // The active tasks have changed to the ones that each client is caught up on
         assertThat(client1, hasProperty("activeTasks", ClientState::activeTasks, Set.of(TASK_0_0)));
@@ -260,22 +260,22 @@ public class TaskMovementTest {
         final Map<ProcessId, ClientState> clientStates = getClientStatesMap(client1, client2);
 
         final Map<TaskId, SortedSet<ProcessId>> tasksToCaughtUpClients = mkMap(
-            mkEntry(TASK_0_0, mkSortedSet(PID_1))
+                mkEntry(TASK_0_0, mkSortedSet(PID_1))
         );
         final Map<TaskId, SortedSet<ProcessId>> tasksToClientByLag = mkMap(
-            mkEntry(TASK_0_0, mkOrderedSet(PID_1, PID_2))
+                mkEntry(TASK_0_0, mkOrderedSet(PID_1, PID_2))
         );
 
         assertThat(
-            "should have assigned movements",
-            assignActiveTaskMovements(
-                tasksToCaughtUpClients,
-                tasksToClientByLag,
-                clientStates,
-                new TreeMap<>(),
-                new AtomicInteger(maxWarmupReplicas)
+                "should have assigned movements",
+                assignActiveTaskMovements(
+                    tasksToCaughtUpClients,
+                    tasksToClientByLag,
+                    clientStates,
+                    new TreeMap<>(),
+                    new AtomicInteger(maxWarmupReplicas)
             ),
-            is(1)
+                is(1)
         );
         // Even though we have no warmups allowed, we still let client1 take over active processing while
         // client2 "warms up" because client1 was a caught-up standby, so it can "trade" standby status with

@@ -83,7 +83,7 @@ public class FetchRequestBenchmark {
             topicNames.put(id, topic);
             for (int partitionId = 0; partitionId < partitionCount; partitionId++) {
                 FetchRequest.PartitionData partitionData = new FetchRequest.PartitionData(
-                    id, 0, 0, 4096, Optional.empty());
+                        id, 0, 0, 4096, Optional.empty());
                 fetchData.put(new TopicPartition(topic, partitionId), partitionData);
             }
         }
@@ -112,7 +112,7 @@ public class FetchRequestBenchmark {
     @Benchmark
     public int testFetchRequestForReplica() {
         FetchRequest fetchRequest = FetchRequest.Builder.forReplica(
-            ApiKeys.FETCH.latestVersion(), 1, 1, 0, 0, fetchData)
+                ApiKeys.FETCH.latestVersion(), 1, 1, 0, 0, fetchData)
                 .build(ApiKeys.FETCH.latestVersion());
         return fetchRequest.fetchData(topicNames).size();
     }

@@ -73,10 +73,10 @@ public class DeleteAclsResponseTest {
             .setPermissionType(AclPermissionType.ALLOW.code());
 
     private static final DeleteAclsFilterResult LITERAL_RESPONSE = new DeleteAclsFilterResult().setMatchingAcls(asList(
-        LITERAL_ACL1, LITERAL_ACL2));
+            LITERAL_ACL1, LITERAL_ACL2));
 
     private static final DeleteAclsFilterResult PREFIXED_RESPONSE = new DeleteAclsFilterResult().setMatchingAcls(asList(
-        LITERAL_ACL1, PREFIXED_ACL1));
+            LITERAL_ACL1, PREFIXED_ACL1));
 
     private static final DeleteAclsFilterResult UNKNOWN_RESPONSE = new DeleteAclsFilterResult().setMatchingAcls(singletonList(
             UNKNOWN_ACL));
@@ -84,19 +84,19 @@ public class DeleteAclsResponseTest {
     @Test
     public void shouldThrowOnIfUnknown() {
         assertThrows(IllegalArgumentException.class, () -> new DeleteAclsResponse(
-            new DeleteAclsResponseData()
+                new DeleteAclsResponseData()
                 .setThrottleTimeMs(10)
                 .setFilterResults(singletonList(UNKNOWN_RESPONSE)),
-            V1));
+                V1));
     }
 
     @Test
     public void shouldRoundTripV1() {
         final DeleteAclsResponse original = new DeleteAclsResponse(
-            new DeleteAclsResponseData()
+                new DeleteAclsResponseData()
                 .setThrottleTimeMs(10)
                 .setFilterResults(asList(LITERAL_RESPONSE, PREFIXED_RESPONSE)),
-            V1);
+                V1);
         final Readable readable = original.serialize(V1);
 
         final DeleteAclsResponse result = DeleteAclsResponse.parse(readable, V1);

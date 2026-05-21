@@ -177,8 +177,8 @@ class DefaultStatePersisterTest {
             .setGroupTopicPartitionData(new GroupTopicPartitionData.Builder<PartitionStateBatchData>()
                 .setGroupId(groupId)
                 .setTopicsData(List.of(new TopicData<>(null,
-                    List.of(PartitionFactory.newPartitionStateBatchData(
-                        partition, 1, 0, 0, 0, null))))).build()).build());
+                        List.of(PartitionFactory.newPartitionStateBatchData(
+                            partition, 1, 0, 0, 0, null))))).build()).build());
         assertTrue(result.isDone());
         assertTrue(result.isCompletedExceptionally());
         assertFutureThrows(IllegalArgumentException.class, result);
@@ -199,8 +199,8 @@ class DefaultStatePersisterTest {
             .setGroupTopicPartitionData(new GroupTopicPartitionData.Builder<PartitionStateBatchData>()
                 .setGroupId(groupId)
                 .setTopicsData(List.of(new TopicData<>(topicId,
-                    List.of(PartitionFactory.newPartitionStateBatchData(
-                        incorrectPartition, 1, 0, 0,  0, null))))).build()).build());
+                        List.of(PartitionFactory.newPartitionStateBatchData(
+                            incorrectPartition, 1, 0, 0,  0, null))))).build()).build());
         assertTrue(result.isDone());
         assertTrue(result.isCompletedExceptionally());
         assertFutureThrows(IllegalArgumentException.class, result);
@@ -253,7 +253,7 @@ class DefaultStatePersisterTest {
             .setGroupTopicPartitionData(new GroupTopicPartitionData.Builder<PartitionIdLeaderEpochData>()
                 .setGroupId(groupId)
                 .setTopicsData(List.of(new TopicData<>(null,
-                    List.of(PartitionFactory.newPartitionIdLeaderEpochData(partition, 1))))
+                        List.of(PartitionFactory.newPartitionIdLeaderEpochData(partition, 1))))
                 ).build()).build());
         assertTrue(result.isDone());
         assertTrue(result.isCompletedExceptionally());
@@ -275,7 +275,7 @@ class DefaultStatePersisterTest {
             .setGroupTopicPartitionData(new GroupTopicPartitionData.Builder<PartitionIdLeaderEpochData>()
                 .setGroupId(groupId)
                 .setTopicsData(List.of(new TopicData<>(topicId,
-                    List.of(PartitionFactory.newPartitionIdLeaderEpochData(incorrectPartition, 1))))).build()).build());
+                        List.of(PartitionFactory.newPartitionIdLeaderEpochData(incorrectPartition, 1))))).build()).build());
         assertTrue(result.isDone());
         assertTrue(result.isCompletedExceptionally());
         assertFutureThrows(IllegalArgumentException.class, result);
@@ -328,7 +328,7 @@ class DefaultStatePersisterTest {
             .setGroupTopicPartitionData(new GroupTopicPartitionData.Builder<PartitionIdLeaderEpochData>()
                 .setGroupId(groupId)
                 .setTopicsData(List.of(new TopicData<>(null,
-                    List.of(PartitionFactory.newPartitionIdLeaderEpochData(partition, 1))))
+                        List.of(PartitionFactory.newPartitionIdLeaderEpochData(partition, 1))))
                 ).build()).build());
         assertTrue(result.isDone());
         assertTrue(result.isCompletedExceptionally());
@@ -350,7 +350,7 @@ class DefaultStatePersisterTest {
             .setGroupTopicPartitionData(new GroupTopicPartitionData.Builder<PartitionIdLeaderEpochData>()
                 .setGroupId(groupId)
                 .setTopicsData(List.of(new TopicData<>(topicId,
-                    List.of(PartitionFactory.newPartitionIdLeaderEpochData(incorrectPartition, 1))))).build()).build());
+                        List.of(PartitionFactory.newPartitionIdLeaderEpochData(incorrectPartition, 1))))).build()).build());
         assertTrue(result.isDone());
         assertTrue(result.isCompletedExceptionally());
         assertFutureThrows(IllegalArgumentException.class, result);
@@ -402,8 +402,8 @@ class DefaultStatePersisterTest {
             .setGroupTopicPartitionData(new GroupTopicPartitionData.Builder<PartitionIdData>()
                 .setGroupId(groupId)
                 .setTopicsData(List.of(new TopicData<>(null,
-                    List.of(PartitionFactory.newPartitionIdData(
-                        partition))))).build()).build());
+                        List.of(PartitionFactory.newPartitionIdData(
+                            partition))))).build()).build());
         assertTrue(result.isDone());
         assertTrue(result.isCompletedExceptionally());
         assertFutureThrows(IllegalArgumentException.class, result);
@@ -424,8 +424,8 @@ class DefaultStatePersisterTest {
             .setGroupTopicPartitionData(new GroupTopicPartitionData.Builder<PartitionIdData>()
                 .setGroupId(groupId)
                 .setTopicsData(List.of(new TopicData<>(topicId,
-                    List.of(PartitionFactory.newPartitionIdData(
-                        incorrectPartition))))).build()).build());
+                        List.of(PartitionFactory.newPartitionIdData(
+                            incorrectPartition))))).build()).build());
         assertTrue(result.isDone());
         assertTrue(result.isCompletedExceptionally());
         assertFutureThrows(IllegalArgumentException.class, result);
@@ -477,8 +477,8 @@ class DefaultStatePersisterTest {
             .setGroupTopicPartitionData(new GroupTopicPartitionData.Builder<PartitionStateData>()
                 .setGroupId(groupId)
                 .setTopicsData(List.of(new TopicData<>(null,
-                    List.of(PartitionFactory.newPartitionStateData(
-                        partition, 1, 0))))).build()).build());
+                        List.of(PartitionFactory.newPartitionStateData(
+                            partition, 1, 0))))).build()).build());
         assertTrue(result.isDone());
         assertTrue(result.isCompletedExceptionally());
         assertFutureThrows(IllegalArgumentException.class, result);
@@ -499,8 +499,8 @@ class DefaultStatePersisterTest {
             .setGroupTopicPartitionData(new GroupTopicPartitionData.Builder<PartitionStateData>()
                 .setGroupId(groupId)
                 .setTopicsData(List.of(new TopicData<>(topicId,
-                    List.of(PartitionFactory.newPartitionStateData(
-                        incorrectPartition, 0, 0))))).build()).build());
+                        List.of(PartitionFactory.newPartitionStateData(
+                            incorrectPartition, 0, 0))))).build()).build());
         assertTrue(result.isDone());
         assertTrue(result.isCompletedExceptionally());
         assertFutureThrows(IllegalArgumentException.class, result);
@@ -528,58 +528,58 @@ class DefaultStatePersisterTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey1),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(5)
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey2),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(6)
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(
-            body -> {
-                WriteShareGroupStateRequest request = (WriteShareGroupStateRequest) body;
-                String requestGroupId = request.data().groupId();
-                Uuid requestTopicId = request.data().topics().get(0).topicId();
-                int requestPartition = request.data().topics().get(0).partitions().get(0).partition();
+                body -> {
+                    WriteShareGroupStateRequest request = (WriteShareGroupStateRequest) body;
+                    String requestGroupId = request.data().groupId();
+                    Uuid requestTopicId = request.data().topics().get(0).topicId();
+                    int requestPartition = request.data().topics().get(0).partitions().get(0).partition();
 
-                return requestGroupId.equals(groupId) && requestTopicId == topicId1 && requestPartition == partition1;
-            },
-            new WriteShareGroupStateResponse(WriteShareGroupStateResponse.toResponseData(topicId1, partition1)),
-            coordinatorNode1);
+                    return requestGroupId.equals(groupId) && requestTopicId == topicId1 && requestPartition == partition1;
+                },
+                new WriteShareGroupStateResponse(WriteShareGroupStateResponse.toResponseData(topicId1, partition1)),
+                coordinatorNode1);
 
         client.prepareResponseFrom(
-            body -> {
-                WriteShareGroupStateRequest request = (WriteShareGroupStateRequest) body;
-                String requestGroupId = request.data().groupId();
-                Uuid requestTopicId = request.data().topics().get(0).topicId();
-                int requestPartition = request.data().topics().get(0).partitions().get(0).partition();
+                body -> {
+                    WriteShareGroupStateRequest request = (WriteShareGroupStateRequest) body;
+                    String requestGroupId = request.data().groupId();
+                    Uuid requestTopicId = request.data().topics().get(0).topicId();
+                    int requestPartition = request.data().topics().get(0).partitions().get(0).partition();
 
-                return requestGroupId.equals(groupId) && requestTopicId == topicId2 && requestPartition == partition2;
-            },
-            new WriteShareGroupStateResponse(WriteShareGroupStateResponse.toResponseData(topicId2, partition2)),
-            coordinatorNode2);
+                    return requestGroupId.equals(groupId) && requestTopicId == topicId2 && requestPartition == partition2;
+                },
+                new WriteShareGroupStateResponse(WriteShareGroupStateResponse.toResponseData(topicId2, partition2)),
+                coordinatorNode2);
 
         ShareCoordinatorMetadataCacheHelper cacheHelper = getDefaultCacheHelper(suppliedNode);
 
@@ -589,13 +589,13 @@ class DefaultStatePersisterTest {
             .build();
 
         WriteShareGroupStateParameters request = WriteShareGroupStateParameters.from(
-            new WriteShareGroupStateRequestData()
+                new WriteShareGroupStateRequestData()
                 .setGroupId(groupId)
                 .setTopics(List.of(
-                    new WriteShareGroupStateRequestData.WriteStateData()
+                        new WriteShareGroupStateRequestData.WriteStateData()
                         .setTopicId(topicId1)
                         .setPartitions(List.of(
-                            new WriteShareGroupStateRequestData.PartitionData()
+                                new WriteShareGroupStateRequestData.PartitionData()
                                 .setPartition(partition1)
                                 .setStateEpoch(0)
                                 .setLeaderEpoch(1)
@@ -607,21 +607,21 @@ class DefaultStatePersisterTest {
                                     .setDeliveryCount((short) 1)
                                     .setDeliveryState((byte) 0)))
                         )),
-                    new WriteShareGroupStateRequestData.WriteStateData()
+                        new WriteShareGroupStateRequestData.WriteStateData()
                         .setTopicId(topicId2)
                         .setPartitions(List.of(
-                            new WriteShareGroupStateRequestData.PartitionData()
+                                new WriteShareGroupStateRequestData.PartitionData()
                                 .setPartition(partition2)
                                 .setStateEpoch(0)
                                 .setLeaderEpoch(1)
                                 .setStartOffset(0)
                                 .setStateBatches(List.of(
-                                    new WriteShareGroupStateRequestData.StateBatch()
+                                        new WriteShareGroupStateRequestData.StateBatch()
                                         .setFirstOffset(0)
                                         .setLastOffset(10)
                                         .setDeliveryCount((short) 1)
                                         .setDeliveryState((byte) 0),
-                                    new WriteShareGroupStateRequestData.StateBatch()
+                                        new WriteShareGroupStateRequestData.StateBatch()
                                         .setFirstOffset(11)
                                         .setLastOffset(20)
                                         .setDeliveryCount((short) 1)
@@ -642,11 +642,10 @@ class DefaultStatePersisterTest {
 
         HashSet<PartitionData> resultMap = new HashSet<>();
         result.topicsData().forEach(
-            topicData -> topicData.partitions().forEach(
-                partitionData -> resultMap.add((PartitionData) partitionData)
+                topicData -> topicData.partitions().forEach(
+                    partitionData -> resultMap.add((PartitionData) partitionData)
             )
         );
-
 
         HashSet<PartitionData> expectedResultMap = new HashSet<>();
         expectedResultMap.add((PartitionData) PartitionFactory.newPartitionErrorData(partition1, Errors.NONE.code(), null));
@@ -679,73 +678,73 @@ class DefaultStatePersisterTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey1),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(5)
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey2),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(6)
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(
-            body -> {
-                ReadShareGroupStateRequest request = (ReadShareGroupStateRequest) body;
-                String requestGroupId = request.data().groupId();
-                Uuid requestTopicId = request.data().topics().get(0).topicId();
-                int requestPartition = request.data().topics().get(0).partitions().get(0).partition();
+                body -> {
+                    ReadShareGroupStateRequest request = (ReadShareGroupStateRequest) body;
+                    String requestGroupId = request.data().groupId();
+                    Uuid requestTopicId = request.data().topics().get(0).topicId();
+                    int requestPartition = request.data().topics().get(0).partitions().get(0).partition();
 
-                return requestGroupId.equals(groupId) && requestTopicId == topicId1 && requestPartition == partition1;
-            },
-            new ReadShareGroupStateResponse(ReadShareGroupStateResponse.toResponseData(topicId1, partition1, 0, 1,
-                List.of(new ReadShareGroupStateResponseData.StateBatch()
+                    return requestGroupId.equals(groupId) && requestTopicId == topicId1 && requestPartition == partition1;
+                },
+                new ReadShareGroupStateResponse(ReadShareGroupStateResponse.toResponseData(topicId1, partition1, 0, 1,
+                    List.of(new ReadShareGroupStateResponseData.StateBatch()
                     .setFirstOffset(0)
                     .setLastOffset(10)
                     .setDeliveryCount((short) 1)
                     .setDeliveryState((byte) 0)))),
-            coordinatorNode1);
+                coordinatorNode1);
 
         client.prepareResponseFrom(
-            body -> {
-                ReadShareGroupStateRequest request = (ReadShareGroupStateRequest) body;
-                String requestGroupId = request.data().groupId();
-                Uuid requestTopicId = request.data().topics().get(0).topicId();
-                int requestPartition = request.data().topics().get(0).partitions().get(0).partition();
+                body -> {
+                    ReadShareGroupStateRequest request = (ReadShareGroupStateRequest) body;
+                    String requestGroupId = request.data().groupId();
+                    Uuid requestTopicId = request.data().topics().get(0).topicId();
+                    int requestPartition = request.data().topics().get(0).partitions().get(0).partition();
 
-                return requestGroupId.equals(groupId) && requestTopicId == topicId2 && requestPartition == partition2;
-            },
-            new ReadShareGroupStateResponse(ReadShareGroupStateResponse.toResponseData(topicId2, partition2, 0, 1,
-                List.of(new ReadShareGroupStateResponseData.StateBatch()
+                    return requestGroupId.equals(groupId) && requestTopicId == topicId2 && requestPartition == partition2;
+                },
+                new ReadShareGroupStateResponse(ReadShareGroupStateResponse.toResponseData(topicId2, partition2, 0, 1,
+                    List.of(new ReadShareGroupStateResponseData.StateBatch()
                         .setFirstOffset(0)
                         .setLastOffset(10)
                         .setDeliveryCount((short) 1)
                         .setDeliveryState((byte) 0),
-                    new ReadShareGroupStateResponseData.StateBatch()
+                        new ReadShareGroupStateResponseData.StateBatch()
                         .setFirstOffset(11)
                         .setLastOffset(20)
                         .setDeliveryCount((short) 1)
                         .setDeliveryState((byte) 0)))),
-            coordinatorNode2);
+                coordinatorNode2);
 
         ShareCoordinatorMetadataCacheHelper cacheHelper = getDefaultCacheHelper(suppliedNode);
 
@@ -755,20 +754,20 @@ class DefaultStatePersisterTest {
             .build();
 
         ReadShareGroupStateParameters request = ReadShareGroupStateParameters.from(
-            new ReadShareGroupStateRequestData()
+                new ReadShareGroupStateRequestData()
                 .setGroupId(groupId)
                 .setTopics(List.of(
-                    new ReadShareGroupStateRequestData.ReadStateData()
+                        new ReadShareGroupStateRequestData.ReadStateData()
                         .setTopicId(topicId1)
                         .setPartitions(List.of(
-                            new ReadShareGroupStateRequestData.PartitionData()
+                                new ReadShareGroupStateRequestData.PartitionData()
                                 .setPartition(partition1)
                                 .setLeaderEpoch(1)
                         )),
-                    new ReadShareGroupStateRequestData.ReadStateData()
+                        new ReadShareGroupStateRequestData.ReadStateData()
                         .setTopicId(topicId2)
                         .setPartitions(List.of(
-                            new ReadShareGroupStateRequestData.PartitionData()
+                                new ReadShareGroupStateRequestData.PartitionData()
                                 .setPartition(partition2)
                                 .setLeaderEpoch(1)
                         ))
@@ -787,22 +786,22 @@ class DefaultStatePersisterTest {
 
         HashSet<PartitionData> resultMap = new HashSet<>();
         result.topicsData().forEach(
-            topicData -> topicData.partitions().forEach(
-                partitionData -> resultMap.add((PartitionData) partitionData)
+                topicData -> topicData.partitions().forEach(
+                    partitionData -> resultMap.add((PartitionData) partitionData)
             )
         );
 
         HashSet<PartitionData> expectedResultMap = new HashSet<>();
         expectedResultMap.add(
-            (PartitionData) PartitionFactory.newPartitionAllData(partition1, 1, 0, Errors.NONE.code(),
-                null, List.of(new PersisterStateBatch(0, 10, (byte) 0, (short) 1)
+                (PartitionData) PartitionFactory.newPartitionAllData(partition1, 1, 0, Errors.NONE.code(),
+                    null, List.of(new PersisterStateBatch(0, 10, (byte) 0, (short) 1)
                 )));
 
         expectedResultMap.add(
-            (PartitionData) PartitionFactory.newPartitionAllData(partition2, 1, 0, Errors.NONE.code(),
-                null, List.of(
-                    new PersisterStateBatch(0, 10, (byte) 0, (short) 1),
-                    new PersisterStateBatch(11, 20, (byte) 0, (short) 1)
+                (PartitionData) PartitionFactory.newPartitionAllData(partition2, 1, 0, Errors.NONE.code(),
+                    null, List.of(
+                        new PersisterStateBatch(0, 10, (byte) 0, (short) 1),
+                        new PersisterStateBatch(11, 20, (byte) 0, (short) 1)
                 )));
 
         assertEquals(2, result.topicsData().size());
@@ -831,58 +830,58 @@ class DefaultStatePersisterTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey1),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(5)
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey2),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(6)
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(
-            body -> {
-                ReadShareGroupStateSummaryRequest request = (ReadShareGroupStateSummaryRequest) body;
-                String requestGroupId = request.data().groupId();
-                Uuid requestTopicId = request.data().topics().get(0).topicId();
-                int requestPartition = request.data().topics().get(0).partitions().get(0).partition();
+                body -> {
+                    ReadShareGroupStateSummaryRequest request = (ReadShareGroupStateSummaryRequest) body;
+                    String requestGroupId = request.data().groupId();
+                    Uuid requestTopicId = request.data().topics().get(0).topicId();
+                    int requestPartition = request.data().topics().get(0).partitions().get(0).partition();
 
-                return requestGroupId.equals(groupId) && requestTopicId == topicId1 && requestPartition == partition1;
-            },
-            new ReadShareGroupStateSummaryResponse(ReadShareGroupStateSummaryResponse.toResponseData(topicId1, partition1, 0, 0, 1, 1)),
-            coordinatorNode1);
+                    return requestGroupId.equals(groupId) && requestTopicId == topicId1 && requestPartition == partition1;
+                },
+                new ReadShareGroupStateSummaryResponse(ReadShareGroupStateSummaryResponse.toResponseData(topicId1, partition1, 0, 0, 1, 1)),
+                coordinatorNode1);
 
         client.prepareResponseFrom(
-            body -> {
-                ReadShareGroupStateSummaryRequest request = (ReadShareGroupStateSummaryRequest) body;
-                String requestGroupId = request.data().groupId();
-                Uuid requestTopicId = request.data().topics().get(0).topicId();
-                int requestPartition = request.data().topics().get(0).partitions().get(0).partition();
+                body -> {
+                    ReadShareGroupStateSummaryRequest request = (ReadShareGroupStateSummaryRequest) body;
+                    String requestGroupId = request.data().groupId();
+                    Uuid requestTopicId = request.data().topics().get(0).topicId();
+                    int requestPartition = request.data().topics().get(0).partitions().get(0).partition();
 
-                return requestGroupId.equals(groupId) && requestTopicId == topicId2 && requestPartition == partition2;
-            },
-            new ReadShareGroupStateSummaryResponse(ReadShareGroupStateSummaryResponse.toResponseData(topicId2, partition2, 0, 0, 1, 1)),
-            coordinatorNode2);
+                    return requestGroupId.equals(groupId) && requestTopicId == topicId2 && requestPartition == partition2;
+                },
+                new ReadShareGroupStateSummaryResponse(ReadShareGroupStateSummaryResponse.toResponseData(topicId2, partition2, 0, 0, 1, 1)),
+                coordinatorNode2);
 
         ShareCoordinatorMetadataCacheHelper cacheHelper = getDefaultCacheHelper(suppliedNode);
 
@@ -892,20 +891,20 @@ class DefaultStatePersisterTest {
             .build();
 
         ReadShareGroupStateSummaryParameters request = ReadShareGroupStateSummaryParameters.from(
-            new ReadShareGroupStateSummaryRequestData()
+                new ReadShareGroupStateSummaryRequestData()
                 .setGroupId(groupId)
                 .setTopics(List.of(
-                    new ReadShareGroupStateSummaryRequestData.ReadStateSummaryData()
+                        new ReadShareGroupStateSummaryRequestData.ReadStateSummaryData()
                         .setTopicId(topicId1)
                         .setPartitions(List.of(
-                            new ReadShareGroupStateSummaryRequestData.PartitionData()
+                                new ReadShareGroupStateSummaryRequestData.PartitionData()
                                 .setPartition(partition1)
                                 .setLeaderEpoch(1)
                         )),
-                    new ReadShareGroupStateSummaryRequestData.ReadStateSummaryData()
+                        new ReadShareGroupStateSummaryRequestData.ReadStateSummaryData()
                         .setTopicId(topicId2)
                         .setPartitions(List.of(
-                            new ReadShareGroupStateSummaryRequestData.PartitionData()
+                                new ReadShareGroupStateSummaryRequestData.PartitionData()
                                 .setPartition(partition2)
                                 .setLeaderEpoch(1)
                         ))
@@ -924,20 +923,20 @@ class DefaultStatePersisterTest {
 
         HashSet<PartitionData> resultMap = new HashSet<>();
         result.topicsData().forEach(
-            topicData -> topicData.partitions().forEach(
-                partitionData -> resultMap.add((PartitionData) partitionData)
+                topicData -> topicData.partitions().forEach(
+                    partitionData -> resultMap.add((PartitionData) partitionData)
             )
         );
 
         HashSet<PartitionData> expectedResultMap = new HashSet<>();
         expectedResultMap.add(
-            (PartitionData) PartitionFactory.newPartitionStateSummaryData(partition1, 1, 0, 0, 1, Errors.NONE.code(),
-                null
+                (PartitionData) PartitionFactory.newPartitionStateSummaryData(partition1, 1, 0, 0, 1, Errors.NONE.code(),
+                    null
             ));
 
         expectedResultMap.add(
-            (PartitionData) PartitionFactory.newPartitionStateSummaryData(partition2, 1, 0, 0, 1, Errors.NONE.code(),
-                null
+                (PartitionData) PartitionFactory.newPartitionStateSummaryData(partition2, 1, 0, 0, 1, Errors.NONE.code(),
+                    null
             ));
 
         assertEquals(2, result.topicsData().size());
@@ -965,59 +964,59 @@ class DefaultStatePersisterTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey1),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(coordinatorNode1.id())
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey2),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(coordinatorNode2.id())
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(
-            body -> {
-                DeleteShareGroupStateRequest request = (DeleteShareGroupStateRequest) body;
-                String requestGroupId = request.data().groupId();
-                Uuid requestTopicId = request.data().topics().get(0).topicId();
-                int requestPartition = request.data().topics().get(0).partitions().get(0).partition();
+                body -> {
+                    DeleteShareGroupStateRequest request = (DeleteShareGroupStateRequest) body;
+                    String requestGroupId = request.data().groupId();
+                    Uuid requestTopicId = request.data().topics().get(0).topicId();
+                    int requestPartition = request.data().topics().get(0).partitions().get(0).partition();
 
-                return requestGroupId.equals(groupId) && requestTopicId == topicId1 && requestPartition == partition1;
-            },
-            new DeleteShareGroupStateResponse(DeleteShareGroupStateResponse.toResponseData(topicId1, partition1)),
-            coordinatorNode1
+                    return requestGroupId.equals(groupId) && requestTopicId == topicId1 && requestPartition == partition1;
+                },
+                new DeleteShareGroupStateResponse(DeleteShareGroupStateResponse.toResponseData(topicId1, partition1)),
+                coordinatorNode1
         );
 
         client.prepareResponseFrom(
-            body -> {
-                DeleteShareGroupStateRequest request = (DeleteShareGroupStateRequest) body;
-                String requestGroupId = request.data().groupId();
-                Uuid requestTopicId = request.data().topics().get(0).topicId();
-                int requestPartition = request.data().topics().get(0).partitions().get(0).partition();
+                body -> {
+                    DeleteShareGroupStateRequest request = (DeleteShareGroupStateRequest) body;
+                    String requestGroupId = request.data().groupId();
+                    Uuid requestTopicId = request.data().topics().get(0).topicId();
+                    int requestPartition = request.data().topics().get(0).partitions().get(0).partition();
 
-                return requestGroupId.equals(groupId) && requestTopicId == topicId2 && requestPartition == partition2;
-            },
-            new DeleteShareGroupStateResponse(DeleteShareGroupStateResponse.toResponseData(topicId2, partition2)),
-            coordinatorNode2
+                    return requestGroupId.equals(groupId) && requestTopicId == topicId2 && requestPartition == partition2;
+                },
+                new DeleteShareGroupStateResponse(DeleteShareGroupStateResponse.toResponseData(topicId2, partition2)),
+                coordinatorNode2
         );
 
         ShareCoordinatorMetadataCacheHelper cacheHelper = getDefaultCacheHelper(suppliedNode);
@@ -1028,19 +1027,19 @@ class DefaultStatePersisterTest {
             .build();
 
         DeleteShareGroupStateParameters request = DeleteShareGroupStateParameters.from(
-            new DeleteShareGroupStateRequestData()
+                new DeleteShareGroupStateRequestData()
                 .setGroupId(groupId)
                 .setTopics(List.of(
-                    new DeleteShareGroupStateRequestData.DeleteStateData()
+                        new DeleteShareGroupStateRequestData.DeleteStateData()
                         .setTopicId(topicId1)
                         .setPartitions(List.of(
-                            new DeleteShareGroupStateRequestData.PartitionData()
+                                new DeleteShareGroupStateRequestData.PartitionData()
                                 .setPartition(partition1)
                         )),
-                    new DeleteShareGroupStateRequestData.DeleteStateData()
+                        new DeleteShareGroupStateRequestData.DeleteStateData()
                         .setTopicId(topicId2)
                         .setPartitions(List.of(
-                            new DeleteShareGroupStateRequestData.PartitionData()
+                                new DeleteShareGroupStateRequestData.PartitionData()
                                 .setPartition(partition2)
                         ))
                 ))
@@ -1058,11 +1057,10 @@ class DefaultStatePersisterTest {
 
         HashSet<PartitionData> resultMap = new HashSet<>();
         result.topicsData().forEach(
-            topicData -> topicData.partitions().forEach(
-                partitionData -> resultMap.add((PartitionData) partitionData)
+                topicData -> topicData.partitions().forEach(
+                    partitionData -> resultMap.add((PartitionData) partitionData)
             )
         );
-
 
         HashSet<PartitionData> expectedResultMap = new HashSet<>();
         expectedResultMap.add((PartitionData) PartitionFactory.newPartitionErrorData(partition1, Errors.NONE.code(), null));
@@ -1098,59 +1096,59 @@ class DefaultStatePersisterTest {
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey1),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(coordinatorNode1.id())
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
                 && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
                 && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey2),
-            new FindCoordinatorResponse(
-                new FindCoordinatorResponseData()
+                new FindCoordinatorResponse(
+                    new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
-                        new FindCoordinatorResponseData.Coordinator()
+                            new FindCoordinatorResponseData.Coordinator()
                             .setNodeId(coordinatorNode2.id())
                             .setHost(HOST)
                             .setPort(PORT)
                             .setErrorCode(Errors.NONE.code())
                     ))
             ),
-            suppliedNode
+                suppliedNode
         );
 
         client.prepareResponseFrom(
-            body -> {
-                InitializeShareGroupStateRequest request = (InitializeShareGroupStateRequest) body;
-                String requestGroupId = request.data().groupId();
-                Uuid requestTopicId = request.data().topics().get(0).topicId();
-                int requestPartition = request.data().topics().get(0).partitions().get(0).partition();
+                body -> {
+                    InitializeShareGroupStateRequest request = (InitializeShareGroupStateRequest) body;
+                    String requestGroupId = request.data().groupId();
+                    Uuid requestTopicId = request.data().topics().get(0).topicId();
+                    int requestPartition = request.data().topics().get(0).partitions().get(0).partition();
 
-                return requestGroupId.equals(groupId) && requestTopicId == topicId1 && requestPartition == partition1;
-            },
-            new InitializeShareGroupStateResponse(InitializeShareGroupStateResponse.toResponseData(topicId1, partition1)),
-            coordinatorNode1
+                    return requestGroupId.equals(groupId) && requestTopicId == topicId1 && requestPartition == partition1;
+                },
+                new InitializeShareGroupStateResponse(InitializeShareGroupStateResponse.toResponseData(topicId1, partition1)),
+                coordinatorNode1
         );
 
         client.prepareResponseFrom(
-            body -> {
-                InitializeShareGroupStateRequest request = (InitializeShareGroupStateRequest) body;
-                String requestGroupId = request.data().groupId();
-                Uuid requestTopicId = request.data().topics().get(0).topicId();
-                int requestPartition = request.data().topics().get(0).partitions().get(0).partition();
+                body -> {
+                    InitializeShareGroupStateRequest request = (InitializeShareGroupStateRequest) body;
+                    String requestGroupId = request.data().groupId();
+                    Uuid requestTopicId = request.data().topics().get(0).topicId();
+                    int requestPartition = request.data().topics().get(0).partitions().get(0).partition();
 
-                return requestGroupId.equals(groupId) && requestTopicId == topicId2 && requestPartition == partition2;
-            },
-            new InitializeShareGroupStateResponse(InitializeShareGroupStateResponse.toResponseData(topicId2, partition2)),
-            coordinatorNode2
+                    return requestGroupId.equals(groupId) && requestTopicId == topicId2 && requestPartition == partition2;
+                },
+                new InitializeShareGroupStateResponse(InitializeShareGroupStateResponse.toResponseData(topicId2, partition2)),
+                coordinatorNode2
         );
 
         ShareCoordinatorMetadataCacheHelper cacheHelper = getDefaultCacheHelper(suppliedNode);
@@ -1161,21 +1159,21 @@ class DefaultStatePersisterTest {
             .build();
 
         InitializeShareGroupStateParameters request = InitializeShareGroupStateParameters.from(
-            new InitializeShareGroupStateRequestData()
+                new InitializeShareGroupStateRequestData()
                 .setGroupId(groupId)
                 .setTopics(List.of(
-                    new InitializeShareGroupStateRequestData.InitializeStateData()
+                        new InitializeShareGroupStateRequestData.InitializeStateData()
                         .setTopicId(topicId1)
                         .setPartitions(List.of(
-                            new InitializeShareGroupStateRequestData.PartitionData()
+                                new InitializeShareGroupStateRequestData.PartitionData()
                                 .setPartition(partition1)
                                 .setStateEpoch(stateEpoch1)
                                 .setStartOffset(startOffset1)
                         )),
-                    new InitializeShareGroupStateRequestData.InitializeStateData()
+                        new InitializeShareGroupStateRequestData.InitializeStateData()
                         .setTopicId(topicId2)
                         .setPartitions(List.of(
-                            new InitializeShareGroupStateRequestData.PartitionData()
+                                new InitializeShareGroupStateRequestData.PartitionData()
                                 .setPartition(partition2)
                                 .setStateEpoch(stateEpoch2)
                                 .setStartOffset(startOffset2)
@@ -1195,11 +1193,10 @@ class DefaultStatePersisterTest {
 
         HashSet<PartitionData> resultMap = new HashSet<>();
         result.topicsData().forEach(
-            topicData -> topicData.partitions().forEach(
-                partitionData -> resultMap.add((PartitionData) partitionData)
+                topicData -> topicData.partitions().forEach(
+                    partitionData -> resultMap.add((PartitionData) partitionData)
             )
         );
-
 
         HashSet<PartitionData> expectedResultMap = new HashSet<>();
         expectedResultMap.add((PartitionData) PartitionFactory.newPartitionErrorData(partition1, Errors.NONE.code(), null));
@@ -1220,9 +1217,9 @@ class DefaultStatePersisterTest {
         futureMap.computeIfAbsent(tp1.topicId(), k -> new HashMap<>())
             .put(tp1.partition(), CompletableFuture.completedFuture(
                     new WriteShareGroupStateResponse(
-                        WriteShareGroupStateResponse.toResponseData(
-                            tp1.topicId(),
-                            tp1.partition()
+                            WriteShareGroupStateResponse.toResponseData(
+                                tp1.topicId(),
+                                tp1.partition()
                         )
                     )
                 )
@@ -1232,11 +1229,11 @@ class DefaultStatePersisterTest {
         futureMap.computeIfAbsent(tp2.topicId(), k -> new HashMap<>())
             .put(tp2.partition(), CompletableFuture.completedFuture(
                     new WriteShareGroupStateResponse(
-                        WriteShareGroupStateResponse.toErrorResponseData(
-                            tp2.topicId(),
-                            tp2.partition(),
-                            Errors.UNKNOWN_TOPIC_OR_PARTITION,
-                            "unknown tp"
+                            WriteShareGroupStateResponse.toErrorResponseData(
+                                tp2.topicId(),
+                                tp2.partition(),
+                                Errors.UNKNOWN_TOPIC_OR_PARTITION,
+                                "unknown tp"
                         )
                     )
                 )
@@ -1250,18 +1247,18 @@ class DefaultStatePersisterTest {
         // results should contain partial results
         assertEquals(2, results.topicsData().size());
         assertTrue(
-            results.topicsData().contains(
-                new TopicData<>(
-                    tp1.topicId(),
-                    List.of(PartitionFactory.newPartitionErrorData(tp1.partition(), Errors.NONE.code(), null))
+                results.topicsData().contains(
+                    new TopicData<>(
+                        tp1.topicId(),
+                        List.of(PartitionFactory.newPartitionErrorData(tp1.partition(), Errors.NONE.code(), null))
                 )
             )
         );
         assertTrue(
-            results.topicsData().contains(
-                new TopicData<>(
-                    tp2.topicId(),
-                    List.of(PartitionFactory.newPartitionErrorData(tp2.partition(), Errors.UNKNOWN_TOPIC_OR_PARTITION.code(), "unknown tp"))
+                results.topicsData().contains(
+                    new TopicData<>(
+                        tp2.topicId(),
+                        List.of(PartitionFactory.newPartitionErrorData(tp2.partition(), Errors.UNKNOWN_TOPIC_OR_PARTITION.code(), "unknown tp"))
                 )
             )
         );
@@ -1277,9 +1274,9 @@ class DefaultStatePersisterTest {
         futureMap.computeIfAbsent(tp1.topicId(), k -> new HashMap<>())
             .put(tp1.partition(), CompletableFuture.completedFuture(
                     new WriteShareGroupStateResponse(
-                        WriteShareGroupStateResponse.toResponseData(
-                            tp1.topicId(),
-                            tp1.partition()
+                            WriteShareGroupStateResponse.toResponseData(
+                                tp1.topicId(),
+                                tp1.partition()
                         )
                     )
                 )
@@ -1297,18 +1294,18 @@ class DefaultStatePersisterTest {
         // results should contain partial results
         assertEquals(2, results.topicsData().size());
         assertTrue(
-            results.topicsData().contains(
-                new TopicData<>(
-                    tp1.topicId(),
-                    List.of(PartitionFactory.newPartitionErrorData(tp1.partition(), Errors.NONE.code(), null))
+                results.topicsData().contains(
+                    new TopicData<>(
+                        tp1.topicId(),
+                        List.of(PartitionFactory.newPartitionErrorData(tp1.partition(), Errors.NONE.code(), null))
                 )
             )
         );
         assertTrue(
-            results.topicsData().contains(
-                new TopicData<>(
-                    tp2.topicId(),
-                    List.of(PartitionFactory.newPartitionErrorData(tp2.partition(), Errors.UNKNOWN_SERVER_ERROR.code(), "Error writing state to share coordinator: java.lang.Exception: scary stuff"))
+                results.topicsData().contains(
+                    new TopicData<>(
+                        tp2.topicId(),
+                        List.of(PartitionFactory.newPartitionErrorData(tp2.partition(), Errors.UNKNOWN_SERVER_ERROR.code(), "Error writing state to share coordinator: java.lang.Exception: scary stuff"))
                 )
             )
         );
@@ -1324,12 +1321,12 @@ class DefaultStatePersisterTest {
         futureMap.computeIfAbsent(tp1.topicId(), k -> new HashMap<>())
             .put(tp1.partition(), CompletableFuture.completedFuture(
                     new ReadShareGroupStateResponse(
-                        ReadShareGroupStateResponse.toResponseData(
-                            tp1.topicId(),
-                            tp1.partition(),
-                            1L,
-                            2,
-                            List.of()
+                            ReadShareGroupStateResponse.toResponseData(
+                                tp1.topicId(),
+                                tp1.partition(),
+                                1L,
+                                2,
+                                List.of()
                         )
                     )
                 )
@@ -1339,11 +1336,11 @@ class DefaultStatePersisterTest {
         futureMap.computeIfAbsent(tp2.topicId(), k -> new HashMap<>())
             .put(tp2.partition(), CompletableFuture.completedFuture(
                     new ReadShareGroupStateResponse(
-                        ReadShareGroupStateResponse.toErrorResponseData(
-                            tp2.topicId(),
-                            tp2.partition(),
-                            Errors.UNKNOWN_TOPIC_OR_PARTITION,
-                            "unknown tp"
+                            ReadShareGroupStateResponse.toErrorResponseData(
+                                tp2.topicId(),
+                                tp2.partition(),
+                                Errors.UNKNOWN_TOPIC_OR_PARTITION,
+                                "unknown tp"
                         )
                     )
                 )
@@ -1357,18 +1354,18 @@ class DefaultStatePersisterTest {
         // results should contain partial results
         assertEquals(2, results.topicsData().size());
         assertTrue(
-            results.topicsData().contains(
-                new TopicData<>(
-                    tp1.topicId(),
-                    List.of(PartitionFactory.newPartitionAllData(tp1.partition(), 2, 1L, Errors.NONE.code(), null, List.of()))
+                results.topicsData().contains(
+                    new TopicData<>(
+                        tp1.topicId(),
+                        List.of(PartitionFactory.newPartitionAllData(tp1.partition(), 2, 1L, Errors.NONE.code(), null, List.of()))
                 )
             )
         );
         assertTrue(
-            results.topicsData().contains(
-                new TopicData<>(
-                    tp2.topicId(),
-                    List.of(PartitionFactory.newPartitionAllData(tp2.partition(), 0, 0, Errors.UNKNOWN_TOPIC_OR_PARTITION.code(), "unknown tp", List.of()))
+                results.topicsData().contains(
+                    new TopicData<>(
+                        tp2.topicId(),
+                        List.of(PartitionFactory.newPartitionAllData(tp2.partition(), 0, 0, Errors.UNKNOWN_TOPIC_OR_PARTITION.code(), "unknown tp", List.of()))
                 )
             )
         );
@@ -1384,12 +1381,12 @@ class DefaultStatePersisterTest {
         futureMap.computeIfAbsent(tp1.topicId(), k -> new HashMap<>())
             .put(tp1.partition(), CompletableFuture.completedFuture(
                     new ReadShareGroupStateResponse(
-                        ReadShareGroupStateResponse.toResponseData(
-                            tp1.topicId(),
-                            tp1.partition(),
-                            1L,
-                            2,
-                            List.of()
+                            ReadShareGroupStateResponse.toResponseData(
+                                tp1.topicId(),
+                                tp1.partition(),
+                                1L,
+                                2,
+                                List.of()
                         )
                     )
                 )
@@ -1407,18 +1404,18 @@ class DefaultStatePersisterTest {
         // results should contain partial results
         assertEquals(2, results.topicsData().size());
         assertTrue(
-            results.topicsData().contains(
-                new TopicData<>(
-                    tp1.topicId(),
-                    List.of(PartitionFactory.newPartitionAllData(tp1.partition(), 2, 1L, Errors.NONE.code(), null, List.of()))
+                results.topicsData().contains(
+                    new TopicData<>(
+                        tp1.topicId(),
+                        List.of(PartitionFactory.newPartitionAllData(tp1.partition(), 2, 1L, Errors.NONE.code(), null, List.of()))
                 )
             )
         );
         assertTrue(
-            results.topicsData().contains(
-                new TopicData<>(
-                    tp2.topicId(),
-                    List.of(PartitionFactory.newPartitionAllData(tp2.partition(), -1, -1L, Errors.UNKNOWN_SERVER_ERROR.code(), "Error reading state from share coordinator: java.lang.Exception: scary stuff", List.of()))
+                results.topicsData().contains(
+                    new TopicData<>(
+                        tp2.topicId(),
+                        List.of(PartitionFactory.newPartitionAllData(tp2.partition(), -1, -1L, Errors.UNKNOWN_SERVER_ERROR.code(), "Error reading state from share coordinator: java.lang.Exception: scary stuff", List.of()))
                 )
             )
         );
@@ -1434,13 +1431,13 @@ class DefaultStatePersisterTest {
         futureMap.computeIfAbsent(tp1.topicId(), k -> new HashMap<>())
             .put(tp1.partition(), CompletableFuture.completedFuture(
                     new ReadShareGroupStateSummaryResponse(
-                        ReadShareGroupStateSummaryResponse.toResponseData(
-                            tp1.topicId(),
-                            tp1.partition(),
-                            1L,
-                            0,
-                            1,
-                            2
+                            ReadShareGroupStateSummaryResponse.toResponseData(
+                                tp1.topicId(),
+                                tp1.partition(),
+                                1L,
+                                0,
+                                1,
+                                2
                         )
                     )
                 )
@@ -1450,11 +1447,11 @@ class DefaultStatePersisterTest {
         futureMap.computeIfAbsent(tp2.topicId(), k -> new HashMap<>())
             .put(tp2.partition(), CompletableFuture.completedFuture(
                     new ReadShareGroupStateSummaryResponse(
-                        ReadShareGroupStateSummaryResponse.toErrorResponseData(
-                            tp2.topicId(),
-                            tp2.partition(),
-                            Errors.UNKNOWN_TOPIC_OR_PARTITION,
-                            "unknown tp"
+                            ReadShareGroupStateSummaryResponse.toErrorResponseData(
+                                tp2.topicId(),
+                                tp2.partition(),
+                                Errors.UNKNOWN_TOPIC_OR_PARTITION,
+                                "unknown tp"
                         )
                     )
                 )
@@ -1468,18 +1465,18 @@ class DefaultStatePersisterTest {
         // results should contain partial results
         assertEquals(2, results.topicsData().size());
         assertTrue(
-            results.topicsData().contains(
-                new TopicData<>(
-                    tp1.topicId(),
-                    List.of(PartitionFactory.newPartitionStateSummaryData(tp1.partition(), 2, 1L, 0, 1, Errors.NONE.code(), null))
+                results.topicsData().contains(
+                    new TopicData<>(
+                        tp1.topicId(),
+                        List.of(PartitionFactory.newPartitionStateSummaryData(tp1.partition(), 2, 1L, 0, 1, Errors.NONE.code(), null))
                 )
             )
         );
         assertTrue(
-            results.topicsData().contains(
-                new TopicData<>(
-                    tp2.topicId(),
-                    List.of(PartitionFactory.newPartitionStateSummaryData(tp2.partition(), 0, 0, -1, 0, Errors.UNKNOWN_TOPIC_OR_PARTITION.code(), "unknown tp"))
+                results.topicsData().contains(
+                    new TopicData<>(
+                        tp2.topicId(),
+                        List.of(PartitionFactory.newPartitionStateSummaryData(tp2.partition(), 0, 0, -1, 0, Errors.UNKNOWN_TOPIC_OR_PARTITION.code(), "unknown tp"))
                 )
             )
         );
@@ -1495,13 +1492,13 @@ class DefaultStatePersisterTest {
         futureMap.computeIfAbsent(tp1.topicId(), k -> new HashMap<>())
             .put(tp1.partition(), CompletableFuture.completedFuture(
                     new ReadShareGroupStateSummaryResponse(
-                        ReadShareGroupStateSummaryResponse.toResponseData(
-                            tp1.topicId(),
-                            tp1.partition(),
-                            1L,
-                            0,
-                            1,
-                            2
+                            ReadShareGroupStateSummaryResponse.toResponseData(
+                                tp1.topicId(),
+                                tp1.partition(),
+                                1L,
+                                0,
+                                1,
+                                2
                         )
                     )
                 )
@@ -1519,18 +1516,18 @@ class DefaultStatePersisterTest {
         // results should contain partial results
         assertEquals(2, results.topicsData().size());
         assertTrue(
-            results.topicsData().contains(
-                new TopicData<>(
-                    tp1.topicId(),
-                    List.of(PartitionFactory.newPartitionStateSummaryData(tp1.partition(), 2, 1L, 0, 1, Errors.NONE.code(), null))
+                results.topicsData().contains(
+                    new TopicData<>(
+                        tp1.topicId(),
+                        List.of(PartitionFactory.newPartitionStateSummaryData(tp1.partition(), 2, 1L, 0, 1, Errors.NONE.code(), null))
                 )
             )
         );
         assertTrue(
-            results.topicsData().contains(
-                new TopicData<>(
-                    tp2.topicId(),
-                    List.of(PartitionFactory.newPartitionStateSummaryData(tp2.partition(), -1, -1L, -1, -1, Errors.UNKNOWN_SERVER_ERROR.code(), "Error reading state from share coordinator: java.lang.Exception: scary stuff"))
+                results.topicsData().contains(
+                    new TopicData<>(
+                        tp2.topicId(),
+                        List.of(PartitionFactory.newPartitionStateSummaryData(tp2.partition(), -1, -1L, -1, -1, Errors.UNKNOWN_SERVER_ERROR.code(), "Error reading state from share coordinator: java.lang.Exception: scary stuff"))
                 )
             )
         );
@@ -1546,9 +1543,9 @@ class DefaultStatePersisterTest {
         futureMap.computeIfAbsent(tp1.topicId(), k -> new HashMap<>())
             .put(tp1.partition(), CompletableFuture.completedFuture(
                     new DeleteShareGroupStateResponse(
-                        DeleteShareGroupStateResponse.toResponseData(
-                            tp1.topicId(),
-                            tp1.partition()
+                            DeleteShareGroupStateResponse.toResponseData(
+                                tp1.topicId(),
+                                tp1.partition()
                         )
                     )
                 )
@@ -1558,11 +1555,11 @@ class DefaultStatePersisterTest {
         futureMap.computeIfAbsent(tp2.topicId(), k -> new HashMap<>())
             .put(tp2.partition(), CompletableFuture.completedFuture(
                     new DeleteShareGroupStateResponse(
-                        DeleteShareGroupStateResponse.toErrorResponseData(
-                            tp2.topicId(),
-                            tp2.partition(),
-                            Errors.UNKNOWN_TOPIC_OR_PARTITION,
-                            "unknown tp"
+                            DeleteShareGroupStateResponse.toErrorResponseData(
+                                tp2.topicId(),
+                                tp2.partition(),
+                                Errors.UNKNOWN_TOPIC_OR_PARTITION,
+                                "unknown tp"
                         )
                     )
                 )
@@ -1576,18 +1573,18 @@ class DefaultStatePersisterTest {
         // results should contain partial results
         assertEquals(2, results.topicsData().size());
         assertTrue(
-            results.topicsData().contains(
-                new TopicData<>(
-                    tp1.topicId(),
-                    List.of(PartitionFactory.newPartitionErrorData(tp1.partition(), Errors.NONE.code(), null))
+                results.topicsData().contains(
+                    new TopicData<>(
+                        tp1.topicId(),
+                        List.of(PartitionFactory.newPartitionErrorData(tp1.partition(), Errors.NONE.code(), null))
                 )
             )
         );
         assertTrue(
-            results.topicsData().contains(
-                new TopicData<>(
-                    tp2.topicId(),
-                    List.of(PartitionFactory.newPartitionErrorData(tp2.partition(), Errors.UNKNOWN_TOPIC_OR_PARTITION.code(), "unknown tp"))
+                results.topicsData().contains(
+                    new TopicData<>(
+                        tp2.topicId(),
+                        List.of(PartitionFactory.newPartitionErrorData(tp2.partition(), Errors.UNKNOWN_TOPIC_OR_PARTITION.code(), "unknown tp"))
                 )
             )
         );
@@ -1601,9 +1598,9 @@ class DefaultStatePersisterTest {
 
         // one entry has valid results
         futureMap.computeIfAbsent(tp1.topicId(), k -> new HashMap<>()).put(tp1.partition(), CompletableFuture.completedFuture(
-            new DeleteShareGroupStateResponse(DeleteShareGroupStateResponse.toResponseData(
-                tp1.topicId(),
-                tp1.partition()
+                new DeleteShareGroupStateResponse(DeleteShareGroupStateResponse.toResponseData(
+                    tp1.topicId(),
+                    tp1.partition()
             ))
         ));
 
@@ -1619,18 +1616,18 @@ class DefaultStatePersisterTest {
         // results should contain partial results
         assertEquals(2, results.topicsData().size());
         assertTrue(
-            results.topicsData().contains(
-                new TopicData<>(
-                    tp1.topicId(),
-                    List.of(PartitionFactory.newPartitionErrorData(tp1.partition(), Errors.NONE.code(), null))
+                results.topicsData().contains(
+                    new TopicData<>(
+                        tp1.topicId(),
+                        List.of(PartitionFactory.newPartitionErrorData(tp1.partition(), Errors.NONE.code(), null))
                 )
             )
         );
         assertTrue(
-            results.topicsData().contains(
-                new TopicData<>(
-                    tp2.topicId(),
-                    List.of(PartitionFactory.newPartitionErrorData(tp2.partition(), Errors.UNKNOWN_SERVER_ERROR.code(), "Error deleting state from share coordinator: java.lang.Exception: scary stuff"))
+                results.topicsData().contains(
+                    new TopicData<>(
+                        tp2.topicId(),
+                        List.of(PartitionFactory.newPartitionErrorData(tp2.partition(), Errors.UNKNOWN_SERVER_ERROR.code(), "Error deleting state from share coordinator: java.lang.Exception: scary stuff"))
                 )
             )
         );
@@ -1644,21 +1641,21 @@ class DefaultStatePersisterTest {
 
         // one entry has valid results
         futureMap.computeIfAbsent(tp1.topicId(), k -> new HashMap<>()).put(tp1.partition(), CompletableFuture.completedFuture(
-            new InitializeShareGroupStateResponse(
-                InitializeShareGroupStateResponse.toResponseData(
-                    tp1.topicId(),
-                    tp1.partition()
+                new InitializeShareGroupStateResponse(
+                    InitializeShareGroupStateResponse.toResponseData(
+                        tp1.topicId(),
+                        tp1.partition()
                 ))
         ));
 
         // one entry has error
         futureMap.computeIfAbsent(tp2.topicId(), k -> new HashMap<>()).put(tp2.partition(), CompletableFuture.completedFuture(
-            new InitializeShareGroupStateResponse(
-                InitializeShareGroupStateResponse.toErrorResponseData(
-                    tp2.topicId(),
-                    tp2.partition(),
-                    Errors.UNKNOWN_TOPIC_OR_PARTITION,
-                    "unknown tp"
+                new InitializeShareGroupStateResponse(
+                    InitializeShareGroupStateResponse.toErrorResponseData(
+                        tp2.topicId(),
+                        tp2.partition(),
+                        Errors.UNKNOWN_TOPIC_OR_PARTITION,
+                        "unknown tp"
                 ))
         ));
 
@@ -1670,18 +1667,18 @@ class DefaultStatePersisterTest {
         // results should contain partial results
         assertEquals(2, results.topicsData().size());
         assertTrue(
-            results.topicsData().contains(
-                new TopicData<>(
-                    tp1.topicId(),
-                    List.of(PartitionFactory.newPartitionErrorData(tp1.partition(), Errors.NONE.code(), null))
+                results.topicsData().contains(
+                    new TopicData<>(
+                        tp1.topicId(),
+                        List.of(PartitionFactory.newPartitionErrorData(tp1.partition(), Errors.NONE.code(), null))
                 )
             )
         );
         assertTrue(
-            results.topicsData().contains(
-                new TopicData<>(
-                    tp2.topicId(),
-                    List.of(PartitionFactory.newPartitionErrorData(tp2.partition(), Errors.UNKNOWN_TOPIC_OR_PARTITION.code(), "unknown tp"))
+                results.topicsData().contains(
+                    new TopicData<>(
+                        tp2.topicId(),
+                        List.of(PartitionFactory.newPartitionErrorData(tp2.partition(), Errors.UNKNOWN_TOPIC_OR_PARTITION.code(), "unknown tp"))
                 )
             )
         );
@@ -1695,10 +1692,10 @@ class DefaultStatePersisterTest {
 
         // one entry has valid results
         futureMap.computeIfAbsent(tp1.topicId(), k -> new HashMap<>()).put(tp1.partition(), CompletableFuture.completedFuture(
-            new InitializeShareGroupStateResponse(
-                InitializeShareGroupStateResponse.toResponseData(
-                    tp1.topicId(),
-                    tp1.partition()
+                new InitializeShareGroupStateResponse(
+                    InitializeShareGroupStateResponse.toResponseData(
+                        tp1.topicId(),
+                        tp1.partition()
                 ))
         ));
 
@@ -1714,18 +1711,18 @@ class DefaultStatePersisterTest {
         // results should contain partial results
         assertEquals(2, results.topicsData().size());
         assertTrue(
-            results.topicsData().contains(
-                new TopicData<>(
-                    tp1.topicId(),
-                    List.of(PartitionFactory.newPartitionErrorData(tp1.partition(), Errors.NONE.code(), null))
+                results.topicsData().contains(
+                    new TopicData<>(
+                        tp1.topicId(),
+                        List.of(PartitionFactory.newPartitionErrorData(tp1.partition(), Errors.NONE.code(), null))
                 )
             )
         );
         assertTrue(
-            results.topicsData().contains(
-                new TopicData<>(
-                    tp2.topicId(),
-                    List.of(PartitionFactory.newPartitionErrorData(tp2.partition(), Errors.UNKNOWN_SERVER_ERROR.code(), "Error initializing state in share coordinator: java.lang.Exception: scary stuff"))
+                results.topicsData().contains(
+                    new TopicData<>(
+                        tp2.topicId(),
+                        List.of(PartitionFactory.newPartitionErrorData(tp2.partition(), Errors.UNKNOWN_SERVER_ERROR.code(), "Error initializing state in share coordinator: java.lang.Exception: scary stuff"))
                 )
             )
         );

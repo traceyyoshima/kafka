@@ -57,7 +57,7 @@ public class NamedInternal extends Named {
     public NamedInternal withName(final String name) {
         return new NamedInternal(name);
     }
-    
+
     String suffixWithOrElseGet(final String suffix, final String other) {
         if (name != null) {
             return name + suffix;

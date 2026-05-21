@@ -88,7 +88,7 @@ public class ConfigurationControlManager {
         private LogContext logContext = null;
         private SnapshotRegistry snapshotRegistry = null;
         private KafkaConfigSchema configSchema = null;
-        private Consumer<ConfigResource> existenceChecker = __ -> { };
+        private Consumer<ConfigResource> existenceChecker = __ -> {};
         private Optional<AlterConfigPolicy> alterConfigPolicy = Optional.empty();
         private ConfigurationValidator validator = ConfigurationValidator.NO_OP;
         private Map<String, Object> staticConfig = Map.of();
@@ -156,16 +156,16 @@ public class ConfigurationControlManager {
                 featureControl = new FeatureControlManager.Builder().build();
             }
             return new ConfigurationControlManager(
-                logContext,
-                snapshotRegistry,
-                configSchema,
-                existenceChecker,
-                alterConfigPolicy,
-                validator,
-                staticConfig,
-                nodeId,
-                featureControl,
-                supportedConfigChecker);
+                    logContext,
+                    snapshotRegistry,
+                    configSchema,
+                    existenceChecker,
+                    alterConfigPolicy,
+                    validator,
+                    staticConfig,
+                    nodeId,
+                    featureControl,
+                    supportedConfigChecker);
         }
     }
 
@@ -220,12 +220,12 @@ public class ConfigurationControlManager {
                 BoundedList.newArrayBacked(MAX_RECORDS_PER_USER_OP);
         Map<ConfigResource, ApiError> outputResults = new HashMap<>();
         for (Entry<ConfigResource, Map<String, Entry<OpType, String>>> resourceEntry :
-                configChanges.entrySet()) {
+            configChanges.entrySet()) {
             ApiError apiError = incrementalAlterConfigResource(resourceEntry.getKey(),
-                resourceEntry.getValue(),
-                newlyCreatedResource,
-                outputRecords,
-                forwarded);
+                    resourceEntry.getValue(),
+                    newlyCreatedResource,
+                    outputRecords,
+                    forwarded);
             outputResults.put(resourceEntry.getKey(), apiError);
         }
         outputRecords.addAll(createClearElrRecordsAsNeeded(outputRecords));
@@ -243,7 +243,7 @@ public class ConfigurationControlManager {
                 if (record.name().equals(MIN_IN_SYNC_REPLICAS_CONFIG)) {
                     if (Type.forId(record.resourceType()) == Type.TOPIC) {
                         output.add(new ApiMessageAndVersion(
-                            new ClearElrRecord().
+                                new ClearElrRecord().
                                 setTopicName(record.resourceName()), (short) 0));
                     } else {
                         output.add(new ApiMessageAndVersion(new ClearElrRecord(), (short) 0));
@@ -263,10 +263,10 @@ public class ConfigurationControlManager {
         List<ApiMessageAndVersion> outputRecords =
                 BoundedList.newArrayBacked(MAX_RECORDS_PER_USER_OP);
         ApiError apiError = incrementalAlterConfigResource(configResource,
-            keyToOps,
-            newlyCreatedResource,
-            outputRecords,
-            forwarded);
+                keyToOps,
+                newlyCreatedResource,
+                outputRecords,
+                forwarded);
 
         outputRecords.addAll(createClearElrRecordsAsNeeded(outputRecords));
         return ControllerResult.atomicOf(outputRecords, apiError);
@@ -302,8 +302,8 @@ public class ConfigurationControlManager {
                 case SUBTRACT:
                     if (!configSchema.isSplittable(configResource.type(), key)) {
                         return new ApiError(
-                            INVALID_CONFIG, "Can't " + opType + " to " +
-                            "key " + key + " because its type is not LIST.");
+                                INVALID_CONFIG, "Can't " + opType + " to " +
+                                "key " + key + " because its type is not LIST.");
                     }
                     List<String> oldValueList = getParts(newValue, key, configResource);
                     if (opType == APPEND) {
@@ -409,16 +409,16 @@ public class ConfigurationControlManager {
     }
 
     private static final ApiError DISALLOWED_BROKER_MIN_ISR_TRANSITION_ERROR =
-        new ApiError(INVALID_CONFIG, "Broker-level " + MIN_IN_SYNC_REPLICAS_CONFIG +
-            " cannot be altered while ELR is enabled.");
+            new ApiError(INVALID_CONFIG, "Broker-level " + MIN_IN_SYNC_REPLICAS_CONFIG +
+                " cannot be altered while ELR is enabled.");
 
     private static final ApiError DISALLOWED_CLUSTER_MIN_ISR_REMOVAL_ERROR =
-        new ApiError(INVALID_CONFIG, "Cluster-level " + MIN_IN_SYNC_REPLICAS_CONFIG +
-            " cannot be removed while ELR is enabled.");
+            new ApiError(INVALID_CONFIG, "Cluster-level " + MIN_IN_SYNC_REPLICAS_CONFIG +
+                " cannot be removed while ELR is enabled.");
 
     private static final ApiError DISALLOWED_CONFIG_VALUE_SIZE_ERROR =
-        new ApiError(INVALID_CONFIG, "The configuration value cannot be added because " +
-            "it exceeds the maximum value size of " + Short.MAX_VALUE + " bytes.");
+            new ApiError(INVALID_CONFIG, "The configuration value cannot be added because " +
+                "it exceeds the maximum value size of " + Short.MAX_VALUE + " bytes.");
 
     static final ApiError DISABLED_CORDONED_LOG_DIRS_ERROR =
             new ApiError(INVALID_CONFIG, "The " + CORDONED_LOG_DIRS_CONFIG + " configuration value cannot be " +
@@ -505,11 +505,11 @@ public class ConfigurationControlManager {
         for (Entry<ConfigResource, Map<String, String>> resourceEntry :
             newConfigs.entrySet()) {
             legacyAlterConfigResource(resourceEntry.getKey(),
-                resourceEntry.getValue(),
-                newlyCreatedResource,
-                outputRecords,
-                outputResults,
-                forwarded);
+                    resourceEntry.getValue(),
+                    newlyCreatedResource,
+                    outputRecords,
+                    outputResults,
+                    forwarded);
         }
         outputRecords.addAll(createClearElrRecordsAsNeeded(outputRecords));
         return ControllerResult.atomicOf(outputRecords, outputResults);
@@ -644,9 +644,9 @@ public class ConfigurationControlManager {
      */
     ConfigEntry getTopicConfig(String topicName, String configKey) throws NoSuchElementException {
         return configSchema.resolveEffectiveTopicConfig(configKey,
-            staticConfig,
-            clusterConfig(),
-            currentControllerConfig(), currentTopicConfig(topicName));
+                staticConfig,
+                clusterConfig(),
+                currentControllerConfig(), currentTopicConfig(topicName));
     }
 
     public Map<ConfigResource, ResultOrError<Map<String, String>>> describeConfigs(
@@ -662,7 +662,7 @@ public class ConfigurationControlManager {
             }
             Map<String, String> foundConfigs = new HashMap<>();
             TimelineHashMap<String, String> configs =
-                configData.get(resource, lastCommittedOffset);
+                    configData.get(resource, lastCommittedOffset);
             if (configs != null) {
                 Collection<String> targetConfigs = resourceEntry.getValue();
                 if (targetConfigs.isEmpty()) {
@@ -708,12 +708,12 @@ public class ConfigurationControlManager {
         if (!clusterConfig().containsKey(MIN_IN_SYNC_REPLICAS_CONFIG)) {
             int minInsyncReplicas = configSchema.getStaticallyConfiguredMinInsyncReplicas(staticConfig);
             outputRecords.add(new ApiMessageAndVersion(
-                new ConfigRecord().
+                    new ConfigRecord().
                     setResourceType(BROKER.id()).
                     setResourceName("").
                     setName(TopicConfig.MIN_IN_SYNC_REPLICAS_CONFIG).
                     setValue(Integer.toString(minInsyncReplicas)),
-                CONFIG_RECORD.highestSupportedVersion()));
+                    CONFIG_RECORD.highestSupportedVersion()));
             bld.append("Generating cluster-level ").append(MIN_IN_SYNC_REPLICAS_CONFIG).
                 append(" of ").append(minInsyncReplicas);
             prefix = ". ";
@@ -724,9 +724,9 @@ public class ConfigurationControlManager {
             Map<String, String> configs = configData.get(configResource);
             if (configs.containsKey(MIN_IN_SYNC_REPLICAS_CONFIG)) {
                 outputRecords.add(new ApiMessageAndVersion(
-                    new ConfigRecord().setResourceType(BROKER.id()).setResourceName(configResource.name()).
+                        new ConfigRecord().setResourceType(BROKER.id()).setResourceName(configResource.name()).
                         setName(TopicConfig.MIN_IN_SYNC_REPLICAS_CONFIG).setValue(null),
-                    CONFIG_RECORD.highestSupportedVersion()));
+                        CONFIG_RECORD.highestSupportedVersion()));
                 bld.append(prefix).append(brokerId);
                 prefix = ", ";
             }
@@ -757,8 +757,8 @@ public class ConfigurationControlManager {
     ) {
         ControllerResult<ApiError> result = featureControl.updateFeatures(updates, upgradeTypes, validateOnly, currentClaimEpoch);
         if (result.response().isSuccess() &&
-            !validateOnly &&
-            updates.getOrDefault(EligibleLeaderReplicasVersion.FEATURE_NAME, (short) 0) > 0
+                !validateOnly &&
+                updates.getOrDefault(EligibleLeaderReplicasVersion.FEATURE_NAME, (short) 0) > 0
         ) {
             List<ApiMessageAndVersion> records = BoundedList.newArrayBacked(MAX_RECORDS_PER_USER_OP);
             String logMessage = maybeGenerateElrSafetyRecords(records);
@@ -787,7 +787,7 @@ public class ConfigurationControlManager {
 
     Map<String, ConfigEntry> computeEffectiveTopicConfigs(Map<String, String> creationConfigs) {
         return configSchema.resolveEffectiveTopicConfigs(staticConfig, clusterConfig(),
-            currentControllerConfig(), creationConfigs);
+                currentControllerConfig(), creationConfigs);
     }
 
     Map<String, String> clusterConfig() {

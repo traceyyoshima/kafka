@@ -71,7 +71,7 @@ public class BootstrapMetadata {
 
     public static BootstrapMetadata fromVersion(MetadataVersion metadataVersion, String source) {
         List<ApiMessageAndVersion> records = List.of(
-            new ApiMessageAndVersion(new FeatureLevelRecord().
+                new ApiMessageAndVersion(new FeatureLevelRecord().
                 setName(MetadataVersion.FEATURE_NAME).
                 setFeatureLevel(metadataVersion.featureLevel()), (short) 0));
         return new BootstrapMetadata(records, metadataVersion.featureLevel(), source);
@@ -171,15 +171,15 @@ public class BootstrapMetadata {
         if (o == null || !o.getClass().equals(this.getClass())) return false;
         BootstrapMetadata other = (BootstrapMetadata) o;
         return Objects.equals(records, other.records) &&
-            metadataVersionLevel == other.metadataVersionLevel &&
-            source.equals(other.source);
+                metadataVersionLevel == other.metadataVersionLevel &&
+                source.equals(other.source);
     }
 
     @Override
     public String toString() {
         return "BootstrapMetadata(records=" + records +
-            ", metadataVersionLevel=" + metadataVersionLevel +
-            ", source=" + source +
-            ")";
+                ", metadataVersionLevel=" + metadataVersionLevel +
+                ", source=" + source +
+                ")";
     }
 }

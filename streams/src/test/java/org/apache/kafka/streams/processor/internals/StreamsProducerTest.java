@@ -85,11 +85,11 @@ public class StreamsProducerTest {
     private final LogContext logContext = new LogContext("test ");
     private final String topic = "topic";
     private final Cluster cluster = new Cluster(
-        "cluster",
-        Collections.singletonList(Node.noNode()),
-        Collections.singletonList(new PartitionInfo(topic, 0, Node.noNode(), new Node[0], new Node[0])),
-        Collections.emptySet(),
-        Collections.emptySet()
+            "cluster",
+            Collections.singletonList(Node.noNode()),
+            Collections.singletonList(new PartitionInfo(topic, 0, Node.noNode(), new Node[0], new Node[0])),
+            Collections.emptySet(),
+            Collections.emptySet()
     );
 
     private final Time mockTime = mock(Time.class);
@@ -97,16 +97,16 @@ public class StreamsProducerTest {
     @SuppressWarnings("unchecked")
     final Producer<byte[], byte[]> mockedProducer = mock(Producer.class);
     private final StreamsProducer streamsProducerWithMock = new StreamsProducer(
-        mockedProducer,
-        AT_LEAST_ONCE,
-        mockTime,
-        logContext
+            mockedProducer,
+            AT_LEAST_ONCE,
+            mockTime,
+            logContext
     );
     private final StreamsProducer eosStreamsProducerWithMock = new StreamsProducer(
-        mockedProducer,
-        EXACTLY_ONCE_V2,
-        mockTime,
-        logContext
+            mockedProducer,
+            EXACTLY_ONCE_V2,
+            mockTime,
+            logContext
     );
 
     private final MockProducer<byte[], byte[]> nonEosMockProducer
@@ -117,36 +117,33 @@ public class StreamsProducerTest {
     private StreamsProducer nonEosStreamsProducer;
     private StreamsProducer eosStreamsProducer;
 
-
     private final ProducerRecord<byte[], byte[]> record =
-        new ProducerRecord<>(topic, 0, 0L, new byte[0], new byte[0], new RecordHeaders());
+            new ProducerRecord<>(topic, 0, 0L, new byte[0], new byte[0], new RecordHeaders());
 
     private final Map<TopicPartition, OffsetAndMetadata> offsetsAndMetadata = mkMap(
-        mkEntry(new TopicPartition(topic, 0), new OffsetAndMetadata(0L, null))
+            mkEntry(new TopicPartition(topic, 0), new OffsetAndMetadata(0L, null))
     );
 
     @BeforeEach
     public void before() {
         nonEosStreamsProducer =
-            new StreamsProducer(
-                nonEosMockProducer,
-                AT_LEAST_ONCE,
-                mockTime,
-                logContext
+                new StreamsProducer(
+                    nonEosMockProducer,
+                    AT_LEAST_ONCE,
+                    mockTime,
+                    logContext
             );
 
         eosStreamsProducer =
-            new StreamsProducer(
-                eosMockProducer,
-                EXACTLY_ONCE_V2,
-                mockTime,
-                logContext
+                new StreamsProducer(
+                    eosMockProducer,
+                    EXACTLY_ONCE_V2,
+                    mockTime,
+                    logContext
             );
         eosStreamsProducer.initTransaction();
         when(mockTime.nanoseconds()).thenReturn(Time.SYSTEM.nanoseconds());
     }
-
-
 
     // common tests (non-EOS and EOS)
 
@@ -156,7 +153,7 @@ public class StreamsProducerTest {
     public void shouldResetTransactionInFlightOnClose() {
         // given:
         eosStreamsProducer.send(
-            new ProducerRecord<>("topic", new byte[1]), (metadata, error) -> { });
+                new ProducerRecord<>("topic", new byte[1]), (metadata, error) -> {});
         assertThat(eosStreamsProducer.transactionInFlight(), is(true));
 
         // when:
@@ -169,7 +166,7 @@ public class StreamsProducerTest {
     @Test
     public void shouldResetTransactionInFlightOnReset() {
         // given:
-        eosStreamsProducer.send(new ProducerRecord<>("topic", new byte[1]), (metadata, error) -> { });
+        eosStreamsProducer.send(new ProducerRecord<>("topic", new byte[1]), (metadata, error) -> {});
         assertThat(eosStreamsProducer.transactionInFlight(), is(true));
 
         // when:
@@ -215,12 +212,12 @@ public class StreamsProducerTest {
     @Test
     public void shouldFailIfProcessingModeIsNull() {
         final NullPointerException thrown = assertThrows(
-            NullPointerException.class,
-            () -> new StreamsProducer(
-                mockedProducer,
-                null,
-                mockTime,
-                logContext
+                NullPointerException.class,
+                () -> new StreamsProducer(
+                    mockedProducer,
+                    null,
+                    mockTime,
+                    logContext
             )
         );
 
@@ -230,12 +227,12 @@ public class StreamsProducerTest {
     @Test
     public void shouldFailIfProducerIsNull() {
         final NullPointerException thrown = assertThrows(
-            NullPointerException.class,
-            () -> new StreamsProducer(
-                null,
-                AT_LEAST_ONCE,
-                mockTime,
-                logContext
+                NullPointerException.class,
+                () -> new StreamsProducer(
+                    null,
+                    AT_LEAST_ONCE,
+                    mockTime,
+                    logContext
             )
         );
 
@@ -245,12 +242,12 @@ public class StreamsProducerTest {
     @Test
     public void shouldFailIfTimeIsNull() {
         final NullPointerException thrown = assertThrows(
-            NullPointerException.class,
-            () -> new StreamsProducer(
-                mockedProducer,
-                AT_LEAST_ONCE,
-                null,
-                logContext
+                NullPointerException.class,
+                () -> new StreamsProducer(
+                    mockedProducer,
+                    AT_LEAST_ONCE,
+                    null,
+                    logContext
             )
         );
 
@@ -260,12 +257,12 @@ public class StreamsProducerTest {
     @Test
     public void shouldFailIfLogContextIsNull() {
         final NullPointerException thrown = assertThrows(
-            NullPointerException.class,
-            () -> new StreamsProducer(
-                mockedProducer,
-                AT_LEAST_ONCE,
-                mockTime,
-                null
+                NullPointerException.class,
+                () -> new StreamsProducer(
+                    mockedProducer,
+                    AT_LEAST_ONCE,
+                    mockTime,
+                    null
             )
         );
 
@@ -275,13 +272,12 @@ public class StreamsProducerTest {
     @Test
     public void shouldFailOnResetProducerForAtLeastOnce() {
         final IllegalStateException thrown = assertThrows(
-            IllegalStateException.class,
-            () -> nonEosStreamsProducer.resetProducer(null)
+                IllegalStateException.class,
+                () -> nonEosStreamsProducer.resetProducer(null)
         );
 
         assertThat(thrown.getMessage(), is("Expected EOS to be enabled, but processing mode is at_least_once"));
     }
-
 
     // non-EOS tests
 
@@ -310,8 +306,8 @@ public class StreamsProducerTest {
     @Test
     public void shouldFailOnInitTxIfEosDisabled() {
         final IllegalStateException thrown = assertThrows(
-            IllegalStateException.class,
-            nonEosStreamsProducer::initTransaction
+                IllegalStateException.class,
+                nonEosStreamsProducer::initTransaction
         );
 
         assertThat(thrown.getMessage(), is("Exactly-once is not enabled [test]"));
@@ -319,11 +315,11 @@ public class StreamsProducerTest {
 
     @Test
     public void shouldThrowStreamsExceptionOnSendError() {
-        nonEosMockProducer.sendException  = new KafkaException("KABOOM!");
+        nonEosMockProducer.sendException = new KafkaException("KABOOM!");
 
         final StreamsException thrown = assertThrows(
-            StreamsException.class,
-            () -> nonEosStreamsProducer.send(record, null)
+                StreamsException.class,
+                () -> nonEosStreamsProducer.send(record, null)
         );
 
         assertThat(thrown.getCause(), is(nonEosMockProducer.sendException));
@@ -335,8 +331,8 @@ public class StreamsProducerTest {
         nonEosMockProducer.sendException = new RuntimeException("KABOOM!");
 
         final RuntimeException thrown = assertThrows(
-            RuntimeException.class,
-            () -> nonEosStreamsProducer.send(record, null)
+                RuntimeException.class,
+                () -> nonEosStreamsProducer.send(record, null)
         );
 
         assertThat(thrown.getMessage(), is("KABOOM!"));
@@ -346,8 +342,8 @@ public class StreamsProducerTest {
     @Test
     public void shouldFailOnCommitIfEosDisabled() {
         final IllegalStateException thrown = assertThrows(
-            IllegalStateException.class,
-            () -> nonEosStreamsProducer.commitTransaction(null, new ConsumerGroupMetadata("appId"))
+                IllegalStateException.class,
+                () -> nonEosStreamsProducer.commitTransaction(null, new ConsumerGroupMetadata("appId"))
         );
 
         assertThat(thrown.getMessage(), is("Exactly-once is not enabled [test]"));
@@ -356,13 +352,12 @@ public class StreamsProducerTest {
     @Test
     public void shouldFailOnAbortIfEosDisabled() {
         final IllegalStateException thrown = assertThrows(
-            IllegalStateException.class,
-            nonEosStreamsProducer::abortTransaction
+                IllegalStateException.class,
+                nonEosStreamsProducer::abortTransaction
         );
 
         assertThat(thrown.getMessage(), is("Exactly-once is not enabled [test]"));
     }
-
 
     // EOS tests
 
@@ -438,10 +433,10 @@ public class StreamsProducerTest {
         when(mockedProducer.send(record, null)).thenReturn(null);
 
         final StreamsProducer streamsProducer = new StreamsProducer(
-            mockedProducer,
-            EXACTLY_ONCE_V2,
-            mockTime,
-            logContext
+                mockedProducer,
+                EXACTLY_ONCE_V2,
+                mockTime,
+                logContext
         );
         streamsProducer.initTransaction();
         // call `send()` to start a transaction
@@ -488,15 +483,15 @@ public class StreamsProducerTest {
         nonEosMockProducer.initTransactionException = new TimeoutException("KABOOM!");
 
         final StreamsProducer streamsProducer = new StreamsProducer(
-            nonEosMockProducer,
-            EXACTLY_ONCE_V2,
-            mockTime,
-            logContext
+                nonEosMockProducer,
+                EXACTLY_ONCE_V2,
+                mockTime,
+                logContext
         );
 
         final TimeoutException thrown = assertThrows(
-            TimeoutException.class,
-            streamsProducer::initTransaction
+                TimeoutException.class,
+                streamsProducer::initTransaction
         );
 
         assertThat(thrown.getMessage(), is("KABOOM!"));
@@ -506,16 +501,16 @@ public class StreamsProducerTest {
     public void shouldFailOnMaybeBeginTransactionIfTransactionsNotInitializedForEos() {
         // use `nonEosMockProducer` instead of `eosMockProducer` to avoid auto-init Tx
         final StreamsProducer streamsProducer =
-            new StreamsProducer(
-                nonEosMockProducer,
-                EXACTLY_ONCE_V2,
-                mockTime,
-                logContext
+                new StreamsProducer(
+                    nonEosMockProducer,
+                    EXACTLY_ONCE_V2,
+                    mockTime,
+                    logContext
             );
 
         final IllegalStateException thrown = assertThrows(
-            IllegalStateException.class,
-            () -> streamsProducer.send(record, null)
+                IllegalStateException.class,
+                () -> streamsProducer.send(record, null)
         );
 
         assertThat(thrown.getMessage(), is("MockProducer hasn't been initialized for transactions."));
@@ -527,15 +522,15 @@ public class StreamsProducerTest {
         nonEosMockProducer.initTransactionException = new KafkaException("KABOOM!");
 
         final StreamsProducer streamsProducer = new StreamsProducer(
-            nonEosMockProducer,
-            EXACTLY_ONCE_V2,
-            mockTime,
-            logContext
+                nonEosMockProducer,
+                EXACTLY_ONCE_V2,
+                mockTime,
+                logContext
         );
 
         final StreamsException thrown = assertThrows(
-            StreamsException.class,
-            streamsProducer::initTransaction
+                StreamsException.class,
+                streamsProducer::initTransaction
         );
 
         assertThat(thrown.getCause(), is(nonEosMockProducer.initTransactionException));
@@ -548,15 +543,15 @@ public class StreamsProducerTest {
         nonEosMockProducer.initTransactionException = new RuntimeException("KABOOM!");
 
         final StreamsProducer streamsProducer = new StreamsProducer(
-            nonEosMockProducer,
-            EXACTLY_ONCE_V2,
-            mockTime,
-            logContext
+                nonEosMockProducer,
+                EXACTLY_ONCE_V2,
+                mockTime,
+                logContext
         );
 
         final RuntimeException thrown = assertThrows(
-            RuntimeException.class,
-            streamsProducer::initTransaction
+                RuntimeException.class,
+                streamsProducer::initTransaction
         );
 
         assertThat(thrown.getMessage(), is("KABOOM!"));
@@ -567,14 +562,14 @@ public class StreamsProducerTest {
         eosMockProducer.fenceProducer();
 
         final TaskMigratedException thrown = assertThrows(
-            TaskMigratedException.class,
-            () -> eosStreamsProducer.send(null, null)
+                TaskMigratedException.class,
+                () -> eosStreamsProducer.send(null, null)
         );
 
         assertThat(
-            thrown.getMessage(),
-            is("Producer got fenced trying to begin a new transaction [test];" +
-                   " it means all tasks belonging to this thread should be migrated.")
+                thrown.getMessage(),
+                is("Producer got fenced trying to begin a new transaction [test];" +
+                    " it means all tasks belonging to this thread should be migrated.")
         );
     }
 
@@ -584,13 +579,13 @@ public class StreamsProducerTest {
 
         // calling `send()` implicitly starts a new transaction
         final StreamsException thrown = assertThrows(
-            StreamsException.class,
-            () -> eosStreamsProducer.send(null, null));
+                StreamsException.class,
+                () -> eosStreamsProducer.send(null, null));
 
         assertThat(thrown.getCause(), is(eosMockProducer.beginTransactionException));
         assertThat(
-            thrown.getMessage(),
-            is("Error encountered trying to begin a new transaction [test]")
+                thrown.getMessage(),
+                is("Error encountered trying to begin a new transaction [test]")
         );
     }
 
@@ -600,8 +595,8 @@ public class StreamsProducerTest {
 
         // calling `send()` implicitly starts a new transaction
         final RuntimeException thrown = assertThrows(
-            RuntimeException.class,
-            () -> eosStreamsProducer.send(null, null));
+                RuntimeException.class,
+                () -> eosStreamsProducer.send(null, null));
 
         assertThat(thrown.getMessage(), is("KABOOM!"));
     }
@@ -627,15 +622,15 @@ public class StreamsProducerTest {
         eosMockProducer.sendException = new KafkaException(exception);
 
         final TaskMigratedException thrown = assertThrows(
-            TaskMigratedException.class,
-            () -> eosStreamsProducer.send(record, null)
+                TaskMigratedException.class,
+                () -> eosStreamsProducer.send(record, null)
         );
 
         assertThat(thrown.getCause(), is(exception));
         assertThat(
-            thrown.getMessage(),
-            is("Producer got fenced trying to send a record [test];" +
-                   " it means all tasks belonging to this thread should be migrated.")
+                thrown.getMessage(),
+                is("Producer got fenced trying to send a record [test];" +
+                    " it means all tasks belonging to this thread should be migrated.")
         );
     }
 
@@ -646,15 +641,15 @@ public class StreamsProducerTest {
         eosMockProducer.sendException = new KafkaException(exception);
 
         final TaskMigratedException thrown = assertThrows(
-            TaskMigratedException.class,
-            () -> eosStreamsProducer.send(record, null)
+                TaskMigratedException.class,
+                () -> eosStreamsProducer.send(record, null)
         );
 
         assertThat(thrown.getCause(), is(exception));
         assertThat(
-            thrown.getMessage(),
-            is("Producer got fenced trying to send a record [test];" +
-                   " it means all tasks belonging to this thread should be migrated.")
+                thrown.getMessage(),
+                is("Producer got fenced trying to send a record [test];" +
+                    " it means all tasks belonging to this thread should be migrated.")
         );
     }
 
@@ -682,17 +677,17 @@ public class StreamsProducerTest {
         eosMockProducer.sendOffsetsToTransactionException = exception;
 
         final TaskMigratedException thrown = assertThrows(
-            TaskMigratedException.class,
-            // we pass in `null` to verify that `sendOffsetsToTransaction()` fails instead of `commitTransaction()`
-            // `sendOffsetsToTransaction()` would throw an NPE on `null` offsets
-            () -> eosStreamsProducer.commitTransaction(null, new ConsumerGroupMetadata("appId"))
+                TaskMigratedException.class,
+                // we pass in `null` to verify that `sendOffsetsToTransaction()` fails instead of `commitTransaction()`
+                // `sendOffsetsToTransaction()` would throw an NPE on `null` offsets
+                () -> eosStreamsProducer.commitTransaction(null, new ConsumerGroupMetadata("appId"))
         );
 
         assertThat(thrown.getCause(), is(eosMockProducer.sendOffsetsToTransactionException));
         assertThat(
-            thrown.getMessage(),
-            is("Producer got fenced trying to add offsets to a transaction [test];" +
-                   " it means all tasks belonging to this thread should be migrated.")
+                thrown.getMessage(),
+                is("Producer got fenced trying to add offsets to a transaction [test];" +
+                    " it means all tasks belonging to this thread should be migrated.")
         );
     }
 
@@ -702,16 +697,16 @@ public class StreamsProducerTest {
         eosMockProducer.sendOffsetsToTransactionException = new KafkaException("KABOOM!");
 
         final StreamsException thrown = assertThrows(
-            StreamsException.class,
-            // we pass in `null` to verify that `sendOffsetsToTransaction()` fails instead of `commitTransaction()`
-            // `sendOffsetsToTransaction()` would throw an NPE on `null` offsets
-            () -> eosStreamsProducer.commitTransaction(null, new ConsumerGroupMetadata("appId"))
+                StreamsException.class,
+                // we pass in `null` to verify that `sendOffsetsToTransaction()` fails instead of `commitTransaction()`
+                // `sendOffsetsToTransaction()` would throw an NPE on `null` offsets
+                () -> eosStreamsProducer.commitTransaction(null, new ConsumerGroupMetadata("appId"))
         );
 
         assertThat(thrown.getCause(), is(eosMockProducer.sendOffsetsToTransactionException));
         assertThat(
-            thrown.getMessage(),
-            is("Error encountered trying to add offsets to a transaction [test]")
+                thrown.getMessage(),
+                is("Error encountered trying to add offsets to a transaction [test]")
         );
     }
 
@@ -721,10 +716,10 @@ public class StreamsProducerTest {
         eosMockProducer.sendOffsetsToTransactionException = new RuntimeException("KABOOM!");
 
         final RuntimeException thrown = assertThrows(
-            RuntimeException.class,
-            // we pass in `null` to verify that `sendOffsetsToTransaction()` fails instead of `commitTransaction()`
-            // `sendOffsetsToTransaction()` would throw an NPE on `null` offsets
-            () -> eosStreamsProducer.commitTransaction(null, new ConsumerGroupMetadata("appId"))
+                RuntimeException.class,
+                // we pass in `null` to verify that `sendOffsetsToTransaction()` fails instead of `commitTransaction()`
+                // `sendOffsetsToTransaction()` would throw an NPE on `null` offsets
+                () -> eosStreamsProducer.commitTransaction(null, new ConsumerGroupMetadata("appId"))
         );
 
         assertThat(thrown.getMessage(), is("KABOOM!"));
@@ -751,16 +746,16 @@ public class StreamsProducerTest {
         eosMockProducer.commitTransactionException = exception;
 
         final TaskMigratedException thrown = assertThrows(
-            TaskMigratedException.class,
-            () -> eosStreamsProducer.commitTransaction(offsetsAndMetadata, new ConsumerGroupMetadata("appId"))
+                TaskMigratedException.class,
+                () -> eosStreamsProducer.commitTransaction(offsetsAndMetadata, new ConsumerGroupMetadata("appId"))
         );
 
         assertThat(eosMockProducer.sentOffsets(), is(true));
         assertThat(thrown.getCause(), is(eosMockProducer.commitTransactionException));
         assertThat(
-            thrown.getMessage(),
-            is("Producer got fenced trying to commit a transaction [test];" +
-                   " it means all tasks belonging to this thread should be migrated.")
+                thrown.getMessage(),
+                is("Producer got fenced trying to commit a transaction [test];" +
+                    " it means all tasks belonging to this thread should be migrated.")
         );
     }
 
@@ -770,15 +765,15 @@ public class StreamsProducerTest {
         eosMockProducer.commitTransactionException = new KafkaException("KABOOM!");
 
         final StreamsException thrown = assertThrows(
-            StreamsException.class,
-            () -> eosStreamsProducer.commitTransaction(offsetsAndMetadata, new ConsumerGroupMetadata("appId"))
+                StreamsException.class,
+                () -> eosStreamsProducer.commitTransaction(offsetsAndMetadata, new ConsumerGroupMetadata("appId"))
         );
 
         assertThat(eosMockProducer.sentOffsets(), is(true));
         assertThat(thrown.getCause(), is(eosMockProducer.commitTransactionException));
         assertThat(
-            thrown.getMessage(),
-            is("Error encountered trying to commit a transaction [test]")
+                thrown.getMessage(),
+                is("Error encountered trying to commit a transaction [test]")
         );
     }
 
@@ -788,8 +783,8 @@ public class StreamsProducerTest {
         eosMockProducer.commitTransactionException = new RuntimeException("KABOOM!");
 
         final RuntimeException thrown = assertThrows(
-            RuntimeException.class,
-            () -> eosStreamsProducer.commitTransaction(offsetsAndMetadata, new ConsumerGroupMetadata("appId"))
+                RuntimeException.class,
+                () -> eosStreamsProducer.commitTransaction(offsetsAndMetadata, new ConsumerGroupMetadata("appId"))
         );
 
         assertThat(eosMockProducer.sentOffsets(), is(true));
@@ -834,8 +829,8 @@ public class StreamsProducerTest {
 
         assertThat(thrown.getCause(), is(eosMockProducer.abortTransactionException));
         assertThat(
-            thrown.getMessage(),
-            is("Error encounter trying to abort a transaction [test]")
+                thrown.getMessage(),
+                is("Error encounter trying to abort a transaction [test]")
         );
     }
 
@@ -849,7 +844,6 @@ public class StreamsProducerTest {
 
         assertThat(thrown.getMessage(), is("KABOOM!"));
     }
-
 
     // EOS test
 
@@ -874,10 +868,10 @@ public class StreamsProducerTest {
     @Test
     public void shouldResetTransactionInitializedOnResetProducer() {
         final StreamsProducer streamsProducer = new StreamsProducer(
-            mockedProducer,
-            EXACTLY_ONCE_V2,
-            mockTime,
-            logContext
+                mockedProducer,
+                EXACTLY_ONCE_V2,
+                mockTime,
+                logContext
         );
         streamsProducer.initTransaction();
 
@@ -897,59 +891,59 @@ public class StreamsProducerTest {
     @Test
     public void shouldComputeTotalBlockedTime() {
         setProducerMetrics(
-            nonEosMockProducer,
-            BUFFER_POOL_WAIT_TIME,
-            FLUSH_TME,
-            TXN_INIT_TIME,
-            TXN_BEGIN_TIME,
-            TXN_SEND_OFFSETS_TIME,
-            TXN_COMMIT_TIME,
-            TXN_ABORT_TIME,
-            METADATA_WAIT_TIME
+                nonEosMockProducer,
+                BUFFER_POOL_WAIT_TIME,
+                FLUSH_TME,
+                TXN_INIT_TIME,
+                TXN_BEGIN_TIME,
+                TXN_SEND_OFFSETS_TIME,
+                TXN_COMMIT_TIME,
+                TXN_ABORT_TIME,
+                METADATA_WAIT_TIME
         );
 
         final double expectedTotalBlocked = BUFFER_POOL_WAIT_TIME + FLUSH_TME + TXN_INIT_TIME +
-            TXN_BEGIN_TIME + TXN_SEND_OFFSETS_TIME +  TXN_COMMIT_TIME + TXN_ABORT_TIME +
-            METADATA_WAIT_TIME;
+                TXN_BEGIN_TIME + TXN_SEND_OFFSETS_TIME + TXN_COMMIT_TIME + TXN_ABORT_TIME +
+                METADATA_WAIT_TIME;
         assertThat(nonEosStreamsProducer.totalBlockedTime(), closeTo(expectedTotalBlocked, 0.01));
     }
 
     @Test
     public void shouldComputeTotalBlockedTimeAfterReset() {
         setProducerMetrics(
-            eosMockProducer,
-            BUFFER_POOL_WAIT_TIME,
-            FLUSH_TME,
-            TXN_INIT_TIME,
-            TXN_BEGIN_TIME,
-            TXN_SEND_OFFSETS_TIME,
-            TXN_COMMIT_TIME,
-            TXN_ABORT_TIME,
-            METADATA_WAIT_TIME
+                eosMockProducer,
+                BUFFER_POOL_WAIT_TIME,
+                FLUSH_TME,
+                TXN_INIT_TIME,
+                TXN_BEGIN_TIME,
+                TXN_SEND_OFFSETS_TIME,
+                TXN_COMMIT_TIME,
+                TXN_ABORT_TIME,
+                METADATA_WAIT_TIME
         );
         final double expectedTotalBlocked = BUFFER_POOL_WAIT_TIME + FLUSH_TME + TXN_INIT_TIME +
-            TXN_BEGIN_TIME + TXN_SEND_OFFSETS_TIME +  TXN_COMMIT_TIME + TXN_ABORT_TIME +
-            METADATA_WAIT_TIME;
+                TXN_BEGIN_TIME + TXN_SEND_OFFSETS_TIME + TXN_COMMIT_TIME + TXN_ABORT_TIME +
+                METADATA_WAIT_TIME;
         assertThat(eosStreamsProducer.totalBlockedTime(), equalTo(expectedTotalBlocked));
         final long closeStart = 1L;
         final long closeDelay = 1L;
         when(mockTime.nanoseconds()).thenReturn(closeStart).thenReturn(closeStart + closeDelay);
         eosStreamsProducer.resetProducer(eosMockProducer);
         setProducerMetrics(
-            eosMockProducer,
-            BUFFER_POOL_WAIT_TIME,
-            FLUSH_TME,
-            TXN_INIT_TIME,
-            TXN_BEGIN_TIME,
-            TXN_SEND_OFFSETS_TIME,
-            TXN_COMMIT_TIME,
-            TXN_ABORT_TIME,
-            METADATA_WAIT_TIME
+                eosMockProducer,
+                BUFFER_POOL_WAIT_TIME,
+                FLUSH_TME,
+                TXN_INIT_TIME,
+                TXN_BEGIN_TIME,
+                TXN_SEND_OFFSETS_TIME,
+                TXN_COMMIT_TIME,
+                TXN_ABORT_TIME,
+                METADATA_WAIT_TIME
         );
 
         assertThat(
-            eosStreamsProducer.totalBlockedTime(),
-            closeTo(2 * expectedTotalBlocked + closeDelay, 0.01)
+                eosStreamsProducer.totalBlockedTime(),
+                closeTo(2 * expectedTotalBlocked + closeDelay, 0.01)
         );
     }
 

@@ -90,10 +90,10 @@ public class UserScramCredentialsCommandTest {
         String scramPossibilityAOut = describeUserMessage(USER1) + "\n" + describeUserMessage(USER2);
         String scramPossibilityBOut = describeUserMessage(USER2) + "\n" + describeUserMessage(USER1);
         describeUsers(
-            quotaPossibilityAOut + "\n" + scramPossibilityAOut,
-            quotaPossibilityAOut + "\n" + scramPossibilityBOut,
-            quotaPossibilityBOut + "\n" + scramPossibilityAOut,
-            quotaPossibilityBOut + "\n" + scramPossibilityBOut);
+                quotaPossibilityAOut + "\n" + scramPossibilityAOut,
+                quotaPossibilityAOut + "\n" + scramPossibilityBOut,
+                quotaPossibilityBOut + "\n" + scramPossibilityAOut,
+                quotaPossibilityBOut + "\n" + scramPossibilityBOut);
 
         // now delete configs, in opposite order, for user1 and user2, and describe
         deleteConfig(USER1, "consumer_byte_rate");
@@ -127,26 +127,26 @@ public class UserScramCredentialsCommandTest {
         ConfigCommandResult result = runConfigCommandViaBroker("--user", user, "--alter", "--add-config", "SCRAM-SHA-256=[iterations=4096,password=foo-secret]");
         assertEquals(updateUserMessage(user), result.stdout);
         TestUtils.waitForCondition(
-            () -> {
-                try {
-                    return Objects.equals(runConfigCommandViaBroker("--user", user, "--describe").stdout, describeUserMessage(user));
-                } catch (Exception e) {
-                    throw new NoRetryException(e);
-                }
-            },
-            () -> "Failed to describe SCRAM credential change '" + user + "'");
+                () -> {
+                    try {
+                        return Objects.equals(runConfigCommandViaBroker("--user", user, "--describe").stdout, describeUserMessage(user));
+                    } catch (Exception e) {
+                        throw new NoRetryException(e);
+                    }
+                },
+                () -> "Failed to describe SCRAM credential change '" + user + "'");
         // create a user quota and describe the user again
         result = runConfigCommandViaBroker("--user", user, "--alter", "--add-config", "consumer_byte_rate=20000");
         assertEquals(updateUserMessage(user), result.stdout);
         TestUtils.waitForCondition(
-            () -> {
-                try {
-                    return Objects.equals(runConfigCommandViaBroker("--user", user, "--describe").stdout, quotaMessage(user) + "\n" + describeUserMessage(user));
-                } catch (Exception e) {
-                    throw new NoRetryException(e);
-                }
-            },
-            () -> "Failed to describe Quota change for '" + user + "'");
+                () -> {
+                    try {
+                        return Objects.equals(runConfigCommandViaBroker("--user", user, "--describe").stdout, quotaMessage(user) + "\n" + describeUserMessage(user));
+                    } catch (Exception e) {
+                        throw new NoRetryException(e);
+                    }
+                },
+                () -> "Failed to describe Quota change for '" + user + "'");
     }
 
     private void deleteConfig(String user, String config) {
@@ -156,15 +156,15 @@ public class UserScramCredentialsCommandTest {
 
     private void describeUsers(String... msgs) throws InterruptedException {
         TestUtils.waitForCondition(
-            () -> {
-                try {
-                    String output = runConfigCommandViaBroker("--entity-type", "users", "--describe").stdout;
-                    return List.of(msgs).contains(output);
-                } catch (Exception e) {
-                    throw new NoRetryException(e);
-                }
-            },
-            () -> "Failed to describe config");
+                () -> {
+                    try {
+                        String output = runConfigCommandViaBroker("--entity-type", "users", "--describe").stdout;
+                        return List.of(msgs).contains(output);
+                    } catch (Exception e) {
+                        throw new NoRetryException(e);
+                    }
+                },
+                () -> "Failed to describe config");
     }
 
     private static String describeUserMessage(String user) {

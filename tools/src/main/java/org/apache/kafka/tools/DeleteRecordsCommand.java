@@ -130,7 +130,7 @@ public class DeleteRecordsCommand {
             StringJoiner duplicates = new StringJoiner(",");
             duplicatePartitions.forEach(tp -> duplicates.add(tp.toString()));
             throw new AdminCommandFailedException(
-                String.format("Offset json file contains duplicate topic partitions: %s", duplicates)
+                    String.format("Offset json file contains duplicate topic partitions: %s", duplicates)
             );
         }
 

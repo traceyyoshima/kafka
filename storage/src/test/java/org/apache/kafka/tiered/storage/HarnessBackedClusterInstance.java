@@ -161,10 +161,10 @@ public class HarnessBackedClusterInstance implements ClusterInstance {
         // Step 2: wait until each broker's metadata cache knows about all alive brokers
         Set<Integer> brokerIds = brokerMap.keySet();
         TestUtils.waitForCondition(
-            () -> brokerMap.values().stream().allMatch(
-                broker -> brokerIds.stream().allMatch(id -> broker.metadataCache().hasAliveBroker(id))
+                () -> brokerMap.values().stream().allMatch(
+                    broker -> brokerIds.stream().allMatch(id -> broker.metadataCache().hasAliveBroker(id))
             ),
-            "Timed out waiting for metadata cache to reflect all alive brokers"
+                "Timed out waiting for metadata cache to reflect all alive brokers"
         );
     }
 

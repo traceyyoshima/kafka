@@ -43,7 +43,7 @@ public class SchemaProjectorTest {
         assertEquals(false, projected);
 
         byte[] bytes = {(byte) 1, (byte) 2};
-        projected  = SchemaProjector.project(Schema.BYTES_SCHEMA, bytes, Schema.BYTES_SCHEMA);
+        projected = SchemaProjector.project(Schema.BYTES_SCHEMA, bytes, Schema.BYTES_SCHEMA);
         assertEquals(bytes, projected);
 
         projected = SchemaProjector.project(Schema.STRING_SCHEMA, "abc", Schema.STRING_SCHEMA);
@@ -52,7 +52,7 @@ public class SchemaProjectorTest {
         projected = SchemaProjector.project(Schema.BOOLEAN_SCHEMA, false, Schema.OPTIONAL_BOOLEAN_SCHEMA);
         assertEquals(false, projected);
 
-        projected  = SchemaProjector.project(Schema.BYTES_SCHEMA, bytes, Schema.OPTIONAL_BYTES_SCHEMA);
+        projected = SchemaProjector.project(Schema.BYTES_SCHEMA, bytes, Schema.OPTIONAL_BYTES_SCHEMA);
         assertEquals(bytes, projected);
 
         projected = SchemaProjector.project(Schema.STRING_SCHEMA, "abc", Schema.OPTIONAL_STRING_SCHEMA);
@@ -72,7 +72,7 @@ public class SchemaProjectorTest {
     public void testNumericTypeProjection() {
         Schema[] promotableSchemas = {Schema.INT8_SCHEMA, Schema.INT16_SCHEMA, Schema.INT32_SCHEMA, Schema.INT64_SCHEMA, Schema.FLOAT32_SCHEMA, Schema.FLOAT64_SCHEMA};
         Schema[] promotableOptionalSchemas = {Schema.OPTIONAL_INT8_SCHEMA, Schema.OPTIONAL_INT16_SCHEMA, Schema.OPTIONAL_INT32_SCHEMA, Schema.OPTIONAL_INT64_SCHEMA,
-                                              Schema.OPTIONAL_FLOAT32_SCHEMA, Schema.OPTIONAL_FLOAT64_SCHEMA};
+                Schema.OPTIONAL_FLOAT32_SCHEMA, Schema.OPTIONAL_FLOAT64_SCHEMA};
 
         Object[] values = {(byte) 127, (short) 255, 32767, 327890L, 1.2F, 1.2345};
         Map<Object, List<?>> expectedProjected = new HashMap<>();
@@ -127,7 +127,7 @@ public class SchemaProjectorTest {
                 Object dummy = new Object();
 
                 assertThrows(DataException.class, () -> SchemaProjector.project(promotableSchema, dummy, nonPromotableSchema),
-                        "Cannot promote " +  promotableSchema.type() + " to " + nonPromotableSchema.type());
+                        "Cannot promote " + promotableSchema.type() + " to " + nonPromotableSchema.type());
             }
         }
     }
@@ -381,8 +381,8 @@ public class SchemaProjectorTest {
 
         Schema nonPromotableTarget = SchemaBuilder.array(Schema.BOOLEAN_SCHEMA).build();
         assertThrows(SchemaProjectorException.class,
-            () -> SchemaProjector.project(optionalSource, null, nonPromotableTarget),
-            "Neither source type matches target type nor source type can be promoted to target type");
+                () -> SchemaProjector.project(optionalSource, null, nonPromotableTarget),
+                "Neither source type matches target type nor source type can be promoted to target type");
     }
 
     @Test
@@ -404,13 +404,13 @@ public class SchemaProjectorTest {
 
         Schema noDefaultValueTarget = SchemaBuilder.map(Schema.INT32_SCHEMA, Schema.INT32_SCHEMA).build();
         assertThrows(SchemaProjectorException.class,
-            () -> SchemaProjector.project(source, null, noDefaultValueTarget),
-            "Reader does not provide a default value.");
+                () -> SchemaProjector.project(source, null, noDefaultValueTarget),
+                "Reader does not provide a default value.");
 
         Schema nonPromotableTarget = SchemaBuilder.map(Schema.BOOLEAN_SCHEMA, Schema.STRING_SCHEMA).build();
         assertThrows(SchemaProjectorException.class,
-            () -> SchemaProjector.project(source, null, nonPromotableTarget),
-            "Neither source type matches target type nor source type can be promoted to target type");
+                () -> SchemaProjector.project(source, null, nonPromotableTarget),
+                "Neither source type matches target type nor source type can be promoted to target type");
     }
 
     @Test
@@ -419,13 +419,13 @@ public class SchemaProjectorTest {
         Schema target = SchemaBuilder.int32().name("target").build();
 
         assertThrows(SchemaProjectorException.class,
-            () ->  SchemaProjector.project(source, 12, target),
-            "Source name and target name mismatch.");
+                () -> SchemaProjector.project(source, 12, target),
+                "Source name and target name mismatch.");
 
         Schema targetWithParameters = SchemaBuilder.int32().parameters(Map.of("key", "value"));
         assertThrows(SchemaProjectorException.class,
-            () ->  SchemaProjector.project(source, 34, targetWithParameters),
-            "Source parameters and target parameters mismatch.");
+                () -> SchemaProjector.project(source, 34, targetWithParameters),
+                "Source parameters and target parameters mismatch.");
     }
 
     @Test

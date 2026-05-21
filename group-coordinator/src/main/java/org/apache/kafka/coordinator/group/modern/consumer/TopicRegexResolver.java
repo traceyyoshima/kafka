@@ -105,22 +105,22 @@ public class TopicRegexResolver {
         }
 
         filterTopicDescribeAuthorizedTopics(
-            context,
-            resolvedRegexes
+                context,
+                resolvedRegexes
         );
 
         long version = metadataImage.version();
         Map<String, ResolvedRegularExpression> result = new HashMap<>(resolvedRegexes.size());
         for (Map.Entry<String, Set<String>> resolvedRegex : resolvedRegexes.entrySet()) {
             result.put(
-                resolvedRegex.getKey(),
-                new ResolvedRegularExpression(resolvedRegex.getValue(), version, startTimeMs)
+                    resolvedRegex.getKey(),
+                    new ResolvedRegularExpression(resolvedRegex.getValue(), version, startTimeMs)
             );
         }
 
         log.info("[GroupId {}] Scanned {} topics to refresh regular expressions {} in {}ms.",
-            groupId, metadataImage.topicNames().size(), resolvedRegexes.keySet(),
-            time.milliseconds() - startTimeMs);
+                groupId, metadataImage.topicNames().size(), resolvedRegexes.keySet(),
+                time.milliseconds() - startTimeMs);
 
         return result;
     }
@@ -142,8 +142,8 @@ public class TopicRegexResolver {
 
         Map<String, Integer> topicNameCount = new HashMap<>();
         resolvedRegexes.values().forEach(topicNames ->
-            topicNames.forEach(topicName ->
-                topicNameCount.compute(topicName, Utils::incValue)
+                topicNames.forEach(topicName ->
+                        topicNameCount.compute(topicName, Utils::incValue)
             )
         );
 

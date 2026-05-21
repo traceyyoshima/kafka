@@ -404,7 +404,7 @@ public class SubscriptionStateTest {
         state.assignFromSubscribed(Set.of(tp0));
 
         assertThrows(IllegalStateException.class, () -> state.position(tp0,
-            new SubscriptionState.FetchPosition(0, Optional.empty(), leaderAndEpoch)));
+                new SubscriptionState.FetchPosition(0, Optional.empty(), leaderAndEpoch)));
     }
 
     @Test
@@ -423,7 +423,7 @@ public class SubscriptionStateTest {
     @Test
     public void cantChangePositionForNonAssignedPartition() {
         assertThrows(IllegalStateException.class, () -> state.position(tp0,
-            new SubscriptionState.FetchPosition(1, Optional.empty(), leaderAndEpoch)));
+                new SubscriptionState.FetchPosition(1, Optional.empty(), leaderAndEpoch)));
     }
 
     @Test
@@ -530,7 +530,7 @@ public class SubscriptionStateTest {
                 Set.of(firstAssignedUuid, secondAssignedUuid),
                 state.assignedTopicIds(),
                 "Updating the subscription state when a reconciliation completes " +
-                        "should not overwrite assigned topics that have not been reconciled yet"
+                "should not overwrite assigned topics that have not been reconciled yet"
         );
     }
 
@@ -538,7 +538,7 @@ public class SubscriptionStateTest {
     public void testMixedPatternSubscriptionNotAllowed() {
         state.subscribe(Pattern.compile(".*"), Optional.of(rebalanceListener));
         assertThrows(IllegalStateException.class, () -> state.subscribe(new SubscriptionPattern("t.*"),
-            Optional.of(rebalanceListener)));
+                Optional.of(rebalanceListener)));
 
         state.unsubscribe();
 
@@ -558,7 +558,6 @@ public class SubscriptionStateTest {
         assertFalse(state.hasRe2JPatternSubscription());
         assertNull(state.subscriptionPattern());
     }
-
 
     @Test
     public void unsubscribeUserAssignment() {
@@ -806,7 +805,7 @@ public class SubscriptionStateTest {
 
         // tp1 is not part of the subscription, so validation should be skipped.
         assertFalse(state.maybeValidatePositionForCurrentLeader(apiVersions, tp1, new Metadata.LeaderAndEpoch(
-            Optional.of(broker1), Optional.of(10))));
+                Optional.of(broker1), Optional.of(10))));
         assertFalse(state.assignedPartitions().contains(tp1));
     }
 
@@ -849,7 +848,7 @@ public class SubscriptionStateTest {
         int initialOffsetEpoch = 5;
 
         SubscriptionState.FetchPosition initialPosition = new SubscriptionState.FetchPosition(initialOffset,
-            Optional.of(initialOffsetEpoch), new Metadata.LeaderAndEpoch(Optional.of(broker1), Optional.of(currentEpoch)));
+                Optional.of(initialOffsetEpoch), new Metadata.LeaderAndEpoch(Optional.of(broker1), Optional.of(currentEpoch)));
         state.seekUnvalidated(tp0, initialPosition);
         assertTrue(state.awaitingValidation(tp0));
 
@@ -934,7 +933,7 @@ public class SubscriptionStateTest {
         int initialOffsetEpoch = 5;
 
         SubscriptionState.FetchPosition initialPosition = new SubscriptionState.FetchPosition(initialOffset,
-            Optional.of(initialOffsetEpoch), new Metadata.LeaderAndEpoch(Optional.of(broker1), Optional.of(currentEpoch)));
+                Optional.of(initialOffsetEpoch), new Metadata.LeaderAndEpoch(Optional.of(broker1), Optional.of(currentEpoch)));
         state.seekUnvalidated(tp0, initialPosition);
         assertTrue(state.awaitingValidation(tp0));
 
@@ -959,7 +958,7 @@ public class SubscriptionStateTest {
         int initialOffsetEpoch = 5;
 
         SubscriptionState.FetchPosition initialPosition = new SubscriptionState.FetchPosition(initialOffset,
-            Optional.of(initialOffsetEpoch), new Metadata.LeaderAndEpoch(Optional.of(broker1), Optional.of(currentEpoch)));
+                Optional.of(initialOffsetEpoch), new Metadata.LeaderAndEpoch(Optional.of(broker1), Optional.of(currentEpoch)));
         state.seekUnvalidated(tp0, initialPosition);
         assertTrue(state.awaitingValidation(tp0));
 

@@ -51,7 +51,7 @@ public final class DeleteRecordsAction implements TieredStorageTestAction {
 
     @Override
     public void doExecute(TieredStorageTestContext context)
-            throws InterruptedException, ExecutionException, TimeoutException {
+        throws InterruptedException, ExecutionException, TimeoutException {
         List<LocalTieredStorage> tieredStorages = context.remoteStorageManagers();
         List<LocalTieredStorageCondition> tieredStorageConditions = deleteSegmentSpecs.stream()
                 .filter(spec -> spec.eventType() == DELETE_SEGMENT)

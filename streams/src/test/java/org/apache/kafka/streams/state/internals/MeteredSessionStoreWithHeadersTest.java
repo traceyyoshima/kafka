@@ -119,16 +119,16 @@ public class MeteredSessionStoreWithHeadersTest {
     private void setUp() {
         mockTime = new MockTime();
         store = new MeteredSessionStoreWithHeaders<>(
-            innerStore,
-            STORE_TYPE,
-            Serdes.String(),
-            createAggregationWithHeadersSerde(Serdes.String()),
-            mockTime
+                innerStore,
+                STORE_TYPE,
+                Serdes.String(),
+                createAggregationWithHeadersSerde(Serdes.String()),
+                mockTime
         );
         tags = mkMap(
-            mkEntry(THREAD_ID_TAG_KEY, threadId),
-            mkEntry("task-id", taskId.toString()),
-            mkEntry(STORE_TYPE + "-state-id", STORE_NAME)
+                mkEntry(THREAD_ID_TAG_KEY, threadId),
+                mkEntry("task-id", taskId.toString()),
+                mkEntry(STORE_TYPE + "-state-id", STORE_NAME)
         );
 
         metrics.config().recordLevel(Sensor.RecordingLevel.DEBUG);
@@ -139,7 +139,7 @@ public class MeteredSessionStoreWithHeadersTest {
         when(context.changelogFor(STORE_NAME)).thenReturn(CHANGELOG_TOPIC);
         when(innerStore.name()).thenReturn(STORE_NAME);
         lenient().when(context.recordContext()).thenReturn(new ProcessorRecordContext(
-            0L, 0L, 0, "topic", new RecordHeaders()));
+                0L, 0L, 0, "topic", new RecordHeaders()));
     }
 
     private void init() {
@@ -176,11 +176,11 @@ public class MeteredSessionStoreWithHeadersTest {
     public void shouldDelegateInit() {
         setUp();
         final MeteredSessionStoreWithHeaders<String, String> outer = new MeteredSessionStoreWithHeaders<>(
-            innerStore,
-            STORE_TYPE,
-            Serdes.String(),
-            createAggregationWithHeadersSerde(Serdes.String()),
-            new MockTime()
+                innerStore,
+                STORE_TYPE,
+                Serdes.String(),
+                createAggregationWithHeadersSerde(Serdes.String()),
+                new MockTime()
         );
         doNothing().when(innerStore).init(context, outer);
         outer.init(context, outer);
@@ -196,13 +196,13 @@ public class MeteredSessionStoreWithHeadersTest {
 
         metrics.addReporter(reporter);
         assertTrue(reporter.containsMbean(String.format(
-            "kafka.streams:type=%s,%s=%s,task-id=%s,%s-state-id=%s",
-            STORE_LEVEL_GROUP,
-            THREAD_ID_TAG_KEY,
-            threadId,
-            taskId,
-            STORE_TYPE,
-            STORE_NAME
+                "kafka.streams:type=%s,%s=%s,task-id=%s,%s-state-id=%s",
+                STORE_LEVEL_GROUP,
+                THREAD_ID_TAG_KEY,
+                threadId,
+                taskId,
+                STORE_TYPE,
+                STORE_NAME
         )));
     }
 
@@ -223,7 +223,7 @@ public class MeteredSessionStoreWithHeadersTest {
         verify(innerStore).put(any(Windowed.class), byteCaptor.capture());
 
         final AggregationWithHeadersDeserializer<String> deserializer =
-            new AggregationWithHeadersDeserializer<>(Serdes.String().deserializer());
+                new AggregationWithHeadersDeserializer<>(Serdes.String().deserializer());
         final AggregationWithHeaders<String> deserialized = deserializer.deserialize(CHANGELOG_TOPIC, byteCaptor.getValue());
         assertEquals(VALUE, deserialized.aggregation());
         assertNotNull(deserialized.headers());
@@ -273,7 +273,7 @@ public class MeteredSessionStoreWithHeadersTest {
 
         when(innerStore.findSessions(KEY_BYTES, 0, 0))
             .thenReturn(new KeyValueIteratorStub<>(
-                Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, serializedValue)).iterator()));
+                    Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, serializedValue)).iterator()));
 
         final KeyValueIterator<Windowed<String>, AggregationWithHeaders<String>> iterator = store.findSessions(KEY, 0, 0);
 
@@ -303,7 +303,7 @@ public class MeteredSessionStoreWithHeadersTest {
 
         when(innerStore.backwardFindSessions(KEY_BYTES, 0, 0))
             .thenReturn(new KeyValueIteratorStub<>(
-                Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, serializedValue)).iterator()));
+                    Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, serializedValue)).iterator()));
 
         final KeyValueIterator<Windowed<String>, AggregationWithHeaders<String>> iterator = store.backwardFindSessions(KEY, 0, 0);
 
@@ -333,7 +333,7 @@ public class MeteredSessionStoreWithHeadersTest {
 
         when(innerStore.findSessions(KEY_BYTES, KEY_BYTES, 0, 0))
             .thenReturn(new KeyValueIteratorStub<>(
-                Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, serializedValue)).iterator()));
+                    Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, serializedValue)).iterator()));
 
         final KeyValueIterator<Windowed<String>, AggregationWithHeaders<String>> iterator = store.findSessions(KEY, KEY, 0, 0);
 
@@ -378,7 +378,7 @@ public class MeteredSessionStoreWithHeadersTest {
 
         when(innerStore.fetch(KEY_BYTES))
             .thenReturn(new KeyValueIteratorStub<>(
-                Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, serializedValue)).iterator()));
+                    Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, serializedValue)).iterator()));
 
         final KeyValueIterator<Windowed<String>, AggregationWithHeaders<String>> iterator = store.fetch(KEY);
 
@@ -408,7 +408,7 @@ public class MeteredSessionStoreWithHeadersTest {
 
         when(innerStore.backwardFetch(KEY_BYTES))
             .thenReturn(new KeyValueIteratorStub<>(
-                Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, serializedValue)).iterator()));
+                    Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, serializedValue)).iterator()));
 
         final KeyValueIterator<Windowed<String>, AggregationWithHeaders<String>> iterator = store.backwardFetch(KEY);
 
@@ -438,7 +438,7 @@ public class MeteredSessionStoreWithHeadersTest {
 
         when(innerStore.fetch(KEY_BYTES, KEY_BYTES))
             .thenReturn(new KeyValueIteratorStub<>(
-                Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, serializedValue)).iterator()));
+                    Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, serializedValue)).iterator()));
 
         final KeyValueIterator<Windowed<String>, AggregationWithHeaders<String>> iterator = store.fetch(KEY, KEY);
 
@@ -502,11 +502,11 @@ public class MeteredSessionStoreWithHeadersTest {
             .thenReturn(true);
 
         final MeteredSessionStoreWithHeaders<String, String> cachedStore = new MeteredSessionStoreWithHeaders<>(
-            cachedSessionStore,
-            STORE_TYPE,
-            Serdes.String(),
-            createAggregationWithHeadersSerde(Serdes.String()),
-            new MockTime()
+                cachedSessionStore,
+                STORE_TYPE,
+                Serdes.String(),
+                createAggregationWithHeadersSerde(Serdes.String()),
+                new MockTime()
         );
 
         assertTrue(cachedStore.setFlushListener(null, false));
@@ -526,7 +526,7 @@ public class MeteredSessionStoreWithHeadersTest {
 
         when(innerStore.backwardFetch(KEY_BYTES, KEY_BYTES))
             .thenReturn(new KeyValueIteratorStub<>(
-                Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, serializedValue)).iterator()));
+                    Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, serializedValue)).iterator()));
 
         final KeyValueIterator<Windowed<String>, AggregationWithHeaders<String>> iterator = store.backwardFetch(KEY, KEY);
 
@@ -556,7 +556,7 @@ public class MeteredSessionStoreWithHeadersTest {
 
         when(innerStore.backwardFindSessions(KEY_BYTES, KEY_BYTES, 0, 0))
             .thenReturn(new KeyValueIteratorStub<>(
-                Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, serializedValue)).iterator()));
+                    Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, serializedValue)).iterator()));
 
         final KeyValueIterator<Windowed<String>, AggregationWithHeaders<String>> iterator = store.backwardFindSessions(KEY, KEY, 0, 0);
 
@@ -586,7 +586,7 @@ public class MeteredSessionStoreWithHeadersTest {
 
         when(innerStore.fetch(KEY_BYTES))
             .thenReturn(new KeyValueIteratorStub<>(
-                Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, serializedValue)).iterator()));
+                    Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, serializedValue)).iterator()));
 
         final KafkaMetric openIteratorsMetric = metric("num-open-iterators");
         assertNotNull(openIteratorsMetric);
@@ -616,7 +616,7 @@ public class MeteredSessionStoreWithHeadersTest {
 
         when(innerStore.fetch(KEY_BYTES))
             .thenReturn(new KeyValueIteratorStub<>(
-                Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, serializedValue)).iterator()));
+                    Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, serializedValue)).iterator()));
 
         final KafkaMetric oldestIteratorMetric = metric("oldest-iterator-open-since-ms");
         assertNotNull(oldestIteratorMetric);
@@ -649,7 +649,7 @@ public class MeteredSessionStoreWithHeadersTest {
 
         when(innerStore.fetch(KEY_BYTES))
             .thenReturn(new KeyValueIteratorStub<>(
-                Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, serializedValue)).iterator()));
+                    Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, serializedValue)).iterator()));
 
         final KeyValueIterator<Windowed<String>, AggregationWithHeaders<String>> iterator = store.fetch(KEY);
 
@@ -760,15 +760,15 @@ public class MeteredSessionStoreWithHeadersTest {
         final byte[] serializedValue = serializer.serialize(CHANGELOG_TOPIC, valueAndHeaders);
 
         final QueryResult<KeyValueIterator<Windowed<Bytes>, byte[]>> rawResult =
-            QueryResult.forResult(new KeyValueIteratorStub<>(
-                Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, serializedValue)).iterator()));
+                QueryResult.forResult(new KeyValueIteratorStub<>(
+                    Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, serializedValue)).iterator()));
 
         when(innerStore.query(any(), any(PositionBound.class), any(QueryConfig.class)))
             .thenReturn((QueryResult) rawResult);
 
         final WindowRangeQuery<String, String> query = WindowRangeQuery.withKey(KEY);
         final QueryResult<KeyValueIterator<Windowed<String>, String>> result =
-            store.query(query, PositionBound.unbounded(), new QueryConfig(false));
+                store.query(query, PositionBound.unbounded(), new QueryConfig(false));
 
         assertTrue(result.isSuccess());
         final KeyValueIterator<Windowed<String>, String> iterator = result.getResult();
@@ -785,11 +785,11 @@ public class MeteredSessionStoreWithHeadersTest {
         init();
 
         final WindowRangeQuery<String, String> query = WindowRangeQuery.withWindowStartRange(
-            java.time.Instant.ofEpochMilli(0L),
-            java.time.Instant.ofEpochMilli(0L)
+                java.time.Instant.ofEpochMilli(0L),
+                java.time.Instant.ofEpochMilli(0L)
         );
         final QueryResult<KeyValueIterator<Windowed<String>, String>> result =
-            store.query(query, PositionBound.unbounded(), new QueryConfig(false));
+                store.query(query, PositionBound.unbounded(), new QueryConfig(false));
 
         assertTrue(result.isFailure());
         assertEquals(FailureReason.UNKNOWN_QUERY_TYPE, result.getFailureReason());
@@ -802,13 +802,13 @@ public class MeteredSessionStoreWithHeadersTest {
         init();
 
         final QueryResult<Void> expectedResult = QueryResult.forFailure(
-            FailureReason.UNKNOWN_QUERY_TYPE, "unknown");
+                FailureReason.UNKNOWN_QUERY_TYPE, "unknown");
         when(innerStore.query(any(), any(PositionBound.class), any(QueryConfig.class)))
             .thenReturn((QueryResult) expectedResult);
 
         final Query<Void> unknownQuery = new Query<Void>() { };
         final QueryResult<Void> result =
-            store.query(unknownQuery, PositionBound.unbounded(), new QueryConfig(false));
+                store.query(unknownQuery, PositionBound.unbounded(), new QueryConfig(false));
 
         assertTrue(result.isFailure());
     }
@@ -844,11 +844,11 @@ public class MeteredSessionStoreWithHeadersTest {
         when(context.headers()).thenReturn(new RecordHeaders());
 
         final MeteredSessionStoreWithHeaders<String, String> mockStore = new MeteredSessionStoreWithHeaders<>(
-            innerStore,
-            STORE_TYPE,
-            keySerde,
-            valueSerde,
-            new MockTime()
+                innerStore,
+                STORE_TYPE,
+                keySerde,
+                valueSerde,
+                new MockTime()
         );
         mockStore.init(context, mockStore);
         return mockStore;
@@ -863,7 +863,7 @@ public class MeteredSessionStoreWithHeadersTest {
 
         when(innerStore.fetch(any(Bytes.class)))
             .thenReturn(new KeyValueIteratorStub<>(
-                List.of(KeyValue.pair(WINDOWED_KEY_BYTES, SERIALIZED_VALUE)).iterator()));
+                    List.of(KeyValue.pair(WINDOWED_KEY_BYTES, SERIALIZED_VALUE)).iterator()));
 
         final KeyValueIterator<Windowed<String>, AggregationWithHeaders<String>> iterator = store.fetch(KEY);
 
@@ -887,7 +887,7 @@ public class MeteredSessionStoreWithHeadersTest {
 
         when(innerStore.backwardFetch(any(Bytes.class)))
             .thenReturn(new KeyValueIteratorStub<>(
-                List.of(KeyValue.pair(WINDOWED_KEY_BYTES, SERIALIZED_VALUE)).iterator()));
+                    List.of(KeyValue.pair(WINDOWED_KEY_BYTES, SERIALIZED_VALUE)).iterator()));
 
         final KeyValueIterator<Windowed<String>, AggregationWithHeaders<String>> iterator = store.backwardFetch(KEY);
 
@@ -911,7 +911,7 @@ public class MeteredSessionStoreWithHeadersTest {
 
         when(innerStore.fetch(any(Bytes.class), any(Bytes.class)))
             .thenReturn(new KeyValueIteratorStub<>(
-                List.of(KeyValue.pair(WINDOWED_KEY_BYTES, SERIALIZED_VALUE)).iterator()));
+                    List.of(KeyValue.pair(WINDOWED_KEY_BYTES, SERIALIZED_VALUE)).iterator()));
 
         final KeyValueIterator<Windowed<String>, AggregationWithHeaders<String>> iterator = store.fetch(KEY, KEY);
 
@@ -935,7 +935,7 @@ public class MeteredSessionStoreWithHeadersTest {
 
         when(innerStore.backwardFetch(any(Bytes.class), any(Bytes.class)))
             .thenReturn(new KeyValueIteratorStub<>(
-                List.of(KeyValue.pair(WINDOWED_KEY_BYTES, SERIALIZED_VALUE)).iterator()));
+                    List.of(KeyValue.pair(WINDOWED_KEY_BYTES, SERIALIZED_VALUE)).iterator()));
 
         final KeyValueIterator<Windowed<String>, AggregationWithHeaders<String>> iterator = store.backwardFetch(KEY, KEY);
 
@@ -959,10 +959,10 @@ public class MeteredSessionStoreWithHeadersTest {
 
         when(innerStore.findSessions(any(Bytes.class), eq(0L), eq(100L)))
             .thenReturn(new KeyValueIteratorStub<>(
-                List.of(KeyValue.pair(WINDOWED_KEY_BYTES, SERIALIZED_VALUE)).iterator()));
+                    List.of(KeyValue.pair(WINDOWED_KEY_BYTES, SERIALIZED_VALUE)).iterator()));
 
         final KeyValueIterator<Windowed<String>, AggregationWithHeaders<String>> iterator =
-            store.findSessions(KEY, 0, 100);
+                store.findSessions(KEY, 0, 100);
 
         assertTrue(iterator.hasNext());
         assertEquals(KEY, iterator.peekNextKey().key());
@@ -984,10 +984,10 @@ public class MeteredSessionStoreWithHeadersTest {
 
         when(innerStore.backwardFindSessions(any(Bytes.class), eq(0L), eq(100L)))
             .thenReturn(new KeyValueIteratorStub<>(
-                List.of(KeyValue.pair(WINDOWED_KEY_BYTES, SERIALIZED_VALUE)).iterator()));
+                    List.of(KeyValue.pair(WINDOWED_KEY_BYTES, SERIALIZED_VALUE)).iterator()));
 
         final KeyValueIterator<Windowed<String>, AggregationWithHeaders<String>> iterator =
-            store.backwardFindSessions(KEY, 0, 100);
+                store.backwardFindSessions(KEY, 0, 100);
 
         assertTrue(iterator.hasNext());
         assertEquals(KEY, iterator.peekNextKey().key());
@@ -1009,10 +1009,10 @@ public class MeteredSessionStoreWithHeadersTest {
 
         when(innerStore.findSessions(any(Bytes.class), any(Bytes.class), eq(0L), eq(100L)))
             .thenReturn(new KeyValueIteratorStub<>(
-                List.of(KeyValue.pair(WINDOWED_KEY_BYTES, SERIALIZED_VALUE)).iterator()));
+                    List.of(KeyValue.pair(WINDOWED_KEY_BYTES, SERIALIZED_VALUE)).iterator()));
 
         final KeyValueIterator<Windowed<String>, AggregationWithHeaders<String>> iterator =
-            store.findSessions(KEY, KEY, 0, 100);
+                store.findSessions(KEY, KEY, 0, 100);
 
         assertTrue(iterator.hasNext());
         assertEquals(KEY, iterator.peekNextKey().key());
@@ -1034,10 +1034,10 @@ public class MeteredSessionStoreWithHeadersTest {
 
         when(innerStore.backwardFindSessions(any(Bytes.class), any(Bytes.class), eq(0L), eq(100L)))
             .thenReturn(new KeyValueIteratorStub<>(
-                List.of(KeyValue.pair(WINDOWED_KEY_BYTES, SERIALIZED_VALUE)).iterator()));
+                    List.of(KeyValue.pair(WINDOWED_KEY_BYTES, SERIALIZED_VALUE)).iterator()));
 
         final KeyValueIterator<Windowed<String>, AggregationWithHeaders<String>> iterator =
-            store.backwardFindSessions(KEY, KEY, 0, 100);
+                store.backwardFindSessions(KEY, KEY, 0, 100);
 
         assertTrue(iterator.hasNext());
         assertEquals(KEY, iterator.peekNextKey().key());
@@ -1059,10 +1059,10 @@ public class MeteredSessionStoreWithHeadersTest {
 
         when(innerStore.findSessions(eq(0L), eq(100L)))
             .thenReturn(new KeyValueIteratorStub<>(
-                List.of(KeyValue.pair(WINDOWED_KEY_BYTES, SERIALIZED_VALUE)).iterator()));
+                    List.of(KeyValue.pair(WINDOWED_KEY_BYTES, SERIALIZED_VALUE)).iterator()));
 
         final KeyValueIterator<Windowed<String>, AggregationWithHeaders<String>> iterator =
-            store.findSessions(0, 100);
+                store.findSessions(0, 100);
 
         assertTrue(iterator.hasNext());
         assertEquals(KEY, iterator.peekNextKey().key());

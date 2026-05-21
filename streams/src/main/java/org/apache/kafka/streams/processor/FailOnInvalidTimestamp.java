@@ -61,12 +61,12 @@ public class FailOnInvalidTimestamp extends ExtractRecordMetadataTimestamp {
     public long onInvalidTimestamp(final ConsumerRecord<Object, Object> record,
                                    final long recordTimestamp,
                                    final long partitionTime)
-            throws StreamsException {
+        throws StreamsException {
 
         final String message = "Input record " + record + " has invalid (negative) timestamp. " +
-            "Possibly because a pre-0.10 producer client was used to write this record to Kafka without embedding " +
-            "a timestamp, or because the input topic was created before upgrading the Kafka cluster to 0.10+. " +
-            "Use a different TimestampExtractor to process this data.";
+                "Possibly because a pre-0.10 producer client was used to write this record to Kafka without embedding " +
+                "a timestamp, or because the input topic was created before upgrading the Kafka cluster to 0.10+. " +
+                "Use a different TimestampExtractor to process this data.";
 
         log.error(message);
         throw new StreamsException(message);

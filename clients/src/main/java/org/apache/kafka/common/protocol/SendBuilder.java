@@ -185,10 +185,10 @@ public class SendBuilder implements Writable {
         Message apiRequest
     ) {
         return buildSend(
-            header.data(),
-            header.headerVersion(),
-            apiRequest,
-            header.apiVersion()
+                header.data(),
+                header.headerVersion(),
+                apiRequest,
+                header.apiVersion()
         );
     }
 
@@ -198,10 +198,10 @@ public class SendBuilder implements Writable {
         short apiVersion
     ) {
         return buildSend(
-            header.data(),
-            header.headerVersion(),
-            apiResponse,
-            apiVersion
+                header.data(),
+                header.headerVersion(),
+                apiResponse,
+                apiVersion
         );
     }
 

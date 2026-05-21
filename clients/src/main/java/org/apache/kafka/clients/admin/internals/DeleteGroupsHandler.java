@@ -125,7 +125,7 @@ public abstract class DeleteGroupsHandler extends AdminApiHandler.Batched<Coordi
             case COORDINATOR_LOAD_IN_PROGRESS:
                 // If the coordinator is in the middle of loading, then we just need to retry
                 log.debug("`{}` request for group id {} failed because the coordinator " +
-                    "is still in the process of loading state. Will retry", displayName(), groupId.idValue);
+                        "is still in the process of loading state. Will retry", displayName(), groupId.idValue);
                 break;
 
             case COORDINATOR_NOT_AVAILABLE:
@@ -133,7 +133,7 @@ public abstract class DeleteGroupsHandler extends AdminApiHandler.Batched<Coordi
                 // If the coordinator is unavailable or there was a coordinator change, then we unmap
                 // the key so that we retry the `FindCoordinator` request
                 log.debug("`{}` request for group id {} returned error {}. " +
-                    "Will attempt to find the coordinator again and retry", displayName(), groupId.idValue, error);
+                        "Will attempt to find the coordinator again and retry", displayName(), groupId.idValue, error);
                 groupsToUnmap.add(groupId);
                 break;
 

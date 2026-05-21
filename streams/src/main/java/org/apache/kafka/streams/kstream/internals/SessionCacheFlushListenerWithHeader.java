@@ -48,7 +48,7 @@ class SessionCacheFlushListenerWithHeader<KOut, VOut> implements CacheFlushListe
                 : new RecordHeaders();
 
             context.forward(
-                record
+                    record
                     .withValue(new Change<>(newValue, oldValue, record.value().isLatest))
                     .withTimestamp(record.key().window().end())
                     .withHeaders(headers));

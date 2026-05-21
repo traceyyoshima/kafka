@@ -161,12 +161,12 @@ public interface MetadataCache extends ConfigRepository {
                 if (nodes != null) {
                     nodes.forEach(node -> {
                         partitionInfos.add(new PartitionInfo(
-                            topic.name(),
-                            partitionId,
-                            node,
-                            toArray(partition.replicas, brokerToNodes),
-                            toArray(partition.isr, brokerToNodes),
-                            getOfflineReplicas(image, partition).stream()
+                                topic.name(),
+                                partitionId,
+                                node,
+                                toArray(partition.replicas, brokerToNodes),
+                                toArray(partition.isr, brokerToNodes),
+                                getOfflineReplicas(image, partition).stream()
                                 .map(brokerToNodes::get)
                                 .flatMap(Collection::stream)
                                 .toArray(Node[]::new)
@@ -184,12 +184,12 @@ public interface MetadataCache extends ConfigRepository {
             .orElse(Node.noNode());
 
         return new Cluster(
-            clusterId,
-            brokerToNodes.values().stream().flatMap(Collection::stream).collect(Collectors.toList()),
-            partitionInfos,
-            Set.of(),
-            internalTopics,
-            controllerNode
+                clusterId,
+                brokerToNodes.values().stream().flatMap(Collection::stream).collect(Collectors.toList()),
+                partitionInfos,
+                Set.of(),
+                internalTopics,
+                controllerNode
         );
     }
 

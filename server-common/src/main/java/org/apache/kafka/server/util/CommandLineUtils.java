@@ -268,9 +268,9 @@ public class CommandLineUtils {
     ) {
         try {
             initializeBootstrapProperties(properties,
-                options.has(bootstrapServer) ?
+                    options.has(bootstrapServer) ?
                     Optional.of(options.valueOf(bootstrapServer)) : Optional.empty(),
-                options.has(bootstrapControllers) ?
+                    options.has(bootstrapControllers) ?
                         Optional.of(options.valueOf(bootstrapControllers)) : Optional.empty());
         } catch (InitializeBootstrapException e) {
             printUsageAndExit(parser, e.getMessage());

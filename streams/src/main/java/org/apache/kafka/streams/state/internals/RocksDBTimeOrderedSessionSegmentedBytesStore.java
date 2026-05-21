@@ -55,11 +55,11 @@ public class RocksDBTimeOrderedSessionSegmentedBytesStore<S extends Segment> ext
                                                  final boolean withIndex,
                                                  final AbstractSegments<S> segments) {
         super(
-            name,
-            retention,
-            new TimeFirstSessionKeySchema(),
-            Optional.ofNullable(withIndex ? new KeyFirstSessionKeySchema() : null),
-            segments
+                name,
+                retention,
+                new TimeFirstSessionKeySchema(),
+                Optional.ofNullable(withIndex ? new KeyFirstSessionKeySchema() : null),
+                segments
         );
     }
 
@@ -68,9 +68,9 @@ public class RocksDBTimeOrderedSessionSegmentedBytesStore<S extends Segment> ext
                                final long sessionStartTime,
                                final long sessionEndTime) {
         return get(TimeFirstSessionKeySchema.toBinary(
-            key,
-            sessionStartTime,
-            sessionEndTime
+                key,
+                sessionStartTime,
+                sessionEndTime
         ));
     }
 
@@ -125,10 +125,10 @@ public class RocksDBTimeOrderedSessionSegmentedBytesStore<S extends Segment> ext
     @Override
     Map<S, WriteBatch> getWriteBatches(final Collection<ConsumerRecord<byte[], byte[]>> records) {
         return getWriteBatches(
-            records,
-            SessionKeySchema::extractEndTimestamp,
-            KeyFirstSessionKeySchema::prefixNonPrefixSessionKey,
-            TimeFirstSessionKeySchema::extractWindowBytesFromNonPrefixSessionKey
+                records,
+                SessionKeySchema::extractEndTimestamp,
+                KeyFirstSessionKeySchema::prefixNonPrefixSessionKey,
+                TimeFirstSessionKeySchema::extractWindowBytesFromNonPrefixSessionKey
         );
     }
 

@@ -67,11 +67,11 @@ public class SubscriptionResponseWrapper<VRight> {
     @Override
     public String toString() {
         return "SubscriptionResponseWrapper{" +
-            "version=" + version +
-            ", foreignValue=" + foreignValue +
-            ", originalValueHash=" + Arrays.toString(originalValueHash) +
-            ", primaryPartition=" + primaryPartition +
-            '}';
+                "version=" + version +
+                ", foreignValue=" + foreignValue +
+                ", originalValueHash=" + Arrays.toString(originalValueHash) +
+                ", primaryPartition=" + primaryPartition +
+                '}';
     }
 
     @Override
@@ -84,10 +84,10 @@ public class SubscriptionResponseWrapper<VRight> {
         }
         final SubscriptionResponseWrapper<?> that = (SubscriptionResponseWrapper<?>) o;
         return version == that.version &&
-               Arrays.equals(originalValueHash,
-               that.originalValueHash) &&
-               Objects.equals(foreignValue, that.foreignValue) &&
-               Objects.equals(primaryPartition, that.primaryPartition);
+                Arrays.equals(originalValueHash,
+                       that.originalValueHash) &&
+                Objects.equals(foreignValue, that.foreignValue) &&
+                Objects.equals(primaryPartition, that.primaryPartition);
     }
 
     @Override

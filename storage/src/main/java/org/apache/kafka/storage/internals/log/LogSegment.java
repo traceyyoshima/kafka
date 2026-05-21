@@ -169,8 +169,8 @@ public class LogSegment implements Closeable {
         boolean reachedRollMs = timeWaitedForRoll(rollParams.now(), rollParams.maxTimestampInMessages()) > rollParams.maxSegmentMs() - rollJitterMs;
         int size = size();
         return size > rollParams.maxSegmentBytes() - rollParams.messagesSize() ||
-            (size > 0 && reachedRollMs) ||
-            offsetIndex().isFull() || timeIndex().isFull() || !canConvertToRelativeOffset(rollParams.maxOffsetInMessages());
+                (size > 0 && reachedRollMs) ||
+                offsetIndex().isFull() || timeIndex().isFull() || !canConvertToRelativeOffset(rollParams.maxOffsetInMessages());
     }
 
     public void resizeIndexes(int size) throws IOException {
@@ -252,7 +252,7 @@ public class LogSegment implements Closeable {
                        MemoryRecords records) throws IOException {
         if (records.sizeInBytes() > 0) {
             LOGGER.trace("Inserting {} bytes at end offset {} at position {}",
-                records.sizeInBytes(), largestOffset, log.sizeInBytes());
+                    records.sizeInBytes(), largestOffset, log.sizeInBytes());
             int physicalPosition = log.sizeInBytes();
 
             ensureOffsetInRange(largestOffset);
@@ -460,7 +460,7 @@ public class LogSegment implements Closeable {
         int fetchSize = Math.min((int) (maxPositionOpt.get() - startPosition), adjustedMaxSize);
 
         return new FetchDataInfo(offsetMetadata, log.slice(startPosition, fetchSize),
-            adjustedMaxSize < startOffsetAndSize.size, Optional.empty());
+                adjustedMaxSize < startOffsetAndSize.size, Optional.empty());
     }
 
     public OptionalLong fetchUpperBoundOffset(OffsetPosition startOffsetPosition, int fetchSize) throws IOException {
@@ -514,7 +514,7 @@ public class LogSegment implements Closeable {
             }
         } catch (CorruptRecordException | InvalidRecordException e) {
             LOGGER.warn("Found invalid messages in log segment {} at byte offset {}.", log.file().getAbsolutePath(),
-                validBytes, e);
+                    validBytes, e);
         }
         int truncated = log.sizeInBytes() - validBytes;
         if (truncated > 0)
@@ -544,10 +544,10 @@ public class LogSegment implements Closeable {
     public String toString() {
         // We don't call `largestRecordTimestamp` below to avoid materializing the time index when `toString` is invoked
         return "LogSegment(baseOffset=" + baseOffset +
-            ", size=" + size() +
-            ", lastModifiedTime=" + lastModified() +
-            ", largestRecordTimestamp=" + maxTimestampAndOffsetSoFar.timestamp() +
-            ")";
+                ", size=" + size() +
+                ", lastModifiedTime=" + lastModified() +
+                ", largestRecordTimestamp=" + maxTimestampAndOffsetSoFar.timestamp() +
+                ")";
     }
 
     /**
@@ -673,9 +673,9 @@ public class LogSegment implements Closeable {
 
     public boolean hasSuffix(String suffix) {
         return log.file().getName().endsWith(suffix) &&
-            offsetIndexFile().getName().endsWith(suffix) &&
-            timeIndexFile().getName().endsWith(suffix) &&
-            txnIndex.file().getName().endsWith(suffix);
+                offsetIndexFile().getName().endsWith(suffix) &&
+                timeIndexFile().getName().endsWith(suffix) &&
+                txnIndex.file().getName().endsWith(suffix);
     }
 
     /**
@@ -787,10 +787,10 @@ public class LogSegment implements Closeable {
     public void deleteIfExists() throws IOException {
         try {
             Utils.tryAll(List.of(
-                () -> deleteTypeIfExists(log::deleteIfExists, "log", log.file(), true),
-                () -> deleteTypeIfExists(lazyOffsetIndex::deleteIfExists, "offset index", offsetIndexFile(), true),
-                () -> deleteTypeIfExists(lazyTimeIndex::deleteIfExists, "time index", timeIndexFile(), true),
-                () -> deleteTypeIfExists(txnIndex::deleteIfExists, "transaction index", txnIndex.file(), false)));
+                    () -> deleteTypeIfExists(log::deleteIfExists, "log", log.file(), true),
+                    () -> deleteTypeIfExists(lazyOffsetIndex::deleteIfExists, "offset index", offsetIndexFile(), true),
+                    () -> deleteTypeIfExists(lazyTimeIndex::deleteIfExists, "time index", timeIndexFile(), true),
+                    () -> deleteTypeIfExists(txnIndex::deleteIfExists, "transaction index", txnIndex.file(), false)));
         } catch (Throwable t) {
             if (t instanceof IOException)
                 throw (IOException) t;
@@ -837,7 +837,6 @@ public class LogSegment implements Closeable {
         return !log.file().exists() && !offsetIndexFile().exists() && !timeIndexFile().exists() && !txnIndex.file().exists();
     }
 
-
     /**
      * The last modified time of this log segment as a unix time stamp
      */
@@ -883,14 +882,14 @@ public class LogSegment implements Closeable {
                                   int initFileSize, boolean preallocate, String fileSuffix) throws IOException {
         int maxIndexSize = config.maxIndexSize;
         return new LogSegment(
-            FileRecords.open(LogFileUtils.logFile(dir, baseOffset, fileSuffix), fileAlreadyExists, initFileSize, preallocate),
-            LazyIndex.forOffset(LogFileUtils.offsetIndexFile(dir, baseOffset, fileSuffix), baseOffset, maxIndexSize),
-            LazyIndex.forTime(LogFileUtils.timeIndexFile(dir, baseOffset, fileSuffix), baseOffset, maxIndexSize),
-            new TransactionIndex(baseOffset, LogFileUtils.transactionIndexFile(dir, baseOffset, fileSuffix)),
-            baseOffset,
-            config.indexInterval,
-            config.randomSegmentJitter(),
-            time);
+                FileRecords.open(LogFileUtils.logFile(dir, baseOffset, fileSuffix), fileAlreadyExists, initFileSize, preallocate),
+                LazyIndex.forOffset(LogFileUtils.offsetIndexFile(dir, baseOffset, fileSuffix), baseOffset, maxIndexSize),
+                LazyIndex.forTime(LogFileUtils.timeIndexFile(dir, baseOffset, fileSuffix), baseOffset, maxIndexSize),
+                new TransactionIndex(baseOffset, LogFileUtils.transactionIndexFile(dir, baseOffset, fileSuffix)),
+                baseOffset,
+                config.indexInterval,
+                config.randomSegmentJitter(),
+                time);
     }
 
     public static void deleteIfExists(File dir, long baseOffset, String fileSuffix) throws IOException {

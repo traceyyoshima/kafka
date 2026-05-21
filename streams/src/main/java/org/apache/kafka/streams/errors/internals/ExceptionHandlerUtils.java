@@ -40,7 +40,6 @@ public class ExceptionHandlerUtils {
     public static final String HEADER_ERRORS_PARTITION_NAME = "__streams.errors.partition";
     public static final String HEADER_ERRORS_OFFSET_NAME = "__streams.errors.offset";
 
-
     public static boolean shouldBuildDeadLetterQueueRecord(final String deadLetterQueueTopicName) {
         return deadLetterQueueTopicName != null;
     }
@@ -65,7 +64,6 @@ public class ExceptionHandlerUtils {
 
         return Collections.singletonList(buildDeadLetterQueueRecord(deadLetterQueueTopicName, key, value, context, exception));
     }
-
 
     /**
      * Build dead letter queue record for the provided exception.

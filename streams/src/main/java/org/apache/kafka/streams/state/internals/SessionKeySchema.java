@@ -93,9 +93,9 @@ public class SessionKeySchema implements SegmentedBytesStore.KeySchema {
                 final Bytes bytes = iterator.peekNextKey();
                 final Windowed<Bytes> windowedKey = SessionKeySchema.from(bytes);
                 if ((binaryKeyFrom == null || windowedKey.key().compareTo(binaryKeyFrom) >= 0)
-                    && (binaryKeyTo == null || windowedKey.key().compareTo(binaryKeyTo) <= 0)
-                    && windowedKey.window().end() >= from
-                    && windowedKey.window().start() <= to) {
+                        && (binaryKeyTo == null || windowedKey.key().compareTo(binaryKeyTo) <= 0)
+                        && windowedKey.window().end() >= from
+                        && windowedKey.window().start() <= to) {
                     return true;
                 }
                 iterator.next();

@@ -97,9 +97,9 @@ public class RaftUtilTest {
         assertEquals(new FetchSnapshotResponseData().setErrorCode(Errors.NONE.code()),
                 RaftUtil.errorResponse(ApiKeys.FETCH_SNAPSHOT, Errors.NONE));
         assertEquals(new AddRaftVoterResponseData().setErrorCode(Errors.NONE.code()),
-            RaftUtil.errorResponse(ApiKeys.ADD_RAFT_VOTER, Errors.NONE));
+                RaftUtil.errorResponse(ApiKeys.ADD_RAFT_VOTER, Errors.NONE));
         assertEquals(new RemoveRaftVoterResponseData().setErrorCode(Errors.NONE.code()),
-            RaftUtil.errorResponse(ApiKeys.REMOVE_RAFT_VOTER, Errors.NONE));
+                RaftUtil.errorResponse(ApiKeys.REMOVE_RAFT_VOTER, Errors.NONE));
         assertThrows(IllegalArgumentException.class, () -> RaftUtil.errorResponse(ApiKeys.PRODUCE, Errors.NONE));
     }
 
@@ -107,38 +107,38 @@ public class RaftUtilTest {
         return Stream.of(
                 Arguments.of(new FetchRequestTestCase(Uuid.ZERO_UUID, (short) 4, (short) -1,
                         "{\"replicaId\":-1,\"maxWaitMs\":0,\"minBytes\":0,\"maxBytes\":2147483647,\"isolationLevel\":0," +
-                            "\"topics\":[{\"topic\":\"topic\",\"partitions\":[{\"partition\":2,\"fetchOffset\":333," +
-                            "\"partitionMaxBytes\":10}]}]}")),
+                        "\"topics\":[{\"topic\":\"topic\",\"partitions\":[{\"partition\":2,\"fetchOffset\":333," +
+                        "\"partitionMaxBytes\":10}]}]}")),
                 Arguments.of(new FetchRequestTestCase(Uuid.ZERO_UUID, (short) 5, (short) -1,
                         "{\"replicaId\":-1,\"maxWaitMs\":0,\"minBytes\":0,\"maxBytes\":2147483647,\"isolationLevel\":0," +
-                            "\"topics\":[{\"topic\":\"topic\",\"partitions\":[{\"partition\":2,\"fetchOffset\":333," +
-                            "\"logStartOffset\":0,\"partitionMaxBytes\":10}]}]}")),
+                        "\"topics\":[{\"topic\":\"topic\",\"partitions\":[{\"partition\":2,\"fetchOffset\":333," +
+                        "\"logStartOffset\":0,\"partitionMaxBytes\":10}]}]}")),
                 Arguments.of(new FetchRequestTestCase(Uuid.ZERO_UUID, (short) 7, (short) -1,
                         "{\"replicaId\":-1,\"maxWaitMs\":0,\"minBytes\":0,\"maxBytes\":2147483647,\"isolationLevel\":0," +
-                            "\"sessionId\":0,\"sessionEpoch\":-1,\"topics\":[{\"topic\":\"topic\",\"partitions\":[{" +
-                            "\"partition\":2,\"fetchOffset\":333,\"logStartOffset\":0,\"partitionMaxBytes\":10}]}]," +
-                            "\"forgottenTopicsData\":[]}")),
+                        "\"sessionId\":0,\"sessionEpoch\":-1,\"topics\":[{\"topic\":\"topic\",\"partitions\":[{" +
+                        "\"partition\":2,\"fetchOffset\":333,\"logStartOffset\":0,\"partitionMaxBytes\":10}]}]," +
+                        "\"forgottenTopicsData\":[]}")),
                 Arguments.of(new FetchRequestTestCase(Uuid.ZERO_UUID, (short) 11, (short) -1,
                         "{\"replicaId\":-1,\"maxWaitMs\":0,\"minBytes\":0,\"maxBytes\":2147483647,\"isolationLevel\":0," +
-                            "\"sessionId\":0,\"sessionEpoch\":-1,\"topics\":[{\"topic\":\"topic\",\"partitions\":[{" +
-                            "\"partition\":2,\"currentLeaderEpoch\":5,\"fetchOffset\":333,\"logStartOffset\":0," +
-                            "\"partitionMaxBytes\":10}]}],\"forgottenTopicsData\":[],\"rackId\":\"\"}")),
+                        "\"sessionId\":0,\"sessionEpoch\":-1,\"topics\":[{\"topic\":\"topic\",\"partitions\":[{" +
+                        "\"partition\":2,\"currentLeaderEpoch\":5,\"fetchOffset\":333,\"logStartOffset\":0," +
+                        "\"partitionMaxBytes\":10}]}],\"forgottenTopicsData\":[],\"rackId\":\"\"}")),
                 Arguments.of(new FetchRequestTestCase(Uuid.ZERO_UUID, (short) 12, (short) 10,
                         "{\"replicaId\":-1,\"maxWaitMs\":0,\"minBytes\":0,\"maxBytes\":2147483647,\"isolationLevel\":0," +
-                            "\"sessionId\":0,\"sessionEpoch\":-1,\"topics\":[{\"topic\":\"topic\",\"partitions\":[{" +
-                            "\"partition\":2,\"currentLeaderEpoch\":5,\"fetchOffset\":333,\"lastFetchedEpoch\":10," +
-                            "\"logStartOffset\":0,\"partitionMaxBytes\":10}]}],\"forgottenTopicsData\":[],\"rackId\":\"\"}")),
+                        "\"sessionId\":0,\"sessionEpoch\":-1,\"topics\":[{\"topic\":\"topic\",\"partitions\":[{" +
+                        "\"partition\":2,\"currentLeaderEpoch\":5,\"fetchOffset\":333,\"lastFetchedEpoch\":10," +
+                        "\"logStartOffset\":0,\"partitionMaxBytes\":10}]}],\"forgottenTopicsData\":[],\"rackId\":\"\"}")),
                 Arguments.of(new FetchRequestTestCase(Uuid.ZERO_UUID, (short) 15, (short) 10,
                         "{\"maxWaitMs\":0,\"minBytes\":0,\"maxBytes\":2147483647,\"isolationLevel\":0,\"sessionId\":0," +
-                            "\"sessionEpoch\":-1,\"topics\":[{\"topicId\":\"AAAAAAAAAAAAAAAAAAAAAQ\",\"partitions\":[{" +
-                            "\"partition\":2,\"currentLeaderEpoch\":5,\"fetchOffset\":333,\"lastFetchedEpoch\":10," +
-                            "\"logStartOffset\":0,\"partitionMaxBytes\":10}]}],\"forgottenTopicsData\":[],\"rackId\":\"\"}")),
+                        "\"sessionEpoch\":-1,\"topics\":[{\"topicId\":\"AAAAAAAAAAAAAAAAAAAAAQ\",\"partitions\":[{" +
+                        "\"partition\":2,\"currentLeaderEpoch\":5,\"fetchOffset\":333,\"lastFetchedEpoch\":10," +
+                        "\"logStartOffset\":0,\"partitionMaxBytes\":10}]}],\"forgottenTopicsData\":[],\"rackId\":\"\"}")),
                 Arguments.of(new FetchRequestTestCase(Uuid.ONE_UUID, (short) 17, (short) 10,
                         "{\"maxWaitMs\":0,\"minBytes\":0,\"maxBytes\":2147483647,\"isolationLevel\":0,\"sessionId\":0," +
-                            "\"sessionEpoch\":-1,\"topics\":[{\"topicId\":\"AAAAAAAAAAAAAAAAAAAAAQ\",\"partitions\":[{" +
-                            "\"partition\":2,\"currentLeaderEpoch\":5,\"fetchOffset\":333,\"lastFetchedEpoch\":10," +
-                            "\"logStartOffset\":0,\"partitionMaxBytes\":10,\"replicaDirectoryId\":\"AAAAAAAAAAAAAAAAAAAAAQ\"}]}]," +
-                            "\"forgottenTopicsData\":[],\"rackId\":\"\"}"))
+                        "\"sessionEpoch\":-1,\"topics\":[{\"topicId\":\"AAAAAAAAAAAAAAAAAAAAAQ\",\"partitions\":[{" +
+                        "\"partition\":2,\"currentLeaderEpoch\":5,\"fetchOffset\":333,\"lastFetchedEpoch\":10," +
+                        "\"logStartOffset\":0,\"partitionMaxBytes\":10,\"replicaDirectoryId\":\"AAAAAAAAAAAAAAAAAAAAAQ\"}]}]," +
+                        "\"forgottenTopicsData\":[],\"rackId\":\"\"}"))
         );
     }
 
@@ -146,39 +146,39 @@ public class RaftUtilTest {
         return Stream.of(
                 Arguments.of(new FetchResponseTestCase((short) 4, -1,
                         "{\"throttleTimeMs\":0,\"responses\":[{\"topic\":\"topic\",\"partitions\":" +
-                            "[{\"partitionIndex\":1,\"errorCode\":0,\"highWatermark\":1000,\"lastStableOffset\":900," +
-                            "\"abortedTransactions\":[{\"producerId\":1,\"firstOffset\":10}],\"records\":\"\"}]}]}")),
+                        "[{\"partitionIndex\":1,\"errorCode\":0,\"highWatermark\":1000,\"lastStableOffset\":900," +
+                        "\"abortedTransactions\":[{\"producerId\":1,\"firstOffset\":10}],\"records\":\"\"}]}]}")),
                 Arguments.of(new FetchResponseTestCase((short) 5, -1,
                         "{\"throttleTimeMs\":0,\"responses\":[{\"topic\":\"topic\",\"partitions\":" +
-                            "[{\"partitionIndex\":1,\"errorCode\":0,\"highWatermark\":1000,\"lastStableOffset\":900," +
-                            "\"logStartOffset\":10,\"abortedTransactions\":[{\"producerId\":1,\"firstOffset\":10}]," +
-                            "\"records\":\"\"}]}]}")),
+                        "[{\"partitionIndex\":1,\"errorCode\":0,\"highWatermark\":1000,\"lastStableOffset\":900," +
+                        "\"logStartOffset\":10,\"abortedTransactions\":[{\"producerId\":1,\"firstOffset\":10}]," +
+                        "\"records\":\"\"}]}]}")),
                 Arguments.of(new FetchResponseTestCase((short) 7, -1,
                         "{\"throttleTimeMs\":0,\"errorCode\":0,\"sessionId\":0,\"responses\":[{" +
-                            "\"topic\":\"topic\",\"partitions\":[{\"partitionIndex\":1,\"errorCode\":0," +
-                            "\"highWatermark\":1000,\"lastStableOffset\":900,\"logStartOffset\":10," +
-                            "\"abortedTransactions\":[{\"producerId\":1,\"firstOffset\":10}],\"records\":\"\"}]}]}")),
+                        "\"topic\":\"topic\",\"partitions\":[{\"partitionIndex\":1,\"errorCode\":0," +
+                        "\"highWatermark\":1000,\"lastStableOffset\":900,\"logStartOffset\":10," +
+                        "\"abortedTransactions\":[{\"producerId\":1,\"firstOffset\":10}],\"records\":\"\"}]}]}")),
                 Arguments.of(new FetchResponseTestCase((short) 11, 21,
                         "{\"throttleTimeMs\":0,\"errorCode\":0,\"sessionId\":0,\"responses\":[{\"topic\":\"topic\"" +
-                            ",\"partitions\":[{\"partitionIndex\":1,\"errorCode\":0,\"highWatermark\":1000," +
-                            "\"lastStableOffset\":900,\"logStartOffset\":10,\"abortedTransactions\":[{\"producerId\":1," +
-                            "\"firstOffset\":10}],\"preferredReadReplica\":21,\"records\":\"\"}]}]}")),
+                        ",\"partitions\":[{\"partitionIndex\":1,\"errorCode\":0,\"highWatermark\":1000," +
+                        "\"lastStableOffset\":900,\"logStartOffset\":10,\"abortedTransactions\":[{\"producerId\":1," +
+                        "\"firstOffset\":10}],\"preferredReadReplica\":21,\"records\":\"\"}]}]}")),
                 Arguments.of(new FetchResponseTestCase((short) 12, 21,
                         "{\"throttleTimeMs\":0,\"errorCode\":0,\"sessionId\":0,\"responses\":[{" +
-                            "\"topic\":\"topic\",\"partitions\":[{\"partitionIndex\":1,\"errorCode\":0," +
-                            "\"highWatermark\":1000,\"lastStableOffset\":900,\"logStartOffset\":10,\"abortedTransactions\"" +
-                            ":[{\"producerId\":1,\"firstOffset\":10}],\"preferredReadReplica\":21,\"records\":\"\"}]}]}")),
+                        "\"topic\":\"topic\",\"partitions\":[{\"partitionIndex\":1,\"errorCode\":0," +
+                        "\"highWatermark\":1000,\"lastStableOffset\":900,\"logStartOffset\":10,\"abortedTransactions\"" +
+                        ":[{\"producerId\":1,\"firstOffset\":10}],\"preferredReadReplica\":21,\"records\":\"\"}]}]}")),
                 Arguments.of(new FetchResponseTestCase((short) 13, 21,
                         "{\"throttleTimeMs\":0,\"errorCode\":0,\"sessionId\":0,\"responses\":[{" +
-                            "\"topicId\":\"AAAAAAAAAAAAAAAAAAAAAQ\",\"partitions\":[{\"partitionIndex\":1,\"errorCode\":0," +
-                            "\"highWatermark\":1000,\"lastStableOffset\":900,\"logStartOffset\":10,\"abortedTransactions\":[{" +
-                            "\"producerId\":1,\"firstOffset\":10}],\"preferredReadReplica\":21,\"records\":\"\"}]}]}")),
+                        "\"topicId\":\"AAAAAAAAAAAAAAAAAAAAAQ\",\"partitions\":[{\"partitionIndex\":1,\"errorCode\":0," +
+                        "\"highWatermark\":1000,\"lastStableOffset\":900,\"logStartOffset\":10,\"abortedTransactions\":[{" +
+                        "\"producerId\":1,\"firstOffset\":10}],\"preferredReadReplica\":21,\"records\":\"\"}]}]}")),
                 Arguments.of(new FetchResponseTestCase((short) 16, 21,
                         "{\"throttleTimeMs\":0,\"errorCode\":0,\"sessionId\":0,\"responses\":[{" +
-                            "\"topicId\":\"AAAAAAAAAAAAAAAAAAAAAQ\",\"partitions\":[{\"partitionIndex\":1," +
-                            "\"errorCode\":0,\"highWatermark\":1000,\"lastStableOffset\":900,\"logStartOffset\":10," +
-                            "\"abortedTransactions\":[{\"producerId\":1,\"firstOffset\":10}],\"preferredReadReplica\":21," +
-                            "\"records\":\"\"}]}]}"))
+                        "\"topicId\":\"AAAAAAAAAAAAAAAAAAAAAQ\",\"partitions\":[{\"partitionIndex\":1," +
+                        "\"errorCode\":0,\"highWatermark\":1000,\"lastStableOffset\":900,\"logStartOffset\":10," +
+                        "\"abortedTransactions\":[{\"producerId\":1,\"firstOffset\":10}],\"preferredReadReplica\":21," +
+                        "\"records\":\"\"}]}]}"))
         );
     }
 
@@ -186,26 +186,26 @@ public class RaftUtilTest {
         return Stream.of(
                 Arguments.of((short) 0,
                         "{\"clusterId\":\"I4ZmrWqfT2e-upky_4fdPA\",\"topics\":[{\"topicName\":\"topic\"," +
-                            "\"partitions\":[{\"partitionIndex\":1,\"replicaEpoch\":1,\"replicaId\":1," +
-                            "\"lastOffsetEpoch\":1000,\"lastOffset\":1000}]}]}"),
+                        "\"partitions\":[{\"partitionIndex\":1,\"replicaEpoch\":1,\"replicaId\":1," +
+                        "\"lastOffsetEpoch\":1000,\"lastOffset\":1000}]}]}"),
                 Arguments.of((short) 1,
                         "{\"clusterId\":\"I4ZmrWqfT2e-upky_4fdPA\",\"voterId\":2,\"topics\":[{" +
-                            "\"topicName\":\"topic\",\"partitions\":[{\"partitionIndex\":1,\"replicaEpoch\":1," +
-                            "\"replicaId\":1,\"replicaDirectoryId\":\"" + TEST_DIRECTORY_ID1 + "\"," +
-                            "\"voterDirectoryId\":\"" + TEST_DIRECTORY_ID2 + "\",\"lastOffsetEpoch\":1000," +
-                            "\"lastOffset\":1000}]}]}"),
+                        "\"topicName\":\"topic\",\"partitions\":[{\"partitionIndex\":1,\"replicaEpoch\":1," +
+                        "\"replicaId\":1,\"replicaDirectoryId\":\"" + TEST_DIRECTORY_ID1 + "\"," +
+                        "\"voterDirectoryId\":\"" + TEST_DIRECTORY_ID2 + "\",\"lastOffsetEpoch\":1000," +
+                        "\"lastOffset\":1000}]}]}"),
                 Arguments.of((short) 2,
                         "{\"clusterId\":\"I4ZmrWqfT2e-upky_4fdPA\",\"voterId\":2,\"topics\":[{" +
-                            "\"topicName\":\"topic\",\"partitions\":[{\"partitionIndex\":1,\"replicaEpoch\":1," +
-                            "\"replicaId\":1,\"replicaDirectoryId\":\"" + TEST_DIRECTORY_ID1 + "\"," +
-                            "\"voterDirectoryId\":\"" + TEST_DIRECTORY_ID2 + "\",\"lastOffsetEpoch\":1000," +
-                            "\"lastOffset\":1000,\"preVote\":true}]}]}"),
+                        "\"topicName\":\"topic\",\"partitions\":[{\"partitionIndex\":1,\"replicaEpoch\":1," +
+                        "\"replicaId\":1,\"replicaDirectoryId\":\"" + TEST_DIRECTORY_ID1 + "\"," +
+                        "\"voterDirectoryId\":\"" + TEST_DIRECTORY_ID2 + "\",\"lastOffsetEpoch\":1000," +
+                        "\"lastOffset\":1000,\"preVote\":true}]}]}"),
                 Arguments.of((short) 2,
                         "{\"clusterId\":\"I4ZmrWqfT2e-upky_4fdPA\",\"voterId\":2,\"topics\":[{" +
-                            "\"topicName\":\"topic\",\"partitions\":[{\"partitionIndex\":1,\"replicaEpoch\":1," +
-                            "\"replicaId\":1,\"replicaDirectoryId\":\"" + TEST_DIRECTORY_ID1 + "\"," +
-                            "\"voterDirectoryId\":\"" + TEST_DIRECTORY_ID2 + "\",\"lastOffsetEpoch\":1000," +
-                            "\"lastOffset\":1000,\"preVote\":true}]}]}")
+                        "\"topicName\":\"topic\",\"partitions\":[{\"partitionIndex\":1,\"replicaEpoch\":1," +
+                        "\"replicaId\":1,\"replicaDirectoryId\":\"" + TEST_DIRECTORY_ID1 + "\"," +
+                        "\"voterDirectoryId\":\"" + TEST_DIRECTORY_ID2 + "\",\"lastOffsetEpoch\":1000," +
+                        "\"lastOffset\":1000,\"preVote\":true}]}]}")
         );
     }
 
@@ -213,15 +213,15 @@ public class RaftUtilTest {
         return Stream.of(
                 Arguments.of((short) 0,
                         "{\"errorCode\":0,\"topics\":[{\"topicName\":\"topic\",\"partitions\":[{" +
-                            "\"partitionIndex\":0,\"errorCode\":0,\"leaderId\":1,\"leaderEpoch\":1,\"voteGranted\":true}]}]}"),
+                        "\"partitionIndex\":0,\"errorCode\":0,\"leaderId\":1,\"leaderEpoch\":1,\"voteGranted\":true}]}]}"),
                 Arguments.of((short) 1,
                         "{\"errorCode\":0,\"topics\":[{\"topicName\":\"topic\",\"partitions\":[{" +
-                            "\"partitionIndex\":0,\"errorCode\":0,\"leaderId\":1,\"leaderEpoch\":1,\"voteGranted\":true}]}]," +
-                            "\"nodeEndpoints\":[{\"nodeId\":1,\"host\":\"localhost\",\"port\":9990}]}"),
+                        "\"partitionIndex\":0,\"errorCode\":0,\"leaderId\":1,\"leaderEpoch\":1,\"voteGranted\":true}]}]," +
+                        "\"nodeEndpoints\":[{\"nodeId\":1,\"host\":\"localhost\",\"port\":9990}]}"),
                 Arguments.of((short) 2,
                         "{\"errorCode\":0,\"topics\":[{\"topicName\":\"topic\",\"partitions\":[{" +
-                            "\"partitionIndex\":0,\"errorCode\":0,\"leaderId\":1,\"leaderEpoch\":1,\"voteGranted\":true}]}]," +
-                            "\"nodeEndpoints\":[{\"nodeId\":1,\"host\":\"localhost\",\"port\":9990}]}")
+                        "\"partitionIndex\":0,\"errorCode\":0,\"leaderId\":1,\"leaderEpoch\":1,\"voteGranted\":true}]}]," +
+                        "\"nodeEndpoints\":[{\"nodeId\":1,\"host\":\"localhost\",\"port\":9990}]}")
         );
     }
 
@@ -229,13 +229,13 @@ public class RaftUtilTest {
         return Stream.of(
                 Arguments.of((short) 0, ReplicaKey.NO_DIRECTORY_ID,
                         "{\"clusterId\":\"I4ZmrWqfT2e-upky_4fdPA\",\"replicaId\":1,\"maxBytes\":1000,\"topics\":[{" +
-                            "\"name\":\"topic\",\"partitions\":[{\"partition\":1,\"currentLeaderEpoch\":1," +
-                            "\"snapshotId\":{\"endOffset\":10,\"epoch\":1},\"position\":10}]}]}"),
+                        "\"name\":\"topic\",\"partitions\":[{\"partition\":1,\"currentLeaderEpoch\":1," +
+                        "\"snapshotId\":{\"endOffset\":10,\"epoch\":1},\"position\":10}]}]}"),
                 Arguments.of((short) 1, Uuid.ONE_UUID,
                         "{\"clusterId\":\"I4ZmrWqfT2e-upky_4fdPA\",\"replicaId\":1,\"maxBytes\":1000,\"topics\":[{" +
-                            "\"name\":\"topic\",\"partitions\":[{\"partition\":1,\"currentLeaderEpoch\":1,\"snapshotId\":{" +
-                            "\"endOffset\":10,\"epoch\":1},\"position\":10," +
-                            "\"replicaDirectoryId\":\"AAAAAAAAAAAAAAAAAAAAAQ\"}]}]}")
+                        "\"name\":\"topic\",\"partitions\":[{\"partition\":1,\"currentLeaderEpoch\":1,\"snapshotId\":{" +
+                        "\"endOffset\":10,\"epoch\":1},\"position\":10," +
+                        "\"replicaDirectoryId\":\"AAAAAAAAAAAAAAAAAAAAAQ\"}]}]}")
         );
     }
 
@@ -243,13 +243,13 @@ public class RaftUtilTest {
         return Stream.of(
                 Arguments.of((short) 0,
                         "{\"throttleTimeMs\":0,\"errorCode\":0,\"topics\":[{\"name\":\"topic\",\"partitions\":[{" +
-                            "\"index\":1,\"errorCode\":0,\"snapshotId\":{\"endOffset\":0,\"epoch\":0},\"size\":0," +
-                            "\"position\":0,\"unalignedRecords\":\"\"}]}]}"),
+                        "\"index\":1,\"errorCode\":0,\"snapshotId\":{\"endOffset\":0,\"epoch\":0},\"size\":0," +
+                        "\"position\":0,\"unalignedRecords\":\"\"}]}]}"),
                 Arguments.of((short) 1,
                         "{\"throttleTimeMs\":0,\"errorCode\":0,\"topics\":[{\"name\":\"topic\",\"partitions\":[{\"index\":1," +
-                            "\"errorCode\":0,\"snapshotId\":{\"endOffset\":0,\"epoch\":0},\"size\":0,\"position\":0," +
-                            "\"unalignedRecords\":\"\"}]}],\"nodeEndpoints\":[{\"nodeId\":1,\"host\":\"localhost\"," +
-                            "\"port\":9990}]}")
+                        "\"errorCode\":0,\"snapshotId\":{\"endOffset\":0,\"epoch\":0},\"size\":0,\"position\":0," +
+                        "\"unalignedRecords\":\"\"}]}],\"nodeEndpoints\":[{\"nodeId\":1,\"host\":\"localhost\"," +
+                        "\"port\":9990}]}")
         );
     }
 
@@ -257,12 +257,12 @@ public class RaftUtilTest {
         return Stream.of(
                 Arguments.of((short) 0,
                         "{\"clusterId\":\"I4ZmrWqfT2e-upky_4fdPA\",\"topics\":[{\"topicName\":\"topic\",\"partitions\":[{" +
-                            "\"partitionIndex\":1,\"leaderId\":1,\"leaderEpoch\":1}]}]}"),
+                        "\"partitionIndex\":1,\"leaderId\":1,\"leaderEpoch\":1}]}]}"),
                 Arguments.of((short) 1,
                         "{\"clusterId\":\"I4ZmrWqfT2e-upky_4fdPA\",\"voterId\":1,\"topics\":[{\"topicName\":\"topic\"," +
-                            "\"partitions\":[{\"partitionIndex\":1,\"voterDirectoryId\":\"AAAAAAAAAAAAAAAAAAAAAQ\"," +
-                            "\"leaderId\":1,\"leaderEpoch\":1}]}],\"leaderEndpoints\":[{\"name\":\"PLAINTEXT\"," +
-                            "\"host\":\"localhost\",\"port\":9990}]}")
+                        "\"partitions\":[{\"partitionIndex\":1,\"voterDirectoryId\":\"AAAAAAAAAAAAAAAAAAAAAQ\"," +
+                        "\"leaderId\":1,\"leaderEpoch\":1}]}],\"leaderEndpoints\":[{\"name\":\"PLAINTEXT\"," +
+                        "\"host\":\"localhost\",\"port\":9990}]}")
         );
     }
 
@@ -270,11 +270,11 @@ public class RaftUtilTest {
         return Stream.of(
                 Arguments.of((short) 0,
                         "{\"errorCode\":0,\"topics\":[{\"topicName\":\"topic\",\"partitions\":[{" +
-                            "\"partitionIndex\":0,\"errorCode\":0,\"leaderId\":1,\"leaderEpoch\":1}]}]}"),
+                        "\"partitionIndex\":0,\"errorCode\":0,\"leaderId\":1,\"leaderEpoch\":1}]}]}"),
                 Arguments.of((short) 1,
                         "{\"errorCode\":0,\"topics\":[{\"topicName\":\"topic\",\"partitions\":[{" +
-                            "\"partitionIndex\":0,\"errorCode\":0,\"leaderId\":1,\"leaderEpoch\":1}]}]," +
-                            "\"nodeEndpoints\":[{\"nodeId\":1,\"host\":\"localhost\",\"port\":9990}]}")
+                        "\"partitionIndex\":0,\"errorCode\":0,\"leaderId\":1,\"leaderEpoch\":1}]}]," +
+                        "\"nodeEndpoints\":[{\"nodeId\":1,\"host\":\"localhost\",\"port\":9990}]}")
         );
     }
 
@@ -282,12 +282,12 @@ public class RaftUtilTest {
         return Stream.of(
                 Arguments.of((short) 0,
                         "{\"clusterId\":\"I4ZmrWqfT2e-upky_4fdPA\",\"topics\":[{\"topicName\":\"topic\",\"partitions\":[{" +
-                            "\"partitionIndex\":1,\"leaderId\":1,\"leaderEpoch\":1,\"preferredSuccessors\":[1]}]}]}"),
+                        "\"partitionIndex\":1,\"leaderId\":1,\"leaderEpoch\":1,\"preferredSuccessors\":[1]}]}]}"),
                 Arguments.of((short) 1,
                         "{\"clusterId\":\"I4ZmrWqfT2e-upky_4fdPA\",\"topics\":[{\"topicName\":\"topic\",\"partitions\":[{" +
-                            "\"partitionIndex\":1,\"leaderId\":1,\"leaderEpoch\":1,\"preferredCandidates\":[{" +
-                            "\"candidateId\":1,\"candidateDirectoryId\":\"AAAAAAAAAAAAAAAAAAAAAQ\"}]}]}],\"" +
-                            "leaderEndpoints\":[]}")
+                        "\"partitionIndex\":1,\"leaderId\":1,\"leaderEpoch\":1,\"preferredCandidates\":[{" +
+                        "\"candidateId\":1,\"candidateDirectoryId\":\"AAAAAAAAAAAAAAAAAAAAAQ\"}]}]}],\"" +
+                        "leaderEndpoints\":[]}")
         );
     }
 
@@ -295,21 +295,21 @@ public class RaftUtilTest {
         return Stream.of(
                 Arguments.of((short) 0,
                         "{\"errorCode\":0,\"topics\":[{\"topicName\":\"topic\",\"partitions\":[{\"partitionIndex\":0," +
-                            "\"errorCode\":0,\"leaderId\":1,\"leaderEpoch\":1}]}]}"),
+                        "\"errorCode\":0,\"leaderId\":1,\"leaderEpoch\":1}]}]}"),
                 Arguments.of((short) 1,
                         "{\"errorCode\":0,\"topics\":[{\"topicName\":\"topic\",\"partitions\":[{\"partitionIndex\":0," +
-                            "\"errorCode\":0,\"leaderId\":1,\"leaderEpoch\":1}]}],\"nodeEndpoints\":[{\"nodeId\":1,\"host\":\"localhost\",\"port\":9990}]}")
+                        "\"errorCode\":0,\"leaderId\":1,\"leaderEpoch\":1}]}],\"nodeEndpoints\":[{\"nodeId\":1,\"host\":\"localhost\",\"port\":9990}]}")
         );
     }
 
     private static Stream<Arguments> describeQuorumRequestTestCases() {
         return Stream.of(
                 Arguments.of((short) 0,
-                    "{\"topics\":[{\"topicName\":\"topic\",\"partitions\":[{\"partitionIndex\":1}]}]}"),
+                        "{\"topics\":[{\"topicName\":\"topic\",\"partitions\":[{\"partitionIndex\":1}]}]}"),
                 Arguments.of((short) 1,
-                    "{\"topics\":[{\"topicName\":\"topic\",\"partitions\":[{\"partitionIndex\":1}]}]}"),
+                        "{\"topics\":[{\"topicName\":\"topic\",\"partitions\":[{\"partitionIndex\":1}]}]}"),
                 Arguments.of((short) 2,
-                    "{\"topics\":[{\"topicName\":\"topic\",\"partitions\":[{\"partitionIndex\":1}]}]}")
+                        "{\"topics\":[{\"topicName\":\"topic\",\"partitions\":[{\"partitionIndex\":1}]}]}")
         );
     }
 
@@ -317,20 +317,20 @@ public class RaftUtilTest {
         return Stream.of(
                 Arguments.of((short) 0,
                         "{\"errorCode\":0,\"topics\":[{\"topicName\":\"topic\",\"partitions\":[{\"partitionIndex\":1," +
-                            "\"errorCode\":0,\"leaderId\":1,\"leaderEpoch\":1,\"highWatermark\":1000,\"currentVoters\":[{" +
-                            "\"replicaId\":1,\"logEndOffset\":-1}],\"observers\":[{\"replicaId\":1,\"logEndOffset\":-1}]}]}]}"),
+                        "\"errorCode\":0,\"leaderId\":1,\"leaderEpoch\":1,\"highWatermark\":1000,\"currentVoters\":[{" +
+                        "\"replicaId\":1,\"logEndOffset\":-1}],\"observers\":[{\"replicaId\":1,\"logEndOffset\":-1}]}]}]}"),
                 Arguments.of((short) 1,
                         "{\"errorCode\":0,\"topics\":[{\"topicName\":\"topic\",\"partitions\":[{\"partitionIndex\":1," +
-                            "\"errorCode\":0,\"leaderId\":1,\"leaderEpoch\":1,\"highWatermark\":1000,\"currentVoters\":" +
-                            "[{\"replicaId\":1,\"logEndOffset\":-1,\"lastFetchTimestamp\":0,\"lastCaughtUpTimestamp\":0}]," +
-                            "\"observers\":[{\"replicaId\":1,\"logEndOffset\":-1,\"lastFetchTimestamp\":0,\"lastCaughtUpTimestamp\":0}]}]}]}"),
+                        "\"errorCode\":0,\"leaderId\":1,\"leaderEpoch\":1,\"highWatermark\":1000,\"currentVoters\":" +
+                        "[{\"replicaId\":1,\"logEndOffset\":-1,\"lastFetchTimestamp\":0,\"lastCaughtUpTimestamp\":0}]," +
+                        "\"observers\":[{\"replicaId\":1,\"logEndOffset\":-1,\"lastFetchTimestamp\":0,\"lastCaughtUpTimestamp\":0}]}]}]}"),
                 Arguments.of((short) 2,
                         "{\"errorCode\":0,\"errorMessage\":\"\",\"topics\":[{\"topicName\":\"topic\",\"partitions\":[{" +
-                            "\"partitionIndex\":1,\"errorCode\":0,\"errorMessage\":\"\",\"leaderId\":1,\"leaderEpoch\":1," +
-                            "\"highWatermark\":1000,\"currentVoters\":[{\"replicaId\":1,\"replicaDirectoryId\":\"AAAAAAAAAAAAAAAAAAAAAQ\"," +
-                            "\"logEndOffset\":-1,\"lastFetchTimestamp\":0,\"lastCaughtUpTimestamp\":0}],\"observers\":[{" +
-                            "\"replicaId\":1,\"replicaDirectoryId\":\"AAAAAAAAAAAAAAAAAAAAAQ\",\"logEndOffset\":-1," +
-                            "\"lastFetchTimestamp\":0,\"lastCaughtUpTimestamp\":0}]}]}],\"nodes\":[{\"nodeId\":1,\"listeners\":[]}]}")
+                        "\"partitionIndex\":1,\"errorCode\":0,\"errorMessage\":\"\",\"leaderId\":1,\"leaderEpoch\":1," +
+                        "\"highWatermark\":1000,\"currentVoters\":[{\"replicaId\":1,\"replicaDirectoryId\":\"AAAAAAAAAAAAAAAAAAAAAQ\"," +
+                        "\"logEndOffset\":-1,\"lastFetchTimestamp\":0,\"lastCaughtUpTimestamp\":0}],\"observers\":[{" +
+                        "\"replicaId\":1,\"replicaDirectoryId\":\"AAAAAAAAAAAAAAAAAAAAAQ\",\"logEndOffset\":-1," +
+                        "\"lastFetchTimestamp\":0,\"lastCaughtUpTimestamp\":0}]}]}],\"nodes\":[{\"nodeId\":1,\"listeners\":[]}]}")
         );
     }
 
@@ -359,9 +359,9 @@ public class RaftUtilTest {
     @MethodSource("singletonFetchRequestTestCases")
     public void testFetchRequestV17Compatibility(final FetchRequestTestCase testCase) {
         FetchRequestData fetchRequestData = RaftUtil.singletonFetchRequest(
-            topicPartition,
-            Uuid.ONE_UUID,
-            partition -> partition
+                topicPartition,
+                Uuid.ONE_UUID,
+                partition -> partition
                 .setPartitionMaxBytes(10)
                 .setCurrentLeaderEpoch(5)
                 .setFetchOffset(333)
@@ -421,14 +421,14 @@ public class RaftUtilTest {
         long lastEpochOffset = 1000;
 
         VoteRequestData voteRequestData = RaftUtil.singletonVoteRequest(
-            topicPartition,
-            clusterId,
-            replicaEpoch,
-            ReplicaKey.of(1, TEST_DIRECTORY_ID1),
-            ReplicaKey.of(2, TEST_DIRECTORY_ID2),
-            lastEpoch,
-            lastEpochOffset,
-            version >= 2
+                topicPartition,
+                clusterId,
+                replicaEpoch,
+                ReplicaKey.of(1, TEST_DIRECTORY_ID1),
+                ReplicaKey.of(2, TEST_DIRECTORY_ID2),
+                lastEpoch,
+                lastEpochOffset,
+                version >= 2
         );
         JsonNode json = VoteRequestDataJsonConverter.write(voteRequestData, version);
         assertEquals(expectedJson, json.toString());
@@ -493,13 +493,13 @@ public class RaftUtilTest {
         int position = 10;
 
         FetchSnapshotRequestData fetchSnapshotRequestData = RaftUtil.singletonFetchSnapshotRequest(
-            clusterId,
-            ReplicaKey.of(1, directoryId),
-            topicPartition,
-            epoch,
-            new OffsetAndEpoch(10, epoch),
-            maxBytes,
-            position
+                clusterId,
+                ReplicaKey.of(1, directoryId),
+                topicPartition,
+                epoch,
+                new OffsetAndEpoch(10, epoch),
+                maxBytes,
+                position
         );
         fetchSnapshotRequestData.topics().get(0).partitions().get(0).setReplicaDirectoryId(Uuid.ONE_UUID);
         JsonNode json = FetchSnapshotRequestDataJsonConverter.write(fetchSnapshotRequestData, version);
@@ -642,8 +642,8 @@ public class RaftUtilTest {
 
         // Attempt to serialize to version 0, which does not support ackWhenCommitted
         assertThrows(
-            UnsupportedVersionException.class,
-            () -> AddRaftVoterRequestDataJsonConverter.write(request, (short) 0)
+                UnsupportedVersionException.class,
+                () -> AddRaftVoterRequestDataJsonConverter.write(request, (short) 0)
         );
     }
 

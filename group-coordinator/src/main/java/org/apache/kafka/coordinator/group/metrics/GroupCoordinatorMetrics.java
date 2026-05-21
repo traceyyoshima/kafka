@@ -53,19 +53,19 @@ public class GroupCoordinatorMetrics extends CoordinatorMetrics implements AutoC
      * Old classic group count metric. To be deprecated.
      */
     public static final com.yammer.metrics.core.MetricName NUM_CLASSIC_GROUPS = getMetricName(
-        "GroupMetadataManager", "NumGroups");
+            "GroupMetadataManager", "NumGroups");
     public static final com.yammer.metrics.core.MetricName NUM_OFFSETS = getMetricName(
-        "GroupMetadataManager", "NumOffsets");
+            "GroupMetadataManager", "NumOffsets");
     public static final com.yammer.metrics.core.MetricName NUM_CLASSIC_GROUPS_PREPARING_REBALANCE = getMetricName(
-        "GroupMetadataManager", "NumGroupsPreparingRebalance");
+            "GroupMetadataManager", "NumGroupsPreparingRebalance");
     public static final com.yammer.metrics.core.MetricName NUM_CLASSIC_GROUPS_COMPLETING_REBALANCE = getMetricName(
-        "GroupMetadataManager", "NumGroupsCompletingRebalance");
+            "GroupMetadataManager", "NumGroupsCompletingRebalance");
     public static final com.yammer.metrics.core.MetricName NUM_CLASSIC_GROUPS_STABLE = getMetricName(
-        "GroupMetadataManager", "NumGroupsStable");
+            "GroupMetadataManager", "NumGroupsStable");
     public static final com.yammer.metrics.core.MetricName NUM_CLASSIC_GROUPS_DEAD = getMetricName(
-        "GroupMetadataManager", "NumGroupsDead");
+            "GroupMetadataManager", "NumGroupsDead");
     public static final com.yammer.metrics.core.MetricName NUM_CLASSIC_GROUPS_EMPTY = getMetricName(
-        "GroupMetadataManager", "NumGroupsEmpty");
+            "GroupMetadataManager", "NumGroupsEmpty");
 
     public static final String GROUP_COUNT_METRIC_NAME = "group-count";
     public static final String GROUP_COUNT_PROTOCOL_TAG = "protocol";
@@ -123,204 +123,204 @@ public class GroupCoordinatorMetrics extends CoordinatorMetrics implements AutoC
         this.metrics = Objects.requireNonNull(metrics);
 
         classicGroupCountMetricName = metrics.metricName(
-            GROUP_COUNT_METRIC_NAME,
-            METRICS_GROUP,
-            "The total number of groups using the classic rebalance protocol.",
-            Map.of(GROUP_COUNT_PROTOCOL_TAG, Group.GroupType.CLASSIC.toString())
+                GROUP_COUNT_METRIC_NAME,
+                METRICS_GROUP,
+                "The total number of groups using the classic rebalance protocol.",
+                Map.of(GROUP_COUNT_PROTOCOL_TAG, Group.GroupType.CLASSIC.toString())
         );
 
         consumerGroupCountMetricName = metrics.metricName(
-            GROUP_COUNT_METRIC_NAME,
-            METRICS_GROUP,
-            "The total number of groups using the consumer rebalance protocol.",
-            Map.of(GROUP_COUNT_PROTOCOL_TAG, Group.GroupType.CONSUMER.toString())
+                GROUP_COUNT_METRIC_NAME,
+                METRICS_GROUP,
+                "The total number of groups using the consumer rebalance protocol.",
+                Map.of(GROUP_COUNT_PROTOCOL_TAG, Group.GroupType.CONSUMER.toString())
         );
 
         consumerGroupCountEmptyMetricName = metrics.metricName(
-            CONSUMER_GROUP_COUNT_METRIC_NAME,
-            METRICS_GROUP,
-            "The number of consumer groups in empty state.",
-            Map.of(CONSUMER_GROUP_COUNT_STATE_TAG, ConsumerGroupState.EMPTY.toString())
+                CONSUMER_GROUP_COUNT_METRIC_NAME,
+                METRICS_GROUP,
+                "The number of consumer groups in empty state.",
+                Map.of(CONSUMER_GROUP_COUNT_STATE_TAG, ConsumerGroupState.EMPTY.toString())
         );
 
         consumerGroupCountAssigningMetricName = metrics.metricName(
-            CONSUMER_GROUP_COUNT_METRIC_NAME,
-            METRICS_GROUP,
-            "The number of consumer groups in assigning state.",
-            Map.of(CONSUMER_GROUP_COUNT_STATE_TAG, ConsumerGroupState.ASSIGNING.toString())
+                CONSUMER_GROUP_COUNT_METRIC_NAME,
+                METRICS_GROUP,
+                "The number of consumer groups in assigning state.",
+                Map.of(CONSUMER_GROUP_COUNT_STATE_TAG, ConsumerGroupState.ASSIGNING.toString())
         );
 
         consumerGroupCountReconcilingMetricName = metrics.metricName(
-            CONSUMER_GROUP_COUNT_METRIC_NAME,
-            METRICS_GROUP,
-            "The number of consumer groups in reconciling state.",
-            Map.of(CONSUMER_GROUP_COUNT_STATE_TAG, ConsumerGroupState.RECONCILING.toString())
+                CONSUMER_GROUP_COUNT_METRIC_NAME,
+                METRICS_GROUP,
+                "The number of consumer groups in reconciling state.",
+                Map.of(CONSUMER_GROUP_COUNT_STATE_TAG, ConsumerGroupState.RECONCILING.toString())
         );
 
         consumerGroupCountStableMetricName = metrics.metricName(
-            CONSUMER_GROUP_COUNT_METRIC_NAME,
-            METRICS_GROUP,
-            "The number of consumer groups in stable state.",
-            Map.of(CONSUMER_GROUP_COUNT_STATE_TAG, ConsumerGroupState.STABLE.toString())
+                CONSUMER_GROUP_COUNT_METRIC_NAME,
+                METRICS_GROUP,
+                "The number of consumer groups in stable state.",
+                Map.of(CONSUMER_GROUP_COUNT_STATE_TAG, ConsumerGroupState.STABLE.toString())
         );
 
         consumerGroupCountDeadMetricName = metrics.metricName(
-            CONSUMER_GROUP_COUNT_METRIC_NAME,
-            METRICS_GROUP,
-            "The number of consumer groups in dead state.",
-            Map.of(CONSUMER_GROUP_COUNT_STATE_TAG, ConsumerGroupState.DEAD.toString())
+                CONSUMER_GROUP_COUNT_METRIC_NAME,
+                METRICS_GROUP,
+                "The number of consumer groups in dead state.",
+                Map.of(CONSUMER_GROUP_COUNT_STATE_TAG, ConsumerGroupState.DEAD.toString())
         );
 
         shareGroupCountMetricName = metrics.metricName(
-            GROUP_COUNT_METRIC_NAME,
-            METRICS_GROUP,
-            "The total number of share groups.",
-            Map.of(SHARE_GROUP_PROTOCOL_TAG, Group.GroupType.SHARE.toString())
+                GROUP_COUNT_METRIC_NAME,
+                METRICS_GROUP,
+                "The total number of share groups.",
+                Map.of(SHARE_GROUP_PROTOCOL_TAG, Group.GroupType.SHARE.toString())
         );
 
         shareGroupCountEmptyMetricName = metrics.metricName(
-            SHARE_GROUP_COUNT_METRIC_NAME,
-            METRICS_GROUP,
-            "The number of share groups in empty state.",
-            Map.of(SHARE_GROUP_COUNT_STATE_TAG, ShareGroup.ShareGroupState.EMPTY.toString())
+                SHARE_GROUP_COUNT_METRIC_NAME,
+                METRICS_GROUP,
+                "The number of share groups in empty state.",
+                Map.of(SHARE_GROUP_COUNT_STATE_TAG, ShareGroup.ShareGroupState.EMPTY.toString())
         );
 
         shareGroupCountStableMetricName = metrics.metricName(
-            SHARE_GROUP_COUNT_METRIC_NAME,
-            METRICS_GROUP,
-            "The number of share groups in stable state.",
-            Map.of(SHARE_GROUP_COUNT_STATE_TAG, ShareGroup.ShareGroupState.STABLE.toString())
+                SHARE_GROUP_COUNT_METRIC_NAME,
+                METRICS_GROUP,
+                "The number of share groups in stable state.",
+                Map.of(SHARE_GROUP_COUNT_STATE_TAG, ShareGroup.ShareGroupState.STABLE.toString())
         );
 
         shareGroupCountDeadMetricName = metrics.metricName(
-            SHARE_GROUP_COUNT_METRIC_NAME,
-            METRICS_GROUP,
-            "The number of share groups in dead state.",
-            Map.of(SHARE_GROUP_COUNT_STATE_TAG, ShareGroup.ShareGroupState.DEAD.toString())
+                SHARE_GROUP_COUNT_METRIC_NAME,
+                METRICS_GROUP,
+                "The number of share groups in dead state.",
+                Map.of(SHARE_GROUP_COUNT_STATE_TAG, ShareGroup.ShareGroupState.DEAD.toString())
         );
 
         streamsGroupCountMetricName = metrics.metricName(
-            GROUP_COUNT_METRIC_NAME,
-            METRICS_GROUP,
-            "The total number of groups using the streams rebalance protocol.",
-            Map.of(GROUP_COUNT_PROTOCOL_TAG, Group.GroupType.STREAMS.toString())
+                GROUP_COUNT_METRIC_NAME,
+                METRICS_GROUP,
+                "The total number of groups using the streams rebalance protocol.",
+                Map.of(GROUP_COUNT_PROTOCOL_TAG, Group.GroupType.STREAMS.toString())
         );
 
         streamsGroupCountEmptyMetricName = metrics.metricName(
-            STREAMS_GROUP_COUNT_METRIC_NAME,
-            METRICS_GROUP,
-            "The number of streams groups in empty state.",
-            Map.of(STREAMS_GROUP_COUNT_STATE_TAG, StreamsGroupState.EMPTY.toString())
+                STREAMS_GROUP_COUNT_METRIC_NAME,
+                METRICS_GROUP,
+                "The number of streams groups in empty state.",
+                Map.of(STREAMS_GROUP_COUNT_STATE_TAG, StreamsGroupState.EMPTY.toString())
         );
 
         streamsGroupCountAssigningMetricName = metrics.metricName(
-            STREAMS_GROUP_COUNT_METRIC_NAME,
-            METRICS_GROUP,
-            "The number of streams groups in assigning state.",
-            Map.of(STREAMS_GROUP_COUNT_STATE_TAG, StreamsGroupState.ASSIGNING.toString())
+                STREAMS_GROUP_COUNT_METRIC_NAME,
+                METRICS_GROUP,
+                "The number of streams groups in assigning state.",
+                Map.of(STREAMS_GROUP_COUNT_STATE_TAG, StreamsGroupState.ASSIGNING.toString())
         );
 
         streamsGroupCountReconcilingMetricName = metrics.metricName(
-            STREAMS_GROUP_COUNT_METRIC_NAME,
-            METRICS_GROUP,
-            "The number of streams groups in reconciling state.",
-            Map.of(STREAMS_GROUP_COUNT_STATE_TAG, StreamsGroupState.RECONCILING.toString())
+                STREAMS_GROUP_COUNT_METRIC_NAME,
+                METRICS_GROUP,
+                "The number of streams groups in reconciling state.",
+                Map.of(STREAMS_GROUP_COUNT_STATE_TAG, StreamsGroupState.RECONCILING.toString())
         );
 
         streamsGroupCountStableMetricName = metrics.metricName(
-            STREAMS_GROUP_COUNT_METRIC_NAME,
-            METRICS_GROUP,
-            "The number of streams groups in stable state.",
-            Map.of(STREAMS_GROUP_COUNT_STATE_TAG, StreamsGroupState.STABLE.toString())
+                STREAMS_GROUP_COUNT_METRIC_NAME,
+                METRICS_GROUP,
+                "The number of streams groups in stable state.",
+                Map.of(STREAMS_GROUP_COUNT_STATE_TAG, StreamsGroupState.STABLE.toString())
         );
 
         streamsGroupCountDeadMetricName = metrics.metricName(
-            STREAMS_GROUP_COUNT_METRIC_NAME,
-            METRICS_GROUP,
-            "The number of streams groups in dead state.",
-            Map.of(STREAMS_GROUP_COUNT_STATE_TAG, StreamsGroupState.DEAD.toString())
+                STREAMS_GROUP_COUNT_METRIC_NAME,
+                METRICS_GROUP,
+                "The number of streams groups in dead state.",
+                Map.of(STREAMS_GROUP_COUNT_STATE_TAG, StreamsGroupState.DEAD.toString())
         );
 
         streamsGroupCountNotReadyMetricName = metrics.metricName(
-            STREAMS_GROUP_COUNT_METRIC_NAME,
-            METRICS_GROUP,
-            "The number of streams groups in not ready state.",
-            Map.of(STREAMS_GROUP_COUNT_STATE_TAG, StreamsGroupState.NOT_READY.toString())
+                STREAMS_GROUP_COUNT_METRIC_NAME,
+                METRICS_GROUP,
+                "The number of streams groups in not ready state.",
+                Map.of(STREAMS_GROUP_COUNT_STATE_TAG, StreamsGroupState.NOT_READY.toString())
         );
 
         registerGauges();
 
         Sensor offsetCommitsSensor = metrics.sensor(OFFSET_COMMITS_SENSOR_NAME);
         offsetCommitsSensor.add(new Meter(
-            metrics.metricName("offset-commit-rate",
-                METRICS_GROUP,
-                "The rate of committed offsets"),
-            metrics.metricName("offset-commit-count",
-                METRICS_GROUP,
-                "The total number of committed offsets")));
+                metrics.metricName("offset-commit-rate",
+                    METRICS_GROUP,
+                    "The rate of committed offsets"),
+                metrics.metricName("offset-commit-count",
+                    METRICS_GROUP,
+                    "The total number of committed offsets")));
 
         Sensor offsetExpiredSensor = metrics.sensor(OFFSET_EXPIRED_SENSOR_NAME);
         offsetExpiredSensor.add(new Meter(
-            metrics.metricName("offset-expiration-rate",
-                METRICS_GROUP,
-                "The rate of expired offsets"),
-            metrics.metricName("offset-expiration-count",
-                METRICS_GROUP,
-                "The total number of expired offsets")));
+                metrics.metricName("offset-expiration-rate",
+                    METRICS_GROUP,
+                    "The rate of expired offsets"),
+                metrics.metricName("offset-expiration-count",
+                    METRICS_GROUP,
+                    "The total number of expired offsets")));
 
         Sensor offsetDeletionsSensor = metrics.sensor(OFFSET_DELETIONS_SENSOR_NAME);
         offsetDeletionsSensor.add(new Meter(
-            metrics.metricName("offset-deletion-rate",
-                METRICS_GROUP,
-                "The rate of administrative deleted offsets"),
-            metrics.metricName("offset-deletion-count",
-                METRICS_GROUP,
-                "The total number of administrative deleted offsets")));
+                metrics.metricName("offset-deletion-rate",
+                    METRICS_GROUP,
+                    "The rate of administrative deleted offsets"),
+                metrics.metricName("offset-deletion-count",
+                    METRICS_GROUP,
+                    "The total number of administrative deleted offsets")));
 
         Sensor classicGroupCompletedRebalancesSensor = metrics.sensor(CLASSIC_GROUP_COMPLETED_REBALANCES_SENSOR_NAME);
         classicGroupCompletedRebalancesSensor.add(new Meter(
-            metrics.metricName("group-completed-rebalance-rate",
-                METRICS_GROUP,
-                "The rate of classic group completed rebalances"),
-            metrics.metricName("group-completed-rebalance-count",
-                METRICS_GROUP,
-                "The total number of classic group completed rebalances")));
+                metrics.metricName("group-completed-rebalance-rate",
+                    METRICS_GROUP,
+                    "The rate of classic group completed rebalances"),
+                metrics.metricName("group-completed-rebalance-count",
+                    METRICS_GROUP,
+                    "The total number of classic group completed rebalances")));
 
         Sensor consumerGroupRebalanceSensor = metrics.sensor(CONSUMER_GROUP_REBALANCES_SENSOR_NAME);
         consumerGroupRebalanceSensor.add(new Meter(
-            metrics.metricName("consumer-group-rebalance-rate",
-                METRICS_GROUP,
-                "The rate of consumer group rebalances"),
-            metrics.metricName("consumer-group-rebalance-count",
-                METRICS_GROUP,
-                "The total number of consumer group rebalances")));
+                metrics.metricName("consumer-group-rebalance-rate",
+                    METRICS_GROUP,
+                    "The rate of consumer group rebalances"),
+                metrics.metricName("consumer-group-rebalance-count",
+                    METRICS_GROUP,
+                    "The total number of consumer group rebalances")));
 
         Sensor shareGroupRebalanceSensor = metrics.sensor(SHARE_GROUP_REBALANCES_SENSOR_NAME);
         shareGroupRebalanceSensor.add(new Meter(
-            metrics.metricName("share-group-rebalance-rate",
-                METRICS_GROUP,
-                "The rate of share group rebalances"),
-            metrics.metricName("share-group-rebalance-count",
-                METRICS_GROUP,
-                "The total number of share group rebalances")));
-        
+                metrics.metricName("share-group-rebalance-rate",
+                    METRICS_GROUP,
+                    "The rate of share group rebalances"),
+                metrics.metricName("share-group-rebalance-count",
+                    METRICS_GROUP,
+                    "The total number of share group rebalances")));
+
         Sensor streamsGroupRebalanceSensor = metrics.sensor(STREAMS_GROUP_REBALANCES_SENSOR_NAME);
         streamsGroupRebalanceSensor.add(new Meter(
-            metrics.metricName("streams-group-rebalance-rate",
-                METRICS_GROUP,
-                "The rate of streams group rebalances"),
-            metrics.metricName("streams-group-rebalance-count",
-                METRICS_GROUP,
-                "The total number of streams group rebalances")));
+                metrics.metricName("streams-group-rebalance-rate",
+                    METRICS_GROUP,
+                    "The rate of streams group rebalances"),
+                metrics.metricName("streams-group-rebalance-count",
+                    METRICS_GROUP,
+                    "The total number of streams group rebalances")));
 
         globalSensors = Collections.unmodifiableMap(Utils.mkMap(
-            Utils.mkEntry(OFFSET_COMMITS_SENSOR_NAME, offsetCommitsSensor),
-            Utils.mkEntry(OFFSET_EXPIRED_SENSOR_NAME, offsetExpiredSensor),
-            Utils.mkEntry(OFFSET_DELETIONS_SENSOR_NAME, offsetDeletionsSensor),
-            Utils.mkEntry(CLASSIC_GROUP_COMPLETED_REBALANCES_SENSOR_NAME, classicGroupCompletedRebalancesSensor),
-            Utils.mkEntry(CONSUMER_GROUP_REBALANCES_SENSOR_NAME, consumerGroupRebalanceSensor),
-            Utils.mkEntry(SHARE_GROUP_REBALANCES_SENSOR_NAME, shareGroupRebalanceSensor),
-            Utils.mkEntry(STREAMS_GROUP_REBALANCES_SENSOR_NAME, streamsGroupRebalanceSensor)
+                Utils.mkEntry(OFFSET_COMMITS_SENSOR_NAME, offsetCommitsSensor),
+                Utils.mkEntry(OFFSET_EXPIRED_SENSOR_NAME, offsetExpiredSensor),
+                Utils.mkEntry(OFFSET_DELETIONS_SENSOR_NAME, offsetDeletionsSensor),
+                Utils.mkEntry(CLASSIC_GROUP_COMPLETED_REBALANCES_SENSOR_NAME, classicGroupCompletedRebalancesSensor),
+                Utils.mkEntry(CONSUMER_GROUP_REBALANCES_SENSOR_NAME, consumerGroupRebalanceSensor),
+                Utils.mkEntry(SHARE_GROUP_REBALANCES_SENSOR_NAME, shareGroupRebalanceSensor),
+                Utils.mkEntry(STREAMS_GROUP_REBALANCES_SENSOR_NAME, streamsGroupRebalanceSensor)
         ));
     }
 
@@ -351,7 +351,7 @@ public class GroupCoordinatorMetrics extends CoordinatorMetrics implements AutoC
     private long numStreamsGroups(StreamsGroupState state) {
         return shards.values().stream().mapToLong(shard -> shard.numStreamsGroups(state)).sum();
     }
-    
+
     private long numShareGroups() {
         return shards.values().stream().mapToLong(GroupCoordinatorMetricsShard::numShareGroups).sum();
     }
@@ -363,44 +363,44 @@ public class GroupCoordinatorMetrics extends CoordinatorMetrics implements AutoC
     @Override
     public void close() {
         Arrays.asList(
-            NUM_OFFSETS,
-            NUM_CLASSIC_GROUPS,
-            NUM_CLASSIC_GROUPS_PREPARING_REBALANCE,
-            NUM_CLASSIC_GROUPS_COMPLETING_REBALANCE,
-            NUM_CLASSIC_GROUPS_STABLE,
-            NUM_CLASSIC_GROUPS_DEAD,
-            NUM_CLASSIC_GROUPS_EMPTY
+                NUM_OFFSETS,
+                NUM_CLASSIC_GROUPS,
+                NUM_CLASSIC_GROUPS_PREPARING_REBALANCE,
+                NUM_CLASSIC_GROUPS_COMPLETING_REBALANCE,
+                NUM_CLASSIC_GROUPS_STABLE,
+                NUM_CLASSIC_GROUPS_DEAD,
+                NUM_CLASSIC_GROUPS_EMPTY
         ).forEach(registry::removeMetric);
 
         Arrays.asList(
-            classicGroupCountMetricName,
-            consumerGroupCountMetricName,
-            consumerGroupCountEmptyMetricName,
-            consumerGroupCountAssigningMetricName,
-            consumerGroupCountReconcilingMetricName,
-            consumerGroupCountStableMetricName,
-            consumerGroupCountDeadMetricName,
-            shareGroupCountMetricName,
-            shareGroupCountEmptyMetricName,
-            shareGroupCountStableMetricName,
-            shareGroupCountDeadMetricName,
-            streamsGroupCountMetricName,
-            streamsGroupCountEmptyMetricName,
-            streamsGroupCountAssigningMetricName,
-            streamsGroupCountReconcilingMetricName,
-            streamsGroupCountStableMetricName,
-            streamsGroupCountDeadMetricName,
-            streamsGroupCountNotReadyMetricName
+                classicGroupCountMetricName,
+                consumerGroupCountMetricName,
+                consumerGroupCountEmptyMetricName,
+                consumerGroupCountAssigningMetricName,
+                consumerGroupCountReconcilingMetricName,
+                consumerGroupCountStableMetricName,
+                consumerGroupCountDeadMetricName,
+                shareGroupCountMetricName,
+                shareGroupCountEmptyMetricName,
+                shareGroupCountStableMetricName,
+                shareGroupCountDeadMetricName,
+                streamsGroupCountMetricName,
+                streamsGroupCountEmptyMetricName,
+                streamsGroupCountAssigningMetricName,
+                streamsGroupCountReconcilingMetricName,
+                streamsGroupCountStableMetricName,
+                streamsGroupCountDeadMetricName,
+                streamsGroupCountNotReadyMetricName
         ).forEach(metrics::removeMetric);
 
         Arrays.asList(
-            OFFSET_COMMITS_SENSOR_NAME,
-            OFFSET_EXPIRED_SENSOR_NAME,
-            OFFSET_DELETIONS_SENSOR_NAME,
-            CLASSIC_GROUP_COMPLETED_REBALANCES_SENSOR_NAME,
-            CONSUMER_GROUP_REBALANCES_SENSOR_NAME,
-            SHARE_GROUP_REBALANCES_SENSOR_NAME,
-            STREAMS_GROUP_REBALANCES_SENSOR_NAME
+                OFFSET_COMMITS_SENSOR_NAME,
+                OFFSET_EXPIRED_SENSOR_NAME,
+                OFFSET_DELETIONS_SENSOR_NAME,
+                CLASSIC_GROUP_COMPLETED_REBALANCES_SENSOR_NAME,
+                CONSUMER_GROUP_REBALANCES_SENSOR_NAME,
+                SHARE_GROUP_REBALANCES_SENSOR_NAME,
+                STREAMS_GROUP_REBALANCES_SENSOR_NAME
         ).forEach(metrics::removeSensor);
     }
 
@@ -485,93 +485,93 @@ public class GroupCoordinatorMetrics extends CoordinatorMetrics implements AutoC
         });
 
         metrics.addMetric(
-            classicGroupCountMetricName,
-            (Gauge<Long>) (config, now) -> numClassicGroups()
+                classicGroupCountMetricName,
+                (Gauge<Long>) (config, now) -> numClassicGroups()
         );
 
         metrics.addMetric(
-            consumerGroupCountMetricName,
-            (Gauge<Long>) (config, now) -> numConsumerGroups()
+                consumerGroupCountMetricName,
+                (Gauge<Long>) (config, now) -> numConsumerGroups()
         );
 
         metrics.addMetric(
-            consumerGroupCountEmptyMetricName,
-            (Gauge<Long>) (config, now) -> numConsumerGroups(ConsumerGroupState.EMPTY)
+                consumerGroupCountEmptyMetricName,
+                (Gauge<Long>) (config, now) -> numConsumerGroups(ConsumerGroupState.EMPTY)
         );
 
         metrics.addMetric(
-            consumerGroupCountAssigningMetricName,
-            (Gauge<Long>) (config, now) -> numConsumerGroups(ConsumerGroupState.ASSIGNING)
+                consumerGroupCountAssigningMetricName,
+                (Gauge<Long>) (config, now) -> numConsumerGroups(ConsumerGroupState.ASSIGNING)
         );
 
         metrics.addMetric(
-            consumerGroupCountReconcilingMetricName,
-            (Gauge<Long>) (config, now) -> numConsumerGroups(ConsumerGroupState.RECONCILING)
+                consumerGroupCountReconcilingMetricName,
+                (Gauge<Long>) (config, now) -> numConsumerGroups(ConsumerGroupState.RECONCILING)
         );
 
         metrics.addMetric(
-            consumerGroupCountStableMetricName,
-            (Gauge<Long>) (config, now) -> numConsumerGroups(ConsumerGroupState.STABLE)
+                consumerGroupCountStableMetricName,
+                (Gauge<Long>) (config, now) -> numConsumerGroups(ConsumerGroupState.STABLE)
         );
 
         metrics.addMetric(
-            consumerGroupCountDeadMetricName,
-            (Gauge<Long>) (config, now) -> numConsumerGroups(ConsumerGroupState.DEAD)
+                consumerGroupCountDeadMetricName,
+                (Gauge<Long>) (config, now) -> numConsumerGroups(ConsumerGroupState.DEAD)
         );
 
         metrics.addMetric(
-            shareGroupCountMetricName,
-            (Gauge<Long>) (config, now) -> numShareGroups()
+                shareGroupCountMetricName,
+                (Gauge<Long>) (config, now) -> numShareGroups()
         );
 
         metrics.addMetric(
-            shareGroupCountEmptyMetricName,
-            (Gauge<Long>) (config, now) -> numShareGroups(ShareGroup.ShareGroupState.EMPTY)
+                shareGroupCountEmptyMetricName,
+                (Gauge<Long>) (config, now) -> numShareGroups(ShareGroup.ShareGroupState.EMPTY)
         );
 
         metrics.addMetric(
-            shareGroupCountStableMetricName,
-            (Gauge<Long>) (config, now) -> numShareGroups(ShareGroup.ShareGroupState.STABLE)
+                shareGroupCountStableMetricName,
+                (Gauge<Long>) (config, now) -> numShareGroups(ShareGroup.ShareGroupState.STABLE)
         );
 
         metrics.addMetric(
-            shareGroupCountDeadMetricName,
-            (Gauge<Long>) (config, now) -> numShareGroups(ShareGroup.ShareGroupState.DEAD)
+                shareGroupCountDeadMetricName,
+                (Gauge<Long>) (config, now) -> numShareGroups(ShareGroup.ShareGroupState.DEAD)
         );
 
         metrics.addMetric(
-            streamsGroupCountMetricName,
-            (Gauge<Long>) (config, now) -> numStreamsGroups()
+                streamsGroupCountMetricName,
+                (Gauge<Long>) (config, now) -> numStreamsGroups()
         );
 
         metrics.addMetric(
-            streamsGroupCountEmptyMetricName,
-            (Gauge<Long>) (config, now) -> numStreamsGroups(StreamsGroupState.EMPTY)
+                streamsGroupCountEmptyMetricName,
+                (Gauge<Long>) (config, now) -> numStreamsGroups(StreamsGroupState.EMPTY)
         );
 
         metrics.addMetric(
-            streamsGroupCountAssigningMetricName,
-            (Gauge<Long>) (config, now) -> numStreamsGroups(StreamsGroupState.ASSIGNING)
+                streamsGroupCountAssigningMetricName,
+                (Gauge<Long>) (config, now) -> numStreamsGroups(StreamsGroupState.ASSIGNING)
         );
 
         metrics.addMetric(
-            streamsGroupCountReconcilingMetricName,
-            (Gauge<Long>) (config, now) -> numStreamsGroups(StreamsGroupState.RECONCILING)
+                streamsGroupCountReconcilingMetricName,
+                (Gauge<Long>) (config, now) -> numStreamsGroups(StreamsGroupState.RECONCILING)
         );
 
         metrics.addMetric(
-            streamsGroupCountStableMetricName,
-            (Gauge<Long>) (config, now) -> numStreamsGroups(StreamsGroupState.STABLE)
+                streamsGroupCountStableMetricName,
+                (Gauge<Long>) (config, now) -> numStreamsGroups(StreamsGroupState.STABLE)
         );
 
         metrics.addMetric(
-            streamsGroupCountDeadMetricName,
-            (Gauge<Long>) (config, now) -> numStreamsGroups(StreamsGroupState.DEAD)
+                streamsGroupCountDeadMetricName,
+                (Gauge<Long>) (config, now) -> numStreamsGroups(StreamsGroupState.DEAD)
         );
 
         metrics.addMetric(
-            streamsGroupCountNotReadyMetricName,
-            (Gauge<Long>) (config, now) -> numStreamsGroups(StreamsGroupState.NOT_READY)
+                streamsGroupCountNotReadyMetricName,
+                (Gauge<Long>) (config, now) -> numStreamsGroups(StreamsGroupState.NOT_READY)
         );
     }
 }

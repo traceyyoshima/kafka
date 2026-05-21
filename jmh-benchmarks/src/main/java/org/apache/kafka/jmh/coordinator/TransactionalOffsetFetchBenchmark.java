@@ -95,13 +95,13 @@ public class TransactionalOffsetFetchBenchmark {
         for (int i = 0; i < transactionCount; i++) {
             snapshotRegistry.idempotentCreateSnapshot(i);
             offsetMetadataManager.replay(
-                i,
-                3193600 + i,
-                new OffsetCommitKey()
+                    i,
+                    3193600 + i,
+                    new OffsetCommitKey()
                     .setGroup(GROUP_ID)
                     .setTopic(TOPIC_NAME)
                     .setPartition(i),
-                new OffsetCommitValue()
+                    new OffsetCommitValue()
                     .setOffset(100)
             );
         }
@@ -117,14 +117,14 @@ public class TransactionalOffsetFetchBenchmark {
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void run() {
         offsetMetadataManager.fetchOffsets(
-            new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                new OffsetFetchRequestData.OffsetFetchRequestGroup()
                 .setGroupId(GROUP_ID)
                 .setTopics(List.of(
-                    new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                        new OffsetFetchRequestData.OffsetFetchRequestTopics()
                         .setName(TOPIC_NAME)
                         .setPartitionIndexes(partitionIndexes)
                 )),
-            Long.MAX_VALUE
+                Long.MAX_VALUE
         );
     }
 }

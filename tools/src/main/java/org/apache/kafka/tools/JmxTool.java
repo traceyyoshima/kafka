@@ -350,7 +350,7 @@ public class JmxTool {
                 .ofType(Boolean.class)
                 .defaultsTo(false);
             waitOpt = parser.accepts("wait", "Wait for requested JMX objects to become available before starting output. " +
-                "Only supported when the list of objects is non-empty and contains no object name patterns.");
+                    "Only supported when the list of objects is non-empty and contains no object name patterns.");
             options = parser.parse(args);
         }
 

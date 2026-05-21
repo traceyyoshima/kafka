@@ -152,7 +152,6 @@ public class PlainToHeadersWindowStoreAdapter implements WindowStore<Bytes, byte
         return new PlainToHeadersIteratorAdapter<>(store.backwardAll());
     }
 
-
     @SuppressWarnings("unchecked")
     @Override
     public <R> QueryResult<R> query(final Query<R> query,
@@ -168,7 +167,7 @@ public class PlainToHeadersWindowStoreAdapter implements WindowStore<Bytes, byte
 
             if (rawResult.isSuccess()) {
                 final WindowStoreIterator<byte[]> wrappedIterator =
-                    new PlainToHeadersWindowStoreIteratorAdapter(rawResult.getResult());
+                        new PlainToHeadersWindowStoreIteratorAdapter(rawResult.getResult());
                 result = (QueryResult<R>) InternalQueryResultUtil.copyAndSubstituteDeserializedResult(rawResult, wrappedIterator);
             } else {
                 result = (QueryResult<R>) rawResult;
@@ -177,11 +176,11 @@ public class PlainToHeadersWindowStoreAdapter implements WindowStore<Bytes, byte
             // Handle WindowRangeQuery: wrap iterator to convert values
             final WindowRangeQuery<Bytes, byte[]> windowRangeQuery = (WindowRangeQuery<Bytes, byte[]>) query;
             final QueryResult<KeyValueIterator<Windowed<Bytes>, byte[]>> rawResult =
-                store.query(windowRangeQuery, positionBound, config);
+                    store.query(windowRangeQuery, positionBound, config);
 
             if (rawResult.isSuccess()) {
                 final KeyValueIterator<Windowed<Bytes>, byte[]> wrappedIterator =
-                    new PlainToHeadersIteratorAdapter<>(rawResult.getResult());
+                        new PlainToHeadersIteratorAdapter<>(rawResult.getResult());
                 result = (QueryResult<R>) InternalQueryResultUtil.copyAndSubstituteDeserializedResult(rawResult, wrappedIterator);
             } else {
                 result = (QueryResult<R>) rawResult;
@@ -193,7 +192,7 @@ public class PlainToHeadersWindowStoreAdapter implements WindowStore<Bytes, byte
 
         if (config.isCollectExecutionInfo()) {
             result.addExecutionInfo(
-                "Handled in " + getClass() + " in " + (System.nanoTime() - start) + "ns"
+                    "Handled in " + getClass() + " in " + (System.nanoTime() - start) + "ns"
             );
         }
 

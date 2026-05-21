@@ -26,7 +26,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MockApiFixedKeyProcessorSupplier<KIn, VIn, VOut>
-    implements FixedKeyProcessorSupplier<KIn, VIn, VOut> {
+        implements FixedKeyProcessorSupplier<KIn, VIn, VOut> {
 
     private final long scheduleInterval;
     private final PunctuationType punctuationType;

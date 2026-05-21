@@ -66,7 +66,6 @@ public interface RaftLog extends AutoCloseable {
      */
     LogFetchInfo read(long startOffsetInclusive, Isolation isolation, int maxTotalBatchBytes);
 
-
     /**
      * Return the latest epoch. For an empty log, the latest epoch is defined
      * as 0. We refer to this as the "primordial epoch" and it is never allowed
@@ -101,9 +100,9 @@ public interface RaftLog extends AutoCloseable {
 
         Optional<OffsetAndEpoch> earliestSnapshotId = earliestSnapshotId();
         if (earliestSnapshotId.isPresent() &&
-            ((offset < startOffset()) ||
-             (offset == startOffset() && epoch != earliestSnapshotId.get().epoch()) ||
-             (epoch < earliestSnapshotId.get().epoch()))
+                ((offset < startOffset()) ||
+                (offset == startOffset() && epoch != earliestSnapshotId.get().epoch()) ||
+                (epoch < earliestSnapshotId.get().epoch()))
         ) {
             /* Send a snapshot if the leader has a snapshot at the log start offset and
              * 1. the fetch offset is less than the log start offset or
@@ -112,9 +111,9 @@ public interface RaftLog extends AutoCloseable {
              * 3. last fetch epoch is less than the oldest snapshot's epoch
              */
             OffsetAndEpoch latestSnapshotId = latestSnapshotId().orElseThrow(() -> new IllegalStateException(
-                String.format(
-                    "Log start offset (%d) is greater than zero but latest snapshot was not found",
-                    startOffset()
+                    String.format(
+                        "Log start offset (%d) is greater than zero but latest snapshot was not found",
+                        startOffset()
                 )
             ));
 

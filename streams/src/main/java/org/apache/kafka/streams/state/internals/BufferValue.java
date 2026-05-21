@@ -96,7 +96,7 @@ public final class BufferValue {
         final byte[] serializedContext = recordContext.serialize();
 
         final ByteBuffer buffer = ByteBuffer.allocate(
-            serializedContext.length
+                serializedContext.length
                 + sizeOfValueLength + sizeOfPriorValue
                 + sizeOfValueLength + sizeOfOldValue
                 + sizeOfValueLength + sizeOfNewValue
@@ -132,9 +132,9 @@ public final class BufferValue {
 
     long residentMemorySizeEstimate() {
         return (priorValue == null ? 0 : priorValue.length)
-            + (oldValue == null || priorValue == oldValue ? 0 : oldValue.length)
-            + (newValue == null ? 0 : newValue.length)
-            + recordContext.residentMemorySizeEstimate();
+                + (oldValue == null || priorValue == oldValue ? 0 : oldValue.length)
+                + (newValue == null ? 0 : newValue.length)
+                + recordContext.residentMemorySizeEstimate();
     }
 
     @Override
@@ -143,9 +143,9 @@ public final class BufferValue {
         if (o == null || getClass() != o.getClass()) return false;
         final BufferValue that = (BufferValue) o;
         return Arrays.equals(priorValue, that.priorValue) &&
-            Arrays.equals(oldValue, that.oldValue) &&
-            Arrays.equals(newValue, that.newValue) &&
-            Objects.equals(recordContext, that.recordContext);
+                Arrays.equals(oldValue, that.oldValue) &&
+                Arrays.equals(newValue, that.newValue) &&
+                Objects.equals(recordContext, that.recordContext);
     }
 
     @Override
@@ -160,10 +160,10 @@ public final class BufferValue {
     @Override
     public String toString() {
         return "BufferValue{" +
-            "priorValue=" + Arrays.toString(priorValue) +
-            ", oldValue=" + Arrays.toString(oldValue) +
-            ", newValue=" + Arrays.toString(newValue) +
-            ", recordContext=" + recordContext +
-            '}';
+                "priorValue=" + Arrays.toString(priorValue) +
+                ", oldValue=" + Arrays.toString(oldValue) +
+                ", newValue=" + Arrays.toString(newValue) +
+                ", recordContext=" + recordContext +
+                '}';
     }
 }

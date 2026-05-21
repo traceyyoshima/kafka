@@ -40,12 +40,12 @@ public class ConfiguredTopologyTest {
     @Test
     public void testConstructorWithNullSubtopologies() {
         assertThrows(NullPointerException.class,
-            () -> new ConfiguredTopology(
-                0,
-                0,
-                null,
-                Map.of(),
-                Optional.empty()
+                () -> new ConfiguredTopology(
+                    0,
+                    0,
+                    null,
+                    Map.of(),
+                    Optional.empty()
             )
         );
     }
@@ -53,12 +53,12 @@ public class ConfiguredTopologyTest {
     @Test
     public void testConstructorWithNullInternalTopicsToBeCreated() {
         assertThrows(NullPointerException.class,
-            () -> new ConfiguredTopology(
-                0,
-                0,
-                Optional.of(new TreeMap<>()),
-                null,
-                Optional.empty()
+                () -> new ConfiguredTopology(
+                    0,
+                    0,
+                    Optional.of(new TreeMap<>()),
+                    null,
+                    Optional.empty()
             )
         );
     }
@@ -66,12 +66,12 @@ public class ConfiguredTopologyTest {
     @Test
     public void testConstructorWithNullTopicConfigurationException() {
         assertThrows(NullPointerException.class,
-            () -> new ConfiguredTopology(
-                0,
-                0,
-                Optional.empty(),
-                Map.of(),
-                null
+                () -> new ConfiguredTopology(
+                    0,
+                    0,
+                    Optional.empty(),
+                    Map.of(),
+                    null
             )
         );
     }
@@ -79,12 +79,12 @@ public class ConfiguredTopologyTest {
     @Test
     public void testConstructorWithInvalidTopologyEpoch() {
         assertThrows(IllegalArgumentException.class,
-            () -> new ConfiguredTopology(
-                -1,
-                0,
-                Optional.of(new TreeMap<>()),
-                Map.of(),
-                Optional.empty()
+                () -> new ConfiguredTopology(
+                    -1,
+                    0,
+                    Optional.of(new TreeMap<>()),
+                    Map.of(),
+                    Optional.empty()
             )
         );
     }
@@ -92,12 +92,12 @@ public class ConfiguredTopologyTest {
     @Test
     public void testNoExceptionButNoSubtopologies() {
         final IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
-            () -> new ConfiguredTopology(
-                1,
-                0,
-                Optional.empty(),
-                Map.of(),
-                Optional.empty()
+                () -> new ConfiguredTopology(
+                    1,
+                    0,
+                    Optional.empty(),
+                    Map.of(),
+                    Optional.empty()
             )
         );
         assertEquals("Subtopologies must be present if topicConfigurationException is empty.", ex.getMessage());
@@ -106,11 +106,11 @@ public class ConfiguredTopologyTest {
     @Test
     public void testIsReady() {
         ConfiguredTopology readyTopology = new ConfiguredTopology(
-            1, 0, Optional.of(new TreeMap<>()), new HashMap<>(), Optional.empty());
+                1, 0, Optional.of(new TreeMap<>()), new HashMap<>(), Optional.empty());
         assertTrue(readyTopology.isReady());
 
         ConfiguredTopology notReadyTopology = new ConfiguredTopology(
-            1, 0, Optional.empty(), new HashMap<>(), Optional.of(TopicConfigurationException.missingSourceTopics("missing")));
+                1, 0, Optional.empty(), new HashMap<>(), Optional.of(TopicConfigurationException.missingSourceTopics("missing")));
         assertFalse(notReadyTopology.isReady());
     }
 
@@ -125,7 +125,7 @@ public class ConfiguredTopologyTest {
         Map<String, CreatableTopic> internalTopicsToBeCreated = new HashMap<>();
         Optional<TopicConfigurationException> topicConfigurationException = Optional.empty();
         ConfiguredTopology configuredTopology = new ConfiguredTopology(
-            topologyEpoch, 0, Optional.of(subtopologies), internalTopicsToBeCreated, topicConfigurationException);
+                topologyEpoch, 0, Optional.of(subtopologies), internalTopicsToBeCreated, topicConfigurationException);
 
         StreamsGroupDescribeResponseData.Topology topology = configuredTopology.asStreamsGroupDescribeTopology();
 

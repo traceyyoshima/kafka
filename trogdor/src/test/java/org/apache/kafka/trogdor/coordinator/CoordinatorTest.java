@@ -114,7 +114,7 @@ public class CoordinatorTest {
 
             NoOpTaskSpec fooSpec = new NoOpTaskSpec(1, 2);
             cluster.coordinatorClient().createTask(
-                new CreateTaskRequest("foo", fooSpec));
+                    new CreateTaskRequest("foo", fooSpec));
             new ExpectedTasks().
                 addTask(new ExpectedTaskBuilder("foo").
                     taskState(new TaskPending(fooSpec)).
@@ -123,13 +123,13 @@ public class CoordinatorTest {
 
             // Re-creating a task with the same arguments is not an error.
             cluster.coordinatorClient().createTask(
-                new CreateTaskRequest("foo", fooSpec));
+                    new CreateTaskRequest("foo", fooSpec));
 
             // Re-creating a task with different arguments gives a RequestConflictException.
             NoOpTaskSpec barSpec = new NoOpTaskSpec(1000, 2000);
             assertThrows(RequestConflictException.class, () -> cluster.coordinatorClient().createTask(
-                new CreateTaskRequest("foo", barSpec)),
-                "Recreating task with different task spec is not allowed");
+                    new CreateTaskRequest("foo", barSpec)),
+                    "Recreating task with different task spec is not allowed");
 
             time.sleep(2);
             new ExpectedTasks().
@@ -172,7 +172,7 @@ public class CoordinatorTest {
             coordinatorClient.createTask(new CreateTaskRequest("foo", fooSpec));
             new ExpectedTasks().
                 addTask(new ExpectedTaskBuilder("foo").taskState(
-                    new TaskPending(fooSpec)).build()).
+                        new TaskPending(fooSpec)).build()).
                 waitFor(coordinatorClient).
                 waitFor(agentClient1).
                 waitFor(agentClient2);
@@ -197,7 +197,7 @@ public class CoordinatorTest {
             new ExpectedTasks().
                 addTask(new ExpectedTaskBuilder("foo").
                     taskState(new TaskDone(fooSpec, 11, 18,
-                        "", false, status2)).
+                            "", false, status2)).
                     workerState(new WorkerDone("foo", fooSpec, 11, 18, new TextNode("done"), "")).
                     build()).
                 waitFor(coordinatorClient).
@@ -255,7 +255,7 @@ public class CoordinatorTest {
             new ExpectedTasks().
                 addTask(new ExpectedTaskBuilder("foo").
                     taskState(new TaskDone(fooSpec, 11, 18, "",
-                        true, status2)).
+                            true, status2)).
                     workerState(new WorkerDone("foo", fooSpec, 11, 18, new TextNode("done"), "")).
                     build()).
                 waitFor(coordinatorClient).
@@ -332,7 +332,7 @@ public class CoordinatorTest {
         public ExpectedLines waitFor(final String nodeName,
                 final CapturingCommandRunner runner) throws InterruptedException {
             TestUtils.waitForCondition(() -> linesMatch(nodeName, runner.lines(nodeName)),
-                "failed to find the expected lines " + this);
+                    "failed to find the expected lines " + this);
             return this;
         }
 
@@ -345,8 +345,8 @@ public class CoordinatorTest {
                 }
                 if (i == actualLines.size()) {
                     log.info("Failed to find the expected lines for {}.  First " +
-                        "missing line on index {}: {}",
-                        nodeName, matchIdx, expectedLines.get(matchIdx));
+                            "missing line on index {}: {}",
+                            nodeName, matchIdx, expectedLines.get(matchIdx));
                     return false;
                 }
                 String actualLine = actualLines.get(i++);
@@ -389,10 +389,10 @@ public class CoordinatorTest {
                 build()) {
             CoordinatorClient coordinatorClient = cluster.coordinatorClient();
             NetworkPartitionFaultSpec spec = new NetworkPartitionFaultSpec(0, Long.MAX_VALUE,
-                createPartitionLists(new String[][] {
-                    new String[] {"node01", "node02"},
-                    new String[] {"node03"},
-                }));
+                    createPartitionLists(new String[][] {
+                        new String[] {"node01", "node02"},
+                        new String[] {"node03"},
+                    }));
             coordinatorClient.createTask(new CreateTaskRequest("netpart", spec));
             new ExpectedTasks().
                 addTask(new ExpectedTaskBuilder("netpart").taskSpec(spec).build()).
@@ -405,17 +405,17 @@ public class CoordinatorTest {
     private void checkLines(String prefix, CapturingCommandRunner runner) throws InterruptedException {
         new ExpectedLines().
             addLine("sudo iptables " + prefix + " INPUT -p tcp -s 127.0.0.1 -j DROP " +
-                "-m comment --comment node03").
+                    "-m comment --comment node03").
             waitFor("node01", runner);
         new ExpectedLines().
             addLine("sudo iptables " + prefix + " INPUT -p tcp -s 127.0.0.1 -j DROP " +
-                "-m comment --comment node03").
+                    "-m comment --comment node03").
             waitFor("node02", runner);
         new ExpectedLines().
             addLine("sudo iptables " + prefix + " INPUT -p tcp -s 127.0.0.1 -j DROP " +
-                "-m comment --comment node01").
+                    "-m comment --comment node01").
             addLine("sudo iptables " + prefix + " INPUT -p tcp -s 127.0.0.1 -j DROP " +
-                "-m comment --comment node02").
+                    "-m comment --comment node02").
             waitFor("node03", runner);
     }
 
@@ -483,9 +483,9 @@ public class CoordinatorTest {
                 waitFor(coordinatorClient);
 
             assertEquals(0, coordinatorClient.tasks(
-                new TasksRequest(null, 10, 0, 10, 0, Optional.empty())).tasks().size());
+                    new TasksRequest(null, 10, 0, 10, 0, Optional.empty())).tasks().size());
             TasksResponse resp1 = coordinatorClient.tasks(
-                new TasksRequest(List.of("foo", "baz"), 0, 0, 0, 0, Optional.empty()));
+                    new TasksRequest(List.of("foo", "baz"), 0, 0, 0, 0, Optional.empty()));
             assertTrue(resp1.tasks().containsKey("foo"));
             assertFalse(resp1.tasks().containsKey("bar"));
             assertEquals(1, resp1.tasks().size());
@@ -503,13 +503,13 @@ public class CoordinatorTest {
                 waitFor(cluster.agentClient("node02"));
 
             TasksResponse resp2 = coordinatorClient.tasks(
-                new TasksRequest(null, 1, 0, 0, 0, Optional.empty()));
+                    new TasksRequest(null, 1, 0, 0, 0, Optional.empty()));
             assertTrue(resp2.tasks().containsKey("foo"));
             assertFalse(resp2.tasks().containsKey("bar"));
             assertEquals(1, resp2.tasks().size());
 
             assertEquals(0, coordinatorClient.tasks(
-                new TasksRequest(null, 3, 0, 0, 0, Optional.empty())).tasks().size());
+                    new TasksRequest(null, 3, 0, 0, 0, Optional.empty())).tasks().size());
         }
     }
 
@@ -534,7 +534,6 @@ public class CoordinatorTest {
 
             TaskState resp = coordinatorClient.task(new TaskRequest("foo"));
             assertEquals(expectedState, resp);
-
 
             time.sleep(2);
             new ExpectedTasks().
@@ -585,7 +584,7 @@ public class CoordinatorTest {
             NoOpTaskSpec updatedSpec = new NoOpTaskSpec(552, 500);
             coordinatorClient.createTask(new CreateTaskRequest("fooSpec", fooSpec));
             TaskState expectedState = new ExpectedTaskBuilder("fooSpec").taskState(
-                new TaskRunning(updatedSpec, 552, new TextNode("receiving"))
+                    new TaskRunning(updatedSpec, 552, new TextNode("receiving"))
             ).build().taskState();
 
             TaskState resp = coordinatorClient.task(new TaskRequest("fooSpec"));
@@ -609,7 +608,7 @@ public class CoordinatorTest {
             CoordinatorClient coordinatorClient = cluster.coordinatorClient();
             coordinatorClient.createTask(new CreateTaskRequest("fooSpec", fooSpec));
             TaskState expectedState = new ExpectedTaskBuilder("fooSpec").taskState(
-                new TaskPending(fooSpec)
+                    new TaskPending(fooSpec)
             ).build().taskState();
 
             TaskState resp = coordinatorClient.task(new TaskRequest("fooSpec"));
@@ -665,7 +664,7 @@ public class CoordinatorTest {
             nodeToExitMs.put("node02", 10L);
             nodeToExitMs.put("node03", 20L);
             SampleTaskSpec fooSpec =
-                new SampleTaskSpec(2, 100, nodeToExitMs, "");
+                    new SampleTaskSpec(2, 100, nodeToExitMs, "");
             coordinatorClient.createTask(new CreateTaskRequest("foo", fooSpec));
             new ExpectedTasks().
                 addTask(new ExpectedTaskBuilder("foo").
@@ -711,7 +710,7 @@ public class CoordinatorTest {
             new ExpectedTasks().
                 addTask(new ExpectedTaskBuilder("foo").
                     taskState(new TaskDone(fooSpec, 2, 22, "",
-                        false, status3)).
+                            false, status3)).
                     build()).
                 waitFor(coordinatorClient);
         }

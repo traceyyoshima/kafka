@@ -67,6 +67,7 @@ public class RetryWithToleranceOperator<T> implements AutoCloseable {
     public static final long RETRIES_DELAY_MIN_MS = 300;
 
     private static final Map<Stage, Class<? extends Exception>> TOLERABLE_EXCEPTIONS = new HashMap<>();
+
     static {
         TOLERABLE_EXCEPTIONS.put(Stage.TRANSFORMATION, Exception.class);
         TOLERABLE_EXCEPTIONS.put(Stage.HEADER_CONVERTER, Exception.class);

@@ -82,9 +82,9 @@ public final class RemoveVoterHandler {
         // Check if there are any pending voter change requests
         if (leaderState.isOperationPending(currentTimeMs)) {
             return CompletableFuture.completedFuture(
-                RaftUtil.removeVoterResponse(
-                    Errors.REQUEST_TIMED_OUT,
-                    "Request timed out waiting for leader to handle previous voter change request"
+                    RaftUtil.removeVoterResponse(
+                        Errors.REQUEST_TIMED_OUT,
+                        "Request timed out waiting for leader to handle previous voter change request"
                 )
             );
         }
@@ -93,9 +93,9 @@ public final class RemoveVoterHandler {
         Optional<Long> highWatermark = leaderState.highWatermark().map(LogOffsetMetadata::offset);
         if (highWatermark.isEmpty()) {
             return CompletableFuture.completedFuture(
-                RaftUtil.removeVoterResponse(
-                    Errors.REQUEST_TIMED_OUT,
-                    "Request timed out waiting for leader to establish HWM and fence previous voter changes"
+                    RaftUtil.removeVoterResponse(
+                        Errors.REQUEST_TIMED_OUT,
+                        "Request timed out waiting for leader to establish HWM and fence previous voter changes"
                 )
             );
         }
@@ -104,12 +104,12 @@ public final class RemoveVoterHandler {
         KRaftVersion kraftVersion = partitionState.lastKraftVersion();
         if (!kraftVersion.isReconfigSupported()) {
             return CompletableFuture.completedFuture(
-                RaftUtil.removeVoterResponse(
-                    Errors.UNSUPPORTED_VERSION,
-                    String.format(
-                        "Cluster doesn't support removing voter because the %s feature is %s",
-                        kraftVersion.featureName(),
-                        kraftVersion.featureLevel()
+                    RaftUtil.removeVoterResponse(
+                        Errors.UNSUPPORTED_VERSION,
+                        String.format(
+                            "Cluster doesn't support removing voter because the %s feature is %s",
+                            kraftVersion.featureName(),
+                            kraftVersion.featureLevel()
                     )
                 )
             );
@@ -119,12 +119,12 @@ public final class RemoveVoterHandler {
         Optional<LogHistory.Entry<VoterSet>> votersEntry = partitionState.lastVoterSetEntry();
         if (votersEntry.isEmpty() || votersEntry.get().offset() >= highWatermark.get()) {
             return CompletableFuture.completedFuture(
-                RaftUtil.removeVoterResponse(
-                    Errors.REQUEST_TIMED_OUT,
-                    String.format(
-                        "Request timed out waiting for voters to commit the latest voter change at %s with HWM %d",
-                        votersEntry.map(LogHistory.Entry::offset),
-                        highWatermark.get()
+                    RaftUtil.removeVoterResponse(
+                        Errors.REQUEST_TIMED_OUT,
+                        String.format(
+                            "Request timed out waiting for voters to commit the latest voter change at %s with HWM %d",
+                            votersEntry.map(LogHistory.Entry::offset),
+                            highWatermark.get()
                     )
                 )
             );
@@ -134,12 +134,12 @@ public final class RemoveVoterHandler {
         Optional<VoterSet> newVoters = votersEntry.get().value().removeVoter(voterKey);
         if (newVoters.isEmpty()) {
             return CompletableFuture.completedFuture(
-                RaftUtil.removeVoterResponse(
-                    Errors.VOTER_NOT_FOUND,
-                    String.format(
-                        "Cannot remove voter %s from the set of voters %s",
-                        voterKey,
-                        votersEntry.get().value().voterKeys()
+                    RaftUtil.removeVoterResponse(
+                        Errors.VOTER_NOT_FOUND,
+                        String.format(
+                            "Cannot remove voter %s from the set of voters %s",
+                            voterKey,
+                            votersEntry.get().value().voterKeys()
                     )
                 )
             );
@@ -147,8 +147,8 @@ public final class RemoveVoterHandler {
 
         // Append the record to the log
         RemoveVoterHandlerState state = new RemoveVoterHandlerState(
-            leaderState.appendVotersRecord(newVoters.get(), currentTimeMs),
-            time.timer(requestTimeoutMs)
+                leaderState.appendVotersRecord(newVoters.get(), currentTimeMs),
+                time.timer(requestTimeoutMs)
         );
         leaderState.resetRemoveVoterHandlerState(Errors.UNKNOWN_SERVER_ERROR, null, Optional.of(state));
 
@@ -157,32 +157,32 @@ public final class RemoveVoterHandler {
 
     public void highWatermarkUpdated(LeaderState<?> leaderState) {
         leaderState.removeVoterHandlerState().ifPresent(current ->
-            leaderState.highWatermark().ifPresent(highWatermark -> {
-                if (highWatermark.offset() > current.lastOffset()) {
-                    // VotersRecord with the removed voter was committed; complete the RPC
-                    leaderState.resetRemoveVoterHandlerState(Errors.NONE, null, Optional.empty());
+                leaderState.highWatermark().ifPresent(highWatermark -> {
+                    if (highWatermark.offset() > current.lastOffset()) {
+                        // VotersRecord with the removed voter was committed; complete the RPC
+                        leaderState.resetRemoveVoterHandlerState(Errors.NONE, null, Optional.empty());
 
-                    // Resign if the leader is not part of the new committed voter set
-                    VoterSet voters = partitionState.lastVoterSet();
-                    ReplicaKey localKey = localReplicaKey.orElseThrow(
-                        () -> new IllegalStateException(
-                            String.format(
-                                "Leaders mush have an id and directory id %s",
-                                localReplicaKey
+                        // Resign if the leader is not part of the new committed voter set
+                        VoterSet voters = partitionState.lastVoterSet();
+                        ReplicaKey localKey = localReplicaKey.orElseThrow(
+                            () -> new IllegalStateException(
+                                String.format(
+                                    "Leaders mush have an id and directory id %s",
+                                    localReplicaKey
                             )
                         )
                     );
-                    if (!voters.isVoter(localKey)) {
-                        logger.info(
-                            "Leader is not in the committed voter set {} resign from epoch {}",
-                            voters.voterKeys(),
-                            leaderState.epoch()
+                        if (!voters.isVoter(localKey)) {
+                            logger.info(
+                                "Leader is not in the committed voter set {} resign from epoch {}",
+                                voters.voterKeys(),
+                                leaderState.epoch()
                         );
 
-                        leaderState.requestResign();
+                            leaderState.requestResign();
+                        }
                     }
-                }
-            })
+                })
         );
     }
 }

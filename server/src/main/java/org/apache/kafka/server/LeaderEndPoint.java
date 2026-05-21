@@ -103,7 +103,6 @@ public interface LeaderEndPoint {
      */
     OffsetAndEpoch fetchEarliestLocalOffset(TopicPartition topicPartition, int currentLeaderEpoch);
 
-
     /**
      * Fetches the earliest offset and epoch that is pending upload for the given topic partition from the leader.
      *

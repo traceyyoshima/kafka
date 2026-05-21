@@ -78,7 +78,6 @@ public abstract class AbstractIndex implements Closeable {
     /** The number of entries in this index */
     private volatile int entries;
 
-
     /**
      * @param file The index file
      * @param baseOffset the base offset of the segment that this index is corresponding to.
@@ -142,7 +141,6 @@ public abstract class AbstractIndex implements Closeable {
     protected abstract void truncate();
 
     protected abstract int entrySize();
-
 
     /**
      * To parse an entry in the index.
@@ -311,7 +309,7 @@ public abstract class AbstractIndex implements Closeable {
     public int relativeOffset(long offset) {
         OptionalInt relativeOffset = toRelative(offset);
         return relativeOffset.orElseThrow(() -> new IndexOffsetOverflowException(
-            "Integer overflow for offset: " + offset + " (" + file.getAbsoluteFile() + ")"));
+                "Integer overflow for offset: " + offset + " (" + file.getAbsoluteFile() + ")"));
     }
 
     /**
@@ -502,7 +500,7 @@ public abstract class AbstractIndex implements Closeable {
         // check if the target offset is in the warm section of the index
         if (compareIndexEntry(parseEntry(idx, firstHotEntry), target, searchEntity) < 0) {
             return binarySearch(idx, target, searchEntity,
-                searchResultType, firstHotEntry, entries - 1);
+                    searchResultType, firstHotEntry, entries - 1);
         }
 
         // check if the target offset is smaller than the least offset

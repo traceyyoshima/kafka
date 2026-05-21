@@ -74,7 +74,7 @@ public class StreamsGroupHeartbeatResponse extends AbstractResponse {
 
     public static StreamsGroupHeartbeatResponse parse(Readable readable, short version) {
         return new StreamsGroupHeartbeatResponse(new StreamsGroupHeartbeatResponseData(
-            readable, version));
+                readable, version));
     }
 
     public enum Status {

@@ -38,7 +38,6 @@ public class TopicIdPartitionSetTest {
 
     private TopicIdPartitionSet topicIdPartitionSet;
 
-
     @BeforeEach
     public void setUp() {
         topicIdPartitionSet = new TopicIdPartitionSet();

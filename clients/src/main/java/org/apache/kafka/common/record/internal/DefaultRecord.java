@@ -287,7 +287,7 @@ public class DefaultRecord implements Record {
         int bytesRead = Utils.readFully(input, recordBuffer);
         if (bytesRead != sizeOfBodyInBytes)
             throw new InvalidRecordException("Invalid record size: expected " + sizeOfBodyInBytes +
-                " bytes in record payload, but the record payload reached EOF.");
+                    " bytes in record payload, but the record payload reached EOF.");
         recordBuffer.flip(); // prepare for reading
         return readFrom(recordBuffer, sizeOfBodyInBytes, baseOffset, baseTimestamp,
                 baseSequence, logAppendTime);
@@ -300,7 +300,7 @@ public class DefaultRecord implements Record {
                                          Long logAppendTime) {
         int sizeOfBodyInBytes = ByteUtils.readVarint(buffer);
         return readFrom(buffer, sizeOfBodyInBytes, baseOffset, baseTimestamp,
-            baseSequence, logAppendTime);
+                baseSequence, logAppendTime);
     }
 
     private static DefaultRecord readFrom(ByteBuffer buffer,
@@ -311,8 +311,8 @@ public class DefaultRecord implements Record {
                                           Long logAppendTime) {
         if (buffer.remaining() < sizeOfBodyInBytes)
             throw new InvalidRecordException("Invalid record size: expected " + sizeOfBodyInBytes +
-                " bytes in record payload, but instead the buffer has only " + buffer.remaining() +
-                " remaining bytes.");
+                    " bytes in record payload, but instead the buffer has only " + buffer.remaining() +
+                    " remaining bytes.");
         try {
             int recordStart = buffer.position();
             byte attributes = buffer.get();
@@ -368,7 +368,7 @@ public class DefaultRecord implements Record {
         int totalSizeInBytes = ByteUtils.sizeOfVarint(sizeOfBodyInBytes) + sizeOfBodyInBytes;
 
         return readPartiallyFrom(input, totalSizeInBytes, baseOffset, baseTimestamp,
-            baseSequence, logAppendTime);
+                baseSequence, logAppendTime);
     }
 
     private static PartialDefaultRecord readPartiallyFrom(InputStream input,
@@ -419,7 +419,6 @@ public class DefaultRecord implements Record {
         }
     }
 
-
     /**
      * Skips over and discards exactly {@code bytesToSkip} bytes from the input stream.
      *
@@ -445,7 +444,7 @@ public class DefaultRecord implements Record {
                 // read one byte to check for EOS
                 if (in.read() == -1) {
                     throw new InvalidRecordException("Reached end of input stream before skipping all bytes. " +
-                        "Remaining bytes:" + bytesToSkip);
+                            "Remaining bytes:" + bytesToSkip);
                 }
                 // one byte read so decrement number to skip
                 bytesToSkip--;

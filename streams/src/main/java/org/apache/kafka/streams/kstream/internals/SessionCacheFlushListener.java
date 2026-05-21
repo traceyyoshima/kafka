@@ -39,7 +39,7 @@ class SessionCacheFlushListener<KOut, VOut> implements CacheFlushListener<Window
         context.setCurrentNode(myNode);
         try {
             context.forward(
-                record
+                    record
                     .withValue(new Change<>(record.value().newValue, record.value().oldValue, record.value().isLatest))
                     .withTimestamp(record.key().window().end())
                     .withHeaders(record.headers() != null ? record.headers() : new RecordHeaders()));

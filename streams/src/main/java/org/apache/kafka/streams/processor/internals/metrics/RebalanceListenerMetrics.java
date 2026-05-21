@@ -42,33 +42,33 @@ public class RebalanceListenerMetrics {
     public static Sensor tasksRevokedSensor(final String threadId,
                                             final StreamsMetricsImpl streamsMetrics) {
         return rebalanceLatencySensor(
-            threadId,
-            TASKS_REVOKED,
-            TASKS_REVOKED_AVG_LATENCY_DESCRIPTION,
-            TASKS_REVOKED_MAX_LATENCY_DESCRIPTION,
-            streamsMetrics
+                threadId,
+                TASKS_REVOKED,
+                TASKS_REVOKED_AVG_LATENCY_DESCRIPTION,
+                TASKS_REVOKED_MAX_LATENCY_DESCRIPTION,
+                streamsMetrics
         );
     }
 
     public static Sensor tasksAssignedSensor(final String threadId,
                                              final StreamsMetricsImpl streamsMetrics) {
         return rebalanceLatencySensor(
-            threadId,
-            TASKS_ASSIGNED,
-            TASKS_ASSIGNED_AVG_LATENCY_DESCRIPTION,
-            TASKS_ASSIGNED_MAX_LATENCY_DESCRIPTION,
-            streamsMetrics
+                threadId,
+                TASKS_ASSIGNED,
+                TASKS_ASSIGNED_AVG_LATENCY_DESCRIPTION,
+                TASKS_ASSIGNED_MAX_LATENCY_DESCRIPTION,
+                streamsMetrics
         );
     }
 
     public static Sensor tasksLostSensor(final String threadId,
                                          final StreamsMetricsImpl streamsMetrics) {
         return rebalanceLatencySensor(
-            threadId,
-            TASKS_LOST,
-            TASKS_LOST_AVG_LATENCY_DESCRIPTION,
-            TASKS_LOST_MAX_LATENCY_DESCRIPTION,
-            streamsMetrics
+                threadId,
+                TASKS_LOST,
+                TASKS_LOST_AVG_LATENCY_DESCRIPTION,
+                TASKS_LOST_MAX_LATENCY_DESCRIPTION,
+                streamsMetrics
         );
     }
 
@@ -80,12 +80,12 @@ public class RebalanceListenerMetrics {
         final Sensor sensor = streamsMetrics.threadLevelSensor(threadId, operation + LATENCY_SUFFIX, RecordingLevel.INFO);
         final Map<String, String> tagMap = streamsMetrics.threadLevelTagMap(threadId);
         addAvgAndMaxToSensor(
-            sensor,
-            THREAD_LEVEL_GROUP,
-            tagMap,
-            operation + LATENCY_SUFFIX,
-            avgDescription,
-            maxDescription
+                sensor,
+                THREAD_LEVEL_GROUP,
+                tagMap,
+                operation + LATENCY_SUFFIX,
+                avgDescription,
+                maxDescription
         );
         return sensor;
     }

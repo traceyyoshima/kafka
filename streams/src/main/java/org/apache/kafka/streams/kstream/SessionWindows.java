@@ -158,7 +158,7 @@ public final class SessionWindows {
         }
         final SessionWindows that = (SessionWindows) o;
         return gapMs == that.gapMs &&
-            graceMs == that.graceMs;
+                graceMs == that.graceMs;
     }
 
     @Override
@@ -169,8 +169,8 @@ public final class SessionWindows {
     @Override
     public String toString() {
         return "SessionWindows{" +
-            "gapMs=" + gapMs +
-            ", graceMs=" + graceMs +
-            '}';
+                "gapMs=" + gapMs +
+                ", graceMs=" + graceMs +
+                '}';
     }
 }
