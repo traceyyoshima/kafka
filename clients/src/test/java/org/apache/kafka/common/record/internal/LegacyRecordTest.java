@@ -60,8 +60,8 @@ public class LegacyRecordTest {
         @Override
         public String toString() {
             return "magic=" + magic +
-                ", compression=" + compression +
-                ", timestamp=" + timestamp;
+                    ", compression=" + compression +
+                    ", timestamp=" + timestamp;
         }
     }
 

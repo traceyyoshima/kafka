@@ -84,7 +84,6 @@ public class RocksDBMetricsRecorder {
 
     private static final String ROCKSDB_PROPERTIES_PREFIX = "rocksdb.";
 
-
     private final Logger logger;
 
     private Sensor bytesWrittenToDatabaseSensor;
@@ -138,13 +137,13 @@ public class RocksDBMetricsRecorder {
         Objects.requireNonNull(taskId, "task ID must not be null");
         if (this.taskId != null && !this.taskId.equals(taskId)) {
             throw new IllegalStateException("Metrics recorder is re-initialised with different task: previous task is " +
-                this.taskId + " whereas current task is " + taskId + ". This is a bug in Kafka Streams. " +
-                "Please open a bug report under https://issues.apache.org/jira/projects/KAFKA/issues");
+                    this.taskId + " whereas current task is " + taskId + ". This is a bug in Kafka Streams. " +
+                    "Please open a bug report under https://issues.apache.org/jira/projects/KAFKA/issues");
         }
         if (this.streamsMetrics != null && this.streamsMetrics != streamsMetrics) {
             throw new IllegalStateException("Metrics recorder is re-initialised with different Streams metrics. "
-                + "This is a bug in Kafka Streams. " +
-                "Please open a bug report under https://issues.apache.org/jira/projects/KAFKA/issues");
+                    + "This is a bug in Kafka Streams. " +
+                    "Please open a bug report under https://issues.apache.org/jira/projects/KAFKA/issues");
         }
         final RocksDBMetricContext metricContext = new RocksDBMetricContext(taskId.toString(), metricsScope, storeName);
         initSensors(streamsMetrics, metricContext);
@@ -162,8 +161,8 @@ public class RocksDBMetricsRecorder {
             streamsMetrics.rocksDBMetricsRecordingTrigger().addMetricsRecorder(this);
         } else if (storeToValueProviders.containsKey(segmentName)) {
             throw new IllegalStateException("Value providers for store " + segmentName + " of task " + taskId +
-                " has been already added. This is a bug in Kafka Streams. " +
-                "Please open a bug report under https://issues.apache.org/jira/projects/KAFKA/issues");
+                    " has been already added. This is a bug in Kafka Streams. " +
+                    "Please open a bug report under https://issues.apache.org/jira/projects/KAFKA/issues");
         }
         verifyDbAndCacheAndStatistics(segmentName, db, cache, statistics);
         logger.debug("Adding value providers for store {} of task {}", segmentName, taskId);
@@ -179,15 +178,15 @@ public class RocksDBMetricsRecorder {
             verifyConsistencyOfValueProvidersAcrossSegments(segmentName, cache, valueProviders.cache, "cache");
             if (db == valueProviders.db) {
                 throw new IllegalStateException("DB instance for store " + segmentName + " of task " + taskId +
-                    " was already added for another segment as a value provider. This is a bug in Kafka Streams. " +
-                    "Please open a bug report under https://issues.apache.org/jira/projects/KAFKA/issues");
+                        " was already added for another segment as a value provider. This is a bug in Kafka Streams. " +
+                        "Please open a bug report under https://issues.apache.org/jira/projects/KAFKA/issues");
             }
             if (storeToValueProviders.size() == 1 && cache != valueProviders.cache) {
                 singleCache = false;
             } else if (singleCache && cache != valueProviders.cache || !singleCache && cache == valueProviders.cache) {
                 throw new IllegalStateException("Caches for store " + storeName + " of task " + taskId +
-                    " are either not all distinct or do not all refer to the same cache. This is a bug in Kafka Streams. " +
-                    "Please open a bug report under https://issues.apache.org/jira/projects/KAFKA/issues");
+                        " are either not all distinct or do not all refer to the same cache. This is a bug in Kafka Streams. " +
+                        "Please open a bug report under https://issues.apache.org/jira/projects/KAFKA/issues");
             }
         }
     }
@@ -197,17 +196,17 @@ public class RocksDBMetricsRecorder {
                                                                  final Object oldValueProvider,
                                                                  final String valueProviderName) {
         if (newValueProvider == null && oldValueProvider != null ||
-            newValueProvider != null && oldValueProvider == null) {
+                newValueProvider != null && oldValueProvider == null) {
 
             final char capitalizedFirstChar = valueProviderName.toUpperCase(Locale.US).charAt(0);
             final StringBuilder capitalizedValueProviderName = new StringBuilder(valueProviderName);
             capitalizedValueProviderName.setCharAt(0, capitalizedFirstChar);
             throw new IllegalStateException(capitalizedValueProviderName +
-                " for segment " + segmentName + " of task " + taskId +
-                " is" + (newValueProvider == null ? " " : " not ") + "null although the " + valueProviderName +
-                " of another segment in this metrics recorder is" + (newValueProvider != null ? " " : " not ") + "null. " +
-                "This is a bug in Kafka Streams. " +
-                "Please open a bug report under https://issues.apache.org/jira/projects/KAFKA/issues");
+                    " for segment " + segmentName + " of task " + taskId +
+                    " is" + (newValueProvider == null ? " " : " not ") + "null although the " + valueProviderName +
+                    " of another segment in this metrics recorder is" + (newValueProvider != null ? " " : " not ") + "null. " +
+                    "This is a bug in Kafka Streams. " +
+                    "Please open a bug report under https://issues.apache.org/jira/projects/KAFKA/issues");
         }
     }
 
@@ -224,7 +223,7 @@ public class RocksDBMetricsRecorder {
         blockCacheIndexHitRatioSensor = RocksDBMetrics.blockCacheIndexHitRatioSensor(streamsMetrics, metricContext);
         blockCacheFilterHitRatioSensor = RocksDBMetrics.blockCacheFilterHitRatioSensor(streamsMetrics, metricContext);
         bytesWrittenDuringCompactionSensor =
-            RocksDBMetrics.bytesWrittenDuringCompactionSensor(streamsMetrics, metricContext);
+                RocksDBMetrics.bytesWrittenDuringCompactionSensor(streamsMetrics, metricContext);
         bytesReadDuringCompactionSensor = RocksDBMetrics.bytesReadDuringCompactionSensor(streamsMetrics, metricContext);
         compactionTimeAvgSensor = RocksDBMetrics.compactionTimeAvgSensor(streamsMetrics, metricContext);
         compactionTimeMinSensor = RocksDBMetrics.compactionTimeMinSensor(streamsMetrics, metricContext);
@@ -236,114 +235,114 @@ public class RocksDBMetricsRecorder {
     private void initGauges(final StreamsMetricsImpl streamsMetrics,
                             final RocksDBMetricContext metricContext) {
         RocksDBMetrics.addNumImmutableMemTableMetric(
-            streamsMetrics,
-            metricContext,
-            gaugeToComputeSumOfProperties(NUMBER_OF_IMMUTABLE_MEMTABLES)
+                streamsMetrics,
+                metricContext,
+                gaugeToComputeSumOfProperties(NUMBER_OF_IMMUTABLE_MEMTABLES)
         );
         RocksDBMetrics.addCurSizeActiveMemTable(
-            streamsMetrics,
-            metricContext,
-            gaugeToComputeSumOfProperties(CURRENT_SIZE_OF_ACTIVE_MEMTABLE)
+                streamsMetrics,
+                metricContext,
+                gaugeToComputeSumOfProperties(CURRENT_SIZE_OF_ACTIVE_MEMTABLE)
         );
         RocksDBMetrics.addCurSizeAllMemTables(
-            streamsMetrics,
-            metricContext,
-            gaugeToComputeSumOfProperties(CURRENT_SIZE_OF_ALL_MEMTABLES)
+                streamsMetrics,
+                metricContext,
+                gaugeToComputeSumOfProperties(CURRENT_SIZE_OF_ALL_MEMTABLES)
         );
         RocksDBMetrics.addSizeAllMemTables(
-            streamsMetrics,
-            metricContext,
-            gaugeToComputeSumOfProperties(SIZE_OF_ALL_MEMTABLES)
+                streamsMetrics,
+                metricContext,
+                gaugeToComputeSumOfProperties(SIZE_OF_ALL_MEMTABLES)
         );
         RocksDBMetrics.addNumEntriesActiveMemTableMetric(
-            streamsMetrics,
-            metricContext,
-            gaugeToComputeSumOfProperties(NUMBER_OF_ENTRIES_ACTIVE_MEMTABLE)
+                streamsMetrics,
+                metricContext,
+                gaugeToComputeSumOfProperties(NUMBER_OF_ENTRIES_ACTIVE_MEMTABLE)
         );
         RocksDBMetrics.addNumDeletesActiveMemTableMetric(
-            streamsMetrics,
-            metricContext,
-            gaugeToComputeSumOfProperties(NUMBER_OF_DELETES_ACTIVE_MEMTABLE)
+                streamsMetrics,
+                metricContext,
+                gaugeToComputeSumOfProperties(NUMBER_OF_DELETES_ACTIVE_MEMTABLE)
         );
         RocksDBMetrics.addNumEntriesImmMemTablesMetric(
-            streamsMetrics,
-            metricContext,
-            gaugeToComputeSumOfProperties(NUMBER_OF_ENTRIES_IMMUTABLE_MEMTABLES)
+                streamsMetrics,
+                metricContext,
+                gaugeToComputeSumOfProperties(NUMBER_OF_ENTRIES_IMMUTABLE_MEMTABLES)
         );
         RocksDBMetrics.addNumDeletesImmMemTablesMetric(
-            streamsMetrics,
-            metricContext,
-            gaugeToComputeSumOfProperties(NUMBER_OF_DELETES_IMMUTABLE_MEMTABLES)
+                streamsMetrics,
+                metricContext,
+                gaugeToComputeSumOfProperties(NUMBER_OF_DELETES_IMMUTABLE_MEMTABLES)
         );
         RocksDBMetrics.addMemTableFlushPending(
-            streamsMetrics,
-            metricContext,
-            gaugeToComputeSumOfProperties(MEMTABLE_FLUSH_PENDING)
+                streamsMetrics,
+                metricContext,
+                gaugeToComputeSumOfProperties(MEMTABLE_FLUSH_PENDING)
         );
         RocksDBMetrics.addNumRunningFlushesMetric(
-            streamsMetrics,
-            metricContext,
-            gaugeToComputeSumOfProperties(NUMBER_OF_RUNNING_FLUSHES)
+                streamsMetrics,
+                metricContext,
+                gaugeToComputeSumOfProperties(NUMBER_OF_RUNNING_FLUSHES)
         );
         RocksDBMetrics.addCompactionPendingMetric(
-            streamsMetrics,
-            metricContext,
-            gaugeToComputeSumOfProperties(COMPACTION_PENDING)
+                streamsMetrics,
+                metricContext,
+                gaugeToComputeSumOfProperties(COMPACTION_PENDING)
         );
         RocksDBMetrics.addNumRunningCompactionsMetric(
-            streamsMetrics,
-            metricContext,
-            gaugeToComputeSumOfProperties(NUMBER_OF_RUNNING_COMPACTIONS)
+                streamsMetrics,
+                metricContext,
+                gaugeToComputeSumOfProperties(NUMBER_OF_RUNNING_COMPACTIONS)
         );
         RocksDBMetrics.addEstimatePendingCompactionBytesMetric(
-            streamsMetrics,
-            metricContext,
-            gaugeToComputeSumOfProperties(ESTIMATED_BYTES_OF_PENDING_COMPACTION)
+                streamsMetrics,
+                metricContext,
+                gaugeToComputeSumOfProperties(ESTIMATED_BYTES_OF_PENDING_COMPACTION)
         );
         RocksDBMetrics.addTotalSstFilesSizeMetric(
-            streamsMetrics,
-            metricContext,
-            gaugeToComputeSumOfProperties(TOTAL_SST_FILES_SIZE)
+                streamsMetrics,
+                metricContext,
+                gaugeToComputeSumOfProperties(TOTAL_SST_FILES_SIZE)
         );
         RocksDBMetrics.addLiveSstFilesSizeMetric(
-            streamsMetrics,
-            metricContext,
-            gaugeToComputeSumOfProperties(LIVE_SST_FILES_SIZE)
+                streamsMetrics,
+                metricContext,
+                gaugeToComputeSumOfProperties(LIVE_SST_FILES_SIZE)
         );
         RocksDBMetrics.addNumLiveVersionMetric(
-            streamsMetrics,
-            metricContext,
-            gaugeToComputeSumOfProperties(NUMBER_OF_LIVE_VERSIONS)
+                streamsMetrics,
+                metricContext,
+                gaugeToComputeSumOfProperties(NUMBER_OF_LIVE_VERSIONS)
         );
         RocksDBMetrics.addEstimateNumKeysMetric(
-            streamsMetrics,
-            metricContext,
-            gaugeToComputeSumOfProperties(ESTIMATED_NUMBER_OF_KEYS)
+                streamsMetrics,
+                metricContext,
+                gaugeToComputeSumOfProperties(ESTIMATED_NUMBER_OF_KEYS)
         );
         RocksDBMetrics.addEstimateTableReadersMemMetric(
-            streamsMetrics,
-            metricContext,
-            gaugeToComputeSumOfProperties(ESTIMATED_MEMORY_OF_TABLE_READERS)
+                streamsMetrics,
+                metricContext,
+                gaugeToComputeSumOfProperties(ESTIMATED_MEMORY_OF_TABLE_READERS)
         );
         RocksDBMetrics.addBackgroundErrorsMetric(
-            streamsMetrics,
-            metricContext,
-            gaugeToComputeSumOfProperties(NUMBER_OF_BACKGROUND_ERRORS)
+                streamsMetrics,
+                metricContext,
+                gaugeToComputeSumOfProperties(NUMBER_OF_BACKGROUND_ERRORS)
         );
         RocksDBMetrics.addBlockCacheCapacityMetric(
-            streamsMetrics,
-            metricContext,
-            gaugeToComputeBlockCacheMetrics(CAPACITY_OF_BLOCK_CACHE)
+                streamsMetrics,
+                metricContext,
+                gaugeToComputeBlockCacheMetrics(CAPACITY_OF_BLOCK_CACHE)
         );
         RocksDBMetrics.addBlockCacheUsageMetric(
-            streamsMetrics,
-            metricContext,
-            gaugeToComputeBlockCacheMetrics(USAGE_OF_BLOCK_CACHE)
+                streamsMetrics,
+                metricContext,
+                gaugeToComputeBlockCacheMetrics(USAGE_OF_BLOCK_CACHE)
         );
         RocksDBMetrics.addBlockCachePinnedUsageMetric(
-            streamsMetrics,
-            metricContext,
-            gaugeToComputeBlockCacheMetrics(PINNED_USAGE_OF_BLOCK_CACHE)
+                streamsMetrics,
+                metricContext,
+                gaugeToComputeBlockCacheMetrics(PINNED_USAGE_OF_BLOCK_CACHE)
         );
     }
 
@@ -355,7 +354,7 @@ public class RocksDBMetricsRecorder {
                     // values of RocksDB properties are of type unsigned long in C++, i.e., in Java we need to use
                     // BigInteger and construct the object from the byte representation of the value
                     result = result.add(new BigInteger(1, longToBytes(
-                        valueProvider.db.getAggregatedLongProperty(ROCKSDB_PROPERTIES_PREFIX + propertyName)
+                            valueProvider.db.getAggregatedLongProperty(ROCKSDB_PROPERTIES_PREFIX + propertyName)
                     )));
                 } catch (final RocksDBException e) {
                     throw new ProcessorStateException("Error recording RocksDB metric " + propertyName, e);
@@ -374,14 +373,14 @@ public class RocksDBMetricsRecorder {
                         // values of RocksDB properties are of type unsigned long in C++, i.e., in Java we need to use
                         // BigInteger and construct the object from the byte representation of the value
                         result = new BigInteger(1, longToBytes(
-                            valueProvider.db.getLongProperty(ROCKSDB_PROPERTIES_PREFIX + propertyName)
+                                valueProvider.db.getLongProperty(ROCKSDB_PROPERTIES_PREFIX + propertyName)
                         ));
                         break;
                     } else {
                         // values of RocksDB properties are of type unsigned long in C++, i.e., in Java we need to use
                         // BigInteger and construct the object from the byte representation of the value
                         result = result.add(new BigInteger(1, longToBytes(
-                            valueProvider.db.getLongProperty(ROCKSDB_PROPERTIES_PREFIX + propertyName)
+                                valueProvider.db.getLongProperty(ROCKSDB_PROPERTIES_PREFIX + propertyName)
                         )));
                     }
                 } catch (final RocksDBException e) {
@@ -403,14 +402,14 @@ public class RocksDBMetricsRecorder {
         final DbAndCacheAndStatistics removedValueProviders = storeToValueProviders.remove(segmentName);
         if (removedValueProviders == null) {
             throw new IllegalStateException("No value providers for store \"" + segmentName + "\" of task " + taskId +
-                " could be found. This is a bug in Kafka Streams. " +
-                "Please open a bug report under https://issues.apache.org/jira/projects/KAFKA/issues");
+                    " could be found. This is a bug in Kafka Streams. " +
+                    "Please open a bug report under https://issues.apache.org/jira/projects/KAFKA/issues");
         }
         if (storeToValueProviders.isEmpty()) {
             logger.debug(
-                "Removing metrics recorder for store {} of task {} from metrics recording trigger",
-                storeName,
-                taskId
+                    "Removing metrics recorder for store {} of task {} from metrics recording trigger",
+                    storeName,
+                    taskId
             );
             streamsMetrics.rocksDBMetricsRecordingTrigger().removeMetricsRecorder(this);
         }

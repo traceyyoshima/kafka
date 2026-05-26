@@ -75,7 +75,7 @@ public final class AssignorConfiguration {
 
             if (!(o instanceof ReferenceContainer)) {
                 final KafkaException fatalException = new KafkaException(
-                    String.format("%s is not an instance of %s", o.getClass().getName(), ReferenceContainer.class.getName())
+                        String.format("%s is not an instance of %s", o.getClass().getName(), ReferenceContainer.class.getName())
                 );
                 log.error(fatalException.getMessage(), fatalException);
                 throw fatalException;
@@ -111,16 +111,16 @@ public final class AssignorConfiguration {
 
                 if (host == null || port == null) {
                     throw new ConfigException(
-                        String.format(
-                            "%s Config %s isn't in the correct format. Expected a host:port pair but received %s",
-                            logPrefix, StreamsConfig.APPLICATION_SERVER_CONFIG, configuredUserEndpoint
-                        )
+                            String.format(
+                                    "%s Config %s isn't in the correct format. Expected a host:port pair but received %s",
+                                    logPrefix, StreamsConfig.APPLICATION_SERVER_CONFIG, configuredUserEndpoint
+                            )
                     );
                 }
             } catch (final NumberFormatException nfe) {
                 throw new ConfigException(
-                    String.format("%s Invalid port supplied in %s for config %s: %s",
-                                  logPrefix, configuredUserEndpoint, StreamsConfig.APPLICATION_SERVER_CONFIG, nfe)
+                        String.format("%s Invalid port supplied in %s for config %s: %s",
+                                logPrefix, configuredUserEndpoint, StreamsConfig.APPLICATION_SERVER_CONFIG, nfe)
                 );
             }
             return configuredUserEndpoint;
@@ -146,8 +146,8 @@ public final class AssignorConfiguration {
             return Utils.newInstance(internalTaskAssignorClass, LegacyTaskAssignor.class);
         } catch (final ClassNotFoundException e) {
             throw new IllegalArgumentException(
-                "Expected an instantiable class name for " + INTERNAL_TASK_ASSIGNOR_CLASS,
-                e
+                    "Expected an instantiable class name for " + INTERNAL_TASK_ASSIGNOR_CLASS,
+                    e
             );
         }
     }
@@ -160,14 +160,14 @@ public final class AssignorConfiguration {
         }
         try {
             final org.apache.kafka.streams.processor.assignment.TaskAssignor assignor = Utils.newInstance(userTaskAssignorClassname,
-                org.apache.kafka.streams.processor.assignment.TaskAssignor.class);
+                    org.apache.kafka.streams.processor.assignment.TaskAssignor.class);
             log.info("Instantiated {} as the task assignor.", userTaskAssignorClassname);
             assignor.configure(streamsConfig.originals());
             return Optional.of(assignor);
         } catch (final ClassNotFoundException e) {
             throw new IllegalArgumentException(
-                "Expected an instantiable class name for " + StreamsConfig.TASK_ASSIGNOR_CLASS_CONFIG + " but got " + userTaskAssignorClassname,
-                e
+                    "Expected an instantiable class name for " + StreamsConfig.TASK_ASSIGNOR_CLASS_CONFIG + " but got " + userTaskAssignorClassname,
+                    e
             );
         }
     }
@@ -175,12 +175,12 @@ public final class AssignorConfiguration {
     public AssignmentListener assignmentListener() {
         final Object o = internalConfigs.get(InternalConfig.ASSIGNMENT_LISTENER);
         if (o == null) {
-            return stable -> { };
+            return stable -> {};
         }
 
         if (!(o instanceof AssignmentListener)) {
             final KafkaException fatalException = new KafkaException(
-                String.format("%s is not an instance of %s", o.getClass().getName(), AssignmentListener.class.getName())
+                    String.format("%s is not an instance of %s", o.getClass().getName(), AssignmentListener.class.getName())
             );
             log.error(fatalException.getMessage(), fatalException);
             throw fatalException;

@@ -98,7 +98,6 @@ public class AcknowledgementsTest {
             acks.add(i + j, AcknowledgeType.REJECT);
         }
 
-
         List<AcknowledgementBatch> ackList = acks.getAcknowledgementBatches();
         assertEquals(2, ackList.size());
         assertEquals(0L, ackList.get(0).firstOffset());

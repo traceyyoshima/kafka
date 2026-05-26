@@ -175,7 +175,7 @@ public class WorkerSinkTaskContext implements SinkTaskContext {
     @Override
     public String toString() {
         return "WorkerSinkTaskContext{" +
-               "id=" + sinkTask.id +
-               '}';
+                "id=" + sinkTask.id +
+                '}';
     }
 }

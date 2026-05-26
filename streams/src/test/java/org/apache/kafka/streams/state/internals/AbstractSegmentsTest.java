@@ -58,9 +58,7 @@ abstract class AbstractSegmentsTest<S extends Segments> {
     private final Serializer<String> stringSerializer = new StringSerializer();
     private final Serializer<Long> longSerializer = new LongSerializer();
 
-
     abstract S getSegments();
-
 
     @BeforeEach
     public void setUp() {

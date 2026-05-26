@@ -163,8 +163,8 @@ public final class NodeManager {
             build();
         this.workers = new HashMap<>();
         this.executor = Executors.newSingleThreadScheduledExecutor(
-            ThreadUtils.createThreadFactory("NodeManager(" + node.name() + ")",
-                false));
+                ThreadUtils.createThreadFactory("NodeManager(" + node.name() + ")",
+                        false));
         this.heartbeat = new NodeHeartbeat();
         rescheduleNextHeartbeat(HEARTBEAT_DELAY_MS);
     }
@@ -179,7 +179,7 @@ public final class NodeManager {
             this.heartbeatFuture.cancel(false);
         }
         this.heartbeatFuture = this.executor.scheduleAtFixedRate(heartbeat,
-            initialDelayMs, HEARTBEAT_DELAY_MS, TimeUnit.MILLISECONDS);
+                initialDelayMs, HEARTBEAT_DELAY_MS, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -238,7 +238,7 @@ public final class NodeManager {
                     // Add these to the NodeManager as tasks that should not be running.
                     log.warn("{}: scheduling unknown worker with ID {} for stopping.", node.name(), workerId);
                     workers.put(workerId, new ManagedWorker(workerId, state.taskId(),
-                        state.spec(), false, state));
+                            state.spec(), false, state));
                 } else {
                     // Handle workers which need to be stopped.
                     if (state instanceof WorkerStarting || state instanceof WorkerRunning) {
@@ -291,7 +291,7 @@ public final class NodeManager {
             ManagedWorker worker = workers.get(workerId);
             if (worker != null) {
                 log.error("{}: there is already a worker {} with ID {}.",
-                    node.name(), worker, workerId);
+                        node.name(), worker, workerId);
                 return null;
             }
             worker = new ManagedWorker(workerId, taskId, spec, true, new WorkerReceiving(taskId, spec));
@@ -330,7 +330,7 @@ public final class NodeManager {
             }
             if (!worker.shouldRun) {
                 log.error("{}: Worker {} is already scheduled to stop.",
-                    node.name(), worker);
+                        node.name(), worker);
                 return null;
             }
             log.info("{}: scheduling worker {} to stop.", node.name(), worker);

@@ -47,11 +47,11 @@ public class ClientRebootstrapTest {
     private static final int REPLICAS = 2;
 
     @ClusterTest(
-        brokers = REPLICAS,
-        types = {Type.KRAFT},
-        serverProperties = {
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "2")
-        }
+            brokers = REPLICAS,
+            types = {Type.KRAFT},
+            serverProperties = {
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "2")
+            }
     )
     public void testAdminRebootstrap(ClusterInstance clusterInstance) {
         var broker0 = 0;
@@ -77,11 +77,11 @@ public class ClientRebootstrapTest {
     }
 
     @ClusterTest(
-        brokers = REPLICAS,
-        types = {Type.KRAFT},
-        serverProperties = {
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "2")
-        }
+            brokers = REPLICAS,
+            types = {Type.KRAFT},
+            serverProperties = {
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "2")
+            }
     )
     public void testAdminRebootstrapDisabled(ClusterInstance clusterInstance) {
         var broker0 = 0;
@@ -106,12 +106,12 @@ public class ClientRebootstrapTest {
     }
 
     @ClusterTest(
-        brokers = REPLICAS,
-        types = {Type.KRAFT},
-        serverProperties = {
-            @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "true"),
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "2")
-        }
+            brokers = REPLICAS,
+            types = {Type.KRAFT},
+            serverProperties = {
+                @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "true"),
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "2")
+            }
     )
     public void testProducerRebootstrap(ClusterInstance clusterInstance) throws ExecutionException, InterruptedException {
         try (var admin = clusterInstance.admin()) {
@@ -141,12 +141,12 @@ public class ClientRebootstrapTest {
     }
 
     @ClusterTest(
-        brokers = REPLICAS,
-        types = {Type.KRAFT},
-        serverProperties = {
-            @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "true"),
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "2")
-        }
+            brokers = REPLICAS,
+            types = {Type.KRAFT},
+            serverProperties = {
+                @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "true"),
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "2")
+            }
     )
     public void testProducerRebootstrapDisabled(ClusterInstance clusterInstance) throws ExecutionException, InterruptedException {
         try (var admin = clusterInstance.admin()) {
@@ -211,23 +211,23 @@ public class ClientRebootstrapTest {
     }
 
     @ClusterTest(
-        brokers = REPLICAS,
-        types = {Type.KRAFT},
-        serverProperties = {
-            @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "true"),
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "2"),
-        })
+            brokers = REPLICAS,
+            types = {Type.KRAFT},
+            serverProperties = {
+                @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "true"),
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "2"),
+            })
     public void testClassicConsumerRebootstrap(ClusterInstance clusterInstance) throws InterruptedException, ExecutionException {
         consumerRebootstrap(clusterInstance, GroupProtocol.CLASSIC);
     }
 
     @ClusterTest(
-        brokers = REPLICAS,
-        types = {Type.KRAFT},
-        serverProperties = {
-            @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "true"),
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "2"),
-        })
+            brokers = REPLICAS,
+            types = {Type.KRAFT},
+            serverProperties = {
+                @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "true"),
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "2"),
+            })
     public void testConsumerRebootstrap(ClusterInstance clusterInstance) throws InterruptedException, ExecutionException {
         consumerRebootstrap(clusterInstance, GroupProtocol.CONSUMER);
     }
@@ -247,8 +247,8 @@ public class ClientRebootstrapTest {
         clusterInstance.shutdownBroker(broker0);
 
         try (var consumer = clusterInstance.consumer(Map.of(
-            CommonClientConfigs.METADATA_RECOVERY_STRATEGY_CONFIG, "none",
-            ConsumerConfig.GROUP_PROTOCOL_CONFIG, groupProtocol.name)
+                CommonClientConfigs.METADATA_RECOVERY_STRATEGY_CONFIG, "none",
+                ConsumerConfig.GROUP_PROTOCOL_CONFIG, groupProtocol.name)
         )) {
             // Only the server 1 is available for the consumer during the bootstrap.
             consumer.assign(List.of(tp));
@@ -271,24 +271,24 @@ public class ClientRebootstrapTest {
     }
 
     @ClusterTest(
-        brokers = REPLICAS,
-        types = {Type.KRAFT},
-        serverProperties = {
-            @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "true"),
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "2")
-        }
+            brokers = REPLICAS,
+            types = {Type.KRAFT},
+            serverProperties = {
+                @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "true"),
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "2")
+            }
     )
     public void testClassicConsumerRebootstrapDisabled(ClusterInstance clusterInstance) throws InterruptedException, ExecutionException {
         consumerRebootstrapDisabled(clusterInstance, GroupProtocol.CLASSIC);
     }
 
     @ClusterTest(
-        brokers = REPLICAS,
-        types = {Type.KRAFT},
-        serverProperties = {
-            @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "true"),
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "2")
-        }
+            brokers = REPLICAS,
+            types = {Type.KRAFT},
+            serverProperties = {
+                @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "true"),
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "2")
+            }
     )
     public void testConsumerRebootstrapDisabled(ClusterInstance clusterInstance) throws InterruptedException, ExecutionException {
         consumerRebootstrapDisabled(clusterInstance, GroupProtocol.CONSUMER);

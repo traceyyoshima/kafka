@@ -105,7 +105,7 @@ public class ServerConnectionId {
 
         try {
             return parseHostPort(split[0]).flatMap(localHost -> parseHostPort(split[1]).map(
-                remoteHost -> new ServerConnectionId(localHost, remoteHost, Integer.parseInt(split[2]), Integer.parseInt(split[3]))));
+                    remoteHost -> new ServerConnectionId(localHost, remoteHost, Integer.parseInt(split[2]), Integer.parseInt(split[3]))));
         } catch (NumberFormatException e) {
             return Optional.empty();
         }

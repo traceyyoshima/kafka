@@ -84,13 +84,13 @@ public final class MessageGenerator {
     static final String ARRAYLIST_CLASS = "java.util.ArrayList";
 
     static final String IMPLICIT_LINKED_HASH_COLLECTION_CLASS =
-        "org.apache.kafka.common.utils.internals.ImplicitLinkedHashCollection";
+            "org.apache.kafka.common.utils.internals.ImplicitLinkedHashCollection";
 
     static final String IMPLICIT_LINKED_HASH_MULTI_COLLECTION_CLASS =
-        "org.apache.kafka.common.utils.internals.ImplicitLinkedHashMultiCollection";
+            "org.apache.kafka.common.utils.internals.ImplicitLinkedHashMultiCollection";
 
     static final String UNSUPPORTED_VERSION_EXCEPTION_CLASS =
-        "org.apache.kafka.common.errors.UnsupportedVersionException";
+            "org.apache.kafka.common.errors.UnsupportedVersionException";
 
     static final String ITERATOR_CLASS = "java.util.Iterator";
 
@@ -247,7 +247,7 @@ public final class MessageGenerator {
                 try {
                     MessageSpec spec = JSON_SERDE.readValue(inputPath.toFile(), MessageSpec.class);
                     outputFileNames.addAll(
-                        generateAndWriteMessageClasses(spec, packageName, outputDir, messageClassGeneratorTypes));
+                            generateAndWriteMessageClasses(spec, packageName, outputDir, messageClassGeneratorTypes));
                     numProcessed++;
                     typeClassGenerators.forEach(generator -> generator.registerMessageType(spec));
                 } catch (Exception e) {
@@ -309,7 +309,7 @@ public final class MessageGenerator {
             return string;
         }
         return string.substring(0, 1).toUpperCase(Locale.ENGLISH) +
-            string.substring(1);
+                string.substring(1);
     }
 
     static String lowerCaseFirst(String string) {
@@ -317,7 +317,7 @@ public final class MessageGenerator {
             return string;
         }
         return string.substring(0, 1).toLowerCase(Locale.ENGLISH) +
-            string.substring(1);
+                string.substring(1);
     }
 
     static boolean firstIsCapitalized(String string) {
@@ -351,7 +351,7 @@ public final class MessageGenerator {
             return str.substring(0, str.length() - suffix.length());
         } else {
             throw new RuntimeException("String " + str + " does not end with the " +
-                "expected suffix " + suffix);
+                    "expected suffix " + suffix);
         }
     }
 
@@ -399,7 +399,7 @@ public final class MessageGenerator {
             .help("The message class generators to use.");
         Namespace res = parser.parseArgsOrFail(args);
         processDirectories(res.getString("package"), res.getString("output"),
-            res.getString("input"), res.getList("typeclass_generators"),
-            res.getList("message_class_generators"));
+                res.getString("input"), res.getList("typeclass_generators"),
+                res.getList("message_class_generators"));
     }
 }

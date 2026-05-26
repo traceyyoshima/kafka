@@ -28,7 +28,7 @@ public class SampleTransformation<R extends ConnectRecord<R>> implements Transfo
     boolean closed = false;
     private R transformedRecord;
 
-    public SampleTransformation() { }
+    public SampleTransformation() {}
 
     public SampleTransformation(R transformedRecord) {
         this.transformedRecord = transformedRecord;
@@ -56,6 +56,6 @@ public class SampleTransformation<R extends ConnectRecord<R>> implements Transfo
     }
 
     @Override
-    public void configure(Map<String, ?> configs) { }
+    public void configure(Map<String, ?> configs) {}
 
 }

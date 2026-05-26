@@ -51,12 +51,11 @@ public class ClientMetrics {
     private static final String DEFAULT_VALUE = "unknown";
     private static final String FAILED_STREAM_THREADS = "failed-stream-threads";
     private static final String RECORDING_LEVEL = "recording-level";
-    
 
     static {
         final Properties props = new Properties();
         try (InputStream resourceStream = ClientMetrics.class.getResourceAsStream(
-            "/kafka/kafka-streams-version.properties")) {
+                "/kafka/kafka-streams-version.properties")) {
 
             props.load(resourceStream);
         } catch (final Exception exception) {
@@ -70,7 +69,7 @@ public class ClientMetrics {
     private static final String COMMIT_ID_DESCRIPTION = "The version control commit ID of the Kafka Streams client";
     private static final String APPLICATION_ID_DESCRIPTION = "The application ID of the Kafka Streams client";
     private static final String TOPOLOGY_DESCRIPTION_DESCRIPTION =
-        "The description of the topology executed in the Kafka Streams client";
+            "The description of the topology executed in the Kafka Streams client";
     private static final String STATE_DESCRIPTION = "The state of the Kafka Streams client";
     private static final String ALIVE_STREAM_THREADS_DESCRIPTION = "The current number of alive stream threads that are running or participating in rebalance";
     private static final String FAILED_STREAM_THREADS_DESCRIPTION = "The number of failed stream threads since the start of the Kafka Streams client";
@@ -86,48 +85,48 @@ public class ClientMetrics {
 
     public static void addVersionMetric(final StreamsMetricsImpl streamsMetrics) {
         streamsMetrics.addClientLevelImmutableMetric(
-            VERSION,
-            VERSION_DESCRIPTION,
-            RecordingLevel.INFO,
-            VERSION_FROM_FILE
+                VERSION,
+                VERSION_DESCRIPTION,
+                RecordingLevel.INFO,
+                VERSION_FROM_FILE
         );
     }
 
     public static void addCommitIdMetric(final StreamsMetricsImpl streamsMetrics) {
         streamsMetrics.addClientLevelImmutableMetric(
-            COMMIT_ID,
-            COMMIT_ID_DESCRIPTION,
-            RecordingLevel.INFO,
-            COMMIT_ID_FROM_FILE
+                COMMIT_ID,
+                COMMIT_ID_DESCRIPTION,
+                RecordingLevel.INFO,
+                COMMIT_ID_FROM_FILE
         );
     }
 
     public static void addApplicationIdMetric(final StreamsMetricsImpl streamsMetrics, final String applicationId) {
         streamsMetrics.addClientLevelImmutableMetric(
-            APPLICATION_ID,
-            APPLICATION_ID_DESCRIPTION,
-            RecordingLevel.INFO,
-            applicationId
+                APPLICATION_ID,
+                APPLICATION_ID_DESCRIPTION,
+                RecordingLevel.INFO,
+                applicationId
         );
     }
 
     public static void addTopologyDescriptionMetric(final StreamsMetricsImpl streamsMetrics,
                                                     final Gauge<String> topologyDescription) {
         streamsMetrics.addClientLevelMutableMetric(
-            TOPOLOGY_DESCRIPTION,
-            TOPOLOGY_DESCRIPTION_DESCRIPTION,
-            RecordingLevel.INFO,
-            topologyDescription
+                TOPOLOGY_DESCRIPTION,
+                TOPOLOGY_DESCRIPTION_DESCRIPTION,
+                RecordingLevel.INFO,
+                topologyDescription
         );
     }
 
     public static void addStateMetric(final StreamsMetricsImpl streamsMetrics,
                                       final Gauge<String> stateProvider) {
         streamsMetrics.addClientLevelMutableMetric(
-            STATE,
-            STATE_DESCRIPTION,
-            RecordingLevel.INFO,
-            stateProvider
+                STATE,
+                STATE_DESCRIPTION,
+                RecordingLevel.INFO,
+                stateProvider
         );
     }
 
@@ -140,11 +139,11 @@ public class ClientMetrics {
         additionalTags.put(APPLICATION_ID_TAG, applicationId);
 
         streamsMetrics.addClientLevelMutableMetric(
-            CLIENT_STATE,
-            STATE_DESCRIPTION,
-            additionalTags,
-            RecordingLevel.INFO,
-            stateProvider
+                CLIENT_STATE,
+                STATE_DESCRIPTION,
+                additionalTags,
+                RecordingLevel.INFO,
+                stateProvider
         );
     }
 
@@ -163,22 +162,22 @@ public class ClientMetrics {
     public static void addNumAliveStreamThreadMetric(final StreamsMetricsImpl streamsMetrics,
                                                      final Gauge<Integer> stateProvider) {
         streamsMetrics.addClientLevelMutableMetric(
-            ALIVE_STREAM_THREADS,
-            ALIVE_STREAM_THREADS_DESCRIPTION,
-            RecordingLevel.INFO,
-            stateProvider
+                ALIVE_STREAM_THREADS,
+                ALIVE_STREAM_THREADS_DESCRIPTION,
+                RecordingLevel.INFO,
+                stateProvider
         );
     }
 
     public static Sensor failedStreamThreadSensor(final StreamsMetricsImpl streamsMetrics) {
         final Sensor sensor = streamsMetrics.clientLevelSensor(FAILED_STREAM_THREADS, RecordingLevel.INFO);
         addSumMetricToSensor(
-            sensor,
-            CLIENT_LEVEL_GROUP,
-            streamsMetrics.clientLevelTagMap(),
-            FAILED_STREAM_THREADS,
-            false,
-            FAILED_STREAM_THREADS_DESCRIPTION
+                sensor,
+                CLIENT_LEVEL_GROUP,
+                streamsMetrics.clientLevelTagMap(),
+                FAILED_STREAM_THREADS,
+                false,
+                FAILED_STREAM_THREADS_DESCRIPTION
         );
         return sensor;
     }

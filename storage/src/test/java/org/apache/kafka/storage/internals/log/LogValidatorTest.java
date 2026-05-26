@@ -136,18 +136,17 @@ public class LogValidatorTest {
         "2,zstd,gzip",
     })
     public void checkOnlyOneBatch(Byte magic, String sourceCompression,
-                                   String targetCompression) {
+                                  String targetCompression) {
         assertThrows(InvalidRecordException.class,
                 () -> validateMessages(createTwoBatchedRecords(magic, Compression.of(sourceCompression).build()),
                         magic, CompressionType.forName(sourceCompression), Compression.of(targetCompression).build())
         );
     }
 
-
     private static Stream<Arguments> testAllCompression() {
         return Arrays.stream(CompressionType.values()).flatMap(source ->
-                        Arrays.stream(CompressionType.values()).map(target ->
-                                Arguments.of(source.name, target.name)));
+                Arrays.stream(CompressionType.values()).map(target ->
+                        Arguments.of(source.name, target.name)));
     }
 
     @ParameterizedTest
@@ -161,7 +160,6 @@ public class LogValidatorTest {
         int partitionLeaderEpoch = 40;
         CompressionType sourceCompression = CompressionType.forName(sourceCompressionName);
         Compression targetCompression = Compression.of(targetCompressionName).build();
-
 
         ByteBuffer buffer = ByteBuffer.allocate(DefaultRecordBatch.RECORD_BATCH_OVERHEAD);
         DefaultRecordBatch.writeEmptyHeader(buffer, RecordBatch.CURRENT_MAGIC_VALUE, producerId, producerEpoch,
@@ -198,6 +196,7 @@ public class LogValidatorTest {
 
         assertTrue(metricsRecorder.recordInvalidMagicCount > 0);
     }
+
     @Test
     public void testCreateTimeUpConversionV1ToV2() {
         long timestamp = System.currentTimeMillis();
@@ -432,7 +431,6 @@ public class LogValidatorTest {
         validateMessages(createTwoBatchedRecords(magic,  Compression.of(sourceCompression).build()), magic,
                 CompressionType.forName(sourceCompression), Compression.of(targetCompression).build());
     }
-
 
     private ValidationResult validateMessages(MemoryRecords records,
                                               Byte magic,
@@ -728,7 +726,6 @@ public class LogValidatorTest {
                 AppendOrigin.CLIENT
         );
 
-
         assertThrows(CorruptRecordException.class, () -> logValidator.validateMessagesAndAssignOffsets(
                 PrimitiveRef.ofLong(0),
                 metricsRecorder,
@@ -756,7 +753,7 @@ public class LogValidatorTest {
 
         ByteBuffer buffer = ByteBuffer.allocate(1024);
         MemoryRecordsBuilder builder = MemoryRecords.builder(buffer, compression,
-                 0L, producerId, producerEpoch, baseSequence, false);
+                0L, producerId, producerEpoch, baseSequence, false);
         builder.append(new SimpleRecord("hello".getBytes()));
 
         MemoryRecords memoryRecords = builder.build();
@@ -780,7 +777,6 @@ public class LogValidatorTest {
                 RecordBatch.NO_PARTITION_LEADER_EPOCH,
                 AppendOrigin.CLIENT
         );
-
 
         assertThrows(InvalidRecordException.class, () -> logValidator.validateMessagesAndAssignOffsets(
                 PrimitiveRef.ofLong(0),
@@ -885,7 +881,6 @@ public class LogValidatorTest {
                 ).validatedRecords(), offset
         );
     }
-
 
     @Test
     public void testAbsoluteOffsetAssignmentCompressed() {
@@ -1408,7 +1403,6 @@ public class LogValidatorTest {
         ));
     }
 
-
     @Test
     public void testDownConversionOfIdempotentRecordsNotPermitted() {
         long offset = 1234567;
@@ -1458,7 +1452,6 @@ public class LogValidatorTest {
                 PrimitiveRef.ofLong(offset), metricsRecorder, RequestLocal.withThreadConfinedCaching().bufferSupplier()
         ).validatedRecords(), offset);
     }
-
 
     @Test
     public void testOffsetAssignmentAfterDownConversionV2ToV0Compressed() {
@@ -1662,7 +1655,6 @@ public class LogValidatorTest {
         assertFalse(e.recordErrors().isEmpty());
         assertEquals(3, e.recordErrors().size());
     }
-
 
     @Test
     public void testDifferentLevelDoesNotCauseRecompression() {

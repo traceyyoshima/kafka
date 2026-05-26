@@ -44,7 +44,7 @@ public abstract class ExpiringCredentialRefreshingLogin implements AutoCloseable
      */
     static class LoginContextFactory {
         public LoginContext createLoginContext(ExpiringCredentialRefreshingLogin expiringCredentialRefreshingLogin)
-                throws LoginException {
+            throws LoginException {
             return new LoginContext(expiringCredentialRefreshingLogin.contextName(),
                     expiringCredentialRefreshingLogin.subject(), expiringCredentialRefreshingLogin.callbackHandler(),
                     expiringCredentialRefreshingLogin.configuration());
@@ -224,9 +224,9 @@ public abstract class ExpiringCredentialRefreshingLogin implements AutoCloseable
         if (nowMs > expireTimeMs) {
             log.error(
                     "[Principal={}]: Current clock: {} is later than expiry {}. This may indicate a clock skew problem."
-                            + " Check that this host's and remote host's clocks are in sync. Not starting refresh thread."
-                            + " This process is likely unable to authenticate SASL connections (for example, it is unlikely"
-                            + " to be able to authenticate a connection with a Kafka Broker).",
+                    + " Check that this host's and remote host's clocks are in sync. Not starting refresh thread."
+                    + " This process is likely unable to authenticate SASL connections (for example, it is unlikely"
+                    + " to be able to authenticate a connection with a Kafka Broker).",
                     principalLogText(), new Date(nowMs), new Date(expireTimeMs));
             return loginContext;
         }
@@ -288,7 +288,7 @@ public abstract class ExpiringCredentialRefreshingLogin implements AutoCloseable
             if (logoutRequiredBeforeLoggingBackIn) {
                 log.error(
                         "[Principal={}]: Current clock: {} is later than expiry {}. This may indicate a clock skew problem."
-                                + " Check that this host's and remote host's clocks are in sync. Exiting refresh thread.",
+                        + " Check that this host's and remote host's clocks are in sync. Exiting refresh thread.",
                         principalLogText(), new Date(relativeToMs), new Date(expireTimeMs));
                 return null;
             } else {
@@ -331,7 +331,7 @@ public abstract class ExpiringCredentialRefreshingLogin implements AutoCloseable
             long retvalRefreshMs = relativeToMs + (long) ((expireTimeMs - relativeToMs) * pct);
             log.warn(
                     "[Principal={}]: Expiring credential expires at {}, so buffer times of {} and {} seconds"
-                            + " at the front and back, respectively, cannot be accommodated.  We will refresh at {}.",
+                    + " at the front and back, respectively, cannot be accommodated.  We will refresh at {}.",
                     principalLogText(), new Date(expireTimeMs), refreshMinPeriodSeconds, clientRefreshBufferSeconds,
                     new Date(retvalRefreshMs));
             return retvalRefreshMs;
@@ -351,7 +351,7 @@ public abstract class ExpiringCredentialRefreshingLogin implements AutoCloseable
         if (proposedRefreshMs < endOfMinRefreshBufferTime) {
             log.info(
                     "[Principal={}]: Expiring credential re-login thread time adjusted from {} to {} since the former is sooner "
-                            + "than the minimum refresh interval ({} seconds from now).",
+                    + "than the minimum refresh interval ({} seconds from now).",
                     principalLogText(), new Date(proposedRefreshMs), new Date(endOfMinRefreshBufferTime),
                     refreshMinPeriodSeconds);
             return endOfMinRefreshBufferTime;

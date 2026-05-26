@@ -31,6 +31,7 @@ public class TimeTest {
     private static final GregorianCalendar EPOCH;
     private static final GregorianCalendar EPOCH_PLUS_DATE_COMPONENT;
     private static final GregorianCalendar EPOCH_PLUS_TEN_THOUSAND_MILLIS;
+
     static {
         EPOCH = new GregorianCalendar(1970, Calendar.JANUARY, 1, 0, 0, 0);
         EPOCH.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -38,7 +39,6 @@ public class TimeTest {
         EPOCH_PLUS_TEN_THOUSAND_MILLIS = new GregorianCalendar(1970, Calendar.JANUARY, 1, 0, 0, 0);
         EPOCH_PLUS_TEN_THOUSAND_MILLIS.setTimeZone(TimeZone.getTimeZone("UTC"));
         EPOCH_PLUS_TEN_THOUSAND_MILLIS.add(Calendar.MILLISECOND, 10000);
-
 
         EPOCH_PLUS_DATE_COMPONENT = new GregorianCalendar(1970, Calendar.JANUARY, 1, 0, 0, 0);
         EPOCH_PLUS_DATE_COMPONENT.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -61,13 +61,13 @@ public class TimeTest {
     @Test
     public void testFromLogicalInvalidSchema() {
         assertThrows(DataException.class,
-            () -> Time.fromLogical(Time.builder().name("invalid").build(), EPOCH.getTime()));
+                () -> Time.fromLogical(Time.builder().name("invalid").build(), EPOCH.getTime()));
     }
 
     @Test
     public void testFromLogicalInvalidHasDateComponents() {
         assertThrows(DataException.class,
-            () -> Time.fromLogical(Time.SCHEMA, EPOCH_PLUS_DATE_COMPONENT.getTime()));
+                () -> Time.fromLogical(Time.SCHEMA, EPOCH_PLUS_DATE_COMPONENT.getTime()));
     }
 
     @Test
@@ -79,6 +79,6 @@ public class TimeTest {
     @Test
     public void testToLogicalInvalidSchema() {
         assertThrows(DataException.class,
-            () -> Time.toLogical(Time.builder().name("invalid").build(), 0));
+                () -> Time.toLogical(Time.builder().name("invalid").build(), 0));
     }
 }

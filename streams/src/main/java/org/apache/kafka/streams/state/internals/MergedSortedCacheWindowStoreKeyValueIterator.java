@@ -27,7 +27,7 @@ import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.StateSerdes;
 
 class MergedSortedCacheWindowStoreKeyValueIterator
-    extends AbstractMergedSortedCacheStoreIterator<Windowed<Bytes>, Windowed<Bytes>, byte[], byte[]> {
+        extends AbstractMergedSortedCacheStoreIterator<Windowed<Bytes>, Windowed<Bytes>, byte[], byte[]> {
 
     private final StateSerdes<Bytes, byte[]> serdes;
     private final long windowSize;
@@ -44,7 +44,7 @@ class MergedSortedCacheWindowStoreKeyValueIterator
         final boolean forward
     ) {
         this(filteredCacheIterator, underlyingIterator, serdes,
-            windowSize, cacheFunction, forward, WindowKeySchema::fromStoreKey, WindowKeySchema::toStoreKeyBinary);
+                windowSize, cacheFunction, forward, WindowKeySchema::fromStoreKey, WindowKeySchema::toStoreKeyBinary);
     }
 
     MergedSortedCacheWindowStoreKeyValueIterator(

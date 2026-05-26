@@ -87,7 +87,7 @@ public class SnapshottableCoordinator<S extends CoordinatorShard<U>, U> implemen
     ) {
         if (offset > lastWrittenOffset) {
             throw new IllegalStateException("New offset " + offset + " of " + tp +
-                " must be smaller than " + lastWrittenOffset + ".");
+                    " must be smaller than " + lastWrittenOffset + ".");
         }
 
         log.debug("Revert last written offset of {} to {}.", tp, offset);
@@ -139,7 +139,7 @@ public class SnapshottableCoordinator<S extends CoordinatorShard<U>, U> implemen
     public synchronized void updateLastWrittenOffset(long offset) {
         if (offset <= lastWrittenOffset) {
             throw new IllegalStateException("New last written offset " + offset + " of " + tp +
-                " must be greater than " + lastWrittenOffset + ".");
+                    " must be greater than " + lastWrittenOffset + ".");
         }
 
         lastWrittenOffset = offset;
@@ -158,12 +158,12 @@ public class SnapshottableCoordinator<S extends CoordinatorShard<U>, U> implemen
     public synchronized void updateLastCommittedOffset(long offset) {
         if (offset < lastCommittedOffset) {
             throw new IllegalStateException("New committed offset " + offset + " of " + tp +
-                " must be greater than or equal to " + lastCommittedOffset + ".");
+                    " must be greater than or equal to " + lastCommittedOffset + ".");
         }
 
         if (offset > lastWrittenOffset) {
             throw new IllegalStateException("New committed offset " + offset + " of " + tp +
-                " must be less than or equal to " + lastWrittenOffset + ".");
+                    " must be less than or equal to " + lastWrittenOffset + ".");
         }
 
         lastCommittedOffset = offset;

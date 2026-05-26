@@ -293,7 +293,7 @@ public class TopicIds implements Set<Uuid> {
     @Override
     public String toString() {
         return "TopicIds(topicNames=" + topicNames +
-            ", resolver=" + resolver +
-            ')';
+                ", resolver=" + resolver +
+                ')';
     }
 }

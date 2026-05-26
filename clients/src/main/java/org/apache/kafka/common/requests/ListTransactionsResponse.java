@@ -45,7 +45,7 @@ public class ListTransactionsResponse extends AbstractResponse {
 
     public static ListTransactionsResponse parse(Readable readable, short version) {
         return new ListTransactionsResponse(new ListTransactionsResponseData(
-            readable, version));
+                readable, version));
     }
 
     @Override

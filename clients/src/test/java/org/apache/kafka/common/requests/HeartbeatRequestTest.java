@@ -28,10 +28,10 @@ public class HeartbeatRequestTest {
     @Test
     public void testRequestVersionCompatibilityFailBuild() {
         assertThrows(UnsupportedVersionException.class, () -> new HeartbeatRequest.Builder(
-            new HeartbeatRequestData()
-                .setGroupId("groupId")
-                .setMemberId("consumerId")
-                .setGroupInstanceId("groupInstanceId")
+                new HeartbeatRequestData()
+                    .setGroupId("groupId")
+                    .setMemberId("consumerId")
+                    .setGroupInstanceId("groupInstanceId")
         ).build((short) 2));
     }
 }

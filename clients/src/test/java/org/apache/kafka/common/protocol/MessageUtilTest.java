@@ -48,26 +48,26 @@ public final class MessageUtilTest {
     @Test
     public void testDeepToString() {
         assertEquals("[1, 2, 3]",
-            MessageUtil.deepToString(Arrays.asList(1, 2, 3).iterator()));
+                MessageUtil.deepToString(Arrays.asList(1, 2, 3).iterator()));
         assertEquals("[foo]",
-            MessageUtil.deepToString(Collections.singletonList("foo").iterator()));
+                MessageUtil.deepToString(Collections.singletonList("foo").iterator()));
     }
 
     @Test
     public void testByteBufferToArray() {
         assertArrayEquals(new byte[]{1, 2, 3},
-            MessageUtil.byteBufferToArray(ByteBuffer.wrap(new byte[]{1, 2, 3})));
+                MessageUtil.byteBufferToArray(ByteBuffer.wrap(new byte[]{1, 2, 3})));
         assertArrayEquals(new byte[]{},
-            MessageUtil.byteBufferToArray(ByteBuffer.wrap(new byte[]{})));
+                MessageUtil.byteBufferToArray(ByteBuffer.wrap(new byte[]{})));
     }
 
     @Test
     public void testDuplicate() {
         assertNull(MessageUtil.duplicate(null));
         assertArrayEquals(new byte[] {},
-            MessageUtil.duplicate(new byte[] {}));
+                MessageUtil.duplicate(new byte[] {}));
         assertArrayEquals(new byte[] {1, 2, 3},
-            MessageUtil.duplicate(new byte[] {1, 2, 3}));
+                MessageUtil.duplicate(new byte[] {1, 2, 3}));
     }
 
     @Test
@@ -76,17 +76,17 @@ public final class MessageUtilTest {
         assertTrue(MessageUtil.compareRawTaggedFields(null, Collections.emptyList()));
         assertTrue(MessageUtil.compareRawTaggedFields(Collections.emptyList(), null));
         assertFalse(MessageUtil.compareRawTaggedFields(Collections.emptyList(),
-            Collections.singletonList(new RawTaggedField(1, new byte[] {1}))));
+                Collections.singletonList(new RawTaggedField(1, new byte[] {1}))));
         assertFalse(MessageUtil.compareRawTaggedFields(null,
-            Collections.singletonList(new RawTaggedField(1, new byte[] {1}))));
+                Collections.singletonList(new RawTaggedField(1, new byte[] {1}))));
         assertFalse(MessageUtil.compareRawTaggedFields(
-            Collections.singletonList(new RawTaggedField(1, new byte[] {1})),
-            Collections.emptyList()));
+                Collections.singletonList(new RawTaggedField(1, new byte[] {1})),
+                Collections.emptyList()));
         assertTrue(MessageUtil.compareRawTaggedFields(
-            Arrays.asList(new RawTaggedField(1, new byte[] {1}),
-                new RawTaggedField(2, new byte[] {})),
-            Arrays.asList(new RawTaggedField(1, new byte[] {1}),
-                new RawTaggedField(2, new byte[] {}))));
+                Arrays.asList(new RawTaggedField(1, new byte[] {1}),
+                        new RawTaggedField(2, new byte[] {})),
+                Arrays.asList(new RawTaggedField(1, new byte[] {1}),
+                        new RawTaggedField(2, new byte[] {}))));
     }
 
     @Test
@@ -113,12 +113,12 @@ public final class MessageUtilTest {
     @Test
     public void testInvalidBinaryNode() {
         assertThrows(
-            IllegalArgumentException.class,
-            () -> MessageUtil.jsonNodeToBinary(new IntNode(42), "Test int to binary")
+                IllegalArgumentException.class,
+                () -> MessageUtil.jsonNodeToBinary(new IntNode(42), "Test int to binary")
         );
         assertThrows(
-            UncheckedIOException.class,
-            () -> MessageUtil.jsonNodeToBinary(new TextNode("This is not base64!"), "Test non-base64 to binary")
+                UncheckedIOException.class,
+                () -> MessageUtil.jsonNodeToBinary(new TextNode("This is not base64!"), "Test non-base64 to binary")
         );
     }
 }

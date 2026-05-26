@@ -35,7 +35,7 @@ public class ExpireDelegationTokenRequest extends AbstractRequest {
 
     public static ExpireDelegationTokenRequest parse(Readable readable, short version) {
         return new ExpireDelegationTokenRequest(
-            new ExpireDelegationTokenRequestData(readable, version), version);
+                new ExpireDelegationTokenRequestData(readable, version), version);
     }
 
     @Override

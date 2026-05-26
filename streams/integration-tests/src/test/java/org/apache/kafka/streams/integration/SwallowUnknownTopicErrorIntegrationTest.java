@@ -110,30 +110,30 @@ public class SwallowUnknownTopicErrorIntegrationTest {
 
     private void produceRecords() {
         final Properties props = TestUtils.producerConfig(
-            CLUSTER.bootstrapServers(),
-            IntegerSerializer.class,
-            StringSerializer.class
+                CLUSTER.bootstrapServers(),
+                IntegerSerializer.class,
+                StringSerializer.class
         );
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-            STREAM_INPUT,
-            Collections.singletonList(new KeyValue<>(1, "A")),
-            props,
-            CLUSTER.time.milliseconds() + 2
+                STREAM_INPUT,
+                Collections.singletonList(new KeyValue<>(1, "A")),
+                props,
+                CLUSTER.time.milliseconds() + 2
         );
     }
 
     private void verifyResult() {
         final Properties props = TestUtils.consumerConfig(
-            CLUSTER.bootstrapServers(),
-            "consumer",
-            IntegerDeserializer.class,
-            StringDeserializer.class
+                CLUSTER.bootstrapServers(),
+                "consumer",
+                IntegerDeserializer.class,
+                StringDeserializer.class
         );
 
         IntegrationTestUtils.verifyKeyValueTimestamps(
-            props,
-            STREAM_OUTPUT,
-            Collections.singletonList(new KeyValueTimestamp<>(1, "A", CLUSTER.time.milliseconds() + 2))
+                props,
+                STREAM_OUTPUT,
+                Collections.singletonList(new KeyValueTimestamp<>(1, "A", CLUSTER.time.milliseconds() + 2))
         );
     }
 
@@ -150,18 +150,18 @@ public class SwallowUnknownTopicErrorIntegrationTest {
 
     public static class TestHandler implements ProductionExceptionHandler {
 
-        public TestHandler() { }
+        public TestHandler() {}
 
         @Override
-        public void configure(final Map<String, ?> configs) { }
+        public void configure(final Map<String, ?> configs) {}
 
         @Override
         public Response handleError(final ErrorHandlerContext context,
                                     final ProducerRecord<byte[], byte[]> record,
                                     final Exception exception) {
             if (exception instanceof TimeoutException &&
-                exception.getCause() != null &&
-                exception.getCause() instanceof UnknownTopicOrPartitionException) {
+                    exception.getCause() != null &&
+                    exception.getCause() instanceof UnknownTopicOrPartitionException) {
                 return Response.resume();
             }
             return ProductionExceptionHandler.super.handleError(context, record, exception);
@@ -180,9 +180,9 @@ public class SwallowUnknownTopicErrorIntegrationTest {
         kafkaStreams = new KafkaStreams(topology, streamsConfiguration);
         kafkaStreams.start();
         TestUtils.waitForCondition(
-            () -> kafkaStreams.state() == State.RUNNING,
-            timeoutMs,
-            () -> "Kafka Streams application did not reach state RUNNING in " + timeoutMs + " ms"
+                () -> kafkaStreams.state() == State.RUNNING,
+                timeoutMs,
+                () -> "Kafka Streams application did not reach state RUNNING in " + timeoutMs + " ms"
         );
 
         produceRecords();

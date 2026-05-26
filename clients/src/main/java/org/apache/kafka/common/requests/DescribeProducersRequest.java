@@ -36,7 +36,7 @@ public class DescribeProducersRequest extends AbstractRequest {
 
         public DescribeProducersRequestData.TopicRequest addTopic(String topic) {
             DescribeProducersRequestData.TopicRequest topicRequest =
-                new DescribeProducersRequestData.TopicRequest().setName(topic);
+                    new DescribeProducersRequestData.TopicRequest().setName(topic);
             data.topics().add(topicRequest);
             return topicRequest;
         }
@@ -73,9 +73,9 @@ public class DescribeProducersRequest extends AbstractRequest {
                 .setName(topicRequest.name());
             for (int partitionId : topicRequest.partitionIndexes()) {
                 topicResponse.partitions().add(
-                    new PartitionResponse()
-                        .setPartitionIndex(partitionId)
-                        .setErrorCode(error.code())
+                        new PartitionResponse()
+                            .setPartitionIndex(partitionId)
+                            .setErrorCode(error.code())
                 );
             }
             response.topics().add(topicResponse);
@@ -85,7 +85,7 @@ public class DescribeProducersRequest extends AbstractRequest {
 
     public static DescribeProducersRequest parse(Readable readable, short version) {
         return new DescribeProducersRequest(new DescribeProducersRequestData(
-            readable, version), version);
+                readable, version), version);
     }
 
     @Override

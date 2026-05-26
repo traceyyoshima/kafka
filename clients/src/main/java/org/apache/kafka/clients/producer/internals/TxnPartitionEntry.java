@@ -60,9 +60,9 @@ class TxnPartitionEntry {
     // only takes `baseSequence` into account.
     // See https://github.com/apache/kafka/pull/12096#pullrequestreview-955554191 for details.
     private static final Comparator<ProducerBatch> PRODUCER_BATCH_COMPARATOR =
-        Comparator.comparingLong(ProducerBatch::producerId)
-            .thenComparingInt(ProducerBatch::producerEpoch)
-            .thenComparingInt(ProducerBatch::baseSequence);
+            Comparator.comparingLong(ProducerBatch::producerId)
+                .thenComparingInt(ProducerBatch::producerEpoch)
+                .thenComparingInt(ProducerBatch::baseSequence);
 
     TxnPartitionEntry(TopicPartition topicPartition) {
         this.topicPartition = topicPartition;
@@ -166,7 +166,7 @@ class TxnPartitionEntry {
         if (updatedSequence < 0) {
             throw new IllegalStateException(
                     "Sequence number for partition " + topicPartition + " is going to become negative: "
-                            + updatedSequence);
+                    + updatedSequence);
         }
         this.nextSequence = updatedSequence;
         return true;

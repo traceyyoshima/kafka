@@ -104,7 +104,7 @@ public class CleanShutdownFileHandler {
     }
 
     public boolean exists() {
-        return  cleanShutdownFile.exists();
+        return cleanShutdownFile.exists();
     }
 
     @Override

@@ -76,12 +76,12 @@ public final class ConsoleConsumerOptions extends CommandDefaultOptions {
                 .describedAs("topic")
                 .ofType(String.class);
         includeOpt = parser.accepts("include",
-                        "Regular expression specifying list of topics to include for consumption.")
+                "Regular expression specifying list of topics to include for consumption.")
                 .withRequiredArg()
                 .describedAs("Java regex (String)")
                 .ofType(String.class);
         partitionIdOpt = parser.accepts("partition",
-                        "The partition to consume from. Consumption starts from the end of the partition unless '--offset' is specified.")
+                "The partition to consume from. Consumption starts from the end of the partition unless '--offset' is specified.")
                 .withRequiredArg()
                 .describedAs("partition")
                 .ofType(Integer.class);
@@ -92,7 +92,7 @@ public final class ConsoleConsumerOptions extends CommandDefaultOptions {
                 .defaultsTo("latest");
         @Deprecated(since = "4.2", forRemoval = true)
         OptionSpec<String> consumerPropertyOpt = parser.accepts("consumer-property", "(DEPRECATED) Consumer config properties in the form key=value. " +
-                        "This option will be removed in a future version. Use --command-property instead.")
+                "This option will be removed in a future version. Use --command-property instead.")
                 .withRequiredArg()
                 .describedAs("consumer_prop")
                 .ofType(String.class);
@@ -100,9 +100,9 @@ public final class ConsoleConsumerOptions extends CommandDefaultOptions {
                 .withRequiredArg()
                 .describedAs("consumer_prop")
                 .ofType(String.class);
-        @Deprecated(since = "4.2", forRemoval = true) 
+        @Deprecated(since = "4.2", forRemoval = true)
         OptionSpec<String> consumerConfigOpt = parser.accepts("consumer.config", "(DEPRECATED) Consumer config properties file. Note that " + commandPropertyOpt + " takes precedence over this config. " +
-                        "This option will be removed in a future version. Use --command-config instead.")
+                "This option will be removed in a future version. Use --command-config instead.")
                 .withRequiredArg()
                 .describedAs("config file")
                 .ofType(String.class);
@@ -116,43 +116,43 @@ public final class ConsoleConsumerOptions extends CommandDefaultOptions {
                 .ofType(String.class)
                 .defaultsTo(DefaultMessageFormatter.class.getName());
         messageFormatterArgOptDeprecated = parser.accepts("property",
-                        "(DEPRECATED) The properties to initialize the message formatter. Default properties include: \n" +
-                            " print.timestamp=true|false\n" +
-                            " print.key=true|false\n" +
-                            " print.offset=true|false\n" +
-                            " print.epoch=true|false\n" +
-                            " print.partition=true|false\n" +
-                            " print.headers=true|false\n" +
-                            " print.value=true|false\n" +
-                            " key.separator=<key.separator>\n" +
-                            " line.separator=<line.separator>\n" +
-                            " headers.separator=<headers.separator>\n" +
-                            " null.literal=<null.literal>\n" +
-                            " key.deserializer=<key.deserializer>\n" +
-                            " value.deserializer=<value.deserializer>\n" +
-                            " header.deserializer=<header.deserializer>\n" +
-                            "\nUsers can also pass in customized properties for their formatter; more specifically, users can pass in properties keyed with 'key.deserializer.', 'value.deserializer.' and 'headers.deserializer.' prefixes to configure their deserializers. " +
-                                "\nThis option will be removed in a future version. Use --formatter-property instead.")
+                "(DEPRECATED) The properties to initialize the message formatter. Default properties include: \n" +
+                " print.timestamp=true|false\n" +
+                " print.key=true|false\n" +
+                " print.offset=true|false\n" +
+                " print.epoch=true|false\n" +
+                " print.partition=true|false\n" +
+                " print.headers=true|false\n" +
+                " print.value=true|false\n" +
+                " key.separator=<key.separator>\n" +
+                " line.separator=<line.separator>\n" +
+                " headers.separator=<headers.separator>\n" +
+                " null.literal=<null.literal>\n" +
+                " key.deserializer=<key.deserializer>\n" +
+                " value.deserializer=<value.deserializer>\n" +
+                " header.deserializer=<header.deserializer>\n" +
+                "\nUsers can also pass in customized properties for their formatter; more specifically, users can pass in properties keyed with 'key.deserializer.', 'value.deserializer.' and 'headers.deserializer.' prefixes to configure their deserializers. " +
+                "\nThis option will be removed in a future version. Use --formatter-property instead.")
                 .withRequiredArg()
                 .describedAs("prop")
                 .ofType(String.class);
         messageFormatterArgOpt = parser.accepts("formatter-property",
-                        "The properties to initialize the message formatter. Default properties include: \n" +
-                            " print.timestamp=true|false\n" +
-                            " print.key=true|false\n" +
-                            " print.offset=true|false\n" +
-                            " print.epoch=true|false\n" +
-                            " print.partition=true|false\n" +
-                            " print.headers=true|false\n" +
-                            " print.value=true|false\n" +
-                            " key.separator=<key.separator>\n" +
-                            " line.separator=<line.separator>\n" +
-                            " headers.separator=<headers.separator>\n" +
-                            " null.literal=<null.literal>\n" +
-                            " key.deserializer=<key.deserializer>\n" +
-                            " value.deserializer=<value.deserializer>\n" +
-                            " header.deserializer=<header.deserializer>\n" +
-                            "\nUsers can also pass in customized properties for their formatter; more specifically, users can pass in properties keyed with 'key.deserializer.', 'value.deserializer.' and 'headers.deserializer.' prefixes to configure their deserializers.")
+                "The properties to initialize the message formatter. Default properties include: \n" +
+                " print.timestamp=true|false\n" +
+                " print.key=true|false\n" +
+                " print.offset=true|false\n" +
+                " print.epoch=true|false\n" +
+                " print.partition=true|false\n" +
+                " print.headers=true|false\n" +
+                " print.value=true|false\n" +
+                " key.separator=<key.separator>\n" +
+                " line.separator=<line.separator>\n" +
+                " headers.separator=<headers.separator>\n" +
+                " null.literal=<null.literal>\n" +
+                " key.deserializer=<key.deserializer>\n" +
+                " value.deserializer=<value.deserializer>\n" +
+                " header.deserializer=<header.deserializer>\n" +
+                "\nUsers can also pass in customized properties for their formatter; more specifically, users can pass in properties keyed with 'key.deserializer.', 'value.deserializer.' and 'headers.deserializer.' prefixes to configure their deserializers.")
                 .withRequiredArg()
                 .describedAs("prop")
                 .ofType(String.class);
@@ -187,8 +187,8 @@ public final class ConsoleConsumerOptions extends CommandDefaultOptions {
         enableSystestEventsLoggingOpt = parser.accepts("enable-systest-events",
                 "Log lifecycle events of the consumer in addition to logging consumed messages. (This is specific for system tests.)");
         isolationLevelOpt = parser.accepts("isolation-level",
-                        "Set to read_committed in order to filter out transactional messages which are not committed. Set to read_uncommitted " +
-                                "to read all messages.")
+                "Set to read_committed in order to filter out transactional messages which are not committed. Set to read_uncommitted " +
+                "to read all messages.")
                 .withRequiredArg()
                 .ofType(String.class)
                 .defaultsTo("read_uncommitted");

@@ -37,12 +37,12 @@ public class OffsetExpirationConditionImplTest {
 
         OffsetExpirationConditionImpl condition = new OffsetExpirationConditionImpl(__ -> commitTimestamp);
         OffsetAndMetadata offsetAndMetadata = new OffsetAndMetadata(
-            100,
-            OptionalInt.of(1),
-            "metadata",
-            commitTimestamp,
-            expireTimestampMs,
-            Uuid.ZERO_UUID
+                100,
+                OptionalInt.of(1),
+                "metadata",
+                commitTimestamp,
+                expireTimestampMs,
+                Uuid.ZERO_UUID
         );
 
         // Test when expire timestamp exists (older versions with per partition retention)
@@ -55,12 +55,12 @@ public class OffsetExpirationConditionImplTest {
 
         // Test when expire timestamp does not exist (current version with no per partition retention)
         offsetAndMetadata = new OffsetAndMetadata(
-            100,
-            OptionalInt.of(1),
-            "metadata",
-            commitTimestamp,
-            OptionalLong.empty(),
-            Uuid.ZERO_UUID
+                100,
+                OptionalInt.of(1),
+                "metadata",
+                commitTimestamp,
+                OptionalLong.empty(),
+                Uuid.ZERO_UUID
         );
 
         // 3. Current timestamp - base timestamp >= offsets retention => should expire

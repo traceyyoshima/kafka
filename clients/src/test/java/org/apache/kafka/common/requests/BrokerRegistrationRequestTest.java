@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class BrokerRegistrationRequestTest {
     private static Stream<Arguments> BrokerRegistrationRequestVersions() {
         return IntStream.range(BrokerRegistrationRequestData.LOWEST_SUPPORTED_VERSION,
-            BrokerRegistrationRequestData.HIGHEST_SUPPORTED_VERSION + 1).mapToObj(version -> Arguments.of((short) version));
+                BrokerRegistrationRequestData.HIGHEST_SUPPORTED_VERSION + 1).mapToObj(version -> Arguments.of((short) version));
     }
 
     private static Stream<Arguments> BrokerRegistrationRequestVersionsWithoutV0() {
@@ -76,55 +76,55 @@ class BrokerRegistrationRequestTest {
     @Test
     public void testV0SerializationFailsWithZkMigrationEnabled() {
         assertThrows(UnsupportedVersionException.class,
-            () -> readSerializedRequest((short) 0,
-                new BrokerRegistrationRequestData().
-                    setIsMigratingZkBroker(true)));
+                () -> readSerializedRequest((short) 0,
+                    new BrokerRegistrationRequestData().
+                        setIsMigratingZkBroker(true)));
     }
 
     @ParameterizedTest
     @MethodSource("BrokerRegistrationRequestVersionsWithoutV0")
     public void testAlterFeaturesWithMinVersion0BeforeV4(short version) {
         BrokerRegistrationRequestData data = readSerializedRequest(version,
-            new BrokerRegistrationRequestData().
-                setBrokerId(1).
-                setIsMigratingZkBroker(true).
-                setClusterId("test").
-                setRack(null).
-                setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
-                    Arrays.asList(
-                        new BrokerRegistrationRequestData.Feature().
-                            setName("metadata.version").
-                            setMinSupportedVersion((short) 1).
-                            setMaxSupportedVersion((short) 17),
-                        new BrokerRegistrationRequestData.Feature().
-                            setName("kraft.version").
-                            setMinSupportedVersion((short) 0).
-                            setMaxSupportedVersion((short) 1)
-                    ))).
-                setIncarnationId(Uuid.fromString("EfIEKywJSaWl5yWDwlop1Q")).
-                setListeners(new BrokerRegistrationRequestData.ListenerCollection()).
-                setPreviousBrokerEpoch(1L));
+                new BrokerRegistrationRequestData().
+                    setBrokerId(1).
+                    setIsMigratingZkBroker(true).
+                    setClusterId("test").
+                    setRack(null).
+                    setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
+                        Arrays.asList(
+                                new BrokerRegistrationRequestData.Feature().
+                                    setName("metadata.version").
+                                    setMinSupportedVersion((short) 1).
+                                    setMaxSupportedVersion((short) 17),
+                                new BrokerRegistrationRequestData.Feature().
+                                    setName("kraft.version").
+                                    setMinSupportedVersion((short) 0).
+                                    setMaxSupportedVersion((short) 1)
+                        ))).
+                    setIncarnationId(Uuid.fromString("EfIEKywJSaWl5yWDwlop1Q")).
+                    setListeners(new BrokerRegistrationRequestData.ListenerCollection()).
+                    setPreviousBrokerEpoch(1L));
         assertEquals(1, data.brokerId());
         assertNull(data.rack());
         assertEquals(Uuid.fromString("EfIEKywJSaWl5yWDwlop1Q"), data.incarnationId());
         if (version < 4) {
             assertEquals(new BrokerRegistrationRequestData.FeatureCollection(
-                Arrays.asList(
-                    new BrokerRegistrationRequestData.Feature().
-                        setName("metadata.version").
-                        setMinSupportedVersion((short) 1).
-                        setMaxSupportedVersion((short) 17))), data.features());
+                    Arrays.asList(
+                            new BrokerRegistrationRequestData.Feature().
+                                setName("metadata.version").
+                                setMinSupportedVersion((short) 1).
+                                setMaxSupportedVersion((short) 17))), data.features());
         } else {
             assertEquals(new BrokerRegistrationRequestData.FeatureCollection(
-                Arrays.asList(
-                    new BrokerRegistrationRequestData.Feature().
-                        setName("metadata.version").
-                        setMinSupportedVersion((short) 1).
-                        setMaxSupportedVersion((short) 17),
-                    new BrokerRegistrationRequestData.Feature().
-                        setName("kraft.version").
-                        setMinSupportedVersion((short) 0).
-                        setMaxSupportedVersion((short) 1))), data.features());
+                    Arrays.asList(
+                            new BrokerRegistrationRequestData.Feature().
+                                setName("metadata.version").
+                                setMinSupportedVersion((short) 1).
+                                setMaxSupportedVersion((short) 17),
+                            new BrokerRegistrationRequestData.Feature().
+                                setName("kraft.version").
+                                setMinSupportedVersion((short) 0).
+                                setMaxSupportedVersion((short) 1))), data.features());
         }
     }
 

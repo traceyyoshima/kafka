@@ -100,7 +100,6 @@ public interface Task {
         }
     }
 
-
     // idempotent life-cycle methods
 
     /**
@@ -135,7 +134,6 @@ public interface Task {
      * Must be idempotent.
      */
     void closeClean();
-
 
     // non-idempotent life-cycle methods
 
@@ -241,7 +239,6 @@ public interface Task {
     default boolean commitRequested() {
         return false;
     }
-
 
     // IQ related methods
 

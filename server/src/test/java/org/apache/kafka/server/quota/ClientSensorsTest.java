@@ -59,14 +59,14 @@ class ClientSensorsTest {
 
         Map<String, String> resultTags = clientSensors.metricTags();
         assertInstanceOf(LinkedHashMap.class, resultTags);
-        
+
         // Convert to arrays to check order
         String[] expectedKeys = {"first", "second", "third", "fourth"};
         String[] actualKeys = resultTags.keySet().toArray(new String[0]);
-        
+
         for (int i = 0; i < expectedKeys.length; i++) {
-            assertEquals(expectedKeys[i], actualKeys[i], 
-                "Key at position " + i + " should match expected order");
+            assertEquals(expectedKeys[i], actualKeys[i],
+                    "Key at position " + i + " should match expected order");
         }
     }
 
@@ -86,18 +86,18 @@ class ClientSensorsTest {
     @Test
     void testConstructorThrowsExceptionWhenQuotaSensorIsNull() {
         assertThrows(NullPointerException.class,
-            () -> new ClientSensors(Map.of("client-id", "test-client"), null, mock(Sensor.class)));
+                () -> new ClientSensors(Map.of("client-id", "test-client"), null, mock(Sensor.class)));
     }
 
     @Test
     void testConstructorThrowsExceptionWhenThrottleTimeSensorIsNull() {
         assertThrows(NullPointerException.class,
-            () -> new ClientSensors(Map.of("client-id", "test-client"), mock(Sensor.class), null));
+                () -> new ClientSensors(Map.of("client-id", "test-client"), mock(Sensor.class), null));
     }
 
     @Test
     void testConstructorThrowsExceptionWhenBothSensorsAreNull() {
         assertThrows(NullPointerException.class,
-            () -> new ClientSensors(Map.of("client-id", "test-client"), null, null));
+                () -> new ClientSensors(Map.of("client-id", "test-client"), null, null));
     }
 }

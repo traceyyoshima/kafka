@@ -42,7 +42,7 @@ public class KafkaChannelTest {
         ChannelMetadataRegistry metadataRegistry = Mockito.mock(ChannelMetadataRegistry.class);
 
         KafkaChannel channel = new KafkaChannel("0", transport, () -> authenticator,
-            1024, pool, metadataRegistry);
+                1024, pool, metadataRegistry);
         ByteBufferSend send = ByteBufferSend.sizePrefixed(ByteBuffer.wrap(TestUtils.randomBytes(128)));
         NetworkSend networkSend = new NetworkSend("0", send);
 
@@ -75,11 +75,11 @@ public class KafkaChannelTest {
 
         ArgumentCaptor<Integer> sizeCaptor = ArgumentCaptor.forClass(Integer.class);
         Mockito.when(pool.tryAllocate(sizeCaptor.capture())).thenAnswer(invocation ->
-            ByteBuffer.allocate(sizeCaptor.getValue())
+                ByteBuffer.allocate(sizeCaptor.getValue())
         );
 
         KafkaChannel channel = new KafkaChannel("0", transport, () -> authenticator,
-            1024, pool, metadataRegistry);
+                1024, pool, metadataRegistry);
 
         ArgumentCaptor<ByteBuffer> bufferCaptor = ArgumentCaptor.forClass(ByteBuffer.class);
         Mockito.when(transport.read(bufferCaptor.capture())).thenAnswer(invocation -> {

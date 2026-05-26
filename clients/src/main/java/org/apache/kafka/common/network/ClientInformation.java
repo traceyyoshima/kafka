@@ -42,7 +42,7 @@ public class ClientInformation {
     @Override
     public String toString() {
         return "ClientInformation(softwareName=" + softwareName +
-            ", softwareVersion=" + softwareVersion + ")";
+                ", softwareVersion=" + softwareVersion + ")";
     }
 
     @Override
@@ -60,6 +60,6 @@ public class ClientInformation {
         }
         ClientInformation other = (ClientInformation) o;
         return other.softwareName.equals(softwareName) &&
-            other.softwareVersion.equals(softwareVersion);
+                other.softwareVersion.equals(softwareVersion);
     }
 }

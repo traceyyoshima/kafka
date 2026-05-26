@@ -66,6 +66,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SessionStoreFetchTest {
     private enum StoreType { InMemory, RocksDB }
+
     private static final String STORE_NAME = "store";
     private static final int DATA_SIZE = 5;
     private static final long WINDOW_SIZE = 500L;
@@ -246,7 +247,6 @@ public class SessionStoreFetchTest {
             verifyRangeQuery(stateStore);
         }
     }
-
 
     private List<KeyValue<Windowed<String>, Long>> filterList(final KeyValueIterator<Windowed<String>, Long> iterator, final String from, final String to) {
         final Predicate<KeyValue<Windowed<String>, Long>> pred = elem -> {

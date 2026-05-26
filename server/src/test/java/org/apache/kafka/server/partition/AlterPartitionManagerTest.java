@@ -494,7 +494,7 @@ public class AlterPartitionManagerTest {
                             topicData.partitions().stream()
                                     .map(partitionData ->
                                             new TopicPartitionKey(topicData.topicId(), partitionData.partitionIndex()))
-                    ).collect(Collectors.toSet());
+            ).collect(Collectors.toSet());
 
             var expectedSet = expectedTopicPartitions.stream()
                     .map(tp -> new TopicPartitionKey(tp.topicId(), tp.partitionId()))

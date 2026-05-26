@@ -131,8 +131,8 @@ public class OAuthBearerLoginCallbackHandlerTest extends OAuthBearerTest {
         try {
             SaslExtensionsCallback callback = new SaslExtensionsCallback();
             assertThrowsWithMessage(ConfigException.class,
-                () -> handler.handle(new Callback[]{callback}),
-                "Extension name " + OAuthBearerClientInitialResponse.AUTH_KEY + " is invalid");
+                    () -> handler.handle(new Callback[]{callback}),
+                    "Extension name " + OAuthBearerClientInitialResponse.AUTH_KEY + " is invalid");
         } finally {
             handler.close();
         }
@@ -175,8 +175,8 @@ public class OAuthBearerLoginCallbackHandlerTest extends OAuthBearerTest {
         try {
             OAuthBearerTokenCallback callback = new OAuthBearerTokenCallback();
             assertThrowsWithMessage(JwtRetrieverException.class,
-                () -> handler.handle(new Callback[]{callback}),
-                "token endpoint response access_token value must be non-null");
+                    () -> handler.handle(new Callback[]{callback}),
+                    "token endpoint response access_token value must be non-null");
         } finally {
             handler.close();
         }
@@ -228,8 +228,8 @@ public class OAuthBearerLoginCallbackHandlerTest extends OAuthBearerTest {
             String actualMessage = callback.errorDescription();
             assertNotNull(actualMessage);
             assertTrue(actualMessage.contains(expectedMessageSubstring), String.format(
-                "The error message \"%s\" didn't contain the expected substring \"%s\"",
-                actualMessage, expectedMessageSubstring));
+                    "The error message \"%s\" didn't contain the expected substring \"%s\"",
+                    actualMessage, expectedMessageSubstring));
         } finally {
             handler.close();
         }

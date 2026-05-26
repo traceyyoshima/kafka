@@ -117,8 +117,8 @@ public class CoordinatorRestResource {
         boolean isEmptyState = state.isEmpty();
         if (!isEmptyState && !TaskStateType.Constants.VALUES.contains(state)) {
             return Response.status(400).entity(
-                String.format("State %s is invalid. Must be one of %s",
-                    state, TaskStateType.Constants.VALUES)
+                    String.format("State %s is invalid. Must be one of %s",
+                            state, TaskStateType.Constants.VALUES)
             ).build();
         }
 

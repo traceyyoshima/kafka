@@ -59,7 +59,6 @@ public class OAuthBearerUnsecuredValidatorCallbackHandlerTest {
     private static final Map<String, String> MODULE_OPTIONS_MAP_REQUIRE_ADDITIONAL_SCOPE = Map.of(
             "unsecuredValidatorRequiredScope", "scope1 scope2");
 
-
     @Test
     public void validToken() {
         for (final boolean includeOptionalIssuedAtClaim : new boolean[] {true, false}) {

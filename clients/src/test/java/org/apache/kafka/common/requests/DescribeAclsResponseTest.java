@@ -77,7 +77,7 @@ public class DescribeAclsResponseTest {
     @Test
     public void shouldThrowIfUnknown() {
         assertThrows(IllegalArgumentException.class,
-            () -> buildResponse(10, Errors.NONE, Collections.singletonList(UNKNOWN_ACL)).serialize(V1));
+                () -> buildResponse(10, Errors.NONE, Collections.singletonList(UNKNOWN_ACL)).serialize(V1));
     }
 
     @Test
@@ -90,7 +90,7 @@ public class DescribeAclsResponseTest {
         assertResponseEquals(original, result);
 
         final DescribeAclsResponse result2 = buildResponse(100, Errors.NONE, DescribeAclsResponse.aclsResources(
-            DescribeAclsResponse.aclBindings(resources)));
+                DescribeAclsResponse.aclBindings(resources)));
         assertResponseEquals(original, result2);
     }
 

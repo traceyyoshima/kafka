@@ -61,19 +61,19 @@ public class HighAvailabilityTaskAssignor implements LegacyTaskAssignor {
         assignActiveStatefulTasks(clientStates, statefulTasks, rackAwareTaskAssignor, configs);
 
         assignStandbyReplicaTasks(
-            clientStates,
-            allTaskIds,
-            statefulTasks,
-            rackAwareTaskAssignor,
-            configs
+                clientStates,
+                allTaskIds,
+                statefulTasks,
+                rackAwareTaskAssignor,
+                configs
         );
 
         final AtomicInteger remainingWarmupReplicas = new AtomicInteger(configs.maxWarmupReplicas());
 
         final Map<TaskId, SortedSet<ProcessId>> tasksToCaughtUpClients = tasksToCaughtUpClients(
-            statefulTasks,
-            clientStates,
-            configs.acceptableRecoveryLag()
+                statefulTasks,
+                clientStates,
+                configs.acceptableRecoveryLag()
         );
 
         final Map<TaskId, SortedSet<ProcessId>> tasksToClientByLag = tasksToClientByLag(statefulTasks, clientStates);
@@ -86,19 +86,19 @@ public class HighAvailabilityTaskAssignor implements LegacyTaskAssignor {
         final Map<ProcessId, Set<TaskId>> warmups = new TreeMap<>();
 
         final int neededActiveTaskMovements = assignActiveTaskMovements(
-            tasksToCaughtUpClients,
-            tasksToClientByLag,
-            clientStates,
-            warmups,
-            remainingWarmupReplicas
+                tasksToCaughtUpClients,
+                tasksToClientByLag,
+                clientStates,
+                warmups,
+                remainingWarmupReplicas
         );
 
         final int neededStandbyTaskMovements = assignStandbyTaskMovements(
-            tasksToCaughtUpClients,
-            tasksToClientByLag,
-            clientStates,
-            remainingWarmupReplicas,
-            warmups
+                tasksToCaughtUpClients,
+                tasksToClientByLag,
+                clientStates,
+                remainingWarmupReplicas,
+                warmups
         );
 
         assignStatelessActiveTasks(clientStates, diff(TreeSet::new, allTaskIds, statefulTasks), rackAwareTaskAssignor);
@@ -106,10 +106,10 @@ public class HighAvailabilityTaskAssignor implements LegacyTaskAssignor {
         final boolean probingRebalanceNeeded = neededActiveTaskMovements + neededStandbyTaskMovements > 0;
 
         log.info("Decided on assignment: " +
-                 clientStates +
-                 " with" +
-                 (probingRebalanceNeeded ? "" : " no") +
-                 " followup probing rebalance.");
+                clientStates +
+                " with" +
+                (probingRebalanceNeeded ? "" : " no") +
+                " followup probing rebalance.");
 
         return probingRebalanceNeeded;
     }
@@ -127,11 +127,11 @@ public class HighAvailabilityTaskAssignor implements LegacyTaskAssignor {
         }
 
         balanceTasksOverThreads(
-            clientStates,
-            ClientState::activeTasks,
-            ClientState::unassignActive,
-            ClientState::assignActive,
-            (source, destination) -> true
+                clientStates,
+                ClientState::activeTasks,
+                ClientState::unassignActive,
+                ClientState::assignActive,
+                (source, destination) -> true
         );
 
         if (rackAwareTaskAssignor.canEnableRackAwareAssignor()) {
@@ -155,11 +155,11 @@ public class HighAvailabilityTaskAssignor implements LegacyTaskAssignor {
         standbyTaskAssignor.assign(clientStates, allTaskIds, statefulTasks, configs);
 
         balanceTasksOverThreads(
-            clientStates,
-            ClientState::standbyTasks,
-            ClientState::unassignStandby,
-            ClientState::assignStandby,
-            standbyTaskAssignor::isAllowedTaskMovement
+                clientStates,
+                ClientState::standbyTasks,
+                ClientState::unassignStandby,
+                ClientState::assignStandby,
+                standbyTaskAssignor::isAllowedTaskMovement
         );
 
         if (rackAwareTaskAssignor.canEnableRackAwareAssignor()) {
@@ -193,9 +193,9 @@ public class HighAvailabilityTaskAssignor implements LegacyTaskAssignor {
                     while (shouldMoveATask(sourceClientState, destinationClientState) && sourceIterator.hasNext()) {
                         final TaskId taskToMove = sourceIterator.next();
                         final boolean canMove = !destinationClientState.hasAssignedTask(taskToMove)
-                                                // When ClientTagAwareStandbyTaskAssignor is used, we need to make sure that
-                                                // sourceClient tags matches destinationClient tags.
-                                                && taskMovementAttemptPredicate.test(sourceClientState, destinationClientState);
+                                // When ClientTagAwareStandbyTaskAssignor is used, we need to make sure that
+                                // sourceClient tags matches destinationClient tags.
+                                && taskMovementAttemptPredicate.test(sourceClientState, destinationClientState);
                         if (canMove) {
                             taskUnassignor.accept(sourceClientState, taskToMove);
                             taskAssignor.accept(destinationClientState, taskToMove);
@@ -216,9 +216,9 @@ public class HighAvailabilityTaskAssignor implements LegacyTaskAssignor {
         }
 
         final double proposedAssignedTasksPerStreamThreadAtDestination =
-            (destinationClientState.assignedTaskCount() + 1.0) / destinationClientState.capacity();
+                (destinationClientState.assignedTaskCount() + 1.0) / destinationClientState.capacity();
         final double proposedAssignedTasksPerStreamThreadAtSource =
-            (sourceClientState.assignedTaskCount() - 1.0) / sourceClientState.capacity();
+                (sourceClientState.assignedTaskCount() - 1.0) / sourceClientState.capacity();
         final double proposedSkew = proposedAssignedTasksPerStreamThreadAtSource - proposedAssignedTasksPerStreamThreadAtDestination;
 
         if (proposedSkew < 0) {
@@ -233,8 +233,8 @@ public class HighAvailabilityTaskAssignor implements LegacyTaskAssignor {
                                                    final Iterable<TaskId> statelessTasks,
                                                    final RackAwareTaskAssignor rackAwareTaskAssignor) {
         final ConstrainedPrioritySet statelessActiveTaskClientsByTaskLoad = new ConstrainedPrioritySet(
-            (client, task) -> true,
-            client -> clientStates.get(client).activeTaskLoad()
+                (client, task) -> true,
+                client -> clientStates.get(client).activeTaskLoad()
         );
         statelessActiveTaskClientsByTaskLoad.offerAll(clientStates.keySet());
 
@@ -249,7 +249,7 @@ public class HighAvailabilityTaskAssignor implements LegacyTaskAssignor {
 
         if (rackAwareTaskAssignor.canEnableRackAwareAssignor()) {
             rackAwareTaskAssignor.optimizeActiveTasks(sortedTasks, clientStates,
-                STATELESS_TRAFFIC_COST, STATELESS_NON_OVERLAP_COST);
+                    STATELESS_TRAFFIC_COST, STATELESS_NON_OVERLAP_COST);
         }
     }
 

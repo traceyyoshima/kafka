@@ -177,15 +177,15 @@ public abstract class AbstractResetIntegrationTest {
 
     private void add10InputElements() {
         final List<KeyValue<Long, String>> records = List.of(KeyValue.pair(0L, "aaa"),
-                                                                   KeyValue.pair(1L, "bbb"),
-                                                                   KeyValue.pair(0L, "ccc"),
-                                                                   KeyValue.pair(1L, "ddd"),
-                                                                   KeyValue.pair(0L, "eee"),
-                                                                   KeyValue.pair(1L, "fff"),
-                                                                   KeyValue.pair(0L, "ggg"),
-                                                                   KeyValue.pair(1L, "hhh"),
-                                                                   KeyValue.pair(0L, "iii"),
-                                                                   KeyValue.pair(1L, "jjj"));
+                KeyValue.pair(1L, "bbb"),
+                KeyValue.pair(0L, "ccc"),
+                KeyValue.pair(1L, "ddd"),
+                KeyValue.pair(0L, "eee"),
+                KeyValue.pair(1L, "fff"),
+                KeyValue.pair(0L, "ggg"),
+                KeyValue.pair(1L, "hhh"),
+                KeyValue.pair(0L, "iii"),
+                KeyValue.pair(1L, "jjj"));
 
         for (final KeyValue<Long, String> record : records) {
             mockTime.sleep(10);
@@ -287,10 +287,10 @@ public abstract class AbstractResetIntegrationTest {
         final KeyValue<Long, String> badMessage = new KeyValue<>(-1L, "badRecord-ShouldBeSkipped");
         if (!useRepartitioned) {
             IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-                INTERMEDIATE_USER_TOPIC,
-                Set.of(badMessage),
-                producerConfig,
-                mockTime.milliseconds());
+                    INTERMEDIATE_USER_TOPIC,
+                    Set.of(badMessage),
+                    producerConfig,
+                    mockTime.milliseconds());
         }
 
         // RESET
@@ -375,10 +375,10 @@ public abstract class AbstractResetIntegrationTest {
                                    final String resetScenarioArg,
                                    final String appID) throws Exception {
         final List<String> parameterList = new ArrayList<>(
-            List.of("--application-id", appID,
-                    "--bootstrap-server", cluster.bootstrapServers(),
-                    "--input-topics", INPUT_TOPIC
-            ));
+                List.of("--application-id", appID,
+                        "--bootstrap-server", cluster.bootstrapServers(),
+                        "--input-topics", INPUT_TOPIC
+                ));
         if (withIntermediateTopics) {
             parameterList.add("--intermediate-topics");
             parameterList.add(INTERMEDIATE_USER_TOPIC);

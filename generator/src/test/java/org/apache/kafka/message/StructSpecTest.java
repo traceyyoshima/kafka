@@ -32,38 +32,38 @@ public class StructSpecTest {
     @Test
     public void testNamesMustBeUnique() {
         assertEquals("In LeaderAndIsrRequest, field field1 has a duplicate name field1. All field names must be unique.",
-            assertThrows(ValueInstantiationException.class,
-                () -> MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
-                    "{",
-                    "  \"type\": \"request\",",
-                    "  \"name\": \"LeaderAndIsrRequest\",",
-                    "  \"validVersions\": \"0-4\",",
-                    "  \"deprecatedVersions\": \"0-1\",",
-                    "  \"flexibleVersions\": \"0+\",",
-                    "  \"fields\": [",
-                    "    { \"name\": \"field1\", \"type\": \"int32\", \"versions\": \"0+\" },",
-                    "    { \"name\": \"field1\", \"type\": \"[]int64\", \"versions\": \"1+\" }",
-                    "  ]",
-                    "}")), MessageSpec.class)).getCause().getMessage());
+                assertThrows(ValueInstantiationException.class,
+                    () -> MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
+                        "{",
+                        "  \"type\": \"request\",",
+                        "  \"name\": \"LeaderAndIsrRequest\",",
+                        "  \"validVersions\": \"0-4\",",
+                        "  \"deprecatedVersions\": \"0-1\",",
+                        "  \"flexibleVersions\": \"0+\",",
+                        "  \"fields\": [",
+                        "    { \"name\": \"field1\", \"type\": \"int32\", \"versions\": \"0+\" },",
+                        "    { \"name\": \"field1\", \"type\": \"[]int64\", \"versions\": \"1+\" }",
+                        "  ]",
+                        "}")), MessageSpec.class)).getCause().getMessage());
     }
 
     @Test
     public void testTagsMustBeUnique() {
         assertEquals("In LeaderAndIsrRequest, field field2 has a duplicate tag ID 0. All tags IDs must be unique.",
-            assertThrows(ValueInstantiationException.class,
-                () -> MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
-                    "{",
-                    "  \"type\": \"request\",",
-                    "  \"name\": \"LeaderAndIsrRequest\",",
-                    "  \"validVersions\": \"0-4\",",
-                    "  \"deprecatedVersions\": \"0-1\",",
-                    "  \"flexibleVersions\": \"0+\",",
-                    "  \"fields\": [",
-                    "    { \"name\": \"field1\", \"type\": \"int32\", \"versions\": \"0+\", ",
-                    "        \"taggedVersions\": \"0+\", \"tag\": 0},",
-                    "    { \"name\": \"field2\", \"type\": \"[]int64\", \"versions\": \"0+\", ",
-                    "        \"taggedVersions\": \"0+\", \"tag\": 0 }",
-                    "  ]",
-                    "}")), MessageSpec.class)).getCause().getMessage());
+                assertThrows(ValueInstantiationException.class,
+                    () -> MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
+                        "{",
+                        "  \"type\": \"request\",",
+                        "  \"name\": \"LeaderAndIsrRequest\",",
+                        "  \"validVersions\": \"0-4\",",
+                        "  \"deprecatedVersions\": \"0-1\",",
+                        "  \"flexibleVersions\": \"0+\",",
+                        "  \"fields\": [",
+                        "    { \"name\": \"field1\", \"type\": \"int32\", \"versions\": \"0+\", ",
+                        "        \"taggedVersions\": \"0+\", \"tag\": 0},",
+                        "    { \"name\": \"field2\", \"type\": \"[]int64\", \"versions\": \"0+\", ",
+                        "        \"taggedVersions\": \"0+\", \"tag\": 0 }",
+                        "  ]",
+                        "}")), MessageSpec.class)).getCause().getMessage());
     }
 }

@@ -41,7 +41,6 @@ public abstract class Window {
     private final Instant startTime;
     private final Instant endTime;
 
-
     /**
      * Create a new window for the given start and end time.
      *
@@ -133,8 +132,8 @@ public abstract class Window {
     @Override
     public String toString() {
         return "Window{" +
-            "startMs=" + startMs +
-            ", endMs=" + endMs +
-            '}';
+                "startMs=" + startMs +
+                ", endMs=" + endMs +
+                '}';
     }
 }

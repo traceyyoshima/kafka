@@ -48,7 +48,7 @@ public class WakeupTriggerTest {
     public void setup() {
         this.wakeupTrigger = new WakeupTrigger();
     }
-    
+
     @Test
     public void testEnsureActiveFutureCanBeWakeUp() {
         CompletableFuture<Void> task = new CompletableFuture<>();
@@ -255,6 +255,6 @@ public class WakeupTriggerTest {
     private void assertWakeupExceptionIsThrown(final CompletableFuture<?> future) {
         assertTrue(future.isCompletedExceptionally());
         assertInstanceOf(WakeupException.class,
-            assertThrows(ExecutionException.class, () -> future.get(DEFAULT_TIMEOUT_MS, TimeUnit.MILLISECONDS)).getCause());
+                assertThrows(ExecutionException.class, () -> future.get(DEFAULT_TIMEOUT_MS, TimeUnit.MILLISECONDS)).getCause());
     }
 }

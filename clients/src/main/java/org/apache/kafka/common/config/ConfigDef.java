@@ -591,7 +591,6 @@ public class ConfigDef {
         return parsed;
     }
 
-
     private Map<String, ConfigValue> validate(Map<String, Object> parsed, Map<String, ConfigValue> configValues) {
         Set<String> configsWithNoParent = getConfigsWithNoParent();
         for (String name: configsWithNoParent) {
@@ -1324,7 +1323,7 @@ public class ConfigDef {
                          List<String> dependents, Recommender recommender,
                          boolean internalConfig) {
             this(name, type, defaultValue, validator, importance, documentation, group, orderInGroup, width, displayName,
-                dependents, recommender, internalConfig, null);
+                    dependents, recommender, internalConfig, null);
         }
 
         private ConfigKey(String name, Type type, Object defaultValue, Validator validator,
@@ -1605,8 +1604,8 @@ public class ConfigDef {
 
     private int compare(ConfigKey k1, ConfigKey k2, Map<String, Integer> groupOrd) {
         int cmp = k1.group == null
-            ? (k2.group == null ? 0 : -1)
-            : (k2.group == null ? 1 : Integer.compare(groupOrd.get(k1.group), groupOrd.get(k2.group)));
+                ? (k2.group == null ? 0 : -1)
+                : (k2.group == null ? 1 : Integer.compare(groupOrd.get(k1.group), groupOrd.get(k2.group)));
         if (cmp == 0) {
             cmp = Integer.compare(k1.orderInGroup, k2.orderInGroup);
             if (cmp == 0) {
@@ -1652,7 +1651,7 @@ public class ConfigDef {
     private static Validator embeddedValidator(final String keyPrefix, final Validator base) {
         if (base == null) return null;
         return ConfigDef.LambdaValidator.with(
-            (name, value) -> base.ensureValid(name.substring(keyPrefix.length()), value), base::toString);
+                (name, value) -> base.ensureValid(name.substring(keyPrefix.length()), value), base::toString);
     }
 
     /**

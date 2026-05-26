@@ -69,7 +69,7 @@ public class PartitionLeaderStrategy implements AdminApiLookupStrategy<TopicPart
         MetadataRequestData request = new MetadataRequestData();
         request.setAllowAutoTopicCreation(false);
         partitions.stream().map(TopicPartition::topic).distinct().forEach(topic ->
-            request.topics().add(new MetadataRequestData.MetadataRequestTopic().setName(topic))
+                request.topics().add(new MetadataRequestData.MetadataRequestTopic().setName(topic))
         );
         return new MetadataRequest.Builder(request);
     }
@@ -92,30 +92,30 @@ public class PartitionLeaderStrategy implements AdminApiLookupStrategy<TopicPart
             case LEADER_NOT_AVAILABLE:
             case BROKER_NOT_AVAILABLE:
                 log.debug("Metadata request for topic {} returned topic-level error {}. Will retry",
-                    topic, topicError);
+                        topic, topicError);
                 break;
 
             case TOPIC_AUTHORIZATION_FAILED:
                 log.error("Received authorization failure for topic {} in `Metadata` response", topic,
-                    topicError.exception());
+                        topicError.exception());
                 failAllPartitionsForTopic(topic, requestPartitions, failed, tp -> new TopicAuthorizationException(
-                    "Failed to fetch metadata for partition " + tp + " due to topic authorization failure",
-                    Collections.singleton(topic)));
+                        "Failed to fetch metadata for partition " + tp + " due to topic authorization failure",
+                        Collections.singleton(topic)));
                 break;
 
             case INVALID_TOPIC_EXCEPTION:
                 log.error("Received invalid topic error for topic {} in `Metadata` response", topic,
-                    topicError.exception());
+                        topicError.exception());
                 failAllPartitionsForTopic(topic, requestPartitions, failed, tp -> new InvalidTopicException(
-                    "Failed to fetch metadata for partition " + tp + " due to invalid topic `" + topic + "`",
-                    Collections.singleton(topic)));
+                        "Failed to fetch metadata for partition " + tp + " due to invalid topic `" + topic + "`",
+                        Collections.singleton(topic)));
                 break;
 
             default:
                 log.error("Received unexpected error for topic {} in `Metadata` response", topic,
-                    topicError.exception());
+                        topicError.exception());
                 failAllPartitionsForTopic(topic, requestPartitions, failed, tp -> topicError.exception(
-                    "Failed to fetch metadata for partition " + tp + " due to unexpected error for topic `" + topic + "`"));
+                        "Failed to fetch metadata for partition " + tp + " due to unexpected error for topic `" + topic + "`"));
         }
     }
 
@@ -126,7 +126,7 @@ public class PartitionLeaderStrategy implements AdminApiLookupStrategy<TopicPart
         Function<TopicPartition, Throwable> exceptionGenerator
     ) {
         partitions.stream().filter(tp -> tp.topic().equals(topic)).forEach(tp ->
-            failed.put(tp, exceptionGenerator.apply(tp))
+                failed.put(tp, exceptionGenerator.apply(tp))
         );
     }
 
@@ -143,14 +143,14 @@ public class PartitionLeaderStrategy implements AdminApiLookupStrategy<TopicPart
             case KAFKA_STORAGE_ERROR:
             case UNKNOWN_TOPIC_OR_PARTITION:
                 log.debug("Metadata request for partition {} returned partition-level error {}. Will retry",
-                    topicPartition, partitionError);
+                        topicPartition, partitionError);
                 break;
 
             default:
                 log.error("Received unexpected error for partition {} in `Metadata` response",
-                    topicPartition, partitionError.exception());
+                        topicPartition, partitionError.exception());
                 failed.put(topicPartition, partitionError.exception(
-                    "Unexpected error during metadata lookup for " + topicPartition));
+                        "Unexpected error during metadata lookup for " + topicPartition));
         }
     }
 
@@ -191,7 +191,7 @@ public class PartitionLeaderStrategy implements AdminApiLookupStrategy<TopicPart
                     mapped.put(topicPartition, leaderId);
                 } else {
                     log.debug("Metadata request for {} returned no error, but the leader is unknown. Will retry",
-                        topicPartition);
+                            topicPartition);
                 }
             }
         }
@@ -214,8 +214,8 @@ public class PartitionLeaderStrategy implements AdminApiLookupStrategy<TopicPart
             this.requestKeys = requestKeys;
             this.partitionLeaderCache = partitionLeaderCache;
             this.futures = requestKeys.stream().collect(Collectors.toUnmodifiableMap(
-                Function.identity(),
-                k -> new KafkaFutureImpl<>()
+                    Function.identity(),
+                    k -> new KafkaFutureImpl<>()
             ));
         }
 
@@ -266,7 +266,7 @@ public class PartitionLeaderStrategy implements AdminApiLookupStrategy<TopicPart
             KafkaFutureImpl<V> future = (KafkaFutureImpl<V>) futures.get(key);
             if (future == null) {
                 throw new IllegalArgumentException("Attempt to complete future for " + key +
-                    ", which was not requested");
+                        ", which was not requested");
             } else {
                 return future;
             }

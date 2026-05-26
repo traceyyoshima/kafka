@@ -97,7 +97,6 @@ public final class MirrorUtils {
         return (Long) wrapped.get(OFFSET_KEY);
     }
 
-
     /**
      * Validate a specific key in a source partition that may be written to the offsets topic for one of the MM2 connectors.
      * This method ensures that the key is present in the source partition map and that its value is a string.
@@ -287,19 +286,19 @@ public final class MirrorUtils {
             }
             if (cause instanceof UnsupportedVersionException) {
                 log.debug("Unable to create topic '{}' since the brokers do not support the CreateTopics API." +
-                                " Falling back to assume topic exists or will be auto-created by the broker.",
+                        " Falling back to assume topic exists or will be auto-created by the broker.",
                         topicName);
                 return;
             }
             if (cause instanceof TopicAuthorizationException) {
                 log.debug("Not authorized to create topic(s) '{}' upon the brokers." +
-                                " Falling back to assume topic(s) exist or will be auto-created by the broker.",
+                        " Falling back to assume topic(s) exist or will be auto-created by the broker.",
                         topicName);
                 return;
             }
             if (cause instanceof ClusterAuthorizationException) {
                 log.debug("Not authorized to create topic '{}'." +
-                                " Falling back to assume topic exists or will be auto-created by the broker.",
+                        " Falling back to assume topic exists or will be auto-created by the broker.",
                         topicName);
                 return;
             }
@@ -323,7 +322,7 @@ public final class MirrorUtils {
     }
 
     static <T> T adminCall(Callable<T> callable, Supplier<String> errMsg)
-            throws ExecutionException, InterruptedException {
+        throws ExecutionException, InterruptedException {
         try {
             return callable.call();
         } catch (ExecutionException | InterruptedException e) {

@@ -123,12 +123,12 @@ public class ClientState {
     // For testing only
     public ClientState(final ClientState clientState) {
         this(
-            new HashSet<>(clientState.previousActiveTasks.taskIds()),
-            new HashSet<>(clientState.previousStandbyTasks.taskIds()),
-            clientState.taskLagTotals,
-            clientState.clientTags,
-            clientState.capacity,
-            clientState.processId
+                new HashSet<>(clientState.previousActiveTasks.taskIds()),
+                new HashSet<>(clientState.previousStandbyTasks.taskIds()),
+                clientState.taskLagTotals,
+                clientState.clientTags,
+                clientState.capacity,
+                clientState.processId
         );
     }
 
@@ -277,11 +277,11 @@ public class ClientState {
         // I'm just trying to prevent subtle bugs if we write code that thinks it can update
         // the assignment by updating the returned set.
         return unmodifiableSet(
-            union(
-                () -> new HashSet<>(assignedActiveTaskIds.size() + assignedStandbyTaskIds.size()),
-                assignedActiveTaskIds,
-                assignedStandbyTaskIds
-            )
+                union(
+                        () -> new HashSet<>(assignedActiveTaskIds.size() + assignedStandbyTaskIds.size()),
+                        assignedActiveTaskIds,
+                        assignedStandbyTaskIds
+                )
         );
     }
 
@@ -395,10 +395,10 @@ public class ClientState {
                 taskLagTotals.put(task, UNKNOWN_OFFSET_SUM);
             } else if (endOffsetSum < offsetSum) {
                 LOG.warn("Task " + task + " had endOffsetSum=" + endOffsetSum + " smaller than offsetSum=" +
-                             offsetSum + " on member " + uuid + ". This probably means the task is corrupted," +
-                             " which in turn indicates that it will need to restore from scratch if it gets assigned." +
-                             " The assignor will de-prioritize returning this task to this member in the hopes that" +
-                             " some other member may be able to re-use its state.");
+                        offsetSum + " on member " + uuid + ". This probably means the task is corrupted," +
+                        " which in turn indicates that it will need to restore from scratch if it gets assigned." +
+                        " The assignor will de-prioritize returning this task to this member in the hopes that" +
+                        " some other member may be able to re-use its state.");
                 taskLagTotals.put(task, endOffsetSum);
             } else {
                 taskLagTotals.put(task, endOffsetSum - offsetSum);
@@ -502,21 +502,21 @@ public class ClientState {
 
     public String currentAssignment() {
         return "[activeTasks: (" + assignedActiveTasks.taskIds() +
-               ") standbyTasks: (" + assignedStandbyTasks.taskIds() + ")]";
+                ") standbyTasks: (" + assignedStandbyTasks.taskIds() + ")]";
     }
 
     @Override
     public String toString() {
         return "[activeTasks: (" + assignedActiveTasks.taskIds() +
-               ") standbyTasks: (" + assignedStandbyTasks.taskIds() +
-               ") prevActiveTasks: (" + previousActiveTasks.taskIds() +
-               ") prevStandbyTasks: (" + previousStandbyTasks.taskIds() +
-               ") changelogOffsetTotalsByTask: (" + taskOffsetSums.entrySet() +
-               ") taskLagTotals: (" + taskLagTotals.entrySet() +
-               ") clientTags: (" + clientTags.entrySet() +
-               ") capacity: " + capacity +
-               " assigned: " + assignedTaskCount() +
-               "]";
+                ") standbyTasks: (" + assignedStandbyTasks.taskIds() +
+                ") prevActiveTasks: (" + previousActiveTasks.taskIds() +
+                ") prevStandbyTasks: (" + previousStandbyTasks.taskIds() +
+                ") changelogOffsetTotalsByTask: (" + taskOffsetSums.entrySet() +
+                ") taskLagTotals: (" + taskLagTotals.entrySet() +
+                ") clientTags: (" + clientTags.entrySet() +
+                ") capacity: " + capacity +
+                " assigned: " + assignedTaskCount() +
+                "]";
     }
 
     private boolean isStateful(final TaskId task) {

@@ -160,7 +160,6 @@ public class RangeAssignorTest {
         assertAssignment(Collections.emptyList(), assignment.get(consumer2));
     }
 
-
     @ParameterizedTest(name = TEST_NAME_WITH_RACK_CONFIG)
     @EnumSource(RackConfig.class)
     public void testTwoConsumersOneTopicTwoPartitions(RackConfig rackConfig) {
@@ -321,7 +320,7 @@ public class RangeAssignorTest {
                                        partitions(tp(topic1, 4), tp(topic2, 4)));
 
         Map<String, List<TopicPartition>> staticAssignment =
-            checkStaticAssignment(assignor, partitionsPerTopic, consumers);
+                checkStaticAssignment(assignor, partitionsPerTopic, consumers);
         assertEquals(expectedInstanceAssignment, staticAssignment);
 
         // Now switch the member.id fields for each member info, the assignment should
@@ -334,7 +333,7 @@ public class RangeAssignorTest {
         consumers.remove(consumer2);
 
         Map<String, List<TopicPartition>> newStaticAssignment =
-            checkStaticAssignment(assignor, partitionsPerTopic, consumers);
+                checkStaticAssignment(assignor, partitionsPerTopic, consumers);
         assertEquals(staticAssignment, newStaticAssignment);
     }
 

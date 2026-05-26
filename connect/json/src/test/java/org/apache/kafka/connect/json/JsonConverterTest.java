@@ -138,7 +138,6 @@ public class JsonConverterTest {
         assertEquals(new SchemaAndValue(Schema.FLOAT64_SCHEMA, 12.34), converter.toConnectData(TOPIC, "{ \"schema\": { \"type\": \"double\" }, \"payload\": 12.34 }".getBytes()));
     }
 
-
     @Test
     public void bytesToConnect() {
         ByteBuffer reference = ByteBuffer.wrap(Utils.utf8("test-string"));
@@ -490,7 +489,6 @@ public class JsonConverterTest {
         assertTrue(converted.get(JsonSchema.ENVELOPE_PAYLOAD_FIELD_NAME).booleanValue());
     }
 
-
     @Test
     public void testCacheSchemaToConnectConversion() {
         assertEquals(0, converter.sizeOfToConnectSchemaCache());
@@ -628,7 +626,7 @@ public class JsonConverterTest {
         for (JsonNode elem : payload)
             payloadEntries.add(elem);
         assertEquals(Set.of(JsonNodeFactory.instance.arrayNode().add(1).add(12),
-                        JsonNodeFactory.instance.arrayNode().add(2).add(15)),
+                JsonNodeFactory.instance.arrayNode().add(2).add(15)),
                 payloadEntries
         );
     }
@@ -663,7 +661,6 @@ public class JsonConverterTest {
         assertStructSchemaEqual(schema, input);
     }
 
-
     @Test
     public void decimalToJson() throws IOException {
         JsonNode converted = parse(converter.fromConnectData(TOPIC, Decimal.schema(2), new BigDecimal(new BigInteger("156"), 2)));
@@ -680,7 +677,7 @@ public class JsonConverterTest {
         JsonNode converted = parse(converter.fromConnectData(TOPIC, Decimal.schema(2), new BigDecimal(new BigInteger("156"), 2)));
         validateEnvelope(converted);
         assertEquals(parse("{ \"type\": \"bytes\", \"optional\": false, \"name\": \"org.apache.kafka.connect.data.Decimal\", \"version\": 1, \"parameters\": { \"scale\": \"2\" } }"),
-            converted.get(JsonSchema.ENVELOPE_SCHEMA_FIELD_NAME));
+                converted.get(JsonSchema.ENVELOPE_SCHEMA_FIELD_NAME));
         assertTrue(converted.get(JsonSchema.ENVELOPE_PAYLOAD_FIELD_NAME).isNumber(), "expected node to be numeric");
         assertEquals(new BigDecimal("1.56"), converted.get(JsonSchema.ENVELOPE_PAYLOAD_FIELD_NAME).decimalValue());
     }
@@ -691,7 +688,7 @@ public class JsonConverterTest {
         JsonNode converted = parse(converter.fromConnectData(TOPIC, Decimal.schema(4), new BigDecimal(new BigInteger("15600"), 4)));
         validateEnvelope(converted);
         assertEquals(parse("{ \"type\": \"bytes\", \"optional\": false, \"name\": \"org.apache.kafka.connect.data.Decimal\", \"version\": 1, \"parameters\": { \"scale\": \"4\" } }"),
-            converted.get(JsonSchema.ENVELOPE_SCHEMA_FIELD_NAME));
+                converted.get(JsonSchema.ENVELOPE_SCHEMA_FIELD_NAME));
         assertTrue(converted.get(JsonSchema.ENVELOPE_PAYLOAD_FIELD_NAME).isNumber(), "expected node to be numeric");
         assertEquals(new BigDecimal("1.5600"), converted.get(JsonSchema.ENVELOPE_PAYLOAD_FIELD_NAME).decimalValue());
     }
@@ -699,9 +696,9 @@ public class JsonConverterTest {
     @Test
     public void decimalToJsonWithoutSchema() {
         assertThrows(
-            DataException.class,
-            () -> converter.fromConnectData(TOPIC, null, new BigDecimal(new BigInteger("156"), 2)),
-            "expected data exception when serializing BigDecimal without schema");
+                DataException.class,
+                () -> converter.fromConnectData(TOPIC, null, new BigDecimal(new BigInteger("156"), 2)),
+                "expected data exception when serializing BigDecimal without schema");
     }
 
     @Test
@@ -752,7 +749,6 @@ public class JsonConverterTest {
         assertTrue(payload.isLong());
         assertEquals(4000000000L, payload.longValue());
     }
-
 
     @Test
     public void nullSchemaAndPrimitiveToJson() {
@@ -807,8 +803,8 @@ public class JsonConverterTest {
         for (JsonNode elem : payload)
             payloadEntries.add(elem);
         assertEquals(Set.of(JsonNodeFactory.instance.arrayNode().add("string").add(12),
-                        JsonNodeFactory.instance.arrayNode().add(52).add("string"),
-                        JsonNodeFactory.instance.arrayNode().add(false).add(true)),
+                JsonNodeFactory.instance.arrayNode().add(52).add("string"),
+                JsonNodeFactory.instance.arrayNode().add(false).add(true)),
                 payloadEntries
         );
     }
@@ -835,7 +831,7 @@ public class JsonConverterTest {
     public void mismatchSchemaJson() {
         // If we have mismatching schema info, we should properly convert to a DataException
         assertThrows(DataException.class,
-            () -> converter.fromConnectData(TOPIC, Schema.FLOAT64_SCHEMA, true));
+                () -> converter.fromConnectData(TOPIC, Schema.FLOAT64_SCHEMA, true));
     }
 
     @Test
@@ -882,7 +878,6 @@ public class JsonConverterTest {
         JsonConverter rc = new JsonConverter();
         rc.configure(workerProps, false);
     }
-
 
     // Note: the header conversion methods delegates to the data conversion methods, which are tested above.
     // The following simply verify that the delegation works.
@@ -1004,9 +999,9 @@ public class JsonConverterTest {
     @Test
     public void testSchemaContentInValidSchema() {
         assertThrows(
-            DataException.class,
-            () -> converter.configure(Map.of(JsonConverterConfig.SCHEMA_CONTENT_CONFIG, "{ \"string\" }"), false),
-            " Provided schema is invalid , please recheck the schema you have provided");
+                DataException.class,
+                () -> converter.configure(Map.of(JsonConverterConfig.SCHEMA_CONTENT_CONFIG, "{ \"string\" }"), false),
+                " Provided schema is invalid , please recheck the schema you have provided");
     }
 
     @Test
@@ -1066,7 +1061,7 @@ public class JsonConverterTest {
         assertTrue(env.get(JsonSchema.ENVELOPE_SCHEMA_FIELD_NAME).isNull());
         assertTrue(env.has(JsonSchema.ENVELOPE_PAYLOAD_FIELD_NAME));
     }
-    
+
     private void assertStructSchemaEqual(Schema schema, Struct struct) {
         converter.fromConnectData(TOPIC, schema, struct);
         assertEquals(schema, struct.schema());

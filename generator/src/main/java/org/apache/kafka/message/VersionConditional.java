@@ -172,7 +172,7 @@ public final class VersionConditional {
     private void generateAlwaysFalseCheck(Versions ifNotVersions, CodeBuffer buffer) {
         if (!allowMembershipCheckAlwaysFalse) {
             throw new RuntimeException("Version ranges " + containingVersions +
-                " and " + possibleVersions + " have no versions in common.");
+                    " and " + possibleVersions + " have no versions in common.");
         }
         if (ifNotMember != null) {
             if (alwaysEmitBlockScope) {
@@ -207,7 +207,7 @@ public final class VersionConditional {
                 generateAlwaysFalseCheck(ifNotVersions, buffer);
             }
         } else if (possibleVersions.highest() >= containingVersions.lowest() &&
-                    (possibleVersions.lowest() <= containingVersions.highest())) {
+                (possibleVersions.lowest() <= containingVersions.highest())) {
             if (possibleVersions.highest() > containingVersions.highest()) {
                 generateUpperRangeCheck(ifVersions, ifNotVersions, buffer);
             } else {

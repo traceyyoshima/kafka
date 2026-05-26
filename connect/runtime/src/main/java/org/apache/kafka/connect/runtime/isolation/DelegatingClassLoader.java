@@ -92,8 +92,8 @@ public class DelegatingClassLoader extends URLClassLoader {
 
         ClassLoader pluginLoader = findPluginLoader(inner, name, range, connectorLoader);
         return pluginLoader instanceof PluginClassLoader
-            ? (PluginClassLoader) pluginLoader
-            : null;
+                ? (PluginClassLoader) pluginLoader
+                : null;
     }
 
     ClassLoader connectorLoader(String classOrAlias, VersionRange range) {
@@ -193,7 +193,7 @@ public class DelegatingClassLoader extends URLClassLoader {
 
     public void installDiscoveredPlugins(PluginScanResult scanResult) {
         scanResult.forEach(pluginDesc ->
-            pluginLoaders.computeIfAbsent(pluginDesc.className(), k -> new TreeMap<>())
+                pluginLoaders.computeIfAbsent(pluginDesc.className(), k -> new TreeMap<>())
                     .put(pluginDesc, pluginDesc.loader()));
         for (String pluginClassName : pluginLoaders.keySet()) {
             log.info("Added plugin '{}'", pluginClassName);
@@ -253,7 +253,7 @@ public class DelegatingClassLoader extends URLClassLoader {
         if (classpathPlugins.size() > 1) {
             throw new VersionedPluginLoadingException(String.format(
                     "Plugin %s has multiple versions specified in class path, "
-                            + "only one version is allowed in class path for loading a plugin with version range",
+                    + "only one version is allowed in class path for loading a plugin with version range",
                     fullName
             ));
         } else if (classpathPlugins.isEmpty()) {

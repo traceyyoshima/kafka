@@ -51,7 +51,6 @@ class MergedSortedCacheSessionStoreIterator extends AbstractMergedSortedCacheSto
         return new Windowed<>(Bytes.wrap(keyBytes), window);
     }
 
-
     @Override
     byte[] deserializeCacheValue(final LRUCacheEntry cacheEntry) {
         return cacheEntry.value();

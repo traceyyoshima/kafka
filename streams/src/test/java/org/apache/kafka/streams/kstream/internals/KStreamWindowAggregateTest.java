@@ -105,14 +105,14 @@ public class KStreamWindowAggregateTest {
 
     public static Stream<Arguments> testParameters() {
         return Stream.of(
-            Arguments.of(StrategyType.ON_WINDOW_UPDATE, true, false),
-            Arguments.of(StrategyType.ON_WINDOW_UPDATE, true, true),
-            Arguments.of(StrategyType.ON_WINDOW_UPDATE, false, false),
-            Arguments.of(StrategyType.ON_WINDOW_UPDATE, false, true),
-            Arguments.of(StrategyType.ON_WINDOW_CLOSE, true, false),
-            Arguments.of(StrategyType.ON_WINDOW_CLOSE, true, true),
-            Arguments.of(StrategyType.ON_WINDOW_CLOSE, false, false),
-            Arguments.of(StrategyType.ON_WINDOW_CLOSE, false, true)
+                Arguments.of(StrategyType.ON_WINDOW_UPDATE, true, false),
+                Arguments.of(StrategyType.ON_WINDOW_UPDATE, true, true),
+                Arguments.of(StrategyType.ON_WINDOW_UPDATE, false, false),
+                Arguments.of(StrategyType.ON_WINDOW_UPDATE, false, true),
+                Arguments.of(StrategyType.ON_WINDOW_CLOSE, true, false),
+                Arguments.of(StrategyType.ON_WINDOW_CLOSE, true, true),
+                Arguments.of(StrategyType.ON_WINDOW_CLOSE, false, false),
+                Arguments.of(StrategyType.ON_WINDOW_CLOSE, false, true)
         );
     }
 
@@ -175,51 +175,51 @@ public class KStreamWindowAggregateTest {
             assertTrue(supplier.theCapturedProcessor().processed().isEmpty());
         } else {
             assertEquals(
-                asList(
-                    new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0, 10)), "0+1", 0),
-                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)), "0+2", 1),
-                    new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(0, 10)), "0+3", 2),
-                    new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(0, 10)), "0+4", 3),
-                    new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0, 10)), "0+1+1", 4),
-                    new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0, 10)), "0+1+1+1",
-                        5),
-                    new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5, 15)), "0+1", 5),
-                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)), "0+2+2", 6),
-                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5, 15)), "0+2", 6),
-                    new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(0, 10)), "0+4+4", 7),
-                    new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(5, 15)), "0+4", 7),
-                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)), "0+2+2+2",
-                        8),
-                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5, 15)), "0+2+2", 8),
-                    new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(0, 10)), "0+3+3", 9),
-                    new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(5, 15)), "0+3", 9),
-                    new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5, 15)), "0+1+1",
-                        10),
-                    new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(10, 20)), "0+1", 10),
-                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5, 15)), "0+2+2+2",
-                        11),
-                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(10, 20)), "0+2", 11),
-                    new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(5, 15)), "0+4+4",
-                        12),
-                    new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(10, 20)), "0+4", 12),
-                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5, 15)), "0+2+2+2+2",
-                        13),
-                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(10, 20)), "0+2+2",
-                        13),
-                    new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(5, 15)), "0+3+3",
-                        14),
-                    new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(10, 20)), "0+3", 14),
-                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)), "0+2+2+2+1",
-                        8),
-                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)),
-                        "0+2+2+2+1+2", 8),
-                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)),
-                        "0+2+2+2+1+2+3", 9),
-                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5, 15)),
-                        "0+2+2+2+2+3", 13)
+                    asList(
+                            new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0, 10)), "0+1", 0),
+                            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)), "0+2", 1),
+                            new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(0, 10)), "0+3", 2),
+                            new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(0, 10)), "0+4", 3),
+                            new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0, 10)), "0+1+1", 4),
+                            new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0, 10)), "0+1+1+1",
+                                    5),
+                            new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5, 15)), "0+1", 5),
+                            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)), "0+2+2", 6),
+                            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5, 15)), "0+2", 6),
+                            new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(0, 10)), "0+4+4", 7),
+                            new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(5, 15)), "0+4", 7),
+                            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)), "0+2+2+2",
+                                    8),
+                            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5, 15)), "0+2+2", 8),
+                            new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(0, 10)), "0+3+3", 9),
+                            new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(5, 15)), "0+3", 9),
+                            new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5, 15)), "0+1+1",
+                                    10),
+                            new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(10, 20)), "0+1", 10),
+                            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5, 15)), "0+2+2+2",
+                                    11),
+                            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(10, 20)), "0+2", 11),
+                            new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(5, 15)), "0+4+4",
+                                    12),
+                            new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(10, 20)), "0+4", 12),
+                            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5, 15)), "0+2+2+2+2",
+                                    13),
+                            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(10, 20)), "0+2+2",
+                                    13),
+                            new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(5, 15)), "0+3+3",
+                                    14),
+                            new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(10, 20)), "0+3", 14),
+                            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)), "0+2+2+2+1",
+                                    8),
+                            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)),
+                                    "0+2+2+2+1+2", 8),
+                            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)),
+                                    "0+2+2+2+1+2+3", 9),
+                            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5, 15)),
+                                    "0+2+2+2+2+3", 13)
 
-                ),
-                supplier.theCapturedProcessor().processed()
+                    ),
+                    supplier.theCapturedProcessor().processed()
             );
         }
     }
@@ -278,13 +278,13 @@ public class KStreamWindowAggregateTest {
         inputTopic1.pipeInput("A", "1", 15L);
 
         final List<MockApiProcessor<Windowed<String>, String, Void, Void>> processors = supplier.capturedProcessors(
-            3);
+                3);
 
         processors.get(0).checkAndClearProcessResult(
-            new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0, 10)), "0+1+1", 9),
-            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)), "0+2", 1),
-            new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(0, 10)), "0+3", 2),
-            new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(0, 10)), "0+4", 3)
+                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0, 10)), "0+1+1", 9),
+                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)), "0+2", 1),
+                new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(0, 10)), "0+3", 2),
+                new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(0, 10)), "0+4", 3)
         );
         processors.get(1).checkAndClearProcessResult();
         processors.get(2).checkAndClearProcessResult();
@@ -357,12 +357,12 @@ public class KStreamWindowAggregateTest {
 
         }
         processors.get(2).checkAndClearProcessResult(
-            new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5, 15)), "0+1+1%0+a",
-                10),
-            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5, 15)), "0+2+2%0+b",
-                13),
-            new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(5, 15)), "0+4%0+d+d",
-                12)
+                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5, 15)), "0+1+1%0+a",
+                        10),
+                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5, 15)), "0+2+2%0+b",
+                        13),
+                new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(5, 15)), "0+4%0+d+d",
+                        12)
         );
     }
 
@@ -376,15 +376,15 @@ public class KStreamWindowAggregateTest {
         inputTopic1.pipeInput("A", "1", 9L);
 
         final List<MockApiProcessor<Windowed<String>, String, Void, Void>> processors = supplier.capturedProcessors(
-            3);
+                3);
 
         processors.get(0).checkAndClearProcessResult(
-            new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0, 10)), "0+1", 0),
-            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)), "0+2", 1),
-            new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(0, 10)), "0+3", 2),
-            new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(0, 10)), "0+4", 3),
-            new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0, 10)), "0+1+1", 9),
-            new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5, 15)), "0+1", 9)
+                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0, 10)), "0+1", 0),
+                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)), "0+2", 1),
+                new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(0, 10)), "0+3", 2),
+                new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(0, 10)), "0+4", 3),
+                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0, 10)), "0+1+1", 9),
+                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5, 15)), "0+1", 9)
         );
         processors.get(1).checkAndClearProcessResult();
         processors.get(2).checkAndClearProcessResult();
@@ -396,18 +396,18 @@ public class KStreamWindowAggregateTest {
         inputTopic1.pipeInput("C", "3", 9L);
 
         processors.get(0).checkAndClearProcessResult(
-            new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0, 10)), "0+1+1+1",
-                9),
-            new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5, 15)), "0+1+1", 9),
-            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)), "0+2+2", 6),
-            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5, 15)), "0+2", 6),
-            new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(0, 10)), "0+4+4", 7),
-            new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(5, 15)), "0+4", 7),
-            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)), "0+2+2+2",
-                8),
-            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5, 15)), "0+2+2", 8),
-            new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(0, 10)), "0+3+3", 9),
-            new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(5, 15)), "0+3", 9)
+                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0, 10)), "0+1+1+1",
+                        9),
+                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5, 15)), "0+1+1", 9),
+                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)), "0+2+2", 6),
+                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5, 15)), "0+2", 6),
+                new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(0, 10)), "0+4+4", 7),
+                new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(5, 15)), "0+4", 7),
+                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)), "0+2+2+2",
+                        8),
+                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5, 15)), "0+2+2", 8),
+                new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(0, 10)), "0+3+3", 9),
+                new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(5, 15)), "0+3", 9)
         );
         processors.get(1).checkAndClearProcessResult();
         processors.get(2).checkAndClearProcessResult();
@@ -420,21 +420,21 @@ public class KStreamWindowAggregateTest {
 
         processors.get(0).checkAndClearProcessResult();
         processors.get(1).checkAndClearProcessResult(
-            new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0, 10)), "0+a", 0),
-            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)), "0+b", 1),
-            new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(0, 10)), "0+c", 2),
-            new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(15, 25)), "0+d", 20),
-            new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(20, 30)), "0+d", 20),
-            new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(15, 25)), "0+a", 20),
-            new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(20, 30)), "0+a", 20)
+                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0, 10)), "0+a", 0),
+                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)), "0+b", 1),
+                new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(0, 10)), "0+c", 2),
+                new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(15, 25)), "0+d", 20),
+                new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(20, 30)), "0+d", 20),
+                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(15, 25)), "0+a", 20),
+                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(20, 30)), "0+a", 20)
         );
         processors.get(2).checkAndClearProcessResult(
-            new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0, 10)),
-                "0+1+1+1%0+a", 9),
-            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)),
-                "0+2+2+2%0+b", 8),
-            new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(0, 10)), "0+3+3%0+c",
-                9));
+                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0, 10)),
+                        "0+1+1+1%0+a", 9),
+                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)),
+                        "0+2+2+2%0+b", 8),
+                new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(0, 10)), "0+3+3%0+c",
+                        9));
 
         inputTopic2.pipeInput("A", "a", 5L);
         inputTopic2.pipeInput("B", "b", 6L);
@@ -444,33 +444,33 @@ public class KStreamWindowAggregateTest {
 
         processors.get(0).checkAndClearProcessResult();
         processors.get(1).checkAndClearProcessResult(
-            new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0, 10)), "0+a+a", 5),
-            new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5, 15)), "0+a", 5),
-            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)), "0+b+b", 6),
-            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5, 15)), "0+b", 6),
-            new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(0, 10)), "0+d", 7),
-            new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(5, 15)), "0+d", 7),
-            new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(10, 20)), "0+d", 18),
-            new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(15, 25)), "0+d+d",
-                20),
-            new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(15, 25)), "0+a+a",
-                21),
-            new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(20, 30)), "0+a+a",
-                21)
+                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0, 10)), "0+a+a", 5),
+                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5, 15)), "0+a", 5),
+                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)), "0+b+b", 6),
+                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5, 15)), "0+b", 6),
+                new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(0, 10)), "0+d", 7),
+                new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(5, 15)), "0+d", 7),
+                new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(10, 20)), "0+d", 18),
+                new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(15, 25)), "0+d+d",
+                        20),
+                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(15, 25)), "0+a+a",
+                        21),
+                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(20, 30)), "0+a+a",
+                        21)
         );
         processors.get(2).checkAndClearProcessResult(
-            new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0, 10)),
-                "0+1+1+1%0+a+a", 9),
-            new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5, 15)), "0+1+1%0+a",
-                9),
-            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)),
-                "0+2+2+2%0+b+b", 8),
-            new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5, 15)), "0+2+2%0+b",
-                8),
-            new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(0, 10)), "0+4+4%0+d",
-                7),
-            new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(5, 15)), "0+4%0+d",
-                7)
+                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0, 10)),
+                        "0+1+1+1%0+a+a", 9),
+                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5, 15)), "0+1+1%0+a",
+                        9),
+                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0, 10)),
+                        "0+2+2+2%0+b+b", 8),
+                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5, 15)), "0+2+2%0+b",
+                        8),
+                new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(0, 10)), "0+4+4%0+d",
+                        7),
+                new KeyValueTimestamp<>(new Windowed<>("D", new TimeWindow(5, 15)), "0+4%0+d",
+                        7)
         );
     }
 
@@ -486,16 +486,16 @@ public class KStreamWindowAggregateTest {
             .windowedBy(TimeWindows.ofSizeWithNoGrace(ofMillis(10)).advanceBy(ofMillis(5)))
             .emitStrategy(emitStrategy)
             .aggregate(
-                MockInitializer.STRING_INIT,
-                MockAggregator.toStringInstance("+"),
-                setMaterializedCache(Materialized.<String, String, WindowStore<Bytes, byte[]>>as("topic1-Canonicalized").withValueSerde(Serdes.String()))
-            );
+                    MockInitializer.STRING_INIT,
+                    MockAggregator.toStringInstance("+"),
+                    setMaterializedCache(Materialized.<String, String, WindowStore<Bytes, byte[]>>as("topic1-Canonicalized").withValueSerde(Serdes.String()))
+        );
 
         try (final LogCaptureAppender appender = LogCaptureAppender.createAndRegister(KStreamWindowAggregate.class);
              final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
 
             final TestInputTopic<String, String> inputTopic =
-                driver.createInputTopic(topic, new StringSerializer(), new StringSerializer());
+                    driver.createInputTopic(topic, new StringSerializer(), new StringSerializer());
             inputTopic.pipeInput(null, "1");
 
             assertThat(appender.getMessages(), hasItem("Skipping record due to null key. topic=[topic] partition=[0] offset=[0]"));
@@ -514,19 +514,19 @@ public class KStreamWindowAggregateTest {
             .windowedBy(TimeWindows.ofSizeAndGrace(ofMillis(10), ofMillis(90)).advanceBy(ofMillis(5)))
             .emitStrategy(emitStrategy)
             .aggregate(
-                () -> "",
-                MockAggregator.toStringInstance("+"),
-                setMaterializedCache(Materialized.<String, String, WindowStore<Bytes, byte[]>>as("topic1-Canonicalized")
-                    .withValueSerde(Serdes.String())
-                    .withLoggingDisabled()
-                    .withRetention(Duration.ofMillis(100)))
-            )
+                    () -> "",
+                    MockAggregator.toStringInstance("+"),
+                    setMaterializedCache(Materialized.<String, String, WindowStore<Bytes, byte[]>>as("topic1-Canonicalized")
+                        .withValueSerde(Serdes.String())
+                        .withLoggingDisabled()
+                        .withRetention(Duration.ofMillis(100)))
+        )
             .toStream()
             .map((key, value) -> new KeyValue<>(key.toString(), value))
             .to("output");
 
         try (final LogCaptureAppender appender = LogCaptureAppender.createAndRegister(KStreamWindowAggregate.class);
-            final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
+                final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
 
             final TestInputTopic<String, String> inputTopic =
                     driver.createInputTopic(topic, new StringSerializer(), new StringSerializer());
@@ -542,20 +542,20 @@ public class KStreamWindowAggregateTest {
             inputTopic.pipeInput("k", "106", 106L);
 
             assertLatenessMetrics(
-                driver,
-                is(7.0), // how many events get dropped
-                is(100.0), // k:0 is 100ms late, since its time is 0, but it arrives at stream time 100.
-                is(67.9) // (0 + 100 + 99 + 98 + 97 + 96 + 95 + 94 + 0) / 10
+                    driver,
+                    is(7.0), // how many events get dropped
+                    is(100.0), // k:0 is 100ms late, since its time is 0, but it arrives at stream time 100.
+                    is(67.9) // (0 + 100 + 99 + 98 + 97 + 96 + 95 + 94 + 0) / 10
             );
 
             assertThat(appender.getMessages(), hasItems(
-                "Skipping record for expired window. topic=[topic] partition=[0] offset=[1] timestamp=[0] window=[0,10) expiration=[10] streamTime=[100]",
-                "Skipping record for expired window. topic=[topic] partition=[0] offset=[2] timestamp=[1] window=[0,10) expiration=[10] streamTime=[100]",
-                "Skipping record for expired window. topic=[topic] partition=[0] offset=[3] timestamp=[2] window=[0,10) expiration=[10] streamTime=[100]",
-                "Skipping record for expired window. topic=[topic] partition=[0] offset=[4] timestamp=[3] window=[0,10) expiration=[10] streamTime=[100]",
-                "Skipping record for expired window. topic=[topic] partition=[0] offset=[5] timestamp=[4] window=[0,10) expiration=[10] streamTime=[100]",
-                "Skipping record for expired window. topic=[topic] partition=[0] offset=[6] timestamp=[5] window=[0,10) expiration=[10] streamTime=[100]",
-                "Skipping record for expired window. topic=[topic] partition=[0] offset=[7] timestamp=[6] window=[0,10) expiration=[10] streamTime=[100]"
+                    "Skipping record for expired window. topic=[topic] partition=[0] offset=[1] timestamp=[0] window=[0,10) expiration=[10] streamTime=[100]",
+                    "Skipping record for expired window. topic=[topic] partition=[0] offset=[2] timestamp=[1] window=[0,10) expiration=[10] streamTime=[100]",
+                    "Skipping record for expired window. topic=[topic] partition=[0] offset=[3] timestamp=[2] window=[0,10) expiration=[10] streamTime=[100]",
+                    "Skipping record for expired window. topic=[topic] partition=[0] offset=[4] timestamp=[3] window=[0,10) expiration=[10] streamTime=[100]",
+                    "Skipping record for expired window. topic=[topic] partition=[0] offset=[5] timestamp=[4] window=[0,10) expiration=[10] streamTime=[100]",
+                    "Skipping record for expired window. topic=[topic] partition=[0] offset=[6] timestamp=[5] window=[0,10) expiration=[10] streamTime=[100]",
+                    "Skipping record for expired window. topic=[topic] partition=[0] offset=[7] timestamp=[6] window=[0,10) expiration=[10] streamTime=[100]"
             ));
 
             final TestOutputTopic<String, String> outputTopic =
@@ -564,25 +564,25 @@ public class KStreamWindowAggregateTest {
             if (emitFinal) {
                 // Window close time is 15 when timestamp is 105
                 assertThat(outputTopic.readRecord(),
-                    equalTo(new TestRecord<>("[k@5/15]", "+5+6", null, 6L)));
+                        equalTo(new TestRecord<>("[k@5/15]", "+5+6", null, 6L)));
                 assertEmittedMetrics(driver, is(1.0));
             } else {
                 assertThat(outputTopic.readRecord(),
-                    equalTo(new TestRecord<>("[k@95/105]", "+100", null, 100L)));
+                        equalTo(new TestRecord<>("[k@95/105]", "+100", null, 100L)));
                 assertThat(outputTopic.readRecord(),
-                    equalTo(new TestRecord<>("[k@100/110]", "+100", null, 100L)));
+                        equalTo(new TestRecord<>("[k@100/110]", "+100", null, 100L)));
                 assertThat(outputTopic.readRecord(),
-                    equalTo(new TestRecord<>("[k@5/15]", "+5", null, 5L)));
+                        equalTo(new TestRecord<>("[k@5/15]", "+5", null, 5L)));
                 assertThat(outputTopic.readRecord(),
-                    equalTo(new TestRecord<>("[k@5/15]", "+5+6", null, 6L)));
+                        equalTo(new TestRecord<>("[k@5/15]", "+5+6", null, 6L)));
                 assertThat(outputTopic.readRecord(),
-                    equalTo(new TestRecord<>("[k@100/110]", "+100+105", null, 105L)));
+                        equalTo(new TestRecord<>("[k@100/110]", "+100+105", null, 105L)));
                 assertThat(outputTopic.readRecord(),
-                    equalTo(new TestRecord<>("[k@105/115]", "+105", null, 105L)));
+                        equalTo(new TestRecord<>("[k@105/115]", "+105", null, 105L)));
                 assertThat(outputTopic.readRecord(),
-                    equalTo(new TestRecord<>("[k@100/110]", "+100+105+106", null, 106L)));
+                        equalTo(new TestRecord<>("[k@100/110]", "+100+105+106", null, 106L)));
                 assertThat(outputTopic.readRecord(),
-                    equalTo(new TestRecord<>("[k@105/115]", "+105+106", null, 106L)));
+                        equalTo(new TestRecord<>("[k@105/115]", "+105+106", null, 106L)));
             }
             assertTrue(outputTopic.isEmpty());
         }
@@ -600,10 +600,10 @@ public class KStreamWindowAggregateTest {
             .windowedBy(TimeWindows.ofSizeAndGrace(ofMillis(10), ofMillis(90)).advanceBy(ofMillis(10)))
             .emitStrategy(emitStrategy)
             .aggregate(
-                () -> "",
-                MockAggregator.toStringInstance("+"),
-                setMaterializedCache(Materialized.<String, String, WindowStore<Bytes, byte[]>>as("topic1-Canonicalized").withValueSerde(Serdes.String()).withLoggingDisabled())
-            )
+                    () -> "",
+                    MockAggregator.toStringInstance("+"),
+                    setMaterializedCache(Materialized.<String, String, WindowStore<Bytes, byte[]>>as("topic1-Canonicalized").withValueSerde(Serdes.String()).withLoggingDisabled())
+        )
             .toStream()
             .map((key, value) -> new KeyValue<>(key.toString(), value))
             .to("output");
@@ -625,21 +625,21 @@ public class KStreamWindowAggregateTest {
             assertLatenessMetrics(driver, is(7.0), is(194.0), is(97.375));
 
             assertThat(appender.getMessages(), hasItems(
-                "Skipping record for expired window. topic=[topic] partition=[0] offset=[1] timestamp=[100] window=[100,110) expiration=[110] streamTime=[200]",
-                "Skipping record for expired window. topic=[topic] partition=[0] offset=[2] timestamp=[101] window=[100,110) expiration=[110] streamTime=[200]",
-                "Skipping record for expired window. topic=[topic] partition=[0] offset=[3] timestamp=[102] window=[100,110) expiration=[110] streamTime=[200]",
-                "Skipping record for expired window. topic=[topic] partition=[0] offset=[4] timestamp=[103] window=[100,110) expiration=[110] streamTime=[200]",
-                "Skipping record for expired window. topic=[topic] partition=[0] offset=[5] timestamp=[104] window=[100,110) expiration=[110] streamTime=[200]",
-                "Skipping record for expired window. topic=[topic] partition=[0] offset=[6] timestamp=[105] window=[100,110) expiration=[110] streamTime=[200]",
-                "Skipping record for expired window. topic=[topic] partition=[0] offset=[7] timestamp=[6] window=[0,10) expiration=[110] streamTime=[200]"
+                    "Skipping record for expired window. topic=[topic] partition=[0] offset=[1] timestamp=[100] window=[100,110) expiration=[110] streamTime=[200]",
+                    "Skipping record for expired window. topic=[topic] partition=[0] offset=[2] timestamp=[101] window=[100,110) expiration=[110] streamTime=[200]",
+                    "Skipping record for expired window. topic=[topic] partition=[0] offset=[3] timestamp=[102] window=[100,110) expiration=[110] streamTime=[200]",
+                    "Skipping record for expired window. topic=[topic] partition=[0] offset=[4] timestamp=[103] window=[100,110) expiration=[110] streamTime=[200]",
+                    "Skipping record for expired window. topic=[topic] partition=[0] offset=[5] timestamp=[104] window=[100,110) expiration=[110] streamTime=[200]",
+                    "Skipping record for expired window. topic=[topic] partition=[0] offset=[6] timestamp=[105] window=[100,110) expiration=[110] streamTime=[200]",
+                    "Skipping record for expired window. topic=[topic] partition=[0] offset=[7] timestamp=[6] window=[0,10) expiration=[110] streamTime=[200]"
             ));
 
             if (!emitFinal) {
                 final TestOutputTopic<String, String> outputTopic =
-                    driver.createOutputTopic("output", new StringDeserializer(),
-                        new StringDeserializer());
+                        driver.createOutputTopic("output", new StringDeserializer(),
+                                new StringDeserializer());
                 assertThat(outputTopic.readRecord(),
-                    equalTo(new TestRecord<>("[k@200/210]", "+100", null, 200L)));
+                        equalTo(new TestRecord<>("[k@200/210]", "+100", null, 200L)));
                 assertTrue(outputTopic.isEmpty());
             }
         }
@@ -658,11 +658,11 @@ public class KStreamWindowAggregateTest {
             props.put(InternalConfig.EMIT_INTERVAL_MS_KSTREAMS_WINDOWED_AGGREGATION, 0);
             final MockInternalProcessorContext<Windowed<String>, Change<String>> context = makeContext(stateDir, windowSize);
             final KStreamWindowAggregate<String, String, String, TimeWindow> processorSupplier = new KStreamWindowAggregate<>(
-                windows,
-                storeFactory,
-                emitStrategy,
-                MockInitializer.STRING_INIT,
-                MockAggregator.TOSTRING_ADDER
+                    windows,
+                    storeFactory,
+                    emitStrategy,
+                    MockInitializer.STRING_INIT,
+                    MockAggregator.TOSTRING_ADDER
             );
             final Processor<String, String, Windowed<String>, Change<String>> processor = processorSupplier.get();
             processor.init(context);
@@ -676,23 +676,23 @@ public class KStreamWindowAggregateTest {
             List<CapturedForward<? extends Windowed<String>, ? extends Change<String>>> expected;
             if (emitFinal) {
                 expected = asList(
-                    new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(0, 10)),
-                        new Change<>("0+1", null), 0)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(0, 10)),
-                        new Change<>("0+2", null), 5))
+                        new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(0, 10)),
+                            new Change<>("0+1", null), 0)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(0, 10)),
+                            new Change<>("0+2", null), 5))
                 );
             } else {
                 expected = asList(
-                    new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(0, 10)),
-                        new Change<>("0+1", null), 0)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(0, 10)),
-                        new Change<>("0+2", null), 5)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(5, 15)),
-                        new Change<>("0+2", null), 5)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("C", new TimeWindow(10, 20)),
-                        new Change<>("0+3", null), 15)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("C", new TimeWindow(15, 25)),
-                        new Change<>("0+3", null), 15))
+                        new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(0, 10)),
+                            new Change<>("0+1", null), 0)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(0, 10)),
+                            new Change<>("0+2", null), 5)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(5, 15)),
+                            new Change<>("0+2", null), 5)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("C", new TimeWindow(10, 20)),
+                            new Change<>("0+3", null), 15)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("C", new TimeWindow(15, 25)),
+                            new Change<>("0+3", null), 15))
                 );
             }
             assertThat(forwarded, is(expected));
@@ -705,10 +705,10 @@ public class KStreamWindowAggregateTest {
                 assertTrue(forwarded.isEmpty());
             } else {
                 expected = asList(
-                    new CapturedForward<>(new Record<>(new Windowed<>("D", new TimeWindow(10, 20)),
-                        new Change<>("0+4", null), 15)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("D", new TimeWindow(15, 25)),
-                        new Change<>("0+4", null), 15))
+                        new CapturedForward<>(new Record<>(new Windowed<>("D", new TimeWindow(10, 20)),
+                            new Change<>("0+4", null), 15)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("D", new TimeWindow(15, 25)),
+                            new Change<>("0+4", null), 15))
                 );
                 assertThat(forwarded, is(expected));
             }
@@ -721,10 +721,10 @@ public class KStreamWindowAggregateTest {
                 assertTrue(forwarded.isEmpty());
             } else {
                 expected = asList(
-                    new CapturedForward<>(new Record<>(new Windowed<>("E", new TimeWindow(10, 20)),
-                        new Change<>("0+5", null), 19)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("E", new TimeWindow(15, 25)),
-                        new Change<>("0+5", null), 19))
+                        new CapturedForward<>(new Record<>(new Windowed<>("E", new TimeWindow(10, 20)),
+                            new Change<>("0+5", null), 19)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("E", new TimeWindow(15, 25)),
+                            new Change<>("0+5", null), 19))
                 );
                 assertThat(forwarded, is(expected));
             }
@@ -748,11 +748,11 @@ public class KStreamWindowAggregateTest {
             props.put(InternalConfig.EMIT_INTERVAL_MS_KSTREAMS_WINDOWED_AGGREGATION, 0);
             final MockInternalProcessorContext<Windowed<String>, Change<String>> context = makeContext(stateDir, windowSize);
             final KStreamWindowAggregate<String, String, String, TimeWindow> processorSupplier = new KStreamWindowAggregate<>(
-                windows,
-                storeFactory,
-                emitStrategy,
-                MockInitializer.STRING_INIT,
-                MockAggregator.TOSTRING_ADDER
+                    windows,
+                    storeFactory,
+                    emitStrategy,
+                    MockInitializer.STRING_INIT,
+                    MockAggregator.TOSTRING_ADDER
             );
             final Processor<String, String, Windowed<String>, Change<String>> processor = processorSupplier.get();
             processor.init(context);
@@ -768,33 +768,33 @@ public class KStreamWindowAggregateTest {
             final List<CapturedForward<? extends Windowed<String>, ? extends Change<String>>> expected;
             if (emitFinal) {
                 expected = asList(
-                    new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(0, 10)),
-                        new Change<>("0+1+1", null), 5)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(5, 15)),
-                        new Change<>("0+1", null), 5)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(5, 15)),
-                        new Change<>("0+2", null), 10))
+                        new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(0, 10)),
+                            new Change<>("0+1+1", null), 5)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(5, 15)),
+                            new Change<>("0+1", null), 5)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(5, 15)),
+                            new Change<>("0+2", null), 10))
                 );
             } else {
                 expected = asList(
-                    new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(0, 10)),
-                        new Change<>("0+1", null), 0)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(0, 10)),
-                        new Change<>("0+1+1", null), 5)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(5, 15)),
-                        new Change<>("0+1", null), 5)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(5, 15)),
-                        new Change<>("0+2", null), 10)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(10, 20)),
-                        new Change<>("0+2", null), 10)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("C", new TimeWindow(10, 20)),
-                        new Change<>("0+3", null), 15)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("C", new TimeWindow(15, 25)),
-                        new Change<>("0+3", null), 15)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("D", new TimeWindow(15, 25)),
-                        new Change<>("0+4", null), 20)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("D", new TimeWindow(20, 30)),
-                        new Change<>("0+4", null), 20))
+                        new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(0, 10)),
+                            new Change<>("0+1", null), 0)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(0, 10)),
+                            new Change<>("0+1+1", null), 5)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(5, 15)),
+                            new Change<>("0+1", null), 5)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(5, 15)),
+                            new Change<>("0+2", null), 10)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(10, 20)),
+                            new Change<>("0+2", null), 10)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("C", new TimeWindow(10, 20)),
+                            new Change<>("0+3", null), 15)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("C", new TimeWindow(15, 25)),
+                            new Change<>("0+3", null), 15)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("D", new TimeWindow(15, 25)),
+                            new Change<>("0+4", null), 20)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("D", new TimeWindow(20, 30)),
+                            new Change<>("0+4", null), 20))
                 );
             }
             assertThat(forwarded, is(expected));
@@ -817,11 +817,11 @@ public class KStreamWindowAggregateTest {
             props.put(InternalConfig.EMIT_INTERVAL_MS_KSTREAMS_WINDOWED_AGGREGATION, 1000L);
             final MockInternalProcessorContext<Windowed<String>, Change<String>> context = makeContext(stateDir, windowSize);
             final KStreamWindowAggregate<String, String, String, TimeWindow> processorSupplier = new KStreamWindowAggregate<>(
-                windows,
-                storeFactory,
-                emitStrategy,
-                MockInitializer.STRING_INIT,
-                MockAggregator.TOSTRING_ADDER
+                    windows,
+                    storeFactory,
+                    emitStrategy,
+                    MockInitializer.STRING_INIT,
+                    MockAggregator.TOSTRING_ADDER
             );
             final Processor<String, String, Windowed<String>, Change<String>> processor = processorSupplier.get();
             processor.init(context);
@@ -837,20 +837,20 @@ public class KStreamWindowAggregateTest {
                 assertTrue(forwarded.isEmpty());
             } else {
                 final List<CapturedForward<? extends Windowed<String>, ? extends Change<String>>> expected = asList(
-                    new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(0, 10)),
-                        new Change<>("0+1", null), 0)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(0, 10)),
-                        new Change<>("0+1+1", null), 5)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(5, 15)),
-                        new Change<>("0+1", null), 5)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(5, 15)),
-                        new Change<>("0+2", null), 10)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(10, 20)),
-                        new Change<>("0+2", null), 10)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("C", new TimeWindow(10, 20)),
-                        new Change<>("0+3", null), 15)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("C", new TimeWindow(15, 25)),
-                        new Change<>("0+3", null), 15))
+                        new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(0, 10)),
+                            new Change<>("0+1", null), 0)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(0, 10)),
+                            new Change<>("0+1+1", null), 5)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(5, 15)),
+                            new Change<>("0+1", null), 5)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(5, 15)),
+                            new Change<>("0+2", null), 10)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(10, 20)),
+                            new Change<>("0+2", null), 10)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("C", new TimeWindow(10, 20)),
+                            new Change<>("0+3", null), 15)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("C", new TimeWindow(15, 25)),
+                            new Change<>("0+3", null), 15))
                 );
                 assertThat(forwarded, is(expected));
             }
@@ -864,19 +864,19 @@ public class KStreamWindowAggregateTest {
             List<CapturedForward<? extends Windowed<String>, ? extends Change<String>>> expected;
             if (emitFinal) {
                 expected = asList(
-                    new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(0, 10)),
-                        new Change<>("0+1+1", null), 5)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(5, 15)),
-                        new Change<>("0+1", null), 5)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(5, 15)),
-                        new Change<>("0+2", null), 10))
+                        new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(0, 10)),
+                            new Change<>("0+1+1", null), 5)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(5, 15)),
+                            new Change<>("0+1", null), 5)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(5, 15)),
+                            new Change<>("0+2", null), 10))
                 );
             } else {
                 expected = asList(
-                    new CapturedForward<>(new Record<>(new Windowed<>("D", new TimeWindow(15, 25)),
-                        new Change<>("0+4", null), 20)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("D", new TimeWindow(20, 30)),
-                        new Change<>("0+4", null), 20))
+                        new CapturedForward<>(new Record<>(new Windowed<>("D", new TimeWindow(15, 25)),
+                            new Change<>("0+4", null), 20)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("D", new TimeWindow(20, 30)),
+                            new Change<>("0+4", null), 20))
                 );
             }
             assertThat(forwarded, is(expected));
@@ -891,10 +891,10 @@ public class KStreamWindowAggregateTest {
                 assertTrue(forwarded.isEmpty());
             } else {
                 expected = asList(
-                    new CapturedForward<>(new Record<>(new Windowed<>("E", new TimeWindow(35, 45)),
-                        new Change<>("0+5", null), 40)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("E", new TimeWindow(40, 50)),
-                        new Change<>("0+5", null), 40))
+                        new CapturedForward<>(new Record<>(new Windowed<>("E", new TimeWindow(35, 45)),
+                            new Change<>("0+5", null), 40)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("E", new TimeWindow(40, 50)),
+                            new Change<>("0+5", null), 40))
                 );
                 assertThat(forwarded, is(expected));
             }
@@ -918,11 +918,11 @@ public class KStreamWindowAggregateTest {
             props.put(InternalConfig.EMIT_INTERVAL_MS_KSTREAMS_WINDOWED_AGGREGATION, 0);
             final MockInternalProcessorContext<Windowed<String>, Change<String>> context = makeContext(stateDir, windowSize);
             final KStreamWindowAggregate<String, String, String, TimeWindow> processorSupplier = new KStreamWindowAggregate<>(
-                windows,
-                storeFactory,
-                emitStrategy,
-                MockInitializer.STRING_INIT,
-                MockAggregator.TOSTRING_ADDER
+                    windows,
+                    storeFactory,
+                    emitStrategy,
+                    MockInitializer.STRING_INIT,
+                    MockAggregator.TOSTRING_ADDER
             );
             final Processor<String, String, Windowed<String>, Change<String>> processor = processorSupplier.get();
             processor.init(context);
@@ -936,23 +936,23 @@ public class KStreamWindowAggregateTest {
             List<CapturedForward<? extends Windowed<String>, ? extends Change<String>>> expected;
             if (emitFinal) {
                 expected = asList(
-                    new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(0, 10)),
-                        new Change<>("0+1", null), 0)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(0, 10)),
-                        new Change<>("0+2", null), 5))
+                        new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(0, 10)),
+                            new Change<>("0+1", null), 0)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(0, 10)),
+                            new Change<>("0+2", null), 5))
                 );
             } else {
                 expected = asList(
-                    new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(0, 10)),
-                        new Change<>("0+1", null), 0)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(0, 10)),
-                        new Change<>("0+2", null), 5)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(5, 15)),
-                        new Change<>("0+2", null), 5)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("C", new TimeWindow(10, 20)),
-                        new Change<>("0+3", null), 15)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("C", new TimeWindow(15, 25)),
-                        new Change<>("0+3", null), 15))
+                        new CapturedForward<>(new Record<>(new Windowed<>("A", new TimeWindow(0, 10)),
+                            new Change<>("0+1", null), 0)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(0, 10)),
+                            new Change<>("0+2", null), 5)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(5, 15)),
+                            new Change<>("0+2", null), 5)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("C", new TimeWindow(10, 20)),
+                            new Change<>("0+3", null), 15)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("C", new TimeWindow(15, 25)),
+                            new Change<>("0+3", null), 15))
                 );
             }
             assertThat(forwarded, is(expected));
@@ -965,17 +965,17 @@ public class KStreamWindowAggregateTest {
             if (emitFinal) {
                 // Don't output old windows for new processor
                 expected = asList(
-                    new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(5, 15)),
-                        new Change<>("0+2", null), 5)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("C", new TimeWindow(10, 20)),
-                        new Change<>("0+3", null), 15))
+                        new CapturedForward<>(new Record<>(new Windowed<>("B", new TimeWindow(5, 15)),
+                            new Change<>("0+2", null), 5)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("C", new TimeWindow(10, 20)),
+                            new Change<>("0+3", null), 15))
                 );
             } else {
                 expected = asList(
-                    new CapturedForward<>(new Record<>(new Windowed<>("D", new TimeWindow(20, 30)),
-                        new Change<>("0+4", null), 25)),
-                    new CapturedForward<>(new Record<>(new Windowed<>("D", new TimeWindow(25, 35)),
-                        new Change<>("0+4", null), 25))
+                        new CapturedForward<>(new Record<>(new Windowed<>("D", new TimeWindow(20, 30)),
+                            new Change<>("0+4", null), 25)),
+                        new CapturedForward<>(new Record<>(new Windowed<>("D", new TimeWindow(25, 35)),
+                            new Change<>("0+4", null), 25))
                 );
             }
             assertThat(forwarded, is(expected));
@@ -993,22 +993,22 @@ public class KStreamWindowAggregateTest {
         setup(inputType, inputWithCache, withHeaders);
         if (emitFinal) {
             final IllegalArgumentException e = assertThrows(
-                IllegalArgumentException.class, () -> new KStreamWindowAggregate<>(
+                    IllegalArgumentException.class, () -> new KStreamWindowAggregate<>(
+                        UnlimitedWindows.of(),
+                        storeFactory,
+                        emitStrategy,
+                        MockInitializer.STRING_INIT,
+                        MockAggregator.TOSTRING_ADDER)
+            );
+            assertThat(e.getMessage(), is("ON_WINDOW_CLOSE strategy is only supported for "
+                    + "TimeWindows and SlidingWindows for TimeWindowedKStream"));
+        } else {
+            new KStreamWindowAggregate<>(
                     UnlimitedWindows.of(),
                     storeFactory,
                     emitStrategy,
                     MockInitializer.STRING_INIT,
-                    MockAggregator.TOSTRING_ADDER)
-            );
-            assertThat(e.getMessage(), is("ON_WINDOW_CLOSE strategy is only supported for "
-                + "TimeWindows and SlidingWindows for TimeWindowedKStream"));
-        } else {
-            new KStreamWindowAggregate<>(
-                UnlimitedWindows.of(),
-                storeFactory,
-                emitStrategy,
-                MockInitializer.STRING_INIT,
-                MockAggregator.TOSTRING_ADDER
+                    MockAggregator.TOSTRING_ADDER
             );
         }
     }
@@ -1017,18 +1017,18 @@ public class KStreamWindowAggregateTest {
         final WindowBytesStoreSupplier supplier;
         if (emitFinal) {
             supplier = RocksDbIndexedTimeOrderedWindowBytesStoreSupplier.create(
-                WINDOW_STORE_NAME,
-                Duration.ofDays(1),
-                Duration.ofMillis(windowSize),
-                false,
-                false
+                    WINDOW_STORE_NAME,
+                    Duration.ofDays(1),
+                    Duration.ofMillis(windowSize),
+                    false,
+                    false
             );
         } else {
             supplier = Stores.persistentTimestampedWindowStoreWithHeaders(
-                WINDOW_STORE_NAME,
-                Duration.ofDays(1),
-                Duration.ofMillis(windowSize),
-                false
+                    WINDOW_STORE_NAME,
+                    Duration.ofDays(1),
+                    Duration.ofMillis(windowSize),
+                    false
             );
         }
 
@@ -1040,9 +1040,9 @@ public class KStreamWindowAggregateTest {
 
     private MockInternalProcessorContext<Windowed<String>, Change<String>> makeContext(final File stateDir, final long windowSize) {
         final MockInternalProcessorContext<Windowed<String>, Change<String>> context = new MockInternalProcessorContext<>(
-            props,
-            new TaskId(0, 0),
-            stateDir
+                props,
+                new TaskId(0, 0),
+                stateDir
         );
 
         context.setCurrentNode(new ProcessorNode<>("testNode"));
@@ -1065,42 +1065,42 @@ public class KStreamWindowAggregateTest {
         final MetricName latenessMaxMetric;
         final MetricName latenessAvgMetric;
         dropTotalMetric = new MetricName(
-            "dropped-records-total",
-            "stream-task-metrics",
-            "The total number of dropped records",
-            mkMap(
-                mkEntry("thread-id", threadId),
-                mkEntry("task-id", "0_0")
-            )
+                "dropped-records-total",
+                "stream-task-metrics",
+                "The total number of dropped records",
+                mkMap(
+                        mkEntry("thread-id", threadId),
+                        mkEntry("task-id", "0_0")
+                )
         );
         dropRateMetric = new MetricName(
-            "dropped-records-rate",
-            "stream-task-metrics",
-            "The average number of dropped records per second",
-            mkMap(
-                mkEntry("thread-id", threadId),
-                mkEntry("task-id", "0_0")
-            )
+                "dropped-records-rate",
+                "stream-task-metrics",
+                "The average number of dropped records per second",
+                mkMap(
+                        mkEntry("thread-id", threadId),
+                        mkEntry("task-id", "0_0")
+                )
         );
         latenessMaxMetric = new MetricName(
-            "record-lateness-max",
-            "stream-task-metrics",
-            "The observed maximum lateness of records in milliseconds, measured by comparing the record "
+                "record-lateness-max",
+                "stream-task-metrics",
+                "The observed maximum lateness of records in milliseconds, measured by comparing the record "
                 + "timestamp with the current stream time",
-            mkMap(
-                mkEntry("thread-id", threadId),
-                mkEntry("task-id", "0_0")
-            )
+                mkMap(
+                        mkEntry("thread-id", threadId),
+                        mkEntry("task-id", "0_0")
+                )
         );
         latenessAvgMetric = new MetricName(
-            "record-lateness-avg",
-            "stream-task-metrics",
-            "The observed average lateness of records in milliseconds, measured by comparing the record "
+                "record-lateness-avg",
+                "stream-task-metrics",
+                "The observed average lateness of records in milliseconds, measured by comparing the record "
                 + "timestamp with the current stream time",
-            mkMap(
-                mkEntry("thread-id", threadId),
-                mkEntry("task-id", "0_0")
-            )
+                mkMap(
+                        mkEntry("thread-id", threadId),
+                        mkEntry("task-id", "0_0")
+                )
         );
 
         assertThat(driver.metrics().get(dropTotalMetric).metricValue(), dropTotal);
@@ -1115,24 +1115,24 @@ public class KStreamWindowAggregateTest {
         final MetricName emittedTotalMetric;
         final MetricName emittedRateMetric;
         emittedTotalMetric = new MetricName(
-            "window-aggregate-final-emit-total",
-            "stream-processor-node-metrics",
-            "The total number of emit final records",
-            mkMap(
-                mkEntry("thread-id", threadId),
-                mkEntry("task-id", "0_0"),
-                mkEntry("processor-node-id", "KSTREAM-AGGREGATE-0000000001")
-            )
+                "window-aggregate-final-emit-total",
+                "stream-processor-node-metrics",
+                "The total number of emit final records",
+                mkMap(
+                        mkEntry("thread-id", threadId),
+                        mkEntry("task-id", "0_0"),
+                        mkEntry("processor-node-id", "KSTREAM-AGGREGATE-0000000001")
+                )
         );
         emittedRateMetric = new MetricName(
-            "window-aggregate-final-emit-rate",
-            "stream-processor-node-metrics",
-            "The average number of emit final records per second",
-            mkMap(
-                mkEntry("thread-id", threadId),
-                mkEntry("task-id", "0_0"),
-                mkEntry("processor-node-id", "KSTREAM-AGGREGATE-0000000001")
-            )
+                "window-aggregate-final-emit-rate",
+                "stream-processor-node-metrics",
+                "The average number of emit final records per second",
+                mkMap(
+                        mkEntry("thread-id", threadId),
+                        mkEntry("task-id", "0_0"),
+                        mkEntry("processor-node-id", "KSTREAM-AGGREGATE-0000000001")
+                )
         );
 
         assertThat(driver.metrics().get(emittedTotalMetric).metricValue(), emittedTotal);

@@ -126,7 +126,7 @@ public class RequestMetrics {
     public Optional<Meter> deprecatedRequestRate(ApiKeys apiKey, short version, ClientInformation clientInformation) {
         if (apiKey.isVersionDeprecated(version)) {
             return Optional.of(deprecatedRequestRateInternal.computeIfAbsent(new DeprecatedRequestRateKey(version, clientInformation),
-                k -> metricsGroup.newMeter(DEPRECATED_REQUESTS_PER_SEC, "requests", TimeUnit.SECONDS, tagsWithVersionAndClientInfo(version, clientInformation))));
+                    k -> metricsGroup.newMeter(DEPRECATED_REQUESTS_PER_SEC, "requests", TimeUnit.SECONDS, tagsWithVersionAndClientInfo(version, clientInformation))));
         } else {
             return Optional.empty();
         }

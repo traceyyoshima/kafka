@@ -286,8 +286,8 @@ abstract class EmbeddedConnect {
             return responseToString(response);
         } else {
             throw new ConnectRestException(
-                response.getStatus(),
-                "Could not execute 'POST /connectors' request. Error response: " + responseToString(response)
+                    response.getStatus(),
+                    "Could not execute 'POST /connectors' request. Error response: " + responseToString(response)
             );
         }
     }
@@ -507,6 +507,7 @@ abstract class EmbeddedConnect {
             throw new ConnectException("Could not parse connector state", e);
         }
     }
+
     /**
      * Get the connector names of the connectors currently running on this cluster.
      *
@@ -648,7 +649,7 @@ abstract class EmbeddedConnect {
         if (response.getStatus() >= Response.Status.BAD_REQUEST.getStatusCode()) {
             throw new ConnectRestException(response.getStatus(),
                     "Resetting active topics for connector " + connectorName + " failed. "
-                            + "Error response: " + responseToString(response));
+                    + "Error response: " + responseToString(response));
         }
     }
 
@@ -829,7 +830,7 @@ abstract class EmbeddedConnect {
                 // versions of JUnit
                 throw new AssertionError(
                         "Response with 204 status contained non-null entity: '"
-                                + response.getEntity() + "'"
+                        + response.getEntity() + "'"
                 );
             }
             return null;

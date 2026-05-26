@@ -84,9 +84,9 @@ public class OffsetDeleteResponse extends AbstractResponse {
         ) {
             final OffsetDeleteResponseTopic topicResponse = getOrCreateTopic(topicName);
             partitions.forEach(partition ->
-                topicResponse.partitions().add(new OffsetDeleteResponsePartition()
-                    .setPartitionIndex(partitionIndex.apply(partition))
-                    .setErrorCode(error.code()))
+                    topicResponse.partitions().add(new OffsetDeleteResponsePartition()
+                        .setPartitionIndex(partitionIndex.apply(partition))
+                        .setErrorCode(error.code()))
             );
             return this;
         }
@@ -112,7 +112,7 @@ public class OffsetDeleteResponse extends AbstractResponse {
                         // expect non-overlapping partitions here as we don't verify
                         // if the partition is already in the list before adding it.
                         newTopic.partitions().forEach(partition ->
-                            existingTopic.partitions().add(partition.duplicate())
+                                existingTopic.partitions().add(partition.duplicate())
                         );
                     }
                 });
@@ -143,9 +143,9 @@ public class OffsetDeleteResponse extends AbstractResponse {
         Map<Errors, Integer> counts = new EnumMap<>(Errors.class);
         updateErrorCounts(counts, Errors.forCode(data.errorCode()));
         data.topics().forEach(topic ->
-            topic.partitions().forEach(partition ->
-                updateErrorCounts(counts, Errors.forCode(partition.errorCode()))
-            )
+                topic.partitions().forEach(partition ->
+                        updateErrorCounts(counts, Errors.forCode(partition.errorCode()))
+                )
         );
         return counts;
     }

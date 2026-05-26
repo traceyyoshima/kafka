@@ -34,8 +34,8 @@ import org.apache.kafka.streams.state.WindowStore;
  * @param <V>
  */
 public class MeteredTimestampedWindowStore<K, V>
-    extends MeteredWindowStore<K, ValueAndTimestamp<V>>
-    implements TimestampedWindowStore<K, V> {
+        extends MeteredWindowStore<K, ValueAndTimestamp<V>>
+        implements TimestampedWindowStore<K, V> {
 
     MeteredTimestampedWindowStore(
         final WindowStore<Bytes, byte[]> inner,

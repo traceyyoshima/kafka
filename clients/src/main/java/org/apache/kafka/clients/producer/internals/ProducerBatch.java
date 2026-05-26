@@ -115,14 +115,14 @@ public final class ProducerBatch {
      */
     void maybeUpdateLeaderEpoch(OptionalInt latestLeaderEpoch) {
         if (latestLeaderEpoch.isPresent()
-            && (currentLeaderEpoch.isEmpty() || currentLeaderEpoch.getAsInt() < latestLeaderEpoch.getAsInt())) {
+                && (currentLeaderEpoch.isEmpty() || currentLeaderEpoch.getAsInt() < latestLeaderEpoch.getAsInt())) {
             log.trace("For {}, leader will be updated, currentLeaderEpoch: {}, attemptsWhenLeaderLastChanged:{}, latestLeaderEpoch: {}, current attempt: {}",
-                this, currentLeaderEpoch, attemptsWhenLeaderLastChanged, latestLeaderEpoch, attempts);
+                    this, currentLeaderEpoch, attemptsWhenLeaderLastChanged, latestLeaderEpoch, attempts);
             attemptsWhenLeaderLastChanged = attempts();
             currentLeaderEpoch = latestLeaderEpoch;
         } else {
             log.trace("For {}, leader wasn't updated, currentLeaderEpoch: {}, attemptsWhenLeaderLastChanged:{}, latestLeaderEpoch: {}, current attempt: {}",
-                this, currentLeaderEpoch, attemptsWhenLeaderLastChanged, latestLeaderEpoch, attempts);
+                    this, currentLeaderEpoch, attemptsWhenLeaderLastChanged, latestLeaderEpoch, attempts);
         }
     }
 
@@ -137,7 +137,6 @@ public final class ProducerBatch {
             return false;
         return attempts == attemptsWhenLeaderLastChanged;
     }
-
 
     /**
      * Append the record to the current record set and return the relative offset within that record set
@@ -281,11 +280,11 @@ public final class ProducerBatch {
             if (tryFinalState == FinalState.SUCCEEDED) {
                 // Log if a previously unsuccessful batch succeeded later on.
                 log.debug("ProduceResponse returned {} for {} after batch with base offset {} had already been {}.",
-                    tryFinalState, topicPartition, baseOffset, this.finalState.get());
+                        tryFinalState, topicPartition, baseOffset, this.finalState.get());
             } else {
                 // FAILED --> FAILED and ABORTED --> FAILED transitions are ignored.
                 log.debug("Ignored state transition {} -> {} for {} batch with base offset {}",
-                    this.finalState.get(), tryFinalState, topicPartition, baseOffset);
+                        this.finalState.get(), tryFinalState, topicPartition, baseOffset);
             }
         } else {
             // A SUCCESSFUL batch must not attempt another state change.

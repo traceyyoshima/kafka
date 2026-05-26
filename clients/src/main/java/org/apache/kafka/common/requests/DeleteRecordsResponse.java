@@ -64,9 +64,9 @@ public class DeleteRecordsResponse extends AbstractResponse {
     public Map<Errors, Integer> errorCounts() {
         Map<Errors, Integer> errorCounts = new EnumMap<>(Errors.class);
         data.topics().forEach(topicResponses ->
-            topicResponses.partitions().forEach(response ->
-                updateErrorCounts(errorCounts, Errors.forCode(response.errorCode()))
-            )
+                topicResponses.partitions().forEach(response ->
+                        updateErrorCounts(errorCounts, Errors.forCode(response.errorCode()))
+                )
         );
         return errorCounts;
     }

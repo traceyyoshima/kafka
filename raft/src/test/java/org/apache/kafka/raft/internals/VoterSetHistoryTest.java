@@ -69,8 +69,8 @@ public final class VoterSetHistoryTest {
         VoterSetHistory votersHistory = voterSetHistory(staticVoterSet);
 
         assertThrows(
-            IllegalArgumentException.class,
-            () -> votersHistory.addAt(-2, VoterSet.fromMap(VoterSetTest.voterMap(IntStream.of(1, 2, 3), true)))
+                IllegalArgumentException.class,
+                () -> votersHistory.addAt(-2, VoterSet.fromMap(VoterSetTest.voterMap(IntStream.of(1, 2, 3), true)))
         );
         assertEquals(staticVoterSet, votersHistory.lastValue());
 

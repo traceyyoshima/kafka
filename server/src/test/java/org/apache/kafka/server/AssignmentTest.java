@@ -81,48 +81,48 @@ public class AssignmentTest {
     @Test
     public void testValidAssignment() {
         assertTrue(new Assignment(
-            new TopicIdPartition(TOPIC_ID, 0),
-            DIRECTORY_ID,
-            0,
-            NoOpRunnable.INSTANCE).valid(0, TEST_IMAGE));
+                new TopicIdPartition(TOPIC_ID, 0),
+                DIRECTORY_ID,
+                0,
+                NoOpRunnable.INSTANCE).valid(0, TEST_IMAGE));
     }
 
     @Test
     public void testAssignmentForNonExistentTopicIsNotValid() {
         assertFalse(new Assignment(
-            new TopicIdPartition(Uuid.fromString("uuOi4qGPSsuM0QwnYINvOw"), 0),
-            DIRECTORY_ID,
-            0,
-            NoOpRunnable.INSTANCE).valid(0, TEST_IMAGE));
+                new TopicIdPartition(Uuid.fromString("uuOi4qGPSsuM0QwnYINvOw"), 0),
+                DIRECTORY_ID,
+                0,
+                NoOpRunnable.INSTANCE).valid(0, TEST_IMAGE));
     }
 
     @Test
     public void testAssignmentForNonExistentPartitionIsNotValid() {
         assertFalse(new Assignment(
-            new TopicIdPartition(TOPIC_ID, 2),
-            DIRECTORY_ID,
-            0,
-            NoOpRunnable.INSTANCE).valid(0, TEST_IMAGE));
+                new TopicIdPartition(TOPIC_ID, 2),
+                DIRECTORY_ID,
+                0,
+                NoOpRunnable.INSTANCE).valid(0, TEST_IMAGE));
     }
 
     @Test
     public void testAssignmentReplicaNotOnBrokerIsNotValid() {
         assertFalse(new Assignment(
-            new TopicIdPartition(TOPIC_ID, 0),
-            DIRECTORY_ID,
-            0,
-            NoOpRunnable.INSTANCE).valid(3, TEST_IMAGE));
+                new TopicIdPartition(TOPIC_ID, 0),
+                DIRECTORY_ID,
+                0,
+                NoOpRunnable.INSTANCE).valid(3, TEST_IMAGE));
     }
 
     @Test
     public void testAssignmentToString() {
         assertEquals("Assignment[topicIdPartition=rTudty6ITOCcO_ldVyzZYg:1, " +
-            "directoryId=rzRT8XZaSbKsP6j238zogg, " +
-            "submissionTimeNs=123, " +
-            "successCallback=NoOpRunnable]",
-            new Assignment(new TopicIdPartition(TOPIC_ID, 1),
-                DIRECTORY_ID,
-                123,
-                NoOpRunnable.INSTANCE).toString());
+                "directoryId=rzRT8XZaSbKsP6j238zogg, " +
+                "submissionTimeNs=123, " +
+                "successCallback=NoOpRunnable]",
+                new Assignment(new TopicIdPartition(TOPIC_ID, 1),
+                    DIRECTORY_ID,
+                    123,
+                    NoOpRunnable.INSTANCE).toString());
     }
 }

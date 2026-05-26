@@ -134,7 +134,6 @@ public class ClusterControlManager {
             return this;
         }
 
-
         Builder setMetrics(QuorumControllerMetrics metrics) {
             this.metrics = metrics;
             return this;
@@ -163,14 +162,14 @@ public class ClusterControlManager {
                 metrics = new QuorumControllerMetrics(Optional.empty(), time, 0);
             }
             return new ClusterControlManager(logContext,
-                clusterId,
-                time,
-                snapshotRegistry,
-                sessionTimeoutNs,
-                replicaPlacer,
-                featureControl,
-                brokerShutdownHandler,
-                metrics
+                    clusterId,
+                    time,
+                    snapshotRegistry,
+                    sessionTimeoutNs,
+                    replicaPlacer,
+                    featureControl,
+                    brokerShutdownHandler,
+                    metrics
             );
         }
     }
@@ -318,7 +317,7 @@ public class ClusterControlManager {
             metrics.addTimeSinceLastHeartbeatMetric(brokerId);
             if (!registration.fenced()) {
                 heartbeatManager.tracker().updateContactTime(
-                    new BrokerIdAndEpoch(brokerId, registration.epoch()), nowNs);
+                        new BrokerIdAndEpoch(brokerId, registration.epoch()), nowNs);
             }
         }
     }
@@ -357,7 +356,7 @@ public class ClusterControlManager {
         }
         if (!clusterId.equals(request.clusterId())) {
             throw new InconsistentClusterIdException("Expected cluster ID " + clusterId +
-                ", but got cluster ID " + request.clusterId());
+                    ", but got cluster ID " + request.clusterId());
         }
         int brokerId = request.brokerId();
         List<ApiMessageAndVersion> records = new ArrayList<>();
@@ -423,10 +422,10 @@ public class ClusterControlManager {
         unverifiedFeatures.forEach((featureName, finalizedVersion) -> {
             if (finalizedVersion != 0 && request.features().findAll(featureName).isEmpty()) {
                 processRegistrationFeature(brokerId, finalizedFeatures,
-                    new BrokerRegistrationRequestData.Feature().
-                        setName(featureName).
-                        setMinSupportedVersion((short) 0).
-                        setMaxSupportedVersion((short) 0));
+                        new BrokerRegistrationRequestData.Feature().
+                            setName(featureName).
+                            setMinSupportedVersion((short) 0).
+                            setMaxSupportedVersion((short) 0));
             }
         });
         if (featureControl.metadataVersionOrThrow().isDirectoryAssignmentSupported()) {
@@ -482,10 +481,10 @@ public class ClusterControlManager {
         ListenerInfo listenerInfo = ListenerInfo.fromControllerRegistrationRequest(request.listeners());
         ControllerFeatureCollection features = new ControllerFeatureCollection();
         request.features().forEach(feature ->
-            features.add(new RegisterControllerRecord.ControllerFeature().
-                setName(feature.name()).
-                setMaxSupportedVersion(feature.maxSupportedVersion()).
-                setMinSupportedVersion(feature.minSupportedVersion()))
+                features.add(new RegisterControllerRecord.ControllerFeature().
+                    setName(feature.name()).
+                    setMaxSupportedVersion(feature.maxSupportedVersion()).
+                    setMinSupportedVersion(feature.minSupportedVersion()))
         );
         List<ApiMessageAndVersion> records = new ArrayList<>();
         records.add(new ApiMessageAndVersion(new RegisterControllerRecord().
@@ -513,7 +512,7 @@ public class ClusterControlManager {
 
         if (!VersionRange.of(feature.minSupportedVersion(), feature.maxSupportedVersion()).contains(finalized)) {
             throw new UnsupportedVersionException("Unable to register because the broker " +
-                "does not support finalized version " + finalized + " of " + feature.name() +
+                    "does not support finalized version " + finalized + " of " + feature.name() +
                     ". The broker wants a version between " + feature.minSupportedVersion() + " and " +
                     feature.maxSupportedVersion() + ", inclusive.");
         }
@@ -559,23 +558,23 @@ public class ClusterControlManager {
         Map<String, VersionRange> features = new HashMap<>();
         for (BrokerFeature feature : record.features()) {
             features.put(feature.name(), VersionRange.of(
-                feature.minSupportedVersion(), feature.maxSupportedVersion()));
+                    feature.minSupportedVersion(), feature.maxSupportedVersion()));
         }
         // Update broker registrations.
         BrokerRegistration prevRegistration = brokerRegistrations.put(brokerId,
-            new BrokerRegistration.Builder().
-                setId(brokerId).
-                setEpoch(record.brokerEpoch()).
-                setIncarnationId(record.incarnationId()).
-                setListeners(listenerInfo.listeners()).
-                setSupportedFeatures(features).
-                setRack(Optional.ofNullable(record.rack())).
-                setFenced(record.fenced()).
-                setInControlledShutdown(record.inControlledShutdown()).
-                setIsMigratingZkBroker(record.isMigratingZkBroker()).
-                setDirectories(record.logDirs()).
-                setCordonedDirectories(record.cordonedLogDirs()).
-                    build());
+                new BrokerRegistration.Builder().
+                    setId(brokerId).
+                    setEpoch(record.brokerEpoch()).
+                    setIncarnationId(record.incarnationId()).
+                    setListeners(listenerInfo.listeners()).
+                    setSupportedFeatures(features).
+                    setRack(Optional.ofNullable(record.rack())).
+                    setFenced(record.fenced()).
+                    setInControlledShutdown(record.inControlledShutdown()).
+                    setIsMigratingZkBroker(record.isMigratingZkBroker()).
+                    setDirectories(record.logDirs()).
+                    setCordonedDirectories(record.cordonedLogDirs()).
+                        build());
         updateDirectories(brokerId, prevRegistration == null ? null : prevRegistration.directories(), record.logDirs());
         if (heartbeatManager != null) {
             if (prevRegistration != null) heartbeatManager.remove(brokerId);
@@ -585,10 +584,10 @@ public class ClusterControlManager {
             log.info("Replayed initial RegisterBrokerRecord for broker {}: {}", record.brokerId(), record);
         } else if (prevRegistration.incarnationId().equals(record.incarnationId())) {
             log.info("Replayed RegisterBrokerRecord modifying the registration for broker {}: {}",
-                record.brokerId(), record);
+                    record.brokerId(), record);
         } else {
             log.info("Replayed RegisterBrokerRecord establishing a new incarnation of broker {}: {}",
-                record.brokerId(), record);
+                    record.brokerId(), record);
         }
     }
 
@@ -598,10 +597,10 @@ public class ClusterControlManager {
         BrokerRegistration registration = brokerRegistrations.get(brokerId);
         if (registration == null) {
             throw new RuntimeException(String.format("Unable to replay %s: no broker " +
-                "registration found for that id", record));
+                    "registration found for that id", record));
         } else if (registration.epoch() != record.brokerEpoch()) {
             throw new RuntimeException(String.format("Unable to replay %s: no broker " +
-                "registration with that epoch found", record));
+                    "registration with that epoch found", record));
         } else {
             if (heartbeatManager != null) heartbeatManager.remove(brokerId);
             updateDirectories(brokerId, registration.directories(), null);
@@ -612,47 +611,47 @@ public class ClusterControlManager {
 
     public void replay(FenceBrokerRecord record) {
         replayRegistrationChange(
-            record,
-            record.id(),
-            record.epoch(),
-            BrokerRegistrationFencingChange.FENCE.asBoolean(),
-            BrokerRegistrationInControlledShutdownChange.NONE.asBoolean(),
-            Optional.empty(),
-            Optional.empty()
+                record,
+                record.id(),
+                record.epoch(),
+                BrokerRegistrationFencingChange.FENCE.asBoolean(),
+                BrokerRegistrationInControlledShutdownChange.NONE.asBoolean(),
+                Optional.empty(),
+                Optional.empty()
         );
     }
 
     public void replay(UnfenceBrokerRecord record) {
         replayRegistrationChange(
-            record,
-            record.id(),
-            record.epoch(),
-            BrokerRegistrationFencingChange.UNFENCE.asBoolean(),
-            BrokerRegistrationInControlledShutdownChange.NONE.asBoolean(),
-            Optional.empty(),
-            Optional.empty()
+                record,
+                record.id(),
+                record.epoch(),
+                BrokerRegistrationFencingChange.UNFENCE.asBoolean(),
+                BrokerRegistrationInControlledShutdownChange.NONE.asBoolean(),
+                Optional.empty(),
+                Optional.empty()
         );
     }
 
     public void replay(BrokerRegistrationChangeRecord record) {
         BrokerRegistrationFencingChange fencingChange =
-            BrokerRegistrationFencingChange.fromValue(record.fenced()).orElseThrow(
-                () -> new IllegalStateException(String.format("Unable to replay %s: unknown " +
-                    "value for fenced field: %x", record, record.fenced())));
+                BrokerRegistrationFencingChange.fromValue(record.fenced()).orElseThrow(
+                        () -> new IllegalStateException(String.format("Unable to replay %s: unknown " +
+                        "value for fenced field: %x", record, record.fenced())));
         BrokerRegistrationInControlledShutdownChange inControlledShutdownChange =
-            BrokerRegistrationInControlledShutdownChange.fromValue(record.inControlledShutdown()).orElseThrow(
-                () -> new IllegalStateException(String.format("Unable to replay %s: unknown " +
-                    "value for inControlledShutdown field: %x", record, record.inControlledShutdown())));
+                BrokerRegistrationInControlledShutdownChange.fromValue(record.inControlledShutdown()).orElseThrow(
+                        () -> new IllegalStateException(String.format("Unable to replay %s: unknown " +
+                        "value for inControlledShutdown field: %x", record, record.inControlledShutdown())));
         Optional<List<Uuid>> directoriesChange = Optional.ofNullable(record.logDirs()).filter(list -> !list.isEmpty());
         Optional<List<Uuid>> cordonedDirectoriesChange = Optional.ofNullable(record.cordonedLogDirs());
         replayRegistrationChange(
-            record,
-            record.brokerId(),
-            record.brokerEpoch(),
-            fencingChange.asBoolean(),
-            inControlledShutdownChange.asBoolean(),
-            directoriesChange,
-            cordonedDirectoriesChange
+                record,
+                record.brokerId(),
+                record.brokerEpoch(),
+                fencingChange.asBoolean(),
+                inControlledShutdownChange.asBoolean(),
+                directoriesChange,
+                cordonedDirectoriesChange
         );
     }
 
@@ -668,16 +667,16 @@ public class ClusterControlManager {
         BrokerRegistration curRegistration = brokerRegistrations.get(brokerId);
         if (curRegistration == null) {
             throw new RuntimeException(String.format("Unable to replay %s: no broker " +
-                "registration found for that id", record.toString()));
+                    "registration found for that id", record.toString()));
         } else if (curRegistration.epoch() != brokerEpoch) {
             throw new RuntimeException(String.format("Unable to replay %s: no broker " +
-                "registration with that epoch found", record.toString()));
+                    "registration with that epoch found", record.toString()));
         } else {
             BrokerRegistration nextRegistration = curRegistration.cloneWith(
-                fencingChange,
-                inControlledShutdownChange,
-                directoriesChange,
-                cordonedDirectoriesChange
+                    fencingChange,
+                    inControlledShutdownChange,
+                    directoriesChange,
+                    cordonedDirectoriesChange
             );
             if (!curRegistration.equals(nextRegistration)) {
                 log.info("Replayed {} modifying the registration for broker {}: {}",
@@ -700,10 +699,10 @@ public class ClusterControlManager {
     public void replay(RegisterControllerRecord record) {
         ControllerRegistration newRegistration = new ControllerRegistration.Builder(record).build();
         ControllerRegistration prevRegistration =
-            controllerRegistrations.put(record.controllerId(), newRegistration);
+                controllerRegistrations.put(record.controllerId(), newRegistration);
         log.info("Replayed RegisterControllerRecord containing {}.{}", newRegistration,
-            prevRegistration == null ? "" :
-                " Previous incarnation was " + prevRegistration.incarnationId());
+                prevRegistration == null ? "" :
+                        " Previous incarnation was " + prevRegistration.incarnationId());
     }
 
     Iterator<UsableBroker> usableBrokers() {
@@ -711,8 +710,8 @@ public class ClusterControlManager {
             throw new RuntimeException("ClusterControlManager is not active.");
         }
         return heartbeatManager.usableBrokers(
-            id -> brokerRegistrations.get(id).rack(),
-            id -> brokerRegistrations.get(id).hasUncordonedDirs());
+                id -> brokerRegistrations.get(id).rack(),
+                id -> brokerRegistrations.get(id).hasUncordonedDirs());
     }
 
     /**
@@ -769,11 +768,11 @@ public class ClusterControlManager {
         BrokerRegistration registration = brokerRegistrations.get(brokerId);
         if (registration == null) {
             throw new StaleBrokerEpochException("No broker registration found for " +
-                "broker id " + brokerId);
+                    "broker id " + brokerId);
         }
         if (registration.epoch() != brokerEpoch) {
             throw new StaleBrokerEpochException("Expected broker epoch " +
-                registration.epoch() + ", but got broker epoch " + brokerEpoch);
+                    registration.epoch() + ", but got broker epoch " + brokerEpoch);
         }
     }
 

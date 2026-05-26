@@ -323,7 +323,7 @@ public class BrokerHeartbeatManager {
         if (broker.controlledShutdownOffset < 0) {
             broker.controlledShutdownOffset = controlledShutDownOffset;
             log.debug("Updated the controlled shutdown offset for broker {} to {}.",
-                brokerId, controlledShutDownOffset);
+                    brokerId, controlledShutDownOffset);
         }
     }
 
@@ -409,7 +409,7 @@ public class BrokerHeartbeatManager {
             case FENCED:
                 if (request.wantShutDown()) {
                     log.info("Fenced broker {} has requested and been granted an immediate " +
-                        "shutdown.", brokerId);
+                            "shutdown.", brokerId);
                     return new BrokerControlStates(currentState, SHUTDOWN_NOW);
                 } else if (!request.wantFence()) {
                     if (request.currentMetadataOffset() >= registerBrokerRecordOffset) {
@@ -420,9 +420,9 @@ public class BrokerHeartbeatManager {
                     } else {
                         if (log.isDebugEnabled()) {
                             log.debug("The request from broker {} to unfence cannot yet " +
-                                "be granted because it has not caught up with the offset of " +
-                                "its register broker record {}. It is still at offset {}.",
-                                brokerId, registerBrokerRecordOffset, request.currentMetadataOffset());
+                                    "be granted because it has not caught up with the offset of " +
+                                    "its register broker record {}. It is still at offset {}.",
+                                    brokerId, registerBrokerRecordOffset, request.currentMetadataOffset());
                         }
                         return new BrokerControlStates(currentState, FENCED);
                     }
@@ -433,21 +433,21 @@ public class BrokerHeartbeatManager {
                 if (request.wantFence()) {
                     if (request.wantShutDown()) {
                         log.info("Unfenced broker {} has requested and been granted an " +
-                            "immediate shutdown.", brokerId);
+                                "immediate shutdown.", brokerId);
                         return new BrokerControlStates(currentState, SHUTDOWN_NOW);
                     } else {
                         log.info("Unfenced broker {} has requested and been granted " +
-                            "fencing", brokerId);
+                                "fencing", brokerId);
                         return new BrokerControlStates(currentState, FENCED);
                     }
                 } else if (request.wantShutDown()) {
                     if (hasLeaderships.get()) {
                         log.info("Unfenced broker {} has requested and been granted a " +
-                            "controlled shutdown.", brokerId);
+                                "controlled shutdown.", brokerId);
                         return new BrokerControlStates(currentState, CONTROLLED_SHUTDOWN);
                     } else {
                         log.info("Unfenced broker {} has requested and been granted an " +
-                            "immediate shutdown.", brokerId);
+                                "immediate shutdown.", brokerId);
                         return new BrokerControlStates(currentState, SHUTDOWN_NOW);
                     }
                 }
@@ -456,21 +456,21 @@ public class BrokerHeartbeatManager {
             case CONTROLLED_SHUTDOWN:
                 if (hasLeaderships.get()) {
                     log.debug("Broker {} is in controlled shutdown state, but can not " +
-                        "shut down because more leaders still need to be moved.", brokerId);
+                            "shut down because more leaders still need to be moved.", brokerId);
                     return new BrokerControlStates(currentState, CONTROLLED_SHUTDOWN);
                 }
                 long lowestActiveOffset = lowestActiveOffset();
                 if (broker.controlledShutdownOffset <= lowestActiveOffset) {
                     log.info("The request from broker {} to shut down has been granted " +
-                        "since the lowest active offset {} is now greater than the " +
-                        "broker's controlled shutdown offset {}.", brokerId,
-                        lowestActiveOffset, broker.controlledShutdownOffset);
+                            "since the lowest active offset {} is now greater than the " +
+                            "broker's controlled shutdown offset {}.", brokerId,
+                            lowestActiveOffset, broker.controlledShutdownOffset);
                     return new BrokerControlStates(currentState, SHUTDOWN_NOW);
                 }
                 log.debug("The request from broker {} to shut down can not yet be granted " +
-                    "because the lowest active offset {} is not greater than the broker's " +
-                    "shutdown offset {}.", brokerId, lowestActiveOffset,
-                    broker.controlledShutdownOffset);
+                        "because the lowest active offset {} is not greater than the broker's " +
+                        "shutdown offset {}.", brokerId, lowestActiveOffset,
+                        broker.controlledShutdownOffset);
                 return new BrokerControlStates(currentState, CONTROLLED_SHUTDOWN);
 
             default:

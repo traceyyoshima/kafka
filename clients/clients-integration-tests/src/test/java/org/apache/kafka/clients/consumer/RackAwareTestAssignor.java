@@ -52,8 +52,8 @@ public class RackAwareTestAssignor implements ConsumerGroupPartitionAssignor, Sh
                 throw new PartitionAssignorException("Member " + memberId + " does not have rack information available.");
             }
             rackIdToMemberId.put(
-                groupSpec.memberSubscription(memberId).rackId().get(),
-                memberId
+                    groupSpec.memberSubscription(memberId).rackId().get(),
+                    memberId
             );
         }
 
@@ -86,12 +86,12 @@ public class RackAwareTestAssignor implements ConsumerGroupPartitionAssignor, Sh
                 }
 
                 Map<Uuid, Set<Integer>> assignment = assignments.computeIfAbsent(
-                    rackIdToMemberId.get(assignedRack),
-                    k -> new HashMap<>()
+                        rackIdToMemberId.get(assignedRack),
+                        k -> new HashMap<>()
                 );
                 Set<Integer> partitions = assignment.computeIfAbsent(
-                    topicId,
-                    k -> new java.util.HashSet<>()
+                        topicId,
+                        k -> new java.util.HashSet<>()
                 );
                 partitions.add(partitionId);
             }

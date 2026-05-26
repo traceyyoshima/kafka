@@ -54,21 +54,21 @@ public class StreamsAssignorBenchmarkUtils {
             StreamsGroupMember member = memberEntry.getValue();
 
             memberSpecs.put(memberId, new AssignmentMemberSpec(
-                member.instanceId(),
-                member.rackId(),
-                Map.of(),
-                Map.of(),
-                Map.of(),
-                member.processId(),
-                member.clientTags(),
-                Map.of(),
-                Map.of()
+                    member.instanceId(),
+                    member.rackId(),
+                    Map.of(),
+                    Map.of(),
+                    Map.of(),
+                    member.processId(),
+                    member.clientTags(),
+                    Map.of(),
+                    Map.of()
             ));
         }
 
         return new GroupSpecImpl(
-            memberSpecs,
-            assignmentConfigs
+                memberSpecs,
+                assignmentConfigs
         );
     }
 
@@ -119,13 +119,12 @@ public class StreamsAssignorBenchmarkUtils {
             String topicName = allTopicNames.get(i);
             if (i % 2 == 0) {
                 subtopologyMap.put(topicName + "_subtopology", new ConfiguredSubtopology(partitionsPerTopic, Set.of(topicName), Map.of(), Set.of(), Map.of(
-                    topicName + "_changelog", new ConfiguredInternalTopic(
-                        topicName + "_changelog",
-                        partitionsPerTopic,
-                        Optional.empty(),
-                        Map.of()
-                    )
-                )));
+                        topicName + "_changelog", new ConfiguredInternalTopic(
+                            topicName + "_changelog",
+                            partitionsPerTopic,
+                            Optional.empty(),
+                            Map.of()
+                ))));
             } else {
                 subtopologyMap.put(topicName + "_subtopology", new ConfiguredSubtopology(partitionsPerTopic, Set.of(topicName), Map.of(), Set.of(), Map.of()));
             }

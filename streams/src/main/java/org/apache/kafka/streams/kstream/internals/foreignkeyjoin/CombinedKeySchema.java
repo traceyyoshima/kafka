@@ -85,7 +85,6 @@ public class CombinedKeySchema<KRight, KLeft> {
         return Bytes.wrap(buf.array());
     }
 
-
     public CombinedKey<KRight, KLeft> fromBytes(final Bytes data, final Headers headers) {
         //{Integer.BYTES foreignKeyLength}{foreignKeySerialized}{Optional-primaryKeySerialized}
         final byte[] dataArray = data.get();

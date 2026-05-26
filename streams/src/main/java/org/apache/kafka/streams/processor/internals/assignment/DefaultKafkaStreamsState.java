@@ -107,7 +107,7 @@ public class DefaultKafkaStreamsState implements KafkaStreamsState {
         final Long totalLag = taskLagTotals.get().get(task);
         if (totalLag == null) {
             LOG.error("Task lag lookup failed: {} not in {}", task,
-                Arrays.toString(taskLagTotals.get().keySet().toArray()));
+                    Arrays.toString(taskLagTotals.get().keySet().toArray()));
             throw new IllegalStateException("Tried to lookup lag for unknown task " + task);
         }
         return totalLag;
@@ -121,16 +121,16 @@ public class DefaultKafkaStreamsState implements KafkaStreamsState {
         }
 
         final SortedSet<TaskId> prevTasksByLag =
-            new TreeSet<>(comparingLong(this::lagFor).thenComparing(TaskId::compareTo));
+                new TreeSet<>(comparingLong(this::lagFor).thenComparing(TaskId::compareTo));
         final Set<TaskId> prevOwnedStatefulTasks = taskIdsByConsumer.containsKey(consumerClientId)
-            ? taskIdsByConsumer.get(consumerClientId) : new HashSet<>();
+                ? taskIdsByConsumer.get(consumerClientId) : new HashSet<>();
         for (final TaskId task : prevOwnedStatefulTasks) {
             if (taskLagTotals.get().containsKey(task)) {
                 prevTasksByLag.add(task);
             } else {
                 LOG.debug(
-                    "Skipping previous task {} since it's not part of the current assignment",
-                    task
+                        "Skipping previous task {} since it's not part of the current assignment",
+                        task
                 );
             }
         }

@@ -79,7 +79,6 @@ public class DefaultKafkaPrincipalBuilderTest {
         verify(session, atLeastOnce()).getPeerPrincipal();
     }
 
-
     @Test
     public void testPrincipalWithSslPrincipalMapper() throws Exception {
         SSLSession session = mock(SSLSession.class);
@@ -90,10 +89,10 @@ public class DefaultKafkaPrincipalBuilderTest {
                                         .thenReturn(new X500Principal("OU=JavaSoft, O=Sun Microsystems, C=US"));
 
         String rules = String.join(", ",
-            "RULE:^CN=(.*),OU=ServiceUsers.*$/$1/L",
-            "RULE:^CN=(.*),OU=(.*),O=(.*),L=(.*),ST=(.*),C=(.*)$/$1@$2/L",
-            "RULE:^.*[Cc][Nn]=([a-zA-Z0-9.]*).*$/$1/U",
-            "DEFAULT"
+                "RULE:^CN=(.*),OU=ServiceUsers.*$/$1/L",
+                "RULE:^CN=(.*),OU=(.*),O=(.*),L=(.*),ST=(.*),C=(.*)$/$1@$2/L",
+                "RULE:^.*[Cc][Nn]=([a-zA-Z0-9.]*).*$/$1/U",
+                "DEFAULT"
         );
 
         SslPrincipalMapper mapper = SslPrincipalMapper.fromRules(rules);
@@ -167,7 +166,7 @@ public class DefaultKafkaPrincipalBuilderTest {
         DefaultKafkaPrincipalBuilder builder = new DefaultKafkaPrincipalBuilder(kerberosShortNamer, null);
 
         KafkaPrincipal principal = builder.build(new SaslAuthenticationContext(server,
-            SecurityProtocol.SASL_PLAINTEXT, InetAddress.getLocalHost(), SecurityProtocol.SASL_PLAINTEXT.name()));
+                SecurityProtocol.SASL_PLAINTEXT, InetAddress.getLocalHost(), SecurityProtocol.SASL_PLAINTEXT.name()));
         assertEquals(KafkaPrincipal.USER_TYPE, principal.getPrincipalType());
         assertEquals("foo", principal.getName());
 

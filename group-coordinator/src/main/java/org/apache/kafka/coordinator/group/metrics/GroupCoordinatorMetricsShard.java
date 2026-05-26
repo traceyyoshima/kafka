@@ -49,6 +49,7 @@ public class GroupCoordinatorMetricsShard implements CoordinatorMetricsShard {
     private record TimelineGaugeCounter(TimelineLong timelineLong, AtomicLong atomicLong) {
 
     }
+
     /**
      * Classic group size gauge counters keyed by the metric name.
      */
@@ -78,7 +79,6 @@ public class GroupCoordinatorMetricsShard implements CoordinatorMetricsShard {
      * The number of offsets gauge counter.
      */
     private final TimelineGaugeCounter numOffsetsTimelineGaugeCounter;
-
 
     /**
      * The topic partition.
@@ -122,7 +122,7 @@ public class GroupCoordinatorMetricsShard implements CoordinatorMetricsShard {
     public void setConsumerGroupGauges(Map<ConsumerGroupState, Long> consumerGroupGauges) {
         this.consumerGroupGauges = consumerGroupGauges;
     }
-    
+
     /**
      * Set the number of streams groups.
      * This method should be the only way to update the map and is called by the scheduled task
@@ -208,7 +208,7 @@ public class GroupCoordinatorMetricsShard implements CoordinatorMetricsShard {
         return consumerGroupGauges.values().stream()
             .mapToLong(Long::longValue).sum();
     }
-    
+
     /**
      * Get the number of streams groups in the specified state.
      *

@@ -128,7 +128,7 @@ public class PlainSaslServer implements SaslServer {
 
         if (tokens.size() != 3)
             throw new SaslAuthenticationException("Invalid SASL/PLAIN response: expected 3 tokens, got " +
-                tokens.size());
+                    tokens.size());
 
         return tokens;
     }

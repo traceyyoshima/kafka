@@ -53,7 +53,7 @@ public class KafkaConsumerMetrics extends AbstractConsumerMetricsManager {
                 return TimeUnit.SECONDS.convert(now - lastPollMs, TimeUnit.MILLISECONDS);
         };
         this.lastPollMetricName = metrics.metricName("last-poll-seconds-ago",
-            metricGroupName, "The number of seconds since the last poll() invocation.");
+                metricGroupName, "The number of seconds since the last poll() invocation.");
         metrics.addMetric(lastPollMetricName, lastPoll);
 
         this.timeBetweenPollSensor = metrics.sensor("time-between-poll");
@@ -74,22 +74,22 @@ public class KafkaConsumerMetrics extends AbstractConsumerMetricsManager {
 
         this.commitSyncSensor = metrics.sensor("commit-sync-time-ns-total");
         this.commitSyncSensor.add(
-            metrics.metricName(
-                "commit-sync-time-ns-total",
-                metricGroupName,
-                "The total time the consumer has spent in commitSync in nanoseconds"
-            ),
-            new CumulativeSum()
+                metrics.metricName(
+                        "commit-sync-time-ns-total",
+                        metricGroupName,
+                        "The total time the consumer has spent in commitSync in nanoseconds"
+                ),
+                new CumulativeSum()
         );
 
         this.committedSensor = metrics.sensor("committed-time-ns-total");
         this.committedSensor.add(
-            metrics.metricName(
-                "committed-time-ns-total",
-                metricGroupName,
-                "The total time the consumer has spent in committed in nanoseconds"
-            ),
-            new CumulativeSum()
+                metrics.metricName(
+                        "committed-time-ns-total",
+                        metricGroupName,
+                        "The total time the consumer has spent in committed in nanoseconds"
+                ),
+                new CumulativeSum()
         );
     }
 

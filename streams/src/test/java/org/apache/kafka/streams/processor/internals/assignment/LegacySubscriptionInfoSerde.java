@@ -55,12 +55,12 @@ public class LegacySubscriptionInfoSerde {
                                        final String userEndPoint) {
         if (latestSupportedVersion == UNKNOWN && (version < 1 || version > 2)) {
             throw new IllegalArgumentException(
-                "Only versions 1 and 2 are expected to use an UNKNOWN (-1) latest supported version. " +
+                    "Only versions 1 and 2 are expected to use an UNKNOWN (-1) latest supported version. " +
                     "Got " + version + "."
             );
         } else if (latestSupportedVersion != UNKNOWN && (version < 1 || version > latestSupportedVersion)) {
             throw new IllegalArgumentException(
-                "version must be between 1 and " + latestSupportedVersion + "; was: " + version
+                    "version must be between 1 and " + latestSupportedVersion + "; was: " + version
             );
         }
         usedVersion = version;
@@ -104,7 +104,7 @@ public class LegacySubscriptionInfoSerde {
             final byte[] endPointBytes = prepareUserEndPoint(this.userEndPoint);
 
             final ByteBuffer buf = ByteBuffer.allocate(
-                4 + // used version
+                    4 + // used version
                     4 + // latest supported version version
                     16 + // client ID
                     4 + prevTasks.size() * 8 + // length + prev tasks
@@ -126,7 +126,7 @@ public class LegacySubscriptionInfoSerde {
             final byte[] endPointBytes = prepareUserEndPoint(this.userEndPoint);
 
             final ByteBuffer buf = ByteBuffer.allocate(
-                4 + // version
+                    4 + // version
                     16 + // client ID
                     4 + prevTasks.size() * 8 + // length + prev tasks
                     4 + standbyTasks.size() * 8 + // length + standby tasks
@@ -144,7 +144,7 @@ public class LegacySubscriptionInfoSerde {
             return buf;
         } else if (usedVersion == 1) {
             final ByteBuffer buf1 = ByteBuffer.allocate(
-                4 + // version
+                    4 + // version
                     16 + // client ID
                     4 + prevTasks.size() * 8 + // length + prev tasks
                     4 + standbyTasks.size() * 8
@@ -158,7 +158,7 @@ public class LegacySubscriptionInfoSerde {
             return buf1;
         } else {
             throw new IllegalStateException("Unknown metadata version: " + usedVersion
-                                                + "; latest supported version: " + LATEST_SUPPORTED_VERSION);
+                    + "; latest supported version: " + LATEST_SUPPORTED_VERSION);
         }
     }
 
@@ -260,11 +260,11 @@ public class LegacySubscriptionInfoSerde {
         if (o instanceof LegacySubscriptionInfoSerde) {
             final LegacySubscriptionInfoSerde other = (LegacySubscriptionInfoSerde) o;
             return usedVersion == other.usedVersion &&
-                latestSupportedVersion == other.latestSupportedVersion &&
-                processId.equals(other.processId) &&
-                prevTasks.equals(other.prevTasks) &&
-                standbyTasks.equals(other.standbyTasks) &&
-                userEndPoint != null ? userEndPoint.equals(other.userEndPoint) : other.userEndPoint == null;
+                    latestSupportedVersion == other.latestSupportedVersion &&
+                    processId.equals(other.processId) &&
+                    prevTasks.equals(other.prevTasks) &&
+                    standbyTasks.equals(other.standbyTasks) &&
+                    userEndPoint != null ? userEndPoint.equals(other.userEndPoint) : other.userEndPoint == null;
         } else {
             return false;
         }
@@ -273,10 +273,10 @@ public class LegacySubscriptionInfoSerde {
     @Override
     public String toString() {
         return "[version=" + usedVersion
-            + ", supported version=" + latestSupportedVersion
-            + ", process ID=" + processId
-            + ", prev tasks=" + prevTasks
-            + ", standby tasks=" + standbyTasks
-            + ", user endpoint=" + userEndPoint + "]";
+                + ", supported version=" + latestSupportedVersion
+                + ", process ID=" + processId
+                + ", prev tasks=" + prevTasks
+                + ", standby tasks=" + standbyTasks
+                + ", user endpoint=" + userEndPoint + "]";
     }
 }

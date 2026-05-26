@@ -78,8 +78,8 @@ public class PlainToHeadersStoreAdapter implements KeyValueStore<Bytes, byte[]> 
     public byte[] putIfAbsent(final Bytes key,
                               final byte[] valueWithTimestampAndHeaders) {
         return convertFromPlainToHeaderFormat(store.putIfAbsent(
-            key,
-            rawPlainValue(valueWithTimestampAndHeaders)));
+                key,
+                rawPlainValue(valueWithTimestampAndHeaders)));
     }
 
     @Override
@@ -174,7 +174,7 @@ public class PlainToHeadersStoreAdapter implements KeyValueStore<Bytes, byte[]> 
 
         if (config.isCollectExecutionInfo()) {
             result.addExecutionInfo(
-                "Handled in " + getClass() + " in " + (System.nanoTime() - start) + "ns"
+                    "Handled in " + getClass() + " in " + (System.nanoTime() - start) + "ns"
             );
         }
 

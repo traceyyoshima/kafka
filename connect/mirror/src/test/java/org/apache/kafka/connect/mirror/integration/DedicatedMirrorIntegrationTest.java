@@ -85,7 +85,7 @@ public class DedicatedMirrorIntegrationTest {
                 Utils.closeQuietly(mirrorMaker::stop, "MirrorMaker worker '" + name + "'", shutdownFailure));
         mirrorMakers.forEach((name, mirrorMaker) -> mirrorMaker.awaitStop());
         kafkaClusters.forEach((name, kafkaCluster) ->
-            Utils.closeQuietly(kafkaCluster::stop, "Embedded Kafka cluster '" + name + "'", shutdownFailure)
+                Utils.closeQuietly(kafkaCluster::stop, "Embedded Kafka cluster '" + name + "'", shutdownFailure)
         );
         if (shutdownFailure.get() != null) {
             throw shutdownFailure.get();
@@ -143,26 +143,26 @@ public class DedicatedMirrorIntegrationTest {
             final String testTopicPrefix = "test-topic-";
 
             Map<String, String> mmProps = new HashMap<>() {{
-                    put("dedicated.mode.enable.internal.rest", "false");
-                    put("listeners", "http://localhost:0");
-                    // Refresh topics very frequently to quickly pick up on topics that are created
-                    // after the MM2 nodes are brought up during testing
-                    put("refresh.topics.interval.seconds", "1");
-                    put("clusters", String.join(", ", a, b));
-                    put(a + ".bootstrap.servers", clusterA.bootstrapServers());
-                    put(b + ".bootstrap.servers", clusterB.bootstrapServers());
-                    put(ab + ".enabled", "true");
-                    put(ab + ".topics", "^" + testTopicPrefix + ".*");
-                    put(ba + ".enabled", "false");
-                    put(ba + ".emit.heartbeats.enabled", "false");
-                    put("replication.factor", "1");
-                    put("checkpoints.topic.replication.factor", "1");
-                    put("heartbeats.topic.replication.factor", "1");
-                    put("offset-syncs.topic.replication.factor", "1");
-                    put("offset.storage.replication.factor", "1");
-                    put("status.storage.replication.factor", "1");
-                    put("config.storage.replication.factor", "1");
-                }};
+                put("dedicated.mode.enable.internal.rest", "false");
+                put("listeners", "http://localhost:0");
+                // Refresh topics very frequently to quickly pick up on topics that are created
+                // after the MM2 nodes are brought up during testing
+                put("refresh.topics.interval.seconds", "1");
+                put("clusters", String.join(", ", a, b));
+                put(a + ".bootstrap.servers", clusterA.bootstrapServers());
+                put(b + ".bootstrap.servers", clusterB.bootstrapServers());
+                put(ab + ".enabled", "true");
+                put(ab + ".topics", "^" + testTopicPrefix + ".*");
+                put(ba + ".enabled", "false");
+                put(ba + ".emit.heartbeats.enabled", "false");
+                put("replication.factor", "1");
+                put("checkpoints.topic.replication.factor", "1");
+                put("heartbeats.topic.replication.factor", "1");
+                put("offset-syncs.topic.replication.factor", "1");
+                put("offset.storage.replication.factor", "1");
+                put("status.storage.replication.factor", "1");
+                put("config.storage.replication.factor", "1");
+            }};
 
             // Bring up a single-node cluster
             final MirrorMaker mm = startMirrorMaker("single node", mmProps);
@@ -205,24 +205,24 @@ public class DedicatedMirrorIntegrationTest {
             final String testTopicPrefix = "test-topic-";
 
             Map<String, String> mmProps = new HashMap<>() {{
-                    put("dedicated.mode.enable.internal.rest", "false");
-                    put("listeners", "http://localhost:0");
-                    // Refresh topics very frequently to quickly pick up on topics that are created
-                    // after the MM2 nodes are brought up during testing
-                    put("refresh.topics.interval.seconds", "1");
-                    put("clusters", String.join(", ", a, b));
-                    put(a + ".bootstrap.servers", clusterA.bootstrapServers());
-                    put(b + ".bootstrap.servers", clusterB.bootstrapServers());
-                    put(ab + ".enabled", "true");
-                    put(ab + ".topics", "^" + testTopicPrefix + ".*");
-                    put("replication.factor", "1");
-                    put("checkpoints.topic.replication.factor", "1");
-                    put("heartbeats.topic.replication.factor", "1");
-                    put("emit.offset-syncs.enabled", "false");
-                    put("status.storage.replication.factor", "1");
-                    put("offset.storage.replication.factor", "1");
-                    put("config.storage.replication.factor", "1");
-                }};
+                put("dedicated.mode.enable.internal.rest", "false");
+                put("listeners", "http://localhost:0");
+                // Refresh topics very frequently to quickly pick up on topics that are created
+                // after the MM2 nodes are brought up during testing
+                put("refresh.topics.interval.seconds", "1");
+                put("clusters", String.join(", ", a, b));
+                put(a + ".bootstrap.servers", clusterA.bootstrapServers());
+                put(b + ".bootstrap.servers", clusterB.bootstrapServers());
+                put(ab + ".enabled", "true");
+                put(ab + ".topics", "^" + testTopicPrefix + ".*");
+                put("replication.factor", "1");
+                put("checkpoints.topic.replication.factor", "1");
+                put("heartbeats.topic.replication.factor", "1");
+                put("emit.offset-syncs.enabled", "false");
+                put("status.storage.replication.factor", "1");
+                put("offset.storage.replication.factor", "1");
+                put("config.storage.replication.factor", "1");
+            }};
 
             // Bring up a single-node cluster
             final MirrorMaker mm = startMirrorMaker("no-offset-syncing", mmProps);
@@ -242,7 +242,6 @@ public class DedicatedMirrorIntegrationTest {
 
             // wait for source connector to start a task
             awaitConnectorTasksStart(mm, MirrorSourceConnector.class, sourceAndTarget);
-
 
             // Write data to the topic on cluster A
             writeToTopic(clusterA, topic, numMessages);
@@ -289,42 +288,42 @@ public class DedicatedMirrorIntegrationTest {
             final String testTopicPrefix = "test-topic-";
 
             Map<String, String> mmProps = new HashMap<>() {{
-                    put("dedicated.mode.enable.internal.rest", "true");
-                    put("listeners", "http://localhost:0");
-                    // Refresh topics very frequently to quickly pick up on topics that are created
-                    // after the MM2 nodes are brought up during testing
-                    put(MirrorSourceConfig.REFRESH_TOPICS_INTERVAL_SECONDS, "1");
-                    put("clusters", String.join(", ", a, b));
-                    put(a + ".bootstrap.servers", clusterA.bootstrapServers());
-                    put(b + ".bootstrap.servers", clusterB.bootstrapServers());
-                    // Enable exactly-once support to both validate that MirrorMaker can run with
-                    // that feature turned on, and to force cross-worker communication before
-                    // task startup
-                    put(b + ".exactly.once.source.support", "enabled");
-                    put(a + ".consumer.isolation.level", "read_committed");
-                    put(ab + ".enabled", "true");
-                    put(ab + ".topics", "^" + testTopicPrefix + ".*");
-                    // The name of the offset syncs topic will contain the name of the cluster in
-                    // the replication flow that it is _not_ hosted on; create the offset syncs topic
-                    // on the target cluster so that its name will contain the source cluster's name
-                    // (since the target cluster's name contains characters that are not valid for
-                    // use in a topic name)
-                    put(ab + ".offset-syncs.topic.location", "target");
-                    // Disable b -> a (and heartbeats from it) so that no topics are created that use
-                    // the target cluster's name
-                    put(ba + ".enabled", "false");
-                    put(ba + ".emit.heartbeats.enabled", "false");
-                    put("replication.factor", "1");
-                    put("checkpoints.topic.replication.factor", "1");
-                    put("heartbeats.topic.replication.factor", "1");
-                    put("offset-syncs.topic.replication.factor", "1");
-                    put("offset.storage.replication.factor", "1");
-                    put("status.storage.replication.factor", "1");
-                    put("config.storage.replication.factor", "1");
-                    // For the multi-node case, we wait for reassignment so shorten the delay period.
-                    put(a + "." + DistributedConfig.SCHEDULED_REBALANCE_MAX_DELAY_MS_CONFIG, "1000");
-                    put(b + "." + DistributedConfig.SCHEDULED_REBALANCE_MAX_DELAY_MS_CONFIG, "1000");
-                }};
+                put("dedicated.mode.enable.internal.rest", "true");
+                put("listeners", "http://localhost:0");
+                // Refresh topics very frequently to quickly pick up on topics that are created
+                // after the MM2 nodes are brought up during testing
+                put(MirrorSourceConfig.REFRESH_TOPICS_INTERVAL_SECONDS, "1");
+                put("clusters", String.join(", ", a, b));
+                put(a + ".bootstrap.servers", clusterA.bootstrapServers());
+                put(b + ".bootstrap.servers", clusterB.bootstrapServers());
+                // Enable exactly-once support to both validate that MirrorMaker can run with
+                // that feature turned on, and to force cross-worker communication before
+                // task startup
+                put(b + ".exactly.once.source.support", "enabled");
+                put(a + ".consumer.isolation.level", "read_committed");
+                put(ab + ".enabled", "true");
+                put(ab + ".topics", "^" + testTopicPrefix + ".*");
+                // The name of the offset syncs topic will contain the name of the cluster in
+                // the replication flow that it is _not_ hosted on; create the offset syncs topic
+                // on the target cluster so that its name will contain the source cluster's name
+                // (since the target cluster's name contains characters that are not valid for
+                // use in a topic name)
+                put(ab + ".offset-syncs.topic.location", "target");
+                // Disable b -> a (and heartbeats from it) so that no topics are created that use
+                // the target cluster's name
+                put(ba + ".enabled", "false");
+                put(ba + ".emit.heartbeats.enabled", "false");
+                put("replication.factor", "1");
+                put("checkpoints.topic.replication.factor", "1");
+                put("heartbeats.topic.replication.factor", "1");
+                put("offset-syncs.topic.replication.factor", "1");
+                put("offset.storage.replication.factor", "1");
+                put("status.storage.replication.factor", "1");
+                put("config.storage.replication.factor", "1");
+                // For the multi-node case, we wait for reassignment so shorten the delay period.
+                put(a + "." + DistributedConfig.SCHEDULED_REBALANCE_MAX_DELAY_MS_CONFIG, "1000");
+                put(b + "." + DistributedConfig.SCHEDULED_REBALANCE_MAX_DELAY_MS_CONFIG, "1000");
+            }};
 
             final SourceAndTarget sourceAndTarget = new SourceAndTarget(a, b);
             // Bring up a three-node cluster
@@ -397,6 +396,7 @@ public class DedicatedMirrorIntegrationTest {
             cluster.produce(topic, Integer.toString(i));
         }
     }
+
     private void awaitMirrorMakerStart(final MirrorMaker mm, final SourceAndTarget sourceAndTarget) throws InterruptedException {
         awaitMirrorMakerStart(mm, sourceAndTarget, CONNECTOR_CLASSES);
     }
@@ -405,7 +405,7 @@ public class DedicatedMirrorIntegrationTest {
         waitForCondition(() -> {
             try {
                 return connectorClasses.stream().allMatch(
-                    connectorClazz -> isConnectorRunningForMirrorMaker(connectorClazz, mm, sourceAndTarget));
+                        connectorClazz -> isConnectorRunningForMirrorMaker(connectorClazz, mm, sourceAndTarget));
             } catch (Exception ex) {
                 log.error("Something unexpected occurred. Unable to check for startup status for mirror maker {}", mm, ex);
                 throw new NoRetryException(ex);
@@ -471,8 +471,8 @@ public class DedicatedMirrorIntegrationTest {
             final ConnectorStateInfo connectorStatus = mm.connectorStatus(sourceAndTarget, connName);
             if (connectorStatus.connector().state().equals(AbstractStatus.State.FAILED.toString())) {
                 throw new NoRetryException(new AssertionError(
-                    String.format("Connector %s is in FAILED state for MirrorMaker %s and source->target=%s",
-                            connectorClazz, mm, sourceAndTarget)));
+                        String.format("Connector %s is in FAILED state for MirrorMaker %s and source->target=%s",
+                                connectorClazz, mm, sourceAndTarget)));
             }
             // verify that connector state is set to running
             return connectorStatus.connector().state().equals(AbstractStatus.State.RUNNING.toString());
@@ -489,13 +489,13 @@ public class DedicatedMirrorIntegrationTest {
         final String connName = connectorClazz.getSimpleName();
         final ConnectorStateInfo connectorStatus = mm.connectorStatus(sourceAndTarget, connName);
         return isConnectorRunningForMirrorMaker(connectorClazz, mm, sourceAndTarget)
-            // verify that at least one task exists
-            && !connectorStatus.tasks().isEmpty()
-            // verify that tasks are set to running
-            && connectorStatus.tasks().stream().allMatch(s -> {
-                if (s.state().equals(AbstractStatus.State.FAILED.toString()))
-                    throw new NoRetryException(new AssertionError(String.format("Task %s is in FAILED state", s)));
-                return s.state().equals(AbstractStatus.State.RUNNING.toString());
-            });
+                // verify that at least one task exists
+                && !connectorStatus.tasks().isEmpty()
+                // verify that tasks are set to running
+                && connectorStatus.tasks().stream().allMatch(s -> {
+                    if (s.state().equals(AbstractStatus.State.FAILED.toString()))
+                        throw new NoRetryException(new AssertionError(String.format("Task %s is in FAILED state", s)));
+                    return s.state().equals(AbstractStatus.State.RUNNING.toString());
+                });
     }
 }

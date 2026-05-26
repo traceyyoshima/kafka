@@ -50,9 +50,9 @@ public class FakeKafkaConfigSchema {
 
     static {
         SYNONYMS.put("unclean.leader.election.enable",
-            List.of(new ConfigSynonym("unclean.leader.election.enable")));
+                List.of(new ConfigSynonym("unclean.leader.election.enable")));
         SYNONYMS.put("min.insync.replicas",
-            List.of(new ConfigSynonym("min.insync.replicas")));
+                List.of(new ConfigSynonym("min.insync.replicas")));
     }
 
     public static final KafkaConfigSchema INSTANCE = new KafkaConfigSchema(CONFIGS, SYNONYMS);

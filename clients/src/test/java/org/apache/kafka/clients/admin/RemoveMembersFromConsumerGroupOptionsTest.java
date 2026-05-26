@@ -28,10 +28,10 @@ public class RemoveMembersFromConsumerGroupOptionsTest {
     @Test
     public void testConstructor() {
         RemoveMembersFromConsumerGroupOptions options = new RemoveMembersFromConsumerGroupOptions(
-            Collections.singleton(new MemberToRemove("instance-1")));
+                Collections.singleton(new MemberToRemove("instance-1")));
 
         assertEquals(Collections.singleton(
-            new MemberToRemove("instance-1")), options.members());
+                new MemberToRemove("instance-1")), options.members());
 
         // Construct will fail if illegal empty members provided
         assertThrows(IllegalArgumentException.class, () -> new RemoveMembersFromConsumerGroupOptions(Collections.emptyList()));

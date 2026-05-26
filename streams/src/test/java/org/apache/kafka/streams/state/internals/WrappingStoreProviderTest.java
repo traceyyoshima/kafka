@@ -75,7 +75,7 @@ public class WrappingStoreProviderTest {
         wrappingStoreProvider.setStoreQueryParameters(StoreQueryParameters.fromNameAndType("window", windowStore()));
         final List<ReadOnlyWindowStore<Object, Object>>
                 windowStores =
-                wrappingStoreProvider.stores("window", windowStore());
+                        wrappingStoreProvider.stores("window", windowStore());
         assertEquals(2, windowStores.size());
     }
 
@@ -109,9 +109,9 @@ public class WrappingStoreProviderTest {
     public void shouldPropagateConfiguredDefaultIsolationLevel() {
         final StateStoreProviderStub stub = new StateStoreProviderStub(false);
         final WrappingStoreProvider provider = new WrappingStoreProvider(
-            Arrays.asList(stub),
-            StoreQueryParameters.fromNameAndType("kv", QueryableStoreTypes.keyValueStore()),
-            IsolationLevel.READ_COMMITTED
+                Arrays.asList(stub),
+                StoreQueryParameters.fromNameAndType("kv", QueryableStoreTypes.keyValueStore()),
+                IsolationLevel.READ_COMMITTED
         );
         assertEquals(IsolationLevel.READ_COMMITTED, provider.defaultIsolationLevel());
     }

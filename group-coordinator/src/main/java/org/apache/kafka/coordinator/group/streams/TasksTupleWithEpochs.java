@@ -56,9 +56,9 @@ public record TasksTupleWithEpochs(Map<String, Map<Integer, Integer>> activeTask
      * An empty task tuple.
      */
     public static final TasksTupleWithEpochs EMPTY = new TasksTupleWithEpochs(
-        Map.of(),
-        Map.of(),
-        Map.of()
+            Map.of(),
+            Map.of(),
+            Map.of()
     );
 
     /**
@@ -112,16 +112,16 @@ public record TasksTupleWithEpochs(Map<String, Map<Integer, Integer>> activeTask
         int memberEpoch
     ) {
         return new TasksTupleWithEpochs(
-            parseActiveTasksWithEpochs(log, groupId, activeTasks, memberEpoch),
-            parseSimpleTasks(standbyTasks),
-            parseSimpleTasks(warmupTasks)
+                parseActiveTasksWithEpochs(log, groupId, activeTasks, memberEpoch),
+                parseSimpleTasks(standbyTasks),
+                parseSimpleTasks(warmupTasks)
         );
     }
 
     private static Map<String, Set<Integer>> mergeTasks(final Map<String, Set<Integer>> tasks1, final Map<String, Set<Integer>> tasks2) {
         HashMap<String, Set<Integer>> result = new HashMap<>();
         tasks1.forEach((subtopologyId, tasks) ->
-            result.put(subtopologyId, new HashSet<>(tasks)));
+                result.put(subtopologyId, new HashSet<>(tasks)));
         tasks2.forEach((subtopologyId, tasks) -> result
             .computeIfAbsent(subtopologyId, __ -> new HashSet<>())
             .addAll(tasks));
@@ -151,7 +151,7 @@ public record TasksTupleWithEpochs(Map<String, Map<Integer, Integer>> activeTask
                 if (epochs != null) {
                     log.error("[GroupId {}] Size of assignment epochs {} is not equal to partitions {} for subtopology {}. " +
                             "Using default epoch {} for all partitions.",
-                        groupId, epochs.size(), partitions.size(), subtopologyId, memberEpoch);
+                            groupId, epochs.size(), partitions.size(), subtopologyId, memberEpoch);
                 }
                 // Legacy record without epochs: use member epoch as default
                 for (Integer partition : partitions) {
@@ -180,26 +180,26 @@ public record TasksTupleWithEpochs(Map<String, Map<Integer, Integer>> activeTask
     @Override
     public String toString() {
         return "(active=" + taskAssignmentToString(activeTasksWithEpochs) +
-            ", standby=" + TasksTuple.taskAssignmentToString(standbyTasks) +
-            ", warmup=" + TasksTuple.taskAssignmentToString(warmupTasks) +
-            ')';
+                ", standby=" + TasksTuple.taskAssignmentToString(standbyTasks) +
+                ", warmup=" + TasksTuple.taskAssignmentToString(warmupTasks) +
+                ')';
     }
 
     private static String taskAssignmentToString(Map<String, Map<Integer, Integer>> assignment) {
         StringBuilder builder = new StringBuilder("[");
-        
+
         // Sort subtopology IDs
         String[] subtopologyIds = assignment.keySet().toArray(new String[0]);
         java.util.Arrays.sort(subtopologyIds);
-        
+
         boolean first = true;
         for (String subtopologyId : subtopologyIds) {
             Map<Integer, Integer> partitions = assignment.get(subtopologyId);
-            
+
             // Sort partition IDs
             Integer[] partitionIds = partitions.keySet().toArray(new Integer[0]);
             java.util.Arrays.sort(partitionIds);
-            
+
             for (Integer partitionId : partitionIds) {
                 if (!first) {
                     builder.append(", ");

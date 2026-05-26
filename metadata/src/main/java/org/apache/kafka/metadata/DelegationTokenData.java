@@ -38,13 +38,13 @@ public record DelegationTokenData(TokenInformation tokenInformation) {
             renewers.add(SecurityUtils.parseKafkaPrincipal(renewerString));
         }
         return new DelegationTokenData(TokenInformation.fromRecord(
-            record.tokenId(),
-            SecurityUtils.parseKafkaPrincipal(record.owner()),
-            SecurityUtils.parseKafkaPrincipal(record.requester()),
-            renewers,
-            record.issueTimestamp(),
-            record.maxTimestamp(),
-            record.expirationTimestamp()));
+                record.tokenId(),
+                SecurityUtils.parseKafkaPrincipal(record.owner()),
+                SecurityUtils.parseKafkaPrincipal(record.requester()),
+                renewers,
+                record.issueTimestamp(),
+                record.maxTimestamp(),
+                record.expirationTimestamp()));
     }
 
     public DelegationTokenRecord toRecord() {
@@ -65,7 +65,7 @@ public record DelegationTokenData(TokenInformation tokenInformation) {
     @Override
     public String toString() {
         return "DelegationTokenData" +
-            "(tokenInformation=" + "[hidden]" +
-            ")";
+                "(tokenInformation=" + "[hidden]" +
+                ")";
     }
 }

@@ -42,7 +42,6 @@ public class Crc32CBenchmark {
     @Param({"false", "true"})
     private boolean direct;
 
-
     @Param({"false", "true"})
     private boolean readonly;
 

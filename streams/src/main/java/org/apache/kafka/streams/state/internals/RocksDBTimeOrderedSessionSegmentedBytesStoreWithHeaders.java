@@ -48,7 +48,7 @@ import org.apache.kafka.streams.query.QueryResult;
  * @see SessionSegmentWithHeaders
  */
 class RocksDBTimeOrderedSessionSegmentedBytesStoreWithHeaders
-    extends RocksDBTimeOrderedSessionSegmentedBytesStore<SessionSegmentWithHeaders> {
+        extends RocksDBTimeOrderedSessionSegmentedBytesStore<SessionSegmentWithHeaders> {
 
     RocksDBTimeOrderedSessionSegmentedBytesStoreWithHeaders(
         final String name,
@@ -58,10 +58,10 @@ class RocksDBTimeOrderedSessionSegmentedBytesStoreWithHeaders
         final boolean withIndex
     ) {
         super(
-            name,
-            retention,
-            withIndex,
-            new SessionSegmentsWithHeaders(name, metricsScope, retention, segmentInterval)
+                name,
+                retention,
+                withIndex,
+                new SessionSegmentsWithHeaders(name, metricsScope, retention, segmentInterval)
         );
     }
 
@@ -80,7 +80,7 @@ class RocksDBTimeOrderedSessionSegmentedBytesStoreWithHeaders
 
             if (config.isCollectExecutionInfo()) {
                 result.addExecutionInfo(
-                    "Handled in " + this.getClass() + " in " + (System.nanoTime() - start) + "ns"
+                        "Handled in " + this.getClass() + " in " + (System.nanoTime() - start) + "ns"
                 );
             }
             result.setPosition(position.copy());

@@ -36,8 +36,8 @@ class StandbyTaskAssignorFactory {
             // racksForProcess should be populated if rackAwareTaskAssignor isn't null
             final Map<ProcessId, String> racksForProcess = rackAwareTaskAssignor.racksForProcess();
             return new ClientTagAwareStandbyTaskAssignor(
-                (processId, clientState) -> mkMap(mkEntry("rack", racksForProcess.get(processId))),
-                assignmentConfigs -> Collections.singletonList("rack")
+                    (processId, clientState) -> mkMap(mkEntry("rack", racksForProcess.get(processId))),
+                    assignmentConfigs -> Collections.singletonList("rack")
             );
         } else {
             return new DefaultStandbyTaskAssignor();

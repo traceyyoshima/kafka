@@ -47,7 +47,7 @@ public class AlterConsumerGroupOffsetsResult {
                 result.completeExceptionally(throwable);
             } else if (!topicPartitions.containsKey(partition)) {
                 result.completeExceptionally(new IllegalArgumentException(
-                    "Alter offset for partition \"" + partition + "\" was not attempted"));
+                        "Alter offset for partition \"" + partition + "\" was not attempted"));
             } else {
                 final Errors error = topicPartitions.get(partition);
                 if (error == Errors.NONE) {
@@ -65,7 +65,7 @@ public class AlterConsumerGroupOffsetsResult {
      * Return a future which succeeds if all the alter offsets succeed.
      */
     public KafkaFuture<Void> all() {
-        return this.future.thenApply(topicPartitionErrorsMap ->  {
+        return this.future.thenApply(topicPartitionErrorsMap -> {
             List<TopicPartition> partitionsFailed = topicPartitionErrorsMap.entrySet()
                 .stream()
                 .filter(e -> e.getValue() != Errors.NONE)
@@ -74,7 +74,7 @@ public class AlterConsumerGroupOffsetsResult {
             for (Errors error : topicPartitionErrorsMap.values()) {
                 if (error != Errors.NONE) {
                     throw error.exception(
-                        "Failed altering group offsets for the following partitions: " + partitionsFailed);
+                            "Failed altering group offsets for the following partitions: " + partitionsFailed);
                 }
             }
             return null;

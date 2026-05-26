@@ -123,27 +123,27 @@ public class UnattachedState implements EpochState {
     @Override
     public boolean canGrantVote(ReplicaKey replicaKey, boolean isLogUpToDate, boolean isPreVote) {
         return unattachedOrProspectiveCanGrantVote(
-            leaderId,
-            votedKey,
-            epoch,
-            replicaKey,
-            isLogUpToDate,
-            isPreVote,
-            log
+                leaderId,
+                votedKey,
+                epoch,
+                replicaKey,
+                isLogUpToDate,
+                isPreVote,
+                log
         );
     }
 
     @Override
     public String toString() {
         return String.format(
-            "UnattachedState(epoch=%d, leaderId=%s, votedKey=%s, voters=%s, " +
-            "electionTimeoutMs=%d, highWatermark=%s)",
-            epoch,
-            leaderId,
-            votedKey,
-            voters,
-            electionTimeoutMs,
-            highWatermark
+                "UnattachedState(epoch=%d, leaderId=%s, votedKey=%s, voters=%s, " +
+                "electionTimeoutMs=%d, highWatermark=%s)",
+                epoch,
+                leaderId,
+                votedKey,
+                voters,
+                electionTimeoutMs,
+                highWatermark
         );
     }
 

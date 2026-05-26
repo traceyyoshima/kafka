@@ -38,7 +38,6 @@ public class DeleteRecordsPartitionStatus {
         this.acksPending = acksPending;
     }
 
-
     public DeleteRecordsPartitionResult responseStatus() {
         return responseStatus;
     }

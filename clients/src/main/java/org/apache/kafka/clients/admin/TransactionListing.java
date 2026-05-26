@@ -51,8 +51,8 @@ public class TransactionListing {
         if (o == null || getClass() != o.getClass()) return false;
         TransactionListing that = (TransactionListing) o;
         return producerId == that.producerId &&
-            Objects.equals(transactionalId, that.transactionalId) &&
-            transactionState == that.transactionState;
+                Objects.equals(transactionalId, that.transactionalId) &&
+                transactionState == that.transactionState;
     }
 
     @Override
@@ -63,9 +63,9 @@ public class TransactionListing {
     @Override
     public String toString() {
         return "TransactionListing(" +
-            "transactionalId='" + transactionalId + '\'' +
-            ", producerId=" + producerId +
-            ", transactionState=" + transactionState +
-            ')';
+                "transactionalId='" + transactionalId + '\'' +
+                ", producerId=" + producerId +
+                ", transactionState=" + transactionState +
+                ')';
     }
 }

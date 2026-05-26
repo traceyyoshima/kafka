@@ -79,8 +79,8 @@ class SegmentedCacheFunction implements CacheFunction {
             final byte[] cacheKeyBytes = cacheKey.get();
             final byte[] storeKeyBytes = storeKey.get();
             return ByteUtils.BYTES_LEXICO_COMPARATOR.compare(
-                cacheKeyBytes, SEGMENT_ID_BYTES, cacheKeyBytes.length - SEGMENT_ID_BYTES,
-                storeKeyBytes, 0, storeKeyBytes.length
+                    cacheKeyBytes, SEGMENT_ID_BYTES, cacheKeyBytes.length - SEGMENT_ID_BYTES,
+                    storeKeyBytes, 0, storeKeyBytes.length
             );
         } else {
             return segmentCompare;

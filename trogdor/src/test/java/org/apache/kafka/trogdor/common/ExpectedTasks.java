@@ -96,11 +96,11 @@ public class ExpectedTasks {
             }
             if ((taskSpec != null) && (!actual.spec().equals(taskSpec))) {
                 return "Invalid spec for task " + id + ": expected " + taskSpec +
-                    ", got " + actual.spec();
+                        ", got " + actual.spec();
             }
             if ((taskState != null) && (!actual.equals(taskState))) {
                 return "Invalid state for task " + id + ": expected " + taskState +
-                    ", got " + actual;
+                        ", got " + actual;
             }
             return null;
         }
@@ -111,7 +111,7 @@ public class ExpectedTasks {
                     return "Did not find worker " + id + "\n";
                 }
                 return "Invalid state for task " + id + ": expected " + workerState +
-                    ", got " + actual;
+                        ", got " + actual;
             }
             return null;
         }

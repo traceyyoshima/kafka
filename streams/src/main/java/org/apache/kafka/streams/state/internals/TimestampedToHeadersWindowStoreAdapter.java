@@ -209,7 +209,7 @@ public class TimestampedToHeadersWindowStoreAdapter implements WindowStore<Bytes
 
             if (rawResult.isSuccess()) {
                 final WindowStoreIterator<byte[]> wrappedIterator =
-                    new TimestampedWindowToHeadersWindowStoreIteratorAdapter(rawResult.getResult());
+                        new TimestampedWindowToHeadersWindowStoreIteratorAdapter(rawResult.getResult());
                 result = (QueryResult<R>) InternalQueryResultUtil.copyAndSubstituteDeserializedResult(rawResult, wrappedIterator);
             } else {
                 result = (QueryResult<R>) rawResult;
@@ -218,11 +218,11 @@ public class TimestampedToHeadersWindowStoreAdapter implements WindowStore<Bytes
             // Handle WindowRangeQuery: wrap iterator to convert values
             final WindowRangeQuery<Bytes, byte[]> windowRangeQuery = (WindowRangeQuery<Bytes, byte[]>) query;
             final QueryResult<KeyValueIterator<Windowed<Bytes>, byte[]>> rawResult =
-                store.query(windowRangeQuery, positionBound, config);
+                    store.query(windowRangeQuery, positionBound, config);
 
             if (rawResult.isSuccess()) {
                 final KeyValueIterator<Windowed<Bytes>, byte[]> wrappedIterator =
-                    new TimestampedToHeadersIteratorAdapter<>(rawResult.getResult());
+                        new TimestampedToHeadersIteratorAdapter<>(rawResult.getResult());
                 result = (QueryResult<R>) InternalQueryResultUtil.copyAndSubstituteDeserializedResult(rawResult, wrappedIterator);
             } else {
                 result = (QueryResult<R>) rawResult;
@@ -234,7 +234,7 @@ public class TimestampedToHeadersWindowStoreAdapter implements WindowStore<Bytes
 
         if (config.isCollectExecutionInfo()) {
             result.addExecutionInfo(
-                "Handled in " + getClass() + " in " + (System.nanoTime() - start) + "ns"
+                    "Handled in " + getClass() + " in " + (System.nanoTime() - start) + "ns"
             );
         }
 
@@ -251,8 +251,8 @@ public class TimestampedToHeadersWindowStoreAdapter implements WindowStore<Bytes
      * to timestamp-with-headers format by adding empty headers.
      */
     private static class TimestampedWindowToHeadersWindowStoreIteratorAdapter
-        extends TimestampedToHeadersIteratorAdapter<Long>
-        implements WindowStoreIterator<byte[]> {
+            extends TimestampedToHeadersIteratorAdapter<Long>
+            implements WindowStoreIterator<byte[]> {
 
         TimestampedWindowToHeadersWindowStoreIteratorAdapter(final KeyValueIterator<Long, byte[]> innerIterator) {
             super(innerIterator);

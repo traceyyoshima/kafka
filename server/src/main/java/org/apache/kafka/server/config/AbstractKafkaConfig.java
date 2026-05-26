@@ -68,25 +68,25 @@ public abstract class AbstractKafkaConfig extends AbstractConfig {
     private static final InetAddressValidator INET_ADDRESS_VALIDATOR = InetAddressValidator.getInstance();
 
     public static final ConfigDef CONFIG_DEF = Utils.mergeConfigs(List.of(
-        RemoteLogManagerConfig.configDef(),
-        ServerConfigs.CONFIG_DEF,
-        KRaftConfigs.CONFIG_DEF,
-        MetadataLogConfig.CONFIG_DEF,
-        SocketServerConfigs.CONFIG_DEF,
-        ReplicationConfigs.CONFIG_DEF,
-        GroupCoordinatorConfig.CONFIG_DEF,
-        CleanerConfig.CONFIG_DEF,
-        LogConfig.SERVER_CONFIG_DEF,
-        ShareGroupConfig.CONFIG_DEF,
-        ShareCoordinatorConfig.CONFIG_DEF,
-        TransactionLogConfig.CONFIG_DEF,
-        TransactionStateManagerConfig.CONFIG_DEF,
-        QuorumConfig.CONFIG_DEF,
-        MetricConfigs.CONFIG_DEF,
-        QuotaConfig.CONFIG_DEF,
-        BrokerSecurityConfigs.CONFIG_DEF,
-        DelegationTokenManagerConfigs.CONFIG_DEF,
-        AddPartitionsToTxnConfig.CONFIG_DEF
+            RemoteLogManagerConfig.configDef(),
+            ServerConfigs.CONFIG_DEF,
+            KRaftConfigs.CONFIG_DEF,
+            MetadataLogConfig.CONFIG_DEF,
+            SocketServerConfigs.CONFIG_DEF,
+            ReplicationConfigs.CONFIG_DEF,
+            GroupCoordinatorConfig.CONFIG_DEF,
+            CleanerConfig.CONFIG_DEF,
+            LogConfig.SERVER_CONFIG_DEF,
+            ShareGroupConfig.CONFIG_DEF,
+            ShareCoordinatorConfig.CONFIG_DEF,
+            TransactionLogConfig.CONFIG_DEF,
+            TransactionStateManagerConfig.CONFIG_DEF,
+            QuorumConfig.CONFIG_DEF,
+            MetricConfigs.CONFIG_DEF,
+            QuotaConfig.CONFIG_DEF,
+            BrokerSecurityConfigs.CONFIG_DEF,
+            DelegationTokenManagerConfigs.CONFIG_DEF,
+            AddPartitionsToTxnConfig.CONFIG_DEF
     ));
 
     public AbstractKafkaConfig(ConfigDef definition, Map<?, ?> originals, Map<String, ?> configProviderProps, boolean doLog) {
@@ -635,7 +635,7 @@ public abstract class AbstractKafkaConfig extends AbstractConfig {
     public Map<String, Object> extractGroupConfigMap() {
         Map<String, Object> defaults = new HashMap<>();
         GroupConfig.ALL_GROUP_CONFIG_SYNONYMS.forEach((groupConfigName, brokerConfigName) ->
-            brokerConfigName.ifPresent(name -> defaults.put(groupConfigName, get(name)))
+                brokerConfigName.ifPresent(name -> defaults.put(groupConfigName, get(name)))
         );
         return defaults;
     }

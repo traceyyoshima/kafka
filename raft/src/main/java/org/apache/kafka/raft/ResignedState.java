@@ -109,7 +109,7 @@ public class ResignedState implements EpochState {
     public void acknowledgeResignation(int voterId) {
         if (!voters.contains(voterId)) {
             throw new IllegalArgumentException("Attempt to acknowledge delivery of `EndQuorumEpoch` " +
-                "by a non-voter " + voterId);
+                    "by a non-voter " + voterId);
         }
         unackedVoters.remove(voterId);
     }
@@ -146,12 +146,12 @@ public class ResignedState implements EpochState {
             return true;
         }
         log.debug(
-            "Rejecting Vote request (preVote={}) from replica ({}) since we are in ResignedState in epoch {} " +
+                "Rejecting Vote request (preVote={}) from replica ({}) since we are in ResignedState in epoch {} " +
                 "and the replica's log is up-to-date={}",
-            isPreVote,
-            replicaKey,
-            epoch,
-            isLogUpToDate
+                isPreVote,
+                replicaKey,
+                epoch,
+                isLogUpToDate
         );
 
         return false;
@@ -165,13 +165,13 @@ public class ResignedState implements EpochState {
     @Override
     public String toString() {
         return "ResignedState(" +
-            "localId=" + localId +
-            ", epoch=" + epoch +
-            ", voters=" + voters +
-            ", electionTimeoutMs=" + electionTimeoutMs +
-            ", unackedVoters=" + unackedVoters +
-            ", preferredSuccessors=" + preferredSuccessors +
-            ')';
+                "localId=" + localId +
+                ", epoch=" + epoch +
+                ", voters=" + voters +
+                ", electionTimeoutMs=" + electionTimeoutMs +
+                ", unackedVoters=" + unackedVoters +
+                ", preferredSuccessors=" + preferredSuccessors +
+                ')';
     }
 
     @Override

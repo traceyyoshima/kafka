@@ -41,22 +41,22 @@ public class KafkaStreamsStateTest {
     @Test
     public void shouldCorrectlyReturnTasksByLag() {
         final KafkaStreamsState state = new DefaultKafkaStreamsState(
-            ProcessId.randomProcessId(),
-            10,
-            mkMap(),
-            mkSortedSet(NAMED_TASK_T0_0_0, NAMED_TASK_T0_0_1),
-            mkSortedSet(),
-            new TreeMap<>(mkMap(
-                mkEntry("c1", Set.of(NAMED_TASK_T0_0_0, NAMED_TASK_T0_0_1))
-            )),
-            Optional.empty(),
-            Optional.of(
-                mkMap(
-                    mkEntry(NAMED_TASK_T0_0_0, 2000L),
-                    mkEntry(NAMED_TASK_T0_0_1, 1000L)
-                )
-            ),
-            Optional.empty()
+                ProcessId.randomProcessId(),
+                10,
+                mkMap(),
+                mkSortedSet(NAMED_TASK_T0_0_0, NAMED_TASK_T0_0_1),
+                mkSortedSet(),
+                new TreeMap<>(mkMap(
+                    mkEntry("c1", Set.of(NAMED_TASK_T0_0_0, NAMED_TASK_T0_0_1))
+                )),
+                Optional.empty(),
+                Optional.of(
+                        mkMap(
+                                mkEntry(NAMED_TASK_T0_0_0, 2000L),
+                                mkEntry(NAMED_TASK_T0_0_1, 1000L)
+                        )
+                ),
+                Optional.empty()
         );
 
         assertThrows(IllegalStateException.class, () -> state.lagFor(NAMED_TASK_T0_1_0));
@@ -65,24 +65,24 @@ public class KafkaStreamsStateTest {
 
         assertThat(state.prevTasksByLag("c0"), equalTo(new TreeSet<>()));
         assertThat(state.prevTasksByLag("c1"), equalTo(new TreeSet<>(
-            Arrays.asList(NAMED_TASK_T0_0_1, NAMED_TASK_T0_0_0)
+                Arrays.asList(NAMED_TASK_T0_0_1, NAMED_TASK_T0_0_0)
         )));
     }
 
     @Test
     public void shouldThrowExceptionOnLagOperationsIfLagsWereNotComputed() {
         final KafkaStreamsState state = new DefaultKafkaStreamsState(
-            ProcessId.randomProcessId(),
-            10,
-            mkMap(),
-            mkSortedSet(NAMED_TASK_T0_0_0, NAMED_TASK_T0_0_1),
-            mkSortedSet(),
-            new TreeMap<>(mkMap(
-                mkEntry("c1", Set.of(NAMED_TASK_T0_0_0, NAMED_TASK_T0_0_1))
-            )),
-            Optional.empty(),
-            Optional.empty(),
-            Optional.empty()
+                ProcessId.randomProcessId(),
+                10,
+                mkMap(),
+                mkSortedSet(NAMED_TASK_T0_0_0, NAMED_TASK_T0_0_1),
+                mkSortedSet(),
+                new TreeMap<>(mkMap(
+                    mkEntry("c1", Set.of(NAMED_TASK_T0_0_0, NAMED_TASK_T0_0_1))
+                )),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty()
         );
 
         assertThrows(UnsupportedOperationException.class, () -> state.lagFor(NAMED_TASK_T0_0_0));

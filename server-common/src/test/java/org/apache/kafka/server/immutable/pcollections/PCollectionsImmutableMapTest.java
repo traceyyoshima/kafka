@@ -163,7 +163,6 @@ public class PCollectionsImmutableMapTest {
             .doUnsupportedVoidFunctionDelegationCheck();
     }
 
-
     @Test
     public void testDelegationOfKeySet() {
         new PCollectionsHashMapWrapperDelegationChecker<>()
@@ -306,7 +305,7 @@ public class PCollectionsImmutableMapTest {
         new PCollectionsHashMapWrapperDelegationChecker<>()
             .defineMockConfigurationForFunctionInvocation(HashPMap::toString, mockFunctionReturnValue)
             .defineWrapperFunctionInvocationAndMockReturnValueTransformation(PCollectionsImmutableMap::toString,
-                text -> "PCollectionsImmutableMap{underlying=" + text + "}")
+                    text -> "PCollectionsImmutableMap{underlying=" + text + "}")
             .doFunctionDelegationCheck();
     }
 }

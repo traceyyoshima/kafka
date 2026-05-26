@@ -73,7 +73,7 @@ public class OAuthBearerUnsecuredJws implements OAuthBearerToken {
      *             not "{@code none}")
      */
     public OAuthBearerUnsecuredJws(String compactSerialization, String principalClaimName, String scopeClaimName)
-            throws OAuthBearerIllegalTokenException {
+        throws OAuthBearerIllegalTokenException {
         this.compactSerialization = Objects.requireNonNull(compactSerialization);
         if (compactSerialization.contains(".."))
             throw new OAuthBearerIllegalTokenException(

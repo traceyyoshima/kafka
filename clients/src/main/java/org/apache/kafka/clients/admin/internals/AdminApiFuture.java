@@ -98,8 +98,8 @@ public interface AdminApiFuture<K, V> {
 
         public SimpleAdminApiFuture(Set<K> keys) {
             this.futures = keys.stream().collect(Collectors.toMap(
-                Function.identity(),
-                k -> new KafkaFutureImpl<>()
+                    Function.identity(),
+                    k -> new KafkaFutureImpl<>()
             ));
         }
 
@@ -131,7 +131,7 @@ public interface AdminApiFuture<K, V> {
             KafkaFutureImpl<V> future = (KafkaFutureImpl<V>) futures.get(key);
             if (future == null) {
                 throw new IllegalArgumentException("Attempt to complete future for " + key +
-                    ", which was not requested");
+                        ", which was not requested");
             } else {
                 return future;
             }

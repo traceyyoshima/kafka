@@ -53,12 +53,12 @@ public class RebalanceListenerMetricsTest {
             verify(streamsMetrics).threadLevelTagMap(THREAD_ID);
 
             streamsMetricsStatic.verify(() -> StreamsMetricsImpl.addAvgAndMaxToSensor(
-                expectedSensor,
-                THREAD_LEVEL_GROUP,
-                tagMap,
-                "tasks-revoked" + LATENCY_SUFFIX,
-                "The average time taken for tasks-revoked rebalance listener callback",
-                "The max time taken for tasks-revoked rebalance listener callback"
+                    expectedSensor,
+                    THREAD_LEVEL_GROUP,
+                    tagMap,
+                    "tasks-revoked" + LATENCY_SUFFIX,
+                    "The average time taken for tasks-revoked rebalance listener callback",
+                    "The max time taken for tasks-revoked rebalance listener callback"
             ));
         }
     }
@@ -77,12 +77,12 @@ public class RebalanceListenerMetricsTest {
             verify(streamsMetrics).threadLevelTagMap(THREAD_ID);
 
             streamsMetricsStatic.verify(() -> StreamsMetricsImpl.addAvgAndMaxToSensor(
-                expectedSensor,
-                THREAD_LEVEL_GROUP,
-                tagMap,
-                "tasks-assigned" + LATENCY_SUFFIX,
-                "The average time taken for tasks-assigned rebalance listener callback",
-                "The max time taken for tasks-assigned rebalance listener callback"
+                    expectedSensor,
+                    THREAD_LEVEL_GROUP,
+                    tagMap,
+                    "tasks-assigned" + LATENCY_SUFFIX,
+                    "The average time taken for tasks-assigned rebalance listener callback",
+                    "The max time taken for tasks-assigned rebalance listener callback"
             ));
         }
     }
@@ -101,12 +101,12 @@ public class RebalanceListenerMetricsTest {
             verify(streamsMetrics).threadLevelTagMap(THREAD_ID);
 
             streamsMetricsStatic.verify(() -> StreamsMetricsImpl.addAvgAndMaxToSensor(
-                expectedSensor,
-                THREAD_LEVEL_GROUP,
-                tagMap,
-                "tasks-lost" + LATENCY_SUFFIX,
-                "The average time taken for tasks-lost rebalance listener callback",
-                "The max time taken for tasks-lost rebalance listener callback"
+                    expectedSensor,
+                    THREAD_LEVEL_GROUP,
+                    tagMap,
+                    "tasks-lost" + LATENCY_SUFFIX,
+                    "The average time taken for tasks-lost rebalance listener callback",
+                    "The max time taken for tasks-lost rebalance listener callback"
             ));
         }
     }

@@ -312,12 +312,12 @@ public class ConnectorOffsetBackingStore implements OffsetBackingStore {
 
         if (secondaryStore != null && !tombstoneOffsets.isEmpty()) {
             return new ChainedOffsetWriteFuture(
-                primaryStore,
-                secondaryStore,
-                values,
-                regularOffsets,
-                tombstoneOffsets,
-                callback
+                    primaryStore,
+                    secondaryStore,
+                    values,
+                    regularOffsets,
+                    tombstoneOffsets,
+                    callback
             );
         } else {
             return setPrimaryThenSecondary(primaryStore, secondaryStore, values, regularOffsets, callback);

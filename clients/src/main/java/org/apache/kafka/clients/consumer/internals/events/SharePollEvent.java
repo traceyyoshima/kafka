@@ -61,8 +61,8 @@ public class SharePollEvent extends ApplicationEvent {
     @Override
     public String toStringBase() {
         return super.toStringBase() +
-            ", deadlineMs=" + deadlineMs +
-            ", pollTimeMs=" + pollTimeMs +
-            ", isComplete=" + isComplete;
+                ", deadlineMs=" + deadlineMs +
+                ", pollTimeMs=" + pollTimeMs +
+                ", isComplete=" + isComplete;
     }
 }

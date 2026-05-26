@@ -38,10 +38,10 @@ public class IntGaugeSuiteTest {
         MetricConfig config = new MetricConfig();
         Metrics metrics = new Metrics(config);
         return new IntGaugeSuite<>(log,
-            "mySuite",
-            metrics,
-            name -> new MetricName(name, "group", "myMetric", Collections.emptyMap()),
-            3);
+                "mySuite",
+                metrics,
+                name -> new MetricName(name, "group", "myMetric", Collections.emptyMap()),
+                3);
     }
 
     @Test

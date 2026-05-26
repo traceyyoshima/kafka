@@ -88,7 +88,6 @@ public class ListTransactionsHandlerTest {
         assertEquals(Collections.emptyList(), request.data().producerIdFilters());
     }
 
-
     @Test
     public void testBuildRequestWithFilteredTransactionalIdPattern() {
         int brokerId = 1;
@@ -156,7 +155,7 @@ public class ListTransactionsHandlerTest {
         ListTransactionsHandler handler = new ListTransactionsHandler(options, logContext);
         ListTransactionsResponse response = sampleListTransactionsResponse1();
         ApiResult<BrokerKey, Collection<TransactionListing>> result = handler.handleResponse(
-            node, singleton(brokerKey), response);
+                node, singleton(brokerKey), response);
         assertEquals(singleton(brokerKey), result.completedKeys.keySet());
         assertExpectedTransactions(response.data().transactionStates(), result.completedKeys.get(brokerKey));
     }
@@ -165,7 +164,7 @@ public class ListTransactionsHandlerTest {
     public void testCoordinatorLoadingErrorIsRetriable() {
         int brokerId = 1;
         ApiResult<BrokerKey, Collection<TransactionListing>> result =
-            handleResponseWithError(brokerId, Errors.COORDINATOR_LOAD_IN_PROGRESS);
+                handleResponseWithError(brokerId, Errors.COORDINATOR_LOAD_IN_PROGRESS);
         assertEquals(Collections.emptyMap(), result.completedKeys);
         assertEquals(Collections.emptyMap(), result.failedKeys);
         assertEquals(Collections.emptyList(), result.unmappedKeys);
@@ -199,24 +198,24 @@ public class ListTransactionsHandlerTest {
         ListTransactionsHandler handler = new ListTransactionsHandler(options, logContext);
 
         ListTransactionsResponse response = new ListTransactionsResponse(
-            new ListTransactionsResponseData().setErrorCode(error.code())
+                new ListTransactionsResponseData().setErrorCode(error.code())
         );
         return handler.handleResponse(node, singleton(brokerKey), response);
     }
 
     private ListTransactionsResponse sampleListTransactionsResponse1() {
         return new ListTransactionsResponse(
-            new ListTransactionsResponseData()
-                .setErrorCode(Errors.NONE.code())
-                .setTransactionStates(asList(
-                    new ListTransactionsResponseData.TransactionState()
-                        .setTransactionalId("foo")
-                        .setProducerId(12345L)
-                        .setTransactionState("Ongoing"),
-                    new ListTransactionsResponseData.TransactionState()
-                        .setTransactionalId("bar")
-                        .setProducerId(98765L)
-                        .setTransactionState("PrepareAbort")
+                new ListTransactionsResponseData()
+                    .setErrorCode(Errors.NONE.code())
+                    .setTransactionStates(asList(
+                        new ListTransactionsResponseData.TransactionState()
+                            .setTransactionalId("foo")
+                            .setProducerId(12345L)
+                            .setTransactionState("Ongoing"),
+                        new ListTransactionsResponseData.TransactionState()
+                            .setTransactionalId("bar")
+                            .setProducerId(98765L)
+                            .setTransactionState("PrepareAbort")
             ))
         );
     }
@@ -228,13 +227,13 @@ public class ListTransactionsHandlerTest {
         assertEquals(expected.size(), actual.size());
 
         Map<String, ListTransactionsResponseData.TransactionState> expectedMap = expected.stream().collect(Collectors.toMap(
-            ListTransactionsResponseData.TransactionState::transactionalId,
-            Function.identity()
+                ListTransactionsResponseData.TransactionState::transactionalId,
+                Function.identity()
         ));
 
         for (TransactionListing actualListing : actual) {
             ListTransactionsResponseData.TransactionState expectedState =
-                expectedMap.get(actualListing.transactionalId());
+                    expectedMap.get(actualListing.transactionalId());
             assertNotNull(expectedState);
             assertExpectedTransactionState(expectedState, actualListing);
         }

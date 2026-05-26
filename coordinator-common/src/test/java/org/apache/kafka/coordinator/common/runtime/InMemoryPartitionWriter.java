@@ -144,7 +144,7 @@ public class InMemoryPartitionWriter implements PartitionWriter {
         try {
             state.committedOffset = offset;
             state.listeners.forEach(listener ->
-                listener.onHighWatermarkUpdated(tp, state.committedOffset));
+                    listener.onHighWatermarkUpdated(tp, state.committedOffset));
         } finally {
             state.lock.unlock();
         }
@@ -158,7 +158,7 @@ public class InMemoryPartitionWriter implements PartitionWriter {
         try {
             state.committedOffset = state.endOffset;
             state.listeners.forEach(listener ->
-                listener.onHighWatermarkUpdated(tp, state.committedOffset));
+                    listener.onHighWatermarkUpdated(tp, state.committedOffset));
         } finally {
             state.lock.unlock();
         }

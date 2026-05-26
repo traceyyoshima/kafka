@@ -66,11 +66,11 @@ public class OAuthBearerSaslClientCallbackHandlerTest {
     public void testWithZeroTokens() {
         OAuthBearerSaslClientCallbackHandler handler = createCallbackHandler();
         CompletionException e = assertThrows(CompletionException.class, () -> SecurityManagerCompatibility.get().callAs(new Subject(),
-            () -> {
-                OAuthBearerTokenCallback callback = new OAuthBearerTokenCallback();
-                handler.handle(new Callback[] {callback});
-                return null;
-            }
+                () -> {
+                    OAuthBearerTokenCallback callback = new OAuthBearerTokenCallback();
+                    handler.handle(new Callback[] {callback});
+                    return null;
+                }
         ));
         assertEquals(IOException.class, e.getCause().getClass());
     }

@@ -114,44 +114,44 @@ public class DescribeProducersHandler extends AdminApiHandler.Batched<TopicParti
                     // explicitly, then they are fatal.
                     int brokerId = options.brokerId().getAsInt();
                     log.error("Not leader error in `DescribeProducers` response for partition {} " +
-                        "for brokerId {} set in options", topicPartition, brokerId, apiError.exception());
+                            "for brokerId {} set in options", topicPartition, brokerId, apiError.exception());
                     failed.put(topicPartition, apiError.error().exception("Failed to describe active producers " +
-                        "for partition " + topicPartition + " on brokerId " + brokerId));
+                            "for partition " + topicPartition + " on brokerId " + brokerId));
                 } else {
                     // Otherwise, we unmap the partition so that we can find the new leader
                     log.debug("Not leader error in `DescribeProducers` response for partition {}. " +
-                        "Will retry later.", topicPartition);
+                            "Will retry later.", topicPartition);
                     unmapped.add(topicPartition);
                 }
                 break;
 
             case UNKNOWN_TOPIC_OR_PARTITION:
                 log.debug("Unknown topic/partition error in `DescribeProducers` response for partition {}. " +
-                    "Will retry later.", topicPartition);
+                        "Will retry later.", topicPartition);
                 break;
 
             case INVALID_TOPIC_EXCEPTION:
                 log.error("Invalid topic in `DescribeProducers` response for partition {}",
-                    topicPartition, apiError.exception());
+                        topicPartition, apiError.exception());
                 failed.put(topicPartition, new InvalidTopicException(
-                    "Failed to fetch metadata for partition " + topicPartition
+                        "Failed to fetch metadata for partition " + topicPartition
                         + " due to invalid topic error: " + apiError.messageWithFallback(),
-                    Collections.singleton(topicPartition.topic())));
+                        Collections.singleton(topicPartition.topic())));
                 break;
 
             case TOPIC_AUTHORIZATION_FAILED:
                 log.error("Authorization failed in `DescribeProducers` response for partition {}",
-                    topicPartition, apiError.exception());
+                        topicPartition, apiError.exception());
                 failed.put(topicPartition, new TopicAuthorizationException("Failed to describe " +
-                    "active producers for partition " + topicPartition + " due to authorization failure on topic" +
-                    " `" + topicPartition.topic() + "`", Collections.singleton(topicPartition.topic())));
+                        "active producers for partition " + topicPartition + " due to authorization failure on topic" +
+                        " `" + topicPartition.topic() + "`", Collections.singleton(topicPartition.topic())));
                 break;
 
             default:
                 log.error("Unexpected error in `DescribeProducers` response for partition {}",
-                    topicPartition, apiError.exception());
+                        topicPartition, apiError.exception());
                 failed.put(topicPartition, apiError.error().exception("Failed to describe active " +
-                    "producers for partition " + topicPartition + " due to unexpected error"));
+                        "producers for partition " + topicPartition + " due to unexpected error"));
                 break;
         }
     }
@@ -170,7 +170,7 @@ public class DescribeProducersHandler extends AdminApiHandler.Batched<TopicParti
         for (DescribeProducersResponseData.TopicResponse topicResponse : response.data().topics()) {
             for (DescribeProducersResponseData.PartitionResponse partitionResponse : topicResponse.partitions()) {
                 TopicPartition topicPartition = new TopicPartition(
-                    topicResponse.name(), partitionResponse.partitionIndex());
+                        topicResponse.name(), partitionResponse.partitionIndex());
 
                 Errors error = Errors.forCode(partitionResponse.errorCode());
                 if (error != Errors.NONE) {
@@ -182,21 +182,21 @@ public class DescribeProducersHandler extends AdminApiHandler.Batched<TopicParti
                 List<ProducerState> activeProducers = partitionResponse.activeProducers().stream()
                     .map(activeProducer -> {
                         OptionalLong currentTransactionFirstOffset =
-                            activeProducer.currentTxnStartOffset() < 0 ?
-                                OptionalLong.empty() :
-                                OptionalLong.of(activeProducer.currentTxnStartOffset());
+                                activeProducer.currentTxnStartOffset() < 0 ?
+                                        OptionalLong.empty() :
+                                        OptionalLong.of(activeProducer.currentTxnStartOffset());
                         OptionalInt coordinatorEpoch =
-                            activeProducer.coordinatorEpoch() < 0 ?
-                                OptionalInt.empty() :
-                                OptionalInt.of(activeProducer.coordinatorEpoch());
+                                activeProducer.coordinatorEpoch() < 0 ?
+                                        OptionalInt.empty() :
+                                        OptionalInt.of(activeProducer.coordinatorEpoch());
 
                         return new ProducerState(
-                            activeProducer.producerId(),
-                            activeProducer.producerEpoch(),
-                            activeProducer.lastSequence(),
-                            activeProducer.lastTimestamp(),
-                            coordinatorEpoch,
-                            currentTransactionFirstOffset
+                                activeProducer.producerId(),
+                                activeProducer.producerEpoch(),
+                                activeProducer.lastSequence(),
+                                activeProducer.lastTimestamp(),
+                                coordinatorEpoch,
+                                currentTransactionFirstOffset
                         );
                     }).collect(Collectors.toList());
 

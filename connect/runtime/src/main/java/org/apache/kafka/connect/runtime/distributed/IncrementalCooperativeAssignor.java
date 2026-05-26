@@ -476,7 +476,7 @@ public class IncrementalCooperativeAssignor implements ConnectAssignor {
             }
 
             if (!candidateWorkerLoad.isEmpty()) {
-                log.debug("Assigning lost tasks to {} candidate workers: {}", 
+                log.debug("Assigning lost tasks to {} candidate workers: {}",
                         candidateWorkerLoad.size(),
                         candidateWorkerLoad.stream().map(WorkerLoad::worker).collect(Collectors.joining(",")));
                 Iterator<WorkerLoad> candidateWorkerIterator = candidateWorkerLoad.iterator();
@@ -584,8 +584,8 @@ public class IncrementalCooperativeAssignor implements ConnectAssignor {
         return assignments.entrySet()
                 .stream()
                 .collect(Collectors.toMap(
-                    Map.Entry::getKey,
-                    e -> IncrementalCooperativeConnectProtocol.serializeAssignment(e.getValue(), sessioned)));
+                        Map.Entry::getKey,
+                        e -> IncrementalCooperativeConnectProtocol.serializeAssignment(e.getValue(), sessioned)));
     }
 
     private static ConnectorsAndTasks diff(ConnectorsAndTasks base,
@@ -740,7 +740,7 @@ public class IncrementalCooperativeAssignor implements ConnectAssignor {
                     // Should never happen, but better to log a warning and move on than die and fail the whole rebalance if it does
                     log.warn(
                             "Unexpectedly ran out of {}s to revoke from worker {} while performing load-balancing revocations; " +
-                                    "worker appears to still be allocated {} instances, which is more than the intended allocation of {}",
+                            "worker appears to still be allocated {} instances, which is more than the intended allocation of {}",
                             allocatedResourceName,
                             worker.worker(),
                             workerAllocationSize.apply(worker),
@@ -835,7 +835,7 @@ public class IncrementalCooperativeAssignor implements ConnectAssignor {
                                 .filter(v -> !ignore.tasks().contains(v))
                                 .collect(Collectors.toList())
                         ).build()
-                ).collect(Collectors.toList());
+        ).collect(Collectors.toList());
     }
 
     private static void addAll(Map<String, ConnectorsAndTasks.Builder> base, Map<String, ConnectorsAndTasks> toAdd) {

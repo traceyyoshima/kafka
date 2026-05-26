@@ -377,7 +377,6 @@ public class PCollectionsImmutableNavigableSetTest {
                 .doFunctionDelegationCheck();
     }
 
-
     @Test
     public void testDelegationOfStream() {
         new PCollectionsTreeSetWrapperDelegationChecker<>()

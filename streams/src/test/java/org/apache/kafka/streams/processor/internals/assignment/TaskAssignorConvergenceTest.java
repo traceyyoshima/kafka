@@ -94,8 +94,6 @@ public class TaskAssignorConvergenceTest {
         public final Map<ProcessId, Map<String, Optional<String>>> racksForProcessConsumer;
         public final InternalTopicManager internalTopicManager;
 
-
-
         private static Harness initializeCluster(final int numStatelessTasks,
                                                  final int numStatefulTasks,
                                                  final int numClients,
@@ -161,20 +159,20 @@ public class TaskAssignorConvergenceTest {
             final StreamsConfig streamsConfig = new StreamsConfig(configProps(StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_MIN_TRAFFIC));
             final MockClientSupplier mockClientSupplier = new MockClientSupplier();
             final MockInternalTopicManager mockInternalTopicManager = new MockInternalTopicManager(
-                time,
-                streamsConfig,
-                mockClientSupplier.restoreConsumer,
-                false
+                    time,
+                    streamsConfig,
+                    mockClientSupplier.restoreConsumer,
+                    false
             );
             final InternalTopicManager spyTopicManager = spy(mockInternalTopicManager);
             doReturn(topicPartitionInfo).when(spyTopicManager).getTopicPartitionInfo(changelogNames);
 
             final Cluster cluster = new Cluster(
-                "cluster",
-                new HashSet<>(nodes),
-                partitionInfoSet,
-                Collections.emptySet(),
-                Collections.emptySet()
+                    "cluster",
+                    new HashSet<>(nodes),
+                    partitionInfoSet,
+                    Collections.emptySet(),
+                    Collections.emptySet()
             );
 
             final Map<ProcessId, ClientState> clientStates = new TreeMap<>();
@@ -511,11 +509,11 @@ public class TaskAssignorConvergenceTest {
                                                                     rackAwareStrategy);
 
             harness = Harness.initializeCluster(
-                numStatelessTasks,
-                numStatefulTasks,
-                initialClusterSize,
-                () -> prng.nextInt(10) + 1,
-                numNodes
+                    numStatelessTasks,
+                    numStatefulTasks,
+                    initialClusterSize,
+                    () -> prng.nextInt(10) + 1,
+                    numNodes
             );
             testForConvergence(harness, configs, 1);
             verifyValidAssignment(numStandbyReplicas, harness);
@@ -548,15 +546,15 @@ public class TaskAssignorConvergenceTest {
             }
         } catch (final AssertionError t) {
             throw new AssertionError(
-                "Assertion failed in randomized test. Reproduce with: `runRandomizedScenario(" + seed + ")`.",
-                t
+                    "Assertion failed in randomized test. Reproduce with: `runRandomizedScenario(" + seed + ")`.",
+                    t
             );
         } catch (final Throwable t) {
             final StringBuilder builder =
-                new StringBuilder()
-                    .append("Exception in randomized scenario. Reproduce with: `runRandomizedScenario(")
-                    .append(seed)
-                    .append(")`. ");
+                    new StringBuilder()
+                        .append("Exception in randomized scenario. Reproduce with: `runRandomizedScenario(")
+                        .append(seed)
+                        .append(")`. ");
             if (harness != null) {
                 builder.append(harness.history);
             }
@@ -598,25 +596,25 @@ public class TaskAssignorConvergenceTest {
         boolean rebalancePending = true;
         int iteration = 0;
         final RackAwareTaskAssignor rackAwareTaskAssignor = new RackAwareTaskAssignor(
-            harness.fullMetadata,
-            harness.partitionsForTask,
-            harness.changelogPartitionsForTask,
-            harness.tasksForTopicGroup,
-            harness.racksForProcessConsumer,
-            harness.internalTopicManager,
-            configs,
-            TIME
+                harness.fullMetadata,
+                harness.partitionsForTask,
+                harness.changelogPartitionsForTask,
+                harness.tasksForTopicGroup,
+                harness.racksForProcessConsumer,
+                harness.internalTopicManager,
+                configs,
+                TIME
         );
         while (rebalancePending && iteration < iterationLimit) {
             iteration++;
             harness.prepareForNextRebalance();
             harness.recordBefore(iteration);
             rebalancePending = new HighAvailabilityTaskAssignor().assign(
-                harness.clientStates,
-                allTasks,
-                harness.statefulTaskEndOffsetSums.keySet(),
-                rackAwareTaskAssignor,
-                configs
+                    harness.clientStates,
+                    allTasks,
+                    harness.statefulTaskEndOffsetSums.keySet(),
+                    rackAwareTaskAssignor,
+                    configs
             );
             harness.recordAfter(iteration, rebalancePending);
         }

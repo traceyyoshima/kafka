@@ -76,14 +76,14 @@ class PartitionReassignmentReplicas {
 
     boolean isReassignmentInProgress() {
         return isReassignmentInProgress(
-            removing,
-            adding);
+                removing,
+                adding);
     }
 
     static boolean isReassignmentInProgress(PartitionRegistration part) {
         return isReassignmentInProgress(
-            Replicas.toList(part.removingReplicas),
-            Replicas.toList(part.addingReplicas));
+                Replicas.toList(part.removingReplicas),
+                Replicas.toList(part.addingReplicas));
     }
 
     private static boolean isReassignmentInProgress(
@@ -92,7 +92,6 @@ class PartitionReassignmentReplicas {
     ) {
         return !removingReplicas.isEmpty() || !addingReplicas.isEmpty();
     }
-
 
     Optional<CompletedReassignment> maybeCompleteReassignment(List<Integer> targetIsr) {
         // Check if there is a reassignment to complete.
@@ -130,10 +129,10 @@ class PartitionReassignmentReplicas {
         if (adding.size() < removing.size() && !newTargetIsr.containsAll(newTargetReplicas)) return Optional.empty();
 
         return Optional.of(
-            new CompletedReassignment(
-                newTargetReplicas,
-                newTargetIsr
-            )
+                new CompletedReassignment(
+                        newTargetReplicas,
+                        newTargetIsr
+                )
         );
     }
 
@@ -155,15 +154,15 @@ class PartitionReassignmentReplicas {
     public boolean equals(Object o) {
         if (!(o instanceof PartitionReassignmentReplicas other)) return false;
         return removing.equals(other.removing) &&
-            adding.equals(other.adding) &&
-            replicas.equals(other.replicas);
+                adding.equals(other.adding) &&
+                replicas.equals(other.replicas);
     }
 
     @Override
     public String toString() {
         return "PartitionReassignmentReplicas(" +
-            "removing=" + removing + ", " +
-            "adding=" + adding + ", " +
-            "replicas=" + replicas + ")";
+                "removing=" + removing + ", " +
+                "adding=" + adding + ", " +
+                "replicas=" + replicas + ")";
     }
 }

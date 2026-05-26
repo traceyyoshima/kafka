@@ -50,7 +50,6 @@ public class DefaultProductionExceptionHandler implements ProductionExceptionHan
         return Response.fail(maybeBuildDeadLetterQueueRecords(deadLetterQueueTopic, context.sourceRawKey(), context.sourceRawValue(), context, exception));
     }
 
-
     @Override
     public void configure(final Map<String, ?> configs) {
         if (configs.get(StreamsConfig.ERRORS_DEAD_LETTER_QUEUE_TOPIC_NAME_CONFIG) != null)

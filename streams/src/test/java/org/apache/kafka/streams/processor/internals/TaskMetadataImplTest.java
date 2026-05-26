@@ -50,11 +50,11 @@ public class TaskMetadataImplTest {
     @BeforeEach
     public void setUp() {
         taskMetadata = new TaskMetadataImpl(
-            TASK_ID,
-            TOPIC_PARTITIONS,
-            COMMITTED_OFFSETS,
-            END_OFFSETS,
-            TIME_CURRENT_IDLING_STARTED);
+                TASK_ID,
+                TOPIC_PARTITIONS,
+                COMMITTED_OFFSETS,
+                END_OFFSETS,
+                TIME_CURRENT_IDLING_STARTED);
     }
 
     @Test
@@ -67,11 +67,11 @@ public class TaskMetadataImplTest {
     @Test
     public void shouldBeEqualsIfSameObject() {
         final TaskMetadataImpl same = new TaskMetadataImpl(
-            TASK_ID,
-            TOPIC_PARTITIONS,
-            COMMITTED_OFFSETS,
-            END_OFFSETS,
-            TIME_CURRENT_IDLING_STARTED);
+                TASK_ID,
+                TOPIC_PARTITIONS,
+                COMMITTED_OFFSETS,
+                END_OFFSETS,
+                TIME_CURRENT_IDLING_STARTED);
         assertThat(taskMetadata, equalTo(same));
         assertThat(taskMetadata.hashCode(), equalTo(same.hashCode()));
     }
@@ -79,11 +79,11 @@ public class TaskMetadataImplTest {
     @Test
     public void shouldBeEqualsIfOnlyDifferInCommittedOffsets() {
         final TaskMetadataImpl stillSameDifferCommittedOffsets = new TaskMetadataImpl(
-            TASK_ID,
-            TOPIC_PARTITIONS,
-            mkMap(mkEntry(TP_1, 1000000L), mkEntry(TP_1, 2L)),
-            END_OFFSETS,
-            TIME_CURRENT_IDLING_STARTED);
+                TASK_ID,
+                TOPIC_PARTITIONS,
+                mkMap(mkEntry(TP_1, 1000000L), mkEntry(TP_1, 2L)),
+                END_OFFSETS,
+                TIME_CURRENT_IDLING_STARTED);
         assertThat(taskMetadata, equalTo(stillSameDifferCommittedOffsets));
         assertThat(taskMetadata.hashCode(), equalTo(stillSameDifferCommittedOffsets.hashCode()));
     }
@@ -91,11 +91,11 @@ public class TaskMetadataImplTest {
     @Test
     public void shouldBeEqualsIfOnlyDifferInEndOffsets() {
         final TaskMetadataImpl stillSameDifferEndOffsets = new TaskMetadataImpl(
-            TASK_ID,
-            TOPIC_PARTITIONS,
-            COMMITTED_OFFSETS,
-            mkMap(mkEntry(TP_1, 1000000L), mkEntry(TP_1, 2L)),
-            TIME_CURRENT_IDLING_STARTED);
+                TASK_ID,
+                TOPIC_PARTITIONS,
+                COMMITTED_OFFSETS,
+                mkMap(mkEntry(TP_1, 1000000L), mkEntry(TP_1, 2L)),
+                TIME_CURRENT_IDLING_STARTED);
         assertThat(taskMetadata, equalTo(stillSameDifferEndOffsets));
         assertThat(taskMetadata.hashCode(), equalTo(stillSameDifferEndOffsets.hashCode()));
     }
@@ -103,11 +103,11 @@ public class TaskMetadataImplTest {
     @Test
     public void shouldBeEqualsIfOnlyDifferInIdlingTime() {
         final TaskMetadataImpl stillSameDifferIdlingTime = new TaskMetadataImpl(
-            TASK_ID,
-            TOPIC_PARTITIONS,
-            COMMITTED_OFFSETS,
-            END_OFFSETS,
-            Optional.empty());
+                TASK_ID,
+                TOPIC_PARTITIONS,
+                COMMITTED_OFFSETS,
+                END_OFFSETS,
+                Optional.empty());
         assertThat(taskMetadata, equalTo(stillSameDifferIdlingTime));
         assertThat(taskMetadata.hashCode(), equalTo(stillSameDifferIdlingTime.hashCode()));
     }
@@ -115,11 +115,11 @@ public class TaskMetadataImplTest {
     @Test
     public void shouldNotBeEqualsIfDifferInTaskID() {
         final TaskMetadataImpl differTaskId = new TaskMetadataImpl(
-            new TaskId(1, 10000),
-            TOPIC_PARTITIONS,
-            COMMITTED_OFFSETS,
-            END_OFFSETS,
-            TIME_CURRENT_IDLING_STARTED);
+                new TaskId(1, 10000),
+                TOPIC_PARTITIONS,
+                COMMITTED_OFFSETS,
+                END_OFFSETS,
+                TIME_CURRENT_IDLING_STARTED);
         assertThat(taskMetadata, not(equalTo(differTaskId)));
         assertThat(taskMetadata.hashCode(), not(equalTo(differTaskId.hashCode())));
     }
@@ -127,11 +127,11 @@ public class TaskMetadataImplTest {
     @Test
     public void shouldNotBeEqualsIfDifferInTopicPartitions() {
         final TaskMetadataImpl differTopicPartitions = new TaskMetadataImpl(
-            TASK_ID,
-            Set.of(TP_0),
-            COMMITTED_OFFSETS,
-            END_OFFSETS,
-            TIME_CURRENT_IDLING_STARTED);
+                TASK_ID,
+                Set.of(TP_0),
+                COMMITTED_OFFSETS,
+                END_OFFSETS,
+                TIME_CURRENT_IDLING_STARTED);
         assertThat(taskMetadata, not(equalTo(differTopicPartitions)));
         assertThat(taskMetadata.hashCode(), not(equalTo(differTopicPartitions.hashCode())));
     }

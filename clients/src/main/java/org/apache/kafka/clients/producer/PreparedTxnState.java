@@ -59,7 +59,7 @@ public class PreparedTxnState {
             // Validate the producerId and epoch values.
             if (!(this.producerId >= 0 && this.epoch >= 0)) {
                 throw new IllegalArgumentException("Invalid producer ID and epoch values: " +
-                    producerId + ":" + epoch + ". Both must be >= 0");
+                        producerId + ":" + epoch + ". Both must be >= 0");
             }
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Invalid serialized transaction state format: " + serializedState, e);

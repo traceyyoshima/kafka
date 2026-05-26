@@ -37,10 +37,10 @@ public class AlterConfigsResponse extends AbstractResponse {
 
     public Map<ConfigResource, ApiError> errors() {
         return data.responses().stream().collect(Collectors.toMap(
-            response -> new ConfigResource(
+                response -> new ConfigResource(
                     ConfigResource.Type.forId(response.resourceType()),
                     response.resourceName()),
-            response -> new ApiError(Errors.forCode(response.errorCode()), response.errorMessage())
+                response -> new ApiError(Errors.forCode(response.errorCode()), response.errorMessage())
         ));
     }
 

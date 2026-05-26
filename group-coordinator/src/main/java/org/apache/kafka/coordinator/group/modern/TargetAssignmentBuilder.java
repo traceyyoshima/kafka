@@ -133,9 +133,9 @@ public abstract class TargetAssignmentBuilder<T extends ModernGroupMember, U ext
             Map<Uuid, Set<Integer>> partitions
         ) {
             return GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentRecord(
-                groupId,
-                memberId,
-                partitions
+                    groupId,
+                    memberId,
+                    partitions
             );
         }
 
@@ -146,9 +146,9 @@ public abstract class TargetAssignmentBuilder<T extends ModernGroupMember, U ext
             long assignmentTimestamp
         ) {
             return GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentMetadataRecord(
-                groupId,
-                assignmentEpoch,
-                assignmentTimestamp
+                    groupId,
+                    assignmentEpoch,
+                    assignmentTimestamp
             );
         }
 
@@ -178,10 +178,10 @@ public abstract class TargetAssignmentBuilder<T extends ModernGroupMember, U ext
             }
 
             return new MemberSubscriptionAndAssignmentImpl(
-                Optional.ofNullable(member.rackId()),
-                Optional.ofNullable(member.instanceId()),
-                new TopicIds(subscriptions, topicResolver),
-                memberAssignment
+                    Optional.ofNullable(member.rackId()),
+                    Optional.ofNullable(member.instanceId()),
+                    new TopicIds(subscriptions, topicResolver),
+                    memberAssignment
             );
         }
     }
@@ -207,9 +207,9 @@ public abstract class TargetAssignmentBuilder<T extends ModernGroupMember, U ext
             Map<Uuid, Set<Integer>> partitions
         ) {
             return GroupCoordinatorRecordHelpers.newShareGroupTargetAssignmentRecord(
-                groupId,
-                memberId,
-                partitions
+                    groupId,
+                    memberId,
+                    partitions
             );
         }
 
@@ -220,9 +220,9 @@ public abstract class TargetAssignmentBuilder<T extends ModernGroupMember, U ext
             long assignmentTimestamp
         ) {
             return GroupCoordinatorRecordHelpers.newShareGroupTargetAssignmentMetadataRecord(
-                groupId,
-                assignmentEpoch,
-                assignmentTimestamp
+                    groupId,
+                    assignmentEpoch,
+                    assignmentTimestamp
             );
         }
 
@@ -233,10 +233,10 @@ public abstract class TargetAssignmentBuilder<T extends ModernGroupMember, U ext
             TopicIds.TopicResolver topicResolver
         ) {
             return new MemberSubscriptionAndAssignmentImpl(
-                Optional.ofNullable(member.rackId()),
-                Optional.ofNullable(member.instanceId()),
-                new TopicIds(member.subscribedTopicNames(), topicResolver),
-                memberAssignment
+                    Optional.ofNullable(member.rackId()),
+                    Optional.ofNullable(member.instanceId()),
+                    new TopicIds(member.subscribedTopicNames(), topicResolver),
+                    memberAssignment
             );
         }
     }
@@ -458,11 +458,11 @@ public abstract class TargetAssignmentBuilder<T extends ModernGroupMember, U ext
 
         // Prepare the member spec for all members.
         members.forEach((memberId, member) ->
-            memberSpecs.put(memberId, newMemberSubscriptionAndAssignment(
-                member,
-                targetAssignment.getOrDefault(memberId, Assignment.EMPTY),
-                topicResolver
-            ))
+                memberSpecs.put(memberId, newMemberSubscriptionAndAssignment(
+                    member,
+                    targetAssignment.getOrDefault(memberId, Assignment.EMPTY),
+                    topicResolver
+                ))
         );
 
         // Update the member spec if updated or deleted members.
@@ -481,22 +481,22 @@ public abstract class TargetAssignmentBuilder<T extends ModernGroupMember, U ext
                 }
 
                 memberSpecs.put(memberId, newMemberSubscriptionAndAssignment(
-                    updatedMemberOrNull,
-                    assignment,
-                    topicResolver
+                        updatedMemberOrNull,
+                        assignment,
+                        topicResolver
                 ));
             }
         });
 
         // Compute the assignment.
         GroupAssignment newGroupAssignment = assignor.assign(
-            new GroupSpecImpl(
-                Collections.unmodifiableMap(memberSpecs),
-                subscriptionType,
-                invertedTargetAssignment,
-                topicAssignablePartitionsMap
-            ),
-            new SubscribedTopicDescriberImpl(metadataImage)
+                new GroupSpecImpl(
+                        Collections.unmodifiableMap(memberSpecs),
+                        subscriptionType,
+                        invertedTargetAssignment,
+                        topicAssignablePartitionsMap
+                ),
+                new SubscribedTopicDescriberImpl(metadataImage)
         );
 
         // Compute delta from previous to new target assignment and create the relevant records.
@@ -510,9 +510,9 @@ public abstract class TargetAssignmentBuilder<T extends ModernGroupMember, U ext
                 // If the member had no assignment or had a different assignment, we
                 // create a record for the new assignment.
                 records.add(newTargetAssignmentRecord(
-                    groupId,
-                    memberId,
-                    newMemberAssignment.partitions()
+                        groupId,
+                        memberId,
+                        newMemberAssignment.partitions()
                 ));
             }
         }

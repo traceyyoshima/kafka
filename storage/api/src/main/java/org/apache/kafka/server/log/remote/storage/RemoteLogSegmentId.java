@@ -63,9 +63,9 @@ public class RemoteLogSegmentId {
     @Override
     public String toString() {
         return "RemoteLogSegmentId{" +
-               "topicIdPartition=" + topicIdPartition +
-               ", id=" + id +
-               '}';
+                "topicIdPartition=" + topicIdPartition +
+                ", id=" + id +
+                '}';
     }
 
     @Override

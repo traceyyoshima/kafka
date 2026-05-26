@@ -110,10 +110,10 @@ public class Plugins {
             }
         } else {
             String message = String.format(
-                "One or more plugins are missing ServiceLoader manifests may not be usable with %s=%s: %s%n" +
-                        "Read the documentation at %s for instructions on migrating your plugins " +
-                        "to take advantage of the performance improvements of %s mode.",
-                            WorkerConfig.PLUGIN_DISCOVERY_CONFIG,
+                    "One or more plugins are missing ServiceLoader manifests may not be usable with %s=%s: %s%n" +
+                    "Read the documentation at %s for instructions on migrating your plugins " +
+                    "to take advantage of the performance improvements of %s mode.",
+                    WorkerConfig.PLUGIN_DISCOVERY_CONFIG,
                     PluginDiscoveryMode.SERVICE_LOAD,
                     missingPlugins.stream()
                             .map(pluginDesc -> pluginDesc.location() + "\t" + pluginDesc.className() + "\t" + pluginDesc.type() + "\t" + pluginDesc.version())
@@ -157,7 +157,7 @@ public class Plugins {
             return (Class<? extends U>) klass;
         }
         throw new ConnectException(
-            "Failed to find any class that implements " + pluginClass.getSimpleName()
+                "Failed to find any class that implements " + pluginClass.getSimpleName()
                 + " for the config "
                 + propertyName + ", available classes are: "
                 + pluginNames(plugins)
@@ -185,8 +185,8 @@ public class Plugins {
         }
         throw new ClassNotFoundException(
                 "Requested class: "
-                        + classOrAlias
-                        + " does not extend " + pluginClass.getSimpleName()
+                + classOrAlias
+                + " does not extend " + pluginClass.getSimpleName()
         );
     }
 
@@ -399,17 +399,17 @@ public class Plugins {
             if (matches.isEmpty()) {
                 throw new ConnectException(
                         "Failed to find any class that implements Connector and which name matches "
-                                + connectorClassOrAlias
-                                + ", available connectors are: "
-                                + connectors.stream().map(PluginDesc::toString).collect(Collectors.joining(", "))
+                        + connectorClassOrAlias
+                        + ", available connectors are: "
+                        + connectors.stream().map(PluginDesc::toString).collect(Collectors.joining(", "))
                 );
             }
             if (matches.size() > 1) {
                 throw new ConnectException(
                         "More than one connector matches alias "
-                                + connectorClassOrAlias
-                                + ". Please use full package and class name instead. Classes found: "
-                                + connectors.stream().map(PluginDesc::toString).collect(Collectors.joining(", "))
+                        + connectorClassOrAlias
+                        + ". Please use full package and class name instead. Classes found: "
+                        + connectors.stream().map(PluginDesc::toString).collect(Collectors.joining(", "))
                 );
             }
 
@@ -477,8 +477,6 @@ public class Plugins {
         }
         return plugin;
     }
-
-
 
     /**
      * Load an internal converter, used by the worker for (de)serializing data in internal topics.
@@ -595,8 +593,8 @@ public class Plugins {
                 } catch (ClassNotFoundException e) {
                     throw new ConnectException(
                             "Failed to find any class that implements " + basePluginClassName + " and which name matches "
-                                    + classOrAlias + ", available plugins are: "
-                                    + pluginNames(availablePlugins)
+                            + classOrAlias + ", available plugins are: "
+                            + pluginNames(availablePlugins)
                     );
                 }
                 break;

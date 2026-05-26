@@ -30,7 +30,6 @@ public class NamedCacheMetrics {
     private static final String HIT_RATIO_MIN_DESCRIPTION = "The minimum cache hit ratio";
     private static final String HIT_RATIO_MAX_DESCRIPTION = "The maximum cache hit ratio";
 
-
     public static Sensor hitRatioSensor(final StreamsMetricsImpl streamsMetrics,
                                         final String threadId,
                                         final String taskName,
@@ -40,20 +39,20 @@ public class NamedCacheMetrics {
         final String hitRatioName;
         hitRatioName = HIT_RATIO;
         hitRatioSensor = streamsMetrics.cacheLevelSensor(
-            threadId,
-            taskName,
-            storeName,
-            hitRatioName,
-            Sensor.RecordingLevel.DEBUG
+                threadId,
+                taskName,
+                storeName,
+                hitRatioName,
+                Sensor.RecordingLevel.DEBUG
         );
         addAvgAndMinAndMaxToSensor(
-            hitRatioSensor,
-            CACHE_LEVEL_GROUP,
-            streamsMetrics.cacheLevelTagMap(threadId, taskName, storeName),
-            hitRatioName,
-            HIT_RATIO_AVG_DESCRIPTION,
-            HIT_RATIO_MIN_DESCRIPTION,
-            HIT_RATIO_MAX_DESCRIPTION
+                hitRatioSensor,
+                CACHE_LEVEL_GROUP,
+                streamsMetrics.cacheLevelTagMap(threadId, taskName, storeName),
+                hitRatioName,
+                HIT_RATIO_AVG_DESCRIPTION,
+                HIT_RATIO_MIN_DESCRIPTION,
+                HIT_RATIO_MAX_DESCRIPTION
         );
         return hitRatioSensor;
     }

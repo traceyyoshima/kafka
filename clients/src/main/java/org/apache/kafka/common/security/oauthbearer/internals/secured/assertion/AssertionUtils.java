@@ -129,8 +129,8 @@ public class AssertionUtils {
 
     public static Optional<StaticAssertionJwtTemplate> staticAssertionJwtTemplate(ConfigurationUtils cu) {
         if (cu.containsKey(SASL_OAUTHBEARER_ASSERTION_CLAIM_AUD) ||
-            cu.containsKey(SASL_OAUTHBEARER_ASSERTION_CLAIM_ISS) ||
-            cu.containsKey(SASL_OAUTHBEARER_ASSERTION_CLAIM_SUB)) {
+                cu.containsKey(SASL_OAUTHBEARER_ASSERTION_CLAIM_ISS) ||
+                cu.containsKey(SASL_OAUTHBEARER_ASSERTION_CLAIM_SUB)) {
             Map<String, Object> staticClaimsPayload = new HashMap<>();
 
             if (cu.containsKey(SASL_OAUTHBEARER_ASSERTION_CLAIM_AUD))

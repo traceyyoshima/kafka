@@ -86,9 +86,9 @@ public class AddPartitionsToTxnManagerTest {
     private final AbstractKafkaConfig config = new AbstractKafkaConfig(
             AbstractKafkaConfig.CONFIG_DEF,
             Map.of(
-                KRaftConfigs.PROCESS_ROLES_CONFIG, "broker", 
-                KRaftConfigs.NODE_ID_CONFIG, "1",
-                KRaftConfigs.CONTROLLER_LISTENER_NAMES_CONFIG, "CONTROLLER"),
+                    KRaftConfigs.PROCESS_ROLES_CONFIG, "broker",
+                    KRaftConfigs.NODE_ID_CONFIG, "1",
+                    KRaftConfigs.CONTROLLER_LISTENER_NAMES_CONFIG, "CONTROLLER"),
             Map.of(),
             false) {
         @Override
@@ -258,7 +258,7 @@ public class AddPartitionsToTxnManagerTest {
         var requestsAndHandlers3 = addPartitionsToTxnManager.generateRequests();
         assertEquals(1, requestsAndHandlers3.size());
         requestsAndHandlers3.forEach(requestAndHandler ->
-            verifyRequest(node1, transactionalId2, producerId2, !isAddPartition, requestAndHandler));
+                verifyRequest(node1, transactionalId2, producerId2, !isAddPartition, requestAndHandler));
     }
 
     @Test

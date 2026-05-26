@@ -32,9 +32,9 @@ public class KerberosNameTest {
     @Test
     public void testParse() throws IOException {
         List<String> rules = Arrays.asList(
-            "RULE:[1:$1](App\\..*)s/App\\.(.*)/$1/g",
-            "RULE:[2:$1](App\\..*)s/App\\.(.*)/$1/g",
-            "DEFAULT"
+                "RULE:[1:$1](App\\..*)s/App\\.(.*)/$1/g",
+                "RULE:[2:$1](App\\..*)s/App\\.(.*)/$1/g",
+                "DEFAULT"
         );
 
         KerberosShortNamer shortNamer = KerberosShortNamer.fromUnparsedRules("REALM.COM", rules);
@@ -61,12 +61,12 @@ public class KerberosNameTest {
     @Test
     public void testToLowerCase() throws Exception {
         List<String> rules = Arrays.asList(
-            "RULE:[1:$1]/L",
-            "RULE:[2:$1](Test.*)s/ABC///L",
-            "RULE:[2:$1](ABC.*)s/ABC/XYZ/g/L",
-            "RULE:[2:$1](App\\..*)s/App\\.(.*)/$1/g/L",
-            "RULE:[2:$1]/L",
-            "DEFAULT"
+                "RULE:[1:$1]/L",
+                "RULE:[2:$1](Test.*)s/ABC///L",
+                "RULE:[2:$1](ABC.*)s/ABC/XYZ/g/L",
+                "RULE:[2:$1](App\\..*)s/App\\.(.*)/$1/g/L",
+                "RULE:[2:$1]/L",
+                "DEFAULT"
         );
 
         KerberosShortNamer shortNamer = KerberosShortNamer.fromUnparsedRules("REALM.COM", rules);
@@ -90,12 +90,12 @@ public class KerberosNameTest {
     @Test
     public void testToUpperCase() throws Exception {
         List<String> rules = Arrays.asList(
-            "RULE:[1:$1]/U",
-            "RULE:[2:$1](Test.*)s/ABC///U",
-            "RULE:[2:$1](ABC.*)s/ABC/XYZ/g/U",
-            "RULE:[2:$1](App\\..*)s/App\\.(.*)/$1/g/U",
-            "RULE:[2:$1]/U",
-            "DEFAULT"
+                "RULE:[1:$1]/U",
+                "RULE:[2:$1](Test.*)s/ABC///U",
+                "RULE:[2:$1](ABC.*)s/ABC/XYZ/g/U",
+                "RULE:[2:$1](App\\..*)s/App\\.(.*)/$1/g/U",
+                "RULE:[2:$1]/U",
+                "DEFAULT"
         );
 
         KerberosShortNamer shortNamer = KerberosShortNamer.fromUnparsedRules("REALM.COM", rules);
@@ -134,7 +134,7 @@ public class KerberosNameTest {
 
     private void testInvalidRule(List<String> rules) {
         assertThrows(
-            IllegalArgumentException.class,
-            () -> KerberosShortNamer.fromUnparsedRules("REALM.COM", rules));
+                IllegalArgumentException.class,
+                () -> KerberosShortNamer.fromUnparsedRules("REALM.COM", rules));
     }
 }

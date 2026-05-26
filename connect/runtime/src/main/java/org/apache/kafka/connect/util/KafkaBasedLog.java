@@ -144,7 +144,7 @@ public class KafkaBasedLog<K, V> {
         this.stopRequested = false;
         this.readLogEndOffsetCallbacks = new ArrayDeque<>();
         this.time = time;
-        this.initializer = initializer != null ? initializer : admin -> { };
+        this.initializer = initializer != null ? initializer : admin -> {};
         // Initialize the producer Optional here to prevent NPEs later on
         this.producer = Optional.empty();
 
@@ -229,8 +229,8 @@ public class KafkaBasedLog<K, V> {
         if (admin == null && requireAdminForOffsets) {
             throw new ConnectException(
                     "Must provide a TopicAdmin to KafkaBasedLog when consumer is configured with "
-                            + ConsumerConfig.ISOLATION_LEVEL_CONFIG + " set to "
-                            + IsolationLevel.READ_COMMITTED
+                    + ConsumerConfig.ISOLATION_LEVEL_CONFIG + " set to "
+                    + IsolationLevel.READ_COMMITTED
             );
         }
         initializer.accept(admin);
@@ -539,6 +539,7 @@ public class KafkaBasedLog<K, V> {
         public WorkThread() {
             super("KafkaBasedLog Work Thread - " + topic);
         }
+
         @Override
         public void run() {
             log.trace("{} started execution", this);
@@ -557,11 +558,11 @@ public class KafkaBasedLog<K, V> {
                             log.trace("Finished read to end log for topic {}", topic);
                         } catch (TimeoutException e) {
                             log.warn("Timeout while reading log to end for topic '{}'. Retrying automatically. " +
-                                "This may occur when brokers are unavailable or unreachable. Reason: {}", topic, e.getMessage());
+                                    "This may occur when brokers are unavailable or unreachable. Reason: {}", topic, e.getMessage());
                             continue;
                         } catch (RetriableException | org.apache.kafka.connect.errors.RetriableException e) {
                             log.warn("Retriable error while reading log to end for topic '{}'. Retrying automatically. " +
-                                "Reason: {}", topic, e.getMessage());
+                                    "Reason: {}", topic, e.getMessage());
                             continue;
                         } catch (WakeupException e) {
                             // Either received another get() call and need to retry reading to end of log or stop() was

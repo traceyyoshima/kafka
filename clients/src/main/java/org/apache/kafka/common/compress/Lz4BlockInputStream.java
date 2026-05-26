@@ -53,6 +53,7 @@ public final class Lz4BlockInputStream extends InputStream {
     private static final XXHash32 CHECKSUM = XXHashFactory.fastestInstance().hash32();
 
     private static final RuntimeException BROKEN_LZ4_EXCEPTION;
+
     // https://issues.apache.org/jira/browse/KAFKA-9203
     // detect buggy lz4 libraries on the classpath
     static {
@@ -183,7 +184,7 @@ public final class Lz4BlockInputStream extends InputStream {
         if (compressed) {
             try {
                 final int bufferSize = DECOMPRESSOR.decompress(in, in.position(), blockSize, decompressionBuffer, 0,
-                    maxBlockSize);
+                        maxBlockSize);
                 decompressionBuffer.position(0);
                 decompressionBuffer.limit(bufferSize);
                 decompressedBuffer = decompressionBuffer;

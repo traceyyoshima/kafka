@@ -27,15 +27,15 @@ public final class ForwardingManagerUtil {
     public static EnvelopeRequest.Builder buildEnvelopeRequest(RequestContext context, ByteBuffer forwardRequestBuffer) {
         KafkaPrincipalSerde principalSerde = context.principalSerde.orElseThrow(() ->
             new IllegalArgumentException(
-                "Cannot deserialize principal from request context " + context +
-                " since there is no serde defined"
+                    "Cannot deserialize principal from request context " + context +
+                    " since there is no serde defined"
             )
         );
         byte[] serializedPrincipal = principalSerde.serialize(context.principal);
         return new EnvelopeRequest.Builder(
-            forwardRequestBuffer,
-            serializedPrincipal,
-            context.clientAddress.getAddress()
+                forwardRequestBuffer,
+                serializedPrincipal,
+                context.clientAddress.getAddress()
         );
     }
 }

@@ -107,8 +107,8 @@ public class RelaxedNullKeyRequirementJoinTest {
         right.pipeInput(null, "rightValue", 1);
         left.pipeInput(null, "leftValue");
         assertEquals(
-            Arrays.asList(new KeyValue<>(null, "null|rightValue"), new KeyValue<>(null, "leftValue|null")),
-            out.readKeyValuesToList()
+                Arrays.asList(new KeyValue<>(null, "null|rightValue"), new KeyValue<>(null, "leftValue|null")),
+                out.readKeyValuesToList()
         );
     }
 
@@ -143,19 +143,19 @@ public class RelaxedNullKeyRequirementJoinTest {
         testDriver = new TopologyTestDriver(builder.build(), props);
 
         left = testDriver.createInputTopic(
-            LEFT,
-            new StringSerializer(),
-            new StringSerializer()
+                LEFT,
+                new StringSerializer(),
+                new StringSerializer()
         );
         right = testDriver.createInputTopic(
-            RIGHT,
-            new StringSerializer(),
-            new StringSerializer()
+                RIGHT,
+                new StringSerializer(),
+                new StringSerializer()
         );
         out = testDriver.createOutputTopic(
-            OUT,
-            new StringDeserializer(),
-            new StringDeserializer()
+                OUT,
+                new StringDeserializer(),
+                new StringDeserializer()
         );
     }
 

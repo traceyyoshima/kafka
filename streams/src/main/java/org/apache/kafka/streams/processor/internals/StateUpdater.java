@@ -63,9 +63,9 @@ public interface StateUpdater {
         @Override
         public String toString() {
             return "ExceptionAndTask{" +
-                "task=" + task.id() +
-                ", exception=" + exception +
-                '}';
+                    "task=" + task.id() +
+                    ", exception=" + exception +
+                    '}';
         }
     }
 
@@ -107,9 +107,9 @@ public interface StateUpdater {
         @Override
         public String toString() {
             return "RemovedTaskResult{" +
-                "task=" + task.id() +
-                ", exception=" + exception +
-                '}';
+                    "task=" + task.id() +
+                    ", exception=" + exception +
+                    '}';
         }
     }
 

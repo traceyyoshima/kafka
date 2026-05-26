@@ -120,14 +120,14 @@ public class IQv2IntegrationTest {
         try (final Producer<Integer, Integer> producer = new KafkaProducer<>(producerProps)) {
             for (int i = 0; i < 3; i++) {
                 final Future<RecordMetadata> send = producer.send(
-                    new ProducerRecord<>(
-                        INPUT_TOPIC_NAME,
-                        i % partitions,
-                        Time.SYSTEM.milliseconds(),
-                        i,
-                        i,
-                        null
-                    )
+                        new ProducerRecord<>(
+                                INPUT_TOPIC_NAME,
+                                i % partitions,
+                                Time.SYSTEM.milliseconds(),
+                                i,
+                                i,
+                                null
+                        )
                 );
                 futures.add(send);
                 Time.SYSTEM.sleep(1L);
@@ -138,18 +138,18 @@ public class IQv2IntegrationTest {
                 final RecordMetadata recordMetadata = future.get(1, TimeUnit.MINUTES);
                 assertThat(recordMetadata.hasOffset(), is(true));
                 INPUT_POSITION.withComponent(
-                    recordMetadata.topic(),
-                    recordMetadata.partition(),
-                    recordMetadata.offset()
+                        recordMetadata.topic(),
+                        recordMetadata.partition(),
+                        recordMetadata.offset()
                 );
             }
         }
 
         assertThat(INPUT_POSITION, equalTo(
-            Position
-                .emptyPosition()
-                .withComponent(INPUT_TOPIC_NAME, 0, 1L)
-                .withComponent(INPUT_TOPIC_NAME, 1, 0L)
+                Position
+                    .emptyPosition()
+                    .withComponent(INPUT_TOPIC_NAME, 0, 1L)
+                    .withComponent(INPUT_TOPIC_NAME, 1, 0L)
         ));
     }
 
@@ -158,9 +158,9 @@ public class IQv2IntegrationTest {
         final StreamsBuilder builder = new StreamsBuilder();
 
         builder.table(
-            INPUT_TOPIC_NAME,
-            Consumed.with(Serdes.Integer(), Serdes.Integer()),
-            Materialized.as(STORE_NAME)
+                INPUT_TOPIC_NAME,
+                Consumed.with(Serdes.Integer(), Serdes.Integer()),
+                Materialized.as(STORE_NAME)
         );
 
         final String safeTestName = safeUniqueTestName(testInfo);
@@ -187,7 +187,7 @@ public class IQv2IntegrationTest {
         setup(groupProtocol, testInfo);
         final KeyQuery<Integer, ValueAndTimestamp<Integer>> query = KeyQuery.withKey(1);
         final StateQueryRequest<ValueAndTimestamp<Integer>> request =
-            inStore("unknown-store").withQuery(query);
+                inStore("unknown-store").withQuery(query);
 
         assertThrows(UnknownStateStoreException.class, () -> kafkaStreams.query(request));
     }
@@ -198,7 +198,7 @@ public class IQv2IntegrationTest {
         setup(groupProtocol, testInfo);
         final KeyQuery<Integer, ValueAndTimestamp<Integer>> query = KeyQuery.withKey(1);
         final StateQueryRequest<ValueAndTimestamp<Integer>> request =
-            inStore(STORE_NAME).withQuery(query);
+                inStore(STORE_NAME).withQuery(query);
 
         assertThrows(StreamsNotStartedException.class, () -> kafkaStreams.query(request));
     }
@@ -209,7 +209,7 @@ public class IQv2IntegrationTest {
         setup(groupProtocol, testInfo);
         final KeyQuery<Integer, ValueAndTimestamp<Integer>> query = KeyQuery.withKey(1);
         final StateQueryRequest<ValueAndTimestamp<Integer>> request =
-            inStore(STORE_NAME).withQuery(query);
+                inStore(STORE_NAME).withQuery(query);
 
         kafkaStreams.start();
         kafkaStreams.close(Duration.ZERO);
@@ -223,7 +223,7 @@ public class IQv2IntegrationTest {
         setup(groupProtocol, testInfo);
         final KeyQuery<Integer, ValueAndTimestamp<Integer>> query = KeyQuery.withKey(1);
         final StateQueryRequest<ValueAndTimestamp<Integer>> request =
-            inStore(STORE_NAME).withQuery(query).requireActive();
+                inStore(STORE_NAME).withQuery(query).requireActive();
         final Set<Integer> partitions = Set.of(0, 1);
 
         kafkaStreams.start();
@@ -231,7 +231,7 @@ public class IQv2IntegrationTest {
         final Field threadsField = KafkaStreams.class.getDeclaredField("threads");
         threadsField.setAccessible(true);
         @SuppressWarnings("unchecked") final List<StreamThread> threads =
-            (List<StreamThread>) threadsField.get(kafkaStreams);
+                (List<StreamThread>) threadsField.get(kafkaStreams);
         final StreamThread streamThread = threads.get(0);
 
         final Field stateLock = StreamThread.class.getDeclaredField("stateLock");
@@ -240,9 +240,9 @@ public class IQv2IntegrationTest {
 
         // wait for the desired partitions to be assigned
         IntegrationTestUtils.iqv2WaitForPartitions(
-            kafkaStreams,
-            inStore(STORE_NAME).withQuery(query),
-            partitions
+                kafkaStreams,
+                inStore(STORE_NAME).withQuery(query),
+                partitions
         );
 
         // then lock the thread state, change it, and make our assertions.
@@ -252,23 +252,23 @@ public class IQv2IntegrationTest {
             stateField.set(streamThread, State.PARTITIONS_ASSIGNED);
 
             final StateQueryResult<ValueAndTimestamp<Integer>> result =
-                IntegrationTestUtils.iqv2WaitForPartitions(
-                    kafkaStreams,
-                    request,
-                    partitions
-                );
+                    IntegrationTestUtils.iqv2WaitForPartitions(
+                            kafkaStreams,
+                            request,
+                            partitions
+                    );
 
             assertThat(result.getPartitionResults().keySet(), is(partitions));
             for (final Integer partition : partitions) {
                 assertThat(result.getPartitionResults().get(partition).isFailure(), is(true));
                 assertThat(
-                    result.getPartitionResults().get(partition).getFailureReason(),
-                    is(FailureReason.NOT_ACTIVE)
+                        result.getPartitionResults().get(partition).getFailureReason(),
+                        is(FailureReason.NOT_ACTIVE)
                 );
                 assertThat(
-                    result.getPartitionResults().get(partition).getFailureMessage(),
-                    is("Query requires a running active task,"
-                        + " but partition was in state PARTITIONS_ASSIGNED and was active.")
+                        result.getPartitionResults().get(partition).getFailureMessage(),
+                        is("Query requires a running active task,"
+                                + " but partition was in state PARTITIONS_ASSIGNED and was active.")
                 );
             }
         }
@@ -282,11 +282,11 @@ public class IQv2IntegrationTest {
         final int partition = 1;
         final Set<Integer> partitions = singleton(partition);
         final StateQueryRequest<ValueAndTimestamp<Integer>> request =
-            inStore(STORE_NAME).withQuery(query).withPartitions(partitions);
+                inStore(STORE_NAME).withQuery(query).withPartitions(partitions);
 
         kafkaStreams.start();
         final StateQueryResult<ValueAndTimestamp<Integer>> result =
-            IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
+                IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
 
         assertThat(result.getPartitionResults().keySet(), equalTo(partitions));
     }
@@ -298,11 +298,11 @@ public class IQv2IntegrationTest {
         final KeyQuery<Integer, ValueAndTimestamp<Integer>> query = KeyQuery.withKey(1);
         final Set<Integer> partitions = Set.of(0, 1);
         final StateQueryRequest<ValueAndTimestamp<Integer>> request =
-            inStore(STORE_NAME).withQuery(query).withAllPartitions();
+                inStore(STORE_NAME).withQuery(query).withAllPartitions();
 
         kafkaStreams.start();
         final StateQueryResult<ValueAndTimestamp<Integer>> result =
-            IntegrationTestUtils.iqv2WaitForPartitions(kafkaStreams, request, partitions);
+                IntegrationTestUtils.iqv2WaitForPartitions(kafkaStreams, request, partitions);
 
         assertThat(result.getPartitionResults().keySet(), equalTo(partitions));
     }
@@ -315,130 +315,130 @@ public class IQv2IntegrationTest {
         final int partition = 1;
         final Set<Integer> partitions = singleton(partition);
         final StateQueryRequest<ValueAndTimestamp<Integer>> request =
-            inStore(STORE_NAME).withQuery(query).withPartitions(partitions);
+                inStore(STORE_NAME).withQuery(query).withPartitions(partitions);
 
         final StreamsBuilder builder = new StreamsBuilder();
 
         builder.table(
-            INPUT_TOPIC_NAME,
-            Consumed.with(Serdes.Integer(), Serdes.Integer()),
-            Materialized.as(new KeyValueBytesStoreSupplier() {
-                @Override
-                public String name() {
-                    return STORE_NAME;
-                }
+                INPUT_TOPIC_NAME,
+                Consumed.with(Serdes.Integer(), Serdes.Integer()),
+                Materialized.as(new KeyValueBytesStoreSupplier() {
+                    @Override
+                    public String name() {
+                        return STORE_NAME;
+                    }
 
-                @Override
-                public KeyValueStore<Bytes, byte[]> get() {
-                    return new KeyValueStore<Bytes, byte[]>() {
-                        private boolean open = false;
-                        private final Map<Bytes, byte[]> map = new HashMap<>();
-                        private Position position;
-                        private StateStoreContext context;
+                    @Override
+                    public KeyValueStore<Bytes, byte[]> get() {
+                        return new KeyValueStore<Bytes, byte[]>() {
+                            private boolean open = false;
+                            private final Map<Bytes, byte[]> map = new HashMap<>();
+                            private Position position;
+                            private StateStoreContext context;
 
-                        @Override
-                        public void put(final Bytes key, final byte[] value) {
-                            synchronized (position) {
-                                map.put(key, value);
-                                StoreQueryUtils.updatePosition(position, context);
-                            }
-                        }
-
-                        @Override
-                        public byte[] putIfAbsent(final Bytes key, final byte[] value) {
-                            synchronized (position) {
-                                StoreQueryUtils.updatePosition(position, context);
-                                return map.putIfAbsent(key, value);
-                            }
-                        }
-
-                        @Override
-                        public void putAll(final List<KeyValue<Bytes, byte[]>> entries) {
-                            synchronized (position) {
-                                StoreQueryUtils.updatePosition(position, context);
-                                for (final KeyValue<Bytes, byte[]> entry : entries) {
-                                    map.put(entry.key, entry.value);
+                            @Override
+                            public void put(final Bytes key, final byte[] value) {
+                                synchronized (position) {
+                                    map.put(key, value);
+                                    StoreQueryUtils.updatePosition(position, context);
                                 }
                             }
-                        }
 
-                        @Override
-                        public byte[] delete(final Bytes key) {
-                            synchronized (position) {
-                                StoreQueryUtils.updatePosition(position, context);
-                                return map.remove(key);
+                            @Override
+                            public byte[] putIfAbsent(final Bytes key, final byte[] value) {
+                                synchronized (position) {
+                                    StoreQueryUtils.updatePosition(position, context);
+                                    return map.putIfAbsent(key, value);
+                                }
                             }
-                        }
 
-                        @Override
-                        public String name() {
-                            return STORE_NAME;
-                        }
+                            @Override
+                            public void putAll(final List<KeyValue<Bytes, byte[]>> entries) {
+                                synchronized (position) {
+                                    StoreQueryUtils.updatePosition(position, context);
+                                    for (final KeyValue<Bytes, byte[]> entry : entries) {
+                                        map.put(entry.key, entry.value);
+                                    }
+                                }
+                            }
 
-                        @Override
-                        public void init(final StateStoreContext stateStoreContext, final StateStore root) {
-                            stateStoreContext.register(root, (key, value) -> put(Bytes.wrap(key), value));
-                            this.open = true;
-                            this.position = Position.emptyPosition();
-                            this.context = stateStoreContext;
-                        }
+                            @Override
+                            public byte[] delete(final Bytes key) {
+                                synchronized (position) {
+                                    StoreQueryUtils.updatePosition(position, context);
+                                    return map.remove(key);
+                                }
+                            }
 
-                        @Override
-                        public void commit(final Map<TopicPartition, Long> changelogOffsets) {
+                            @Override
+                            public String name() {
+                                return STORE_NAME;
+                            }
 
-                        }
+                            @Override
+                            public void init(final StateStoreContext stateStoreContext, final StateStore root) {
+                                stateStoreContext.register(root, (key, value) -> put(Bytes.wrap(key), value));
+                                this.open = true;
+                                this.position = Position.emptyPosition();
+                                this.context = stateStoreContext;
+                            }
 
-                        @Override
-                        public void close() {
-                            this.open = false;
-                            map.clear();
-                        }
+                            @Override
+                            public void commit(final Map<TopicPartition, Long> changelogOffsets) {
 
-                        @Override
-                        public boolean persistent() {
-                            return false;
-                        }
+                            }
 
-                        @Override
-                        public boolean isOpen() {
-                            return open;
-                        }
+                            @Override
+                            public void close() {
+                                this.open = false;
+                                map.clear();
+                            }
 
-                        @Override
-                        public Position getPosition() {
-                            return position;
-                        }
+                            @Override
+                            public boolean persistent() {
+                                return false;
+                            }
 
-                        @Override
-                        public byte[] get(final Bytes key) {
-                            return map.get(key);
-                        }
+                            @Override
+                            public boolean isOpen() {
+                                return open;
+                            }
 
-                        @Override
-                        public KeyValueIterator<Bytes, byte[]> range(
+                            @Override
+                            public Position getPosition() {
+                                return position;
+                            }
+
+                            @Override
+                            public byte[] get(final Bytes key) {
+                                return map.get(key);
+                            }
+
+                            @Override
+                            public KeyValueIterator<Bytes, byte[]> range(
                             final Bytes from,
                             final Bytes to
                         ) {
-                            throw new UnsupportedOperationException();
-                        }
+                                throw new UnsupportedOperationException();
+                            }
 
-                        @Override
-                        public KeyValueIterator<Bytes, byte[]> all() {
-                            throw new UnsupportedOperationException();
-                        }
+                            @Override
+                            public KeyValueIterator<Bytes, byte[]> all() {
+                                throw new UnsupportedOperationException();
+                            }
 
-                        @Override
-                        public long approximateNumEntries() {
-                            return map.size();
-                        }
-                    };
-                }
+                            @Override
+                            public long approximateNumEntries() {
+                                return map.size();
+                            }
+                        };
+                    }
 
-                @Override
-                public String metricsScope() {
-                    return "nonquery";
-                }
-            })
+                    @Override
+                    public String metricsScope() {
+                        return "nonquery";
+                    }
+                })
         );
 
         // Discard the basic streams and replace with test-specific topology
@@ -452,18 +452,17 @@ public class IQv2IntegrationTest {
 
         kafkaStreams.start();
         final StateQueryResult<ValueAndTimestamp<Integer>> result =
-            IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
+                IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
 
         final QueryResult<ValueAndTimestamp<Integer>> queryResult =
-            result.getPartitionResults().get(partition);
+                result.getPartitionResults().get(partition);
         assertThat(queryResult.isFailure(), is(true));
         assertThat(queryResult.getFailureReason(), is(FailureReason.UNKNOWN_QUERY_TYPE));
         assertThat(queryResult.getFailureMessage(), matchesPattern(
-            "This store (.*) doesn't know how to execute the given query (.*)."
+                "This store (.*) doesn't know how to execute the given query (.*)."
                 + " Contact the store maintainer if you need support for a new query type."
         ));
     }
-
 
     private Properties streamsConfiguration(final String safeTestName) {
         final Properties config = new Properties();
@@ -486,8 +485,8 @@ public class IQv2IntegrationTest {
 
     private static Stream<Arguments> groupProtocolParameters() {
         return Stream.of(
-            Arguments.of("classic", "CLASSIC protocol"),
-            Arguments.of("streams", "STREAMS protocol")
+                Arguments.of("classic", "CLASSIC protocol"),
+                Arguments.of("streams", "STREAMS protocol")
         );
     }
 }

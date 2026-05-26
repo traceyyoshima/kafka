@@ -75,8 +75,8 @@ public class ShareCompletedFetchTest {
         int numRecordsPerBatch = 10;
         int numRecords = 20;        // Records for 10-29, in 2 equal batches
         ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-            .setRecords(newRecords(startingOffset, numRecordsPerBatch, 2))
-            .setAcquiredRecords(acquiredRecords(startingOffset, numRecords));
+                .setRecords(newRecords(startingOffset, numRecordsPerBatch, 2))
+                .setAcquiredRecords(acquiredRecords(startingOffset, numRecords));
 
         Deserializers<String, String> deserializers = newStringDeserializers();
 
@@ -115,8 +115,8 @@ public class ShareCompletedFetchTest {
         long startingOffset = 10L;
         int numRecords = 11;        // Records for 10-20, in a single batch
         ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-            .setRecords(newRecords(startingOffset, numRecords))
-            .setAcquiredRecords(acquiredRecords(startingOffset, numRecords));
+                .setRecords(newRecords(startingOffset, numRecords))
+                .setAcquiredRecords(acquiredRecords(startingOffset, numRecords));
 
         Deserializers<String, String> deserializers = newStringDeserializers();
 
@@ -231,7 +231,7 @@ public class ShareCompletedFetchTest {
                 Compression.NONE,
                 TimestampType.CREATE_TIME,
                 0);
-            final UUIDSerializer serializer = new UUIDSerializer()) {
+                final UUIDSerializer serializer = new UUIDSerializer()) {
             builder.append(new SimpleRecord(serializer.serialize(TOPIC_NAME, UUID.randomUUID())));
             builder.append(0L, "key".getBytes(), "value".getBytes());
             Headers headers = new RecordHeaders();
@@ -407,8 +407,8 @@ public class ShareCompletedFetchTest {
 
         // Acquire only non-existent records 15-19 (all should be gaps)
         ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-            .setRecords(newRecords(startingOffset, numRecords))  // Records 0-9
-            .setAcquiredRecords(acquiredRecords(15L, 5));       // Acquire 15-19 (don't exist)
+                .setRecords(newRecords(startingOffset, numRecords))  // Records 0-9
+                .setAcquiredRecords(acquiredRecords(15L, 5));       // Acquire 15-19 (don't exist)
 
         Deserializers<String, String> deserializers = newStringDeserializers();
 
@@ -547,11 +547,11 @@ public class ShareCompletedFetchTest {
         // Fetch records and verify that only 15 unique records are returned (0-14)
         ShareInFlightBatch<String, String> batch = completedFetch.fetchRecords(deserializers, 20, true);
         List<ConsumerRecord<String, String>> records = batch.getInFlightRecords();
-        
+
         // Should get 15 unique records: 0-9 from first range (with deliveryCount=1)
         // and 10-14 from second range (with deliveryCount=2)
         assertEquals(15, records.size());
-        
+
         // Verify first occurrence (offset 5 should have deliveryCount=1 from first range)
         ConsumerRecord<String, String> record5 = records.stream()
             .filter(r -> r.offset() == 5L)
@@ -559,7 +559,7 @@ public class ShareCompletedFetchTest {
             .orElse(null);
         assertNotNull(record5);
         assertEquals(Optional.of((short) 1), record5.deliveryCount());
-        
+
         // Verify offset 10 has deliveryCount=2 from second range
         ConsumerRecord<String, String> record10 = records.stream()
             .filter(r -> r.offset() == 10L)
@@ -567,7 +567,7 @@ public class ShareCompletedFetchTest {
             .orElse(null);
         assertNotNull(record10);
         assertEquals(Optional.of((short) 2), record10.deliveryCount());
-        
+
         // Verify all offsets are unique
         Set<Long> offsetSet = new HashSet<>();
         for (ConsumerRecord<String, String> record : records) {
@@ -603,7 +603,7 @@ public class ShareCompletedFetchTest {
         assertEquals(10, acks1.size(), "All records in corrupted batch should be rejected");
         for (long offset = 0; offset < 10; offset++) {
             assertEquals(AcknowledgeType.REJECT, acks1.get(offset),
-                "Record at offset " + offset + " should be REJECT");
+                    "Record at offset " + offset + " should be REJECT");
         }
 
         // No records should be returned
@@ -800,14 +800,14 @@ public class ShareCompletedFetchTest {
         ShareFetchMetricsAggregator shareFetchMetricsAggregator = new ShareFetchMetricsAggregator(shareFetchMetricsManager, partitionSet);
 
         return new ShareCompletedFetch(
-            logContext,
-            BufferSupplier.create(),
-            0,
-            TIP,
-            partitionData,
-            DEFAULT_ACQUISITION_LOCK_TIMEOUT_MS,
-            shareFetchMetricsAggregator,
-            ApiKeys.SHARE_FETCH.latestVersion());
+                logContext,
+                BufferSupplier.create(),
+                0,
+                TIP,
+                partitionData,
+                DEFAULT_ACQUISITION_LOCK_TIMEOUT_MS,
+                shareFetchMetricsAggregator,
+                ApiKeys.SHARE_FETCH.latestVersion());
     }
 
     private static Deserializers<UUID, UUID> newUuidDeserializers() {
@@ -896,12 +896,12 @@ public class ShareCompletedFetchTest {
                                         int offset,
                                         Time time) {
         MemoryRecords.writeEndTransactionalMarker(buffer,
-            offset,
-            time.milliseconds(),
-            0,
-            PRODUCER_ID,
-            PRODUCER_EPOCH,
-            new EndTransactionMarker(ControlRecordType.COMMIT, 0));
+                offset,
+                time.milliseconds(),
+                0,
+                PRODUCER_ID,
+                PRODUCER_EPOCH,
+                new EndTransactionMarker(ControlRecordType.COMMIT, 0));
     }
 
     private void createBatch(ByteBuffer buffer, long baseOffset, int numRecords, Time time) {

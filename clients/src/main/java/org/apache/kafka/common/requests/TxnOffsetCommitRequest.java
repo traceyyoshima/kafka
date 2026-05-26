@@ -77,9 +77,9 @@ public class TxnOffsetCommitRequest extends AbstractRequest {
             final boolean isTransactionV2Enabled
         ) {
             return new Builder(
-                data,
-                ApiKeys.TXN_OFFSET_COMMIT.oldestVersion(),
-                isTransactionV2Enabled ? (short) 5 : LAST_STABLE_VERSION_BEFORE_TRANSACTION_V2
+                    data,
+                    ApiKeys.TXN_OFFSET_COMMIT.oldestVersion(),
+                    isTransactionV2Enabled ? (short) 5 : LAST_STABLE_VERSION_BEFORE_TRANSACTION_V2
             );
         }
 
@@ -89,11 +89,11 @@ public class TxnOffsetCommitRequest extends AbstractRequest {
             final boolean enableUnstableLastVersion
         ) {
             return new Builder(
-                data,
-                ApiKeys.TXN_OFFSET_COMMIT.oldestVersion(),
-                isTransactionV2Enabled
-                    ? ApiKeys.TXN_OFFSET_COMMIT.latestVersion(enableUnstableLastVersion)
-                    : LAST_STABLE_VERSION_BEFORE_TRANSACTION_V2
+                    data,
+                    ApiKeys.TXN_OFFSET_COMMIT.oldestVersion(),
+                    isTransactionV2Enabled
+                            ? ApiKeys.TXN_OFFSET_COMMIT.latestVersion(enableUnstableLastVersion)
+                            : LAST_STABLE_VERSION_BEFORE_TRANSACTION_V2
             );
         }
 
@@ -101,20 +101,20 @@ public class TxnOffsetCommitRequest extends AbstractRequest {
         public TxnOffsetCommitRequest build(short version) {
             if (version < 3 && groupMetadataSet()) {
                 throw new UnsupportedVersionException("Broker doesn't support group metadata commit API on version " + version
-                    + ", minimum supported request version is 3 which requires brokers to be on version 2.5 or above.");
+                        + ", minimum supported request version is 3 which requires brokers to be on version 2.5 or above.");
             }
             if (version >= 6) {
                 for (TxnOffsetCommitRequestTopic topic : data.topics()) {
                     if (topic.topicId() == null || topic.topicId().equals(Uuid.ZERO_UUID)) {
                         throw new UnsupportedVersionException("The broker TxnOffsetCommit api version " +
-                            version + " does require usage of topic ids.");
+                                version + " does require usage of topic ids.");
                     }
                 }
             } else {
                 for (TxnOffsetCommitRequestTopic topic : data.topics()) {
                     if (topic.name() == null || topic.name().isEmpty()) {
                         throw new UnsupportedVersionException("The broker TxnOffsetCommit api version " +
-                            version + " does require usage of topic names.");
+                                version + " does require usage of topic names.");
                     }
                 }
             }
@@ -123,8 +123,8 @@ public class TxnOffsetCommitRequest extends AbstractRequest {
 
         private boolean groupMetadataSet() {
             return !data.memberId().equals(JoinGroupRequest.UNKNOWN_MEMBER_ID) ||
-                       data.generationIdOrMemberEpoch() != JoinGroupRequest.UNKNOWN_GENERATION_ID ||
-                       data.groupInstanceId() != null;
+                    data.generationIdOrMemberEpoch() != JoinGroupRequest.UNKNOWN_GENERATION_ID ||
+                    data.groupInstanceId() != null;
         }
 
         @Override
@@ -169,7 +169,7 @@ public class TxnOffsetCommitRequest extends AbstractRequest {
             CommittedOffset offset = entry.getValue();
 
             List<TxnOffsetCommitRequestPartition> partitions =
-                topicPartitionMap.getOrDefault(topicPartition.topic(), new ArrayList<>());
+                    topicPartitionMap.getOrDefault(topicPartition.topic(), new ArrayList<>());
             partitions.add(new TxnOffsetCommitRequestPartition()
                                .setPartitionIndex(topicPartition.partition())
                                .setCommittedOffset(offset.offset)
@@ -213,9 +213,9 @@ public class TxnOffsetCommitRequest extends AbstractRequest {
             response.topics().add(responseTopic);
 
             topic.partitions().forEach(partition ->
-                responseTopic.partitions().add(new TxnOffsetCommitResponseData.TxnOffsetCommitResponsePartition()
-                    .setPartitionIndex(partition.partitionIndex())
-                    .setErrorCode(error.code()))
+                    responseTopic.partitions().add(new TxnOffsetCommitResponseData.TxnOffsetCommitResponsePartition()
+                        .setPartitionIndex(partition.partitionIndex())
+                        .setErrorCode(error.code()))
             );
         });
         return response;
@@ -223,7 +223,7 @@ public class TxnOffsetCommitRequest extends AbstractRequest {
 
     public static TxnOffsetCommitRequest parse(Readable readable, short version) {
         return new TxnOffsetCommitRequest(new TxnOffsetCommitRequestData(
-            readable, version), version);
+                readable, version), version);
     }
 
     public static class CommittedOffset {
@@ -253,8 +253,8 @@ public class TxnOffsetCommitRequest extends AbstractRequest {
             CommittedOffset otherOffset = (CommittedOffset) other;
 
             return this.offset == otherOffset.offset
-                       && this.leaderEpoch.equals(otherOffset.leaderEpoch)
-                       && Objects.equals(this.metadata, otherOffset.metadata);
+                    && this.leaderEpoch.equals(otherOffset.leaderEpoch)
+                    && Objects.equals(this.metadata, otherOffset.metadata);
         }
 
         @Override

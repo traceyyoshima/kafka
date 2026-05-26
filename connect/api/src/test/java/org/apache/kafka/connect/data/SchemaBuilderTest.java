@@ -188,7 +188,6 @@ public class SchemaBuilderTest {
         assertThrows(SchemaBuilderException.class, () -> SchemaBuilder.bytes().defaultValue("a string, not bytes"));
     }
 
-
     @Test
     public void testParameters() {
         Map<String, String> expectedParameters = new HashMap<>();
@@ -203,7 +202,6 @@ public class SchemaBuilderTest {
         assertTypeAndDefault(schema, Schema.Type.STRING, false, null);
         assertMetadata(schema, null, null, null, expectedParameters);
     }
-
 
     @Test
     public void testStructBuilder() {
@@ -227,7 +225,6 @@ public class SchemaBuilderTest {
         assertThrows(SchemaBuilderException.class, () -> SchemaBuilder.int8().field("field", SchemaBuilder.int8().build()));
     }
 
-
     @Test
     public void testArrayBuilder() {
         Schema schema = SchemaBuilder.array(Schema.INT8_SCHEMA).build();
@@ -247,7 +244,7 @@ public class SchemaBuilderTest {
     public void testArrayBuilderInvalidDefault() {
         // Array, but wrong embedded type
         assertThrows(SchemaBuilderException.class,
-            () -> SchemaBuilder.array(Schema.INT8_SCHEMA).defaultValue(List.of("string")).build());
+                () -> SchemaBuilder.array(Schema.INT8_SCHEMA).defaultValue(List.of("string")).build());
     }
 
     @Test
@@ -324,13 +321,13 @@ public class SchemaBuilderTest {
     @Test
     public void testFieldNameNull() {
         assertThrows(SchemaBuilderException.class,
-            () -> SchemaBuilder.struct().field(null, Schema.STRING_SCHEMA).build());
+                () -> SchemaBuilder.struct().field(null, Schema.STRING_SCHEMA).build());
     }
 
     @Test
     public void testFieldSchemaNull() {
         assertThrows(SchemaBuilderException.class,
-            () -> SchemaBuilder.struct().field("fieldName", null).build());
+                () -> SchemaBuilder.struct().field("fieldName", null).build());
     }
 
     @Test

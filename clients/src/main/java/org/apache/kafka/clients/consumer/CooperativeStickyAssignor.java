@@ -54,7 +54,7 @@ public class CooperativeStickyAssignor extends AbstractStickyAssignor {
     // these schemas are used for preserving useful metadata for the assignment, such as the last stable generation
     private static final String GENERATION_KEY_NAME = "generation";
     private static final Schema COOPERATIVE_STICKY_ASSIGNOR_USER_DATA_V0 = new Schema(
-        new Field(GENERATION_KEY_NAME, Type.INT32));
+            new Field(GENERATION_KEY_NAME, Type.INT32));
 
     private int generation = DEFAULT_GENERATION; // consumer group generation
 

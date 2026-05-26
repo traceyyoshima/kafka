@@ -88,9 +88,9 @@ public class Endpoint {
 
         Endpoint that = (Endpoint) o;
         return Objects.equals(this.listener, that.listener) &&
-            Objects.equals(this.securityProtocol, that.securityProtocol) &&
-            Objects.equals(this.host, that.host) &&
-            this.port == that.port;
+                Objects.equals(this.securityProtocol, that.securityProtocol) &&
+                Objects.equals(this.host, that.host) &&
+                this.port == that.port;
 
     }
 
@@ -102,10 +102,10 @@ public class Endpoint {
     @Override
     public String toString() {
         return "Endpoint(" +
-            "listenerName='" + listener + '\'' +
-            ", securityProtocol=" + securityProtocol +
-            ", host='" + host + '\'' +
-            ", port=" + port +
-            ')';
+                "listenerName='" + listener + '\'' +
+                ", securityProtocol=" + securityProtocol +
+                ", host='" + host + '\'' +
+                ", port=" + port +
+                ')';
     }
 }

@@ -51,10 +51,10 @@ public class RemoteLogMetadataTopicPartitioner {
 
     private byte[] toBytes(int n) {
         return new byte[]{
-            (byte) (n >> 24),
-            (byte) (n >> 16),
-            (byte) (n >> 8),
-            (byte) n
+                (byte) (n >> 24),
+                (byte) (n >> 16),
+                (byte) (n >> 8),
+                (byte) n
         };
     }
 }

@@ -59,9 +59,9 @@ public class ProducerIdControlManager {
                 throw new RuntimeException("You must specify ClusterControlManager.");
             }
             return new ProducerIdControlManager(
-                logContext,
-                clusterControlManager,
-                snapshotRegistry);
+                    logContext,
+                    clusterControlManager,
+                    snapshotRegistry);
         }
     }
 
@@ -87,7 +87,7 @@ public class ProducerIdControlManager {
         long firstProducerIdInBlock = nextProducerBlock.get().firstProducerId();
         if (firstProducerIdInBlock > Long.MAX_VALUE - ProducerIdsBlock.PRODUCER_ID_BLOCK_SIZE) {
             throw new UnknownServerException("Exhausted all producerIds as the next block's end producerId " +
-                "has exceeded the int64 type limit");
+                    "has exceeded the int64 type limit");
         }
 
         ProducerIdsBlock block = new ProducerIdsBlock(brokerId, firstProducerIdInBlock, ProducerIdsBlock.PRODUCER_ID_BLOCK_SIZE);
@@ -111,7 +111,7 @@ public class ProducerIdControlManager {
         ProducerIdsBlock nextBlock = nextProducerBlock.get();
         if (nextBlock != ProducerIdsBlock.EMPTY && record.nextProducerId() <= nextBlock.firstProducerId()) {
             throw new RuntimeException("Next Producer ID from replayed record (" + record.nextProducerId() + ")" +
-                " is not greater than current next Producer ID in block (" + nextBlock + ")");
+                    " is not greater than current next Producer ID in block (" + nextBlock + ")");
         } else {
             log.info("Replaying ProducerIdsRecord {}", record);
             nextProducerBlock.set(new ProducerIdsBlock(record.brokerId(), record.nextProducerId(),

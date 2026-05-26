@@ -275,7 +275,7 @@ public class MirrorCheckpointConfig extends MirrorConnectorConfig {
                         TOPIC_FILTER_CLASS_DEFAULT,
                         ConfigDef.Importance.LOW,
                         TOPIC_FILTER_CLASS_DOC
-                )
+        )
                 .define(
                         METRIC_NAMES_FORMAT,
                         ConfigDef.Type.LIST,
@@ -283,7 +283,7 @@ public class MirrorCheckpointConfig extends MirrorConnectorConfig {
                         ConfigDef.ValidList.in(false, METRIC_NAMES_LEGACY, METRIC_NAMES_NEW),
                         ConfigDef.Importance.LOW,
                         METRIC_NAMES_FORMAT_DOC
-                );
+        );
     }
 
     protected static final ConfigDef CONNECTOR_CONFIG_DEF = defineCheckpointConfig(new ConfigDef(BASE_CONNECTOR_CONFIG_DEF));

@@ -53,7 +53,7 @@ public class ReconfigurableQuorumIntegrationTest {
         FeatureMetadata featureMetadata = admin.describeFeatures().featureMetadata().get();
         if (finalized > 0) {
             assertTrue(featureMetadata.finalizedFeatures().containsKey(KRaftVersion.FEATURE_NAME),
-                "finalizedFeatures does not contain " + KRaftVersion.FEATURE_NAME + ", finalizedFeatures: " + featureMetadata.finalizedFeatures());
+                    "finalizedFeatures does not contain " + KRaftVersion.FEATURE_NAME + ", finalizedFeatures: " + featureMetadata.finalizedFeatures());
             assertEquals(finalized, featureMetadata.finalizedFeatures().
                     get(KRaftVersion.FEATURE_NAME).minVersionLevel());
             assertEquals(finalized, featureMetadata.finalizedFeatures().
@@ -70,16 +70,16 @@ public class ReconfigurableQuorumIntegrationTest {
     @Test
     public void testCreateAndDestroyNonReconfigurableCluster() throws Exception {
         try (KafkaClusterTestKit cluster = new KafkaClusterTestKit.Builder(
-            new TestKitNodes.Builder().
-                setNumBrokerNodes(1).
-                setNumControllerNodes(1).
-                build()
+                new TestKitNodes.Builder().
+                    setNumBrokerNodes(1).
+                    setNumControllerNodes(1).
+                    build()
         ).build()) {
             cluster.format();
             cluster.startup();
             try (var admin = cluster.admin()) {
                 retryOnExceptionWithTimeout(30_000, () ->
-                    checkKRaftVersions(admin, KRaftVersion.KRAFT_VERSION_0.featureLevel()));
+                        checkKRaftVersions(admin, KRaftVersion.KRAFT_VERSION_0.featureLevel()));
             }
         }
     }
@@ -87,16 +87,16 @@ public class ReconfigurableQuorumIntegrationTest {
     @Test
     public void testCreateAndDestroyReconfigurableCluster() throws Exception {
         try (KafkaClusterTestKit cluster = new KafkaClusterTestKit.Builder(
-            new TestKitNodes.Builder().
-                setNumBrokerNodes(1).
-                setNumControllerNodes(1).
-                build()
+                new TestKitNodes.Builder().
+                    setNumBrokerNodes(1).
+                    setNumControllerNodes(1).
+                    build()
         ).setStandalone(true).build()) {
             cluster.format();
             cluster.startup();
             try (var admin = cluster.admin()) {
                 retryOnExceptionWithTimeout(30_000, () ->
-                    checkKRaftVersions(admin, KRaftVersion.KRAFT_VERSION_1.featureLevel()));
+                        checkKRaftVersions(admin, KRaftVersion.KRAFT_VERSION_1.featureLevel()));
             }
         }
     }
@@ -118,8 +118,8 @@ public class ReconfigurableQuorumIntegrationTest {
         final Map<Integer, Uuid> initialVoters = new HashMap<>();
         for (final var controllerNode : nodes.controllerNodes().values()) {
             initialVoters.put(
-                controllerNode.id(),
-                controllerNode.metadataDirectoryId()
+                    controllerNode.id(),
+                    controllerNode.metadataDirectoryId()
             );
         }
 
@@ -153,8 +153,8 @@ public class ReconfigurableQuorumIntegrationTest {
         final Map<Integer, Uuid> initialVoters = new HashMap<>();
         for (final var controllerNode : nodes.controllerNodes().values()) {
             initialVoters.put(
-                controllerNode.id(),
-                controllerNode.metadataDirectoryId()
+                    controllerNode.id(),
+                    controllerNode.metadataDirectoryId()
             );
         }
 
@@ -184,7 +184,7 @@ public class ReconfigurableQuorumIntegrationTest {
                 });
 
                 retryOnExceptionWithTimeout(30_000, 1_000, () ->
-                    admin.addRaftVoter(3000, dirId, Set.of(new RaftVoterEndpoint("CONTROLLER", "localhost", port))).all().get());
+                        admin.addRaftVoter(3000, dirId, Set.of(new RaftVoterEndpoint("CONTROLLER", "localhost", port))).all().get());
             }
         }
     }
@@ -227,9 +227,9 @@ public class ReconfigurableQuorumIntegrationTest {
         final var oldDirectoryId = Uuid.randomUuid();
         for (final var controllerNode : nodes.controllerNodes().values()) {
             initialVoters.put(
-                controllerNode.id(),
-                controllerNode.id() == TestKitDefaults.CONTROLLER_ID_OFFSET ?
-                    oldDirectoryId : controllerNode.metadataDirectoryId()
+                    controllerNode.id(),
+                    controllerNode.id() == TestKitDefaults.CONTROLLER_ID_OFFSET ?
+                            oldDirectoryId : controllerNode.metadataDirectoryId()
             );
         }
 
@@ -263,8 +263,8 @@ public class ReconfigurableQuorumIntegrationTest {
         final Map<Integer, Uuid> initialVoters = new HashMap<>();
         for (final var controllerNode : nodes.controllerNodes().values()) {
             initialVoters.put(
-                controllerNode.id(),
-                controllerNode.metadataDirectoryId()
+                    controllerNode.id(),
+                    controllerNode.metadataDirectoryId()
             );
         }
 
@@ -283,9 +283,9 @@ public class ReconfigurableQuorumIntegrationTest {
                 Uuid dirId = cluster.nodes().controllerNodes().get(3000).metadataDirectoryId();
                 int port = port(admin, 3000);
                 admin.removeRaftVoter(
-                    3000,
-                    dirId,
-                    new RemoveRaftVoterOptions().setClusterId(Optional.of("test-cluster"))
+                        3000,
+                        dirId,
+                        new RemoveRaftVoterOptions().setClusterId(Optional.of("test-cluster"))
                 ).all().get();
                 retryOnExceptionWithTimeout(30_000, 10, () -> {
                     Map<Integer, Uuid> voters = findVoterDirs(admin);
@@ -296,8 +296,8 @@ public class ReconfigurableQuorumIntegrationTest {
                 });
 
                 retryOnExceptionWithTimeout(30_000, 1_000, () ->
-                    admin.addRaftVoter(3000, dirId, Set.of(new RaftVoterEndpoint("CONTROLLER", "localhost", port)),
-                        new AddRaftVoterOptions().setClusterId(Optional.of("test-cluster"))).all().get());
+                        admin.addRaftVoter(3000, dirId, Set.of(new RaftVoterEndpoint("CONTROLLER", "localhost", port)),
+                            new AddRaftVoterOptions().setClusterId(Optional.of("test-cluster"))).all().get());
             }
         }
     }
@@ -313,8 +313,8 @@ public class ReconfigurableQuorumIntegrationTest {
         final Map<Integer, Uuid> initialVoters = new HashMap<>();
         for (final var controllerNode : nodes.controllerNodes().values()) {
             initialVoters.put(
-                controllerNode.id(),
-                controllerNode.metadataDirectoryId()
+                    controllerNode.id(),
+                    controllerNode.metadataDirectoryId()
             );
         }
 
@@ -324,17 +324,17 @@ public class ReconfigurableQuorumIntegrationTest {
             try (var admin = cluster.admin()) {
                 Uuid dirId = cluster.nodes().controllerNodes().get(3000).metadataDirectoryId();
                 var removeFuture = admin.removeRaftVoter(
-                    3000,
-                    dirId,
-                    new RemoveRaftVoterOptions().setClusterId(Optional.of("inconsistent"))
+                        3000,
+                        dirId,
+                        new RemoveRaftVoterOptions().setClusterId(Optional.of("inconsistent"))
                 ).all();
                 assertFutureThrows(InconsistentClusterIdException.class, removeFuture);
 
                 var addFuture = admin.addRaftVoter(
-                    3000,
-                    dirId,
-                    Set.of(new RaftVoterEndpoint("CONTROLLER", "localhost", port(admin, 3000))),
-                    new AddRaftVoterOptions().setClusterId(Optional.of("inconsistent"))
+                        3000,
+                        dirId,
+                        Set.of(new RaftVoterEndpoint("CONTROLLER", "localhost", port(admin, 3000))),
+                        new AddRaftVoterOptions().setClusterId(Optional.of("inconsistent"))
                 ).all();
                 assertFutureThrows(InconsistentClusterIdException.class, addFuture);
             }

@@ -31,7 +31,6 @@ public final class EqualityCheck {
         }
         verifyGeneralEqualityProperties(o1, o2);
 
-
         // the two objects should equal each other
         if (!o1.equals(o2)) {
             throw new AssertionError(String.format("o1[%s] was not equal to o2[%s].", o1, o2));
@@ -71,22 +70,20 @@ public final class EqualityCheck {
         }
         verifyHashCodeConsistency(o1, o2);
 
-
         // since these objects are NOT equal, their hashcode SHOULD PROBABLY not be the same
         if (o1.hashCode() == o2.hashCode()) {
             throw new AssertionError(
-                String.format(
-                    "o1[%s].hash[%d] was equal to o2[%s].hash[%d], even though !o1.equals(o2). " +
-                        "This is NOT A BUG, but it is undesirable for hash collection performance.",
-                    o1,
-                    o1.hashCode(),
-                    o2,
-                    o2.hashCode()
-                )
+                    String.format(
+                            "o1[%s].hash[%d] was equal to o2[%s].hash[%d], even though !o1.equals(o2). " +
+                            "This is NOT A BUG, but it is undesirable for hash collection performance.",
+                            o1,
+                            o1.hashCode(),
+                            o2,
+                            o2.hashCode()
+                    )
             );
         }
     }
-
 
     @SuppressWarnings({"EqualsWithItself", "ConstantConditions", "ObjectEqualsNull"})
     private static <T> void verifyGeneralEqualityProperties(final T o1, final T o2) {
@@ -118,19 +115,18 @@ public final class EqualityCheck {
         }
     }
 
-
     private static <T> void verifyHashCodeConsistency(final T o1, final T o2) {
         {
             final int first = o1.hashCode();
             final int second = o1.hashCode();
             if (first != second) {
                 throw new AssertionError(
-                    String.format(
-                        "o1[%s]'s hashcode was not consistent: [%d]!=[%d].",
-                        o1,
-                        first,
-                        second
-                    )
+                        String.format(
+                                "o1[%s]'s hashcode was not consistent: [%d]!=[%d].",
+                                o1,
+                                first,
+                                second
+                        )
                 );
             }
         }
@@ -140,12 +136,12 @@ public final class EqualityCheck {
             final int second = o2.hashCode();
             if (first != second) {
                 throw new AssertionError(
-                    String.format(
-                        "o2[%s]'s hashcode was not consistent: [%d]!=[%d].",
-                        o2,
-                        first,
-                        second
-                    )
+                        String.format(
+                                "o2[%s]'s hashcode was not consistent: [%d]!=[%d].",
+                                o2,
+                                first,
+                                second
+                        )
                 );
             }
         }

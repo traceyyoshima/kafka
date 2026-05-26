@@ -57,18 +57,18 @@ public class RocksDBSessionStoreWithHeadersTest {
         final Properties props = StreamsTestUtils.getStreamsConfig();
         baseDir = TestUtils.tempDirectory();
         context = new InternalMockProcessorContext<>(
-            baseDir,
-            Serdes.String(),
-            Serdes.String(),
-            new StreamsConfig(props)
+                baseDir,
+                Serdes.String(),
+                Serdes.String(),
+                new StreamsConfig(props)
         );
 
         final SegmentedBytesStore segmentedBytesStore = new RocksDBSegmentedBytesStore(
-            STORE_NAME,
-            "test-metrics-scope",
-            RETENTION_PERIOD,
-            SEGMENT_INTERVAL,
-            new SessionKeySchema()
+                STORE_NAME,
+                "test-metrics-scope",
+                RETENTION_PERIOD,
+                SEGMENT_INTERVAL,
+                new SessionKeySchema()
         );
 
         sessionStore = new RocksDBSessionStoreWithHeaders(segmentedBytesStore);
@@ -85,10 +85,10 @@ public class RocksDBSessionStoreWithHeadersTest {
     @Test
     public void shouldReturnUnknownQueryTypeForWindowRangeQuery() {
         final WindowRangeQuery<Bytes, byte[]> query = WindowRangeQuery.withKey(
-            new Bytes("test-key".getBytes())
+                new Bytes("test-key".getBytes())
         );
         final QueryResult<KeyValueIterator<Windowed<Bytes>, byte[]>> result =
-            sessionStore.query(query, PositionBound.unbounded(), new QueryConfig(false));
+                sessionStore.query(query, PositionBound.unbounded(), new QueryConfig(false));
 
         assertFalse(result.isSuccess());
         assertEquals(FailureReason.UNKNOWN_QUERY_TYPE, result.getFailureReason());
@@ -98,24 +98,24 @@ public class RocksDBSessionStoreWithHeadersTest {
     @Test
     public void shouldCollectExecutionInfoWhenRequested() {
         final WindowRangeQuery<Bytes, byte[]> query = WindowRangeQuery.withKey(
-            new Bytes("test-key".getBytes())
+                new Bytes("test-key".getBytes())
         );
         final QueryResult<KeyValueIterator<Windowed<Bytes>, byte[]>> result =
-            sessionStore.query(query, PositionBound.unbounded(), new QueryConfig(true));
+                sessionStore.query(query, PositionBound.unbounded(), new QueryConfig(true));
 
         assertFalse(result.getExecutionInfo().isEmpty());
         assertTrue(result.getExecutionInfo().get(0).contains("Handled in"));
         assertTrue(result.getExecutionInfo().get(0).contains(
-            RocksDBSessionStoreWithHeaders.class.getName()));
+                RocksDBSessionStoreWithHeaders.class.getName()));
     }
 
     @Test
     public void shouldNotCollectExecutionInfoWhenNotRequested() {
         final WindowRangeQuery<Bytes, byte[]> query = WindowRangeQuery.withKey(
-            new Bytes("test-key".getBytes())
+                new Bytes("test-key".getBytes())
         );
         final QueryResult<KeyValueIterator<Windowed<Bytes>, byte[]>> result =
-            sessionStore.query(query, PositionBound.unbounded(), new QueryConfig(false));
+                sessionStore.query(query, PositionBound.unbounded(), new QueryConfig(false));
 
         assertTrue(result.getExecutionInfo().isEmpty());
     }

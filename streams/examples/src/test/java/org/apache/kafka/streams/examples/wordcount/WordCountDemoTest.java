@@ -68,7 +68,6 @@ public class WordCountDemoTest {
         testDriver.close();
     }
 
-
     /**
      * Simple test validating count of one word
      */

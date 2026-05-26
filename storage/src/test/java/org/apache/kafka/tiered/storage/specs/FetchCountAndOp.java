@@ -28,8 +28,8 @@ public record FetchCountAndOp(
     @Override
     public String toString() {
         return "FetchCountAndOp{" +
-            "count=" + count +
-            ", operationType=" + operationType +
-            '}';
+                "count=" + count +
+                ", operationType=" + operationType +
+                '}';
     }
 }

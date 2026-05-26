@@ -258,7 +258,7 @@ public class FetchCollector<K, V> {
         SubscriptionState.FetchPosition position = subscriptions.positionOrNull(tp);
         if (position == null || position.offset != fetchOffset) {
             log.debug("Discarding stale fetch response for partition {} since its offset {} does not match " +
-                "the expected offset {} or the partition has been unassigned", tp, fetchOffset, position);
+                    "the expected offset {} or the partition has been unassigned", tp, fetchOffset, position);
             return null;
         }
 
@@ -307,12 +307,12 @@ public class FetchCollector<K, V> {
 
         if (FetchResponse.isPreferredReplica(partitionData)) {
             return subscriptions.tryUpdatingPreferredReadReplica(
-                tp, partitionData.preferredReadReplica(), () -> {
-                    long expireTimeMs = time.milliseconds() + metadata.metadataExpireMs();
-                    log.debug("Updating preferred read replica for partition {} to {}, set to expire at {}",
-                        tp, partitionData.preferredReadReplica(), expireTimeMs);
-                    return expireTimeMs;
-                });
+                    tp, partitionData.preferredReadReplica(), () -> {
+                        long expireTimeMs = time.milliseconds() + metadata.metadataExpireMs();
+                        log.debug("Updating preferred read replica for partition {} to {}, set to expire at {}",
+                            tp, partitionData.preferredReadReplica(), expireTimeMs);
+                        return expireTimeMs;
+                    });
         }
 
         return true;

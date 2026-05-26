@@ -271,9 +271,9 @@ final class RocksDBVersionedStoreSegmentValueFormatter {
         private PartiallyDeserializedSegmentValue(final byte[] segmentValue) {
             this.segmentValue = segmentValue;
             this.nextTimestamp =
-                RocksDBVersionedStoreSegmentValueFormatter.nextTimestamp(segmentValue);
+                    RocksDBVersionedStoreSegmentValueFormatter.nextTimestamp(segmentValue);
             this.minTimestamp =
-                RocksDBVersionedStoreSegmentValueFormatter.minTimestamp(segmentValue);
+                    RocksDBVersionedStoreSegmentValueFormatter.minTimestamp(segmentValue);
             this.isDegenerate = nextTimestamp == minTimestamp;
             resetDeserHelpers();
         }
@@ -398,8 +398,8 @@ final class RocksDBVersionedStoreSegmentValueFormatter {
                 // we have the older segment at hand, and need to truncate the partial write.
                 // do this by removing the latest entries from this segment until the overlap is resolved.
                 LOG.warn("Detected inconsistency among versioned store segments. "
-                    + "This indicates a previous failure to write to a state store. "
-                    + "Automatically recovering and continuing.");
+                        + "This indicates a previous failure to write to a state store. "
+                        + "Automatically recovering and continuing.");
                 truncateRecordsToTimestamp(validFrom);
             }
 
@@ -572,9 +572,9 @@ final class RocksDBVersionedStoreSegmentValueFormatter {
                             + "one record version, even though under normal replay operations only one "
                             + "record should be affected. Full records affected: {} (expected: 1). "
                             + "New record timestamp: {} (expected: {}).",
-                        totalRecords,
-                        timestamp,
-                        unpackedReversedTimestampAndValueSizes.get(0).timestamp);
+                            totalRecords,
+                            timestamp,
+                            unpackedReversedTimestampAndValueSizes.get(0).timestamp);
                 }
 
                 // delete everything in this current segment by replacing it with a degenerate segment
@@ -597,12 +597,12 @@ final class RocksDBVersionedStoreSegmentValueFormatter {
             // an extra warning
             if (!((fullRecordsToTruncate == 1) && (searchResult.index == 0))) {
                 LOG.warn("The versioned store inconsistency affects more (or less) than "
-                    + "one record version, even though under normal replay operations only one "
-                    + "record should be affected. Full records affected: {} (expected: 1). "
-                    + "New record timestamp: {} (expected: {}).",
-                    fullRecordsToTruncate,
-                    timestamp,
-                    unpackedReversedTimestampAndValueSizes.get(0).timestamp);
+                        + "one record version, even though under normal replay operations only one "
+                        + "record should be affected. Full records affected: {} (expected: 1). "
+                        + "New record timestamp: {} (expected: {}).",
+                        fullRecordsToTruncate,
+                        timestamp,
+                        unpackedReversedTimestampAndValueSizes.get(0).timestamp);
             }
 
             if (fullRecordsToTruncate == 0) {

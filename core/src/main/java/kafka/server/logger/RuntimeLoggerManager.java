@@ -90,7 +90,7 @@ public class RuntimeLoggerManager {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                        "Invalid log4j configOperation: " + op.configOperation());
+                            "Invalid log4j configOperation: " + op.configOperation());
             }
         });
     }
@@ -101,11 +101,11 @@ public class RuntimeLoggerManager {
             requestId = Integer.parseInt(resourceName);
         } catch (NumberFormatException e) {
             throw new InvalidRequestException("Node id must be an integer, but it is: " +
-                resourceName);
+                    resourceName);
         }
         if (requestId != nodeId) {
             throw new InvalidRequestException("Unexpected node id. Expected " + nodeId +
-                ", but received " + requestId);
+                    ", but received " + requestId);
         }
     }
 
@@ -124,27 +124,27 @@ public class RuntimeLoggerManager {
                     String logLevel = op.value();
                     if (!LogLevelConfig.VALID_LOG_LEVELS.contains(logLevel)) {
                         throw new InvalidConfigurationException("Cannot set the log level of " +
-                            loggerName + " to " + logLevel + " as it is not a supported log level. " +
-                            "Valid log levels are " + VALID_LOG_LEVELS_STRING);
+                                loggerName + " to " + logLevel + " as it is not a supported log level. " +
+                                "Valid log levels are " + VALID_LOG_LEVELS_STRING);
                     }
                     break;
                 case DELETE:
                     validateLoggerNameExists(loggerName);
                     if (loggerName.equals(LoggingController.ROOT_LOGGER)) {
                         throw new InvalidRequestException("Removing the log level of the " +
-                            LoggingController.ROOT_LOGGER + " logger is not allowed");
+                                LoggingController.ROOT_LOGGER + " logger is not allowed");
                     }
                     break;
                 case APPEND:
                     throw new InvalidRequestException(OpType.APPEND +
-                        " operation is not allowed for the " + BROKER_LOGGER + " resource");
+                            " operation is not allowed for the " + BROKER_LOGGER + " resource");
                 case SUBTRACT:
                     throw new InvalidRequestException(OpType.SUBTRACT +
-                        " operation is not allowed for the " + BROKER_LOGGER + " resource");
+                            " operation is not allowed for the " + BROKER_LOGGER + " resource");
                 default:
                     throw new InvalidRequestException("Unknown operation type " +
-                        (int) op.configOperation() + " is not allowed for the " +
-                        BROKER_LOGGER + " resource");
+                            (int) op.configOperation() + " is not allowed for the " +
+                            BROKER_LOGGER + " resource");
             }
         });
     }

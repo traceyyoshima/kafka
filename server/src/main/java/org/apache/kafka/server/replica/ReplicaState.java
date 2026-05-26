@@ -38,12 +38,12 @@ public record ReplicaState(
     Optional<Long> brokerEpoch
 ) {
     public static final ReplicaState EMPTY = new ReplicaState(
-        UnifiedLog.UNKNOWN_OFFSET,
-        LogOffsetMetadata.UNKNOWN_OFFSET_METADATA,
-        0L,
-        0L,
-        0L,
-        Optional.empty()
+            UnifiedLog.UNKNOWN_OFFSET,
+            LogOffsetMetadata.UNKNOWN_OFFSET_METADATA,
+            0L,
+            0L,
+            0L,
+            Optional.empty()
     );
 
     /**

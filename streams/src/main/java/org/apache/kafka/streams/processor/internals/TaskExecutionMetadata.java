@@ -71,7 +71,7 @@ public class TaskExecutionMetadata {
         final boolean taskWasReady = !taskToLastNotReadyLogTime.containsKey(task.id());
         final boolean canProcess;
         final String logMessage;
-        
+
         if (!hasNamedTopologies) {
             // TODO implement error handling/backoff for non-named topologies (needs KIP)
             canProcess = !pausedTopologies.contains(UNNAMED_TOPOLOGY);
@@ -94,7 +94,7 @@ public class TaskExecutionMetadata {
                 }
             }
         }
-        
+
         if (!canProcess) {
             if (taskWasReady) {
                 // READY -> NOT_READY - start timer
@@ -108,16 +108,16 @@ public class TaskExecutionMetadata {
             taskToLastNotReadyLogTime.remove(task.id());
             log.trace(logMessage);
         }
-        
+
         return canProcess;
     }
-    
+
     private void maybeLogNotReady(final TaskId taskId, final long now, final String logMessage) {
         final Long lastLogTime = taskToLastNotReadyLogTime.get(taskId);
         if (lastLogTime == null) {
             return;
         }
-        
+
         final long timeSinceLastLog = now - lastLogTime;
         if (timeSinceLastLog >= NOT_READY_LOG_INTERVAL_MS) {
             log.info("Task {} is not ready to process: {}", taskId, logMessage != null ? logMessage : "Task cannot be processed");
@@ -158,7 +158,7 @@ public class TaskExecutionMetadata {
     void clearSuccessfullyProcessed() {
         successfullyProcessed.clear();
     }
-    
+
     void removeTaskFromNotReadyTracking(final Task task) {
         final TaskId taskId = task.id();
         taskToLastNotReadyLogTime.remove(taskId);

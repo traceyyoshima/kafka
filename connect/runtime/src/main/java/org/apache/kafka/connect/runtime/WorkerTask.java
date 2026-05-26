@@ -135,7 +135,6 @@ abstract class WorkerTask<T, R extends ConnectRecord<R>> implements Runnable {
      */
     public abstract void initialize(TaskConfig taskConfig);
 
-
     private void triggerStop() {
         synchronized (this) {
             stopping = true;
@@ -430,7 +429,7 @@ abstract class WorkerTask<T, R extends ConnectRecord<R>> implements Runnable {
             metricGroup.close();
 
             metricGroup.addValueMetric(registry.taskStatus, now ->
-                taskStateTimer.currentState().toString().toLowerCase(Locale.getDefault())
+                    taskStateTimer.currentState().toString().toLowerCase(Locale.getDefault())
             );
 
             addRatioMetric(State.RUNNING, registry.taskRunningRatio);

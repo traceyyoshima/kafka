@@ -126,7 +126,6 @@ public class ShareSessionContext extends ShareFetchContext {
         private final boolean updateShareContextAndRemoveUnselected;
         private Map.Entry<TopicIdPartition, ShareFetchResponseData.PartitionData> nextElement;
 
-
         public PartitionIterator(Iterator<Map.Entry<TopicIdPartition, ShareFetchResponseData.PartitionData>> iterator, boolean updateShareContextAndRemoveUnselected) {
             this.iterator = iterator;
             this.updateShareContextAndRemoveUnselected = updateShareContextAndRemoveUnselected;
@@ -226,7 +225,7 @@ public class ShareSessionContext extends ShareFetchContext {
         synchronized (session) {
             session.partitionMap().forEach(cachedSharePartition -> {
                 TopicIdPartition topicIdPartition = new TopicIdPartition(cachedSharePartition.topicId(), new
-                        TopicPartition(cachedSharePartition.topic(), cachedSharePartition.partition()));
+                                TopicPartition(cachedSharePartition.topic(), cachedSharePartition.partition()));
                 if (topicIdPartition.topic() == null) {
                     erroneous.put(topicIdPartition, ShareFetchResponse.partitionResponse(topicIdPartition, Errors.UNKNOWN_TOPIC_ID));
                 } else {

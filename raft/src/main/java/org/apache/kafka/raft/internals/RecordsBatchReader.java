@@ -107,9 +107,9 @@ public final class RecordsBatchReader<T> implements BatchReader<T> {
         LogContext logContext
     ) {
         return new RecordsBatchReader<>(
-            baseOffset,
-            new RecordsIterator<>(records, serde, bufferSupplier, maxBatchSize, doCrcValidation, logContext),
-            closeListener
+                baseOffset,
+                new RecordsIterator<>(records, serde, bufferSupplier, maxBatchSize, doCrcValidation, logContext),
+                closeListener
         );
     }
 

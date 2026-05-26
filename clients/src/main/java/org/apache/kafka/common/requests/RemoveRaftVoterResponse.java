@@ -58,6 +58,6 @@ public class RemoveRaftVoterResponse extends AbstractResponse {
 
     public static RemoveRaftVoterResponse parse(Readable readable, short version) {
         return new RemoveRaftVoterResponse(
-            new RemoveRaftVoterResponseData(readable, version));
+                new RemoveRaftVoterResponseData(readable, version));
     }
 }

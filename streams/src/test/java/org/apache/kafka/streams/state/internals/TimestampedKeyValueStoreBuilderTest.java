@@ -54,10 +54,10 @@ public class TimestampedKeyValueStoreBuilderTest {
         when(supplier.metricsScope()).thenReturn("metricScope");
 
         builder = new TimestampedKeyValueStoreBuilder<>(
-            supplier,
-            Serdes.String(),
-            Serdes.String(),
-            new MockTime()
+                supplier,
+                Serdes.String(),
+                Serdes.String(),
+                new MockTime()
         );
     }
 
@@ -183,7 +183,7 @@ public class TimestampedKeyValueStoreBuilderTest {
         when(supplier.metricsScope()).thenReturn(null);
 
         final Exception e = assertThrows(NullPointerException.class,
-            () -> new TimestampedKeyValueStoreBuilder<>(supplier, Serdes.String(), Serdes.String(), new MockTime()));
+                () -> new TimestampedKeyValueStoreBuilder<>(supplier, Serdes.String(), Serdes.String(), new MockTime()));
         assertThat(e.getMessage(), equalTo("storeSupplier's metricsScope can't be null"));
     }
 

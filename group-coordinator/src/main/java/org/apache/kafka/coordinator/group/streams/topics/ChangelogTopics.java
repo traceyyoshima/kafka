@@ -71,10 +71,10 @@ public class ChangelogTopics {
         final Map<String, Integer> changelogTopicPartitions = new HashMap<>();
         for (Subtopology subtopology : subtopologies) {
             final OptionalInt maxNumPartitions =
-                Stream.concat(
-                    subtopology.sourceTopics().stream(),
-                    subtopology.repartitionSourceTopics().stream().map(TopicInfo::name)
-                ).mapToInt(this::getPartitionCountOrFail).max();
+                    Stream.concat(
+                        subtopology.sourceTopics().stream(),
+                        subtopology.repartitionSourceTopics().stream().map(TopicInfo::name)
+                    ).mapToInt(this::getPartitionCountOrFail).max();
 
             if (maxNumPartitions.isEmpty()) {
                 throw new StreamsInvalidTopologyException("No source topics found for subtopology " + subtopology.subtopologyId());
@@ -86,7 +86,7 @@ public class ChangelogTopics {
 
         if (!changelogTopicPartitions.isEmpty()) {
             log.debug("Expecting state changelog topic partitions {} for the requested topology.",
-                changelogTopicPartitions.entrySet().stream().map(e -> e.getKey() + ":" + e.getValue()).collect(Collectors.joining(", ")));
+                    changelogTopicPartitions.entrySet().stream().map(e -> e.getKey() + ":" + e.getValue()).collect(Collectors.joining(", ")));
         }
 
         return changelogTopicPartitions;

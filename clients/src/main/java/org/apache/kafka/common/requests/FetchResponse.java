@@ -105,7 +105,7 @@ public class FetchResponse extends AbstractResponse {
             }
             if (name != null) {
                 topicResponse.partitions().forEach(partition ->
-                    responseData.put(new TopicPartition(name, partition.partitionIndex()), partition));
+                        responseData.put(new TopicPartition(name, partition.partitionIndex()), partition));
             }
         });
         return responseData;
@@ -130,8 +130,8 @@ public class FetchResponse extends AbstractResponse {
         Map<Errors, Integer> errorCounts = new EnumMap<>(Errors.class);
         updateErrorCounts(errorCounts, error());
         data.responses().forEach(topicResponse ->
-            topicResponse.partitions().forEach(partition ->
-                updateErrorCounts(errorCounts, Errors.forCode(partition.errorCode())))
+                topicResponse.partitions().forEach(partition ->
+                        updateErrorCounts(errorCounts, Errors.forCode(partition.errorCode())))
         );
         return errorCounts;
     }
@@ -162,7 +162,7 @@ public class FetchResponse extends AbstractResponse {
      */
     public static int sizeOf(short version,
                              Iterator<Map.Entry<TopicIdPartition,
-                             FetchResponseData.PartitionData>> partIterator) {
+                                     FetchResponseData.PartitionData>> partIterator) {
         // Since the throttleTimeMs and metadata field sizes are constant and fixed, we can
         // use arbitrary values here without affecting the result.
         FetchResponseData data = toMessage(Errors.NONE, 0, INVALID_SESSION_ID, partIterator, List.of());
@@ -215,7 +215,7 @@ public class FetchResponse extends AbstractResponse {
         if (partition.records() == null) return MemoryRecords.EMPTY;
         if (partition.records() instanceof Records) return (Records) partition.records();
         throw new ClassCastException("The record type is " + partition.records().getClass().getSimpleName() + ", which is not a subtype of " +
-            Records.class.getSimpleName() + ". This method is only safe to call if the `FetchResponse` was deserialized from bytes.");
+                Records.class.getSimpleName() + ". This method is only safe to call if the `FetchResponse` was deserialized from bytes.");
     }
 
     /**

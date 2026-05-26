@@ -119,13 +119,13 @@ public class ServerConfigs {
     public static final String AUTHORIZER_CLASS_NAME_CONFIG = "authorizer.class.name";
     public static final String AUTHORIZER_CLASS_NAME_DEFAULT = "";
     public static final String AUTHORIZER_CLASS_NAME_DOC = "The fully qualified name of a class that implements <code>" +
-           Authorizer.class.getName() + "</code> interface, which is used by the broker for authorization.";
+            Authorizer.class.getName() + "</code> interface, which is used by the broker for authorization.";
     public static final String EARLY_START_LISTENERS_CONFIG = "early.start.listeners";
     public static final String EARLY_START_LISTENERS_DOC = "A comma-separated list of listener names which may be started before the authorizer has finished " +
             "initialization. This is useful when the authorizer is dependent on the cluster itself for bootstrapping, as is the case for " +
             "the StandardAuthorizer (which stores ACLs in the metadata log.) By default, all listeners included in controller.listener.names " +
             "will also be early start listeners. A listener should not appear in this list if it accepts external traffic.";
-    public static final ConfigDef CONFIG_DEF =  new ConfigDef()
+    public static final ConfigDef CONFIG_DEF = new ConfigDef()
             .define(BROKER_ID_CONFIG, INT, BROKER_ID_DEFAULT, HIGH, BROKER_ID_DOC)
             .define(MESSAGE_MAX_BYTES_CONFIG, INT, ServerLogConfigs.MAX_MESSAGE_BYTES_DEFAULT, atLeast(0), HIGH, MESSAGE_MAX_BYTES_DOC)
             .define(NUM_IO_THREADS_CONFIG, INT, NUM_IO_THREADS_DEFAULT, atLeast(1), HIGH, NUM_IO_THREADS_DOC)

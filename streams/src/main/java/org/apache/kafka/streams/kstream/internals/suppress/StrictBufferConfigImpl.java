@@ -41,7 +41,6 @@ public class StrictBufferConfigImpl extends BufferConfigInternal<Suppressed.Stri
         this.logConfig = logConfig;
     }
 
-
     public StrictBufferConfigImpl() {
         this.maxRecords = Long.MAX_VALUE;
         this.maxBytes = Long.MAX_VALUE;
@@ -104,9 +103,9 @@ public class StrictBufferConfigImpl extends BufferConfigInternal<Suppressed.Stri
         }
         final StrictBufferConfigImpl that = (StrictBufferConfigImpl) o;
         return maxRecords == that.maxRecords &&
-            maxBytes == that.maxBytes &&
-            bufferFullStrategy == that.bufferFullStrategy &&
-            Objects.equals(logConfig(), ((StrictBufferConfigImpl) o).logConfig());
+                maxBytes == that.maxBytes &&
+                bufferFullStrategy == that.bufferFullStrategy &&
+                Objects.equals(logConfig(), ((StrictBufferConfigImpl) o).logConfig());
     }
 
     @Override
@@ -117,9 +116,9 @@ public class StrictBufferConfigImpl extends BufferConfigInternal<Suppressed.Stri
     @Override
     public String toString() {
         return "StrictBufferConfigImpl{maxKeys=" + maxRecords +
-            ", maxBytes=" + maxBytes +
-            ", bufferFullStrategy=" + bufferFullStrategy +
-            ", logConfig=" + logConfig().toString() +
-             '}';
+                ", maxBytes=" + maxBytes +
+                ", bufferFullStrategy=" + bufferFullStrategy +
+                ", logConfig=" + logConfig().toString() +
+                '}';
     }
 }

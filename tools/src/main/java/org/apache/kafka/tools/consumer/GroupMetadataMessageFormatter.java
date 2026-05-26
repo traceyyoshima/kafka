@@ -27,7 +27,7 @@ import java.util.Set;
 
 public class GroupMetadataMessageFormatter extends CoordinatorRecordMessageFormatter {
     private static final Set<Short> ALLOWED_RECORDS = Set.of(
-        CoordinatorRecordType.GROUP_METADATA.id()
+            CoordinatorRecordType.GROUP_METADATA.id()
     );
 
     public GroupMetadataMessageFormatter() {

@@ -34,7 +34,6 @@ public class GlobalStoreNode<KIn, VIn, S extends StateStore> extends StateStoreN
     private final ProcessorSupplier<KIn, VIn, Void, Void> stateUpdateSupplier;
     private final boolean reprocessOnRestore;
 
-
     public GlobalStoreNode(final StoreFactory storeBuilder,
                            final String sourceName,
                            final String topic,
@@ -71,10 +70,10 @@ public class GlobalStoreNode<KIn, VIn, S extends StateStore> extends StateStoreN
     @Override
     public String toString() {
         return "GlobalStoreNode{" +
-               "sourceName='" + sourceName + '\'' +
-               ", topic='" + topic + '\'' +
-               ", processorName='" + processorName + '\'' +
-               ", reprocessOnRestore='" + reprocessOnRestore + '\'' +
-               "} ";
+                "sourceName='" + sourceName + '\'' +
+                ", topic='" + topic + '\'' +
+                ", processorName='" + processorName + '\'' +
+                ", reprocessOnRestore='" + reprocessOnRestore + '\'' +
+                "} ";
     }
 }

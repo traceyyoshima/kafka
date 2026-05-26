@@ -105,11 +105,11 @@ public class OAuthBearerValidatorCallbackHandler implements AuthenticateCallback
     @Override
     public void configure(Map<String, ?> configs, String saslMechanism, List<AppConfigurationEntry> jaasConfigEntries) {
         jwtValidator = getConfiguredInstance(
-            configs,
-            saslMechanism,
-            jaasConfigEntries,
-            SaslConfigs.SASL_OAUTHBEARER_JWT_VALIDATOR_CLASS,
-            JwtValidator.class
+                configs,
+                saslMechanism,
+                jaasConfigEntries,
+                SaslConfigs.SASL_OAUTHBEARER_JWT_VALIDATOR_CLASS,
+                JwtValidator.class
         );
     }
 

@@ -118,7 +118,7 @@ public class ClientTelemetryProvider implements Configurable {
     synchronized void updateLabels(Map<String, String> labels) {
         final Resource.Builder resourceBuilder = resource.toBuilder();
         Map<String, String> finalLabels = resource.getAttributesList().stream().collect(Collectors.toMap(
-            KeyValue::getKey, kv -> kv.getValue().getStringValue()));
+                KeyValue::getKey, kv -> kv.getValue().getStringValue()));
         finalLabels.putAll(labels);
 
         resourceBuilder.clearAttributes();

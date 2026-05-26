@@ -64,8 +64,8 @@ public class QueryableStoreProvider {
             return queryableStoreType.create(globalStoreProvider, storeName);
         }
         return queryableStoreType.create(
-            new WrappingStoreProvider(storeProviders.values(), storeQueryParameters, defaultIsolationLevel.get()),
-            storeName
+                new WrappingStoreProvider(storeProviders.values(), storeQueryParameters, defaultIsolationLevel.get()),
+                storeName
         );
     }
 

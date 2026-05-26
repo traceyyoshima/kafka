@@ -55,7 +55,7 @@ public class KafkaYammerMetrics implements Reconfigurable {
 
     private final MetricsRegistry metricsRegistry = new MetricsRegistry();
     private final FilteringJmxReporter jmxReporter = new FilteringJmxReporter(metricsRegistry,
-        metricName -> true);
+            metricName -> true);
 
     private KafkaYammerMetrics() {
         jmxReporter.start();
@@ -89,10 +89,10 @@ public class KafkaYammerMetrics implements Reconfigurable {
         String name
     ) {
         return getMetricName(
-            group,
-            typeName,
-            name,
-            null
+                group,
+                typeName,
+                name,
+                null
         );
     }
 

@@ -174,7 +174,6 @@ public class MirrorMaker {
         this(props, null);
     }
 
-
     public void start() {
         log.info("Kafka MirrorMaker starting with {} herders.", herders.size());
         if (startLatch != null) {
@@ -350,7 +349,7 @@ public class MirrorMaker {
             Properties props = Utils.loadProps(configFile.getPath());
             Map<String, String> config = Utils.propsToStringMap(props);
             MirrorMaker mirrorMaker = new MirrorMaker(config, clusters);
-            
+
             try {
                 mirrorMaker.start();
             } catch (Exception e) {

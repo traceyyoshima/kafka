@@ -91,12 +91,12 @@ public final class ListenerInfo {
             SecurityProtocol protocol = SecurityProtocol.forId(listener.securityProtocol());
             if (protocol == null) {
                 throw new RuntimeException("Unknown security protocol " +
-                    (int) listener.securityProtocol() + " in listener " + listener.name());
+                        (int) listener.securityProtocol() + " in listener " + listener.name());
             }
             listeners.put(listener.name(), new Endpoint(listener.name(),
-                protocol,
-                listener.host(),
-                listener.port()));
+                    protocol,
+                    listener.host(),
+                    listener.port()));
         });
         return new ListenerInfo(listeners);
     }
@@ -116,12 +116,12 @@ public final class ListenerInfo {
             SecurityProtocol protocol = SecurityProtocol.forId(listener.securityProtocol());
             if (protocol == null) {
                 throw new RuntimeException("Unknown security protocol " +
-                    (int) listener.securityProtocol() + " in listener " + listener.name());
+                        (int) listener.securityProtocol() + " in listener " + listener.name());
             }
             listeners.put(listener.name(), new Endpoint(listener.name(),
-                protocol,
-                listener.host(),
-                listener.port()));
+                    protocol,
+                    listener.host(),
+                    listener.port()));
         });
         return new ListenerInfo(listeners);
     }
@@ -144,9 +144,9 @@ public final class ListenerInfo {
                         (int) listener.securityProtocol() + " in listener " + listener.name());
             }
             listeners.put(listener.name(), new Endpoint(listener.name(),
-                protocol,
-                listener.host(),
-                listener.port()));
+                    protocol,
+                    listener.host(),
+                    listener.port()));
         });
         return new ListenerInfo(listeners);
     }
@@ -286,10 +286,10 @@ public final class ListenerInfo {
             throw new RuntimeException("Cannot serialize ephemeral port 0 in ListenerInfo.");
         } else if (port < 0) {
             throw new RuntimeException("Cannot serialize negative port number " + port +
-                " in ListenerInfo.");
+                    " in ListenerInfo.");
         } else if (port > 65535) {
             throw new RuntimeException("Cannot serialize invalid port number " + port +
-                " in ListenerInfo.");
+                    " in ListenerInfo.");
         }
     }
 
@@ -303,7 +303,7 @@ public final class ListenerInfo {
 
     public ControllerRegistrationRequestData.ListenerCollection toControllerRegistrationRequest() {
         ControllerRegistrationRequestData.ListenerCollection collection =
-            new ControllerRegistrationRequestData.ListenerCollection();
+                new ControllerRegistrationRequestData.ListenerCollection();
         listeners.values().forEach(endpoint -> {
             checkPortIsSerializable(endpoint.port());
             checkHostIsSerializable(endpoint.host());

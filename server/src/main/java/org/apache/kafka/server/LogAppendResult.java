@@ -53,13 +53,13 @@ public record LogAppendResult(
 
         public static LogAppendSummary fromAppendInfo(LogAppendInfo info) {
             return new LogAppendSummary(
-                info.firstOffset(),
-                info.lastOffset(),
-                info.logAppendTime(),
-                info.logStartOffset(),
-                info.recordValidationStats(),
-                info.recordErrors(),
-                info.leaderHwChange()
+                    info.firstOffset(),
+                    info.lastOffset(),
+                    info.logAppendTime(),
+                    info.logStartOffset(),
+                    info.recordValidationStats(),
+                    info.recordErrors(),
+                    info.leaderHwChange()
             );
         }
     }

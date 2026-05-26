@@ -27,6 +27,6 @@ class FindCoordinatorRequestTest {
     @Test
     public void getInvalidCoordinatorTypeId() {
         assertThrows(InvalidRequestException.class,
-            () -> FindCoordinatorRequest.CoordinatorType.forId((byte) 10));
+                () -> FindCoordinatorRequest.CoordinatorType.forId((byte) 10));
     }
 }

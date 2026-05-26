@@ -219,8 +219,7 @@ public class GetOffsetShellTest {
             List<Row> offsets = executeAndParse("--topic", getTopicName(i));
 
             assertEquals(expectedOffsetsForTopic(i), offsets, () -> "Offset output did not match for " + getTopicName(i));
-            }
-        );
+        });
     }
 
     @ClusterTest
@@ -377,7 +376,7 @@ public class GetOffsetShellTest {
             // as remote log disabled, broker returns unknown offset of each topic partition and these
             // unknown offsets are ignore by GetOffsetShell, hence we have empty result here.
             assertEquals(List.of(),
-                executeAndParse("--topic-partitions", "topic\\d+:0", "--time", time));
+                    executeAndParse("--topic-partitions", "topic\\d+:0", "--time", time));
 
             // test topics enable remote log storage
             TestUtils.waitForCondition(() ->
@@ -472,7 +471,7 @@ public class GetOffsetShellTest {
 
     @ClusterTest
     public void testPrintHelp() {
-        Exit.setExitProcedure((statusCode, message) -> { });
+        Exit.setExitProcedure((statusCode, message) -> {});
         try {
             String out = ToolsTestUtils.captureStandardErr(() -> GetOffsetShell.mainNoExit("--help"));
             assertTrue(out.startsWith(GetOffsetShell.USAGE_TEXT));

@@ -33,11 +33,11 @@ public class FinalResultsSuppressionBuilder<K extends Windowed<?>> implements Su
 
     public SuppressedInternal<K> buildFinalResultsSuppression(final Duration gracePeriod) {
         return new SuppressedInternal<>(
-            name,
-            gracePeriod,
-            bufferConfig,
-            TimeDefinitions.WindowEndTimeDefinition.instance(),
-            true
+                name,
+                gracePeriod,
+                bufferConfig,
+                TimeDefinitions.WindowEndTimeDefinition.instance(),
+                true
         );
     }
 
@@ -56,7 +56,7 @@ public class FinalResultsSuppressionBuilder<K extends Windowed<?>> implements Su
         }
         final FinalResultsSuppressionBuilder<?> that = (FinalResultsSuppressionBuilder<?>) o;
         return Objects.equals(name, that.name) &&
-            Objects.equals(bufferConfig, that.bufferConfig);
+                Objects.equals(bufferConfig, that.bufferConfig);
     }
 
     @Override
@@ -72,8 +72,8 @@ public class FinalResultsSuppressionBuilder<K extends Windowed<?>> implements Su
     @Override
     public String toString() {
         return "FinalResultsSuppressionBuilder{" +
-            "name='" + name + '\'' +
-            ", bufferConfig=" + bufferConfig +
-            '}';
+                "name='" + name + '\'' +
+                ", bufferConfig=" + bufferConfig +
+                '}';
     }
 }

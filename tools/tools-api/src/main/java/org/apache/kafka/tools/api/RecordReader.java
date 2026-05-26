@@ -42,7 +42,6 @@ public interface RecordReader extends Closeable, Configurable {
      */
     Iterator<ProducerRecord<byte[], byte[]>> readRecords(InputStream inputStream);
 
-
     /**
      * Closes this reader.
      * This method is invoked if the iterator from readRecords either has no more records or throws exception.

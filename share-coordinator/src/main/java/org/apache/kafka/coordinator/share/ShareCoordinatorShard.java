@@ -163,12 +163,12 @@ public class ShareCoordinatorShard implements CoordinatorShard<CoordinatorRecord
                 .newMetricsShard(snapshotRegistry, topicPartition);
 
             return new ShareCoordinatorShard(
-                logContext,
-                config,
-                coordinatorMetrics,
-                metricsShard,
-                snapshotRegistry,
-                time
+                    logContext,
+                    config,
+                    coordinatorMetrics,
+                    metricsShard,
+                    snapshotRegistry,
+                    time
             );
         }
     }
@@ -331,10 +331,10 @@ public class ShareCoordinatorShard implements CoordinatorShard<CoordinatorRecord
         CoordinatorRecord record = generateShareStateRecord(partitionData, key, false);
         // build successful response if record is correctly created
         WriteShareGroupStateResponseData responseData = new WriteShareGroupStateResponseData().setResults(
-            List.of(WriteShareGroupStateResponse.toResponseWriteStateResult(key.topicId(),
-                List.of(WriteShareGroupStateResponse.toResponsePartitionResult(
-                    key.partition()))
-            ))
+                List.of(WriteShareGroupStateResponse.toResponseWriteStateResult(key.topicId(),
+                    List.of(WriteShareGroupStateResponse.toResponsePartitionResult(
+                        key.partition()))
+                ))
         );
 
         return new CoordinatorResult<>(List.of(record), responseData);
@@ -370,24 +370,24 @@ public class ShareCoordinatorShard implements CoordinatorShard<CoordinatorRecord
         List<ReadShareGroupStateResponseData.StateBatch> stateBatches = (offsetValue.stateBatches() != null && !offsetValue.stateBatches().isEmpty()) ?
             offsetValue.stateBatches().stream()
                 .map(
-                    stateBatch -> new ReadShareGroupStateResponseData.StateBatch()
-                        .setFirstOffset(stateBatch.firstOffset())
-                        .setLastOffset(stateBatch.lastOffset())
-                        .setDeliveryState(stateBatch.deliveryState())
-                        .setDeliveryCount(stateBatch.deliveryCount())
-                ).toList() : List.of();
+                        stateBatch -> new ReadShareGroupStateResponseData.StateBatch()
+                            .setFirstOffset(stateBatch.firstOffset())
+                            .setLastOffset(stateBatch.lastOffset())
+                            .setDeliveryState(stateBatch.deliveryState())
+                            .setDeliveryCount(stateBatch.deliveryCount())
+            ).toList() : List.of();
 
         ReadShareGroupStateResponseData responseData = ReadShareGroupStateResponse.toResponseData(
-            topicId,
-            partitionId,
-            offsetValue.startOffset(),
-            offsetValue.stateEpoch(),
-            stateBatches
+                topicId,
+                partitionId,
+                offsetValue.startOffset(),
+                offsetValue.stateEpoch(),
+                stateBatches
         );
 
         // Optimization in case leaderEpoch update is not required.
         if (leaderEpoch == -1 ||
-            (leaderEpochMap.get(key) != null && leaderEpochMap.get(key) == leaderEpoch)) {
+                (leaderEpochMap.get(key) != null && leaderEpochMap.get(key) == leaderEpoch)) {
             return new CoordinatorResult<>(List.of(), responseData);
         }
 
@@ -442,31 +442,31 @@ public class ShareCoordinatorShard implements CoordinatorShard<CoordinatorRecord
 
         if (!shareStateMap.containsKey(key)) {
             responseData = ReadShareGroupStateSummaryResponse.toResponseData(
-                topicId,
-                partitionId,
-                PartitionFactory.UNINITIALIZED_START_OFFSET,
-                PartitionFactory.UNINITIALIZED_DELIVERY_COMPLETE_COUNT,
-                PartitionFactory.DEFAULT_LEADER_EPOCH,
-                PartitionFactory.DEFAULT_STATE_EPOCH
+                    topicId,
+                    partitionId,
+                    PartitionFactory.UNINITIALIZED_START_OFFSET,
+                    PartitionFactory.UNINITIALIZED_DELIVERY_COMPLETE_COUNT,
+                    PartitionFactory.DEFAULT_LEADER_EPOCH,
+                    PartitionFactory.DEFAULT_STATE_EPOCH
             );
         } else {
             ShareGroupOffset offsetValue = shareStateMap.get(key);
             if (offsetValue == null) {
                 log.error("Data not found for topic {}, partition {} for group {}, in the in-memory state of share coordinator", topicId, partitionId, request.groupId());
                 responseData = ReadShareGroupStateSummaryResponse.toErrorResponseData(
-                    topicId,
-                    partitionId,
-                    Errors.UNKNOWN_SERVER_ERROR,
-                    "Data not found for the topics " + topicId + ", partition " + partitionId + " for group " + request.groupId() + ", in the in-memory state of share coordinator"
+                        topicId,
+                        partitionId,
+                        Errors.UNKNOWN_SERVER_ERROR,
+                        "Data not found for the topics " + topicId + ", partition " + partitionId + " for group " + request.groupId() + ", in the in-memory state of share coordinator"
                 );
             } else {
                 responseData = ReadShareGroupStateSummaryResponse.toResponseData(
-                    topicId,
-                    partitionId,
-                    offsetValue.startOffset(),
-                    offsetValue.deliveryCompleteCount(),
-                    offsetValue.leaderEpoch(),
-                    offsetValue.stateEpoch()
+                        topicId,
+                        partitionId,
+                        offsetValue.startOffset(),
+                        offsetValue.deliveryCompleteCount(),
+                        offsetValue.leaderEpoch(),
+                        offsetValue.stateEpoch()
                 );
             }
         }
@@ -482,8 +482,8 @@ public class ShareCoordinatorShard implements CoordinatorShard<CoordinatorRecord
      */
     public CoordinatorResult<Optional<Long>, CoordinatorRecord> lastRedundantOffset() {
         return new CoordinatorResult<>(
-            List.of(),
-            this.offsetsManager.lastRedundantOffset()
+                List.of(),
+                this.offsetsManager.lastRedundantOffset()
         );
     }
 
@@ -515,20 +515,20 @@ public class ShareCoordinatorShard implements CoordinatorShard<CoordinatorRecord
         if (!shareStateMap.containsKey(key)) {
             log.warn("Attempted to delete non-existent share partition {}.", key);
             return new CoordinatorResult<>(List.of(), new DeleteShareGroupStateResponseData().setResults(
-                List.of(DeleteShareGroupStateResponse.toResponseDeleteStateResult(key.topicId(),
-                    List.of(DeleteShareGroupStateResponse.toResponsePartitionResult(
-                        key.partition()))
-                ))
+                    List.of(DeleteShareGroupStateResponse.toResponseDeleteStateResult(key.topicId(),
+                        List.of(DeleteShareGroupStateResponse.toResponsePartitionResult(
+                            key.partition()))
+                    ))
             ));
         }
 
         CoordinatorRecord record = generateTombstoneRecord(key);
         // build successful response if record is correctly created
         DeleteShareGroupStateResponseData responseData = new DeleteShareGroupStateResponseData().setResults(
-            List.of(DeleteShareGroupStateResponse.toResponseDeleteStateResult(key.topicId(),
-                List.of(DeleteShareGroupStateResponse.toResponsePartitionResult(
-                    key.partition()))
-            ))
+                List.of(DeleteShareGroupStateResponse.toResponseDeleteStateResult(key.topicId(),
+                    List.of(DeleteShareGroupStateResponse.toResponsePartitionResult(
+                        key.partition()))
+                ))
         );
 
         return new CoordinatorResult<>(List.of(record), responseData);
@@ -562,10 +562,10 @@ public class ShareCoordinatorShard implements CoordinatorShard<CoordinatorRecord
         CoordinatorRecord record = generateInitializeStateRecord(partitionData, key);
         // build successful response if record is correctly created
         InitializeShareGroupStateResponseData responseData = new InitializeShareGroupStateResponseData().setResults(
-            List.of(InitializeShareGroupStateResponse.toResponseInitializeStateResult(key.topicId(),
-                List.of(InitializeShareGroupStateResponse.toResponsePartitionResult(
-                    key.partition()))
-            ))
+                List.of(InitializeShareGroupStateResponse.toResponseInitializeStateResult(key.topicId(),
+                    List.of(InitializeShareGroupStateResponse.toResponsePartitionResult(
+                        key.partition()))
+                ))
         );
 
         return new CoordinatorResult<>(List.of(record), responseData);
@@ -598,13 +598,13 @@ public class ShareCoordinatorShard implements CoordinatorShard<CoordinatorRecord
                 // We need to force create a snapshot here
                 log.debug("Last snapshot for {} is older than allowed interval (last snapshot delta {}).", sharePartitionKey, timeSinceLastSnapshot);
                 records.add(ShareCoordinatorRecordHelpers.newShareSnapshotRecord(
-                    sharePartitionKey.groupId(),
-                    sharePartitionKey.topicId(),
-                    sharePartitionKey.partition(),
-                    shareGroupOffset.builderSupplier()
-                        .setSnapshotEpoch(shareGroupOffset.snapshotEpoch() + 1) // We need to increment by one as this is a new snapshot.
-                        .setWriteTimestamp(time.milliseconds())
-                        .build()
+                        sharePartitionKey.groupId(),
+                        sharePartitionKey.topicId(),
+                        sharePartitionKey.partition(),
+                        shareGroupOffset.builderSupplier()
+                            .setSnapshotEpoch(shareGroupOffset.snapshotEpoch() + 1) // We need to increment by one as this is a new snapshot.
+                            .setWriteTimestamp(time.milliseconds())
+                            .build()
                 ));
             }
         });
@@ -667,38 +667,38 @@ public class ShareCoordinatorShard implements CoordinatorShard<CoordinatorRecord
             // or state epoch has incremented, we should be creating a share snapshot record.
             // The incoming partition data could have overlapping state batches, we must merge them.
             return ShareCoordinatorRecordHelpers.newShareSnapshotRecord(
-                key.groupId(), key.topicId(), partitionData.partition(),
-                new ShareGroupOffset.Builder()
-                    .setSnapshotEpoch(currentState.snapshotEpoch() + 1)   // We must increment snapshot epoch as this is new snapshot.
-                    .setStartOffset(newStartOffset)
-                    .setDeliveryCompleteCount(partitionData.deliveryCompleteCount())
-                    .setLeaderEpoch(newLeaderEpoch)
-                    .setStateEpoch(currentState.stateEpoch())
-                    .setStateBatches(mergeBatches(currentState.stateBatches(), partitionData, newStartOffset))
-                    .setCreateTimestamp(timestamp)
-                    .setWriteTimestamp(timestamp)
-                    .build());
+                    key.groupId(), key.topicId(), partitionData.partition(),
+                    new ShareGroupOffset.Builder()
+                        .setSnapshotEpoch(currentState.snapshotEpoch() + 1)   // We must increment snapshot epoch as this is new snapshot.
+                        .setStartOffset(newStartOffset)
+                        .setDeliveryCompleteCount(partitionData.deliveryCompleteCount())
+                        .setLeaderEpoch(newLeaderEpoch)
+                        .setStateEpoch(currentState.stateEpoch())
+                        .setStateBatches(mergeBatches(currentState.stateBatches(), partitionData, newStartOffset))
+                        .setCreateTimestamp(timestamp)
+                        .setWriteTimestamp(timestamp)
+                        .build());
         } else {
             // Share snapshot is present and number of share snapshot update records < snapshotUpdateRecordsPerSnapshot
             // so create a share update record.
             // The incoming partition data could have overlapping state batches, we must merge them.
             return ShareCoordinatorRecordHelpers.newShareUpdateRecord(
-                key.groupId(), key.topicId(), partitionData.partition(),
-                new ShareGroupOffset.Builder()
-                    .setSnapshotEpoch(currentState.snapshotEpoch()) // Use same snapshotEpoch as last share snapshot.
-                    .setStartOffset(partitionData.startOffset())
-                    .setDeliveryCompleteCount(partitionData.deliveryCompleteCount())
-                    .setLeaderEpoch(newLeaderEpoch)
-                    .setStateBatches(mergeBatches(List.of(), partitionData))
-                    .build());
+                    key.groupId(), key.topicId(), partitionData.partition(),
+                    new ShareGroupOffset.Builder()
+                        .setSnapshotEpoch(currentState.snapshotEpoch()) // Use same snapshotEpoch as last share snapshot.
+                        .setStartOffset(partitionData.startOffset())
+                        .setDeliveryCompleteCount(partitionData.deliveryCompleteCount())
+                        .setLeaderEpoch(newLeaderEpoch)
+                        .setStateBatches(mergeBatches(List.of(), partitionData))
+                        .build());
         }
     }
 
     private CoordinatorRecord generateTombstoneRecord(SharePartitionKey key) {
         return ShareCoordinatorRecordHelpers.newShareStateTombstoneRecord(
-            key.groupId(),
-            key.topicId(),
-            key.partition()
+                key.groupId(),
+                key.topicId(),
+                key.partition()
         );
     }
 
@@ -713,10 +713,10 @@ public class ShareCoordinatorShard implements CoordinatorShard<CoordinatorRecord
 
         int snapshotEpoch = shareStateMap.containsKey(key) ? shareStateMap.get(key).snapshotEpoch() + 1 : 0;
         return ShareCoordinatorRecordHelpers.newShareSnapshotRecord(
-            key.groupId(),
-            key.topicId(),
-            key.partition(),
-            ShareGroupOffset.fromRequest(partitionData, snapshotEpoch, time.milliseconds())
+                key.groupId(),
+                key.topicId(),
+                key.partition(),
+                ShareGroupOffset.fromRequest(partitionData, snapshotEpoch, time.milliseconds())
         );
     }
 
@@ -734,7 +734,7 @@ public class ShareCoordinatorShard implements CoordinatorShard<CoordinatorRecord
         return new PersisterStateBatchCombiner(soFar, partitionData.stateBatches().stream()
             .map(PersisterStateBatch::from)
             .toList(),
-            startOffset
+                startOffset
         ).combineStateBatches();
     }
 
@@ -776,9 +776,9 @@ public class ShareCoordinatorShard implements CoordinatorShard<CoordinatorRecord
         }
         Optional<CoordinatorMetadataImage.TopicMetadata> topicMetadataOp = metadataImage.topicMetadata(topicId);
         if (topicMetadataOp.isEmpty() ||
-            topicMetadataOp.get().partitionCount() <= partitionId) {
+                topicMetadataOp.get().partitionCount() <= partitionId) {
             log.error("Topic or partition not found in metadata image when writing: {}:{}-{}.", topicId,
-                topicMetadataOp.map(CoordinatorMetadataImage.TopicMetadata::name).orElse("null"), partitionId);
+                    topicMetadataOp.map(CoordinatorMetadataImage.TopicMetadata::name).orElse("null"), partitionId);
             return Optional.of(getWriteErrorCoordinatorResult(Errors.UNKNOWN_TOPIC_OR_PARTITION, null, topicId, partitionId));
         }
 
@@ -796,13 +796,13 @@ public class ShareCoordinatorShard implements CoordinatorShard<CoordinatorRecord
         if (topicId == null) {
             log.error("Request topic id is null.");
             return Optional.of(ReadShareGroupStateResponse.toErrorResponseData(
-                null, partitionId, Errors.INVALID_REQUEST, NULL_TOPIC_ID.getMessage()));
+                    null, partitionId, Errors.INVALID_REQUEST, NULL_TOPIC_ID.getMessage()));
         }
 
         if (partitionId < 0) {
             log.error("Request partition id is negative.");
             return Optional.of(ReadShareGroupStateResponse.toErrorResponseData(
-                topicId, partitionId, Errors.INVALID_REQUEST, NEGATIVE_PARTITION_ID.getMessage()));
+                    topicId, partitionId, Errors.INVALID_REQUEST, NEGATIVE_PARTITION_ID.getMessage()));
         }
 
         SharePartitionKey mapKey = SharePartitionKey.getInstance(groupId, topicId, partitionId);
@@ -810,7 +810,7 @@ public class ShareCoordinatorShard implements CoordinatorShard<CoordinatorRecord
         if (!shareStateMap.containsKey(mapKey)) {
             log.error("Read on uninitialized share partition {}", mapKey);
             return Optional.of(ReadShareGroupStateResponse.toErrorResponseData(
-                topicId, partitionId, Errors.INVALID_REQUEST, READ_UNINITIALIZED_SHARE_PARTITION.getMessage()));
+                    topicId, partitionId, Errors.INVALID_REQUEST, READ_UNINITIALIZED_SHARE_PARTITION.getMessage()));
         }
 
         if (leaderEpochMap.containsKey(mapKey) && leaderEpochMap.get(mapKey) > partitionData.leaderEpoch()) {
@@ -825,9 +825,9 @@ public class ShareCoordinatorShard implements CoordinatorShard<CoordinatorRecord
 
         Optional<CoordinatorMetadataImage.TopicMetadata> topicMetadataOp = metadataImage.topicMetadata(topicId);
         if (topicMetadataOp.isEmpty() ||
-            topicMetadataOp.get().partitionCount() <= partitionId) {
+                topicMetadataOp.get().partitionCount() <= partitionId) {
             log.error("Topic or partition not found in metadata image when reading: {}:{}-{}.", topicId,
-                topicMetadataOp.map(CoordinatorMetadataImage.TopicMetadata::name).orElse("null"), partitionId);
+                    topicMetadataOp.map(CoordinatorMetadataImage.TopicMetadata::name).orElse("null"), partitionId);
             return Optional.of(ReadShareGroupStateResponse.toErrorResponseData(topicId, partitionId, Errors.UNKNOWN_TOPIC_OR_PARTITION, Errors.UNKNOWN_TOPIC_OR_PARTITION.message()));
         }
 
@@ -844,13 +844,13 @@ public class ShareCoordinatorShard implements CoordinatorShard<CoordinatorRecord
         if (topicId == null) {
             log.error("Request topic id is null.");
             return Optional.of(ReadShareGroupStateSummaryResponse.toErrorResponseData(
-                null, partitionId, Errors.INVALID_REQUEST, NULL_TOPIC_ID.getMessage()));
+                    null, partitionId, Errors.INVALID_REQUEST, NULL_TOPIC_ID.getMessage()));
         }
 
         if (partitionId < 0) {
             log.error("Request partition id is negative.");
             return Optional.of(ReadShareGroupStateSummaryResponse.toErrorResponseData(
-                topicId, partitionId, Errors.INVALID_REQUEST, NEGATIVE_PARTITION_ID.getMessage()));
+                    topicId, partitionId, Errors.INVALID_REQUEST, NEGATIVE_PARTITION_ID.getMessage()));
         }
 
         if (metadataImage == null) {
@@ -860,9 +860,9 @@ public class ShareCoordinatorShard implements CoordinatorShard<CoordinatorRecord
 
         Optional<CoordinatorMetadataImage.TopicMetadata> topicMetadataOp = metadataImage.topicMetadata(topicId);
         if (topicMetadataOp.isEmpty() ||
-            topicMetadataOp.get().partitionCount() <= partitionId) {
+                topicMetadataOp.get().partitionCount() <= partitionId) {
             log.error("Topic or partition not found in metadata image when reading summary: {}:{}-{}.", topicId,
-                topicMetadataOp.map(CoordinatorMetadataImage.TopicMetadata::name).orElse("null"), partitionId);
+                    topicMetadataOp.map(CoordinatorMetadataImage.TopicMetadata::name).orElse("null"), partitionId);
             return Optional.of(ReadShareGroupStateSummaryResponse.toErrorResponseData(topicId, partitionId, Errors.UNKNOWN_TOPIC_OR_PARTITION, Errors.UNKNOWN_TOPIC_OR_PARTITION.message()));
         }
 
@@ -893,9 +893,9 @@ public class ShareCoordinatorShard implements CoordinatorShard<CoordinatorRecord
 
         Optional<CoordinatorMetadataImage.TopicMetadata> topicMetadataOp = metadataImage.topicMetadata(topicId);
         if (topicMetadataOp.isEmpty() ||
-            topicMetadataOp.get().partitionCount() <= partitionId) {
+                topicMetadataOp.get().partitionCount() <= partitionId) {
             log.error("Topic or partition not found in metadata image when deleting: {}:{}-{}.", topicId,
-                topicMetadataOp.map(CoordinatorMetadataImage.TopicMetadata::name).orElse("null"), partitionId);
+                    topicMetadataOp.map(CoordinatorMetadataImage.TopicMetadata::name).orElse("null"), partitionId);
             return Optional.of(getDeleteErrorCoordinatorResult(Errors.UNKNOWN_TOPIC_OR_PARTITION, null, topicId, partitionId));
         }
 
@@ -932,9 +932,9 @@ public class ShareCoordinatorShard implements CoordinatorShard<CoordinatorRecord
 
         Optional<CoordinatorMetadataImage.TopicMetadata> topicMetadataOp = metadataImage.topicMetadata(topicId);
         if (topicMetadataOp.isEmpty() ||
-            topicMetadataOp.get().partitionCount() <= partitionId) {
+                topicMetadataOp.get().partitionCount() <= partitionId) {
             log.error("Topic or partition not found in metadata image when initializing: {}:{}-{}.", topicId,
-                topicMetadataOp.map(CoordinatorMetadataImage.TopicMetadata::name).orElse("null"), partitionId);
+                    topicMetadataOp.map(CoordinatorMetadataImage.TopicMetadata::name).orElse("null"), partitionId);
             return Optional.of(getInitializeErrorCoordinatorResult(Errors.UNKNOWN_TOPIC_OR_PARTITION, null, topicId, partitionId));
         }
 
@@ -1033,10 +1033,10 @@ public class ShareCoordinatorShard implements CoordinatorShard<CoordinatorRecord
      */
     private static PersisterStateBatch toPersisterStateBatch(ShareUpdateValue.StateBatch batch) {
         return new PersisterStateBatch(
-            batch.firstOffset(),
-            batch.lastOffset(),
-            batch.deliveryState(),
-            batch.deliveryCount()
+                batch.firstOffset(),
+                batch.lastOffset(),
+                batch.deliveryState(),
+                batch.deliveryCount()
         );
     }
 }

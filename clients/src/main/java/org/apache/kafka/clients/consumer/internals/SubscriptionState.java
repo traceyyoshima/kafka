@@ -119,12 +119,12 @@ public class SubscriptionState {
     @Override
     public synchronized String toString() {
         return "SubscriptionState{" +
-            "type=" + subscriptionType +
-            ", subscribedPattern=" + subscribedPatternInUse() +
-            ", subscription=" + String.join(",", subscription) +
-            ", groupSubscription=" + String.join(",", groupSubscription) +
-            ", defaultResetStrategy=" + defaultResetStrategy +
-            ", assignment=" + assignment.partitionStateValues() + " (id=" + assignmentId + ")}";
+                "type=" + subscriptionType +
+                ", subscribedPattern=" + subscribedPatternInUse() +
+                ", subscription=" + String.join(",", subscription) +
+                ", groupSubscription=" + String.join(",", groupSubscription) +
+                ", defaultResetStrategy=" + defaultResetStrategy +
+                ", assignment=" + assignment.partitionStateValues() + " (id=" + assignmentId + ")}";
     }
 
     private Object subscribedPatternInUse() {
@@ -291,8 +291,8 @@ public class SubscriptionState {
             if (this.subscribedPattern != null) {
                 if (!this.subscribedPattern.matcher(topicPartition.topic()).matches()) {
                     log.info("Assigned partition {} for non-subscribed topic regex pattern; subscription pattern is {}",
-                        topicPartition,
-                        this.subscribedPattern);
+                            topicPartition,
+                            this.subscribedPattern);
 
                     return false;
                 }
@@ -580,7 +580,7 @@ public class SubscriptionState {
                           "no longer matches the position {} when the request was sent",
                           tp, currentPosition, requestPosition);
             } else if (epochEndOffset.endOffset() == UNDEFINED_EPOCH_OFFSET ||
-                        epochEndOffset.leaderEpoch() == UNDEFINED_EPOCH) {
+                    epochEndOffset.leaderEpoch() == UNDEFINED_EPOCH) {
                 if (hasDefaultOffsetResetPolicy()) {
                     log.info("Truncation detected for partition {} at offset {}, resetting offset",
                              tp, currentPosition);
@@ -600,7 +600,7 @@ public class SubscriptionState {
                     state.seekValidated(newPosition);
                 } else {
                     OffsetAndMetadata divergentOffset = new OffsetAndMetadata(epochEndOffset.endOffset(),
-                        Optional.of(epochEndOffset.leaderEpoch()), null);
+                            Optional.of(epochEndOffset.leaderEpoch()), null);
                     log.warn("Truncation detected for partition {} at offset {} (the end offset from the " +
                              "broker is {}), but no reset policy is set", tp, currentPosition, divergentOffset);
                     return Optional.of(new LogTruncation(tp, requestPosition, Optional.of(divergentOffset)));
@@ -815,7 +815,6 @@ public class SubscriptionState {
         }
     }
 
-
     synchronized void setNextAllowedRetry(Set<TopicPartition> partitions, long nextAllowResetTimeMs) {
         for (TopicPartition partition : partitions) {
             assignedState(partition).setNextAllowedRetry(nextAllowResetTimeMs);
@@ -1024,7 +1023,7 @@ public class SubscriptionState {
         private Integer preferredReadReplica;
         private Long preferredReadReplicaExpireTimeMs;
         private boolean endOffsetRequested;
-        
+
         TopicPartitionState() {
             this.paused = false;
             this.pendingRevocation = false;

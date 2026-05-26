@@ -27,18 +27,18 @@ public class ShareSessionKeyTest {
     @Test
     public void testConstructorThrowsExceptionWhenGroupIdIsNull() {
         assertThrows(NullPointerException.class,
-            () -> new ShareSessionKey(null, Uuid.randomUuid().toString()));
+                () -> new ShareSessionKey(null, Uuid.randomUuid().toString()));
     }
 
     @Test
     public void testConstructorThrowsExceptionWhenMemberIdIsNull() {
         assertThrows(NullPointerException.class,
-            () -> new ShareSessionKey("random", null));
+                () -> new ShareSessionKey("random", null));
     }
 
     @Test
     public void testConstructorThrowsExceptionWhenBothGroupIdAndMemberIdIsNull() {
         assertThrows(NullPointerException.class,
-            () -> new ShareSessionKey(null, null));
+                () -> new ShareSessionKey(null, null));
     }
 }

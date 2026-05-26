@@ -146,8 +146,8 @@ public class ClientCompatibilityTest {
             .dest("expectRecordTooLargeException")
             .metavar("EXPECT_RECORD_TOO_LARGE_EXCEPTION")
             .help("True if we should expect a RecordTooLargeException when trying to read from a topic " +
-                  "that contains a message that is bigger than " + ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG +
-                  ".  This is pre-KIP-74 behavior.");
+                    "that contains a message that is bigger than " + ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG +
+                    ".  This is pre-KIP-74 behavior.");
         parser.addArgument("--num-cluster-nodes")
             .action(store())
             .required(true)
@@ -279,25 +279,25 @@ public class ClientCompatibilityTest {
                     break;
                 } else if (nodes.size() > testConfig.numClusterNodes) {
                     throw new KafkaException("Expected to see " + testConfig.numClusterNodes +
-                        " nodes, but saw " + nodes.size());
+                            " nodes, but saw " + nodes.size());
                 }
                 Thread.sleep(1);
                 log.info("Saw only {} cluster nodes.  Waiting to see {}.",
-                    nodes.size(), testConfig.numClusterNodes);
+                        nodes.size(), testConfig.numClusterNodes);
             }
 
             testDescribeConfigsMethod(client);
 
             tryFeature("createTopics", testConfig.createTopicsSupported,
-                () -> {
-                    try {
-                        client.createTopics(Set.of(
-                            new NewTopic("newtopic", 1, (short) 1))).all().get();
-                    } catch (ExecutionException e) {
-                        throw e.getCause();
-                    }
-                },
-                () ->  createTopicsResultTest(client, Set.of("newtopic"))
+                    () -> {
+                        try {
+                            client.createTopics(Set.of(
+                                new NewTopic("newtopic", 1, (short) 1))).all().get();
+                        } catch (ExecutionException e) {
+                            throw e.getCause();
+                        }
+                    },
+                    () -> createTopicsResultTest(client, Set.of("newtopic"))
             );
 
             while (true) {
@@ -313,43 +313,43 @@ public class ClientCompatibilityTest {
             }
 
             tryFeature("describeAclsSupported", testConfig.describeAclsSupported,
-                () -> {
-                    try {
-                        client.describeAcls(AclBindingFilter.ANY).values().get();
-                    } catch (ExecutionException e) {
-                        if (e.getCause() instanceof SecurityDisabledException)
-                            return;
-                        throw e.getCause();
-                    }
-                });
+                    () -> {
+                        try {
+                            client.describeAcls(AclBindingFilter.ANY).values().get();
+                        } catch (ExecutionException e) {
+                            if (e.getCause() instanceof SecurityDisabledException)
+                                return;
+                            throw e.getCause();
+                        }
+                    });
         }
     }
 
     private void testDescribeConfigsMethod(final Admin client) throws Throwable {
         tryFeature("describeConfigsSupported", testConfig.describeConfigsSupported,
-            () -> {
-                try {
-                    Collection<Node> nodes = client.describeCluster().nodes().get();
+                () -> {
+                    try {
+                        Collection<Node> nodes = client.describeCluster().nodes().get();
 
-                    final ConfigResource configResource = new ConfigResource(
-                        ConfigResource.Type.BROKER,
-                        nodes.iterator().next().idString()
-                    );
+                        final ConfigResource configResource = new ConfigResource(
+                            ConfigResource.Type.BROKER,
+                            nodes.iterator().next().idString()
+                        );
 
-                    Map<ConfigResource, Config> brokerConfig =
-                        client.describeConfigs(Set.of(configResource)).all().get();
+                        Map<ConfigResource, Config> brokerConfig =
+                                client.describeConfigs(Set.of(configResource)).all().get();
 
-                    if (brokerConfig.get(configResource).entries().isEmpty()) {
-                        throw new KafkaException("Expected to see config entries, but got zero entries");
+                        if (brokerConfig.get(configResource).entries().isEmpty()) {
+                            throw new KafkaException("Expected to see config entries, but got zero entries");
+                        }
+                    } catch (ExecutionException e) {
+                        throw e.getCause();
                     }
-                } catch (ExecutionException e) {
-                    throw e.getCause();
-                }
-            });
+                });
     }
 
     private void createTopicsResultTest(Admin client, Collection<String> topics)
-            throws InterruptedException, ExecutionException {
+        throws InterruptedException, ExecutionException {
         while (true) {
             try {
                 client.describeTopics(topics).allTopicNames().get();
@@ -414,7 +414,7 @@ public class ClientCompatibilityTest {
         consumerProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, testConfig.bootstrapServer);
         consumerProps.put(ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG, 512);
         ClientCompatibilityTestDeserializer deserializer =
-            new ClientCompatibilityTestDeserializer(testConfig.expectClusterId);
+                new ClientCompatibilityTestDeserializer(testConfig.expectClusterId);
         try (final KafkaConsumer<byte[], byte[]> consumer = new KafkaConsumer<>(consumerProps, deserializer, deserializer)) {
             final List<PartitionInfo> partitionInfos = consumer.partitionsFor(testConfig.topic);
             if (partitionInfos.isEmpty())
@@ -428,8 +428,8 @@ public class ClientCompatibilityTest {
             }
             final OffsetsForTime offsetsForTime = new OffsetsForTime();
             tryFeature("offsetsForTimes", testConfig.offsetsForTimesSupported,
-                () -> offsetsForTime.result = consumer.offsetsForTimes(timestampsToSearch),
-                () -> log.info("offsetsForTime = {}", offsetsForTime.result));
+                    () -> offsetsForTime.result = consumer.offsetsForTimes(timestampsToSearch),
+                    () -> log.info("offsetsForTime = {}", offsetsForTime.result));
             // Whether or not offsetsForTimes works, beginningOffsets and endOffsets
             // should work.
             consumer.beginningOffsets(timestampsToSearch.keySet());
@@ -497,14 +497,14 @@ public class ClientCompatibilityTest {
                     compareArrays(message2, next);
                 } catch (RuntimeException e) {
                     System.out.println("The second message in this topic was not ours. Please use a new " +
-                        "topic when running this program.");
+                            "topic when running this program.");
                     Exit.exit(1);
                 }
             } catch (RecordTooLargeException e) {
                 log.debug("Got RecordTooLargeException", e);
                 if (!testConfig.expectRecordTooLargeException)
                     throw new RuntimeException("Got an unexpected RecordTooLargeException when reading a record " +
-                        "bigger than " + ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG);
+                            "bigger than " + ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG);
             }
             log.debug("Closing consumer.");
         }
@@ -520,11 +520,11 @@ public class ClientCompatibilityTest {
     }
 
     private void tryFeature(String featureName, boolean supported, Invoker invoker) throws Throwable {
-        tryFeature(featureName, supported, invoker, () -> { });
+        tryFeature(featureName, supported, invoker, () -> {});
     }
 
     private void tryFeature(String featureName, boolean supported, Invoker invoker, ResultTester resultTester)
-            throws Throwable {
+        throws Throwable {
         try {
             invoker.invoke();
             log.info("Successfully used feature {}", featureName);

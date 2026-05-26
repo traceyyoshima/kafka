@@ -121,10 +121,10 @@ public class HeadersBytesStoreTest {
 
         // Expected: [0x00][0xFF x 8][0x01, 0x02, 0x03]
         final byte[] expected = new byte[]{
-            0x00,                                           // empty headers
-            (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,  // timestamp -1 (high 4 bytes)
-            (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,  // timestamp -1 (low 4 bytes)
-            0x01, 0x02, 0x03                                // payload
+                0x00,                                           // empty headers
+                (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,  // timestamp -1 (high 4 bytes)
+                (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,  // timestamp -1 (low 4 bytes)
+                0x01, 0x02, 0x03                                // payload
         };
 
         assertArrayEquals(expected, converted);

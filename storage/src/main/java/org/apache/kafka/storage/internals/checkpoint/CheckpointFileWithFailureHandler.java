@@ -33,7 +33,6 @@ import java.util.List;
 public class CheckpointFileWithFailureHandler<T> {
     private static final Logger log = LoggerFactory.getLogger(CheckpointFileWithFailureHandler.class);
 
-
     public final File file;
     private final LogDirFailureChannel logDirFailureChannel;
     private final String logDir;

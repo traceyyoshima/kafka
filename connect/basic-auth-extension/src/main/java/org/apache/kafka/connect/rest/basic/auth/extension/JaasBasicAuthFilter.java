@@ -94,19 +94,19 @@ public class JaasBasicAuthFilter implements ContainerRequestFilter {
             log.debug("Authenticating request");
             BasicAuthCredentials credentials = new BasicAuthCredentials(requestContext.getHeaderString(AUTHORIZATION));
             LoginContext loginContext = new LoginContext(
-                CONNECT_LOGIN_MODULE,
-                null,
-                new BasicAuthCallBackHandler(credentials),
-                configuration);
+                    CONNECT_LOGIN_MODULE,
+                    null,
+                    new BasicAuthCallBackHandler(credentials),
+                    configuration);
             loginContext.login();
             setSecurityContextForRequest(requestContext, credentials);
         } catch (LoginException | ConfigException e) {
             // Log at debug here in order to avoid polluting log files whenever someone mistypes their credentials
             log.debug("Request failed authentication", e);
             requestContext.abortWith(
-                Response.status(Response.Status.UNAUTHORIZED)
-                    .entity("User cannot access the resource.")
-                    .build());
+                    Response.status(Response.Status.UNAUTHORIZED)
+                        .entity("User cannot access the resource.")
+                        .build());
         }
     }
 
@@ -132,8 +132,8 @@ public class JaasBasicAuthFilter implements ContainerRequestFilter {
                     ((NameCallback) callback).setName(username);
                 } else if (callback instanceof PasswordCallback) {
                     ((PasswordCallback) callback).setPassword(password != null
-                        ? password.toCharArray()
-                        : null
+                            ? password.toCharArray()
+                            : null
                     );
                 } else {
                     unsupportedCallbacks.add(callback);
@@ -141,12 +141,12 @@ public class JaasBasicAuthFilter implements ContainerRequestFilter {
             }
             if (!unsupportedCallbacks.isEmpty())
                 throw new ConnectException(String.format(
-                    "Unsupported callbacks %s; request authentication will fail. "
+                        "Unsupported callbacks %s; request authentication will fail. "
                         + "This indicates the Connect worker was configured with a JAAS "
                         + "LoginModule that is incompatible with the %s, and will need to be "
                         + "corrected and restarted.",
-                    unsupportedCallbacks,
-                    BasicAuthSecurityRestExtension.class.getSimpleName()
+                        unsupportedCallbacks,
+                        BasicAuthSecurityRestExtension.class.getSimpleName()
                 ));
         }
     }
@@ -165,7 +165,7 @@ public class JaasBasicAuthFilter implements ContainerRequestFilter {
 
             @Override
             public boolean isSecure() {
-                return  "https".equalsIgnoreCase(requestContext.getUriInfo().getRequestUri().getScheme());
+                return "https".equalsIgnoreCase(requestContext.getUriInfo().getRequestUri().getScheme());
             }
 
             @Override

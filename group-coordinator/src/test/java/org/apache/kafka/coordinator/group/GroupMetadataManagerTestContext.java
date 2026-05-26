@@ -174,10 +174,10 @@ public class GroupMetadataManagerTestContext {
             Map<?, ?> props
         ) {
             return new GroupCoordinatorConfigContext(
-                new AbstractConfig(
-                    GroupCoordinatorConfig.CONFIG_DEF,
-                    props
-                )
+                    new AbstractConfig(
+                            GroupCoordinatorConfig.CONFIG_DEF,
+                            props
+                    )
             );
         }
 
@@ -210,7 +210,7 @@ public class GroupMetadataManagerTestContext {
             protocols.add(new JoinGroupRequestData.JoinGroupRequestProtocol()
                 .setName(protocolNames[i])
                 .setMetadata(ConsumerProtocol.serializeSubscription(new ConsumerPartitionAssignor.Subscription(
-                    List.of(topicNames.get(i % topicNames.size())))).array())
+                        List.of(topicNames.get(i % topicNames.size())))).array())
             );
         }
         return protocols;
@@ -229,16 +229,16 @@ public class GroupMetadataManagerTestContext {
         short version
     ) {
         JoinGroupRequestData.JoinGroupRequestProtocolCollection protocols =
-            new JoinGroupRequestData.JoinGroupRequestProtocolCollection(0);
+                new JoinGroupRequestData.JoinGroupRequestProtocolCollection(0);
         protocols.add(new JoinGroupRequestData.JoinGroupRequestProtocol()
             .setName("range")
             .setMetadata(ConsumerProtocol.serializeSubscription(
-                new ConsumerPartitionAssignor.Subscription(
-                    topicNames,
-                    null,
-                    ownedPartitions
-                ),
-                version
+                    new ConsumerPartitionAssignor.Subscription(
+                            topicNames,
+                            null,
+                            ownedPartitions
+                    ),
+                    version
             ).array())
         );
         return protocols;
@@ -249,12 +249,12 @@ public class GroupMetadataManagerTestContext {
         GroupMetadataValue value
     ) {
         return CoordinatorRecord.record(
-            new GroupMetadataKey()
-                .setGroup(groupId),
-            new ApiMessageAndVersion(
-                value,
-                (short) 3
-            )
+                new GroupMetadataKey()
+                    .setGroup(groupId),
+                new ApiMessageAndVersion(
+                        value,
+                        (short) 3
+                )
         );
     }
 
@@ -443,7 +443,6 @@ public class GroupMetadataManagerTestContext {
             return this;
         }
 
-
         SyncGroupRequestData build() {
             return new SyncGroupRequestData()
                 .setGroupId(groupId)
@@ -492,7 +491,7 @@ public class GroupMetadataManagerTestContext {
             this.streamsGroupBuilders.add(builder);
             return this;
         }
-        
+
         public Builder withShareGroup(ShareGroupBuilder builder) {
             this.shareGroupBuilders.add(builder);
             return this;
@@ -507,7 +506,7 @@ public class GroupMetadataManagerTestContext {
             this.authorizerPlugin = Optional.of(authorizerPlugin);
             return this;
         }
-        
+
         public Builder withStreamsGroupTaskAssignors(List<TaskAssignor> assignors) {
             this.streamsGroupAssignors = assignors;
             return this;
@@ -523,34 +522,34 @@ public class GroupMetadataManagerTestContext {
             if (groupConfigManager == null) groupConfigManager = createConfigManager();
 
             config.putIfAbsent(
-                GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNORS_CONFIG,
-                List.of(new MockPartitionAssignor("range"))
+                    GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNORS_CONFIG,
+                    List.of(new MockPartitionAssignor("range"))
             );
 
             GroupCoordinatorConfig groupCoordinatorConfig = GroupCoordinatorConfigContext.fromProps(config);
 
             GroupMetadataManagerTestContext context = new GroupMetadataManagerTestContext(
-                time,
-                timer,
-                executor,
-                snapshotRegistry,
-                metrics,
-                groupCoordinatorConfig,
-                new GroupMetadataManager.Builder()
-                    .withSnapshotRegistry(snapshotRegistry)
-                    .withLogContext(logContext)
-                    .withTime(time)
-                    .withTimer(timer)
-                    .withExecutor(executor)
-                    .withConfig(groupCoordinatorConfig)
-                    .withMetadataImage(metadataImage)
-                    .withGroupCoordinatorMetricsShard(metrics)
-                    .withShareGroupAssignor(shareGroupAssignor)
-                    .withGroupConfigManager(groupConfigManager)
-                    .withAuthorizerPlugin(authorizerPlugin)
-                    .withStreamsGroupAssignors(streamsGroupAssignors)
-                    .build(),
-                groupConfigManager
+                    time,
+                    timer,
+                    executor,
+                    snapshotRegistry,
+                    metrics,
+                    groupCoordinatorConfig,
+                    new GroupMetadataManager.Builder()
+                        .withSnapshotRegistry(snapshotRegistry)
+                        .withLogContext(logContext)
+                        .withTime(time)
+                        .withTimer(timer)
+                        .withExecutor(executor)
+                        .withConfig(groupCoordinatorConfig)
+                        .withMetadataImage(metadataImage)
+                        .withGroupCoordinatorMetricsShard(metrics)
+                        .withShareGroupAssignor(shareGroupAssignor)
+                        .withGroupConfigManager(groupConfigManager)
+                        .withAuthorizerPlugin(authorizerPlugin)
+                        .withStreamsGroupAssignors(streamsGroupAssignors)
+                        .build(),
+                    groupConfigManager
             );
 
             consumerGroupBuilders.forEach(builder -> builder.build().forEach(context::replay));
@@ -560,13 +559,13 @@ public class GroupMetadataManagerTestContext {
                 StreamsGroup group = context.groupMetadataManager.getStreamsGroupOrThrow(builder.groupId());
                 if (group.topology().isPresent()) {
                     group.setConfiguredTopology(InternalTopicManager.configureTopics(
-                        logContext.logger(InternalTopicManager.class),
-                        builder.groupId(),
-                        "",
-                        0,
-                        group.topology().get(),
-                        metadataImage,
-                        time)
+                            logContext.logger(InternalTopicManager.class),
+                            builder.groupId(),
+                            "",
+                            0,
+                            group.topology().get(),
+                            metadataImage,
+                            time)
                     );
                 }
             });
@@ -666,7 +665,7 @@ public class GroupMetadataManagerTestContext {
             .getMemberOrThrow(memberId)
             .state();
     }
-    
+
     public CoordinatorResult<ConsumerGroupHeartbeatResponseData, CoordinatorRecord> consumerGroupHeartbeat(
         ConsumerGroupHeartbeatRequestData request
     ) {
@@ -678,24 +677,24 @@ public class GroupMetadataManagerTestContext {
         short apiVersion
     ) {
         RequestContext context = new RequestContext(
-            new RequestHeader(
-                ApiKeys.CONSUMER_GROUP_HEARTBEAT,
-                apiVersion,
-                DEFAULT_CLIENT_ID,
-                0
-            ),
-            "1",
-            DEFAULT_CLIENT_ADDRESS,
-            KafkaPrincipal.ANONYMOUS,
-            ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
-            SecurityProtocol.PLAINTEXT,
-            ClientInformation.EMPTY,
-            false
+                new RequestHeader(
+                        ApiKeys.CONSUMER_GROUP_HEARTBEAT,
+                        apiVersion,
+                        DEFAULT_CLIENT_ID,
+                        0
+                ),
+                "1",
+                DEFAULT_CLIENT_ADDRESS,
+                KafkaPrincipal.ANONYMOUS,
+                ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
+                SecurityProtocol.PLAINTEXT,
+                ClientInformation.EMPTY,
+                false
         );
 
         CoordinatorResult<ConsumerGroupHeartbeatResponseData, CoordinatorRecord> result = groupMetadataManager.consumerGroupHeartbeat(
-            context,
-            request
+                context,
+                request
         );
 
         if (result.replayRecords()) {
@@ -708,26 +707,26 @@ public class GroupMetadataManagerTestContext {
         ShareGroupHeartbeatRequestData request
     ) {
         RequestContext context = new RequestContext(
-            new RequestHeader(
-                ApiKeys.SHARE_GROUP_HEARTBEAT,
-                ApiKeys.SHARE_GROUP_HEARTBEAT.latestVersion(),
-                DEFAULT_CLIENT_ID,
-                0
-            ),
-            "1",
-            DEFAULT_CLIENT_ADDRESS,
-            KafkaPrincipal.ANONYMOUS,
-            ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
-            SecurityProtocol.PLAINTEXT,
-            ClientInformation.EMPTY,
-            false
+                new RequestHeader(
+                        ApiKeys.SHARE_GROUP_HEARTBEAT,
+                        ApiKeys.SHARE_GROUP_HEARTBEAT.latestVersion(),
+                        DEFAULT_CLIENT_ID,
+                        0
+                ),
+                "1",
+                DEFAULT_CLIENT_ADDRESS,
+                KafkaPrincipal.ANONYMOUS,
+                ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
+                SecurityProtocol.PLAINTEXT,
+                ClientInformation.EMPTY,
+                false
         );
 
         CoordinatorResult<Map.Entry<ShareGroupHeartbeatResponseData, Optional<InitializeShareGroupStateParameters>>, CoordinatorRecord> result =
-            groupMetadataManager.shareGroupHeartbeat(
-                context,
-                request
-            );
+                groupMetadataManager.shareGroupHeartbeat(
+                        context,
+                        request
+                );
 
         result.records().forEach(this::replay);
         return result;
@@ -737,24 +736,24 @@ public class GroupMetadataManagerTestContext {
         StreamsGroupHeartbeatRequestData request
     ) {
         RequestContext context = new RequestContext(
-            new RequestHeader(
-                ApiKeys.STREAMS_GROUP_HEARTBEAT,
-                ApiKeys.STREAMS_GROUP_HEARTBEAT.latestVersion(),
-                "client",
-                0
-            ),
-            "1",
-            InetAddress.getLoopbackAddress(),
-            KafkaPrincipal.ANONYMOUS,
-            ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
-            SecurityProtocol.PLAINTEXT,
-            ClientInformation.EMPTY,
-            false
+                new RequestHeader(
+                        ApiKeys.STREAMS_GROUP_HEARTBEAT,
+                        ApiKeys.STREAMS_GROUP_HEARTBEAT.latestVersion(),
+                        "client",
+                        0
+                ),
+                "1",
+                InetAddress.getLoopbackAddress(),
+                KafkaPrincipal.ANONYMOUS,
+                ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
+                SecurityProtocol.PLAINTEXT,
+                ClientInformation.EMPTY,
+                false
         );
 
         CoordinatorResult<StreamsGroupHeartbeatResult, CoordinatorRecord> result = groupMetadataManager.streamsGroupHeartbeat(
-            context,
-            request
+                context,
+                request
         );
 
         if (result.replayRecords()) {
@@ -790,7 +789,7 @@ public class GroupMetadataManagerTestContext {
         long delayMs
     ) {
         MockCoordinatorTimer.ScheduledTimeout<CoordinatorRecord> timeout =
-            timer.timeout(groupSessionTimeoutKey(groupId, memberId));
+                timer.timeout(groupSessionTimeoutKey(groupId, memberId));
         assertNotNull(timeout);
         assertEquals(time.milliseconds() + delayMs, timeout.deadlineMs());
     }
@@ -800,7 +799,7 @@ public class GroupMetadataManagerTestContext {
         String memberId
     ) {
         MockCoordinatorTimer.ScheduledTimeout<CoordinatorRecord> timeout =
-            timer.timeout(groupSessionTimeoutKey(groupId, memberId));
+                timer.timeout(groupSessionTimeoutKey(groupId, memberId));
         assertNull(timeout);
     }
 
@@ -810,7 +809,7 @@ public class GroupMetadataManagerTestContext {
         long delayMs
     ) {
         MockCoordinatorTimer.ScheduledTimeout<CoordinatorRecord> timeout =
-            timer.timeout(groupRebalanceTimeoutKey(groupId, memberId));
+                timer.timeout(groupRebalanceTimeoutKey(groupId, memberId));
         assertNotNull(timeout);
         assertEquals(time.milliseconds() + delayMs, timeout.deadlineMs());
         return timeout;
@@ -821,7 +820,7 @@ public class GroupMetadataManagerTestContext {
         String memberId
     ) {
         MockCoordinatorTimer.ScheduledTimeout<CoordinatorRecord> timeout =
-            timer.timeout(groupRebalanceTimeoutKey(groupId, memberId));
+                timer.timeout(groupRebalanceTimeoutKey(groupId, memberId));
         assertNull(timeout);
     }
 
@@ -831,7 +830,7 @@ public class GroupMetadataManagerTestContext {
         long delayMs
     ) {
         MockCoordinatorTimer.ScheduledTimeout<CoordinatorRecord> timeout =
-            timer.timeout(consumerGroupJoinKey(groupId, memberId));
+                timer.timeout(consumerGroupJoinKey(groupId, memberId));
         assertNotNull(timeout);
         assertEquals(time.milliseconds() + delayMs, timeout.deadlineMs());
         return timeout;
@@ -842,7 +841,7 @@ public class GroupMetadataManagerTestContext {
         String memberId
     ) {
         MockCoordinatorTimer.ScheduledTimeout<CoordinatorRecord> timeout =
-            timer.timeout(consumerGroupJoinKey(groupId, memberId));
+                timer.timeout(consumerGroupJoinKey(groupId, memberId));
         assertNull(timeout);
     }
 
@@ -852,7 +851,7 @@ public class GroupMetadataManagerTestContext {
         long delayMs
     ) {
         MockCoordinatorTimer.ScheduledTimeout<CoordinatorRecord> timeout =
-            timer.timeout(consumerGroupSyncKey(groupId, memberId));
+                timer.timeout(consumerGroupSyncKey(groupId, memberId));
         assertNotNull(timeout);
         assertEquals(time.milliseconds() + delayMs, timeout.deadlineMs());
         return timeout;
@@ -863,7 +862,7 @@ public class GroupMetadataManagerTestContext {
         String memberId
     ) {
         MockCoordinatorTimer.ScheduledTimeout<CoordinatorRecord> timeout =
-            timer.timeout(consumerGroupSyncKey(groupId, memberId));
+                timer.timeout(consumerGroupSyncKey(groupId, memberId));
         assertNull(timeout);
     }
 
@@ -901,26 +900,26 @@ public class GroupMetadataManagerTestContext {
         }
 
         RequestContext context = new RequestContext(
-            new RequestHeader(
-                ApiKeys.JOIN_GROUP,
-                joinGroupVersion,
-                DEFAULT_CLIENT_ID,
-                0
-            ),
-            "1",
-            DEFAULT_CLIENT_ADDRESS,
-            KafkaPrincipal.ANONYMOUS,
-            ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
-            SecurityProtocol.PLAINTEXT,
-            ClientInformation.EMPTY,
-            false
+                new RequestHeader(
+                        ApiKeys.JOIN_GROUP,
+                        joinGroupVersion,
+                        DEFAULT_CLIENT_ID,
+                        0
+                ),
+                "1",
+                DEFAULT_CLIENT_ADDRESS,
+                KafkaPrincipal.ANONYMOUS,
+                ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
+                SecurityProtocol.PLAINTEXT,
+                ClientInformation.EMPTY,
+                false
         );
 
         CompletableFuture<JoinGroupResponseData> responseFuture = new CompletableFuture<>();
         CoordinatorResult<Void, CoordinatorRecord> coordinatorResult = groupMetadataManager.classicGroupJoin(
-            context,
-            request,
-            responseFuture
+                context,
+                request,
+                responseFuture
         );
 
         if (coordinatorResult.replayRecords()) {
@@ -936,13 +935,13 @@ public class GroupMetadataManagerTestContext {
         ClassicGroup group = createClassicGroup(groupId);
 
         JoinGroupResponseData leaderJoinResponse =
-            joinClassicGroupAsDynamicMemberAndCompleteJoin(new JoinGroupRequestBuilder()
-                .withGroupId(groupId)
-                .withMemberId(UNKNOWN_MEMBER_ID)
-                .withDefaultProtocolTypeAndProtocols()
-                .withRebalanceTimeoutMs(10000)
-                .withSessionTimeoutMs(5000)
-                .build());
+                joinClassicGroupAsDynamicMemberAndCompleteJoin(new JoinGroupRequestBuilder()
+                    .withGroupId(groupId)
+                    .withMemberId(UNKNOWN_MEMBER_ID)
+                    .withDefaultProtocolTypeAndProtocols()
+                    .withRebalanceTimeoutMs(10000)
+                    .withSessionTimeoutMs(5000)
+                    .build());
 
         assertEquals(1, leaderJoinResponse.generationId());
         assertTrue(group.isInState(COMPLETING_REBALANCE));
@@ -954,8 +953,8 @@ public class GroupMetadataManagerTestContext {
             .build());
 
         assertEquals(
-            List.of(GroupCoordinatorRecordHelpers.newGroupMetadataRecord(group, group.groupAssignment())),
-            syncResult.records
+                List.of(GroupCoordinatorRecordHelpers.newGroupMetadataRecord(group, group.groupAssignment())),
+                syncResult.records
         );
         // Simulate a successful write to the log.
         syncResult.appendFuture.complete(null);
@@ -976,8 +975,8 @@ public class GroupMetadataManagerTestContext {
         if (request.memberId().equals(UNKNOWN_MEMBER_ID)) {
             // Since member id is required, we need another round to get the successful join group result.
             JoinResult firstJoinResult = sendClassicGroupJoin(
-                request,
-                requireKnownMemberId
+                    request,
+                    requireKnownMemberId
             );
             assertTrue(firstJoinResult.records.isEmpty());
             assertTrue(firstJoinResult.joinFuture.isDone());
@@ -996,8 +995,8 @@ public class GroupMetadataManagerTestContext {
             .setReason(request.reason());
 
         JoinResult secondJoinResult = sendClassicGroupJoin(
-            secondRequest,
-            requireKnownMemberId
+                secondRequest,
+                requireKnownMemberId
         );
 
         assertTrue(secondJoinResult.records.isEmpty());
@@ -1015,10 +1014,10 @@ public class GroupMetadataManagerTestContext {
         boolean supportSkippingAssignment
     ) throws ExecutionException, InterruptedException {
         return joinClassicGroupAndCompleteJoin(
-            request,
-            requireKnownMemberId,
-            supportSkippingAssignment,
-            classicGroupInitialRebalanceDelayMs
+                request,
+                requireKnownMemberId,
+                supportSkippingAssignment,
+                classicGroupInitialRebalanceDelayMs
         );
     }
 
@@ -1034,9 +1033,9 @@ public class GroupMetadataManagerTestContext {
 
         try {
             JoinResult joinResult = sendClassicGroupJoin(
-                request,
-                requireKnownMemberId,
-                supportSkippingAssignment
+                    request,
+                    requireKnownMemberId,
+                    supportSkippingAssignment
             );
 
             sleep(advanceClockMs);
@@ -1051,27 +1050,27 @@ public class GroupMetadataManagerTestContext {
 
     public SyncResult sendClassicGroupSync(SyncGroupRequestData request) {
         RequestContext context = new RequestContext(
-            new RequestHeader(
-                ApiKeys.SYNC_GROUP,
-                ApiKeys.SYNC_GROUP.latestVersion(),
-                DEFAULT_CLIENT_ID,
-                0
-            ),
-            "1",
-            DEFAULT_CLIENT_ADDRESS,
-            KafkaPrincipal.ANONYMOUS,
-            ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
-            SecurityProtocol.PLAINTEXT,
-            ClientInformation.EMPTY,
-            false
+                new RequestHeader(
+                        ApiKeys.SYNC_GROUP,
+                        ApiKeys.SYNC_GROUP.latestVersion(),
+                        DEFAULT_CLIENT_ID,
+                        0
+                ),
+                "1",
+                DEFAULT_CLIENT_ADDRESS,
+                KafkaPrincipal.ANONYMOUS,
+                ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
+                SecurityProtocol.PLAINTEXT,
+                ClientInformation.EMPTY,
+                false
         );
 
         CompletableFuture<SyncGroupResponseData> responseFuture = new CompletableFuture<>();
 
         CoordinatorResult<Void, CoordinatorRecord> coordinatorResult = groupMetadataManager.classicGroupSync(
-            context,
-            request,
-            responseFuture
+                context,
+                request,
+                responseFuture
         );
 
         if (coordinatorResult.replayRecords()) {
@@ -1087,11 +1086,11 @@ public class GroupMetadataManagerTestContext {
         String followerInstanceId
     ) throws Exception {
         return staticMembersJoinAndRebalance(
-            groupId,
-            leaderInstanceId,
-            followerInstanceId,
-            10000,
-            5000
+                groupId,
+                leaderInstanceId,
+                followerInstanceId,
+                10000,
+                5000
         );
     }
 
@@ -1142,9 +1141,9 @@ public class GroupMetadataManagerTestContext {
         String followerId = followerJoinResult.joinFuture.get().memberId();
         List<SyncGroupRequestData.SyncGroupRequestAssignment> assignment = new ArrayList<>();
         assignment.add(new SyncGroupRequestData.SyncGroupRequestAssignment().setMemberId(leaderId)
-                                                                            .setAssignment(new byte[]{1}));
+                .setAssignment(new byte[]{1}));
         assignment.add(new SyncGroupRequestData.SyncGroupRequestAssignment().setMemberId(followerId)
-                                                                            .setAssignment(new byte[]{2}));
+                .setAssignment(new byte[]{2}));
 
         SyncGroupRequestData syncRequest = new SyncGroupRequestBuilder()
             .withGroupId(groupId)
@@ -1158,12 +1157,12 @@ public class GroupMetadataManagerTestContext {
 
         // The generated record should contain the new assignment.
         Map<String, byte[]> groupAssignment = assignment.stream().collect(Collectors.toMap(
-            SyncGroupRequestData.SyncGroupRequestAssignment::memberId, SyncGroupRequestData.SyncGroupRequestAssignment::assignment
+                SyncGroupRequestData.SyncGroupRequestAssignment::memberId, SyncGroupRequestData.SyncGroupRequestAssignment::assignment
         ));
         assertEquals(
-            List.of(
-                GroupCoordinatorRecordHelpers.newGroupMetadataRecord(group, groupAssignment)),
-            leaderSyncResult.records
+                List.of(
+                        GroupCoordinatorRecordHelpers.newGroupMetadataRecord(group, groupAssignment)),
+                leaderSyncResult.records
         );
 
         // Simulate a successful write to the log.
@@ -1174,9 +1173,9 @@ public class GroupMetadataManagerTestContext {
         assertTrue(group.isInState(STABLE));
 
         SyncResult followerSyncResult = sendClassicGroupSync(
-            syncRequest.setGroupInstanceId(followerInstanceId)
-                       .setMemberId(followerId)
-                       .setAssignments(List.of())
+                syncRequest.setGroupInstanceId(followerInstanceId)
+                           .setMemberId(followerId)
+                           .setAssignments(List.of())
         );
 
         assertTrue(followerSyncResult.records.isEmpty());
@@ -1188,11 +1187,11 @@ public class GroupMetadataManagerTestContext {
         assertEquals(1, group.generationId());
 
         return new RebalanceResult(
-            1,
-            leaderId,
-            leaderSyncResult.syncFuture.get().assignment(),
-            followerId,
-            followerSyncResult.syncFuture.get().assignment()
+                1,
+                leaderId,
+                leaderSyncResult.syncFuture.get().assignment(),
+                followerId,
+                followerSyncResult.syncFuture.get().assignment()
         );
     }
 
@@ -1207,7 +1206,7 @@ public class GroupMetadataManagerTestContext {
             .build();
 
         JoinGroupResponseData leaderJoinResponse =
-            joinClassicGroupAsDynamicMemberAndCompleteJoin(joinRequest);
+                joinClassicGroupAsDynamicMemberAndCompleteJoin(joinRequest);
 
         List<SyncGroupRequestData.SyncGroupRequestAssignment> assignment = new ArrayList<>();
         assignment.add(new SyncGroupRequestData.SyncGroupRequestAssignment().setMemberId(leaderJoinResponse.memberId()));
@@ -1222,8 +1221,8 @@ public class GroupMetadataManagerTestContext {
 
         // Now the group is stable, with the one member that joined above
         assertEquals(
-            List.of(GroupCoordinatorRecordHelpers.newGroupMetadataRecord(group, group.groupAssignment())),
-            syncResult.records
+                List.of(GroupCoordinatorRecordHelpers.newGroupMetadataRecord(group, group.groupAssignment())),
+                syncResult.records
         );
         // Simulate a successful write to log.
         syncResult.appendFuture.complete(null);
@@ -1233,14 +1232,14 @@ public class GroupMetadataManagerTestContext {
 
         // Start the join for the second member
         JoinResult followerJoinResult = sendClassicGroupJoin(
-            joinRequest.setMemberId(UNKNOWN_MEMBER_ID)
+                joinRequest.setMemberId(UNKNOWN_MEMBER_ID)
         );
 
         assertTrue(followerJoinResult.records.isEmpty());
         assertFalse(followerJoinResult.joinFuture.isDone());
 
         JoinResult leaderJoinResult = sendClassicGroupJoin(
-            joinRequest.setMemberId(leaderJoinResponse.memberId())
+                joinRequest.setMemberId(leaderJoinResponse.memberId())
         );
 
         assertTrue(leaderJoinResult.records.isEmpty());
@@ -1260,8 +1259,8 @@ public class GroupMetadataManagerTestContext {
         syncResult = sendClassicGroupSync(syncRequest.setGenerationId(nextGenerationId));
 
         assertEquals(
-            List.of(GroupCoordinatorRecordHelpers.newGroupMetadataRecord(group, group.groupAssignment())),
-            syncResult.records
+                List.of(GroupCoordinatorRecordHelpers.newGroupMetadataRecord(group, group.groupAssignment())),
+                syncResult.records
         );
         // Simulate a successful write to log.
         syncResult.appendFuture.complete(null);
@@ -1272,7 +1271,7 @@ public class GroupMetadataManagerTestContext {
 
         // Re-join an existing member, to transition the group to PreparingRebalance state.
         leaderJoinResult = sendClassicGroupJoin(
-            joinRequest.setMemberId(leaderJoinResponse.memberId()));
+                joinRequest.setMemberId(leaderJoinResponse.memberId()));
 
         assertTrue(leaderJoinResult.records.isEmpty());
         assertFalse(leaderJoinResult.joinFuture.isDone());
@@ -1280,10 +1279,10 @@ public class GroupMetadataManagerTestContext {
 
         // Create a pending member in the group
         JoinResult pendingMemberJoinResult = sendClassicGroupJoin(
-            joinRequest
-                .setMemberId(UNKNOWN_MEMBER_ID)
-                .setSessionTimeoutMs(2500),
-            true
+                joinRequest
+                    .setMemberId(UNKNOWN_MEMBER_ID)
+                    .setSessionTimeoutMs(2500),
+                true
         );
 
         assertTrue(pendingMemberJoinResult.records.isEmpty());
@@ -1293,7 +1292,7 @@ public class GroupMetadataManagerTestContext {
 
         // Re-join the second existing member
         followerJoinResult = sendClassicGroupJoin(
-            joinRequest.setMemberId(followerId).setSessionTimeoutMs(5000)
+                joinRequest.setMemberId(followerId).setSessionTimeoutMs(5000)
         );
 
         assertTrue(followerJoinResult.records.isEmpty());
@@ -1303,9 +1302,9 @@ public class GroupMetadataManagerTestContext {
         assertEquals(1, group.numPendingJoinMembers());
 
         return new PendingMemberGroupResult(
-            leaderJoinResponse.memberId(),
-            followerId,
-            pendingMemberJoinResult.joinFuture.get()
+                leaderJoinResponse.memberId(),
+                followerId,
+                pendingMemberJoinResult.joinFuture.get()
         );
     }
 
@@ -1316,16 +1315,15 @@ public class GroupMetadataManagerTestContext {
         // Member should be removed as session expires.
         List<MockCoordinatorTimer.ExpiredTimeout<CoordinatorRecord>> timeouts = sleep(timeoutMs);
         List<CoordinatorRecord> expectedRecords = List.of(newGroupMetadataRecord(
-            group.groupId(),
-            new GroupMetadataValue()
-                .setMembers(List.of())
-                .setGeneration(group.generationId())
-                .setLeader(null)
-                .setProtocolType("consumer")
-                .setProtocol(null)
-                .setCurrentStateTimestamp(time.milliseconds())
+                group.groupId(),
+                new GroupMetadataValue()
+                    .setMembers(List.of())
+                    .setGeneration(group.generationId())
+                    .setLeader(null)
+                    .setProtocolType("consumer")
+                    .setProtocol(null)
+                    .setCurrentStateTimestamp(time.milliseconds())
         ));
-
 
         Set<String> heartbeatKeys = timeouts.stream().map(timeout -> timeout.key()).collect(Collectors.toSet());
         assertEquals(expectedHeartbeatKeys, heartbeatKeys);
@@ -1342,24 +1340,24 @@ public class GroupMetadataManagerTestContext {
         HeartbeatRequestData request
     ) {
         RequestContext context = new RequestContext(
-            new RequestHeader(
-                ApiKeys.HEARTBEAT,
-                ApiKeys.HEARTBEAT.latestVersion(),
-                DEFAULT_CLIENT_ID,
-                0
-            ),
-            "1",
-            DEFAULT_CLIENT_ADDRESS,
-            KafkaPrincipal.ANONYMOUS,
-            ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
-            SecurityProtocol.PLAINTEXT,
-            ClientInformation.EMPTY,
-            false
+                new RequestHeader(
+                        ApiKeys.HEARTBEAT,
+                        ApiKeys.HEARTBEAT.latestVersion(),
+                        DEFAULT_CLIENT_ID,
+                        0
+                ),
+                "1",
+                DEFAULT_CLIENT_ADDRESS,
+                KafkaPrincipal.ANONYMOUS,
+                ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
+                SecurityProtocol.PLAINTEXT,
+                ClientInformation.EMPTY,
+                false
         );
 
         return groupMetadataManager.classicGroupHeartbeat(
-            context,
-            request
+                context,
+                request
         );
     }
 
@@ -1379,19 +1377,19 @@ public class GroupMetadataManagerTestContext {
 
     public List<DescribeGroupsResponseData.DescribedGroup> describeGroups(List<String> groupIds) {
         RequestContext context = new RequestContext(
-            new RequestHeader(
-                ApiKeys.DESCRIBE_GROUPS,
-                ApiKeys.DESCRIBE_GROUPS.latestVersion(),
-                DEFAULT_CLIENT_ID,
-                0
-            ),
-            "1",
-            DEFAULT_CLIENT_ADDRESS,
-            KafkaPrincipal.ANONYMOUS,
-            ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
-            SecurityProtocol.PLAINTEXT,
-            ClientInformation.EMPTY,
-            false
+                new RequestHeader(
+                        ApiKeys.DESCRIBE_GROUPS,
+                        ApiKeys.DESCRIBE_GROUPS.latestVersion(),
+                        DEFAULT_CLIENT_ID,
+                        0
+                ),
+                "1",
+                DEFAULT_CLIENT_ADDRESS,
+                KafkaPrincipal.ANONYMOUS,
+                ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
+                SecurityProtocol.PLAINTEXT,
+                ClientInformation.EMPTY,
+                false
         );
 
         return groupMetadataManager.describeGroups(context, groupIds, lastCommittedOffset);
@@ -1399,19 +1397,19 @@ public class GroupMetadataManagerTestContext {
 
     public List<DescribeGroupsResponseData.DescribedGroup> describeGroups(List<String> groupIds, short apiVersion) {
         RequestContext context = new RequestContext(
-            new RequestHeader(
-                ApiKeys.DESCRIBE_GROUPS,
-                apiVersion,
-                DEFAULT_CLIENT_ID,
-                0
-            ),
-            "1",
-            DEFAULT_CLIENT_ADDRESS,
-            KafkaPrincipal.ANONYMOUS,
-            ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
-            SecurityProtocol.PLAINTEXT,
-            ClientInformation.EMPTY,
-            false
+                new RequestHeader(
+                        ApiKeys.DESCRIBE_GROUPS,
+                        apiVersion,
+                        DEFAULT_CLIENT_ID,
+                        0
+                ),
+                "1",
+                DEFAULT_CLIENT_ADDRESS,
+                KafkaPrincipal.ANONYMOUS,
+                ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
+                SecurityProtocol.PLAINTEXT,
+                ClientInformation.EMPTY,
+                false
         );
 
         return groupMetadataManager.describeGroups(context, groupIds, lastCommittedOffset);
@@ -1508,19 +1506,19 @@ public class GroupMetadataManagerTestContext {
         LeaveGroupRequestData request
     ) {
         RequestContext context = new RequestContext(
-            new RequestHeader(
-                ApiKeys.LEAVE_GROUP,
-                ApiKeys.LEAVE_GROUP.latestVersion(),
-                DEFAULT_CLIENT_ID,
-                0
-            ),
-            "1",
-            DEFAULT_CLIENT_ADDRESS,
-            KafkaPrincipal.ANONYMOUS,
-            ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
-            SecurityProtocol.PLAINTEXT,
-            ClientInformation.EMPTY,
-            false
+                new RequestHeader(
+                        ApiKeys.LEAVE_GROUP,
+                        ApiKeys.LEAVE_GROUP.latestVersion(),
+                        DEFAULT_CLIENT_ID,
+                        0
+                ),
+                "1",
+                DEFAULT_CLIENT_ADDRESS,
+                KafkaPrincipal.ANONYMOUS,
+                ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
+                SecurityProtocol.PLAINTEXT,
+                ClientInformation.EMPTY,
+                false
         );
 
         return groupMetadataManager.classicGroupLeave(context, request);
@@ -1528,29 +1526,29 @@ public class GroupMetadataManagerTestContext {
 
     public void verifyDescribeGroupsReturnsDeadGroup(String groupId) {
         List<DescribeGroupsResponseData.DescribedGroup> describedGroups =
-            describeGroups(List.of(groupId));
+                describeGroups(List.of(groupId));
 
         assertEquals(
-            List.of(new DescribeGroupsResponseData.DescribedGroup()
-                .setGroupId(groupId)
-                .setGroupState(DEAD.toString())
-                .setErrorCode(Errors.GROUP_ID_NOT_FOUND.code())
-                .setErrorMessage("Group " + groupId + " not found.")
-            ),
-            describedGroups
+                List.of(new DescribeGroupsResponseData.DescribedGroup()
+                    .setGroupId(groupId)
+                    .setGroupState(DEAD.toString())
+                    .setErrorCode(Errors.GROUP_ID_NOT_FOUND.code())
+                    .setErrorMessage("Group " + groupId + " not found.")
+                ),
+                describedGroups
         );
     }
 
     public void verifyDescribeGroupsBeforeV6ReturnsDeadGroup(String groupId) {
         List<DescribeGroupsResponseData.DescribedGroup> describedGroups =
-            describeGroups(List.of(groupId), (short) 5);
+                describeGroups(List.of(groupId), (short) 5);
 
         assertEquals(
-            List.of(new DescribeGroupsResponseData.DescribedGroup()
-                .setGroupId(groupId)
-                .setGroupState(DEAD.toString())
-            ),
-            describedGroups
+                List.of(new DescribeGroupsResponseData.DescribedGroup()
+                    .setGroupId(groupId)
+                    .setGroupState(DEAD.toString())
+                ),
+                describedGroups
         );
     }
 
@@ -1564,13 +1562,13 @@ public class GroupMetadataManagerTestContext {
         short version
     ) throws Exception {
         GroupMetadataManagerTestContext.SyncResult syncResult = sendClassicGroupSync(
-            new GroupMetadataManagerTestContext.SyncGroupRequestBuilder()
-                .withGroupId(groupId)
-                .withMemberId(memberId)
-                .withGenerationId(generationId)
-                .withProtocolName(protocolName)
-                .withProtocolType(protocolType)
-                .build()
+                new GroupMetadataManagerTestContext.SyncGroupRequestBuilder()
+                    .withGroupId(groupId)
+                    .withMemberId(memberId)
+                    .withGenerationId(generationId)
+                    .withProtocolName(protocolName)
+                    .withProtocolType(protocolType)
+                    .build()
         );
         assertEquals(List.of(), syncResult.records);
         assertFalse(syncResult.syncFuture.isDone());
@@ -1578,14 +1576,14 @@ public class GroupMetadataManagerTestContext {
         // Simulate a successful write to log.
         syncResult.appendFuture.complete(null);
         assertResponseEquals(
-            new SyncGroupResponseData()
-                .setProtocolType(protocolType)
-                .setProtocolName(protocolName)
-                .setAssignment(ConsumerProtocol.serializeAssignment(
-                    new ConsumerPartitionAssignor.Assignment(topicPartitionList),
-                    version
-                ).array()),
-            syncResult.syncFuture.get()
+                new SyncGroupResponseData()
+                    .setProtocolType(protocolType)
+                    .setProtocolName(protocolName)
+                    .setAssignment(ConsumerProtocol.serializeAssignment(
+                        new ConsumerPartitionAssignor.Assignment(topicPartitionList),
+                        version
+                    ).array()),
+                syncResult.syncFuture.get()
         );
         assertSessionTimeout(groupId, memberId, 5000);
         assertNoSyncTimeout(groupId, memberId);
@@ -1600,13 +1598,13 @@ public class GroupMetadataManagerTestContext {
         List<TopicPartition> topicPartitionList
     ) throws Exception {
         verifyClassicGroupSyncToConsumerGroup(
-            groupId,
-            memberId,
-            generationId,
-            protocolName,
-            protocolType,
-            topicPartitionList,
-            ConsumerProtocolAssignment.HIGHEST_SUPPORTED_VERSION
+                groupId,
+                memberId,
+                generationId,
+                protocolName,
+                protocolType,
+                topicPartitionList,
+                ConsumerProtocolAssignment.HIGHEST_SUPPORTED_VERSION
         );
     }
 
@@ -1631,147 +1629,147 @@ public class GroupMetadataManagerTestContext {
         switch (CoordinatorRecordType.fromId(record.key().apiKey())) {
             case GROUP_METADATA:
                 groupMetadataManager.replay(
-                    (GroupMetadataKey) key,
-                    (GroupMetadataValue) messageOrNull(value)
+                        (GroupMetadataKey) key,
+                        (GroupMetadataValue) messageOrNull(value)
                 );
                 break;
 
             case CONSUMER_GROUP_MEMBER_METADATA:
                 groupMetadataManager.replay(
-                    (ConsumerGroupMemberMetadataKey) key,
-                    (ConsumerGroupMemberMetadataValue) messageOrNull(value)
+                        (ConsumerGroupMemberMetadataKey) key,
+                        (ConsumerGroupMemberMetadataValue) messageOrNull(value)
                 );
                 break;
 
             case CONSUMER_GROUP_METADATA:
                 groupMetadataManager.replay(
-                    (ConsumerGroupMetadataKey) key,
-                    (ConsumerGroupMetadataValue) messageOrNull(value)
+                        (ConsumerGroupMetadataKey) key,
+                        (ConsumerGroupMetadataValue) messageOrNull(value)
                 );
                 break;
 
             case CONSUMER_GROUP_PARTITION_METADATA:
                 groupMetadataManager.replay(
-                    (ConsumerGroupPartitionMetadataKey) key,
-                    (ConsumerGroupPartitionMetadataValue) messageOrNull(value)
+                        (ConsumerGroupPartitionMetadataKey) key,
+                        (ConsumerGroupPartitionMetadataValue) messageOrNull(value)
                 );
                 break;
 
             case CONSUMER_GROUP_TARGET_ASSIGNMENT_MEMBER:
                 groupMetadataManager.replay(
-                    (ConsumerGroupTargetAssignmentMemberKey) key,
-                    (ConsumerGroupTargetAssignmentMemberValue) messageOrNull(value)
+                        (ConsumerGroupTargetAssignmentMemberKey) key,
+                        (ConsumerGroupTargetAssignmentMemberValue) messageOrNull(value)
                 );
                 break;
 
             case CONSUMER_GROUP_TARGET_ASSIGNMENT_METADATA:
                 groupMetadataManager.replay(
-                    (ConsumerGroupTargetAssignmentMetadataKey) key,
-                    (ConsumerGroupTargetAssignmentMetadataValue) messageOrNull(value)
+                        (ConsumerGroupTargetAssignmentMetadataKey) key,
+                        (ConsumerGroupTargetAssignmentMetadataValue) messageOrNull(value)
                 );
                 break;
 
             case CONSUMER_GROUP_CURRENT_MEMBER_ASSIGNMENT:
                 groupMetadataManager.replay(
-                    (ConsumerGroupCurrentMemberAssignmentKey) key,
-                    (ConsumerGroupCurrentMemberAssignmentValue) messageOrNull(value)
+                        (ConsumerGroupCurrentMemberAssignmentKey) key,
+                        (ConsumerGroupCurrentMemberAssignmentValue) messageOrNull(value)
                 );
                 break;
 
             case SHARE_GROUP_MEMBER_METADATA:
                 groupMetadataManager.replay(
-                    (ShareGroupMemberMetadataKey) key,
-                    (ShareGroupMemberMetadataValue) messageOrNull(value)
+                        (ShareGroupMemberMetadataKey) key,
+                        (ShareGroupMemberMetadataValue) messageOrNull(value)
                 );
                 break;
 
             case SHARE_GROUP_METADATA:
                 groupMetadataManager.replay(
-                    (ShareGroupMetadataKey) key,
-                    (ShareGroupMetadataValue) messageOrNull(value)
+                        (ShareGroupMetadataKey) key,
+                        (ShareGroupMetadataValue) messageOrNull(value)
                 );
                 break;
 
             case SHARE_GROUP_TARGET_ASSIGNMENT_MEMBER:
                 groupMetadataManager.replay(
-                    (ShareGroupTargetAssignmentMemberKey) key,
-                    (ShareGroupTargetAssignmentMemberValue) messageOrNull(value)
+                        (ShareGroupTargetAssignmentMemberKey) key,
+                        (ShareGroupTargetAssignmentMemberValue) messageOrNull(value)
                 );
                 break;
 
             case SHARE_GROUP_TARGET_ASSIGNMENT_METADATA:
                 groupMetadataManager.replay(
-                    (ShareGroupTargetAssignmentMetadataKey) key,
-                    (ShareGroupTargetAssignmentMetadataValue) messageOrNull(value)
+                        (ShareGroupTargetAssignmentMetadataKey) key,
+                        (ShareGroupTargetAssignmentMetadataValue) messageOrNull(value)
                 );
                 break;
 
             case SHARE_GROUP_CURRENT_MEMBER_ASSIGNMENT:
                 groupMetadataManager.replay(
-                    (ShareGroupCurrentMemberAssignmentKey) key,
-                    (ShareGroupCurrentMemberAssignmentValue) messageOrNull(value)
+                        (ShareGroupCurrentMemberAssignmentKey) key,
+                        (ShareGroupCurrentMemberAssignmentValue) messageOrNull(value)
                 );
                 break;
 
             case SHARE_GROUP_STATE_PARTITION_METADATA:
                 groupMetadataManager.replay(
-                    (ShareGroupStatePartitionMetadataKey) key,
-                    (ShareGroupStatePartitionMetadataValue) messageOrNull(value)
+                        (ShareGroupStatePartitionMetadataKey) key,
+                        (ShareGroupStatePartitionMetadataValue) messageOrNull(value)
                 );
                 break;
 
             case CONSUMER_GROUP_REGULAR_EXPRESSION:
                 groupMetadataManager.replay(
-                    (ConsumerGroupRegularExpressionKey) key,
-                    (ConsumerGroupRegularExpressionValue) messageOrNull(value)
+                        (ConsumerGroupRegularExpressionKey) key,
+                        (ConsumerGroupRegularExpressionValue) messageOrNull(value)
                 );
                 break;
 
             case STREAMS_GROUP_CURRENT_MEMBER_ASSIGNMENT:
                 groupMetadataManager.replay(
-                    (StreamsGroupCurrentMemberAssignmentKey) key,
-                    (StreamsGroupCurrentMemberAssignmentValue) messageOrNull(value)
+                        (StreamsGroupCurrentMemberAssignmentKey) key,
+                        (StreamsGroupCurrentMemberAssignmentValue) messageOrNull(value)
                 );
                 break;
 
             case STREAMS_GROUP_MEMBER_METADATA:
                 groupMetadataManager.replay(
-                    (StreamsGroupMemberMetadataKey) key,
-                    (StreamsGroupMemberMetadataValue) messageOrNull(value)
+                        (StreamsGroupMemberMetadataKey) key,
+                        (StreamsGroupMemberMetadataValue) messageOrNull(value)
                 );
                 break;
 
             case STREAMS_GROUP_METADATA:
                 groupMetadataManager.replay(
-                    (StreamsGroupMetadataKey) key,
-                    (StreamsGroupMetadataValue) messageOrNull(value)
+                        (StreamsGroupMetadataKey) key,
+                        (StreamsGroupMetadataValue) messageOrNull(value)
                 );
                 break;
 
             case STREAMS_GROUP_TARGET_ASSIGNMENT_MEMBER:
                 groupMetadataManager.replay(
-                    (StreamsGroupTargetAssignmentMemberKey) key,
-                    (StreamsGroupTargetAssignmentMemberValue) messageOrNull(value)
+                        (StreamsGroupTargetAssignmentMemberKey) key,
+                        (StreamsGroupTargetAssignmentMemberValue) messageOrNull(value)
                 );
                 break;
 
             case STREAMS_GROUP_TARGET_ASSIGNMENT_METADATA:
                 groupMetadataManager.replay(
-                    (StreamsGroupTargetAssignmentMetadataKey) key,
-                    (StreamsGroupTargetAssignmentMetadataValue) messageOrNull(value)
+                        (StreamsGroupTargetAssignmentMetadataKey) key,
+                        (StreamsGroupTargetAssignmentMetadataValue) messageOrNull(value)
                 );
                 break;
 
             case STREAMS_GROUP_TOPOLOGY:
                 groupMetadataManager.replay(
-                    (StreamsGroupTopologyKey) key,
-                    (StreamsGroupTopologyValue) messageOrNull(value)
+                        (StreamsGroupTopologyKey) key,
+                        (StreamsGroupTopologyValue) messageOrNull(value)
                 );
                 break;
 
             default:
                 throw new IllegalStateException("Received an unknown record type " + record.key().apiKey()
-                    + " in " + record);
+                        + " in " + record);
         }
 
         lastWrittenOffset++;

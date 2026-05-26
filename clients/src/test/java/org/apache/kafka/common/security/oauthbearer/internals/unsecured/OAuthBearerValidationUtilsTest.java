@@ -87,10 +87,10 @@ public class OAuthBearerValidationUtilsTest {
                             assertTrue(isSuccess(result), "!required && !exists");
                         else if (nowClaimValue * 1000 > whenCheckMs + allowableClockSkewMs) // issued in future
                             assertTrue(isFailureWithMessageAndNoFailureScope(result),
-                                assertionFailureMessage(nowClaimValue, allowableClockSkewMs, whenCheckMs));
+                                    assertionFailureMessage(nowClaimValue, allowableClockSkewMs, whenCheckMs));
                         else
                             assertTrue(isSuccess(result),
-                                assertionFailureMessage(nowClaimValue, allowableClockSkewMs, whenCheckMs));
+                                    assertionFailureMessage(nowClaimValue, allowableClockSkewMs, whenCheckMs));
                     }
                 }
             }
@@ -116,7 +116,7 @@ public class OAuthBearerValidationUtilsTest {
                         whenCheckMs, allowableClockSkewMs);
                 if (whenCheckMs - allowableClockSkewMs >= nowClaimValue * 1000) // expired
                     assertTrue(isFailureWithMessageAndNoFailureScope(result),
-                        assertionFailureMessage(nowClaimValue, allowableClockSkewMs, whenCheckMs));
+                            assertionFailureMessage(nowClaimValue, allowableClockSkewMs, whenCheckMs));
                 else
                     assertTrue(isSuccess(result), assertionFailureMessage(nowClaimValue, allowableClockSkewMs, whenCheckMs));
             }

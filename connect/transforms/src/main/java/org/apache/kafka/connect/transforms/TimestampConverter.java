@@ -52,9 +52,9 @@ public abstract class TimestampConverter<R extends ConnectRecord<R>> implements 
 
     public static final String OVERVIEW_DOC =
             "Convert timestamps between different formats such as Unix epoch, strings, and Connect Date/Timestamp types."
-                    + "Applies to individual fields or to the entire value."
-                    + "<p/>Use the concrete transformation type designed for the record key (<code>" + TimestampConverter.Key.class.getName() + "</code>) "
-                    + "or value (<code>" + TimestampConverter.Value.class.getName() + "</code>).";
+            + "Applies to individual fields or to the entire value."
+            + "<p/>Use the concrete transformation type designed for the record key (<code>" + TimestampConverter.Key.class.getName() + "</code>) "
+            + "or value (<code>" + TimestampConverter.Value.class.getName() + "</code>).";
 
     public static final String FIELD_CONFIG = "field";
     private static final String FIELD_DEFAULT = "";
@@ -97,18 +97,17 @@ public abstract class TimestampConverter<R extends ConnectRecord<R>> implements 
                     "The desired timestamp representation: string, unix, Date, Time, or Timestamp")
             .define(FORMAT_CONFIG, ConfigDef.Type.STRING, FORMAT_DEFAULT, ConfigDef.Importance.MEDIUM,
                     "A SimpleDateFormat-compatible format for the timestamp. Used to generate the output when type=string "
-                            + "or used to parse the input if the input is a string.")
+                    + "or used to parse the input if the input is a string.")
             .define(UNIX_PRECISION_CONFIG, ConfigDef.Type.STRING, UNIX_PRECISION_DEFAULT,
                     ConfigDef.ValidString.in(
                             UNIX_PRECISION_NANOS, UNIX_PRECISION_MICROS,
                             UNIX_PRECISION_MILLIS, UNIX_PRECISION_SECONDS),
                     ConfigDef.Importance.LOW,
                     "The desired Unix precision for the timestamp: seconds, milliseconds, microseconds, or nanoseconds. " +
-                            "Used to generate the output when type=unix or used to parse the input if the input is a Long." +
-                            "Note: This SMT will cause precision loss during conversions from, and to, values with sub-millisecond components.")
+                    "Used to generate the output when type=unix or used to parse the input if the input is a Long." +
+                    "Note: This SMT will cause precision loss during conversions from, and to, values with sub-millisecond components.")
             .define(REPLACE_NULL_WITH_DEFAULT_CONFIG, ConfigDef.Type.BOOLEAN, true, ConfigDef.Importance.MEDIUM,
                     "Whether to replace fields that have a default value and that are null to the default value. When set to true, the default value is used, otherwise null is used.");
-
 
     private interface TimestampTranslator {
         /**
@@ -133,6 +132,7 @@ public abstract class TimestampConverter<R extends ConnectRecord<R>> implements 
     }
 
     private static final Map<String, TimestampTranslator> TRANSLATORS = new HashMap<>();
+
     static {
         TRANSLATORS.put(TYPE_STRING, new TimestampTranslator() {
             @Override
@@ -276,11 +276,13 @@ public abstract class TimestampConverter<R extends ConnectRecord<R>> implements 
             this.format = format;
             this.unixPrecision = unixPrecision;
         }
+
         String field;
         String type;
         SimpleDateFormat format;
         String unixPrecision;
     }
+
     private Config config;
     private Cache<Schema, Schema> schemaUpdateCache;
     private boolean replaceNullWithDefault;

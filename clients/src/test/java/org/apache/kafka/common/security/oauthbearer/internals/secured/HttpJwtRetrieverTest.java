@@ -66,11 +66,11 @@ public class HttpJwtRetrieverTest extends OAuthBearerTest {
         HttpURLConnection mockedCon = createHttpURLConnection("dummy");
         when(mockedCon.getInputStream()).thenThrow(new IOException("Can't read"));
         when(mockedCon.getErrorStream()).thenReturn(new ByteArrayInputStream(
-            "{\"error\":\"some_arg\", \"error_description\":\"some problem with arg\"}"
-                .getBytes(StandardCharsets.UTF_8)));
+                "{\"error\":\"some_arg\", \"error_description\":\"some problem with arg\"}"
+                    .getBytes(StandardCharsets.UTF_8)));
         when(mockedCon.getResponseCode()).thenReturn(HttpURLConnection.HTTP_BAD_REQUEST);
         UnretryableException ioe = assertThrows(UnretryableException.class,
-            () -> HttpJwtRetriever.post(mockedCon, null, null, null, null));
+                () -> HttpJwtRetriever.post(mockedCon, null, null, null, null));
         assertTrue(ioe.getMessage().contains("{\"some_arg\" - \"some problem with arg\"}"));
     }
 
@@ -79,27 +79,27 @@ public class HttpJwtRetrieverTest extends OAuthBearerTest {
         HttpURLConnection mockedCon = createHttpURLConnection("dummy");
         when(mockedCon.getInputStream()).thenThrow(new IOException("Can't read"));
         when(mockedCon.getErrorStream()).thenReturn(new ByteArrayInputStream(
-            "{\"error\":\"some_arg\", \"error_description\":\"some problem with arg\"}"
-                .getBytes(StandardCharsets.UTF_8)));
+                "{\"error\":\"some_arg\", \"error_description\":\"some problem with arg\"}"
+                    .getBytes(StandardCharsets.UTF_8)));
         when(mockedCon.getResponseCode()).thenReturn(HttpURLConnection.HTTP_INTERNAL_ERROR);
         IOException ioe = assertThrows(IOException.class,
-            () -> HttpJwtRetriever.post(mockedCon, null, null, null, null));
+                () -> HttpJwtRetriever.post(mockedCon, null, null, null, null));
         assertTrue(ioe.getMessage().contains("{\"some_arg\" - \"some problem with arg\"}"));
 
         // error response body has different keys
         when(mockedCon.getErrorStream()).thenReturn(new ByteArrayInputStream(
-            "{\"errorCode\":\"some_arg\", \"errorSummary\":\"some problem with arg\"}"
-                .getBytes(StandardCharsets.UTF_8)));
+                "{\"errorCode\":\"some_arg\", \"errorSummary\":\"some problem with arg\"}"
+                    .getBytes(StandardCharsets.UTF_8)));
         ioe = assertThrows(IOException.class,
-            () -> HttpJwtRetriever.post(mockedCon, null, null, null, null));
+                () -> HttpJwtRetriever.post(mockedCon, null, null, null, null));
         assertTrue(ioe.getMessage().contains("{\"some_arg\" - \"some problem with arg\"}"));
 
         // error response is valid json but unknown keys
         when(mockedCon.getErrorStream()).thenReturn(new ByteArrayInputStream(
-            "{\"err\":\"some_arg\", \"err_des\":\"some problem with arg\"}"
-                .getBytes(StandardCharsets.UTF_8)));
+                "{\"err\":\"some_arg\", \"err_des\":\"some problem with arg\"}"
+                    .getBytes(StandardCharsets.UTF_8)));
         ioe = assertThrows(IOException.class,
-            () -> HttpJwtRetriever.post(mockedCon, null, null, null, null));
+                () -> HttpJwtRetriever.post(mockedCon, null, null, null, null));
         assertTrue(ioe.getMessage().contains("{\"err\":\"some_arg\", \"err_des\":\"some problem with arg\"}"));
     }
 
@@ -108,10 +108,10 @@ public class HttpJwtRetrieverTest extends OAuthBearerTest {
         HttpURLConnection mockedCon = createHttpURLConnection("dummy");
         when(mockedCon.getInputStream()).thenThrow(new IOException("Can't read"));
         when(mockedCon.getErrorStream()).thenReturn(new ByteArrayInputStream(
-            "non json error output".getBytes(StandardCharsets.UTF_8)));
+                "non json error output".getBytes(StandardCharsets.UTF_8)));
         when(mockedCon.getResponseCode()).thenReturn(HttpURLConnection.HTTP_INTERNAL_ERROR);
         IOException ioe = assertThrows(IOException.class,
-            () -> HttpJwtRetriever.post(mockedCon, null, null, null, null));
+                () -> HttpJwtRetriever.post(mockedCon, null, null, null, null));
         assertTrue(ioe.getMessage().contains("{non json error output}"));
     }
 

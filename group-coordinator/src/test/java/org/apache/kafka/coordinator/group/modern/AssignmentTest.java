@@ -55,7 +55,7 @@ public class AssignmentTest {
     @Test
     public void testAttributes() {
         Map<Uuid, Set<Integer>> partitions = mkAssignment(
-            mkTopicAssignment(Uuid.randomUuid(), 1, 2, 3)
+                mkTopicAssignment(Uuid.randomUuid(), 1, 2, 3)
         );
         Assignment assignment = new Assignment(partitions);
         assertEquals(partitions, assignment.partitions());
@@ -80,15 +80,15 @@ public class AssignmentTest {
         Assignment assignment = Assignment.fromRecord(record);
 
         assertEquals(mkAssignment(
-            mkTopicAssignment(topicId1, 1, 2, 3),
-            mkTopicAssignment(topicId2, 4, 5, 6)
+                mkTopicAssignment(topicId1, 1, 2, 3),
+                mkTopicAssignment(topicId2, 4, 5, 6)
         ), assignment.partitions());
     }
 
     @Test
     public void testEquals() {
         Map<Uuid, Set<Integer>> partitions = mkAssignment(
-            mkTopicAssignment(Uuid.randomUuid(), 1, 2, 3)
+                mkTopicAssignment(Uuid.randomUuid(), 1, 2, 3)
         );
 
         assertEquals(new Assignment(partitions), new Assignment(partitions));

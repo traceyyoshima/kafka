@@ -77,13 +77,13 @@ public abstract class RaftRequest implements RaftMessage {
         @Override
         public String toString() {
             return String.format(
-                "InboundRequest(listenerName=%s, correlationId=%d, apiVersion=%d, data=%s, " +
-                "createdTimeMs=%d)",
-                listenerName,
-                correlationId(),
-                apiVersion,
-                data(),
-                createdTimeMs()
+                    "InboundRequest(listenerName=%s, correlationId=%d, apiVersion=%d, data=%s, " +
+                    "createdTimeMs=%d)",
+                    listenerName,
+                    correlationId(),
+                    apiVersion,
+                    data(),
+                    createdTimeMs()
             );
         }
     }
@@ -104,11 +104,11 @@ public abstract class RaftRequest implements RaftMessage {
         @Override
         public String toString() {
             return String.format(
-                "OutboundRequest(correlationId=%d, data=%s, createdTimeMs=%d, destination=%s)",
-                correlationId(),
-                data(),
-                createdTimeMs(),
-                destination
+                    "OutboundRequest(correlationId=%d, data=%s, createdTimeMs=%d, destination=%s)",
+                    correlationId(),
+                    data(),
+                    createdTimeMs(),
+                    destination
             );
         }
     }

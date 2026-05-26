@@ -98,7 +98,7 @@ public class PrintedTest {
     @Test
     public void shouldPrintWithKeyValueMapper() {
         final Processor<String, Integer, Void, Void> processor = new PrintedInternal<>(
-            sysOutPrinter.withKeyValueMapper((key, value) -> String.format("%s -> %d", key, value))
+                sysOutPrinter.withKeyValueMapper((key, value) -> String.format("%s -> %d", key, value))
         ).build("processor").get();
         processor.process(new Record<>("hello", 1, 0L));
         processor.close();

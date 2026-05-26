@@ -151,7 +151,7 @@ public class StoreChangelogReaderTest {
     private final MockConsumer<byte[], byte[]> consumer = new MockConsumer<>(AutoOffsetResetStrategy.EARLIEST.name());
     private final MockAdminClient adminClient = new MockAdminClient();
     private final StoreChangelogReader changelogReader =
-        new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
+            new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
 
     private void setupStateManagerMock(final Task.TaskType type) {
         when(stateManager.storeMetadata(tp)).thenReturn(storeMetadata);
@@ -194,7 +194,7 @@ public class StoreChangelogReaderTest {
     @Test
     public void shouldNotRegisterStoreWithoutMetadata() {
         assertThrows(IllegalStateException.class,
-            () -> changelogReader.register(new TopicPartition("ChangelogWithoutStoreMetadata", 0), stateManager));
+                () -> changelogReader.register(new TopicPartition("ChangelogWithoutStoreMetadata", 0), stateManager));
     }
 
     @ParameterizedTest
@@ -205,7 +205,7 @@ public class StoreChangelogReaderTest {
         adminClient.updateEndOffsets(Collections.singletonMap(tp, 100L));
 
         final StoreChangelogReader changelogReader =
-            new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
+                new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
 
         changelogReader.register(tp, stateManager);
 
@@ -246,7 +246,7 @@ public class StoreChangelogReaderTest {
         adminClient.updateEndOffsets(Collections.singletonMap(tp, 100L));
 
         final StoreChangelogReader changelogReader =
-            new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
+                new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
 
         changelogReader.register(tp, stateManager);
 
@@ -301,7 +301,7 @@ public class StoreChangelogReaderTest {
         adminClient.updateEndOffsets(Collections.singletonMap(tp, 10L));
 
         final StoreChangelogReader changelogReader =
-            new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
+                new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
 
         changelogReader.register(tp, stateManager);
 
@@ -359,7 +359,7 @@ public class StoreChangelogReaderTest {
         adminClient.updateEndOffsets(Collections.singletonMap(tp, 100L));
 
         final StoreChangelogReader changelogReader =
-            new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
+                new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
 
         changelogReader.register(tp, stateManager);
         changelogReader.transitToUpdateStandby();
@@ -438,7 +438,7 @@ public class StoreChangelogReaderTest {
             consumer.updateBeginningOffsets(Collections.singletonMap(tp, 5L));
 
             final StoreChangelogReader changelogReader =
-                new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
+                    new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
 
             changelogReader.register(tp, stateManager);
             changelogReader.restore(mockTasks);
@@ -493,7 +493,7 @@ public class StoreChangelogReaderTest {
         adminClient.updateEndOffsets(Collections.singletonMap(tp, 10L));
 
         final StoreChangelogReader changelogReader =
-            new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
+                new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
 
         changelogReader.register(tp, stateManager);
 
@@ -570,7 +570,7 @@ public class StoreChangelogReaderTest {
         adminClient.updateEndOffsets(Collections.singletonMap(tp, 11L));
 
         final StoreChangelogReader changelogReader =
-            new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
+                new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
 
         changelogReader.register(tp, stateManager);
 
@@ -646,7 +646,7 @@ public class StoreChangelogReaderTest {
         adminClient.updateEndOffsets(Collections.singletonMap(tp, 0L));
 
         final StoreChangelogReader changelogReader =
-            new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
+                new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
 
         changelogReader.register(tp, activeStateManager);
         changelogReader.restore(mockTasks);
@@ -690,7 +690,7 @@ public class StoreChangelogReaderTest {
         adminClient.updateEndOffsets(Collections.singletonMap(tp, 10L));
 
         final StoreChangelogReader changelogReader =
-            new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
+                new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
 
         changelogReader.register(tp, activeStateManager);
         changelogReader.restore(Collections.singletonMap(taskId, mockTask));
@@ -732,13 +732,13 @@ public class StoreChangelogReaderTest {
         adminClient.updateEndOffsets(Collections.singletonMap(tp, 10L));
 
         final StoreChangelogReader changelogReader =
-            new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
+                new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
 
         changelogReader.register(tp, activeStateManager);
 
         final StreamsException thrown = assertThrows(
-            StreamsException.class,
-            () -> changelogReader.restore(Collections.singletonMap(taskId, mock(Task.class)))
+                StreamsException.class,
+                () -> changelogReader.restore(Collections.singletonMap(taskId, mock(Task.class)))
         );
         assertEquals(kaboom, thrown.getCause());
     }
@@ -780,7 +780,7 @@ public class StoreChangelogReaderTest {
         };
 
         final StoreChangelogReader changelogReader =
-            new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
+                new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
 
         changelogReader.register(tp, activeStateManager);
         changelogReader.restore(Collections.singletonMap(taskId, mockTask));
@@ -819,13 +819,13 @@ public class StoreChangelogReaderTest {
         adminClient.updateEndOffsets(Collections.singletonMap(tp, 0L));
 
         final StoreChangelogReader changelogReader =
-            new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
+                new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
 
         changelogReader.register(tp, activeStateManager);
 
         final StreamsException thrown = assertThrows(
-            StreamsException.class,
-            () -> changelogReader.restore(Collections.singletonMap(taskId, mock(Task.class)))
+                StreamsException.class,
+                () -> changelogReader.restore(Collections.singletonMap(taskId, mock(Task.class)))
         );
         assertEquals(kaboom, thrown.getCause());
     }
@@ -865,16 +865,16 @@ public class StoreChangelogReaderTest {
         adminClient.updateConsumerGroupOffsets(Collections.singletonMap(tp, 10L));
 
         final StoreChangelogReader changelogReader =
-            new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
+                new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
 
         changelogReader.register(tp, stateManager);
         changelogReader.restore(Collections.singletonMap(taskId, mockTask));
 
         assertEquals(
-            type == ACTIVE ?
-                StoreChangelogReader.ChangelogState.REGISTERED :
-                StoreChangelogReader.ChangelogState.RESTORING,
-            changelogReader.changelogMetadata(tp).state()
+                type == ACTIVE ?
+                        StoreChangelogReader.ChangelogState.REGISTERED :
+                        StoreChangelogReader.ChangelogState.RESTORING,
+                changelogReader.changelogMetadata(tp).state()
         );
         if (type == ACTIVE) {
             assertNull(changelogReader.changelogMetadata(tp).endOffset());
@@ -917,13 +917,13 @@ public class StoreChangelogReaderTest {
         adminClient.updateEndOffsets(Collections.singletonMap(tp, 10L));
 
         final StoreChangelogReader changelogReader =
-            new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
+                new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
 
         changelogReader.register(tp, stateManager);
 
         final StreamsException thrown = assertThrows(
-            StreamsException.class,
-            () -> changelogReader.restore(Collections.singletonMap(taskId, mock(Task.class)))
+                StreamsException.class,
+                () -> changelogReader.restore(Collections.singletonMap(taskId, mock(Task.class)))
         );
         assertEquals(kaboom, thrown.getCause());
     }
@@ -937,7 +937,7 @@ public class StoreChangelogReaderTest {
             }
         };
         final StoreChangelogReader changelogReader =
-            new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
+                new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
 
         final StreamsException thrown = assertThrows(StreamsException.class, changelogReader::clear);
         assertEquals(kaboom, thrown.getCause());
@@ -1183,9 +1183,9 @@ public class StoreChangelogReaderTest {
         when(activeStateManager.storeMetadata(tp1)).thenReturn(storeMetadataOne);
         when(activeStateManager.storeMetadata(tp2)).thenReturn(storeMetadataTwo);
         when(activeStateManager.changelogOffsets()).thenReturn(mkMap(
-            mkEntry(tp, 5L),
-            mkEntry(tp1, 5L),
-            mkEntry(tp2, 5L)
+                mkEntry(tp, 5L),
+                mkEntry(tp1, 5L),
+                mkEntry(tp2, 5L)
         ));
 
         setupConsumer(10, tp);
@@ -1281,8 +1281,8 @@ public class StoreChangelogReaderTest {
 
         // if a new active is registered, we should immediately transit to standby updating
         assertThrows(
-            IllegalStateException.class,
-            () -> changelogReader.restore(Collections.singletonMap(taskId, mock(Task.class)))
+                IllegalStateException.class,
+                () -> changelogReader.restore(Collections.singletonMap(taskId, mock(Task.class)))
         );
 
         assertEquals(StoreChangelogReader.ChangelogState.RESTORING, changelogReader.changelogMetadata(tp).state());
@@ -1324,13 +1324,13 @@ public class StoreChangelogReaderTest {
         adminClient.updateEndOffsets(Collections.singletonMap(tp, 10L));
 
         final StoreChangelogReader changelogReader =
-            new StoreChangelogReader(time, config, logContext, adminClient, consumer, exceptionCallback, standbyListener);
+                new StoreChangelogReader(time, config, logContext, adminClient, consumer, exceptionCallback, standbyListener);
 
         changelogReader.register(tp, activeStateManager);
 
         StreamsException thrown = assertThrows(
-            StreamsException.class,
-            () -> changelogReader.restore(Collections.singletonMap(taskId, mock(Task.class)))
+                StreamsException.class,
+                () -> changelogReader.restore(Collections.singletonMap(taskId, mock(Task.class)))
         );
         assertEquals(kaboom, thrown.getCause());
 
@@ -1338,16 +1338,16 @@ public class StoreChangelogReaderTest {
         consumer.addRecord(new ConsumerRecord<>(topicName, 0, 7L, "key".getBytes(), "value".getBytes()));
 
         thrown = assertThrows(
-            StreamsException.class,
-            () -> changelogReader.restore(Collections.singletonMap(taskId, mock(Task.class)))
+                StreamsException.class,
+                () -> changelogReader.restore(Collections.singletonMap(taskId, mock(Task.class)))
         );
         assertEquals(kaboom, thrown.getCause());
 
         consumer.seek(tp, 10L);
 
         thrown = assertThrows(
-            StreamsException.class,
-            () -> changelogReader.restore(Collections.singletonMap(taskId, mock(Task.class)))
+                StreamsException.class,
+                () -> changelogReader.restore(Collections.singletonMap(taskId, mock(Task.class)))
         );
         assertEquals(kaboom, thrown.getCause());
     }
@@ -1359,9 +1359,9 @@ public class StoreChangelogReaderTest {
             changelogReader.unregister(Collections.singletonList(new TopicPartition("unknown", 0)));
 
             assertThat(
-                appender.getMessages(),
-                hasItem("test-reader Changelog partition unknown-0 could not be found," +
-                    " it could be already cleaned up during the handling of task corruption and never restore again")
+                    appender.getMessages(),
+                    hasItem("test-reader Changelog partition unknown-0 could not be found," +
+                            " it could be already cleaned up during the handling of task corruption and never restore again")
             );
         }
     }
@@ -1427,11 +1427,11 @@ public class StoreChangelogReaderTest {
     private void addRecords(final long messages, final TopicPartition topicPartition) {
         for (int i = 0; i < messages; i++) {
             consumer.addRecord(new ConsumerRecord<>(
-                topicPartition.topic(),
-                topicPartition.partition(),
-                i,
-                new byte[0],
-                new byte[0]));
+                    topicPartition.topic(),
+                    topicPartition.partition(),
+                    i,
+                    new byte[0],
+                    new byte[0]));
         }
     }
 
@@ -1471,13 +1471,13 @@ public class StoreChangelogReaderTest {
 
         // schedule adding the record during poll, after the partition is assigned
         timestampConsumer.schedulePollTask(() -> timestampConsumer.addRecord(new ConsumerRecord<>(
-            tp.topic(), tp.partition(), endOffset - 1,
-            latestRecordTimestamp, TimestampType.CREATE_TIME,
-            0, 0, new byte[0], new byte[0],
-            new RecordHeaders(), Optional.empty())));
+                tp.topic(), tp.partition(), endOffset - 1,
+                latestRecordTimestamp, TimestampType.CREATE_TIME,
+                0, 0, new byte[0], new byte[0],
+                new RecordHeaders(), Optional.empty())));
 
         final StoreChangelogReader reader =
-            new StoreChangelogReader(time, config, logContext, adminClient, timestampConsumer, callback, standbyListener);
+                new StoreChangelogReader(time, config, logContext, adminClient, timestampConsumer, callback, standbyListener);
 
         reader.register(tp, windowStateManager);
         reader.restore(Collections.singletonMap(taskId, mock(Task.class)));
@@ -1520,13 +1520,13 @@ public class StoreChangelogReaderTest {
 
         // schedule adding the record during poll, after the partition is assigned
         timestampConsumer.schedulePollTask(() -> timestampConsumer.addRecord(new ConsumerRecord<>(
-            tp.topic(), tp.partition(), endOffset - 1,
-            latestRecordTimestamp, TimestampType.CREATE_TIME,
-            0, 0, new byte[0], new byte[0],
-            new RecordHeaders(), Optional.empty())));
+                tp.topic(), tp.partition(), endOffset - 1,
+                latestRecordTimestamp, TimestampType.CREATE_TIME,
+                0, 0, new byte[0], new byte[0],
+                new RecordHeaders(), Optional.empty())));
 
         final StoreChangelogReader reader =
-            new StoreChangelogReader(time, config, logContext, adminClient, timestampConsumer, callback, standbyListener);
+                new StoreChangelogReader(time, config, logContext, adminClient, timestampConsumer, callback, standbyListener);
 
         reader.register(tp, windowStateManager);
         reader.restore(Collections.singletonMap(taskId, mock(Task.class)));
@@ -1554,7 +1554,7 @@ public class StoreChangelogReaderTest {
         adminClient.updateEndOffsets(Collections.singletonMap(tp, 100L));
 
         final StoreChangelogReader reader =
-            new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
+                new StoreChangelogReader(time, config, logContext, adminClient, consumer, callback, standbyListener);
 
         reader.register(tp, kvStateManager);
         reader.restore(Collections.singletonMap(taskId, mock(Task.class)));
@@ -1565,13 +1565,13 @@ public class StoreChangelogReaderTest {
     private void assignPartition(final long messages,
                                  final TopicPartition topicPartition) {
         consumer.updatePartitions(
-            topicPartition.topic(),
-            Collections.singletonList(new PartitionInfo(
                 topicPartition.topic(),
-                topicPartition.partition(),
-                null,
-                null,
-                null)));
+                Collections.singletonList(new PartitionInfo(
+                    topicPartition.topic(),
+                    topicPartition.partition(),
+                    null,
+                    null,
+                    null)));
         consumer.updateBeginningOffsets(Collections.singletonMap(topicPartition, 0L));
         consumer.updateEndOffsets(Collections.singletonMap(topicPartition, Math.max(0, messages) + 1));
         adminClient.updateEndOffsets(Collections.singletonMap(topicPartition, Math.max(0, messages) + 1));

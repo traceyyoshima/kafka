@@ -69,12 +69,12 @@ public final class KafkaRaftClientFetchTest {
         ReplicaKey electedLeader = KafkaRaftClientTest.replicaKey(localId + 1, true);
 
         RaftClientTestContext context = new RaftClientTestContext.Builder(
-            local.id(),
-            local.directoryId().get()
+                local.id(),
+                local.directoryId().get()
         )
             .withStartingVoters(
-                VoterSetTest.voterSet(Stream.of(local, electedLeader)), KRaftVersion.KRAFT_VERSION_1
-            )
+                    VoterSetTest.voterSet(Stream.of(local, electedLeader)), KRaftVersion.KRAFT_VERSION_1
+        )
             .withElectedLeader(epoch, electedLeader.id())
             .withRaftProtocol(RaftClientTestContext.RaftProtocol.KIP_996_PROTOCOL)
             .build();
@@ -86,9 +86,9 @@ public final class KafkaRaftClientFetchTest {
         long oldLogEndOffset = context.log.endOffset().offset();
 
         context.deliverResponse(
-            fetchRequest.correlationId(),
-            fetchRequest.destination(),
-            context.fetchResponse(epoch, electedLeader.id(), records, 0L, Errors.NONE)
+                fetchRequest.correlationId(),
+                fetchRequest.destination(),
+                context.fetchResponse(epoch, electedLeader.id(), records, 0L, Errors.NONE)
         );
 
         context.client.poll();
@@ -105,13 +105,13 @@ public final class KafkaRaftClientFetchTest {
         int expectedFetchMaxBytes = 1024;
 
         RaftClientTestContext context = new RaftClientTestContext.Builder(
-            local.id(),
-            local.directoryId().get()
+                local.id(),
+                local.directoryId().get()
         )
             .withStartingVoters(
-                VoterSetTest.voterSet(Stream.of(local, electedLeader)),
-                KRaftVersion.KRAFT_VERSION_1
-            )
+                    VoterSetTest.voterSet(Stream.of(local, electedLeader)),
+                    KRaftVersion.KRAFT_VERSION_1
+        )
             .withElectedLeader(epoch, electedLeader.id())
             // Explicitly change the configuration here.
             .withFetchMaxBytes(expectedFetchMaxBytes)
@@ -135,15 +135,15 @@ public final class KafkaRaftClientFetchTest {
         var localMaxSizeBytes = 1;
 
         RaftClientTestContext context = new RaftClientTestContext.Builder(
-            localKey.id(),
-            localKey.directoryId().get()
+                localKey.id(),
+                localKey.directoryId().get()
         )
             .appendToLog(epoch, List.of("a", "a", "a"))
             .appendToLog(epoch, List.of("b", "b", "b"))
             .withStartingVoters(
-                VoterSetTest.voterSet(Stream.of(localKey, remoteKey)),
-                KRaftVersion.KRAFT_VERSION_1
-            )
+                    VoterSetTest.voterSet(Stream.of(localKey, remoteKey)),
+                    KRaftVersion.KRAFT_VERSION_1
+        )
             .withUnknownLeader(epoch)
             .withFetchMaxBytes(localMaxSizeBytes)
             .build();
@@ -190,15 +190,15 @@ public final class KafkaRaftClientFetchTest {
         var localMaxSizeBytes = 1024;
 
         RaftClientTestContext context = new RaftClientTestContext.Builder(
-            localKey.id(),
-            localKey.directoryId().get()
+                localKey.id(),
+                localKey.directoryId().get()
         )
             .appendToLog(epoch, List.of("a", "a", "a"))
             .appendToLog(epoch, List.of("b", "b", "b"))
             .withStartingVoters(
-                VoterSetTest.voterSet(Stream.of(localKey, remoteKey)),
-                KRaftVersion.KRAFT_VERSION_1
-            )
+                    VoterSetTest.voterSet(Stream.of(localKey, remoteKey)),
+                    KRaftVersion.KRAFT_VERSION_1
+        )
             .withUnknownLeader(epoch)
             .withFetchMaxBytes(localMaxSizeBytes)
             .build();
@@ -216,19 +216,19 @@ public final class KafkaRaftClientFetchTest {
         assertEquals(Errors.NONE.code(), partitionData.errorCode());
         MemoryRecords records = (MemoryRecords) FetchResponse.recordsOrFail(partitionData);
         assertTrue(
-            records.sizeInBytes() > 1,
-            String.format(
-                "Expected records.sizeInBytes() (%d) > 1 since we always return at least one batch",
-                records.sizeInBytes()
-            )
+                records.sizeInBytes() > 1,
+                String.format(
+                        "Expected records.sizeInBytes() (%d) > 1 since we always return at least one batch",
+                        records.sizeInBytes()
+                )
         );
         var iterator = records.batchIterator();
         var firstBatch = iterator.next();
         assertEquals(0, firstBatch.baseOffset());
         assertEquals(3, firstBatch.nextOffset());
         assertFalse(
-            iterator.hasNext(),
-            String.format("Expected only a single batch to be fetched for maxSize = %d", remoteMaxSizeBytes)
+                iterator.hasNext(),
+                String.format("Expected only a single batch to be fetched for maxSize = %d", remoteMaxSizeBytes)
         );
     }
 
@@ -243,16 +243,16 @@ public final class KafkaRaftClientFetchTest {
         var localMaxSizeBytes = 1024;
 
         RaftClientTestContext context = new RaftClientTestContext.Builder(
-            localKey.id(),
-            localKey.directoryId().get()
+                localKey.id(),
+                localKey.directoryId().get()
         )
             .appendToLog(epoch, List.of("a", "a", "a"))
             .appendToLog(epoch, List.of("b", "b", "b"))
             .appendToLog(epoch, List.of("c", "c", "c"))
             .withStartingVoters(
-                VoterSetTest.voterSet(Stream.of(localKey, remoteKey)),
-                KRaftVersion.KRAFT_VERSION_1
-            )
+                    VoterSetTest.voterSet(Stream.of(localKey, remoteKey)),
+                    KRaftVersion.KRAFT_VERSION_1
+        )
             .withUnknownLeader(epoch)
             .withFetchMaxBytes(localMaxSizeBytes)
             .build();
@@ -272,33 +272,33 @@ public final class KafkaRaftClientFetchTest {
         // There is less data than remoteMaxSizeBytes so we expect the size of records.sizeInBytes to be less than
         // remoteMaxSizeBytes.
         assertTrue(
-            records.sizeInBytes() < remoteMaxSizeBytes,
-            String.format(
-                "Expected records size (%d) < remoteMaxBatchSizeBytes (%d)",
-                records.sizeInBytes(),
-                remoteMaxSizeBytes
-            )
+                records.sizeInBytes() < remoteMaxSizeBytes,
+                String.format(
+                        "Expected records size (%d) < remoteMaxBatchSizeBytes (%d)",
+                        records.sizeInBytes(),
+                        remoteMaxSizeBytes
+                )
         );
         var iterator = records.batchIterator();
         var firstBatch = iterator.next();
         // First batch should be less than the batchSizeBytes.
         assertTrue(
-            firstBatch.sizeInBytes() < batchSizeBytes,
-            String.format(
-                "Expected secondBatch.sizeInBytes() (%d) < batchSizeBytes (%d)",
-                firstBatch.sizeInBytes(),
-                remoteMaxSizeBytes
-            )
+                firstBatch.sizeInBytes() < batchSizeBytes,
+                String.format(
+                        "Expected secondBatch.sizeInBytes() (%d) < batchSizeBytes (%d)",
+                        firstBatch.sizeInBytes(),
+                        remoteMaxSizeBytes
+                )
         );
         assertTrue(iterator.hasNext(), "Expected more than one batch to be fetched");
         var secondBatch = iterator.next();
         assertTrue(
-            secondBatch.sizeInBytes() < batchSizeBytes,
-            String.format(
-                "Expected secondBatch.sizeInBytes() (%d) < batchSizeBytes (%d)",
-                secondBatch.sizeInBytes(),
-                remoteMaxSizeBytes
-            )
+                secondBatch.sizeInBytes() < batchSizeBytes,
+                String.format(
+                        "Expected secondBatch.sizeInBytes() (%d) < batchSizeBytes (%d)",
+                        secondBatch.sizeInBytes(),
+                        remoteMaxSizeBytes
+                )
         );
         assertFalse(iterator.hasNext(), "Expected two batches to be fetched");
     }
@@ -312,15 +312,15 @@ public final class KafkaRaftClientFetchTest {
         var localMaxSizeBytes = 1024;
 
         RaftClientTestContext context = new RaftClientTestContext.Builder(
-            localKey.id(),
-            localKey.directoryId().get()
+                localKey.id(),
+                localKey.directoryId().get()
         )
             .appendToLog(epoch, List.of("a", "a", "a"))
             .appendToLog(epoch, List.of("b", "b", "b"))
             .withStartingVoters(
-                VoterSetTest.voterSet(Stream.of(localKey, remoteKey)),
-                KRaftVersion.KRAFT_VERSION_1
-            )
+                    VoterSetTest.voterSet(Stream.of(localKey, remoteKey)),
+                    KRaftVersion.KRAFT_VERSION_1
+        )
             .withUnknownLeader(epoch)
             .withFetchMaxBytes(localMaxSizeBytes)
             .build();
@@ -330,16 +330,16 @@ public final class KafkaRaftClientFetchTest {
 
         // Send initial request to get all available data.
         FetchRequestData allRecordsRequest =
-            context.fetchRequest(epoch, remoteKey, 1L, epoch, 500);
+                context.fetchRequest(epoch, remoteKey, 1L, epoch, 500);
         allRecordsRequest.setMaxBytes(Integer.MAX_VALUE);
         context.deliverRequest(allRecordsRequest);
         context.pollUntilResponse();
         MemoryRecords allRecords =
-            (MemoryRecords) FetchResponse.recordsOrFail(context.assertSentFetchPartitionResponse());
+                (MemoryRecords) FetchResponse.recordsOrFail(context.assertSentFetchPartitionResponse());
 
         // Send another request to retrieve all data by setting exactSizeBytes
         FetchRequestData exactSizeBytesRequest =
-            context.fetchRequest(epoch, remoteKey, 1L, epoch, 500);
+                context.fetchRequest(epoch, remoteKey, 1L, epoch, 500);
         exactSizeBytesRequest.setMaxBytes(allRecords.sizeInBytes());
         context.deliverRequest(exactSizeBytesRequest);
         context.pollUntilResponse();
@@ -365,12 +365,12 @@ public final class KafkaRaftClientFetchTest {
         // Send fetch request with sizeInBytes-1. It will appear here that we have only 1 batch
         // since the other batch is not "complete" (it's missing one byte) and hence not "iterable".
         FetchRequestData oneBatchRequest =
-            context.fetchRequest(epoch, remoteKey, 1L, epoch, 500);
+                context.fetchRequest(epoch, remoteKey, 1L, epoch, 500);
         oneBatchRequest.setMaxBytes(exactSizeBytesRecords.sizeInBytes() - 1);
         context.deliverRequest(oneBatchRequest);
         context.pollUntilResponse();
         MemoryRecords oneBatchRecords =
-            (MemoryRecords) FetchResponse.recordsOrFail(context.assertSentFetchPartitionResponse());
+                (MemoryRecords) FetchResponse.recordsOrFail(context.assertSentFetchPartitionResponse());
         assertTrue(oneBatchRecords.sizeInBytes() < exactSizeBytesRecords.sizeInBytes());
         var oneBatchBatches = oneBatchRecords.batchIterator();
         var firstBatch = oneBatchBatches.next();
@@ -387,13 +387,13 @@ public final class KafkaRaftClientFetchTest {
         ReplicaKey electedLeader = KafkaRaftClientTest.replicaKey(localId + 1, true);
 
         RaftClientTestContext context = new RaftClientTestContext.Builder(
-            local.id(),
-            local.directoryId().get()
+                local.id(),
+                local.directoryId().get()
         )
             .withStartingVoters(
-                VoterSetTest.voterSet(Stream.of(local, electedLeader)),
-                KRaftVersion.KRAFT_VERSION_1
-            )
+                    VoterSetTest.voterSet(Stream.of(local, electedLeader)),
+                    KRaftVersion.KRAFT_VERSION_1
+        )
             .withElectedLeader(epoch, electedLeader.id())
             .withRaftProtocol(RaftClientTestContext.RaftProtocol.KIP_996_PROTOCOL)
             .build();
@@ -405,23 +405,23 @@ public final class KafkaRaftClientFetchTest {
         long oldLogEndOffset = context.log.endOffset().offset();
         int numberOfRecords = 10;
         MemoryRecords batchWithValidEpoch = MemoryRecords.withRecords(
-            oldLogEndOffset,
-            Compression.NONE,
-            epoch,
-            IntStream
-                .range(0, numberOfRecords)
-                .mapToObj(number -> new SimpleRecord(Integer.toString(number).getBytes()))
-                .toArray(SimpleRecord[]::new)
+                oldLogEndOffset,
+                Compression.NONE,
+                epoch,
+                IntStream
+                    .range(0, numberOfRecords)
+                    .mapToObj(number -> new SimpleRecord(Integer.toString(number).getBytes()))
+                    .toArray(SimpleRecord[]::new)
         );
 
         MemoryRecords batchWithInvalidEpoch = MemoryRecords.withRecords(
-            oldLogEndOffset + numberOfRecords,
-            Compression.NONE,
-            epoch + 1,
-            IntStream
-                .range(0, numberOfRecords)
-                .mapToObj(number -> new SimpleRecord(Integer.toString(number).getBytes()))
-                .toArray(SimpleRecord[]::new)
+                oldLogEndOffset + numberOfRecords,
+                Compression.NONE,
+                epoch + 1,
+                IntStream
+                    .range(0, numberOfRecords)
+                    .mapToObj(number -> new SimpleRecord(Integer.toString(number).getBytes()))
+                    .toArray(SimpleRecord[]::new)
         );
 
         var buffer = ByteBuffer.allocate(batchWithValidEpoch.sizeInBytes() + batchWithInvalidEpoch.sizeInBytes());
@@ -432,9 +432,9 @@ public final class KafkaRaftClientFetchTest {
         MemoryRecords records = MemoryRecords.readableRecords(buffer);
 
         context.deliverResponse(
-            fetchRequest.correlationId(),
-            fetchRequest.destination(),
-            context.fetchResponse(epoch, electedLeader.id(), records, 0L, Errors.NONE)
+                fetchRequest.correlationId(),
+                fetchRequest.destination(),
+                context.fetchResponse(epoch, electedLeader.id(), records, 0L, Errors.NONE)
         );
 
         context.client.poll();
@@ -451,14 +451,14 @@ public final class KafkaRaftClientFetchTest {
         ReplicaKey electedLeader = KafkaRaftClientTest.replicaKey(localId + 1, true);
 
         RaftClientTestContext context = new RaftClientTestContext.Builder(
-            local.id(),
-            local.directoryId().get()
+                local.id(),
+                local.directoryId().get()
         )
             .appendToLog(epoch, List.of("a", "b", "c"))
             .appendToLog(epoch, List.of("d", "e", "f"))
             .withStartingVoters(
-                VoterSetTest.voterSet(Stream.of(local, electedLeader)), KRaftVersion.KRAFT_VERSION_1
-            )
+                    VoterSetTest.voterSet(Stream.of(local, electedLeader)), KRaftVersion.KRAFT_VERSION_1
+        )
             .withElectedLeader(epoch, electedLeader.id())
             .withRaftProtocol(RaftClientTestContext.RaftProtocol.KIP_1166_PROTOCOL)
             .build();
@@ -468,34 +468,34 @@ public final class KafkaRaftClientFetchTest {
         context.pollUntilRequest();
         RaftRequest.Outbound fetchRequest = context.assertSentFetchRequest();
         context.assertFetchRequestData(
-            fetchRequest,
-            epoch,
-            localLogEndOffset,
-            epoch,
-            OptionalLong.empty()
+                fetchRequest,
+                epoch,
+                localLogEndOffset,
+                epoch,
+                OptionalLong.empty()
         );
 
         // Set the HWM to the LEO
         context.deliverResponse(
-            fetchRequest.correlationId(),
-            fetchRequest.destination(),
-            context.fetchResponse(
-                epoch,
-                electedLeader.id(),
-                MemoryRecords.EMPTY,
-                localLogEndOffset,
-                Errors.NONE
-            )
+                fetchRequest.correlationId(),
+                fetchRequest.destination(),
+                context.fetchResponse(
+                        epoch,
+                        electedLeader.id(),
+                        MemoryRecords.EMPTY,
+                        localLogEndOffset,
+                        Errors.NONE
+                )
         );
 
         context.pollUntilRequest();
         fetchRequest = context.assertSentFetchRequest();
         context.assertFetchRequestData(
-            fetchRequest,
-            epoch,
-            localLogEndOffset,
-            epoch,
-            OptionalLong.of(localLogEndOffset)
+                fetchRequest,
+                epoch,
+                localLogEndOffset,
+                epoch,
+                OptionalLong.of(localLogEndOffset)
         );
     }
 
@@ -503,21 +503,21 @@ public final class KafkaRaftClientFetchTest {
     void testDefaultHwmDeferred() throws Exception {
         var epoch = 2;
         var local = KafkaRaftClientTest.replicaKey(
-            KafkaRaftClientTest.randomReplicaId(),
-            true
+                KafkaRaftClientTest.randomReplicaId(),
+                true
         );
         var voter = KafkaRaftClientTest.replicaKey(local.id() + 1, true);
         var remote = KafkaRaftClientTest.replicaKey(local.id() + 2, true);
 
         RaftClientTestContext context = new RaftClientTestContext.Builder(
-            local.id(),
-            local.directoryId().get()
+                local.id(),
+                local.directoryId().get()
         )
             .appendToLog(epoch, List.of("a", "b", "c"))
             .appendToLog(epoch, List.of("d", "e", "f"))
             .withStartingVoters(
-                VoterSetTest.voterSet(Stream.of(local, voter)), KRaftVersion.KRAFT_VERSION_1
-            )
+                    VoterSetTest.voterSet(Stream.of(local, voter)), KRaftVersion.KRAFT_VERSION_1
+        )
             .withUnknownLeader(epoch)
             .withRaftProtocol(RaftClientTestContext.RaftProtocol.KIP_1166_PROTOCOL)
             .build();
@@ -530,13 +530,13 @@ public final class KafkaRaftClientFetchTest {
         var localLogEndOffset = context.log.endOffset().offset();
         var lastFetchedEpoch = context.log.lastFetchedEpoch();
         context.deliverRequest(
-            context.fetchRequest(
-                epoch,
-                remote,
-                localLogEndOffset,
-                lastFetchedEpoch,
-                Integer.MAX_VALUE
-            )
+                context.fetchRequest(
+                        epoch,
+                        remote,
+                        localLogEndOffset,
+                        lastFetchedEpoch,
+                        Integer.MAX_VALUE
+                )
         );
 
         // Check that the fetch response was deferred
@@ -550,21 +550,21 @@ public final class KafkaRaftClientFetchTest {
     void testUnknownHwmDeferredWhenLeaderDoesNotKnowHwm() throws Exception {
         var epoch = 2;
         var local = KafkaRaftClientTest.replicaKey(
-            KafkaRaftClientTest.randomReplicaId(),
-            true
+                KafkaRaftClientTest.randomReplicaId(),
+                true
         );
         var voter = KafkaRaftClientTest.replicaKey(local.id() + 1, true);
         var remote = KafkaRaftClientTest.replicaKey(local.id() + 2, true);
 
         RaftClientTestContext context = new RaftClientTestContext.Builder(
-            local.id(),
-            local.directoryId().get()
+                local.id(),
+                local.directoryId().get()
         )
             .appendToLog(epoch, List.of("a", "b", "c"))
             .appendToLog(epoch, List.of("d", "e", "f"))
             .withStartingVoters(
-                VoterSetTest.voterSet(Stream.of(local, voter)), KRaftVersion.KRAFT_VERSION_1
-            )
+                    VoterSetTest.voterSet(Stream.of(local, voter)), KRaftVersion.KRAFT_VERSION_1
+        )
             .withUnknownLeader(epoch)
             .withRaftProtocol(RaftClientTestContext.RaftProtocol.KIP_1166_PROTOCOL)
             .build();
@@ -575,14 +575,14 @@ public final class KafkaRaftClientFetchTest {
         var localLogEndOffset = context.log.endOffset().offset();
         var lastFetchedEpoch = context.log.lastFetchedEpoch();
         context.deliverRequest(
-            context.fetchRequest(
-                epoch,
-                remote,
-                localLogEndOffset,
-                lastFetchedEpoch,
-                OptionalLong.empty(),
-                Integer.MAX_VALUE
-            )
+                context.fetchRequest(
+                        epoch,
+                        remote,
+                        localLogEndOffset,
+                        lastFetchedEpoch,
+                        OptionalLong.empty(),
+                        Integer.MAX_VALUE
+                )
         );
 
         // Check that the fetch response was deferred
@@ -596,21 +596,21 @@ public final class KafkaRaftClientFetchTest {
     void testOutdatedHwmCompletedWhenLeaderKnowsHwm() throws Exception {
         var epoch = 2;
         var local = KafkaRaftClientTest.replicaKey(
-            KafkaRaftClientTest.randomReplicaId(),
-            true
+                KafkaRaftClientTest.randomReplicaId(),
+                true
         );
         var voter = KafkaRaftClientTest.replicaKey(local.id() + 1, true);
         var remote = KafkaRaftClientTest.replicaKey(local.id() + 2, true);
 
         RaftClientTestContext context = new RaftClientTestContext.Builder(
-            local.id(),
-            local.directoryId().get()
+                local.id(),
+                local.directoryId().get()
         )
             .appendToLog(epoch, List.of("a", "b", "c"))
             .appendToLog(epoch, List.of("d", "e", "f"))
             .withStartingVoters(
-                VoterSetTest.voterSet(Stream.of(local, voter)), KRaftVersion.KRAFT_VERSION_1
-            )
+                    VoterSetTest.voterSet(Stream.of(local, voter)), KRaftVersion.KRAFT_VERSION_1
+        )
             .withUnknownLeader(epoch)
             .withRaftProtocol(RaftClientTestContext.RaftProtocol.KIP_1166_PROTOCOL)
             .build();
@@ -625,28 +625,28 @@ public final class KafkaRaftClientFetchTest {
 
         // FETCH response completed when remote replica doesn't know HWM
         context.deliverRequest(
-            context.fetchRequest(
-                epoch,
-                remote,
-                localLogEndOffset,
-                lastFetchedEpoch,
-                OptionalLong.empty(),
-                Integer.MAX_VALUE
-            )
+                context.fetchRequest(
+                        epoch,
+                        remote,
+                        localLogEndOffset,
+                        lastFetchedEpoch,
+                        OptionalLong.empty(),
+                        Integer.MAX_VALUE
+                )
         );
         context.pollUntilResponse();
         context.assertSentFetchPartitionResponse(localLogEndOffset, epoch);
 
         // FETCH response completed when remote replica has outdated HWM
         context.deliverRequest(
-            context.fetchRequest(
-                epoch,
-                remote,
-                localLogEndOffset,
-                lastFetchedEpoch,
-                OptionalLong.of(localLogEndOffset - 1),
-                Integer.MAX_VALUE
-            )
+                context.fetchRequest(
+                        epoch,
+                        remote,
+                        localLogEndOffset,
+                        lastFetchedEpoch,
+                        OptionalLong.of(localLogEndOffset - 1),
+                        Integer.MAX_VALUE
+                )
         );
         context.pollUntilResponse();
         context.assertSentFetchPartitionResponse(localLogEndOffset, epoch);
@@ -656,21 +656,21 @@ public final class KafkaRaftClientFetchTest {
     void testUnchangedHighWatermarkDeferred() throws Exception {
         var epoch = 2;
         var local = KafkaRaftClientTest.replicaKey(
-            KafkaRaftClientTest.randomReplicaId(),
-            true
+                KafkaRaftClientTest.randomReplicaId(),
+                true
         );
         var voter = KafkaRaftClientTest.replicaKey(local.id() + 1, true);
         var remote = KafkaRaftClientTest.replicaKey(local.id() + 2, true);
 
         RaftClientTestContext context = new RaftClientTestContext.Builder(
-            local.id(),
-            local.directoryId().get()
+                local.id(),
+                local.directoryId().get()
         )
             .appendToLog(epoch, List.of("a", "b", "c"))
             .appendToLog(epoch, List.of("d", "e", "f"))
             .withStartingVoters(
-                VoterSetTest.voterSet(Stream.of(local, voter)), KRaftVersion.KRAFT_VERSION_1
-            )
+                    VoterSetTest.voterSet(Stream.of(local, voter)), KRaftVersion.KRAFT_VERSION_1
+        )
             .withUnknownLeader(epoch)
             .withRaftProtocol(RaftClientTestContext.RaftProtocol.KIP_1166_PROTOCOL)
             .build();
@@ -683,14 +683,14 @@ public final class KafkaRaftClientFetchTest {
         var localLogEndOffset = context.log.endOffset().offset();
         var lastFetchedEpoch = context.log.lastFetchedEpoch();
         context.deliverRequest(
-            context.fetchRequest(
-                epoch,
-                remote,
-                localLogEndOffset,
-                lastFetchedEpoch,
-                OptionalLong.of(localLogEndOffset),
-                Integer.MAX_VALUE
-            )
+                context.fetchRequest(
+                        epoch,
+                        remote,
+                        localLogEndOffset,
+                        lastFetchedEpoch,
+                        OptionalLong.of(localLogEndOffset),
+                        Integer.MAX_VALUE
+                )
         );
 
         // Check that the fetch response was deferred
@@ -704,21 +704,21 @@ public final class KafkaRaftClientFetchTest {
     void testUpdatedHighWatermarkCompleted() throws Exception {
         var epoch = 2;
         var local = KafkaRaftClientTest.replicaKey(
-            KafkaRaftClientTest.randomReplicaId(),
-            true
+                KafkaRaftClientTest.randomReplicaId(),
+                true
         );
         var voter = KafkaRaftClientTest.replicaKey(local.id() + 1, true);
         var remote = KafkaRaftClientTest.replicaKey(local.id() + 2, true);
 
         RaftClientTestContext context = new RaftClientTestContext.Builder(
-            local.id(),
-            local.directoryId().get()
+                local.id(),
+                local.directoryId().get()
         )
             .appendToLog(epoch, List.of("a", "b", "c"))
             .appendToLog(epoch, List.of("d", "e", "f"))
             .withStartingVoters(
-                VoterSetTest.voterSet(Stream.of(local, voter)), KRaftVersion.KRAFT_VERSION_1
-            )
+                    VoterSetTest.voterSet(Stream.of(local, voter)), KRaftVersion.KRAFT_VERSION_1
+        )
             .withUnknownLeader(epoch)
             .withRaftProtocol(RaftClientTestContext.RaftProtocol.KIP_1166_PROTOCOL)
             .build();
@@ -734,14 +734,14 @@ public final class KafkaRaftClientFetchTest {
         var localLogEndOffset = context.log.endOffset().offset();
         var lastFetchedEpoch = context.log.lastFetchedEpoch();
         context.deliverRequest(
-            context.fetchRequest(
-                epoch,
-                remote,
-                localLogEndOffset,
-                lastFetchedEpoch,
-                OptionalLong.of(localLogEndOffset),
-                Integer.MAX_VALUE
-            )
+                context.fetchRequest(
+                        epoch,
+                        remote,
+                        localLogEndOffset,
+                        lastFetchedEpoch,
+                        OptionalLong.of(localLogEndOffset),
+                        Integer.MAX_VALUE
+                )
         );
 
         // Check that the fetch response was deferred
@@ -752,7 +752,7 @@ public final class KafkaRaftClientFetchTest {
 
         // Update the HWM and complete the deferred FETCH response
         context.deliverRequest(
-            context.fetchRequest(epoch, voter, localLogEndOffset, lastFetchedEpoch, 0)
+                context.fetchRequest(epoch, voter, localLogEndOffset, lastFetchedEpoch, 0)
         );
         context.pollUntilResponse();
 

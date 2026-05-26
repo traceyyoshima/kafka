@@ -75,8 +75,8 @@ public final class ReplicaKey implements Comparable<ReplicaKey> {
 
     public static ReplicaKey of(int id, Uuid directoryId) {
         return new ReplicaKey(
-            id,
-            directoryId.equals(NO_DIRECTORY_ID) ? Optional.empty() : Optional.of(directoryId)
+                id,
+                directoryId.equals(NO_DIRECTORY_ID) ? Optional.empty() : Optional.of(directoryId)
         );
     }
 }

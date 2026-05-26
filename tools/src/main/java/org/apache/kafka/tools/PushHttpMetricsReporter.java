@@ -68,6 +68,7 @@ public class PushHttpMetricsReporter implements MetricsReporter {
     static final String CLIENT_ID_CONFIG = ProducerConfig.CLIENT_ID_CONFIG;
 
     private static final Map<String, String> HEADERS = new LinkedHashMap<>();
+
     static {
         HEADERS.put("Content-Type", "application/json");
     }
@@ -91,10 +92,10 @@ public class PushHttpMetricsReporter implements MetricsReporter {
                     "The frequency at which metrics should be reported, in second")
             .define(METRICS_HOST_CONFIG, ConfigDef.Type.STRING, "", ConfigDef.Importance.LOW,
                     "The hostname to report with each metric; if empty, defaults to the FQDN that can be automatically" +
-                            "determined")
+                    "determined")
             .define(CLIENT_ID_CONFIG, ConfigDef.Type.STRING, "", ConfigDef.Importance.LOW,
                     "Client ID to identify the application, generally inherited from the " +
-                            "producer/consumer/streams/connect instance");
+                    "producer/consumer/streams/connect instance");
 
     public PushHttpMetricsReporter() {
         // In test_performance_services.py, we have system tests for Kafka versions 0.8.2 and 0.9.
@@ -240,18 +241,18 @@ public class PushHttpMetricsReporter implements MetricsReporter {
         }
     }
 
-    private record MetricsReport(@JsonProperty("client") MetricClientInfo client, 
+    private record MetricsReport(@JsonProperty("client") MetricClientInfo client,
                                 @JsonProperty("metrics") Collection<MetricValue> metrics) {
     }
 
-    private record MetricClientInfo(@JsonProperty("host") String host, 
-                                   @JsonProperty("client_id") String clientId, 
+    private record MetricClientInfo(@JsonProperty("host") String host,
+                                   @JsonProperty("client_id") String clientId,
                                    @JsonProperty("time") long time) {
     }
 
-    private record MetricValue(@JsonProperty("name") String name, 
-                              @JsonProperty("group") String group, 
-                              @JsonProperty("tags") Map<String, String> tags, 
+    private record MetricValue(@JsonProperty("name") String name,
+                              @JsonProperty("group") String group,
+                              @JsonProperty("tags") Map<String, String> tags,
                               @JsonProperty("value") Object value) {
     }
 

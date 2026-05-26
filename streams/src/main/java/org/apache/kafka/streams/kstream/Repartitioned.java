@@ -52,11 +52,11 @@ public class Repartitioned<K, V> implements NamedOperation<Repartitioned<K, V>> 
 
     protected Repartitioned(final Repartitioned<K, V> repartitioned) {
         this(
-            repartitioned.name,
-            repartitioned.keySerde,
-            repartitioned.valueSerde,
-            repartitioned.numberOfPartitions,
-            repartitioned.partitioner
+                repartitioned.name,
+                repartitioned.keySerde,
+                repartitioned.valueSerde,
+                repartitioned.numberOfPartitions,
+                repartitioned.partitioner
         );
     }
 

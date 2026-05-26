@@ -84,15 +84,15 @@ public class EndQuorumEpochRequest extends AbstractRequest {
         return new EndQuorumEpochRequestData()
                    .setClusterId(clusterId)
                    .setTopics(List.of(
-                       new EndQuorumEpochRequestData.TopicData()
-                           .setTopicName(topicPartition.topic())
-                           .setPartitions(List.of(
-                               new EndQuorumEpochRequestData.PartitionData()
-                                   .setPartitionIndex(topicPartition.partition())
-                                   .setLeaderEpoch(leaderEpoch)
-                                   .setLeaderId(leaderId)
-                                   .setPreferredSuccessors(preferredSuccessors))))
-                   );
+                           new EndQuorumEpochRequestData.TopicData()
+                               .setTopicName(topicPartition.topic())
+                               .setPartitions(List.of(
+                                   new EndQuorumEpochRequestData.PartitionData()
+                                       .setPartitionIndex(topicPartition.partition())
+                                       .setLeaderEpoch(leaderEpoch)
+                                       .setLeaderId(leaderId)
+                                       .setPreferredSuccessors(preferredSuccessors))))
+        );
     }
 
     public static List<EndQuorumEpochRequestData.ReplicaInfo> preferredCandidates(EndQuorumEpochRequestData.PartitionData partition) {
@@ -103,7 +103,7 @@ public class EndQuorumEpochRequest extends AbstractRequest {
                 .map(id -> new EndQuorumEpochRequestData.ReplicaInfo()
                     .setCandidateId(id)
                     .setCandidateDirectoryId(Uuid.ZERO_UUID)
-                )
+            )
                 .collect(Collectors.toList());
         } else {
             return partition.preferredCandidates();

@@ -481,7 +481,7 @@ public abstract class SslFactoryTest {
         SslFactory sslFactory = new SslFactory(ConnectionMode.CLIENT);
         sslFactory.configure(clientSslConfig);
         assertInstanceOf(TestSslUtils.TestSslEngineFactory.class, sslFactory.sslEngineFactory(),
-            "SslEngineFactory must be of expected type");
+                "SslEngineFactory must be of expected type");
     }
 
     @Test
@@ -514,7 +514,7 @@ public abstract class SslFactoryTest {
         SslFactory sslFactory = new SslFactory(ConnectionMode.SERVER);
         sslFactory.configure(serverSslConfig);
         assertInstanceOf(TestSslUtils.TestSslEngineFactory.class, sslFactory.sslEngineFactory(),
-            "SslEngineFactory must be of expected type");
+                "SslEngineFactory must be of expected type");
     }
 
     /**

@@ -333,14 +333,14 @@ public class MirrorSourceConfig extends MirrorConnectorConfig {
                         EMIT_OFFSET_SYNCS_ENABLED_DEFAULT,
                         ConfigDef.Importance.LOW,
                         EMIT_OFFSET_SYNCS_ENABLED_DOC
-                )
+        )
                 .define(
                         HEARTBEATS_REPLICATION_ENABLED,
                         ConfigDef.Type.BOOLEAN,
                         HEARTBEATS_REPLICATION_ENABLED_DEFAULT,
                         ConfigDef.Importance.LOW,
                         HEARTBEATS_REPLICATION_ENABLED_DOC
-                )
+        )
                 .define(
                         METRIC_NAMES_FORMAT,
                         ConfigDef.Type.LIST,
@@ -348,12 +348,12 @@ public class MirrorSourceConfig extends MirrorConnectorConfig {
                         ConfigDef.ValidList.in(false, METRIC_NAMES_LEGACY, METRIC_NAMES_NEW),
                         ConfigDef.Importance.LOW,
                         METRIC_NAMES_FORMAT_DOC
-                );
+        );
     }
 
     protected static final ConfigDef CONNECTOR_CONFIG_DEF = defineSourceConfig(new ConfigDef(BASE_CONNECTOR_CONFIG_DEF));
 
-    public static void main(String[] args) {        
+    public static void main(String[] args) {
         System.out.println(defineSourceConfig(new ConfigDef()).toHtml(4, config -> "mirror_source_" + config));
     }
 }

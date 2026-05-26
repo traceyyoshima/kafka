@@ -53,9 +53,9 @@ public class CreateTopicsRequest extends AbstractRequest {
 
             if (!topicsWithDefaults.isEmpty() && version < 4) {
                 throw new UnsupportedVersionException("Creating topics with default "
-                    + "partitions/replication factor are only supported in CreateTopicRequest "
-                    + "version 4+. The following topics need values for partitions and replicas: "
-                    + topicsWithDefaults);
+                        + "partitions/replication factor are only supported in CreateTopicRequest "
+                        + "version 4+. The following topics need values for partitions and replicas: "
+                        + topicsWithDefaults);
             }
 
             return new CreateTopicsRequest(data, version);

@@ -134,11 +134,11 @@ public class OAuthCompatibilityTool {
 
         Map<String, ?> configs = configHandler.getConfigs();
         List<AppConfigurationEntry> jaasConfigEntries = List.of(
-            new AppConfigurationEntry(
-                OAuthBearerLoginModule.class.getName(),
-                AppConfigurationEntry.LoginModuleControlFlag.REQUIRED,
-                configHandler.getJaasOptions()
-            )
+                new AppConfigurationEntry(
+                        OAuthBearerLoginModule.class.getName(),
+                        AppConfigurationEntry.LoginModuleControlFlag.REQUIRED,
+                        configHandler.getJaasOptions()
+                )
         );
 
         try {
@@ -186,31 +186,31 @@ public class OAuthCompatibilityTool {
 
     private static JwtRetriever createRetriever(Map<String, ?> configs, List<AppConfigurationEntry> jaasConfigEntries) {
         return getConfiguredInstance(
-            configs,
-            OAUTHBEARER_MECHANISM,
-            jaasConfigEntries,
-            SaslConfigs.SASL_OAUTHBEARER_JWT_RETRIEVER_CLASS,
-            JwtRetriever.class
+                configs,
+                OAUTHBEARER_MECHANISM,
+                jaasConfigEntries,
+                SaslConfigs.SASL_OAUTHBEARER_JWT_RETRIEVER_CLASS,
+                JwtRetriever.class
         );
     }
 
     private static JwtValidator createValidator(Map<String, ?> configs, List<AppConfigurationEntry> jaasConfigEntries) {
         return getConfiguredInstance(
-            configs,
-            OAUTHBEARER_MECHANISM,
-            jaasConfigEntries,
-            SaslConfigs.SASL_OAUTHBEARER_JWT_VALIDATOR_CLASS,
-            JwtValidator.class
+                configs,
+                OAUTHBEARER_MECHANISM,
+                jaasConfigEntries,
+                SaslConfigs.SASL_OAUTHBEARER_JWT_VALIDATOR_CLASS,
+                JwtValidator.class
         );
     }
 
     private static class ArgsHandler {
 
         private static final String DESCRIPTION = String.format(
-            "This tool is used to verify OAuth/OIDC provider compatibility.%n%n" +
-            "Run the following script to determine the configuration options:%n%n" +
+                "This tool is used to verify OAuth/OIDC provider compatibility.%n%n" +
+                "Run the following script to determine the configuration options:%n%n" +
                 "    ./bin/kafka-run-class.sh %s --help",
-            OAuthCompatibilityTool.class.getName());
+                OAuthCompatibilityTool.class.getName());
 
         private final ArgumentParser parser;
 

@@ -72,16 +72,16 @@ public class ReadOnlySessionStoreFacadeTest {
     public void shouldReturnStrippedKeyValuePairsOnFindSessions() {
         when(mockedIterator.next())
             .thenReturn(KeyValue.pair(
-                new Windowed<>("key1", new SessionWindow(10L, 20L)),
-                AggregationWithHeaders.make("value1", new RecordHeaders())))
+                    new Windowed<>("key1", new SessionWindow(10L, 20L)),
+                    AggregationWithHeaders.make("value1", new RecordHeaders())))
             .thenReturn(KeyValue.pair(
-                new Windowed<>("key2", new SessionWindow(30L, 40L)),
-                AggregationWithHeaders.make("value2", new RecordHeaders())));
+                    new Windowed<>("key2", new SessionWindow(30L, 40L)),
+                    AggregationWithHeaders.make("value2", new RecordHeaders())));
         when(mockedSessionStoreWithHeaders.findSessions("key1", 10L, 40L))
             .thenReturn(mockedIterator);
 
         final KeyValueIterator<Windowed<String>, String> iterator =
-            readOnlySessionStoreFacade.findSessions("key1", 10L, 40L);
+                readOnlySessionStoreFacade.findSessions("key1", 10L, 40L);
 
         assertThat(iterator.next(), is(KeyValue.pair(new Windowed<>("key1", new SessionWindow(10L, 20L)), "value1")));
         assertThat(iterator.next(), is(KeyValue.pair(new Windowed<>("key2", new SessionWindow(30L, 40L)), "value2")));
@@ -91,13 +91,13 @@ public class ReadOnlySessionStoreFacadeTest {
     public void shouldReturnStrippedKeyValuePairsOnBackwardFindSessions() {
         when(mockedIterator.next())
             .thenReturn(KeyValue.pair(
-                new Windowed<>("key1", new SessionWindow(30L, 40L)),
-                AggregationWithHeaders.make("value1", new RecordHeaders())));
+                    new Windowed<>("key1", new SessionWindow(30L, 40L)),
+                    AggregationWithHeaders.make("value1", new RecordHeaders())));
         when(mockedSessionStoreWithHeaders.backwardFindSessions("key1", 10L, 40L))
             .thenReturn(mockedIterator);
 
         final KeyValueIterator<Windowed<String>, String> iterator =
-            readOnlySessionStoreFacade.backwardFindSessions("key1", 10L, 40L);
+                readOnlySessionStoreFacade.backwardFindSessions("key1", 10L, 40L);
 
         assertThat(iterator.next(), is(KeyValue.pair(new Windowed<>("key1", new SessionWindow(30L, 40L)), "value1")));
     }
@@ -106,13 +106,13 @@ public class ReadOnlySessionStoreFacadeTest {
     public void shouldReturnStrippedKeyValuePairsOnFindSessionsWithKeyRange() {
         when(mockedIterator.next())
             .thenReturn(KeyValue.pair(
-                new Windowed<>("key1", new SessionWindow(10L, 20L)),
-                AggregationWithHeaders.make("value1", new RecordHeaders())));
+                    new Windowed<>("key1", new SessionWindow(10L, 20L)),
+                    AggregationWithHeaders.make("value1", new RecordHeaders())));
         when(mockedSessionStoreWithHeaders.findSessions("key1", "key2", 10L, 40L))
             .thenReturn(mockedIterator);
 
         final KeyValueIterator<Windowed<String>, String> iterator =
-            readOnlySessionStoreFacade.findSessions("key1", "key2", 10L, 40L);
+                readOnlySessionStoreFacade.findSessions("key1", "key2", 10L, 40L);
 
         assertThat(iterator.next(), is(KeyValue.pair(new Windowed<>("key1", new SessionWindow(10L, 20L)), "value1")));
     }
@@ -121,13 +121,13 @@ public class ReadOnlySessionStoreFacadeTest {
     public void shouldReturnStrippedKeyValuePairsOnBackwardFindSessionsWithKeyRange() {
         when(mockedIterator.next())
             .thenReturn(KeyValue.pair(
-                new Windowed<>("key2", new SessionWindow(30L, 40L)),
-                AggregationWithHeaders.make("value2", new RecordHeaders())));
+                    new Windowed<>("key2", new SessionWindow(30L, 40L)),
+                    AggregationWithHeaders.make("value2", new RecordHeaders())));
         when(mockedSessionStoreWithHeaders.backwardFindSessions("key1", "key2", 10L, 40L))
             .thenReturn(mockedIterator);
 
         final KeyValueIterator<Windowed<String>, String> iterator =
-            readOnlySessionStoreFacade.backwardFindSessions("key1", "key2", 10L, 40L);
+                readOnlySessionStoreFacade.backwardFindSessions("key1", "key2", 10L, 40L);
 
         assertThat(iterator.next(), is(KeyValue.pair(new Windowed<>("key2", new SessionWindow(30L, 40L)), "value2")));
     }
@@ -136,15 +136,15 @@ public class ReadOnlySessionStoreFacadeTest {
     public void shouldReturnStrippedKeyValuePairsOnFetch() {
         when(mockedIterator.next())
             .thenReturn(KeyValue.pair(
-                new Windowed<>("key1", new SessionWindow(10L, 20L)),
-                AggregationWithHeaders.make("value1", new RecordHeaders())))
+                    new Windowed<>("key1", new SessionWindow(10L, 20L)),
+                    AggregationWithHeaders.make("value1", new RecordHeaders())))
             .thenReturn(KeyValue.pair(
-                new Windowed<>("key1", new SessionWindow(30L, 40L)),
-                AggregationWithHeaders.make("value2", new RecordHeaders())));
+                    new Windowed<>("key1", new SessionWindow(30L, 40L)),
+                    AggregationWithHeaders.make("value2", new RecordHeaders())));
         when(mockedSessionStoreWithHeaders.fetch("key1")).thenReturn(mockedIterator);
 
         final KeyValueIterator<Windowed<String>, String> iterator =
-            readOnlySessionStoreFacade.fetch("key1");
+                readOnlySessionStoreFacade.fetch("key1");
 
         assertThat(iterator.next(), is(KeyValue.pair(new Windowed<>("key1", new SessionWindow(10L, 20L)), "value1")));
         assertThat(iterator.next(), is(KeyValue.pair(new Windowed<>("key1", new SessionWindow(30L, 40L)), "value2")));
@@ -154,12 +154,12 @@ public class ReadOnlySessionStoreFacadeTest {
     public void shouldReturnStrippedKeyValuePairsOnBackwardFetch() {
         when(mockedIterator.next())
             .thenReturn(KeyValue.pair(
-                new Windowed<>("key1", new SessionWindow(30L, 40L)),
-                AggregationWithHeaders.make("value1", new RecordHeaders())));
+                    new Windowed<>("key1", new SessionWindow(30L, 40L)),
+                    AggregationWithHeaders.make("value1", new RecordHeaders())));
         when(mockedSessionStoreWithHeaders.backwardFetch("key1")).thenReturn(mockedIterator);
 
         final KeyValueIterator<Windowed<String>, String> iterator =
-            readOnlySessionStoreFacade.backwardFetch("key1");
+                readOnlySessionStoreFacade.backwardFetch("key1");
 
         assertThat(iterator.next(), is(KeyValue.pair(new Windowed<>("key1", new SessionWindow(30L, 40L)), "value1")));
     }
@@ -168,12 +168,12 @@ public class ReadOnlySessionStoreFacadeTest {
     public void shouldReturnStrippedKeyValuePairsOnFetchWithKeyRange() {
         when(mockedIterator.next())
             .thenReturn(KeyValue.pair(
-                new Windowed<>("key1", new SessionWindow(10L, 20L)),
-                AggregationWithHeaders.make("value1", new RecordHeaders())));
+                    new Windowed<>("key1", new SessionWindow(10L, 20L)),
+                    AggregationWithHeaders.make("value1", new RecordHeaders())));
         when(mockedSessionStoreWithHeaders.fetch("key1", "key2")).thenReturn(mockedIterator);
 
         final KeyValueIterator<Windowed<String>, String> iterator =
-            readOnlySessionStoreFacade.fetch("key1", "key2");
+                readOnlySessionStoreFacade.fetch("key1", "key2");
 
         assertThat(iterator.next(), is(KeyValue.pair(new Windowed<>("key1", new SessionWindow(10L, 20L)), "value1")));
     }
@@ -182,12 +182,12 @@ public class ReadOnlySessionStoreFacadeTest {
     public void shouldReturnStrippedKeyValuePairsOnBackwardFetchWithKeyRange() {
         when(mockedIterator.next())
             .thenReturn(KeyValue.pair(
-                new Windowed<>("key2", new SessionWindow(30L, 40L)),
-                AggregationWithHeaders.make("value2", new RecordHeaders())));
+                    new Windowed<>("key2", new SessionWindow(30L, 40L)),
+                    AggregationWithHeaders.make("value2", new RecordHeaders())));
         when(mockedSessionStoreWithHeaders.backwardFetch("key1", "key2")).thenReturn(mockedIterator);
 
         final KeyValueIterator<Windowed<String>, String> iterator =
-            readOnlySessionStoreFacade.backwardFetch("key1", "key2");
+                readOnlySessionStoreFacade.backwardFetch("key1", "key2");
 
         assertThat(iterator.next(), is(KeyValue.pair(new Windowed<>("key2", new SessionWindow(30L, 40L)), "value2")));
     }

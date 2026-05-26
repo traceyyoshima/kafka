@@ -283,14 +283,14 @@ public class GroupCoordinatorShard implements CoordinatorShard<CoordinatorRecord
                 .build();
 
             return new GroupCoordinatorShard(
-                logContext,
-                groupMetadataManager,
-                offsetMetadataManager,
-                time,
-                timer,
-                config,
-                coordinatorMetrics,
-                metricsShard
+                    logContext,
+                    groupMetadataManager,
+                    offsetMetadataManager,
+                    time,
+                    timer,
+                    config,
+                    coordinatorMetrics,
+                    metricsShard
             );
         }
     }
@@ -347,9 +347,9 @@ public class GroupCoordinatorShard implements CoordinatorShard<CoordinatorRecord
             if (o == null || getClass() != o.getClass()) return false;
             DeleteShareGroupOffsetsResultHolder other = (DeleteShareGroupOffsetsResultHolder) o;
             return topLevelErrorCode == other.topLevelErrorCode &&
-                Objects.equals(topLevelErrorMessage, other.topLevelErrorMessage) &&
-                Objects.equals(errorTopicResponseList, other.errorTopicResponseList) &&
-                Objects.equals(deleteStateRequestParameters, other.deleteStateRequestParameters);
+                    Objects.equals(topLevelErrorMessage, other.topLevelErrorMessage) &&
+                    Objects.equals(errorTopicResponseList, other.errorTopicResponseList) &&
+                    Objects.equals(deleteStateRequestParameters, other.deleteStateRequestParameters);
         }
 
         @Override
@@ -563,9 +563,9 @@ public class GroupCoordinatorShard implements CoordinatorShard<CoordinatorRecord
         CompletableFuture<JoinGroupResponseData> responseFuture
     ) {
         return groupMetadataManager.classicGroupJoin(
-            context,
-            request,
-            responseFuture
+                context,
+                request,
+                responseFuture
         );
     }
 
@@ -584,9 +584,9 @@ public class GroupCoordinatorShard implements CoordinatorShard<CoordinatorRecord
         CompletableFuture<SyncGroupResponseData> responseFuture
     ) {
         return groupMetadataManager.classicGroupSync(
-            context,
-            request,
-            responseFuture
+                context,
+                request,
+                responseFuture
         );
     }
 
@@ -604,8 +604,8 @@ public class GroupCoordinatorShard implements CoordinatorShard<CoordinatorRecord
         HeartbeatRequestData request
     ) {
         return groupMetadataManager.classicGroupHeartbeat(
-            context,
-            request
+                context,
+                request
         );
     }
 
@@ -622,7 +622,7 @@ public class GroupCoordinatorShard implements CoordinatorShard<CoordinatorRecord
         List<String> groupIds
     ) throws ApiException {
         final DeleteGroupsResponseData.DeletableGroupResultCollection resultCollection =
-            new DeleteGroupsResponseData.DeletableGroupResultCollection(groupIds.size());
+                new DeleteGroupsResponseData.DeletableGroupResultCollection(groupIds.size());
         final List<CoordinatorRecord> records = new ArrayList<>();
         int numDeletedOffsets = 0;
         final List<String> deletedGroups = new ArrayList<>();
@@ -635,21 +635,21 @@ public class GroupCoordinatorShard implements CoordinatorShard<CoordinatorRecord
                 deletedGroups.add(groupId);
 
                 resultCollection.add(
-                    new DeleteGroupsResponseData.DeletableGroupResult()
-                        .setGroupId(groupId)
+                        new DeleteGroupsResponseData.DeletableGroupResult()
+                            .setGroupId(groupId)
                 );
             } catch (ApiException exception) {
                 resultCollection.add(
-                    new DeleteGroupsResponseData.DeletableGroupResult()
-                        .setGroupId(groupId)
-                        .setErrorCode(Errors.forException(exception).code())
+                        new DeleteGroupsResponseData.DeletableGroupResult()
+                            .setGroupId(groupId)
+                            .setErrorCode(Errors.forException(exception).code())
                 );
             }
         }
 
         log.info("The following groups were deleted: {}. A total of {} offsets were removed.",
-            String.join(", ", deletedGroups),
-            numDeletedOffsets
+                String.join(", ", deletedGroups),
+                numDeletedOffsets
         );
         return new CoordinatorResult<>(records, resultCollection);
     }
@@ -711,17 +711,17 @@ public class GroupCoordinatorShard implements CoordinatorShard<CoordinatorRecord
 
             List<DeleteShareGroupOffsetsResponseData.DeleteShareGroupOffsetsResponseTopic> errorTopicResponseList = new ArrayList<>();
             List<DeleteShareGroupStateRequestData.DeleteStateData> deleteShareGroupStateRequestTopicsData =
-                groupMetadataManager.sharePartitionsEligibleForOffsetDeletion(
-                    groupId,
-                    requestData,
-                    errorTopicResponseList,
-                    records
-                );
+                    groupMetadataManager.sharePartitionsEligibleForOffsetDeletion(
+                            groupId,
+                            requestData,
+                            errorTopicResponseList,
+                            records
+                    );
 
             if (deleteShareGroupStateRequestTopicsData.isEmpty()) {
                 return new CoordinatorResult<>(
-                    records,
-                    new DeleteShareGroupOffsetsResultHolder(Errors.NONE.code(), null, errorTopicResponseList)
+                        records,
+                        new DeleteShareGroupOffsetsResultHolder(Errors.NONE.code(), null, errorTopicResponseList)
                 );
             }
 
@@ -730,26 +730,26 @@ public class GroupCoordinatorShard implements CoordinatorShard<CoordinatorRecord
                 .setTopics(deleteShareGroupStateRequestTopicsData);
 
             return new CoordinatorResult<>(
-                records,
-                new DeleteShareGroupOffsetsResultHolder(
-                    Errors.NONE.code(),
-                    null,
-                    errorTopicResponseList,
-                    DeleteShareGroupStateParameters.from(deleteShareGroupStateRequestData)
-                )
+                    records,
+                    new DeleteShareGroupOffsetsResultHolder(
+                            Errors.NONE.code(),
+                            null,
+                            errorTopicResponseList,
+                            DeleteShareGroupStateParameters.from(deleteShareGroupStateRequestData)
+                    )
             );
 
         } catch (GroupIdNotFoundException exception) {
             log.debug("Unable to delete share group offsets. GroupId {} not found.", groupId);
             return new CoordinatorResult<>(
-                records,
-                new DeleteShareGroupOffsetsResultHolder(Errors.GROUP_ID_NOT_FOUND.code(), exception.getMessage())
+                    records,
+                    new DeleteShareGroupOffsetsResultHolder(Errors.GROUP_ID_NOT_FOUND.code(), exception.getMessage())
             );
         } catch (GroupNotEmptyException exception) {
             log.debug("Unable to delete share group offsets. Provided group {} is not empty.", groupId);
             return new CoordinatorResult<>(
-                records,
-                new DeleteShareGroupOffsetsResultHolder(Errors.NON_EMPTY_GROUP.code(), exception.getMessage())
+                    records,
+                    new DeleteShareGroupOffsetsResultHolder(Errors.NON_EMPTY_GROUP.code(), exception.getMessage())
             );
         }
     }
@@ -771,21 +771,21 @@ public class GroupCoordinatorShard implements CoordinatorShard<CoordinatorRecord
         List<DeleteShareGroupOffsetsResponseData.DeleteShareGroupOffsetsResponseTopic> topicResponseList = new ArrayList<>();
 
         topicResponseList.addAll(
-            groupMetadataManager.completeDeleteShareGroupOffsets(
-                groupId,
-                topics,
-                records
-            )
+                groupMetadataManager.completeDeleteShareGroupOffsets(
+                        groupId,
+                        topics,
+                        records
+                )
         );
 
         topicResponseList.addAll(errorTopicResponseList);
 
         return new CoordinatorResult<>(
-            records,
-            new DeleteShareGroupOffsetsResponseData()
-                .setErrorCode(Errors.NONE.code())
-                .setErrorMessage(null)
-                .setResponses(topicResponseList)
+                records,
+                new DeleteShareGroupOffsetsResponseData()
+                    .setErrorCode(Errors.NONE.code())
+                    .setErrorMessage(null)
+                    .setResponses(topicResponseList)
         );
     }
 
@@ -995,7 +995,7 @@ public class GroupCoordinatorShard implements CoordinatorShard<CoordinatorRecord
 
         if (!records.isEmpty()) {
             log.info("Generated {} tombstone records while cleaning up group metadata in {} milliseconds.",
-                records.size(), time.milliseconds() - startMs);
+                    records.size(), time.milliseconds() - startMs);
         }
 
         // Reschedule the next cycle.
@@ -1008,12 +1008,12 @@ public class GroupCoordinatorShard implements CoordinatorShard<CoordinatorRecord
      */
     private void scheduleGroupMetadataExpiration() {
         timer.schedule(
-            GROUP_EXPIRATION_KEY,
-            config.offsetsRetentionCheckIntervalMs(),
-            TimeUnit.MILLISECONDS,
-            true,
-            config.offsetsRetentionCheckIntervalMs(),
-            this::cleanupGroupMetadata
+                GROUP_EXPIRATION_KEY,
+                config.offsetsRetentionCheckIntervalMs(),
+                TimeUnit.MILLISECONDS,
+                true,
+                config.offsetsRetentionCheckIntervalMs(),
+                this::cleanupGroupMetadata
         );
     }
 
@@ -1030,7 +1030,7 @@ public class GroupCoordinatorShard implements CoordinatorShard<CoordinatorRecord
         final List<CoordinatorRecord> records = offsetMetadataManager.onTopicsDeleted(deletedTopics);
 
         log.info("Generated {} tombstone records in {} milliseconds while deleting offsets for topics {}.",
-            records.size(), time.milliseconds() - startTimeMs, deletedTopics);
+                records.size(), time.milliseconds() - startTimeMs, deletedTopics);
 
         return new CoordinatorResult<>(records, false);
     }
@@ -1042,7 +1042,7 @@ public class GroupCoordinatorShard implements CoordinatorShard<CoordinatorRecord
         final var result = groupMetadataManager.maybeCleanupShareGroupState(deletedTopicIds);
 
         log.info("Generated {} records in {} milliseconds while cleaning share group state for topics {}.",
-            result.records().size(), time.milliseconds() - startTimeMs, deletedTopicIds);
+                result.records().size(), time.milliseconds() - startTimeMs, deletedTopicIds);
 
         return result;
     }
@@ -1052,15 +1052,15 @@ public class GroupCoordinatorShard implements CoordinatorShard<CoordinatorRecord
      */
     private void scheduleGroupSizeCounter() {
         timer.schedule(
-            GROUP_SIZE_COUNTER_KEY,
-            DEFAULT_GROUP_GAUGES_UPDATE_INTERVAL_MS,
-            TimeUnit.MILLISECONDS,
-            true,
-            () -> {
-                groupMetadataManager.updateGroupSizeCounter();
-                scheduleGroupSizeCounter();
-                return GroupMetadataManager.EMPTY_RESULT;
-            }
+                GROUP_SIZE_COUNTER_KEY,
+                DEFAULT_GROUP_GAUGES_UPDATE_INTERVAL_MS,
+                TimeUnit.MILLISECONDS,
+                true,
+                () -> {
+                    groupMetadataManager.updateGroupSizeCounter();
+                    scheduleGroupSizeCounter();
+                    return GroupMetadataManager.EMPTY_RESULT;
+                }
         );
     }
 
@@ -1152,171 +1152,171 @@ public class GroupCoordinatorShard implements CoordinatorShard<CoordinatorRecord
             recordType = CoordinatorRecordType.fromId(key.apiKey());
         } catch (UnsupportedVersionException ex) {
             throw new IllegalStateException("Received an unknown record type " + key.apiKey()
-                + " in " + record, ex);
+                    + " in " + record, ex);
         }
 
         switch (recordType) {
             case LEGACY_OFFSET_COMMIT:
                 offsetMetadataManager.replay(
-                    offset,
-                    producerId,
-                    convertLegacyOffsetCommitKey((LegacyOffsetCommitKey) key),
-                    convertLegacyOffsetCommitValue((LegacyOffsetCommitValue) Utils.messageOrNull(value))
+                        offset,
+                        producerId,
+                        convertLegacyOffsetCommitKey((LegacyOffsetCommitKey) key),
+                        convertLegacyOffsetCommitValue((LegacyOffsetCommitValue) Utils.messageOrNull(value))
                 );
                 break;
 
             case OFFSET_COMMIT:
                 offsetMetadataManager.replay(
-                    offset,
-                    producerId,
-                    (OffsetCommitKey) key,
-                    (OffsetCommitValue) Utils.messageOrNull(value)
+                        offset,
+                        producerId,
+                        (OffsetCommitKey) key,
+                        (OffsetCommitValue) Utils.messageOrNull(value)
                 );
                 break;
 
             case GROUP_METADATA:
                 groupMetadataManager.replay(
-                    (GroupMetadataKey) key,
-                    (GroupMetadataValue) Utils.messageOrNull(value)
+                        (GroupMetadataKey) key,
+                        (GroupMetadataValue) Utils.messageOrNull(value)
                 );
                 break;
 
             case CONSUMER_GROUP_METADATA:
                 groupMetadataManager.replay(
-                    (ConsumerGroupMetadataKey) key,
-                    (ConsumerGroupMetadataValue) Utils.messageOrNull(value)
+                        (ConsumerGroupMetadataKey) key,
+                        (ConsumerGroupMetadataValue) Utils.messageOrNull(value)
                 );
                 break;
 
             case CONSUMER_GROUP_PARTITION_METADATA:
                 groupMetadataManager.replay(
-                    (ConsumerGroupPartitionMetadataKey) key,
-                    (ConsumerGroupPartitionMetadataValue) Utils.messageOrNull(value)
+                        (ConsumerGroupPartitionMetadataKey) key,
+                        (ConsumerGroupPartitionMetadataValue) Utils.messageOrNull(value)
                 );
                 break;
 
             case CONSUMER_GROUP_MEMBER_METADATA:
                 groupMetadataManager.replay(
-                    (ConsumerGroupMemberMetadataKey) key,
-                    (ConsumerGroupMemberMetadataValue) Utils.messageOrNull(value)
+                        (ConsumerGroupMemberMetadataKey) key,
+                        (ConsumerGroupMemberMetadataValue) Utils.messageOrNull(value)
                 );
                 break;
 
             case CONSUMER_GROUP_TARGET_ASSIGNMENT_METADATA:
                 groupMetadataManager.replay(
-                    (ConsumerGroupTargetAssignmentMetadataKey) key,
-                    (ConsumerGroupTargetAssignmentMetadataValue) Utils.messageOrNull(value)
+                        (ConsumerGroupTargetAssignmentMetadataKey) key,
+                        (ConsumerGroupTargetAssignmentMetadataValue) Utils.messageOrNull(value)
                 );
                 break;
 
             case CONSUMER_GROUP_TARGET_ASSIGNMENT_MEMBER:
                 groupMetadataManager.replay(
-                    (ConsumerGroupTargetAssignmentMemberKey) key,
-                    (ConsumerGroupTargetAssignmentMemberValue) Utils.messageOrNull(value)
+                        (ConsumerGroupTargetAssignmentMemberKey) key,
+                        (ConsumerGroupTargetAssignmentMemberValue) Utils.messageOrNull(value)
                 );
                 break;
 
             case CONSUMER_GROUP_CURRENT_MEMBER_ASSIGNMENT:
                 groupMetadataManager.replay(
-                    (ConsumerGroupCurrentMemberAssignmentKey) key,
-                    (ConsumerGroupCurrentMemberAssignmentValue) Utils.messageOrNull(value)
+                        (ConsumerGroupCurrentMemberAssignmentKey) key,
+                        (ConsumerGroupCurrentMemberAssignmentValue) Utils.messageOrNull(value)
                 );
                 break;
 
             case SHARE_GROUP_MEMBER_METADATA:
                 groupMetadataManager.replay(
-                    (ShareGroupMemberMetadataKey) key,
-                    (ShareGroupMemberMetadataValue) Utils.messageOrNull(value)
+                        (ShareGroupMemberMetadataKey) key,
+                        (ShareGroupMemberMetadataValue) Utils.messageOrNull(value)
                 );
                 break;
 
             case SHARE_GROUP_METADATA:
                 groupMetadataManager.replay(
-                    (ShareGroupMetadataKey) key,
-                    (ShareGroupMetadataValue) Utils.messageOrNull(value)
+                        (ShareGroupMetadataKey) key,
+                        (ShareGroupMetadataValue) Utils.messageOrNull(value)
                 );
                 break;
 
             case SHARE_GROUP_TARGET_ASSIGNMENT_METADATA:
                 groupMetadataManager.replay(
-                    (ShareGroupTargetAssignmentMetadataKey) key,
-                    (ShareGroupTargetAssignmentMetadataValue) Utils.messageOrNull(value)
+                        (ShareGroupTargetAssignmentMetadataKey) key,
+                        (ShareGroupTargetAssignmentMetadataValue) Utils.messageOrNull(value)
                 );
                 break;
 
             case SHARE_GROUP_TARGET_ASSIGNMENT_MEMBER:
                 groupMetadataManager.replay(
-                    (ShareGroupTargetAssignmentMemberKey) key,
-                    (ShareGroupTargetAssignmentMemberValue) Utils.messageOrNull(value)
+                        (ShareGroupTargetAssignmentMemberKey) key,
+                        (ShareGroupTargetAssignmentMemberValue) Utils.messageOrNull(value)
                 );
                 break;
 
             case SHARE_GROUP_CURRENT_MEMBER_ASSIGNMENT:
                 groupMetadataManager.replay(
-                    (ShareGroupCurrentMemberAssignmentKey) key,
-                    (ShareGroupCurrentMemberAssignmentValue) Utils.messageOrNull(value)
+                        (ShareGroupCurrentMemberAssignmentKey) key,
+                        (ShareGroupCurrentMemberAssignmentValue) Utils.messageOrNull(value)
                 );
                 break;
 
             case SHARE_GROUP_STATE_PARTITION_METADATA:
                 groupMetadataManager.replay(
-                    (ShareGroupStatePartitionMetadataKey) key,
-                    (ShareGroupStatePartitionMetadataValue) Utils.messageOrNull(value)
+                        (ShareGroupStatePartitionMetadataKey) key,
+                        (ShareGroupStatePartitionMetadataValue) Utils.messageOrNull(value)
                 );
                 break;
 
             case CONSUMER_GROUP_REGULAR_EXPRESSION:
                 groupMetadataManager.replay(
-                    (ConsumerGroupRegularExpressionKey) key,
-                    (ConsumerGroupRegularExpressionValue) Utils.messageOrNull(value)
+                        (ConsumerGroupRegularExpressionKey) key,
+                        (ConsumerGroupRegularExpressionValue) Utils.messageOrNull(value)
                 );
                 break;
 
             case STREAMS_GROUP_METADATA:
                 groupMetadataManager.replay(
-                    (StreamsGroupMetadataKey) key,
-                    (StreamsGroupMetadataValue) Utils.messageOrNull(value)
+                        (StreamsGroupMetadataKey) key,
+                        (StreamsGroupMetadataValue) Utils.messageOrNull(value)
                 );
                 break;
 
             case STREAMS_GROUP_MEMBER_METADATA:
                 groupMetadataManager.replay(
-                    (StreamsGroupMemberMetadataKey) key,
-                    (StreamsGroupMemberMetadataValue) Utils.messageOrNull(value)
+                        (StreamsGroupMemberMetadataKey) key,
+                        (StreamsGroupMemberMetadataValue) Utils.messageOrNull(value)
                 );
                 break;
 
             case STREAMS_GROUP_TARGET_ASSIGNMENT_METADATA:
                 groupMetadataManager.replay(
-                    (StreamsGroupTargetAssignmentMetadataKey) key,
-                    (StreamsGroupTargetAssignmentMetadataValue) Utils.messageOrNull(value)
+                        (StreamsGroupTargetAssignmentMetadataKey) key,
+                        (StreamsGroupTargetAssignmentMetadataValue) Utils.messageOrNull(value)
                 );
                 break;
 
             case STREAMS_GROUP_TARGET_ASSIGNMENT_MEMBER:
                 groupMetadataManager.replay(
-                    (StreamsGroupTargetAssignmentMemberKey) key,
-                    (StreamsGroupTargetAssignmentMemberValue) Utils.messageOrNull(value)
+                        (StreamsGroupTargetAssignmentMemberKey) key,
+                        (StreamsGroupTargetAssignmentMemberValue) Utils.messageOrNull(value)
                 );
                 break;
 
             case STREAMS_GROUP_CURRENT_MEMBER_ASSIGNMENT:
                 groupMetadataManager.replay(
-                    (StreamsGroupCurrentMemberAssignmentKey) key,
-                    (StreamsGroupCurrentMemberAssignmentValue) Utils.messageOrNull(value)
+                        (StreamsGroupCurrentMemberAssignmentKey) key,
+                        (StreamsGroupCurrentMemberAssignmentValue) Utils.messageOrNull(value)
                 );
                 break;
 
             case STREAMS_GROUP_TOPOLOGY:
                 groupMetadataManager.replay(
-                    (StreamsGroupTopologyKey) key,
-                    (StreamsGroupTopologyValue) Utils.messageOrNull(value)
+                        (StreamsGroupTopologyKey) key,
+                        (StreamsGroupTopologyValue) Utils.messageOrNull(value)
                 );
                 break;
 
             default:
                 throw new IllegalStateException("Received an unknown record type " + recordType
-                    + " in " + record);
+                        + " in " + record);
         }
     }
 

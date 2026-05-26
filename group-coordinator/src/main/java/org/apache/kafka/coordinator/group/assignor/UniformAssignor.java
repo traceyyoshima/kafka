@@ -77,12 +77,12 @@ public class UniformAssignor implements ConsumerGroupPartitionAssignor {
 
         if (groupSpec.subscriptionType().equals(HOMOGENEOUS)) {
             LOG.debug("Detected that all members are subscribed to the same set of topics, invoking the "
-                + "homogeneous assignment algorithm");
+                    + "homogeneous assignment algorithm");
             return new UniformHomogeneousAssignmentBuilder(groupSpec, subscribedTopicDescriber)
                 .build();
         } else {
             LOG.debug("Detected that the members are subscribed to different sets of topics, invoking the "
-                + "heterogeneous assignment algorithm");
+                    + "heterogeneous assignment algorithm");
             return new UniformHeterogeneousAssignmentBuilder(groupSpec, subscribedTopicDescriber)
                 .build();
         }

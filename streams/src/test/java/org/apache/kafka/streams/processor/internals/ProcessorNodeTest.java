@@ -94,38 +94,38 @@ public class ProcessorNodeTest {
     @Test
     public void shouldThrowStreamsExceptionIfExceptionCaughtDuringInit() {
         final ProcessorNode<Object, Object, Object, Object> node =
-            new ProcessorNode<>(NAME, new ExceptionalProcessor(), Collections.emptySet());
+                new ProcessorNode<>(NAME, new ExceptionalProcessor(), Collections.emptySet());
         assertThrows(StreamsException.class, () -> node.init(null));
     }
 
     @Test
     public void shouldThrowStreamsExceptionIfExceptionCaughtDuringClose() {
         final ProcessorNode<Object, Object, Object, Object> node =
-            new ProcessorNode<>(NAME, new ExceptionalProcessor(), Collections.emptySet());
+                new ProcessorNode<>(NAME, new ExceptionalProcessor(), Collections.emptySet());
         assertThrows(StreamsException.class, () -> node.init(null));
     }
 
     @Test
     public void shouldThrowFailedProcessingExceptionWhenProcessingExceptionHandlerRepliesWithFail() {
         final ProcessorNode<Object, Object, Object, Object> node =
-            new ProcessorNode<>(NAME, new IgnoredInternalExceptionsProcessor(), Collections.emptySet());
+                new ProcessorNode<>(NAME, new IgnoredInternalExceptionsProcessor(), Collections.emptySet());
 
         final InternalProcessorContext<Object, Object> internalProcessorContext = mockInternalProcessorContext();
         node.init(internalProcessorContext, new ProcessingExceptionHandlerMock(ProcessingExceptionHandler.Response.fail(), internalProcessorContext, false));
 
         final FailedProcessingException failedProcessingException = assertThrows(FailedProcessingException.class,
-            () -> node.process(new Record<>(KEY, VALUE, TIMESTAMP)));
+                () -> node.process(new Record<>(KEY, VALUE, TIMESTAMP)));
 
         assertInstanceOf(RuntimeException.class, failedProcessingException.getCause());
         assertEquals("Processing exception should be caught and handled by the processing exception handler.",
-            failedProcessingException.getCause().getMessage());
+                failedProcessingException.getCause().getMessage());
         assertEquals(NAME, failedProcessingException.failedProcessorNodeName());
     }
 
     @Test
     public void shouldNotThrowFailedProcessingExceptionWhenProcessingExceptionHandlerRepliesWithContinue() {
         final ProcessorNode<Object, Object, Object, Object> node =
-            new ProcessorNode<>(NAME, new IgnoredInternalExceptionsProcessor(), Collections.emptySet());
+                new ProcessorNode<>(NAME, new IgnoredInternalExceptionsProcessor(), Collections.emptySet());
 
         final InternalProcessorContext<Object, Object> internalProcessorContext = mockInternalProcessorContext();
         node.init(internalProcessorContext, new ProcessingExceptionHandlerMock(ProcessingExceptionHandler.Response.resume(), internalProcessorContext, false));
@@ -137,7 +137,7 @@ public class ProcessorNodeTest {
     public void shouldRethrowExceptionWhenProcessingExceptionHandlerIsNull() {
         // This simulates the global thread case where no ProcessingExceptionHandler is set
         final ProcessorNode<Object, Object, Object, Object> node =
-            new ProcessorNode<>(NAME, new IgnoredInternalExceptionsProcessor(), Collections.emptySet());
+                new ProcessorNode<>(NAME, new IgnoredInternalExceptionsProcessor(), Collections.emptySet());
 
         final InternalProcessorContext<Object, Object> internalProcessorContext = mockInternalProcessorContext();
         // Initialize without a ProcessingExceptionHandler (simulates global thread initialization)
@@ -145,10 +145,10 @@ public class ProcessorNodeTest {
 
         // The exception should be rethrown since there's no handler to process it
         final RuntimeException exception = assertThrows(RuntimeException.class,
-            () -> node.process(new Record<>(KEY, VALUE, TIMESTAMP)));
+                () -> node.process(new Record<>(KEY, VALUE, TIMESTAMP)));
 
         assertEquals("Processing exception should be caught and handled by the processing exception handler.",
-            exception.getMessage());
+                exception.getMessage());
     }
 
     @ParameterizedTest
@@ -163,13 +163,13 @@ public class ProcessorNodeTest {
         final ProcessingExceptionHandler processingExceptionHandler = mock(ProcessingExceptionHandler.class);
 
         final ProcessorNode<Object, Object, Object, Object> node =
-            new ProcessorNode<>(NAME, new IgnoredInternalExceptionsProcessor(), Collections.emptySet());
+                new ProcessorNode<>(NAME, new IgnoredInternalExceptionsProcessor(), Collections.emptySet());
 
         final InternalProcessorContext<Object, Object> internalProcessorContext = mockInternalProcessorContext();
         node.init(internalProcessorContext, processingExceptionHandler);
 
         final RuntimeException runtimeException = assertThrows(RuntimeException.class,
-            () -> node.process(new Record<>(ignoredExceptionName, VALUE, TIMESTAMP)));
+                () -> node.process(new Record<>(ignoredExceptionName, VALUE, TIMESTAMP)));
 
         assertEquals(ignoredExceptionCause, runtimeException.getCause().getClass());
         assertEquals(ignoredExceptionCauseMessage, runtimeException.getCause().getMessage());
@@ -185,13 +185,12 @@ public class ProcessorNodeTest {
         node.init(internalProcessorContext, new ProcessingExceptionHandlerMock(ProcessingExceptionHandler.Response.resume(), internalProcessorContext, true));
 
         final FailedProcessingException failedProcessingException = assertThrows(FailedProcessingException.class,
-            () -> node.process(new Record<>(KEY, VALUE, TIMESTAMP)));
+                () -> node.process(new Record<>(KEY, VALUE, TIMESTAMP)));
 
         assertInstanceOf(RuntimeException.class, failedProcessingException.getCause());
         assertEquals("KABOOM!", failedProcessingException.getCause().getMessage());
         assertEquals(NAME, failedProcessingException.failedProcessorNodeName());
     }
-
 
     @Test
     public void shouldBuildDeadLetterQueueRecordsInDefaultProcessingExceptionHandler() {
@@ -297,10 +296,10 @@ public class ProcessorNodeTest {
     public void testMetricsWithBuiltInMetricsVersionLatest() {
         final Metrics metrics = new Metrics();
         final StreamsMetricsImpl streamsMetrics =
-            new StreamsMetricsImpl(metrics, "test-client", new MockTime());
+                new StreamsMetricsImpl(metrics, "test-client", new MockTime());
         final InternalMockProcessorContext<Object, Object> context = new InternalMockProcessorContext<>(streamsMetrics);
         final ProcessorNode<Object, Object, Object, Object> node =
-            new ProcessorNode<>(NAME, new NoOpProcessor(), Collections.emptySet());
+                new ProcessorNode<>(NAME, new NoOpProcessor(), Collections.emptySet());
         node.init(context);
 
         final String threadId = Thread.currentThread().getName();
@@ -381,14 +380,14 @@ public class ProcessorNodeTest {
     public void testTopologyLevelClassCastExceptionDirect() {
         final Metrics metrics = new Metrics();
         final StreamsMetricsImpl streamsMetrics =
-            new StreamsMetricsImpl(metrics, "test-client", new MockTime());
+                new StreamsMetricsImpl(metrics, "test-client", new MockTime());
         final InternalMockProcessorContext<Object, Object> context = new InternalMockProcessorContext<>(streamsMetrics);
         final ProcessorNode<Object, Object, Object, Object> node =
-            new ProcessorNode<>("pname", new ClassCastProcessor(), Collections.emptySet());
+                new ProcessorNode<>("pname", new ClassCastProcessor(), Collections.emptySet());
         node.init(context);
         final StreamsException se = assertThrows(
-            StreamsException.class,
-            () -> node.process(new Record<>(KEY, VALUE, TIMESTAMP))
+                StreamsException.class,
+                () -> node.process(new Record<>(KEY, VALUE, TIMESTAMP))
         );
         assertInstanceOf(ClassCastException.class, se.getCause());
         assertTrue(se.getMessage().contains("default Serdes"));
@@ -436,7 +435,6 @@ public class ProcessorNodeTest {
         assertTrue(response.deadLetterQueueRecords().isEmpty());
     }
 
-
     @Test
     void shouldNotBeModifiable() {
         final ProducerRecord<byte[], byte[]> record = new ProducerRecord<>("topic", new byte[]{}, new byte[]{});
@@ -464,14 +462,14 @@ public class ProcessorNodeTest {
         when(internalProcessorContext.partition()).thenReturn(PARTITION);
         when(internalProcessorContext.offset()).thenReturn(OFFSET);
         when(internalProcessorContext.recordContext()).thenReturn(
-            new ProcessorRecordContext(
-                TIMESTAMP,
-                OFFSET,
-                PARTITION,
-                TOPIC,
-                new RecordHeaders(),
-                RAW_KEY,
-                RAW_VALUE));
+                new ProcessorRecordContext(
+                        TIMESTAMP,
+                        OFFSET,
+                        PARTITION,
+                        TOPIC,
+                        new RecordHeaders(),
+                        RAW_KEY,
+                        RAW_VALUE));
         when(internalProcessorContext.currentNode()).thenReturn(new ProcessorNode<>(NAME));
 
         return internalProcessorContext;

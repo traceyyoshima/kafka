@@ -120,8 +120,8 @@ public class ConfigurationsImageTest {
     private static void testToImage(ConfigurationsImage image, List<ApiMessageAndVersion> fromRecords) {
         // test from empty image stopping each of the various intermediate images along the way
         new RecordTestUtils.TestThroughAllIntermediateImagesLeadingToFinalImageHelper<>(
-            () -> ConfigurationsImage.EMPTY,
-            img -> new ConfigurationsDelta(img, SupportedConfigChecker.TRUE)
+                () -> ConfigurationsImage.EMPTY,
+                img -> new ConfigurationsDelta(img, SupportedConfigChecker.TRUE)
         ).test(image, fromRecords);
     }
 

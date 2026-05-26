@@ -113,33 +113,33 @@ public interface AdminApiHandler<K, V> {
 
         public static <K, V> ApiResult<K, V> completed(K key, V value) {
             return new ApiResult<>(
-                Collections.singletonMap(key, value),
-                Collections.emptyMap(),
-                Collections.emptyList()
+                    Collections.singletonMap(key, value),
+                    Collections.emptyMap(),
+                    Collections.emptyList()
             );
         }
 
         public static <K, V> ApiResult<K, V> failed(K key, Throwable t) {
             return new ApiResult<>(
-                Collections.emptyMap(),
-                Collections.singletonMap(key, t),
-                Collections.emptyList()
+                    Collections.emptyMap(),
+                    Collections.singletonMap(key, t),
+                    Collections.emptyList()
             );
         }
 
         public static <K, V> ApiResult<K, V> unmapped(List<K> keys) {
             return new ApiResult<>(
-                Collections.emptyMap(),
-                Collections.emptyMap(),
-                keys
+                    Collections.emptyMap(),
+                    Collections.emptyMap(),
+                    keys
             );
         }
 
         public static <K, V> ApiResult<K, V> empty() {
             return new ApiResult<>(
-                Collections.emptyMap(),
-                Collections.emptyMap(),
-                Collections.emptyList()
+                    Collections.emptyMap(),
+                    Collections.emptyMap(),
+                    Collections.emptyList()
             );
         }
     }
@@ -176,6 +176,7 @@ public interface AdminApiHandler<K, V> {
      */
     abstract class Unbatched<K, V> implements AdminApiHandler<K, V> {
         abstract AbstractRequest.Builder<?> buildSingleRequest(int brokerId, K key);
+
         abstract ApiResult<K, V> handleSingleResponse(Node broker, K key, AbstractResponse response);
 
         @Override

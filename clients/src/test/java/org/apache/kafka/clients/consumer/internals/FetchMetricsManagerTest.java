@@ -51,7 +51,6 @@ public class FetchMetricsManagerTest {
     private FetchMetricsRegistry metricsRegistry;
     private FetchMetricsManager metricsManager;
 
-
     @BeforeEach
     public void setup() {
         metrics = new Metrics(time);

@@ -95,24 +95,24 @@ public class ListTransactionsHandler extends AdminApiHandler.Batched<AllBrokersS
 
         if (error == Errors.COORDINATOR_LOAD_IN_PROGRESS) {
             log.debug("The `ListTransactions` request sent to broker {} failed because the " +
-                "coordinator is still loading state. Will try again after backing off", brokerId);
+                    "coordinator is still loading state. Will try again after backing off", brokerId);
             return ApiResult.empty();
         } else if (error == Errors.COORDINATOR_NOT_AVAILABLE) {
             log.debug("The `ListTransactions` request sent to broker {} failed because the " +
-                "coordinator is shutting down", brokerId);
+                    "coordinator is shutting down", brokerId);
             return ApiResult.failed(key, new CoordinatorNotAvailableException("ListTransactions " +
-                "request sent to broker " + brokerId + " failed because the coordinator is shutting down"));
+                    "request sent to broker " + brokerId + " failed because the coordinator is shutting down"));
         } else if (error != Errors.NONE) {
             log.error("The `ListTransactions` request sent to broker {} failed because of an " +
-                "unexpected error {}", brokerId, error);
+                    "unexpected error {}", brokerId, error);
             return ApiResult.failed(key, error.exception("ListTransactions request " +
-                "sent to broker " + brokerId + " failed with an unexpected exception"));
+                    "sent to broker " + brokerId + " failed with an unexpected exception"));
         } else {
             List<TransactionListing> listings = response.data().transactionStates().stream()
                 .map(transactionState -> new TransactionListing(
-                    transactionState.transactionalId(),
-                    transactionState.producerId(),
-                    TransactionState.parse(transactionState.transactionState())))
+                        transactionState.transactionalId(),
+                        transactionState.producerId(),
+                        TransactionState.parse(transactionState.transactionState())))
                 .collect(Collectors.toList());
             return ApiResult.completed(key, listings);
         }

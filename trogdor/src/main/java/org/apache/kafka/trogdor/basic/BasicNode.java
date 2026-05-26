@@ -58,7 +58,7 @@ public class BasicNode implements Node {
                             "array of strings.");
                 }
                 tags = new HashSet<>();
-                for (Iterator<JsonNode> tagIter = node.elements(); tagIter.hasNext(); ) {
+                for (Iterator<JsonNode> tagIter = node.elements(); tagIter.hasNext();) {
                     JsonNode tag = tagIter.next();
                     tags.add(tag.asText());
                 }
@@ -102,8 +102,8 @@ public class BasicNode implements Node {
         if (o == null || getClass() != o.getClass()) return false;
         BasicNode that = (BasicNode) o;
         return Objects.equals(name, that.name) &&
-            Objects.equals(hostname, that.hostname) &&
-            Objects.equals(config, that.config) &&
-            Objects.equals(tags, that.tags);
+                Objects.equals(hostname, that.hostname) &&
+                Objects.equals(config, that.config) &&
+                Objects.equals(tags, that.tags);
     }
 }

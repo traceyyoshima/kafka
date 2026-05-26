@@ -116,8 +116,8 @@ public class CoordinatorRequestManager implements RequestManager {
                 .setKeyType(FindCoordinatorRequest.CoordinatorType.GROUP.id())
                 .setKey(this.groupId);
         NetworkClientDelegate.UnsentRequest unsentRequest = new NetworkClientDelegate.UnsentRequest(
-            new FindCoordinatorRequest.Builder(data),
-            Optional.empty()
+                new FindCoordinatorRequest.Builder(data),
+                Optional.empty()
         );
 
         return unsentRequest.whenComplete((clientResponse, throwable) -> {
@@ -166,9 +166,9 @@ public class CoordinatorRequestManager implements RequestManager {
 
         if (coordinator != null) {
             log.info(
-                "Group coordinator {} is unavailable or invalid due to cause: {}. Rediscovery will be attempted.",
-                coordinator,
-                cause
+                    "Group coordinator {} is unavailable or invalid due to cause: {}. Rediscovery will be attempted.",
+                    coordinator,
+                    cause
             );
             coordinator = null;
         } else {
@@ -252,7 +252,7 @@ public class CoordinatorRequestManager implements RequestManager {
     public Optional<Node> coordinator() {
         return Optional.ofNullable(this.coordinator);
     }
-    
+
     public Optional<Throwable> getAndClearFatalError() {
         Optional<Throwable> fatalError = this.fatalError;
         this.fatalError = Optional.empty();

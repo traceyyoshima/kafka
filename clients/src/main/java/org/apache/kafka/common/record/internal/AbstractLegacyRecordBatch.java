@@ -445,7 +445,7 @@ public abstract class AbstractLegacyRecordBatch extends AbstractRecordBatch impl
             BasicLegacyRecordBatch that = (BasicLegacyRecordBatch) o;
 
             return offset == that.offset &&
-                Objects.equals(record, that.record);
+                    Objects.equals(record, that.record);
         }
 
         @Override

@@ -311,8 +311,8 @@ public class KafkaStatusBackingStore extends KafkaTopicBasedBackingStore impleme
                 if (exception instanceof RetriableException) {
                     synchronized (KafkaStatusBackingStore.this) {
                         if (entry.isDeleted()
-                            || status.generation() != generation
-                            || (safeWrite && !entry.canWriteSafely(status, sequence)))
+                                || status.generation() != generation
+                                || (safeWrite && !entry.canWriteSafely(status, sequence)))
                             return;
                     }
 
@@ -401,8 +401,8 @@ public class KafkaStatusBackingStore extends KafkaTopicBasedBackingStore impleme
     public Collection<TopicStatus> getAllTopics(String connector) {
         ConcurrentMap<String, TopicStatus> activeTopics = topics.get(Objects.requireNonNull(connector));
         return activeTopics != null
-               ? Set.copyOf(Objects.requireNonNull(activeTopics.values()))
-               : Set.of();
+                ? Set.copyOf(Objects.requireNonNull(activeTopics.values()))
+                : Set.of();
     }
 
     @Override

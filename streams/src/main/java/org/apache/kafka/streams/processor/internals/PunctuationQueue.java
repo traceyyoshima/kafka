@@ -59,7 +59,6 @@ public class PunctuationQueue {
                     punctuated = true;
                 }
 
-
                 top = pq.peek();
             }
 

@@ -59,7 +59,6 @@ public final class LeaderEpochFileCache {
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     private final TreeMap<Integer, EpochEntry> epochs = new TreeMap<>();
 
-
     /**
      * @param topicPartition the associated topic partition
      * @param checkpoint     the checkpoint file

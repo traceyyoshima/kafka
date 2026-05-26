@@ -58,7 +58,7 @@ public final class MetadataShell {
 
     public static class Builder {
         private String snapshotPath = null;
-        private FaultHandler faultHandler = new LoggingFaultHandler("shell", () -> { });
+        private FaultHandler faultHandler = new LoggingFaultHandler("shell", () -> {});
 
         public Builder setSnapshotPath(String snapshotPath) {
             this.snapshotPath = snapshotPath;
@@ -111,8 +111,8 @@ public final class MetadataShell {
         try {
             if (!fileLock.tryLock()) {
                 throw new RuntimeException("Unable to lock " + directory.getAbsolutePath() +
-                    ". Please ensure that no broker or controller process is using this " +
-                    "directory before proceeding.");
+                        ". Please ensure that no broker or controller process is using this " +
+                        "directory before proceeding.");
             }
         } catch (Throwable e) {
             fileLock.unlockAndClose();
@@ -222,7 +222,7 @@ public final class MetadataShell {
                     Utils.delete(tempDir.toFile());
                 } catch (Exception e) {
                     log.error("Got exception while removing temporary directory " +
-                        tempDir.toAbsolutePath());
+                            tempDir.toAbsolutePath());
                 }
             });
             MetadataShell shell = builder.build();
@@ -237,7 +237,7 @@ public final class MetadataShell {
             Exit.exit(1);
         } catch (Throwable e) {
             System.err.println("Unexpected error: " +
-                (e.getMessage() == null ? "" : e.getMessage()));
+                    (e.getMessage() == null ? "" : e.getMessage()));
             e.printStackTrace(System.err);
             Exit.exit(1);
         }

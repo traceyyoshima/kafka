@@ -59,8 +59,8 @@ public class KTableMapKeysTest {
         final KStream<String, String> convertedStream = table1.toStream((key, value) -> keyMap.get(key));
 
         final KeyValueTimestamp[] expected = new KeyValueTimestamp[] {new KeyValueTimestamp<>("ONE", "V_ONE", 5),
-            new KeyValueTimestamp<>("TWO", "V_TWO", 10),
-            new KeyValueTimestamp<>("THREE", "V_THREE", 15)};
+                new KeyValueTimestamp<>("TWO", "V_TWO", 10),
+                new KeyValueTimestamp<>("THREE", "V_THREE", 15)};
         final int[] originalKeys = new int[] {1, 2, 3};
         final String[] values = new String[] {"V_ONE", "V_TWO", "V_THREE"};
 

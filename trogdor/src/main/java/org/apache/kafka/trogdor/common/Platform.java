@@ -38,13 +38,13 @@ public interface Platform {
             JsonNode platformNode = root.get("platform");
             if (platformNode == null) {
                 throw new RuntimeException("Expected to find a 'platform' field " +
-                    "in the root JSON configuration object");
+                        "in the root JSON configuration object");
             }
             String platformName = platformNode.textValue();
             return Utils.newParameterizedInstance(platformName,
-                String.class, curNodeName,
-                Scheduler.class, Scheduler.SYSTEM,
-                JsonNode.class, root);
+                    String.class, curNodeName,
+                    Scheduler.class, Scheduler.SYSTEM,
+                    JsonNode.class, root);
         }
     }
 

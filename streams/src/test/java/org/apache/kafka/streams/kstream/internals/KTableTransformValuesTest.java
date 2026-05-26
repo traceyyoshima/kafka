@@ -127,7 +127,7 @@ public class KTableTransformValuesTest {
     @Test
     public void shouldThrowOnGetIfSupplierReturnsNull() {
         final KTableTransformValues<String, String, String> transformer =
-            new KTableTransformValues<>(parent, new NullSupplier(), QUERYABLE_NAME);
+                new KTableTransformValues<>(parent, new NullSupplier(), QUERYABLE_NAME);
 
         try {
             transformer.get();
@@ -140,7 +140,7 @@ public class KTableTransformValuesTest {
     @Test
     public void shouldThrowOnViewGetIfSupplierReturnsNull() {
         final KTableValueGetterSupplier<String, String> view =
-            new KTableTransformValues<>(parent, new NullSupplier(), null).view();
+                new KTableTransformValues<>(parent, new NullSupplier(), null).view();
 
         try {
             view.get();
@@ -155,7 +155,7 @@ public class KTableTransformValuesTest {
     public void shouldInitializeTransformerWithForwardDisabledProcessorContext() {
         final NoOpValueTransformerWithKeySupplier<String, String> transformer = new NoOpValueTransformerWithKeySupplier<>();
         final KTableTransformValues<String, String, String> transformValues =
-            new KTableTransformValues<>(parent, transformer, null);
+                new KTableTransformValues<>(parent, transformer, null);
         final Processor<String, Change<String>, String, Change<String>> processor = transformValues.get();
 
         processor.init(context);
@@ -166,7 +166,7 @@ public class KTableTransformValuesTest {
     @Test
     public void shouldNotSendOldValuesByDefault() {
         final KTableTransformValues<String, String, String> transformValues =
-            new KTableTransformValues<>(parent, new ExclamationValueTransformerSupplier(), null);
+                new KTableTransformValues<>(parent, new ExclamationValueTransformerSupplier(), null);
 
         final Processor<String, Change<String>, String, Change<String>> processor = transformValues.get();
         processor.init(context);
@@ -179,7 +179,7 @@ public class KTableTransformValuesTest {
     @Test
     public void shouldSendOldValuesIfConfigured() {
         final KTableTransformValues<String, String, String> transformValues =
-            new KTableTransformValues<>(parent, new ExclamationValueTransformerSupplier(), null);
+                new KTableTransformValues<>(parent, new ExclamationValueTransformerSupplier(), null);
 
         when(parent.enableSendingOldValues(true)).thenReturn(true);
 
@@ -209,25 +209,25 @@ public class KTableTransformValuesTest {
     @Test
     public void shouldTransformOnGetIfNotMaterialized() {
         final KTableTransformValues<String, String, String> transformValues =
-            new KTableTransformValues<>(parent, new ExclamationValueTransformerSupplier(), null);
+                new KTableTransformValues<>(parent, new ExclamationValueTransformerSupplier(), null);
 
         when(parent.valueGetterSupplier()).thenReturn(parentGetterSupplier);
         when(parentGetterSupplier.get()).thenReturn(parentGetter);
         when(parentGetter.get("Key")).thenReturn(ValueTimestampHeaders.make("Value", 73L, new RecordHeaders()));
         final ProcessorRecordContext recordContext = new ProcessorRecordContext(
-            42L,
-            23L,
-            -1,
-            "foo",
-            new RecordHeaders()
+                42L,
+                23L,
+                -1,
+                "foo",
+                new RecordHeaders()
         );
         when(context.recordContext()).thenReturn(recordContext);
         doNothing().when(context).setRecordContext(new ProcessorRecordContext(
-            73L,
-            -1L,
-            -1,
-            null,
-            new RecordHeaders()
+                73L,
+                -1L,
+                -1,
+                null,
+                new RecordHeaders()
         ));
         doNothing().when(context).setRecordContext(recordContext);
 
@@ -242,7 +242,7 @@ public class KTableTransformValuesTest {
     @Test
     public void shouldUseContextHeadersWhenValueTimestampHeadersIsNull() {
         final KTableTransformValues<String, String, String> transformValues =
-            new KTableTransformValues<>(parent, new ExclamationValueTransformerSupplier(), null);
+                new KTableTransformValues<>(parent, new ExclamationValueTransformerSupplier(), null);
 
         when(parent.valueGetterSupplier()).thenReturn(parentGetterSupplier);
         when(parentGetterSupplier.get()).thenReturn(parentGetter);
@@ -251,19 +251,19 @@ public class KTableTransformValuesTest {
         final RecordHeaders contextHeaders = new RecordHeaders();
         contextHeaders.add("test-header", "test-value".getBytes());
         final ProcessorRecordContext recordContext = new ProcessorRecordContext(
-            42L,
-            23L,
-            -1,
-            "foo",
-            contextHeaders
+                42L,
+                23L,
+                -1,
+                "foo",
+                contextHeaders
         );
         when(context.recordContext()).thenReturn(recordContext);
         doNothing().when(context).setRecordContext(new ProcessorRecordContext(
-            -1L,
-            -1L,
-            -1,
-            null,
-            new RecordHeaders()
+                -1L,
+                -1L,
+                -1,
+                null,
+                new RecordHeaders()
         ));
         doNothing().when(context).setRecordContext(recordContext);
 
@@ -279,7 +279,7 @@ public class KTableTransformValuesTest {
     @Test
     public void shouldGetFromStateStoreIfMaterialized() {
         final KTableTransformValues<String, String, String> transformValues =
-            new KTableTransformValues<>(parent, new ExclamationValueTransformerSupplier(), QUERYABLE_NAME);
+                new KTableTransformValues<>(parent, new ExclamationValueTransformerSupplier(), QUERYABLE_NAME);
 
         when(context.getStateStore(QUERYABLE_NAME)).thenReturn(stateStore);
         when(stateStore.get("Key")).thenReturn(ValueTimestampHeaders.make("something", 0L, new RecordHeaders()));
@@ -295,7 +295,7 @@ public class KTableTransformValuesTest {
     @Test
     public void shouldGetStoreNamesFromParentIfNotMaterialized() {
         final KTableTransformValues<String, String, String> transformValues =
-            new KTableTransformValues<>(parent, new ExclamationValueTransformerSupplier(), null);
+                new KTableTransformValues<>(parent, new ExclamationValueTransformerSupplier(), null);
 
         when(parent.valueGetterSupplier()).thenReturn(parentGetterSupplier);
         when(parentGetterSupplier.storeNames()).thenReturn(new String[]{"store1", "store2"});
@@ -308,7 +308,7 @@ public class KTableTransformValuesTest {
     @Test
     public void shouldGetQueryableStoreNameIfMaterialized() {
         final KTableTransformValues<String, String, String> transformValues =
-            new KTableTransformValues<>(parent, new ExclamationValueTransformerSupplier(), QUERYABLE_NAME);
+                new KTableTransformValues<>(parent, new ExclamationValueTransformerSupplier(), QUERYABLE_NAME);
 
         final String[] storeNames = transformValues.view().storeNames();
 
@@ -318,7 +318,7 @@ public class KTableTransformValuesTest {
     @Test
     public void shouldCloseTransformerOnProcessorClose() {
         final KTableTransformValues<String, String, String> transformValues =
-            new KTableTransformValues<>(parent, mockSupplier, null);
+                new KTableTransformValues<>(parent, mockSupplier, null);
 
         when(mockSupplier.get()).thenReturn(transformer);
         doNothing().when(transformer).close();
@@ -330,7 +330,7 @@ public class KTableTransformValuesTest {
     @Test
     public void shouldCloseTransformerOnGetterClose() {
         final KTableTransformValues<String, String, String> transformValues =
-            new KTableTransformValues<>(parent, mockSupplier, null);
+                new KTableTransformValues<>(parent, mockSupplier, null);
 
         when(mockSupplier.get()).thenReturn(transformer);
         when(parentGetterSupplier.get()).thenReturn(parentGetter);
@@ -345,7 +345,7 @@ public class KTableTransformValuesTest {
     @Test
     public void shouldCloseParentGetterClose() {
         final KTableTransformValues<String, String, String> transformValues =
-            new KTableTransformValues<>(parent, mockSupplier, null);
+                new KTableTransformValues<>(parent, mockSupplier, null);
 
         when(parent.valueGetterSupplier()).thenReturn(parentGetterSupplier);
         when(mockSupplier.get()).thenReturn(transformer);
@@ -364,8 +364,8 @@ public class KTableTransformValuesTest {
             .addStateStore(storeBuilder(OTHER_STORE_NAME))
             .table(INPUT_TOPIC, CONSUMED)
             .transformValues(
-                new ExclamationValueTransformerSupplier(STORE_NAME, OTHER_STORE_NAME),
-                STORE_NAME, OTHER_STORE_NAME)
+                    new ExclamationValueTransformerSupplier(STORE_NAME, OTHER_STORE_NAME),
+                    STORE_NAME, OTHER_STORE_NAME)
             .toStream()
             .process(capture);
 
@@ -376,7 +376,6 @@ public class KTableTransformValuesTest {
         inputTopic.pipeInput("A", "a", 5L);
         inputTopic.pipeInput("B", "b", 10L);
         inputTopic.pipeInput("D", null, 15L);
-
 
         assertThat(output(), hasItems(new KeyValueTimestamp<>("A", "A->a!", 5),
                 new KeyValueTimestamp<>("B", "B->b!", 10),
@@ -392,11 +391,11 @@ public class KTableTransformValuesTest {
             .addStateStore(storeBuilder(STORE_NAME))
             .table(INPUT_TOPIC, CONSUMED)
             .transformValues(
-                new ExclamationValueTransformerSupplier(STORE_NAME, QUERYABLE_NAME),
-                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as(QUERYABLE_NAME)
-                    .withKeySerde(Serdes.String())
-                    .withValueSerde(Serdes.String()),
-                STORE_NAME)
+                    new ExclamationValueTransformerSupplier(STORE_NAME, QUERYABLE_NAME),
+                    Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as(QUERYABLE_NAME)
+                        .withKeySerde(Serdes.String())
+                        .withValueSerde(Serdes.String()),
+                    STORE_NAME)
             .toStream()
             .process(capture);
 
@@ -431,10 +430,10 @@ public class KTableTransformValuesTest {
         builder
             .table(INPUT_TOPIC, CONSUMED)
             .transformValues(
-                new StatefulTransformerSupplier(),
-                Materialized.<String, Integer, KeyValueStore<Bytes, byte[]>>as(QUERYABLE_NAME)
-                    .withKeySerde(Serdes.String())
-                    .withValueSerde(Serdes.Integer()))
+                    new StatefulTransformerSupplier(),
+                    Materialized.<String, Integer, KeyValueStore<Bytes, byte[]>>as(QUERYABLE_NAME)
+                        .withKeySerde(Serdes.String())
+                        .withValueSerde(Serdes.Integer()))
             .groupBy(toForceSendingOfOldValues(), Grouped.with(Serdes.String(), Serdes.Integer()))
             .reduce(MockReducer.INTEGER_ADDER, MockReducer.INTEGER_SUBTRACTOR)
             .mapValues(mapBackToStrings())
@@ -456,7 +455,7 @@ public class KTableTransformValuesTest {
         final KeyValueStore<String, Integer> keyValueStore = driver.getKeyValueStore(QUERYABLE_NAME);
         assertThat(keyValueStore.get("A"), is(3));
         assertThat(driver.getAllStateStores().keySet(),
-            equalTo(Set.of(QUERYABLE_NAME, "KTABLE-AGGREGATE-STATE-STORE-0000000005")));
+                equalTo(Set.of(QUERYABLE_NAME, "KTABLE-AGGREGATE-STATE-STORE-0000000005")));
     }
 
     @ParameterizedTest
@@ -483,7 +482,7 @@ public class KTableTransformValuesTest {
                 new KeyValueTimestamp<>("A", "2", 15),
                 new KeyValueTimestamp<>("A", "3", 15))));
         assertThat(driver.getAllStateStores().keySet(),
-            equalTo(Set.of("inputTopic-STATE-STORE-0000000000", "KTABLE-AGGREGATE-STATE-STORE-0000000005")));
+                equalTo(Set.of("inputTopic-STATE-STORE-0000000000", "KTABLE-AGGREGATE-STATE-STORE-0000000005")));
     }
 
     @ParameterizedTest
@@ -492,8 +491,8 @@ public class KTableTransformValuesTest {
         builder
             .table(INPUT_TOPIC, CONSUMED)
             .transformValues(new StatelessTransformerSupplier(),
-                Materialized.with(Serdes.String(), Serdes.Integer())
-            )
+                    Materialized.with(Serdes.String(), Serdes.Integer())
+        )
             .groupBy(toForceSendingOfOldValues(), Grouped.with(Serdes.String(), Serdes.Integer()))
             .reduce(MockReducer.INTEGER_ADDER, MockReducer.INTEGER_SUBTRACTOR)
             .mapValues(mapBackToStrings())
@@ -502,17 +501,17 @@ public class KTableTransformValuesTest {
 
         driver = new TopologyTestDriver(builder.build(), props(withHeaders));
         final TestInputTopic<String, String> inputTopic =
-            driver.createInputTopic(INPUT_TOPIC, new StringSerializer(), new StringSerializer());
+                driver.createInputTopic(INPUT_TOPIC, new StringSerializer(), new StringSerializer());
 
         inputTopic.pipeInput("A", "a", 5L);
         inputTopic.pipeInput("A", "aa", 15L);
         inputTopic.pipeInput("A", "aaa", 10);
 
         assertThat(output(), equalTo(Arrays.asList(new KeyValueTimestamp<>("A", "1", 5),
-            new KeyValueTimestamp<>("A", "2", 15),
-            new KeyValueTimestamp<>("A", "3", 15))));
+                new KeyValueTimestamp<>("A", "2", 15),
+                new KeyValueTimestamp<>("A", "3", 15))));
         assertThat(driver.getAllStateStores().keySet(),
-            equalTo(Set.of("inputTopic-STATE-STORE-0000000000", "KTABLE-AGGREGATE-STATE-STORE-0000000005")));
+                equalTo(Set.of("inputTopic-STATE-STORE-0000000000", "KTABLE-AGGREGATE-STATE-STORE-0000000005")));
     }
 
     private ArrayList<KeyValueTimestamp<String, String>> output() {

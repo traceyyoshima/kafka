@@ -144,7 +144,7 @@ public final class TieredStorageTestContext implements AutoCloseable {
     public void updateTopicConfig(String topic,
                                   Map<String, String> configsToBeAdded,
                                   List<String> configsToBeDeleted)
-            throws ExecutionException, InterruptedException, TimeoutException {
+        throws ExecutionException, InterruptedException, TimeoutException {
         ConfigResource configResource = new ConfigResource(ConfigResource.Type.TOPIC, topic);
         updateResource(configResource, configsToBeAdded, configsToBeDeleted);
     }
@@ -152,7 +152,7 @@ public final class TieredStorageTestContext implements AutoCloseable {
     public void updateBrokerConfig(Integer brokerId,
                                    Map<String, String> configsToBeAdded,
                                    List<String> configsToBeDeleted)
-            throws ExecutionException, InterruptedException, TimeoutException {
+        throws ExecutionException, InterruptedException, TimeoutException {
         ConfigResource configResource = new ConfigResource(ConfigResource.Type.BROKER, brokerId.toString());
         updateResource(configResource, configsToBeAdded, configsToBeDeleted);
     }
@@ -160,7 +160,7 @@ public final class TieredStorageTestContext implements AutoCloseable {
     private void updateResource(ConfigResource configResource,
                                 Map<String, String> configsToBeAdded,
                                 List<String> configsToBeDeleted)
-            throws ExecutionException, InterruptedException, TimeoutException {
+        throws ExecutionException, InterruptedException, TimeoutException {
         List<AlterConfigOp> alterEntries = new ArrayList<>();
         configsToBeDeleted.forEach(k ->
                 alterEntries.add(new AlterConfigOp(new ConfigEntry(k, ""), AlterConfigOp.OpType.DELETE)));
@@ -205,12 +205,12 @@ public final class TieredStorageTestContext implements AutoCloseable {
         String sep = System.lineSeparator();
         List<ConsumerRecord<String, String>> records = new ArrayList<>();
         TestUtils.waitForCondition(
-            () -> {
-                consumer.poll(Duration.ofMillis(pollTimeoutMs)).forEach(records::add);
-                return records.size() >= expectedTotalCount;
-            },
-            timeoutMs,
-            () -> String.format("Could not consume %d records of %s from offset %d in %d ms. %d message(s) consumed:%s%s",
+                () -> {
+                    consumer.poll(Duration.ofMillis(pollTimeoutMs)).forEach(records::add);
+                    return records.size() >= expectedTotalCount;
+                },
+                timeoutMs,
+                () -> String.format("Could not consume %d records of %s from offset %d in %d ms. %d message(s) consumed:%s%s",
                     expectedTotalCount, topicPartition, fetchOffset, timeoutMs, records.size(), sep,
                     records.stream().map(Object::toString).collect(Collectors.joining(sep)))
         );
@@ -319,7 +319,7 @@ public final class TieredStorageTestContext implements AutoCloseable {
     }
 
     public boolean isAssignedReplica(TopicPartition topicPartition, Integer replicaId)
-            throws ExecutionException, InterruptedException {
+        throws ExecutionException, InterruptedException {
         String topic = topicPartition.topic();
         int partition = topicPartition.partition();
         TopicDescription description = admin.describeTopics(List.of(topicPartition.topic()))

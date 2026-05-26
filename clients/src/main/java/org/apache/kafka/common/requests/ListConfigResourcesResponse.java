@@ -49,7 +49,7 @@ public class ListConfigResourcesResponse extends AbstractResponse {
 
     public static ListConfigResourcesResponse parse(Readable readable, short version) {
         return new ListConfigResourcesResponse(new ListConfigResourcesResponseData(
-            readable, version));
+                readable, version));
     }
 
     @Override
@@ -72,9 +72,9 @@ public class ListConfigResourcesResponse extends AbstractResponse {
             .stream()
             .map(entry ->
                 new ConfigResource(
-                    ConfigResource.Type.forId(entry.resourceType()),
-                    entry.resourceName()
+                        ConfigResource.Type.forId(entry.resourceType()),
+                        entry.resourceName()
                 )
-            ).collect(Collectors.toList());
+        ).collect(Collectors.toList());
     }
 }

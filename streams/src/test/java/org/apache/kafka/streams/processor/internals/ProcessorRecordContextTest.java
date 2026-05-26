@@ -31,25 +31,25 @@ public class ProcessorRecordContextTest {
     @Test
     public void shouldNotAllowNullHeaders() {
         assertThrows(
-            NullPointerException.class,
-            () -> new ProcessorRecordContext(
-                42L,
-                73L,
-                0,
-                "topic",
-                null
-            )
+                NullPointerException.class,
+                () -> new ProcessorRecordContext(
+                    42L,
+                    73L,
+                    0,
+                    "topic",
+                    null
+                )
         );
     }
 
     @Test
     public void shouldEstimateNullTopicAndEmptyHeadersAsZeroLength() {
         final ProcessorRecordContext context = new ProcessorRecordContext(
-            42L,
-            73L,
-            0,
-            null,
-            new RecordHeaders()
+                42L,
+                73L,
+                0,
+                null,
+                new RecordHeaders()
         );
 
         assertEquals(MIN_SIZE, context.residentMemorySizeEstimate());
@@ -58,11 +58,11 @@ public class ProcessorRecordContextTest {
     @Test
     public void shouldEstimateEmptyHeaderAsZeroLength() {
         final ProcessorRecordContext context = new ProcessorRecordContext(
-            42L,
-            73L,
-            0,
-            null,
-            new RecordHeaders()
+                42L,
+                73L,
+                0,
+                null,
+                new RecordHeaders()
         );
 
         assertEquals(MIN_SIZE, context.residentMemorySizeEstimate());
@@ -71,11 +71,11 @@ public class ProcessorRecordContextTest {
     @Test
     public void shouldEstimateTopicLength() {
         final ProcessorRecordContext context = new ProcessorRecordContext(
-            42L,
-            73L,
-            0,
-            "topic",
-            new RecordHeaders()
+                42L,
+                73L,
+                0,
+                "topic",
+                new RecordHeaders()
         );
 
         assertEquals(MIN_SIZE + 5L, context.residentMemorySizeEstimate());
@@ -86,11 +86,11 @@ public class ProcessorRecordContextTest {
         final Headers headers = new RecordHeaders();
         headers.add("header-key", "header-value".getBytes());
         final ProcessorRecordContext context = new ProcessorRecordContext(
-            42L,
-            73L,
-            0,
-            null,
-            headers
+                42L,
+                73L,
+                0,
+                null,
+                headers
         );
 
         assertEquals(MIN_SIZE + 10L + 12L, context.residentMemorySizeEstimate());
@@ -101,11 +101,11 @@ public class ProcessorRecordContextTest {
         final Headers headers = new RecordHeaders();
         headers.add("header-key", null);
         final ProcessorRecordContext context = new ProcessorRecordContext(
-            42L,
-            73L,
-            0,
-            null,
-            headers
+                42L,
+                73L,
+                0,
+                null,
+                headers
         );
 
         assertEquals(MIN_SIZE + 10L, context.residentMemorySizeEstimate());

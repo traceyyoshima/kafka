@@ -68,13 +68,13 @@ public class ValueTimestampHeadersSerializerTest {
         final Headers headers = new RecordHeaders()
             .add("key1", "value1".getBytes());
         final ValueTimestampHeaders<String> original =
-            ValueTimestampHeaders.make(VALUE, TIMESTAMP, headers);
+                ValueTimestampHeaders.make(VALUE, TIMESTAMP, headers);
 
         final byte[] serialized = serializer.serialize(TOPIC, original);
         assertNotNull(serialized);
 
         final ValueTimestampHeaders<String> deserialized =
-            deserializer.deserialize(TOPIC, serialized);
+                deserializer.deserialize(TOPIC, serialized);
 
         assertNotNull(deserialized);
         assertEquals(original.value(), deserialized.value());
@@ -92,13 +92,13 @@ public class ValueTimestampHeadersSerializerTest {
     public void shouldSerializeValueWithEmptyHeaders() {
         final Headers emptyHeaders = new RecordHeaders();
         final ValueTimestampHeaders<String> valueTimestampHeaders =
-            ValueTimestampHeaders.make(VALUE, TIMESTAMP, emptyHeaders);
+                ValueTimestampHeaders.make(VALUE, TIMESTAMP, emptyHeaders);
 
         final byte[] serialized = serializer.serialize(TOPIC, valueTimestampHeaders);
         assertNotNull(serialized);
 
         final ValueTimestampHeaders<String> deserialized =
-            deserializer.deserialize(TOPIC, serialized);
+                deserializer.deserialize(TOPIC, serialized);
 
         assertEquals(VALUE, deserialized.value());
         assertEquals(TIMESTAMP, deserialized.timestamp());
@@ -112,13 +112,13 @@ public class ValueTimestampHeadersSerializerTest {
             .add("key1", "value2".getBytes())
             .add("key3", "value3".getBytes());
         final ValueTimestampHeaders<String> valueTimestampHeaders =
-            ValueTimestampHeaders.make(VALUE, TIMESTAMP, headers);
+                ValueTimestampHeaders.make(VALUE, TIMESTAMP, headers);
 
         final byte[] serialized = serializer.serialize(TOPIC, valueTimestampHeaders);
         assertNotNull(serialized);
 
         final ValueTimestampHeaders<String> deserialized =
-            deserializer.deserialize(TOPIC, serialized);
+                deserializer.deserialize(TOPIC, serialized);
 
         assertEquals(VALUE, deserialized.value());
         assertEquals(TIMESTAMP, deserialized.timestamp());
@@ -128,7 +128,7 @@ public class ValueTimestampHeadersSerializerTest {
     @Test
     public void shouldReturnNullWhenSerializingNullValue() {
         final ValueTimestampHeaders<String> valueTimestampHeaders =
-            ValueTimestampHeaders.makeAllowNullable(null, TIMESTAMP, new RecordHeaders());
+                ValueTimestampHeaders.makeAllowNullable(null, TIMESTAMP, new RecordHeaders());
         final byte[] serialized = serializer.serialize(TOPIC, valueTimestampHeaders);
         assertNull(serialized);
     }
@@ -142,10 +142,10 @@ public class ValueTimestampHeadersSerializerTest {
 
         final Headers headers = new RecordHeaders().add("key1", "value1".getBytes());
         final ValueTimestampHeaders<String> valueTimestampHeaders =
-            ValueTimestampHeaders.make(VALUE, TIMESTAMP, headers);
+                ValueTimestampHeaders.make(VALUE, TIMESTAMP, headers);
 
         final ValueTimestampHeadersSerializer<String> testSerializer =
-            new ValueTimestampHeadersSerializer<>(mockSerializer);
+                new ValueTimestampHeadersSerializer<>(mockSerializer);
         testSerializer.serialize(TOPIC, valueTimestampHeaders);
 
         // we should invoke the serialize(String, Headers, Object) instead of serialize(String, Object)

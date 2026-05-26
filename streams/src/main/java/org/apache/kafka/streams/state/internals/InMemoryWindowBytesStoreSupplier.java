@@ -60,7 +60,6 @@ public class InMemoryWindowBytesStoreSupplier implements WindowBytesStoreSupplie
         return retentionPeriod;
     }
 
-
     @Override
     public long windowSize() {
         return windowSize;
@@ -80,10 +79,10 @@ public class InMemoryWindowBytesStoreSupplier implements WindowBytesStoreSupplie
     @Override
     public String toString() {
         return "InMemoryWindowBytesStoreSupplier{" +
-            "name='" + name + '\'' +
-            ", retentionPeriod=" + retentionPeriod +
-            ", windowSize=" + windowSize +
-            ", retainDuplicates=" + retainDuplicates +
-            '}';
+                "name='" + name + '\'' +
+                ", retentionPeriod=" + retentionPeriod +
+                ", windowSize=" + windowSize +
+                ", retainDuplicates=" + retainDuplicates +
+                '}';
     }
 }

@@ -54,8 +54,8 @@ public class LeaveGroupRequestTest {
                                          .setMemberId("member_2")
                                          .setGroupInstanceId("instance_2"));
         builder = new LeaveGroupRequest.Builder(
-            groupId,
-            members
+                groupId,
+                members
         );
     }
 
@@ -70,16 +70,16 @@ public class LeaveGroupRequestTest {
                 LeaveGroupRequest request = builder.build(version);
                 if (version <= 2) {
                     fail("Older version " + version +
-                             " request data should not be created due to non-single members");
+                            " request data should not be created due to non-single members");
                 }
                 assertEquals(expectedData, request.data());
                 assertEquals(members, request.members());
 
                 LeaveGroupResponse expectedResponse = new LeaveGroupResponse(
-                    Collections.emptyList(),
-                    Errors.COORDINATOR_LOAD_IN_PROGRESS,
-                    throttleTimeMs,
-                    version
+                        Collections.emptyList(),
+                        Errors.COORDINATOR_LOAD_IN_PROGRESS,
+                        throttleTimeMs,
+                        version
                 );
 
                 assertEquals(expectedResponse, request.getErrorResponse(throttleTimeMs,
@@ -97,8 +97,8 @@ public class LeaveGroupRequestTest {
                                                        .setGroupId(groupId)
                                                        .setMemberId(memberIdOne);
         List<MemberIdentity> singleMember = Collections.singletonList(
-            new MemberIdentity()
-                .setMemberId(memberIdOne));
+                new MemberIdentity()
+                    .setMemberId(memberIdOne));
 
         builder = new LeaveGroupRequest.Builder(groupId, singleMember);
 
@@ -110,9 +110,9 @@ public class LeaveGroupRequestTest {
             int expectedThrottleTime = version >= 1 ? throttleTimeMs
                                            : AbstractResponse.DEFAULT_THROTTLE_TIME;
             LeaveGroupResponse expectedResponse = new LeaveGroupResponse(
-                new LeaveGroupResponseData()
-                    .setErrorCode(Errors.NOT_CONTROLLER.code())
-                    .setThrottleTimeMs(expectedThrottleTime)
+                    new LeaveGroupResponseData()
+                        .setErrorCode(Errors.NOT_CONTROLLER.code())
+                        .setThrottleTimeMs(expectedThrottleTime)
             );
 
             assertEquals(expectedResponse, request.getErrorResponse(throttleTimeMs,
@@ -123,6 +123,6 @@ public class LeaveGroupRequestTest {
     @Test
     public void testBuildEmptyMembers() {
         assertThrows(IllegalArgumentException.class,
-            () -> new LeaveGroupRequest.Builder(groupId, Collections.emptyList()));
+                () -> new LeaveGroupRequest.Builder(groupId, Collections.emptyList()));
     }
 }

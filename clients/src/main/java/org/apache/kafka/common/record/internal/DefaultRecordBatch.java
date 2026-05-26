@@ -308,10 +308,12 @@ public class DefaultRecordBatch extends AbstractRecordBatch implements MutableRe
                     throw new InvalidRecordException("Incorrect declared batch size, premature EOF reached");
                 }
             }
+
             @Override
             protected boolean ensureNoneRemaining() {
                 return !buffer.hasRemaining();
             }
+
             @Override
             public void close() {}
         };

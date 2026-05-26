@@ -56,8 +56,8 @@ class ConsumerRebalanceMetricsManagerTest extends AbstractConsumerMetricsManager
         windowSizeMs = 30000; // 30 seconds - default value
         numSamples = 2; // default value
         metricConfig = new MetricConfig()
-                .samples(numSamples)
-                .timeWindow(windowSizeMs, java.util.concurrent.TimeUnit.MILLISECONDS);
+                    .samples(numSamples)
+                    .timeWindow(windowSizeMs, java.util.concurrent.TimeUnit.MILLISECONDS);
         metrics = new Metrics(metricConfig, time);
         subscriptionState = new SubscriptionState(mock(LogContext.class), AutoOffsetResetStrategy.EARLIEST);
         metricsManager = new ConsumerRebalanceMetricsManager(metrics, subscriptionState);
@@ -173,7 +173,7 @@ class ConsumerRebalanceMetricsManagerTest extends AbstractConsumerMetricsManager
         // Start a rebalance but don't complete it
         metricsManager.recordRebalanceStarted(time.milliseconds());
         time.sleep(10);
-        
+
         metricsManager.maybeRecordRebalanceFailed();
         assertEquals(1.0d, metrics.metric(metricsManager.failedRebalanceTotal).metricValue(),
                 "Failed rebalance count should increment to 1 after recording failure");
@@ -182,7 +182,7 @@ class ConsumerRebalanceMetricsManagerTest extends AbstractConsumerMetricsManager
         metricsManager.recordRebalanceStarted(time.milliseconds());
         time.sleep(10);
         metricsManager.recordRebalanceEnded(time.milliseconds());
-        
+
         metricsManager.maybeRecordRebalanceFailed();
         assertEquals(1.0d, metrics.metric(metricsManager.failedRebalanceTotal).metricValue(),
                 "Failed count should not increment after successful rebalance completes");
@@ -237,22 +237,22 @@ class ConsumerRebalanceMetricsManagerTest extends AbstractConsumerMetricsManager
     @Test
     public void testRebalanceStartedFlag() {
 
-        assertFalse(metricsManager.rebalanceStarted(), 
+        assertFalse(metricsManager.rebalanceStarted(),
                 "Initially, no rebalance should be in progress");
 
         metricsManager.recordRebalanceStarted(time.milliseconds());
-        assertTrue(metricsManager.rebalanceStarted(), 
+        assertTrue(metricsManager.rebalanceStarted(),
                 "Rebalance should be marked as started after recordRebalanceStarted()");
 
         time.sleep(10);
         metricsManager.recordRebalanceEnded(time.milliseconds());
-        assertFalse(metricsManager.rebalanceStarted(), 
+        assertFalse(metricsManager.rebalanceStarted(),
                 "Rebalance should not be in progress after recordRebalanceEnded()");
 
         // Start another rebalance - advance time first
         time.sleep(100);
         metricsManager.recordRebalanceStarted(time.milliseconds());
-        assertTrue(metricsManager.rebalanceStarted(), 
+        assertTrue(metricsManager.rebalanceStarted(),
                 "New rebalance should be marked as started");
     }
 
@@ -268,7 +268,7 @@ class ConsumerRebalanceMetricsManagerTest extends AbstractConsumerMetricsManager
 
         assertEquals(5.0d, metrics.metric(metricsManager.failedRebalanceTotal).metricValue(),
                 "Should have recorded 5 consecutive failed rebalances");
-        
+
         assertEquals(0.0d, metrics.metric(metricsManager.rebalanceTotal).metricValue(),
                 "Successful rebalance count should remain 0 when only failures occur");
     }
@@ -282,24 +282,24 @@ class ConsumerRebalanceMetricsManagerTest extends AbstractConsumerMetricsManager
         time.sleep(20);
         metricsManager.recordRebalanceEnded(time.milliseconds());
         assertEquals(1.0d, metrics.metric(metricsManager.rebalanceTotal).metricValue());
-        
+
         // First failure
         time.sleep(10);
         metricsManager.recordRebalanceStarted(time.milliseconds());
         assertTrue(metricsManager.rebalanceStarted(), "First failure rebalance should be in progress");
         time.sleep(30);
         metricsManager.maybeRecordRebalanceFailed();
-        
+
         double failedAfterFirst = (Double) metrics.metric(metricsManager.failedRebalanceTotal).metricValue();
         assertEquals(1.0d, failedAfterFirst, "Should have recorded one failed rebalance after first failure");
-        
+
         // Second success
         time.sleep(10);
         metricsManager.recordRebalanceStarted(time.milliseconds());
         time.sleep(40);
         metricsManager.recordRebalanceEnded(time.milliseconds());
         assertEquals(2.0d, metrics.metric(metricsManager.rebalanceTotal).metricValue());
-        
+
         // Second failure
         time.sleep(10);
         metricsManager.recordRebalanceStarted(time.milliseconds());
@@ -311,7 +311,7 @@ class ConsumerRebalanceMetricsManagerTest extends AbstractConsumerMetricsManager
                 "Should have 2 successful rebalances in mixed scenario");
         assertEquals(2.0d, metrics.metric(metricsManager.failedRebalanceTotal).metricValue(),
                 "Should have 2 failed rebalances in mixed scenario");
-        
+
         assertEquals(30.0d, metrics.metric(metricsManager.rebalanceLatencyAvg).metricValue(),
                 "Average latency should only include successful rebalances: (20 + 40) / 2 = 30ms");
         assertEquals(40.0d, metrics.metric(metricsManager.rebalanceLatencyMax).metricValue(),

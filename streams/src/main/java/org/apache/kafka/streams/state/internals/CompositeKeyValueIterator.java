@@ -57,7 +57,6 @@ class CompositeKeyValueIterator<K, V, StoreType> implements KeyValueIterator<K, 
         return current != null && current.hasNext();
     }
 
-
     @Override
     public KeyValue<K, V> next() {
         if (!hasNext()) {

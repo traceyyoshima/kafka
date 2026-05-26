@@ -38,7 +38,7 @@ public abstract class SetSchemaMetadata<R extends ConnectRecord<R>> implements T
 
     public static final String OVERVIEW_DOC =
             "Set the schema name, version or both on the record's key (<code>" + Key.class.getName() + "</code>)"
-                    + " or value (<code>" + Value.class.getName() + "</code>) schema.";
+            + " or value (<code>" + Value.class.getName() + "</code>) schema.";
 
     private interface ConfigName {
         String SCHEMA_NAME = "schema.name";
@@ -96,7 +96,7 @@ public abstract class SetSchemaMetadata<R extends ConnectRecord<R>> implements T
                 isMap || isArray ? schema.valueSchema() : null
         );
         log.trace("Applying SetSchemaMetadata SMT. Original schema: {}, updated schema: {}",
-            schema, updatedSchema);
+                schema, updatedSchema);
         return newRecord(record, updatedSchema);
     }
 

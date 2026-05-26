@@ -217,7 +217,7 @@ public class SaslClientAuthenticator implements Authenticator {
             return SecurityManagerCompatibility.get().callAs(subject, () -> {
                 String[] mechs = {mechanism};
                 log.debug("Creating SaslClient: client={};service={};serviceHostname={};mechs={}",
-                    clientPrincipalName, servicePrincipal, host, Arrays.toString(mechs));
+                        clientPrincipalName, servicePrincipal, host, Arrays.toString(mechs));
                 SaslClient retvalSaslClient = Sasl.createSaslClient(mechs, clientPrincipalName, servicePrincipal, host, configs, callbackHandler);
                 if (retvalSaslClient == null) {
                     throw new SaslAuthenticationException("Failed to create SaslClient with mechanism " + mechanism);
@@ -374,12 +374,12 @@ public class SaslClientAuthenticator implements Authenticator {
         String clientId = (String) configs.get(CommonClientConfigs.CLIENT_ID_CONFIG);
         short requestApiKey = apiKey.id;
         currentRequestHeader = new RequestHeader(
-            new RequestHeaderData().
-                setRequestApiKey(requestApiKey).
-                setRequestApiVersion(version).
-                setClientId(clientId).
-                setCorrelationId(nextCorrelationId()),
-            apiKey.requestHeaderVersion(version));
+                new RequestHeaderData().
+                    setRequestApiKey(requestApiKey).
+                    setRequestApiVersion(version).
+                    setClientId(clientId).
+                    setCorrelationId(nextCorrelationId()),
+                apiKey.requestHeaderVersion(version));
         return currentRequestHeader;
     }
 
@@ -523,7 +523,6 @@ public class SaslClientAuthenticator implements Authenticator {
         }
     }
 
-
     private byte[] createSaslToken(final byte[] saslToken, boolean isInitial) throws SaslException {
         if (saslToken == null)
             throw new IllegalSaslStateException("Error authenticating with the Kafka Broker: received a `null` saslToken.");
@@ -539,10 +538,10 @@ public class SaslClientAuthenticator implements Authenticator {
             // Try to provide hints to use about what went wrong so they can fix their configuration.
             if (kerberosError == KerberosError.SERVER_NOT_FOUND) {
                 error += " This may be caused by Java's being unable to resolve the Kafka Broker's" +
-                    " hostname correctly. You may want to try to adding" +
-                    " '-Dsun.net.spi.nameservice.provider.1=dns,sun' to your client's JVMFLAGS environment." +
-                    " Users must configure FQDN of kafka brokers when authenticating using SASL and" +
-                    " `socketChannel.socket().getInetAddress().getHostName()` must match the hostname in `principal/hostname@realm`";
+                        " hostname correctly. You may want to try to adding" +
+                        " '-Dsun.net.spi.nameservice.provider.1=dns,sun' to your client's JVMFLAGS environment." +
+                        " Users must configure FQDN of kafka brokers when authenticating using SASL and" +
+                        " `socketChannel.socket().getInetAddress().getHostName()` must match the hostname in `principal/hostname@realm`";
             }
             //Unwrap the SaslException
             Throwable cause = e.getCause();
@@ -607,13 +606,13 @@ public class SaslClientAuthenticator implements Authenticator {
                 break;
             case UNSUPPORTED_SASL_MECHANISM:
                 throw new UnsupportedSaslMechanismException(String.format("Client SASL mechanism '%s' not enabled in the server, enabled mechanisms are %s",
-                    mechanism, response.enabledMechanisms()));
+                        mechanism, response.enabledMechanisms()));
             case ILLEGAL_SASL_STATE:
                 throw new IllegalSaslStateException(String.format("Unexpected handshake request with client mechanism %s, enabled mechanisms are %s",
-                    mechanism, response.enabledMechanisms()));
+                        mechanism, response.enabledMechanisms()));
             default:
                 throw new IllegalSaslStateException(String.format("Unknown error code %s, client mechanism is %s, enabled mechanisms are %s",
-                    response.error(), mechanism, response.enabledMechanisms()));
+                        response.error(), mechanism, response.enabledMechanisms()));
         }
     }
 

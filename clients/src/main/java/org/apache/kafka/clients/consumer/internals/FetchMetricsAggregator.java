@@ -50,7 +50,7 @@ class FetchMetricsAggregator {
 
         // Also aggregate the metrics on a per-topic basis.
         perTopicFetchMetrics.computeIfAbsent(partition.topic(), t -> new FetchMetrics())
-                        .increment(bytes, records);
+                .increment(bytes, records);
 
         maybeRecordMetrics(partition);
     }

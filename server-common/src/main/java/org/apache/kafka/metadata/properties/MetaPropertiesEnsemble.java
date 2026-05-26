@@ -64,9 +64,9 @@ public final class MetaPropertiesEnsemble {
      * A completely empty MetaPropertiesEnsemble object.
      */
     public static final MetaPropertiesEnsemble EMPTY = new MetaPropertiesEnsemble(Set.of(),
-        Set.of(),
-        Map.of(),
-        Optional.empty());
+            Set.of(),
+            Map.of(),
+            Optional.empty());
 
     /**
      * The name of the meta.properties file within each log directory.
@@ -108,7 +108,7 @@ public final class MetaPropertiesEnsemble {
         public Loader addMetadataLogDir(String metadataLogDir) {
             if (this.metadataLogDir.isPresent()) {
                 throw new RuntimeException("Cannot specify more than one metadata log directory. " +
-                    "Already specified " + this.metadataLogDir.get());
+                        "Already specified " + this.metadataLogDir.get());
             }
             this.metadataLogDir = Optional.of(metadataLogDir);
             logDirs.add(metadataLogDir);
@@ -310,11 +310,11 @@ public final class MetaPropertiesEnsemble {
             for (String logDir : emptyLogDirs) {
                 if (errorLogDirs.contains(logDir)) {
                     throw new RuntimeException("Error: log directory " + logDir +
-                        " is in both emptyLogDirs and errorLogDirs.");
+                            " is in both emptyLogDirs and errorLogDirs.");
                 }
                 if (logDirProps.containsKey(logDir)) {
                     throw new RuntimeException("Error: log directory " + logDir +
-                        " is in both emptyLogDirs and logDirProps.");
+                            " is in both emptyLogDirs and logDirProps.");
                 }
             }
             for (String logDir : errorLogDirs) {
@@ -328,7 +328,7 @@ public final class MetaPropertiesEnsemble {
                         logDirProps.containsKey(m) ||
                         errorLogDirs.contains(m))) {
                     throw new RuntimeException("Error: metaLogDir " + m + " does not appear " +
-                        "in emptyLogDirs, errorLogDirs, or logDirProps.");
+                            "in emptyLogDirs, errorLogDirs, or logDirProps.");
                 }
             });
         }
@@ -359,7 +359,7 @@ public final class MetaPropertiesEnsemble {
                 try {
                     preWriteHandler.handle(logDir, newSet.contains(logDir), metaProps);
                     PropertiesUtils.writePropertiesFile(metaProps.toProperties(),
-                        metaPropsPath, true);
+                            metaPropsPath, true);
                 } catch (IOException e) {
                     errorLogDirs.add(logDir);
                     logDirProps.remove(logDir);
@@ -375,9 +375,9 @@ public final class MetaPropertiesEnsemble {
          */
         public MetaPropertiesEnsemble copy() {
             return new MetaPropertiesEnsemble(emptyLogDirs,
-                errorLogDirs,
-                logDirProps,
-                metaLogDir);
+                    errorLogDirs,
+                    logDirProps,
+                    metaLogDir);
         }
     }
 
@@ -487,20 +487,20 @@ public final class MetaPropertiesEnsemble {
             if (verificationFlags.contains(VerificationFlag.REQUIRE_V0)) {
                 if (!metaProps.version().equals(MetaPropertiesVersion.V0)) {
                     throw new RuntimeException("Found unexpected version in " + path + ". " +
-                        "ZK-based brokers that are not migrating only support version 0 " +
-                        "(which is implicit when the `version` field is missing).");
+                            "ZK-based brokers that are not migrating only support version 0 " +
+                            "(which is implicit when the `version` field is missing).");
                 }
             }
             if (metaProps.clusterId().isEmpty()) {
                 if (metaProps.version().alwaysHasClusterId()) {
                     throw new RuntimeException("cluster.id was not specified in the v1 file: " +
-                        path);
+                            path);
                 }
             } else if (expectedClusterId.isEmpty()) {
                 expectedClusterId = metaProps.clusterId();
             } else if (!metaProps.clusterId().get().equals(expectedClusterId.get())) {
                 throw new RuntimeException("Invalid cluster.id in: " + path + ". Expected " +
-                    expectedClusterId.get() + ", but read " + metaProps.clusterId().get());
+                        expectedClusterId.get() + ", but read " + metaProps.clusterId().get());
             }
             if (metaProps.nodeId().isEmpty()) {
                 if (metaProps.version().alwaysHasNodeId()) {
@@ -510,21 +510,21 @@ public final class MetaPropertiesEnsemble {
                 expectedNodeId = metaProps.nodeId();
             } else if (metaProps.nodeId().getAsInt() != expectedNodeId.getAsInt()) {
                 throw new RuntimeException("Stored node id " + metaProps.nodeId().getAsInt() +
-                    " doesn't match previous node id " + expectedNodeId.getAsInt() + " in " + path +
-                    ". If you moved your data, make sure your configured node id matches. If you " +
-                    "intend to create a new node, you should remove all data in your data " +
-                    "directories.");
+                        " doesn't match previous node id " + expectedNodeId.getAsInt() + " in " + path +
+                        ". If you moved your data, make sure your configured node id matches. If you " +
+                        "intend to create a new node, you should remove all data in your data " +
+                        "directories.");
             }
             if (metaProps.directoryId().isPresent()) {
                 if (DirectoryId.reserved(metaProps.directoryId().get())) {
                     throw new RuntimeException("Invalid reserved directory ID " +
-                        metaProps.directoryId().get() + " found in " + logDir);
+                            metaProps.directoryId().get() + " found in " + logDir);
                 }
                 String prevLogDir = seenUuids.put(metaProps.directoryId().get(), logDir);
                 if (prevLogDir != null) {
                     throw new RuntimeException("Duplicate directory ID " + metaProps.directoryId() +
-                        " found. It was the ID of " + prevLogDir + ", " + "but also of " +
-                        logDir);
+                            " found. It was the ID of " + prevLogDir + ", " + "but also of " +
+                            logDir);
                 }
             }
         }
@@ -576,17 +576,17 @@ public final class MetaPropertiesEnsemble {
         }
         MetaPropertiesEnsemble other = (MetaPropertiesEnsemble) o;
         return emptyLogDirs.equals(other.emptyLogDirs) &&
-            errorLogDirs.equals(other.errorLogDirs) &&
-            logDirProps.equals(other.logDirProps) &&
-            metadataLogDir.equals(other.metadataLogDir);
+                errorLogDirs.equals(other.errorLogDirs) &&
+                logDirProps.equals(other.logDirProps) &&
+                metadataLogDir.equals(other.metadataLogDir);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(emptyLogDirs,
-            errorLogDirs,
-            logDirProps,
-            metadataLogDir);
+                errorLogDirs,
+                logDirProps,
+                metadataLogDir);
     }
 
     @Override
@@ -596,10 +596,10 @@ public final class MetaPropertiesEnsemble {
         errorLogDirs.forEach(e -> outputMap.put(e, "ERROR"));
         logDirProps.forEach((key, value) -> outputMap.put(key, value.toString()));
         return "MetaPropertiesEnsemble" +
-            "(metadataLogDir=" + metadataLogDir +
-            ", dirs={" + outputMap.entrySet().stream().
+                "(metadataLogDir=" + metadataLogDir +
+                ", dirs={" + outputMap.entrySet().stream().
             map(e -> e.getKey() + ": " + e.getValue()).
             collect(Collectors.joining(", ")) +
-            "})";
+                "})";
     }
 }

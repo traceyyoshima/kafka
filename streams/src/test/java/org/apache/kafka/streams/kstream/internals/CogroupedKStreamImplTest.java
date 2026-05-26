@@ -69,18 +69,17 @@ public class CogroupedKStreamImplTest {
     private final Properties props = StreamsTestUtils.getStreamsConfig(Serdes.String(), Serdes.String());
 
     private static final Aggregator<String, String, String> STRING_AGGREGATOR =
-        (key, value, aggregate) -> aggregate + value;
+            (key, value, aggregate) -> aggregate + value;
 
     private static final Initializer<String> STRING_INITIALIZER = () -> "";
 
     private static final Aggregator<String, String, Integer> STRING_SUM_AGGREGATOR =
-        (key, value, aggregate) -> aggregate + Integer.parseInt(value);
+            (key, value, aggregate) -> aggregate + Integer.parseInt(value);
 
     private static final Aggregator<? super String, ? super Integer, Integer> SUM_AGGREGATOR =
-        (key, value, aggregate) -> aggregate + value;
+            (key, value, aggregate) -> aggregate + value;
 
     private static final Initializer<Integer> SUM_INITIALIZER = () -> 0;
-
 
     private void setup(final boolean withHeaders) {
         StreamsTestUtils.maybeSetDslStoreFormatHeaders(props, withHeaders);
@@ -204,27 +203,27 @@ public class CogroupedKStreamImplTest {
         final String topologyDescription = builder.build().describe().toString();
 
         assertThat(
-            topologyDescription,
-            equalTo("Topologies:\n" +
-                "   Sub-topology: 0\n" +
-                "    Source: KSTREAM-SOURCE-0000000000 (topics: [one])\n" +
-                "      --> test-cogroup-agg-0\n" +
-                "    Source: KSTREAM-SOURCE-0000000001 (topics: [two])\n" +
-                "      --> test-cogroup-agg-1\n" +
-                "    Processor: test-cogroup-agg-0 (stores: [store])\n" +
-                "      --> test-cogroup-merge\n" +
-                "      <-- KSTREAM-SOURCE-0000000000\n" +
-                "    Processor: test-cogroup-agg-1 (stores: [store])\n" +
-                "      --> test-cogroup-merge\n" +
-                "      <-- KSTREAM-SOURCE-0000000001\n" +
-                "    Processor: test-cogroup-merge (stores: [])\n" +
-                "      --> KTABLE-TOSTREAM-0000000005\n" +
-                "      <-- test-cogroup-agg-0, test-cogroup-agg-1\n" +
-                "    Processor: KTABLE-TOSTREAM-0000000005 (stores: [])\n" +
-                "      --> KSTREAM-SINK-0000000006\n" +
-                "      <-- test-cogroup-merge\n" +
-                "    Sink: KSTREAM-SINK-0000000006 (topic: output)\n" +
-                "      <-- KTABLE-TOSTREAM-0000000005\n\n"));
+                topologyDescription,
+                equalTo("Topologies:\n" +
+                        "   Sub-topology: 0\n" +
+                        "    Source: KSTREAM-SOURCE-0000000000 (topics: [one])\n" +
+                        "      --> test-cogroup-agg-0\n" +
+                        "    Source: KSTREAM-SOURCE-0000000001 (topics: [two])\n" +
+                        "      --> test-cogroup-agg-1\n" +
+                        "    Processor: test-cogroup-agg-0 (stores: [store])\n" +
+                        "      --> test-cogroup-merge\n" +
+                        "      <-- KSTREAM-SOURCE-0000000000\n" +
+                        "    Processor: test-cogroup-agg-1 (stores: [store])\n" +
+                        "      --> test-cogroup-merge\n" +
+                        "      <-- KSTREAM-SOURCE-0000000001\n" +
+                        "    Processor: test-cogroup-merge (stores: [])\n" +
+                        "      --> KTABLE-TOSTREAM-0000000005\n" +
+                        "      <-- test-cogroup-agg-0, test-cogroup-agg-1\n" +
+                        "    Processor: KTABLE-TOSTREAM-0000000005 (stores: [])\n" +
+                        "      --> KSTREAM-SINK-0000000006\n" +
+                        "      <-- test-cogroup-merge\n" +
+                        "    Sink: KSTREAM-SINK-0000000006 (topic: output)\n" +
+                        "      <-- KTABLE-TOSTREAM-0000000005\n\n"));
     }
 
     @ParameterizedTest
@@ -774,7 +773,6 @@ public class CogroupedKStreamImplTest {
         final KGroupedStream<String, String> groupedThree = stream3.groupByKey();
         final KGroupedStream<String, String> groupedFour = stream1.map((k, v) -> new KeyValue<>(v, k)).groupByKey();
 
-
         groupedOne.cogroup(STRING_AGGREGATOR)
                 .cogroup(groupedTwo, STRING_AGGREGATOR)
                 .aggregate(STRING_INITIALIZER);
@@ -782,7 +780,6 @@ public class CogroupedKStreamImplTest {
         groupedThree.cogroup(STRING_AGGREGATOR)
                 .cogroup(groupedFour, STRING_AGGREGATOR)
                 .aggregate(STRING_INITIALIZER);
-
 
         final String topologyDescription = builder.build(properties).describe().toString();
 
@@ -904,9 +901,9 @@ public class CogroupedKStreamImplTest {
 
         try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
             final TestInputTopic<String, String> testInputTopic =
-                driver.createInputTopic("one", new StringSerializer(), new StringSerializer());
+                    driver.createInputTopic("one", new StringSerializer(), new StringSerializer());
             final TestOutputTopic<String, String> testOutputTopic =
-                driver.createOutputTopic(OUTPUT, new StringDeserializer(), new StringDeserializer());
+                    driver.createOutputTopic(OUTPUT, new StringDeserializer(), new StringDeserializer());
             testInputTopic.pipeInput("k1", "A", 0);
             testInputTopic.pipeInput("k2", "B", 0);
             testInputTopic.pipeInput("k2", "B", 0);
@@ -970,11 +967,11 @@ public class CogroupedKStreamImplTest {
 
         try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
             final TestInputTopic<String, String> testInputTopic =
-                driver.createInputTopic("one", new StringSerializer(), new StringSerializer());
+                    driver.createInputTopic("one", new StringSerializer(), new StringSerializer());
             final TestInputTopic<String, String> testInputTopic2 =
-                driver.createInputTopic("two", new StringSerializer(), new StringSerializer());
+                    driver.createInputTopic("two", new StringSerializer(), new StringSerializer());
             final TestOutputTopic<String, String> testOutputTopic =
-                driver.createOutputTopic(OUTPUT, new StringDeserializer(), new StringDeserializer());
+                    driver.createOutputTopic(OUTPUT, new StringDeserializer(), new StringDeserializer());
 
             testInputTopic.pipeInput("k1", "A", 0);
             testInputTopic.pipeInput("k1", "A", 1);
@@ -1020,11 +1017,11 @@ public class CogroupedKStreamImplTest {
 
         try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
             final TestInputTopic<String, String> testInputTopic =
-                driver.createInputTopic("one", new StringSerializer(), new StringSerializer());
+                    driver.createInputTopic("one", new StringSerializer(), new StringSerializer());
             final TestInputTopic<String, String> testInputTopic2 =
-                driver.createInputTopic("two", new StringSerializer(), new StringSerializer());
+                    driver.createInputTopic("two", new StringSerializer(), new StringSerializer());
             final TestOutputTopic<String, String> testOutputTopic =
-                driver.createOutputTopic(OUTPUT, new StringDeserializer(), new StringDeserializer());
+                    driver.createOutputTopic(OUTPUT, new StringDeserializer(), new StringDeserializer());
 
             testInputTopic.pipeInput("k1", "A", 0L);
             testInputTopic.pipeInput("k2", "A", 1L);
@@ -1067,19 +1064,19 @@ public class CogroupedKStreamImplTest {
             .cogroup(STRING_SUM_AGGREGATOR)
             .cogroup(grouped2, STRING_SUM_AGGREGATOR)
             .aggregate(
-                SUM_INITIALIZER,
-                Materialized.<String, Integer, KeyValueStore<Bytes, byte[]>>as("store1")
-                    .withValueSerde(Serdes.Integer()));
+                    SUM_INITIALIZER,
+                    Materialized.<String, Integer, KeyValueStore<Bytes, byte[]>>as("store1")
+                        .withValueSerde(Serdes.Integer()));
 
         customers.toStream().to(OUTPUT);
 
         try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
             final TestInputTopic<String, String> testInputTopic =
-                driver.createInputTopic("one", new StringSerializer(), new StringSerializer());
+                    driver.createInputTopic("one", new StringSerializer(), new StringSerializer());
             final TestInputTopic<String, String> testInputTopic2 =
-                driver.createInputTopic("two", new StringSerializer(), new StringSerializer());
+                    driver.createInputTopic("two", new StringSerializer(), new StringSerializer());
             final TestOutputTopic<String, Integer> testOutputTopic =
-                driver.createOutputTopic(OUTPUT, new StringDeserializer(), new IntegerDeserializer());
+                    driver.createOutputTopic(OUTPUT, new StringDeserializer(), new IntegerDeserializer());
 
             testInputTopic.pipeInput("k1", "1", 0L);
             testInputTopic.pipeInput("k2", "1", 1L);
@@ -1123,9 +1120,9 @@ public class CogroupedKStreamImplTest {
             .cogroup(STRING_SUM_AGGREGATOR)
             .cogroup(grouped2, SUM_AGGREGATOR)
             .aggregate(
-                SUM_INITIALIZER,
-                Materialized.<String, Integer, KeyValueStore<Bytes, byte[]>>as("store1")
-                    .withValueSerde(Serdes.Integer()));
+                    SUM_INITIALIZER,
+                    Materialized.<String, Integer, KeyValueStore<Bytes, byte[]>>as("store1")
+                        .withValueSerde(Serdes.Integer()));
 
         customers.toStream().to(OUTPUT);
 
@@ -1176,19 +1173,19 @@ public class CogroupedKStreamImplTest {
             .cogroup(MockAggregator.TOSTRING_REMOVER)
             .cogroup(grouped2, MockAggregator.TOSTRING_ADDER)
             .aggregate(
-                MockInitializer.STRING_INIT,
-                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("store1")
-                    .withValueSerde(Serdes.String()));
+                    MockInitializer.STRING_INIT,
+                    Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("store1")
+                        .withValueSerde(Serdes.String()));
 
         customers.toStream().to(OUTPUT);
 
         try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
             final TestInputTopic<String, String> testInputTopic =
-                driver.createInputTopic("one", new StringSerializer(), new StringSerializer());
+                    driver.createInputTopic("one", new StringSerializer(), new StringSerializer());
             final TestInputTopic<String, String> testInputTopic2 =
-                driver.createInputTopic("two", new StringSerializer(), new StringSerializer());
+                    driver.createInputTopic("two", new StringSerializer(), new StringSerializer());
             final TestOutputTopic<String, String> testOutputTopic =
-                driver.createOutputTopic(OUTPUT, new StringDeserializer(), new StringDeserializer());
+                    driver.createOutputTopic(OUTPUT, new StringDeserializer(), new StringDeserializer());
 
             testInputTopic.pipeInput("k1", "1", 0L);
             testInputTopic.pipeInput("k2", "1", 1L);
@@ -1233,14 +1230,14 @@ public class CogroupedKStreamImplTest {
 
         try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
             final TestInputTopic<String, String> testInputTopic =
-                driver.createInputTopic("one", new StringSerializer(), new StringSerializer());
+                    driver.createInputTopic("one", new StringSerializer(), new StringSerializer());
             final TestInputTopic<String, String> testInputTopic2 =
-                driver.createInputTopic("two", new StringSerializer(), new StringSerializer());
+                    driver.createInputTopic("two", new StringSerializer(), new StringSerializer());
             final TestInputTopic<String, String> testInputTopic3 =
-                driver.createInputTopic("three", new StringSerializer(), new StringSerializer());
+                    driver.createInputTopic("three", new StringSerializer(), new StringSerializer());
 
             final TestOutputTopic<String, String> testOutputTopic =
-                driver.createOutputTopic(OUTPUT, new StringDeserializer(), new StringDeserializer());
+                    driver.createOutputTopic(OUTPUT, new StringDeserializer(), new StringDeserializer());
 
             testInputTopic.pipeInput("k1", "A", 0L);
             testInputTopic.pipeInput("k2", "A", 1L);
@@ -1289,13 +1286,13 @@ public class CogroupedKStreamImplTest {
 
         try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
             final TestInputTopic<String, String> testInputTopic =
-                driver.createInputTopic("one", new StringSerializer(), new StringSerializer());
+                    driver.createInputTopic("one", new StringSerializer(), new StringSerializer());
             final TestInputTopic<String, String> testInputTopic2 =
-                driver.createInputTopic("two", new StringSerializer(), new StringSerializer());
+                    driver.createInputTopic("two", new StringSerializer(), new StringSerializer());
             final TestInputTopic<String, String> testInputTopic3 =
-                driver.createInputTopic("three", new StringSerializer(), new StringSerializer());
+                    driver.createInputTopic("three", new StringSerializer(), new StringSerializer());
             final TestOutputTopic<String, String> testOutputTopic =
-                driver.createOutputTopic(OUTPUT, new StringDeserializer(), new StringDeserializer());
+                    driver.createOutputTopic(OUTPUT, new StringDeserializer(), new StringDeserializer());
 
             testInputTopic.pipeInput("k1", "A", 5L);
             testInputTopic2.pipeInput("k2", "B", 6L);
@@ -1316,8 +1313,8 @@ public class CogroupedKStreamImplTest {
                                                final String expectedValue,
                                                final long expectedTimestamp) {
         assertThat(
-            outputTopic.readRecord(),
-            equalTo(new TestRecord<>(expectedKey, expectedValue, null, expectedTimestamp)));
+                outputTopic.readRecord(),
+                equalTo(new TestRecord<>(expectedKey, expectedValue, null, expectedTimestamp)));
     }
 
     private void assertOutputKeyValueTimestamp(final TestOutputTopic<String, Integer> outputTopic,
@@ -1325,7 +1322,7 @@ public class CogroupedKStreamImplTest {
                                                final Integer expectedValue,
                                                final long expectedTimestamp) {
         assertThat(
-            outputTopic.readRecord(),
-            equalTo(new TestRecord<>(expectedKey, expectedValue, null, expectedTimestamp)));
+                outputTopic.readRecord(),
+                equalTo(new TestRecord<>(expectedKey, expectedValue, null, expectedTimestamp)));
     }
 }

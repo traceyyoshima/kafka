@@ -40,9 +40,9 @@ public abstract class AbstractConfigurableStoreFactory implements StoreFactory {
     public void configure(final StreamsConfig config) {
         if (dslStoreSuppliers == null) {
             dslStoreSuppliers = config.getConfiguredInstance(
-                StreamsConfig.DSL_STORE_SUPPLIERS_CLASS_CONFIG,
-                DslStoreSuppliers.class,
-                config.originals()
+                    StreamsConfig.DSL_STORE_SUPPLIERS_CLASS_CONFIG,
+                    DslStoreSuppliers.class,
+                    config.originals()
             );
         }
         final String dslStoreFormatValue = config.getString(StreamsConfig.DSL_STORE_FORMAT_CONFIG);

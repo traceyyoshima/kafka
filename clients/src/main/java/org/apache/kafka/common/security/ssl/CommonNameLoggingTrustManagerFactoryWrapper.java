@@ -48,6 +48,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 import javax.security.auth.x500.X500Principal;
+
 /**
  * A wrapper around the original trust manager factory for creating common name logging trust managers.
  * These trust managers log the common name of an expired but otherwise valid (client) certificate before rejecting the connection attempt.
@@ -67,6 +68,7 @@ class CommonNameLoggingTrustManagerFactoryWrapper {
     protected CommonNameLoggingTrustManagerFactoryWrapper(String kmfAlgorithm) throws NoSuchAlgorithmException {
         this.origTmf = TrustManagerFactory.getInstance(kmfAlgorithm);
     }
+
     /**
      * Factory for creating a wrapped trust manager factory
      * @param kmfAlgorithm the algorithm
@@ -103,6 +105,7 @@ class CommonNameLoggingTrustManagerFactoryWrapper {
         }
         return wrappedTrustManagers;
     }
+
     /**
      * A trust manager which logs the common name of an expired but otherwise valid (client) certificate before rejecting the connection attempt.
      * This allows to identify misconfigured clients in complex network environments, where the IP address is not sufficient.
@@ -135,7 +138,7 @@ class CommonNameLoggingTrustManagerFactoryWrapper {
 
         @Override
         public void checkClientTrusted(X509Certificate[] chain, String authType)
-                throws CertificateException {
+            throws CertificateException {
             CertificateException origException = null;
             ByteBuffer chainDigest = calcDigestForCertificateChain(chain);
             if (chainDigest != null) {
@@ -199,7 +202,7 @@ class CommonNameLoggingTrustManagerFactoryWrapper {
 
         @Override
         public void checkServerTrusted(X509Certificate[] chain, String authType)
-                throws CertificateException {
+            throws CertificateException {
             this.origTm.checkServerTrusted(chain, authType);
         }
 
@@ -207,7 +210,7 @@ class CommonNameLoggingTrustManagerFactoryWrapper {
         public X509Certificate[] getAcceptedIssuers() {
             return this.origTm.getAcceptedIssuers();
         }
-        
+
        /**
          * This method sorts the certificate chain from end to root certificate and wraps the end certificate to make it "never-expireing"
          * @param origChain The original (unsorted) certificate chain
@@ -300,7 +303,7 @@ class CommonNameLoggingTrustManagerFactoryWrapper {
 
         @Override
         public void checkValidity()
-                throws CertificateExpiredException, CertificateNotYetValidException {
+            throws CertificateExpiredException, CertificateNotYetValidException {
             Date now = new Date();
             // Do nothing for certificates which are not valid anymore now
             if (this.origCertificate.getNotAfter().before(now)) {
@@ -413,7 +416,7 @@ class CommonNameLoggingTrustManagerFactoryWrapper {
 
         @Override
         public void verify(PublicKey publicKey, String sigProvider)
-                throws CertificateException, NoSuchAlgorithmException, InvalidKeyException,
+            throws CertificateException, NoSuchAlgorithmException, InvalidKeyException,
                 NoSuchProviderException, SignatureException {
             this.origCertificate.verify(publicKey, sigProvider);
         }

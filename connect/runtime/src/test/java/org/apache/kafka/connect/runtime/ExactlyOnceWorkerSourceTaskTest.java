@@ -156,9 +156,11 @@ public class ExactlyOnceWorkerSourceTaskTest {
     @Mock private Runnable postProducerCheck;
 
     private static final Map<String, String> TASK_PROPS = new HashMap<>();
+
     static {
         TASK_PROPS.put(TaskConfig.TASK_CLASS_CONFIG, TestSourceTask.class.getName());
     }
+
     private static final TaskConfig TASK_CONFIG = new TaskConfig(TASK_PROPS);
 
     private static final SourceRecord SOURCE_RECORD_1 =
@@ -174,7 +176,6 @@ public class ExactlyOnceWorkerSourceTaskTest {
 
     private boolean taskStarted;
     private Future<?> workerTaskFuture;
-
 
     public void setup(boolean enableTopicCreation) throws Exception {
         this.enableTopicCreation = enableTopicCreation;

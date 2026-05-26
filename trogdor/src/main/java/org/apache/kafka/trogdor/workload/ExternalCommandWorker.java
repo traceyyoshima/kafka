@@ -143,7 +143,7 @@ public class ExternalCommandWorker implements TaskWorker {
         this.status = status;
         this.doneFuture = doneFuture;
         this.executor = Executors.newCachedThreadPool(
-            ThreadUtils.createThreadFactory("ExternalCommandWorkerThread%d", false));
+                ThreadUtils.createThreadFactory("ExternalCommandWorkerThread%d", false));
         Process process;
         try {
             process = startProcess();
@@ -237,7 +237,7 @@ public class ExternalCommandWorker implements TaskWorker {
         public void run() {
             log.trace("{}: starting stderr monitor.", id);
             try (BufferedReader br = new BufferedReader(
-                new InputStreamReader(process.getErrorStream(), StandardCharsets.UTF_8))) {
+                    new InputStreamReader(process.getErrorStream(), StandardCharsets.UTF_8))) {
                 String line;
                 while (true) {
                     try {
@@ -267,7 +267,7 @@ public class ExternalCommandWorker implements TaskWorker {
         @Override
         public void run() {
             OutputStreamWriter stdinWriter = new OutputStreamWriter(
-                process.getOutputStream(), StandardCharsets.UTF_8);
+                    process.getOutputStream(), StandardCharsets.UTF_8);
             try {
                 while (true) {
                     log.info("{}: stdin writer ready.", id);

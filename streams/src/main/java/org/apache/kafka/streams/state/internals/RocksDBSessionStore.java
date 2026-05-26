@@ -29,8 +29,8 @@ import org.apache.kafka.streams.state.SessionStore;
 
 
 public class RocksDBSessionStore
-    extends WrappedStateStore<SegmentedBytesStore, Object, Object>
-    implements SessionStore<Bytes, byte[]> {
+        extends WrappedStateStore<SegmentedBytesStore, Object, Object>
+        implements SessionStore<Bytes, byte[]> {
 
     private StateStoreContext stateStoreContext;
 
@@ -50,12 +50,12 @@ public class RocksDBSessionStore
                                     final QueryConfig config) {
 
         return StoreQueryUtils.handleBasicQueries(
-            query,
-            positionBound,
-            config,
-            this,
-            getPosition(),
-            stateStoreContext
+                query,
+                positionBound,
+                config,
+                this,
+                getPosition(),
+                stateStoreContext
         );
     }
 
@@ -64,9 +64,9 @@ public class RocksDBSessionStore
                                                                   final long earliestSessionEndTime,
                                                                   final long latestSessionStartTime) {
         final KeyValueIterator<Bytes, byte[]> bytesIterator = wrapped().fetch(
-            key,
-            earliestSessionEndTime,
-            latestSessionStartTime
+                key,
+                earliestSessionEndTime,
+                latestSessionStartTime
         );
         return new WrappedSessionStoreIterator(bytesIterator);
     }
@@ -76,9 +76,9 @@ public class RocksDBSessionStore
                                                                           final long earliestSessionEndTime,
                                                                           final long latestSessionStartTime) {
         final KeyValueIterator<Bytes, byte[]> bytesIterator = wrapped().backwardFetch(
-            key,
-            earliestSessionEndTime,
-            latestSessionStartTime
+                key,
+                earliestSessionEndTime,
+                latestSessionStartTime
         );
         return new WrappedSessionStoreIterator(bytesIterator);
     }
@@ -89,10 +89,10 @@ public class RocksDBSessionStore
                                                                   final long earliestSessionEndTime,
                                                                   final long latestSessionStartTime) {
         final KeyValueIterator<Bytes, byte[]> bytesIterator = wrapped().fetch(
-            keyFrom,
-            keyTo,
-            earliestSessionEndTime,
-            latestSessionStartTime
+                keyFrom,
+                keyTo,
+                earliestSessionEndTime,
+                latestSessionStartTime
         );
         return new WrappedSessionStoreIterator(bytesIterator);
     }
@@ -103,10 +103,10 @@ public class RocksDBSessionStore
                                                                           final long earliestSessionEndTime,
                                                                           final long latestSessionStartTime) {
         final KeyValueIterator<Bytes, byte[]> bytesIterator = wrapped().backwardFetch(
-            keyFrom,
-            keyTo,
-            earliestSessionEndTime,
-            latestSessionStartTime
+                keyFrom,
+                keyTo,
+                earliestSessionEndTime,
+                latestSessionStartTime
         );
         return new WrappedSessionStoreIterator(bytesIterator);
     }
@@ -116,9 +116,9 @@ public class RocksDBSessionStore
                                final long earliestSessionEndTime,
                                final long latestSessionStartTime) {
         return wrapped().get(SessionKeySchema.toBinary(
-            key,
-            earliestSessionEndTime,
-            latestSessionStartTime
+                key,
+                earliestSessionEndTime,
+                latestSessionStartTime
         ));
     }
 

@@ -112,11 +112,11 @@ public final class MessageTest {
 
         AddPartitionsToTxnRequestData data = new AddPartitionsToTxnRequestData().
                 setTransactions(new AddPartitionsToTxnTransactionCollection(singletonList(
-                       new AddPartitionsToTxnRequestData.AddPartitionsToTxnTransaction().
-                              setTransactionalId("blah").
-                              setProducerId(0xbadcafebadcafeL).
-                              setProducerEpoch((short) 30000).
-                              setTopics(v3AndBelowData.v3AndBelowTopics()))));
+                        new AddPartitionsToTxnRequestData.AddPartitionsToTxnTransaction().
+                               setTransactionalId("blah").
+                               setProducerId(0xbadcafebadcafeL).
+                               setProducerEpoch((short) 30000).
+                               setTopics(v3AndBelowData.v3AndBelowTopics()))));
         testDuplication(data);
         testAllMessageRoundTripsFromVersion((short) 4, data);
     }
@@ -240,15 +240,15 @@ public final class MessageTest {
     @Test
     public void testLeaveGroupResponseVersions() throws Exception {
         Supplier<LeaveGroupResponseData> newResponse = () -> new LeaveGroupResponseData()
-                                                                 .setErrorCode(Errors.NOT_COORDINATOR.code());
+                .setErrorCode(Errors.NOT_COORDINATOR.code());
 
         testAllMessageRoundTrips(newResponse.get());
         testAllMessageRoundTripsFromVersion((short) 1, newResponse.get().setThrottleTimeMs(1000));
 
         testAllMessageRoundTripsFromVersion((short) 3, newResponse.get().setMembers(
-            Collections.singletonList(new MemberResponse()
-            .setMemberId(memberId)
-            .setGroupInstanceId(instanceId))
+                Collections.singletonList(new MemberResponse()
+                .setMemberId(memberId)
+                .setGroupInstanceId(instanceId))
         ));
     }
 
@@ -298,7 +298,7 @@ public final class MessageTest {
                                        .setMembers(Collections.singletonList(baseMember))
                                        .setProtocolType("consumer");
         DescribeGroupsResponseData baseResponse = new DescribeGroupsResponseData()
-                                                      .setGroups(Collections.singletonList(baseGroup));
+                .setGroups(Collections.singletonList(baseGroup));
         testAllMessageRoundTrips(baseResponse);
 
         testAllMessageRoundTripsFromVersion((short) 1, baseResponse.setThrottleTimeMs(10));
@@ -320,11 +320,11 @@ public final class MessageTest {
     public void testDescribeClusterResponseVersions() throws Exception {
         DescribeClusterResponseData data = new DescribeClusterResponseData()
             .setBrokers(new DescribeClusterBrokerCollection(
-                Collections.singletonList(new DescribeClusterBroker()
-                    .setBrokerId(1)
-                    .setHost("localhost")
-                    .setPort(9092)
-                    .setRack("rack1"))))
+                    Collections.singletonList(new DescribeClusterBroker()
+                        .setBrokerId(1)
+                        .setHost("localhost")
+                        .setPort(9092)
+                        .setRack("rack1"))))
             .setClusterId("clusterId")
             .setControllerId(1)
             .setClusterAuthorizedOperations(10);
@@ -335,18 +335,18 @@ public final class MessageTest {
     @Test
     public void testGroupInstanceIdIgnorableInDescribeGroupsResponse() throws Exception {
         DescribeGroupsResponseData responseWithGroupInstanceId =
-            new DescribeGroupsResponseData()
-                .setGroups(Collections.singletonList(
-                    new DescribedGroup()
-                        .setGroupId("group")
-                        .setGroupState("Stable")
-                        .setErrorCode(Errors.NONE.code())
-                        .setMembers(Collections.singletonList(
-                            new DescribedGroupMember()
-                                .setMemberId(memberId)
-                                .setGroupInstanceId(instanceId)))
-                        .setProtocolType("consumer")
-                ));
+                new DescribeGroupsResponseData()
+                    .setGroups(Collections.singletonList(
+                        new DescribedGroup()
+                            .setGroupId("group")
+                            .setGroupState("Stable")
+                            .setErrorCode(Errors.NONE.code())
+                            .setMembers(Collections.singletonList(
+                                new DescribedGroupMember()
+                                    .setMemberId(memberId)
+                                    .setGroupInstanceId(instanceId)))
+                            .setProtocolType("consumer")
+                    ));
 
         DescribeGroupsResponseData expectedResponse = responseWithGroupInstanceId.duplicate();
         // Unset GroupInstanceId
@@ -358,18 +358,18 @@ public final class MessageTest {
     @Test
     public void testThrottleTimeIgnorableInDescribeGroupsResponse() throws Exception {
         DescribeGroupsResponseData responseWithGroupInstanceId =
-            new DescribeGroupsResponseData()
-                .setGroups(Collections.singletonList(
-                    new DescribedGroup()
-                        .setGroupId("group")
-                        .setGroupState("Stable")
-                        .setErrorCode(Errors.NONE.code())
-                        .setMembers(Collections.singletonList(
-                            new DescribedGroupMember()
-                                .setMemberId(memberId)))
-                        .setProtocolType("consumer")
-                ))
-                .setThrottleTimeMs(10);
+                new DescribeGroupsResponseData()
+                    .setGroups(Collections.singletonList(
+                        new DescribedGroup()
+                            .setGroupId("group")
+                            .setGroupState("Stable")
+                            .setErrorCode(Errors.NONE.code())
+                            .setMembers(Collections.singletonList(
+                                new DescribedGroupMember()
+                                    .setMemberId(memberId)))
+                            .setProtocolType("consumer")
+                    ))
+                    .setThrottleTimeMs(10);
 
         DescribeGroupsResponseData expectedResponse = responseWithGroupInstanceId.duplicate();
         // Unset throttle time
@@ -420,17 +420,17 @@ public final class MessageTest {
             .setGroupInstanceId(version >= 7 ? "instanceId" : null)
             .setRetentionTimeMs((version >= 2 && version <= 4) ? 20 : -1)
             .setTopics(singletonList(
-                new OffsetCommitRequestTopic()
-                    .setTopicId(version >= 10 ? Uuid.randomUuid() : Uuid.ZERO_UUID)
-                    .setName(version < 10 ? "topic" : "")
-                    .setPartitions(singletonList(
-                        new OffsetCommitRequestPartition()
-                            .setPartitionIndex(1)
-                            .setCommittedMetadata("metadata")
-                            .setCommittedOffset(100)
-                            .setCommittedLeaderEpoch(version >= 6 ? 10 : -1)
+                    new OffsetCommitRequestTopic()
+                        .setTopicId(version >= 10 ? Uuid.randomUuid() : Uuid.ZERO_UUID)
+                        .setName(version < 10 ? "topic" : "")
+                        .setPartitions(singletonList(
+                            new OffsetCommitRequestPartition()
+                                .setPartitionIndex(1)
+                                .setCommittedMetadata("metadata")
+                                .setCommittedOffset(100)
+                                .setCommittedLeaderEpoch(version >= 6 ? 10 : -1)
 
-                    ))
+                        ))
             ));
 
         testMessageRoundTrip(version, request, request);
@@ -442,14 +442,14 @@ public final class MessageTest {
         OffsetCommitResponseData response = new OffsetCommitResponseData()
             .setThrottleTimeMs(version >= 3 ? 20 : 0)
             .setTopics(singletonList(
-                new OffsetCommitResponseTopic()
-                    .setTopicId(version >= 10 ? Uuid.randomUuid() : Uuid.ZERO_UUID)
-                    .setName(version < 10 ? "topic" : "")
-                    .setPartitions(singletonList(
-                        new OffsetCommitResponsePartition()
-                            .setPartitionIndex(1)
-                            .setErrorCode(Errors.UNKNOWN_MEMBER_ID.code())
-                    ))
+                    new OffsetCommitResponseTopic()
+                        .setTopicId(version >= 10 ? Uuid.randomUuid() : Uuid.ZERO_UUID)
+                        .setName(version < 10 ? "topic" : "")
+                        .setPartitions(singletonList(
+                            new OffsetCommitResponsePartition()
+                                .setPartitionIndex(1)
+                                .setErrorCode(Errors.UNKNOWN_MEMBER_ID.code())
+                        ))
             ));
 
         testMessageRoundTrip(version, response, response);
@@ -467,15 +467,15 @@ public final class MessageTest {
             .setGenerationIdOrMemberEpoch(version >= 3 ? 1 : -1)
             .setGroupInstanceId(version >= 3 ? "instance" : null)
             .setTopics(singletonList(
-                new TxnOffsetCommitRequestTopic()
-                    .setTopicId(version >= 6 ? Uuid.randomUuid() : Uuid.ZERO_UUID)
-                    .setName(version < 6 ? "topic" : "")
-                    .setPartitions(singletonList(
-                        new TxnOffsetCommitRequestPartition()
-                            .setPartitionIndex(2)
-                            .setCommittedLeaderEpoch(version >= 2 ? 10 : -1)
-                            .setCommittedMetadata("metadata")
-                            .setCommittedOffset(100)))));
+                    new TxnOffsetCommitRequestTopic()
+                        .setTopicId(version >= 6 ? Uuid.randomUuid() : Uuid.ZERO_UUID)
+                        .setName(version < 6 ? "topic" : "")
+                        .setPartitions(singletonList(
+                            new TxnOffsetCommitRequestPartition()
+                                .setPartitionIndex(2)
+                                .setCommittedLeaderEpoch(version >= 2 ? 10 : -1)
+                                .setCommittedMetadata("metadata")
+                                .setCommittedOffset(100)))));
 
         testMessageRoundTrip(version, request, request);
     }
@@ -486,13 +486,13 @@ public final class MessageTest {
         TxnOffsetCommitResponseData response = new TxnOffsetCommitResponseData()
             .setThrottleTimeMs(20)
             .setTopics(singletonList(
-                new TxnOffsetCommitResponseTopic()
-                    .setTopicId(version >= 6 ? Uuid.randomUuid() : Uuid.ZERO_UUID)
-                    .setName(version < 6 ? "topic" : "")
-                    .setPartitions(singletonList(
-                        new TxnOffsetCommitResponsePartition()
-                            .setPartitionIndex(1)
-                            .setErrorCode(Errors.UNKNOWN_MEMBER_ID.code())))));
+                    new TxnOffsetCommitResponseTopic()
+                        .setTopicId(version >= 6 ? Uuid.randomUuid() : Uuid.ZERO_UUID)
+                        .setName(version < 6 ? "topic" : "")
+                        .setPartitions(singletonList(
+                            new TxnOffsetCommitResponsePartition()
+                                .setPartitionIndex(1)
+                                .setErrorCode(Errors.UNKNOWN_MEMBER_ID.code())))));
 
         testMessageRoundTrip(version, response, response);
     }
@@ -507,24 +507,24 @@ public final class MessageTest {
                 .setGroupId("groupId")
                 .setRequireStable(version == 7)
                 .setTopics(List.of(
-                    new OffsetFetchRequestTopic()
-                        .setName("foo")
-                        .setPartitionIndexes(List.of(0, 1, 2))
+                        new OffsetFetchRequestTopic()
+                            .setName("foo")
+                            .setPartitionIndexes(List.of(0, 1, 2))
                 ));
         } else {
             request = new OffsetFetchRequestData()
                 .setRequireStable(true)
                 .setGroups(List.of(
-                    new OffsetFetchRequestGroup()
-                        .setGroupId("groupId")
-                        .setMemberId(version >= 9 ? "memberId" : null)
-                        .setMemberEpoch(version >= 9 ? 10 : -1)
-                        .setTopics(List.of(
-                            new OffsetFetchRequestTopics()
-                                .setName(version < 10 ? "foo" : "")
-                                .setTopicId(version >= 10 ? Uuid.randomUuid() : Uuid.ZERO_UUID)
-                                .setPartitionIndexes(List.of(0, 1, 2))
-                        ))
+                        new OffsetFetchRequestGroup()
+                            .setGroupId("groupId")
+                            .setMemberId(version >= 9 ? "memberId" : null)
+                            .setMemberEpoch(version >= 9 ? 10 : -1)
+                            .setTopics(List.of(
+                                new OffsetFetchRequestTopics()
+                                    .setName(version < 10 ? "foo" : "")
+                                    .setTopicId(version >= 10 ? Uuid.randomUuid() : Uuid.ZERO_UUID)
+                                    .setPartitionIndexes(List.of(0, 1, 2))
+                            ))
                 ));
         }
 
@@ -541,37 +541,37 @@ public final class MessageTest {
                 .setThrottleTimeMs(version >= 3 ? 1000 : 0)
                 .setErrorCode(version >= 2 ? Errors.INVALID_GROUP_ID.code() : 0)
                 .setTopics(List.of(
-                    new OffsetFetchResponseTopic()
-                        .setName("foo")
-                        .setPartitions(List.of(
-                            new OffsetFetchResponsePartition()
-                                .setPartitionIndex(0)
-                                .setCommittedOffset(10)
-                                .setMetadata("meta")
-                                .setCommittedLeaderEpoch(version >= 5 ? 20 : -1)
-                                .setErrorCode(Errors.UNKNOWN_TOPIC_OR_PARTITION.code())
-                        ))
+                        new OffsetFetchResponseTopic()
+                            .setName("foo")
+                            .setPartitions(List.of(
+                                new OffsetFetchResponsePartition()
+                                    .setPartitionIndex(0)
+                                    .setCommittedOffset(10)
+                                    .setMetadata("meta")
+                                    .setCommittedLeaderEpoch(version >= 5 ? 20 : -1)
+                                    .setErrorCode(Errors.UNKNOWN_TOPIC_OR_PARTITION.code())
+                            ))
                 ));
         } else {
             response = new OffsetFetchResponseData()
                 .setThrottleTimeMs(1000)
                 .setGroups(List.of(
-                    new OffsetFetchResponseGroup()
-                        .setGroupId("groupId")
-                        .setErrorCode(Errors.INVALID_GROUP_ID.code())
-                        .setTopics(List.of(
-                            new OffsetFetchResponseTopics()
-                                .setName(version < 10 ? "foo" : "")
-                                .setTopicId(version >= 10 ? Uuid.randomUuid() : Uuid.ZERO_UUID)
-                                .setPartitions(List.of(
-                                    new OffsetFetchResponsePartitions()
-                                        .setPartitionIndex(0)
-                                        .setCommittedOffset(10)
-                                        .setMetadata("meta")
-                                        .setCommittedLeaderEpoch(20)
-                                        .setErrorCode(Errors.UNKNOWN_TOPIC_OR_PARTITION.code())
-                                ))
-                        ))
+                        new OffsetFetchResponseGroup()
+                            .setGroupId("groupId")
+                            .setErrorCode(Errors.INVALID_GROUP_ID.code())
+                            .setTopics(List.of(
+                                new OffsetFetchResponseTopics()
+                                    .setName(version < 10 ? "foo" : "")
+                                    .setTopicId(version >= 10 ? Uuid.randomUuid() : Uuid.ZERO_UUID)
+                                    .setPartitions(List.of(
+                                        new OffsetFetchResponsePartitions()
+                                            .setPartitionIndex(0)
+                                            .setCommittedOffset(10)
+                                            .setMetadata("meta")
+                                            .setCommittedLeaderEpoch(20)
+                                            .setErrorCode(Errors.UNKNOWN_TOPIC_OR_PARTITION.code())
+                                    ))
+                            ))
                 ));
         }
 
@@ -595,28 +595,28 @@ public final class MessageTest {
 
         testAllMessageRoundTrips(new ProduceResponseData()
             .setResponses(new ProduceResponseData.TopicProduceResponseCollection(singletonList(
-                new ProduceResponseData.TopicProduceResponse()
-                    .setPartitionResponses(singletonList(
-                        new ProduceResponseData.PartitionProduceResponse()
-                            .setIndex(partitionIndex)
-                            .setErrorCode(errorCode)
-                            .setBaseOffset(baseOffset)))))));
+                    new ProduceResponseData.TopicProduceResponse()
+                        .setPartitionResponses(singletonList(
+                            new ProduceResponseData.PartitionProduceResponse()
+                                .setIndex(partitionIndex)
+                                .setErrorCode(errorCode)
+                                .setBaseOffset(baseOffset)))))));
 
         Supplier<ProduceResponseData> response = () -> new ProduceResponseData()
                 .setResponses(new ProduceResponseData.TopicProduceResponseCollection(singletonList(
-                    new ProduceResponseData.TopicProduceResponse()
-                        .setPartitionResponses(singletonList(
-                             new ProduceResponseData.PartitionProduceResponse()
-                                 .setIndex(partitionIndex)
-                                 .setErrorCode(errorCode)
-                                 .setBaseOffset(baseOffset)
-                                 .setLogAppendTimeMs(logAppendTimeMs)
-                                 .setLogStartOffset(logStartOffset)
-                                 .setRecordErrors(singletonList(
-                                     new ProduceResponseData.BatchIndexAndErrorMessage()
-                                         .setBatchIndex(batchIndex)
-                                         .setBatchIndexErrorMessage(batchIndexErrorMessage)))
-                                 .setErrorMessage(errorMessage))))))
+                        new ProduceResponseData.TopicProduceResponse()
+                            .setPartitionResponses(singletonList(
+                                new ProduceResponseData.PartitionProduceResponse()
+                                    .setIndex(partitionIndex)
+                                    .setErrorCode(errorCode)
+                                    .setBaseOffset(baseOffset)
+                                    .setLogAppendTimeMs(logAppendTimeMs)
+                                    .setLogStartOffset(logStartOffset)
+                                    .setRecordErrors(singletonList(
+                                         new ProduceResponseData.BatchIndexAndErrorMessage()
+                                             .setBatchIndex(batchIndex)
+                                             .setBatchIndexErrorMessage(batchIndexErrorMessage)))
+                                    .setErrorMessage(errorMessage))))))
                 .setThrottleTimeMs(throttleTimeMs);
 
         for (short version : ApiKeys.PRODUCE.allVersions()) {
@@ -668,7 +668,7 @@ public final class MessageTest {
     public void testSimpleMessage() throws Exception {
         final SimpleExampleMessageData message = new SimpleExampleMessageData();
         message.setMyStruct(new SimpleExampleMessageData.MyStruct().setStructId(25).setArrayInStruct(
-            Collections.singletonList(new SimpleExampleMessageData.StructArray().setArrayFieldId(20))
+                Collections.singletonList(new SimpleExampleMessageData.StructArray().setArrayFieldId(20))
         ));
         message.setMyTaggedStruct(new SimpleExampleMessageData.TaggedStruct().setStructId("abc"));
 
@@ -741,14 +741,14 @@ public final class MessageTest {
         ByteBufferAccessor byteBufferAccessor = new ByteBufferAccessor(buf);
         message.write(byteBufferAccessor, cache, version);
         assertEquals(size, buf.position(), "The result of the size function does not match the number of bytes " +
-            "written for version " + version);
+                "written for version " + version);
         Message message2 = message.getClass().getConstructor().newInstance();
         buf.flip();
         message2.read(byteBufferAccessor, version);
         assertEquals(size, buf.position(), "The result of the size function does not match the number of bytes " +
-            "read back in for version " + version);
+                "read back in for version " + version);
         assertEquals(expected, message2, "The message object created after a round trip did not match for " +
-            "version " + version);
+                "version " + version);
         assertEquals(expected.hashCode(), message2.hashCode());
         assertEquals(expected.toString(), message2.toString());
     }
@@ -768,10 +768,10 @@ public final class MessageTest {
     private static String jsonConverterTypeName(String source) {
         int outerClassIndex = source.lastIndexOf('$');
         if (outerClassIndex == -1) {
-            return  source + "JsonConverter";
+            return source + "JsonConverter";
         } else {
             return source.substring(0, outerClassIndex) + "JsonConverter$" +
-                source.substring(outerClassIndex + 1) + "JsonConverter";
+                    source.substring(outerClassIndex + 1) + "JsonConverter";
         }
     }
 
@@ -791,7 +791,7 @@ public final class MessageTest {
                 }
                 assertTrue(apiKey.latestVersion() <= message.highestSupportedVersion(),
                         "Request message spec for " + apiKey + " only " + "supports versions up to " +
-                                message.highestSupportedVersion());
+                        message.highestSupportedVersion());
                 try {
                     message = ApiMessageType.fromApiKey(apiKey.id).newResponse();
                 } catch (UnsupportedVersionException e) {
@@ -799,7 +799,7 @@ public final class MessageTest {
                 }
                 assertTrue(apiKey.latestVersion() <= message.highestSupportedVersion(),
                         "Response message spec for " + apiKey + " only " + "supports versions up to " +
-                                message.highestSupportedVersion());
+                        message.highestSupportedVersion());
             }
         }
     }
@@ -807,11 +807,11 @@ public final class MessageTest {
     @Test
     public void testDefaultValues() {
         verifyWriteSucceeds((short) 2,
-            new OffsetCommitRequestData().setRetentionTimeMs(123));
+                new OffsetCommitRequestData().setRetentionTimeMs(123));
 
         verifyWriteRaisesUve((short) 5, "forgotten",
-            new FetchRequestData().setForgottenTopicsData(singletonList(
-                new FetchRequestData.ForgottenTopic().setTopic("foo"))));
+                new FetchRequestData().setForgottenTopicsData(singletonList(
+                    new FetchRequestData.ForgottenTopic().setTopic("foo"))));
         verifyWriteSucceeds((short) 5, new FetchRequestData());
         verifyWriteSucceeds((short) 7,
                 new FetchRequestData().setForgottenTopicsData(singletonList(
@@ -888,14 +888,14 @@ public final class MessageTest {
                                       Message message) {
         ObjectSerializationCache cache = new ObjectSerializationCache();
         UnsupportedVersionException e =
-            assertThrows(UnsupportedVersionException.class, () -> {
-                int size = message.size(cache, version);
-                ByteBuffer buf = ByteBuffer.allocate(size);
-                ByteBufferAccessor byteBufferAccessor = new ByteBufferAccessor(buf);
-                message.write(byteBufferAccessor, cache, version);
-            });
+                assertThrows(UnsupportedVersionException.class, () -> {
+                    int size = message.size(cache, version);
+                    ByteBuffer buf = ByteBuffer.allocate(size);
+                    ByteBufferAccessor byteBufferAccessor = new ByteBufferAccessor(buf);
+                    message.write(byteBufferAccessor, cache, version);
+                });
         assertTrue(e.getMessage().contains(problemText), "Expected to get an error message about " + problemText +
-            ", but got: " + e.getMessage());
+                ", but got: " + e.getMessage());
     }
 
     private void verifyWriteSucceeds(short version, Message message) {

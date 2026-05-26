@@ -56,8 +56,8 @@ public class CoordinatorRecordTypeGenerator implements TypeClassGenerator {
                 CoordinatorRecord record = records.computeIfAbsent(id, __ -> new CoordinatorRecord(id));
                 if (record.key != null) {
                     throw new RuntimeException("Duplicate coordinator record key for type " +
-                        id + ". Original claimant: " + record.key.name() + ". New " +
-                        "claimant: " + spec.name());
+                            id + ". Original claimant: " + record.key.name() + ". New " +
+                            "claimant: " + spec.name());
                 }
                 record.key = spec;
                 break;
@@ -68,8 +68,8 @@ public class CoordinatorRecordTypeGenerator implements TypeClassGenerator {
                 CoordinatorRecord record = records.computeIfAbsent(id, __ -> new CoordinatorRecord(id));
                 if (record.value != null) {
                     throw new RuntimeException("Duplicate coordinator record value for type " +
-                        id + ". Original claimant: " + record.key.name() + ". New " +
-                        "claimant: " + spec.name());
+                            id + ". Original claimant: " + record.key.name() + ". New " +
+                            "claimant: " + spec.name());
                 }
                 record.value = spec;
                 break;
@@ -133,12 +133,12 @@ public class CoordinatorRecordTypeGenerator implements TypeClassGenerator {
             String name = cleanName(key.name());
             numProcessed++;
             buffer.printf("%s(\"%s\", (short) %d, (short) %d, (short) %d)%s%n",
-                MessageGenerator.toSnakeCase(name).toUpperCase(Locale.ROOT),
-                MessageGenerator.capitalizeFirst(name),
-                entry.getKey(),
-                value.validVersions().lowest(),
-                value.validVersions().highest(),
-                (numProcessed == records.size()) ? ";" : ",");
+                    MessageGenerator.toSnakeCase(name).toUpperCase(Locale.ROOT),
+                    MessageGenerator.capitalizeFirst(name),
+                    entry.getKey(),
+                    value.validVersions().lowest(),
+                    value.validVersions().highest(),
+                    (numProcessed == records.size()) ? ";" : ",");
         }
     }
 
@@ -176,7 +176,7 @@ public class CoordinatorRecordTypeGenerator implements TypeClassGenerator {
         buffer.incrementIndent();
         headerGenerator.addImport(MessageGenerator.UNSUPPORTED_VERSION_EXCEPTION_CLASS);
         buffer.printf("throw new UnsupportedVersionException(\"Unknown record id \"" +
-            " + id);%n");
+                " + id);%n");
         buffer.decrementIndent();
         buffer.decrementIndent();
         buffer.printf("}%n");
@@ -194,14 +194,14 @@ public class CoordinatorRecordTypeGenerator implements TypeClassGenerator {
             buffer.printf("case %d:%n", entry.getKey());
             buffer.incrementIndent();
             buffer.printf("return new %s();%n",
-                MessageGenerator.capitalizeFirst(entry.getValue().key.name()));
+                    MessageGenerator.capitalizeFirst(entry.getValue().key.name()));
             buffer.decrementIndent();
         }
         buffer.printf("default:%n");
         buffer.incrementIndent();
         headerGenerator.addImport(MessageGenerator.UNSUPPORTED_VERSION_EXCEPTION_CLASS);
         buffer.printf("throw new UnsupportedVersionException(\"Unknown record id \"" +
-            " + id);%n");
+                " + id);%n");
         buffer.decrementIndent();
         buffer.decrementIndent();
         buffer.printf("}%n");
@@ -219,14 +219,14 @@ public class CoordinatorRecordTypeGenerator implements TypeClassGenerator {
             buffer.printf("case %d:%n", entry.getKey());
             buffer.incrementIndent();
             buffer.printf("return new %s();%n",
-                MessageGenerator.capitalizeFirst(entry.getValue().value.name()));
+                    MessageGenerator.capitalizeFirst(entry.getValue().value.name()));
             buffer.decrementIndent();
         }
         buffer.printf("default:%n");
         buffer.incrementIndent();
         headerGenerator.addImport(MessageGenerator.UNSUPPORTED_VERSION_EXCEPTION_CLASS);
         buffer.printf("throw new UnsupportedVersionException(\"Unknown record id \"" +
-            " + id);%n");
+                " + id);%n");
         buffer.decrementIndent();
         buffer.decrementIndent();
         buffer.printf("}%n");

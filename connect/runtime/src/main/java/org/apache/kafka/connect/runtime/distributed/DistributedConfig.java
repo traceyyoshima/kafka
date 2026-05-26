@@ -205,12 +205,12 @@ public final class DistributedConfig extends WorkerConfig {
 
     public static final String INTER_WORKER_KEY_SIZE_CONFIG = "inter.worker.key.size";
     public static final String INTER_WORKER_KEY_SIZE_DOC = "The size of the key to use for signing internal requests, in bits. "
-        + "If null, the default key size for the key generation algorithm will be used.";
+            + "If null, the default key size for the key generation algorithm will be used.";
     public static final Long INTER_WORKER_KEY_SIZE_DEFAULT = null;
 
     public static final String INTER_WORKER_KEY_TTL_MS_CONFIG = "inter.worker.key.ttl.ms";
     public static final String INTER_WORKER_KEY_TTL_MS_DOC = "The TTL of generated session keys used for "
-        + "internal request validation (in milliseconds)";
+            + "internal request validation (in milliseconds)";
     public static final int INTER_WORKER_KEY_TTL_MS_DEFAULT = Math.toIntExact(TimeUnit.HOURS.toMillis(1));
 
     public static final String INTER_WORKER_SIGNATURE_ALGORITHM_CONFIG = "inter.worker.signature.algorithm";
@@ -222,9 +222,9 @@ public final class DistributedConfig extends WorkerConfig {
     public static final String INTER_WORKER_VERIFICATION_ALGORITHMS_CONFIG = "inter.worker.verification.algorithms";
     public static final List<String> INTER_WORKER_VERIFICATION_ALGORITHMS_DEFAULT = List.of(INTER_WORKER_SIGNATURE_ALGORITHM_DEFAULT);
     public static final String INTER_WORKER_VERIFICATION_ALGORITHMS_DOC = "A list of permitted algorithms for verifying internal requests, "
-        + "which must include the algorithm used for the <code>" + INTER_WORKER_SIGNATURE_ALGORITHM_CONFIG + "</code> property. "
-        + "The algorithm(s) '" + INTER_WORKER_VERIFICATION_ALGORITHMS_DEFAULT + "' will be used as a default on JVMs that provide them; "
-        + "on other JVMs, no default is used and a value for this property must be manually specified in the worker config.";
+            + "which must include the algorithm used for the <code>" + INTER_WORKER_SIGNATURE_ALGORITHM_CONFIG + "</code> property. "
+            + "The algorithm(s) '" + INTER_WORKER_VERIFICATION_ALGORITHMS_DEFAULT + "' will be used as a default on JVMs that provide them; "
+            + "on other JVMs, no default is used and a value for this property must be manually specified in the worker config.";
     private final Crypto crypto;
 
     public enum ExactlyOnceSourceSupport {
@@ -265,7 +265,7 @@ public final class DistributedConfig extends WorkerConfig {
         } catch (Throwable t) {
             log.info(
                     "The default key generation algorithm '{}' does not appear to be available on this worker."
-                            + "A key algorithm will have to be manually specified via the '{}' worker property",
+                    + "A key algorithm will have to be manually specified via the '{}' worker property",
                     INTER_WORKER_KEY_GENERATION_ALGORITHM_DEFAULT,
                     INTER_WORKER_KEY_GENERATION_ALGORITHM_CONFIG
             );
@@ -280,7 +280,7 @@ public final class DistributedConfig extends WorkerConfig {
         } catch (Throwable t) {
             log.info(
                     "The default signature algorithm '{}' does not appear to be available on this worker."
-                            + "A signature algorithm will have to be manually specified via the '{}' worker property",
+                    + "A signature algorithm will have to be manually specified via the '{}' worker property",
                     INTER_WORKER_SIGNATURE_ALGORITHM_DEFAULT,
                     INTER_WORKER_SIGNATURE_ALGORITHM_CONFIG
             );
@@ -301,7 +301,7 @@ public final class DistributedConfig extends WorkerConfig {
         if (result.isEmpty()) {
             log.info(
                     "The default verification algorithm '{}' does not appear to be available on this worker."
-                            + "One or more verification algorithms will have to be manually specified via the '{}' worker property",
+                    + "One or more verification algorithms will have to be manually specified via the '{}' worker property",
                     INTER_WORKER_VERIFICATION_ALGORITHMS_DEFAULT,
                     INTER_WORKER_VERIFICATION_ALGORITHMS_CONFIG
             );
@@ -473,15 +473,15 @@ public final class DistributedConfig extends WorkerConfig {
                     ConfigDef.Type.STRING,
                     CONNECT_PROTOCOL_DEFAULT,
                     ConfigDef.LambdaValidator.with(
-                        (name, value) -> {
-                            try {
-                                ConnectProtocolCompatibility.compatibility((String) value);
-                            } catch (Throwable t) {
-                                throw new ConfigException(name, value, "Invalid Connect protocol "
+                            (name, value) -> {
+                                try {
+                                    ConnectProtocolCompatibility.compatibility((String) value);
+                                } catch (Throwable t) {
+                                    throw new ConfigException(name, value, "Invalid Connect protocol "
                                         + "compatibility");
-                            }
-                        },
-                        () -> Arrays.stream(ConnectProtocolCompatibility.values()).map(ConnectProtocolCompatibility::toString)
+                                }
+                            },
+                            () -> Arrays.stream(ConnectProtocolCompatibility.values()).map(ConnectProtocolCompatibility::toString)
                                 .collect(Collectors.joining(", ", "[", "]"))),
                     ConfigDef.Importance.LOW,
                     CONNECT_PROTOCOL_DOC)
@@ -624,10 +624,10 @@ public final class DistributedConfig extends WorkerConfig {
             return result;
         } catch (NoSuchAlgorithmException | InvalidParameterException e) {
             throw new ConfigException(String.format(
-                "Unable to create key generator with algorithm %s and key size %d: %s",
-                getString(INTER_WORKER_KEY_GENERATION_ALGORITHM_CONFIG),
-                getInt(INTER_WORKER_KEY_SIZE_CONFIG),
-                e.getMessage()
+                    "Unable to create key generator with algorithm %s and key size %d: %s",
+                    getString(INTER_WORKER_KEY_GENERATION_ALGORITHM_CONFIG),
+                    getInt(INTER_WORKER_KEY_SIZE_CONFIG),
+                    e.getMessage()
             ));
         }
     }
@@ -669,9 +669,9 @@ public final class DistributedConfig extends WorkerConfig {
         List<String> verificationAlgorithms = getList(INTER_WORKER_VERIFICATION_ALGORITHMS_CONFIG);
         if (!verificationAlgorithms.contains(signatureAlgorithm)) {
             throw new ConfigException(
-                INTER_WORKER_SIGNATURE_ALGORITHM_CONFIG,
-                signatureAlgorithm,
-                String.format("Signature algorithm must be present in %s list", INTER_WORKER_VERIFICATION_ALGORITHMS_CONFIG)
+                    INTER_WORKER_SIGNATURE_ALGORITHM_CONFIG,
+                    signatureAlgorithm,
+                    String.format("Signature algorithm must be present in %s list", INTER_WORKER_VERIFICATION_ALGORITHMS_CONFIG)
             );
         }
     }

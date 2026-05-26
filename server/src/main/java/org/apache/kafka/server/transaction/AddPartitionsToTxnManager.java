@@ -314,8 +314,8 @@ public class AddPartitionsToTxnManager extends InterBrokerSendThread {
     private Map<TopicPartition, Errors> topicPartitionsToError(AddPartitionsToTxnTransaction txnData, Errors error) {
         Map<TopicPartition, Errors> topicPartitionsToError = new HashMap<>();
         txnData.topics().forEach(topic ->
-            topic.partitions().forEach(partition ->
-                topicPartitionsToError.put(new TopicPartition(topic.name(), partition), error)));
+                topic.partitions().forEach(partition ->
+                        topicPartitionsToError.put(new TopicPartition(topic.name(), partition), error)));
         verificationFailureRate.mark(topicPartitionsToError.size());
         return topicPartitionsToError;
     }

@@ -38,13 +38,13 @@ public final class InternalQueryResultUtil {
 
         if (rawResult.isFailure()) {
             throw new IllegalArgumentException(
-                "Callers must avoid calling this method on a failed result."
+                    "Callers must avoid calling this method on a failed result."
             );
         } else {
             return new SucceededQueryResult<>(
-                deserializedResult,
-                rawResult.getExecutionInfo(),
-                rawResult.getPosition()
+                    deserializedResult,
+                    rawResult.getExecutionInfo(),
+                    rawResult.getPosition()
             );
         }
     }

@@ -105,14 +105,14 @@ public class RecordCollectorImpl implements RecordCollector {
         for (final String topic : topology.sinkTopics()) {
             final String processorNodeId = topology.sink(topic).name();
             producedSensorByTopic.put(
-                topic,
-                TopicMetrics.producedSensor(
-                    threadId,
-                    taskId.toString(),
-                    processorNodeId,
                     topic,
-                    streamsMetrics
-                ));
+                    TopicMetrics.producedSensor(
+                            threadId,
+                            taskId.toString(),
+                            processorNodeId,
+                            topic,
+                            streamsMetrics
+                    ));
         }
 
         this.offsets = new HashMap<>();
@@ -154,8 +154,8 @@ public class RecordCollectorImpl implements RecordCollector {
                 // here we cannot drop the message on the floor even if it is a transient timeout exception,
                 // so we treat everything the same as a fatal exception
                 throw new StreamsException("Could not determine the number of partitions for topic '" + topic +
-                    "' for task " + taskId + " due to " + fatal,
-                    fatal
+                        "' for task " + taskId + " due to " + fatal,
+                        fatal
                 );
             }
             if (!partitions.isEmpty()) {
@@ -178,7 +178,7 @@ public class RecordCollectorImpl implements RecordCollector {
                 }
             } else {
                 throw new StreamsException("Could not get partition information for topic " + topic + " for task " + taskId +
-                    ". This can happen if the topic does not exist.");
+                        ". This can happen if the topic does not exist.");
             }
         } else {
             send(topic, key, value, headers, null, timestamp, keySerializer, valueSerializer, processorNodeId, context);
@@ -205,26 +205,26 @@ public class RecordCollectorImpl implements RecordCollector {
             keyBytes = keySerializer.serialize(topic, headers, key);
         } catch (final ClassCastException exception) {
             throw createStreamsExceptionForClassCastException(
-                ProductionExceptionHandler.SerializationExceptionOrigin.KEY,
-                topic,
-                key,
-                keySerializer,
-                exception);
+                    ProductionExceptionHandler.SerializationExceptionOrigin.KEY,
+                    topic,
+                    key,
+                    keySerializer,
+                    exception);
         } catch (final Exception serializationException) {
             // while Java distinguishes checked vs unchecked exceptions, other languages
             // like Scala or Kotlin do not, and thus we need to catch `Exception`
             // (instead of `RuntimeException`) to work well with those languages
             handleException(
-                ProductionExceptionHandler.SerializationExceptionOrigin.KEY,
-                topic,
-                key,
-                value,
-                headers,
-                partition,
-                timestamp,
-                processorNodeId,
-                context,
-                serializationException
+                    ProductionExceptionHandler.SerializationExceptionOrigin.KEY,
+                    topic,
+                    key,
+                    value,
+                    headers,
+                    partition,
+                    timestamp,
+                    processorNodeId,
+                    context,
+                    serializationException
             );
             return;
         }
@@ -233,26 +233,26 @@ public class RecordCollectorImpl implements RecordCollector {
             valBytes = valueSerializer.serialize(topic, headers, value);
         } catch (final ClassCastException exception) {
             throw createStreamsExceptionForClassCastException(
-                ProductionExceptionHandler.SerializationExceptionOrigin.VALUE,
-                topic,
-                value,
-                valueSerializer,
-                exception);
+                    ProductionExceptionHandler.SerializationExceptionOrigin.VALUE,
+                    topic,
+                    value,
+                    valueSerializer,
+                    exception);
         } catch (final Exception serializationException) {
             // while Java distinguishes checked vs unchecked exceptions, other languages
             // like Scala or Kotlin do not, and thus we need to catch `Exception`
             // (instead of `RuntimeException`) to work well with those languages
             handleException(
-                ProductionExceptionHandler.SerializationExceptionOrigin.VALUE,
-                topic,
-                key,
-                value,
-                headers,
-                partition,
-                timestamp,
-                processorNodeId,
-                context,
-                serializationException);
+                    ProductionExceptionHandler.SerializationExceptionOrigin.VALUE,
+                    topic,
+                    key,
+                    value,
+                    headers,
+                    partition,
+                    timestamp,
+                    processorNodeId,
+                    context,
+                    serializationException);
             return;
         }
 
@@ -290,28 +290,28 @@ public class RecordCollectorImpl implements RecordCollector {
                         // we may not have created a sensor during initialization if the node uses dynamic topic routing,
                         // as all topics are not known up front, so create the sensor for this topic if absent
                         final Sensor topicProducedSensor = producedSensorByTopic.computeIfAbsent(
-                            serializedRecord.topic(),
-                            t -> TopicMetrics.producedSensor(
-                                Thread.currentThread().getName(),
-                                taskId.toString(),
-                                processorNodeId,
                                 serializedRecord.topic(),
-                                context.metrics()
-                            )
+                                t -> TopicMetrics.producedSensor(
+                                    Thread.currentThread().getName(),
+                                    taskId.toString(),
+                                    processorNodeId,
+                                    serializedRecord.topic(),
+                                    context.metrics()
+                                )
                         );
                         final long bytesProduced = producerRecordSizeInBytes(serializedRecord);
                         topicProducedSensor.record(
-                            bytesProduced,
-                            context.currentSystemTimeMs()
+                                bytesProduced,
+                                context.currentSystemTimeMs()
                         );
                     }
                 } else {
                     recordSendError(
-                        serializedRecord.topic(),
-                        exception,
-                        serializedRecord,
-                        context,
-                        processorNodeId
+                            serializedRecord.topic(),
+                            exception,
+                            serializedRecord,
+                            context,
+                            processorNodeId
                     );
 
                     // KAFKA-7510 only put message key and value in TRACE level log so we don't leak data by default
@@ -346,30 +346,30 @@ public class RecordCollectorImpl implements RecordCollector {
         final ProductionExceptionHandler.Response response;
         try {
             response = Objects.requireNonNull(
-                productionExceptionHandler.handleSerializationError(
-                    errorHandlerContext(context, processorNodeId),
-                    record,
-                    serializationException,
-                    origin
-                ),
-                "Invalid ProductionExceptionHandler response."
+                    productionExceptionHandler.handleSerializationError(
+                            errorHandlerContext(context, processorNodeId),
+                            record,
+                            serializationException,
+                            origin
+                    ),
+                    "Invalid ProductionExceptionHandler response."
             );
         } catch (final Exception fatalUserException) {
             // while Java distinguishes checked vs unchecked exceptions, other languages
             // like Scala or Kotlin do not, and thus we need to catch `Exception`
             // (instead of `RuntimeException`) to work well with those languages
             log.error(
-                String.format(
-                    "Production error callback failed after serialization error for record %s: %s",
-                    origin.toString().toLowerCase(Locale.ROOT),
-                    errorHandlerContext(context, processorNodeId)
-                ),
-                serializationException
+                    String.format(
+                            "Production error callback failed after serialization error for record %s: %s",
+                            origin.toString().toLowerCase(Locale.ROOT),
+                            errorHandlerContext(context, processorNodeId)
+                    ),
+                    serializationException
             );
             throw new FailedProcessingException(
-                "Fatal user code error in production error callback",
-                processorNodeId,
-                fatalUserException
+                    "Fatal user code error in production error callback",
+                    processorNodeId,
+                    fatalUserException
             );
         }
 
@@ -388,17 +388,17 @@ public class RecordCollectorImpl implements RecordCollector {
 
         if (maybeFailResponse(response.result()) == ProductionExceptionHandler.Result.FAIL) {
             throw new StreamsException(
-                String.format(
-                    "Unable to serialize record. ProducerRecord(topic=[%s], partition=[%d], timestamp=[%d]",
-                    topic,
-                    partition,
-                    timestamp),
-                serializationException
+                    String.format(
+                            "Unable to serialize record. ProducerRecord(topic=[%s], partition=[%d], timestamp=[%d]",
+                            topic,
+                            partition,
+                            timestamp),
+                    serializationException
             );
         }
 
         log.warn("Unable to serialize record, continue processing. " +
-                    "ProducerRecord(topic=[{}], partition=[{}], timestamp=[{}])",
+                "ProducerRecord(topic=[{}], partition=[{}], timestamp=[{}])",
                 topic,
                 partition,
                 timestamp);
@@ -412,28 +412,28 @@ public class RecordCollectorImpl implements RecordCollector {
 
         return recordContext != null ?
             new DefaultErrorHandlerContext(
-                context,
-                recordContext.topic(),
-                recordContext.partition(),
-                recordContext.offset(),
-                recordContext.headers(),
-                processorNodeId,
-                taskId,
-                recordContext.timestamp(),
-                context.recordContext().sourceRawKey(),
-                context.recordContext().sourceRawValue()
+                    context,
+                    recordContext.topic(),
+                    recordContext.partition(),
+                    recordContext.offset(),
+                    recordContext.headers(),
+                    processorNodeId,
+                    taskId,
+                    recordContext.timestamp(),
+                    context.recordContext().sourceRawKey(),
+                    context.recordContext().sourceRawValue()
             ) :
             new DefaultErrorHandlerContext(
-                context,
-                null,
-                -1,
-                -1,
-                new RecordHeaders(),
-                processorNodeId,
-                taskId,
-                -1L,
-                null,
-                null
+                    context,
+                    null,
+                    -1,
+                    -1,
+                    new RecordHeaders(),
+                    processorNodeId,
+                    taskId,
+                    -1L,
+                    null,
+                    null
             );
     }
 
@@ -443,20 +443,20 @@ public class RecordCollectorImpl implements RecordCollector {
                                                                               final Serializer<KV> keyOrValueSerializer,
                                                                               final ClassCastException exception) {
         final String keyOrValueClass = keyOrValue == null
-            ? String.format("unknown because %s is null", origin.toString().toLowerCase(Locale.ROOT)) : keyOrValue.getClass().getName();
+                ? String.format("unknown because %s is null", origin.toString().toLowerCase(Locale.ROOT)) : keyOrValue.getClass().getName();
 
         return new StreamsException(
-            MessageFormat.format(
-                String.format(
-                        "ClassCastException while producing data to topic %s. " +
-                            "The {0} serializer %s is not compatible to the actual {0} type: %s. " +
-                            "Change the default {0} serde in StreamConfig or provide the correct {0} serde via method parameters " +
-                            "(for example if using the DSL, `#to(String topic, Produced<K, V> produced)` with " +
-                            "`Produced.{0}Serde(WindowedSerdes.timeWindowedSerdeFrom(String.class))`).",
-                        topic,
-                        keyOrValueSerializer.getClass().getName(),
-                        keyOrValueClass),
-                origin.toString().toLowerCase(Locale.ROOT)),
+                MessageFormat.format(
+                        String.format(
+                                "ClassCastException while producing data to topic %s. " +
+                                "The {0} serializer %s is not compatible to the actual {0} type: %s. " +
+                                "Change the default {0} serde in StreamConfig or provide the correct {0} serde via method parameters " +
+                                "(for example if using the DSL, `#to(String topic, Produced<K, V> produced)` with " +
+                                "`Produced.{0}Serde(WindowedSerdes.timeWindowedSerdeFrom(String.class))`).",
+                                topic,
+                                keyOrValueSerializer.getClass().getName(),
+                                keyOrValueClass),
+                        origin.toString().toLowerCase(Locale.ROOT)),
                 exception);
     }
 
@@ -475,7 +475,7 @@ public class RecordCollectorImpl implements RecordCollector {
                 productionException instanceof InvalidProducerEpochException ||
                 productionException instanceof OutOfOrderSequenceException) {
             errorMessage += "\nWritten offsets would not be recorded and no more records would be sent since the producer is fenced, " +
-                "indicating the task may be migrated out";
+                    "indicating the task may be migrated out";
             sendException.set(new TaskMigratedException(errorMessage, productionException));
         } else if (productionException instanceof TransactionAbortedException) {
             // swallow silently
@@ -486,26 +486,26 @@ public class RecordCollectorImpl implements RecordCollector {
             final ProductionExceptionHandler.Response response;
             try {
                 response = Objects.requireNonNull(
-                    productionExceptionHandler.handleError(
-                        errorHandlerContext(context, processorNodeId),
-                        serializedRecord,
-                        productionException
-                    ),
-                    "Invalid ProductionExceptionHandler response."
+                        productionExceptionHandler.handleError(
+                                errorHandlerContext(context, processorNodeId),
+                                serializedRecord,
+                                productionException
+                        ),
+                        "Invalid ProductionExceptionHandler response."
                 );
             } catch (final Exception fatalUserException) {
                 // while Java distinguishes checked vs unchecked exceptions, other languages
                 // like Scala or Kotlin do not, and thus we need to catch `Exception`
                 // (instead of `RuntimeException`) to work well with those languages
                 log.error(
-                    "Production error callback failed after production error for record {}",
-                    serializedRecord,
-                    productionException
+                        "Production error callback failed after production error for record {}",
+                        serializedRecord,
+                        productionException
                 );
                 sendException.set(new FailedProcessingException(
-                    "Fatal user code error in production error callback",
-                    processorNodeId,
-                    fatalUserException
+                        "Fatal user code error in production error callback",
+                        processorNodeId,
+                        fatalUserException
                     )
                 );
                 return;
@@ -526,9 +526,9 @@ public class RecordCollectorImpl implements RecordCollector {
 
             if (productionException instanceof RetriableException && response.result() == ProductionExceptionHandler.Result.RETRY) {
                 errorMessage += "\nThe broker is either slow or in bad state (like not having enough replicas) in responding the request, " +
-                    "or the connection to broker was interrupted sending the request or receiving the response. " +
-                    "\nConsider overwriting `max.block.ms` and /or " +
-                    "`delivery.timeout.ms` to a larger value to wait longer for such scenarios and avoid timeout errors";
+                        "or the connection to broker was interrupted sending the request or receiving the response. " +
+                        "\nConsider overwriting `max.block.ms` and /or " +
+                        "`delivery.timeout.ms` to a larger value to wait longer for such scenarios and avoid timeout errors";
                 sendException.set(new TaskCorruptedException(Collections.singleton(taskId)));
             } else {
                 if (maybeFailResponse(response.result()) == ProductionExceptionHandler.Result.FAIL) {
@@ -555,14 +555,14 @@ public class RecordCollectorImpl implements RecordCollector {
 
     private boolean isFatalException(final Exception exception) {
         final boolean securityException = exception instanceof AuthenticationException ||
-            exception instanceof AuthorizationException ||
-            exception instanceof SecurityDisabledException;
+                exception instanceof AuthorizationException ||
+                exception instanceof SecurityDisabledException;
 
         final boolean communicationException = exception instanceof InvalidTopicException ||
-            exception instanceof UnknownServerException ||
-            exception instanceof SerializationException ||
-            exception instanceof OffsetMetadataTooLarge ||
-            exception instanceof IllegalStateException;
+                exception instanceof UnknownServerException ||
+                exception instanceof SerializationException ||
+                exception instanceof OffsetMetadataTooLarge ||
+                exception instanceof IllegalStateException;
 
         return securityException || communicationException;
     }

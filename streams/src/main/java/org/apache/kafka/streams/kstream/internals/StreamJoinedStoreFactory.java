@@ -91,7 +91,7 @@ public class StreamJoinedStoreFactory<K, V1, V2> extends AbstractConfigurableSto
                         EmitStrategy.onWindowUpdate(),
                         false,
                         dslStoreFormat()
-                ))
+        ))
                 : storeSupplier;
 
         final StoreBuilder<? extends WindowStore<K, ?>> builder = Stores.timestampedWindowStoreWithHeadersBuilder(
@@ -99,7 +99,6 @@ public class StreamJoinedStoreFactory<K, V1, V2> extends AbstractConfigurableSto
                 joinedInternal.keySerde(),
                 valueSerde
         );
-
 
         if (joinedInternal.loggingEnabled()) {
             builder.withLoggingEnabled(logConfig);

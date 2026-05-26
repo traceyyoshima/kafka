@@ -189,15 +189,15 @@ public class ConnectMetricsRegistry {
         taskClass = createTemplate("task-class", TASK_GROUP_NAME, "The class name of the task.", workerTaskTags);
         taskVersion = createTemplate("task-version", TASK_GROUP_NAME, "The version of the task.", workerTaskTags);
         taskKeyConverterClass = createTemplate("key-converter-class", TASK_GROUP_NAME,
-                                            "The fully qualified class name from key.converter", workerTaskTags);
+                "The fully qualified class name from key.converter", workerTaskTags);
         taskValueConverterClass = createTemplate("value-converter-class", TASK_GROUP_NAME,
-                                            "The fully qualified class name from value.converter", workerTaskTags);
+                "The fully qualified class name from value.converter", workerTaskTags);
         taskKeyConverterVersion = createTemplate("key-converter-version", TASK_GROUP_NAME,
-                                            "The version instantiated for key.converter. May be undefined", workerTaskTags);
+                "The version instantiated for key.converter. May be undefined", workerTaskTags);
         taskValueConverterVersion = createTemplate("value-converter-version", TASK_GROUP_NAME,
-                                                "The version instantiated for value.converter. May be undefined", workerTaskTags);
+                "The version instantiated for value.converter. May be undefined", workerTaskTags);
         taskHeaderConverterClass = createTemplate("header-converter-class", TASK_GROUP_NAME,
-                                                "The fully qualified class name from header.converter", workerTaskTags);
+                "The fully qualified class name from header.converter", workerTaskTags);
         taskHeaderConverterVersion = createTemplate("header-converter-version", TASK_GROUP_NAME,
                                                     "The version instantiated for header.converter. May be undefined", workerTaskTags);
 
@@ -346,15 +346,15 @@ public class ConnectMetricsRegistry {
         connectorCount = createTemplate("connector-count", WORKER_GROUP_NAME, "The number of connectors run in this worker.", workerTags);
         taskCount = createTemplate("task-count", WORKER_GROUP_NAME, "The number of tasks run in this worker.", workerTags);
         connectorStartupAttemptsTotal = createTemplate("connector-startup-attempts-total", WORKER_GROUP_NAME,
-                                                  "The total number of connector startups that this worker has attempted.", workerTags);
+                "The total number of connector startups that this worker has attempted.", workerTags);
         connectorStartupSuccessTotal = createTemplate("connector-startup-success-total", WORKER_GROUP_NAME,
-                                                 "The total number of connector starts that succeeded.", workerTags);
+                "The total number of connector starts that succeeded.", workerTags);
         connectorStartupSuccessPercentage = createTemplate("connector-startup-success-percentage", WORKER_GROUP_NAME,
-                                                      "The average percentage of this worker's connectors starts that succeeded.", workerTags);
+                "The average percentage of this worker's connectors starts that succeeded.", workerTags);
         connectorStartupFailureTotal = createTemplate("connector-startup-failure-total", WORKER_GROUP_NAME,
-                                                 "The total number of connector starts that failed.", workerTags);
+                "The total number of connector starts that failed.", workerTags);
         connectorStartupFailurePercentage = createTemplate("connector-startup-failure-percentage", WORKER_GROUP_NAME,
-                                                      "The average percentage of this worker's connectors starts that failed.", workerTags);
+                "The average percentage of this worker's connectors starts that failed.", workerTags);
         taskStartupAttemptsTotal = createTemplate("task-startup-attempts-total", WORKER_GROUP_NAME,
                                                   "The total number of task startups that this worker has attempted.", workerTags);
         taskStartupSuccessTotal = createTemplate("task-startup-success-total", WORKER_GROUP_NAME,
@@ -369,30 +369,30 @@ public class ConnectMetricsRegistry {
         Set<String> workerConnectorTags = new LinkedHashSet<>(tags);
         workerConnectorTags.add(CONNECTOR_TAG_NAME);
         connectorTotalTaskCount = createTemplate("connector-total-task-count", WORKER_GROUP_NAME,
-            "The number of tasks of the connector on the worker.", workerConnectorTags);
+                "The number of tasks of the connector on the worker.", workerConnectorTags);
         connectorRunningTaskCount = createTemplate("connector-running-task-count", WORKER_GROUP_NAME,
-            "The number of running tasks of the connector on the worker.", workerConnectorTags);
+                "The number of running tasks of the connector on the worker.", workerConnectorTags);
         connectorPausedTaskCount = createTemplate("connector-paused-task-count", WORKER_GROUP_NAME,
-            "The number of paused tasks of the connector on the worker.", workerConnectorTags);
+                "The number of paused tasks of the connector on the worker.", workerConnectorTags);
         connectorFailedTaskCount = createTemplate("connector-failed-task-count", WORKER_GROUP_NAME,
-            "The number of failed tasks of the connector on the worker.", workerConnectorTags);
+                "The number of failed tasks of the connector on the worker.", workerConnectorTags);
         connectorUnassignedTaskCount = createTemplate("connector-unassigned-task-count",
-            WORKER_GROUP_NAME,
-            "The number of unassigned tasks of the connector on the worker.", workerConnectorTags);
+                WORKER_GROUP_NAME,
+                "The number of unassigned tasks of the connector on the worker.", workerConnectorTags);
         connectorDestroyedTaskCount = createTemplate("connector-destroyed-task-count",
-            WORKER_GROUP_NAME,
-            "The number of destroyed tasks of the connector on the worker.", workerConnectorTags);
+                WORKER_GROUP_NAME,
+                "The number of destroyed tasks of the connector on the worker.", workerConnectorTags);
         connectorRestartingTaskCount = createTemplate("connector-restarting-task-count",
-            WORKER_GROUP_NAME,
-            "The number of restarting tasks of the connector on the worker.", workerConnectorTags);
+                WORKER_GROUP_NAME,
+                "The number of restarting tasks of the connector on the worker.", workerConnectorTags);
 
         connectorStatusMetrics = Map.of(
-            connectorRunningTaskCount, TaskStatus.State.RUNNING,
-            connectorPausedTaskCount, TaskStatus.State.PAUSED,
-            connectorFailedTaskCount, TaskStatus.State.FAILED,
-            connectorUnassignedTaskCount, TaskStatus.State.UNASSIGNED,
-            connectorDestroyedTaskCount, TaskStatus.State.DESTROYED,
-            connectorRestartingTaskCount, TaskStatus.State.RESTARTING
+                connectorRunningTaskCount, TaskStatus.State.RUNNING,
+                connectorPausedTaskCount, TaskStatus.State.PAUSED,
+                connectorFailedTaskCount, TaskStatus.State.FAILED,
+                connectorUnassignedTaskCount, TaskStatus.State.UNASSIGNED,
+                connectorDestroyedTaskCount, TaskStatus.State.DESTROYED,
+                connectorRestartingTaskCount, TaskStatus.State.RESTARTING
         );
 
         /* Worker rebalance level */
@@ -402,9 +402,9 @@ public class ConnectMetricsRegistry {
         leaderName = createTemplate("leader-name", WORKER_REBALANCE_GROUP_NAME, "The name of the group leader.", rebalanceTags);
         epoch = createTemplate("epoch", WORKER_REBALANCE_GROUP_NAME, "The epoch or generation number of this worker.", rebalanceTags);
         rebalanceCompletedTotal = createTemplate("completed-rebalances-total", WORKER_REBALANCE_GROUP_NAME,
-                                                "The total number of rebalances completed by this worker.", rebalanceTags);
+                "The total number of rebalances completed by this worker.", rebalanceTags);
         rebalanceMode = createTemplate("rebalancing", WORKER_REBALANCE_GROUP_NAME,
-                                               "Whether this worker is currently rebalancing.", rebalanceTags);
+                "Whether this worker is currently rebalancing.", rebalanceTags);
         rebalanceTimeMax = createTemplate("rebalance-max-time-ms", WORKER_REBALANCE_GROUP_NAME,
                                           "The maximum time in milliseconds spent by this worker to rebalance.", rebalanceTags);
         rebalanceTimeAvg = createTemplate("rebalance-avg-time-ms", WORKER_REBALANCE_GROUP_NAME,

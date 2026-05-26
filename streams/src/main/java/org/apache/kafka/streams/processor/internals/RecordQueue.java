@@ -72,22 +72,22 @@ public class RecordQueue {
 
         final String threadName = Thread.currentThread().getName();
         droppedRecordsSensor = TaskMetrics.droppedRecordsSensor(
-            threadName,
-            processorContext.taskId().toString(),
-            processorContext.metrics()
+                threadName,
+                processorContext.taskId().toString(),
+                processorContext.metrics()
         );
         consumedSensor = TopicMetrics.consumedSensor(
-            threadName,
-            processorContext.taskId().toString(),
-            source.name(),
-            partition.topic(),
-            processorContext.metrics()
+                threadName,
+                processorContext.taskId().toString(),
+                source.name(),
+                partition.topic(),
+                processorContext.metrics()
         );
         recordDeserializer = new RecordDeserializer(
-            source,
-            deserializationExceptionHandler,
-            logContext,
-            droppedRecordsSensor
+                source,
+                deserializationExceptionHandler,
+                logContext,
+                droppedRecordsSensor
         );
         this.log = logContext.logger(RecordQueue.class);
         this.headRecordSizeInBytes = 0L;
@@ -213,7 +213,7 @@ public class RecordQueue {
         while (headRecord == null && !fifoQueue.isEmpty()) {
             final ConsumerRecord<byte[], byte[]> raw = fifoQueue.pollFirst();
             final ConsumerRecord<Object, Object> deserialized =
-                recordDeserializer.deserialize(processorContext, raw);
+                    recordDeserializer.deserialize(processorContext, raw);
 
             if (deserialized == null) {
                 // this only happens if the deserializer decides to skip. It has already logged the reason.

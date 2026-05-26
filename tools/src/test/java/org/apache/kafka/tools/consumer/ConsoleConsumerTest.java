@@ -119,14 +119,14 @@ public class ConsoleConsumerTest {
         });
 
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--timeout-ms", String.valueOf(timeoutMs)
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--timeout-ms", String.valueOf(timeoutMs)
         };
 
         ConsoleConsumer.ConsumerWrapper consumer = new ConsoleConsumer.ConsumerWrapper(
-            new ConsoleConsumerOptions(args),
-            mockConsumer
+                new ConsoleConsumerOptions(args),
+                mockConsumer
         );
 
         assertThrows(TimeoutException.class, consumer::receive);
@@ -144,14 +144,14 @@ public class ConsoleConsumerTest {
         TopicPartition tp2 = new TopicPartition(topic, 1);
 
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", topic,
-            "--timeout-ms", "1000"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", topic,
+                "--timeout-ms", "1000"
         };
 
         ConsoleConsumer.ConsumerWrapper consumer = new ConsoleConsumer.ConsumerWrapper(
-            new ConsoleConsumerOptions(args),
-            mockConsumer
+                new ConsoleConsumerOptions(args),
+                mockConsumer
         );
 
         mockConsumer.rebalance(List.of(tp1, tp2));
@@ -222,15 +222,15 @@ public class ConsoleConsumerTest {
         TopicPartition tp0 = new TopicPartition("test", 0);
 
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", tp0.topic(),
-            "--partition", String.valueOf(tp0.partition())
+                "--bootstrap-server", "localhost:9092",
+                "--topic", tp0.topic(),
+                "--partition", String.valueOf(tp0.partition())
             //"--timeout-ms", "1000"
         };
 
         ConsoleConsumer.ConsumerWrapper consumer = new ConsoleConsumer.ConsumerWrapper(
-            new ConsoleConsumerOptions(args),
-            mockConsumer
+                new ConsoleConsumerOptions(args),
+                mockConsumer
         );
 
         verify(mockConsumer).assign(eq(List.of(tp0)));
@@ -239,11 +239,11 @@ public class ConsoleConsumerTest {
         reset(mockConsumer);
 
         args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", tp0.topic(),
-            "--partition", String.valueOf(tp0.partition()),
-            "--offset", "123",
-            "--timeout-ms", "1000"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", tp0.topic(),
+                "--partition", String.valueOf(tp0.partition()),
+                "--offset", "123",
+                "--timeout-ms", "1000"
         };
 
         consumer = new ConsoleConsumer.ConsumerWrapper(new ConsoleConsumerOptions(args), mockConsumer);
@@ -254,11 +254,11 @@ public class ConsoleConsumerTest {
         reset(mockConsumer);
 
         args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", tp0.topic(),
-            "--partition", String.valueOf(tp0.partition()),
-            "--offset", "earliest",
-            "--timeout-ms", "1000"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", tp0.topic(),
+                "--partition", String.valueOf(tp0.partition()),
+                "--offset", "earliest",
+                "--timeout-ms", "1000"
         };
 
         consumer = new ConsoleConsumer.ConsumerWrapper(new ConsoleConsumerOptions(args), mockConsumer);
@@ -275,14 +275,14 @@ public class ConsoleConsumerTest {
         Consumer<byte[], byte[]> mockConsumer = mock(Consumer.class);
 
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--include", "includeTest*",
-            "--from-beginning"
+                "--bootstrap-server", "localhost:9092",
+                "--include", "includeTest*",
+                "--from-beginning"
         };
 
         ConsoleConsumer.ConsumerWrapper consumer = new ConsoleConsumer.ConsumerWrapper(
-            new ConsoleConsumerOptions(args),
-            mockConsumer
+                new ConsoleConsumerOptions(args),
+                mockConsumer
         );
 
         verify(mockConsumer).subscribe(any(Pattern.class));
@@ -297,17 +297,17 @@ public class ConsoleConsumerTest {
             admin.createTopics(Set.of(newTopic));
             produceMessagesWithTxn(cluster);
 
-            String[] transactionLogMessageFormatter = createConsoleConsumerArgs(cluster, 
-                    Topic.TRANSACTION_STATE_TOPIC_NAME, 
+            String[] transactionLogMessageFormatter = createConsoleConsumerArgs(cluster,
+                    Topic.TRANSACTION_STATE_TOPIC_NAME,
                     "org.apache.kafka.tools.consumer.TransactionLogMessageFormatter");
 
             ConsoleConsumerOptions options = new ConsoleConsumerOptions(transactionLogMessageFormatter);
             ConsoleConsumer.ConsumerWrapper consumerWrapper = new ConsoleConsumer.ConsumerWrapper(options, createTxnConsumer(cluster));
-            
+
             try (ByteArrayOutputStream out = new ByteArrayOutputStream();
                  PrintStream output = new PrintStream(out)) {
                 ConsoleConsumer.process(1, options.formatter(), consumerWrapper, output, true);
-                
+
                 JsonNode jsonNode = objectMapper.reader().readTree(out.toByteArray());
                 JsonNode keyNode = jsonNode.get("key");
 
@@ -336,14 +336,14 @@ public class ConsoleConsumerTest {
             admin.createTopics(Set.of(newTopic));
             produceMessages(cluster);
 
-            String[] offsetsMessageFormatter = createConsoleConsumerArgs(cluster, 
-                    Topic.GROUP_METADATA_TOPIC_NAME, 
+            String[] offsetsMessageFormatter = createConsoleConsumerArgs(cluster,
+                    Topic.GROUP_METADATA_TOPIC_NAME,
                     "org.apache.kafka.tools.consumer.OffsetsMessageFormatter");
 
             ConsoleConsumerOptions options = new ConsoleConsumerOptions(offsetsMessageFormatter);
             ConsoleConsumer.ConsumerWrapper consumerWrapper = new ConsoleConsumer.ConsumerWrapper(options, createOffsetConsumer(cluster));
 
-            try (ByteArrayOutputStream out = new ByteArrayOutputStream(); 
+            try (ByteArrayOutputStream out = new ByteArrayOutputStream();
                  PrintStream output = new PrintStream(out)) {
                 ConsoleConsumer.process(1, options.formatter(), consumerWrapper, output, true);
 
@@ -378,12 +378,12 @@ public class ConsoleConsumerTest {
             admin.createTopics(Set.of(newTopic));
             produceMessages(cluster);
 
-            String[] groupMetadataMessageFormatter = createConsoleConsumerArgs(cluster, 
-                    Topic.GROUP_METADATA_TOPIC_NAME, 
+            String[] groupMetadataMessageFormatter = createConsoleConsumerArgs(cluster,
+                    Topic.GROUP_METADATA_TOPIC_NAME,
                     "org.apache.kafka.tools.consumer.GroupMetadataMessageFormatter");
 
             ConsoleConsumerOptions options = new ConsoleConsumerOptions(groupMetadataMessageFormatter);
-            ConsoleConsumer.ConsumerWrapper consumerWrapper = 
+            ConsoleConsumer.ConsumerWrapper consumerWrapper =
                     new ConsoleConsumer.ConsumerWrapper(options, createGroupMetaDataConsumer(cluster));
 
             try (ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -395,13 +395,13 @@ public class ConsoleConsumerTest {
                 // The group coordinator writes an empty group metadata record when the group is created for the first time
                 JsonNode keyNode = jsonNode.get("key");
                 GroupMetadataKey groupMetadataKey =
-                    GroupMetadataKeyJsonConverter.read(keyNode.get("data"), GroupMetadataKey.HIGHEST_SUPPORTED_VERSION);
+                        GroupMetadataKeyJsonConverter.read(keyNode.get("data"), GroupMetadataKey.HIGHEST_SUPPORTED_VERSION);
                 assertNotNull(groupMetadataKey);
                 assertEquals(groupId, groupMetadataKey.group());
 
                 JsonNode valueNode = jsonNode.get("value");
                 GroupMetadataValue groupMetadataValue =
-                    GroupMetadataValueJsonConverter.read(valueNode.get("data"), GroupMetadataValue.HIGHEST_SUPPORTED_VERSION);
+                        GroupMetadataValueJsonConverter.read(valueNode.get("data"), GroupMetadataValue.HIGHEST_SUPPORTED_VERSION);
                 assertNotNull(groupMetadataValue);
                 assertEquals("", groupMetadataValue.protocolType());
                 assertEquals(0, groupMetadataValue.generation());
@@ -428,12 +428,12 @@ public class ConsoleConsumerTest {
             producer.send(new ProducerRecord<>(topic, new byte[1_000 * 100]));
         }
     }
-    
+
     private String[] createConsoleConsumerArgs(ClusterInstance cluster, String topic, String formatter) {
         return new String[]{
-            "--bootstrap-server", cluster.bootstrapServers(),
-            "--topic", topic,
-            "--formatter", formatter
+                "--bootstrap-server", cluster.bootstrapServers(),
+                "--topic", topic,
+                "--formatter", formatter
         };
     }
 
@@ -463,7 +463,7 @@ public class ConsoleConsumerTest {
         props.put(AUTO_OFFSET_RESET_CONFIG, "earliest");
         return new KafkaConsumer<>(props);
     }
-    
+
     private Properties producerProps(ClusterInstance cluster) {
         Properties props = new Properties();
         props.put(BOOTSTRAP_SERVERS_CONFIG, cluster.bootstrapServers());
@@ -471,7 +471,7 @@ public class ConsoleConsumerTest {
         props.put(VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class.getName());
         return props;
     }
-    
+
     private Properties consumerProps(ClusterInstance cluster) {
         Properties props = new Properties();
         props.put(BOOTSTRAP_SERVERS_CONFIG, cluster.bootstrapServers());

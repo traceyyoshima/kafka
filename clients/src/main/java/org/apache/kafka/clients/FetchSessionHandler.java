@@ -81,7 +81,7 @@ public class FetchSessionHandler {
      * All of the partitions which exist in the fetch request session.
      */
     private LinkedHashMap<TopicPartition, PartitionData> sessionPartitions =
-        new LinkedHashMap<>(0);
+            new LinkedHashMap<>(0);
 
     /**
      * All of the topic names mapped to topic ids for topics which exist in the fetch request session.
@@ -298,7 +298,7 @@ public class FetchSessionHandler {
             List<TopicIdPartition> altered = new ArrayList<>();
             List<TopicIdPartition> replaced = new ArrayList<>();
             for (Iterator<Entry<TopicPartition, PartitionData>> iter =
-                 sessionPartitions.entrySet().iterator(); iter.hasNext(); ) {
+                    sessionPartitions.entrySet().iterator(); iter.hasNext();) {
                 Entry<TopicPartition, PartitionData> entry = iter.next();
                 TopicPartition topicPartition = entry.getKey();
                 PartitionData prevData = entry.getValue();
@@ -377,7 +377,6 @@ public class FetchSessionHandler {
         return new Builder();
     }
 
-
     /** A builder that allows for presizing the PartitionData hashmap, and avoiding making a
      *  secondary copy of the sessionPartitions, in cases where this is not necessarily.
      *  This builder is primarily for use by the Replica Fetcher
@@ -431,9 +430,9 @@ public class FetchSessionHandler {
     String verifyFullFetchResponsePartitions(Set<TopicPartition> topicPartitions, Set<Uuid> ids, short version) {
         StringBuilder bld = new StringBuilder();
         Set<TopicPartition> extra =
-            findMissing(topicPartitions, sessionPartitions.keySet());
+                findMissing(topicPartitions, sessionPartitions.keySet());
         Set<TopicPartition> omitted =
-            findMissing(sessionPartitions.keySet(), topicPartitions);
+                findMissing(sessionPartitions.keySet(), topicPartitions);
         Set<Uuid> extraIds = new HashSet<>();
         if (version >= 13) {
             extraIds = findMissing(ids, sessionTopicNames.keySet());
@@ -468,7 +467,7 @@ public class FetchSessionHandler {
             extraIds = findMissing(ids, sessionTopicNames.keySet());
         }
         Set<TopicPartition> extra =
-            findMissing(topicPartitions, sessionPartitions.keySet());
+                findMissing(topicPartitions, sessionPartitions.keySet());
         StringBuilder bld = new StringBuilder();
         if (!extra.isEmpty())
             bld.append("extraPartitions=(").append(extra.stream().map(TopicPartition::toString).collect(Collectors.joining(", "))).append("), ");
@@ -492,10 +491,10 @@ public class FetchSessionHandler {
             int implied = sessionPartitions.size() - topicPartitions.size();
             if (implied > 0) {
                 return String.format(" with %d response partition(s), %d implied partition(s)",
-                    topicPartitions.size(), implied);
+                        topicPartitions.size(), implied);
             } else {
                 return String.format(" with %d response partition(s)",
-                    topicPartitions.size());
+                        topicPartitions.size());
             }
         }
         StringBuilder bld = new StringBuilder();
@@ -527,7 +526,7 @@ public class FetchSessionHandler {
     public boolean handleResponse(FetchResponse response, short version) {
         if (response.error() != Errors.NONE) {
             log.info("Node {} was unable to process the fetch request with {}: {}.",
-                node, nextMetadata, response.error());
+                    node, nextMetadata, response.error());
             if (response.error() == Errors.FETCH_SESSION_ID_NOT_FOUND) {
                 nextMetadata = FetchMetadata.INITIAL;
             } else {
@@ -546,7 +545,7 @@ public class FetchSessionHandler {
                 // to return false here.
                 if (log.isDebugEnabled()) {
                     log.debug("Node {} sent a empty full fetch response to indicate that this " +
-                        "client should be throttled for {} ms.", node, response.throttleTimeMs());
+                            "client should be throttled for {} ms.", node, response.throttleTimeMs());
                 }
                 nextMetadata = FetchMetadata.INITIAL;
                 return false;
@@ -588,8 +587,8 @@ public class FetchSessionHandler {
                 // fetch request is perfectly valid.
                 if (log.isDebugEnabled())
                     log.debug("Node {} sent an incremental fetch response with throttleTimeMs = {} " +
-                        "for session {}{}", node, response.throttleTimeMs(), response.sessionId(),
-                        responseDataToLogString(topicPartitions));
+                            "for session {}{}", node, response.throttleTimeMs(), response.sessionId(),
+                            responseDataToLogString(topicPartitions));
                 nextMetadata = nextMetadata.nextIncremental();
                 return true;
             }

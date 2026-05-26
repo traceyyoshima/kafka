@@ -43,7 +43,7 @@ public class DeleteShareGroupOffsetsResponse extends AbstractResponse {
         Map<Errors, Integer> counts = new EnumMap<>(Errors.class);
         updateErrorCounts(counts, Errors.forCode(data.errorCode()));
         data.responses().forEach(
-            topicResult -> updateErrorCounts(counts, Errors.forCode(topicResult.errorCode()))
+                topicResult -> updateErrorCounts(counts, Errors.forCode(topicResult.errorCode()))
         );
         return counts;
     }
@@ -60,7 +60,7 @@ public class DeleteShareGroupOffsetsResponse extends AbstractResponse {
 
     public static DeleteShareGroupOffsetsResponse parse(Readable readable, short version) {
         return new DeleteShareGroupOffsetsResponse(
-            new DeleteShareGroupOffsetsResponseData(readable, version)
+                new DeleteShareGroupOffsetsResponseData(readable, version)
         );
     }
 }

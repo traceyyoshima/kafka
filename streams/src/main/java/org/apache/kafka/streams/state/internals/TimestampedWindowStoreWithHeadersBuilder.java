@@ -46,7 +46,7 @@ import java.util.Objects;
  * @param <V> value type
  */
 public class TimestampedWindowStoreWithHeadersBuilder<K, V>
-    extends AbstractStoreBuilder<K, ValueTimestampHeaders<V>, TimestampedWindowStoreWithHeaders<K, V>> {
+        extends AbstractStoreBuilder<K, ValueTimestampHeaders<V>, TimestampedWindowStoreWithHeaders<K, V>> {
 
     private static final Logger LOG = LoggerFactory.getLogger(TimestampedWindowStoreWithHeadersBuilder.class);
 
@@ -84,12 +84,12 @@ public class TimestampedWindowStoreWithHeadersBuilder<K, V>
         }
 
         return new MeteredTimestampedWindowStoreWithHeaders<>(
-            maybeWrapCaching(maybeWrapLogging(store)),
-            storeSupplier.windowSize(),
-            storeSupplier.metricsScope(),
-            time,
-            keySerde,
-            valueSerde);
+                maybeWrapCaching(maybeWrapLogging(store)),
+                storeSupplier.windowSize(),
+                storeSupplier.metricsScope(),
+                time,
+                keySerde,
+                valueSerde);
     }
 
     private WindowStore<Bytes, byte[]> maybeWrapCaching(final WindowStore<Bytes, byte[]> inner) {
@@ -100,16 +100,16 @@ public class TimestampedWindowStoreWithHeadersBuilder<K, V>
         final boolean isTimeOrdered = isTimeOrderedStore(inner);
         if (isTimeOrdered) {
             return new TimeOrderedCachingWindowStore(
-                inner,
-                storeSupplier.windowSize(),
-                storeSupplier.segmentIntervalMs()
+                    inner,
+                    storeSupplier.windowSize(),
+                    storeSupplier.segmentIntervalMs()
             );
         }
 
         return new CachingWindowStore(
-            inner,
-            storeSupplier.windowSize(),
-            storeSupplier.segmentIntervalMs()
+                inner,
+                storeSupplier.windowSize(),
+                storeSupplier.segmentIntervalMs()
         );
     }
 
@@ -144,8 +144,8 @@ public class TimestampedWindowStoreWithHeadersBuilder<K, V>
      * The actual in-memory store doesn't need to change since it operates on raw bytes.
      */
     private static final class InMemoryTimestampedWindowStoreWithHeadersMarker
-        extends WrappedStateStore<WindowStore<Bytes, byte[]>, Bytes, byte[]>
-        implements WindowStore<Bytes, byte[]>, TimestampedBytesStore, HeadersBytesStore {
+            extends WrappedStateStore<WindowStore<Bytes, byte[]>, Bytes, byte[]>
+            implements WindowStore<Bytes, byte[]>, TimestampedBytesStore, HeadersBytesStore {
 
         private InMemoryTimestampedWindowStoreWithHeadersMarker(final WindowStore<Bytes, byte[]> wrapped) {
             super(wrapped);

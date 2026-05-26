@@ -74,15 +74,15 @@ public class MemberDescription {
         Optional<Boolean> upgraded
     ) {
         this(
-            memberId,
-            groupInstanceId,
-            Optional.empty(),
-            clientId,
-            host,
-            assignment,
-            targetAssignment,
-            memberEpoch,
-            upgraded
+                memberId,
+                groupInstanceId,
+                Optional.empty(),
+                clientId,
+                host,
+                assignment,
+                targetAssignment,
+                memberEpoch,
+                upgraded
         );
     }
 
@@ -99,14 +99,14 @@ public class MemberDescription {
         Optional<MemberAssignment> targetAssignment
     ) {
         this(
-            memberId,
-            groupInstanceId,
-            clientId,
-            host,
-            assignment,
-            targetAssignment,
-            Optional.empty(),
-            Optional.empty()
+                memberId,
+                groupInstanceId,
+                clientId,
+                host,
+                assignment,
+                targetAssignment,
+                Optional.empty(),
+                Optional.empty()
         );
     }
 
@@ -122,12 +122,12 @@ public class MemberDescription {
         MemberAssignment assignment
     ) {
         this(
-            memberId,
-            groupInstanceId,
-            clientId,
-            host,
-            assignment,
-            Optional.empty()
+                memberId,
+                groupInstanceId,
+                clientId,
+                host,
+                assignment,
+                Optional.empty()
         );
     }
 
@@ -148,14 +148,14 @@ public class MemberDescription {
         if (o == null || getClass() != o.getClass()) return false;
         MemberDescription that = (MemberDescription) o;
         return memberId.equals(that.memberId) &&
-            groupInstanceId.equals(that.groupInstanceId) &&
-            rackId.equals(that.rackId) &&
-            clientId.equals(that.clientId) &&
-            host.equals(that.host) &&
-            assignment.equals(that.assignment) &&
-            targetAssignment.equals(that.targetAssignment) &&
-            memberEpoch.equals(that.memberEpoch) &&
-            upgraded.equals(that.upgraded);
+                groupInstanceId.equals(that.groupInstanceId) &&
+                rackId.equals(that.rackId) &&
+                clientId.equals(that.clientId) &&
+                host.equals(that.host) &&
+                assignment.equals(that.assignment) &&
+                targetAssignment.equals(that.targetAssignment) &&
+                memberEpoch.equals(that.memberEpoch) &&
+                upgraded.equals(that.upgraded);
     }
 
     @Override
@@ -238,14 +238,14 @@ public class MemberDescription {
     @Override
     public String toString() {
         return "(memberId=" + memberId +
-            ", groupInstanceId=" + groupInstanceId.orElse("null") +
-            ", rackId=" + rackId.orElse("null") +
-            ", clientId=" + clientId +
-            ", host=" + host +
-            ", assignment=" + assignment +
-            ", targetAssignment=" + targetAssignment +
-            ", memberEpoch=" + memberEpoch.orElse(null) +
-            ", upgraded=" + upgraded.orElse(null) +
-            ")";
+                ", groupInstanceId=" + groupInstanceId.orElse("null") +
+                ", rackId=" + rackId.orElse("null") +
+                ", clientId=" + clientId +
+                ", host=" + host +
+                ", assignment=" + assignment +
+                ", targetAssignment=" + targetAssignment +
+                ", memberEpoch=" + memberEpoch.orElse(null) +
+                ", upgraded=" + upgraded.orElse(null) +
+                ")";
     }
 }

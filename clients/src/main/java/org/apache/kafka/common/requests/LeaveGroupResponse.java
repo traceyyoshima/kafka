@@ -65,7 +65,7 @@ public class LeaveGroupResponse extends AbstractResponse {
         } else {
             if (data.members().size() != 1) {
                 throw new UnsupportedVersionException("LeaveGroup response version " + version +
-                    " can only contain one member, got " + data.members().size() + " members.");
+                        " can only contain one member, got " + data.members().size() + " members.");
             }
 
             this.data = new LeaveGroupResponseData().setErrorCode(data.members().get(0).errorCode());
@@ -82,7 +82,7 @@ public class LeaveGroupResponse extends AbstractResponse {
             final short errorCode = getError(topLevelError, memberResponses).code();
 
             this.data = new LeaveGroupResponseData()
-                            .setErrorCode(errorCode);
+                    .setErrorCode(errorCode);
         } else {
             this.data = new LeaveGroupResponseData()
                             .setErrorCode(topLevelError.code())
@@ -138,7 +138,7 @@ public class LeaveGroupResponse extends AbstractResponse {
 
         // Member level error.
         data.members().forEach(memberResponse ->
-            updateErrorCounts(combinedErrorCounts, Errors.forCode(memberResponse.errorCode()))
+                updateErrorCounts(combinedErrorCounts, Errors.forCode(memberResponse.errorCode()))
         );
         return combinedErrorCounts;
     }
@@ -160,7 +160,7 @@ public class LeaveGroupResponse extends AbstractResponse {
     @Override
     public boolean equals(Object other) {
         return other instanceof LeaveGroupResponse &&
-                   ((LeaveGroupResponse) other).data.equals(this.data);
+                ((LeaveGroupResponse) other).data.equals(this.data);
     }
 
     @Override

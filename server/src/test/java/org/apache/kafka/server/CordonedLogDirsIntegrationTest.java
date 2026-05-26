@@ -89,10 +89,10 @@ public class CordonedLogDirsIntegrationTest {
     }
 
     @ClusterTest(
-        metadataVersion = MetadataVersion.IBP_4_2_IV1,
-        serverProperties = {
-            @ClusterConfigProperty(key = CORDONED_LOG_DIRS_CONFIG, value = "*")
-        }
+            metadataVersion = MetadataVersion.IBP_4_2_IV1,
+            serverProperties = {
+                @ClusterConfigProperty(key = CORDONED_LOG_DIRS_CONFIG, value = "*")
+            }
     )
     public void testFeatureNotEnabledStaticConfig() throws Exception {
         testFeatureNotEnabled(logDirsBroker0);
@@ -107,7 +107,7 @@ public class CordonedLogDirsIntegrationTest {
             assertCordonedLogDirs(admin, List.of());
             // 3. we can't dynamically configure cordoned.log.dirs
             Throwable ee = assertThrows(ExecutionException.class, () ->
-                admin.incrementalAlterConfigs(cordonedDirsConfig("", BROKER_0)).all().get());
+                    admin.incrementalAlterConfigs(cordonedDirsConfig("", BROKER_0)).all().get());
             assertInstanceOf(InvalidConfigurationException.class, ee.getCause());
 
             // Update the metadata version to support cordoning log dirs
@@ -134,12 +134,12 @@ public class CordonedLogDirsIntegrationTest {
             // As all log dirs are cordoned, we can't create a topic
             Set<NewTopic> newTopics = newTopic(TOPIC2);
             ee = assertThrows(ExecutionException.class, () ->
-                admin.createTopics(newTopics).all().get());
+                    admin.createTopics(newTopics).all().get());
             assertInstanceOf(InvalidReplicationFactorException.class, ee.getCause());
             // We can't create partitions either
             Map<String, NewPartitions> newPartitions = Map.of(TOPIC1, NewPartitions.increaseTo(2));
             ee = assertThrows(ExecutionException.class, () ->
-                admin.createPartitions(newPartitions).all().get());
+                    admin.createPartitions(newPartitions).all().get());
             assertInstanceOf(InvalidReplicationFactorException.class, ee.getCause());
 
             // After uncordoning log dirs, we can create topics and partitions again
@@ -165,12 +165,12 @@ public class CordonedLogDirsIntegrationTest {
             // We can't create new topics or partitions
             Set<NewTopic> newTopics = newTopic(TOPIC2);
             Throwable ee = assertThrows(ExecutionException.class, () ->
-                admin.createTopics(newTopics).all().get()
+                    admin.createTopics(newTopics).all().get()
             );
             assertInstanceOf(InvalidReplicationFactorException.class, ee.getCause());
             Map<String, NewPartitions> newPartitions = Map.of(TOPIC1, NewPartitions.increaseTo(2));
             ee = assertThrows(ExecutionException.class, () ->
-                admin.createPartitions(newPartitions).all().get()
+                    admin.createPartitions(newPartitions).all().get()
             );
             assertInstanceOf(InvalidReplicationFactorException.class, ee.getCause());
 
@@ -185,16 +185,16 @@ public class CordonedLogDirsIntegrationTest {
     }
 
     @ClusterTest(
-        serverProperties = {
-            @ClusterConfigProperty(key = CORDONED_LOG_DIRS_CONFIG, value = "*")
-        }
+            serverProperties = {
+                @ClusterConfigProperty(key = CORDONED_LOG_DIRS_CONFIG, value = "*")
+            }
     )
     public void testStaticCordonUncordonLogDirs() throws Exception {
         Set<NewTopic> newTopics = newTopic(TOPIC1);
         try (Admin admin = clusterInstance.admin()) {
             // All log dirs are statically cordoned, so we can't create topics
             Throwable ee = assertThrows(ExecutionException.class, () ->
-                admin.createTopics(newTopics).all().get()
+                    admin.createTopics(newTopics).all().get()
             );
             assertInstanceOf(InvalidReplicationFactorException.class, ee.getCause());
 
@@ -225,7 +225,7 @@ public class CordonedLogDirsIntegrationTest {
 
             // We can't move the replica to the now cordoned log dir
             Throwable ee = assertThrows(ExecutionException.class, () ->
-                admin.alterReplicaLogDirs(Map.of(replica, otherLogDir)).all().get()
+                    admin.alterReplicaLogDirs(Map.of(replica, otherLogDir)).all().get()
             );
             assertInstanceOf(InvalidReplicaAssignmentException.class, ee.getCause());
 
@@ -307,7 +307,7 @@ public class CordonedLogDirsIntegrationTest {
                         found += logDirDescription.replicaInfos().size();
                         if (entry.getKey() == brokerId) {
                             logDirDescription.replicaInfos().forEach((tp, replicaInfo) ->
-                                partitionsToMove.add(tp)
+                                    partitionsToMove.add(tp)
                             );
                         }
                     }

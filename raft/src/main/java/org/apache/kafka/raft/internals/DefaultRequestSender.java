@@ -79,10 +79,10 @@ public final class DefaultRequestSender  implements RequestSender {
         ApiMessage request = requestSupplier.get();
 
         RaftRequest.Outbound requestMessage = new RaftRequest.Outbound(
-            correlationId,
-            request,
-            destination,
-            currentTimeMs
+                correlationId,
+                request,
+                destination,
+                currentTimeMs
         );
 
         requestMessage.completion.whenComplete((response, exception) -> {
@@ -92,9 +92,9 @@ public final class DefaultRequestSender  implements RequestSender {
                 ApiMessage errorResponse = RaftUtil.errorResponse(api, error);
 
                 response = new RaftResponse.Inbound(
-                    correlationId,
-                    errorResponse,
-                    destination
+                        correlationId,
+                        errorResponse,
+                        destination
                 );
             }
 

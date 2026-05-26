@@ -49,7 +49,7 @@ public class MetadataVersionConfigValidatorTest {
         .numBytes(88)
         .build();
     public static final MetadataProvenance TEST_PROVENANCE =
-        new MetadataProvenance(50, 3, 8000, true);
+            new MetadataProvenance(50, 3, 8000, true);
 
     void executeMetadataUpdate(
         MetadataVersion metadataVersion,
@@ -96,8 +96,8 @@ public class MetadataVersionConfigValidatorTest {
 
         verify(multiLogDirSupplier, times(1)).get();
         verify(faultHandler, times(1)).handleFault(
-            eq("Broker configuration does not support the cluster MetadataVersion"),
-            any(IllegalArgumentException.class));
+                eq("Broker configuration does not support the cluster MetadataVersion"),
+                any(IllegalArgumentException.class));
     }
 
     @Test
@@ -117,14 +117,14 @@ public class MetadataVersionConfigValidatorTest {
         faultHandler = mock(FaultHandler.class);
         validate(MetadataVersion.IBP_3_6_IV2, true, faultHandler);
         verify(faultHandler, times(1)).handleFault(
-            eq("Broker configuration does not support the cluster MetadataVersion"),
-            any(IllegalArgumentException.class));
+                eq("Broker configuration does not support the cluster MetadataVersion"),
+                any(IllegalArgumentException.class));
 
         faultHandler = mock(FaultHandler.class);
         validate(MetadataVersion.IBP_3_7_IV0, true, faultHandler);
         verify(faultHandler, times(1)).handleFault(
-            eq("Broker configuration does not support the cluster MetadataVersion"),
-            any(IllegalArgumentException.class));
+                eq("Broker configuration does not support the cluster MetadataVersion"),
+                any(IllegalArgumentException.class));
 
         faultHandler = mock(FaultHandler.class);
         validate(MetadataVersion.IBP_3_7_IV2, true, faultHandler);

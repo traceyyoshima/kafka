@@ -81,7 +81,7 @@ public class AdminUtilsTest {
         when(admin.describeTopics(anyCollection())).thenReturn(describeResult);
 
         assertThrows(AssertionError.class, () ->
-                        AdminUtils.fetchOrWaitForLeader(admin, topic, partition, 1),
+                AdminUtils.fetchOrWaitForLeader(admin, topic, partition, 1),
                 "Timing out after 1 ms since a leader was not elected for partition test-topic-0");
     }
 }

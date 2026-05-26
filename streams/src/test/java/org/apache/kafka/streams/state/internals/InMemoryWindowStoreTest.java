@@ -74,13 +74,13 @@ public class InMemoryWindowStoreTest extends AbstractWindowBytesStoreTest {
                                               final Serde<K> keySerde,
                                               final Serde<V> valueSerde) {
         return Stores.windowStoreBuilder(
-            Stores.inMemoryWindowStore(
-                STORE_NAME,
-                ofMillis(retentionPeriod),
-                ofMillis(windowSize),
-                retainDuplicates),
-            keySerde,
-            valueSerde)
+                Stores.inMemoryWindowStore(
+                        STORE_NAME,
+                        ofMillis(retentionPeriod),
+                        ofMillis(windowSize),
+                        retainDuplicates),
+                keySerde,
+                valueSerde)
             .build();
     }
 
@@ -138,16 +138,16 @@ public class InMemoryWindowStoreTest extends AbstractWindowBytesStoreTest {
         assertFalse(windowStore.all().hasNext());
 
         final StateSerdes<Integer, String> serdes = new StateSerdes<>("", Serdes.Integer(),
-            Serdes.String());
+                Serdes.String());
 
         final List<KeyValue<byte[], byte[]>> restorableEntries = new LinkedList<>();
 
         restorableEntries
             .add(new KeyValue<>(toStoreKeyBinary(1, 0L, 0, new RecordHeaders(), serdes).get(), serdes.rawValue("one")));
         restorableEntries.add(new KeyValue<>(toStoreKeyBinary(2, WINDOW_SIZE, 0, new RecordHeaders(), serdes).get(),
-            serdes.rawValue("two")));
+                serdes.rawValue("two")));
         restorableEntries.add(new KeyValue<>(toStoreKeyBinary(3, 2 * WINDOW_SIZE, 0, new RecordHeaders(), serdes).get(),
-            serdes.rawValue("three")));
+                serdes.rawValue("three")));
 
         context.restore(STORE_NAME, restorableEntries);
         try (final KeyValueIterator<Windowed<Integer>, String> iterator = windowStore
@@ -268,18 +268,18 @@ public class InMemoryWindowStoreTest extends AbstractWindowBytesStoreTest {
             final Properties props = StreamsTestUtils.getStreamsConfig();
             baseDir = TestUtils.tempDirectory();
             context = new InternalMockProcessorContext<>(
-                baseDir,
-                Serdes.String(),
-                Serdes.String(),
-                new StreamsConfig(props)
+                    baseDir,
+                    Serdes.String(),
+                    Serdes.String(),
+                    new StreamsConfig(props)
             );
 
             inMemoryStore = new InMemoryWindowStore(
-                "iqv2-inmemory-test-store",
-                RETENTION_PERIOD,
-                WINDOW_SIZE,
-                false,  // retainDuplicates
-                "test-metrics-scope"
+                    "iqv2-inmemory-test-store",
+                    RETENTION_PERIOD,
+                    WINDOW_SIZE,
+                    false,  // retainDuplicates
+                    "test-metrics-scope"
             );
 
             inMemoryStore.init(context, inMemoryStore);
@@ -296,13 +296,13 @@ public class InMemoryWindowStoreTest extends AbstractWindowBytesStoreTest {
         public void shouldHandleWindowKeyQuerySuccessfullyOnInMemoryStore() {
             // Build a typed window store using timestamped window store with headers
             final TimestampedWindowStoreWithHeaders<String, String> typedStore = Stores.timestampedWindowStoreWithHeadersBuilder(
-                Stores.inMemoryWindowStore(
-                    "typed-window-store",
-                    ofMillis(RETENTION_PERIOD),
-                    ofMillis(WINDOW_SIZE),
-                    false),
-                Serdes.String(),
-                Serdes.String())
+                    Stores.inMemoryWindowStore(
+                            "typed-window-store",
+                            ofMillis(RETENTION_PERIOD),
+                            ofMillis(WINDOW_SIZE),
+                            false),
+                    Serdes.String(),
+                    Serdes.String())
                 .withLoggingDisabled()
                 .build();
 
@@ -317,12 +317,12 @@ public class InMemoryWindowStoreTest extends AbstractWindowBytesStoreTest {
 
                 // Query at typed level - WindowKeyQuery should return windowed values with timestamps
                 final WindowKeyQuery<String, ValueAndTimestamp<String>> query = WindowKeyQuery.withKeyAndWindowStartRange(
-                    "test-key",
-                    Instant.ofEpochMilli(0),
-                    Instant.ofEpochMilli(10000L)
+                        "test-key",
+                        Instant.ofEpochMilli(0),
+                        Instant.ofEpochMilli(10000L)
                 );
                 final QueryResult<WindowStoreIterator<ValueAndTimestamp<String>>> result =
-                    typedStore.query(query, PositionBound.unbounded(), new QueryConfig(false));
+                        typedStore.query(query, PositionBound.unbounded(), new QueryConfig(false));
 
                 // Verify IQv2 query result
                 assertTrue(result.isSuccess(), "Expected query to succeed on in-memory store");
@@ -355,13 +355,13 @@ public class InMemoryWindowStoreTest extends AbstractWindowBytesStoreTest {
         public void shouldHandleWindowRangeQuerySuccessfullyOnInMemoryStore() {
             // Build a typed window store using timestamped window store with headers
             final TimestampedWindowStoreWithHeaders<String, String> typedStore = Stores.timestampedWindowStoreWithHeadersBuilder(
-                Stores.inMemoryWindowStore(
-                    "typed-window-range-store",
-                    ofMillis(RETENTION_PERIOD),
-                    ofMillis(WINDOW_SIZE),
-                    false),
-                Serdes.String(),
-                Serdes.String())
+                    Stores.inMemoryWindowStore(
+                            "typed-window-range-store",
+                            ofMillis(RETENTION_PERIOD),
+                            ofMillis(WINDOW_SIZE),
+                            false),
+                    Serdes.String(),
+                    Serdes.String())
                 .withLoggingDisabled()
                 .build();
 
@@ -378,11 +378,11 @@ public class InMemoryWindowStoreTest extends AbstractWindowBytesStoreTest {
 
                 // Query at typed level - WindowRangeQuery should return all windowed key-values with timestamps
                 final WindowRangeQuery<String, ValueAndTimestamp<String>> query = WindowRangeQuery.withWindowStartRange(
-                    Instant.ofEpochMilli(0),
-                    Instant.ofEpochMilli(10000L)
+                        Instant.ofEpochMilli(0),
+                        Instant.ofEpochMilli(10000L)
                 );
                 final QueryResult<KeyValueIterator<Windowed<String>, ValueAndTimestamp<String>>> result =
-                    typedStore.query(query, PositionBound.unbounded(), new QueryConfig(false));
+                        typedStore.query(query, PositionBound.unbounded(), new QueryConfig(false));
 
                 // Verify IQv2 query result
                 assertTrue(result.isSuccess(), "Expected query to succeed on in-memory store");
@@ -421,9 +421,9 @@ public class InMemoryWindowStoreTest extends AbstractWindowBytesStoreTest {
         @Test
         public void shouldCollectExecutionInfoForInMemoryStoreWhenRequested() {
             final WindowKeyQuery<Bytes, byte[]> query = WindowKeyQuery.withKeyAndWindowStartRange(
-                new Bytes("test-key".getBytes()),
-                Instant.ofEpochMilli(0),
-                Instant.ofEpochMilli(Long.MAX_VALUE)
+                    new Bytes("test-key".getBytes()),
+                    Instant.ofEpochMilli(0),
+                    Instant.ofEpochMilli(Long.MAX_VALUE)
             );
             final PositionBound positionBound = PositionBound.unbounded();
             final QueryConfig config = new QueryConfig(true); // Enable execution info
@@ -445,9 +445,9 @@ public class InMemoryWindowStoreTest extends AbstractWindowBytesStoreTest {
         @Test
         public void shouldNotCollectExecutionInfoForInMemoryStoreWhenNotRequested() {
             final WindowKeyQuery<Bytes, byte[]> query = WindowKeyQuery.withKeyAndWindowStartRange(
-                new Bytes("test-key".getBytes()),
-                Instant.ofEpochMilli(0),
-                Instant.ofEpochMilli(Long.MAX_VALUE)
+                    new Bytes("test-key".getBytes()),
+                    Instant.ofEpochMilli(0),
+                    Instant.ofEpochMilli(Long.MAX_VALUE)
             );
             final PositionBound positionBound = PositionBound.unbounded();
             final QueryConfig config = new QueryConfig(false); // Disable execution info

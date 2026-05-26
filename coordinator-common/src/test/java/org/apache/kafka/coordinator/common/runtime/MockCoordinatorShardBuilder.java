@@ -84,9 +84,9 @@ public class MockCoordinatorShardBuilder implements CoordinatorShardBuilder<Mock
     @Override
     public MockCoordinatorShard build() {
         return new MockCoordinatorShard(
-            Objects.requireNonNull(this.snapshotRegistry),
-            Objects.requireNonNull(this.timer),
-            Objects.requireNonNull(this.executor)
+                Objects.requireNonNull(this.snapshotRegistry),
+                Objects.requireNonNull(this.timer),
+                Objects.requireNonNull(this.executor)
         );
     }
 }

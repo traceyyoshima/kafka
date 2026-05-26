@@ -56,8 +56,8 @@ public class ListConsumerGroupsOptions extends AbstractOptions<ListConsumerGroup
     @Deprecated
     public ListConsumerGroupsOptions inStates(Set<ConsumerGroupState> states) {
         this.groupStates = (states == null || states.isEmpty())
-            ? Collections.emptySet()
-            : states.stream().map(state -> GroupState.parse(state.toString())).collect(Collectors.toSet());
+                ? Collections.emptySet()
+                : states.stream().map(state -> GroupState.parse(state.toString())).collect(Collectors.toSet());
         return this;
     }
 

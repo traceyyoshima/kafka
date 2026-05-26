@@ -70,11 +70,11 @@ public class ConsumerIntegrationTest {
         String topic = "test-topic";
         clusterInstance.createTopic(topic, 1, (short) 1);
         try (KafkaConsumer<String, String> consumer = new KafkaConsumer<>(Map.of(
-            ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, clusterInstance.bootstrapServers(),
-            ConsumerConfig.GROUP_ID_CONFIG, "test-group",
-            ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName(),
-            ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName(),
-            ConsumerConfig.GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name()))) {
+                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, clusterInstance.bootstrapServers(),
+                ConsumerConfig.GROUP_ID_CONFIG, "test-group",
+                ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName(),
+                ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName(),
+                ConsumerConfig.GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name()))) {
             consumer.subscribe(Collections.singletonList(topic));
             TestUtils.waitForCondition(() -> {
                 try {
@@ -92,7 +92,7 @@ public class ConsumerIntegrationTest {
         @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "1"),
     })
     public void testFetchPartitionsAfterFailedListenerWithGroupProtocolClassic(ClusterInstance clusterInstance)
-            throws InterruptedException {
+        throws InterruptedException {
         testFetchPartitionsAfterFailedListener(clusterInstance, GroupProtocol.CLASSIC);
     }
 
@@ -101,12 +101,12 @@ public class ConsumerIntegrationTest {
         @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "1"),
     })
     public void testFetchPartitionsAfterFailedListenerWithGroupProtocolConsumer(ClusterInstance clusterInstance)
-            throws InterruptedException {
+        throws InterruptedException {
         testFetchPartitionsAfterFailedListener(clusterInstance, GroupProtocol.CONSUMER);
     }
 
     private static void testFetchPartitionsAfterFailedListener(ClusterInstance clusterInstance, GroupProtocol groupProtocol)
-            throws InterruptedException {
+        throws InterruptedException {
         var topic = "topic";
         try (var producer = clusterInstance.producer(Map.of(
                 ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class,
@@ -118,6 +118,7 @@ public class ConsumerIntegrationTest {
                 ConsumerConfig.GROUP_PROTOCOL_CONFIG, groupProtocol.name()))) {
             consumer.subscribe(List.of(topic), new ConsumerRebalanceListener() {
                 private int count = 0;
+
                 @Override
                 public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
                 }
@@ -140,7 +141,7 @@ public class ConsumerIntegrationTest {
         @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "1"),
     })
     public void testFetchPartitionsWithAlwaysFailedListenerWithGroupProtocolClassic(ClusterInstance clusterInstance)
-            throws InterruptedException {
+        throws InterruptedException {
         testFetchPartitionsWithAlwaysFailedListener(clusterInstance, GroupProtocol.CLASSIC);
     }
 
@@ -149,12 +150,12 @@ public class ConsumerIntegrationTest {
         @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "1"),
     })
     public void testFetchPartitionsWithAlwaysFailedListenerWithGroupProtocolConsumer(ClusterInstance clusterInstance)
-            throws InterruptedException {
+        throws InterruptedException {
         testFetchPartitionsWithAlwaysFailedListener(clusterInstance, GroupProtocol.CONSUMER);
     }
 
     private static void testFetchPartitionsWithAlwaysFailedListener(ClusterInstance clusterInstance, GroupProtocol groupProtocol)
-            throws InterruptedException {
+        throws InterruptedException {
         var topic = "topic";
         try (var producer = clusterInstance.producer(Map.of(
                 ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class,
@@ -234,30 +235,30 @@ public class ConsumerIntegrationTest {
 
     @ClusterTests({
         @ClusterTest(
-            types = {Type.KRAFT},
-            brokers = 3,
-            serverProperties = {
-                @ClusterConfigProperty(id = 0, key = "broker.rack", value = "rack0"),
-                @ClusterConfigProperty(id = 1, key = "broker.rack", value = "rack1"),
-                @ClusterConfigProperty(id = 2, key = "broker.rack", value = "rack2"),
-                @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, value = "1000"),
-                @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG, value = "1000"),
-                @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNORS_CONFIG, value = "org.apache.kafka.clients.consumer.RackAwareTestAssignor"),
-                @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
-            }
+                types = {Type.KRAFT},
+                brokers = 3,
+                serverProperties = {
+                    @ClusterConfigProperty(id = 0, key = "broker.rack", value = "rack0"),
+                    @ClusterConfigProperty(id = 1, key = "broker.rack", value = "rack1"),
+                    @ClusterConfigProperty(id = 2, key = "broker.rack", value = "rack2"),
+                    @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, value = "1000"),
+                    @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG, value = "1000"),
+                    @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNORS_CONFIG, value = "org.apache.kafka.clients.consumer.RackAwareTestAssignor"),
+                    @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
+                }
         ),
         @ClusterTest(
-            types = {Type.KRAFT},
-            brokers = 3,
-            serverProperties = {
-                @ClusterConfigProperty(id = 0, key = "broker.rack", value = "rack0"),
-                @ClusterConfigProperty(id = 1, key = "broker.rack", value = "rack1"),
-                @ClusterConfigProperty(id = 2, key = "broker.rack", value = "rack2"),
-                @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, value = "1000"),
-                @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG, value = "1000"),
-                @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNORS_CONFIG, value = "org.apache.kafka.clients.consumer.RackAwareTestAssignor"),
-                @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
-            }
+                types = {Type.KRAFT},
+                brokers = 3,
+                serverProperties = {
+                    @ClusterConfigProperty(id = 0, key = "broker.rack", value = "rack0"),
+                    @ClusterConfigProperty(id = 1, key = "broker.rack", value = "rack1"),
+                    @ClusterConfigProperty(id = 2, key = "broker.rack", value = "rack2"),
+                    @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, value = "1000"),
+                    @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG, value = "1000"),
+                    @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNORS_CONFIG, value = "org.apache.kafka.clients.consumer.RackAwareTestAssignor"),
+                    @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
+                }
         )
     })
     public void testRackAwareAssignment(ClusterInstance clusterInstance) throws ExecutionException, InterruptedException {
@@ -265,22 +266,22 @@ public class ConsumerIntegrationTest {
         try (Admin admin = clusterInstance.admin();
              Producer<byte[], byte[]> producer = clusterInstance.producer();
              Consumer<byte[], byte[]> consumer0 = clusterInstance.consumer(Map.of(
-                 ConsumerConfig.GROUP_ID_CONFIG, "group0",
-                 ConsumerConfig.CLIENT_RACK_CONFIG, "rack0",
-                 ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false",
-                 ConsumerConfig.GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name()
+                     ConsumerConfig.GROUP_ID_CONFIG, "group0",
+                     ConsumerConfig.CLIENT_RACK_CONFIG, "rack0",
+                     ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false",
+                     ConsumerConfig.GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name()
              ));
              Consumer<byte[], byte[]> consumer1 = clusterInstance.consumer(Map.of(
-                 ConsumerConfig.GROUP_ID_CONFIG, "group0",
-                 ConsumerConfig.CLIENT_RACK_CONFIG, "rack1",
-                 ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false",
-                 ConsumerConfig.GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name()
+                     ConsumerConfig.GROUP_ID_CONFIG, "group0",
+                     ConsumerConfig.CLIENT_RACK_CONFIG, "rack1",
+                     ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false",
+                     ConsumerConfig.GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name()
              ));
              Consumer<byte[], byte[]> consumer2 = clusterInstance.consumer(Map.of(
-                 ConsumerConfig.GROUP_ID_CONFIG, "group0",
-                 ConsumerConfig.CLIENT_RACK_CONFIG, "rack2",
-                 ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false",
-                 ConsumerConfig.GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name()
+                     ConsumerConfig.GROUP_ID_CONFIG, "group0",
+                     ConsumerConfig.CLIENT_RACK_CONFIG, "rack2",
+                     ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false",
+                     ConsumerConfig.GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name()
              ))
         ) {
             // Create a new topic with 1 partition on broker 0.
@@ -299,16 +300,16 @@ public class ConsumerIntegrationTest {
                 consumer1.poll(Duration.ofMillis(100));
                 consumer2.poll(Duration.ofMillis(100));
                 return consumer0.assignment().equals(Set.of(new TopicPartition(topic, 0))) &&
-                    consumer1.assignment().isEmpty() &&
-                    consumer2.assignment().isEmpty();
+                        consumer1.assignment().isEmpty() &&
+                        consumer2.assignment().isEmpty();
             }, "Consumer 0 should be assigned to topic partition 0");
 
             // Add a new partition 1 and 2 to broker 1.
             admin.createPartitions(
-                Map.of(
-                    topic,
-                    NewPartitions.increaseTo(3, List.of(List.of(1), List.of(1)))
-                )
+                    Map.of(
+                            topic,
+                            NewPartitions.increaseTo(3, List.of(List.of(1), List.of(1)))
+                    )
             );
             clusterInstance.waitTopicCreation(topic, 3);
             TestUtils.waitForCondition(() -> {
@@ -316,16 +317,16 @@ public class ConsumerIntegrationTest {
                 consumer1.poll(Duration.ofMillis(100));
                 consumer2.poll(Duration.ofMillis(100));
                 return consumer0.assignment().equals(Set.of(new TopicPartition(topic, 0))) &&
-                    consumer1.assignment().equals(Set.of(new TopicPartition(topic, 1), new TopicPartition(topic, 2))) &&
-                    consumer2.assignment().isEmpty();
+                        consumer1.assignment().equals(Set.of(new TopicPartition(topic, 1), new TopicPartition(topic, 2))) &&
+                        consumer2.assignment().isEmpty();
             }, "Consumer 1 should be assigned to topic partition 1 and 2");
 
             // Add a new partition 3, 4, and 5 to broker 2.
             admin.createPartitions(
-                Map.of(
-                    topic,
-                    NewPartitions.increaseTo(6, List.of(List.of(2), List.of(2), List.of(2)))
-                )
+                    Map.of(
+                            topic,
+                            NewPartitions.increaseTo(6, List.of(List.of(2), List.of(2), List.of(2)))
+                    )
             );
             clusterInstance.waitTopicCreation(topic, 6);
             TestUtils.waitForCondition(() -> {
@@ -333,8 +334,8 @@ public class ConsumerIntegrationTest {
                 consumer1.poll(Duration.ofMillis(100));
                 consumer2.poll(Duration.ofMillis(100));
                 return consumer0.assignment().equals(Set.of(new TopicPartition(topic, 0))) &&
-                    consumer1.assignment().equals(Set.of(new TopicPartition(topic, 1), new TopicPartition(topic, 2))) &&
-                    consumer2.assignment().equals(Set.of(new TopicPartition(topic, 3), new TopicPartition(topic, 4), new TopicPartition(topic, 5)));
+                        consumer1.assignment().equals(Set.of(new TopicPartition(topic, 1), new TopicPartition(topic, 2))) &&
+                        consumer2.assignment().equals(Set.of(new TopicPartition(topic, 3), new TopicPartition(topic, 4), new TopicPartition(topic, 5)));
             }, "Consumer 2 should be assigned to topic partition 3, 4, and 5");
 
             // Change partitions to different brokers.
@@ -345,31 +346,31 @@ public class ConsumerIntegrationTest {
             // partition 4 -> broker 1
             // partition 5 -> broker 0
             admin.alterPartitionReassignments(Map.of(
-                new TopicPartition(topic, 0), Optional.of(new NewPartitionReassignment(List.of(2))),
-                new TopicPartition(topic, 1), Optional.of(new NewPartitionReassignment(List.of(2))),
-                new TopicPartition(topic, 2), Optional.of(new NewPartitionReassignment(List.of(2))),
-                new TopicPartition(topic, 3), Optional.of(new NewPartitionReassignment(List.of(1))),
-                new TopicPartition(topic, 4), Optional.of(new NewPartitionReassignment(List.of(1))),
-                new TopicPartition(topic, 5), Optional.of(new NewPartitionReassignment(List.of(0)))
+                    new TopicPartition(topic, 0), Optional.of(new NewPartitionReassignment(List.of(2))),
+                    new TopicPartition(topic, 1), Optional.of(new NewPartitionReassignment(List.of(2))),
+                    new TopicPartition(topic, 2), Optional.of(new NewPartitionReassignment(List.of(2))),
+                    new TopicPartition(topic, 3), Optional.of(new NewPartitionReassignment(List.of(1))),
+                    new TopicPartition(topic, 4), Optional.of(new NewPartitionReassignment(List.of(1))),
+                    new TopicPartition(topic, 5), Optional.of(new NewPartitionReassignment(List.of(0)))
             )).all().get();
             TestUtils.waitForCondition(() -> {
                 consumer0.poll(Duration.ofMillis(100));
                 consumer1.poll(Duration.ofMillis(100));
                 consumer2.poll(Duration.ofMillis(100));
                 return consumer0.assignment().equals(Set.of(new TopicPartition(topic, 5))) &&
-                    consumer1.assignment().equals(Set.of(new TopicPartition(topic, 3), new TopicPartition(topic, 4))) &&
-                    consumer2.assignment().equals(Set.of(new TopicPartition(topic, 0), new TopicPartition(topic, 1), new TopicPartition(topic, 2)));
+                        consumer1.assignment().equals(Set.of(new TopicPartition(topic, 3), new TopicPartition(topic, 4))) &&
+                        consumer2.assignment().equals(Set.of(new TopicPartition(topic, 0), new TopicPartition(topic, 1), new TopicPartition(topic, 2)));
             }, 30000, "Consumer with topic partition mapping should be 0 -> 5 | 1 -> 3, 4 | 2 -> 0, 1, 2");
         }
     }
 
     @ClusterTest(
-        brokers = 2,
-        types = {Type.KRAFT},
-        serverProperties = {
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.GROUP_COORDINATOR_APPEND_LINGER_MS_CONFIG, value = "3000")
-        }
+            brokers = 2,
+            types = {Type.KRAFT},
+            serverProperties = {
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.GROUP_COORDINATOR_APPEND_LINGER_MS_CONFIG, value = "3000")
+            }
     )
     public void testSingleCoordinatorOwnershipAfterPartitionReassignment(ClusterInstance clusterInstance) throws InterruptedException, ExecutionException, TimeoutException {
         try (var producer = clusterInstance.<byte[], byte[]>producer()) {
@@ -381,7 +382,7 @@ public class ConsumerIntegrationTest {
         }
 
         try (var consumer = clusterInstance.consumer(Map.of(ConsumerConfig.GROUP_ID_CONFIG, "test-group"));
-            var admin = clusterInstance.admin()) {
+                var admin = clusterInstance.admin()) {
             consumer.subscribe(List.of("topic"));
             TestUtils.waitForCondition(() -> consumer.poll(Duration.ofMillis(100)).isEmpty(), "polling to join group");
             // Append records to coordinator.
@@ -390,9 +391,9 @@ public class ConsumerIntegrationTest {
             var broker0Metrics = clusterInstance.brokers().get(0).metrics();
             var broker1Metrics = clusterInstance.brokers().get(1).metrics();
             var activeNumPartitions = broker0Metrics.metricName(
-                "num-partitions",
-                GroupCoordinatorRuntimeMetrics.METRICS_GROUP,
-                Map.of("state", "active")
+                    "num-partitions",
+                    GroupCoordinatorRuntimeMetrics.METRICS_GROUP,
+                    Map.of("state", "active")
             );
 
             assertEquals(1L, broker0Metrics.metric(activeNumPartitions).metricValue());
@@ -400,14 +401,14 @@ public class ConsumerIntegrationTest {
 
             // Unload the coordinator by changing leader (0 -> 1).
             admin.alterPartitionReassignments(
-                Map.of(new TopicPartition(Topic.GROUP_METADATA_TOPIC_NAME, 0), Optional.of(new NewPartitionReassignment(List.of(1))))
+                    Map.of(new TopicPartition(Topic.GROUP_METADATA_TOPIC_NAME, 0), Optional.of(new NewPartitionReassignment(List.of(1))))
             ).all().get();
 
             // Wait for the coordinator metrics to update after leadership change.
             TestUtils.waitForCondition(() ->
                 0L == (Long) broker0Metrics.metric(activeNumPartitions).metricValue() &&
                     1L == (Long) broker1Metrics.metric(activeNumPartitions).metricValue(),
-                "Incorrect num-partitions metric after partition reassignment to the new coordinator"
+                    "Incorrect num-partitions metric after partition reassignment to the new coordinator"
             );
         }
     }

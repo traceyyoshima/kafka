@@ -687,7 +687,7 @@ public class AuthorizerTest {
 
         Set<AclBinding> expectedAcls = new HashSet<>();
         resourceToAcls.forEach((res, aces) ->
-            aces.forEach(ace -> expectedAcls.add(new AclBinding(res, ace)))
+                aces.forEach(ace -> expectedAcls.add(new AclBinding(res, ace)))
         );
         acls.forEach(acl -> expectedAcls.add(new AclBinding(resource, acl)));
         TestUtils.waitForCondition(() -> expectedAcls.equals(getAcls(authorizer)), "changes not propagated in timeout period.");
@@ -1050,8 +1050,8 @@ public class AuthorizerTest {
 
     private void removeAcls(Authorizer authorizer, Set<AccessControlEntry> aces, ResourcePattern resourcePattern) throws Exception {
         List<AclBindingFilter> filters = aces.isEmpty()
-            ? List.of(new AclBindingFilter(resourcePattern.toFilter(), AccessControlEntryFilter.ANY))
-            : aces.stream().map(ace -> new AclBinding(resourcePattern, ace).toFilter()).toList();
+                ? List.of(new AclBindingFilter(resourcePattern.toFilter(), AccessControlEntryFilter.ANY))
+                : aces.stream().map(ace -> new AclBinding(resourcePattern, ace).toFilter()).toList();
 
         for (CompletionStage<AclDeleteResult> stage : authorizer.deleteAcls(requestContext, filters)) {
             AclDeleteResult result = stage.toCompletableFuture().get();

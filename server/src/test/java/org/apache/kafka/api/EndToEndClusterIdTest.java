@@ -104,7 +104,7 @@ public class EndToEndClusterIdTest {
 
             String id = (String) configs.get(ServerConfigs.BROKER_ID_CONFIG);
             controllerId = roles.contains("controller") ? id : null;
-            brokerId    = roles.contains("broker")    ? id : null;
+            brokerId = roles.contains("broker") ? id : null;
         }
 
         @Override
@@ -137,11 +137,11 @@ public class EndToEndClusterIdTest {
         isValidClusterId(controllerClusterResource.clusterId());
 
         Map<String, Object> producerConfig = Map.of(ProducerConfig.INTERCEPTOR_CLASSES_CONFIG, MockProducerInterceptor.class.getName(),
-            "mock.interceptor.append", "mock",
-            ProducerConfig.METRIC_REPORTER_CLASSES_CONFIG, MockCommonMetricsReporter.class.getName(),
-            ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, MockSerializer.class.getName(),
-            ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, MockSerializer.class.getName(),
-            ProducerConfig.CLIENT_ID_CONFIG, PRODUCER_CLIENT_ID);
+                "mock.interceptor.append", "mock",
+                ProducerConfig.METRIC_REPORTER_CLASSES_CONFIG, MockCommonMetricsReporter.class.getName(),
+                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, MockSerializer.class.getName(),
+                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, MockSerializer.class.getName(),
+                ProducerConfig.CLIENT_ID_CONFIG, PRODUCER_CLIENT_ID);
         try (var producer = clusterInstance.<String, String>producer(producerConfig)) {
             // Send one record and make sure clusterId is set after sending and before onAcknowledgement
             sendRecord(producer);
@@ -149,8 +149,8 @@ public class EndToEndClusterIdTest {
         assertNotEquals(MockProducerInterceptor.CLUSTER_ID_BEFORE_ON_ACKNOWLEDGEMENT.get(), MockProducerInterceptor.NO_CLUSTER_ID);
         assertNotNull(MockProducerInterceptor.CLUSTER_META.get());
         assertEquals(
-            MockProducerInterceptor.CLUSTER_ID_BEFORE_ON_ACKNOWLEDGEMENT.get().clusterId(),
-            MockProducerInterceptor.CLUSTER_META.get().clusterId()
+                MockProducerInterceptor.CLUSTER_ID_BEFORE_ON_ACKNOWLEDGEMENT.get().clusterId(),
+                MockProducerInterceptor.CLUSTER_META.get().clusterId()
         );
         isValidClusterId(MockProducerInterceptor.CLUSTER_META.get().clusterId());
 
@@ -164,11 +164,11 @@ public class EndToEndClusterIdTest {
         isValidClusterId(producerClusterResource.clusterId());
 
         Map<String, Object> consumerConfig = Map.of(ConsumerConfig.INTERCEPTOR_CLASSES_CONFIG, MockConsumerInterceptor.class.getName(),
-            ConsumerConfig.METRIC_REPORTER_CLASSES_CONFIG, MockCommonMetricsReporter.class.getName(),
-            ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, MockDeserializer.class.getName(),
-            ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, MockDeserializer.class.getName(),
-            ConsumerConfig.GROUP_PROTOCOL_CONFIG, groupProtocol.name(),
-            ConsumerConfig.CLIENT_ID_CONFIG, CONSUMER_CLIENT_ID);
+                ConsumerConfig.METRIC_REPORTER_CLASSES_CONFIG, MockCommonMetricsReporter.class.getName(),
+                ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, MockDeserializer.class.getName(),
+                ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, MockDeserializer.class.getName(),
+                ConsumerConfig.GROUP_PROTOCOL_CONFIG, groupProtocol.name(),
+                ConsumerConfig.CLIENT_ID_CONFIG, CONSUMER_CLIENT_ID);
         try (var consumer = clusterInstance.<String, String>consumer(consumerConfig)) {
             consumer.assign(List.of(TP));
             consumer.seek(TP, 0);
@@ -181,16 +181,16 @@ public class EndToEndClusterIdTest {
         assertNotNull(MockConsumerInterceptor.CLUSTER_META.get());
         isValidClusterId(MockConsumerInterceptor.CLUSTER_META.get().clusterId());
         assertEquals(
-            MockConsumerInterceptor.CLUSTER_ID_BEFORE_ON_CONSUME.get().clusterId(),
-            MockConsumerInterceptor.CLUSTER_META.get().clusterId()
+                MockConsumerInterceptor.CLUSTER_ID_BEFORE_ON_CONSUME.get().clusterId(),
+                MockConsumerInterceptor.CLUSTER_META.get().clusterId()
         );
 
         assertNotEquals(MockDeserializer.clusterIdBeforeDeserialize.get(), MockDeserializer.noClusterId);
         assertNotNull(MockDeserializer.clusterMeta);
         isValidClusterId(MockDeserializer.clusterMeta.get().clusterId());
         assertEquals(
-            MockDeserializer.clusterIdBeforeDeserialize.get().clusterId(),
-            MockDeserializer.clusterMeta.get().clusterId()
+                MockDeserializer.clusterIdBeforeDeserialize.get().clusterId(),
+                MockDeserializer.clusterMeta.get().clusterId()
         );
 
         ClusterResource consumerClusterResource = MockCommonMetricsReporter.CLUSTER_RESOURCE_MAP.get(CONSUMER_CLIENT_ID);

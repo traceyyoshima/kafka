@@ -53,11 +53,11 @@ public class FallbackPriorTaskAssignorTest {
         final List<TaskId> taskIds = asList(TASK_0_0, TASK_0_1, TASK_0_2);
         Collections.shuffle(taskIds);
         final boolean probingRebalanceNeeded = new FallbackPriorTaskAssignor().assign(
-            clients,
-            new HashSet<>(taskIds),
-            new HashSet<>(taskIds),
-            null,
-            new AssignmentConfigs(0L, 1, 0, 60_000L, EMPTY_RACK_AWARE_ASSIGNMENT_TAGS)
+                clients,
+                new HashSet<>(taskIds),
+                new HashSet<>(taskIds),
+                null,
+                new AssignmentConfigs(0L, 1, 0, 60_000L, EMPTY_RACK_AWARE_ASSIGNMENT_TAGS)
         );
         assertThat(probingRebalanceNeeded, is(true));
 

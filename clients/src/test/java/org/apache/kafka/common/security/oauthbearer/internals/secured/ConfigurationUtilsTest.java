@@ -166,15 +166,15 @@ public class ConfigurationUtilsTest extends OAuthBearerTest {
 
         // By default, no file is allowed
         assertThrowsWithMessage(ConfigException.class, () -> cu.throwIfFileIsNotAllowed(FILE_CONFIG_NAME, file1),
-            ALLOWED_SASL_OAUTHBEARER_FILES_CONFIG);
+                ALLOWED_SASL_OAUTHBEARER_FILES_CONFIG);
         assertThrowsWithMessage(ConfigException.class, () -> cu.throwIfFileIsNotAllowed(FILE_CONFIG_NAME, file1),
-            ALLOWED_SASL_OAUTHBEARER_FILES_CONFIG);
+                ALLOWED_SASL_OAUTHBEARER_FILES_CONFIG);
 
         // add one file into allowed list
         System.setProperty(ALLOWED_SASL_OAUTHBEARER_FILES_CONFIG, file1);
         assertDoesNotThrow(() -> cu.throwIfFileIsNotAllowed(FILE_CONFIG_NAME, file1));
         assertThrowsWithMessage(ConfigException.class, () -> cu.throwIfFileIsNotAllowed(FILE_CONFIG_NAME, file2),
-            ALLOWED_SASL_OAUTHBEARER_FILES_CONFIG);
+                ALLOWED_SASL_OAUTHBEARER_FILES_CONFIG);
 
         // add all files into allowed list
         System.setProperty(ALLOWED_SASL_OAUTHBEARER_FILES_CONFIG, file1 + "," + file2);

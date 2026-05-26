@@ -53,20 +53,20 @@ public class ConsumerGroupDescribeRequestTest {
     @Test
     public void testGetErrorDescribedGroupList() {
         List<ConsumerGroupDescribeResponseData.DescribedGroup> expectedDescribedGroupList = Arrays.asList(
-            new ConsumerGroupDescribeResponseData.DescribedGroup()
-                .setGroupId("group-id-1")
-                .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code()),
-            new ConsumerGroupDescribeResponseData.DescribedGroup()
-                .setGroupId("group-id-2")
-                .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code()),
-            new ConsumerGroupDescribeResponseData.DescribedGroup()
-                .setGroupId("group-id-3")
-                .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code())
+                new ConsumerGroupDescribeResponseData.DescribedGroup()
+                    .setGroupId("group-id-1")
+                    .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code()),
+                new ConsumerGroupDescribeResponseData.DescribedGroup()
+                    .setGroupId("group-id-2")
+                    .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code()),
+                new ConsumerGroupDescribeResponseData.DescribedGroup()
+                    .setGroupId("group-id-3")
+                    .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code())
         );
 
         List<ConsumerGroupDescribeResponseData.DescribedGroup> describedGroupList = getErrorDescribedGroupList(
-            Arrays.asList("group-id-1", "group-id-2", "group-id-3"),
-            Errors.COORDINATOR_LOAD_IN_PROGRESS
+                Arrays.asList("group-id-1", "group-id-2", "group-id-3"),
+                Errors.COORDINATOR_LOAD_IN_PROGRESS
         );
 
         assertEquals(expectedDescribedGroupList, describedGroupList);

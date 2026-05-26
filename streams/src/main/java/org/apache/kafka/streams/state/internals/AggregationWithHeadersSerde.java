@@ -33,8 +33,8 @@ import static java.util.Objects.requireNonNull;
 public class AggregationWithHeadersSerde<AGG> extends WrappingNullableSerde<AggregationWithHeaders<AGG>, Void, AGG> {
     public AggregationWithHeadersSerde(final Serde<AGG> aggSerde) {
         super(
-            new AggregationWithHeadersSerializer<>(requireNonNull(aggSerde, "aggSerde was null").serializer()),
-            new AggregationWithHeadersDeserializer<>(requireNonNull(aggSerde, "aggSerde was null").deserializer())
+                new AggregationWithHeadersSerializer<>(requireNonNull(aggSerde, "aggSerde was null").serializer()),
+                new AggregationWithHeadersDeserializer<>(requireNonNull(aggSerde, "aggSerde was null").deserializer())
         );
     }
 }

@@ -62,19 +62,19 @@ public class StreamsUpgradeTestIntegrationTest {
     @Test
     public void testVersionProbingUpgrade() throws InterruptedException {
         final KafkaStreams kafkaStreams1 = StreamsUpgradeTest.buildStreams(mkProperties(
-            mkMap(
-                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers())
-            )
+                mkMap(
+                        mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers())
+                )
         ));
         final KafkaStreams kafkaStreams2 = StreamsUpgradeTest.buildStreams(mkProperties(
-            mkMap(
-                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers())
-            )
+                mkMap(
+                        mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers())
+                )
         ));
         final KafkaStreams kafkaStreams3 = StreamsUpgradeTest.buildStreams(mkProperties(
-            mkMap(
-                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers())
-            )
+                mkMap(
+                        mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers())
+                )
         ));
         startSync(kafkaStreams1, kafkaStreams2, kafkaStreams3);
 

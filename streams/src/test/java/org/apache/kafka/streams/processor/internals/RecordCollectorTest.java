@@ -123,22 +123,22 @@ public class RecordCollectorTest {
     private final String topic = "topic";
     private final String sinkNodeName = "output-node";
     private final Cluster cluster = new Cluster(
-        "cluster",
-        Collections.singletonList(Node.noNode()),
-        Arrays.asList(
-            new PartitionInfo(topic, 0, Node.noNode(), new Node[0], new Node[0]),
-            new PartitionInfo(topic, 1, Node.noNode(), new Node[0], new Node[0]),
-            new PartitionInfo(topic, 2, Node.noNode(), new Node[0], new Node[0])
-        ),
-        Collections.emptySet(),
-        Collections.emptySet()
+            "cluster",
+            Collections.singletonList(Node.noNode()),
+            Arrays.asList(
+                    new PartitionInfo(topic, 0, Node.noNode(), new Node[0], new Node[0]),
+                    new PartitionInfo(topic, 1, Node.noNode(), new Node[0], new Node[0]),
+                    new PartitionInfo(topic, 2, Node.noNode(), new Node[0], new Node[0])
+            ),
+            Collections.emptySet(),
+            Collections.emptySet()
     );
 
     private final StringSerializer stringSerializer = new StringSerializer();
     private final ByteArraySerializer byteArraySerializer = new ByteArraySerializer();
 
     private final StreamPartitioner<String, Object> streamPartitioner =
-        (topic, key, value, numPartitions) -> Optional.of(Collections.singleton(Integer.parseInt(key) % numPartitions));
+            (topic, key, value, numPartitions) -> Optional.of(Collections.singleton(Integer.parseInt(key) % numPartitions));
 
     private final MockProducer<byte[], byte[]> mockProducer
         = new MockProducer<>(cluster, true, new org.apache.kafka.clients.producer.RoundRobinPartitioner(), new ByteArraySerializer(), new ByteArraySerializer());
@@ -152,34 +152,34 @@ public class RecordCollectorTest {
     @BeforeEach
     public void setup() {
         streamsProducer = new StreamsProducer(
-            mockProducer,
-            AT_LEAST_ONCE,
-            Time.SYSTEM,
-            logContext
+                mockProducer,
+                AT_LEAST_ONCE,
+                Time.SYSTEM,
+                logContext
         );
         final SinkNode<?, ?> sinkNode = new SinkNode<>(
-            sinkNodeName,
-            new StaticTopicNameExtractor<>(topic),
-            stringSerializer,
-            byteArraySerializer,
-            streamPartitioner);
+                sinkNodeName,
+                new StaticTopicNameExtractor<>(topic),
+                stringSerializer,
+                byteArraySerializer,
+                streamPartitioner);
         topology = new ProcessorTopology(
-            emptyList(),
-            emptyMap(),
-            singletonMap(topic, sinkNode),
-            emptyList(),
-            emptyList(),
-            emptyMap(),
-            emptySet(),
-            emptyMap()
+                emptyList(),
+                emptyMap(),
+                singletonMap(topic, sinkNode),
+                emptyList(),
+                emptyList(),
+                emptyMap(),
+                emptySet(),
+                emptyMap()
         );
         collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            streamsProducer,
-            productionExceptionHandler,
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                streamsProducer,
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
     }
 
@@ -196,16 +196,16 @@ public class RecordCollectorTest {
         final String processorNodeId = sinkNodeName;
         final String topic = "topic";
         final Metric recordsProduced = streamsMetrics.metrics().get(
-            new MetricName("records-produced-total",
-                           TOPIC_LEVEL_GROUP,
-                           "The total number of records produced from this topic",
-                           streamsMetrics.topicLevelTagMap(threadId, taskId.toString(), processorNodeId, topic))
+                new MetricName("records-produced-total",
+                        TOPIC_LEVEL_GROUP,
+                        "The total number of records produced from this topic",
+                        streamsMetrics.topicLevelTagMap(threadId, taskId.toString(), processorNodeId, topic))
         );
         final Metric bytesProduced = streamsMetrics.metrics().get(
-            new MetricName("bytes-produced-total",
-                           TOPIC_LEVEL_GROUP,
-                           "The total number of bytes produced from this topic",
-                           streamsMetrics.topicLevelTagMap(threadId, taskId.toString(), processorNodeId, topic))
+                new MetricName("bytes-produced-total",
+                        TOPIC_LEVEL_GROUP,
+                        "The total number of bytes produced from this topic",
+                        streamsMetrics.topicLevelTagMap(threadId, taskId.toString(), processorNodeId, topic))
         );
 
         double totalRecords = 0D;
@@ -475,7 +475,6 @@ public class RecordCollectorTest {
                 )
         ));
 
-
         final Headers headers = new RecordHeaders(new Header[] {new RecordHeader("key", "value".getBytes())});
 
         collector.send(topic, "3", "0", null, null, stringSerializer, stringSerializer, null, context, droppingPartitioner);
@@ -731,12 +730,12 @@ public class RecordCollectorTest {
         when(topology.sinkTopics()).thenReturn(Collections.emptySet());
 
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            streamsProducer,
-            productionExceptionHandler,
-            streamsMetrics, 
-            topology
+                logContext,
+                taskId,
+                streamsProducer,
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
 
         collector.flush();
@@ -748,14 +747,14 @@ public class RecordCollectorTest {
         when(streamsProducer.sendException()).thenReturn(new AtomicReference<>(null));
         doNothing().when(streamsProducer).flush();
         final ProcessorTopology topology = mock(ProcessorTopology.class);
-        
+
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            streamsProducer,
-            productionExceptionHandler,
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                streamsProducer,
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
 
         collector.flush();
@@ -776,12 +775,12 @@ public class RecordCollectorTest {
         when(streamsProducer.sendException()).thenReturn(new AtomicReference<>(null));
         final long offset = 1234L;
         final RecordMetadata metadata = new RecordMetadata(
-            new TopicPartition(topic, 0),
-            offset,
-            0,
-            0,
-            1,
-            1
+                new TopicPartition(topic, 0),
+                offset,
+                0,
+                0,
+                1,
+                1
         );
         when(streamsProducer.send(any(), any())).thenAnswer(invocation -> {
             ((Callback) invocation.getArgument(1)).onCompletion(metadata, null);
@@ -790,24 +789,24 @@ public class RecordCollectorTest {
         final ProcessorTopology topology = mock(ProcessorTopology.class);
 
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            streamsProducer,
-            productionExceptionHandler,
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                streamsProducer,
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
         collector.send(
-            topic + "-changelog",
-            "key",
-            "value",
-            new RecordHeaders(),
-            0,
-            0L,
-            new StringSerializer(),
-            new StringSerializer(),
-            null,
-            null
+                topic + "-changelog",
+                "key",
+                "value",
+                new RecordHeaders(),
+                0,
+                0L,
+                new StringSerializer(),
+                new StringSerializer(),
+                null,
+                null
         );
 
         assertFalse(collector.offsets().isEmpty());
@@ -826,16 +825,16 @@ public class RecordCollectorTest {
         final StreamsProducer streamsProducer = mock(StreamsProducer.class);
         when(streamsProducer.sendException()).thenReturn(new AtomicReference<>(null));
         final ProcessorTopology topology = mock(ProcessorTopology.class);
-        
+
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            streamsProducer,
-            productionExceptionHandler,
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                streamsProducer,
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
-       
+
         collector.closeClean();
     }
 
@@ -846,14 +845,14 @@ public class RecordCollectorTest {
         when(streamsProducer.sendException()).thenReturn(new AtomicReference<>(null));
         doNothing().when(streamsProducer).abortTransaction();
         final ProcessorTopology topology = mock(ProcessorTopology.class);
-        
+
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            streamsProducer,
-            productionExceptionHandler,
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                streamsProducer,
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
 
         collector.closeDirty();
@@ -863,27 +862,27 @@ public class RecordCollectorTest {
     @Test
     public void shouldThrowInformativeStreamsExceptionOnKeyClassCastException() {
         final StreamsException expected = assertThrows(
-            StreamsException.class,
-            () -> this.collector.send(
-                "topic",
-                "key",
-                "value",
-                new RecordHeaders(),
-                0,
-                0L,
-                (Serializer) new LongSerializer(), // need to add cast to trigger `ClassCastException`
-                new StringSerializer(), null, null)
+                StreamsException.class,
+                () -> this.collector.send(
+                    "topic",
+                    "key",
+                    "value",
+                    new RecordHeaders(),
+                    0,
+                    0L,
+                    (Serializer) new LongSerializer(), // need to add cast to trigger `ClassCastException`
+                    new StringSerializer(), null, null)
         );
 
         assertThat(expected.getCause(), instanceOf(ClassCastException.class));
         assertThat(
-            expected.getMessage(),
-            equalTo(
-                "ClassCastException while producing data to topic topic. " +
-                    "The key serializer org.apache.kafka.common.serialization.LongSerializer " +
-                    "is not compatible to the actual key type: java.lang.String. " +
-                    "Change the default key serde in StreamConfig or provide the correct key serde via method parameters " +
-                    "(for example if using the DSL, `#to(String topic, Produced<K, V> produced)` with `Produced.keySerde(WindowedSerdes.timeWindowedSerdeFrom(String.class))`).")
+                expected.getMessage(),
+                equalTo(
+                        "ClassCastException while producing data to topic topic. " +
+                        "The key serializer org.apache.kafka.common.serialization.LongSerializer " +
+                        "is not compatible to the actual key type: java.lang.String. " +
+                        "Change the default key serde in StreamConfig or provide the correct key serde via method parameters " +
+                        "(for example if using the DSL, `#to(String topic, Produced<K, V> produced)` with `Produced.keySerde(WindowedSerdes.timeWindowedSerdeFrom(String.class))`).")
         );
     }
 
@@ -891,27 +890,27 @@ public class RecordCollectorTest {
     @Test
     public void shouldThrowInformativeStreamsExceptionOnKeyAndNullValueClassCastException() {
         final StreamsException expected = assertThrows(
-            StreamsException.class,
-            () -> this.collector.send(
-                "topic",
-                "key",
-                null,
-                new RecordHeaders(),
-                0,
-                0L,
-                (Serializer) new LongSerializer(), // need to add cast to trigger `ClassCastException`
-                new StringSerializer(), null, null)
+                StreamsException.class,
+                () -> this.collector.send(
+                    "topic",
+                    "key",
+                    null,
+                    new RecordHeaders(),
+                    0,
+                    0L,
+                    (Serializer) new LongSerializer(), // need to add cast to trigger `ClassCastException`
+                    new StringSerializer(), null, null)
         );
 
         assertThat(expected.getCause(), instanceOf(ClassCastException.class));
         assertThat(
-            expected.getMessage(),
-            equalTo(
-                "ClassCastException while producing data to topic topic. " +
-                    "The key serializer org.apache.kafka.common.serialization.LongSerializer " +
-                    "is not compatible to the actual key type: java.lang.String. " +
-                    "Change the default key serde in StreamConfig or provide the correct key serde via method parameters " +
-                    "(for example if using the DSL, `#to(String topic, Produced<K, V> produced)` with `Produced.keySerde(WindowedSerdes.timeWindowedSerdeFrom(String.class))`).")
+                expected.getMessage(),
+                equalTo(
+                        "ClassCastException while producing data to topic topic. " +
+                        "The key serializer org.apache.kafka.common.serialization.LongSerializer " +
+                        "is not compatible to the actual key type: java.lang.String. " +
+                        "Change the default key serde in StreamConfig or provide the correct key serde via method parameters " +
+                        "(for example if using the DSL, `#to(String topic, Produced<K, V> produced)` with `Produced.keySerde(WindowedSerdes.timeWindowedSerdeFrom(String.class))`).")
         );
     }
 
@@ -919,27 +918,27 @@ public class RecordCollectorTest {
     @Test
     public void shouldThrowInformativeStreamsExceptionOnValueClassCastException() {
         final StreamsException expected = assertThrows(
-            StreamsException.class,
-            () -> this.collector.send(
-                "topic",
-                "key",
-                "value",
-                new RecordHeaders(),
-                0,
-                0L,
-                new StringSerializer(),
-                (Serializer) new LongSerializer(), null, null) // need to add cast to trigger `ClassCastException`
+                StreamsException.class,
+                () -> this.collector.send(
+                    "topic",
+                    "key",
+                    "value",
+                    new RecordHeaders(),
+                    0,
+                    0L,
+                    new StringSerializer(),
+                    (Serializer) new LongSerializer(), null, null) // need to add cast to trigger `ClassCastException`
         );
 
         assertThat(expected.getCause(), instanceOf(ClassCastException.class));
         assertThat(
-            expected.getMessage(),
-            equalTo(
-                "ClassCastException while producing data to topic topic. " +
-                    "The value serializer org.apache.kafka.common.serialization.LongSerializer " +
-                    "is not compatible to the actual value type: java.lang.String. " +
-                    "Change the default value serde in StreamConfig or provide the correct value serde via method parameters " +
-                    "(for example if using the DSL, `#to(String topic, Produced<K, V> produced)` with `Produced.valueSerde(WindowedSerdes.timeWindowedSerdeFrom(String.class))`).")
+                expected.getMessage(),
+                equalTo(
+                        "ClassCastException while producing data to topic topic. " +
+                        "The value serializer org.apache.kafka.common.serialization.LongSerializer " +
+                        "is not compatible to the actual value type: java.lang.String. " +
+                        "Change the default value serde in StreamConfig or provide the correct value serde via method parameters " +
+                        "(for example if using the DSL, `#to(String topic, Produced<K, V> produced)` with `Produced.valueSerde(WindowedSerdes.timeWindowedSerdeFrom(String.class))`).")
         );
     }
 
@@ -947,50 +946,50 @@ public class RecordCollectorTest {
     @Test
     public void shouldThrowInformativeStreamsExceptionOnValueAndNullKeyClassCastException() {
         final StreamsException expected = assertThrows(
-            StreamsException.class,
-            () -> this.collector.send(
-                "topic",
-                null,
-                "value",
-                new RecordHeaders(),
-                0,
-                0L,
-                new StringSerializer(),
-                (Serializer) new LongSerializer(), null, null) // need to add cast to trigger `ClassCastException`
+                StreamsException.class,
+                () -> this.collector.send(
+                    "topic",
+                    null,
+                    "value",
+                    new RecordHeaders(),
+                    0,
+                    0L,
+                    new StringSerializer(),
+                    (Serializer) new LongSerializer(), null, null) // need to add cast to trigger `ClassCastException`
         );
 
         assertThat(expected.getCause(), instanceOf(ClassCastException.class));
         assertThat(
-            expected.getMessage(),
-            equalTo(
-                "ClassCastException while producing data to topic topic. " +
-                    "The value serializer org.apache.kafka.common.serialization.LongSerializer " +
-                    "is not compatible to the actual value type: java.lang.String. " +
-                    "Change the default value serde in StreamConfig or provide the correct value serde via method parameters " +
-                    "(for example if using the DSL, `#to(String topic, Produced<K, V> produced)` with `Produced.valueSerde(WindowedSerdes.timeWindowedSerdeFrom(String.class))`).")
+                expected.getMessage(),
+                equalTo(
+                        "ClassCastException while producing data to topic topic. " +
+                        "The value serializer org.apache.kafka.common.serialization.LongSerializer " +
+                        "is not compatible to the actual value type: java.lang.String. " +
+                        "Change the default value serde in StreamConfig or provide the correct value serde via method parameters " +
+                        "(for example if using the DSL, `#to(String topic, Produced<K, V> produced)` with `Produced.valueSerde(WindowedSerdes.timeWindowedSerdeFrom(String.class))`).")
         );
     }
 
     @Test
     public void shouldThrowInformativeStreamsExceptionOnKafkaExceptionFromStreamPartitioner() {
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            getExceptionalStreamProducerOnPartitionsFor(new KafkaException("Kaboom!")),
-            productionExceptionHandler,
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                getExceptionalStreamProducerOnPartitionsFor(new KafkaException("Kaboom!")),
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
         collector.initialize();
 
         final StreamsException exception = assertThrows(
-            StreamsException.class,
-            () -> collector.send(topic, "0", "0", null, null, stringSerializer, stringSerializer, null, context, streamPartitioner)
+                StreamsException.class,
+                () -> collector.send(topic, "0", "0", null, null, stringSerializer, stringSerializer, null, context, streamPartitioner)
         );
         assertThat(
-            exception.getMessage(),
-            equalTo("Could not determine the number of partitions for topic '" + topic + "' for task " +
-                taskId + " due to org.apache.kafka.common.KafkaException: Kaboom!")
+                exception.getMessage(),
+                equalTo("Could not determine the number of partitions for topic '" + topic + "' for task " +
+                        taskId + " due to org.apache.kafka.common.KafkaException: Kaboom!")
         );
     }
 
@@ -1006,18 +1005,18 @@ public class RecordCollectorTest {
 
     private <E extends RuntimeException> void shouldForwardExceptionWithoutWrappingIt(final E runtimeException) {
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            getExceptionalStreamProducerOnPartitionsFor(runtimeException),
-            productionExceptionHandler,
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                getExceptionalStreamProducerOnPartitionsFor(runtimeException),
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
         collector.initialize();
 
         final RuntimeException exception = assertThrows(
-            runtimeException.getClass(),
-            () -> collector.send(topic, "0", "0", null, null, stringSerializer, stringSerializer, null, null, streamPartitioner)
+                runtimeException.getClass(),
+                () -> collector.send(topic, "0", "0", null, null, stringSerializer, stringSerializer, null, null, streamPartitioner)
         );
         assertThat(exception.getMessage(), equalTo("Kaboom!"));
     }
@@ -1039,20 +1038,20 @@ public class RecordCollectorTest {
 
     private void testThrowTaskMigratedExceptionOnSubsequentSend(final RuntimeException exception) {
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            getExceptionalStreamsProducerOnSend(exception),
-            productionExceptionHandler,
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                getExceptionalStreamsProducerOnSend(exception),
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
         collector.initialize();
 
         collector.send(topic, "3", "0", null, null, stringSerializer, stringSerializer, null, null, streamPartitioner);
 
         final TaskMigratedException thrown = assertThrows(
-            TaskMigratedException.class,
-            () -> collector.send(topic, "3", "0", null, null, stringSerializer, stringSerializer, null, null, streamPartitioner)
+                TaskMigratedException.class,
+                () -> collector.send(topic, "3", "0", null, null, stringSerializer, stringSerializer, null, null, streamPartitioner)
         );
         assertEquals(exception, thrown.getCause());
     }
@@ -1074,12 +1073,12 @@ public class RecordCollectorTest {
 
     private void testThrowTaskMigratedExceptionOnSubsequentFlush(final RuntimeException exception) {
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            getExceptionalStreamsProducerOnSend(exception),
-            productionExceptionHandler,
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                getExceptionalStreamsProducerOnSend(exception),
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
         collector.initialize();
 
@@ -1106,12 +1105,12 @@ public class RecordCollectorTest {
 
     private void testThrowTaskMigratedExceptionOnSubsequentClose(final RuntimeException exception) {
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            getExceptionalStreamsProducerOnSend(exception),
-            productionExceptionHandler,
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                getExceptionalStreamsProducerOnSend(exception),
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
         collector.initialize();
 
@@ -1125,26 +1124,26 @@ public class RecordCollectorTest {
     public void shouldThrowStreamsExceptionOnSubsequentSendIfASendFailsWithDefaultExceptionHandler() {
         final KafkaException exception = new KafkaException("KABOOM!");
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            getExceptionalStreamsProducerOnSend(exception),
-            productionExceptionHandler,
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                getExceptionalStreamsProducerOnSend(exception),
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
 
         collector.send(topic, "3", "0", null, null, stringSerializer, stringSerializer, sinkNodeName, context, streamPartitioner);
 
         final StreamsException thrown = assertThrows(
-            StreamsException.class,
-            () -> collector.send(topic, "3", "0", null, null, stringSerializer, stringSerializer, sinkNodeName, context, streamPartitioner)
+                StreamsException.class,
+                () -> collector.send(topic, "3", "0", null, null, stringSerializer, stringSerializer, sinkNodeName, context, streamPartitioner)
         );
         assertEquals(exception, thrown.getCause());
         assertThat(
-            thrown.getMessage(),
-            equalTo("Error encountered sending record to topic topic for task 0_0 due to:" +
-                "\norg.apache.kafka.common.KafkaException: KABOOM!" +
-                "\nException handler choose to FAIL the processing, no more records would be sent.")
+                thrown.getMessage(),
+                equalTo("Error encountered sending record to topic topic for task 0_0 due to:" +
+                        "\norg.apache.kafka.common.KafkaException: KABOOM!" +
+                        "\nException handler choose to FAIL the processing, no more records would be sent.")
         );
     }
 
@@ -1152,12 +1151,12 @@ public class RecordCollectorTest {
     public void shouldThrowStreamsExceptionOnSubsequentFlushIfASendFailsWithDefaultExceptionHandler() {
         final KafkaException exception = new KafkaException("KABOOM!");
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            getExceptionalStreamsProducerOnSend(exception),
-            productionExceptionHandler,
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                getExceptionalStreamsProducerOnSend(exception),
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
 
         collector.send(topic, "3", "0", null, null, stringSerializer, stringSerializer, sinkNodeName, context, streamPartitioner);
@@ -1165,8 +1164,8 @@ public class RecordCollectorTest {
         final StreamsException thrown = assertThrows(StreamsException.class, collector::flush);
         assertEquals(exception, thrown.getCause());
         assertThat(
-            thrown.getMessage(),
-            equalTo("Error encountered sending record to topic topic for task 0_0 due to:" +
+                thrown.getMessage(),
+                equalTo("Error encountered sending record to topic topic for task 0_0 due to:" +
                         "\norg.apache.kafka.common.KafkaException: KABOOM!" +
                         "\nException handler choose to FAIL the processing, no more records would be sent.")
         );
@@ -1176,12 +1175,12 @@ public class RecordCollectorTest {
     public void shouldThrowStreamsExceptionOnSubsequentCloseIfASendFailsWithDefaultExceptionHandler() {
         final KafkaException exception = new KafkaException("KABOOM!");
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            getExceptionalStreamsProducerOnSend(exception),
-            productionExceptionHandler,
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                getExceptionalStreamsProducerOnSend(exception),
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
 
         collector.send(topic, "3", "0", null, null, stringSerializer, stringSerializer, sinkNodeName, context, streamPartitioner);
@@ -1189,8 +1188,8 @@ public class RecordCollectorTest {
         final StreamsException thrown = assertThrows(StreamsException.class, collector::closeClean);
         assertEquals(exception, thrown.getCause());
         assertThat(
-            thrown.getMessage(),
-            equalTo("Error encountered sending record to topic topic for task 0_0 due to:" +
+                thrown.getMessage(),
+                equalTo("Error encountered sending record to topic topic for task 0_0 due to:" +
                         "\norg.apache.kafka.common.KafkaException: KABOOM!" +
                         "\nException handler choose to FAIL the processing, no more records would be sent.")
         );
@@ -1200,24 +1199,24 @@ public class RecordCollectorTest {
     public void shouldThrowStreamsExceptionOnSubsequentSendIfFatalEvenWithContinueExceptionHandler() {
         final KafkaException exception = new AuthenticationException("KABOOM!");
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            getExceptionalStreamsProducerOnSend(exception),
-            new ProductionExceptionHandlerMock(Optional.of(ProductionExceptionHandler.Response.resume())),
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                getExceptionalStreamsProducerOnSend(exception),
+                new ProductionExceptionHandlerMock(Optional.of(ProductionExceptionHandler.Response.resume())),
+                streamsMetrics,
+                topology
         );
 
         collector.send(topic, "3", "0", null, null, stringSerializer, stringSerializer, null, null, streamPartitioner);
 
         final StreamsException thrown = assertThrows(
-            StreamsException.class,
-            () -> collector.send(topic, "3", "0", null, null, stringSerializer, stringSerializer, null, null, streamPartitioner)
+                StreamsException.class,
+                () -> collector.send(topic, "3", "0", null, null, stringSerializer, stringSerializer, null, null, streamPartitioner)
         );
         assertEquals(exception, thrown.getCause());
         assertThat(
-            thrown.getMessage(),
-            equalTo("Error encountered sending record to topic topic for task 0_0 due to:" +
+                thrown.getMessage(),
+                equalTo("Error encountered sending record to topic topic for task 0_0 due to:" +
                         "\norg.apache.kafka.common.errors.AuthenticationException: KABOOM!" +
                         "\nWritten offsets would not be recorded and no more records would be sent since this is a fatal error.")
         );
@@ -1227,12 +1226,12 @@ public class RecordCollectorTest {
     public void shouldThrowStreamsExceptionOnSubsequentFlushIfFatalEvenWithContinueExceptionHandler() {
         final KafkaException exception = new AuthenticationException("KABOOM!");
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            getExceptionalStreamsProducerOnSend(exception),
-            new ProductionExceptionHandlerMock(Optional.of(ProductionExceptionHandler.Response.resume())),
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                getExceptionalStreamsProducerOnSend(exception),
+                new ProductionExceptionHandlerMock(Optional.of(ProductionExceptionHandler.Response.resume())),
+                streamsMetrics,
+                topology
         );
 
         collector.send(topic, "3", "0", null, null, stringSerializer, stringSerializer, null, null, streamPartitioner);
@@ -1240,8 +1239,8 @@ public class RecordCollectorTest {
         final StreamsException thrown = assertThrows(StreamsException.class, collector::flush);
         assertEquals(exception, thrown.getCause());
         assertThat(
-            thrown.getMessage(),
-            equalTo("Error encountered sending record to topic topic for task 0_0 due to:" +
+                thrown.getMessage(),
+                equalTo("Error encountered sending record to topic topic for task 0_0 due to:" +
                         "\norg.apache.kafka.common.errors.AuthenticationException: KABOOM!" +
                         "\nWritten offsets would not be recorded and no more records would be sent since this is a fatal error.")
         );
@@ -1251,12 +1250,12 @@ public class RecordCollectorTest {
     public void shouldThrowStreamsExceptionOnSubsequentCloseIfFatalEvenWithContinueExceptionHandler() {
         final KafkaException exception = new AuthenticationException("KABOOM!");
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            getExceptionalStreamsProducerOnSend(exception),
-            new ProductionExceptionHandlerMock(Optional.of(ProductionExceptionHandler.Response.resume())),
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                getExceptionalStreamsProducerOnSend(exception),
+                new ProductionExceptionHandlerMock(Optional.of(ProductionExceptionHandler.Response.resume())),
+                streamsMetrics,
+                topology
         );
 
         collector.send(topic, "3", "0", null, null, stringSerializer, stringSerializer, null, null, streamPartitioner);
@@ -1264,8 +1263,8 @@ public class RecordCollectorTest {
         final StreamsException thrown = assertThrows(StreamsException.class, collector::closeClean);
         assertEquals(exception, thrown.getCause());
         assertThat(
-            thrown.getMessage(),
-            equalTo("Error encountered sending record to topic topic for task 0_0 due to:" +
+                thrown.getMessage(),
+                equalTo("Error encountered sending record to topic topic for task 0_0 due to:" +
                         "\norg.apache.kafka.common.errors.AuthenticationException: KABOOM!" +
                         "\nWritten offsets would not be recorded and no more records would be sent since this is a fatal error.")
         );
@@ -1274,21 +1273,21 @@ public class RecordCollectorTest {
     @Test
     public void shouldNotThrowStreamsExceptionOnSubsequentCallIfASendFailsWithContinueExceptionHandler() {
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            getExceptionalStreamsProducerOnSend(new RuntimeException("KABOOM!")),
-            new ProductionExceptionHandlerMock(
-                Optional.of(ProductionExceptionHandler.Response.resume()),
-                context,
-                sinkNodeName,
-                taskId
-            ),
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                getExceptionalStreamsProducerOnSend(new RuntimeException("KABOOM!")),
+                new ProductionExceptionHandlerMock(
+                        Optional.of(ProductionExceptionHandler.Response.resume()),
+                        context,
+                        sinkNodeName,
+                        taskId
+                ),
+                streamsMetrics,
+                topology
         );
 
         try (final LogCaptureAppender logCaptureAppender =
-                 LogCaptureAppender.createAndRegister(RecordCollectorImpl.class)) {
+                LogCaptureAppender.createAndRegister(RecordCollectorImpl.class)) {
             logCaptureAppender.addFilter(ThresholdFilter.createFilter(Level.INFO, null, null));
 
             collector.send(topic, "3", "0", null, null, stringSerializer, stringSerializer, sinkNodeName, context, streamPartitioner);
@@ -1301,17 +1300,17 @@ public class RecordCollectorTest {
             }
             assertTrue(messages.get(messages.size() - 1)
                     .endsWith("Exception handler choose to CONTINUE processing in spite of this error but written offsets would not be recorded."),
-                errorMessage.toString());
+                    errorMessage.toString());
         }
 
         final Metric metric = streamsMetrics.metrics().get(new MetricName(
-            "dropped-records-total",
-            "stream-task-metrics",
-            "The total number of dropped records",
-            mkMap(
-                mkEntry("thread-id", Thread.currentThread().getName()),
-                mkEntry("task-id", taskId.toString())
-            )
+                "dropped-records-total",
+                "stream-task-metrics",
+                "The total number of dropped records",
+                mkMap(
+                        mkEntry("thread-id", Thread.currentThread().getName()),
+                        mkEntry("task-id", taskId.toString())
+                )
         ));
         assertEquals(1.0, metric.metricValue());
 
@@ -1324,20 +1323,20 @@ public class RecordCollectorTest {
     public void shouldThrowStreamsExceptionOnUnknownTopicOrPartitionExceptionWithDefaultExceptionHandler() {
         final KafkaException exception = new TimeoutException("KABOOM!", new UnknownTopicOrPartitionException());
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            getExceptionalStreamsProducerOnSend(exception),
-            productionExceptionHandler,
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                getExceptionalStreamsProducerOnSend(exception),
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
 
         collector.send(topic, "3", "0", null, null, stringSerializer, stringSerializer, sinkNodeName, context, streamPartitioner);
 
         final TaskCorruptedException thrown = assertThrows(TaskCorruptedException.class, collector::flush);
         assertThat(
-            thrown.getMessage(),
-            equalTo("Tasks [0_0] are corrupted and hence need to be re-initialized")
+                thrown.getMessage(),
+                equalTo("Tasks [0_0] are corrupted and hence need to be re-initialized")
         );
     }
 
@@ -1345,17 +1344,17 @@ public class RecordCollectorTest {
     public void shouldThrowStreamsExceptionOnUnknownTopicOrPartitionExceptionWhenExceptionHandlerReturnsFail() {
         final KafkaException exception = new TimeoutException("KABOOM!", new UnknownTopicOrPartitionException());
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            getExceptionalStreamsProducerOnSend(exception),
-            new ProductionExceptionHandlerMock(
-                Optional.of(ProductionExceptionHandler.Response.fail()),
-                context,
-                sinkNodeName,
-                taskId
-            ),
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                getExceptionalStreamsProducerOnSend(exception),
+                new ProductionExceptionHandlerMock(
+                        Optional.of(ProductionExceptionHandler.Response.fail()),
+                        context,
+                        sinkNodeName,
+                        taskId
+                ),
+                streamsMetrics,
+                topology
         );
 
         collector.send(topic, "3", "0", null, null, stringSerializer, stringSerializer, sinkNodeName, context, streamPartitioner);
@@ -1364,10 +1363,10 @@ public class RecordCollectorTest {
         final StreamsException thrown = assertThrows(StreamsException.class, collector::flush);
         assertEquals(exception, thrown.getCause());
         assertThat(
-            thrown.getMessage(),
-            equalTo("Error encountered sending record to topic topic for task 0_0 due to:" +
-                "\norg.apache.kafka.common.errors.TimeoutException: KABOOM!" +
-                "\nException handler choose to FAIL the processing, no more records would be sent.")
+                thrown.getMessage(),
+                equalTo("Error encountered sending record to topic topic for task 0_0 due to:" +
+                        "\norg.apache.kafka.common.errors.TimeoutException: KABOOM!" +
+                        "\nException handler choose to FAIL the processing, no more records would be sent.")
         );
     }
 
@@ -1375,17 +1374,17 @@ public class RecordCollectorTest {
     public void shouldNotThrowTaskCorruptedExceptionOnUnknownTopicOrPartitionExceptionUsingAlwaysContinueExceptionHandler() {
         final KafkaException exception = new TimeoutException("KABOOM!", new UnknownTopicOrPartitionException());
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            getExceptionalStreamsProducerOnSend(exception),
-            new ProductionExceptionHandlerMock(
-                Optional.of(ProductionExceptionHandler.Response.resume()),
-                context,
-                sinkNodeName,
-                taskId
-            ),
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                getExceptionalStreamsProducerOnSend(exception),
+                new ProductionExceptionHandlerMock(
+                        Optional.of(ProductionExceptionHandler.Response.resume()),
+                        context,
+                        sinkNodeName,
+                        taskId
+                ),
+                streamsMetrics,
+                topology
         );
 
         collector.send(topic, "3", "0", null, null, stringSerializer, stringSerializer, sinkNodeName, context, streamPartitioner);
@@ -1398,17 +1397,17 @@ public class RecordCollectorTest {
         try (final LogCaptureAppender logCaptureAppender = LogCaptureAppender.createAndRegister(RecordCollectorImpl.class)) {
             final RuntimeException exception = new RuntimeException("KABOOM!");
             final RecordCollector collector = new RecordCollectorImpl(
-                logContext,
-                taskId,
-                getExceptionalStreamsProducerOnSend(exception),
-                new ProductionExceptionHandlerMock(
-                    Optional.of(ProductionExceptionHandler.Response.retry()),
-                    context,
-                    sinkNodeName,
-                    taskId
-                ),
-                streamsMetrics,
-                topology
+                    logContext,
+                    taskId,
+                    getExceptionalStreamsProducerOnSend(exception),
+                    new ProductionExceptionHandlerMock(
+                            Optional.of(ProductionExceptionHandler.Response.retry()),
+                            context,
+                            sinkNodeName,
+                            taskId
+                    ),
+                    streamsMetrics,
+                    topology
             );
 
             collector.send(topic, "3", "0", null, null, stringSerializer, stringSerializer, sinkNodeName, context, streamPartitioner);
@@ -1416,15 +1415,15 @@ public class RecordCollectorTest {
             final StreamsException thrown = assertThrows(StreamsException.class, collector::flush);
             assertEquals(exception, thrown.getCause());
             assertThat(
-                thrown.getMessage(),
-                equalTo("Error encountered sending record to topic topic for task 0_0 due to:" +
-                    "\njava.lang.RuntimeException: KABOOM!" +
-                    "\nException handler choose to FAIL the processing, no more records would be sent.")
+                    thrown.getMessage(),
+                    equalTo("Error encountered sending record to topic topic for task 0_0 due to:" +
+                            "\njava.lang.RuntimeException: KABOOM!" +
+                            "\nException handler choose to FAIL the processing, no more records would be sent.")
             );
 
             assertThat(
-                logCaptureAppender.getMessages().get(0),
-                equalTo("test ProductionExceptionHandler returned RETRY for a non-retriable exception. Will treat it as FAIL.")
+                    logCaptureAppender.getMessages().get(0),
+                    equalTo("test ProductionExceptionHandler returned RETRY for a non-retriable exception. Will treat it as FAIL.")
             );
         }
     }
@@ -1433,22 +1432,22 @@ public class RecordCollectorTest {
     public void shouldNotAbortTxnOnEOSCloseDirtyIfNothingSent() {
         final AtomicBoolean functionCalled = new AtomicBoolean(false);
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            new StreamsProducer(
-                new MockProducer<>(cluster, true, null, byteArraySerializer, byteArraySerializer) {
-                    @Override
-                    public void abortTransaction() {
-                        functionCalled.set(true);
-                    }
-                },
-                EXACTLY_ONCE_V2,
-                Time.SYSTEM,
-                logContext
-            ),
-            productionExceptionHandler,
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                new StreamsProducer(
+                        new MockProducer<>(cluster, true, null, byteArraySerializer, byteArraySerializer) {
+                            @Override
+                            public void abortTransaction() {
+                                functionCalled.set(true);
+                            }
+                        },
+                        EXACTLY_ONCE_V2,
+                        Time.SYSTEM,
+                        logContext
+                ),
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
 
         collector.closeDirty();
@@ -1458,50 +1457,50 @@ public class RecordCollectorTest {
     @Test
     public void shouldThrowIfTopicIsUnknownOnSendWithPartitioner() {
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            new StreamsProducer(
-                new MockProducer<>(cluster, true, null, byteArraySerializer, byteArraySerializer) {
-                    @Override
-                    public List<PartitionInfo> partitionsFor(final String topic) {
-                        return Collections.emptyList();
-                    }
-                },
-                AT_LEAST_ONCE,
-                Time.SYSTEM,
-                logContext
-            ),
-            productionExceptionHandler,
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                new StreamsProducer(
+                        new MockProducer<>(cluster, true, null, byteArraySerializer, byteArraySerializer) {
+                            @Override
+                            public List<PartitionInfo> partitionsFor(final String topic) {
+                                return Collections.emptyList();
+                            }
+                        },
+                        AT_LEAST_ONCE,
+                        Time.SYSTEM,
+                        logContext
+                ),
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
         collector.initialize();
 
         final StreamsException thrown = assertThrows(
-            StreamsException.class,
-            () -> collector.send(topic, "3", "0", null, null, stringSerializer, stringSerializer, null, null, streamPartitioner)
+                StreamsException.class,
+                () -> collector.send(topic, "3", "0", null, null, stringSerializer, stringSerializer, null, null, streamPartitioner)
         );
         assertThat(
-            thrown.getMessage(),
-            equalTo("Could not get partition information for topic topic for task 0_0." +
-                " This can happen if the topic does not exist.")
+                thrown.getMessage(),
+                equalTo("Could not get partition information for topic topic for task 0_0." +
+                        " This can happen if the topic does not exist.")
         );
     }
 
     @Test
     public void shouldNotCloseInternalProducerForEOS() {
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            new StreamsProducer(
-                mockProducer,
-                EXACTLY_ONCE_V2,
-                Time.SYSTEM,
-                logContext
-            ),
-            productionExceptionHandler,
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                new StreamsProducer(
+                        mockProducer,
+                        EXACTLY_ONCE_V2,
+                        Time.SYSTEM,
+                        logContext
+                ),
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
 
         collector.closeClean();
@@ -1525,8 +1524,8 @@ public class RecordCollectorTest {
             collector.initialize();
 
             final StreamsException error = assertThrows(
-                StreamsException.class,
-                () -> collector.send(topic, "key", "val", null, 0, null, stringSerializer, errorSerializer, sinkNodeName, context)
+                    StreamsException.class,
+                    () -> collector.send(topic, "key", "val", null, 0, null, stringSerializer, errorSerializer, sinkNodeName, context)
             );
 
             assertThat(error.getCause(), instanceOf(SerializationException.class));
@@ -1537,11 +1536,11 @@ public class RecordCollectorTest {
     public void shouldDropRecordExceptionUsingAlwaysContinueExceptionHandler() {
         try (final ErrorStringSerializer errorSerializer = new ErrorStringSerializer()) {
             final RecordCollector collector = newRecordCollector(new ProductionExceptionHandlerMock(
-                Optional.of(ProductionExceptionHandler.Response.resume()),
-                context,
-                sinkNodeName,
-                taskId,
-                SerializationExceptionOrigin.KEY
+                    Optional.of(ProductionExceptionHandler.Response.resume()),
+                    context,
+                    sinkNodeName,
+                    taskId,
+                    SerializationExceptionOrigin.KEY
             ));
             collector.initialize();
 
@@ -1549,15 +1548,15 @@ public class RecordCollectorTest {
 
             assertThat(mockProducer.history().isEmpty(), equalTo(true));
             assertThat(
-                streamsMetrics.metrics().get(new MetricName(
-                    "dropped-records-total",
-                    "stream-task-metrics",
-                    "The total number of dropped records",
-                    mkMap(
-                        mkEntry("thread-id", Thread.currentThread().getName()),
-                        mkEntry("task-id", taskId.toString())
-                    ))).metricValue(),
-                equalTo(1.0)
+                    streamsMetrics.metrics().get(new MetricName(
+                        "dropped-records-total",
+                        "stream-task-metrics",
+                        "The total number of dropped records",
+                        mkMap(
+                                mkEntry("thread-id", Thread.currentThread().getName()),
+                                mkEntry("task-id", taskId.toString())
+                        ))).metricValue(),
+                    equalTo(1.0)
             );
         }
     }
@@ -1566,17 +1565,17 @@ public class RecordCollectorTest {
     public void shouldThrowStreamsExceptionWhenValueSerializationFailedAndProductionExceptionHandlerRepliesWithFail() {
         try (final ErrorStringSerializer errorSerializer = new ErrorStringSerializer()) {
             final RecordCollector collector = newRecordCollector(new ProductionExceptionHandlerMock(
-                Optional.of(ProductionExceptionHandler.Response.fail()),
-                context,
-                sinkNodeName,
-                taskId,
-                SerializationExceptionOrigin.VALUE
+                    Optional.of(ProductionExceptionHandler.Response.fail()),
+                    context,
+                    sinkNodeName,
+                    taskId,
+                    SerializationExceptionOrigin.VALUE
             ));
             collector.initialize();
 
             final StreamsException exception = assertThrows(
-                StreamsException.class,
-                () -> collector.send(topic, "key", "val", null, 0, null, stringSerializer, errorSerializer, sinkNodeName, context));
+                    StreamsException.class,
+                    () -> collector.send(topic, "key", "val", null, 0, null, stringSerializer, errorSerializer, sinkNodeName, context));
 
             assertInstanceOf(RuntimeException.class, exception.getCause());
             assertEquals("KABOOM!", exception.getCause().getMessage());
@@ -1587,17 +1586,17 @@ public class RecordCollectorTest {
     public void shouldThrowStreamsExceptionWhenKeySerializationFailedAndProductionExceptionHandlerRepliesWithFail() {
         try (final ErrorStringSerializer errorSerializer = new ErrorStringSerializer()) {
             final RecordCollector collector = newRecordCollector(new ProductionExceptionHandlerMock(
-                Optional.of(ProductionExceptionHandler.Response.fail()),
-                context,
-                sinkNodeName,
-                taskId,
-                SerializationExceptionOrigin.KEY
+                    Optional.of(ProductionExceptionHandler.Response.fail()),
+                    context,
+                    sinkNodeName,
+                    taskId,
+                    SerializationExceptionOrigin.KEY
             ));
             collector.initialize();
 
             final StreamsException exception = assertThrows(
-                StreamsException.class,
-                () -> collector.send(topic, "key", "val", null, 0, null, errorSerializer, stringSerializer, sinkNodeName, context));
+                    StreamsException.class,
+                    () -> collector.send(topic, "key", "val", null, 0, null, errorSerializer, stringSerializer, sinkNodeName, context));
 
             assertInstanceOf(RuntimeException.class, exception.getCause());
             assertEquals("KABOOM!", exception.getCause().getMessage());
@@ -1608,49 +1607,49 @@ public class RecordCollectorTest {
     public void shouldNotFailIfContextIsNotAvailableOnSerializationError() {
         try (final ErrorStringSerializer errorSerializer = new ErrorStringSerializer()) {
             final RecordCollector collector = new RecordCollectorImpl(
-                logContext,
-                taskId,
-                streamsProducer,
-                productionExceptionHandler,
-                streamsMetrics,
-                topology
+                    logContext,
+                    taskId,
+                    streamsProducer,
+                    productionExceptionHandler,
+                    streamsMetrics,
+                    topology
             );
 
             assertThrows(
-                StreamsException.class, // should not crash with NullPointerException
-                () -> collector.send(
-                    topic,
-                    "key",
-                    "val",
-                    null,
-                    0,
-                    null,
-                    errorSerializer,
-                    stringSerializer,
-                    sinkNodeName,
-                    null // pass `null` context for testing
-                )
+                    StreamsException.class, // should not crash with NullPointerException
+                    () -> collector.send(
+                        topic,
+                        "key",
+                        "val",
+                        null,
+                        0,
+                        null,
+                        errorSerializer,
+                        stringSerializer,
+                        sinkNodeName,
+                        null // pass `null` context for testing
+                    )
             );
         }
     }
-    
+
     @Test
     public void shouldNotFailIfRecordContextIsNotAvailableOnSerializationError() {
         try (final ErrorStringSerializer errorSerializer = new ErrorStringSerializer()) {
             final RecordCollector collector = new RecordCollectorImpl(
-                logContext,
-                taskId,
-                streamsProducer,
-                productionExceptionHandler,
-                streamsMetrics,
-                topology
+                    logContext,
+                    taskId,
+                    streamsProducer,
+                    productionExceptionHandler,
+                    streamsMetrics,
+                    topology
             );
 
             // RecordContext is null when writing into a changelog topic
             context.setRecordContext(null);
             assertThrows(
-                StreamsException.class, // should not crash with NullPointerException
-                () -> collector.send(topic, "key", "val", null, 0, null, errorSerializer, stringSerializer, sinkNodeName, context)
+                    StreamsException.class, // should not crash with NullPointerException
+                    () -> collector.send(topic, "key", "val", null, 0, null, errorSerializer, stringSerializer, sinkNodeName, context)
             );
         }
     }
@@ -1658,37 +1657,37 @@ public class RecordCollectorTest {
     @Test
     public void shouldNotFailIfContextIsNotAvailableOnSendError() {
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            getExceptionalStreamsProducerOnSend(new RuntimeException("Kaboom!")),
-            productionExceptionHandler,
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                getExceptionalStreamsProducerOnSend(new RuntimeException("Kaboom!")),
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
 
         collector.send(
-            topic,
-            "key",
-            "val",
-            null,
-            0,
-            null,
-            stringSerializer,
-            stringSerializer,
-            sinkNodeName,
-            null // pass `null` context for testing
+                topic,
+                "key",
+                "val",
+                null,
+                0,
+                null,
+                stringSerializer,
+                stringSerializer,
+                sinkNodeName,
+                null // pass `null` context for testing
         );
     }
 
     @Test
     public void shouldNotFailIfRecordContextIsNotAvailableOnSendError() {
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            getExceptionalStreamsProducerOnSend(new RuntimeException("Kaboom!")),
-            productionExceptionHandler,
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                getExceptionalStreamsProducerOnSend(new RuntimeException("Kaboom!")),
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
 
         // RecordContext is null when writing into a changelog topic
@@ -1700,17 +1699,17 @@ public class RecordCollectorTest {
     public void shouldThrowStreamsExceptionWhenSerializationFailedAndProductionExceptionHandlerReturnsNull() {
         try (final ErrorStringSerializer errorSerializer = new ErrorStringSerializer()) {
             final RecordCollector collector = newRecordCollector(new ProductionExceptionHandlerMock(
-                Optional.empty(),
-                context,
-                sinkNodeName,
-                taskId,
-                SerializationExceptionOrigin.KEY
+                    Optional.empty(),
+                    context,
+                    sinkNodeName,
+                    taskId,
+                    SerializationExceptionOrigin.KEY
             ));
             collector.initialize();
 
             final StreamsException exception = assertThrows(
-                StreamsException.class,
-                () -> collector.send(topic, "key", "val", null, 0, null, errorSerializer, stringSerializer, sinkNodeName, context)
+                    StreamsException.class,
+                    () -> collector.send(topic, "key", "val", null, 0, null, errorSerializer, stringSerializer, sinkNodeName, context)
             );
 
             assertEquals("Fatal user code error in production error callback", exception.getMessage());
@@ -1723,17 +1722,17 @@ public class RecordCollectorTest {
     public void shouldThrowStreamsExceptionWhenSerializationFailedAndProductionExceptionHandlerThrows() {
         try (final ErrorStringSerializer errorSerializer = new ErrorStringSerializer()) {
             final RecordCollector collector = newRecordCollector(new ProductionExceptionHandlerMock(
-                true,
-                context,
-                sinkNodeName,
-                taskId,
-                SerializationExceptionOrigin.KEY
+                    true,
+                    context,
+                    sinkNodeName,
+                    taskId,
+                    SerializationExceptionOrigin.KEY
             ));
             collector.initialize();
 
             final StreamsException exception = assertThrows(
-                StreamsException.class,
-                () -> collector.send(topic, "key", "val", null, 0, null, errorSerializer, stringSerializer, sinkNodeName, context)
+                    StreamsException.class,
+                    () -> collector.send(topic, "key", "val", null, 0, null, errorSerializer, stringSerializer, sinkNodeName, context)
             );
 
             assertEquals("Fatal user code error in production error callback", exception.getMessage());
@@ -1745,18 +1744,18 @@ public class RecordCollectorTest {
     public void shouldThrowStreamsExceptionOnSubsequentFlushIfASendFailsAndProductionExceptionHandlerReturnsNull() {
         final KafkaException exception = new KafkaException("KABOOM!");
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            getExceptionalStreamsProducerOnSend(exception),
-            new ProductionExceptionHandlerMock(
-                Optional.empty(),
-                context,
-                sinkNodeName,
+                logContext,
                 taskId,
-                SerializationExceptionOrigin.KEY
-            ),
-            streamsMetrics,
-            topology
+                getExceptionalStreamsProducerOnSend(exception),
+                new ProductionExceptionHandlerMock(
+                        Optional.empty(),
+                        context,
+                        sinkNodeName,
+                        taskId,
+                        SerializationExceptionOrigin.KEY
+                ),
+                streamsMetrics,
+                topology
         );
 
         collector.send(topic, "3", "0", null, null, stringSerializer, stringSerializer, sinkNodeName, context, streamPartitioner);
@@ -1771,18 +1770,18 @@ public class RecordCollectorTest {
     public void shouldThrowStreamsExceptionOnSubsequentFlushIfASendFailsAndProductionExceptionHandlerThrows() {
         final KafkaException exception = new KafkaException("KABOOM!");
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            getExceptionalStreamsProducerOnSend(exception),
-            new ProductionExceptionHandlerMock(
-                true,
-                context,
-                sinkNodeName,
+                logContext,
                 taskId,
-                SerializationExceptionOrigin.KEY
-            ),
-            streamsMetrics,
-            topology
+                getExceptionalStreamsProducerOnSend(exception),
+                new ProductionExceptionHandlerMock(
+                        true,
+                        context,
+                        sinkNodeName,
+                        taskId,
+                        SerializationExceptionOrigin.KEY
+                ),
+                streamsMetrics,
+                topology
         );
 
         collector.send(topic, "3", "0", null, null, stringSerializer, stringSerializer, sinkNodeName, context, streamPartitioner);
@@ -1797,14 +1796,14 @@ public class RecordCollectorTest {
     public void shouldNotCallProductionExceptionHandlerOnClassCastException() {
         try (final ErrorStringSerializer errorSerializer = new ErrorStringSerializer()) {
             final RecordCollector collector = newRecordCollector(
-                new ProductionExceptionHandlerMock(Optional.of(ProductionExceptionHandler.Response.resume()))
+                    new ProductionExceptionHandlerMock(Optional.of(ProductionExceptionHandler.Response.resume()))
             );
             collector.initialize();
 
             assertThat(mockProducer.history().isEmpty(), equalTo(true));
             final StreamsException error = assertThrows(
-                StreamsException.class,
-                () -> collector.send(topic, true, "val", null, 0, null, (Serializer) errorSerializer, stringSerializer, sinkNodeName, context)
+                    StreamsException.class,
+                    () -> collector.send(topic, true, "val", null, 0, null, (Serializer) errorSerializer, stringSerializer, sinkNodeName, context)
             );
 
             assertThat(error.getCause(), instanceOf(ClassCastException.class));
@@ -1814,17 +1813,17 @@ public class RecordCollectorTest {
     @Test
     public void shouldSwallowTransactionAbortedExceptionAndNotCallProductionExceptionHandler() {
         final MockProducer<byte[], byte[]> mockProducer = new MockProducer<>(
-            cluster,
-            false,
-            new org.apache.kafka.clients.producer.RoundRobinPartitioner(),
-            new ByteArraySerializer(),
-            new ByteArraySerializer()
+                cluster,
+                false,
+                new org.apache.kafka.clients.producer.RoundRobinPartitioner(),
+                new ByteArraySerializer(),
+                new ByteArraySerializer()
         );
         streamsProducer = new StreamsProducer(
-            mockProducer,
-            EXACTLY_ONCE_V2,
-            Time.SYSTEM,
-            logContext
+                mockProducer,
+                EXACTLY_ONCE_V2,
+                Time.SYSTEM,
+                logContext
         );
 
         final RecordCollector collector = newRecordCollector(new ProductionExceptionHandlerMock());
@@ -1841,24 +1840,23 @@ public class RecordCollectorTest {
         try (final ErrorStringSerializer errorSerializer = new ErrorStringSerializer()) {
             final DefaultProductionExceptionHandler productionExceptionHandler = new DefaultProductionExceptionHandler();
             productionExceptionHandler.configure(Collections.singletonMap(
-                StreamsConfig.ERRORS_DEAD_LETTER_QUEUE_TOPIC_NAME_CONFIG,
-                "dlq"
+                    StreamsConfig.ERRORS_DEAD_LETTER_QUEUE_TOPIC_NAME_CONFIG,
+                    "dlq"
             ));
             final RecordCollector collector = newRecordCollector(productionExceptionHandler);
             collector.initialize();
 
             assertThat(mockProducer.history().isEmpty(), equalTo(true));
             assertThrows(
-                StreamsException.class,
-                () ->
-                    collector.send(topic, "hello", "world", null, 0, null, errorSerializer, stringSerializer, sinkNodeName, context)
+                    StreamsException.class,
+                    () ->
+                            collector.send(topic, "hello", "world", null, 0, null, errorSerializer, stringSerializer, sinkNodeName, context)
             );
 
             assertEquals(1, mockProducer.history().size());
             assertEquals("dlq", mockProducer.history().get(0).topic());
         }
     }
-
 
     @Test
     public void shouldBuildDeadLetterQueueRecordsInDefaultExceptionHandler() {
@@ -1867,16 +1865,16 @@ public class RecordCollectorTest {
         final MockProducer<byte[], byte[]> mockProducer = (MockProducer<byte[], byte[]>) streamProducer.kafkaProducer();
         final DefaultProductionExceptionHandler productionExceptionHandler = new DefaultProductionExceptionHandler();
         productionExceptionHandler.configure(Collections.singletonMap(
-            StreamsConfig.ERRORS_DEAD_LETTER_QUEUE_TOPIC_NAME_CONFIG,
-            "dlq"
+                StreamsConfig.ERRORS_DEAD_LETTER_QUEUE_TOPIC_NAME_CONFIG,
+                "dlq"
         ));
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            streamProducer,
-            productionExceptionHandler,
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                streamProducer,
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
 
         collector.initialize();
@@ -1896,53 +1894,53 @@ public class RecordCollectorTest {
         when(streamsProducer.eosEnabled()).thenReturn(true);
         when(streamsProducer.sendException()).thenReturn(new AtomicReference<>(null));
         when(streamsProducer.send(any(), any())).thenAnswer(
-            invocation -> {
-                final Callback callback = invocation.getArgument(1);
-                callback.onCompletion(null, new ProducerFencedException("KABOOM!"));
-                return null;
-            }
+                invocation -> {
+                    final Callback callback = invocation.getArgument(1);
+                    callback.onCompletion(null, new ProducerFencedException("KABOOM!"));
+                    return null;
+                }
         );
         final RecordCollector collector1 = new RecordCollectorImpl(
-            logContext,
-            taskId1,
-            streamsProducer,
-            productionExceptionHandler,
-            streamsMetrics,
-            topology
+                logContext,
+                taskId1,
+                streamsProducer,
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
         collector1.initialize();
         final RecordCollector collector2 = new RecordCollectorImpl(
-            logContext,
-            taskId2,
-            streamsProducer,
-            productionExceptionHandler,
-            streamsMetrics,
-            topology
+                logContext,
+                taskId2,
+                streamsProducer,
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
         collector2.initialize();
         collector1.send(
-            topic,
-            "key",
-            "val",
-            null,
-            0,
-            null,
-            stringSerializer,
-            stringSerializer,
-            sinkNodeName,
-            context
+                topic,
+                "key",
+                "val",
+                null,
+                0,
+                null,
+                stringSerializer,
+                stringSerializer,
+                sinkNodeName,
+                context
         );
         assertThrows(StreamsException.class, () -> collector2.send(
-            topic,
-            "key",
-            "val",
-            null,
-            1,
-            null,
-            stringSerializer,
-            stringSerializer,
-            sinkNodeName,
-            context
+                topic,
+                "key",
+                "val",
+                null,
+                1,
+                null,
+                stringSerializer,
+                stringSerializer,
+                sinkNodeName,
+                context
         ));
     }
 
@@ -2015,12 +2013,12 @@ public class RecordCollectorTest {
         final OldProductionExceptionHandlerImplementation productionExceptionHandler = new OldProductionExceptionHandlerImplementation();
 
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            streamProducer,
-            productionExceptionHandler,
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                streamProducer,
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
 
         collector.initialize();
@@ -2038,12 +2036,12 @@ public class RecordCollectorTest {
         final OldProductionExceptionHandlerWithRecordContextImplementation productionExceptionHandler = new OldProductionExceptionHandlerWithRecordContextImplementation();
 
         final RecordCollector collector = new RecordCollectorImpl(
-            logContext,
-            taskId,
-            streamProducer,
-            productionExceptionHandler,
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                streamProducer,
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
 
         collector.initialize();
@@ -2121,12 +2119,12 @@ public class RecordCollectorTest {
 
     private RecordCollector newRecordCollector(final ProductionExceptionHandler productionExceptionHandler) {
         return new RecordCollectorImpl(
-            logContext,
-            taskId,
-            streamsProducer,
-            productionExceptionHandler,
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                streamsProducer,
+                productionExceptionHandler,
+                streamsMetrics,
+                topology
         );
     }
 
@@ -2140,34 +2138,34 @@ public class RecordCollectorTest {
 
     private StreamsProducer getExceptionalStreamsProducerOnSend(final Exception exception) {
         return new StreamsProducer(
-            new MockProducer<>(cluster, true, null, byteArraySerializer, byteArraySerializer) {
-                @Override
-                public synchronized Future<RecordMetadata> send(final ProducerRecord<byte[], byte[]> record, final Callback callback) {
-                    if (record.topic().equals("dlq")) {
-                        return super.send(record, callback);
-                    } else {
-                        callback.onCompletion(null, exception);
-                        return null;
+                new MockProducer<>(cluster, true, null, byteArraySerializer, byteArraySerializer) {
+                    @Override
+                    public synchronized Future<RecordMetadata> send(final ProducerRecord<byte[], byte[]> record, final Callback callback) {
+                        if (record.topic().equals("dlq")) {
+                            return super.send(record, callback);
+                        } else {
+                            callback.onCompletion(null, exception);
+                            return null;
+                        }
                     }
-                }
-            },
-            AT_LEAST_ONCE,
-            Time.SYSTEM,
-            logContext
+                },
+                AT_LEAST_ONCE,
+                Time.SYSTEM,
+                logContext
         );
     }
 
     private StreamsProducer getExceptionalStreamProducerOnPartitionsFor(final RuntimeException exception) {
         return new StreamsProducer(
-            new MockProducer<>(cluster, true, null, byteArraySerializer, byteArraySerializer) {
-                @Override
-                public synchronized List<PartitionInfo> partitionsFor(final String topic) {
-                    throw exception;
-                }
-            },
-            AT_LEAST_ONCE,
-            Time.SYSTEM,
-            logContext
+                new MockProducer<>(cluster, true, null, byteArraySerializer, byteArraySerializer) {
+                    @Override
+                    public synchronized List<PartitionInfo> partitionsFor(final String topic) {
+                        throw exception;
+                    }
+                },
+                AT_LEAST_ONCE,
+                Time.SYSTEM,
+                logContext
         );
     }
 

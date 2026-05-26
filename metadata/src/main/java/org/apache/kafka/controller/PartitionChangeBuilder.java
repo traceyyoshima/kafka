@@ -140,10 +140,10 @@ public class PartitionChangeBuilder {
 
     public PartitionChangeBuilder setTargetIsrWithBrokerStates(List<BrokerState> targetIsrWithEpoch) {
         return setTargetIsr(
-            targetIsrWithEpoch
-              .stream()
-              .map(BrokerState::brokerId)
-              .collect(Collectors.toList())
+                targetIsrWithEpoch
+                  .stream()
+                  .map(BrokerState::brokerId)
+                  .collect(Collectors.toList())
         );
     }
 
@@ -318,7 +318,7 @@ public class PartitionChangeBuilder {
     private boolean isValidNewLeader(int replica) {
         // The valid new leader should be in either ISR or in ELR when ISR is empty.
         return (targetIsr.contains(replica) || (targetIsr.isEmpty() && targetElr.contains(replica))) &&
-            isAcceptableLeader.test(replica);
+                isAcceptableLeader.test(replica);
     }
 
     private void tryElection(PartitionChangeRecord record) {
@@ -335,10 +335,10 @@ public class PartitionChangeBuilder {
                         topicId, partitionId, electionResult.node, partition, record);
             } else if (electionResult.unclean) {
                 log.info("Setting new leader for topicId {}, partition {} to {} using an unclean election. Previous partition: {}, change record: {}",
-                    topicId, partitionId, electionResult.node, partition, record);
+                        topicId, partitionId, electionResult.node, partition, record);
             } else {
                 log.trace("Setting new leader for topicId {}, partition {} to {} using a clean election",
-                    topicId, partitionId, electionResult.node);
+                        topicId, partitionId, electionResult.node);
             }
             record.setLeader(electionResult.node);
             if (electionResult.unclean) {
@@ -404,13 +404,13 @@ public class PartitionChangeBuilder {
 
     private void completeReassignmentIfNeeded() {
         PartitionReassignmentReplicas reassignmentReplicas =
-            new PartitionReassignmentReplicas(
-                targetRemoving,
-                targetAdding,
-                targetReplicas);
+                new PartitionReassignmentReplicas(
+                        targetRemoving,
+                        targetAdding,
+                        targetReplicas);
 
         Optional<PartitionReassignmentReplicas.CompletedReassignment> completedReassignmentOpt =
-            reassignmentReplicas.maybeCompleteReassignment(targetIsr);
+                reassignmentReplicas.maybeCompleteReassignment(targetIsr);
         if (completedReassignmentOpt.isEmpty()) {
             return;
         }
@@ -440,7 +440,7 @@ public class PartitionChangeBuilder {
 
         // If ELR is enabled, the ISR is allowed to be empty.
         if (record.isr() == null && (!targetIsr.isEmpty() || eligibleLeaderReplicasEnabled) &&
-            !targetIsr.equals(Replicas.toList(partition.isr))) {
+                !targetIsr.equals(Replicas.toList(partition.isr))) {
             // Set the new ISR if it is different from the current ISR and unclean leader election didn't already set it.
             if (targetIsr.isEmpty()) {
                 log.debug("A partition will have an empty ISR. {}", this);
@@ -565,19 +565,19 @@ public class PartitionChangeBuilder {
     @Override
     public String toString() {
         return "PartitionChangeBuilder(" +
-            "partition=" + partition +
-            ", topicId=" + topicId +
-            ", partitionId=" + partitionId +
-            ", isAcceptableLeader=" + isAcceptableLeader +
-            ", targetIsr=" + targetIsr +
-            ", targetReplicas=" + targetReplicas +
-            ", targetRemoving=" + targetRemoving +
-            ", targetAdding=" + targetAdding +
-            ", targetElr=" + targetElr +
-            ", targetLastKnownElr=" + targetLastKnownElr +
-            ", uncleanShutdownReplicas=" + uncleanShutdownReplicas +
-            ", election=" + election +
-            ", targetLeaderRecoveryState=" + targetLeaderRecoveryState +
-            ')';
+                "partition=" + partition +
+                ", topicId=" + topicId +
+                ", partitionId=" + partitionId +
+                ", isAcceptableLeader=" + isAcceptableLeader +
+                ", targetIsr=" + targetIsr +
+                ", targetReplicas=" + targetReplicas +
+                ", targetRemoving=" + targetRemoving +
+                ", targetAdding=" + targetAdding +
+                ", targetElr=" + targetElr +
+                ", targetLastKnownElr=" + targetLastKnownElr +
+                ", uncleanShutdownReplicas=" + uncleanShutdownReplicas +
+                ", election=" + election +
+                ", targetLeaderRecoveryState=" + targetLeaderRecoveryState +
+                ')';
     }
 }

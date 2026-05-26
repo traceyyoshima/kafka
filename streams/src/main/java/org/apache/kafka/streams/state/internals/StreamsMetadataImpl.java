@@ -52,12 +52,12 @@ public class StreamsMetadataImpl implements StreamsMetadata {
                                final Set<String> standbyStoreNames,
                                final Set<TopicPartition> standbyTopicPartitions) {
         this(
-            hostInfo,
-            stateStoreNames,
-            topicPartitions,
-            standbyStoreNames,
-            standbyTopicPartitions,
-            null
+                hostInfo,
+                stateStoreNames,
+                topicPartitions,
+                standbyStoreNames,
+                standbyTopicPartitions,
+                null
         );
     }
 
@@ -152,11 +152,11 @@ public class StreamsMetadataImpl implements StreamsMetadata {
 
         final StreamsMetadataImpl that = (StreamsMetadataImpl) o;
         return Objects.equals(hostInfo, that.hostInfo)
-            && Objects.equals(stateStoreNames, that.stateStoreNames)
-            && Objects.equals(topicPartitions, that.topicPartitions)
-            && Objects.equals(standbyStateStoreNames, that.standbyStateStoreNames)
-            && Objects.equals(standbyTopicPartitions, that.standbyTopicPartitions)
-            && Objects.equals(topologyName, that.topologyName);
+                && Objects.equals(stateStoreNames, that.stateStoreNames)
+                && Objects.equals(topicPartitions, that.topicPartitions)
+                && Objects.equals(standbyStateStoreNames, that.standbyStateStoreNames)
+                && Objects.equals(standbyTopicPartitions, that.standbyTopicPartitions)
+                && Objects.equals(topologyName, that.topologyName);
     }
 
     @Override
@@ -167,7 +167,7 @@ public class StreamsMetadataImpl implements StreamsMetadata {
     @Override
     public String toString() {
         final String str =
-            "StreamsMetadata {" +
+                "StreamsMetadata {" +
                 "hostInfo=" + hostInfo +
                 ", stateStoreNames=" + stateStoreNames +
                 ", topicPartitions=" + topicPartitions +
@@ -177,8 +177,8 @@ public class StreamsMetadataImpl implements StreamsMetadata {
             return str + '}';
         } else {
             return str +
-                ", topologyName=" + topologyName +
-                '}';
+                    ", topologyName=" + topologyName +
+                    '}';
         }
     }
 }

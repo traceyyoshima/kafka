@@ -59,9 +59,11 @@ import static org.mockito.Mockito.when;
 public class WorkerTaskTest {
 
     private static final Map<String, String> TASK_PROPS = new HashMap<>();
+
     static {
         TASK_PROPS.put(TaskConfig.TASK_CLASS_CONFIG, TestSinkTask.class.getName());
     }
+
     private static final TaskConfig TASK_CONFIG = new TaskConfig(TASK_PROPS);
 
     @Mock private TaskStatus.Listener statusListener;

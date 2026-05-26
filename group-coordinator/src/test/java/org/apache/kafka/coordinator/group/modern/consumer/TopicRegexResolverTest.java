@@ -59,11 +59,11 @@ public class TopicRegexResolverTest {
         TopicRegexResolver resolver = new TopicRegexResolver(Optional::empty, time);
 
         var result = resolver.resolveRegularExpressions(
-            null,
-            "group-1",
-            log,
-            image,
-            Set.of("ba.*")
+                null,
+                "group-1",
+                log,
+                image,
+                Set.of("ba.*")
         );
 
         var resolved = result.get("ba.*");
@@ -85,11 +85,11 @@ public class TopicRegexResolverTest {
         TopicRegexResolver resolver = new TopicRegexResolver(Optional::empty, time);
 
         var result = resolver.resolveRegularExpressions(
-            null,
-            "group-2",
-            log,
-            image,
-            Set.of("a.*")
+                null,
+                "group-2",
+                log,
+                image,
+                Set.of("a.*")
         );
 
         var resolved = result.get("a.*");
@@ -125,11 +125,11 @@ public class TopicRegexResolverTest {
         TopicRegexResolver resolver = new TopicRegexResolver(() -> Optional.of(plugin), time);
 
         var result = resolver.resolveRegularExpressions(
-            null,
-            "group-3",
-            log,
-            image,
-            Set.of("a.*", "d.*")
+                null,
+                "group-3",
+                log,
+                image,
+                Set.of("a.*", "d.*")
         );
 
         var resolved = result.get("a.*");

@@ -87,14 +87,14 @@ public class AllBrokersStrategy implements AdminApiLookupStrategy<AllBrokersStra
         }
 
         Map<BrokerKey, Integer> brokerKeys = brokers.stream().collect(Collectors.toMap(
-            broker -> new BrokerKey(OptionalInt.of(broker.nodeId())),
-            MetadataResponseData.MetadataResponseBroker::nodeId
+                broker -> new BrokerKey(OptionalInt.of(broker.nodeId())),
+                MetadataResponseData.MetadataResponseBroker::nodeId
         ));
 
         return new LookupResult<>(
-            Collections.singletonList(ANY_BROKER),
-            Collections.emptyMap(),
-            brokerKeys
+                Collections.singletonList(ANY_BROKER),
+                Collections.emptyMap(),
+                brokerKeys
         );
     }
 
@@ -131,8 +131,8 @@ public class AllBrokersStrategy implements AdminApiLookupStrategy<AllBrokersStra
         @Override
         public String toString() {
             return "BrokerKey(" +
-                "brokerId=" + brokerId +
-                ')';
+                    "brokerId=" + brokerId +
+                    ')';
         }
     }
 

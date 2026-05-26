@@ -77,13 +77,13 @@ public class BeginQuorumEpochRequest extends AbstractRequest {
         return new BeginQuorumEpochRequestData()
                    .setClusterId(clusterId)
                    .setTopics(List.of(
-                       new BeginQuorumEpochRequestData.TopicData()
-                           .setTopicName(topicPartition.topic())
-                           .setPartitions(List.of(
-                               new BeginQuorumEpochRequestData.PartitionData()
-                                   .setPartitionIndex(topicPartition.partition())
-                                   .setLeaderEpoch(leaderEpoch)
-                                   .setLeaderId(leaderId))))
-                   );
+                           new BeginQuorumEpochRequestData.TopicData()
+                               .setTopicName(topicPartition.topic())
+                               .setPartitions(List.of(
+                                   new BeginQuorumEpochRequestData.PartitionData()
+                                       .setPartitionIndex(topicPartition.partition())
+                                       .setLeaderEpoch(leaderEpoch)
+                                       .setLeaderId(leaderId))))
+        );
     }
 }

@@ -50,7 +50,6 @@ public class NodeToControllerRequestThread extends InterBrokerSendThread {
     private final LinkedBlockingDeque<NodeToControllerQueueItem> requestQueue = new LinkedBlockingDeque<>();
     private final AtomicReference<Node> activeController = new AtomicReference<>(null);
 
-
     private final Time time;
     private final long retryTimeoutMs;
     private final Supplier<ControllerInformation> controllerNodeProvider;
@@ -58,6 +57,7 @@ public class NodeToControllerRequestThread extends InterBrokerSendThread {
 
     // Used for testing
     volatile boolean started = false;
+
     public void setStarted(boolean started) {
         this.started = started;
     }
@@ -128,7 +128,7 @@ public class NodeToControllerRequestThread extends InterBrokerSendThread {
         log.debug("Request {} received {}", queueItem.request(), response);
         if (response.authenticationException() != null) {
             log.error("Request {} failed due to authentication error with controller. Disconnecting the " +
-                            "connection to the stale controller {}",
+                    "connection to the stale controller {}",
                     queueItem.request(), activeControllerAddress().map(Node::idString).orElse("null"),
                     response.authenticationException()
             );
@@ -143,7 +143,7 @@ public class NodeToControllerRequestThread extends InterBrokerSendThread {
             requestQueue.addFirst(queueItem);
         } else if (response.responseBody().errorCounts().containsKey(Errors.NOT_CONTROLLER)) {
             log.debug("Request {} received NOT_CONTROLLER exception. Disconnecting the " +
-                            "connection to the stale controller {}",
+                    "connection to the stale controller {}",
                     queueItem.request(),
                     activeControllerAddress().map(Node::idString).orElse("null"));
             maybeDisconnectAndUpdateController();

@@ -66,19 +66,19 @@ public class TopicMetricsTest {
         when(streamsMetrics.topicLevelTagMap(THREAD_ID, TASK_ID, PROCESSOR_NODE_ID, TOPIC)).thenReturn(tagMap);
 
         verifySensor(
-            () -> TopicMetrics.consumedSensor(THREAD_ID, TASK_ID, PROCESSOR_NODE_ID, TOPIC, streamsMetrics)
+                () -> TopicMetrics.consumedSensor(THREAD_ID, TASK_ID, PROCESSOR_NODE_ID, TOPIC, streamsMetrics)
         );
 
         STREAMS_METRICS_STATIC_MOCK.verify(
-            () -> StreamsMetricsImpl.addTotalCountAndSumMetricsToSensor(
-                expectedSensor,
-                TOPIC_LEVEL_GROUP,
-                tagMap,
-                recordsMetricNamePrefix,
-                bytesMetricNamePrefix,
-                descriptionOfRecordsTotal,
-                descriptionOfBytesTotal
-            )
+                () -> StreamsMetricsImpl.addTotalCountAndSumMetricsToSensor(
+                    expectedSensor,
+                    TOPIC_LEVEL_GROUP,
+                    tagMap,
+                    recordsMetricNamePrefix,
+                    bytesMetricNamePrefix,
+                    descriptionOfRecordsTotal,
+                    descriptionOfBytesTotal
+                )
         );
     }
 
@@ -98,15 +98,15 @@ public class TopicMetricsTest {
         verifySensor(() -> TopicMetrics.producedSensor(THREAD_ID, TASK_ID, PROCESSOR_NODE_ID, TOPIC, streamsMetrics));
 
         STREAMS_METRICS_STATIC_MOCK.verify(
-            () -> StreamsMetricsImpl.addTotalCountAndSumMetricsToSensor(
-                expectedSensor,
-                TOPIC_LEVEL_GROUP,
-                tagMap,
-                recordsMetricNamePrefix,
-                bytesMetricNamePrefix,
-                descriptionOfRecordsTotal,
-                descriptionOfBytesTotal
-            )
+                () -> StreamsMetricsImpl.addTotalCountAndSumMetricsToSensor(
+                    expectedSensor,
+                    TOPIC_LEVEL_GROUP,
+                    tagMap,
+                    recordsMetricNamePrefix,
+                    bytesMetricNamePrefix,
+                    descriptionOfRecordsTotal,
+                    descriptionOfBytesTotal
+                )
         );
     }
 

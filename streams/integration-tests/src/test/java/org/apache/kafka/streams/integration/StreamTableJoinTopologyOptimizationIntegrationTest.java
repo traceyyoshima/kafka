@@ -148,18 +148,18 @@ public class StreamTableJoinTopologyOptimizationIntegrationTest {
         final long timestamp = System.currentTimeMillis();
 
         final List<KeyValue<Integer, String>> expectedRecords = Arrays.asList(
-            new KeyValue<>(1, "A"),
-            new KeyValue<>(2, "B")
+                new KeyValue<>(1, "A"),
+                new KeyValue<>(2, "B")
         );
 
         sendEvents(inputTopic, timestamp, expectedRecords);
         sendEvents(outputTopic, timestamp, expectedRecords);
 
         validateReceivedMessages(
-            outputTopic,
-            new IntegerDeserializer(),
-            new StringDeserializer(),
-            expectedRecords
+                outputTopic,
+                new IntegerDeserializer(),
+                new StringDeserializer(),
+                expectedRecords
         );
 
         final Set<String> allTopicsInCluster = CLUSTER.getAllTopicsInCluster();
@@ -213,15 +213,15 @@ public class StreamTableJoinTopologyOptimizationIntegrationTest {
                                    final long timestamp,
                                    final List<KeyValue<K, V>> events) throws Exception {
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-            topic,
-            events,
-            TestUtils.producerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerSerializer.class,
-                StringSerializer.class,
-                new Properties()
-            ),
-            timestamp
+                topic,
+                events,
+                TestUtils.producerConfig(
+                        CLUSTER.bootstrapServers(),
+                        IntegerSerializer.class,
+                        StringSerializer.class,
+                        new Properties()
+                ),
+                timestamp
         );
     }
 
@@ -236,18 +236,18 @@ public class StreamTableJoinTopologyOptimizationIntegrationTest {
         consumerProperties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "group-" + safeTestName);
         consumerProperties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         consumerProperties.setProperty(
-            ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
-            keySerializer.getClass().getName()
+                ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
+                keySerializer.getClass().getName()
         );
         consumerProperties.setProperty(
-            ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
-            valueSerializer.getClass().getName()
+                ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
+                valueSerializer.getClass().getName()
         );
 
         IntegrationTestUtils.waitUntilFinalKeyValueRecordsReceived(
-            consumerProperties,
-            topic,
-            expectedRecords
+                consumerProperties,
+                topic,
+                expectedRecords
         );
     }
 

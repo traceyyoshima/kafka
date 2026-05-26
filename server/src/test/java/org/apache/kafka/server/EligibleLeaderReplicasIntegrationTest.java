@@ -64,12 +64,12 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ClusterTestDefaults(
-    brokers = 5,
-    serverProperties = {
-        @ClusterConfigProperty(key = ServerConfigs.CONTROLLED_SHUTDOWN_ENABLE_CONFIG, value = "true"),
-        @ClusterConfigProperty(key = ServerConfigs.DELETE_TOPIC_ENABLE_CONFIG, value = "true"),
-        @ClusterConfigProperty(key = ReplicationConfigs.DEFAULT_REPLICATION_FACTOR_CONFIG, value = "4")
-    }
+        brokers = 5,
+        serverProperties = {
+            @ClusterConfigProperty(key = ServerConfigs.CONTROLLED_SHUTDOWN_ENABLE_CONFIG, value = "true"),
+            @ClusterConfigProperty(key = ServerConfigs.DELETE_TOPIC_ENABLE_CONFIG, value = "true"),
+            @ClusterConfigProperty(key = ReplicationConfigs.DEFAULT_REPLICATION_FACTOR_CONFIG, value = "4")
+        }
 )
 public class EligibleLeaderReplicasIntegrationTest {
     private final ClusterInstance clusterInstance;
@@ -81,22 +81,22 @@ public class EligibleLeaderReplicasIntegrationTest {
     @ClusterTest(types = {Type.KRAFT}, metadataVersion = MetadataVersion.IBP_4_0_IV1)
     public void testHighWatermarkShouldNotAdvanceIfUnderMinIsr() throws ExecutionException, InterruptedException {
         try (var admin = clusterInstance.admin();
-            var producer = clusterInstance.producer(Map.of(
-                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName(),
-                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName(),
-                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, clusterInstance.bootstrapServers(),
-                ProducerConfig.ACKS_CONFIG, "1"));
-            var consumer = clusterInstance.consumer(Map.of(
-                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, clusterInstance.bootstrapServers(),
-                ConsumerConfig.GROUP_ID_CONFIG, "test",
-                ConsumerConfig.FETCH_MAX_WAIT_MS_CONFIG, "10",
-                ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest",
-                ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName(),
-                ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName()))) {
+                var producer = clusterInstance.producer(Map.of(
+                    ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName(),
+                    ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName(),
+                    ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, clusterInstance.bootstrapServers(),
+                    ProducerConfig.ACKS_CONFIG, "1"));
+                var consumer = clusterInstance.consumer(Map.of(
+                    ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, clusterInstance.bootstrapServers(),
+                    ConsumerConfig.GROUP_ID_CONFIG, "test",
+                    ConsumerConfig.FETCH_MAX_WAIT_MS_CONFIG, "10",
+                    ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest",
+                    ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName(),
+                    ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName()))) {
             String testTopicName = String.format("%s-%s", "testHighWatermarkShouldNotAdvanceIfUnderMinIsr", "ELR-test");
             admin.updateFeatures(
-                Map.of(EligibleLeaderReplicasVersion.FEATURE_NAME,
-                    new FeatureUpdate(EligibleLeaderReplicasVersion.ELRV_1.featureLevel(), FeatureUpdate.UpgradeType.UPGRADE))).all().get();
+                    Map.of(EligibleLeaderReplicasVersion.FEATURE_NAME,
+                            new FeatureUpdate(EligibleLeaderReplicasVersion.ELRV_1.featureLevel(), FeatureUpdate.UpgradeType.UPGRADE))).all().get();
 
             admin.createTopics(List.of(new NewTopic(testTopicName, 1, (short) 4))).all().get();
             clusterInstance.waitTopicCreation(testTopicName, 1);
@@ -143,15 +143,15 @@ public class EligibleLeaderReplicasIntegrationTest {
 
     void waitUntilOneMessageIsConsumed(Consumer<?, ?> consumer) throws InterruptedException {
         TestUtils.waitForCondition(
-            () -> {
-                try {
-                    return consumer.poll(Duration.ofMillis(100L)).count() >= 1;
-                } catch (Exception e) {
-                    return false;
-                }
-            },
-            DEFAULT_MAX_WAIT_MS,
-            () -> "fail to consume messages"
+                () -> {
+                    try {
+                        return consumer.poll(Duration.ofMillis(100L)).count() >= 1;
+                    } catch (Exception e) {
+                        return false;
+                    }
+                },
+                DEFAULT_MAX_WAIT_MS,
+                () -> "fail to consume messages"
         );
     }
 
@@ -161,8 +161,8 @@ public class EligibleLeaderReplicasIntegrationTest {
             String testTopicName = String.format("%s-%s", "testElrMemberCanBeElected", "ELR-test");
 
             admin.updateFeatures(
-                Map.of(EligibleLeaderReplicasVersion.FEATURE_NAME,
-                    new FeatureUpdate(EligibleLeaderReplicasVersion.ELRV_1.featureLevel(), FeatureUpdate.UpgradeType.UPGRADE))).all().get();
+                    Map.of(EligibleLeaderReplicasVersion.FEATURE_NAME,
+                            new FeatureUpdate(EligibleLeaderReplicasVersion.ELRV_1.featureLevel(), FeatureUpdate.UpgradeType.UPGRADE))).all().get();
             admin.createTopics(List.of(new NewTopic(testTopicName, 1, (short) 4))).all().get();
             clusterInstance.waitTopicCreation(testTopicName, 1);
 
@@ -230,8 +230,8 @@ public class EligibleLeaderReplicasIntegrationTest {
             String testTopicName = String.format("%s-%s", "testElrMemberShouldBeKickOutWhenUncleanShutdown", "ELR-test");
 
             admin.updateFeatures(
-                Map.of(EligibleLeaderReplicasVersion.FEATURE_NAME,
-                    new FeatureUpdate(EligibleLeaderReplicasVersion.ELRV_1.featureLevel(), FeatureUpdate.UpgradeType.UPGRADE))).all().get();
+                    Map.of(EligibleLeaderReplicasVersion.FEATURE_NAME,
+                            new FeatureUpdate(EligibleLeaderReplicasVersion.ELRV_1.featureLevel(), FeatureUpdate.UpgradeType.UPGRADE))).all().get();
             admin.createTopics(List.of(new NewTopic(testTopicName, 1, (short) 4))).all().get();
             clusterInstance.waitTopicCreation(testTopicName, 1);
 
@@ -287,8 +287,8 @@ public class EligibleLeaderReplicasIntegrationTest {
             String testTopicName = String.format("%s-%s", "testLastKnownLeaderShouldBeElectedIfEmptyElr", "ELR-test");
 
             admin.updateFeatures(
-                Map.of(EligibleLeaderReplicasVersion.FEATURE_NAME,
-                    new FeatureUpdate(EligibleLeaderReplicasVersion.ELRV_1.featureLevel(), FeatureUpdate.UpgradeType.UPGRADE))).all().get();
+                    Map.of(EligibleLeaderReplicasVersion.FEATURE_NAME,
+                            new FeatureUpdate(EligibleLeaderReplicasVersion.ELRV_1.featureLevel(), FeatureUpdate.UpgradeType.UPGRADE))).all().get();
             admin.createTopics(List.of(new NewTopic(testTopicName, 1, (short) 4))).all().get();
             clusterInstance.waitTopicCreation(testTopicName, 1);
 
@@ -298,7 +298,6 @@ public class EligibleLeaderReplicasIntegrationTest {
             Map<ConfigResource, Collection<AlterConfigOp>> configOps = Map.of(configResource, ops);
             // alter configs on target cluster
             admin.incrementalAlterConfigs(configOps).all().get();
-
 
             TopicDescription testTopicDescription = admin.describeTopics(List.of(testTopicName))
                 .allTopicNames().get().get(testTopicName);
@@ -342,36 +341,36 @@ public class EligibleLeaderReplicasIntegrationTest {
             clusterInstance.startBroker(lastKnownLeader);
             waitForIsrAndElr((isrSize, elrSize) -> isrSize > 0 && elrSize == 0, admin, testTopicName);
             TestUtils.waitForCondition(
-                () -> {
-                    try {
-                        TopicPartitionInfo partition = admin.describeTopics(List.of(testTopicName))
-                            .allTopicNames().get().get(testTopicName).partitions().get(0);
-                        if (partition.leader() == null) return false;
-                        return partition.lastKnownElr().isEmpty() && partition.elr().isEmpty() && partition.leader().id() == lastKnownLeader;
-                    } catch (Exception e) {
-                        return false;
-                    }
-                },
-                DEFAULT_MAX_WAIT_MS,
-                () -> String.format("Partition metadata for %s is not correct", testTopicName)
+                    () -> {
+                        try {
+                            TopicPartitionInfo partition = admin.describeTopics(List.of(testTopicName))
+                                .allTopicNames().get().get(testTopicName).partitions().get(0);
+                            if (partition.leader() == null) return false;
+                            return partition.lastKnownElr().isEmpty() && partition.elr().isEmpty() && partition.leader().id() == lastKnownLeader;
+                        } catch (Exception e) {
+                            return false;
+                        }
+                    },
+                    DEFAULT_MAX_WAIT_MS,
+                    () -> String.format("Partition metadata for %s is not correct", testTopicName)
             );
         }
     }
 
     void waitForIsrAndElr(BiFunction<Integer, Integer, Boolean> isIsrAndElrSizeSatisfied, Admin admin, String testTopicName) throws InterruptedException {
         TestUtils.waitForCondition(
-            () -> {
-                try {
-                    TopicDescription topicDescription = admin.describeTopics(List.of(testTopicName))
-                        .allTopicNames().get().get(testTopicName);
-                    TopicPartitionInfo partition = topicDescription.partitions().get(0);
-                    return isIsrAndElrSizeSatisfied.apply(partition.isr().size(), partition.elr().size());
-                } catch (Exception e) {
-                    return false;
-                }
-            },
-            DEFAULT_MAX_WAIT_MS,
-            () -> String.format("Partition metadata for %s is not propagated", testTopicName)
+                () -> {
+                    try {
+                        TopicDescription topicDescription = admin.describeTopics(List.of(testTopicName))
+                            .allTopicNames().get().get(testTopicName);
+                        TopicPartitionInfo partition = topicDescription.partitions().get(0);
+                        return isIsrAndElrSizeSatisfied.apply(partition.isr().size(), partition.elr().size());
+                    } catch (Exception e) {
+                        return false;
+                    }
+                },
+                DEFAULT_MAX_WAIT_MS,
+                () -> String.format("Partition metadata for %s is not propagated", testTopicName)
         );
     }
 }

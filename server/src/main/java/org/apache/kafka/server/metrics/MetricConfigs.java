@@ -67,7 +67,7 @@ public class MetricConfigs {
     public static final String CLIENT_TELEMETRY_MAX_BYTES_DOC = "The maximum size (after compression if compression is used) of" +
             " telemetry metrics pushed from a client to the broker. The default value is 1048576 (1 MB).";
 
-    public static final ConfigDef CONFIG_DEF =  new ConfigDef()
+    public static final ConfigDef CONFIG_DEF = new ConfigDef()
             // Kafka Metrics Configuration
             .define(METRIC_NUM_SAMPLES_CONFIG, INT, METRIC_NUM_SAMPLES_DEFAULT, atLeast(1), LOW, METRIC_NUM_SAMPLES_DOC)
             .define(METRIC_SAMPLE_WINDOW_MS_CONFIG, LONG, METRIC_SAMPLE_WINDOW_MS_DEFAULT, atLeast(1), LOW, METRIC_SAMPLE_WINDOW_MS_DOC)

@@ -185,11 +185,11 @@ public class ShareSessionHandler {
 
         if (log.isDebugEnabled()) {
             log.debug("Build ShareFetch {} for node {}. Added {}, removed {}, replaced {} out of {}",
-                nextMetadata, node,
-                topicIdPartitionsToLogString(added),
-                topicIdPartitionsToLogString(removed),
-                topicIdPartitionsToLogString(replaced),
-                topicIdPartitionsToLogString(sessionPartitions.values()));
+                    nextMetadata, node,
+                    topicIdPartitionsToLogString(added),
+                    topicIdPartitionsToLogString(removed),
+                    topicIdPartitionsToLogString(replaced),
+                    topicIdPartitionsToLogString(sessionPartitions.values()));
         }
 
         if (hasRenewAcknowledgements) {
@@ -197,24 +197,24 @@ public class ShareSessionHandler {
             // and potentially update the share session. The parameters for wait time, number of bytes and number of
             // records are all zero.
             return ShareFetchRequest.Builder.forConsumer(
-                groupId, nextMetadata, 0,
-                0, 0, 0,
-                0, shareFetchConfig.shareAcquireMode.id, true,
-                added, removed, acknowledgementBatches);
+                    groupId, nextMetadata, 0,
+                    0, 0, 0,
+                    0, shareFetchConfig.shareAcquireMode.id, true,
+                    added, removed, acknowledgementBatches);
         } else if (canSkipIfRequestEmpty) {
             // The request contains changes to the share session or acknowledgements only. The parameters for wait time,
             // number of bytes and number of records are all zero.
             return ShareFetchRequest.Builder.forConsumer(
-                groupId, nextMetadata, 0,
-                0, 0, 0,
-                0, shareFetchConfig.shareAcquireMode.id, false,
-                added, removed, acknowledgementBatches);
+                    groupId, nextMetadata, 0,
+                    0, 0, 0,
+                    0, shareFetchConfig.shareAcquireMode.id, false,
+                    added, removed, acknowledgementBatches);
         } else {
             return ShareFetchRequest.Builder.forConsumer(
-                groupId, nextMetadata, shareFetchConfig.maxWaitMs,
-                shareFetchConfig.minBytes, shareFetchConfig.maxBytes, shareFetchConfig.maxPollRecords,
-                shareFetchConfig.maxPollRecords, shareFetchConfig.shareAcquireMode.id, false,
-                added, removed, acknowledgementBatches);
+                    groupId, nextMetadata, shareFetchConfig.maxWaitMs,
+                    shareFetchConfig.minBytes, shareFetchConfig.maxBytes, shareFetchConfig.maxPollRecords,
+                    shareFetchConfig.maxPollRecords, shareFetchConfig.shareAcquireMode.id, false,
+                    added, removed, acknowledgementBatches);
         }
     }
 

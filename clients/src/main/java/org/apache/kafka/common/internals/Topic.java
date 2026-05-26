@@ -29,8 +29,8 @@ public class Topic {
     public static final String SHARE_GROUP_STATE_TOPIC_NAME = "__share_group_state";
     public static final String CLUSTER_METADATA_TOPIC_NAME = "__cluster_metadata";
     public static final TopicPartition CLUSTER_METADATA_TOPIC_PARTITION = new TopicPartition(
-        CLUSTER_METADATA_TOPIC_NAME,
-        0
+            CLUSTER_METADATA_TOPIC_NAME,
+            0
     );
     public static final String LEGAL_CHARS = "[a-zA-Z0-9._-]";
 
@@ -55,7 +55,7 @@ public class Topic {
             return "the length of '" + name + "' is longer than the max allowed length " + MAX_NAME_LENGTH;
         if (!containsValidPattern(name))
             return "'" + name + "' contains one or more characters other than " +
-                "ASCII alphanumerics, '.', '_' and '-'";
+                    "ASCII alphanumerics, '.', '_' and '-'";
         return null;
     }
 
@@ -67,7 +67,7 @@ public class Topic {
     public static void validate(String name, String logPrefix, Consumer<String> throwableConsumer) {
         String reasonInvalid = detectInvalidTopic(name);
         if (reasonInvalid != null) {
-            throwableConsumer.accept(logPrefix + " is invalid: " +  reasonInvalid);
+            throwableConsumer.accept(logPrefix + " is invalid: " + reasonInvalid);
         }
     }
 

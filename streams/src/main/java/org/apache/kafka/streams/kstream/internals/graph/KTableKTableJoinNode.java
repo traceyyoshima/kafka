@@ -48,12 +48,12 @@ public class KTableKTableJoinNode<K, V1, V2, VR> extends BaseJoinProcessorNode<K
                          final String[] joinOtherStoreNames) {
 
         super(nodeName,
-            null,
-            joinThisProcessorParameters,
-            joinOtherProcessorParameters,
-            joinMergeProcessorParameters,
-            thisJoinSide,
-            otherJoinSide);
+                null,
+                joinThisProcessorParameters,
+                joinOtherProcessorParameters,
+                joinMergeProcessorParameters,
+                thisJoinSide,
+                otherJoinSide);
 
         this.keySerde = keySerde;
         this.valueSerde = valueSerde;
@@ -127,9 +127,9 @@ public class KTableKTableJoinNode<K, V1, V2, VR> extends BaseJoinProcessorNode<K
     @Override
     public String toString() {
         return "KTableKTableJoinNode{" +
-            "joinThisStoreNames=" + Arrays.toString(joinThisStoreNames()) +
-            ", joinOtherStoreNames=" + Arrays.toString(joinOtherStoreNames()) +
-            "} " + super.toString();
+                "joinThisStoreNames=" + Arrays.toString(joinThisStoreNames()) +
+                ", joinOtherStoreNames=" + Arrays.toString(joinOtherStoreNames()) +
+                "} " + super.toString();
     }
 
     public static <K, V1, V2, VR> KTableKTableJoinNodeBuilder<K, V1, V2, VR> kTableKTableJoinNodeBuilder() {
@@ -204,16 +204,16 @@ public class KTableKTableJoinNode<K, V1, V2, VR> extends BaseJoinProcessorNode<K
 
         public KTableKTableJoinNode<K, V1, V2, VR> build() {
             return new KTableKTableJoinNode<>(
-                nodeName,
-                joinThisProcessorParameters,
-                joinOtherProcessorParameters,
-                joinMergeProcessorParameters,
-                thisJoinSide,
-                otherJoinSide,
-                keySerde,
-                valueSerde,
-                joinThisStoreNames,
-                joinOtherStoreNames
+                    nodeName,
+                    joinThisProcessorParameters,
+                    joinOtherProcessorParameters,
+                    joinMergeProcessorParameters,
+                    thisJoinSide,
+                    otherJoinSide,
+                    keySerde,
+                    valueSerde,
+                    joinThisStoreNames,
+                    joinOtherStoreNames
             );
         }
     }

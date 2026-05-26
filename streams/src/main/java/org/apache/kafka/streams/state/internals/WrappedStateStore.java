@@ -115,7 +115,6 @@ public abstract class WrappedStateStore<S extends StateStore, K, V> implements S
         }
     }
 
-
     @Override
     public String name() {
         return wrapped.name();
@@ -168,7 +167,7 @@ public abstract class WrappedStateStore<S extends StateStore, K, V> implements S
         if (config.isCollectExecutionInfo()) {
             final long end = System.nanoTime();
             result.addExecutionInfo(
-                "Handled in " + getClass() + " via WrappedStateStore" + " in " + (end - start)
+                    "Handled in " + getClass() + " via WrappedStateStore" + " in " + (end - start)
                     + "ns");
         }
         return result;

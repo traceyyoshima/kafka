@@ -140,7 +140,6 @@ public class OffsetCheckpoint {
         writer.newLine();
     }
 
-
     /**
      * Reads the offsets from the local checkpoint file, skipping any negative offsets it finds.
      *
@@ -160,7 +159,7 @@ public class OffsetCheckpoint {
                             final String[] pieces = WHITESPACE_MINIMUM_ONCE.split(line);
                             if (pieces.length != 3) {
                                 throw new IOException(
-                                    String.format("Malformed line in offset checkpoint file: '%s'.", line));
+                                        String.format("Malformed line in offset checkpoint file: '%s'.", line));
                             }
 
                             final String topic = pieces[0];
@@ -178,7 +177,7 @@ public class OffsetCheckpoint {
                         }
                         if (offsets.size() != expectedSize) {
                             throw new IOException(
-                                String.format("Expected %d entries but found only %d", expectedSize, offsets.size()));
+                                    String.format("Expected %d entries but found only %d", expectedSize, offsets.size()));
                         }
                         return offsets;
 

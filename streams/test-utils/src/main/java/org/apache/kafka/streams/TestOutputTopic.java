@@ -117,7 +117,6 @@ public class TestOutputTopic<K, V> {
         return output;
     }
 
-
     /**
      * Read output to map.
      * This method can be used if the result is considered a table,

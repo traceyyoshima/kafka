@@ -87,8 +87,8 @@ public final class RecordsIteratorTest {
 
     private static Stream<Arguments> emptyRecords() throws IOException {
         return Stream.of(
-            FileRecords.open(TestUtils.tempFile()),
-            MemoryRecords.EMPTY
+                FileRecords.open(TestUtils.tempFile()),
+                MemoryRecords.EMPTY
         ).map(Arguments::of);
     }
 
@@ -169,8 +169,8 @@ public final class RecordsIteratorTest {
             .setKraftVersion(KRaftVersion.KRAFT_VERSION_0)
             .setVoterSet(Optional.empty())
             .setRawSnapshotWriter(
-                new MockRawSnapshotWriter(new OffsetAndEpoch(100, 10), buffer::set)
-            );
+                    new MockRawSnapshotWriter(new OffsetAndEpoch(100, 10), buffer::set)
+        );
         try (RecordsSnapshotWriter<String> snapshot = builder.build(STRING_SERDE)) {
             snapshot.append(List.of("a", "b", "c"));
             snapshot.append(List.of("d", "e", "f"));
@@ -212,15 +212,15 @@ public final class RecordsIteratorTest {
     public void testControlRecordIterationWithKraftVersion1() {
         AtomicReference<ByteBuffer> buffer = new AtomicReference<>(null);
         VoterSet voterSet = VoterSet.fromMap(
-            VoterSetTest.voterMap(IntStream.of(1, 2, 3), true)
+                VoterSetTest.voterMap(IntStream.of(1, 2, 3), true)
         );
         RecordsSnapshotWriter.Builder builder = new RecordsSnapshotWriter.Builder()
             .setTime(new MockTime())
             .setKraftVersion(KRaftVersion.KRAFT_VERSION_1)
             .setVoterSet(Optional.of(voterSet))
             .setRawSnapshotWriter(
-                new MockRawSnapshotWriter(new OffsetAndEpoch(100, 10), buffer::set)
-            );
+                    new MockRawSnapshotWriter(new OffsetAndEpoch(100, 10), buffer::set)
+        );
         try (RecordsSnapshotWriter<String> snapshot = builder.build(STRING_SERDE)) {
             snapshot.append(List.of("a", "b", "c"));
             snapshot.append(List.of("d", "e", "f"));
@@ -268,8 +268,8 @@ public final class RecordsIteratorTest {
 
     @ParameterizedTest
     @EnumSource(
-        value = ControlRecordType.class,
-        names = {"LEADER_CHANGE", "SNAPSHOT_HEADER", "SNAPSHOT_FOOTER", "KRAFT_VERSION", "KRAFT_VOTERS"}
+            value = ControlRecordType.class,
+            names = {"LEADER_CHANGE", "SNAPSHOT_HEADER", "SNAPSHOT_FOOTER", "KRAFT_VERSION", "KRAFT_VOTERS"}
     )
     void testWithAllSupportedControlRecords(ControlRecordType type) {
         MemoryRecords records = buildControlRecords(type);
@@ -278,8 +278,8 @@ public final class RecordsIteratorTest {
         try (RecordsIterator<String> iterator = createIterator(records, BufferSupplier.NO_CACHING, true)) {
             assertTrue(iterator.hasNext());
             assertEquals(
-                List.of(ControlRecord.of(expectedMessage)),
-                iterator.next().controlRecords()
+                    List.of(ControlRecord.of(expectedMessage)),
+                    iterator.next().controlRecords()
             );
             assertFalse(iterator.hasNext());
         }
@@ -324,12 +324,12 @@ public final class RecordsIteratorTest {
         boolean validateCrc
     ) {
         return new RecordsIterator<>(
-            records,
-            STRING_SERDE,
-            bufferSupplier,
-            Records.HEADER_SIZE_UP_TO_MAGIC,
-            validateCrc,
-            new LogContext()
+                records,
+                STRING_SERDE,
+                bufferSupplier,
+                Records.HEADER_SIZE_UP_TO_MAGIC,
+                validateCrc,
+                new LogContext()
         );
     }
 
@@ -399,9 +399,9 @@ public final class RecordsIteratorTest {
         ) {
             final Message message = defaultControlRecord(type);
             builder.appendControlRecord(
-                0,
-                type,
-                MessageUtil.toByteBufferAccessor(message, defaultControlRecordVersion(type)).buffer()
+                    0,
+                    type,
+                    MessageUtil.toByteBufferAccessor(message, defaultControlRecordVersion(type)).buffer()
             );
         }
 
@@ -418,13 +418,13 @@ public final class RecordsIteratorTest {
 
         for (TestBatch<String> batch : batches) {
             BatchBuilder<String> builder = new BatchBuilder<>(
-                buffer,
-                STRING_SERDE,
-                compression,
-                batch.baseOffset,
-                batch.appendTimestamp,
-                batch.epoch,
-                1024
+                    buffer,
+                    STRING_SERDE,
+                    compression,
+                    batch.baseOffset,
+                    batch.appendTimestamp,
+                    batch.epoch,
+                    1024
             );
 
             for (String record : batch.records) {
@@ -454,10 +454,10 @@ public final class RecordsIteratorTest {
         @Override
         public String toString() {
             return String.format(
-                "TestBatch(baseOffset=%s, epoch=%s, records=%s)",
-                baseOffset,
-                epoch,
-                records
+                    "TestBatch(baseOffset=%s, epoch=%s, records=%s)",
+                    baseOffset,
+                    epoch,
+                    records
             );
         }
 
@@ -467,8 +467,8 @@ public final class RecordsIteratorTest {
             if (o == null || getClass() != o.getClass()) return false;
             TestBatch<?> testBatch = (TestBatch<?>) o;
             return baseOffset == testBatch.baseOffset &&
-                epoch == testBatch.epoch &&
-                Objects.equals(records, testBatch.records);
+                    epoch == testBatch.epoch &&
+                    Objects.equals(records, testBatch.records);
         }
 
         @Override

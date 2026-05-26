@@ -40,12 +40,12 @@ public class EndTxnRequestTest {
         boolean isTransactionV2Enabled = true;
 
         EndTxnRequest.Builder builder = new EndTxnRequest.Builder(
-            new EndTxnRequestData()
-                .setCommitted(true)
-                .setProducerEpoch(producerEpoch)
-                .setProducerId(producerId)
-                .setTransactionalId(transactionId),
-            isTransactionV2Enabled
+                new EndTxnRequestData()
+                    .setCommitted(true)
+                    .setProducerEpoch(producerEpoch)
+                    .setProducerId(producerId)
+                    .setTransactionalId(transactionId),
+                isTransactionV2Enabled
         );
 
         for (short version : ApiKeys.END_TXN.allVersions()) {

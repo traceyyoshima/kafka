@@ -88,17 +88,17 @@ public abstract class InterBrokerSendThread extends ShutdownableThread {
 
     private void drainGeneratedRequests() {
         generateRequests().forEach(request ->
-            unsentRequests.put(
-                request.destination,
-                networkClient.newClientRequest(
-                    request.destination.idString(),
-                    request.request,
-                    request.creationTimeMs,
-                    true,
-                    requestTimeoutMs,
-                    request.handler
+                unsentRequests.put(
+                        request.destination,
+                        networkClient.newClientRequest(
+                                request.destination.idString(),
+                                request.request,
+                                request.creationTimeMs,
+                                true,
+                                requestTimeoutMs,
+                                request.handler
+                        )
                 )
-            )
         );
     }
 
@@ -193,17 +193,17 @@ public abstract class InterBrokerSendThread extends ShutdownableThread {
     ) {
         final RequestCompletionHandler handler = request.callback();
         handler.onComplete(
-            new ClientResponse(
-                request.makeHeader(request.requestBuilder().latestAllowedVersion()),
-                handler,
-                request.destination(),
-                now /* createdTimeMs */,
-                now /* receivedTimeMs */,
-                true /* disconnected */,
-                null /* versionMismatch */,
-                authenticationException,
-                null
-            )
+                new ClientResponse(
+                        request.makeHeader(request.requestBuilder().latestAllowedVersion()),
+                        handler,
+                        request.destination(),
+                        now /* createdTimeMs */,
+                        now /* receivedTimeMs */,
+                        true /* disconnected */,
+                        null /* versionMismatch */,
+                        authenticationException,
+                        null
+                )
         );
     }
 

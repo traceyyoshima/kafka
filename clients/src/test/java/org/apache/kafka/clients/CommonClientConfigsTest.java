@@ -44,37 +44,38 @@ public class CommonClientConfigsTest {
 
     private static class TestConfig extends AbstractConfig {
         private static final ConfigDef CONFIG;
+
         static {
             CONFIG = new ConfigDef()
                 .define(CommonClientConfigs.RECONNECT_BACKOFF_MS_CONFIG,
-                    ConfigDef.Type.LONG,
-                    50L,
-                    atLeast(0L),
-                    ConfigDef.Importance.LOW,
-                    "")
+                        ConfigDef.Type.LONG,
+                        50L,
+                        atLeast(0L),
+                        ConfigDef.Importance.LOW,
+                        "")
                 .define(CommonClientConfigs.RECONNECT_BACKOFF_MAX_MS_CONFIG,
-                    ConfigDef.Type.LONG,
-                    1000L,
-                    atLeast(0L),
-                    ConfigDef.Importance.LOW,
-                    "")
+                        ConfigDef.Type.LONG,
+                        1000L,
+                        atLeast(0L),
+                        ConfigDef.Importance.LOW,
+                        "")
                 .define(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG,
-                    ConfigDef.Type.STRING,
-                    CommonClientConfigs.DEFAULT_SECURITY_PROTOCOL,
-                    in(Utils.enumOptions(SecurityProtocol.class)),
-                    ConfigDef.Importance.MEDIUM,
-                    CommonClientConfigs.SECURITY_PROTOCOL_DOC)
+                        ConfigDef.Type.STRING,
+                        CommonClientConfigs.DEFAULT_SECURITY_PROTOCOL,
+                        in(Utils.enumOptions(SecurityProtocol.class)),
+                        ConfigDef.Importance.MEDIUM,
+                        CommonClientConfigs.SECURITY_PROTOCOL_DOC)
                 .define(SaslConfigs.SASL_MECHANISM,
-                    ConfigDef.Type.STRING,
-                    SaslConfigs.DEFAULT_SASL_MECHANISM,
-                    ConfigDef.Importance.MEDIUM,
-                    SaslConfigs.SASL_MECHANISM_DOC)
+                        ConfigDef.Type.STRING,
+                        SaslConfigs.DEFAULT_SASL_MECHANISM,
+                        ConfigDef.Importance.MEDIUM,
+                        SaslConfigs.SASL_MECHANISM_DOC)
                 .define(CommonClientConfigs.METRIC_REPORTER_CLASSES_CONFIG,
-                    ConfigDef.Type.LIST,
-                    JmxReporter.class.getName(),
-                    new ConfigDef.NonNullValidator(),
-                    ConfigDef.Importance.LOW,
-                    CommonClientConfigs.METRIC_REPORTER_CLASSES_DOC);
+                        ConfigDef.Type.LIST,
+                        JmxReporter.class.getName(),
+                        new ConfigDef.NonNullValidator(),
+                        ConfigDef.Importance.LOW,
+                        CommonClientConfigs.METRIC_REPORTER_CLASSES_DOC);
         }
 
         @Override
@@ -97,17 +98,17 @@ public class CommonClientConfigsTest {
                 defaultConf.getLong(CommonClientConfigs.RECONNECT_BACKOFF_MAX_MS_CONFIG));
 
         TestConfig bothSetConfig = new TestConfig(new HashMap<String, Object>() {{
-                put(CommonClientConfigs.RECONNECT_BACKOFF_MS_CONFIG, "123");
-                put(CommonClientConfigs.RECONNECT_BACKOFF_MAX_MS_CONFIG, "12345");
-            }});
+            put(CommonClientConfigs.RECONNECT_BACKOFF_MS_CONFIG, "123");
+            put(CommonClientConfigs.RECONNECT_BACKOFF_MAX_MS_CONFIG, "12345");
+        }});
         assertEquals(Long.valueOf(123L),
                 bothSetConfig.getLong(CommonClientConfigs.RECONNECT_BACKOFF_MS_CONFIG));
         assertEquals(Long.valueOf(12345L),
                 bothSetConfig.getLong(CommonClientConfigs.RECONNECT_BACKOFF_MAX_MS_CONFIG));
 
         TestConfig reconnectBackoffSetConf = new TestConfig(new HashMap<String, Object>() {{
-                put(CommonClientConfigs.RECONNECT_BACKOFF_MS_CONFIG, "123");
-            }});
+            put(CommonClientConfigs.RECONNECT_BACKOFF_MS_CONFIG, "123");
+        }});
         assertEquals(Long.valueOf(123L),
                 reconnectBackoffSetConf.getLong(CommonClientConfigs.RECONNECT_BACKOFF_MS_CONFIG));
         assertEquals(Long.valueOf(123L),

@@ -196,9 +196,9 @@ public class FetchMetricsManager extends AbstractConsumerMetricsManager {
 
                     MetricName metricName = partitionPreferredReadReplicaMetricName(tp);
                     metrics.addMetricIfAbsent(
-                        metricName,
-                        null,
-                        (Gauge<Integer>) (config, now) -> subscription.preferredReadReplica(tp, 0L).orElse(-1)
+                            metricName,
+                            null,
+                            (Gauge<Integer>) (config, now) -> subscription.preferredReadReplica(tp, 0L).orElse(-1)
                     );
                 }
             }
@@ -262,9 +262,9 @@ public class FetchMetricsManager extends AbstractConsumerMetricsManager {
         if (shouldReportDeprecatedMetric(tp.topic())) {
             MetricName metricName = deprecatedPartitionPreferredReadReplicaMetricName(tp);
             metrics.addMetricIfAbsent(
-                metricName,
-                null,
-                (Gauge<Integer>) (config, now) -> subscription.preferredReadReplica(tp, 0L).orElse(-1)
+                    metricName,
+                    null,
+                    (Gauge<Integer>) (config, now) -> subscription.preferredReadReplica(tp, 0L).orElse(-1)
             );
         }
     }
@@ -312,7 +312,7 @@ public class FetchMetricsManager extends AbstractConsumerMetricsManager {
     @Deprecated
     static Map<String, String> topicPartitionTags(TopicPartition tp) {
         return mkMap(mkEntry("topic", tp.topic().replace('.', '_')),
-            mkEntry("partition", String.valueOf(tp.partition())));
+                mkEntry("partition", String.valueOf(tp.partition())));
     }
 
 }

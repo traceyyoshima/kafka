@@ -125,15 +125,15 @@ public class TargetAssignmentBuilder {
         TasksTuple targetAssignment
     ) {
         return new AssignmentMemberSpec(
-            member.instanceId(),
-            member.rackId(),
-            targetAssignment.activeTasks(),
-            targetAssignment.standbyTasks(),
-            targetAssignment.warmupTasks(),
-            member.processId(),
-            member.clientTags(),
-            Map.of(),
-            Map.of()
+                member.instanceId(),
+                member.rackId(),
+                targetAssignment.activeTasks(),
+                targetAssignment.standbyTasks(),
+                targetAssignment.warmupTasks(),
+                member.processId(),
+                member.clientTags(),
+                Map.of(),
+                Map.of()
         );
     }
 
@@ -251,8 +251,8 @@ public class TargetAssignmentBuilder {
 
         // Prepare the member spec for all members.
         members.forEach((memberId, member) -> memberSpecs.put(memberId, createAssignmentMemberSpec(
-            member,
-            targetAssignment.getOrDefault(memberId, org.apache.kafka.coordinator.group.streams.TasksTuple.EMPTY)
+                member,
+                targetAssignment.getOrDefault(memberId, org.apache.kafka.coordinator.group.streams.TasksTuple.EMPTY)
         )));
 
         // Update the member spec if updated or deleted members.
@@ -261,20 +261,20 @@ public class TargetAssignmentBuilder {
                 memberSpecs.remove(memberId);
             } else {
                 org.apache.kafka.coordinator.group.streams.TasksTuple assignment = targetAssignment.getOrDefault(memberId,
-                    org.apache.kafka.coordinator.group.streams.TasksTuple.EMPTY);
+                        org.apache.kafka.coordinator.group.streams.TasksTuple.EMPTY);
 
                 // A new static member joins and needs to replace an existing departed one.
                 if (updatedMemberOrNull.instanceId().isPresent()) {
                     String previousMemberId = staticMembers.get(updatedMemberOrNull.instanceId().get());
                     if (previousMemberId != null && !previousMemberId.equals(memberId)) {
                         assignment = targetAssignment.getOrDefault(previousMemberId,
-                            org.apache.kafka.coordinator.group.streams.TasksTuple.EMPTY);
+                                org.apache.kafka.coordinator.group.streams.TasksTuple.EMPTY);
                     }
                 }
 
                 memberSpecs.put(memberId, createAssignmentMemberSpec(
-                    updatedMemberOrNull,
-                    assignment
+                        updatedMemberOrNull,
+                        assignment
                 ));
             }
         });
@@ -286,15 +286,15 @@ public class TargetAssignmentBuilder {
                 throw new IllegalStateException("Subtopologies must be present if topology is ready.");
             }
             newGroupAssignment = assignor.assign(
-                new GroupSpecImpl(
-                    Collections.unmodifiableMap(memberSpecs),
-                    assignmentConfigs
-                ),
-                new TopologyMetadata(metadataImage, topology.subtopologies().get())
+                    new GroupSpecImpl(
+                            Collections.unmodifiableMap(memberSpecs),
+                            assignmentConfigs
+                    ),
+                    new TopologyMetadata(metadataImage, topology.subtopologies().get())
             );
         } else {
             newGroupAssignment = new GroupAssignment(
-                memberSpecs.keySet().stream().collect(Collectors.toMap(x -> x, x -> MemberAssignment.empty())));
+                    memberSpecs.keySet().stream().collect(Collectors.toMap(x -> x, x -> MemberAssignment.empty())));
         }
 
         // Compute delta from previous to new target assignment and create the
@@ -311,18 +311,18 @@ public class TargetAssignmentBuilder {
             if (oldMemberAssignment == null) {
                 // If the member had no assignment, we always create a record for it.
                 records.add(StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentRecord(
-                    groupId,
-                    memberId,
-                    newMemberAssignment
+                        groupId,
+                        memberId,
+                        newMemberAssignment
                 ));
             } else {
                 // If the member had an assignment, we only create a record if the
                 // new assignment is different.
                 if (!newMemberAssignment.equals(oldMemberAssignment)) {
                     records.add(StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentRecord(
-                        groupId,
-                        memberId,
-                        newMemberAssignment
+                            groupId,
+                            memberId,
+                            newMemberAssignment
                     ));
                 }
             }
@@ -330,9 +330,9 @@ public class TargetAssignmentBuilder {
 
         // Bump the target assignment epoch.
         records.add(StreamsCoordinatorRecordHelpers.newStreamsGroupTargetAssignmentMetadataRecord(
-            groupId,
-            groupEpoch,
-            time.milliseconds()
+                groupId,
+                groupEpoch,
+                time.milliseconds()
         ));
 
         return new TargetAssignmentResult(records, newTargetAssignment);
@@ -345,9 +345,9 @@ public class TargetAssignmentBuilder {
         MemberAssignment newMemberAssignment = newGroupAssignment.members().get(memberId);
         if (newMemberAssignment != null) {
             return new TasksTuple(
-                newMemberAssignment.activeTasks(),
-                newMemberAssignment.standbyTasks(),
-                newMemberAssignment.warmupTasks()
+                    newMemberAssignment.activeTasks(),
+                    newMemberAssignment.standbyTasks(),
+                    newMemberAssignment.warmupTasks()
             );
         } else {
             return TasksTuple.EMPTY;

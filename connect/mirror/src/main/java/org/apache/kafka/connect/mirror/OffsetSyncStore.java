@@ -95,7 +95,7 @@ public class OffsetSyncStore implements AutoCloseable {
                 admin,
                 (error, record) -> this.handleRecord(record),
                 Time.SYSTEM,
-                ignored -> { },
+                ignored -> {},
                 topicPartition -> topicPartition.partition() == 0
         );
     }
@@ -312,7 +312,6 @@ public class OffsetSyncStore implements AutoCloseable {
                 .map(syncs -> lookupLatestSync(syncs, upstreamOffset));
     }
 
-
     private OffsetSync lookupLatestSync(OffsetSync[] syncs, long upstreamOffset) {
         // linear search the syncs, effectively a binary search over the topic offsets
         // Search from latest to earliest to find the sync that gives the best accuracy
@@ -333,7 +332,7 @@ public class OffsetSyncStore implements AutoCloseable {
         if (syncIdx >= syncs.length)
             throw new IllegalArgumentException(
                     "Requested sync " + (syncIdx + 1) + " for " + topicPartition
-                            + " but there are only " + syncs.length + " syncs available for that topic partition"
+                    + " but there are only " + syncs.length + " syncs available for that topic partition"
             );
         return syncs[syncIdx];
     }

@@ -33,7 +33,7 @@ public class RenewDelegationTokenRequest extends AbstractRequest {
 
     public static RenewDelegationTokenRequest parse(Readable readable, short version) {
         return new RenewDelegationTokenRequest(new RenewDelegationTokenRequestData(
-            readable, version), version);
+                readable, version), version);
     }
 
     @Override

@@ -77,7 +77,7 @@ public final class TranslatedValueMapView<K, V, B> extends AbstractMap<K, V> {
         public Entry<K, V> next() {
             Entry<K, B> underlyingEntry = underlyingIterator.next();
             return new AbstractMap.SimpleImmutableEntry<>(underlyingEntry.getKey(),
-                valueMapping.apply(underlyingEntry.getValue()));
+                    valueMapping.apply(underlyingEntry.getValue()));
         }
     }
 

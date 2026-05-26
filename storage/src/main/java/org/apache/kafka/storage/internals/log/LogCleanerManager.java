@@ -246,28 +246,28 @@ public class LogCleanerManager {
                     .filter(entry -> entry.getValue().config().compact &&
                             !inProgress.containsKey(entry.getKey()) &&
                             !isUncleanablePartition(entry.getValue(), entry.getKey())
-                    )
+            )
                     .map(entry -> {
-                                // create a LogToClean instance for each
-                                TopicPartition topicPartition = entry.getKey();
-                                UnifiedLog log = entry.getValue();
-                                try {
-                                    Long lastCleanOffset = lastClean.get(topicPartition);
-                                    OffsetsToClean offsetsToClean = cleanableOffsets(log, Optional.ofNullable(lastCleanOffset), now);
-                                    // update checkpoint for logs with invalid checkpointed offsets
-                                    if (offsetsToClean.forceUpdateCheckpoint) {
-                                        updateCheckpoints(log.parentDirFile(), Optional.of(Map.entry(topicPartition, offsetsToClean.firstDirtyOffset)), Optional.empty());
-                                    }
-                                    long compactionDelayMs = maxCompactionDelay(log, offsetsToClean.firstDirtyOffset, now);
-                                    preCleanStats.updateMaxCompactionDelay(compactionDelayMs);
-
-                                    return new LogToClean(log, offsetsToClean.firstDirtyOffset,
-                                            offsetsToClean.firstUncleanableDirtyOffset, compactionDelayMs > 0);
-                                } catch (Throwable e) {
-                                    throw new LogCleaningException(log, "Failed to calculate log cleaning stats for partition " + topicPartition, e);
-                                }
+                        // create a LogToClean instance for each
+                        TopicPartition topicPartition = entry.getKey();
+                        UnifiedLog log = entry.getValue();
+                        try {
+                            Long lastCleanOffset = lastClean.get(topicPartition);
+                            OffsetsToClean offsetsToClean = cleanableOffsets(log, Optional.ofNullable(lastCleanOffset), now);
+                            // update checkpoint for logs with invalid checkpointed offsets
+                            if (offsetsToClean.forceUpdateCheckpoint) {
+                                updateCheckpoints(log.parentDirFile(), Optional.of(Map.entry(topicPartition, offsetsToClean.firstDirtyOffset)), Optional.empty());
                             }
-                    )
+                            long compactionDelayMs = maxCompactionDelay(log, offsetsToClean.firstDirtyOffset, now);
+                            preCleanStats.updateMaxCompactionDelay(compactionDelayMs);
+
+                            return new LogToClean(log, offsetsToClean.firstDirtyOffset,
+                                            offsetsToClean.firstUncleanableDirtyOffset, compactionDelayMs > 0);
+                        } catch (Throwable e) {
+                            throw new LogCleaningException(log, "Failed to calculate log cleaning stats for partition " + topicPartition, e);
+                        }
+                    }
+            )
                     .filter(ltc -> ltc.totalBytes() > 0) // skip any empty logs
                     .toList();
 
@@ -711,7 +711,7 @@ public class LogCleanerManager {
             // The dirty offset has gotten ahead of the log end offset. This could happen if there was data
             // corruption at the end of the log. We conservatively assume that the full log needs cleaning.
             LOG.warn("The last checkpoint dirty offset for partition {} is {}, " +
-                            "which is larger than the log end offset {}. Resetting to the log start offset {}.",
+                    "which is larger than the log end offset {}. Resetting to the log start offset {}.",
                     log.name(), checkpointDirtyOffset, log.logEndOffset(), logStartOffset);
 
             firstDirtyOffset = logStartOffset;
@@ -728,21 +728,21 @@ public class LogCleanerManager {
         // 2. The last stable offset (including the high watermark)
         // 3. Any segments closer to the head of the log than the minimum compaction lag time
         long firstUncleanableDirtyOffset = Stream.of(
-                        // we do not clean beyond the last stable offset
-                        Optional.of(log.lastStableOffset()),
+                // we do not clean beyond the last stable offset
+                Optional.of(log.lastStableOffset()),
 
-                        // the active segment is always uncleanable
-                        Optional.of(log.activeSegment().baseOffset()),
+                // the active segment is always uncleanable
+                Optional.of(log.activeSegment().baseOffset()),
 
-                        // the first segment whose largest message timestamp is within a minimum time lag from now
-                        minCompactionLagMs > 0 ? findFirstUncleanableSegment(log, firstDirtyOffset, now, minCompactionLagMs) : Optional.<Long>empty()
+                // the first segment whose largest message timestamp is within a minimum time lag from now
+                minCompactionLagMs > 0 ? findFirstUncleanableSegment(log, firstDirtyOffset, now, minCompactionLagMs) : Optional.<Long>empty()
                 )
                 .flatMap(Optional::stream)
                 .min(Long::compare)
                 .orElseThrow(() -> new IllegalStateException("No uncleanable offset found"));
 
         LOG.debug("Finding range of cleanable offsets for log={}. Last clean offset={} " +
-                        "now={} => firstDirtyOffset={} firstUncleanableOffset={} activeSegment.baseOffset={}",
+                "now={} => firstDirtyOffset={} firstUncleanableOffset={} activeSegment.baseOffset={}",
                 log.name(), lastCleanOffset, now, firstDirtyOffset, firstUncleanableDirtyOffset, log.activeSegment().baseOffset());
 
         return new OffsetsToClean(firstDirtyOffset, Math.max(firstDirtyOffset, firstUncleanableDirtyOffset), forceUpdateCheckpoint);
@@ -771,7 +771,7 @@ public class LogCleanerManager {
             boolean isUncleanable = segment.largestTimestamp() > now - minCompactionLagMs;
 
             LOG.debug("Checking if log segment may be cleaned: log='{}' segment.baseOffset={} " +
-                            "segment.largestTimestamp={}; now - compactionLag={}; is uncleanable={}",
+                    "segment.largestTimestamp={}; now - compactionLag={}; is uncleanable={}",
                     log.name(), segment.baseOffset(), segment.largestTimestamp(), now - minCompactionLagMs, isUncleanable);
 
             if (isUncleanable) {

@@ -71,7 +71,7 @@ public class FileStreamSinkConnectorIntegrationTest {
         Map<String, String> connectorConfigs = baseConnectorConfigs(TOPIC, tempFilePath.toString());
         connect.configureConnector(CONNECTOR_NAME, connectorConfigs);
         connect.assertions().assertConnectorAndExactlyNumTasksAreRunning(CONNECTOR_NAME, 1,
-            "Connector and task did not start in time");
+                "Connector and task did not start in time");
 
         verifyLinesInFile(tempFilePath, NUM_MESSAGES, true);
     }
@@ -83,7 +83,7 @@ public class FileStreamSinkConnectorIntegrationTest {
         Map<String, String> connectorConfigs = baseConnectorConfigs(TOPIC, tempFilePath.toString());
         connect.configureConnector(CONNECTOR_NAME, connectorConfigs);
         connect.assertions().assertConnectorAndExactlyNumTasksAreRunning(CONNECTOR_NAME, 1,
-            "Connector and task did not start in time");
+                "Connector and task did not start in time");
 
         verifyLinesInFile(tempFilePath, NUM_MESSAGES, true);
 
@@ -95,7 +95,7 @@ public class FileStreamSinkConnectorIntegrationTest {
 
         connect.resumeConnector(CONNECTOR_NAME);
         connect.assertions().assertConnectorAndExactlyNumTasksAreRunning(CONNECTOR_NAME, 1,
-            "Connector and task did not resume in time");
+                "Connector and task did not resume in time");
 
         // The last message should be re-processed when the connector is resumed after the offsets are altered
         verifyLinesInFile(tempFilePath, NUM_MESSAGES + 1, false);
@@ -108,7 +108,7 @@ public class FileStreamSinkConnectorIntegrationTest {
         Map<String, String> connectorConfigs = baseConnectorConfigs(TOPIC, tempFilePath.toString());
         connect.configureConnector(CONNECTOR_NAME, connectorConfigs);
         connect.assertions().assertConnectorAndExactlyNumTasksAreRunning(CONNECTOR_NAME, 1,
-            "Connector and task did not start in time");
+                "Connector and task did not start in time");
 
         verifyLinesInFile(tempFilePath, NUM_MESSAGES, true);
 
@@ -120,7 +120,7 @@ public class FileStreamSinkConnectorIntegrationTest {
 
         connect.resumeConnector(CONNECTOR_NAME);
         connect.assertions().assertConnectorAndExactlyNumTasksAreRunning(CONNECTOR_NAME, 1,
-            "Connector and task did not resume in time");
+                "Connector and task did not resume in time");
 
         // All the messages should be re-processed when the connector is resumed after the offsets are reset
         verifyLinesInFile(tempFilePath, 2 * NUM_MESSAGES, false);
@@ -139,7 +139,7 @@ public class FileStreamSinkConnectorIntegrationTest {
 
         connect.configureConnector(CONNECTOR_NAME, connectorConfigs);
         connect.assertions().assertConnectorAndExactlyNumTasksAreRunning(CONNECTOR_NAME, 2,
-            "Connector and task did not start in time");
+                "Connector and task did not start in time");
 
         // Only verify the number of lines since the messages can be consumed in any order across the two topics
         verifyLinesInFile(tempFilePath, 2 * NUM_MESSAGES, false);

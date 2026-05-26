@@ -72,7 +72,7 @@ public class LogAppendInfo {
                          int validBytes,
                          long lastOffsetOfFirstBatch) {
         this(firstOffset, lastOffset, lastLeaderEpoch, maxTimestamp, logAppendTime, logStartOffset,
-            recordValidationStats, sourceCompression, validBytes, lastOffsetOfFirstBatch, List.of(),
+                recordValidationStats, sourceCompression, validBytes, lastOffsetOfFirstBatch, List.of(),
                 LeaderHwChange.NONE);
     }
 

@@ -172,7 +172,7 @@ public class ClusterConfigState {
      * been generated
      */
     public Map<String, String> appliedConnectorConfig(String connector) {
-        AppliedConnectorConfig appliedConfig =  appliedConnectorConfigs.get(connector);
+        AppliedConnectorConfig appliedConfig = appliedConnectorConfigs.get(connector);
         return appliedConfig != null ? appliedConfig.transformedConfig(configTransformer) : null;
     }
 

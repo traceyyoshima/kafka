@@ -234,7 +234,7 @@ public class MockConsumer<K, V> implements Consumer<K, V> {
         Set<String> topicsToSubscribe = new HashSet<>();
         for (String topic: partitions.keySet()) {
             if (pattern.matcher(topic).matches() &&
-                !subscriptions.subscription().contains(topic))
+                    !subscriptions.subscription().contains(topic))
                 topicsToSubscribe.add(topic);
         }
         ensureNotClosed();
@@ -688,7 +688,7 @@ public class MockConsumer<K, V> implements Consumer<K, V> {
      * Schedules a no-op task to be executed during a poll invocation.
      */
     public synchronized void scheduleNopPollTask() {
-        schedulePollTask(() -> { });
+        schedulePollTask(() -> {});
     }
 
     public synchronized Set<TopicPartition> paused() {

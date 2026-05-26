@@ -50,7 +50,7 @@ public class SaslClientCallbackHandler implements AuthenticateCallbackHandler {
 
     @Override
     public void configure(Map<String, ?> configs, String saslMechanism, List<AppConfigurationEntry> jaasConfigEntries) {
-        this.mechanism  = saslMechanism;
+        this.mechanism = saslMechanism;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class SaslClientCallbackHandler implements AuthenticateCallbackHandler {
                     ((PasswordCallback) callback).setPassword(password);
                 } else {
                     String errorMessage = "Could not login: the client is being asked for a password, but the Kafka" +
-                             " client code does not currently support obtaining a password from the user.";
+                            " client code does not currently support obtaining a password from the user.";
                     throw new UnsupportedCallbackException(callback, errorMessage);
                 }
             } else if (callback instanceof RealmCallback) {

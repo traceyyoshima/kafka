@@ -43,7 +43,7 @@ public final class ClientQuotasDelta {
             ClientQuotaEntity entity = entry.getKey();
             ClientQuotaImage quotaImage = entry.getValue();
             ClientQuotaDelta quotaDelta = changes.computeIfAbsent(entity,
-                __ -> new ClientQuotaDelta(quotaImage));
+                    __ -> new ClientQuotaDelta(quotaImage));
             quotaDelta.finishSnapshot();
         }
     }
@@ -62,7 +62,7 @@ public final class ClientQuotasDelta {
 
     public ClientQuotasImage apply() {
         Map<ClientQuotaEntity, ClientQuotaImage> newEntities =
-            new HashMap<>(image.entities().size());
+                new HashMap<>(image.entities().size());
         for (Entry<ClientQuotaEntity, ClientQuotaImage> entry : image.entities().entrySet()) {
             ClientQuotaEntity entity = entry.getKey();
             ClientQuotaDelta change = changes.get(entity);
@@ -90,7 +90,7 @@ public final class ClientQuotasDelta {
     @Override
     public String toString() {
         return "ClientQuotasDelta(" +
-            "changes=" + changes +
-            ')';
+                "changes=" + changes +
+                ')';
     }
 }

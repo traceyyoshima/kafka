@@ -102,9 +102,9 @@ public class FetchRequestManager extends AbstractFetch implements RequestManager
     @Override
     public PollResult poll(long currentTimeMs) {
         return pollInternal(
-            this::prepareFetchRequests,
-            this::handleFetchSuccess,
-            this::handleFetchFailure
+                this::prepareFetchRequests,
+                this::handleFetchSuccess,
+                this::handleFetchFailure
         );
     }
 

@@ -57,7 +57,6 @@ public class AclDeleteResult {
         return aclBindingDeleteResults;
     }
 
-
     /**
      * Delete result for each ACL binding that matched a delete filter.
      */

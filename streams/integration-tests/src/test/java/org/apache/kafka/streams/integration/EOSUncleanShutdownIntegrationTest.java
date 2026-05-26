@@ -104,9 +104,9 @@ public class EOSUncleanShutdownIntegrationTest {
         final KTable<String, String> valueCounts = inputStream
             .groupByKey()
             .aggregate(
-                () -> "()",
-                (key, value, aggregate) -> aggregate + ",(" + key + ": " + value + ")",
-                Materialized.as("aggregated_value"));
+                    () -> "()",
+                    (key, value, aggregate) -> aggregate + ",(" + key + ": " + value + ")",
+                    Materialized.as("aggregated_value"));
 
         valueCounts.toStream().peek((key, value) -> {
             if (recordCount.incrementAndGet() >= RECORD_TOTAL) {
@@ -115,12 +115,12 @@ public class EOSUncleanShutdownIntegrationTest {
         });
 
         final Properties producerConfig = mkProperties(mkMap(
-            mkEntry(ProducerConfig.CLIENT_ID_CONFIG, "anything"),
-            mkEntry(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, ((Serializer<String>) STRING_SERIALIZER).getClass().getName()),
-            mkEntry(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ((Serializer<String>) STRING_SERIALIZER).getClass().getName()),
-            mkEntry(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers())
+                mkEntry(ProducerConfig.CLIENT_ID_CONFIG, "anything"),
+                mkEntry(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, ((Serializer<String>) STRING_SERIALIZER).getClass().getName()),
+                mkEntry(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ((Serializer<String>) STRING_SERIALIZER).getClass().getName()),
+                mkEntry(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers())
         ));
-        final KafkaStreams driver =  new KafkaStreams(builder.build(), STREAMS_CONFIG);
+        final KafkaStreams driver = new KafkaStreams(builder.build(), STREAMS_CONFIG);
         driver.cleanUp();
         driver.start();
 
@@ -133,14 +133,14 @@ public class EOSUncleanShutdownIntegrationTest {
 
         try {
             IntegrationTestUtils.produceSynchronously(producerConfig, false, input, Optional.empty(),
-                singletonList(new KeyValueTimestamp<>("k1", "v1", 0L)));
+                    singletonList(new KeyValueTimestamp<>("k1", "v1", 0L)));
 
             // wait until the first request is processed and some files are created in it
             TestUtils.waitForCondition(() -> taskStateDir.exists() && taskStateDir.isDirectory() && taskStateDir.list().length > 0,
-                "Failed awaiting CreateTopics first request failure");
+                    "Failed awaiting CreateTopics first request failure");
             IntegrationTestUtils.produceSynchronously(producerConfig, false, input, Optional.empty(),
-                asList(new KeyValueTimestamp<>("k2", "v2", 1L),
-                    new KeyValueTimestamp<>("k3", "v3", 2L)));
+                    asList(new KeyValueTimestamp<>("k2", "v2", 1L),
+                            new KeyValueTimestamp<>("k3", "v3", 2L)));
 
             TestUtils.waitForCondition(() -> recordCount.get() == RECORD_TOTAL,
                     () -> "Expected " + RECORD_TOTAL + " records processed but only got " + recordCount.get());
@@ -157,8 +157,8 @@ public class EOSUncleanShutdownIntegrationTest {
             // case 2: The state directory is not cleaned up, for it does not include any checkpoint file.
             // case 3: The state directory is not cleaned up, for it includes a checkpoint file but it is empty.
             assertTrue(!taskStateDir.exists()
-                || (taskStateDir.exists() && taskStateDir.list().length > 0 && !taskCheckpointFile.exists())
-                || (taskCheckpointFile.exists() && taskCheckpointFile.length() == 0L));
+                    || (taskStateDir.exists() && taskStateDir.list().length > 0 && !taskCheckpointFile.exists())
+                    || (taskCheckpointFile.exists() && taskCheckpointFile.length() == 0L));
 
             quietlyCleanStateAfterTest(CLUSTER, driver);
         }

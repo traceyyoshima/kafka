@@ -70,7 +70,7 @@ public class ListTransactionsResult {
         future.whenComplete((brokerFutures, exception) -> {
             if (brokerFutures != null) {
                 Map<Integer, KafkaFuture<Collection<TransactionListing>>> brokerFuturesCopy =
-                    new HashMap<>(brokerFutures.size());
+                        new HashMap<>(brokerFutures.size());
                 brokerFuturesCopy.putAll(brokerFutures);
                 result.complete(brokerFuturesCopy);
             } else {
@@ -101,18 +101,18 @@ public class ListTransactionsResult {
 
             Set<Integer> remainingResponses = new HashSet<>(map.keySet());
             map.forEach((brokerId, future) ->
-                future.whenComplete((listings, brokerException) -> {
-                    if (brokerException != null) {
-                        allFuture.completeExceptionally(brokerException);
-                    } else if (!allFuture.isDone()) {
-                        allListingsMap.put(brokerId, listings);
-                        remainingResponses.remove(brokerId);
+                    future.whenComplete((listings, brokerException) -> {
+                        if (brokerException != null) {
+                            allFuture.completeExceptionally(brokerException);
+                        } else if (!allFuture.isDone()) {
+                            allListingsMap.put(brokerId, listings);
+                            remainingResponses.remove(brokerId);
 
-                        if (remainingResponses.isEmpty()) {
-                            allFuture.complete(allListingsMap);
+                            if (remainingResponses.isEmpty()) {
+                                allFuture.complete(allListingsMap);
+                            }
                         }
-                    }
-                })
+                    })
             );
         });
 

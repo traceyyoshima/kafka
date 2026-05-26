@@ -233,13 +233,13 @@ public class InternalStreamsBuilder implements InternalNameProvider {
         final String processorName = named.orElseGenerateWithPrefix(this, KTableImpl.SOURCE_NAME);
 
         final GraphNode globalStoreNode = new GlobalStoreNode<>(
-            storeFactory,
-            sourceName,
-            topic,
-            consumed,
-            processorName,
-            stateUpdateSupplier,
-            reprocessOnRestore
+                storeFactory,
+                sourceName,
+                topic,
+                consumed,
+                processorName,
+                stateUpdateSupplier,
+                reprocessOnRestore
         );
 
         addGraphNode(root, globalStoreNode);
@@ -273,8 +273,8 @@ public class InternalStreamsBuilder implements InternalNameProvider {
 
         if (node.parentNodes().isEmpty() && !node.nodeName().equals(TOPOLOGY_ROOT)) {
             throw new IllegalStateException(
-                "Nodes should not have a null parent node.  Name: " + node.nodeName() + " Type: "
-                + node.getClass().getSimpleName());
+                    "Nodes should not have a null parent node.  Name: " + node.nodeName() + " Type: "
+                    + node.getClass().getSimpleName());
         }
 
         if (node.isKeyChangingOperation()) {
@@ -346,7 +346,7 @@ public class InternalStreamsBuilder implements InternalNameProvider {
             optimizationConfigs = Collections.emptySet();
         } else {
             optimizationConfigs = StreamsConfig.verifyTopologyOptimizationConfigs(
-                (String) props.get(StreamsConfig.TOPOLOGY_OPTIMIZATION_CONFIG));
+                    (String) props.get(StreamsConfig.TOPOLOGY_OPTIMIZATION_CONFIG));
         }
         if (optimizationConfigs.contains(StreamsConfig.REUSE_KTABLE_SOURCE_TOPICS)) {
             LOG.debug("Optimizing the Kafka Streams graph for ktable source nodes");
@@ -369,13 +369,12 @@ public class InternalStreamsBuilder implements InternalNameProvider {
         for (final BaseRepartitionNode<?, ?> partitionNode : nodes) {
             if (partitionNode.processorParameters() != null) {
                 partitionNode.setProcessorParameters(new ProcessorParameters<>(
-                    new KStreamFilter<>((k, v) -> k != null, false),
-                    partitionNode.processorParameters().processorName()
+                        new KStreamFilter<>((k, v) -> k != null, false),
+                        partitionNode.processorParameters().processorName()
                 ));
             }
         }
     }
-
 
     private void mergeDuplicateSourceNodes() {
         final Map<String, StreamSourceNode<?, ?>> topicsToSourceNodes = new HashMap<>();
@@ -384,7 +383,7 @@ public class InternalStreamsBuilder implements InternalNameProvider {
         // a regular HashMap and containsKey(Pattern). But for our purposes it's sufficient to compare the compiled
         // string and flags to determine if two pattern subscriptions can be merged into a single source node
         final Map<Pattern, StreamSourceNode<?, ?>> patternsToSourceNodes =
-            new TreeMap<>(Comparator.comparing(Pattern::pattern).thenComparing(Pattern::flags));
+                new TreeMap<>(Comparator.comparing(Pattern::pattern).thenComparing(Pattern::flags));
 
         for (final GraphNode graphNode : root.children()) {
             if (graphNode instanceof StreamSourceNode) {
@@ -406,17 +405,17 @@ public class InternalStreamsBuilder implements InternalNameProvider {
                                 topicsToSourceNodes.put(topic, currentSourceNode);
                             } else {
                                 final StreamSourceNode<?, ?> mainSourceNode = topicsToSourceNodes.get(
-                                    topic);
+                                        topic);
                                 // TODO we only merge source nodes if the subscribed topic(s) are an exact match, so it's still not
                                 // possible to subscribe to topicA in one KStream and topicA + topicB in another. We could achieve
                                 // this by splitting these source nodes into one topic per node and routing to the subscribed children
                                 if (!mainSourceNode.topicNames()
                                     .equals(currentSourceNode.topicNames())) {
                                     LOG.error(
-                                        "Topic {} was found in  subscription for non-equal source nodes {} and {}",
-                                        topic, mainSourceNode, currentSourceNode);
+                                            "Topic {} was found in  subscription for non-equal source nodes {} and {}",
+                                            topic, mainSourceNode, currentSourceNode);
                                     throw new TopologyException(
-                                        "Two source nodes are subscribed to overlapping but not equal input topics");
+                                            "Two source nodes are subscribed to overlapping but not equal input topics");
                                 }
                                 mainSourceNode.merge(currentSourceNode);
                                 root.removeChild(graphNode);
@@ -427,7 +426,6 @@ public class InternalStreamsBuilder implements InternalNameProvider {
             }
         }
     }
-
 
     /**
      * The self-join rewriting can be applied if the StreamStreamJoinNode has a single parent.
@@ -477,7 +475,7 @@ public class InternalStreamsBuilder implements InternalNameProvider {
     private void mergeRepartitionTopics() {
         maybeUpdateKeyChangingRepartitionNodeMap();
         final Iterator<Entry<GraphNode, LinkedHashSet<OptimizableRepartitionNode<?, ?>>>> entryIterator =
-            keyChangingOperationsToOptimizableRepartitionNodes.entrySet().iterator();
+                keyChangingOperationsToOptimizableRepartitionNodes.entrySet().iterator();
 
         while (entryIterator.hasNext()) {
             final Map.Entry<GraphNode, LinkedHashSet<OptimizableRepartitionNode<?, ?>>> entry = entryIterator.next();
@@ -587,7 +585,7 @@ public class InternalStreamsBuilder implements InternalNameProvider {
                                                                           final Serde<V> valueSerde) {
 
         final OptimizableRepartitionNode.OptimizableRepartitionNodeBuilder<K, V> repartitionNodeBuilder =
-            OptimizableRepartitionNode.optimizableRepartitionNodeBuilder();
+                OptimizableRepartitionNode.optimizableRepartitionNodeBuilder();
         KStreamImpl.createRepartitionedSource(
                 this,
                 keySerde,
@@ -654,7 +652,7 @@ public class InternalStreamsBuilder implements InternalNameProvider {
         tableSuppressNodesNodes.forEach(node -> {
             if (isVersionedUpstream(node)) {
                 throw new TopologyException("suppress() is only supported for non-versioned KTables " +
-                    "(note that version semantics might be inherited from upstream)");
+                        "(note that version semantics might be inherited from upstream)");
             }
         });
     }
@@ -690,7 +688,7 @@ public class InternalStreamsBuilder implements InternalNameProvider {
 
     // Visible for testing.
     GraphNode findParentNodeMatching(final GraphNode startSeekingNode,
-                                             final Predicate<GraphNode> parentNodePredicate) {
+                                     final Predicate<GraphNode> parentNodePredicate) {
         if (parentNodePredicate.test(startSeekingNode)) {
             return startSeekingNode;
         }

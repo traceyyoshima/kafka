@@ -118,7 +118,7 @@ public abstract class RoundTripWorkerBase implements TaskWorker {
         }
         log.info("{}: Activating RoundTripWorker.", id);
         this.executor = Executors.newScheduledThreadPool(3,
-            ThreadUtils.createThreadFactory("RoundTripWorker%d", false));
+                ThreadUtils.createThreadFactory("RoundTripWorker%d", false));
         this.status = status;
         this.doneFuture = doneFuture;
         this.producer = null;
@@ -149,7 +149,7 @@ public abstract class RoundTripWorkerBase implements TaskWorker {
                 }
                 status.update(new TextNode("Creating " + newTopics.keySet().size() + " topic(s)"));
                 WorkerUtils.createTopics(log, spec.bootstrapServers(), spec.commonClientConf(),
-                    spec.adminClientConf(), newTopics, false);
+                        spec.adminClientConf(), newTopics, false);
                 status.update(new TextNode("Created " + newTopics.keySet().size() + " topic(s)"));
                 toSendTracker = new ToSendTracker(spec.maxMessages());
                 toReceiveTracker = new ToReceiveTracker();
@@ -157,7 +157,7 @@ public abstract class RoundTripWorkerBase implements TaskWorker {
                 executor.submit(new ConsumerRunnable(active));
                 executor.submit(new StatusUpdater());
                 executor.scheduleWithFixedDelay(
-                    new StatusUpdater(), 30, 30, TimeUnit.SECONDS);
+                        new StatusUpdater(), 30, 30, TimeUnit.SECONDS);
             } catch (Throwable e) {
                 WorkerUtils.abort(log, "Prepare", e, doneFuture);
             }
@@ -221,7 +221,7 @@ public abstract class RoundTripWorkerBase implements TaskWorker {
             // user may over-write the defaults with common client config and producer config
             WorkerUtils.addConfigsToProperties(props, spec.commonClientConf(), spec.producerConf());
             producer = new KafkaProducer<>(props, new ByteArraySerializer(),
-                new ByteArraySerializer());
+                    new ByteArraySerializer());
             int perPeriod = WorkerUtils.
                 perSecToPerPeriod(spec.targetMessagesPerSec(), THROTTLE_PERIOD_MS);
             this.throttle = new Throttle(perPeriod, THROTTLE_PERIOD_MS);
@@ -252,8 +252,8 @@ public abstract class RoundTripWorkerBase implements TaskWorker {
                     TopicPartition partition = iter.next();
                     // we explicitly specify generator position based on message index
                     ProducerRecord<byte[], byte[]> record = new ProducerRecord<>(partition.topic(),
-                        partition.partition(), KEY_GENERATOR.generate(messageIndex),
-                        spec.valueGenerator().generate(messageIndex));
+                            partition.partition(), KEY_GENERATOR.generate(messageIndex),
+                            spec.valueGenerator().generate(messageIndex));
                     producer.send(record, (metadata, exception) -> {
                         if (exception == null) {
                             lock.lock();
@@ -266,7 +266,7 @@ public abstract class RoundTripWorkerBase implements TaskWorker {
                             }
                         } else {
                             log.info("{}: Got exception when sending message {}: {}",
-                                id, messageIndex, exception.getMessage());
+                                    id, messageIndex, exception.getMessage());
                             toSendTracker.addFailed(messageIndex);
                         }
                     });
@@ -277,7 +277,7 @@ public abstract class RoundTripWorkerBase implements TaskWorker {
                 lock.lock();
                 try {
                     log.info("{}: ProducerRunnable is exiting.  messagesSent={}; uniqueMessagesSent={}; " +
-                                    "ackedSends={}/{}.", id, messagesSent, uniqueMessagesSent,
+                            "ackedSends={}/{}.", id, messagesSent, uniqueMessagesSent,
                             spec.maxMessages() - unackedSends, spec.maxMessages());
                 } finally {
                     lock.unlock();
@@ -314,13 +314,13 @@ public abstract class RoundTripWorkerBase implements TaskWorker {
             synchronized (this) {
                 numToReceive = pending.size();
                 for (Iterator<Long> iter = pending.iterator();
-                        iter.hasNext() && (list.size() < LOG_NUM_MESSAGES); ) {
+                    iter.hasNext() && (list.size() < LOG_NUM_MESSAGES);) {
                     Long i = iter.next();
                     list.add(i);
                 }
             }
             log.info("{}: consumer waiting for {} message(s), starting with: {}",
-                id, numToReceive, list.stream().map(Object::toString).collect(Collectors.joining(", ")));
+                    id, numToReceive, list.stream().map(Object::toString).collect(Collectors.joining(", ")));
         }
     }
 
@@ -380,8 +380,8 @@ public abstract class RoundTripWorkerBase implements TaskWorker {
                 WorkerUtils.abort(log, "ConsumerRunnable", e, doneFuture);
             } finally {
                 log.info("{}: ConsumerRunnable is exiting.  Invoked poll {} time(s).  " +
-                    "messagesReceived = {}; uniqueMessagesReceived = {}.",
-                    id, pollInvoked, messagesReceived, uniqueMessagesReceived);
+                        "messagesReceived = {}; uniqueMessagesReceived = {}.",
+                        id, pollInvoked, messagesReceived, uniqueMessagesReceived);
             }
         }
     }
@@ -398,7 +398,7 @@ public abstract class RoundTripWorkerBase implements TaskWorker {
 
         StatusData update() {
             StatusData statusData =
-                new StatusData(toSendTracker.frontier(), toReceiveTracker.totalReceived());
+                    new StatusData(toSendTracker.frontier(), toReceiveTracker.totalReceived());
             status.update(JsonUtil.JSON_SERDE.valueToTree(statusData));
             return statusData;
         }

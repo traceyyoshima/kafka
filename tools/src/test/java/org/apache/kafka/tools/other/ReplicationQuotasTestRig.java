@@ -107,16 +107,16 @@ public class ReplicationQuotasTestRig {
         Journal journal = new Journal();
 
         List<ExperimentDef> experiments = List.of(
-            //1GB total data written, will take 210s
-            new ExperimentDef("Experiment1", 5, 20, 1 * K, 500, 100 * 1000),
-            //5GB total data written, will take 110s
-            new ExperimentDef("Experiment2", 5, 50, 10 * K, 1000, 100 * 1000),
-            //5GB total data written, will take 110s
-            new ExperimentDef("Experiment3", 50, 50, 2 * K, 1000, 100 * 1000),
-            //10GB total data written, will take 110s
-            new ExperimentDef("Experiment4", 25, 100, 4 * K, 1000, 100 * 1000),
-            //10GB total data written, will take 80s
-            new ExperimentDef("Experiment5", 5, 50, 50 * K, 4000, 100 * 1000)
+                //1GB total data written, will take 210s
+                new ExperimentDef("Experiment1", 5, 20, 1 * K, 500, 100 * 1000),
+                //5GB total data written, will take 110s
+                new ExperimentDef("Experiment2", 5, 50, 10 * K, 1000, 100 * 1000),
+                //5GB total data written, will take 110s
+                new ExperimentDef("Experiment3", 50, 50, 2 * K, 1000, 100 * 1000),
+                //10GB total data written, will take 110s
+                new ExperimentDef("Experiment4", 25, 100, 4 * K, 1000, 100 * 1000),
+                //10GB total data written, will take 80s
+                new ExperimentDef("Experiment5", 5, 50, 50 * K, 4000, 100 * 1000)
         );
         experiments.forEach(def -> run(def, journal, displayChartsOnScreen));
 
@@ -208,8 +208,8 @@ public class ReplicationQuotasTestRig {
             };
 
             Map<Integer, List<Integer>> replicas = IntStream.rangeClosed(0, config.partitions - 1).boxed().collect(Collectors.toMap(
-                Function.identity(),
-                partition -> List.of(nextReplicaRoundRobin.getAsInt())
+                    Function.identity(),
+                    partition -> List.of(nextReplicaRoundRobin.getAsInt())
             ));
 
             startBrokers(config.brokers);
@@ -248,8 +248,8 @@ public class ReplicationQuotasTestRig {
             long start = System.currentTimeMillis();
 
             ReassignPartitionsCommand.executeAssignment(adminClient, false,
-                ReassignPartitionsCommand.formatAsReassignmentJson(newAssignment, Map.of()),
-                config.throttle, -1L, 10000L, Time.SYSTEM, false);
+                    ReassignPartitionsCommand.formatAsReassignmentJson(newAssignment, Map.of()),
+                    config.throttle, -1L, 10000L, Time.SYSTEM, false);
 
             //Await completion
             waitForReassignmentToComplete();
@@ -273,8 +273,8 @@ public class ReplicationQuotasTestRig {
                             .map(UnifiedLog::logEndOffset).orElse(-1L);
                     if (offset >= 0 && offset != config.msgsPerPartition) {
                         throw new RuntimeException(
-                            "Run failed as offsets did not match for partition " + partitionId + " on broker " + broker.config().nodeId() + ". " +
-                            "Expected " + config.msgsPerPartition + " but was " + offset + "."
+                                "Run failed as offsets did not match for partition " + partitionId + " on broker " + broker.config().nodeId() + ". " +
+                                "Expected " + config.msgsPerPartition + " but was " + offset + "."
                         );
                     }
                 }
@@ -286,8 +286,8 @@ public class ReplicationQuotasTestRig {
                 .allTopicNames().get().get(TOPIC_NAME).partitions();
 
             Map<Integer, List<Integer>> curAssignment = actual.stream().collect(Collectors.toMap(
-                TopicPartitionInfo::partition,
-                p -> p.replicas().stream().map(Node::id).toList()
+                    TopicPartitionInfo::partition,
+                    p -> p.replicas().stream().map(Node::id).toList()
             ));
 
             //Long stats
@@ -342,10 +342,10 @@ public class ReplicationQuotasTestRig {
 
         JFreeChart createChart(String name, XYSeriesCollection dataset) {
             return ChartFactory.createXYLineChart(
-                experimentName + " - " + name + " Throttling Performance",
-                "Time (s)",
-                "Throttle Throughput (B/s)",
-                dataset, PlotOrientation.VERTICAL, false, true, false
+                    experimentName + " - " + name + " Throttling Performance",
+                    "Time (s)",
+                    "Throttle Throughput (B/s)",
+                    dataset, PlotOrientation.VERTICAL, false, true, false
             );
         }
 
@@ -388,8 +388,8 @@ public class ReplicationQuotasTestRig {
         private double measuredRate(KafkaBroker broker, QuotaType repType) {
             MetricName metricName = broker.metrics().metricName("byte-rate", repType.toString());
             return broker.metrics().metrics().containsKey(metricName)
-                ? (double) broker.metrics().metrics().get(metricName).metricValue()
-                : -1d;
+                    ? (double) broker.metrics().metrics().get(metricName).metricValue()
+                    : -1d;
         }
 
         String json(String... topic) {
@@ -399,22 +399,22 @@ public class ReplicationQuotasTestRig {
 
         KafkaProducer<byte[], byte[]> createProducer() {
             return TestUtils.createProducer(
-                cluster.bootstrapServers(),
-                1,
-                60 * 1000L,
-                1024L * 1024L,
-                Integer.MAX_VALUE,
-                30 * 1000,
-                0,
-                16384,
-                "none",
-                20 * 1000,
-                SecurityProtocol.PLAINTEXT,
-                Option.empty(),
-                Option.empty(),
-                new ByteArraySerializer(),
-                new ByteArraySerializer(),
-                false
+                    cluster.bootstrapServers(),
+                    1,
+                    60 * 1000L,
+                    1024L * 1024L,
+                    Integer.MAX_VALUE,
+                    30 * 1000,
+                    0,
+                    16384,
+                    "none",
+                    20 * 1000,
+                    SecurityProtocol.PLAINTEXT,
+                    Option.empty(),
+                    Option.empty(),
+                    new ByteArraySerializer(),
+                    new ByteArraySerializer(),
+                    false
             );
         }
     }
@@ -430,12 +430,12 @@ public class ReplicationQuotasTestRig {
             DecimalFormat format = new DecimalFormat("###,###.###");
 
             String message = "\n\n<h3>" + config.name + "</h3>" +
-                "<p>- BrokerCount: " + config.brokers +
-                "<p>- PartitionCount: " + config.partitions +
-                "<p>- Throttle: " + format.format(config.throttle) + " MB/s" +
-                "<p>- MsgCount: " + format.format(config.msgsPerPartition) + " " +
-                "<p>- MsgSize: " + format.format(config.msgSize) +
-                "<p>- TargetBytesPerBrokerMB: " + config.targetBytesPerBrokerMB + "<p>";
+                    "<p>- BrokerCount: " + config.brokers +
+                    "<p>- PartitionCount: " + config.partitions +
+                    "<p>- Throttle: " + format.format(config.throttle) + " MB/s" +
+                    "<p>- MsgCount: " + format.format(config.msgsPerPartition) + " " +
+                    "<p>- MsgSize: " + format.format(config.msgSize) +
+                    "<p>- TargetBytesPerBrokerMB: " + config.targetBytesPerBrokerMB + "<p>";
 
             append(message);
         }

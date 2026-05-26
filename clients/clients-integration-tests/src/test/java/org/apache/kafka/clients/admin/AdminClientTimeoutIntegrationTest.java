@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@ClusterTestDefaults(types = { Type.KRAFT })
+@ClusterTestDefaults(types = {Type.KRAFT})
 public class AdminClientTimeoutIntegrationTest {
 
     private static final Logger log = LoggerFactory.getLogger(AdminClientTimeoutIntegrationTest.class);
@@ -74,7 +74,6 @@ public class AdminClientTimeoutIntegrationTest {
             assertEquals(1, factory.failuresInjected());
         }
     }
-
 
     static class FailureInjectingTimeoutProcessorFactory extends KafkaAdminClient.TimeoutProcessorFactory {
 

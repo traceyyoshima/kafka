@@ -90,8 +90,8 @@ public class MockProcessorContextAPITest {
 
         final List<CapturedForward<? extends String, ? extends Long>> actual = context.forwarded();
         final List<CapturedForward<String, Long>> expected = asList(
-            new CapturedForward<>(new Record<>("foo5", 8L, 0L)),
-            new CapturedForward<>(new Record<>("barbaz50", 56L, 0L))
+                new CapturedForward<>(new Record<>("foo5", 8L, 0L)),
+                new CapturedForward<>(new Record<>("barbaz50", 56L, 0L))
         );
         assertThat(actual, is(expected));
 
@@ -136,9 +136,9 @@ public class MockProcessorContextAPITest {
         {
             final List<CapturedForward<? extends String, ? extends Long>> forwarded = context.forwarded();
             final List<CapturedForward<? extends String, ? extends Long>> expected = asList(
-                new CapturedForward<>(new Record<>("start", -1L, 0L), Optional.empty()),
-                new CapturedForward<>(new Record<>("foo5", 8L, 0L), Optional.of("george")),
-                new CapturedForward<>(new Record<>("barbaz50", 56L, 0L), Optional.of("pete"))
+                    new CapturedForward<>(new Record<>("start", -1L, 0L), Optional.empty()),
+                    new CapturedForward<>(new Record<>("foo5", 8L, 0L), Optional.of("george")),
+                    new CapturedForward<>(new Record<>("barbaz50", 56L, 0L), Optional.of("pete"))
             );
 
             assertThat(forwarded, is(expected));
@@ -146,8 +146,8 @@ public class MockProcessorContextAPITest {
         {
             final List<CapturedForward<? extends String, ? extends Long>> forwarded = context.forwarded("george");
             final List<CapturedForward<? extends String, ? extends Long>> expected = asList(
-                new CapturedForward<>(new Record<>("start", -1L, 0L), Optional.empty()),
-                new CapturedForward<>(new Record<>("foo5", 8L, 0L), Optional.of("george"))
+                    new CapturedForward<>(new Record<>("start", -1L, 0L), Optional.empty()),
+                    new CapturedForward<>(new Record<>("foo5", 8L, 0L), Optional.of("george"))
             );
 
             assertThat(forwarded, is(expected));
@@ -155,8 +155,8 @@ public class MockProcessorContextAPITest {
         {
             final List<CapturedForward<? extends String, ? extends Long>> forwarded = context.forwarded("pete");
             final List<CapturedForward<? extends String, ? extends Long>> expected = asList(
-                new CapturedForward<>(new Record<>("start", -1L, 0L), Optional.empty()),
-                new CapturedForward<>(new Record<>("barbaz50", 56L, 0L), Optional.of("pete"))
+                    new CapturedForward<>(new Record<>("start", -1L, 0L), Optional.empty()),
+                    new CapturedForward<>(new Record<>("barbaz50", 56L, 0L), Optional.of("pete"))
             );
 
             assertThat(forwarded, is(expected));
@@ -164,7 +164,7 @@ public class MockProcessorContextAPITest {
         {
             final List<CapturedForward<? extends String, ? extends Long>> forwarded = context.forwarded("steve");
             final List<CapturedForward<? extends String, ? extends Long>> expected = singletonList(
-                new CapturedForward<>(new Record<>("start", -1L, 0L))
+                    new CapturedForward<>(new Record<>("start", -1L, 0L))
             );
 
             assertThat(forwarded, is(expected));
@@ -234,71 +234,88 @@ public class MockProcessorContextAPITest {
         final MockProcessorContext<Void, Void> context = new MockProcessorContext<>();
 
         final StoreBuilder<KeyValueStore<String, Long>> storeBuilder = Stores.keyValueStoreBuilder(
-            Stores.inMemoryKeyValueStore("my-state"),
-            Serdes.String(),
-            Serdes.Long()).withLoggingDisabled();
+                Stores.inMemoryKeyValueStore("my-state"),
+                Serdes.String(),
+                Serdes.Long()).withLoggingDisabled();
 
         final KeyValueStore<String, Long> store = storeBuilder.build();
 
         store.init(
-            new AbstractProcessorContext<>(new TaskId(0, 0), new StreamsConfig(context.appConfigs()), (StreamsMetricsImpl) context.metrics(), null) {
-                @SuppressWarnings("rawtypes")
-                @Override
-                public void forward(final Record record, final String childName) { }
-                @SuppressWarnings("rawtypes")
-                @Override
-                public void forward(final Record record) { }
-                @SuppressWarnings("rawtypes")
-                @Override
-                public void forward(final FixedKeyRecord record, final String childName) { }
-                @SuppressWarnings("rawtypes")
-                @Override
-                public void forward(final FixedKeyRecord record) { }
-                @Override
-                public Cancellable schedule(final Duration interval, final PunctuationType type, final Punctuator callback) {
-                    return null;
-                }
-                @Override
-                public Cancellable schedule(final Instant startTime, final Duration interval, final PunctuationType type, final Punctuator callback) {
-                    return null;
-                }
-                @Override
-                public void commit() { }
-                @Override
-                public long currentStreamTimeMs() {
-                    return 0;
-                }
-                @Override
-                public void forward(final Object key, final Object value, final To to) { }
-                @Override
-                public void forward(final Object key, final Object value) { }
-                @SuppressWarnings("unchecked")
-                @Override
-                public StateStore getStateStore(final String name) {
-                    return null;
-                }
-                @Override
-                public void transitionToActive(final StreamTask streamTask, final RecordCollector recordCollector, final ThreadCache newCache) { }
-                @Override
-                public void transitionToStandby(final ThreadCache newCache) { }
-                @Override
-                public void registerCacheFlushListener(final String namespace, final ThreadCache.DirtyEntryFlushListener listener) { }
-                @Override
-                public void logChange(final String storeName, final Bytes key, final byte[] value, final long timestamp, final Headers headers, final Position position) { }
-                @Override
-                protected StateManager stateManager() {
-                    return null;
-                }
-                @Override
-                public String changelogFor(final String storeName) {
-                    return "changelog";
-                }
-                @Override
-                public void register(final StateStore store, final StateRestoreCallback stateRestoreCallback) {
-                    context.getStateStoreContext().register(store, stateRestoreCallback);
-                }
-            },
-            store
+                new AbstractProcessorContext<>(new TaskId(0, 0), new StreamsConfig(context.appConfigs()), (StreamsMetricsImpl) context.metrics(), null) {
+                    @SuppressWarnings("rawtypes")
+                    @Override
+                    public void forward(final Record record, final String childName) {}
+
+                    @SuppressWarnings("rawtypes")
+                    @Override
+                    public void forward(final Record record) {}
+
+                    @SuppressWarnings("rawtypes")
+                    @Override
+                    public void forward(final FixedKeyRecord record, final String childName) {}
+
+                    @SuppressWarnings("rawtypes")
+                    @Override
+                    public void forward(final FixedKeyRecord record) {}
+
+                    @Override
+                    public Cancellable schedule(final Duration interval, final PunctuationType type, final Punctuator callback) {
+                        return null;
+                    }
+
+                    @Override
+                    public Cancellable schedule(final Instant startTime, final Duration interval, final PunctuationType type, final Punctuator callback) {
+                        return null;
+                    }
+
+                    @Override
+                    public void commit() {}
+
+                    @Override
+                    public long currentStreamTimeMs() {
+                        return 0;
+                    }
+
+                    @Override
+                    public void forward(final Object key, final Object value, final To to) {}
+
+                    @Override
+                    public void forward(final Object key, final Object value) {}
+
+                    @SuppressWarnings("unchecked")
+                    @Override
+                    public StateStore getStateStore(final String name) {
+                        return null;
+                    }
+
+                    @Override
+                    public void transitionToActive(final StreamTask streamTask, final RecordCollector recordCollector, final ThreadCache newCache) {}
+
+                    @Override
+                    public void transitionToStandby(final ThreadCache newCache) {}
+
+                    @Override
+                    public void registerCacheFlushListener(final String namespace, final ThreadCache.DirtyEntryFlushListener listener) {}
+
+                    @Override
+                    public void logChange(final String storeName, final Bytes key, final byte[] value, final long timestamp, final Headers headers, final Position position) {}
+
+                    @Override
+                    protected StateManager stateManager() {
+                        return null;
+                    }
+
+                    @Override
+                    public String changelogFor(final String storeName) {
+                        return "changelog";
+                    }
+
+                    @Override
+                    public void register(final StateStore store, final StateRestoreCallback stateRestoreCallback) {
+                        context.getStateStoreContext().register(store, stateRestoreCallback);
+                    }
+                },
+                store
         );
 
         processor.init(context);
@@ -311,14 +328,13 @@ public class MockProcessorContextAPITest {
         assertThat(store.get("all"), is(55L));
     }
 
-
     @Test
     public void shouldCaptureApplicationAndRecordMetadata() {
         final Properties config = mkProperties(
-            mkMap(
-                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "testMetadata"),
-                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "mock-localhost:9092")
-            )
+                mkMap(
+                        mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "testMetadata"),
+                        mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "mock-localhost:9092")
+                )
         );
 
         final Processor<String, Object, String, Object> processor = new Processor<>() {
@@ -352,9 +368,9 @@ public class MockProcessorContextAPITest {
         {
             final List<CapturedForward<? extends String, ?>> forwarded = context.forwarded();
             final List<CapturedForward<? extends String, ?>> expected = asList(
-                new CapturedForward<>(new Record<>("appId", "testMetadata", 0L)),
-                new CapturedForward<>(new Record<>("taskId", new TaskId(0, 0), 0L)),
-                new CapturedForward<>(new Record<>("record", new Record<>("foo", 5L, 0L), 0L))
+                    new CapturedForward<>(new Record<>("appId", "testMetadata", 0L)),
+                    new CapturedForward<>(new Record<>("taskId", new TaskId(0, 0), 0L)),
+                    new CapturedForward<>(new Record<>("record", new Record<>("foo", 5L, 0L), 0L))
             );
             assertThat(forwarded, is(expected));
         }
@@ -364,12 +380,12 @@ public class MockProcessorContextAPITest {
         {
             final List<CapturedForward<? extends String, ?>> forwarded = context.forwarded();
             final List<CapturedForward<? extends String, ?>> expected = asList(
-                new CapturedForward<>(new Record<>("appId", "testMetadata", 0L)),
-                new CapturedForward<>(new Record<>("taskId", new TaskId(0, 0), 0L)),
-                new CapturedForward<>(new Record<>("topic", "t1", 0L)),
-                new CapturedForward<>(new Record<>("partition", 0, 0L)),
-                new CapturedForward<>(new Record<>("offset", 0L, 0L)),
-                new CapturedForward<>(new Record<>("record", new Record<>("foo", 5L, 0L), 0L))
+                    new CapturedForward<>(new Record<>("appId", "testMetadata", 0L)),
+                    new CapturedForward<>(new Record<>("taskId", new TaskId(0, 0), 0L)),
+                    new CapturedForward<>(new Record<>("topic", "t1", 0L)),
+                    new CapturedForward<>(new Record<>("partition", 0, 0L)),
+                    new CapturedForward<>(new Record<>("offset", 0L, 0L)),
+                    new CapturedForward<>(new Record<>("record", new Record<>("foo", 5L, 0L), 0L))
             );
             assertThat(forwarded, is(expected));
         }
@@ -381,9 +397,9 @@ public class MockProcessorContextAPITest {
             @Override
             public void init(final ProcessorContext<Void, Void> context) {
                 context.schedule(
-                    Duration.ofSeconds(1L),
-                    PunctuationType.WALL_CLOCK_TIME,
-                    timestamp -> context.commit()
+                        Duration.ofSeconds(1L),
+                        PunctuationType.WALL_CLOCK_TIME,
+                        timestamp -> context.commit()
                 );
             }
 
@@ -417,7 +433,7 @@ public class MockProcessorContextAPITest {
 
         final File dummyFile = new File("");
         final MockProcessorContext<Void, Void> context =
-            new MockProcessorContext<>(config, new TaskId(1, 1), dummyFile);
+                new MockProcessorContext<>(config, new TaskId(1, 1), dummyFile);
 
         assertThat(context.applicationId(), is("testFullConstructor"));
         assertThat(context.taskId(), is(new TaskId(1, 1)));

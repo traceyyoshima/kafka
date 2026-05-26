@@ -36,9 +36,9 @@ public record ShareAcknowledgementBatch(
     @Override
     public String toString() {
         return "ShareAcknowledgementBatch(" +
-            "firstOffset=" + firstOffset +
-            ", lastOffset=" + lastOffset +
-            ", acknowledgeTypes=" + ((acknowledgeTypes == null) ? "" : acknowledgeTypes) +
-            ")";
+                "firstOffset=" + firstOffset +
+                ", lastOffset=" + lastOffset +
+                ", acknowledgeTypes=" + ((acknowledgeTypes == null) ? "" : acknowledgeTypes) +
+                ")";
     }
 }

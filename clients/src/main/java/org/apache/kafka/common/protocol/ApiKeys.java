@@ -140,7 +140,7 @@ public enum ApiKeys {
     DELETE_SHARE_GROUP_OFFSETS(ApiMessageType.DELETE_SHARE_GROUP_OFFSETS);
 
     private static final Map<ApiMessageType.ListenerType, EnumSet<ApiKeys>> APIS_BY_LISTENER =
-        new EnumMap<>(ApiMessageType.ListenerType.class);
+            new EnumMap<>(ApiMessageType.ListenerType.class);
 
     static {
         for (ApiMessageType.ListenerType listenerType : ApiMessageType.ListenerType.values()) {
@@ -346,9 +346,9 @@ public enum ApiKeys {
             public void visit(Type field) {
                 // avoid BooleanExpressionComplexity checkstyle warning
                 boolean isBytesType = field == BYTES || field == NULLABLE_BYTES ||
-                    field == COMPACT_BYTES || field == COMPACT_NULLABLE_BYTES;
+                        field == COMPACT_BYTES || field == COMPACT_NULLABLE_BYTES;
                 boolean isRecordsType = field == RECORDS || field == NULLABLE_RECORDS ||
-                    field == COMPACT_RECORDS || field == COMPACT_NULLABLE_RECORDS;
+                        field == COMPACT_RECORDS || field == COMPACT_NULLABLE_RECORDS;
                 if (isBytesType || isRecordsType) {
                     hasBuffer.set(true);
                 }

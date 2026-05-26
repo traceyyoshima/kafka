@@ -331,41 +331,41 @@ public class ClassicKafkaConsumer<K, V> implements ConsumerDelegate<K, V> {
         Optional<String> groupInstanceId = Optional.ofNullable(config.getString(ConsumerConfig.GROUP_INSTANCE_ID_CONFIG));
 
         this.client = new ConsumerNetworkClient(
-            logContext,
-            client,
-            metadata,
-            time,
-            retryBackoffMs,
-            requestTimeoutMs,
-            heartbeatIntervalMs
+                logContext,
+                client,
+                metadata,
+                time,
+                retryBackoffMs,
+                requestTimeoutMs,
+                heartbeatIntervalMs
         );
 
         if (groupId.isPresent()) {
             GroupRebalanceConfig rebalanceConfig = new GroupRebalanceConfig(
-                sessionTimeoutMs,
-                rebalanceTimeoutMs,
-                heartbeatIntervalMs,
-                groupId.get(),
-                groupInstanceId,
-                rackId,
-                retryBackoffMs,
-                retryBackoffMaxMs
+                    sessionTimeoutMs,
+                    rebalanceTimeoutMs,
+                    heartbeatIntervalMs,
+                    groupId.get(),
+                    groupInstanceId,
+                    rackId,
+                    retryBackoffMs,
+                    retryBackoffMaxMs
             );
             this.coordinator = new ConsumerCoordinator(
-                rebalanceConfig,
-                logContext,
-                this.client,
-                assignors,
-                metadata,
-                subscriptions,
-                metrics,
-                CONSUMER_METRIC_GROUP_PREFIX,
-                time,
-                enableAutoCommit,
-                autoCommitIntervalMs,
-                interceptors,
-                throwOnStableOffsetNotSupported,
-                clientTelemetryReporter
+                    rebalanceConfig,
+                    logContext,
+                    this.client,
+                    assignors,
+                    metadata,
+                    subscriptions,
+                    metrics,
+                    CONSUMER_METRIC_GROUP_PREFIX,
+                    time,
+                    enableAutoCommit,
+                    autoCommitIntervalMs,
+                    interceptors,
+                    throwOnStableOffsetNotSupported,
+                    clientTelemetryReporter
             );
         } else {
             this.coordinator = null;
@@ -392,32 +392,32 @@ public class ClassicKafkaConsumer<K, V> implements ConsumerDelegate<K, V> {
                 isolationLevel
         );
         this.fetcher = new Fetcher<>(
-            logContext,
-            this.client,
-            metadata,
-            subscriptions,
-            fetchConfig,
-            deserializers,
-            fetchMetricsManager,
-            time,
-            apiVersions
+                logContext,
+                this.client,
+                metadata,
+                subscriptions,
+                fetchConfig,
+                deserializers,
+                fetchMetricsManager,
+                time,
+                apiVersions
         );
         this.offsetFetcher = new OffsetFetcher(
-            logContext,
-            this.client,
-            metadata,
-            subscriptions,
-            time,
-            retryBackoffMs,
-            requestTimeoutMs,
-            isolationLevel,
-            apiVersions
+                logContext,
+                this.client,
+                metadata,
+                subscriptions,
+                time,
+                retryBackoffMs,
+                requestTimeoutMs,
+                isolationLevel,
+                apiVersions
         );
         this.topicMetadataFetcher = new TopicMetadataFetcher(
-            logContext,
-            this.client,
-            retryBackoffMs,
-            retryBackoffMaxMs
+                logContext,
+                this.client,
+                retryBackoffMs,
+                retryBackoffMaxMs
         );
     }
 
@@ -446,7 +446,6 @@ public class ClassicKafkaConsumer<K, V> implements ConsumerDelegate<K, V> {
 
         subscribeInternal(topics, Optional.of(listener));
     }
-
 
     @Override
     public void registerMetricForSubscription(KafkaMetric metric) {
@@ -543,13 +542,13 @@ public class ClassicKafkaConsumer<K, V> implements ConsumerDelegate<K, V> {
     @Override
     public void subscribe(SubscriptionPattern pattern, ConsumerRebalanceListener callback) {
         throw new UnsupportedOperationException(String.format("Subscribe to RE2/J pattern is not supported when using" +
-            "the %s protocol defined in config %s", GroupProtocol.CLASSIC, ConsumerConfig.GROUP_PROTOCOL_CONFIG));
+                "the %s protocol defined in config %s", GroupProtocol.CLASSIC, ConsumerConfig.GROUP_PROTOCOL_CONFIG));
     }
 
     @Override
     public void subscribe(SubscriptionPattern pattern) {
         throw new UnsupportedOperationException(String.format("Subscribe to RE2/J pattern is not supported when using" +
-            "the %s protocol defined in config %s", GroupProtocol.CLASSIC, ConsumerConfig.GROUP_PROTOCOL_CONFIG));
+                "the %s protocol defined in config %s", GroupProtocol.CLASSIC, ConsumerConfig.GROUP_PROTOCOL_CONFIG));
     }
 
     /**
@@ -1155,11 +1154,11 @@ public class ClassicKafkaConsumer<K, V> implements ConsumerDelegate<K, V> {
         if (coordinator != null) {
             // This is a blocking call bound by the time remaining in closeTimer
             swallow(
-                log,
-                Level.ERROR,
-                "Failed to close coordinator with a timeout(ms)=" + closeTimer.timeoutMs(),
-                () -> coordinator.close(closeTimer, membershipOperation),
-                firstException
+                    log,
+                    Level.ERROR,
+                    "Failed to close coordinator with a timeout(ms)=" + closeTimer.timeoutMs(),
+                    () -> coordinator.close(closeTimer, membershipOperation),
+                    firstException
             );
         }
 

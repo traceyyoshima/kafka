@@ -69,9 +69,9 @@ public class AlterPartitionRequest extends AbstractRequest {
          */
         public Builder(AlterPartitionRequestData data) {
             super(
-                ApiKeys.ALTER_PARTITION,
-                ApiKeys.ALTER_PARTITION.oldestVersion(),
-                ApiKeys.ALTER_PARTITION.latestVersion()
+                    ApiKeys.ALTER_PARTITION,
+                    ApiKeys.ALTER_PARTITION.oldestVersion(),
+                    ApiKeys.ALTER_PARTITION.latestVersion()
             );
             this.data = data;
         }
@@ -80,18 +80,18 @@ public class AlterPartitionRequest extends AbstractRequest {
         public AlterPartitionRequest build(short version) {
             if (version < 3) {
                 data.topics().forEach(topicData ->
-                    topicData.partitions().forEach(partitionData -> {
-                        // The newIsrWithEpochs will be empty after build. Then we can skip the conversion if the build
-                        // is called again.
-                        if (!partitionData.newIsrWithEpochs().isEmpty()) {
-                            List<Integer> newIsr = new ArrayList<>(partitionData.newIsrWithEpochs().size());
-                            partitionData.newIsrWithEpochs().forEach(brokerState ->
-                                newIsr.add(brokerState.brokerId())
-                            );
-                            partitionData.setNewIsr(newIsr);
-                            partitionData.setNewIsrWithEpochs(List.of());
-                        }
-                    })
+                        topicData.partitions().forEach(partitionData -> {
+                            // The newIsrWithEpochs will be empty after build. Then we can skip the conversion if the build
+                            // is called again.
+                            if (!partitionData.newIsrWithEpochs().isEmpty()) {
+                                List<Integer> newIsr = new ArrayList<>(partitionData.newIsrWithEpochs().size());
+                                partitionData.newIsrWithEpochs().forEach(brokerState ->
+                                        newIsr.add(brokerState.brokerId())
+                                );
+                                partitionData.setNewIsr(newIsr);
+                                partitionData.setNewIsrWithEpochs(List.of());
+                            }
+                        })
                 );
             }
             return new AlterPartitionRequest(data, version);

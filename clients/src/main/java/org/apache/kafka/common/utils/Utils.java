@@ -110,7 +110,7 @@ public final class Utils {
 
     // Prints up to 2 decimal digits. Used for human-readable printing
     private static final DecimalFormat TWO_DIGIT_FORMAT = new DecimalFormat("0.##",
-        DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+            DecimalFormatSymbols.getInstance(Locale.ENGLISH));
 
     private static final String[] BYTE_SCALE_SUFFIXES = new String[] {"B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"};
 
@@ -229,7 +229,6 @@ public final class Utils {
         }
         return max;
     }
-
 
     public static short min(short first, short second) {
         return (short) Math.min(first, second);
@@ -468,7 +467,7 @@ public final class Utils {
      * @throws ClassNotFoundException   If there was a problem constructing the object.
      */
     public static <T> T newParameterizedInstance(String className, Object... params)
-            throws ClassNotFoundException {
+        throws ClassNotFoundException {
         Class<?>[] argTypes = new Class<?>[params.length / 2];
         Object[] args = new Object[params.length / 2];
         try {
@@ -482,13 +481,13 @@ public final class Utils {
             return constructor.newInstance(args);
         } catch (NoSuchMethodException e) {
             throw new ClassNotFoundException(String.format("Failed to find " +
-                "constructor with %s for %s", Arrays.stream(argTypes).map(Object::toString).collect(Collectors.joining(", ")), className), e);
+                    "constructor with %s for %s", Arrays.stream(argTypes).map(Object::toString).collect(Collectors.joining(", ")), className), e);
         } catch (InstantiationException e) {
             throw new ClassNotFoundException(String.format("Failed to instantiate " +
-                "%s", className), e);
+                    "%s", className), e);
         } catch (IllegalAccessException e) {
             throw new ClassNotFoundException(String.format("Unable to access " +
-                "constructor of %s", className), e);
+                    "constructor of %s", className), e);
         } catch (InvocationTargetException e) {
             throw new KafkaException(String.format("The constructor of %s threw an exception", className), e.getCause());
         }
@@ -1315,9 +1314,9 @@ public final class Utils {
      * @throws IOException If an I/O error occurs
      */
     public static int tryWriteTo(TransferableChannel destChannel,
-                                  int position,
-                                  int length,
-                                  ByteBuffer sourceBuffer) throws IOException {
+                                 int position,
+                                 int length,
+                                 ByteBuffer sourceBuffer) throws IOException {
 
         ByteBuffer dup = sourceBuffer.duplicate();
         dup.position(position);

@@ -64,10 +64,10 @@ class NamedCache {
         storeName = ThreadCache.underlyingStoreNamefromCacheName(name);
         taskName = ThreadCache.taskIDfromCacheName(name);
         hitRatioSensor = NamedCacheMetrics.hitRatioSensor(
-            streamsMetrics,
-            Thread.currentThread().getName(),
-            taskName,
-            storeName
+                streamsMetrics,
+                Thread.currentThread().getName(),
+                taskName,
+                storeName
         );
         totalCacheSizeSensor = TaskMetrics.totalCacheSizeBytesSensor(
                 Thread.currentThread().getName(),
@@ -122,7 +122,7 @@ class NamedCache {
 
         if (log.isTraceEnabled()) {
             log.trace("Named cache {} stats on flush: #hits={}, #misses={}, #overwrites={}, #flushes={}",
-                name, hits(), misses(), overwrites(), flushes());
+                    name, hits(), misses(), overwrites(), flushes());
         }
 
         if (listener == null) {
@@ -165,10 +165,10 @@ class NamedCache {
     synchronized void put(final Bytes key, final LRUCacheEntry value) {
         if (!value.isDirty() && dirtyKeys.contains(key)) {
             throw new IllegalStateException(
-                String.format(
-                    "Attempting to put a clean entry for key [%s] into NamedCache [%s] when it already contains a dirty entry for the same key",
-                    key, name
-                )
+                    String.format(
+                            "Attempting to put a clean entry for key [%s] into NamedCache [%s] when it already contains a dirty entry for the same key",
+                            key, name
+                    )
             );
         }
         LRUNode node = cache.get(key);
@@ -393,10 +393,10 @@ class NamedCache {
 
         long size() {
             return key.get().length +
-                8 + // entry
-                8 + // previous
-                8 + // next
-                entry.size();
+                    8 + // entry
+                    8 + // previous
+                    8 + // next
+                    entry.size();
         }
 
         LRUNode next() {

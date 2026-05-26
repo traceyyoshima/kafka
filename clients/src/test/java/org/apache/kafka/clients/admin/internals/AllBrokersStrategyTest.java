@@ -73,20 +73,20 @@ class AllBrokersStrategyTest {
         );
 
         AdminApiLookupStrategy.LookupResult<AllBrokersStrategy.BrokerKey> lookupResult = strategy.handleResponse(
-            AllBrokersStrategy.LOOKUP_KEYS,
-            new MetadataResponse(response, ApiKeys.METADATA.latestVersion())
+                AllBrokersStrategy.LOOKUP_KEYS,
+                new MetadataResponse(response, ApiKeys.METADATA.latestVersion())
         );
 
         assertEquals(Collections.emptyMap(), lookupResult.failedKeys);
 
         Set<AllBrokersStrategy.BrokerKey> expectedMappedKeys = Set.of(
-            new AllBrokersStrategy.BrokerKey(OptionalInt.of(1)),
-            new AllBrokersStrategy.BrokerKey(OptionalInt.of(2))
+                new AllBrokersStrategy.BrokerKey(OptionalInt.of(1)),
+                new AllBrokersStrategy.BrokerKey(OptionalInt.of(2))
         );
 
         assertEquals(expectedMappedKeys, lookupResult.mappedKeys.keySet());
         lookupResult.mappedKeys.forEach((brokerKey, brokerId) ->
-            assertEquals(OptionalInt.of(brokerId), brokerKey.brokerId)
+                assertEquals(OptionalInt.of(brokerId), brokerKey.brokerId)
         );
     }
 
@@ -97,8 +97,8 @@ class AllBrokersStrategyTest {
         MetadataResponseData response = new MetadataResponseData();
 
         AdminApiLookupStrategy.LookupResult<AllBrokersStrategy.BrokerKey> lookupResult = strategy.handleResponse(
-            AllBrokersStrategy.LOOKUP_KEYS,
-            new MetadataResponse(response, ApiKeys.METADATA.latestVersion())
+                AllBrokersStrategy.LOOKUP_KEYS,
+                new MetadataResponse(response, ApiKeys.METADATA.latestVersion())
         );
 
         assertEquals(Collections.emptyMap(), lookupResult.failedKeys);

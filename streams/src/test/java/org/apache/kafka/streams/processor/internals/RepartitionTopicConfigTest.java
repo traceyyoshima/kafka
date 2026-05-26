@@ -35,8 +35,8 @@ public class RepartitionTopicConfigTest {
                                                                                          true);
 
         final UnsupportedOperationException ex = assertThrows(
-            UnsupportedOperationException.class,
-            () -> repartitionTopicConfig.setNumberOfPartitions(2)
+                UnsupportedOperationException.class,
+                () -> repartitionTopicConfig.setNumberOfPartitions(2)
         );
 
         assertEquals(String.format("number of partitions are enforced on topic " +

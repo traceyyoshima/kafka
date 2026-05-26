@@ -213,8 +213,8 @@ public class PCollectionsImmutableMap<K, V> implements ImmutableMap<K, V> {
     @Override
     public String toString() {
         return "PCollectionsImmutableMap{" +
-            "underlying=" + underlying() +
-            '}';
+                "underlying=" + underlying() +
+                '}';
     }
 
     // package-private for testing

@@ -88,12 +88,12 @@ public class StreamsBuilder {
         topology = newTopology(topologyConfigs);
         internalTopologyBuilder = topology.internalTopologyBuilder;
         internalStreamsBuilder = new InternalStreamsBuilder(
-            internalTopologyBuilder,
-            TopologyConfig.InternalConfig.getBoolean(
-                topologyConfigs.originals(),
-                TopologyConfig.InternalConfig.ENABLE_PROCESS_PROCESSVALUE_FIX,
-                false
-            )
+                internalTopologyBuilder,
+                TopologyConfig.InternalConfig.getBoolean(
+                        topologyConfigs.originals(),
+                        TopologyConfig.InternalConfig.ENABLE_PROCESS_PROCESSVALUE_FIX,
+                        false
+                )
         );
     }
 
@@ -176,7 +176,6 @@ public class StreamsBuilder {
         Objects.requireNonNull(consumed, "consumed can't be null");
         return internalStreamsBuilder.stream(topics, new ConsumedInternal<>(consumed));
     }
-
 
     /**
      * Create a {@link KStream} from the specified topic pattern.
@@ -272,7 +271,7 @@ public class StreamsBuilder {
         materialized.withKeySerde(consumedInternal.keySerde()).withValueSerde(consumedInternal.valueSerde());
 
         final MaterializedInternal<K, V, KeyValueStore<Bytes, byte[]>> materializedInternal =
-            new MaterializedInternal<>(materialized, internalStreamsBuilder, topic + "-");
+                new MaterializedInternal<>(materialized, internalStreamsBuilder, topic + "-");
 
         return internalStreamsBuilder.table(topic, consumedInternal, materializedInternal);
     }
@@ -325,10 +324,10 @@ public class StreamsBuilder {
         final ConsumedInternal<K, V> consumedInternal = new ConsumedInternal<>(consumed);
 
         final MaterializedInternal<K, V, KeyValueStore<Bytes, byte[]>> materializedInternal =
-            new MaterializedInternal<>(
-                Materialized.with(consumedInternal.keySerde(), consumedInternal.valueSerde()),
-                internalStreamsBuilder,
-                topic + "-");
+                new MaterializedInternal<>(
+                        Materialized.with(consumedInternal.keySerde(), consumedInternal.valueSerde()),
+                        internalStreamsBuilder,
+                        topic + "-");
 
         return internalStreamsBuilder.table(topic, consumedInternal, materializedInternal);
     }
@@ -357,7 +356,7 @@ public class StreamsBuilder {
         Objects.requireNonNull(materialized, "materialized can't be null");
 
         final MaterializedInternal<K, V, KeyValueStore<Bytes, byte[]>> materializedInternal =
-            new MaterializedInternal<>(materialized, internalStreamsBuilder, topic + "-");
+                new MaterializedInternal<>(materialized, internalStreamsBuilder, topic + "-");
 
         final ConsumedInternal<K, V> consumedInternal =
                 new ConsumedInternal<>(Consumed.with(materializedInternal.keySerde(), materializedInternal.valueSerde()));
@@ -390,11 +389,11 @@ public class StreamsBuilder {
         final ConsumedInternal<K, V> consumedInternal = new ConsumedInternal<>(consumed);
 
         final MaterializedInternal<K, V, KeyValueStore<Bytes, byte[]>> materializedInternal =
-            new MaterializedInternal<>(
-                Materialized.<K, V, KeyValueStore<Bytes, byte[]>>with(consumedInternal.keySerde(), consumedInternal.valueSerde()).withLoggingDisabled(),
-                internalStreamsBuilder,
-                topic + "-",
-                true /* force materializing global tables */);
+                new MaterializedInternal<>(
+                        Materialized.<K, V, KeyValueStore<Bytes, byte[]>>with(consumedInternal.keySerde(), consumedInternal.valueSerde()).withLoggingDisabled(),
+                        internalStreamsBuilder,
+                        topic + "-",
+                        true /* force materializing global tables */);
 
         return internalStreamsBuilder.globalTable(topic, consumedInternal, materializedInternal);
     }
@@ -467,7 +466,7 @@ public class StreamsBuilder {
         materialized.withKeySerde(consumedInternal.keySerde()).withValueSerde(consumedInternal.valueSerde()).withLoggingDisabled();
 
         final MaterializedInternal<K, V, KeyValueStore<Bytes, byte[]>> materializedInternal =
-            new MaterializedInternal<>(materialized, internalStreamsBuilder, topic + "-");
+                new MaterializedInternal<>(materialized, internalStreamsBuilder, topic + "-");
 
         return internalStreamsBuilder.globalTable(topic, consumedInternal, materializedInternal);
     }
@@ -505,14 +504,13 @@ public class StreamsBuilder {
         Objects.requireNonNull(topic, "topic can't be null");
         Objects.requireNonNull(materialized, "materialized can't be null");
         final MaterializedInternal<K, V, KeyValueStore<Bytes, byte[]>> materializedInternal =
-            new MaterializedInternal<>(materialized, internalStreamsBuilder, topic + "-");
+                new MaterializedInternal<>(materialized, internalStreamsBuilder, topic + "-");
 
         return internalStreamsBuilder.globalTable(topic,
                                                   new ConsumedInternal<>(Consumed.with(materializedInternal.keySerde(),
                                                                                        materializedInternal.valueSerde())),
                                                   materializedInternal);
     }
-
 
     /**
      * Adds a state store to the underlying {@link Topology}.
@@ -565,11 +563,11 @@ public class StreamsBuilder {
         Objects.requireNonNull(storeBuilder, "storeBuilder can't be null");
         Objects.requireNonNull(consumed, "consumed can't be null");
         internalStreamsBuilder.addGlobalStore(
-            StoreBuilderWrapper.wrapStoreBuilder(storeBuilder),
-            topic,
-            new ConsumedInternal<>(consumed),
-            stateUpdateSupplier,
-            true
+                StoreBuilderWrapper.wrapStoreBuilder(storeBuilder),
+                topic,
+                new ConsumedInternal<>(consumed),
+                stateUpdateSupplier,
+                true
         );
         return this;
     }

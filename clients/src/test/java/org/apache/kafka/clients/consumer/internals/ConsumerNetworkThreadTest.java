@@ -109,11 +109,11 @@ public class ConsumerNetworkThreadTest {
     @Test
     public void testEnsureCloseStopsRunningThread() {
         assertTrue(consumerNetworkThread.isRunning(),
-            "ConsumerNetworkThread should start running when created");
+                "ConsumerNetworkThread should start running when created");
 
         consumerNetworkThread.close();
         assertFalse(consumerNetworkThread.isRunning(),
-            "close() should make consumerNetworkThread.running false by calling closeInternal(Duration timeout)");
+                "close() should make consumerNetworkThread.running false by calling closeInternal(Duration timeout)");
     }
 
     @ParameterizedTest
@@ -228,16 +228,16 @@ public class ConsumerNetworkThreadTest {
             time.sleep(10);
             consumerNetworkThread.runOnce();
             assertEquals(
-                10,
-                (double) metrics.metric(
-                    metrics.metricName("time-between-network-thread-poll-avg", groupName)
-                ).metricValue()
+                    10,
+                    (double) metrics.metric(
+                        metrics.metricName("time-between-network-thread-poll-avg", groupName)
+                    ).metricValue()
             );
             assertEquals(
-                10,
-                (double) metrics.metric(
-                    metrics.metricName("time-between-network-thread-poll-max", groupName)
-                ).metricValue()
+                    10,
+                    (double) metrics.metric(
+                        metrics.metricName("time-between-network-thread-poll-max", groupName)
+                    ).metricValue()
             );
         }
     }
@@ -267,22 +267,22 @@ public class ConsumerNetworkThreadTest {
             time.sleep(10);
             consumerNetworkThread.runOnce();
             assertEquals(
-                0,
-                (double) metrics.metric(
-                    metrics.metricName("application-event-queue-size", groupName)
-                ).metricValue()
+                    0,
+                    (double) metrics.metric(
+                        metrics.metricName("application-event-queue-size", groupName)
+                    ).metricValue()
             );
             assertEquals(
-                10,
-                (double) metrics.metric(
-                    metrics.metricName("application-event-queue-time-avg", groupName)
-                ).metricValue()
+                    10,
+                    (double) metrics.metric(
+                        metrics.metricName("application-event-queue-time-avg", groupName)
+                    ).metricValue()
             );
             assertEquals(
-                10,
-                (double) metrics.metric(
-                    metrics.metricName("application-event-queue-time-max", groupName)
-                ).metricValue()
+                    10,
+                    (double) metrics.metric(
+                        metrics.metricName("application-event-queue-time-max", groupName)
+                    ).metricValue()
             );
         }
     }
@@ -326,14 +326,14 @@ public class ConsumerNetworkThreadTest {
         // resources. However, most of the mocks can be reused, so this is mostly boilerplate except for the error
         // when a supplier is invoked.
         try (ConsumerNetworkThread thread = new ConsumerNetworkThread(
-            new LogContext(),
-            time,
-            applicationEventQueue,
-            applicationEventReaper,
-            () -> applicationEventProcessor,
-            networkClientDelegateSupplier,
-            requestManagersSupplier,
-            asyncConsumerMetrics
+                new LogContext(),
+                time,
+                applicationEventQueue,
+                applicationEventReaper,
+                () -> applicationEventProcessor,
+                networkClientDelegateSupplier,
+                requestManagersSupplier,
+                asyncConsumerMetrics
         )) {
             assertThrows(KafkaException.class, thread::initializeResources, "initializeResources should fail because one or more Supplier throws an error on get()");
             assertDoesNotThrow(thread::cleanup, "cleanup() should not cause an error because all references are checked before use");

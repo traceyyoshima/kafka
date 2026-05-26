@@ -71,18 +71,18 @@ class KafkaConsumerMetricsTest {
     @Test
     public void checkMetricsAfterCreation() {
         Set<MetricName> expectedMetrics = Set.of(
-            metrics.metricName("last-poll-seconds-ago", CONSUMER_METRIC_GROUP),
-            metrics.metricName("time-between-poll-avg", CONSUMER_METRIC_GROUP),
-            metrics.metricName("time-between-poll-max", CONSUMER_METRIC_GROUP),
-            metrics.metricName("poll-idle-ratio-avg", CONSUMER_METRIC_GROUP),
-            metrics.metricName("commit-sync-time-ns-total", CONSUMER_METRIC_GROUP),
-            metrics.metricName("committed-time-ns-total", CONSUMER_METRIC_GROUP)
+                metrics.metricName("last-poll-seconds-ago", CONSUMER_METRIC_GROUP),
+                metrics.metricName("time-between-poll-avg", CONSUMER_METRIC_GROUP),
+                metrics.metricName("time-between-poll-max", CONSUMER_METRIC_GROUP),
+                metrics.metricName("poll-idle-ratio-avg", CONSUMER_METRIC_GROUP),
+                metrics.metricName("commit-sync-time-ns-total", CONSUMER_METRIC_GROUP),
+                metrics.metricName("committed-time-ns-total", CONSUMER_METRIC_GROUP)
         );
         expectedMetrics.forEach(
-            metricName -> assertTrue(
-                metrics.metrics().containsKey(metricName),
-                "Missing metric: " + metricName
-            )
+                metricName -> assertTrue(
+                    metrics.metrics().containsKey(metricName),
+                    "Missing metric: " + metricName
+                )
         );
         consumerMetrics.close();
         expectedMetrics.forEach(
@@ -99,8 +99,8 @@ class KafkaConsumerMetricsTest {
 
     private void assertMetricValue(final String name) {
         assertEquals(
-            (double) METRIC_VALUE,
-            metrics.metric(metrics.metricName(name, CONSUMER_METRIC_GROUP)).metricValue()
+                (double) METRIC_VALUE,
+                metrics.metric(metrics.metricName(name, CONSUMER_METRIC_GROUP)).metricValue()
         );
     }
 }

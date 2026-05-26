@@ -178,10 +178,10 @@ class DualColumnFamilyAccessor extends AbstractColumnFamilyAccessor {
                                                         final boolean forward) {
         final ManagedKeyValueIterator<Bytes, byte[]> iterNew =
                 accessor.range(newColumnFamily, store.name(), from, to, forward, true);
-        iterNew.onClose(() -> { });
+        iterNew.onClose(() -> {});
         final ManagedKeyValueIterator<Bytes, byte[]> iterOld =
                 accessor.range(oldColumnFamily, store.name(), from, to, forward, true);
-        iterOld.onClose(() -> { });
+        iterOld.onClose(() -> {});
         return new RocksDBDualCFIterator(store.name(), iterNew, iterOld, forward, valueConverter);
     }
 
@@ -204,10 +204,10 @@ class DualColumnFamilyAccessor extends AbstractColumnFamilyAccessor {
                                                       final boolean forward) {
         final ManagedKeyValueIterator<Bytes, byte[]> iterNew =
                 accessor.all(newColumnFamily, store.name(), forward);
-        iterNew.onClose(() -> { });
+        iterNew.onClose(() -> {});
         final ManagedKeyValueIterator<Bytes, byte[]> iterOld =
                 accessor.all(oldColumnFamily, store.name(), forward);
-        iterOld.onClose(() -> { });
+        iterOld.onClose(() -> {});
         return new RocksDBDualCFIterator(store.name(), iterNew, iterOld, forward, valueConverter);
     }
 
@@ -217,10 +217,10 @@ class DualColumnFamilyAccessor extends AbstractColumnFamilyAccessor {
         final Bytes to = incrementWithoutOverflow(prefix);
         final ManagedKeyValueIterator<Bytes, byte[]> iterNew =
                 accessor.prefixScan(newColumnFamily, store.name(), prefix, to);
-        iterNew.onClose(() -> { });
+        iterNew.onClose(() -> {});
         final ManagedKeyValueIterator<Bytes, byte[]> iterOld =
                 accessor.prefixScan(oldColumnFamily, store.name(), prefix, to);
-        iterOld.onClose(() -> { });
+        iterOld.onClose(() -> {});
         return new RocksDBDualCFIterator(store.name(), iterNew, iterOld, true, valueConverter);
     }
 
@@ -252,8 +252,8 @@ class DualColumnFamilyAccessor extends AbstractColumnFamilyAccessor {
     }
 
     private static class RocksDBDualCFIterator
-        extends AbstractIterator<KeyValue<Bytes, byte[]>>
-        implements ManagedKeyValueIterator<Bytes, byte[]> {
+            extends AbstractIterator<KeyValue<Bytes, byte[]>>
+            implements ManagedKeyValueIterator<Bytes, byte[]> {
 
         // RocksDB's JNI interface does not expose getters/setters that allow the
         // comparator to be pluggable, and the default is lexicographic, so it's

@@ -200,7 +200,7 @@ public final class Cluster {
      */
     public static Cluster empty() {
         return new Cluster(null, new ArrayList<>(0), new ArrayList<>(0), Collections.emptySet(),
-            Collections.emptySet(), null);
+                Collections.emptySet(), null);
     }
 
     /**
@@ -214,7 +214,7 @@ public final class Cluster {
         for (InetSocketAddress address : addresses)
             nodes.add(new Node(nodeId--, address.getHostString(), address.getPort()));
         return new Cluster(null, true, nodes, new ArrayList<>(0),
-            Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), null, Collections.emptyMap());
+                Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), null, Collections.emptyMap());
     }
 
     /**
@@ -255,8 +255,8 @@ public final class Cluster {
         PartitionInfo partitionInfo = partition(partition);
 
         if (node != null && partitionInfo != null &&
-            !Arrays.asList(partitionInfo.offlineReplicas()).contains(node) &&
-            Arrays.asList(partitionInfo.replicas()).contains(node)) {
+                !Arrays.asList(partitionInfo.offlineReplicas()).contains(node) &&
+                Arrays.asList(partitionInfo.replicas()).contains(node)) {
 
             return Optional.of(node);
         } else {
@@ -370,7 +370,7 @@ public final class Cluster {
     @Override
     public String toString() {
         return "Cluster(id = " + clusterResource.clusterId() + ", nodes = " + this.nodes +
-            ", partitions = " + this.partitionsByTopicPartition.values() + ", controller = " + controller + ")";
+                ", partitions = " + this.partitionsByTopicPartition.values() + ", controller = " + controller + ")";
     }
 
     @Override

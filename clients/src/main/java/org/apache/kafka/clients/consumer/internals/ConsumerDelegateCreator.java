@@ -85,26 +85,26 @@ public class ConsumerDelegateCreator {
 
             if (groupProtocol == GroupProtocol.CONSUMER)
                 return new AsyncKafkaConsumer<>(
-                    logContext,
-                    time,
-                    config,
-                    keyDeserializer,
-                    valueDeserializer,
-                    client,
-                    subscriptions,
-                    metadata
+                        logContext,
+                        time,
+                        config,
+                        keyDeserializer,
+                        valueDeserializer,
+                        client,
+                        subscriptions,
+                        metadata
                 );
             else
                 return new ClassicKafkaConsumer<>(
-                    logContext,
-                    time,
-                    config,
-                    keyDeserializer,
-                    valueDeserializer,
-                    client,
-                    subscriptions,
-                    metadata,
-                    assignors
+                        logContext,
+                        time,
+                        config,
+                        keyDeserializer,
+                        valueDeserializer,
+                        client,
+                        subscriptions,
+                        metadata,
+                        assignors
                 );
         } catch (KafkaException e) {
             throw e;

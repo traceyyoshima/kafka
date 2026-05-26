@@ -45,12 +45,12 @@ public class HeartbeatRequestState extends RequestState {
                                  final long retryBackoffMaxMs,
                                  final double jitter) {
         super(
-            logContext,
-            HeartbeatRequestState.class.getName(),
-            retryBackoffMs,
-            2,
-            retryBackoffMaxMs,
-            jitter
+                logContext,
+                HeartbeatRequestState.class.getName(),
+                retryBackoffMs,
+                2,
+                retryBackoffMaxMs,
+                jitter
         );
         this.heartbeatIntervalMs = heartbeatIntervalMs;
         this.heartbeatTimer = time.timer(heartbeatIntervalMs);
@@ -107,7 +107,7 @@ public class HeartbeatRequestState extends RequestState {
     @Override
     public String toStringBase() {
         return super.toStringBase() +
-            ", remainingMs=" + heartbeatTimer.remainingMs() +
-            ", heartbeatIntervalMs=" + heartbeatIntervalMs;
+                ", remainingMs=" + heartbeatTimer.remainingMs() +
+                ", heartbeatIntervalMs=" + heartbeatIntervalMs;
     }
 }

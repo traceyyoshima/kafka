@@ -82,38 +82,38 @@ import static org.mockito.Mockito.mockingDetails;
 public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapterTest {
 
     private final List<String> walRelatedMethods = List.of(
-        "setManualWalFlush",
-        "setMaxTotalWalSize",
-        "setWalBytesPerSync",
-        "setWalDir",
-        "setWalFilter",
-        "setWalRecoveryMode",
-        "setWalSizeLimitMB",
-        "setWalTtlSeconds"
+            "setManualWalFlush",
+            "setMaxTotalWalSize",
+            "setWalBytesPerSync",
+            "setWalDir",
+            "setWalFilter",
+            "setWalRecoveryMode",
+            "setWalSizeLimitMB",
+            "setWalTtlSeconds"
     );
 
     private final List<String> ignoreMethods = Stream.concat(
-        Stream.of(
-            "isOwningHandle",
-            "getNativeHandle",
-            "dispose",
-            "wait",
-            "equals",
-            "getClass",
-            "hashCode",
-            "notify",
-            "notifyAll",
-            "toString",
-            "getOptionStringFromProps",
-            "maxBackgroundCompactions",
-            "setMaxBackgroundCompactions",
-            "maxBackgroundFlushes",
-            "setMaxBackgroundFlushes",
-            "tablePropertiesCollectorFactory",
-            "setTablePropertiesCollectorFactory",
-            "setAtomicFlush"
-        ),
-        walRelatedMethods.stream()
+            Stream.of(
+                    "isOwningHandle",
+                    "getNativeHandle",
+                    "dispose",
+                    "wait",
+                    "equals",
+                    "getClass",
+                    "hashCode",
+                    "notify",
+                    "notifyAll",
+                    "toString",
+                    "getOptionStringFromProps",
+                    "maxBackgroundCompactions",
+                    "setMaxBackgroundCompactions",
+                    "maxBackgroundFlushes",
+                    "setMaxBackgroundFlushes",
+                    "tablePropertiesCollectorFactory",
+                    "setTablePropertiesCollectorFactory",
+                    "setAtomicFlush"
+            ),
+            walRelatedMethods.stream()
     ).collect(Collectors.toList());
 
     @Test
@@ -133,7 +133,7 @@ public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapterTest {
                 try {
                     DBOptions.class.getMethod(method.getName(), method.getParameterTypes());
                     verifyDBOptionsMethodCall(method);
-                } catch (final NoSuchMethodException expectedAndSwallow) { }
+                } catch (final NoSuchMethodException expectedAndSwallow) {}
             }
         }
     }
@@ -153,7 +153,7 @@ public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapterTest {
         } catch (final InvocationTargetException undeclaredMockMethodCall) {
             assertThat(undeclaredMockMethodCall.getCause(), instanceOf(AssertionError.class));
             assertThat(undeclaredMockMethodCall.getCause().getMessage().trim(),
-                matchesPattern("Unexpected method call DBOptions\\." + method.getName() + "((.*\n*)*):"));
+                    matchesPattern("Unexpected method call DBOptions\\." + method.getName() + "((.*\n*)*):"));
         } finally {
             optionsFacadeDbOptions.close();
         }
@@ -236,7 +236,7 @@ public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapterTest {
                 try {
                     ColumnFamilyOptions.class.getMethod(method.getName(), method.getParameterTypes());
                     verifyColumnFamilyOptionsMethodCall(method);
-                } catch (final NoSuchMethodException expectedAndSwallow) { }
+                } catch (final NoSuchMethodException expectedAndSwallow) {}
             }
         }
     }
@@ -256,7 +256,7 @@ public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapterTest {
         } catch (final InvocationTargetException undeclaredMockMethodCall) {
             assertThat(undeclaredMockMethodCall.getCause(), instanceOf(AssertionError.class));
             assertThat(undeclaredMockMethodCall.getCause().getMessage().trim(),
-                matchesPattern("Unexpected method call ColumnFamilyOptions\\." + method.getName() +  "(.*)"));
+                    matchesPattern("Unexpected method call ColumnFamilyOptions\\." + method.getName() + "(.*)"));
         } finally {
             optionsFacadeColumnFamilyOptions.close();
         }
@@ -340,7 +340,7 @@ public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapterTest {
         try (final LogCaptureAppender appender = LogCaptureAppender.createAndRegister(RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter.class)) {
 
             try (RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter adapter =
-                     new RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter(new DBOptions(), new ColumnFamilyOptions())) {
+                    new RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter(new DBOptions(), new ColumnFamilyOptions())) {
                 for (final Method method : RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter.class.getDeclaredMethods()) {
                     if (walRelatedMethods.contains(method.getName())) {
                         method.invoke(adapter, getDBOptionsParameters(method.getParameterTypes()));
@@ -365,7 +365,7 @@ public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapterTest {
         try (final LogCaptureAppender appender = LogCaptureAppender.createAndRegister(RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter.class)) {
 
             try (RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter adapter =
-                         new RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter(new DBOptions(), new ColumnFamilyOptions())) {
+                    new RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter(new DBOptions(), new ColumnFamilyOptions())) {
                 adapter.setAtomicFlush(false);
                 final Set<String> logMessages = appender.getEvents().stream()
                         .filter(e -> e.getLevel().equals("WARN"))

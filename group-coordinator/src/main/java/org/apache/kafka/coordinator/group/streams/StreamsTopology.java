@@ -92,14 +92,14 @@ public record StreamsTopology(int topologyEpoch,
     public Set<String> requiredTopics() {
         return subtopologies.values().stream()
             .flatMap(x ->
-                Stream.concat(
                     Stream.concat(
-                        x.sourceTopics().stream(),
-                        x.repartitionSourceTopics().stream().map(TopicInfo::name)
-                    ),
-                    x.stateChangelogTopics().stream().map(TopicInfo::name)
-                )
-            ).collect(Collectors.toSet());
+                            Stream.concat(
+                                    x.sourceTopics().stream(),
+                                    x.repartitionSourceTopics().stream().map(TopicInfo::name)
+                            ),
+                            x.stateChangelogTopics().stream().map(TopicInfo::name)
+                    )
+        ).collect(Collectors.toSet());
     }
 
     /**
@@ -110,8 +110,8 @@ public record StreamsTopology(int topologyEpoch,
      */
     public static StreamsTopology fromRecord(StreamsGroupTopologyValue record) {
         return new StreamsTopology(
-            record.epoch(),
-            record.subtopologies().stream().collect(Collectors.toMap(Subtopology::subtopologyId, x -> x))
+                record.epoch(),
+                record.subtopologies().stream().collect(Collectors.toMap(Subtopology::subtopologyId, x -> x))
         );
     }
 
@@ -132,11 +132,11 @@ public record StreamsTopology(int topologyEpoch,
         return new StreamsGroupDescribeResponseData.Topology()
             .setEpoch(topologyEpoch)
             .setSubtopologies(
-                subtopologies.entrySet().stream()
-                    .sorted(Map.Entry.comparingByKey())
-                    .map(entry -> asStreamsGroupDescribeSubtopology(entry.getKey(), entry.getValue()))
-                    .toList()
-            );
+                    subtopologies.entrySet().stream()
+                        .sorted(Map.Entry.comparingByKey())
+                        .map(entry -> asStreamsGroupDescribeSubtopology(entry.getKey(), entry.getValue()))
+                        .toList()
+        );
     }
 
     private StreamsGroupDescribeResponseData.Subtopology asStreamsGroupDescribeSubtopology(String subtopologyId, StreamsGroupTopologyValue.Subtopology subtopology) {
@@ -158,12 +158,12 @@ public record StreamsTopology(int topologyEpoch,
             .setPartitions(topicInfo.partitions())
             .setReplicationFactor(topicInfo.replicationFactor())
             .setTopicConfigs(
-                topicInfo.topicConfigs().stream().map(
-                    topicConfig -> new StreamsGroupDescribeResponseData.KeyValue()
-                        .setKey(topicConfig.key())
-                        .setValue(topicConfig.value())
-                ).toList()
-            );
+                    topicInfo.topicConfigs().stream().map(
+                        topicConfig -> new StreamsGroupDescribeResponseData.KeyValue()
+                            .setKey(topicConfig.key())
+                            .setValue(topicConfig.value())
+                    ).toList()
+        );
     }
 
 }

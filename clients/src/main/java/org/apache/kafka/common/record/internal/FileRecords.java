@@ -67,8 +67,8 @@ public class FileRecords extends AbstractRecords implements Closeable {
 
         if (channel.size() > Integer.MAX_VALUE) {
             throw new KafkaException(
-                "The size of segment " + file + " (" + channel.size() +
-                ") is larger than the maximum allowed segment size of " + Integer.MAX_VALUE
+                    "The size of segment " + file + " (" + channel.size() +
+                    ") is larger than the maximum allowed segment size of " + Integer.MAX_VALUE
             );
         }
 

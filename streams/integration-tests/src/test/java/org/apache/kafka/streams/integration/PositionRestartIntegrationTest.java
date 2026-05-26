@@ -110,7 +110,7 @@ public class PositionRestartIntegrationTest {
     private static final String STORE_NAME = "kv-store";
     private static final long RECORD_TIME = System.currentTimeMillis();
     private static final long WINDOW_START =
-        (RECORD_TIME / WINDOW_SIZE.toMillis()) * WINDOW_SIZE.toMillis();
+            (RECORD_TIME / WINDOW_SIZE.toMillis()) * WINDOW_SIZE.toMillis();
     public static final EmbeddedKafkaCluster CLUSTER = new EmbeddedKafkaCluster(NUM_BROKERS);
     private KafkaStreams kafkaStreams;
 
@@ -287,14 +287,14 @@ public class PositionRestartIntegrationTest {
         try (final Producer<Integer, Integer> producer = new KafkaProducer<>(producerProps)) {
             for (int i = 0; i < 4; i++) {
                 final Future<RecordMetadata> send = producer.send(
-                    new ProducerRecord<>(
-                        INPUT_TOPIC_NAME,
-                        i % partitions,
-                        RECORD_TIME,
-                        i,
-                        i,
-                        null
-                    )
+                        new ProducerRecord<>(
+                                INPUT_TOPIC_NAME,
+                                i % partitions,
+                                RECORD_TIME,
+                                i,
+                                i,
+                                null
+                        )
                 );
                 futures.add(send);
                 Time.SYSTEM.sleep(1L);
@@ -305,18 +305,18 @@ public class PositionRestartIntegrationTest {
                 final RecordMetadata recordMetadata = future.get(1, TimeUnit.MINUTES);
                 assertThat(recordMetadata.hasOffset(), is(true));
                 INPUT_POSITION.withComponent(
-                    recordMetadata.topic(),
-                    recordMetadata.partition(),
-                    recordMetadata.offset()
+                        recordMetadata.topic(),
+                        recordMetadata.partition(),
+                        recordMetadata.offset()
                 );
             }
         }
 
         assertThat(INPUT_POSITION, equalTo(
-            Position
-                .emptyPosition()
-                .withComponent(INPUT_TOPIC_NAME, 0, 1L)
-                .withComponent(INPUT_TOPIC_NAME, 1, 1L)
+                Position
+                    .emptyPosition()
+                    .withComponent(INPUT_TOPIC_NAME, 0, 1L)
+                    .withComponent(INPUT_TOPIC_NAME, 1, 1L)
         ));
     }
 
@@ -371,9 +371,9 @@ public class PositionRestartIntegrationTest {
             query = RangeQuery.withNoBounds();
         } else if (storeToTest.isWindowed()) {
             query = WindowKeyQuery.withKeyAndWindowStartRange(
-                2,
-                Instant.ofEpochMilli(WINDOW_START),
-                Instant.ofEpochMilli(WINDOW_START)
+                    2,
+                    Instant.ofEpochMilli(WINDOW_START),
+                    Instant.ofEpochMilli(WINDOW_START)
             );
         } else if (storeToTest.isSession()) {
             query = WindowRangeQuery.withKey(2);
@@ -391,13 +391,13 @@ public class PositionRestartIntegrationTest {
 
     private void shouldReachExpectedPosition(final Query<?> query) {
         final StateQueryRequest<?> request =
-            inStore(STORE_NAME)
-                .withQuery(query)
-                .withPartitions(Set.of(0, 1))
-                .withPositionBound(PositionBound.at(INPUT_POSITION));
+                inStore(STORE_NAME)
+                    .withQuery(query)
+                    .withPartitions(Set.of(0, 1))
+                    .withPositionBound(PositionBound.at(INPUT_POSITION));
 
         final StateQueryResult<?> result =
-            IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
+                IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
 
         assertThat(result.getPosition(), is(INPUT_POSITION));
     }
@@ -407,7 +407,7 @@ public class PositionRestartIntegrationTest {
                                          final boolean cache,
                                          final boolean log) {
         final Materialized<Integer, Integer, SessionStore<Bytes, byte[]>> materialized =
-            Materialized.as(supplier);
+                Materialized.as(supplier);
 
         if (cache) {
             materialized.withCachingEnabled();
@@ -426,11 +426,11 @@ public class PositionRestartIntegrationTest {
             .groupByKey()
             .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(WINDOW_SIZE))
             .aggregate(
-                () -> 0,
-                (key, value, aggregate) -> aggregate + value,
-                (aggKey, aggOne, aggTwo) -> aggOne + aggTwo,
-                materialized
-            );
+                    () -> 0,
+                    (key, value, aggregate) -> aggregate + value,
+                    (aggKey, aggOne, aggTwo) -> aggOne + aggTwo,
+                    materialized
+        );
     }
 
     private static void setUpWindowDSLTopology(final WindowBytesStoreSupplier supplier,
@@ -438,7 +438,7 @@ public class PositionRestartIntegrationTest {
                                         final boolean cache,
                                         final boolean log) {
         final Materialized<Integer, Integer, WindowStore<Bytes, byte[]>> materialized =
-            Materialized.as(supplier);
+                Materialized.as(supplier);
 
         if (cache) {
             materialized.withCachingEnabled();
@@ -457,10 +457,10 @@ public class PositionRestartIntegrationTest {
             .groupByKey()
             .windowedBy(TimeWindows.ofSizeWithNoGrace(WINDOW_SIZE))
             .aggregate(
-                () -> 0,
-                (key, value, aggregate) -> aggregate + value,
-                materialized
-            );
+                    () -> 0,
+                    (key, value, aggregate) -> aggregate + value,
+                    materialized
+        );
     }
 
     private static void setUpKeyValueDSLTopology(final KeyValueBytesStoreSupplier supplier,
@@ -468,7 +468,7 @@ public class PositionRestartIntegrationTest {
                                           final boolean cache,
                                           final boolean log) {
         final Materialized<Integer, Integer, KeyValueStore<Bytes, byte[]>> materialized =
-            Materialized.as(supplier);
+                Materialized.as(supplier);
 
         if (cache) {
             materialized.withCachingEnabled();
@@ -483,9 +483,9 @@ public class PositionRestartIntegrationTest {
         }
 
         builder.table(
-            INPUT_TOPIC_NAME,
-            Consumed.with(Serdes.Integer(), Serdes.Integer()),
-            materialized
+                INPUT_TOPIC_NAME,
+                Consumed.with(Serdes.Integer(), Serdes.Integer()),
+                materialized
         );
     }
 
@@ -498,38 +498,38 @@ public class PositionRestartIntegrationTest {
         final ProcessorSupplier<Integer, Integer, Void, Void> processorSupplier;
         if (storeToTest.timestamped()) {
             keyValueStoreStoreBuilder = Stores.timestampedKeyValueStoreBuilder(
-                supplier,
-                Serdes.Integer(),
-                Serdes.Integer()
+                    supplier,
+                    Serdes.Integer(),
+                    Serdes.Integer()
             );
             processorSupplier = () -> new ContextualProcessor<Integer, Integer, Void, Void>() {
                 @Override
                 public void process(final Record<Integer, Integer> record) {
                     final TimestampedKeyValueStore<Integer, Integer> stateStore =
-                        context().getStateStore(keyValueStoreStoreBuilder.name());
+                            context().getStateStore(keyValueStoreStoreBuilder.name());
                     stateStore.put(
-                        record.key(),
-                        ValueAndTimestamp.make(
-                            record.value(), record.timestamp()
-                        )
+                            record.key(),
+                            ValueAndTimestamp.make(
+                                    record.value(), record.timestamp()
+                            )
                     );
                 }
             };
         } else {
             keyValueStoreStoreBuilder = Stores.keyValueStoreBuilder(
-                supplier,
-                Serdes.Integer(),
-                Serdes.Integer()
+                    supplier,
+                    Serdes.Integer(),
+                    Serdes.Integer()
             );
             processorSupplier =
-                () -> new ContextualProcessor<Integer, Integer, Void, Void>() {
-                    @Override
-                    public void process(final Record<Integer, Integer> record) {
-                        final KeyValueStore<Integer, Integer> stateStore =
-                            context().getStateStore(keyValueStoreStoreBuilder.name());
-                        stateStore.put(record.key(), record.value());
-                    }
-                };
+                    () -> new ContextualProcessor<Integer, Integer, Void, Void>() {
+                        @Override
+                        public void process(final Record<Integer, Integer> record) {
+                            final KeyValueStore<Integer, Integer> stateStore =
+                                    context().getStateStore(keyValueStoreStoreBuilder.name());
+                            stateStore.put(record.key(), record.value());
+                        }
+                    };
         }
         if (cache) {
             keyValueStoreStoreBuilder.withCachingEnabled();
@@ -557,39 +557,39 @@ public class PositionRestartIntegrationTest {
         final ProcessorSupplier<Integer, Integer, Void, Void> processorSupplier;
         if (storeToTest.timestamped()) {
             windowStoreStoreBuilder = Stores.timestampedWindowStoreBuilder(
-                supplier,
-                Serdes.Integer(),
-                Serdes.Integer()
+                    supplier,
+                    Serdes.Integer(),
+                    Serdes.Integer()
             );
             processorSupplier = () -> new ContextualProcessor<Integer, Integer, Void, Void>() {
                 @Override
                 public void process(final Record<Integer, Integer> record) {
                     final TimestampedWindowStore<Integer, Integer> stateStore =
-                        context().getStateStore(windowStoreStoreBuilder.name());
+                            context().getStateStore(windowStoreStoreBuilder.name());
                     stateStore.put(
-                        record.key(),
-                        ValueAndTimestamp.make(
-                            record.value(), record.timestamp()
-                        ),
-                        WINDOW_START
+                            record.key(),
+                            ValueAndTimestamp.make(
+                                    record.value(), record.timestamp()
+                            ),
+                            WINDOW_START
                     );
                 }
             };
         } else {
             windowStoreStoreBuilder = Stores.windowStoreBuilder(
-                supplier,
-                Serdes.Integer(),
-                Serdes.Integer()
+                    supplier,
+                    Serdes.Integer(),
+                    Serdes.Integer()
             );
             processorSupplier =
-                () -> new ContextualProcessor<Integer, Integer, Void, Void>() {
-                    @Override
-                    public void process(final Record<Integer, Integer> record) {
-                        final WindowStore<Integer, Integer> stateStore =
-                            context().getStateStore(windowStoreStoreBuilder.name());
-                        stateStore.put(record.key(), record.value(), WINDOW_START);
-                    }
-                };
+                    () -> new ContextualProcessor<Integer, Integer, Void, Void>() {
+                        @Override
+                        public void process(final Record<Integer, Integer> record) {
+                            final WindowStore<Integer, Integer> stateStore =
+                                    context().getStateStore(windowStoreStoreBuilder.name());
+                            stateStore.put(record.key(), record.value(), WINDOW_START);
+                        }
+                    };
         }
         if (cache) {
             windowStoreStoreBuilder.withCachingEnabled();
@@ -615,18 +615,18 @@ public class PositionRestartIntegrationTest {
         final StoreBuilder<?> sessionStoreStoreBuilder;
         final ProcessorSupplier<Integer, Integer, Void, Void> processorSupplier;
         sessionStoreStoreBuilder = Stores.sessionStoreBuilder(
-            supplier,
-            Serdes.Integer(),
-            Serdes.Integer()
+                supplier,
+                Serdes.Integer(),
+                Serdes.Integer()
         );
         processorSupplier = () -> new ContextualProcessor<Integer, Integer, Void, Void>() {
             @Override
             public void process(final Record<Integer, Integer> record) {
                 final SessionStore<Integer, Integer> stateStore =
-                    context().getStateStore(sessionStoreStoreBuilder.name());
+                        context().getStateStore(sessionStoreStoreBuilder.name());
                 stateStore.put(
-                    new Windowed<>(record.key(), new SessionWindow(WINDOW_START, WINDOW_START)),
-                    record.value()
+                        new Windowed<>(record.key(), new SessionWindow(WINDOW_START, WINDOW_START)),
+                        record.value()
                 );
             }
         };
@@ -651,7 +651,7 @@ public class PositionRestartIntegrationTest {
                                             final String supplier,
                                             final String kind) {
         final String safeTestName =
-            PositionRestartIntegrationTest.class.getName() + "-" + cache + "-" + log + "-"
+                PositionRestartIntegrationTest.class.getName() + "-" + cache + "-" + log + "-"
                 + supplier + "-" + kind;
         final Properties config = new Properties();
         config.put(StreamsConfig.TOPOLOGY_OPTIMIZATION_CONFIG, StreamsConfig.OPTIMIZE);

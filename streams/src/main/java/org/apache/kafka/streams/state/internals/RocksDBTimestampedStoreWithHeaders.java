@@ -51,11 +51,10 @@ public class RocksDBTimestampedStoreWithHeaders extends RocksDBStore implements 
      * Legacy column family name - must match {@code RocksDBTimestampedStore#TIMESTAMPED_VALUES_COLUMN_FAMILY_NAME}
      */
     private static final byte[] LEGACY_TIMESTAMPED_CF_NAME =
-        RocksDBTimestampedStore.TIMESTAMPED_VALUES_COLUMN_FAMILY_NAME;
+            RocksDBTimestampedStore.TIMESTAMPED_VALUES_COLUMN_FAMILY_NAME;
 
     static final byte[] TIMESTAMPED_VALUES_WITH_HEADERS_CF_NAME =
-        "keyValueWithTimestampAndHeaders".getBytes(StandardCharsets.UTF_8);
-
+            "keyValueWithTimestampAndHeaders".getBytes(StandardCharsets.UTF_8);
 
     public RocksDBTimestampedStoreWithHeaders(final String name,
                                               final String metricsScope) {
@@ -95,10 +94,10 @@ public class RocksDBTimestampedStoreWithHeaders extends RocksDBStore implements 
                                       final ColumnFamilyOptions columnFamilyOptions) {
 
         final List<ColumnFamilyHandle> columnFamilies = openRocksDB(
-            dbOptions,
-            new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, columnFamilyOptions),
-            new ColumnFamilyDescriptor(TIMESTAMPED_VALUES_WITH_HEADERS_CF_NAME, columnFamilyOptions),
-            new ColumnFamilyDescriptor(OFFSETS_COLUMN_FAMILY_NAME, createOffsetsCFOptions())
+                dbOptions,
+                new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, columnFamilyOptions),
+                new ColumnFamilyDescriptor(TIMESTAMPED_VALUES_WITH_HEADERS_CF_NAME, columnFamilyOptions),
+                new ColumnFamilyDescriptor(OFFSETS_COLUMN_FAMILY_NAME, createOffsetsCFOptions())
         );
 
         final ColumnFamilyHandle defaultCf = columnFamilies.get(0);
@@ -111,12 +110,12 @@ public class RocksDBTimestampedStoreWithHeaders extends RocksDBStore implements 
             if (defaultIter.isValid()) {
                 log.info("Opening store {} in upgrade mode from plain key value store", name);
                 cfAccessor = new DualColumnFamilyAccessor(
-                    offsetsCf,
-                    defaultCf,
-                    headersCf,
-                    HeadersBytesStore::convertFromPlainToHeaderFormat,
-                    this,
-                    open
+                        offsetsCf,
+                        defaultCf,
+                        headersCf,
+                        HeadersBytesStore::convertFromPlainToHeaderFormat,
+                        this,
+                        open
                 );
             } else {
                 log.info("Opening store {} in regular headers-aware mode", name);
@@ -134,12 +133,12 @@ public class RocksDBTimestampedStoreWithHeaders extends RocksDBStore implements 
     private void openFromTimestampedStore(final DBOptions dbOptions,
                                           final ColumnFamilyOptions columnFamilyOptions) {
         final List<ColumnFamilyHandle> columnFamilies = openRocksDB(
-            dbOptions,
-            // we have to open the default CF to be able to open the legacy CF, but we won't use it
-            new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, columnFamilyOptions),
-            new ColumnFamilyDescriptor(LEGACY_TIMESTAMPED_CF_NAME, columnFamilyOptions),
-            new ColumnFamilyDescriptor(TIMESTAMPED_VALUES_WITH_HEADERS_CF_NAME, columnFamilyOptions),
-            new ColumnFamilyDescriptor(OFFSETS_COLUMN_FAMILY_NAME, createOffsetsCFOptions())
+                dbOptions,
+                // we have to open the default CF to be able to open the legacy CF, but we won't use it
+                new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, columnFamilyOptions),
+                new ColumnFamilyDescriptor(LEGACY_TIMESTAMPED_CF_NAME, columnFamilyOptions),
+                new ColumnFamilyDescriptor(TIMESTAMPED_VALUES_WITH_HEADERS_CF_NAME, columnFamilyOptions),
+                new ColumnFamilyDescriptor(OFFSETS_COLUMN_FAMILY_NAME, createOffsetsCFOptions())
         );
 
         try {
@@ -148,7 +147,7 @@ public class RocksDBTimestampedStoreWithHeaders extends RocksDBStore implements 
                 defaultIter.seekToFirst();
                 if (defaultIter.isValid()) {
                     throw new ProcessorStateException(
-                        "Inconsistent store state for " + name + ". " +
+                            "Inconsistent store state for " + name + ". " +
                             "Cannot have both plain (DEFAULT) and timestamped data simultaneously. " +
                             "Headers store can upgrade from either plain or timestamped format, but not both."
                     );
@@ -167,11 +166,11 @@ public class RocksDBTimestampedStoreWithHeaders extends RocksDBStore implements 
                 if (legacyIter.isValid()) {
                     log.info("Opening store {} in upgrade mode from timestamped store", name);
                     cfAccessor = new DualColumnFamilyAccessor(
-                        offsetsCf,
-                        legacyTimestampedCf,
-                        headersCf,
-                        HeadersBytesStore::convertToHeaderFormat,
-                        this,
+                            offsetsCf,
+                            legacyTimestampedCf,
+                            headersCf,
+                            HeadersBytesStore::convertToHeaderFormat,
+                            this,
                             open
                     );
                 } else {
@@ -207,7 +206,7 @@ public class RocksDBTimestampedStoreWithHeaders extends RocksDBStore implements 
 
             if (config.isCollectExecutionInfo()) {
                 result.addExecutionInfo(
-                    "Handled in " + this.getClass() + " in " + (System.nanoTime() - start) + "ns"
+                        "Handled in " + this.getClass() + " in " + (System.nanoTime() - start) + "ns"
                 );
             }
             result.setPosition(position.copy());

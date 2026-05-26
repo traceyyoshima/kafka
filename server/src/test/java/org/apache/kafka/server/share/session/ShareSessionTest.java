@@ -32,8 +32,8 @@ public class ShareSessionTest {
         Uuid uuid1 = Uuid.randomUuid();
         Uuid uuid2 = Uuid.randomUuid();
         List<TopicIdPartition> partitions = List.of(
-            new TopicIdPartition(uuid1, 0, "foo"),
-            new TopicIdPartition(uuid2, 1, "bar"));
+                new TopicIdPartition(uuid1, 0, "foo"),
+                new TopicIdPartition(uuid2, 1, "bar"));
 
         String response = ShareSession.partitionsToLogString(partitions, false);
         assertEquals("2 partition(s)", response);

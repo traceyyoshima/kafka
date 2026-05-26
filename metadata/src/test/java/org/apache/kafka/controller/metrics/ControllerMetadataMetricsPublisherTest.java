@@ -81,16 +81,16 @@ public class ControllerMetadataMetricsPublisherTest {
 
     static MetadataImage fakeImageFromTopicsImage(TopicsImage topicsImage) {
         return new MetadataImage(
-            MetadataProvenance.EMPTY,
-            FeaturesImage.EMPTY,
-            ClusterImage.EMPTY,
-            topicsImage,
-            ConfigurationsImage.EMPTY,
-            ClientQuotasImage.EMPTY,
-            ProducerIdsImage.EMPTY,
-            AclsImage.EMPTY,
-            ScramImage.EMPTY,
-            DelegationTokenImage.EMPTY);
+                MetadataProvenance.EMPTY,
+                FeaturesImage.EMPTY,
+                ClusterImage.EMPTY,
+                topicsImage,
+                ConfigurationsImage.EMPTY,
+                ClientQuotasImage.EMPTY,
+                ProducerIdsImage.EMPTY,
+                AclsImage.EMPTY,
+                ScramImage.EMPTY,
+                DelegationTokenImage.EMPTY);
     }
 
     static final TopicsImage TOPICS_IMAGE1;
@@ -99,19 +99,19 @@ public class ControllerMetadataMetricsPublisherTest {
 
     static {
         TOPICS_IMAGE1 = fakeTopicsImage(
-            fakeTopicImage("foo",
-                Uuid.fromString("JKNp6fQaT-icHxh654ok-w"),
-                    fakePartitionRegistration(NORMAL)),
-            fakeTopicImage("bar",
-                Uuid.fromString("pEMSdUVWTXaFQUzLTznFSw"),
-                    fakePartitionRegistration(NORMAL),
-                    fakePartitionRegistration(NORMAL),
-                    fakePartitionRegistration(NON_PREFERRED_LEADER)),
-            fakeTopicImage("quux",
-                    Uuid.fromString("zkUT4lyyRke6VIaTw6RQWg"),
-                    fakePartitionRegistration(OFFLINE),
-                    fakePartitionRegistration(OFFLINE),
-                    fakePartitionRegistration(OFFLINE))
+                fakeTopicImage("foo",
+                        Uuid.fromString("JKNp6fQaT-icHxh654ok-w"),
+                        fakePartitionRegistration(NORMAL)),
+                fakeTopicImage("bar",
+                        Uuid.fromString("pEMSdUVWTXaFQUzLTznFSw"),
+                        fakePartitionRegistration(NORMAL),
+                        fakePartitionRegistration(NORMAL),
+                        fakePartitionRegistration(NON_PREFERRED_LEADER)),
+                fakeTopicImage("quux",
+                        Uuid.fromString("zkUT4lyyRke6VIaTw6RQWg"),
+                        fakePartitionRegistration(OFFLINE),
+                        fakePartitionRegistration(OFFLINE),
+                        fakePartitionRegistration(OFFLINE))
         );
         IMAGE1 = fakeImageFromTopicsImage(TOPICS_IMAGE1);
     }

@@ -100,7 +100,7 @@ public class TimeWindowedCogroupedKStreamImplTest {
     public void shouldNotHaveNullMaterializedOnTwoOptionAggregate(final boolean withHeaders) {
         setup(withHeaders);
         assertThrows(NullPointerException.class, () -> windowedCogroupedStream.aggregate(MockInitializer.STRING_INIT,
-            (Materialized<String, String, WindowStore<Bytes, byte[]>>) null));
+                (Materialized<String, String, WindowStore<Bytes, byte[]>>) null));
     }
 
     @ParameterizedTest

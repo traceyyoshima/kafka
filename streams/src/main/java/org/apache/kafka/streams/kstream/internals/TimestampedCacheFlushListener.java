@@ -47,10 +47,10 @@ class TimestampedCacheFlushListener<KOut, VOut> implements CacheFlushListener<KO
             final Headers headers = record.headers() != null ? record.headers() : new RecordHeaders();
 
             context.forward(
-                record
-                    .withValue(new Change<>(newValue, oldValue, record.value().isLatest))
-                    .withTimestamp(timestamp)
-                    .withHeaders(headers)
+                    record
+                        .withValue(new Change<>(newValue, oldValue, record.value().isLatest))
+                        .withTimestamp(timestamp)
+                        .withHeaders(headers)
             );
         } finally {
             context.setCurrentNode(prev);

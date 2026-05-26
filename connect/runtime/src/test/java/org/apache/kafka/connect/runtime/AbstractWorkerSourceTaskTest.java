@@ -253,7 +253,7 @@ public class AbstractWorkerSourceTaskTest {
 
         // Can just use the same record for key and value
         List<SourceRecord> records = List.of(
-            new SourceRecord(PARTITION, OFFSET, "topic", null, KEY_SCHEMA, KEY, RECORD_SCHEMA, RECORD)
+                new SourceRecord(PARTITION, OFFSET, "topic", null, KEY_SCHEMA, KEY, RECORD_SCHEMA, RECORD)
         );
 
         expectSendRecord(emptyHeaders());
@@ -345,8 +345,8 @@ public class AbstractWorkerSourceTaskTest {
         expectTopicCreation(TOPIC);
 
         workerTask.toSend = List.of(
-            new SourceRecord(PARTITION, OFFSET, TOPIC, null, KEY_SCHEMA, KEY, RECORD_SCHEMA, RECORD,
-                null, connectHeaders)
+                new SourceRecord(PARTITION, OFFSET, TOPIC, null, KEY_SCHEMA, KEY, RECORD_SCHEMA, RECORD,
+                        null, connectHeaders)
         );
         workerTask.sendRecords();
 
@@ -383,10 +383,10 @@ public class AbstractWorkerSourceTaskTest {
             .addString("encoding", encodingB);
 
         workerTask.toSend = List.of(
-            new SourceRecord(PARTITION, OFFSET, "topic", null, Schema.STRING_SCHEMA, "a",
-                Schema.STRING_SCHEMA, stringA, null, headersA),
-            new SourceRecord(PARTITION, OFFSET, "topic", null, Schema.STRING_SCHEMA, "b",
-                Schema.STRING_SCHEMA, stringB, null, headersB)
+                new SourceRecord(PARTITION, OFFSET, "topic", null, Schema.STRING_SCHEMA, "a",
+                        Schema.STRING_SCHEMA, stringA, null, headersA),
+                new SourceRecord(PARTITION, OFFSET, "topic", null, Schema.STRING_SCHEMA, "b",
+                        Schema.STRING_SCHEMA, stringB, null, headersB)
         );
         workerTask.sendRecords();
 
@@ -400,15 +400,15 @@ public class AbstractWorkerSourceTaskTest {
 
         assertEquals(ByteBuffer.wrap("a".getBytes()), ByteBuffer.wrap(sentRecordA.key()));
         assertEquals(
-            ByteBuffer.wrap(stringA.getBytes(encodingA)),
-            ByteBuffer.wrap(sentRecordA.value())
+                ByteBuffer.wrap(stringA.getBytes(encodingA)),
+                ByteBuffer.wrap(sentRecordA.value())
         );
         assertEquals(encodingA, new String(sentRecordA.headers().lastHeader("encoding").value()));
 
         assertEquals(ByteBuffer.wrap("b".getBytes()), ByteBuffer.wrap(sentRecordB.key()));
         assertEquals(
-            ByteBuffer.wrap(stringB.getBytes(encodingB)),
-            ByteBuffer.wrap(sentRecordB.value())
+                ByteBuffer.wrap(stringB.getBytes(encodingB)),
+                ByteBuffer.wrap(sentRecordB.value())
         );
         assertEquals(encodingB, new String(sentRecordB.headers().lastHeader("encoding").value()));
 
@@ -512,10 +512,10 @@ public class AbstractWorkerSourceTaskTest {
                 .thenThrow(new RetriableException(new TimeoutException("timeout")))
                 .thenReturn(Map.of());
         when(admin.createOrFindTopics(any(NewTopic.class))).thenAnswer(
-            (Answer<TopicAdmin.TopicCreationResponse>) invocation -> {
-                NewTopic newTopic = invocation.getArgument(0);
-                return createdTopic(newTopic.name());
-            });
+                (Answer<TopicAdmin.TopicCreationResponse>) invocation -> {
+                    NewTopic newTopic = invocation.getArgument(0);
+                    return createdTopic(newTopic.name());
+                });
 
         // Try to send 3, make first pass, second fail. Should save last record
         workerTask.toSend = List.of(record1, record2, record3);
@@ -577,7 +577,7 @@ public class AbstractWorkerSourceTaskTest {
 
         expectPreliminaryCalls(TOPIC);
         when(admin.describeTopics(TOPIC)).thenThrow(
-            new ConnectException(new TopicAuthorizationException("unauthorized"))
+                new ConnectException(new TopicAuthorizationException("unauthorized"))
         );
 
         workerTask.toSend = List.of(record1, record2);
@@ -594,7 +594,7 @@ public class AbstractWorkerSourceTaskTest {
         expectPreliminaryCalls(TOPIC);
         when(admin.describeTopics(TOPIC)).thenReturn(Map.of());
         when(admin.createOrFindTopics(any(NewTopic.class))).thenThrow(
-            new ConnectException(new TopicAuthorizationException("unauthorized"))
+                new ConnectException(new TopicAuthorizationException("unauthorized"))
         );
 
         workerTask.toSend = List.of(record1, record2);
@@ -853,6 +853,7 @@ public class AbstractWorkerSourceTaskTest {
     private void verifyTaskGetTopic() {
         verifyTaskGetTopic(1);
     }
+
     private void verifyTaskGetTopic(int times) {
         ArgumentCaptor<String> connectorCapture = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> topicCapture = ArgumentCaptor.forClass(String.class);
@@ -870,6 +871,7 @@ public class AbstractWorkerSourceTaskTest {
     private void verifyTopicCreation() {
         verifyTopicCreation(1, TOPIC);
     }
+
     private void verifyTopicCreation(int times, String... topics) {
         ArgumentCaptor<NewTopic> newTopicCapture = ArgumentCaptor.forClass(NewTopic.class);
 

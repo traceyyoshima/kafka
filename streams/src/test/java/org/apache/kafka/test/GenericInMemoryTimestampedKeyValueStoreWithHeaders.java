@@ -39,8 +39,8 @@ import java.util.TreeMap;
  *  need a basic KeyValueStore for arbitrary types and don't have/want to write a serde
  */
 public class GenericInMemoryTimestampedKeyValueStoreWithHeaders<K extends Comparable, V>
-    extends WrappedStateStore<StateStore, K, ValueTimestampHeaders<V>>
-    implements TimestampedKeyValueStoreWithHeaders<K, V> {
+        extends WrappedStateStore<StateStore, K, ValueTimestampHeaders<V>>
+        implements TimestampedKeyValueStoreWithHeaders<K, V> {
 
     private final String name;
     private final NavigableMap<K, ValueTimestampHeaders<V>> map;

@@ -159,7 +159,7 @@ public class MemoryRecords extends AbstractRecords {
                 continue;
 
             final BatchFilterResult iterationResult = filterBatch(batch, decompressionBufferSupplier, filterResult,
-                filter);
+                    filter);
             List<Record> retainedRecords = iterationResult.retainedRecords;
             boolean containsTombstones = iterationResult.containsTombstones;
             boolean writeOriginalBatch = iterationResult.writeOriginalBatch;
@@ -170,7 +170,7 @@ public class MemoryRecords extends AbstractRecords {
                 // in which case, we need to reset the base timestamp and overwrite the timestamp deltas
                 // if the batch does not contain tombstones, then we don't need to overwrite batch
                 boolean needToSetDeleteHorizon = (containsTombstones || containsMarkerForEmptyTxn) &&
-                    batch.deleteHorizonMs().isEmpty();
+                        batch.deleteHorizonMs().isEmpty();
                 if (writeOriginalBatch && !needToSetDeleteHorizon) {
                     batch.writeTo(bufferOutputStream);
                     filterResult.updateRetainedBatchMetadata(batch, retainedRecords.size(), false);
@@ -186,7 +186,7 @@ public class MemoryRecords extends AbstractRecords {
                         int filteredBatchSize = records.sizeInBytes();
                         MemoryRecordsBuilder.RecordsInfo info = builder.info();
                         filterResult.updateRetainedBatchMetadata(info.maxTimestamp, info.shallowOffsetOfMaxTimestamp,
-                            maxOffset, retainedRecords.size(), filteredBatchSize);
+                                maxOffset, retainedRecords.size(), filteredBatchSize);
                     }
                 }
             } else if (batchRetention == BatchRetention.RETAIN_EMPTY) {
@@ -249,6 +249,7 @@ public class MemoryRecords extends AbstractRecords {
         private final boolean writeOriginalBatch;
         private final boolean containsTombstones;
         private final long maxOffset;
+
         private BatchFilterResult(List<Record> retainedRecords,
                                   final boolean writeOriginalBatch,
                                   final boolean containsTombstones,
@@ -367,6 +368,7 @@ public class MemoryRecords extends AbstractRecords {
         public static class BatchRetentionResult {
             public final BatchRetention batchRetention;
             public final boolean containsMarkerForEmptyTxn;
+
             public BatchRetentionResult(final BatchRetention batchRetention,
                                         final boolean containsMarkerForEmptyTxn) {
                 this.batchRetention = batchRetention;
@@ -489,8 +491,8 @@ public class MemoryRecords extends AbstractRecords {
             logAppendTime = System.currentTimeMillis();
 
         return new MemoryRecordsBuilder(buffer, RecordBatch.CURRENT_MAGIC_VALUE, compression, timestampType, baseOffset,
-            logAppendTime, RecordBatch.NO_PRODUCER_ID, RecordBatch.NO_PRODUCER_EPOCH, RecordBatch.NO_SEQUENCE,
-            false, false, RecordBatch.NO_PARTITION_LEADER_EPOCH, maxSize);
+                logAppendTime, RecordBatch.NO_PRODUCER_ID, RecordBatch.NO_PRODUCER_EPOCH, RecordBatch.NO_SEQUENCE,
+                false, false, RecordBatch.NO_PARTITION_LEADER_EPOCH, maxSize);
     }
 
     public static MemoryRecordsBuilder builder(ByteBuffer buffer,
@@ -817,19 +819,19 @@ public class MemoryRecords extends AbstractRecords {
         ByteBuffer buffer
     ) {
         return new MemoryRecordsBuilder(
-            buffer,
-            RecordBatch.CURRENT_MAGIC_VALUE,
-            Compression.NONE,
-            TimestampType.CREATE_TIME,
-            initialOffset,
-            timestamp,
-            RecordBatch.NO_PRODUCER_ID,
-            RecordBatch.NO_PRODUCER_EPOCH,
-            RecordBatch.NO_SEQUENCE,
-            false,
-            true,
-            leaderEpoch,
-            buffer.capacity()
+                buffer,
+                RecordBatch.CURRENT_MAGIC_VALUE,
+                Compression.NONE,
+                TimestampType.CREATE_TIME,
+                initialOffset,
+                timestamp,
+                RecordBatch.NO_PRODUCER_ID,
+                RecordBatch.NO_PRODUCER_EPOCH,
+                RecordBatch.NO_SEQUENCE,
+                false,
+                true,
+                leaderEpoch,
+                buffer.capacity()
         );
     }
 }

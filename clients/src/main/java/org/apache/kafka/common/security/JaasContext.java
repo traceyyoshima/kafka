@@ -106,7 +106,7 @@ public class JaasContext {
 
     @SuppressWarnings("deprecation")
     // Visible for testing
-     static void throwIfLoginModuleIsNotAllowed(AppConfigurationEntry appConfigurationEntry) {
+    static void throwIfLoginModuleIsNotAllowed(AppConfigurationEntry appConfigurationEntry) {
         String disallowedProperty = System.getProperty(DISALLOWED_LOGIN_MODULES_CONFIG);
         if (disallowedProperty != null) {
             LOG.warn("System property '{}' is deprecated and will be removed in a future release. Use '{}' instead.",
@@ -132,9 +132,9 @@ public class JaasContext {
                 .collect(Collectors.toSet());
         if (disallowedLoginModuleList.contains(loginModuleName)) {
             throw new IllegalArgumentException(loginModuleName + " is not allowed. "
-                + "The system property '" + DISALLOWED_LOGIN_MODULES_CONFIG + "' is deprecated. "
-                + "Use the " + ALLOWED_LOGIN_MODULES_CONFIG + " to allow this module. e.g.,"
-                + "-D" + ALLOWED_LOGIN_MODULES_CONFIG + "=" + loginModuleName);
+                    + "The system property '" + DISALLOWED_LOGIN_MODULES_CONFIG + "' is deprecated. "
+                    + "Use the " + ALLOWED_LOGIN_MODULES_CONFIG + " to allow this module. e.g.,"
+                    + "-D" + ALLOWED_LOGIN_MODULES_CONFIG + "=" + loginModuleName);
         }
     }
 

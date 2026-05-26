@@ -143,21 +143,22 @@ public class RebalanceIntegrationTest {
         builder.<Long, Long>stream(MULTI_PARTITION_INPUT_TOPIC)
             .process(() -> new Processor<Long, Long, Long, Long>() {
                 ProcessorContext<Long, Long> context;
+
                 @Override
                 public void init(final ProcessorContext<Long, Long> context) {
                     this.context = context;
 
                     final AtomicReference<Cancellable> cancellable = new AtomicReference<>();
                     cancellable.set(context.schedule(
-                        Duration.ofSeconds(1),
-                        PunctuationType.WALL_CLOCK_TIME,
-                        time -> {
-                            context.forward(new Record<>(
-                                (context.taskId().partition() + 1) * 100L,
-                                -(context.taskId().partition() + 1L),
-                                context.currentSystemTimeMs()));
-                            cancellable.get().cancel();
-                        }
+                            Duration.ofSeconds(1),
+                            PunctuationType.WALL_CLOCK_TIME,
+                            time -> {
+                                context.forward(new Record<>(
+                                    (context.taskId().partition() + 1) * 100L,
+                                    -(context.taskId().partition() + 1L),
+                                    context.currentSystemTimeMs()));
+                                cancellable.get().cancel();
+                            }
                     ));
                 }
 
@@ -185,11 +186,11 @@ public class RebalanceIntegrationTest {
         properties.put(StreamsConfig.TASK_ASSIGNOR_CLASS_CONFIG, TestTaskAssignor.class.getName());
 
         final Properties config = StreamsTestUtils.getStreamsConfig(
-            applicationId,
-            cluster.bootstrapServers(),
-            Serdes.LongSerde.class.getName(),
-            Serdes.LongSerde.class.getName(),
-            properties
+                applicationId,
+                cluster.bootstrapServers(),
+                Serdes.LongSerde.class.getName(),
+                Serdes.LongSerde.class.getName(),
+                properties
         );
 
         try (final KafkaStreams streams = new KafkaStreams(builder.build(), config)) {
@@ -200,9 +201,9 @@ public class RebalanceIntegrationTest {
             // StreamThread-1 now has a task with progress, and one task w/o progress
             final List<KeyValue<Long, Long>> expectedUncommittedResultBeforeRebalance = Arrays.asList(KeyValue.pair(100L, -1L), KeyValue.pair(200L, -2L));
             final List<KeyValue<Long, Long>> uncommittedRecordsBeforeRebalance = IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(
-                TestUtils.consumerConfig(cluster.bootstrapServers(), LongDeserializer.class, LongDeserializer.class),
-                SINGLE_PARTITION_OUTPUT_TOPIC,
-                expectedUncommittedResultBeforeRebalance.size()
+                    TestUtils.consumerConfig(cluster.bootstrapServers(), LongDeserializer.class, LongDeserializer.class),
+                    SINGLE_PARTITION_OUTPUT_TOPIC,
+                    expectedUncommittedResultBeforeRebalance.size()
             );
             checkResultPerKey(uncommittedRecordsBeforeRebalance, expectedUncommittedResultBeforeRebalance);
 
@@ -213,9 +214,9 @@ public class RebalanceIntegrationTest {
 
             final List<KeyValue<Long, Long>> expectedUncommittedResultAfterRebalance = Arrays.asList(KeyValue.pair(100L, -1L), KeyValue.pair(200L, -2L));
             final List<KeyValue<Long, Long>> uncommittedRecordsAfterRebalance = IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(
-                TestUtils.consumerConfig(cluster.bootstrapServers(), LongDeserializer.class, LongDeserializer.class),
-                SINGLE_PARTITION_OUTPUT_TOPIC,
-                expectedUncommittedResultAfterRebalance.size()
+                    TestUtils.consumerConfig(cluster.bootstrapServers(), LongDeserializer.class, LongDeserializer.class),
+                    SINGLE_PARTITION_OUTPUT_TOPIC,
+                    expectedUncommittedResultAfterRebalance.size()
             );
             checkResultPerKey(uncommittedRecordsAfterRebalance, expectedUncommittedResultAfterRebalance);
         }

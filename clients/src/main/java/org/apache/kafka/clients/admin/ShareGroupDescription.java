@@ -71,12 +71,12 @@ public class ShareGroupDescription {
         if (o == null || getClass() != o.getClass()) return false;
         final ShareGroupDescription that = (ShareGroupDescription) o;
         return Objects.equals(groupId, that.groupId) &&
-            Objects.equals(members, that.members) &&
-            groupState == that.groupState &&
-            Objects.equals(coordinator, that.coordinator) &&
-            groupEpoch == that.groupEpoch &&
-            targetAssignmentEpoch == that.targetAssignmentEpoch &&
-            Objects.equals(authorizedOperations, that.authorizedOperations);
+                Objects.equals(members, that.members) &&
+                groupState == that.groupState &&
+                Objects.equals(coordinator, that.coordinator) &&
+                groupEpoch == that.groupEpoch &&
+                targetAssignmentEpoch == that.targetAssignmentEpoch &&
+                Objects.equals(authorizedOperations, that.authorizedOperations);
     }
 
     @Override
@@ -136,12 +136,12 @@ public class ShareGroupDescription {
     @Override
     public String toString() {
         return "(groupId=" + groupId +
-            ", members=" + members.stream().map(ShareMemberDescription::toString).collect(Collectors.joining(",")) +
-            ", groupState=" + groupState +
-            ", coordinator=" + coordinator +
-            ", groupEpoch=" + groupEpoch +
-            ", targetAssignmentEpoch=" + targetAssignmentEpoch +
-            ", authorizedOperations=" + authorizedOperations +
-            ")";
+                ", members=" + members.stream().map(ShareMemberDescription::toString).collect(Collectors.joining(",")) +
+                ", groupState=" + groupState +
+                ", coordinator=" + coordinator +
+                ", groupEpoch=" + groupEpoch +
+                ", targetAssignmentEpoch=" + targetAssignmentEpoch +
+                ", authorizedOperations=" + authorizedOperations +
+                ")";
     }
 }

@@ -32,7 +32,7 @@ public class TestTaskAssignor extends StickyTaskAssignor {
 
         for (final String threadName : assignment.groupAssignment().keySet()) {
             if (threadName.contains("-StreamThread-1-")) {
-                final TaskId taskWithData =  EosIntegrationTest.TASK_WITH_DATA.get();
+                final TaskId taskWithData = EosIntegrationTest.TASK_WITH_DATA.get();
                 if (taskWithData != null && taskWithData.partition() == assignment.groupAssignment().get(threadName).partitions().get(0).partition()) {
                     EosIntegrationTest.DID_REVOKE_IDLE_TASK.set(true);
                 }

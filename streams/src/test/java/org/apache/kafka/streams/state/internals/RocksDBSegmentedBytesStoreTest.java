@@ -23,11 +23,11 @@ public class RocksDBSegmentedBytesStoreTest extends AbstractRocksDBSegmentedByte
     @Override
     RocksDBSegmentedBytesStore getBytesStore() {
         return new RocksDBSegmentedBytesStore(
-            storeName,
-            METRICS_SCOPE,
-            retention,
-            segmentInterval,
-            schema
+                storeName,
+                METRICS_SCOPE,
+                retention,
+                segmentInterval,
+                schema
         );
     }
 

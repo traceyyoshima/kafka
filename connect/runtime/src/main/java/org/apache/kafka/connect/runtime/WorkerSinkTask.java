@@ -224,8 +224,8 @@ class WorkerSinkTask extends WorkerTask<ConsumerRecord<byte[], byte[]>, SinkReco
             while (!isStopping())
                 iteration();
         } catch (WakeupException e) {
-            log.trace("Consumer woken up during initial offset commit attempt, " 
-                + "but succeeded during a later attempt");
+            log.trace("Consumer woken up during initial offset commit attempt, "
+                    + "but succeeded during a later attempt");
         }
     }
 
@@ -480,7 +480,7 @@ class WorkerSinkTask extends WorkerTask<ConsumerRecord<byte[], byte[]>, SinkReco
                     committableOffsets.put(partition, taskProvidedOffset);
                 } else {
                     log.warn("{} Ignoring invalid task provided offset {}/{} -- not yet consumed, taskOffset={} currentOffset={}",
-                        this, partition, taskProvidedOffset, taskOffset, currentOffset);
+                            this, partition, taskProvidedOffset, taskOffset, currentOffset);
                 }
             } else if (!allAssignedTopicPartitions.contains(partition)) {
                 log.warn("{} Ignoring invalid task provided offset {}/{} -- partition not assigned, assignment={}",
@@ -499,7 +499,6 @@ class WorkerSinkTask extends WorkerTask<ConsumerRecord<byte[], byte[]>, SinkReco
 
         doCommit(committableOffsets, closing, commitSeqno);
     }
-
 
     @Override
     public String toString() {
@@ -540,7 +539,7 @@ class WorkerSinkTask extends WorkerTask<ConsumerRecord<byte[], byte[]>, SinkReco
             } else {
                 log.trace(
                         "{} Converters and transformations returned null, possibly because of too many retries, so " +
-                                "dropping record in topic '{}' partition {} at offset {}",
+                        "dropping record in topic '{}' partition {} at offset {}",
                         this, msg.topic(), msg.partition(), msg.offset()
                 );
             }
@@ -833,8 +832,8 @@ class WorkerSinkTask extends WorkerTask<ConsumerRecord<byte[], byte[]>, SinkReco
 
             ConnectMetricsRegistry registry = connectMetrics.registry();
             metricGroup = connectMetrics
-                                  .group(registry.sinkTaskGroupName(), registry.connectorTagName(), id.connector(), registry.taskTagName(),
-                                         Integer.toString(id.task()));
+                    .group(registry.sinkTaskGroupName(), registry.connectorTagName(), id.connector(), registry.taskTagName(),
+                                          Integer.toString(id.task()));
             // prevent collisions by removing any previously created metrics in this group.
             metricGroup.close();
 

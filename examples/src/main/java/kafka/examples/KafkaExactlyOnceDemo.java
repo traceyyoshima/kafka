@@ -54,9 +54,9 @@ public class KafkaExactlyOnceDemo {
         try {
             if (args.length != 3) {
                 Utils.printHelp("This example takes 3 parameters (i.e. 6 3 10000):%n" +
-                    "- partition: number of partitions for input and output topics (required)%n" +
-                    "- instances: number of application instances (required)%n" +
-                    "- records: total number of records (required)");
+                        "- partition: number of partitions for input and output topics (required)%n" +
+                        "- instances: number of application instances (required)%n" +
+                        "- records: total number of records (required)");
                 return;
             }
 

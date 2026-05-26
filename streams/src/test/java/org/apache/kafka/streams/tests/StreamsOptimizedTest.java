@@ -66,7 +66,6 @@ public class StreamsOptimizedTest {
         final String reduceTopic = (String) Objects.requireNonNull(streamsProperties.remove("reduce.topic"));
         final String joinTopic = (String) Objects.requireNonNull(streamsProperties.remove("join.topic"));
 
-
         final Pattern repartitionTopicPattern = Pattern.compile("Sink: .*-repartition");
         final Initializer<Integer> initializer = () -> 0;
         final Aggregator<String, String, Integer> aggregator = (k, v, agg) -> agg + v.length();
@@ -82,17 +81,16 @@ public class StreamsOptimizedTest {
         final KStream<String, String> mappedStream = sourceStream.selectKey((k, v) -> keyFunction.apply(v));
 
         final KStream<String, Long> countStream = mappedStream.groupByKey()
-                                                               .count(Materialized.with(Serdes.String(),
-                                                                                        Serdes.Long())).toStream();
+                .count(Materialized.with(Serdes.String(),
+                                                                       Serdes.Long())).toStream();
 
         mappedStream.groupByKey().aggregate(
-            initializer,
-            aggregator,
-            Materialized.with(Serdes.String(), Serdes.Integer()))
+                initializer,
+                aggregator,
+                Materialized.with(Serdes.String(), Serdes.Integer()))
             .toStream()
             .peek((k, v) -> System.out.printf("AGGREGATED key=%s value=%s%n", k, v))
             .to(aggregationTopic, Produced.with(Serdes.String(), Serdes.Integer()));
-
 
         mappedStream.groupByKey()
             .reduce(reducer, Materialized.with(Serdes.String(), Serdes.String()))
@@ -101,13 +99,12 @@ public class StreamsOptimizedTest {
             .to(reduceTopic, Produced.with(Serdes.String(), Serdes.String()));
 
         mappedStream.join(countStream, (v1, v2) -> v1 + ":" + v2.toString(),
-            JoinWindows.of(ofMillis(500)),
-            StreamJoined.with(Serdes.String(), Serdes.String(), Serdes.Long()))
+                JoinWindows.of(ofMillis(500)),
+                StreamJoined.with(Serdes.String(), Serdes.String(), Serdes.Long()))
             .peek((k, v) -> System.out.printf("JOINED key=%s value=%s%n", k, v))
             .to(joinTopic, Produced.with(Serdes.String(), Serdes.String()));
 
         final Properties config = new Properties();
-
 
         config.setProperty(StreamsConfig.APPLICATION_ID_CONFIG, "StreamsOptimizedTest");
         config.setProperty(StreamsConfig.STATESTORE_CACHE_MAX_BYTES_CONFIG, "0");
@@ -115,12 +112,10 @@ public class StreamsOptimizedTest {
         config.setProperty(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         config.setProperty(StreamsConfig.adminClientPrefix(AdminClientConfig.RETRIES_CONFIG), "100");
 
-
         config.putAll(streamsProperties);
 
         final Topology topology = builder.build(config);
         final KafkaStreams streams = new KafkaStreams(topology, config);
-
 
         streams.setStateListener((newState, oldState) -> {
             if (oldState == State.REBALANCING && newState == State.RUNNING) {

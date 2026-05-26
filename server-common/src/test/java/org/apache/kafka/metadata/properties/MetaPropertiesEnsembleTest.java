@@ -51,29 +51,29 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class MetaPropertiesEnsembleTest {
     private static final MetaPropertiesEnsemble FOO =
-        new MetaPropertiesEnsemble(
-            Set.of("/tmp/empty1", "/tmp/empty2"),
-            Set.of("/tmp/error3"),
-            Stream.of(
-                new SimpleImmutableEntry<>("/tmp/dir4",
-                    new MetaProperties.Builder().
-                        setVersion(MetaPropertiesVersion.V1).
-                        setClusterId("fooClusterId").
-                        setNodeId(2).
-                        build()),
-                new SimpleImmutableEntry<>("/tmp/dir5",
-                    new MetaProperties.Builder().
-                        setVersion(MetaPropertiesVersion.V1).
-                        setClusterId("fooClusterId").
-                        setNodeId(2).
-                        build())).collect(Collectors.
-                            toMap(Entry::getKey, Entry::getValue)),
-                Optional.of("/tmp/dir4"));
+            new MetaPropertiesEnsemble(
+                    Set.of("/tmp/empty1", "/tmp/empty2"),
+                    Set.of("/tmp/error3"),
+                    Stream.of(
+                    new SimpleImmutableEntry<>("/tmp/dir4",
+                            new MetaProperties.Builder().
+                                setVersion(MetaPropertiesVersion.V1).
+                                setClusterId("fooClusterId").
+                                setNodeId(2).
+                                build()),
+                    new SimpleImmutableEntry<>("/tmp/dir5",
+                            new MetaProperties.Builder().
+                                setVersion(MetaPropertiesVersion.V1).
+                                setClusterId("fooClusterId").
+                                setNodeId(2).
+                                build())).collect(Collectors.
+                                    toMap(Entry::getKey, Entry::getValue)),
+                    Optional.of("/tmp/dir4"));
 
     private static String createLogDir(MetaProperties metaProps) throws IOException {
         File logDir = TestUtils.tempDirectory();
         PropertiesUtils.writePropertiesFile(metaProps.toProperties(),
-            new File(logDir, META_PROPERTIES_NAME).getAbsolutePath(), false);
+                new File(logDir, META_PROPERTIES_NAME).getAbsolutePath(), false);
         return logDir.getAbsolutePath();
     }
 
@@ -93,7 +93,7 @@ public final class MetaPropertiesEnsembleTest {
     @Test
     public void testEmptyLogDirsForFoo() {
         assertEquals(Set.of("/tmp/empty1", "/tmp/empty2"),
-            FOO.emptyLogDirs());
+                FOO.emptyLogDirs());
     }
 
     @Test
@@ -114,20 +114,20 @@ public final class MetaPropertiesEnsembleTest {
     @Test
     public void testLogDirPropsForFoo() {
         assertEquals(Set.of("/tmp/dir4", "/tmp/dir5"),
-            FOO.logDirProps().keySet());
+                FOO.logDirProps().keySet());
     }
 
     @Test
     public void testLogDirPropsForEmpty() {
         assertEquals(Set.of(),
-            EMPTY.logDirProps().keySet());
+                EMPTY.logDirProps().keySet());
     }
 
     @Test
     public void testNonFailedDirectoryPropsForFoo() {
         Map<String, Optional<MetaProperties>> results = new HashMap<>();
         FOO.nonFailedDirectoryProps().forEachRemaining(entry ->
-            results.put(entry.getKey(), entry.getValue())
+                results.put(entry.getKey(), entry.getValue())
         );
         assertEquals(Optional.empty(), results.get("/tmp/empty1"));
         assertEquals(Optional.empty(), results.get("/tmp/empty2"));
@@ -183,72 +183,72 @@ public final class MetaPropertiesEnsembleTest {
     @Test
     public void testSuccessfulVerification() {
         FOO.verify(Optional.empty(),
-            OptionalInt.empty(),
-            EnumSet.of(REQUIRE_AT_LEAST_ONE_VALID, REQUIRE_METADATA_LOG_DIR));
+                OptionalInt.empty(),
+                EnumSet.of(REQUIRE_AT_LEAST_ONE_VALID, REQUIRE_METADATA_LOG_DIR));
     }
 
     @Test
     public void testSuccessfulVerificationWithClusterId() {
         FOO.verify(Optional.of("fooClusterId"),
-            OptionalInt.empty(),
-            EnumSet.of(REQUIRE_AT_LEAST_ONE_VALID, REQUIRE_METADATA_LOG_DIR));
+                OptionalInt.empty(),
+                EnumSet.of(REQUIRE_AT_LEAST_ONE_VALID, REQUIRE_METADATA_LOG_DIR));
     }
 
     @Test
     public void testSuccessfulVerificationWithClusterIdAndNodeId() {
         FOO.verify(Optional.of("fooClusterId"),
-            OptionalInt.of(2),
-            EnumSet.of(REQUIRE_AT_LEAST_ONE_VALID, REQUIRE_METADATA_LOG_DIR));
+                OptionalInt.of(2),
+                EnumSet.of(REQUIRE_AT_LEAST_ONE_VALID, REQUIRE_METADATA_LOG_DIR));
     }
 
     @Test
     public void testVerificationFailureOnRequireV0() {
         assertEquals("Found unexpected version in /tmp/dir4/meta.properties. ZK-based brokers " +
-            "that are not migrating only support version 0 (which is implicit when the " +
-            "`version` field is missing).",
+                "that are not migrating only support version 0 (which is implicit when the " +
+                "`version` field is missing).",
                 assertThrows(RuntimeException.class, () ->
-                    FOO.verify(Optional.empty(), OptionalInt.empty(), EnumSet.of(REQUIRE_V0))).
+                        FOO.verify(Optional.empty(), OptionalInt.empty(), EnumSet.of(REQUIRE_V0))).
                         getMessage());
     }
 
     @Test
     public void testVerificationFailureOnRequireAtLeastOneValid() {
         assertEquals("No readable meta.properties files found.",
-            assertThrows(RuntimeException.class,
-                () -> EMPTY.verify(Optional.empty(),
-                    OptionalInt.empty(),
-                    EnumSet.of(REQUIRE_AT_LEAST_ONE_VALID))).
-                        getMessage());
+                assertThrows(RuntimeException.class,
+                    () -> EMPTY.verify(Optional.empty(),
+                        OptionalInt.empty(),
+                        EnumSet.of(REQUIRE_AT_LEAST_ONE_VALID))).
+                            getMessage());
     }
 
     @Test
     public void testVerificationFailureOnLackOfMetadataLogDir() {
         MetaPropertiesEnsemble ensemble = new MetaPropertiesEnsemble(
-            Set.of("/tmp/foo1"),
-            Set.of(),
-            Map.of(),
-            Optional.empty());
+                Set.of("/tmp/foo1"),
+                Set.of(),
+                Map.of(),
+                Optional.empty());
         assertEquals("No metadata log directory was specified.",
-            assertThrows(RuntimeException.class,
-                () -> ensemble.verify(Optional.empty(),
-                    OptionalInt.empty(),
-                    EnumSet.of(REQUIRE_METADATA_LOG_DIR))).
-                        getMessage());
+                assertThrows(RuntimeException.class,
+                    () -> ensemble.verify(Optional.empty(),
+                        OptionalInt.empty(),
+                        EnumSet.of(REQUIRE_METADATA_LOG_DIR))).
+                            getMessage());
     }
 
     @Test
     public void testVerificationFailureOnMetadataLogDirWithError() {
         MetaPropertiesEnsemble ensemble = new MetaPropertiesEnsemble(
-            Set.of(),
-            Set.of("/tmp/foo1"),
-            Map.of(),
-            Optional.of("/tmp/foo1"));
+                Set.of(),
+                Set.of("/tmp/foo1"),
+                Map.of(),
+                Optional.of("/tmp/foo1"));
         assertEquals("Encountered I/O error in metadata log directory /tmp/foo1. Cannot continue.",
-            assertThrows(RuntimeException.class,
-                () -> ensemble.verify(Optional.empty(),
-                    OptionalInt.empty(),
-                    EnumSet.of(REQUIRE_METADATA_LOG_DIR))).
-                        getMessage());
+                assertThrows(RuntimeException.class,
+                    () -> ensemble.verify(Optional.empty(),
+                        OptionalInt.empty(),
+                        EnumSet.of(REQUIRE_METADATA_LOG_DIR))).
+                            getMessage());
     }
 
     @Test
@@ -262,8 +262,8 @@ public final class MetaPropertiesEnsembleTest {
         loader.addMetadataLogDir(createLogDir(metaProps));
         MetaPropertiesEnsemble metaPropertiesEnsemble = loader.load();
         metaPropertiesEnsemble.verify(Optional.of("AtgGav8yQjiaJ3rTXE7VCA"),
-            OptionalInt.of(1),
-            EnumSet.of(REQUIRE_METADATA_LOG_DIR, REQUIRE_AT_LEAST_ONE_VALID));
+                OptionalInt.of(1),
+                EnumSet.of(REQUIRE_METADATA_LOG_DIR, REQUIRE_AT_LEAST_ONE_VALID));
         assertEquals(1, metaPropertiesEnsemble.logDirProps().values().size());
         assertEquals(metaProps, metaPropertiesEnsemble.logDirProps().values().iterator().next());
     }
@@ -274,8 +274,8 @@ public final class MetaPropertiesEnsembleTest {
         loader.addMetadataLogDir(createEmptyLogDir());
         MetaPropertiesEnsemble metaPropertiesEnsemble = loader.load();
         metaPropertiesEnsemble.verify(Optional.of("AtgGav8yQjiaJ3rTXE7VCA"),
-            OptionalInt.of(1),
-            EnumSet.of(REQUIRE_METADATA_LOG_DIR));
+                OptionalInt.of(1),
+                EnumSet.of(REQUIRE_METADATA_LOG_DIR));
         assertEquals(1, metaPropertiesEnsemble.emptyLogDirs().size());
     }
 
@@ -322,14 +322,14 @@ public final class MetaPropertiesEnsembleTest {
     static class MetaPropertiesMockRandom extends Random {
         private final AtomicInteger index = new AtomicInteger(0);
         private final List<Long> results = List.of(
-            0L,
-            0L,
-            2336837413447398698L,
-            1758400403264101670L,
-            4341931186263415792L,
-            6389410885970711333L,
-            7265008559332826740L,
-            3478747443029687715L
+                0L,
+                0L,
+                2336837413447398698L,
+                1758400403264101670L,
+                4341931186263415792L,
+                6389410885970711333L,
+                7265008559332826740L,
+                3478747443029687715L
         );
 
         @Override
@@ -345,23 +345,23 @@ public final class MetaPropertiesEnsembleTest {
         MetaPropertiesEnsemble.Copier copier = new MetaPropertiesEnsemble.Copier(EMPTY);
         copier.setRandom(random);
         copier.logDirProps().put("/tmp/dir1",
-            new MetaProperties.Builder().
-                setVersion(MetaPropertiesVersion.V1).
-                setClusterId("PpYMbsoRQV-589isZzNzEw").
-                setNodeId(0).
-                setDirectoryId(new Uuid(2336837413447398698L, 1758400403264101670L)).
-                build());
+                new MetaProperties.Builder().
+                    setVersion(MetaPropertiesVersion.V1).
+                    setClusterId("PpYMbsoRQV-589isZzNzEw").
+                    setNodeId(0).
+                    setDirectoryId(new Uuid(2336837413447398698L, 1758400403264101670L)).
+                    build());
         copier.logDirProps().put("/tmp/dir2",
-            new MetaProperties.Builder().
-                setVersion(MetaPropertiesVersion.V1).
-                setClusterId("PpYMbsoRQV-589isZzNzEw").
-                setNodeId(0).
-                setDirectoryId(new Uuid(4341931186263415792L, 6389410885970711333L)).
-                build());
+                new MetaProperties.Builder().
+                    setVersion(MetaPropertiesVersion.V1).
+                    setClusterId("PpYMbsoRQV-589isZzNzEw").
+                    setNodeId(0).
+                    setDirectoryId(new Uuid(4341931186263415792L, 6389410885970711333L)).
+                    build());
         // Verify that we ignore the non-safe IDs, or the IDs that have already been used,
         // when invoking generateValidDirectoryId.
         assertEquals(new Uuid(7265008559332826740L, 3478747443029687715L),
-            copier.generateValidDirectoryId());
+                copier.generateValidDirectoryId());
     }
 
     @Test
@@ -370,7 +370,7 @@ public final class MetaPropertiesEnsembleTest {
         copier.emptyLogDirs().add("/tmp/foo");
         copier.errorLogDirs().add("/tmp/foo");
         assertEquals("Error: log directory /tmp/foo is in both emptyLogDirs and errorLogDirs.",
-            assertThrows(RuntimeException.class, copier::verify).getMessage());
+                assertThrows(RuntimeException.class, copier::verify).getMessage());
     }
 
     @Test
@@ -379,7 +379,7 @@ public final class MetaPropertiesEnsembleTest {
         copier.emptyLogDirs().add("/tmp/foo");
         copier.logDirProps().put("/tmp/foo", new MetaProperties.Builder().build());
         assertEquals("Error: log directory /tmp/foo is in both emptyLogDirs and logDirProps.",
-            assertThrows(RuntimeException.class, copier::verify).getMessage());
+                assertThrows(RuntimeException.class, copier::verify).getMessage());
     }
 
     @Test
@@ -388,28 +388,28 @@ public final class MetaPropertiesEnsembleTest {
         copier.errorLogDirs().add("/tmp/foo");
         copier.logDirProps().put("/tmp/foo", new MetaProperties.Builder().build());
         assertEquals("Error: log directory /tmp/foo is in both errorLogDirs and logDirProps.",
-            assertThrows(RuntimeException.class, copier::verify).getMessage());
+                assertThrows(RuntimeException.class, copier::verify).getMessage());
     }
 
     private static final List<MetaProperties> SAMPLE_META_PROPS_LIST = List.of(
-        new MetaProperties.Builder().
-            setVersion(MetaPropertiesVersion.V1).
-            setClusterId("AtgGav8yQjiaJ3rTXE7VCA").
-            setNodeId(1).
-            setDirectoryId(Uuid.fromString("s33AdXtkR8Gf_xRO-R_dpA")).
-            build(),
-        new MetaProperties.Builder().
-            setVersion(MetaPropertiesVersion.V1).
-            setClusterId("AtgGav8yQjiaJ3rTXE7VCA").
-            setNodeId(1).
-            setDirectoryId(Uuid.fromString("oTM53yT_SbSfzlvkh_PfVA")).
-            build(),
-        new MetaProperties.Builder().
-            setVersion(MetaPropertiesVersion.V1).
-            setClusterId("AtgGav8yQjiaJ3rTXE7VCA").
-            setNodeId(1).
-            setDirectoryId(Uuid.fromString("FcUhIv2mTzmLqGkVEabyag")).
-            build());
+            new MetaProperties.Builder().
+                setVersion(MetaPropertiesVersion.V1).
+                setClusterId("AtgGav8yQjiaJ3rTXE7VCA").
+                setNodeId(1).
+                setDirectoryId(Uuid.fromString("s33AdXtkR8Gf_xRO-R_dpA")).
+                build(),
+            new MetaProperties.Builder().
+                setVersion(MetaPropertiesVersion.V1).
+                setClusterId("AtgGav8yQjiaJ3rTXE7VCA").
+                setNodeId(1).
+                setDirectoryId(Uuid.fromString("oTM53yT_SbSfzlvkh_PfVA")).
+                build(),
+            new MetaProperties.Builder().
+                setVersion(MetaPropertiesVersion.V1).
+                setClusterId("AtgGav8yQjiaJ3rTXE7VCA").
+                setNodeId(1).
+                setDirectoryId(Uuid.fromString("FcUhIv2mTzmLqGkVEabyag")).
+                build());
 
     @Test
     public void testCopierWriteLogDirChanges() throws Exception {
@@ -423,9 +423,9 @@ public final class MetaPropertiesEnsembleTest {
         copier.logDirProps().put(newLogDir2, SAMPLE_META_PROPS_LIST.get(2));
         copier.writeLogDirChanges();
         assertEquals(SAMPLE_META_PROPS_LIST.get(1).toProperties(), PropertiesUtils.readPropertiesFile(
-            new File(newLogDir1, META_PROPERTIES_NAME).getAbsolutePath()));
+                new File(newLogDir1, META_PROPERTIES_NAME).getAbsolutePath()));
         assertEquals(SAMPLE_META_PROPS_LIST.get(2).toProperties(), PropertiesUtils.readPropertiesFile(
-            new File(newLogDir2, META_PROPERTIES_NAME).getAbsolutePath()));
+                new File(newLogDir2, META_PROPERTIES_NAME).getAbsolutePath()));
     }
 
     @Test

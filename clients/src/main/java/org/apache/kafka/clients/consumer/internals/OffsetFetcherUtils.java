@@ -77,8 +77,8 @@ class OffsetFetcherUtils {
                        long retryBackoffMs,
                        ApiVersions apiVersions) {
         this(logContext, metadata, subscriptionState,
-            time, retryBackoffMs, apiVersions,
-            new PositionsValidator(logContext, time, subscriptionState, metadata));
+                time, retryBackoffMs, apiVersions,
+                new PositionsValidator(logContext, time, subscriptionState, metadata));
     }
 
     OffsetFetcherUtils(LogContext logContext,
@@ -237,10 +237,10 @@ class OffsetFetcherUtils {
         final Map<TopicPartition, Long> timestampsToSearch,
         final Map<TopicPartition, ListOffsetData> fetchedOffsets) {
         return buildListOffsetsResult(timestampsToSearch, fetchedOffsets,
-            (topicPartition, offsetData) -> new OffsetAndTimestamp(
-                offsetData.offset,
-                offsetData.timestamp,
-                offsetData.leaderEpoch));
+                (topicPartition, offsetData) -> new OffsetAndTimestamp(
+                    offsetData.offset,
+                    offsetData.timestamp,
+                    offsetData.leaderEpoch));
     }
 
     static Map<TopicPartition, OffsetAndTimestampInternal> buildOffsetsForTimeInternalResult(
@@ -365,7 +365,6 @@ class OffsetFetcherUtils {
             log.error("Discarding error resetting positions because another error is pending",
                     error);
     }
-
 
     void onSuccessfulResponseForValidatingPositions(
             final Map<TopicPartition, SubscriptionState.FetchPosition> fetchPositions,

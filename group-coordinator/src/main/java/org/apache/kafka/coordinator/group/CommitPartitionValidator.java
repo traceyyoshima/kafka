@@ -35,5 +35,5 @@ public interface CommitPartitionValidator {
     /**
      * A no-op validator that performs no validation.
      */
-    CommitPartitionValidator NO_OP = (topicName, topicId, partitionId) -> { };
+    CommitPartitionValidator NO_OP = (topicName, topicId, partitionId) -> {};
 }

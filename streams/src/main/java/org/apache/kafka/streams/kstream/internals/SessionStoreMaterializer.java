@@ -61,25 +61,25 @@ public class SessionStoreMaterializer<K, V> extends MaterializedStoreFactory<K, 
     @Override
     public  StoreBuilder<?> builder() {
         final SessionBytesStoreSupplier supplier = materialized.storeSupplier() == null
-            ? dslStoreSuppliers().sessionStore(new DslSessionParams(
-                materialized.storeName(),
-                Duration.ofMillis(retentionPeriod),
-                emitStrategy,
-                dslStoreFormat()))
-            : (SessionBytesStoreSupplier) materialized.storeSupplier();
+                ? dslStoreSuppliers().sessionStore(new DslSessionParams(
+                    materialized.storeName(),
+                    Duration.ofMillis(retentionPeriod),
+                    emitStrategy,
+                    dslStoreFormat()))
+                : (SessionBytesStoreSupplier) materialized.storeSupplier();
 
         final StoreBuilder<?> builder;
         if (supplier instanceof HeadersBytesStoreSupplier) {
             builder = Stores.sessionStoreWithHeadersBuilder(
-                supplier,
-                materialized.keySerde(),
-                materialized.valueSerde()
+                    supplier,
+                    materialized.keySerde(),
+                    materialized.valueSerde()
             );
         } else {
             builder = Stores.sessionStoreBuilder(
-                supplier,
-                materialized.keySerde(),
-                materialized.valueSerde()
+                    supplier,
+                    materialized.keySerde(),
+                    materialized.valueSerde()
             );
         }
 

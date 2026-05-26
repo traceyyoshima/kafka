@@ -47,8 +47,8 @@ import static org.apache.kafka.streams.state.internals.ExceptionUtils.executeAll
 import static org.apache.kafka.streams.state.internals.ExceptionUtils.throwSuppressed;
 
 public class CachingWindowStore
-    extends WrappedStateStore<WindowStore<Bytes, byte[]>, byte[], byte[]>
-    implements WindowStore<Bytes, byte[]>, CachedStateStore<byte[], byte[]> {
+        extends WrappedStateStore<WindowStore<Bytes, byte[]>, byte[], byte[]>
+        implements WindowStore<Bytes, byte[]>, CachedStateStore<byte[], byte[]> {
 
     private static final Logger LOG = LoggerFactory.getLogger(CachingWindowStore.class);
 
@@ -78,9 +78,9 @@ public class CachingWindowStore
         final String changelogTopic = ProcessorContextUtils.changelogFor(stateStoreContext, name(), Boolean.TRUE);
         internalContext = asInternalProcessorContext(stateStoreContext);
         bytesSerdes = new StateSerdes<>(
-            changelogTopic,
-            Serdes.Bytes(),
-            Serdes.ByteArray());
+                changelogTopic,
+                Serdes.Bytes(),
+                Serdes.ByteArray());
         cacheName = internalContext.taskId() + "-" + name();
 
         internalContext.registerCacheFlushListener(cacheName, entries -> {
@@ -113,11 +113,11 @@ public class CachingWindowStore
                     context.setRecordContext(entry.entry().context());
                     wrapped().put(binaryKey, entry.newValue(), windowStartTimestamp);
                     flushListener.apply(
-                        new Record<>(
-                            binaryWindowKey,
-                            new Change<>(rawNewValue, sendOldValues ? rawOldValue : null),
-                            entry.entry().context().timestamp(),
-                            entry.entry().context().headers()));
+                            new Record<>(
+                                    binaryWindowKey,
+                                    new Change<>(rawNewValue, sendOldValues ? rawOldValue : null),
+                                    entry.entry().context().timestamp(),
+                                    entry.entry().context().headers()));
                 } finally {
                     context.setRecordContext(current);
                 }
@@ -142,7 +142,6 @@ public class CachingWindowStore
         return true;
     }
 
-
     @Override
     public synchronized void put(final Bytes key,
                                  final byte[] value,
@@ -153,17 +152,17 @@ public class CachingWindowStore
 
         final Bytes keyBytes = WindowKeySchema.toStoreKeyBinary(key, windowStartTimestamp, 0);
         final LRUCacheEntry entry =
-            new LRUCacheEntry(
-                value,
-                internalContext.recordContext().headers(),
-                true,
-                internalContext.recordContext().offset(),
-                internalContext.recordContext().timestamp(),
-                internalContext.recordContext().partition(),
-                internalContext.recordContext().topic(),
-                internalContext.recordContext().sourceRawKey(),
-                internalContext.recordContext().sourceRawValue()
-            );
+                new LRUCacheEntry(
+                        value,
+                        internalContext.recordContext().headers(),
+                        true,
+                        internalContext.recordContext().offset(),
+                        internalContext.recordContext().timestamp(),
+                        internalContext.recordContext().partition(),
+                        internalContext.recordContext().topic(),
+                        internalContext.recordContext().sourceRawKey(),
+                        internalContext.recordContext().sourceRawValue()
+                );
         internalContext.cache().put(cacheName, cacheFunction.cacheKey(keyBytes), entry);
 
         maxObservedTimestamp.set(Math.max(keySchema.segmentTimestamp(keyBytes), maxObservedTimestamp.get()));
@@ -202,14 +201,14 @@ public class CachingWindowStore
         final PeekingKeyValueIterator<Bytes, LRUCacheEntry> cacheIterator = wrapped().persistent() ?
             new CacheIteratorWrapper(key, timeFrom, timeTo, true) :
             internalContext.cache().range(
-                cacheName,
-                cacheFunction.cacheKey(keySchema.lowerRangeFixedSize(key, timeFrom)),
-                cacheFunction.cacheKey(keySchema.upperRangeFixedSize(key, timeTo))
+                    cacheName,
+                    cacheFunction.cacheKey(keySchema.lowerRangeFixedSize(key, timeFrom)),
+                    cacheFunction.cacheKey(keySchema.upperRangeFixedSize(key, timeTo))
             );
 
         final HasNextCondition hasNextCondition = keySchema.hasNextCondition(key, key, timeFrom, timeTo, true);
         final PeekingKeyValueIterator<Bytes, LRUCacheEntry> filteredCacheIterator =
-            new FilteredCacheIterator(cacheIterator, hasNextCondition, cacheFunction);
+                new FilteredCacheIterator(cacheIterator, hasNextCondition, cacheFunction);
 
         return new MergedSortedCacheWindowStoreIterator(filteredCacheIterator, underlyingIterator, true);
     }
@@ -230,14 +229,14 @@ public class CachingWindowStore
         final PeekingKeyValueIterator<Bytes, LRUCacheEntry> cacheIterator = wrapped().persistent() ?
             new CacheIteratorWrapper(key, timeFrom, timeTo, false) :
             internalContext.cache().reverseRange(
-                cacheName,
-                cacheFunction.cacheKey(keySchema.lowerRangeFixedSize(key, timeFrom)),
-                cacheFunction.cacheKey(keySchema.upperRangeFixedSize(key, timeTo))
+                    cacheName,
+                    cacheFunction.cacheKey(keySchema.lowerRangeFixedSize(key, timeFrom)),
+                    cacheFunction.cacheKey(keySchema.upperRangeFixedSize(key, timeTo))
             );
 
         final HasNextCondition hasNextCondition = keySchema.hasNextCondition(key, key, timeFrom, timeTo, false);
         final PeekingKeyValueIterator<Bytes, LRUCacheEntry> filteredCacheIterator =
-            new FilteredCacheIterator(cacheIterator, hasNextCondition, cacheFunction);
+                new FilteredCacheIterator(cacheIterator, hasNextCondition, cacheFunction);
 
         return new MergedSortedCacheWindowStoreIterator(filteredCacheIterator, underlyingIterator, false);
     }
@@ -249,9 +248,9 @@ public class CachingWindowStore
                                                            final long timeTo) {
         if (keyFrom != null && keyTo != null && keyFrom.compareTo(keyTo) > 0) {
             LOG.warn("Returning empty iterator for fetch with invalid key range: from > to. " +
-                "This may be due to range arguments set in the wrong order, " +
-                "or serdes that don't preserve ordering when lexicographically comparing the serialized bytes. " +
-                "Note that the built-in numerical serdes do not follow this for negative numbers");
+                    "This may be due to range arguments set in the wrong order, " +
+                    "or serdes that don't preserve ordering when lexicographically comparing the serialized bytes. " +
+                    "Note that the built-in numerical serdes do not follow this for negative numbers");
             return KeyValueIterators.emptyIterator();
         }
 
@@ -260,7 +259,7 @@ public class CachingWindowStore
         validateStoreOpen();
 
         final KeyValueIterator<Windowed<Bytes>, byte[]> underlyingIterator =
-            wrapped().fetch(keyFrom, keyTo, timeFrom, timeTo);
+                wrapped().fetch(keyFrom, keyTo, timeFrom, timeTo);
         if (internalContext.cache() == null) {
             return underlyingIterator;
         }
@@ -268,22 +267,22 @@ public class CachingWindowStore
         final PeekingKeyValueIterator<Bytes, LRUCacheEntry> cacheIterator = wrapped().persistent() ?
             new CacheIteratorWrapper(keyFrom, keyTo, timeFrom, timeTo, true) :
             internalContext.cache().range(
-                cacheName,
-                keyFrom == null ? null : cacheFunction.cacheKey(keySchema.lowerRange(keyFrom, timeFrom)),
-                keyTo == null ? null : cacheFunction.cacheKey(keySchema.upperRange(keyTo, timeTo))
+                    cacheName,
+                    keyFrom == null ? null : cacheFunction.cacheKey(keySchema.lowerRange(keyFrom, timeFrom)),
+                    keyTo == null ? null : cacheFunction.cacheKey(keySchema.upperRange(keyTo, timeTo))
             );
 
         final HasNextCondition hasNextCondition = keySchema.hasNextCondition(keyFrom, keyTo, timeFrom, timeTo, true);
         final PeekingKeyValueIterator<Bytes, LRUCacheEntry> filteredCacheIterator =
-            new FilteredCacheIterator(cacheIterator, hasNextCondition, cacheFunction);
+                new FilteredCacheIterator(cacheIterator, hasNextCondition, cacheFunction);
 
         return new MergedSortedCacheWindowStoreKeyValueIterator(
-            filteredCacheIterator,
-            underlyingIterator,
-            bytesSerdes,
-            windowSize,
-            cacheFunction,
-            true
+                filteredCacheIterator,
+                underlyingIterator,
+                bytesSerdes,
+                windowSize,
+                cacheFunction,
+                true
         );
     }
 
@@ -294,8 +293,8 @@ public class CachingWindowStore
                                                                    final long timeTo) {
         if (keyFrom != null && keyTo != null && keyFrom.compareTo(keyTo) > 0) {
             LOG.warn("Returning empty iterator for fetch with invalid key range: from > to. "
-                + "This may be due to serdes that don't preserve ordering when lexicographically comparing the serialized bytes. " +
-                "Note that the built-in numerical serdes do not follow this for negative numbers");
+                    + "This may be due to serdes that don't preserve ordering when lexicographically comparing the serialized bytes. " +
+                    "Note that the built-in numerical serdes do not follow this for negative numbers");
             return KeyValueIterators.emptyIterator();
         }
 
@@ -304,7 +303,7 @@ public class CachingWindowStore
         validateStoreOpen();
 
         final KeyValueIterator<Windowed<Bytes>, byte[]> underlyingIterator =
-            wrapped().backwardFetch(keyFrom, keyTo, timeFrom, timeTo);
+                wrapped().backwardFetch(keyFrom, keyTo, timeFrom, timeTo);
         if (internalContext.cache() == null) {
             return underlyingIterator;
         }
@@ -312,22 +311,22 @@ public class CachingWindowStore
         final PeekingKeyValueIterator<Bytes, LRUCacheEntry> cacheIterator = wrapped().persistent() ?
             new CacheIteratorWrapper(keyFrom, keyTo, timeFrom, timeTo, false) :
             internalContext.cache().reverseRange(
-                cacheName,
-                keyFrom == null ? null : cacheFunction.cacheKey(keySchema.lowerRange(keyFrom, timeFrom)),
-                keyTo == null ? null : cacheFunction.cacheKey(keySchema.upperRange(keyTo, timeTo))
+                    cacheName,
+                    keyFrom == null ? null : cacheFunction.cacheKey(keySchema.lowerRange(keyFrom, timeFrom)),
+                    keyTo == null ? null : cacheFunction.cacheKey(keySchema.upperRange(keyTo, timeTo))
             );
 
         final HasNextCondition hasNextCondition = keySchema.hasNextCondition(keyFrom, keyTo, timeFrom, timeTo, false);
         final PeekingKeyValueIterator<Bytes, LRUCacheEntry> filteredCacheIterator =
-            new FilteredCacheIterator(cacheIterator, hasNextCondition, cacheFunction);
+                new FilteredCacheIterator(cacheIterator, hasNextCondition, cacheFunction);
 
         return new MergedSortedCacheWindowStoreKeyValueIterator(
-            filteredCacheIterator,
-            underlyingIterator,
-            bytesSerdes,
-            windowSize,
-            cacheFunction,
-            false
+                filteredCacheIterator,
+                underlyingIterator,
+                bytesSerdes,
+                windowSize,
+                cacheFunction,
+                false
         );
     }
 
@@ -341,14 +340,14 @@ public class CachingWindowStore
 
         final HasNextCondition hasNextCondition = keySchema.hasNextCondition(null, null, timeFrom, timeTo, true);
         final PeekingKeyValueIterator<Bytes, LRUCacheEntry> filteredCacheIterator =
-            new FilteredCacheIterator(cacheIterator, hasNextCondition, cacheFunction);
+                new FilteredCacheIterator(cacheIterator, hasNextCondition, cacheFunction);
         return new MergedSortedCacheWindowStoreKeyValueIterator(
-            filteredCacheIterator,
-            underlyingIterator,
-            bytesSerdes,
-            windowSize,
-            cacheFunction,
-            true
+                filteredCacheIterator,
+                underlyingIterator,
+                bytesSerdes,
+                windowSize,
+                cacheFunction,
+                true
         );
     }
 
@@ -362,15 +361,15 @@ public class CachingWindowStore
 
         final HasNextCondition hasNextCondition = keySchema.hasNextCondition(null, null, timeFrom, timeTo, false);
         final PeekingKeyValueIterator<Bytes, LRUCacheEntry> filteredCacheIterator =
-            new FilteredCacheIterator(cacheIterator, hasNextCondition, cacheFunction);
+                new FilteredCacheIterator(cacheIterator, hasNextCondition, cacheFunction);
 
         return new MergedSortedCacheWindowStoreKeyValueIterator(
-            filteredCacheIterator,
-            underlyingIterator,
-            bytesSerdes,
-            windowSize,
-            cacheFunction,
-            false
+                filteredCacheIterator,
+                underlyingIterator,
+                bytesSerdes,
+                windowSize,
+                cacheFunction,
+                false
         );
     }
 
@@ -382,12 +381,12 @@ public class CachingWindowStore
         final ThreadCache.MemoryLRUCacheBytesIterator cacheIterator = internalContext.cache().all(cacheName);
 
         return new MergedSortedCacheWindowStoreKeyValueIterator(
-            cacheIterator,
-            underlyingIterator,
-            bytesSerdes,
-            windowSize,
-            cacheFunction,
-            true
+                cacheIterator,
+                underlyingIterator,
+                bytesSerdes,
+                windowSize,
+                cacheFunction,
+                true
         );
     }
 
@@ -399,12 +398,12 @@ public class CachingWindowStore
         final ThreadCache.MemoryLRUCacheBytesIterator cacheIterator = internalContext.cache().reverseAll(cacheName);
 
         return new MergedSortedCacheWindowStoreKeyValueIterator(
-            cacheIterator,
-            underlyingIterator,
-            bytesSerdes,
-            windowSize,
-            cacheFunction,
-            false
+                cacheIterator,
+                underlyingIterator,
+                bytesSerdes,
+                windowSize,
+                cacheFunction,
+                false
         );
     }
 
@@ -427,16 +426,15 @@ public class CachingWindowStore
     @Override
     public synchronized void close() {
         final LinkedList<RuntimeException> suppressed = executeAll(
-            () -> internalContext.cache().flush(cacheName),
-            () -> internalContext.cache().close(cacheName),
-            wrapped()::close
+                () -> internalContext.cache().flush(cacheName),
+                () -> internalContext.cache().close(cacheName),
+                wrapped()::close
         );
         if (!suppressed.isEmpty()) {
             throwSuppressed("Caught an exception while closing caching window store for store " + name(),
-                suppressed);
+                    suppressed);
         }
     }
-
 
     private class CacheIteratorWrapper implements PeekingKeyValueIterator<Bytes, LRUCacheEntry> {
 

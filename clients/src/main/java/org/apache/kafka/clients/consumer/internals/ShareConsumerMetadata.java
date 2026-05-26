@@ -46,12 +46,12 @@ public class ShareConsumerMetadata extends Metadata {
                                  LogContext logContext,
                                  ClusterResourceListeners clusterResourceListeners) {
         this(config.getLong(ConsumerConfig.RETRY_BACKOFF_MS_CONFIG),
-            config.getLong(ConsumerConfig.RETRY_BACKOFF_MAX_MS_CONFIG),
-            config.getLong(ConsumerConfig.METADATA_MAX_AGE_CONFIG),
-            config.getBoolean(ConsumerConfig.ALLOW_AUTO_CREATE_TOPICS_CONFIG),
-            subscriptions,
-            logContext,
-            clusterResourceListeners);
+                config.getLong(ConsumerConfig.RETRY_BACKOFF_MAX_MS_CONFIG),
+                config.getLong(ConsumerConfig.METADATA_MAX_AGE_CONFIG),
+                config.getBoolean(ConsumerConfig.ALLOW_AUTO_CREATE_TOPICS_CONFIG),
+                subscriptions,
+                logContext,
+                clusterResourceListeners);
     }
 
     public boolean allowAutoTopicCreation() {

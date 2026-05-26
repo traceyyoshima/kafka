@@ -381,11 +381,11 @@ public final class OffsetsRequestManager implements RequestManager, ClusterResou
                     commitRequestManager.fetchOffsets(initializingPartitions, fetchCommittedDeadlineMs);
             CompletableFuture<Map<TopicPartition, OffsetAndMetadata>> fetchOffsetsAndRefresh =
                     fetchOffsets.thenApply(CommitRequestManager.OffsetFetchResult::toOffsetMapWithNulls)
-                    .whenComplete((offsets, error) -> {
-                        pendingOffsetFetchEvent = null;
-                        // Update positions with the retrieved offsets
-                        refreshOffsets(offsets, error, result);
-                    });
+                            .whenComplete((offsets, error) -> {
+                                pendingOffsetFetchEvent = null;
+                                // Update positions with the retrieved offsets
+                                refreshOffsets(offsets, error, result);
+                            });
             pendingOffsetFetchEvent = new PendingFetchCommittedRequest(initializingPartitions, fetchOffsetsAndRefresh);
         } else {
             // Reuse pending OffsetFetch request that will complete when positions are refreshed with the committed offsets retrieved
@@ -743,7 +743,7 @@ public final class OffsetsRequestManager implements RequestManager, ClusterResou
 
             if (!hasUsableOffsetForLeaderEpochVersion(nodeApiVersions)) {
                 log.debug("Skipping validation of fetch offsets for partitions {} since the broker does not " +
-                                "support the required protocol version (introduced in Kafka 2.3)",
+                        "support the required protocol version (introduced in Kafka 2.3)",
                         fetchPositions.keySet());
                 for (TopicPartition partition : fetchPositions.keySet()) {
                     subscriptionState.completeValidation(partition);

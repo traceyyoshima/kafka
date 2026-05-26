@@ -64,11 +64,11 @@ public class ConsumerGroupDescribeRequest extends AbstractRequest {
             .setThrottleTimeMs(throttleTimeMs);
         // Set error for each group
         this.data.groupIds().forEach(
-            groupId -> data.groups().add(
-                new ConsumerGroupDescribeResponseData.DescribedGroup()
-                    .setGroupId(groupId)
-                    .setErrorCode(Errors.forException(e).code())
-            )
+                groupId -> data.groups().add(
+                    new ConsumerGroupDescribeResponseData.DescribedGroup()
+                        .setGroupId(groupId)
+                        .setErrorCode(Errors.forException(e).code())
+                )
         );
         return new ConsumerGroupDescribeResponse(data);
     }
@@ -80,8 +80,8 @@ public class ConsumerGroupDescribeRequest extends AbstractRequest {
 
     public static ConsumerGroupDescribeRequest parse(Readable readable, short version) {
         return new ConsumerGroupDescribeRequest(
-            new ConsumerGroupDescribeRequestData(readable, version),
-            version
+                new ConsumerGroupDescribeRequestData(readable, version),
+                version
         );
     }
 
@@ -93,6 +93,6 @@ public class ConsumerGroupDescribeRequest extends AbstractRequest {
             .map(groupId -> new ConsumerGroupDescribeResponseData.DescribedGroup()
                 .setGroupId(groupId)
                 .setErrorCode(error.code())
-            ).collect(Collectors.toList());
+        ).collect(Collectors.toList());
     }
 }

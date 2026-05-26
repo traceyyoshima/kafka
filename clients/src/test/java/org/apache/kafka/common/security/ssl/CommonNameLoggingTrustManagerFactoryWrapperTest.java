@@ -309,7 +309,6 @@ public class CommonNameLoggingTrustManagerFactoryWrapperTest {
         }
     }
 
-
     @Test
     public void testCommonNameLoggingTrustManagerWithInvalidEndCert() throws Exception {
         X509Certificate endCert = chainWithInvalidEndCertificate[0];
@@ -386,7 +385,7 @@ public class CommonNameLoggingTrustManagerFactoryWrapperTest {
             List<String> logMessages = appender.getMessages();
             assertEquals(nrOfInitialMessagges + 1, logMessages.size());
             assertEquals("Certificate with common name \"" + endCert.getSubjectX500Principal() +
-                "\" expired on " + endCert.getNotAfter(), logMessages.get(logMessages.size() - 1));
+                    "\" expired on " + endCert.getNotAfter(), logMessages.get(logMessages.size() - 1));
             // Call original method, then method of wrapped trust manager and compare result
             origException = assertThrows(CertificateException.class,
                     () -> testTrustManager.checkServerTrusted(chainWithoutCa, "RSA"));
@@ -429,7 +428,7 @@ public class CommonNameLoggingTrustManagerFactoryWrapperTest {
             List<String> logMessages = appender.getMessages();
             assertEquals(nrOfInitialMessagges + 1, logMessages.size());
             assertEquals("Certificate with common name \"" + endCert.getSubjectX500Principal() +
-                "\" expired on " + endCert.getNotAfter(), logMessages.get(logMessages.size() - 1));
+                    "\" expired on " + endCert.getNotAfter(), logMessages.get(logMessages.size() - 1));
             // Note: As there are multiple SSLContext created within Kafka, the message may be logged multiple times
 
             // Check validation of server certificates, then method of wrapped trust manager and compare result
@@ -525,22 +524,22 @@ public class CommonNameLoggingTrustManagerFactoryWrapperTest {
 
     @Test
     public void testSortChainWithMultipleEndCertificate() {
-        assertThrows(CertificateException.class, 
+        assertThrows(CertificateException.class,
                 () -> CommonNameLoggingTrustManager.sortChainAnWrapEndCertificate(chainWithMultipleEndCertificates));
     }
 
     @Test
     public void testCalcDigestForCertificateChain() {
-        ByteBuffer digestForValidChain = 
-            assertDoesNotThrow(() -> CommonNameLoggingTrustManager.calcDigestForCertificateChain(chainWithValidEndCertificate));
-        ByteBuffer digestForValidChainAgain = 
-            assertDoesNotThrow(() -> CommonNameLoggingTrustManager.calcDigestForCertificateChain(chainWithValidEndCertificate));
+        ByteBuffer digestForValidChain =
+                assertDoesNotThrow(() -> CommonNameLoggingTrustManager.calcDigestForCertificateChain(chainWithValidEndCertificate));
+        ByteBuffer digestForValidChainAgain =
+                assertDoesNotThrow(() -> CommonNameLoggingTrustManager.calcDigestForCertificateChain(chainWithValidEndCertificate));
         assertEquals(digestForValidChain, digestForValidChainAgain);
-        ByteBuffer digestForInvalidChain = 
-            assertDoesNotThrow(() -> CommonNameLoggingTrustManager.calcDigestForCertificateChain(chainWithInvalidEndCertificate));
+        ByteBuffer digestForInvalidChain =
+                assertDoesNotThrow(() -> CommonNameLoggingTrustManager.calcDigestForCertificateChain(chainWithInvalidEndCertificate));
         assertNotEquals(digestForValidChain, digestForInvalidChain);
-        ByteBuffer digestForExpiredChain = 
-            assertDoesNotThrow(() -> CommonNameLoggingTrustManager.calcDigestForCertificateChain(chainWithExpiredEndCertificate));
+        ByteBuffer digestForExpiredChain =
+                assertDoesNotThrow(() -> CommonNameLoggingTrustManager.calcDigestForCertificateChain(chainWithExpiredEndCertificate));
         assertNotEquals(digestForValidChain, digestForExpiredChain);
         assertNotEquals(digestForInvalidChain, digestForExpiredChain);
     }
@@ -555,7 +554,7 @@ public class CommonNameLoggingTrustManagerFactoryWrapperTest {
      * @throws NoSuchAlgorithmException
      */
     private X509Certificate[] generateKeyChainIncludingCA(boolean expired, boolean multipleEndCert, boolean endCert0Valid, boolean endCert1Valid)
-            throws CertificateException, NoSuchAlgorithmException {
+        throws CertificateException, NoSuchAlgorithmException {
         // For testing, we might create another end certificate
         int nrOfCerts = multipleEndCert ? 4 : 3;
         KeyPair[] keyPairs = new KeyPair[nrOfCerts];

@@ -55,8 +55,8 @@ class ControllerResult<T> {
         }
         ControllerResult<?> other = (ControllerResult<?>) o;
         return records.equals(other.records) &&
-            Objects.equals(response, other.response) &&
-            Objects.equals(isAtomic, other.isAtomic);
+                Objects.equals(response, other.response) &&
+                Objects.equals(isAtomic, other.isAtomic);
     }
 
     @Override
@@ -67,10 +67,10 @@ class ControllerResult<T> {
     @Override
     public String toString() {
         return String.format(
-            "ControllerResult(records=%s, response=%s, isAtomic=%s)",
-            records.stream().map(ApiMessageAndVersion::toString).collect(Collectors.joining(",")),
-            response,
-            isAtomic
+                "ControllerResult(records=%s, response=%s, isAtomic=%s)",
+                records.stream().map(ApiMessageAndVersion::toString).collect(Collectors.joining(",")),
+                response,
+                isAtomic
         );
     }
 

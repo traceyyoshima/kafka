@@ -404,15 +404,15 @@ public class NetworkClient implements KafkaClient {
             if (log.isDebugEnabled()) {
                 log.debug("Cancelled in-flight {} request with correlation id {} due to node {} being disconnected " +
                         "(elapsed time since creation: {}ms, elapsed time since send: {}ms, throttle time: {}ms, request timeout: {}ms): {}",
-                    request.header.apiKey(), request.header.correlationId(), nodeId,
-                    request.timeElapsedSinceCreateMs(now), request.timeElapsedSinceSendMs(now),
-                    request.throttleTimeMs(), request.requestTimeoutMs, request.request);
+                        request.header.apiKey(), request.header.correlationId(), nodeId,
+                        request.timeElapsedSinceCreateMs(now), request.timeElapsedSinceSendMs(now),
+                        request.throttleTimeMs(), request.requestTimeoutMs, request.request);
             } else {
                 log.info("Cancelled in-flight {} request with correlation id {} due to node {} being disconnected " +
                         "(elapsed time since creation: {}ms, elapsed time since send: {}ms, throttle time: {}ms, request timeout: {}ms)",
-                    request.header.apiKey(), request.header.correlationId(), nodeId,
-                    request.timeElapsedSinceCreateMs(now), request.timeElapsedSinceSendMs(now),
-                    request.throttleTimeMs(), request.requestTimeoutMs);
+                        request.header.apiKey(), request.header.correlationId(), nodeId,
+                        request.timeElapsedSinceCreateMs(now), request.timeElapsedSinceSendMs(now),
+                        request.throttleTimeMs(), request.requestTimeoutMs);
             }
 
             if (!request.isInternalRequest) {
@@ -529,7 +529,7 @@ public class NetworkClient implements KafkaClient {
      */
     private boolean canSendRequest(String node, long now) {
         return connectionStates.isReady(node, now) && selector.isChannelReady(node) &&
-            inFlightRequests.canSendMore(node);
+                inFlightRequests.canSendMore(node);
     }
 
     /**
@@ -603,7 +603,7 @@ public class NetworkClient implements KafkaClient {
         RequestHeader header = clientRequest.makeHeader(request.version());
         if (log.isDebugEnabled()) {
             log.debug("Sending {} request with header {} and timeout {} to node {}: {}",
-                clientRequest.apiKey(), header, clientRequest.requestTimeoutMs(), destination, request);
+                    clientRequest.apiKey(), header, clientRequest.requestTimeoutMs(), destination, request);
         }
         Send send = request.toSend(header);
         InFlightRequest inFlightRequest = new InFlightRequest(
@@ -795,7 +795,7 @@ public class NetworkClient implements KafkaClient {
             } else if (canConnect(node, now)) {
                 if (foundCanConnect == null ||
                         this.connectionStates.lastConnectAttemptMs(foundCanConnect.idString()) >
-                                this.connectionStates.lastConnectAttemptMs(node.idString())) {
+                        this.connectionStates.lastConnectAttemptMs(node.idString())) {
                     foundCanConnect = node;
                 }
             } else {
@@ -828,11 +828,11 @@ public class NetworkClient implements KafkaClient {
             throw new SchemaException("Buffer underflow while parsing response for request with header " + requestHeader, e);
         } catch (CorrelationIdMismatchException e) {
             if (SaslClientAuthenticator.isReserved(requestHeader.correlationId())
-                && !SaslClientAuthenticator.isReserved(e.responseCorrelationId()))
+                    && !SaslClientAuthenticator.isReserved(e.responseCorrelationId()))
                 throw new SchemaException("The response is unrelated to Sasl request since its correlation id is "
-                    + e.responseCorrelationId() + " and the reserved range for Sasl request is [ "
-                    + SaslClientAuthenticator.MIN_RESERVED_CORRELATION_ID + ","
-                    + SaslClientAuthenticator.MAX_RESERVED_CORRELATION_ID + "]");
+                        + e.responseCorrelationId() + " and the reserved range for Sasl request is [ "
+                        + SaslClientAuthenticator.MIN_RESERVED_CORRELATION_ID + ","
+                        + SaslClientAuthenticator.MAX_RESERVED_CORRELATION_ID + "]");
             else {
                 throw e;
             }
@@ -887,13 +887,13 @@ public class NetworkClient implements KafkaClient {
                 AuthenticationException exception = disconnectState.exception();
                 connectionStates.authenticationFailed(nodeId, now, exception);
                 log.error("Connection to node {} ({}) failed authentication due to: {}", nodeId,
-                    disconnectState.remoteAddress(), exception.getMessage());
+                        disconnectState.remoteAddress(), exception.getMessage());
                 break;
             case AUTHENTICATE:
                 log.warn("Connection to node {} ({}) terminated during authentication. This may happen " +
-                    "due to any of the following reasons: (1) Firewall blocking Kafka TLS " +
-                    "traffic (eg it may only allow HTTPS traffic), (2) Transient network issue.",
-                    nodeId, disconnectState.remoteAddress());
+                        "due to any of the following reasons: (1) Firewall blocking Kafka TLS " +
+                        "traffic (eg it may only allow HTTPS traffic), (2) Transient network issue.",
+                        nodeId, disconnectState.remoteAddress());
                 break;
             case NOT_CONNECTED:
                 log.warn("Connection to node {} ({}) could not be established. Node may not be available.", nodeId, disconnectState.remoteAddress());
@@ -941,10 +941,10 @@ public class NetworkClient implements KafkaClient {
         for (String nodeId : nodes) {
             this.selector.close(nodeId);
             log.info(
-                "Disconnecting from node {} due to socket connection setup timeout. " +
-                "The timeout value is {} ms.",
-                nodeId,
-                connectionStates.connectionSetupTimeoutMs(nodeId));
+                    "Disconnecting from node {} due to socket connection setup timeout. " +
+                    "The timeout value is {} ms.",
+                    nodeId,
+                    connectionStates.connectionSetupTimeoutMs(nodeId));
             processTimeoutDisconnection(responses, nodeId, now);
         }
     }
@@ -1002,7 +1002,7 @@ public class NetworkClient implements KafkaClient {
 
             if (log.isDebugEnabled()) {
                 log.debug("Received {} response from node {} for request with header {}: {}",
-                    req.header.apiKey(), req.destination, req.header, response);
+                        req.header.apiKey(), req.destination, req.header, response);
             }
 
             // If the received response includes a throttle delay, throttle the connection.
@@ -1045,10 +1045,10 @@ public class NetworkClient implements KafkaClient {
             return;
         }
         NodeApiVersions nodeVersionInfo = new NodeApiVersions(
-            apiVersionsResponse.data().apiKeys(),
-            apiVersionsResponse.data().supportedFeatures(),
-            apiVersionsResponse.data().finalizedFeatures(),
-            apiVersionsResponse.data().finalizedFeaturesEpoch());
+                apiVersionsResponse.data().apiKeys(),
+                apiVersionsResponse.data().supportedFeatures(),
+                apiVersionsResponse.data().finalizedFeatures(),
+                apiVersionsResponse.data().finalizedFeaturesEpoch());
         apiVersions.update(node, nodeVersionInfo);
         this.connectionStates.ready(node);
         log.debug("Node {} has finalized features epoch: {}, finalized features: {}, supported features: {}, API versions: {}.",
@@ -1187,7 +1187,6 @@ public class NetworkClient implements KafkaClient {
          */
         private Optional<Long> metadataAttemptStartMs = Optional.empty();
 
-
         DefaultMetadataUpdater(Metadata metadata) {
             this.metadata = metadata;
             this.inProgress = null;
@@ -1279,9 +1278,9 @@ public class NetworkClient implements KafkaClient {
             // for diagnosing broker configuration issues.
             // This could be a transient issue if listeners were added dynamically to brokers.
             List<TopicPartition> missingListenerPartitions = response.topicMetadata().stream().flatMap(topicMetadata ->
-                topicMetadata.partitionMetadata().stream()
-                    .filter(partitionMetadata -> partitionMetadata.error == Errors.LISTENER_NOT_FOUND)
-                    .map(partitionMetadata -> new TopicPartition(topicMetadata.topic(), partitionMetadata.partition())))
+                    topicMetadata.partitionMetadata().stream()
+                        .filter(partitionMetadata -> partitionMetadata.error == Errors.LISTENER_NOT_FOUND)
+                        .map(partitionMetadata -> new TopicPartition(topicMetadata.topic(), partitionMetadata.partition())))
                 .collect(Collectors.toList());
             if (!missingListenerPartitions.isEmpty()) {
                 int count = missingListenerPartitions.size();

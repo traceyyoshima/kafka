@@ -174,15 +174,15 @@ public class KafkaStreamsCloseOptionsIntegrationTest {
 
     private void add10InputElements() {
         final List<KeyValue<Long, String>> records = Arrays.asList(KeyValue.pair(0L, "aaa"),
-            KeyValue.pair(1L, "bbb"),
-            KeyValue.pair(0L, "ccc"),
-            KeyValue.pair(1L, "ddd"),
-            KeyValue.pair(0L, "eee"),
-            KeyValue.pair(1L, "fff"),
-            KeyValue.pair(0L, "ggg"),
-            KeyValue.pair(1L, "hhh"),
-            KeyValue.pair(0L, "iii"),
-            KeyValue.pair(1L, "jjj"));
+                KeyValue.pair(1L, "bbb"),
+                KeyValue.pair(0L, "ccc"),
+                KeyValue.pair(1L, "ddd"),
+                KeyValue.pair(0L, "eee"),
+                KeyValue.pair(1L, "fff"),
+                KeyValue.pair(0L, "ggg"),
+                KeyValue.pair(1L, "hhh"),
+                KeyValue.pair(0L, "iii"),
+                KeyValue.pair(1L, "jjj"));
 
         for (final KeyValue<Long, String> record : records) {
             mockTime.sleep(10);

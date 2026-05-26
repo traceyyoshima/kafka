@@ -37,12 +37,12 @@ public class IncrementalAlterConfigsResponse extends AbstractResponse {
         super(ApiKeys.INCREMENTAL_ALTER_CONFIGS);
         final List<AlterConfigsResourceResponse> newResults = new ArrayList<>(results.size());
         results.forEach(
-            (resource, error) -> newResults.add(
-                new AlterConfigsResourceResponse()
-                    .setErrorCode(error.error().code())
-                    .setErrorMessage(error.message())
-                    .setResourceName(resource.name())
-                    .setResourceType(resource.type().id()))
+                (resource, error) -> newResults.add(
+                    new AlterConfigsResourceResponse()
+                        .setErrorCode(error.error().code())
+                        .setErrorMessage(error.message())
+                        .setResourceName(resource.name())
+                        .setResourceType(resource.type().id()))
         );
 
         this.data = new IncrementalAlterConfigsResponseData()
@@ -75,7 +75,7 @@ public class IncrementalAlterConfigsResponse extends AbstractResponse {
     public Map<Errors, Integer> errorCounts() {
         Map<Errors, Integer> counts = new EnumMap<>(Errors.class);
         data.responses().forEach(response ->
-            updateErrorCounts(counts, Errors.forCode(response.errorCode()))
+                updateErrorCounts(counts, Errors.forCode(response.errorCode()))
         );
         return counts;
     }
@@ -97,6 +97,6 @@ public class IncrementalAlterConfigsResponse extends AbstractResponse {
 
     public static IncrementalAlterConfigsResponse parse(Readable readable, short version) {
         return new IncrementalAlterConfigsResponse(new IncrementalAlterConfigsResponseData(
-            readable, version));
+                readable, version));
     }
 }

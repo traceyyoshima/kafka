@@ -62,8 +62,8 @@ public class SubscribedTopicMetadataTest {
 
         // Test that the correct number of partitions are returned for a given topic ID.
         metadataImage.topicIds().forEach(id ->
-            // Test that the correct number of partitions are returned for a given topic ID.
-            assertEquals(numPartitions, subscribedTopicMetadata.numPartitions(id))
+                // Test that the correct number of partitions are returned for a given topic ID.
+                assertEquals(numPartitions, subscribedTopicMetadata.numPartitions(id))
         );
     }
 

@@ -68,8 +68,8 @@ public class ProduceRequest extends AbstractRequest {
         public ProduceRequest build(short version) {
             // Validate the given records first
             data.topicData().forEach(tpd ->
-                tpd.partitionData().forEach(partitionProduceData ->
-                    ProduceRequest.validateRecords(version, partitionProduceData.records())));
+                    tpd.partitionData().forEach(partitionProduceData ->
+                            ProduceRequest.validateRecords(version, partitionProduceData.records())));
             return new ProduceRequest(data, version);
         }
 
@@ -114,16 +114,16 @@ public class ProduceRequest extends AbstractRequest {
                 if (partitionSizes == null) {
                     Map<TopicIdPartition, Integer> tmpPartitionSizes = new HashMap<>();
                     data.topicData().forEach(topicData ->
-                        topicData.partitionData().forEach(partitionData ->
-                            // While topic id and name might not be populated at the same time in the request all the time;
-                            // for example on server side they will never be populated together while in produce client they will be,
-                            // to simplify initializing `TopicIdPartition` the code will use both topic name and id.
-                            // TopicId will be Uuid.ZERO_UUID in versions < 13 and topic name will be used as main identifier of topic partition.
-                            // TopicName will be empty string in versions >= 13 and topic id will be used as the main identifier.
-                            tmpPartitionSizes.compute(new TopicIdPartition(topicData.topicId(), partitionData.index(), topicData.name()),
-                                (ignored, previousValue) ->
+                            topicData.partitionData().forEach(partitionData ->
+                                    // While topic id and name might not be populated at the same time in the request all the time;
+                                    // for example on server side they will never be populated together while in produce client they will be,
+                                    // to simplify initializing `TopicIdPartition` the code will use both topic name and id.
+                                    // TopicId will be Uuid.ZERO_UUID in versions < 13 and topic name will be used as main identifier of topic partition.
+                                    // TopicName will be empty string in versions >= 13 and topic id will be used as the main identifier.
+                                    tmpPartitionSizes.compute(new TopicIdPartition(topicData.topicId(), partitionData.index(), topicData.name()),
+                                            (ignored, previousValue) ->
                                     partitionData.records().sizeInBytes() + (previousValue == null ? 0 : previousValue))
-                        )
+                            )
                     );
                     partitionSizes = tmpPartitionSizes;
                 }

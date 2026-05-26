@@ -115,7 +115,7 @@ public final class ConnectUtils {
         // And issue a warning to the user
         return Optional.of(String.format(
                 "The value '%s' for the '%s' property will be ignored as it cannot be overridden%s. "
-                        + "The value '%s' will be used instead.",
+                + "The value '%s' will be used instead.",
                 value, key, justification, expectedValue
         ));
     }

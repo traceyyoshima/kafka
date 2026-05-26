@@ -96,7 +96,7 @@ final class InFlightRequests {
     public boolean canSendMore(String node) {
         Deque<NetworkClient.InFlightRequest> queue = requests.get(node);
         return queue == null || queue.isEmpty() ||
-               (queue.peekFirst().send.completed() && queue.size() < this.maxInFlightRequestsPerConnection);
+                (queue.peekFirst().send.completed() && queue.size() < this.maxInFlightRequestsPerConnection);
     }
 
     /**

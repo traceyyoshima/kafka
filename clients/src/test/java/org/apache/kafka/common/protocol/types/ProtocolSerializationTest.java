@@ -196,8 +196,8 @@ public class ProtocolSerializationTest {
             invalidBuffer.put((byte) i);
         invalidBuffer.rewind();
         assertThrows(SchemaException.class,
-            () -> type.read(invalidBuffer),
-            "Array size not validated");
+                () -> type.read(invalidBuffer),
+                "Array size not validated");
     }
 
     @Test
@@ -205,14 +205,14 @@ public class ProtocolSerializationTest {
         Type type = new CompactArrayOf(Type.INT8);
         int size = 10;
         ByteBuffer invalidBuffer = ByteBuffer.allocate(
-            ByteUtils.sizeOfUnsignedVarint(Integer.MAX_VALUE) + size);
+                ByteUtils.sizeOfUnsignedVarint(Integer.MAX_VALUE) + size);
         ByteUtils.writeUnsignedVarint(Integer.MAX_VALUE, invalidBuffer);
         for (int i = 0; i < size; i++)
             invalidBuffer.put((byte) i);
         invalidBuffer.rewind();
         assertThrows(SchemaException.class,
-            () -> type.read(invalidBuffer),
-            "Array size not validated");
+                () -> type.read(invalidBuffer),
+                "Array size not validated");
     }
 
     @Test
@@ -234,7 +234,7 @@ public class ProtocolSerializationTest {
         // should throw SchemaException while reading the buffer, instead of OOM
         Throwable e = assertThrows(SchemaException.class, () -> type.read(buffer));
         assertEquals("Error reading field of size " + Integer.MAX_VALUE + ", only " + expectedRemaining + " bytes available",
-            e.getMessage());
+                e.getMessage());
     }
 
     @Test
@@ -247,8 +247,8 @@ public class ProtocolSerializationTest {
             invalidBuffer.put((byte) i);
         invalidBuffer.rewind();
         assertThrows(SchemaException.class,
-            () -> type.read(invalidBuffer),
-            "Array size not validated");
+                () -> type.read(invalidBuffer),
+                "Array size not validated");
     }
 
     @Test
@@ -256,14 +256,14 @@ public class ProtocolSerializationTest {
         Type type = new CompactArrayOf(Type.INT8);
         int size = 10;
         ByteBuffer invalidBuffer = ByteBuffer.allocate(
-            ByteUtils.sizeOfUnsignedVarint(0) + size);
+                ByteUtils.sizeOfUnsignedVarint(0) + size);
         ByteUtils.writeUnsignedVarint(0, invalidBuffer);
         for (int i = 0; i < size; i++)
             invalidBuffer.put((byte) i);
         invalidBuffer.rewind();
         assertThrows(SchemaException.class,
-            () -> type.read(invalidBuffer),
-            "Array size not validated");
+                () -> type.read(invalidBuffer),
+                "Array size not validated");
     }
 
     @Test
@@ -274,13 +274,13 @@ public class ProtocolSerializationTest {
         invalidBuffer.put(stringBytes);
         invalidBuffer.rewind();
         assertThrows(SchemaException.class,
-            () -> Type.STRING.read(invalidBuffer),
-            "String size not validated");
+                () -> Type.STRING.read(invalidBuffer),
+                "String size not validated");
 
         invalidBuffer.rewind();
         assertThrows(SchemaException.class,
-            () -> Type.NULLABLE_STRING.read(invalidBuffer),
-            "String size not validated");
+                () -> Type.NULLABLE_STRING.read(invalidBuffer),
+                "String size not validated");
     }
 
     @Test
@@ -292,8 +292,8 @@ public class ProtocolSerializationTest {
         invalidBuffer.rewind();
 
         assertThrows(SchemaException.class,
-            () -> Type.STRING.read(invalidBuffer),
-            "String size not validated");
+                () -> Type.STRING.read(invalidBuffer),
+                "String size not validated");
     }
 
     @Test
@@ -304,13 +304,13 @@ public class ProtocolSerializationTest {
         invalidBuffer.put(stringBytes);
         invalidBuffer.rewind();
         assertThrows(SchemaException.class,
-            () -> Type.BYTES.read(invalidBuffer),
-            "Bytes size not validated");
+                () -> Type.BYTES.read(invalidBuffer),
+                "Bytes size not validated");
 
         invalidBuffer.rewind();
         assertThrows(SchemaException.class,
-            () -> Type.NULLABLE_BYTES.read(invalidBuffer),
-            "Bytes size not validated");
+                () -> Type.NULLABLE_BYTES.read(invalidBuffer),
+                "Bytes size not validated");
     }
 
     @Test
@@ -322,8 +322,8 @@ public class ProtocolSerializationTest {
         invalidBuffer.rewind();
 
         assertThrows(SchemaException.class,
-            () -> Type.BYTES.read(invalidBuffer),
-            "Bytes size not validated");
+                () -> Type.BYTES.read(invalidBuffer),
+                "Bytes size not validated");
     }
 
     @Test
@@ -435,10 +435,10 @@ public class ProtocolSerializationTest {
     @Test
     public void testReadBytesBeyondItsSize() {
         Type[] types = new Type[]{
-            Type.BYTES,
-            Type.COMPACT_BYTES,
-            Type.NULLABLE_BYTES,
-            Type.COMPACT_NULLABLE_BYTES
+                Type.BYTES,
+                Type.COMPACT_BYTES,
+                Type.NULLABLE_BYTES,
+                Type.COMPACT_NULLABLE_BYTES
         };
         for (Type type : types) {
             ByteBuffer buffer = ByteBuffer.allocate(20);

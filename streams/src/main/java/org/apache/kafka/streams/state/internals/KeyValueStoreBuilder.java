@@ -41,11 +41,11 @@ public class KeyValueStoreBuilder<K, V> extends AbstractStoreBuilder<K, V, KeyVa
     @Override
     public KeyValueStore<K, V> build() {
         return new MeteredKeyValueStore<>(
-            maybeWrapCaching(maybeWrapLogging(storeSupplier.get())),
-            storeSupplier.metricsScope(),
-            time,
-            keySerde,
-            valueSerde);
+                maybeWrapCaching(maybeWrapLogging(storeSupplier.get())),
+                storeSupplier.metricsScope(),
+                time,
+                keySerde,
+                valueSerde);
     }
 
     private KeyValueStore<Bytes, byte[]> maybeWrapCaching(final KeyValueStore<Bytes, byte[]> inner) {

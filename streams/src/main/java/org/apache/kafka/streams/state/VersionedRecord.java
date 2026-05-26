@@ -55,7 +55,6 @@ public final class VersionedRecord<V> {
         this.validTo = Optional.of(validTo);
     }
 
-
     public V value() {
         return value;
     }
@@ -83,7 +82,7 @@ public final class VersionedRecord<V> {
         }
         final VersionedRecord<?> that = (VersionedRecord<?>) o;
         return timestamp == that.timestamp && validTo == that.validTo &&
-            Objects.equals(value, that.value);
+                Objects.equals(value, that.value);
     }
 
     @Override

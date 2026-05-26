@@ -91,6 +91,6 @@ public class ShareGroupDescribeRequest extends AbstractRequest {
                         .setGroupId(groupId)
                         .setErrorCode(error.code())
                         .setErrorMessage(error.message())
-                ).collect(Collectors.toList());
+        ).collect(Collectors.toList());
     }
 }

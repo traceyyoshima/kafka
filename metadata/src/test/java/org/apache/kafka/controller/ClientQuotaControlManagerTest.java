@@ -114,8 +114,8 @@ public class ClientQuotaControlManagerTest {
         // Replace it and add another
         alters.clear();
         entityQuotaToAlterations(userEntity, quotas(
-            QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 10001.0,
-            QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0
+                QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 10001.0,
+                QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0
         ), alters::add);
         alterQuotas(alters, manager);
         assertEquals(2, manager.clientQuotaData.get(userEntity).size());
@@ -125,7 +125,7 @@ public class ClientQuotaControlManagerTest {
         // Remove one of the quotas, the other remains
         alters.clear();
         entityQuotaToAlterations(userEntity, quotas(
-            QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, null
+                QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, null
         ), alters::add);
         alterQuotas(alters, manager);
         assertEquals(1, manager.clientQuotaData.get(userEntity).size());
@@ -204,45 +204,45 @@ public class ClientQuotaControlManagerTest {
         quotasToTest.forEach((entity, quota) -> entityQuotaToAlterations(entity, quota, alters::add));
         List<ApiMessageAndVersion> records = alterQuotas(alters, manager);
         List<ApiMessageAndVersion> expectedRecords = Arrays.asList(
-            new ApiMessageAndVersion(new ClientQuotaRecord().setEntity(Arrays.asList(
-                new EntityData().setEntityType("user").setEntityName("user-1"),
-                new EntityData().setEntityType("client-id").setEntityName("client-id-1"))).
-                    setKey("request_percentage").setValue(50.5).setRemove(false), (short) 0),
-            new ApiMessageAndVersion(new ClientQuotaRecord().setEntity(Arrays.asList(
-                new EntityData().setEntityType("user").setEntityName("user-2"),
-                new EntityData().setEntityType("client-id").setEntityName("client-id-1"))).
-                    setKey("request_percentage").setValue(51.51).setRemove(false), (short) 0),
-            new ApiMessageAndVersion(new ClientQuotaRecord().setEntity(Arrays.asList(
-                new EntityData().setEntityType("user").setEntityName("user-3"),
-                new EntityData().setEntityType("client-id").setEntityName("client-id-2"))).
-                    setKey("request_percentage").setValue(52.52).setRemove(false), (short) 0),
-            new ApiMessageAndVersion(new ClientQuotaRecord().setEntity(Arrays.asList(
-                new EntityData().setEntityType("user").setEntityName(null),
-                new EntityData().setEntityType("client-id").setEntityName("client-id-1"))).
-                    setKey("request_percentage").setValue(53.53).setRemove(false), (short) 0),
-            new ApiMessageAndVersion(new ClientQuotaRecord().setEntity(Arrays.asList(
-                new EntityData().setEntityType("user").setEntityName("user-1"),
-                new EntityData().setEntityType("client-id").setEntityName(null))).
-                    setKey("request_percentage").setValue(54.54).setRemove(false), (short) 0),
-            new ApiMessageAndVersion(new ClientQuotaRecord().setEntity(Arrays.asList(
-                new EntityData().setEntityType("user").setEntityName("user-3"),
-                new EntityData().setEntityType("client-id").setEntityName(null))).
-                    setKey("request_percentage").setValue(55.55).setRemove(false), (short) 0),
-            new ApiMessageAndVersion(new ClientQuotaRecord().setEntity(Collections.singletonList(
-                new EntityData().setEntityType("user").setEntityName("user-1"))).
-                    setKey("request_percentage").setValue(56.56).setRemove(false), (short) 0),
-            new ApiMessageAndVersion(new ClientQuotaRecord().setEntity(Collections.singletonList(
-                new EntityData().setEntityType("user").setEntityName("user-2"))).
-                    setKey("request_percentage").setValue(57.57).setRemove(false), (short) 0),
-            new ApiMessageAndVersion(new ClientQuotaRecord().setEntity(Collections.singletonList(
-                new EntityData().setEntityType("user").setEntityName("user-3"))).
-                    setKey("request_percentage").setValue(58.58).setRemove(false), (short) 0),
-            new ApiMessageAndVersion(new ClientQuotaRecord().setEntity(Collections.singletonList(
-                new EntityData().setEntityType("user").setEntityName(null))).
-                    setKey("request_percentage").setValue(59.59).setRemove(false), (short) 0),
-            new ApiMessageAndVersion(new ClientQuotaRecord().setEntity(Collections.singletonList(
-                new EntityData().setEntityType("client-id").setEntityName("client-id-2"))).
-                    setKey("request_percentage").setValue(60.60).setRemove(false), (short) 0));
+                new ApiMessageAndVersion(new ClientQuotaRecord().setEntity(Arrays.asList(
+                    new EntityData().setEntityType("user").setEntityName("user-1"),
+                    new EntityData().setEntityType("client-id").setEntityName("client-id-1"))).
+                        setKey("request_percentage").setValue(50.5).setRemove(false), (short) 0),
+                new ApiMessageAndVersion(new ClientQuotaRecord().setEntity(Arrays.asList(
+                    new EntityData().setEntityType("user").setEntityName("user-2"),
+                    new EntityData().setEntityType("client-id").setEntityName("client-id-1"))).
+                        setKey("request_percentage").setValue(51.51).setRemove(false), (short) 0),
+                new ApiMessageAndVersion(new ClientQuotaRecord().setEntity(Arrays.asList(
+                    new EntityData().setEntityType("user").setEntityName("user-3"),
+                    new EntityData().setEntityType("client-id").setEntityName("client-id-2"))).
+                        setKey("request_percentage").setValue(52.52).setRemove(false), (short) 0),
+                new ApiMessageAndVersion(new ClientQuotaRecord().setEntity(Arrays.asList(
+                    new EntityData().setEntityType("user").setEntityName(null),
+                    new EntityData().setEntityType("client-id").setEntityName("client-id-1"))).
+                        setKey("request_percentage").setValue(53.53).setRemove(false), (short) 0),
+                new ApiMessageAndVersion(new ClientQuotaRecord().setEntity(Arrays.asList(
+                    new EntityData().setEntityType("user").setEntityName("user-1"),
+                    new EntityData().setEntityType("client-id").setEntityName(null))).
+                        setKey("request_percentage").setValue(54.54).setRemove(false), (short) 0),
+                new ApiMessageAndVersion(new ClientQuotaRecord().setEntity(Arrays.asList(
+                    new EntityData().setEntityType("user").setEntityName("user-3"),
+                    new EntityData().setEntityType("client-id").setEntityName(null))).
+                        setKey("request_percentage").setValue(55.55).setRemove(false), (short) 0),
+                new ApiMessageAndVersion(new ClientQuotaRecord().setEntity(Collections.singletonList(
+                    new EntityData().setEntityType("user").setEntityName("user-1"))).
+                        setKey("request_percentage").setValue(56.56).setRemove(false), (short) 0),
+                new ApiMessageAndVersion(new ClientQuotaRecord().setEntity(Collections.singletonList(
+                    new EntityData().setEntityType("user").setEntityName("user-2"))).
+                        setKey("request_percentage").setValue(57.57).setRemove(false), (short) 0),
+                new ApiMessageAndVersion(new ClientQuotaRecord().setEntity(Collections.singletonList(
+                    new EntityData().setEntityType("user").setEntityName("user-3"))).
+                        setKey("request_percentage").setValue(58.58).setRemove(false), (short) 0),
+                new ApiMessageAndVersion(new ClientQuotaRecord().setEntity(Collections.singletonList(
+                    new EntityData().setEntityType("user").setEntityName(null))).
+                        setKey("request_percentage").setValue(59.59).setRemove(false), (short) 0),
+                new ApiMessageAndVersion(new ClientQuotaRecord().setEntity(Collections.singletonList(
+                    new EntityData().setEntityType("client-id").setEntityName("client-id-2"))).
+                        setKey("request_percentage").setValue(60.60).setRemove(false), (short) 0));
         records = new ArrayList<>(records);
         RecordTestUtils.deepSortRecords(records);
         RecordTestUtils.deepSortRecords(expectedRecords);
@@ -250,7 +250,7 @@ public class ClientQuotaControlManagerTest {
     }
 
     static void entityQuotaToAlterations(ClientQuotaEntity entity, Map<String, Double> quota,
-                                          Consumer<ClientQuotaAlteration> acceptor) {
+                                         Consumer<ClientQuotaAlteration> acceptor) {
         Collection<ClientQuotaAlteration.Op> ops = quota.entrySet().stream()
                 .map(quotaEntry -> new ClientQuotaAlteration.Op(quotaEntry.getKey(), quotaEntry.getValue()))
                 .collect(Collectors.toList());
@@ -324,42 +324,42 @@ public class ClientQuotaControlManagerTest {
     @Test
     public void testConfigKeysForEntityTypeWithUser() {
         testConfigKeysForEntityType(List.of(ClientQuotaEntity.USER),
-            List.of(
-                "producer_byte_rate",
-                "consumer_byte_rate",
-                "controller_mutation_rate",
-                "request_percentage"
-            ));
+                List.of(
+                        "producer_byte_rate",
+                        "consumer_byte_rate",
+                        "controller_mutation_rate",
+                        "request_percentage"
+                ));
     }
 
     @Test
     public void testConfigKeysForEntityTypeWithClientId() {
         testConfigKeysForEntityType(List.of(ClientQuotaEntity.CLIENT_ID),
-            List.of(
-                "producer_byte_rate",
-                "consumer_byte_rate",
-                "controller_mutation_rate",
-                "request_percentage"
-            ));
+                List.of(
+                        "producer_byte_rate",
+                        "consumer_byte_rate",
+                        "controller_mutation_rate",
+                        "request_percentage"
+                ));
     }
 
     @Test
     public void testConfigKeysForEntityTypeWithUserAndClientId() {
         testConfigKeysForEntityType(List.of(ClientQuotaEntity.CLIENT_ID, ClientQuotaEntity.USER),
-            List.of(
-                "producer_byte_rate",
-                "consumer_byte_rate",
-                "controller_mutation_rate",
-                "request_percentage"
-            ));
+                List.of(
+                        "producer_byte_rate",
+                        "consumer_byte_rate",
+                        "controller_mutation_rate",
+                        "request_percentage"
+                ));
     }
 
     @Test
     public void testConfigKeysForEntityTypeWithIp() {
         testConfigKeysForEntityType(List.of(ClientQuotaEntity.IP),
-            List.of(
-                "connection_creation_rate"
-            ));
+                List.of(
+                        "connection_creation_rate"
+                ));
     }
 
     private static Map<String, String> keysToEntity(List<String> entityKeys) {
@@ -387,21 +387,21 @@ public class ClientQuotaControlManagerTest {
     @Test
     public void testConfigKeysForEmptyEntity() {
         testConfigKeysError(List.of(),
-            new ApiError(Errors.INVALID_REQUEST, "Invalid empty client quota entity"));
+                new ApiError(Errors.INVALID_REQUEST, "Invalid empty client quota entity"));
     }
 
     @Test
     public void testConfigKeysForEntityTypeWithIpAndUser() {
         testConfigKeysError(List.of(ClientQuotaEntity.IP, ClientQuotaEntity.USER),
-            new ApiError(Errors.INVALID_REQUEST, "Invalid quota entity combination, IP entity should" +
-                "not be combined with User or ClientId"));
+                new ApiError(Errors.INVALID_REQUEST, "Invalid quota entity combination, IP entity should" +
+                        "not be combined with User or ClientId"));
     }
 
     @Test
     public void testConfigKeysForEntityTypeWithIpAndClientId() {
         testConfigKeysError(List.of(ClientQuotaEntity.IP, ClientQuotaEntity.CLIENT_ID),
-            new ApiError(Errors.INVALID_REQUEST, "Invalid quota entity combination, IP entity should" +
-                "not be combined with User or ClientId"));
+                new ApiError(Errors.INVALID_REQUEST, "Invalid quota entity combination, IP entity should" +
+                        "not be combined with User or ClientId"));
     }
 
     private static void testConfigKeysError(List<String> entityKeys, ApiError expectedError) {
@@ -411,7 +411,7 @@ public class ClientQuotaControlManagerTest {
     @Test
     public void testConfigKeysForUnresolvableIpEntity() {
         testConfigKeysError(Map.of(ClientQuotaEntity.IP, "example.invalid"),
-            new ApiError(Errors.INVALID_REQUEST, "example.invalid is not a valid IP or resolvable host."));
+                new ApiError(Errors.INVALID_REQUEST, "example.invalid is not a valid IP or resolvable host."));
     }
 
     private static void testConfigKeysError(
@@ -433,43 +433,43 @@ public class ClientQuotaControlManagerTest {
     @Test
     public void testValidateQuotaKeyValueForUnknownQuota() {
         assertEquals(new ApiError(Errors.INVALID_REQUEST, "Invalid configuration key foobar"),
-            ClientQuotaControlManager.validateQuotaKeyValue(
-                VALID_CLIENT_ID_QUOTA_KEYS, "foobar", 1.0));
+                ClientQuotaControlManager.validateQuotaKeyValue(
+                        VALID_CLIENT_ID_QUOTA_KEYS, "foobar", 1.0));
     }
 
     @Test
     public void testValidateQuotaKeyValueForZeroQuota() {
         assertEquals(new ApiError(Errors.INVALID_REQUEST, "Quota producer_byte_rate must be greater than 0"),
-            ClientQuotaControlManager.validateQuotaKeyValue(
-                VALID_CLIENT_ID_QUOTA_KEYS, "producer_byte_rate", 0.0));
+                ClientQuotaControlManager.validateQuotaKeyValue(
+                        VALID_CLIENT_ID_QUOTA_KEYS, "producer_byte_rate", 0.0));
     }
 
     @Test
     public void testValidateQuotaKeyValueForNegativeQuota() {
         assertEquals(new ApiError(Errors.INVALID_REQUEST, "Quota consumer_byte_rate must be greater than 0"),
-            ClientQuotaControlManager.validateQuotaKeyValue(
-                VALID_CLIENT_ID_QUOTA_KEYS, "consumer_byte_rate", -2.0));
+                ClientQuotaControlManager.validateQuotaKeyValue(
+                        VALID_CLIENT_ID_QUOTA_KEYS, "consumer_byte_rate", -2.0));
     }
 
     @Test
     public void testValidateQuotaKeyValueForValidConsumerByteRate() {
         assertEquals(ApiError.NONE, ClientQuotaControlManager.validateQuotaKeyValue(
-            VALID_CLIENT_ID_QUOTA_KEYS, "consumer_byte_rate", 1234.0));
+                VALID_CLIENT_ID_QUOTA_KEYS, "consumer_byte_rate", 1234.0));
     }
 
     @Test
     public void testValidateQuotaKeyValueForConsumerByteRateTooLarge() {
         assertEquals(new ApiError(Errors.INVALID_REQUEST,
-            "Proposed value for consumer_byte_rate is too large for a LONG."),
+                "Proposed value for consumer_byte_rate is too large for a LONG."),
                 ClientQuotaControlManager.validateQuotaKeyValue(
-                    VALID_CLIENT_ID_QUOTA_KEYS, "consumer_byte_rate", 36893488147419103232.4));
+                        VALID_CLIENT_ID_QUOTA_KEYS, "consumer_byte_rate", 36893488147419103232.4));
     }
 
     @Test
     public void testValidateQuotaKeyValueForFractionalConsumerByteRate() {
         assertEquals(new ApiError(Errors.INVALID_REQUEST, "consumer_byte_rate cannot be a fractional value."),
-            ClientQuotaControlManager.validateQuotaKeyValue(
-                VALID_CLIENT_ID_QUOTA_KEYS, "consumer_byte_rate", 2.245));
+                ClientQuotaControlManager.validateQuotaKeyValue(
+                        VALID_CLIENT_ID_QUOTA_KEYS, "consumer_byte_rate", 2.245));
     }
 
     @Test
@@ -481,6 +481,6 @@ public class ClientQuotaControlManagerTest {
     @Test
     public void testValidateQuotaKeyValueForValidRequestPercentage() {
         assertEquals(ApiError.NONE, ClientQuotaControlManager.validateQuotaKeyValue(
-            VALID_CLIENT_ID_QUOTA_KEYS, "request_percentage", 56.62367));
+                VALID_CLIENT_ID_QUOTA_KEYS, "request_percentage", 56.62367));
     }
 }

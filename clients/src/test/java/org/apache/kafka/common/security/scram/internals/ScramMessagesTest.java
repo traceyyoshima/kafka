@@ -40,33 +40,33 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class ScramMessagesTest {
 
     private static final String[] VALID_EXTENSIONS = {
-        "ext=val1",
-        "anotherext=name1=value1 name2=another test value \"\'!$[]()",
-        "first=val1,second=name1 = value ,third=123"
+            "ext=val1",
+            "anotherext=name1=value1 name2=another test value \"\'!$[]()",
+            "first=val1,second=name1 = value ,third=123"
     };
     private static final String[] INVALID_EXTENSIONS = {
-        "ext1=value",
-        "ext",
-        "ext=value1,value2",
-        "ext=,",
-        "ext =value"
+            "ext1=value",
+            "ext",
+            "ext=value1,value2",
+            "ext=,",
+            "ext =value"
     };
 
     private static final String[] VALID_RESERVED = {
-        "m=reserved-value",
-        "m=name1=value1 name2=another test value \"\'!$[]()"
+            "m=reserved-value",
+            "m=name1=value1 name2=another test value \"\'!$[]()"
     };
     private static final String[] INVALID_RESERVED = {
-        "m",
-        "m=name,value",
-        "m=,"
+            "m",
+            "m=name,value",
+            "m=,"
     };
 
     private ScramFormatter formatter;
 
     @BeforeEach
     public void setUp() throws Exception {
-        formatter  = new ScramFormatter(ScramMechanism.SCRAM_SHA_256);
+        formatter = new ScramFormatter(ScramMechanism.SCRAM_SHA_256);
     }
 
     @Test

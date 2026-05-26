@@ -227,13 +227,13 @@ public interface ConsumerPartitionAssignor {
         @Override
         public String toString() {
             return "Subscription(" +
-                "topics=" + topics +
-                (userData == null ? "" : ", userDataSize=" + userData.remaining()) +
-                ", ownedPartitions=" + ownedPartitions +
-                ", groupInstanceId=" + groupInstanceId.map(String::toString).orElse("null") +
-                ", generationId=" + generationId.orElse(-1) +
-                ", rackId=" + (rackId.orElse("null")) +
-                ")";
+                    "topics=" + topics +
+                    (userData == null ? "" : ", userDataSize=" + userData.remaining()) +
+                    ", ownedPartitions=" + ownedPartitions +
+                    ", groupInstanceId=" + groupInstanceId.map(String::toString).orElse("null") +
+                    ", generationId=" + generationId.orElse(-1) +
+                    ", rackId=" + (rackId.orElse("null")) +
+                    ")";
         }
     }
 
@@ -285,9 +285,9 @@ public interface ConsumerPartitionAssignor {
         @Override
         public String toString() {
             return "Assignment(" +
-                "partitions=" + partitions +
-                (userData == null ? "" : ", userDataSize=" + userData.remaining()) +
-                ')';
+                    "partitions=" + partitions +
+                    (userData == null ? "" : ", userDataSize=" + userData.remaining()) +
+                    ')';
         }
     }
 
@@ -318,8 +318,8 @@ public interface ConsumerPartitionAssignor {
         @Override
         public String toString() {
             return "GroupSubscription(" +
-                "subscriptions=" + subscriptions +
-                ")";
+                    "subscriptions=" + subscriptions +
+                    ")";
         }
     }
 
@@ -350,8 +350,8 @@ public interface ConsumerPartitionAssignor {
         @Override
         public String toString() {
             return "GroupAssignment(" +
-                "assignments=" + assignments +
-                ")";
+                    "assignments=" + assignments +
+                    ")";
         }
     }
 
@@ -437,7 +437,7 @@ public interface ConsumerPartitionAssignor {
                     String assignorName = ((ConsumerPartitionAssignor) assignor).name();
                     if (assignorNameMap.containsKey(assignorName)) {
                         throw new KafkaException("The assignor name: '" + assignorName + "' is used in more than one assignor: " +
-                            assignorNameMap.get(assignorName) + ", " + assignor.getClass().getName());
+                                assignorNameMap.get(assignorName) + ", " + assignor.getClass().getName());
                     }
                     assignorNameMap.put(assignorName, assignor.getClass().getName());
                     assignors.add((ConsumerPartitionAssignor) assignor);

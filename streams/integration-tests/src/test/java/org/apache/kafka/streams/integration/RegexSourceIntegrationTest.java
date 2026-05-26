@@ -142,11 +142,11 @@ public class RegexSourceIntegrationTest {
         properties.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, 10000);
 
         streamsConfiguration = StreamsTestUtils.getStreamsConfig(
-            safeUniqueTestName(testInfo),
-            CLUSTER.bootstrapServers(),
-            STRING_SERDE_CLASSNAME,
-            STRING_SERDE_CLASSNAME,
-            properties
+                safeUniqueTestName(testInfo),
+                CLUSTER.bootstrapServers(),
+                STRING_SERDE_CLASSNAME,
+                STRING_SERDE_CLASSNAME,
+                properties
         );
     }
 
@@ -233,21 +233,21 @@ public class RegexSourceIntegrationTest {
             final KeyValue<String, String> record1 = new KeyValue<>("1", "1");
             final KeyValue<String, String> record2 = new KeyValue<>("2", "2");
             IntegrationTestUtils.produceKeyValuesSynchronously(
-                topic1,
-                Collections.singletonList(record1),
-                TestUtils.producerConfig(CLUSTER.bootstrapServers(), StringSerializer.class, StringSerializer.class),
-                CLUSTER.time
+                    topic1,
+                    Collections.singletonList(record1),
+                    TestUtils.producerConfig(CLUSTER.bootstrapServers(), StringSerializer.class, StringSerializer.class),
+                    CLUSTER.time
             );
             IntegrationTestUtils.produceKeyValuesSynchronously(
-                topic2,
-                Collections.singletonList(record2),
-                TestUtils.producerConfig(CLUSTER.bootstrapServers(), StringSerializer.class, StringSerializer.class),
-                CLUSTER.time
+                    topic2,
+                    Collections.singletonList(record2),
+                    TestUtils.producerConfig(CLUSTER.bootstrapServers(), StringSerializer.class, StringSerializer.class),
+                    CLUSTER.time
             );
             IntegrationTestUtils.waitUntilFinalKeyValueRecordsReceived(
-                TestUtils.consumerConfig(CLUSTER.bootstrapServers(), StringDeserializer.class, StringDeserializer.class),
-                outputTopic,
-                Arrays.asList(record1, record2)
+                    TestUtils.consumerConfig(CLUSTER.bootstrapServers(), StringDeserializer.class, StringDeserializer.class),
+                    outputTopic,
+                    Arrays.asList(record1, record2)
             );
 
             streams.close();
@@ -297,15 +297,15 @@ public class RegexSourceIntegrationTest {
 
             final KeyValue<String, String> record1 = new KeyValue<>("1", "1");
             IntegrationTestUtils.produceKeyValuesSynchronously(
-                topic1,
-                Collections.singletonList(record1),
-                TestUtils.producerConfig(CLUSTER.bootstrapServers(), StringSerializer.class, StringSerializer.class),
-                CLUSTER.time
+                    topic1,
+                    Collections.singletonList(record1),
+                    TestUtils.producerConfig(CLUSTER.bootstrapServers(), StringSerializer.class, StringSerializer.class),
+                    CLUSTER.time
             );
             IntegrationTestUtils.waitUntilFinalKeyValueRecordsReceived(
-                TestUtils.consumerConfig(CLUSTER.bootstrapServers(), StringDeserializer.class, StringDeserializer.class),
-                outputTopic,
-                List.of(record1)
+                    TestUtils.consumerConfig(CLUSTER.bootstrapServers(), StringDeserializer.class, StringDeserializer.class),
+                    outputTopic,
+                    List.of(record1)
             );
 
             streams.close();
@@ -348,7 +348,6 @@ public class RegexSourceIntegrationTest {
                 }
             });
 
-
             streams.start();
             TestUtils.waitForCondition(() -> assignedTopics.equals(expectedFirstAssignment), STREAM_TASKS_NOT_UPDATED);
         } finally {
@@ -388,7 +387,6 @@ public class RegexSourceIntegrationTest {
         final String topicCTestMessage = "topic-C test";
         final String topicYTestMessage = "topic-Y test";
         final String topicZTestMessage = "topic-Z test";
-
 
         final Serde<String> stringSerde = Serdes.String();
 
@@ -441,7 +439,6 @@ public class RegexSourceIntegrationTest {
 
             final KStream<String, String> partitionedStreamLeader = builderLeader.stream(Pattern.compile("partitioned-\\d"));
             final KStream<String, String> partitionedStreamFollower = builderFollower.stream(Pattern.compile("partitioned-\\d"));
-
 
             partitionedStreamLeader.to(outputTopic, Produced.with(stringSerde, stringSerde));
             partitionedStreamFollower.to(outputTopic, Produced.with(stringSerde, stringSerde));

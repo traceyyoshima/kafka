@@ -125,31 +125,31 @@ public class AgentClient {
 
     public AgentStatusResponse status() throws Exception {
         HttpResponse<AgentStatusResponse> resp =
-            JsonRestServer.httpRequest(url("/agent/status"), "GET",
-                null, new TypeReference<AgentStatusResponse>() { }, maxTries);
+                JsonRestServer.httpRequest(url("/agent/status"), "GET",
+                        null, new TypeReference<AgentStatusResponse>() { }, maxTries);
         return resp.body();
     }
 
     public UptimeResponse uptime() throws Exception {
         HttpResponse<UptimeResponse> resp =
-            JsonRestServer.httpRequest(url("/agent/uptime"), "GET",
-                null, new TypeReference<UptimeResponse>() { }, maxTries);
+                JsonRestServer.httpRequest(url("/agent/uptime"), "GET",
+                        null, new TypeReference<UptimeResponse>() { }, maxTries);
         return resp.body();
     }
 
     public void createWorker(CreateWorkerRequest request) throws Exception {
         HttpResponse<Empty> resp =
-            JsonRestServer.httpRequest(
-                url("/agent/worker/create"), "POST",
-                request, new TypeReference<Empty>() { }, maxTries);
+                JsonRestServer.httpRequest(
+                        url("/agent/worker/create"), "POST",
+                        request, new TypeReference<Empty>() { }, maxTries);
         resp.body();
     }
 
     public void stopWorker(StopWorkerRequest request) throws Exception {
         HttpResponse<Empty> resp =
-            JsonRestServer.httpRequest(url(
-                "/agent/worker/stop"), "PUT",
-                request, new TypeReference<Empty>() { }, maxTries);
+                JsonRestServer.httpRequest(url(
+                    "/agent/worker/stop"), "PUT",
+                        request, new TypeReference<Empty>() { }, maxTries);
         resp.body();
     }
 
@@ -157,16 +157,16 @@ public class AgentClient {
         UriBuilder uriBuilder = UriBuilder.fromPath(url("/agent/worker"));
         uriBuilder.queryParam("workerId", request.workerId());
         HttpResponse<Empty> resp =
-            JsonRestServer.httpRequest(uriBuilder.build().toString(), "DELETE",
-                null, new TypeReference<Empty>() { }, maxTries);
+                JsonRestServer.httpRequest(uriBuilder.build().toString(), "DELETE",
+                        null, new TypeReference<Empty>() { }, maxTries);
         resp.body();
     }
 
     public void invokeShutdown() throws Exception {
         HttpResponse<Empty> resp =
-            JsonRestServer.httpRequest(url(
-                "/agent/shutdown"), "PUT",
-                null, new TypeReference<Empty>() { }, maxTries);
+                JsonRestServer.httpRequest(url(
+                    "/agent/shutdown"), "PUT",
+                        null, new TypeReference<Empty>() { }, maxTries);
         resp.body();
     }
 
@@ -257,11 +257,11 @@ public class AgentClient {
                 } else {
                     System.out.printf("Agent is running at %s.%n", target);
                     System.out.printf("\tStart time: %s%n",
-                        dateString(uptime.serverStartMs(), localOffset));
+                            dateString(uptime.serverStartMs(), localOffset));
                     System.out.printf("\tCurrent server time: %s%n",
-                        dateString(uptime.nowMs(), localOffset));
+                            dateString(uptime.nowMs(), localOffset));
                     System.out.printf("\tUptime: %s%n",
-                        durationString(uptime.nowMs() - uptime.serverStartMs()));
+                            durationString(uptime.nowMs() - uptime.serverStartMs()));
                 }
                 break;
             }
@@ -272,7 +272,7 @@ public class AgentClient {
                 } else {
                     System.out.printf("Agent is running at %s.%n", target);
                     System.out.printf("\tStart time: %s%n",
-                        dateString(status.serverStartMs(), localOffset));
+                            dateString(status.serverStartMs(), localOffset));
                     List<List<String>> lines = new ArrayList<>();
                     lines.add(List.of("WORKER_ID", "TASK_ID", "STATE", "TASK_TYPE"));
                     for (Map.Entry<Long, WorkerState> entry : status.workers().entrySet()) {
@@ -293,7 +293,7 @@ public class AgentClient {
                 TaskSpec taskSpec = JsonUtil.
                     objectFromCommandLineArgument(res.getString("taskSpec"), TaskSpec.class);
                 CreateWorkerRequest req =
-                    new CreateWorkerRequest(workerId, taskId, taskSpec);
+                        new CreateWorkerRequest(workerId, taskId, taskSpec);
                 client.createWorker(req);
                 System.out.printf("Sent CreateWorkerRequest for worker %d%n.", req.workerId());
                 break;

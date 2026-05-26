@@ -52,11 +52,11 @@ public final class Endpoints {
         return endpoints.entrySet()
             .stream()
             .map(entry ->
-                new VotersRecord.Endpoint()
-                    .setName(entry.getKey().value())
-                    .setHost(entry.getValue().getHostString())
-                    .setPort(entry.getValue().getPort())
-            )
+                    new VotersRecord.Endpoint()
+                        .setName(entry.getKey().value())
+                        .setHost(entry.getValue().getHostString())
+                        .setPort(entry.getValue().getPort())
+        )
             .iterator();
     }
 
@@ -90,13 +90,13 @@ public final class Endpoints {
 
     public BeginQuorumEpochRequestData.LeaderEndpointCollection toBeginQuorumEpochRequest() {
         BeginQuorumEpochRequestData.LeaderEndpointCollection leaderEndpoints =
-            new BeginQuorumEpochRequestData.LeaderEndpointCollection(endpoints.size());
+                new BeginQuorumEpochRequestData.LeaderEndpointCollection(endpoints.size());
         for (Map.Entry<ListenerName, InetSocketAddress> entry : endpoints.entrySet()) {
             leaderEndpoints.add(
-                new BeginQuorumEpochRequestData.LeaderEndpoint()
-                    .setName(entry.getKey().value())
-                    .setHost(entry.getValue().getHostString())
-                    .setPort(entry.getValue().getPort())
+                    new BeginQuorumEpochRequestData.LeaderEndpoint()
+                        .setName(entry.getKey().value())
+                        .setHost(entry.getValue().getHostString())
+                        .setPort(entry.getValue().getPort())
             );
         }
 
@@ -105,13 +105,13 @@ public final class Endpoints {
 
     public AddRaftVoterRequestData.ListenerCollection toAddVoterRequest() {
         AddRaftVoterRequestData.ListenerCollection listeners =
-            new AddRaftVoterRequestData.ListenerCollection(endpoints.size());
+                new AddRaftVoterRequestData.ListenerCollection(endpoints.size());
         for (Map.Entry<ListenerName, InetSocketAddress> entry : endpoints.entrySet()) {
             listeners.add(
-                new AddRaftVoterRequestData.Listener()
-                    .setName(entry.getKey().value())
-                    .setHost(entry.getValue().getHostString())
-                    .setPort(entry.getValue().getPort())
+                    new AddRaftVoterRequestData.Listener()
+                        .setName(entry.getKey().value())
+                        .setHost(entry.getValue().getHostString())
+                        .setPort(entry.getValue().getPort())
             );
         }
         return listeners;
@@ -119,13 +119,13 @@ public final class Endpoints {
 
     public DescribeQuorumResponseData.ListenerCollection toDescribeQuorumResponseListeners() {
         DescribeQuorumResponseData.ListenerCollection listeners =
-            new DescribeQuorumResponseData.ListenerCollection(endpoints.size());
+                new DescribeQuorumResponseData.ListenerCollection(endpoints.size());
         for (Map.Entry<ListenerName, InetSocketAddress> entry : endpoints.entrySet()) {
             listeners.add(
-                new DescribeQuorumResponseData.Listener()
-                    .setName(entry.getKey().value())
-                    .setHost(entry.getValue().getHostString())
-                    .setPort(entry.getValue().getPort())
+                    new DescribeQuorumResponseData.Listener()
+                        .setName(entry.getKey().value())
+                        .setHost(entry.getValue().getHostString())
+                        .setPort(entry.getValue().getPort())
             );
         }
         return listeners;
@@ -133,13 +133,13 @@ public final class Endpoints {
 
     public UpdateRaftVoterRequestData.ListenerCollection toUpdateVoterRequest() {
         UpdateRaftVoterRequestData.ListenerCollection listeners =
-            new UpdateRaftVoterRequestData.ListenerCollection(endpoints.size());
+                new UpdateRaftVoterRequestData.ListenerCollection(endpoints.size());
         for (Map.Entry<ListenerName, InetSocketAddress> entry : endpoints.entrySet()) {
             listeners.add(
-                new UpdateRaftVoterRequestData.Listener()
-                    .setName(entry.getKey().value())
-                    .setHost(entry.getValue().getHostString())
-                    .setPort(entry.getValue().getPort())
+                    new UpdateRaftVoterRequestData.Listener()
+                        .setName(entry.getKey().value())
+                        .setHost(entry.getValue().getHostString())
+                        .setPort(entry.getValue().getPort())
             );
         }
 
@@ -147,6 +147,7 @@ public final class Endpoints {
     }
 
     private static final Endpoints EMPTY = new Endpoints(Map.of());
+
     public static Endpoints empty() {
         return EMPTY;
     }
@@ -159,8 +160,8 @@ public final class Endpoints {
         Map<ListenerName, InetSocketAddress> listeners = new HashMap<>(endpoints.size());
         for (VotersRecord.Endpoint endpoint : endpoints) {
             listeners.put(
-                ListenerName.normalised(endpoint.name()),
-                InetSocketAddress.createUnresolved(endpoint.host(), endpoint.port())
+                    ListenerName.normalised(endpoint.name()),
+                    InetSocketAddress.createUnresolved(endpoint.host(), endpoint.port())
             );
         }
 
@@ -171,8 +172,8 @@ public final class Endpoints {
         Map<ListenerName, InetSocketAddress> listeners = new HashMap<>(endpoints.size());
         for (BeginQuorumEpochRequestData.LeaderEndpoint endpoint : endpoints) {
             listeners.put(
-                ListenerName.normalised(endpoint.name()),
-                InetSocketAddress.createUnresolved(endpoint.host(), endpoint.port())
+                    ListenerName.normalised(endpoint.name()),
+                    InetSocketAddress.createUnresolved(endpoint.host(), endpoint.port())
             );
         }
 
@@ -187,12 +188,12 @@ public final class Endpoints {
         return Optional.ofNullable(endpoints.find(leaderId))
             .map(endpoint ->
                 new Endpoints(
-                    Map.of(
-                        listenerName,
-                        InetSocketAddress.createUnresolved(endpoint.host(), endpoint.port())
-                    )
+                        Map.of(
+                                listenerName,
+                                InetSocketAddress.createUnresolved(endpoint.host(), endpoint.port())
+                        )
                 )
-            )
+        )
             .orElse(Endpoints.empty());
     }
 
@@ -200,8 +201,8 @@ public final class Endpoints {
         Map<ListenerName, InetSocketAddress> listeners = new HashMap<>(endpoints.size());
         for (EndQuorumEpochRequestData.LeaderEndpoint endpoint : endpoints) {
             listeners.put(
-                ListenerName.normalised(endpoint.name()),
-                InetSocketAddress.createUnresolved(endpoint.host(), endpoint.port())
+                    ListenerName.normalised(endpoint.name()),
+                    InetSocketAddress.createUnresolved(endpoint.host(), endpoint.port())
             );
         }
 
@@ -216,12 +217,12 @@ public final class Endpoints {
         return Optional.ofNullable(endpoints.find(leaderId))
             .map(endpoint ->
                 new Endpoints(
-                    Map.of(
-                        listenerName,
-                        InetSocketAddress.createUnresolved(endpoint.host(), endpoint.port())
-                    )
+                        Map.of(
+                                listenerName,
+                                InetSocketAddress.createUnresolved(endpoint.host(), endpoint.port())
+                        )
                 )
-            )
+        )
             .orElse(Endpoints.empty());
     }
 
@@ -233,12 +234,12 @@ public final class Endpoints {
         return Optional.ofNullable(endpoints.find(leaderId))
             .map(endpoint ->
                 new Endpoints(
-                    Map.of(
-                        listenerName,
-                        InetSocketAddress.createUnresolved(endpoint.host(), endpoint.port())
-                    )
+                        Map.of(
+                                listenerName,
+                                InetSocketAddress.createUnresolved(endpoint.host(), endpoint.port())
+                        )
                 )
-            )
+        )
             .orElse(Endpoints.empty());
     }
 
@@ -250,12 +251,12 @@ public final class Endpoints {
         return Optional.ofNullable(endpoints.find(leaderId))
             .map(endpoint ->
                 new Endpoints(
-                    Map.of(
-                        listenerName,
-                        InetSocketAddress.createUnresolved(endpoint.host(), endpoint.port())
-                    )
+                        Map.of(
+                                listenerName,
+                                InetSocketAddress.createUnresolved(endpoint.host(), endpoint.port())
+                        )
                 )
-            )
+        )
             .orElse(Endpoints.empty());
     }
 
@@ -267,12 +268,12 @@ public final class Endpoints {
         return Optional.ofNullable(endpoints.find(leaderId))
             .map(endpoint ->
                 new Endpoints(
-                    Map.of(
-                        listenerName,
-                        InetSocketAddress.createUnresolved(endpoint.host(), endpoint.port())
-                    )
+                        Map.of(
+                                listenerName,
+                                InetSocketAddress.createUnresolved(endpoint.host(), endpoint.port())
+                        )
                 )
-            )
+        )
             .orElse(Endpoints.empty());
     }
 
@@ -280,8 +281,8 @@ public final class Endpoints {
         Map<ListenerName, InetSocketAddress> listeners = new HashMap<>(endpoints.size());
         for (AddRaftVoterRequestData.Listener endpoint : endpoints) {
             listeners.put(
-                ListenerName.normalised(endpoint.name()),
-                InetSocketAddress.createUnresolved(endpoint.host(), endpoint.port())
+                    ListenerName.normalised(endpoint.name()),
+                    InetSocketAddress.createUnresolved(endpoint.host(), endpoint.port())
             );
         }
 
@@ -292,8 +293,8 @@ public final class Endpoints {
         Map<ListenerName, InetSocketAddress> listeners = new HashMap<>(endpoints.size());
         for (UpdateRaftVoterRequestData.Listener endpoint : endpoints) {
             listeners.put(
-                ListenerName.normalised(endpoint.name()),
-                InetSocketAddress.createUnresolved(endpoint.host(), endpoint.port())
+                    ListenerName.normalised(endpoint.name()),
+                    InetSocketAddress.createUnresolved(endpoint.host(), endpoint.port())
             );
         }
 

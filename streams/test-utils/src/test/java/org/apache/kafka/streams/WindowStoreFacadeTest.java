@@ -214,12 +214,12 @@ public class WindowStoreFacadeTest {
         when(mockedWindowTimestampStore.<Integer>query(any(), any(), any())).thenReturn(queryResult);
 
         assertThat(
-            windowStoreFacade.query(
-                query,
-                PositionBound.unbounded(),
-                queryConfig
-            ),
-            is(queryResult));
+                windowStoreFacade.query(
+                        query,
+                        PositionBound.unbounded(),
+                        queryConfig
+                ),
+                is(queryResult));
         verify(mockedWindowTimestampStore).query(query, PositionBound.unbounded(), queryConfig);
     }
 }

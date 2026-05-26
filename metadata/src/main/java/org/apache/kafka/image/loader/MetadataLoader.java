@@ -128,19 +128,19 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
             }
             if (metrics == null) {
                 metrics = new MetadataLoaderMetrics(
-                    Optional.empty(),
-                    __ -> { },
-                    __ -> { },
-                    new AtomicReference<>(MetadataProvenance.EMPTY));
+                        Optional.empty(),
+                        __ -> {},
+                        __ -> {},
+                        new AtomicReference<>(MetadataProvenance.EMPTY));
             }
             return new MetadataLoader(
-                time,
-                logContext,
-                threadNamePrefix,
-                faultHandler,
-                metrics,
-                highWaterMarkAccessor,
-                supportedConfigChecker);
+                    time,
+                    logContext,
+                    threadNamePrefix,
+                    faultHandler,
+                    metrics,
+                    highWaterMarkAccessor,
+                    supportedConfigChecker);
         }
     }
 
@@ -228,17 +228,17 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
         this.publishers = new LinkedHashMap<>();
         this.image = MetadataImage.EMPTY;
         this.batchLoader = new MetadataBatchLoader(
-            logContext,
-            time,
-            faultHandler,
-            this::maybePublishMetadata,
-            supportedConfigChecker);
+                logContext,
+                time,
+                faultHandler,
+                this::maybePublishMetadata,
+                supportedConfigChecker);
         this.eventQueue = new KafkaEventQueue(
-            time,
-            logContext,
-            threadNamePrefix + "metadata-loader-",
-            new ShutdownEvent(),
-            metrics::updateIdleTime);
+                time,
+                logContext,
+                threadNamePrefix + "metadata-loader-",
+                new ShutdownEvent(),
+                metrics::updateIdleTime);
     }
 
     // VisibleForTesting
@@ -282,14 +282,14 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
      */
     void scheduleInitializeNewPublishers(long delayNs) {
         eventQueue.scheduleDeferred(INITIALIZE_NEW_PUBLISHERS,
-            new EventQueue.EarliestDeadlineFunction(eventQueue.time().nanoseconds() + delayNs),
-            () -> {
-                try {
-                    initializeNewPublishers();
-                } catch (Throwable e) {
-                    faultHandler.handleFault("Unhandled error initializing new publishers", e);
-                }
-            });
+                new EventQueue.EarliestDeadlineFunction(eventQueue.time().nanoseconds() + delayNs),
+                () -> {
+                    try {
+                        initializeNewPublishers();
+                    } catch (Throwable e) {
+                        faultHandler.handleFault("Unhandled error initializing new publishers", e);
+                    }
+                });
     }
 
     void initializeNewPublishers() {
@@ -300,7 +300,7 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
         if (stillNeedToCatchUp("initializeNewPublishers", image.highestOffsetAndEpoch().offset())) {
             // Reschedule the initialization for later.
             log.debug("InitializeNewPublishers: unable to initialize new publisher(s) {} " +
-                            "because we are still catching up with quorum metadata. Rescheduling.",
+                    "because we are still catching up with quorum metadata. Rescheduling.",
                     uninitializedPublisherNames());
             scheduleInitializeNewPublishers(TimeUnit.MILLISECONDS.toNanos(100));
             return;
@@ -323,7 +323,7 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
                 image.provenance(),
                 time.nanoseconds() - startNs);
         for (Iterator<MetadataPublisher> iter = uninitializedPublishers.values().iterator();
-                iter.hasNext(); ) {
+            iter.hasNext();) {
             MetadataPublisher publisher = iter.next();
             iter.remove();
             try {
@@ -350,8 +350,8 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
         this.image = image;
 
         if (stillNeedToCatchUp(
-            "maybePublishMetadata(" + manifest.type().toString() + ")",
-            manifest.provenance().lastContainedOffset())
+                "maybePublishMetadata(" + manifest.type().toString() + ")",
+                manifest.provenance().lastContainedOffset())
         ) {
             return;
         }
@@ -364,8 +364,8 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
                 publisher.onMetadataUpdate(delta, image, manifest);
             } catch (Throwable e) {
                 faultHandler.handleFault("Unhandled error publishing the new metadata " +
-                    "image ending at " + manifest.provenance().lastContainedOffset() +
-                    " with publisher " + publisher.name(), e);
+                        "image ending at " + manifest.provenance().lastContainedOffset() +
+                        " with publisher " + publisher.name(), e);
             }
         }
         metrics.updateLastAppliedImageProvenance(image.provenance());
@@ -374,16 +374,16 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
 
         // Set the metadata version feature level, since it is handled separately from other features
         metrics.recordFinalizedFeatureLevel(
-            MetadataVersion.FEATURE_NAME,
-            metadataVersion.featureLevel()
+                MetadataVersion.FEATURE_NAME,
+                metadataVersion.featureLevel()
         );
 
         // Set all production feature levels from the image
         metrics.maybeRemoveFinalizedFeatureLevelMetrics(image.features().finalizedVersions());
         for (var featureEntry : image.features().finalizedVersions().entrySet()) {
             metrics.recordFinalizedFeatureLevel(
-                featureEntry.getKey(),
-                featureEntry.getValue()
+                    featureEntry.getKey(),
+                    featureEntry.getValue()
             );
         }
 
@@ -420,7 +420,7 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
                 long numLoaded = metrics.incrementHandleLoadSnapshotCount();
                 String snapshotName = Snapshots.filenameFromSnapshotId(reader.snapshotId());
                 log.info("handleLoadSnapshot({}): incrementing HandleLoadSnapshotCount to {}.",
-                    snapshotName, numLoaded);
+                        snapshotName, numLoaded);
                 MetadataDelta delta = new MetadataDelta.Builder().
                     setImage(image).
                     setSupportedConfigChecker(supportedConfigChecker).
@@ -503,8 +503,8 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
                     publisher.onControllerChange(currentLeaderAndEpoch);
                 } catch (Throwable e) {
                     faultHandler.handleFault("Unhandled error publishing the new leader " +
-                        "change to " + currentLeaderAndEpoch + " with publisher " +
-                        publisher.name(), e);
+                            "change to " + currentLeaderAndEpoch + " with publisher " +
+                            publisher.name(), e);
                 }
             }
             metrics.setCurrentControllerId(leaderAndEpoch.leaderId().orElse(-1));
@@ -604,12 +604,12 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
         @Override
         public void run() throws Exception {
             for (Iterator<MetadataPublisher> iter = uninitializedPublishers.values().iterator();
-                 iter.hasNext(); ) {
+                iter.hasNext();) {
                 closePublisher(iter.next());
                 iter.remove();
             }
             for (Iterator<MetadataPublisher> iter = publishers.values().iterator();
-                 iter.hasNext(); ) {
+                iter.hasNext();) {
                 closePublisher(iter.next());
                 iter.remove();
             }

@@ -101,11 +101,11 @@ public class GroupListing {
     @Override
     public String toString() {
         return "(" +
-            "groupId='" + groupId + '\'' +
-            ", type=" + type.map(GroupType::toString).orElse("none") +
-            ", protocol='" + protocol + '\'' +
-            ", groupState=" + groupState.map(GroupState::toString).orElse("none") +
-            ')';
+                "groupId='" + groupId + '\'' +
+                ", type=" + type.map(GroupType::toString).orElse("none") +
+                ", protocol='" + protocol + '\'' +
+                ", groupState=" + groupState.map(GroupState::toString).orElse("none") +
+                ')';
     }
 
     @Override
@@ -119,8 +119,8 @@ public class GroupListing {
         if (!(o instanceof GroupListing)) return false;
         GroupListing that = (GroupListing) o;
         return Objects.equals(groupId, that.groupId) &&
-            Objects.equals(type, that.type) &&
-            Objects.equals(protocol, that.protocol) &&
-            Objects.equals(groupState, that.groupState);
+                Objects.equals(type, that.type) &&
+                Objects.equals(protocol, that.protocol) &&
+                Objects.equals(groupState, that.groupState);
     }
 }

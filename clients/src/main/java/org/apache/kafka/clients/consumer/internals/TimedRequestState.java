@@ -67,7 +67,6 @@ public class TimedRequestState extends RequestState {
         return time.timer(diff);
     }
 
-
     @Override
     protected String toStringBase() {
         return super.toStringBase() + ", remainingMs=" + remainingMs();

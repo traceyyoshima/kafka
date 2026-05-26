@@ -135,9 +135,9 @@ public class SinglePointMetric implements MetricKeyable {
 
     private static Iterable<KeyValue> asAttributes(Map<String, String> labels, Set<String> excludeLabels) {
         return labels.entrySet().stream().filter(entry -> !excludeLabels.contains(entry.getKey())).map(
-            entry -> KeyValue.newBuilder()
-                .setKey(entry.getKey())
-                .setValue(AnyValue.newBuilder().setStringValue(entry.getValue())).build()
+                entry -> KeyValue.newBuilder()
+                    .setKey(entry.getKey())
+                    .setValue(AnyValue.newBuilder().setStringValue(entry.getValue())).build()
         )::iterator;
     }
 

@@ -205,9 +205,10 @@ public class ConnectorConfigTest<R extends ConnectRecord<R>> {
         props.put("transforms.a.type", AbstractTransformation.class.getName());
         ConfigException ex = assertThrows(ConfigException.class, () -> new ConnectorConfig(MOCK_PLUGINS, props));
         assertTrue(
-            ex.getMessage().contains("This class is abstract and cannot be created.")
+                ex.getMessage().contains("This class is abstract and cannot be created.")
         );
     }
+
     @Test
     public void abstractKeyValueTransform() {
         Map<String, String> props = new HashMap<>();
@@ -217,13 +218,13 @@ public class ConnectorConfigTest<R extends ConnectRecord<R>> {
         props.put("transforms.a.type", AbstractKeyValueTransformation.class.getName());
         ConfigException ex = assertThrows(ConfigException.class, () -> new ConnectorConfig(MOCK_PLUGINS, props));
         assertTrue(
-            ex.getMessage().contains("This class is abstract and cannot be created.")
+                ex.getMessage().contains("This class is abstract and cannot be created.")
         );
         assertTrue(
-            ex.getMessage().contains(AbstractKeyValueTransformation.Key.class.getName())
+                ex.getMessage().contains(AbstractKeyValueTransformation.Key.class.getName())
         );
         assertTrue(
-            ex.getMessage().contains(AbstractKeyValueTransformation.Value.class.getName())
+                ex.getMessage().contains(AbstractKeyValueTransformation.Value.class.getName())
         );
     }
 
@@ -374,7 +375,7 @@ public class ConnectorConfigTest<R extends ConnectRecord<R>> {
 
         int param;
 
-        public TestPredicate() { }
+        public TestPredicate() {}
 
         @Override
         public ConfigDef config() {
@@ -405,7 +406,7 @@ public class ConnectorConfigTest<R extends ConnectRecord<R>> {
             return "1.0";
         }
 
-        public AbstractTestPredicate() { }
+        public AbstractTestPredicate() {}
 
     }
 
@@ -443,7 +444,6 @@ public class ConnectorConfigTest<R extends ConnectRecord<R>> {
         public void configure(Map<String, ?> configs) {
 
         }
-
 
         public static class Key<R extends ConnectRecord<R>> extends AbstractKeyValueTransformation<R> {
 

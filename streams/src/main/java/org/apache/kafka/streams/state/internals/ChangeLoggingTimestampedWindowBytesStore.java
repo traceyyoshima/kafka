@@ -34,12 +34,12 @@ public class ChangeLoggingTimestampedWindowBytesStore extends ChangeLoggingWindo
     void log(final Bytes key,
              final byte[] valueAndTimestamp) {
         internalContext.logChange(
-            name(),
-            key,
-            rawValue(valueAndTimestamp),
-            valueAndTimestamp != null ? timestamp(valueAndTimestamp) : internalContext.recordContext().timestamp(),
-            new RecordHeaders(),
-            wrapped().getPosition()
+                name(),
+                key,
+                rawValue(valueAndTimestamp),
+                valueAndTimestamp != null ? timestamp(valueAndTimestamp) : internalContext.recordContext().timestamp(),
+                new RecordHeaders(),
+                wrapped().getPosition()
         );
     }
 }

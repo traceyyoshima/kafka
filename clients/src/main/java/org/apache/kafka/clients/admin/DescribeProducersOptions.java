@@ -41,7 +41,7 @@ public class DescribeProducersOptions extends AbstractOptions<DescribeProducersO
         if (o == null || getClass() != o.getClass()) return false;
         DescribeProducersOptions that = (DescribeProducersOptions) o;
         return Objects.equals(brokerId, that.brokerId) &&
-            Objects.equals(timeoutMs, that.timeoutMs);
+                Objects.equals(timeoutMs, that.timeoutMs);
     }
 
     @Override
@@ -52,8 +52,8 @@ public class DescribeProducersOptions extends AbstractOptions<DescribeProducersO
     @Override
     public String toString() {
         return "DescribeProducersOptions(" +
-            "brokerId=" + brokerId +
-            ", timeoutMs=" + timeoutMs +
-            ')';
+                "brokerId=" + brokerId +
+                ", timeoutMs=" + timeoutMs +
+                ')';
     }
 }

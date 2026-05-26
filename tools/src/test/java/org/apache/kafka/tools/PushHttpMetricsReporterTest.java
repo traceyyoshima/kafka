@@ -65,6 +65,7 @@ import static org.mockito.Mockito.when;
 public class PushHttpMetricsReporterTest {
 
     private static final URL URL;
+
     static {
         try {
             URL = new URL("http://fake:80");
@@ -211,11 +212,11 @@ public class PushHttpMetricsReporterTest {
                 time
         );
         KafkaMetric metric4 = new KafkaMetric(
-            new Object(),
-            new MetricName("name4", "group4", "desc4", Map.of("key4", "value4")),
-            (Gauge<String>) (config, now) -> "value4",
-            null,
-            time
+                new Object(),
+                new MetricName("name4", "group4", "desc4", Map.of("key4", "value4")),
+                (Gauge<String>) (config, now) -> "value4",
+                null,
+                time
         );
 
         reporter.init(List.of(metric1, metric2, metric4));
@@ -315,7 +316,7 @@ public class PushHttpMetricsReporterTest {
 
     private void verifyConfigure() {
         verify(executor).scheduleAtFixedRate(reportRunnableCaptor.capture(),
-            eq(5L), eq(5L), eq(TimeUnit.SECONDS));
+                eq(5L), eq(5L), eq(TimeUnit.SECONDS));
     }
 
     private void verifyResponse() throws IOException {

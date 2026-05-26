@@ -72,7 +72,7 @@ public class JsonRestServer {
      */
     public JsonRestServer(int port) {
         this.shutdownExecutor = Executors.newSingleThreadScheduledExecutor(
-            ThreadUtils.createThreadFactory("JsonRestServerCleanupExecutor", false));
+                ThreadUtils.createThreadFactory("JsonRestServerCleanupExecutor", false));
         this.jettyServer = new Server();
         this.connector = new ServerConnector(jettyServer);
         if (port > 0) {
@@ -241,7 +241,7 @@ public class JsonRestServer {
      */
     public static <T> HttpResponse<T> httpRequest(String url, String method, Object requestBodyData,
                                                   TypeReference<T> responseFormat, int maxTries)
-            throws IOException, InterruptedException {
+        throws IOException, InterruptedException {
         return httpRequest(log, url, method, requestBodyData, responseFormat, maxTries);
     }
 
@@ -258,7 +258,7 @@ public class JsonRestServer {
      */
     public static <T> HttpResponse<T> httpRequest(Logger logger, String url, String method,
             Object requestBodyData, TypeReference<T> responseFormat, int maxTries)
-            throws IOException, InterruptedException {
+        throws IOException, InterruptedException {
         IOException exc = null;
         for (int tries = 0; tries < maxTries; tries++) {
             if (tries > 0) {

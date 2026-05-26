@@ -74,8 +74,8 @@ public class KeyValueToTimestampedKeyValueByteStoreAdapter implements KeyValueSt
     public byte[] putIfAbsent(final Bytes key,
                               final byte[] valueWithTimestamp) {
         return convertToTimestampedFormat(store.putIfAbsent(
-            key,
-            rawValue(valueWithTimestamp)));
+                key,
+                rawValue(valueWithTimestamp)));
     }
 
     @Override
@@ -162,7 +162,7 @@ public class KeyValueToTimestampedKeyValueByteStoreAdapter implements KeyValueSt
 
             final long end = System.nanoTime();
             result.addExecutionInfo(
-                "Handled in " + getClass() + " in " + (end - start) + "ns"
+                    "Handled in " + getClass() + " in " + (end - start) + "ns"
             );
         }
         return result;

@@ -64,19 +64,19 @@ public class StickyAssignorTest extends AbstractStickyAssignorTest {
     @Override
     public Subscription buildSubscriptionV0(List<String> topics, List<TopicPartition> partitions, int generationId, int consumerIndex) {
         return new Subscription(topics, serializeTopicPartitionAssignment(new MemberData(partitions, Optional.of(generationId))),
-            Collections.emptyList(), DEFAULT_GENERATION, consumerRackId(consumerIndex));
+                Collections.emptyList(), DEFAULT_GENERATION, consumerRackId(consumerIndex));
     }
 
     @Override
     public Subscription buildSubscriptionV1(List<String> topics, List<TopicPartition> partitions, int generationId, int consumerIndex) {
         return new Subscription(topics, serializeTopicPartitionAssignment(new MemberData(partitions, Optional.of(generationId))),
-            partitions, DEFAULT_GENERATION, Optional.empty());
+                partitions, DEFAULT_GENERATION, Optional.empty());
     }
 
     @Override
     public Subscription buildSubscriptionV2Above(List<String> topics, List<TopicPartition> partitions, int generationId, int consumerIndex) {
         return new Subscription(topics, serializeTopicPartitionAssignment(new MemberData(partitions, Optional.of(generationId))),
-            partitions, generationId, Optional.empty());
+                partitions, generationId, Optional.empty());
     }
 
     @Override

@@ -89,6 +89,6 @@ public class ImageReWriterTest {
 
         assertEquals(Map.of(), newImage.topics().topicsById());
         assertEquals(Map.of("num.io.threads", "12"),
-            newImage.configs().configMapForResource(new ConfigResource(BROKER, "")));
+                newImage.configs().configMapForResource(new ConfigResource(BROKER, "")));
     }
 }

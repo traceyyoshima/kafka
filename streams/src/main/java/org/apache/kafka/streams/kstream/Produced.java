@@ -180,8 +180,8 @@ public class Produced<K, V> implements NamedOperation<Produced<K, V>> {
         }
         final Produced<?, ?> produced = (Produced<?, ?>) o;
         return Objects.equals(keySerde, produced.keySerde) &&
-               Objects.equals(valueSerde, produced.valueSerde) &&
-               Objects.equals(partitioner, produced.partitioner);
+                Objects.equals(valueSerde, produced.valueSerde) &&
+                Objects.equals(partitioner, produced.partitioner);
     }
 
     @Override

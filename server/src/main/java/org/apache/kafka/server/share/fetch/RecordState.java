@@ -51,7 +51,7 @@ public enum RecordState {
         Objects.requireNonNull(newState, "newState cannot be null");
         if (this == newState) {
             throw new IllegalStateException("The state transition is invalid as the new state is "
-                + "the same as the current state");
+                    + "the same as the current state");
         }
 
         if (this == ACKNOWLEDGED || this == ARCHIVED) {

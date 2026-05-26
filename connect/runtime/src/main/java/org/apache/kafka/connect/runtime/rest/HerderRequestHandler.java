@@ -103,7 +103,7 @@ public class HerderRequestHandler {
                     // the target didn't know of the leader at this moment.
                     throw new ConnectRestException(Response.Status.CONFLICT.getStatusCode(),
                             "Cannot complete request momentarily due to no known leader URL, "
-                                    + "likely because a rebalance was underway.");
+                            + "likely because a rebalance was underway.");
                 }
                 UriBuilder uriBuilder = UriBuilder.fromUri(forwardedUrl)
                         .path(path)
@@ -135,12 +135,12 @@ public class HerderRequestHandler {
     }
 
     public <T> T completeOrForwardRequest(FutureCallback<T> cb, String path, String method, HttpHeaders headers, Object body,
-                                                 TypeReference<T> resultType, Boolean forward) throws Throwable {
+                                          TypeReference<T> resultType, Boolean forward) throws Throwable {
         return completeOrForwardRequest(cb, path, method, headers, body, resultType, new IdentityTranslator<>(), forward);
     }
 
     public void completeOrForwardRequest(FutureCallback<Void> cb, String path, String method, HttpHeaders headers, Object body,
-                                          Boolean forward) throws Throwable {
+                                         Boolean forward) throws Throwable {
         completeOrForwardRequest(cb, path, method, headers, body, new TypeReference<>() { }, new IdentityTranslator<>(), forward);
     }
 

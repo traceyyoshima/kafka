@@ -78,7 +78,7 @@ public class ConsumerPartitionAssignorTest {
     public void shouldInstantiateFromClassType() {
         List<String> classTypes =
                 initConsumerConfigWithClassTypes(Collections.singletonList(StickyAssignor.class))
-                .getList(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG);
+                        .getList(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG);
         List<ConsumerPartitionAssignor> assignors = getAssignorInstances(classTypes, Collections.emptyMap());
         assertInstanceOf(StickyAssignor.class, assignors.get(0));
     }
@@ -99,7 +99,7 @@ public class ConsumerPartitionAssignorTest {
     public void shouldThrowKafkaExceptionOnListWithNonAssignorClassType() {
         List<String> classTypes =
                 initConsumerConfigWithClassTypes(Arrays.asList(StickyAssignor.class, String.class))
-                .getList(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG);
+                        .getList(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG);
 
         assertThrows(KafkaException.class, () -> getAssignorInstances(classTypes, Collections.emptyMap()));
     }
@@ -107,8 +107,8 @@ public class ConsumerPartitionAssignorTest {
     @Test
     public void shouldThrowKafkaExceptionOnAssignorsWithSameName() {
         assertThrows(KafkaException.class, () -> getAssignorInstances(
-            Arrays.asList(RangeAssignor.class.getName(), TestConsumerPartitionAssignor.class.getName()),
-            Collections.emptyMap()
+                Arrays.asList(RangeAssignor.class.getName(), TestConsumerPartitionAssignor.class.getName()),
+                Collections.emptyMap()
         ));
     }
 
@@ -116,14 +116,13 @@ public class ConsumerPartitionAssignorTest {
     public void shouldBeConfigurable() {
         Map<String, Object> configs = Collections.singletonMap("key", "value");
         List<ConsumerPartitionAssignor> assignors = getAssignorInstances(
-            Collections.singletonList(TestConsumerPartitionAssignor.class.getName()),
-            configs
+                Collections.singletonList(TestConsumerPartitionAssignor.class.getName()),
+                configs
         );
         assertEquals(1, assignors.size());
         assertInstanceOf(TestConsumerPartitionAssignor.class, assignors.get(0));
         assertEquals(configs, ((TestConsumerPartitionAssignor) assignors.get(0)).configs);
     }
-
 
     public static class TestConsumerPartitionAssignor implements ConsumerPartitionAssignor, Configurable {
         private Map<String, ?> configs = null;

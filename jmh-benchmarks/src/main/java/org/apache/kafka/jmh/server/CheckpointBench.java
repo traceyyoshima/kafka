@@ -98,7 +98,6 @@ public class CheckpointBench {
     private LogManager logManager;
     private AlterPartitionManager alterPartitionManager;
 
-
     @Setup(Level.Trial)
     public void setup() throws IOException {
         this.scheduler = new KafkaScheduler(1, true, "scheduler-thread");
@@ -114,7 +113,7 @@ public class CheckpointBench {
             setConfigRepository(new MockConfigRepository()).
             setInitialDefaultConfig(new LogConfig(new Properties())).
             setCleanerConfig(new CleanerConfig(1, 4 * 1024 * 1024L, 0.9d,
-                1024 * 1024, 32 * 1024 * 1024, Double.MAX_VALUE, 15 * 1000, true)).
+                    1024 * 1024, 32 * 1024 * 1024, Double.MAX_VALUE, 15 * 1000, true)).
             setRecoveryThreadsPerDataDir(1).
             setFlushCheckMs(1000L).
             setFlushRecoveryOffsetCheckpointMs(10000L).
@@ -178,7 +177,6 @@ public class CheckpointBench {
             Utils.delete(dir);
         }
     }
-
 
     @Benchmark
     @Threads(1)

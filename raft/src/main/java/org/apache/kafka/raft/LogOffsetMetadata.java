@@ -53,7 +53,7 @@ public class LogOffsetMetadata {
     public boolean equals(Object obj) {
         if (obj instanceof LogOffsetMetadata other) {
             return this.offset == other.offset &&
-                   this.metadata.equals(other.metadata);
+                    this.metadata.equals(other.metadata);
         } else {
             return false;
         }

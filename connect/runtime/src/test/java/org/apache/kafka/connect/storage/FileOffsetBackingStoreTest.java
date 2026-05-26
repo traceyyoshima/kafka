@@ -63,7 +63,6 @@ public class FileOffsetBackingStoreTest {
     private File tempFile;
     private Converter converter;
 
-
     private static final Map<ByteBuffer, ByteBuffer> FIRST_SET = new HashMap<>();
     private static final Runnable EMPTY_RUNNABLE = () -> {
     };

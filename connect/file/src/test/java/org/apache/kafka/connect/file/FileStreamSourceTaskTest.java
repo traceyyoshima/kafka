@@ -178,7 +178,7 @@ public class FileStreamSourceTaskTest {
     }
 
     private void writeAndAssertBufferSize(int batchSize, OutputStream os, byte[] bytes, int expectBufferSize)
-            throws IOException, InterruptedException {
+        throws IOException, InterruptedException {
         writeTimesAndFlush(os, batchSize, bytes);
         List<SourceRecord> records = task.poll();
         assertEquals(batchSize, records.size());

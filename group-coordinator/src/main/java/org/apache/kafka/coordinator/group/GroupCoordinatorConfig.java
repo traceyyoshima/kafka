@@ -73,20 +73,20 @@ public class GroupCoordinatorConfig {
     public static final String GROUP_COORDINATOR_REBALANCE_PROTOCOLS_CONFIG = "group.coordinator.rebalance.protocols";
     @Deprecated(since = "4.3", forRemoval = true)
     public static final String GROUP_COORDINATOR_REBALANCE_PROTOCOLS_DOC = "This configuration is deprecated and will be removed in Kafka 5.0. " +
-        "The list of enabled rebalance protocols. " +
-        "In Kafka 5.0, all protocols will always be enabled and cannot be disabled via this configuration. " +
-        "Use feature versions (group.version, streams.version, share.version) managed by kafka-features.sh instead.";
+            "The list of enabled rebalance protocols. " +
+            "In Kafka 5.0, all protocols will always be enabled and cannot be disabled via this configuration. " +
+            "Use feature versions (group.version, streams.version, share.version) managed by kafka-features.sh instead.";
     @Deprecated(since = "4.3", forRemoval = true)
     public static final List<String> GROUP_COORDINATOR_REBALANCE_PROTOCOLS_DEFAULT = List.of(
-        Group.GroupType.CLASSIC.toString(),
-        Group.GroupType.CONSUMER.toString(),
-        Group.GroupType.STREAMS.toString());
+            Group.GroupType.CLASSIC.toString(),
+            Group.GroupType.CONSUMER.toString(),
+            Group.GroupType.STREAMS.toString());
     public static final String GROUP_COORDINATOR_APPEND_LINGER_MS_CONFIG = "group.coordinator.append.linger.ms";
     public static final String GROUP_COORDINATOR_APPEND_LINGER_MS_DOC = "The duration in milliseconds that the coordinator will " +
-        "wait for writes to accumulate before flushing them to disk. Increasing this value improves write efficiency and batch size, " +
-        "but also increases the response latency for requests, as the coordinator must wait for batches to be flushed to " +
-        "disk before completing request processing. Transactional writes are not accumulated. " +
-        "Set to -1 for an adaptive linger time that minimizes latency based on the workload.";
+            "wait for writes to accumulate before flushing them to disk. Increasing this value improves write efficiency and batch size, " +
+            "but also increases the response latency for requests, as the coordinator must wait for batches to be flushed to " +
+            "disk before completing request processing. Transactional writes are not accumulated. " +
+            "Set to -1 for an adaptive linger time that minimizes latency based on the workload.";
     public static final int GROUP_COORDINATOR_APPEND_LINGER_MS_DEFAULT = -1;
 
     public static final String GROUP_COORDINATOR_NUM_THREADS_CONFIG = "group.coordinator.threads";
@@ -95,18 +95,18 @@ public class GroupCoordinatorConfig {
 
     public static final String GROUP_COORDINATOR_NUM_BACKGROUND_THREADS_CONFIG = "group.coordinator.background.threads";
     public static final String GROUP_COORDINATOR_NUM_BACKGROUND_THREADS_DOC = "The number of threads used by the group coordinator for " +
-        "processing background tasks (e.g. updating regular expression subscriptions and offloaded assignments).";
+            "processing background tasks (e.g. updating regular expression subscriptions and offloaded assignments).";
     public static final int GROUP_COORDINATOR_NUM_BACKGROUND_THREADS_DEFAULT = 2;
 
     public static final String OFFSETS_LOAD_BUFFER_SIZE_CONFIG = "offsets.load.buffer.size";
     public static final int OFFSETS_LOAD_BUFFER_SIZE_DEFAULT = 5 * 1024 * 1024;
     public static final String OFFSETS_LOAD_BUFFER_SIZE_DOC = "Batch size for reading from the offsets segments when loading group metadata " +
-        " into the cache (soft-limit, overridden if records are too large).";
+            " into the cache (soft-limit, overridden if records are too large).";
 
     public static final String OFFSET_COMMIT_TIMEOUT_MS_CONFIG = "offsets.commit.timeout.ms";
     public static final int OFFSET_COMMIT_TIMEOUT_MS_DEFAULT = 5000;
     public static final String OFFSET_COMMIT_TIMEOUT_MS_DOC = "Offset commit will be delayed until all replicas for the offsets topic receive the commit " +
-        "or this timeout is reached. This is similar to the producer request timeout. This is applied to all the writes made by the coordinator.";
+            "or this timeout is reached. This is similar to the producer request timeout. This is applied to all the writes made by the coordinator.";
 
     public static final String OFFSETS_TOPIC_PARTITIONS_CONFIG = "offsets.topic.num.partitions";
     public static final int OFFSETS_TOPIC_PARTITIONS_DEFAULT = 50;
@@ -115,12 +115,12 @@ public class GroupCoordinatorConfig {
     public static final String OFFSETS_TOPIC_SEGMENT_BYTES_CONFIG = "offsets.topic.segment.bytes";
     public static final int OFFSETS_TOPIC_SEGMENT_BYTES_DEFAULT = 100 * 1024 * 1024;
     public static final String OFFSETS_TOPIC_SEGMENT_BYTES_DOC = "The offsets topic segment bytes should be kept relatively small in order to facilitate " +
-        "faster log compaction and cache loads.";
+            "faster log compaction and cache loads.";
 
     public static final String OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG = "offsets.topic.replication.factor";
     public static final short OFFSETS_TOPIC_REPLICATION_FACTOR_DEFAULT = 3;
     public static final String OFFSETS_TOPIC_REPLICATION_FACTOR_DOC = "The replication factor for the offsets topic (set higher to ensure availability). " +
-        "Internal topic creation will fail until the cluster size meets this replication factor requirement.";
+            "Internal topic creation will fail until the cluster size meets this replication factor requirement.";
 
     public static final String OFFSETS_TOPIC_COMPRESSION_CODEC_CONFIG = "offsets.topic.compression.codec";
     public static final CompressionType OFFSETS_TOPIC_COMPRESSION_CODEC_DEFAULT = CompressionType.NONE;
@@ -129,8 +129,8 @@ public class GroupCoordinatorConfig {
     public static final String CACHED_BUFFER_MAX_BYTES_CONFIG = "group.coordinator.cached.buffer.max.bytes";
     public static final int CACHED_BUFFER_MAX_BYTES_DEFAULT = 1024 * 1024 + Records.LOG_OVERHEAD;
     public static final String CACHED_BUFFER_MAX_BYTES_DOC = "The maximum buffer size that the GroupCoordinator will retain for reuse. " +
-        "Note: Setting this larger than the maximum message size is not recommended. In this case, every write buffer will be eligible " +
-        "for recycling, which renders this configuration ineffective as a size limit.";
+            "Note: Setting this larger than the maximum message size is not recommended. In this case, every write buffer will be eligible " +
+            "for recycling, which renders this configuration ineffective as a size limit.";
 
     ///
     /// Offset configs
@@ -142,11 +142,11 @@ public class GroupCoordinatorConfig {
     public static final String OFFSETS_RETENTION_MINUTES_CONFIG = "offsets.retention.minutes";
     public static final int OFFSETS_RETENTION_MINUTES_DEFAULT = 7 * 24 * 60;
     public static final String OFFSETS_RETENTION_MINUTES_DOC = "For subscribed consumers, committed offset of a specific partition will be expired and discarded when " +
-        "1) this retention period has elapsed after the consumer group loses all its consumers (i.e. becomes empty); " +
-        "2) this retention period has elapsed since the last time an offset is committed for the partition and the group is no longer subscribed to the corresponding topic. " +
-        "For standalone consumers (using manual assignment), offsets will be expired after this retention period has elapsed since the time of last commit. " +
-        "Note that when a group is deleted via the delete-group request, its committed offsets will also be deleted without extra retention period; " +
-        "also when a topic is deleted via the delete-topic request, upon propagated metadata update any group's committed offsets for that topic will also be deleted without extra retention period.";
+            "1) this retention period has elapsed after the consumer group loses all its consumers (i.e. becomes empty); " +
+            "2) this retention period has elapsed since the last time an offset is committed for the partition and the group is no longer subscribed to the corresponding topic. " +
+            "For standalone consumers (using manual assignment), offsets will be expired after this retention period has elapsed since the time of last commit. " +
+            "Note that when a group is deleted via the delete-group request, its committed offsets will also be deleted without extra retention period; " +
+            "also when a topic is deleted via the delete-topic request, upon propagated metadata update any group's committed offsets for that topic will also be deleted without extra retention period.";
 
     public static final String OFFSETS_RETENTION_CHECK_INTERVAL_MS_CONFIG = "offsets.retention.check.interval.ms";
     public static final long OFFSETS_RETENTION_CHECK_INTERVAL_MS_DEFAULT = 600000L;
@@ -157,17 +157,17 @@ public class GroupCoordinatorConfig {
     ///
     public static final String GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG = "group.min.session.timeout.ms";
     public static final String GROUP_MIN_SESSION_TIMEOUT_MS_DOC = "The minimum allowed session timeout for registered consumers. Shorter timeouts result in " +
-        "quicker failure detection at the cost of more frequent consumer heartbeating, which can overwhelm broker resources.";
+            "quicker failure detection at the cost of more frequent consumer heartbeating, which can overwhelm broker resources.";
     public static final int GROUP_MIN_SESSION_TIMEOUT_MS_DEFAULT = 6000;
 
     public static final String GROUP_MAX_SESSION_TIMEOUT_MS_CONFIG = "group.max.session.timeout.ms";
     public static final String GROUP_MAX_SESSION_TIMEOUT_MS_DOC = "The maximum allowed session timeout for registered consumers. Longer timeouts give consumers " +
-        "more time to process messages in between heartbeats at the cost of a longer time to detect failures.";
+            "more time to process messages in between heartbeats at the cost of a longer time to detect failures.";
     public static final int GROUP_MAX_SESSION_TIMEOUT_MS_DEFAULT = 1800000;
 
     public static final String GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG = "group.initial.rebalance.delay.ms";
     public static final String GROUP_INITIAL_REBALANCE_DELAY_MS_DOC = "The amount of time the group coordinator will wait for more consumers to join a new group " +
-        "before performing the first rebalance. A longer delay means potentially fewer rebalances, but increases the time until processing begins.";
+            "before performing the first rebalance. A longer delay means potentially fewer rebalances, but increases the time until processing begins.";
     public static final int GROUP_INITIAL_REBALANCE_DELAY_MS_DEFAULT = 3000;
 
     public static final String GROUP_MAX_SIZE_CONFIG = "group.max.size";
@@ -203,21 +203,20 @@ public class GroupCoordinatorConfig {
 
     public static final String CONSUMER_GROUP_MAX_SIZE_CONFIG = "group.consumer.max.size";
     public static final String CONSUMER_GROUP_MAX_SIZE_DOC = "The maximum number of consumers " +
-        "that a single consumer group can accommodate. This value will only impact groups under " +
-        "the CONSUMER group protocol. To configure the max group size when using the CLASSIC " +
-        "group protocol use " + GROUP_MAX_SIZE_CONFIG + " " + "instead.";
+            "that a single consumer group can accommodate. This value will only impact groups under " +
+            "the CONSUMER group protocol. To configure the max group size when using the CLASSIC " +
+            "group protocol use " + GROUP_MAX_SIZE_CONFIG + " " + "instead.";
     public static final int CONSUMER_GROUP_MAX_SIZE_DEFAULT = Integer.MAX_VALUE;
 
-
     private static final List<ConsumerGroupPartitionAssignor> CONSUMER_GROUP_BUILTIN_ASSIGNORS = List.of(
-        new UniformAssignor(),
-        new RangeAssignor()
+            new UniformAssignor(),
+            new RangeAssignor()
     );
     public static final String CONSUMER_GROUP_ASSIGNORS_CONFIG = "group.consumer.assignors";
     public static final String CONSUMER_GROUP_ASSIGNORS_DOC = "The server side assignors as a list of either names for builtin assignors or full class names for customer assignors. " +
-        "The first one in the list is considered as the default assignor to be used in the case where the consumer does not specify an assignor. " +
-        "Changing the default assignor does not trigger a rebalance for existing groups; the new default takes effect on the next rebalance. " +
-        "The supported builtin assignors are: " + CONSUMER_GROUP_BUILTIN_ASSIGNORS.stream().map(ConsumerGroupPartitionAssignor::name).collect(Collectors.joining(", ")) + ".";
+            "The first one in the list is considered as the default assignor to be used in the case where the consumer does not specify an assignor. " +
+            "Changing the default assignor does not trigger a rebalance for existing groups; the new default takes effect on the next rebalance. " +
+            "The supported builtin assignors are: " + CONSUMER_GROUP_BUILTIN_ASSIGNORS.stream().map(ConsumerGroupPartitionAssignor::name).collect(Collectors.joining(", ")) + ".";
     public static final List<String> CONSUMER_GROUP_ASSIGNORS_DEFAULT = CONSUMER_GROUP_BUILTIN_ASSIGNORS
         .stream()
         .map(ConsumerGroupPartitionAssignor::name)
@@ -226,12 +225,12 @@ public class GroupCoordinatorConfig {
     public static final String CONSUMER_GROUP_MIGRATION_POLICY_CONFIG = "group.consumer.migration.policy";
     public static final String CONSUMER_GROUP_MIGRATION_POLICY_DEFAULT = ConsumerGroupMigrationPolicy.BIDIRECTIONAL.toString();
     public static final String CONSUMER_GROUP_MIGRATION_POLICY_DOC = "The config that enables converting the non-empty classic group using the consumer embedded protocol " +
-        "to the non-empty consumer group using the consumer group protocol and vice versa; " +
-        "conversions of empty groups in both directions are always enabled regardless of this policy. " +
-        ConsumerGroupMigrationPolicy.BIDIRECTIONAL + ": both upgrade from classic group to consumer group and downgrade from consumer group to classic group are enabled, " +
-        ConsumerGroupMigrationPolicy.UPGRADE + ": only upgrade from classic group to consumer group is enabled, " +
-        ConsumerGroupMigrationPolicy.DOWNGRADE + ": only downgrade from consumer group to classic group is enabled, " +
-        ConsumerGroupMigrationPolicy.DISABLED + ": neither upgrade nor downgrade is enabled.";
+            "to the non-empty consumer group using the consumer group protocol and vice versa; " +
+            "conversions of empty groups in both directions are always enabled regardless of this policy. " +
+            ConsumerGroupMigrationPolicy.BIDIRECTIONAL + ": both upgrade from classic group to consumer group and downgrade from consumer group to classic group are enabled, " +
+            ConsumerGroupMigrationPolicy.UPGRADE + ": only upgrade from classic group to consumer group is enabled, " +
+            ConsumerGroupMigrationPolicy.DOWNGRADE + ": only downgrade from consumer group to classic group is enabled, " +
+            ConsumerGroupMigrationPolicy.DISABLED + ": neither upgrade nor downgrade is enabled.";
 
     public static final String CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG = "group.consumer.assignment.interval.ms";
     public static final String CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_DOC = "The interval between assignment updates for a consumer group.";
@@ -251,7 +250,7 @@ public class GroupCoordinatorConfig {
 
     public static final String CONSUMER_GROUP_REGEX_REFRESH_INTERVAL_MS_CONFIG = "group.consumer.regex.refresh.interval.ms";
     public static final String CONSUMER_GROUP_REGEX_REFRESH_INTERVAL_MS_DOC = "The interval at which the group coordinator will refresh " +
-        "the topics matching the group subscribed regexes. This is only applicable to consumer groups using the consumer group protocol. ";
+            "the topics matching the group subscribed regexes. This is only applicable to consumer groups using the consumer group protocol. ";
     public static final int CONSUMER_GROUP_REGEX_REFRESH_INTERVAL_MS_DEFAULT = 10 * 60 * 1000; // 10 minutes
 
     ///
@@ -288,8 +287,8 @@ public class GroupCoordinatorConfig {
     private static final ShareGroupPartitionAssignor SHARE_GROUP_BUILTIN_ASSIGNOR = new SimpleAssignor();
     public static final String SHARE_GROUP_ASSIGNORS_CONFIG = "group.share.assignors";
     public static final String SHARE_GROUP_ASSIGNORS_DOC = "The server-side assignors as a list of either names for built-in assignors or full class names for custom assignors. " +
-        "The list must contain only a single entry which is used by all groups. The supported built-in assignors are: " +
-        SHARE_GROUP_BUILTIN_ASSIGNOR.name() + ".";
+            "The list must contain only a single entry which is used by all groups. The supported built-in assignors are: " +
+            SHARE_GROUP_BUILTIN_ASSIGNOR.name() + ".";
     public static final String SHARE_GROUP_ASSIGNORS_DEFAULT = SHARE_GROUP_BUILTIN_ASSIGNOR.name();
 
     public static final String SHARE_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG = "group.share.assignment.interval.ms";
@@ -312,7 +311,7 @@ public class GroupCoordinatorConfig {
     // Because persister retries with exp backoff 5 times and upper cap of 30 secs.
     public static final int SHARE_GROUP_INITIALIZE_RETRY_INTERVAL_MS_DEFAULT = 30_000;
     public static final String SHARE_GROUP_INITIALIZE_RETRY_INTERVAL_MS_DOC = "Time elapsed before retrying initialize share group state request. " +
-        "If below offsets.commit.timeout.ms, then value of offsets.commit.timeout.ms is used.";
+            "If below offsets.commit.timeout.ms, then value of offsets.commit.timeout.ms is used.";
 
     ///
     /// DLQ configs (KIP-1191)
@@ -401,19 +400,19 @@ public class GroupCoordinatorConfig {
     public static final String STREAMS_GROUP_MAX_WARMUP_REPLICAS_DOC = "The maximum allowed value for the group-level configuration of " + GroupConfig.STREAMS_NUM_WARMUP_REPLICAS_CONFIG;
 
     public static final Set<String> RECONFIGURABLE_CONFIGS = Set.of(
-        CACHED_BUFFER_MAX_BYTES_CONFIG,
-        CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-        CONSUMER_GROUP_ASSIGNOR_OFFLOAD_ENABLE_CONFIG,
-        SHARE_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-        SHARE_GROUP_ASSIGNOR_OFFLOAD_ENABLE_CONFIG,
-        STREAMS_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-        STREAMS_GROUP_ASSIGNOR_OFFLOAD_ENABLE_CONFIG
+            CACHED_BUFFER_MAX_BYTES_CONFIG,
+            CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+            CONSUMER_GROUP_ASSIGNOR_OFFLOAD_ENABLE_CONFIG,
+            SHARE_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+            SHARE_GROUP_ASSIGNOR_OFFLOAD_ENABLE_CONFIG,
+            STREAMS_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
+            STREAMS_GROUP_ASSIGNOR_OFFLOAD_ENABLE_CONFIG
     );
-    
+
     public static final ConfigDef CONFIG_DEF = new ConfigDef()
         // Group coordinator configs
-        .define(GROUP_COORDINATOR_REBALANCE_PROTOCOLS_CONFIG, LIST, GROUP_COORDINATOR_REBALANCE_PROTOCOLS_DEFAULT, 
-            ConfigDef.ValidList.in(false, Group.GroupType.documentValidValues()), MEDIUM, GROUP_COORDINATOR_REBALANCE_PROTOCOLS_DOC)
+        .define(GROUP_COORDINATOR_REBALANCE_PROTOCOLS_CONFIG, LIST, GROUP_COORDINATOR_REBALANCE_PROTOCOLS_DEFAULT,
+                ConfigDef.ValidList.in(false, Group.GroupType.documentValidValues()), MEDIUM, GROUP_COORDINATOR_REBALANCE_PROTOCOLS_DOC)
         .define(GROUP_COORDINATOR_NUM_THREADS_CONFIG, INT, GROUP_COORDINATOR_NUM_THREADS_DEFAULT, atLeast(1), HIGH, GROUP_COORDINATOR_NUM_THREADS_DOC)
         .define(GROUP_COORDINATOR_NUM_BACKGROUND_THREADS_CONFIG, INT, GROUP_COORDINATOR_NUM_BACKGROUND_THREADS_DEFAULT, atLeast(1), HIGH, GROUP_COORDINATOR_NUM_BACKGROUND_THREADS_DOC)
         .define(GROUP_COORDINATOR_APPEND_LINGER_MS_CONFIG, INT, GROUP_COORDINATOR_APPEND_LINGER_MS_DEFAULT, atLeast(-1), MEDIUM, GROUP_COORDINATOR_APPEND_LINGER_MS_DOC)
@@ -493,7 +492,6 @@ public class GroupCoordinatorConfig {
         .define(STREAMS_GROUP_MIN_TASK_OFFSET_INTERVAL_MS_CONFIG, INT, STREAMS_GROUP_MIN_TASK_OFFSET_INTERVAL_MS_DEFAULT, atLeast(1), MEDIUM, STREAMS_GROUP_MIN_TASK_OFFSET_INTERVAL_MS_DOC)
         .define(STREAMS_GROUP_NUM_WARMUP_REPLICAS_CONFIG, INT, STREAMS_GROUP_NUM_WARMUP_REPLICAS_DEFAULT, atLeast(0), MEDIUM, STREAMS_GROUP_NUM_WARMUP_REPLICAS_DOC)
         .define(STREAMS_GROUP_MAX_WARMUP_REPLICAS_CONFIG, INT, STREAMS_GROUP_MAX_WARMUP_REPLICAS_DEFAULT, atLeast(0), MEDIUM, STREAMS_GROUP_MAX_WARMUP_REPLICAS_DOC);
-
 
     /**
      * The timeout used to wait for a new member in milliseconds.
@@ -655,83 +653,81 @@ public class GroupCoordinatorConfig {
         require(consumerGroupAssignmentIntervalMs() <= consumerGroupMaxAssignmentIntervalMs,
                 String.format("%s must be less than or equal to %s", CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, CONSUMER_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_CONFIG));
 
-
         // Share group configs validation.
         require(shareGroupMaxHeartbeatIntervalMs >= shareGroupMinHeartbeatIntervalMs,
-            String.format("%s must be greater than or equal to %s",
-                SHARE_GROUP_MAX_HEARTBEAT_INTERVAL_MS_CONFIG, SHARE_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG));
+                String.format("%s must be greater than or equal to %s",
+                        SHARE_GROUP_MAX_HEARTBEAT_INTERVAL_MS_CONFIG, SHARE_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG));
         require(shareGroupHeartbeatIntervalMs >= shareGroupMinHeartbeatIntervalMs,
-            String.format("%s must be greater than or equal to %s",
-                SHARE_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, SHARE_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG));
+                String.format("%s must be greater than or equal to %s",
+                        SHARE_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, SHARE_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG));
         require(shareGroupHeartbeatIntervalMs <= shareGroupMaxHeartbeatIntervalMs,
-            String.format("%s must be less than or equal to %s",
-                SHARE_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, SHARE_GROUP_MAX_HEARTBEAT_INTERVAL_MS_CONFIG));
+                String.format("%s must be less than or equal to %s",
+                        SHARE_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, SHARE_GROUP_MAX_HEARTBEAT_INTERVAL_MS_CONFIG));
 
         require(shareGroupMaxSessionTimeoutMs >= shareGroupMinSessionTimeoutMs,
-            String.format("%s must be greater than or equal to %s",
-                SHARE_GROUP_MAX_SESSION_TIMEOUT_MS_CONFIG, SHARE_GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG));
+                String.format("%s must be greater than or equal to %s",
+                        SHARE_GROUP_MAX_SESSION_TIMEOUT_MS_CONFIG, SHARE_GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG));
         require(shareGroupSessionTimeoutMs >= shareGroupMinSessionTimeoutMs,
-            String.format("%s must be greater than or equal to %s",
-                SHARE_GROUP_SESSION_TIMEOUT_MS_CONFIG, SHARE_GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG));
+                String.format("%s must be greater than or equal to %s",
+                        SHARE_GROUP_SESSION_TIMEOUT_MS_CONFIG, SHARE_GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG));
         require(shareGroupSessionTimeoutMs <= shareGroupMaxSessionTimeoutMs,
-            String.format("%s must be less than or equal to %s",
-                SHARE_GROUP_SESSION_TIMEOUT_MS_CONFIG, SHARE_GROUP_MAX_SESSION_TIMEOUT_MS_CONFIG));
+                String.format("%s must be less than or equal to %s",
+                        SHARE_GROUP_SESSION_TIMEOUT_MS_CONFIG, SHARE_GROUP_MAX_SESSION_TIMEOUT_MS_CONFIG));
 
         require(shareGroupHeartbeatIntervalMs < shareGroupSessionTimeoutMs,
-            String.format("%s must be less than %s",
-                SHARE_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, SHARE_GROUP_SESSION_TIMEOUT_MS_CONFIG));
+                String.format("%s must be less than %s",
+                        SHARE_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, SHARE_GROUP_SESSION_TIMEOUT_MS_CONFIG));
         require(shareGroupAssignors.size() == 1,
-            String.format("%s must contain exactly one assignor, but found %d", SHARE_GROUP_ASSIGNORS_CONFIG, shareGroupAssignors.size()));
+                String.format("%s must contain exactly one assignor, but found %d", SHARE_GROUP_ASSIGNORS_CONFIG, shareGroupAssignors.size()));
 
         require(shareGroupMaxAssignmentIntervalMs >= shareGroupMinAssignmentIntervalMs,
-            String.format("%s must be greater than or equal to %s",
-                SHARE_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_CONFIG, SHARE_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG));
+                String.format("%s must be greater than or equal to %s",
+                        SHARE_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_CONFIG, SHARE_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG));
         require(shareGroupAssignmentIntervalMs() >= shareGroupMinAssignmentIntervalMs,
-            String.format("%s must be greater than or equal to %s",
-                SHARE_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, SHARE_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG));
+                String.format("%s must be greater than or equal to %s",
+                        SHARE_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, SHARE_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG));
         require(shareGroupAssignmentIntervalMs() <= shareGroupMaxAssignmentIntervalMs,
-            String.format("%s must be less than or equal to %s",
-                SHARE_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, SHARE_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_CONFIG));
-
+                String.format("%s must be less than or equal to %s",
+                        SHARE_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, SHARE_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_CONFIG));
 
         // Streams group configs validation.
         require(streamsGroupMaxHeartbeatIntervalMs >= streamsGroupMinHeartbeatIntervalMs,
-            String.format("%s must be greater than or equal to %s",
-                STREAMS_GROUP_MAX_HEARTBEAT_INTERVAL_MS_CONFIG, STREAMS_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG));
+                String.format("%s must be greater than or equal to %s",
+                        STREAMS_GROUP_MAX_HEARTBEAT_INTERVAL_MS_CONFIG, STREAMS_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG));
         require(streamsGroupHeartbeatIntervalMs >= streamsGroupMinHeartbeatIntervalMs,
-            String.format("%s must be greater than or equal to %s",
-                STREAMS_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, STREAMS_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG));
+                String.format("%s must be greater than or equal to %s",
+                        STREAMS_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, STREAMS_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG));
         require(streamsGroupHeartbeatIntervalMs <= streamsGroupMaxHeartbeatIntervalMs,
-            String.format("%s must be less than or equal to %s",
-                STREAMS_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, STREAMS_GROUP_MAX_HEARTBEAT_INTERVAL_MS_CONFIG));
+                String.format("%s must be less than or equal to %s",
+                        STREAMS_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, STREAMS_GROUP_MAX_HEARTBEAT_INTERVAL_MS_CONFIG));
 
         require(streamsGroupMaxSessionTimeoutMs >= streamsGroupMinSessionTimeoutMs,
-            String.format("%s must be greater than or equal to %s", STREAMS_GROUP_MAX_SESSION_TIMEOUT_MS_CONFIG, STREAMS_GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG));
+                String.format("%s must be greater than or equal to %s", STREAMS_GROUP_MAX_SESSION_TIMEOUT_MS_CONFIG, STREAMS_GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG));
         require(streamsGroupSessionTimeoutMs >= streamsGroupMinSessionTimeoutMs,
-            String.format("%s must be greater than or equal to %s", STREAMS_GROUP_SESSION_TIMEOUT_MS_CONFIG, STREAMS_GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG));
+                String.format("%s must be greater than or equal to %s", STREAMS_GROUP_SESSION_TIMEOUT_MS_CONFIG, STREAMS_GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG));
         require(streamsGroupSessionTimeoutMs <= streamsGroupMaxSessionTimeoutMs,
-            String.format("%s must be less than or equal to %s", STREAMS_GROUP_SESSION_TIMEOUT_MS_CONFIG, STREAMS_GROUP_MAX_SESSION_TIMEOUT_MS_CONFIG));
+                String.format("%s must be less than or equal to %s", STREAMS_GROUP_SESSION_TIMEOUT_MS_CONFIG, STREAMS_GROUP_MAX_SESSION_TIMEOUT_MS_CONFIG));
 
         require(streamsGroupHeartbeatIntervalMs < streamsGroupSessionTimeoutMs,
-            String.format("%s must be less than %s",
-                STREAMS_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, STREAMS_GROUP_SESSION_TIMEOUT_MS_CONFIG));
+                String.format("%s must be less than %s",
+                        STREAMS_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, STREAMS_GROUP_SESSION_TIMEOUT_MS_CONFIG));
 
         require(streamsGroupMaxAssignmentIntervalMs >= streamsGroupMinAssignmentIntervalMs,
-            String.format("%s must be greater than or equal to %s",
-                STREAMS_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_CONFIG, STREAMS_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG));
+                String.format("%s must be greater than or equal to %s",
+                        STREAMS_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_CONFIG, STREAMS_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG));
         require(streamsGroupAssignmentIntervalMs() >= streamsGroupMinAssignmentIntervalMs,
-            String.format("%s must be greater than or equal to %s",
-                STREAMS_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, STREAMS_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG));
+                String.format("%s must be greater than or equal to %s",
+                        STREAMS_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, STREAMS_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG));
         require(streamsGroupAssignmentIntervalMs() <= streamsGroupMaxAssignmentIntervalMs,
-            String.format("%s must be less than or equal to %s",
-                STREAMS_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, STREAMS_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_CONFIG));
+                String.format("%s must be less than or equal to %s",
+                        STREAMS_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, STREAMS_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_CONFIG));
 
         require(streamsGroupNumStandbyReplicas <= streamsGroupMaxStandbyReplicas,
-            String.format("%s must be less than or equal to %s", STREAMS_GROUP_NUM_STANDBY_REPLICAS_CONFIG, STREAMS_GROUP_MAX_STANDBY_REPLICAS_CONFIG));
+                String.format("%s must be less than or equal to %s", STREAMS_GROUP_NUM_STANDBY_REPLICAS_CONFIG, STREAMS_GROUP_MAX_STANDBY_REPLICAS_CONFIG));
         require(streamsGroupTaskOffsetIntervalMs >= streamsGroupMinTaskOffsetIntervalMs,
-            String.format("%s must be greater than or equal to %s", STREAMS_GROUP_TASK_OFFSET_INTERVAL_MS_CONFIG, STREAMS_GROUP_MIN_TASK_OFFSET_INTERVAL_MS_CONFIG));
+                String.format("%s must be greater than or equal to %s", STREAMS_GROUP_TASK_OFFSET_INTERVAL_MS_CONFIG, STREAMS_GROUP_MIN_TASK_OFFSET_INTERVAL_MS_CONFIG));
         require(streamsGroupNumWarmupReplicas <= streamsGroupMaxWarmupReplicas,
-            String.format("%s must be less than or equal to %s", STREAMS_GROUP_NUM_WARMUP_REPLICAS_CONFIG, STREAMS_GROUP_MAX_WARMUP_REPLICAS_CONFIG));
+                String.format("%s must be less than or equal to %s", STREAMS_GROUP_NUM_WARMUP_REPLICAS_CONFIG, STREAMS_GROUP_MAX_WARMUP_REPLICAS_CONFIG));
 
     }
 
@@ -744,19 +740,19 @@ public class GroupCoordinatorConfig {
     public static void clampDynamicConfigs(Map<String, String> props) {
         // Parse configs but do not validate mins and maxes.
         AbstractConfig groupCoordinatorConfig = new AbstractConfig(
-            GroupCoordinatorConfig.CONFIG_DEF,
-            props
+                GroupCoordinatorConfig.CONFIG_DEF,
+                props
         );
 
         clampDynamicIntConfig(props, CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-            groupCoordinatorConfig.getInt(CONSUMER_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG),
-            groupCoordinatorConfig.getInt(CONSUMER_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_CONFIG));
+                groupCoordinatorConfig.getInt(CONSUMER_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG),
+                groupCoordinatorConfig.getInt(CONSUMER_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_CONFIG));
         clampDynamicIntConfig(props, SHARE_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-            groupCoordinatorConfig.getInt(SHARE_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG),
-            groupCoordinatorConfig.getInt(SHARE_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_CONFIG));
+                groupCoordinatorConfig.getInt(SHARE_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG),
+                groupCoordinatorConfig.getInt(SHARE_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_CONFIG));
         clampDynamicIntConfig(props, STREAMS_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG,
-            groupCoordinatorConfig.getInt(STREAMS_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG),
-            groupCoordinatorConfig.getInt(STREAMS_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_CONFIG));
+                groupCoordinatorConfig.getInt(STREAMS_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG),
+                groupCoordinatorConfig.getInt(STREAMS_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_CONFIG));
     }
 
     /**
@@ -781,12 +777,12 @@ public class GroupCoordinatorConfig {
         if (value < min) {
             LOG.warn("The config '{}' has value {} which is below the " +
                     "allowed minimum {}. The effective value will be capped to {}.",
-                key, value, min, min);
+                    key, value, min, min);
             props.put(key, String.valueOf(min));
         } else if (value > max) {
             LOG.warn("The config '{}' has value {} which exceeds the " +
                     "allowed maximum {}. The effective value will be capped to {}.",
-                key, value, max, max);
+                    key, value, max, max);
             props.put(key, String.valueOf(max));
         }
     }
@@ -795,10 +791,10 @@ public class GroupCoordinatorConfig {
         Map<?, ?> props
     ) {
         return new GroupCoordinatorConfig(
-            new AbstractConfig(
-                GroupCoordinatorConfig.CONFIG_DEF,
-                props
-            )
+                new AbstractConfig(
+                        GroupCoordinatorConfig.CONFIG_DEF,
+                        props
+                )
         );
     }
 

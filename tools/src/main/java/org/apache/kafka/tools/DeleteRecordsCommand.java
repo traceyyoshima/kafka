@@ -130,7 +130,7 @@ public class DeleteRecordsCommand {
             StringJoiner duplicates = new StringJoiner(",");
             duplicatePartitions.forEach(tp -> duplicates.add(tp.toString()));
             throw new AdminCommandFailedException(
-                String.format("Offset json file contains duplicate topic partitions: %s", duplicates)
+                    String.format("Offset json file contains duplicate topic partitions: %s", duplicates)
             );
         }
 
@@ -154,8 +154,8 @@ public class DeleteRecordsCommand {
 
     private static Admin createAdminClient(DeleteRecordsCommandOptions opts) throws IOException {
         Properties props = opts.options.has(opts.commandConfigOpt)
-            ? Utils.loadProps(opts.options.valueOf(opts.commandConfigOpt))
-            : new Properties();
+                ? Utils.loadProps(opts.options.valueOf(opts.commandConfigOpt))
+                : new Properties();
         props.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, opts.options.valueOf(opts.bootstrapServerOpt));
         return Admin.create(props);
     }

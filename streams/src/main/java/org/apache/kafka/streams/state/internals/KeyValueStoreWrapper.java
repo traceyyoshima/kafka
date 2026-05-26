@@ -83,7 +83,7 @@ public class KeyValueStoreWrapper<K, V> implements StateStore {
             store = context.getStateStore(storeName);
             final String storeType = store == null ? "null" : store.getClass().getName();
             throw new InvalidStateStoreException("KTable source state store must implement either "
-                + "TimestampedKeyValueStoreWithHeaders, or VersionedKeyValueStore. Got: " + storeType);
+                    + "TimestampedKeyValueStoreWithHeaders, or VersionedKeyValueStore. Got: " + storeType);
         }
     }
 
@@ -94,8 +94,8 @@ public class KeyValueStoreWrapper<K, V> implements StateStore {
         if (versionedStore != null) {
             final VersionedRecord<V> versionedRecord = versionedStore.get(key);
             return versionedRecord == null
-                ? null
-                : ValueTimestampHeaders.make(versionedRecord.value(), versionedRecord.timestamp(), new RecordHeaders());
+                    ? null
+                    : ValueTimestampHeaders.make(versionedRecord.value(), versionedRecord.timestamp(), new RecordHeaders());
         }
         throw new IllegalStateException("KeyValueStoreWrapper must be initialized with either headers or versioned store");
     }

@@ -47,7 +47,6 @@ public class BuiltInPartitioner {
     private volatile PartitionLoadStatsHolder partitionLoadStatsHolder = null;
     private final AtomicReference<StickyPartitionInfo> stickyPartitionInfo = new AtomicReference<>();
 
-
     /**
      * BuiltInPartitioner constructor.
      *
@@ -245,7 +244,7 @@ public class BuiltInPartitioner {
         // between stickyBatchSize and stickyBatchSize * 2 bytes, to better align with batch boundary.
         if (producedBytes >= stickyBatchSize * 2) {
             log.trace("Produced {} bytes, exceeding twice the batch size of {} bytes, with switching set to {}",
-                producedBytes, stickyBatchSize, enableSwitch);
+                    producedBytes, stickyBatchSize, enableSwitch);
         }
 
         if (producedBytes >= stickyBatchSize && enableSwitch || producedBytes >= stickyBatchSize * 2) {
@@ -337,8 +336,8 @@ public class BuiltInPartitioner {
         log.trace("Partition load stats for topic {}: CFT={}, IDs={}, length={}",
                 topic, queueSizes, partitionIds, length);
         partitionLoadStatsHolder = new PartitionLoadStatsHolder(
-            new PartitionLoadStats(queueSizes, partitionIds, length),
-            partitionLoadStatsInThisRack
+                new PartitionLoadStats(queueSizes, partitionIds, length),
+                partitionLoadStatsInThisRack
         );
     }
 

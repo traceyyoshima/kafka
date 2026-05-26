@@ -57,10 +57,10 @@ public class VersionedKeyValueStoreBuilderTest {
         when(supplier.metricsScope()).thenReturn(METRICS_SCOPE);
 
         builder = new VersionedKeyValueStoreBuilder<>(
-            supplier,
-            Serdes.String(),
-            Serdes.String(),
-            new MockTime()
+                supplier,
+                Serdes.String(),
+                Serdes.String(),
+                new MockTime()
         );
     }
 

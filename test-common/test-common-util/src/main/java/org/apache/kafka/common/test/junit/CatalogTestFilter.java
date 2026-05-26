@@ -144,9 +144,9 @@ public class CatalogTestFilter implements Filter<TestDescriptor> {
         @Override
         public String toString() {
             return "TestAndMethod{" +
-                "testClass='" + testClass + '\'' +
-                ", testMethod='" + testMethod + '\'' +
-                '}';
+                    "testClass='" + testClass + '\'' +
+                    ", testMethod='" + testMethod + '\'' +
+                    '}';
         }
     }
 }

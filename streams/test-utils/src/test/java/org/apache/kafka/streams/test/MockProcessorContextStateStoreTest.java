@@ -60,9 +60,9 @@ public class MockProcessorContextStateStoreTest {
             for (final Boolean caching : booleans) {
                 for (final Boolean logging : booleans) {
                     final List<KeyValueBytesStoreSupplier> keyValueBytesStoreSuppliers = asList(
-                        Stores.inMemoryKeyValueStore("kv" + timestamped + caching + logging),
-                        Stores.persistentKeyValueStore("kv" + timestamped + caching + logging),
-                        Stores.persistentTimestampedKeyValueStore("kv" + timestamped + caching + logging)
+                            Stores.inMemoryKeyValueStore("kv" + timestamped + caching + logging),
+                            Stores.persistentKeyValueStore("kv" + timestamped + caching + logging),
+                            Stores.persistentTimestampedKeyValueStore("kv" + timestamped + caching + logging)
                     );
                     for (final KeyValueBytesStoreSupplier supplier : keyValueBytesStoreSuppliers) {
                         final StoreBuilder<? extends KeyValueStore<String, ?>> builder;
@@ -92,9 +92,9 @@ public class MockProcessorContextStateStoreTest {
             for (final Boolean caching : booleans) {
                 for (final Boolean logging : booleans) {
                     final List<WindowBytesStoreSupplier> windowBytesStoreSuppliers = asList(
-                        Stores.inMemoryWindowStore("w" + timestamped + caching + logging, Duration.ofSeconds(1), Duration.ofSeconds(1), false),
-                        Stores.persistentWindowStore("w" + timestamped + caching + logging, Duration.ofSeconds(1), Duration.ofSeconds(1), false),
-                        Stores.persistentTimestampedWindowStore("w" + timestamped + caching + logging, Duration.ofSeconds(1), Duration.ofSeconds(1), false)
+                            Stores.inMemoryWindowStore("w" + timestamped + caching + logging, Duration.ofSeconds(1), Duration.ofSeconds(1), false),
+                            Stores.persistentWindowStore("w" + timestamped + caching + logging, Duration.ofSeconds(1), Duration.ofSeconds(1), false),
+                            Stores.persistentTimestampedWindowStore("w" + timestamped + caching + logging, Duration.ofSeconds(1), Duration.ofSeconds(1), false)
                     );
 
                     for (final WindowBytesStoreSupplier supplier : windowBytesStoreSuppliers) {
@@ -124,13 +124,13 @@ public class MockProcessorContextStateStoreTest {
         for (final Boolean caching : booleans) {
             for (final Boolean logging : booleans) {
                 final List<SessionBytesStoreSupplier> sessionBytesStoreSuppliers = asList(
-                    Stores.inMemorySessionStore("s" + caching + logging, Duration.ofSeconds(1)),
-                    Stores.persistentSessionStore("s" + caching + logging, Duration.ofSeconds(1))
+                        Stores.inMemorySessionStore("s" + caching + logging, Duration.ofSeconds(1)),
+                        Stores.persistentSessionStore("s" + caching + logging, Duration.ofSeconds(1))
                 );
 
                 for (final SessionBytesStoreSupplier supplier : sessionBytesStoreSuppliers) {
                     final StoreBuilder<? extends SessionStore<String, ?>> builder =
-                        Stores.sessionStoreBuilder(supplier, Serdes.String(), Serdes.Long());
+                            Stores.sessionStoreBuilder(supplier, Serdes.String(), Serdes.Long());
                     if (caching) {
                         builder.withCachingEnabled();
                     } else {
@@ -161,12 +161,12 @@ public class MockProcessorContextStateStoreTest {
         final File stateDir = TestUtils.tempDirectory();
         try {
             final MockProcessorContext<Void, Void> context = new MockProcessorContext<>(
-                mkProperties(mkMap(
-                    mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, ""),
-                    mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "mock-localhost:9092")
-                )),
-                new TaskId(0, 0),
-                stateDir
+                    mkProperties(mkMap(
+                        mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, ""),
+                        mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "mock-localhost:9092")
+                    )),
+                    new TaskId(0, 0),
+                    stateDir
             );
             final StateStore store = builder.build();
             store.init(context.getStateStoreContext(), store);

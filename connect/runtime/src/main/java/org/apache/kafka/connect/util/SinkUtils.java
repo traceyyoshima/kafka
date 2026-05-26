@@ -47,7 +47,7 @@ public final class SinkUtils {
             partition.put(KAFKA_TOPIC_KEY, topicPartitionOffset.getKey().topic());
             partition.put(KAFKA_PARTITION_KEY, topicPartitionOffset.getKey().partition());
             connectorOffsets.add(new ConnectorOffset(partition,
-                   Map.of(KAFKA_OFFSET_KEY, topicPartitionOffset.getValue().offset())));
+                    Map.of(KAFKA_OFFSET_KEY, topicPartitionOffset.getValue().offset())));
         }
 
         return new ConnectorOffsets(connectorOffsets);

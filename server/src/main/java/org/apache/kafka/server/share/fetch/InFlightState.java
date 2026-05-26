@@ -272,10 +272,10 @@ public class InFlightState {
     @Override
     public String toString() {
         return "InFlightState(" +
-            "state=" + state.toString() +
-            ", deliveryCount=" + deliveryCount +
-            ", memberId=" + memberId +
-            ")";
+                "state=" + state.toString() +
+                ", deliveryCount=" + deliveryCount +
+                ", memberId=" + memberId +
+                ")";
     }
 
   /**

@@ -315,7 +315,6 @@ public interface Herder {
      */
     String kafkaClusterId();
 
-
     /**
      * Returns the configuration of a plugin
      * @param pluginName the name of the plugin

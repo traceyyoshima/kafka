@@ -63,7 +63,7 @@ public class DeleteTopicsResponse extends AbstractResponse {
     public Map<Errors, Integer> errorCounts() {
         Map<Errors, Integer> counts = new EnumMap<>(Errors.class);
         data.responses().forEach(result ->
-            updateErrorCounts(counts, Errors.forCode(result.errorCode()))
+                updateErrorCounts(counts, Errors.forCode(result.errorCode()))
         );
         return counts;
     }

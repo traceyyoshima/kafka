@@ -497,7 +497,7 @@ public class KafkaChannel implements AutoCloseable {
     public String toString() {
         return super.toString() + " id=" + id;
     }
-    
+
     /**
      * Return the number of times this instance has successfully authenticated. This
      * value can only exceed 1 when re-authentication is enabled and it has
@@ -595,7 +595,7 @@ public class KafkaChannel implements AutoCloseable {
      *             if this channel is not "ready"
      */
     public boolean maybeBeginClientReauthentication(Supplier<Long> nowNanosSupplier)
-            throws AuthenticationException, IOException {
+        throws AuthenticationException, IOException {
         if (!ready())
             throw new IllegalStateException(
                     "KafkaChannel should always be \"ready\" when it is checked for possible re-authentication");
@@ -613,7 +613,7 @@ public class KafkaChannel implements AutoCloseable {
         receive = null;
         return true;
     }
-    
+
     /**
      * Return the number of milliseconds that elapsed while re-authenticating this
      * session from the perspective of this instance, if applicable, otherwise null.
@@ -642,7 +642,7 @@ public class KafkaChannel implements AutoCloseable {
         Long serverSessionExpirationTimeNanos = authenticator.serverSessionExpirationTimeNanos();
         return serverSessionExpirationTimeNanos != null && nowNanos - serverSessionExpirationTimeNanos > 0;
     }
-    
+
     /**
      * Return the (always non-null but possibly empty) client-side
      * {@link NetworkReceive} response that arrived during re-authentication but
@@ -658,7 +658,7 @@ public class KafkaChannel implements AutoCloseable {
     public Optional<NetworkReceive> pollResponseReceivedDuringReauthentication() {
         return authenticator.pollResponseReceivedDuringReauthentication();
     }
-    
+
     /**
      * Return true if this is a server-side channel and the connected client has
      * indicated that it supports re-authentication, otherwise false
@@ -671,7 +671,7 @@ public class KafkaChannel implements AutoCloseable {
     }
 
     private void swapAuthenticatorsAndBeginReauthentication(ReauthenticationContext reauthenticationContext)
-            throws IOException {
+        throws IOException {
         // it is up to the new authenticator to close the old one
         // replace with a new one and begin the process of re-authenticating
         authenticator = authenticatorCreator.get();
@@ -681,7 +681,6 @@ public class KafkaChannel implements AutoCloseable {
     public ChannelMetadataRegistry channelMetadataRegistry() {
         return metadataRegistry;
     }
-
 
     /**
      * Maybe add write interest after re-authentication. This is to ensure that any pending write operation

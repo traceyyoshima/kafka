@@ -106,10 +106,10 @@ public class AssignorBenchmarkUtils {
 
         for (String topicName : allTopicNames) {
             AssignorBenchmarkUtils.addTopic(
-                delta,
-                Uuid.randomUuid(),
-                topicName,
-                partitionsPerTopic
+                    delta,
+                    Uuid.randomUuid(),
+                    topicName,
+                    partitionsPerTopic
             );
         }
 
@@ -136,17 +136,17 @@ public class AssignorBenchmarkUtils {
             ConsumerGroupMember member = memberEntry.getValue();
 
             memberSpecs.put(memberId, new MemberSubscriptionAndAssignmentImpl(
-                Optional.ofNullable(member.rackId()),
-                Optional.ofNullable(member.instanceId()),
-                new TopicIds(member.subscribedTopicNames(), topicResolver),
-                new Assignment(Utils.toAssignmentWithoutEpochs(member.assignedPartitions()))
+                    Optional.ofNullable(member.rackId()),
+                    Optional.ofNullable(member.instanceId()),
+                    new TopicIds(member.subscribedTopicNames(), topicResolver),
+                    new Assignment(Utils.toAssignmentWithoutEpochs(member.assignedPartitions()))
             ));
         }
 
         return new GroupSpecImpl(
-            memberSpecs,
-            subscriptionType,
-            Map.of()
+                memberSpecs,
+                subscriptionType,
+                Map.of()
         );
     }
 
@@ -170,17 +170,17 @@ public class AssignorBenchmarkUtils {
             ShareGroupMember member = memberEntry.getValue();
 
             memberSpecs.put(memberId, new MemberSubscriptionAndAssignmentImpl(
-                Optional.ofNullable(member.rackId()),
-                Optional.empty(),
-                new TopicIds(member.subscribedTopicNames(), topicResolver),
-                new Assignment(member.assignedPartitions())
+                    Optional.ofNullable(member.rackId()),
+                    Optional.empty(),
+                    new TopicIds(member.subscribedTopicNames(), topicResolver),
+                    new Assignment(member.assignedPartitions())
             ));
         }
 
         return new GroupSpecImpl(
-            memberSpecs,
-            subscriptionType,
-            Map.of()
+                memberSpecs,
+                subscriptionType,
+                Map.of()
         );
     }
 

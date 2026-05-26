@@ -158,7 +158,7 @@ public class StandaloneWorkerIntegrationTest {
                     List.of(),
                     invalidAffectedLoggers,
                     "No loggers outside the namespace '" + namespace
-                            + "' should have been included in the response for a request to modify that namespace"
+                    + "' should have been included in the response for a request to modify that namespace"
             );
         }
 
@@ -171,7 +171,7 @@ public class StandaloneWorkerIntegrationTest {
         assertTrue(
                 loggerLevel.lastModified() >= requestTime,
                 "Last-modified timestamp for logger level is " + loggerLevel.lastModified()
-                        + ", which is before " + requestTime + ", the most-recent time the level was adjusted"
+                + ", which is before " + requestTime + ", the most-recent time the level was adjusted"
         );
 
         // Verify information for all listed loggers
@@ -182,17 +182,17 @@ public class StandaloneWorkerIntegrationTest {
                 newLevels,
                 e -> hasNamespace(e, namespace)
                         && (!level(e).equals(level)
-                            || (isModified(e) && lastModified(e) < requestTime)
+                        || (isModified(e) && lastModified(e) < requestTime)
                         )
         );
         assertEquals(
                 Map.of(),
                 invalidAffectedLoggerLevels,
                 "At least one logger in the affected namespace '" + namespace
-                        + "' does not have the expected level of '" + level
-                        + "', has a null last-modified timestamp, or has a last-modified timestamp "
-                        + "that is less recent than " + requestTime
-                        + ", which is when the namespace was last adjusted"
+                + "' does not have the expected level of '" + level
+                + "', has a null last-modified timestamp, or has a last-modified timestamp "
+                + "that is less recent than " + requestTime
+                + ", which is when the namespace was last adjusted"
         );
 
         Set<String> droppedLoggers = Utils.diff(HashSet::new, initialLevels.keySet(), newLevels.keySet());
@@ -200,9 +200,9 @@ public class StandaloneWorkerIntegrationTest {
                 Set.of(),
                 droppedLoggers,
                 "At least one logger was present in the listing of all loggers "
-                        + "before the logging level for namespace '" + namespace
-                        + "' was set to '" + level
-                        + "' that is no longer present"
+                + "before the logging level for namespace '" + namespace
+                + "' was set to '" + level
+                + "' that is no longer present"
         );
 
         Map<String, LoggerLevel> invalidUnaffectedLoggerLevels = Utils.filterMap(
@@ -213,9 +213,9 @@ public class StandaloneWorkerIntegrationTest {
                 Map.of(),
                 invalidUnaffectedLoggerLevels,
                 "At least one logger outside of the affected namespace '" + namespace
-                        + "' has a different logging level or last-modified timestamp than it did "
-                        + "before the namespace was set to level '" + level
-                        + "'; none of these loggers should have been affected"
+                + "' has a different logging level or last-modified timestamp than it did "
+                + "before the namespace was set to level '" + level
+                + "'; none of these loggers should have been affected"
         );
 
         return newLevels;
@@ -243,16 +243,16 @@ public class StandaloneWorkerIntegrationTest {
         connect.start();
 
         CreateConnectorRequest createConnectorRequest = new CreateConnectorRequest(
-            CONNECTOR_NAME,
-            defaultSourceConnectorProps(TOPIC_NAME),
-            CreateConnectorRequest.InitialState.STOPPED
+                CONNECTOR_NAME,
+                defaultSourceConnectorProps(TOPIC_NAME),
+                CreateConnectorRequest.InitialState.STOPPED
         );
         connect.configureConnector(createConnectorRequest);
 
         // Verify that the connector's status is STOPPED and also that no tasks were spawned for the connector
         connect.assertions().assertConnectorIsStopped(
-            CONNECTOR_NAME,
-            "Connector was not created in a stopped state"
+                CONNECTOR_NAME,
+                "Connector was not created in a stopped state"
         );
         assertEquals(List.of(), connect.connectorInfo(CONNECTOR_NAME).tasks());
         assertEquals(List.of(), connect.taskConfigs(CONNECTOR_NAME));
@@ -260,9 +260,9 @@ public class StandaloneWorkerIntegrationTest {
         // Verify that a connector created in the STOPPED state can be resumed successfully
         connect.resumeConnector(CONNECTOR_NAME);
         connect.assertions().assertConnectorAndExactlyNumTasksAreRunning(
-            CONNECTOR_NAME,
-            NUM_TASKS,
-            "Connector or tasks did not start running healthily in time"
+                CONNECTOR_NAME,
+                NUM_TASKS,
+                "Connector or tasks did not start running healthily in time"
         );
     }
 

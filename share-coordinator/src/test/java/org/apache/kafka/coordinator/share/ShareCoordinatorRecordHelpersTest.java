@@ -40,28 +40,10 @@ public class ShareCoordinatorRecordHelpersTest {
         int partitionId = 1;
         PersisterStateBatch batch = new PersisterStateBatch(1L, 10L, (byte) 0, (short) 1);
         CoordinatorRecord record = ShareCoordinatorRecordHelpers.newShareSnapshotRecord(
-            groupId,
-            topicId,
-            partitionId,
-            new ShareGroupOffset.Builder()
-                .setSnapshotEpoch(0)
-                .setStateEpoch(1)
-                .setLeaderEpoch(5)
-                .setStartOffset(0)
-                .setDeliveryCompleteCount(10)
-                .setCreateTimestamp(timestamp)
-                .setWriteTimestamp(timestamp)
-                .setStateBatches(List.of(batch))
-                .build()
-        );
-
-        CoordinatorRecord expectedRecord = CoordinatorRecord.record(
-            new ShareSnapshotKey()
-                .setGroupId(groupId)
-                .setTopicId(topicId)
-                .setPartition(partitionId),
-            new ApiMessageAndVersion(
-                new ShareSnapshotValue()
+                groupId,
+                topicId,
+                partitionId,
+                new ShareGroupOffset.Builder()
                     .setSnapshotEpoch(0)
                     .setStateEpoch(1)
                     .setLeaderEpoch(5)
@@ -69,13 +51,31 @@ public class ShareCoordinatorRecordHelpersTest {
                     .setDeliveryCompleteCount(10)
                     .setCreateTimestamp(timestamp)
                     .setWriteTimestamp(timestamp)
-                    .setStateBatches(List.of(
-                        new ShareSnapshotValue.StateBatch()
-                            .setFirstOffset(1L)
-                            .setLastOffset(10L)
-                            .setDeliveryState((byte) 0)
-                            .setDeliveryCount((short) 1))),
-                (short) 0));
+                    .setStateBatches(List.of(batch))
+                    .build()
+        );
+
+        CoordinatorRecord expectedRecord = CoordinatorRecord.record(
+                new ShareSnapshotKey()
+                    .setGroupId(groupId)
+                    .setTopicId(topicId)
+                    .setPartition(partitionId),
+                new ApiMessageAndVersion(
+                        new ShareSnapshotValue()
+                            .setSnapshotEpoch(0)
+                            .setStateEpoch(1)
+                            .setLeaderEpoch(5)
+                            .setStartOffset(0)
+                            .setDeliveryCompleteCount(10)
+                            .setCreateTimestamp(timestamp)
+                            .setWriteTimestamp(timestamp)
+                            .setStateBatches(List.of(
+                            new ShareSnapshotValue.StateBatch()
+                                .setFirstOffset(1L)
+                                .setLastOffset(10L)
+                                .setDeliveryState((byte) 0)
+                                .setDeliveryCount((short) 1))),
+                        (short) 0));
 
         assertEquals(expectedRecord, record);
     }
@@ -87,37 +87,37 @@ public class ShareCoordinatorRecordHelpersTest {
         int partitionId = 1;
         PersisterStateBatch batch = new PersisterStateBatch(1L, 10L, (byte) 0, (short) 1);
         CoordinatorRecord record = ShareCoordinatorRecordHelpers.newShareUpdateRecord(
-            groupId,
-            topicId,
-            partitionId,
-            new ShareGroupOffset.Builder()
-                .setSnapshotEpoch(0)
-                .setStateEpoch(-1)  // ignored for share update
-                .setLeaderEpoch(5)
-                .setStartOffset(0)
-                .setDeliveryCompleteCount(10)
-                .setStateBatches(List.of(batch))
-                .build()
-        );
-
-        CoordinatorRecord expectedRecord = CoordinatorRecord.record(
-            new ShareUpdateKey()
-                .setGroupId(groupId)
-                .setTopicId(topicId)
-                .setPartition(partitionId),
-            new ApiMessageAndVersion(
-                new ShareUpdateValue()
+                groupId,
+                topicId,
+                partitionId,
+                new ShareGroupOffset.Builder()
                     .setSnapshotEpoch(0)
+                    .setStateEpoch(-1)  // ignored for share update
                     .setLeaderEpoch(5)
                     .setStartOffset(0)
                     .setDeliveryCompleteCount(10)
-                    .setStateBatches(List.of(
-                        new ShareUpdateValue.StateBatch()
-                            .setFirstOffset(1L)
-                            .setLastOffset(10L)
-                            .setDeliveryState((byte) 0)
-                            .setDeliveryCount((short) 1))),
-                (short) 0));
+                    .setStateBatches(List.of(batch))
+                    .build()
+        );
+
+        CoordinatorRecord expectedRecord = CoordinatorRecord.record(
+                new ShareUpdateKey()
+                    .setGroupId(groupId)
+                    .setTopicId(topicId)
+                    .setPartition(partitionId),
+                new ApiMessageAndVersion(
+                        new ShareUpdateValue()
+                            .setSnapshotEpoch(0)
+                            .setLeaderEpoch(5)
+                            .setStartOffset(0)
+                            .setDeliveryCompleteCount(10)
+                            .setStateBatches(List.of(
+                            new ShareUpdateValue.StateBatch()
+                                .setFirstOffset(1L)
+                                .setLastOffset(10L)
+                                .setDeliveryState((byte) 0)
+                                .setDeliveryCount((short) 1))),
+                        (short) 0));
 
         assertEquals(expectedRecord, record);
     }
@@ -128,16 +128,16 @@ public class ShareCoordinatorRecordHelpersTest {
         Uuid topicId = Uuid.randomUuid();
         int partitionId = 1;
         CoordinatorRecord record = ShareCoordinatorRecordHelpers.newShareStateTombstoneRecord(
-            groupId,
-            topicId,
-            partitionId
+                groupId,
+                topicId,
+                partitionId
         );
 
         CoordinatorRecord expectedRecord = CoordinatorRecord.tombstone(
-            new ShareSnapshotKey()
-                .setGroupId(groupId)
-                .setTopicId(topicId)
-                .setPartition(partitionId)
+                new ShareSnapshotKey()
+                    .setGroupId(groupId)
+                    .setTopicId(topicId)
+                    .setPartition(partitionId)
         );
 
         assertEquals(expectedRecord, record);

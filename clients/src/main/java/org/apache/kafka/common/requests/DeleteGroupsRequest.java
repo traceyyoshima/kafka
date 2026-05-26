@@ -73,11 +73,11 @@ public class DeleteGroupsRequest extends AbstractRequest {
         Errors error
     ) {
         DeleteGroupsResponseData.DeletableGroupResultCollection resultCollection =
-            new DeleteGroupsResponseData.DeletableGroupResultCollection();
+                new DeleteGroupsResponseData.DeletableGroupResultCollection();
         groupIds.forEach(groupId -> resultCollection.add(
-            new DeleteGroupsResponseData.DeletableGroupResult()
-                .setGroupId(groupId)
-                .setErrorCode(error.code())
+                new DeleteGroupsResponseData.DeletableGroupResult()
+                    .setGroupId(groupId)
+                    .setErrorCode(error.code())
         ));
         return resultCollection;
     }

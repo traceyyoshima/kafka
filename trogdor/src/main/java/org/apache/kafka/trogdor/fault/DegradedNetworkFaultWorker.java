@@ -169,7 +169,7 @@ public class DegradedNetworkFaultWorker implements TaskWorker {
      */
     private void disableTrafficControl(Platform platform, String networkDevice) throws IOException {
         platform.runCommand(new String[] {
-            "sudo", "tc", "qdisc", "del", "dev", networkDevice, "root"
+                "sudo", "tc", "qdisc", "del", "dev", networkDevice, "root"
         });
     }
 }

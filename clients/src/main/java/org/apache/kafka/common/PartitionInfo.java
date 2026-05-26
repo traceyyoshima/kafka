@@ -95,7 +95,7 @@ public class PartitionInfo {
     @Override
     public int hashCode() {
         return Objects.hash(topic, partition, leader, Arrays.hashCode(replicas),
-            Arrays.hashCode(inSyncReplicas), Arrays.hashCode(offlineReplicas));
+                Arrays.hashCode(inSyncReplicas), Arrays.hashCode(offlineReplicas));
     }
 
     @Override
@@ -108,11 +108,11 @@ public class PartitionInfo {
             return false;
         PartitionInfo other = (PartitionInfo) obj;
         return Objects.equals(topic, other.topic) &&
-            partition == other.partition &&
-            Objects.equals(leader, other.leader) &&
-            Objects.deepEquals(replicas, other.replicas) &&
-            Objects.deepEquals(inSyncReplicas, other.inSyncReplicas) &&
-            Objects.deepEquals(offlineReplicas, other.offlineReplicas);
+                partition == other.partition &&
+                Objects.equals(leader, other.leader) &&
+                Objects.deepEquals(replicas, other.replicas) &&
+                Objects.deepEquals(inSyncReplicas, other.inSyncReplicas) &&
+                Objects.deepEquals(offlineReplicas, other.offlineReplicas);
     }
 
     @Override

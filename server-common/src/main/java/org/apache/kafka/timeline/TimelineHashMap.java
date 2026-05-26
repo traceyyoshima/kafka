@@ -142,7 +142,7 @@ public class TimelineHashMap<K, V>
 
     public V get(Object key, long epoch) {
         Entry<K, V> entry =
-            snapshottableGet(new TimelineHashMapEntry<>(key, null), epoch);
+                snapshottableGet(new TimelineHashMapEntry<>(key, null), epoch);
         if (entry == null) {
             return null;
         }
@@ -164,7 +164,7 @@ public class TimelineHashMap<K, V>
     @Override
     public V remove(Object key) {
         TimelineHashMapEntry<K, V> result = snapshottableRemove(
-            new TimelineHashMapEntry<>(key, null));
+                new TimelineHashMapEntry<>(key, null));
         return result == null ? null : result.value;
     }
 

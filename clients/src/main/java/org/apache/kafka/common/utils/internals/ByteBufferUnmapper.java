@@ -91,7 +91,7 @@ public final class ByteBufferUnmapper {
             return unmapper.bindTo(theUnsafe);
         } catch (ReflectiveOperationException | RuntimeException e1) {
             throw new UnsupportedOperationException("Unmapping is not supported on this platform, because internal " +
-                "Java APIs are not compatible with this Kafka version", e1);
+                    "Java APIs are not compatible with this Kafka version", e1);
         }
     }
 }

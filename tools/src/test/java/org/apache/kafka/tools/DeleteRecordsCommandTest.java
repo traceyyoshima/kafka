@@ -53,12 +53,12 @@ public class DeleteRecordsCommandTest {
 
         try (Admin admin = cluster.admin(adminProps)) {
             assertThrows(
-                AdminCommandFailedException.class,
-                () -> DeleteRecordsCommand.execute(admin, "{\"partitions\":[" +
-                    "{\"topic\":\"t\", \"partition\":0, \"offset\":1}," +
-                    "{\"topic\":\"t\", \"partition\":0, \"offset\":1}]" +
-                    "}", System.out),
-                "Offset json file contains duplicate topic partitions: t-0"
+                    AdminCommandFailedException.class,
+                    () -> DeleteRecordsCommand.execute(admin, "{\"partitions\":[" +
+                        "{\"topic\":\"t\", \"partition\":0, \"offset\":1}," +
+                        "{\"topic\":\"t\", \"partition\":0, \"offset\":1}]" +
+                        "}", System.out),
+                    "Offset json file contains duplicate topic partitions: t-0"
             );
 
             admin.createTopics(Set.of(new NewTopic("t", 1, (short) 1))).all().get();
@@ -76,15 +76,15 @@ public class DeleteRecordsCommandTest {
             }
 
             executeAndAssertOutput(
-                "{\"partitions\":[{\"topic\":\"t\", \"partition\":0, \"offset\":1}]}",
-                "partition: t-0\tlow_watermark: 1",
-                admin
+                    "{\"partitions\":[{\"topic\":\"t\", \"partition\":0, \"offset\":1}]}",
+                    "partition: t-0\tlow_watermark: 1",
+                    admin
             );
 
             executeAndAssertOutput(
-                "{\"partitions\":[{\"topic\":\"t\", \"partition\":42, \"offset\":42}]}",
-                "partition: t-42\terror",
-                admin
+                    "{\"partitions\":[{\"topic\":\"t\", \"partition\":42, \"offset\":42}]}",
+                    "partition: t-42\terror",
+                    admin
             );
         }
     }
@@ -107,25 +107,25 @@ public class DeleteRecordsCommandTest {
     @Test
     public void testOffsetFileNotExists() {
         assertThrows(IOException.class, () -> DeleteRecordsCommand.execute(new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--offset-json-file", "/not/existing/file"
+                "--bootstrap-server", "localhost:9092",
+                "--offset-json-file", "/not/existing/file"
         }, System.out));
         assertEquals(1, DeleteRecordsCommand.mainNoExit(
-            "--bootstrap-server", "localhost:9092",
-            "--offset-json-file", "/not/existing/file"));
+                "--bootstrap-server", "localhost:9092",
+                "--offset-json-file", "/not/existing/file"));
     }
 
     @Test
     public void testCommandConfigNotExists() {
         assertThrows(NoSuchFileException.class, () -> DeleteRecordsCommand.execute(new String[] {
-            "--bootstrap-server", "localhost:9092",
-            "--offset-json-file", "/not/existing/file",
-            "--command-config", "/another/not/existing/file"
+                "--bootstrap-server", "localhost:9092",
+                "--offset-json-file", "/not/existing/file",
+                "--command-config", "/another/not/existing/file"
         }, System.out));
         assertEquals(1, DeleteRecordsCommand.mainNoExit(
-            "--bootstrap-server", "localhost:9092",
-            "--offset-json-file", "/not/existing/file",
-            "--command-config", "/another/not/existing/file"));
+                "--bootstrap-server", "localhost:9092",
+                "--offset-json-file", "/not/existing/file",
+                "--command-config", "/another/not/existing/file"));
     }
 
     @Test
@@ -149,7 +149,7 @@ public class DeleteRecordsCommandTest {
     @Test
     public void testParse() throws Exception {
         Map<TopicPartition, List<Long>> res = DeleteRecordsCommand.parseOffsetJsonStringWithoutDedup(
-            "{\"partitions\":[" +
+                "{\"partitions\":[" +
                 "{\"topic\":\"t\", \"partition\":0, \"offset\":0}," +
                 "{\"topic\":\"t\", \"partition\":1, \"offset\":1, \"ignored\":\"field\"}," +
                 "{\"topic\":\"t\", \"partition\":0, \"offset\":2}," +
@@ -168,8 +168,8 @@ public class DeleteRecordsCommandTest {
      */
     private static void assertCommandThrows(Class<? extends Exception> expectedException, String jsonData) {
         assertThrows(
-            expectedException,
-            () -> DeleteRecordsCommand.parseOffsetJsonStringWithoutDedup(jsonData)
+                expectedException,
+                () -> DeleteRecordsCommand.parseOffsetJsonStringWithoutDedup(jsonData)
         );
     }
 }

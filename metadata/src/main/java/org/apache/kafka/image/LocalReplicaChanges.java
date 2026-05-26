@@ -82,13 +82,13 @@ public final class LocalReplicaChanges {
     @Override
     public String toString() {
         return String.format(
-            "LocalReplicaChanges(deletes = %s, newly elected leaders = %s, leaders = %s, followers = %s, topicIds = %s, directoryIds = %s)",
-            deletes,
-            electedLeaders,
-            leaders,
-            followers,
-            topicIds,
-            directoryIds
+                "LocalReplicaChanges(deletes = %s, newly elected leaders = %s, leaders = %s, followers = %s, topicIds = %s, directoryIds = %s)",
+                deletes,
+                electedLeaders,
+                leaders,
+                followers,
+                topicIds,
+                directoryIds
         );
     }
 

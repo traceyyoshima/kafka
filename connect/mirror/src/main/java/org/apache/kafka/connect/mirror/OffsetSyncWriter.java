@@ -47,7 +47,6 @@ class OffsetSyncWriter implements AutoCloseable {
     private final long maxOffsetLag;
     private final Map<TopicPartition, PartitionState> partitionStates = new HashMap<>();
 
-
     public OffsetSyncWriter(MirrorSourceTaskConfig config) {
         outstandingOffsetSyncs = new Semaphore(MAX_OUTSTANDING_OFFSET_SYNCS);
         offsetSyncsTopic = config.offsetSyncsTopic();

@@ -240,8 +240,8 @@ public class SingleFieldPath {
     @Override
     public String toString() {
         return "SingleFieldPath{" +
-            "version=" + version +
-            ", path=" + String.join(".", steps) +
-            '}';
+                "version=" + version +
+                ", path=" + String.join(".", steps) +
+                '}';
     }
 }

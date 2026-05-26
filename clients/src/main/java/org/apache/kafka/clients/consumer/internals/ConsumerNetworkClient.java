@@ -129,7 +129,7 @@ public class ConsumerNetworkClient implements Closeable {
         long now = time.milliseconds();
         RequestFutureCompletionHandler completionHandler = new RequestFutureCompletionHandler();
         ClientRequest clientRequest = client.newClientRequest(node.idString(), requestBuilder, now, true,
-            requestTimeoutMs, completionHandler);
+                requestTimeoutMs, completionHandler);
         unsent.put(node, clientRequest);
 
         // wakeup the client in case it is blocking in poll so that we can send the queued request
@@ -551,7 +551,6 @@ public class ConsumerNetworkClient implements Closeable {
             lock.unlock();
         }
     }
-
 
     /**
      * Check if the code is disconnected and unavailable for immediate reconnection (i.e. if it is in

@@ -60,11 +60,11 @@ public class StreamsGroupDescribeRequest extends AbstractRequest {
             .setThrottleTimeMs(throttleTimeMs);
         // Set error for each group
         this.data.groupIds().forEach(
-            groupId -> data.groups().add(
-                new StreamsGroupDescribeResponseData.DescribedGroup()
-                    .setGroupId(groupId)
-                    .setErrorCode(Errors.forException(e).code())
-            )
+                groupId -> data.groups().add(
+                    new StreamsGroupDescribeResponseData.DescribedGroup()
+                        .setGroupId(groupId)
+                        .setErrorCode(Errors.forException(e).code())
+                )
         );
         return new StreamsGroupDescribeResponse(data);
     }
@@ -76,8 +76,8 @@ public class StreamsGroupDescribeRequest extends AbstractRequest {
 
     public static StreamsGroupDescribeRequest parse(Readable readable, short version) {
         return new StreamsGroupDescribeRequest(
-            new StreamsGroupDescribeRequestData(readable, version),
-            version
+                new StreamsGroupDescribeRequestData(readable, version),
+                version
         );
     }
 
@@ -89,6 +89,6 @@ public class StreamsGroupDescribeRequest extends AbstractRequest {
             .map(groupId -> new StreamsGroupDescribeResponseData.DescribedGroup()
                 .setGroupId(groupId)
                 .setErrorCode(error.code())
-            ).collect(Collectors.toList());
+        ).collect(Collectors.toList());
     }
 }

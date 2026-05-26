@@ -80,17 +80,17 @@ public class MessageDataGeneratorTest {
     @Test
     public void testInvalidNullDefaultForInt() throws Exception {
         MessageSpec testMessageSpec = MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
-            "{",
-            "  \"type\": \"request\",",
-            "  \"name\": \"FooBar\",",
-            "  \"validVersions\": \"0-2\",",
-            "  \"flexibleVersions\": \"none\",",
-            "  \"fields\": [",
-            "    { \"name\": \"field1\", \"type\": \"int32\", \"versions\": \"0+\", \"default\": \"null\" }",
-            "  ]",
-            "}")), MessageSpec.class);
+                "{",
+                "  \"type\": \"request\",",
+                "  \"name\": \"FooBar\",",
+                "  \"validVersions\": \"0-2\",",
+                "  \"flexibleVersions\": \"none\",",
+                "  \"fields\": [",
+                "    { \"name\": \"field1\", \"type\": \"int32\", \"versions\": \"0+\", \"default\": \"null\" }",
+                "  ]",
+                "}")), MessageSpec.class);
         assertStringContains("Invalid default for int32",
-            assertThrows(RuntimeException.class, () -> new MessageDataGenerator("org.apache.kafka.common.message").generate(testMessageSpec)).getMessage());
+                assertThrows(RuntimeException.class, () -> new MessageDataGenerator("org.apache.kafka.common.message").generate(testMessageSpec)).getMessage());
     }
 
     @Test
@@ -108,7 +108,7 @@ public class MessageDataGeneratorTest {
                 "}")), MessageSpec.class);
 
         assertStringContains("not all versions of this field are nullable",
-            assertThrows(RuntimeException.class, () -> new MessageDataGenerator("org.apache.kafka.common.message").generate(testMessageSpec)).getMessage());
+                assertThrows(RuntimeException.class, () -> new MessageDataGenerator("org.apache.kafka.common.message").generate(testMessageSpec)).getMessage());
     }
 
     /**
@@ -118,205 +118,205 @@ public class MessageDataGeneratorTest {
     @Test
     public void testInvalidFieldName() {
         assertStringContains("Invalid field name",
-            assertThrows(Throwable.class, () ->
-                MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
-                    "{",
-                    "  \"type\": \"request\",",
-                    "  \"name\": \"FooBar\",",
-                    "  \"validVersions\": \"0-2\",",
-                    "  \"flexibleVersions\": \"0+\",",
-                    "  \"fields\": [",
-                    "    { \"name\": \"_badName\", \"type\": \"[]int32\", \"versions\": \"0+\" }",
-                    "  ]",
-                    "}")), MessageSpec.class)
-            ).getMessage());
+                assertThrows(Throwable.class, () ->
+                        MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
+                        "{",
+                        "  \"type\": \"request\",",
+                        "  \"name\": \"FooBar\",",
+                        "  \"validVersions\": \"0-2\",",
+                        "  \"flexibleVersions\": \"0+\",",
+                        "  \"fields\": [",
+                        "    { \"name\": \"_badName\", \"type\": \"[]int32\", \"versions\": \"0+\" }",
+                        "  ]",
+                        "}")), MessageSpec.class)
+                ).getMessage());
     }
 
     @Test
     public void testInvalidTagWithoutTaggedVersions() {
         assertStringContains("If a tag is specified, taggedVersions must be specified as well.",
-            assertThrows(Throwable.class, () -> {
-                MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
-                    "{",
-                    "  \"type\": \"request\",",
-                    "  \"name\": \"FooBar\",",
-                    "  \"validVersions\": \"0-2\",",
-                    "  \"flexibleVersions\": \"0+\",",
-                    "  \"fields\": [",
-                    "    { \"name\": \"field1\", \"type\": \"int32\", \"versions\": \"0+\", \"tag\": 0 }",
-                    "  ]",
-                    "}")), MessageSpec.class);
-                fail("Expected the MessageSpec constructor to fail");
-            }).getMessage());
+                assertThrows(Throwable.class, () -> {
+                    MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
+                        "{",
+                        "  \"type\": \"request\",",
+                        "  \"name\": \"FooBar\",",
+                        "  \"validVersions\": \"0-2\",",
+                        "  \"flexibleVersions\": \"0+\",",
+                        "  \"fields\": [",
+                        "    { \"name\": \"field1\", \"type\": \"int32\", \"versions\": \"0+\", \"tag\": 0 }",
+                        "  ]",
+                        "}")), MessageSpec.class);
+                    fail("Expected the MessageSpec constructor to fail");
+                }).getMessage());
     }
 
     @Test
     public void testInvalidNegativeTag() {
         assertStringContains("Tags cannot be negative",
-            assertThrows(Throwable.class, () ->
-                MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
-                    "{",
-                    "  \"type\": \"request\",",
-                    "  \"name\": \"FooBar\",",
-                    "  \"validVersions\": \"0-2\",",
-                    "  \"flexibleVersions\": \"0+\",",
-                    "  \"fields\": [",
-                    "    { \"name\": \"field1\", \"type\": \"int32\", \"versions\": \"0+\", ",
-                    "        \"tag\": -1, \"taggedVersions\": \"0+\" }",
-                    "  ]",
-                    "}")), MessageSpec.class)
-            ).getMessage());
+                assertThrows(Throwable.class, () ->
+                        MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
+                        "{",
+                        "  \"type\": \"request\",",
+                        "  \"name\": \"FooBar\",",
+                        "  \"validVersions\": \"0-2\",",
+                        "  \"flexibleVersions\": \"0+\",",
+                        "  \"fields\": [",
+                        "    { \"name\": \"field1\", \"type\": \"int32\", \"versions\": \"0+\", ",
+                        "        \"tag\": -1, \"taggedVersions\": \"0+\" }",
+                        "  ]",
+                        "}")), MessageSpec.class)
+                ).getMessage());
     }
 
     @Test
     public void testInvalidFlexibleVersionsRange() {
         assertStringContains("flexibleVersions must be either none, or an open-ended range",
-            assertThrows(Throwable.class, () ->
-                MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
-                    "{",
-                    "  \"type\": \"request\",",
-                    "  \"name\": \"FooBar\",",
-                    "  \"validVersions\": \"0-2\",",
-                    "  \"flexibleVersions\": \"0-2\",",
-                    "  \"fields\": [",
-                    "    { \"name\": \"field1\", \"type\": \"int32\", \"versions\": \"0+\" }",
-                    "  ]",
-                    "}")), MessageSpec.class)
-            ).getMessage());
+                assertThrows(Throwable.class, () ->
+                        MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
+                        "{",
+                        "  \"type\": \"request\",",
+                        "  \"name\": \"FooBar\",",
+                        "  \"validVersions\": \"0-2\",",
+                        "  \"flexibleVersions\": \"0-2\",",
+                        "  \"fields\": [",
+                        "    { \"name\": \"field1\", \"type\": \"int32\", \"versions\": \"0+\" }",
+                        "  ]",
+                        "}")), MessageSpec.class)
+                ).getMessage());
     }
 
     @Test
     public void testInvalidSometimesNullableTaggedField() {
         assertStringContains("Either all tagged versions must be nullable, or none must be",
-            assertThrows(Throwable.class, () ->
-                MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
-                    "{",
-                    "  \"type\": \"request\",",
-                    "  \"name\": \"FooBar\",",
-                    "  \"validVersions\": \"0-2\",",
-                    "  \"flexibleVersions\": \"0+\",",
-                    "  \"fields\": [",
-                    "    { \"name\": \"field1\", \"type\": \"string\", \"versions\": \"0+\", ",
-                    "        \"tag\": 0, \"taggedVersions\": \"0+\", \"nullableVersions\": \"1+\" }",
-                    "  ]",
-                    "}")), MessageSpec.class)
-            ).getMessage());
+                assertThrows(Throwable.class, () ->
+                        MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
+                        "{",
+                        "  \"type\": \"request\",",
+                        "  \"name\": \"FooBar\",",
+                        "  \"validVersions\": \"0-2\",",
+                        "  \"flexibleVersions\": \"0+\",",
+                        "  \"fields\": [",
+                        "    { \"name\": \"field1\", \"type\": \"string\", \"versions\": \"0+\", ",
+                        "        \"tag\": 0, \"taggedVersions\": \"0+\", \"nullableVersions\": \"1+\" }",
+                        "  ]",
+                        "}")), MessageSpec.class)
+                ).getMessage());
     }
 
     @Test
     public void testInvalidTaggedVersionsNotASubsetOfVersions() {
         assertStringContains("taggedVersions must be a subset of versions",
-            assertThrows(Throwable.class, () ->
-                MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
-                    "{",
-                    "  \"type\": \"request\",",
-                    "  \"name\": \"FooBar\",",
-                    "  \"validVersions\": \"0-2\",",
-                    "  \"flexibleVersions\": \"0+\",",
-                    "  \"fields\": [",
-                    "    { \"name\": \"field1\", \"type\": \"string\", \"versions\": \"0-2\", ",
-                    "        \"tag\": 0, \"taggedVersions\": \"1+\" }",
-                    "  ]",
-                    "}")), MessageSpec.class)
-            ).getMessage());
+                assertThrows(Throwable.class, () ->
+                        MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
+                        "{",
+                        "  \"type\": \"request\",",
+                        "  \"name\": \"FooBar\",",
+                        "  \"validVersions\": \"0-2\",",
+                        "  \"flexibleVersions\": \"0+\",",
+                        "  \"fields\": [",
+                        "    { \"name\": \"field1\", \"type\": \"string\", \"versions\": \"0-2\", ",
+                        "        \"tag\": 0, \"taggedVersions\": \"1+\" }",
+                        "  ]",
+                        "}")), MessageSpec.class)
+                ).getMessage());
     }
 
     @Test
     public void testInvalidTaggedVersionsWithoutTag() {
         assertStringContains("Please specify a tag, or remove the taggedVersions",
-            assertThrows(Throwable.class, () ->
-                MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
-                    "{",
-                    "  \"type\": \"request\",",
-                    "  \"name\": \"FooBar\",",
-                    "  \"validVersions\": \"0-2\",",
-                    "  \"flexibleVersions\": \"0+\",",
-                    "  \"fields\": [",
-                    "    { \"name\": \"field1\", \"type\": \"string\", \"versions\": \"0+\", ",
-                    "        \"taggedVersions\": \"1+\" }",
-                    "  ]",
-                    "}")), MessageSpec.class)
-            ).getMessage());
+                assertThrows(Throwable.class, () ->
+                        MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
+                        "{",
+                        "  \"type\": \"request\",",
+                        "  \"name\": \"FooBar\",",
+                        "  \"validVersions\": \"0-2\",",
+                        "  \"flexibleVersions\": \"0+\",",
+                        "  \"fields\": [",
+                        "    { \"name\": \"field1\", \"type\": \"string\", \"versions\": \"0+\", ",
+                        "        \"taggedVersions\": \"1+\" }",
+                        "  ]",
+                        "}")), MessageSpec.class)
+                ).getMessage());
     }
 
     @Test
     public void testInvalidTaggedVersionsRange() {
         assertStringContains("taggedVersions must be either none, or an open-ended range",
-            assertThrows(Throwable.class, () ->
-                MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
-                    "{",
-                    "  \"type\": \"request\",",
-                    "  \"name\": \"FooBar\",",
-                    "  \"validVersions\": \"0-2\",",
-                    "  \"flexibleVersions\": \"0+\",",
-                    "  \"fields\": [",
-                    "    { \"name\": \"field1\", \"type\": \"string\", \"versions\": \"0+\", ",
-                    "        \"tag\": 0, \"taggedVersions\": \"1-2\" }",
-                    "  ]",
-                    "}")), MessageSpec.class)
-            ).getMessage());
+                assertThrows(Throwable.class, () ->
+                        MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
+                        "{",
+                        "  \"type\": \"request\",",
+                        "  \"name\": \"FooBar\",",
+                        "  \"validVersions\": \"0-2\",",
+                        "  \"flexibleVersions\": \"0+\",",
+                        "  \"fields\": [",
+                        "    { \"name\": \"field1\", \"type\": \"string\", \"versions\": \"0+\", ",
+                        "        \"tag\": 0, \"taggedVersions\": \"1-2\" }",
+                        "  ]",
+                        "}")), MessageSpec.class)
+                ).getMessage());
     }
 
     @Test
     public void testDuplicateTags() {
         assertStringContains("duplicate tag",
-            assertThrows(Throwable.class, () ->
-                MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
-                    "{",
-                    "  \"type\": \"request\",",
-                    "  \"name\": \"FooBar\",",
-                    "  \"validVersions\": \"0-2\",",
-                    "  \"flexibleVersions\": \"0+\",",
-                    "  \"fields\": [",
-                    "    { \"name\": \"field1\", \"type\": \"string\", \"versions\": \"0+\", ",
-                    "        \"tag\": 0, \"taggedVersions\": \"0+\" },",
-                    "    { \"name\": \"field2\", \"type\": \"int64\", \"versions\": \"0+\", ",
-                    "        \"tag\": 0, \"taggedVersions\": \"0+\" }",
-                    "  ]",
-                    "}")), MessageSpec.class)
-            ).getMessage());
+                assertThrows(Throwable.class, () ->
+                        MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
+                        "{",
+                        "  \"type\": \"request\",",
+                        "  \"name\": \"FooBar\",",
+                        "  \"validVersions\": \"0-2\",",
+                        "  \"flexibleVersions\": \"0+\",",
+                        "  \"fields\": [",
+                        "    { \"name\": \"field1\", \"type\": \"string\", \"versions\": \"0+\", ",
+                        "        \"tag\": 0, \"taggedVersions\": \"0+\" },",
+                        "    { \"name\": \"field2\", \"type\": \"int64\", \"versions\": \"0+\", ",
+                        "        \"tag\": 0, \"taggedVersions\": \"0+\" }",
+                        "  ]",
+                        "}")), MessageSpec.class)
+                ).getMessage());
     }
 
     @Test
     public void testInvalidNullDefaultForNullableStruct() throws Exception {
         MessageSpec testMessageSpec = MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
-            "{",
-            "  \"type\": \"request\",",
-            "  \"name\": \"FooBar\",",
-            "  \"validVersions\": \"0\",",
-            "  \"flexibleVersions\": \"none\",",
-            "  \"fields\": [",
-            "    { \"name\": \"struct1\", \"type\": \"MyStruct\", \"versions\": \"0+\", \"nullableVersions\": \"0+\", ",
-            "      \"default\": \"not-null\", \"fields\": [",
-            "        { \"name\": \"field1\", \"type\": \"string\", \"versions\": \"0+\" }",
-            "      ]",
-            "    }",
-            "  ]",
-            "}")), MessageSpec.class);
+                "{",
+                "  \"type\": \"request\",",
+                "  \"name\": \"FooBar\",",
+                "  \"validVersions\": \"0\",",
+                "  \"flexibleVersions\": \"none\",",
+                "  \"fields\": [",
+                "    { \"name\": \"struct1\", \"type\": \"MyStruct\", \"versions\": \"0+\", \"nullableVersions\": \"0+\", ",
+                "      \"default\": \"not-null\", \"fields\": [",
+                "        { \"name\": \"field1\", \"type\": \"string\", \"versions\": \"0+\" }",
+                "      ]",
+                "    }",
+                "  ]",
+                "}")), MessageSpec.class);
 
         assertStringContains("Invalid default for struct field struct1.  The only valid default for a struct field " +
                 "is the empty struct or null",
-            assertThrows(RuntimeException.class, () -> new MessageDataGenerator("org.apache.kafka.common.message").generate(testMessageSpec)).getMessage());
+                assertThrows(RuntimeException.class, () -> new MessageDataGenerator("org.apache.kafka.common.message").generate(testMessageSpec)).getMessage());
     }
 
     @Test
     public void testInvalidNullDefaultForPotentiallyNonNullableStruct() throws Exception {
         MessageSpec testMessageSpec = MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
-            "{",
-            "  \"type\": \"request\",",
-            "  \"name\": \"FooBar\",",
-            "  \"validVersions\": \"0-1\",",
-            "  \"flexibleVersions\": \"none\",",
-            "  \"fields\": [",
-            "    { \"name\": \"struct1\", \"type\": \"MyStruct\", \"versions\": \"0+\", \"nullableVersions\": \"1+\", ",
-            "      \"default\": \"null\", \"fields\": [",
-            "        { \"name\": \"field1\", \"type\": \"string\", \"versions\": \"0+\" }",
-            "      ]",
-            "    }",
-            "  ]",
-            "}")), MessageSpec.class);
+                "{",
+                "  \"type\": \"request\",",
+                "  \"name\": \"FooBar\",",
+                "  \"validVersions\": \"0-1\",",
+                "  \"flexibleVersions\": \"none\",",
+                "  \"fields\": [",
+                "    { \"name\": \"struct1\", \"type\": \"MyStruct\", \"versions\": \"0+\", \"nullableVersions\": \"1+\", ",
+                "      \"default\": \"null\", \"fields\": [",
+                "        { \"name\": \"field1\", \"type\": \"string\", \"versions\": \"0+\" }",
+                "      ]",
+                "    }",
+                "  ]",
+                "}")), MessageSpec.class);
 
         assertStringContains("not all versions of this field are nullable",
-            assertThrows(RuntimeException.class, () -> new MessageDataGenerator("org.apache.kafka.common.message").generate(testMessageSpec)).getMessage());
+                assertThrows(RuntimeException.class, () -> new MessageDataGenerator("org.apache.kafka.common.message").generate(testMessageSpec)).getMessage());
     }
 }

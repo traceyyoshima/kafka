@@ -90,9 +90,9 @@ public abstract class Shell {
             timeoutTimer.schedule(new ShellTimeoutTimerTask(this), timeout);
         }
         final BufferedReader errReader = new BufferedReader(
-            new InputStreamReader(process.getErrorStream(), StandardCharsets.UTF_8));
+                new InputStreamReader(process.getErrorStream(), StandardCharsets.UTF_8));
         BufferedReader inReader = new BufferedReader(
-            new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
+                new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
         final StringBuffer errMsg = new StringBuffer();
 
         // read error and input streams as this would free up the buffers
@@ -152,7 +152,6 @@ public abstract class Shell {
         }
     }
 
-
     /**
      * This is an IOException with exit code added.
      */
@@ -194,7 +193,6 @@ public abstract class Shell {
             super(timeout);
             command = execString.clone();
         }
-
 
         /** Execute the shell command. */
         public void execute() throws IOException {

@@ -50,7 +50,7 @@ public final class RemoteClusterUtils {
      * Returns -1 if the cluster is unreachable.
      */
     public static int replicationHops(Map<String, Object> properties, String upstreamClusterAlias)
-            throws InterruptedException, TimeoutException {
+        throws InterruptedException, TimeoutException {
         try (MirrorClient client = new MirrorClient(properties)) {
             return client.replicationHops(upstreamClusterAlias);
         }
@@ -60,7 +60,7 @@ public final class RemoteClusterUtils {
      * Finds all heartbeats topics
      */
     public static Set<String> heartbeatTopics(Map<String, Object> properties)
-            throws InterruptedException, TimeoutException {
+        throws InterruptedException, TimeoutException {
         try (MirrorClient client = new MirrorClient(properties)) {
             return client.heartbeatTopics();
         }
@@ -70,7 +70,7 @@ public final class RemoteClusterUtils {
      * Finds all checkpoints topics
      */
     public static Set<String> checkpointTopics(Map<String, Object> properties)
-            throws InterruptedException, TimeoutException {
+        throws InterruptedException, TimeoutException {
         try (MirrorClient client = new MirrorClient(properties)) {
             return client.checkpointTopics();
         }
@@ -80,7 +80,7 @@ public final class RemoteClusterUtils {
      * Finds all upstream clusters
      */
     public static Set<String> upstreamClusters(Map<String, Object> properties)
-            throws InterruptedException, TimeoutException {
+        throws InterruptedException, TimeoutException {
         try (MirrorClient client = new MirrorClient(properties)) {
             return client.upstreamClusters();
         }
@@ -96,7 +96,7 @@ public final class RemoteClusterUtils {
      */
     public static Map<TopicPartition, OffsetAndMetadata> translateOffsets(Map<String, Object> properties,
             String remoteClusterAlias, String consumerGroupId, Duration timeout)
-            throws InterruptedException, TimeoutException {
+        throws InterruptedException, TimeoutException {
         try (MirrorClient client = new MirrorClient(properties)) {
             return client.remoteConsumerOffsets(consumerGroupId, remoteClusterAlias, timeout);
         }

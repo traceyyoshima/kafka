@@ -41,12 +41,12 @@ public class PartitionAssignmentTest {
     @Test
     public void testConsistentEqualsAndHashCode() {
         List<PartitionAssignment> partitionAssignments = List.of(
-            partitionAssignment(
-                List.of(0, 1, 2)
-            ),
-            partitionAssignment(
-                List.of(1, 2, 0)
-            )
+                partitionAssignment(
+                        List.of(0, 1, 2)
+                ),
+                partitionAssignment(
+                        List.of(1, 2, 0)
+                )
         );
 
         for (int i = 0; i < partitionAssignments.size(); i++) {

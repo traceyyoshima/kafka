@@ -33,7 +33,7 @@ import static org.apache.kafka.clients.consumer.internals.metrics.AsyncConsumerM
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BackgroundEventHandlerTest {
-    private final BlockingQueue<BackgroundEvent> backgroundEventsQueue =  new LinkedBlockingQueue<>();
+    private final BlockingQueue<BackgroundEvent> backgroundEventsQueue = new LinkedBlockingQueue<>();
 
     @ParameterizedTest
     @MethodSource("org.apache.kafka.clients.consumer.internals.metrics.AsyncConsumerMetricsTest#groupNameProvider")
@@ -41,25 +41,25 @@ public class BackgroundEventHandlerTest {
         try (Metrics metrics = new Metrics();
              AsyncConsumerMetrics asyncConsumerMetrics = new AsyncConsumerMetrics(metrics, groupName)) {
             BackgroundEventHandler backgroundEventHandler = new BackgroundEventHandler(
-                backgroundEventsQueue,
-                new MockTime(0),
-                asyncConsumerMetrics);
+                    backgroundEventsQueue,
+                    new MockTime(0),
+                    asyncConsumerMetrics);
             // add event
             backgroundEventHandler.add(new ErrorEvent(new Throwable()));
             assertEquals(
-                1,
-                (double) metrics.metric(
-                    metrics.metricName(BACKGROUND_EVENT_QUEUE_SIZE_SENSOR_NAME, groupName)
-                ).metricValue()
+                    1,
+                    (double) metrics.metric(
+                        metrics.metricName(BACKGROUND_EVENT_QUEUE_SIZE_SENSOR_NAME, groupName)
+                    ).metricValue()
             );
 
             // drain event
             backgroundEventHandler.drainEvents();
             assertEquals(
-                0,
-                (double) metrics.metric(
-                    metrics.metricName(BACKGROUND_EVENT_QUEUE_SIZE_SENSOR_NAME, groupName)
-                ).metricValue()
+                    0,
+                    (double) metrics.metric(
+                        metrics.metricName(BACKGROUND_EVENT_QUEUE_SIZE_SENSOR_NAME, groupName)
+                    ).metricValue()
             );
         }
     }

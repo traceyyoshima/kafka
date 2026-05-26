@@ -120,41 +120,41 @@ class FieldPathNotationTest {
         // When backticks are not closed and not escaped
         // Then it should fail
         assertParseV2Error(
-            "`foo.bar.baz",
-            "Incomplete backtick pair in path: [`foo.bar.baz], consider adding a backslash before backtick at position 0 to escape it"
+                "`foo.bar.baz",
+                "Incomplete backtick pair in path: [`foo.bar.baz], consider adding a backslash before backtick at position 0 to escape it"
         );
         assertParseV2Error(
-            "foo.`bar.baz",
-            "Incomplete backtick pair in path: [foo.`bar.baz], consider adding a backslash before backtick at position 4 to escape it"
+                "foo.`bar.baz",
+                "Incomplete backtick pair in path: [foo.`bar.baz], consider adding a backslash before backtick at position 4 to escape it"
         );
         assertParseV2Error(
-            "foo.bar.`baz",
-            "Incomplete backtick pair in path: [foo.bar.`baz], consider adding a backslash before backtick at position 8 to escape it"
+                "foo.bar.`baz",
+                "Incomplete backtick pair in path: [foo.bar.`baz], consider adding a backslash before backtick at position 8 to escape it"
         );
         assertParseV2Error(
-            "foo.bar.`baz\\`",
-            "Incomplete backtick pair in path: [foo.bar.`baz\\`], consider adding a backslash before backtick at position 8 to escape it"
+                "foo.bar.`baz\\`",
+                "Incomplete backtick pair in path: [foo.bar.`baz\\`], consider adding a backslash before backtick at position 8 to escape it"
         );
 
     }
 
     private void assertParseV1(String path) {
         assertArrayEquals(
-            new String[] {path},
-            new SingleFieldPath(path, FieldSyntaxVersion.V1).path());
+                new String[] {path},
+                new SingleFieldPath(path, FieldSyntaxVersion.V1).path());
     }
 
     private void assertParseV2(String inputPath, String... expectedSteps) {
         assertArrayEquals(
-            expectedSteps,
-            new SingleFieldPath(inputPath, FieldSyntaxVersion.V2).path()
+                expectedSteps,
+                new SingleFieldPath(inputPath, FieldSyntaxVersion.V2).path()
         );
     }
 
     private void assertParseV2Error(String inputPath, String expectedMessage) {
         ConfigException exception = assertThrows(
-            ConfigException.class,
-            () -> new SingleFieldPath(inputPath, FieldSyntaxVersion.V2)
+                ConfigException.class,
+                () -> new SingleFieldPath(inputPath, FieldSyntaxVersion.V2)
         );
         assertEquals(expectedMessage, exception.getMessage());
     }

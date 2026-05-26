@@ -56,6 +56,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Timeout(600)
 public class KTableEfficientRangeQueryTest {
     private enum StoreType { InMemory, RocksDB, Timed }
+
     private static final String TABLE_NAME = "mytable";
     private static final int DATA_SIZE = 5;
 

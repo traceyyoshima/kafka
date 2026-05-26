@@ -193,13 +193,13 @@ public class CurrentAssignmentBuilder {
                 // assignment is consistent with the subscribed topics, if changed.
                 if (member.memberEpoch() != targetAssignmentEpoch) {
                     return computeNextAssignment(
-                        member.memberEpoch(),
-                        member.assignedPartitions()
+                            member.memberEpoch(),
+                            member.assignedPartitions()
                     );
                 } else if (hasSubscriptionChanged) {
                     return updateCurrentAssignment(
-                        member.memberEpoch(),
-                        member.assignedPartitions()
+                            member.memberEpoch(),
+                            member.assignedPartitions()
                     );
                 } else {
                     return member;
@@ -218,8 +218,8 @@ public class CurrentAssignmentBuilder {
                 if (ownsRevokedPartitions(member.partitionsPendingRevocation())) {
                     if (hasSubscriptionChanged) {
                         return updateCurrentAssignment(
-                            member.memberEpoch(),
-                            member.assignedPartitions()
+                                member.memberEpoch(),
+                                member.assignedPartitions()
                         );
                     } else {
                         return member;
@@ -229,8 +229,8 @@ public class CurrentAssignmentBuilder {
                 // When the member has revoked all the pending partitions, we can
                 // reconcile its state towards the latest target assignment.
                 return computeNextAssignment(
-                    member.memberEpoch(),
-                    member.assignedPartitions()
+                        member.memberEpoch(),
+                        member.assignedPartitions()
                 );
 
             case UNRELEASED_PARTITIONS:
@@ -238,8 +238,8 @@ public class CurrentAssignmentBuilder {
                 // member towards the latest target assignment. This will assign any
                 // of the unreleased partitions when they become available.
                 return computeNextAssignment(
-                    member.memberEpoch(),
-                    member.assignedPartitions()
+                        member.memberEpoch(),
+                        member.assignedPartitions()
                 );
 
             case UNKNOWN:
@@ -249,12 +249,12 @@ public class CurrentAssignmentBuilder {
                 // without any partitions and to reconcile it again from scratch.
                 if (ownedTopicPartitions == null || !ownedTopicPartitions.isEmpty()) {
                     throw new FencedMemberEpochException("The consumer group member is in a unknown state. "
-                        + "The member must abandon all its partitions and rejoin.");
+                            + "The member must abandon all its partitions and rejoin.");
                 }
 
                 return computeNextAssignment(
-                    targetAssignmentEpoch,
-                    member.assignedPartitions()
+                        targetAssignmentEpoch,
+                        member.assignedPartitions()
                 );
         }
 
@@ -274,7 +274,7 @@ public class CurrentAssignmentBuilder {
 
         for (ConsumerGroupHeartbeatRequestData.TopicPartitions topicPartitions : ownedTopicPartitions) {
             Map<Integer, Integer> partitionsPendingRevocation =
-                assignment.getOrDefault(topicPartitions.topicId(), Map.of());
+                    assignment.getOrDefault(topicPartitions.topicId(), Map.of());
 
             for (Integer partitionId : topicPartitions.partitions()) {
                 if (partitionsPendingRevocation.containsKey(partitionId)) {
@@ -319,13 +319,13 @@ public class CurrentAssignmentBuilder {
                     }
                     newAssignedPartitions.remove(entry.getKey());
                     newPartitionsPendingRevocation.merge(
-                        entry.getKey(),
-                        entry.getValue(),
-                        (existing, additional) -> {
-                            existing = new HashMap<>(existing);
-                            existing.putAll(additional);
-                            return existing;
-                        }
+                            entry.getKey(),
+                            entry.getValue(),
+                            (existing, additional) -> {
+                                existing = new HashMap<>(existing);
+                                existing.putAll(additional);
+                                return existing;
+                            }
                     );
                 }
             }
@@ -403,10 +403,10 @@ public class CurrentAssignmentBuilder {
             partitionsPendingAssignment.removeAll(assignedPartitions.keySet());
             hasUnreleasedPartitions = partitionsPendingAssignment.removeIf(partitionId ->
                 currentPartitionEpoch.apply(topicId, partitionId) != -1 &&
-                // Don't consider a partition unreleased if it is owned by the current member
-                // because it is pending revocation. This is safe to do since only a single member
-                // can own a partition at a time.
-                !member.partitionsPendingRevocation().getOrDefault(topicId, Map.of()).containsKey(partitionId)
+                    // Don't consider a partition unreleased if it is owned by the current member
+                    // because it is pending revocation. This is safe to do since only a single member
+                    // can own a partition at a time.
+                    !member.partitionsPendingRevocation().getOrDefault(topicId, Map.of()).containsKey(partitionId)
             ) || hasUnreleasedPartitions;
 
             if (!assignedPartitions.isEmpty()) {

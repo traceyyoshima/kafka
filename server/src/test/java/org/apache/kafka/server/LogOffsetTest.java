@@ -57,13 +57,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @ClusterTestDefaults(
-    types = {Type.KRAFT},
-    serverProperties = {
-        @ClusterConfigProperty(key = "log.flush.interval.messages", value = "1"),
-        @ClusterConfigProperty(key = "num.partitions", value = "20"),
-        @ClusterConfigProperty(key = "log.retention.hours", value = "10"),
-        @ClusterConfigProperty(key = "log.retention.check.interval.ms", value = "300000")
-    }
+        types = {Type.KRAFT},
+        serverProperties = {
+            @ClusterConfigProperty(key = "log.flush.interval.messages", value = "1"),
+            @ClusterConfigProperty(key = "num.partitions", value = "20"),
+            @ClusterConfigProperty(key = "log.retention.hours", value = "10"),
+            @ClusterConfigProperty(key = "log.retention.check.interval.ms", value = "300000")
+        }
 )
 public class LogOffsetTest {
 
@@ -134,7 +134,7 @@ public class LogOffsetTest {
         log.truncateTo(0);
 
         assertEquals(Optional.empty(),
-            log.fetchOffsetByTimestamp(ListOffsetsRequest.MAX_TIMESTAMP, Optional.empty()).timestampAndOffsetOpt());
+                log.fetchOffsetByTimestamp(ListOffsetsRequest.MAX_TIMESTAMP, Optional.empty()).timestampAndOffsetOpt());
     }
 
     @ClusterTest
@@ -186,13 +186,13 @@ public class LogOffsetTest {
 
         // try to fetch using latest offset
         FetchRequest fetchRequest = FetchRequest.Builder.forConsumer(
-            ApiKeys.FETCH.latestVersion(), 0, 1,
-            Map.of(topicPartition, new FetchRequest.PartitionData(topicId, consumerOffset,
-                FetchRequest.INVALID_LOG_START_OFFSET, 300 * 1024, Optional.empty()))
+                ApiKeys.FETCH.latestVersion(), 0, 1,
+                Map.of(topicPartition, new FetchRequest.PartitionData(topicId, consumerOffset,
+                    FetchRequest.INVALID_LOG_START_OFFSET, 300 * 1024, Optional.empty()))
         ).build();
         FetchResponse fetchResponse = sendFetchRequest(fetchRequest);
         assertFalse(FetchResponse.recordsOrFail(
-            fetchResponse.responseData(topicNames, ApiKeys.FETCH.latestVersion()).get(topicPartition))
+                fetchResponse.responseData(topicNames, ApiKeys.FETCH.latestVersion()).get(topicPartition))
                 .batches().iterator().hasNext());
     }
 
@@ -280,7 +280,7 @@ public class LogOffsetTest {
         clusterInstance.createTopic(topic, 1, (short) 1);
 
         TestUtils.waitForCondition(() -> broker().logManager().getLog(topicPartition).isPresent(),
-            "Log for partition [topic,0] should be created");
+                "Log for partition [topic,0] should be created");
         return broker().logManager().getLog(topicPartition).get();
     }
 

@@ -117,7 +117,7 @@ public class UniformHomogeneousAssignmentBuilder {
             int partitionCount = subscribedTopicDescriber.numPartitions(topicId);
             if (partitionCount == -1) {
                 throw new PartitionAssignorException(
-                    "Members are subscribed to topic " + topicId + " which doesn't exist in the topic metadata."
+                        "Members are subscribed to topic " + topicId + " which doesn't exist in the topic metadata."
                 );
             } else {
                 for (int i = 0; i < partitionCount; i++) {
@@ -215,8 +215,8 @@ public class UniformHomogeneousAssignmentBuilder {
             }
 
             if (quota > 0 &&
-                quotaHasExtraPartition &&
-                memberCount - memberIndex > remainingMembersToGetAnExtraPartition) {
+                    quotaHasExtraPartition &&
+                    memberCount - memberIndex > remainingMembersToGetAnExtraPartition) {
                 // Give up the extra partition quota for another member to claim,
                 // unless this member is one of the last remainingMembersToGetAnExtraPartition
                 // members in the list and must take the extra partition.

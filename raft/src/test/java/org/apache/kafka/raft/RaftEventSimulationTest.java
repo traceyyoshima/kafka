@@ -259,12 +259,12 @@ public class RaftEventSimulationTest {
         // but the two sets cannot communicate with each other. We should be able
         // to make progress even if an election is needed in the larger set.
         router.filter(
-            0,
-            new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(2, 3, 4)))
+                0,
+                new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(2, 3, 4)))
         );
         router.filter(
-            1,
-            new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(2, 3, 4)))
+                1,
+                new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(2, 3, 4)))
         );
         router.filter(2, new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(0, 1))));
         router.filter(3, new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(0, 1))));
@@ -277,12 +277,12 @@ public class RaftEventSimulationTest {
         long majorityHighWatermark = cluster.maxHighWatermarkReached(Set.of(2, 3, 4));
 
         assertTrue(
-            majorityHighWatermark > minorityHighWatermark,
-            String.format(
-                "majorityHighWatermark = %s, minorityHighWatermark = %s",
-                majorityHighWatermark,
-                minorityHighWatermark
-            )
+                majorityHighWatermark > minorityHighWatermark,
+                String.format(
+                        "majorityHighWatermark = %s, minorityHighWatermark = %s",
+                        majorityHighWatermark,
+                        minorityHighWatermark
+                )
         );
 
         // Now restore the partition and verify everyone catches up
@@ -316,12 +316,12 @@ public class RaftEventSimulationTest {
         //  \ /
         //   4
         router.filter(
-            0,
-            new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(1, 3, 4)))
+                0,
+                new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(1, 3, 4)))
         );
         router.filter(
-            1,
-            new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(0, 2, 4)))
+                1,
+                new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(0, 2, 4)))
         );
         router.filter(2, new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(1))));
         router.filter(3, new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(0))));
@@ -386,12 +386,12 @@ public class RaftEventSimulationTest {
         int nodeD = (leaderId + 3) % numVoters;
         int nodeE = (leaderId + 4) % numVoters;
         router.filter(
-            nodeA,
-            new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(nodeB, nodeD, nodeE)))
+                nodeA,
+                new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(nodeB, nodeD, nodeE)))
         );
         router.filter(
-            nodeB,
-            new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(nodeA, leaderId, nodeE)))
+                nodeB,
+                new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(nodeA, leaderId, nodeE)))
         );
         router.filter(leaderId, new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(nodeB))));
         router.filter(nodeD, new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(nodeA))));
@@ -614,7 +614,7 @@ public class RaftEventSimulationTest {
             }
 
             assertTrue(exitCondition.get(), "Simulation condition was not satisfied after "
-                + MAX_ITERATIONS + " iterations");
+                    + MAX_ITERATIONS + " iterations");
 
             validations.forEach(Validation::validate);
         }
@@ -627,9 +627,9 @@ public class RaftEventSimulationTest {
 
         PersistentState(int nodeId) {
             log = new MockLog(
-                METADATA_PARTITION,
-                Uuid.METADATA_TOPIC_ID,
-                new LogContext(String.format("[Node %s] ", nodeId))
+                    METADATA_PARTITION,
+                    Uuid.METADATA_TOPIC_ID,
+                    new LogContext(String.format("[Node %s] ", nodeId))
             );
         }
     }
@@ -851,10 +851,10 @@ public class RaftEventSimulationTest {
 
         private static Endpoints endpointsFromId(int nodeId, ListenerName listenerName) {
             return Endpoints.fromInetSocketAddresses(
-                Map.of(
-                    listenerName,
-                    InetSocketAddress.createUnresolved(hostFromId(nodeId), PORT)
-                )
+                    Map.of(
+                            listenerName,
+                            InetSocketAddress.createUnresolved(hostFromId(nodeId), PORT)
+                    )
             );
         }
 
@@ -884,36 +884,36 @@ public class RaftEventSimulationTest {
             MemoryPool memoryPool = new BatchMemoryPool(2, KafkaRaftClient.MAX_BATCH_SIZE_BYTES);
 
             KafkaRaftClient<Integer> client = new KafkaRaftClient<>(
-                OptionalInt.of(nodeId),
-                persistentState.nodeDirectoryId,
-                serde,
-                channel,
-                messageQueue,
-                persistentState.log,
-                memoryPool,
-                time,
-                new MockExpirationService(time),
-                FETCH_MAX_WAIT_MS,
-                true,
-                clusterId,
-                List.of(),
-                endpointsFromId(nodeId, channel.listenerName()),
-                Feature.KRAFT_VERSION.supportedVersionRange(),
-                logContext,
-                random,
-                quorumConfig
+                    OptionalInt.of(nodeId),
+                    persistentState.nodeDirectoryId,
+                    serde,
+                    channel,
+                    messageQueue,
+                    persistentState.log,
+                    memoryPool,
+                    time,
+                    new MockExpirationService(time),
+                    FETCH_MAX_WAIT_MS,
+                    true,
+                    clusterId,
+                    List.of(),
+                    endpointsFromId(nodeId, channel.listenerName()),
+                    Feature.KRAFT_VERSION.supportedVersionRange(),
+                    logContext,
+                    random,
+                    quorumConfig
             );
             RaftNode node = new RaftNode(
-                nodeId,
-                client,
-                persistentState.log,
-                channel,
-                messageQueue,
-                persistentState.store,
-                logContext,
-                time,
-                random,
-                serde
+                    nodeId,
+                    client,
+                    persistentState.log,
+                    channel,
+                    messageQueue,
+                    persistentState.store,
+                    logContext,
+                    time,
+                    random,
+                    serde
             );
             node.initialize(voterAddressMap, metrics);
 
@@ -958,10 +958,10 @@ public class RaftEventSimulationTest {
         void initialize(Map<Integer, InetSocketAddress> voterAddresses, Metrics metrics) {
             client.register(counter);
             client.initialize(
-                voterAddresses,
-                store,
-                metrics,
-                Mockito.mock(ExternalKRaftMetrics.class)
+                    voterAddresses,
+                    store,
+                    metrics,
+                    Mockito.mock(ExternalKRaftMetrics.class)
             );
         }
 
@@ -988,10 +988,10 @@ public class RaftEventSimulationTest {
         @Override
         public String toString() {
             return String.format(
-                "Node(id=%s, hw=%s, logEndOffset=%s)",
-                nodeId,
-                highWatermark(),
-                logEndOffset()
+                    "Node(id=%s, hw=%s, logEndOffset=%s)",
+                    nodeId,
+                    highWatermark(),
+                    logEndOffset()
             );
         }
 
@@ -1005,6 +1005,7 @@ public class RaftEventSimulationTest {
 
     private interface NetworkFilter {
         boolean acceptInbound(RaftMessage message);
+
         boolean acceptOutbound(RaftMessage message);
     }
 
@@ -1062,8 +1063,8 @@ public class RaftEventSimulationTest {
         public boolean acceptOutbound(RaftMessage message) {
             if (message instanceof RaftRequest.Outbound request) {
                 InetSocketAddress destination = InetSocketAddress.createUnresolved(
-                    request.destination().host(),
-                    request.destination().port()
+                        request.destination().host(),
+                        request.destination().port()
                 );
                 return !unreachable.contains(destination);
             }
@@ -1101,7 +1102,7 @@ public class RaftEventSimulationTest {
                             oldEpoch + " -> " + newEpoch);
                 }
                 cluster.ifRunning(nodeId, nodeState ->
-                    assertEquals(newEpoch, nodeState.client.quorum().epoch())
+                        assertEquals(newEpoch, nodeState.client.quorum().epoch())
                 );
                 nodeEpochs.put(nodeId, newEpoch);
             }
@@ -1118,8 +1119,8 @@ public class RaftEventSimulationTest {
                     .filter(entry -> entry.getValue().log.endOffset().offset() >= highWatermark)
                     .count();
                 assertTrue(
-                    numReachedHighWatermark >= cluster.majoritySize(),
-                    "Insufficient nodes have reached current high watermark");
+                        numReachedHighWatermark >= cluster.majoritySize(),
+                        "Insufficient nodes have reached current high watermark");
             });
         }
     }
@@ -1221,33 +1222,33 @@ public class RaftEventSimulationTest {
             for (Map.Entry<Integer, PersistentState> nodeEntry : cluster.nodes.entrySet()) {
                 int nodeId = nodeEntry.getKey();
                 RaftLog log = nodeEntry.getValue().log;
-                log.earliestSnapshotId().ifPresent(earliestSnapshotId  -> {
+                log.earliestSnapshotId().ifPresent(earliestSnapshotId -> {
                     long logStartOffset = log.startOffset();
                     ValidOffsetAndEpoch validateOffsetAndEpoch = log.validateOffsetAndEpoch(
-                        earliestSnapshotId.offset(),
-                        earliestSnapshotId.epoch()
+                            earliestSnapshotId.offset(),
+                            earliestSnapshotId.epoch()
                     );
 
                     assertTrue(
-                        logStartOffset <= earliestSnapshotId.offset(),
-                        () -> String.format(
-                            "invalid log start offset (%s) and snapshotId offset (%s): nodeId = %s",
-                            logStartOffset,
-                            earliestSnapshotId.offset(),
-                            nodeId
-                        )
+                            logStartOffset <= earliestSnapshotId.offset(),
+                            () -> String.format(
+                                "invalid log start offset (%s) and snapshotId offset (%s): nodeId = %s",
+                                logStartOffset,
+                                earliestSnapshotId.offset(),
+                                nodeId
+                            )
                     );
                     assertEquals(
-                        ValidOffsetAndEpoch.valid(earliestSnapshotId),
-                        validateOffsetAndEpoch,
-                        () -> String.format("invalid leader epoch cache: nodeId = %s", nodeId)
+                            ValidOffsetAndEpoch.valid(earliestSnapshotId),
+                            validateOffsetAndEpoch,
+                            () -> String.format("invalid leader epoch cache: nodeId = %s", nodeId)
                     );
 
                     if (logStartOffset > 0) {
                         assertEquals(
-                            logStartOffset,
-                            earliestSnapshotId.offset(),
-                            () -> String.format("missing snapshot at log start offset: nodeId = %s", nodeId)
+                                logStartOffset,
+                                earliestSnapshotId.offset(),
+                                () -> String.format("missing snapshot at log start offset: nodeId = %s", nodeId)
                         );
                     }
                 });
@@ -1332,9 +1333,9 @@ public class RaftEventSimulationTest {
                     committedSequenceNumbers.putIfAbsent(offset, sequence.getAsInt());
 
                     assertEquals(
-                        committedSequenceNumbers.get(offset),
-                        sequence.getAsInt(),
-                        String.format("Committed sequence at offset %s changed on node %s", offset, nodeId)
+                            committedSequenceNumbers.get(offset),
+                            sequence.getAsInt(),
+                            String.format("Committed sequence at offset %s changed on node %s", offset, nodeId)
                     );
                 }
             });
@@ -1353,9 +1354,9 @@ public class RaftEventSimulationTest {
 
                     int committedSequence = committedSequenceNumbers.get(offset);
                     assertEquals(
-                        committedSequence,
-                        sequence,
-                        String.format("Committed sequence at offset %d changed on node %d", offset, nodeId)
+                            committedSequence,
+                            sequence,
+                            String.format("Committed sequence at offset %d changed on node %d", offset, nodeId)
                     );
                 }
             }
@@ -1388,15 +1389,15 @@ public class RaftEventSimulationTest {
                 .nodeIfRunning(senderId)
                 .map(node ->
                     new RaftRequest.Inbound(
-                        node.channel.listenerName(),
-                        correlationId,
-                        ApiMessageType
-                            .fromApiKey(outbound.data().apiKey())
-                            .highestSupportedVersion(true),
-                        outbound.data(),
-                        cluster.time.milliseconds()
+                            node.channel.listenerName(),
+                            correlationId,
+                            ApiMessageType
+                                .fromApiKey(outbound.data().apiKey())
+                                .highestSupportedVersion(true),
+                            outbound.data(),
+                            cluster.time.milliseconds()
                     )
-                )
+            )
                 .get();
 
             if (!filters.get(destination.id()).acceptInbound(inbound))
@@ -1420,17 +1421,17 @@ public class RaftEventSimulationTest {
             InflightRequest inflightRequest = inflight.remove(correlationId);
 
             RaftResponse.Inbound inbound = new RaftResponse.Inbound(
-                correlationId,
-                outbound.data(),
-                // The source of the response is the destination of the request
-                inflightRequest.destination
+                    correlationId,
+                    outbound.data(),
+                    // The source of the response is the destination of the request
+                    inflightRequest.destination
             );
 
             if (!filters.get(inflightRequest.sourceId).acceptInbound(inbound))
                 return;
 
             cluster.nodeIfRunning(inflightRequest.sourceId).ifPresent(node ->
-                node.channel.mockReceive(inbound)
+                    node.channel.mockReceive(inbound)
             );
         }
 

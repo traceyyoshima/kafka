@@ -53,7 +53,7 @@ public class SystemTestUtil {
             final String[] keyValue = part.split("=");
             if (keyValue.length > 2) {
                 throw new IllegalStateException(
-                    String.format("Provided string [ %s ] does not have expected key-value pair separator of ','", formattedConfigs));
+                        String.format("Provided string [ %s ] does not have expected key-value pair separator of ','", formattedConfigs));
             }
             configs.put(keyValue[KEY], keyValue[VALUE]);
         }

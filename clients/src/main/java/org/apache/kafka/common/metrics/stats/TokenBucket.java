@@ -103,9 +103,9 @@ public class TokenBucket implements MeasurableStat {
     @Override
     public String toString() {
         return "TokenBucket(" +
-            "unit=" + unit +
-            ", tokens=" + tokens +
-            ", lastUpdateMs=" + lastUpdateMs +
-            ')';
+                "unit=" + unit +
+                ", tokens=" + tokens +
+                ", lastUpdateMs=" + lastUpdateMs +
+                ')';
     }
 }

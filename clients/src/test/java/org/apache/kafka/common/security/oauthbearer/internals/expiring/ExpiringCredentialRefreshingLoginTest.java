@@ -53,6 +53,7 @@ import static org.mockito.Mockito.when;
 
 public class ExpiringCredentialRefreshingLoginTest {
     private static final Configuration EMPTY_WILDCARD_CONFIGURATION;
+
     static {
         EMPTY_WILDCARD_CONFIGURATION = new Configuration() {
             @Override
@@ -244,12 +245,13 @@ public class ExpiringCredentialRefreshingLoginTest {
         public LoginContext createLoginContext(ExpiringCredentialRefreshingLogin expiringCredentialRefreshingLogin) throws LoginException {
             return new LoginContext("", null, null, EMPTY_WILDCARD_CONFIGURATION) {
                 private boolean loginSuccess = false;
+
                 @Override
                 public void login() throws LoginException {
                     testLoginContext.login();
                     loginSuccess = true;
                 }
-        
+
                 @Override
                 public void logout() throws LoginException {
                     if (!loginSuccess)
@@ -257,7 +259,7 @@ public class ExpiringCredentialRefreshingLoginTest {
                         throw new IllegalStateException("logout called without a successful login");
                     testLoginContext.logout();
                 }
-        
+
                 @Override
                 public Subject getSubject() {
                     return testLoginContext.getSubject();

@@ -84,19 +84,19 @@ public class CoordinatorTimerImpl<U> implements CoordinatorTimer<U> {
                 var operationName = "Timeout(key=" + key + ")";
 
                 scheduler.scheduleWriteOperation(
-                    operationName,
-                    () -> {
-                        log.debug("Executing write event {} for timer {}.", operationName, key);
+                        operationName,
+                        () -> {
+                            log.debug("Executing write event {} for timer {}.", operationName, key);
 
-                        // If the task is different, it means that the timer has been
-                        // cancelled while the event was waiting to be processed.
-                        if (!tasks.remove(key, this)) {
-                            throw new RejectedExecutionException("Timer " + key + " was overridden or cancelled");
+                            // If the task is different, it means that the timer has been
+                            // cancelled while the event was waiting to be processed.
+                            if (!tasks.remove(key, this)) {
+                                throw new RejectedExecutionException("Timer " + key + " was overridden or cancelled");
+                            }
+
+                            // Execute the timeout operation.
+                            return operation.generateRecords();
                         }
-
-                        // Execute the timeout operation.
-                        return operation.generateRecords();
-                    }
                 ).exceptionally(ex -> {
                     // Exceptions may be wrapped in CompletionException when propagated
                     // through CompletableFuture chains, so we unwrap them before
@@ -108,23 +108,23 @@ public class CoordinatorTimerImpl<U> implements CoordinatorTimer<U> {
 
                     if (ex instanceof RejectedExecutionException) {
                         log.debug("The write event {} for the timer {} was not executed because it was " +
-                            "cancelled or overridden.", operationName, key);
+                                "cancelled or overridden.", operationName, key);
                         return null;
                     }
 
                     if (ex instanceof NotCoordinatorException || ex instanceof CoordinatorLoadInProgressException) {
                         log.debug("The write event {} for the timer {} failed due to {}. Ignoring it because " +
-                            "the coordinator is not active.", operationName, key, ex.getMessage());
+                                "the coordinator is not active.", operationName, key, ex.getMessage());
                         return null;
                     }
 
                     if (retry) {
                         log.info("The write event {} for the timer {} failed due to {}. Rescheduling it. ",
-                            operationName, key, ex.getMessage());
+                                operationName, key, ex.getMessage());
                         schedule(key, retryBackoff, TimeUnit.MILLISECONDS, true, retryBackoff, operation);
                     } else {
                         log.error("The write event {} for the timer {} failed due to {}. Ignoring it. ",
-                            operationName, key, ex.getMessage(), ex);
+                                operationName, key, ex.getMessage(), ex);
                     }
 
                     return null;

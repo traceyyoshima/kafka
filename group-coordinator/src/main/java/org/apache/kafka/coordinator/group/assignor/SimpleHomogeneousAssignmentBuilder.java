@@ -171,7 +171,7 @@ public class SimpleHomogeneousAssignmentBuilder {
         double preciseDesiredAssignmentCount = desiredSharing * numTargetPartitions / (double) numGroupMembers;
         for (int memberIndex = 0; memberIndex < numGroupMembers; memberIndex++) {
             desiredAssignmentCount[memberIndex] =
-                (int) Math.ceil(preciseDesiredAssignmentCount * (double) (memberIndex + 1)) -
+                    (int) Math.ceil(preciseDesiredAssignmentCount * (double) (memberIndex + 1)) -
                     (int) Math.ceil(preciseDesiredAssignmentCount * (double) memberIndex);
         }
     }
@@ -402,7 +402,7 @@ public class SimpleHomogeneousAssignmentBuilder {
             int numPartitions = subscribedTopicDescriber.numPartitions(topicId);
             if (numPartitions == -1) {
                 throw new PartitionAssignorException(
-                    "Members are subscribed to topic " + topicId + " which doesn't exist in the topic metadata."
+                        "Members are subscribed to topic " + topicId + " which doesn't exist in the topic metadata."
                 );
             }
 

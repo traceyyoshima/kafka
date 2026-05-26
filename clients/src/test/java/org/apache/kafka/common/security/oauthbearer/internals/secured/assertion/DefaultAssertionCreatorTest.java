@@ -56,14 +56,14 @@ public class DefaultAssertionCreatorTest extends OAuthBearerTest {
         Builder builder = new Builder()
             .setPrivateKeyFile(generatePrivateKey(keyPair.getPrivate()));
         AssertionJwtTemplate jwtTemplate = new LayeredAssertionJwtTemplate(
-            new StaticAssertionJwtTemplate(Map.of("kid", "test-id"), Map.of()),
-            new DynamicAssertionJwtTemplate(
-                new MockTime(),
-                builder.algorithm,
-                3600,
-                60,
-                false
-            )
+                new StaticAssertionJwtTemplate(Map.of("kid", "test-id"), Map.of()),
+                new DynamicAssertionJwtTemplate(
+                        new MockTime(),
+                        builder.algorithm,
+                        3600,
+                        60,
+                        false
+                )
         );
 
         try (AssertionCreator assertionCreator = builder.build()) {
@@ -79,14 +79,14 @@ public class DefaultAssertionCreatorTest extends OAuthBearerTest {
             .setPrivateKeyFile(generatePrivateKey(keyPair.getPrivate()));
 
         AssertionJwtTemplate jwtTemplate = new LayeredAssertionJwtTemplate(
-            new StaticAssertionJwtTemplate(Map.of("kid", "test-id"), Map.of()),
-            new DynamicAssertionJwtTemplate(
-                new MockTime(),
-                builder.algorithm,
-                3600,
-                60,
-                false
-            )
+                new StaticAssertionJwtTemplate(Map.of("kid", "test-id"), Map.of()),
+                new DynamicAssertionJwtTemplate(
+                        new MockTime(),
+                        builder.algorithm,
+                        3600,
+                        60,
+                        false
+                )
         );
 
         try (AssertionCreator assertionCreator = builder.build()) {
@@ -133,11 +133,11 @@ public class DefaultAssertionCreatorTest extends OAuthBearerTest {
 
         try (AssertionCreator assertionCreator = builder.build()) {
             AssertionJwtTemplate jwtTemplate = new DynamicAssertionJwtTemplate(
-                new MockTime(),
-                algorithm,
-                3600,
-                60,
-                false
+                    new MockTime(),
+                    algorithm,
+                    3600,
+                    60,
+                    false
             );
             assertion = assertionCreator.create(jwtTemplate);
         }
@@ -160,8 +160,8 @@ public class DefaultAssertionCreatorTest extends OAuthBearerTest {
             .setAlgorithm("thisisnotvalid");
         assertThrows(NoSuchAlgorithmException.class, () -> getSignature(builder.algorithm));
         assertThrows(
-            NoSuchAlgorithmException.class,
-            () -> sign(builder.algorithm, privateKey, "dummy content"));
+                NoSuchAlgorithmException.class,
+                () -> sign(builder.algorithm, privateKey, "dummy content"));
     }
 
     private static class Builder {

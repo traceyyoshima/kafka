@@ -31,10 +31,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class EpochElectionTest {
     private final int voter1 = randomReplicaId();
     private final Set<ReplicaKey> voters = Set.of(
-        ReplicaKey.of(voter1, Uuid.randomUuid()),
-        ReplicaKey.of(voter1 + 1, Uuid.randomUuid()),
-        ReplicaKey.of(voter1 + 2, Uuid.randomUuid())
+            ReplicaKey.of(voter1, Uuid.randomUuid()),
+            ReplicaKey.of(voter1 + 1, Uuid.randomUuid()),
+            ReplicaKey.of(voter1 + 2, Uuid.randomUuid())
     );
+
     @Test
     public void testStateOnInitialization() {
         EpochElection epochElection = new EpochElection(voters);

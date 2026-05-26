@@ -41,9 +41,9 @@ public class ShareCoordinatorConfigTest {
 
     public static ShareCoordinatorConfig createConfig(Map<String, Object> configs) {
         return new ShareCoordinatorConfig(new AbstractConfig(
-            ShareCoordinatorConfig.CONFIG_DEF,
-            configs,
-            false
+                ShareCoordinatorConfig.CONFIG_DEF,
+                configs,
+                false
         ));
     }
 }
