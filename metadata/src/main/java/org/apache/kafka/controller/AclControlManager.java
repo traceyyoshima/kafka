@@ -118,7 +118,6 @@ public class AclControlManager {
                 log.debug("Not creating ACL since it already exists: {}", standardAcl);
             }
 
-
             results.add(AclCreateResult.SUCCESS);
         }
         return new ControllerResult<>(records, results, true);
@@ -137,7 +136,7 @@ public class AclControlManager {
             case UNKNOWN:
             case ANY:
                 throw new InvalidRequestException("Invalid resourceType " +
-                    binding.pattern().resourceType());
+                        binding.pattern().resourceType());
             default:
                 break;
         }
@@ -147,13 +146,13 @@ public class AclControlManager {
                 break;
             default:
                 throw new InvalidRequestException("Invalid patternType " +
-                    binding.pattern().patternType());
+                        binding.pattern().patternType());
         }
         switch (binding.entry().operation()) {
             case UNKNOWN:
             case ANY:
                 throw new InvalidRequestException("Invalid operation " +
-                    binding.entry().operation());
+                        binding.entry().operation());
             default:
                 break;
         }
@@ -163,7 +162,7 @@ public class AclControlManager {
                 break;
             default:
                 throw new InvalidRequestException("Invalid permissionType " +
-                    binding.entry().permissionType());
+                        binding.entry().permissionType());
         }
         if (binding.pattern().name() == null || binding.pattern().name().isEmpty()) {
             throw new InvalidRequestException("Resource name should not be empty");
@@ -171,8 +170,8 @@ public class AclControlManager {
         int colonIndex = binding.entry().principal().indexOf(":");
         if (colonIndex == -1) {
             throw new InvalidRequestException("Could not parse principal from `" +
-                binding.entry().principal() + "` " + "(no colon is present separating the " +
-                "principal type from the principal name)");
+                    binding.entry().principal() + "` " + "(no colon is present separating the " +
+                    "principal type from the principal name)");
         }
     }
 
@@ -206,11 +205,11 @@ public class AclControlManager {
                 // check size limitation first before adding additional records
                 if (records.size() >= MAX_RECORDS_PER_USER_OP) {
                     throw new BoundedListTooLongException("Cannot remove more than " +
-                        MAX_RECORDS_PER_USER_OP + " acls in a single delete operation.");
+                            MAX_RECORDS_PER_USER_OP + " acls in a single delete operation.");
                 }
                 deleted.add(new AclBindingDeleteResult(binding));
                 records.add(new ApiMessageAndVersion(
-                    new RemoveAccessControlEntryRecord().setId(id), (short) 0));
+                        new RemoveAccessControlEntryRecord().setId(id), (short) 0));
             }
         }
         return new AclDeleteResult(deleted);
@@ -237,11 +236,11 @@ public class AclControlManager {
         StandardAcl acl = idToAcl.remove(record.id());
         if (acl == null) {
             throw new RuntimeException("Unable to replay " + record + ": no acl with " +
-                "that ID found.");
+                    "that ID found.");
         }
         if (!existingAcls.remove(acl)) {
             throw new RuntimeException("Unable to replay " + record + " for " + acl +
-                ": acl not found " + "in existingAcls.");
+                    ": acl not found " + "in existingAcls.");
         }
         log.info("Replayed RemoveAccessControlEntryRecord for {}, removing {}", record.id(), acl);
     }

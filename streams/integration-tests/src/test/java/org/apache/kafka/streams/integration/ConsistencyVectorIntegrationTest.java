@@ -118,16 +118,16 @@ public class ConsistencyVectorIntegrationTest {
 
             // Assert that all messages in the first batch were processed in a timely manner
             assertThat(
-                "Did not process all message in time.",
-                semaphore.tryAcquire(NUMBER_OF_MESSAGES, 120, TimeUnit.SECONDS), is(equalTo(true))
+                    "Did not process all message in time.",
+                    semaphore.tryAcquire(NUMBER_OF_MESSAGES, 120, TimeUnit.SECONDS), is(equalTo(true))
             );
 
             // Assert that both active and standby have the same position bound
             final StateQueryRequest<Integer> request =
-                StateQueryRequest
-                    .inStore(TABLE_NAME)
-                    .withQuery(KeyQuery.<Integer, Integer>withKey(KEY))
-                    .withPositionBound(PositionBound.unbounded());
+                    StateQueryRequest
+                        .inStore(TABLE_NAME)
+                        .withQuery(KeyQuery.<Integer, Integer>withKey(KEY))
+                        .withPositionBound(PositionBound.unbounded());
 
             checkPosition(request, kafkaStreams1);
             checkPosition(request, kafkaStreams2);
@@ -144,21 +144,21 @@ public class ConsistencyVectorIntegrationTest {
 
         while (true) {
             final StateQueryResult<Integer> stateQueryResult =
-                IntegrationTestUtils.iqv2WaitForResult(
-                    kafkaStreams1,
-                    request
-                );
+                    IntegrationTestUtils.iqv2WaitForResult(
+                            kafkaStreams1,
+                            request
+                    );
             final QueryResult<Integer> queryResult =
-                stateQueryResult.getPartitionResults().get(0);
+                    stateQueryResult.getPartitionResults().get(0);
             if (queryResult.isSuccess() && queryResult.getResult() != null) {
                 // invariant: each value is also at the equivalent offset
                 assertThat(
-                    "Result:" + queryResult,
-                    queryResult.getPosition(),
-                    is(
-                        Position.emptyPosition()
-                                .withComponent(INPUT_TOPIC_NAME, 0, queryResult.getResult())
-                    )
+                        "Result:" + queryResult,
+                        queryResult.getPosition(),
+                        is(
+                                Position.emptyPosition()
+                                        .withComponent(INPUT_TOPIC_NAME, 0, queryResult.getResult())
+                        )
                 );
 
                 if (queryResult.getResult() == NUMBER_OF_MESSAGES - 1) {
@@ -168,7 +168,7 @@ public class ConsistencyVectorIntegrationTest {
             } else {
                 if (expectedEnd <= System.currentTimeMillis()) {
                     throw new RuntimeException(
-                        "Test timed out in " + maxWaitMs);
+                            "Test timed out in " + maxWaitMs);
                 }
             }
 
@@ -191,12 +191,12 @@ public class ConsistencyVectorIntegrationTest {
         producerProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, IntegerSerializer.class);
 
         IntegrationTestUtils.produceKeyValuesSynchronously(
-            INPUT_TOPIC_NAME,
-            IntStream.range(0, NUMBER_OF_MESSAGES)
-                     .mapToObj(i -> KeyValue.pair(KEY, i))
-                     .collect(Collectors.toList()),
-            producerProps,
-            mockTime
+                INPUT_TOPIC_NAME,
+                IntStream.range(0, NUMBER_OF_MESSAGES)
+                         .mapToObj(i -> KeyValue.pair(KEY, i))
+                         .collect(Collectors.toList()),
+                producerProps,
+                mockTime
         );
     }
 

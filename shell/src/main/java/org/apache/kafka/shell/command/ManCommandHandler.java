@@ -94,7 +94,7 @@ public final class ManCommandHandler implements Commands.Handler {
         Commands.Type type = Commands.TYPES.get(cmd);
         if (type == null) {
             writer.println("man: unknown command " + cmd +
-                ". Type help to get a list of commands.");
+                    ". Type help to get a list of commands.");
         } else {
             ArgumentParser parser = ArgumentParsers.newArgumentParser(type.name(), false);
             type.addArguments(parser);

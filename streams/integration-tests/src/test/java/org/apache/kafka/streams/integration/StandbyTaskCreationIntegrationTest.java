@@ -114,9 +114,9 @@ public class StandbyTaskCreationIntegrationTest {
         final StreamsBuilder builder = new StreamsBuilder();
         final String stateStoreName = "myTransformState";
         final StoreBuilder<KeyValueStore<Integer, Integer>> keyValueStoreBuilder =
-            Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(stateStoreName),
-                                        Serdes.Integer(),
-                                        Serdes.Integer()).withLoggingDisabled();
+                Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(stateStoreName),
+                    Serdes.Integer(),
+                    Serdes.Integer()).withLoggingDisabled();
         builder.addStateStore(keyValueStoreBuilder);
         builder.stream(INPUT_TOPIC, Consumed.with(Serdes.Integer(), Serdes.Integer()))
             // don't use method reference below as it won't create a new `Processor` instance but re-use the same object
@@ -127,7 +127,6 @@ public class StandbyTaskCreationIntegrationTest {
                 }
             }, stateStoreName);
 
-
         final Topology topology = builder.build();
         createClients(topology, streamsConfiguration(streamsProtocolEnabled, withHeaders), topology, streamsConfiguration(streamsProtocolEnabled, withHeaders));
 
@@ -136,7 +135,7 @@ public class StandbyTaskCreationIntegrationTest {
         startClients();
 
         waitUntilBothClientAreOK(
-            "At least one client did not reach state RUNNING with active tasks but no stand-by tasks"
+                "At least one client did not reach state RUNNING with active tasks but no stand-by tasks"
         );
     }
 
@@ -152,10 +151,10 @@ public class StandbyTaskCreationIntegrationTest {
         builder.table(INPUT_TOPIC, Consumed.with(Serdes.Integer(), Serdes.Integer()), Materialized.as("source-table"));
 
         createClients(
-            builder.build(streamsConfiguration1),
-            streamsConfiguration1,
-            builder.build(streamsConfiguration2),
-            streamsConfiguration2
+                builder.build(streamsConfiguration1),
+                streamsConfiguration1,
+                builder.build(streamsConfiguration2),
+                streamsConfiguration2
         );
 
         setStateListenersForVerification(thread -> !thread.standbyTasks().isEmpty() && !thread.activeTasks().isEmpty());
@@ -163,7 +162,7 @@ public class StandbyTaskCreationIntegrationTest {
         startClients();
 
         waitUntilBothClientAreOK(
-            "At least one client did not reach state RUNNING with active tasks and stand-by tasks"
+                "At least one client did not reach state RUNNING with active tasks and stand-by tasks"
         );
     }
 
@@ -179,14 +178,14 @@ public class StandbyTaskCreationIntegrationTest {
     private void setStateListenersForVerification(final Predicate<ThreadMetadata> taskCondition) {
         client1.setStateListener((newState, oldState) -> {
             if (newState == State.RUNNING &&
-                client1.metadataForLocalThreads().stream().allMatch(taskCondition)) {
+                    client1.metadataForLocalThreads().stream().allMatch(taskCondition)) {
 
                 client1IsOk = true;
             }
         });
         client2.setStateListener((newState, oldState) -> {
             if (newState == State.RUNNING &&
-                client2.metadataForLocalThreads().stream().allMatch(taskCondition)) {
+                    client2.metadataForLocalThreads().stream().allMatch(taskCondition)) {
 
                 client2IsOk = true;
             }
@@ -200,9 +199,9 @@ public class StandbyTaskCreationIntegrationTest {
 
     private void waitUntilBothClientAreOK(final String message) throws Exception {
         TestUtils.waitForCondition(
-            () -> client1IsOk && client2IsOk,
-            30 * 1000,
-            message + ": "
+                () -> client1IsOk && client2IsOk,
+                30 * 1000,
+                message + ": "
                 + "Client 1 is " + (!client1IsOk ? "NOT " : "") + "OK, "
                 + "client 2 is " + (!client2IsOk ? "NOT " : "") + "OK."
         );

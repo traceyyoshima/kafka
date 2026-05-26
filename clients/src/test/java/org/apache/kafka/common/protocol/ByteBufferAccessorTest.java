@@ -38,8 +38,8 @@ public class ByteBufferAccessorTest {
         assertArrayEquals(testArray, testArray2);
         assertEquals(12345, accessor.readInt());
         assertEquals("Error reading byte array of 3 byte(s): only 0 byte(s) available",
-            assertThrows(RuntimeException.class,
-                () -> accessor.readArray(3)).getMessage());
+                assertThrows(RuntimeException.class,
+                    () -> accessor.readArray(3)).getMessage());
     }
 
     @Test

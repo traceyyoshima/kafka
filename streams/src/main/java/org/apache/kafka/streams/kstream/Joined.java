@@ -167,7 +167,6 @@ public class Joined<K, VLeft, VRight> implements NamedOperation<Joined<K, VLeft,
         return new Joined<>(null, leftValueSerde, null, null, null);
     }
 
-
     /**
      * Create an instance of {@code Joined} with another value {@link Serde}.
      * {@code null} values are accepted and will be replaced by the default value serde as defined in config.
@@ -270,7 +269,6 @@ public class Joined<K, VLeft, VRight> implements NamedOperation<Joined<K, VLeft,
     public Joined<K, VLeft, VRight> withGracePeriod(final Duration gracePeriod) {
         return new Joined<>(keySerde, leftValueSerde, rightValueSerde, name, gracePeriod);
     }
-
 
     /**
      * @deprecated Since 4.0 and should not be used any longer.

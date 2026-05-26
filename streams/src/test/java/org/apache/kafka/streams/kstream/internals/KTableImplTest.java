@@ -126,7 +126,7 @@ public class KTableImplTest {
 
         try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
             final TestInputTopic<String, String> inputTopic =
-                driver.createInputTopic(topic1, new StringSerializer(), new StringSerializer());
+                    driver.createInputTopic(topic1, new StringSerializer(), new StringSerializer());
             inputTopic.pipeInput("A", "01", 5L);
             inputTopic.pipeInput("B", "02", 100L);
             inputTopic.pipeInput("C", "03", 0L);
@@ -137,37 +137,37 @@ public class KTableImplTest {
 
         final List<MockApiProcessor<String, Object, Void, Void>> processors = supplier.capturedProcessors(4);
         assertEquals(asList(
-            new KeyValueTimestamp<>("A", "01", 5),
-            new KeyValueTimestamp<>("B", "02", 100),
-            new KeyValueTimestamp<>("C", "03", 0),
-            new KeyValueTimestamp<>("D", "04", 0),
-            new KeyValueTimestamp<>("A", "05", 10),
-            new KeyValueTimestamp<>("A", "06", 8)),
-            processors.get(0).processed());
+                new KeyValueTimestamp<>("A", "01", 5),
+                new KeyValueTimestamp<>("B", "02", 100),
+                new KeyValueTimestamp<>("C", "03", 0),
+                new KeyValueTimestamp<>("D", "04", 0),
+                new KeyValueTimestamp<>("A", "05", 10),
+                new KeyValueTimestamp<>("A", "06", 8)),
+                processors.get(0).processed());
         assertEquals(asList(
-            new KeyValueTimestamp<>("A", 1, 5),
-            new KeyValueTimestamp<>("B", 2, 100),
-            new KeyValueTimestamp<>("C", 3, 0),
-            new KeyValueTimestamp<>("D", 4, 0),
-            new KeyValueTimestamp<>("A", 5, 10),
-            new KeyValueTimestamp<>("A", 6, 8)),
-            processors.get(1).processed());
+                new KeyValueTimestamp<>("A", 1, 5),
+                new KeyValueTimestamp<>("B", 2, 100),
+                new KeyValueTimestamp<>("C", 3, 0),
+                new KeyValueTimestamp<>("D", 4, 0),
+                new KeyValueTimestamp<>("A", 5, 10),
+                new KeyValueTimestamp<>("A", 6, 8)),
+                processors.get(1).processed());
         assertEquals(asList(
-            new KeyValueTimestamp<>("A", null, 5),
-            new KeyValueTimestamp<>("B", 2, 100),
-            new KeyValueTimestamp<>("C", null, 0),
-            new KeyValueTimestamp<>("D", 4, 0),
-            new KeyValueTimestamp<>("A", null, 10),
-            new KeyValueTimestamp<>("A", 6, 8)),
-            processors.get(2).processed());
+                new KeyValueTimestamp<>("A", null, 5),
+                new KeyValueTimestamp<>("B", 2, 100),
+                new KeyValueTimestamp<>("C", null, 0),
+                new KeyValueTimestamp<>("D", 4, 0),
+                new KeyValueTimestamp<>("A", null, 10),
+                new KeyValueTimestamp<>("A", 6, 8)),
+                processors.get(2).processed());
         assertEquals(asList(
-            new KeyValueTimestamp<>("A", "01", 5),
-            new KeyValueTimestamp<>("B", "02", 100),
-            new KeyValueTimestamp<>("C", "03", 0),
-            new KeyValueTimestamp<>("D", "04", 0),
-            new KeyValueTimestamp<>("A", "05", 10),
-            new KeyValueTimestamp<>("A", "06", 8)),
-            processors.get(3).processed());
+                new KeyValueTimestamp<>("A", "01", 5),
+                new KeyValueTimestamp<>("B", "02", 100),
+                new KeyValueTimestamp<>("C", "03", 0),
+                new KeyValueTimestamp<>("D", "04", 0),
+                new KeyValueTimestamp<>("A", "05", 10),
+                new KeyValueTimestamp<>("A", "06", 8)),
+                processors.get(3).processed());
     }
 
     @ParameterizedTest
@@ -196,7 +196,7 @@ public class KTableImplTest {
 
         try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
             final TestInputTopic<String, String> inputTopic =
-                driver.createInputTopic(topic1, new StringSerializer(), new StringSerializer());
+                    driver.createInputTopic(topic1, new StringSerializer(), new StringSerializer());
             inputTopic.pipeInput("A", "01", 5L);
             inputTopic.pipeInput("B", "02", 100L);
             inputTopic.pipeInput("C", "03", 0L);
@@ -207,34 +207,34 @@ public class KTableImplTest {
 
         final List<MockApiProcessor<String, Object, Void, Void>> processors = supplier.capturedProcessors(4);
         assertEquals(asList(
-            new KeyValueTimestamp<>("A", "01", 5),
-            new KeyValueTimestamp<>("B", "02", 100),
-            new KeyValueTimestamp<>("C", "03", 0),
-            new KeyValueTimestamp<>("D", "04", 0),
-            new KeyValueTimestamp<>("A", "05", 10),
-            new KeyValueTimestamp<>("A", "06", 8)),
-            processors.get(0).processed());
+                new KeyValueTimestamp<>("A", "01", 5),
+                new KeyValueTimestamp<>("B", "02", 100),
+                new KeyValueTimestamp<>("C", "03", 0),
+                new KeyValueTimestamp<>("D", "04", 0),
+                new KeyValueTimestamp<>("A", "05", 10),
+                new KeyValueTimestamp<>("A", "06", 8)),
+                processors.get(0).processed());
         assertEquals(asList(
-            new KeyValueTimestamp<>("A", 1, 5),
-            new KeyValueTimestamp<>("B", 2, 100),
-            new KeyValueTimestamp<>("C", 3, 0),
-            new KeyValueTimestamp<>("D", 4, 0),
-            new KeyValueTimestamp<>("A", 5, 10),
-            new KeyValueTimestamp<>("A", 6, 8)),
-            processors.get(1).processed());
+                new KeyValueTimestamp<>("A", 1, 5),
+                new KeyValueTimestamp<>("B", 2, 100),
+                new KeyValueTimestamp<>("C", 3, 0),
+                new KeyValueTimestamp<>("D", 4, 0),
+                new KeyValueTimestamp<>("A", 5, 10),
+                new KeyValueTimestamp<>("A", 6, 8)),
+                processors.get(1).processed());
         assertEquals(asList(
-            new KeyValueTimestamp<>("B", 2, 100),
-            new KeyValueTimestamp<>("D", 4, 0),
-            new KeyValueTimestamp<>("A", 6, 8)),
-            processors.get(2).processed());
+                new KeyValueTimestamp<>("B", 2, 100),
+                new KeyValueTimestamp<>("D", 4, 0),
+                new KeyValueTimestamp<>("A", 6, 8)),
+                processors.get(2).processed());
         assertEquals(asList(
-            new KeyValueTimestamp<>("A", "01", 5),
-            new KeyValueTimestamp<>("B", "02", 100),
-            new KeyValueTimestamp<>("C", "03", 0),
-            new KeyValueTimestamp<>("D", "04", 0),
-            new KeyValueTimestamp<>("A", "05", 10),
-            new KeyValueTimestamp<>("A", "06", 8)),
-            processors.get(3).processed());
+                new KeyValueTimestamp<>("A", "01", 5),
+                new KeyValueTimestamp<>("B", "02", 100),
+                new KeyValueTimestamp<>("C", "03", 0),
+                new KeyValueTimestamp<>("D", "04", 0),
+                new KeyValueTimestamp<>("A", "05", 10),
+                new KeyValueTimestamp<>("A", "06", 8)),
+                processors.get(3).processed());
     }
 
     @ParameterizedTest
@@ -249,118 +249,118 @@ public class KTableImplTest {
         final ValueMapper<String, String> mapper = value -> value;
         final ValueJoiner<String, String, String> joiner = (value1, value2) -> value1;
         final ValueTransformerWithKeySupplier<String, String, String> valueTransformerWithKeySupplier =
-            () -> new ValueTransformerWithKey<>() {
-                @Override
-                public void init(final ProcessorContext context) {}
+                () -> new ValueTransformerWithKey<>() {
+                    @Override
+                    public void init(final ProcessorContext context) {}
 
-                @Override
-                public String transform(final String key, final String value) {
-                    return value;
-                }
+                    @Override
+                    public String transform(final String key, final String value) {
+                        return value;
+                    }
 
-                @Override
-                public void close() {}
-            };
-
-        assertEquals(
-            ((AbstractStream<?, ?>) table1.filter((key, value) -> false)).keySerde(),
-            consumedInternal.keySerde());
-        assertEquals(
-            ((AbstractStream<?, ?>) table1.filter((key, value) -> false)).valueSerde(),
-            consumedInternal.valueSerde());
-        assertEquals(
-            ((AbstractStream<?, ?>) table1.filter((key, value) -> false, Materialized.with(mySerde, mySerde))).keySerde(),
-            mySerde);
-        assertEquals(
-            ((AbstractStream<?, ?>) table1.filter((key, value) -> false, Materialized.with(mySerde, mySerde))).valueSerde(),
-            mySerde);
+                    @Override
+                    public void close() {}
+                };
 
         assertEquals(
-            ((AbstractStream<?, ?>) table1.filterNot((key, value) -> false)).keySerde(),
-            consumedInternal.keySerde());
+                ((AbstractStream<?, ?>) table1.filter((key, value) -> false)).keySerde(),
+                consumedInternal.keySerde());
         assertEquals(
-            ((AbstractStream<?, ?>) table1.filterNot((key, value) -> false)).valueSerde(),
-            consumedInternal.valueSerde());
+                ((AbstractStream<?, ?>) table1.filter((key, value) -> false)).valueSerde(),
+                consumedInternal.valueSerde());
         assertEquals(
-            ((AbstractStream<?, ?>) table1.filterNot((key, value) -> false, Materialized.with(mySerde, mySerde))).keySerde(),
-            mySerde);
+                ((AbstractStream<?, ?>) table1.filter((key, value) -> false, Materialized.with(mySerde, mySerde))).keySerde(),
+                mySerde);
         assertEquals(
-            ((AbstractStream<?, ?>) table1.filterNot((key, value) -> false, Materialized.with(mySerde, mySerde))).valueSerde(),
-            mySerde);
+                ((AbstractStream<?, ?>) table1.filter((key, value) -> false, Materialized.with(mySerde, mySerde))).valueSerde(),
+                mySerde);
 
         assertEquals(
-            ((AbstractStream<?, ?>) table1.mapValues(mapper)).keySerde(),
-            consumedInternal.keySerde());
+                ((AbstractStream<?, ?>) table1.filterNot((key, value) -> false)).keySerde(),
+                consumedInternal.keySerde());
+        assertEquals(
+                ((AbstractStream<?, ?>) table1.filterNot((key, value) -> false)).valueSerde(),
+                consumedInternal.valueSerde());
+        assertEquals(
+                ((AbstractStream<?, ?>) table1.filterNot((key, value) -> false, Materialized.with(mySerde, mySerde))).keySerde(),
+                mySerde);
+        assertEquals(
+                ((AbstractStream<?, ?>) table1.filterNot((key, value) -> false, Materialized.with(mySerde, mySerde))).valueSerde(),
+                mySerde);
+
+        assertEquals(
+                ((AbstractStream<?, ?>) table1.mapValues(mapper)).keySerde(),
+                consumedInternal.keySerde());
         assertNull(((AbstractStream<?, ?>) table1.mapValues(mapper)).valueSerde());
         assertEquals(
-            ((AbstractStream<?, ?>) table1.mapValues(mapper, Materialized.with(mySerde, mySerde))).keySerde(),
-            mySerde);
+                ((AbstractStream<?, ?>) table1.mapValues(mapper, Materialized.with(mySerde, mySerde))).keySerde(),
+                mySerde);
         assertEquals(
-            ((AbstractStream<?, ?>) table1.mapValues(mapper, Materialized.with(mySerde, mySerde))).valueSerde(),
-            mySerde);
+                ((AbstractStream<?, ?>) table1.mapValues(mapper, Materialized.with(mySerde, mySerde))).valueSerde(),
+                mySerde);
 
         assertEquals(
-            ((AbstractStream<?, ?>) table1.toStream()).keySerde(),
-            consumedInternal.keySerde());
+                ((AbstractStream<?, ?>) table1.toStream()).keySerde(),
+                consumedInternal.keySerde());
         assertEquals(
-            ((AbstractStream<?, ?>) table1.toStream()).valueSerde(),
-            consumedInternal.valueSerde());
+                ((AbstractStream<?, ?>) table1.toStream()).valueSerde(),
+                consumedInternal.valueSerde());
         assertNull(((AbstractStream<?, ?>) table1.toStream(selector)).keySerde());
         assertEquals(
-            ((AbstractStream<?, ?>) table1.toStream(selector)).valueSerde(),
-            consumedInternal.valueSerde());
+                ((AbstractStream<?, ?>) table1.toStream(selector)).valueSerde(),
+                consumedInternal.valueSerde());
 
         assertEquals(
-            ((AbstractStream<?, ?>) table1.transformValues(valueTransformerWithKeySupplier)).keySerde(),
-            consumedInternal.keySerde());
+                ((AbstractStream<?, ?>) table1.transformValues(valueTransformerWithKeySupplier)).keySerde(),
+                consumedInternal.keySerde());
         assertNull(((AbstractStream<?, ?>) table1.transformValues(valueTransformerWithKeySupplier)).valueSerde());
         assertEquals(
-            ((AbstractStream<?, ?>) table1.transformValues(valueTransformerWithKeySupplier, Materialized.with(mySerde, mySerde))).keySerde(),
-            mySerde);
+                ((AbstractStream<?, ?>) table1.transformValues(valueTransformerWithKeySupplier, Materialized.with(mySerde, mySerde))).keySerde(),
+                mySerde);
         assertEquals(((AbstractStream<?, ?>) table1.transformValues(valueTransformerWithKeySupplier, Materialized.with(mySerde, mySerde))).valueSerde(),
-            mySerde);
+                mySerde);
 
         assertNull(((AbstractStream<?, ?>) table1.groupBy(KeyValue::new)).keySerde());
         assertNull(((AbstractStream<?, ?>) table1.groupBy(KeyValue::new)).valueSerde());
         assertEquals(
-            ((AbstractStream<?, ?>) table1.groupBy(KeyValue::new, Grouped.with(mySerde, mySerde))).keySerde(),
-            mySerde);
+                ((AbstractStream<?, ?>) table1.groupBy(KeyValue::new, Grouped.with(mySerde, mySerde))).keySerde(),
+                mySerde);
         assertEquals(
-            ((AbstractStream<?, ?>) table1.groupBy(KeyValue::new, Grouped.with(mySerde, mySerde))).valueSerde(),
-            mySerde);
+                ((AbstractStream<?, ?>) table1.groupBy(KeyValue::new, Grouped.with(mySerde, mySerde))).valueSerde(),
+                mySerde);
 
         assertEquals(
-            ((AbstractStream<?, ?>) table1.join(table1, joiner)).keySerde(),
-            consumedInternal.keySerde());
+                ((AbstractStream<?, ?>) table1.join(table1, joiner)).keySerde(),
+                consumedInternal.keySerde());
         assertNull(((AbstractStream<?, ?>) table1.join(table1, joiner)).valueSerde());
         assertEquals(
-            ((AbstractStream<?, ?>) table1.join(table1, joiner, Materialized.with(mySerde, mySerde))).keySerde(),
-            mySerde);
+                ((AbstractStream<?, ?>) table1.join(table1, joiner, Materialized.with(mySerde, mySerde))).keySerde(),
+                mySerde);
         assertEquals(
-            ((AbstractStream<?, ?>) table1.join(table1, joiner, Materialized.with(mySerde, mySerde))).valueSerde(),
-            mySerde);
+                ((AbstractStream<?, ?>) table1.join(table1, joiner, Materialized.with(mySerde, mySerde))).valueSerde(),
+                mySerde);
 
         assertEquals(
-            ((AbstractStream<?, ?>) table1.leftJoin(table1, joiner)).keySerde(),
-            consumedInternal.keySerde());
+                ((AbstractStream<?, ?>) table1.leftJoin(table1, joiner)).keySerde(),
+                consumedInternal.keySerde());
         assertNull(((AbstractStream<?, ?>) table1.leftJoin(table1, joiner)).valueSerde());
         assertEquals(
-            ((AbstractStream<?, ?>) table1.leftJoin(table1, joiner, Materialized.with(mySerde, mySerde))).keySerde(),
-            mySerde);
+                ((AbstractStream<?, ?>) table1.leftJoin(table1, joiner, Materialized.with(mySerde, mySerde))).keySerde(),
+                mySerde);
         assertEquals(
-            ((AbstractStream<?, ?>) table1.leftJoin(table1, joiner, Materialized.with(mySerde, mySerde))).valueSerde(),
-            mySerde);
+                ((AbstractStream<?, ?>) table1.leftJoin(table1, joiner, Materialized.with(mySerde, mySerde))).valueSerde(),
+                mySerde);
 
         assertEquals(
-            ((AbstractStream<?, ?>) table1.outerJoin(table1, joiner)).keySerde(),
-            consumedInternal.keySerde());
+                ((AbstractStream<?, ?>) table1.outerJoin(table1, joiner)).keySerde(),
+                consumedInternal.keySerde());
         assertNull(((AbstractStream<?, ?>) table1.outerJoin(table1, joiner)).valueSerde());
         assertEquals(
-            ((AbstractStream<?, ?>) table1.outerJoin(table1, joiner, Materialized.with(mySerde, mySerde))).keySerde(),
-            mySerde);
+                ((AbstractStream<?, ?>) table1.outerJoin(table1, joiner, Materialized.with(mySerde, mySerde))).keySerde(),
+                mySerde);
         assertEquals(
-            ((AbstractStream<?, ?>) table1.outerJoin(table1, joiner, Materialized.with(mySerde, mySerde))).valueSerde(),
-            mySerde);
+                ((AbstractStream<?, ?>) table1.outerJoin(table1, joiner, Materialized.with(mySerde, mySerde))).valueSerde(),
+                mySerde);
     }
 
     @ParameterizedTest
@@ -435,7 +435,7 @@ public class KTableImplTest {
             }
         }
         throw new AssertionError("No processor named '" + processorName + "'"
-            + "found in the provided Topology:\n" + topology.describe());
+                + "found in the provided Topology:\n" + topology.describe());
     }
 
     @ParameterizedTest
@@ -456,16 +456,16 @@ public class KTableImplTest {
 
         table1.groupBy(MockMapper.noOpKeyValueMapper())
             .aggregate(
-                MockInitializer.STRING_INIT,
-                MockAggregator.TOSTRING_ADDER,
-                MockAggregator.TOSTRING_REMOVER,
-                Materialized.as("mock-result1"));
+                    MockInitializer.STRING_INIT,
+                    MockAggregator.TOSTRING_ADDER,
+                    MockAggregator.TOSTRING_REMOVER,
+                    Materialized.as("mock-result1"));
 
         table1.groupBy(MockMapper.noOpKeyValueMapper())
             .reduce(
-                MockReducer.STRING_ADDER,
-                MockReducer.STRING_REMOVER,
-                Materialized.as("mock-result2"));
+                    MockReducer.STRING_ADDER,
+                    MockReducer.STRING_REMOVER,
+                    Materialized.as("mock-result2"));
 
         final Topology topology = builder.build();
         try (final TopologyTestDriverWrapper driver = new TopologyTestDriverWrapper(topology, props)) {
@@ -589,8 +589,8 @@ public class KTableImplTest {
     public void shouldThrowNullPointerOnFilterWhenMaterializedIsNull(final boolean withHeaders) {
         setDslStoreFormat(withHeaders);
         assertThrows(
-            NullPointerException.class,
-            () -> table.filter((key, value) -> false, (Materialized<String, String, KeyValueStore<Bytes, byte[]>>) null)
+                NullPointerException.class,
+                () -> table.filter((key, value) -> false, (Materialized<String, String, KeyValueStore<Bytes, byte[]>>) null)
         );
     }
 
@@ -599,8 +599,8 @@ public class KTableImplTest {
     public void shouldThrowNullPointerOnFilterNotWhenMaterializedIsNull(final boolean withHeaders) {
         setDslStoreFormat(withHeaders);
         assertThrows(
-            NullPointerException.class,
-            () -> table.filterNot((key, value) -> false, (Materialized<String, String, KeyValueStore<Bytes, byte[]>>) null)
+                NullPointerException.class,
+                () -> table.filterNot((key, value) -> false, (Materialized<String, String, KeyValueStore<Bytes, byte[]>>) null)
         );
     }
 
@@ -609,8 +609,8 @@ public class KTableImplTest {
     public void shouldThrowNullPointerOnJoinWhenMaterializedIsNull(final boolean withHeaders) {
         setDslStoreFormat(withHeaders);
         assertThrows(
-            NullPointerException.class,
-            () -> table.join(table, MockValueJoiner.TOSTRING_JOINER, (Materialized<String, String, KeyValueStore<Bytes, byte[]>>) null)
+                NullPointerException.class,
+                () -> table.join(table, MockValueJoiner.TOSTRING_JOINER, (Materialized<String, String, KeyValueStore<Bytes, byte[]>>) null)
         );
     }
 
@@ -619,8 +619,8 @@ public class KTableImplTest {
     public void shouldThrowNullPointerOnLeftJoinWhenMaterializedIsNull(final boolean withHeaders) {
         setDslStoreFormat(withHeaders);
         assertThrows(
-            NullPointerException.class,
-            () -> table.leftJoin(table, MockValueJoiner.TOSTRING_JOINER, (Materialized<String, String, KeyValueStore<Bytes, byte[]>>) null)
+                NullPointerException.class,
+                () -> table.leftJoin(table, MockValueJoiner.TOSTRING_JOINER, (Materialized<String, String, KeyValueStore<Bytes, byte[]>>) null)
         );
     }
 
@@ -629,8 +629,8 @@ public class KTableImplTest {
     public void shouldThrowNullPointerOnOuterJoinWhenMaterializedIsNull(final boolean withHeaders) {
         setDslStoreFormat(withHeaders);
         assertThrows(
-            NullPointerException.class,
-            () -> table.outerJoin(table, MockValueJoiner.TOSTRING_JOINER, (Materialized<String, String, KeyValueStore<Bytes, byte[]>>) null)
+                NullPointerException.class,
+                () -> table.outerJoin(table, MockValueJoiner.TOSTRING_JOINER, (Materialized<String, String, KeyValueStore<Bytes, byte[]>>) null)
         );
     }
 
@@ -647,7 +647,6 @@ public class KTableImplTest {
         setDslStoreFormat(withHeaders);
         assertThrows(NullPointerException.class, () -> table.transformValues(mock(), (Materialized<String, Object, KeyValueStore<Bytes, byte[]>>) null));
     }
-
 
     @ParameterizedTest
     @ValueSource(booleans = {false, true})

@@ -43,7 +43,6 @@ public class NetworkReceive implements Receive {
     private int requestedBufferSize = -1;
     private ByteBuffer buffer;
 
-
     public NetworkReceive(String source, ByteBuffer buffer) {
         this(UNLIMITED, source);
         this.buffer = buffer;
@@ -123,7 +122,6 @@ public class NetworkReceive implements Receive {
     public boolean memoryAllocated() {
         return buffer != null;
     }
-
 
     @Override
     public void close() throws IOException {

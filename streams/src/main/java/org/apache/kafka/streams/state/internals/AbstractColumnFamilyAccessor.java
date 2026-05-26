@@ -115,7 +115,6 @@ abstract class AbstractColumnFamilyAccessor implements RocksDBStore.ColumnFamily
         return null;
     }
 
-
     private void wipeOffsets(final RocksDBStore.DBAccessor accessor) throws RocksDBException {
         try (final RocksIterator iter = accessor.newIterator(offsetColumnFamilyHandle)) {
             iter.seekToFirst();

@@ -102,7 +102,6 @@ public final class Metrics implements Closeable {
         this(defaultConfig, new ArrayList<>(0), time);
     }
 
-
   /**
      * Create a metrics repository with no reporters and the given default config. This config will be used for any
      * metric that doesn't override its own config. Expiration of Sensors is disabled.
@@ -179,7 +178,7 @@ public final class Metrics implements Closeable {
         }
 
         addMetric(metricName("count", "kafka-metrics-count", "total number of registered metrics"),
-            (config, now) -> metrics.size());
+                (config, now) -> metrics.size());
     }
 
     /**
@@ -256,14 +255,14 @@ public final class Metrics implements Closeable {
      */
     public static String toHtmlTable(String domain, Iterable<MetricNameTemplate> allMetrics) {
         Map<String, Map<String, String>> beansAndAttributes = new TreeMap<>();
-    
+
         try (Metrics metrics = new Metrics()) {
             for (MetricNameTemplate template : allMetrics) {
                 Map<String, String> tags = new LinkedHashMap<>();
                 for (String s : template.tags()) {
                     tags.put(s, "{" + s + "}");
                 }
-    
+
                 MetricName metricName = metrics.metricName(template.name(), template.group(), template.description(), tags);
                 String mBeanName = JmxReporter.getMBeanName(domain, metricName);
                 if (!beansAndAttributes.containsKey(mBeanName)) {
@@ -337,7 +336,6 @@ public final class Metrics implements Closeable {
         return sensor(name, null, recordingLevel, (Sensor[]) null);
     }
 
-
     /**
      * Get or create a sensor with the given unique name and zero or more parent sensors. All parent sensors will
      * receive every value recorded with this sensor. This uses a default recording level of INFO.
@@ -372,7 +370,6 @@ public final class Metrics implements Closeable {
     public Sensor sensor(String name, MetricConfig config, Sensor... parents) {
         return this.sensor(name, config, Sensor.RecordingLevel.INFO, parents);
     }
-
 
     /**
      * Get or create a sensor with the given unique name and zero or more parent sensors. All parent sensors will
@@ -661,14 +658,14 @@ public final class Metrics implements Closeable {
         // check to make sure that the runtime defined tags contain all the template tags.
         Set<String> runtimeTagKeys = new HashSet<>(tags.keySet());
         runtimeTagKeys.addAll(config().tags().keySet());
-        
+
         Set<String> templateTagKeys = template.tags();
-        
+
         if (!runtimeTagKeys.equals(templateTagKeys)) {
             throw new IllegalArgumentException("For '" + template.name() + "', runtime-defined metric tags do not match the tags in the template. "
                     + "Runtime = " + runtimeTagKeys + " Template = " + templateTagKeys.toString());
         }
-                
+
         return this.metricName(template.name(), template.group(), template.description(), tags);
     }
 

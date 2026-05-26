@@ -382,7 +382,7 @@ public enum Errors {
     INVALID_UPDATE_VERSION(95, "The given update version was invalid.", InvalidUpdateVersionException::new),
     FEATURE_UPDATE_FAILED(96, "Unable to update finalized features due to an unexpected server error.", FeatureUpdateFailedException::new),
     PRINCIPAL_DESERIALIZATION_FAILURE(97, "Request principal deserialization failed during forwarding. " +
-         "This indicates an internal error on the broker cluster security setup.", PrincipalDeserializationException::new),
+            "This indicates an internal error on the broker cluster security setup.", PrincipalDeserializationException::new),
     SNAPSHOT_NOT_FOUND(98, "Requested snapshot was not found.", SnapshotNotFoundException::new),
     POSITION_OUT_OF_RANGE(99, "Requested position is not greater than or equal to zero, and less than the size of the snapshot.", PositionOutOfRangeException::new),
     UNKNOWN_TOPIC_ID(100, "This server does not host this topic ID.", UnknownTopicIdException::new),

@@ -70,29 +70,28 @@ public class StateQueryRequest<R> {
      */
     public StateQueryRequest<R> withPositionBound(final PositionBound positionBound) {
         return new StateQueryRequest<>(
-            storeName,
-            positionBound,
-            partitions,
-            query,
-            executionInfoEnabled,
-            requireActive,
-            isolationLevel
+                storeName,
+                positionBound,
+                partitions,
+                query,
+                executionInfoEnabled,
+                requireActive,
+                isolationLevel
         );
     }
-
 
     /**
      * Specifies that the query will run against all locally available partitions.
      */
     public StateQueryRequest<R> withAllPartitions() {
         return new StateQueryRequest<>(
-            storeName,
-            position,
-            Optional.empty(),
-            query,
-            executionInfoEnabled,
-            requireActive,
-            isolationLevel
+                storeName,
+                position,
+                Optional.empty(),
+                query,
+                executionInfoEnabled,
+                requireActive,
+                isolationLevel
         );
     }
 
@@ -104,13 +103,13 @@ public class StateQueryRequest<R> {
      */
     public StateQueryRequest<R> withPartitions(final Set<Integer> partitions) {
         return new StateQueryRequest<>(
-            storeName,
-            position,
-            Optional.of(Set.copyOf(partitions)),
-            query,
-            executionInfoEnabled,
-            requireActive,
-            isolationLevel
+                storeName,
+                position,
+                Optional.of(Set.copyOf(partitions)),
+                query,
+                executionInfoEnabled,
+                requireActive,
+                isolationLevel
         );
     }
 
@@ -120,13 +119,13 @@ public class StateQueryRequest<R> {
      */
     public StateQueryRequest<R> enableExecutionInfo() {
         return new StateQueryRequest<>(
-            storeName,
-            position,
-            partitions,
-            query,
-            true,
-            requireActive,
-            isolationLevel
+                storeName,
+                position,
+                partitions,
+                query,
+                true,
+                requireActive,
+                isolationLevel
         );
     }
 
@@ -137,13 +136,13 @@ public class StateQueryRequest<R> {
      */
     public StateQueryRequest<R> requireActive() {
         return new StateQueryRequest<>(
-            storeName,
-            position,
-            partitions,
-            query,
-            executionInfoEnabled,
-            true,
-            isolationLevel
+                storeName,
+                position,
+                partitions,
+                query,
+                executionInfoEnabled,
+                true,
+                isolationLevel
         );
     }
 
@@ -153,13 +152,13 @@ public class StateQueryRequest<R> {
      */
     public StateQueryRequest<R> withIsolationLevel(final IsolationLevel isolationLevel) {
         return new StateQueryRequest<>(
-            storeName,
-            position,
-            partitions,
-            query,
-            executionInfoEnabled,
-            requireActive,
-            Optional.of(isolationLevel)
+                storeName,
+                position,
+                partitions,
+                query,
+                executionInfoEnabled,
+                requireActive,
+                Optional.of(isolationLevel)
         );
     }
 
@@ -200,7 +199,7 @@ public class StateQueryRequest<R> {
     public Set<Integer> getPartitions() {
         if (partitions.isEmpty()) {
             throw new IllegalStateException(
-                "Cannot list partitions of an 'all partitions' request");
+                    "Cannot list partitions of an 'all partitions' request");
         } else {
             return partitions.get();
         }
@@ -244,13 +243,13 @@ public class StateQueryRequest<R> {
          */
         public <R> StateQueryRequest<R> withQuery(final Query<R> query) {
             return new StateQueryRequest<>(
-                name, // name is already specified
-                PositionBound.unbounded(), // default: unbounded
-                Optional.empty(), // default: all partitions
-                query, // the query is specified
-                false, // default: no execution info
-                false, // default: don't require active
-                Optional.empty() // default: no isolation-level override
+                    name, // name is already specified
+                    PositionBound.unbounded(), // default: unbounded
+                    Optional.empty(), // default: all partitions
+                    query, // the query is specified
+                    false, // default: no execution info
+                    false, // default: don't require active
+                    Optional.empty() // default: no isolation-level override
             );
         }
     }

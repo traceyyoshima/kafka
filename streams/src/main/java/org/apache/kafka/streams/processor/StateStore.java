@@ -221,7 +221,7 @@ public interface StateStore {
     @Evolving
     default Position getPosition() {
         throw new UnsupportedOperationException(
-            "getPosition is not implemented by this StateStore (" + getClass() + ")"
+                "getPosition is not implemented by this StateStore (" + getClass() + ")"
         );
     }
 }

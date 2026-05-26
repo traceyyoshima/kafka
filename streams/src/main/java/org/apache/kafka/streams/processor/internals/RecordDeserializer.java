@@ -59,17 +59,17 @@ public class RecordDeserializer {
 
         try {
             return new ConsumerRecord<>(
-                rawRecord.topic(),
-                rawRecord.partition(),
-                rawRecord.offset(),
-                rawRecord.timestamp(),
-                TimestampType.CREATE_TIME,
-                rawRecord.serializedKeySize(),
-                rawRecord.serializedValueSize(),
-                sourceNode.deserializeKey(rawRecord.topic(), rawRecord.headers(), rawRecord.key()),
-                sourceNode.deserializeValue(rawRecord.topic(), rawRecord.headers(), rawRecord.value()),
-                rawRecord.headers(),
-                rawRecord.leaderEpoch()
+                    rawRecord.topic(),
+                    rawRecord.partition(),
+                    rawRecord.offset(),
+                    rawRecord.timestamp(),
+                    TimestampType.CREATE_TIME,
+                    rawRecord.serializedKeySize(),
+                    rawRecord.serializedValueSize(),
+                    sourceNode.deserializeKey(rawRecord.topic(), rawRecord.headers(), rawRecord.key()),
+                    sourceNode.deserializeValue(rawRecord.topic(), rawRecord.headers(), rawRecord.value()),
+                    rawRecord.headers(),
+                    rawRecord.leaderEpoch()
             );
         } catch (final Exception deserializationException) {
             // while Java distinguishes checked vs unchecked exceptions, other languages
@@ -89,32 +89,32 @@ public class RecordDeserializer {
                                                     final String sourceNodeName) {
 
         final DefaultErrorHandlerContext errorHandlerContext = new DefaultErrorHandlerContext(
-            (InternalProcessorContext<?, ?>) processorContext,
-            rawRecord.topic(),
-            rawRecord.partition(),
-            rawRecord.offset(),
-            rawRecord.headers(),
-            sourceNodeName,
-            processorContext.taskId(),
-            rawRecord.timestamp(),
-            rawRecord.key(),
-            rawRecord.value()
+                (InternalProcessorContext<?, ?>) processorContext,
+                rawRecord.topic(),
+                rawRecord.partition(),
+                rawRecord.offset(),
+                rawRecord.headers(),
+                sourceNodeName,
+                processorContext.taskId(),
+                rawRecord.timestamp(),
+                rawRecord.key(),
+                rawRecord.value()
         );
 
         final DeserializationExceptionHandler.Response response;
         try {
             response = Objects.requireNonNull(
-                deserializationExceptionHandler.handleError(errorHandlerContext, rawRecord, deserializationException),
-                "Invalid DeserializationExceptionResponse response."
+                    deserializationExceptionHandler.handleError(errorHandlerContext, rawRecord, deserializationException),
+                    "Invalid DeserializationExceptionResponse response."
             );
         } catch (final Exception fatalUserException) {
             // while Java distinguishes checked vs unchecked exceptions, other languages
             // like Scala or Kotlin do not, and thus we need to catch `Exception`
             // (instead of `RuntimeException`) to work well with those languages
             log.error(
-                "Deserialization error callback failed after deserialization error for record {}",
-                rawRecord,
-                deserializationException
+                    "Deserialization error callback failed after deserialization error for record {}",
+                    rawRecord,
+                    deserializationException
             );
             throw new StreamsException("Fatal user code error in deserialization error callback", fatalUserException);
         }
@@ -135,22 +135,21 @@ public class RecordDeserializer {
 
         if (response.result() == DeserializationExceptionHandler.Result.FAIL) {
             throw new StreamsException("Deserialization exception handler is set to fail upon" +
-                " a deserialization error. If you would rather have the streaming pipeline" +
-                " continue after a deserialization error, please set the " +
-                DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG + " appropriately.",
-                deserializationException);
+                    " a deserialization error. If you would rather have the streaming pipeline" +
+                    " continue after a deserialization error, please set the " +
+                    DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG + " appropriately.",
+                    deserializationException);
         } else {
             log.warn(
-                "Skipping record due to deserialization error. topic=[{}] partition=[{}] offset=[{}]",
-                rawRecord.topic(),
-                rawRecord.partition(),
-                rawRecord.offset(),
-                deserializationException
+                    "Skipping record due to deserialization error. topic=[{}] partition=[{}] offset=[{}]",
+                    rawRecord.topic(),
+                    rawRecord.partition(),
+                    rawRecord.offset(),
+                    deserializationException
             );
             droppedRecordsSensor.record();
         }
     }
-
 
     SourceNode<?, ?> sourceNode() {
         return sourceNode;

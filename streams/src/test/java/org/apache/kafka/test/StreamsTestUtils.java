@@ -105,9 +105,9 @@ public final class StreamsTestUtils {
 
     public static Properties getStreamsConfig(final String applicationId, final Properties additional) {
         return getStreamsConfig(
-            applicationId,
-            "localhost:9091",
-            additional);
+                applicationId,
+                "localhost:9091",
+                additional);
     }
 
     public static Properties getStreamsConfig() {
@@ -165,14 +165,14 @@ public final class StreamsTestUtils {
                                                   final List<String> expectedValues) {
         if (expectedKeys.size() != expectedValues.size()) {
             throw new IllegalArgumentException("expectedKeys and expectedValues should have the same size. " +
-                "expectedKeys size: " + expectedKeys.size() + ", expectedValues size: " + expectedValues.size());
+                    "expectedKeys size: " + expectedKeys.size() + ", expectedValues size: " + expectedValues.size());
         }
 
         for (int i = 0; i < expectedKeys.size(); i++) {
             verifyWindowedKeyValue(
-                iterator.next(),
-                expectedKeys.get(i),
-                expectedValues.get(i)
+                    iterator.next(),
+                    expectedKeys.get(i),
+                    expectedValues.get(i)
             );
         }
         assertFalse(iterator.hasNext());
@@ -196,7 +196,7 @@ public final class StreamsTestUtils {
                     metric = entry.getValue();
                 } else {
                     throw new IllegalStateException(
-                        "Found two metrics with name=[" + name + "]: \n" +
+                            "Found two metrics with name=[" + name + "]: \n" +
                             metric.metricName().toString() +
                             " AND \n" +
                             entry.getKey().toString()
@@ -229,7 +229,7 @@ public final class StreamsTestUtils {
                         metric = entry.getValue();
                     } else {
                         throw new IllegalStateException(
-                            "Found two metrics with name=[" + name + "] and tags=[" + filterTags + "]: \n" +
+                                "Found two metrics with name=[" + name + "] and tags=[" + filterTags + "]: \n" +
                                 metric.metricName().toString() +
                                 " AND \n" +
                                 entry.getKey().toString()

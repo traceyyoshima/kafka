@@ -76,10 +76,10 @@ class GroupedStreamAggregateBuilder<K, V> {
         final String aggFunctionName = functionName.name();
 
         final ProcessorGraphNode<K, V> aggProcessorNode =
-            new ProcessorGraphNode<>(
-                aggFunctionName,
-                new ProcessorParameters<>(aggregateSupplier, aggFunctionName)
-            );
+                new ProcessorGraphNode<>(
+                        aggFunctionName,
+                        new ProcessorParameters<>(aggregateSupplier, aggFunctionName)
+                );
 
         aggProcessorNode.setOutputVersioned(isOutputVersioned);
 
@@ -97,11 +97,11 @@ class GroupedStreamAggregateBuilder<K, V> {
         final String aggFunctionName = functionName.name();
 
         final GracePeriodGraphNode<K, V> gracePeriodAggProcessorNode =
-            new GracePeriodGraphNode<>(
-                aggFunctionName,
-                new ProcessorParameters<>(aggregateSupplier, aggFunctionName),
-                gracePeriod
-            );
+                new GracePeriodGraphNode<>(
+                        aggFunctionName,
+                        new ProcessorParameters<>(aggregateSupplier, aggFunctionName),
+                        gracePeriod
+                );
 
         gracePeriodAggProcessorNode.setOutputVersioned(isOutputVersioned);
 
@@ -117,7 +117,7 @@ class GroupedStreamAggregateBuilder<K, V> {
                                           final Serde<VR> valueSerde) {
         if (!(queryableStoreName == null || queryableStoreName.equals(storeName))) {
             throw new IllegalStateException(String.format("queryableStoreName should be null or equal to storeName"
-                                                              + " but got storeName='%s' and queryableStoreName='%s'",
+                    + " but got storeName='%s' and queryableStoreName='%s'",
                                                           storeName, queryableStoreName));
         }
 

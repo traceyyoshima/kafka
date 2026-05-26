@@ -65,7 +65,7 @@ public class AlterShareGroupOffsetsHandler extends AdminApiHandler.Batched<Coord
     private void validateKeys(Set<CoordinatorKey> groupIds) {
         if (!groupIds.equals(Set.of(groupId))) {
             throw new IllegalArgumentException("Received unexpected group ids " + groupIds +
-                " (expected only " + Set.of(groupId) + ")");
+                    " (expected only " + Set.of(groupId) + ")");
         }
     }
 
@@ -105,22 +105,22 @@ public class AlterShareGroupOffsetsHandler extends AdminApiHandler.Batched<Coord
             final String topLevelErrorMessage = response.data().errorMessage();
 
             offsets.forEach((topicPartition, offset) ->
-                handleError(
-                    groupId,
-                    topicPartition,
-                    topLevelError,
-                    topLevelErrorMessage,
-                    partitionResults,
-                    groupsToUnmap,
-                    groupsToRetry
-                ));
+                    handleError(
+                            groupId,
+                            topicPartition,
+                            topLevelError,
+                            topLevelErrorMessage,
+                            partitionResults,
+                            groupsToUnmap,
+                            groupsToRetry
+                    ));
         } else {
             response.data().responses().forEach(topic -> topic.partitions().forEach(partition -> {
                 final Errors partitionError = Errors.forCode(partition.errorCode());
                 if (partitionError != Errors.NONE) {
                     String errorMessageToLog = partition.errorMessage() == null ? "" : partition.errorMessage();
                     log.debug("AlterShareGroupOffsets request for group id {} and topic-partition {}-{} failed and returned error {}. {}",
-                        groupId.idValue, topic.topicName(), partition.partitionIndex(), partitionError.name(), errorMessageToLog);
+                            groupId.idValue, topic.topicName(), partition.partitionIndex(), partitionError.name(), errorMessageToLog);
                 }
                 partitionResults.put(new TopicPartition(topic.topicName(), partition.partitionIndex()), partitionError.exception(partition.errorMessage()));
             }));

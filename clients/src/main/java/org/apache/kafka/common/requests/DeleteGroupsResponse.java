@@ -71,7 +71,7 @@ public class DeleteGroupsResponse extends AbstractResponse {
     public Map<Errors, Integer> errorCounts() {
         Map<Errors, Integer> counts = new EnumMap<>(Errors.class);
         data.results().forEach(result ->
-            updateErrorCounts(counts, Errors.forCode(result.errorCode()))
+                updateErrorCounts(counts, Errors.forCode(result.errorCode()))
         );
         return counts;
     }

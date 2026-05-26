@@ -228,7 +228,7 @@ public class SnapshotGeneratorTest {
                 build()) {
             for (int i = 0; i < 2; i++) {
                 generator.publishLogDelta(TEST_IMAGE,
-                    logDeltaManifestBuilder().elapsedNs(10000).numBytes(50000).build());
+                        logDeltaManifestBuilder().elapsedNs(10000).numBytes(50000).build());
             }
         }
         assertEquals(List.of(), emitter.images());

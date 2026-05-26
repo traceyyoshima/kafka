@@ -73,7 +73,7 @@ public class SslTransportTls12Tls13Test {
         sslServerConfigs.put(SslConfigs.SSL_ENABLED_PROTOCOLS_CONFIG, Collections.singletonList("TLSv1.3"));
         sslServerConfigs.put(SslConfigs.SSL_CIPHER_SUITES_CONFIG, Collections.singletonList(cipherSuite));
         server = NetworkTestUtils.createEchoServer(ListenerName.forSecurityProtocol(SecurityProtocol.SSL),
-            SecurityProtocol.SSL, new TestSecurityConfig(sslServerConfigs), null, TIME);
+                SecurityProtocol.SSL, new TestSecurityConfig(sslServerConfigs), null, TIME);
 
         sslClientConfigs.put(SslConfigs.SSL_ENABLED_PROTOCOLS_CONFIG, Collections.singletonList("TLSv1.3"));
         sslClientConfigs.put(SslConfigs.SSL_CIPHER_SUITES_CONFIG, Collections.singletonList(cipherSuite));
@@ -93,7 +93,7 @@ public class SslTransportTls12Tls13Test {
         sslServerConfigs.put(SslConfigs.SSL_ENABLED_PROTOCOLS_CONFIG, Collections.singletonList("TLSv1.2"));
         sslServerConfigs.put(SslConfigs.SSL_CIPHER_SUITES_CONFIG, Collections.singletonList(tls12CipherSuite));
         server = NetworkTestUtils.createEchoServer(ListenerName.forSecurityProtocol(SecurityProtocol.SSL),
-            SecurityProtocol.SSL, new TestSecurityConfig(sslServerConfigs), null, TIME);
+                SecurityProtocol.SSL, new TestSecurityConfig(sslServerConfigs), null, TIME);
 
         sslClientConfigs.put(SslConfigs.SSL_PROTOCOL_CONFIG, "TLSv1.3");
         sslClientConfigs.put(SslConfigs.SSL_CIPHER_SUITES_CONFIG, Collections.singletonList(tls13CipherSuite));
@@ -110,7 +110,7 @@ public class SslTransportTls12Tls13Test {
 
         sslServerConfigs.put(SslConfigs.SSL_CIPHER_SUITES_CONFIG, Collections.singletonList(cipherSuite));
         server = NetworkTestUtils.createEchoServer(ListenerName.forSecurityProtocol(SecurityProtocol.SSL),
-            SecurityProtocol.SSL, new TestSecurityConfig(sslServerConfigs), null, TIME);
+                SecurityProtocol.SSL, new TestSecurityConfig(sslServerConfigs), null, TIME);
 
         sslClientConfigs.put(SslConfigs.SSL_CIPHER_SUITES_CONFIG, Collections.singletonList(cipherSuite));
         checkAuthenticationSucceed();
@@ -126,7 +126,7 @@ public class SslTransportTls12Tls13Test {
         sslServerConfigs.put(SslConfigs.SSL_ENABLED_PROTOCOLS_CONFIG, Arrays.asList(SslConfigs.DEFAULT_SSL_ENABLED_PROTOCOLS.split(",")));
         sslServerConfigs.put(SslConfigs.SSL_CIPHER_SUITES_CONFIG, Collections.singletonList(cipherSuite));
         server = NetworkTestUtils.createEchoServer(ListenerName.forSecurityProtocol(SecurityProtocol.SSL),
-            SecurityProtocol.SSL, new TestSecurityConfig(sslServerConfigs), null, TIME);
+                SecurityProtocol.SSL, new TestSecurityConfig(sslServerConfigs), null, TIME);
 
         sslClientConfigs.put(SslConfigs.SSL_ENABLED_PROTOCOLS_CONFIG, Arrays.asList(SslConfigs.DEFAULT_SSL_ENABLED_PROTOCOLS.split(",")));
         sslClientConfigs.put(SslConfigs.SSL_CIPHER_SUITES_CONFIG, Collections.singletonList(cipherSuite));

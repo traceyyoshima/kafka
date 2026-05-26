@@ -87,15 +87,15 @@ public final class NullableSchema extends Schema {
     public String rightBracket() {
         return "}";
     }
-    
+
     @Override
     public String documentation() {
         return "A nullable struct is named by a string with a capitalized first letter and consists of one or more fields. " +
-            "It represents a composite object or null. " +
-            "For non-null values, the first byte has value 1, " +
-            "followed by the serialization of each field in the order they are defined. " +
-            "A null value is encoded as a byte with value -1 and there are no following bytes." +
-            "In protocol documentation a nullable struct containing multiple fields is enclosed by " + 
-            leftBracket() + " and " + rightBracket() + ".";
+                "It represents a composite object or null. " +
+                "For non-null values, the first byte has value 1, " +
+                "followed by the serialization of each field in the order they are defined. " +
+                "A null value is encoded as a byte with value -1 and there are no following bytes." +
+                "In protocol documentation a nullable struct containing multiple fields is enclosed by " +
+                leftBracket() + " and " + rightBracket() + ".";
     }
 }

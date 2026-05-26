@@ -66,10 +66,10 @@ public class GroupMetadataMessageFormatterTest extends CoordinatorRecordMessageF
     @Override
     protected Stream<Arguments> parameters() {
         return Stream.of(
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 2, GROUP_METADATA_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, GROUP_METADATA_VALUE).array(),
-                """
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 2, GROUP_METADATA_KEY).array(),
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 0, GROUP_METADATA_VALUE).array(),
+                        """
                     {"key":{"type":2,"data":{"group":"group-id"}},
                      "value":{"version":0,
                               "data":{"protocolType":"consumer",
@@ -83,11 +83,11 @@ public class GroupMetadataMessageFormatterTest extends CoordinatorRecordMessageF
                                                   "subscription":"AAE=",
                                                   "assignment":"AQI="}]}}}
                 """
-            ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 2, GROUP_METADATA_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 1, GROUP_METADATA_VALUE).array(),
-                """
+                ),
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 2, GROUP_METADATA_KEY).array(),
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 1, GROUP_METADATA_VALUE).array(),
+                        """
                     {"key":{"type":2,"data":{"group":"group-id"}},
                      "value":{"version":1,
                               "data":{"protocolType":"consumer",
@@ -102,11 +102,11 @@ public class GroupMetadataMessageFormatterTest extends CoordinatorRecordMessageF
                                                   "subscription":"AAE=",
                                                   "assignment":"AQI="}]}}}
                 """
-            ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 2, GROUP_METADATA_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 2, GROUP_METADATA_VALUE).array(),
-                """
+                ),
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 2, GROUP_METADATA_KEY).array(),
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 2, GROUP_METADATA_VALUE).array(),
+                        """
                     {"key":{"type":2,"data":{"group":"group-id"}},
                      "value":{"version":2,
                               "data":{"protocolType":"consumer",
@@ -122,11 +122,11 @@ public class GroupMetadataMessageFormatterTest extends CoordinatorRecordMessageF
                                                   "subscription":"AAE=",
                                                   "assignment":"AQI="}]}}}
                 """
-            ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 2, GROUP_METADATA_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 3, GROUP_METADATA_VALUE).array(),
-                """
+                ),
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 2, GROUP_METADATA_KEY).array(),
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 3, GROUP_METADATA_VALUE).array(),
+                        """
                     {"key":{"type":2,"data":{"group":"group-id"}},
                      "value":{"version":3,
                               "data":{"protocolType":"consumer",
@@ -143,11 +143,11 @@ public class GroupMetadataMessageFormatterTest extends CoordinatorRecordMessageF
                                                   "subscription":"AAE=",
                                                   "assignment":"AQI="}]}}}
                 """
-            ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 2, GROUP_METADATA_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 4, GROUP_METADATA_VALUE).array(),
-                """
+                ),
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 2, GROUP_METADATA_KEY).array(),
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 4, GROUP_METADATA_VALUE).array(),
+                        """
                     {"key":{"type":2,"data":{"group":"group-id"}},
                     "value":{"version":4,
                              "data":{"protocolType":"consumer",
@@ -164,30 +164,30 @@ public class GroupMetadataMessageFormatterTest extends CoordinatorRecordMessageF
                                                  "subscription":"AAE=",
                                                  "assignment":"AQI="}]}}}
                 """
-            ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 2, GROUP_METADATA_KEY).array(),
-                null,
-                """
+                ),
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 2, GROUP_METADATA_KEY).array(),
+                        null,
+                        """
                     {"key":{"type":2,"data":{"group":"group-id"}},"value":null}
                 """
-            ),
-            Arguments.of(
-                null,
-                MessageUtil.toVersionPrefixedByteBuffer((short) 4, GROUP_METADATA_VALUE).array(),
-                ""
-            ),
-            Arguments.of(null, null, ""),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, OFFSET_COMMIT_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, OFFSET_COMMIT_VALUE).array(),
-                ""
-            ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer(Short.MAX_VALUE, OFFSET_COMMIT_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, OFFSET_COMMIT_VALUE).array(),
-                ""
-            )
+                ),
+                Arguments.of(
+                        null,
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 4, GROUP_METADATA_VALUE).array(),
+                        ""
+                ),
+                Arguments.of(null, null, ""),
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 0, OFFSET_COMMIT_KEY).array(),
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 0, OFFSET_COMMIT_VALUE).array(),
+                        ""
+                ),
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer(Short.MAX_VALUE, OFFSET_COMMIT_KEY).array(),
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 0, OFFSET_COMMIT_VALUE).array(),
+                        ""
+                )
         );
     }
 }

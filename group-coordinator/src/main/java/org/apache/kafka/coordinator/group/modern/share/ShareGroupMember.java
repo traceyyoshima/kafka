@@ -63,8 +63,8 @@ public class ShareGroupMember extends ModernGroupMember {
 
         public Builder(ShareGroupMember member) {
             this(
-                Objects.requireNonNull(member),
-                member.memberId
+                    Objects.requireNonNull(member),
+                    member.memberId
             );
         }
 
@@ -157,15 +157,15 @@ public class ShareGroupMember extends ModernGroupMember {
 
         public ShareGroupMember build() {
             return new ShareGroupMember(
-                memberId,
-                memberEpoch,
-                previousMemberEpoch,
-                rackId,
-                clientId,
-                clientHost,
-                subscribedTopicNames,
-                state,
-                assignedPartitions
+                    memberId,
+                    memberEpoch,
+                    previousMemberEpoch,
+                    rackId,
+                    clientId,
+                    clientHost,
+                    subscribedTopicNames,
+                    state,
+                    assignedPartitions
             );
         }
     }
@@ -187,15 +187,15 @@ public class ShareGroupMember extends ModernGroupMember {
           Map<Uuid, Set<Integer>> assignedPartitions
     ) {
         super(
-            memberId,
-            memberEpoch,
-            previousMemberEpoch,
-            null,
-            rackId,
-            clientId,
-            clientHost,
-            subscribedTopicNames,
-            state
+                memberId,
+                memberEpoch,
+                previousMemberEpoch,
+                null,
+                rackId,
+                clientId,
+                clientHost,
+                subscribedTopicNames,
+                state
         );
         this.assignedPartitions = assignedPartitions;
     }
@@ -257,14 +257,14 @@ public class ShareGroupMember extends ModernGroupMember {
         if (o == null || getClass() != o.getClass()) return false;
         ShareGroupMember that = (ShareGroupMember) o;
         return memberEpoch == that.memberEpoch
-            && previousMemberEpoch == that.previousMemberEpoch
-            && state == that.state
-            && Objects.equals(memberId, that.memberId)
-            && Objects.equals(rackId, that.rackId)
-            && Objects.equals(clientId, that.clientId)
-            && Objects.equals(clientHost, that.clientHost)
-            && Objects.equals(subscribedTopicNames, that.subscribedTopicNames)
-            && Objects.equals(assignedPartitions, that.assignedPartitions);
+                && previousMemberEpoch == that.previousMemberEpoch
+                && state == that.state
+                && Objects.equals(memberId, that.memberId)
+                && Objects.equals(rackId, that.rackId)
+                && Objects.equals(clientId, that.clientId)
+                && Objects.equals(clientHost, that.clientHost)
+                && Objects.equals(subscribedTopicNames, that.subscribedTopicNames)
+                && Objects.equals(assignedPartitions, that.assignedPartitions);
     }
 
     @Override
@@ -284,15 +284,15 @@ public class ShareGroupMember extends ModernGroupMember {
     @Override
     public String toString() {
         return "ShareGroupMember(" +
-            "memberId='" + memberId + '\'' +
-            ", memberEpoch=" + memberEpoch + '\'' +
-            ", previousMemberEpoch=" + previousMemberEpoch + '\'' +
-            ", state='" + state + '\'' +
-            ", rackId='" + rackId + '\'' +
-            ", clientId='" + clientId + '\'' +
-            ", clientHost='" + clientHost + '\'' +
-            ", subscribedTopicNames=" + subscribedTopicNames + '\'' +
-            ", assignedPartitions=" + assignedPartitions +
-            ')';
+                "memberId='" + memberId + '\'' +
+                ", memberEpoch=" + memberEpoch + '\'' +
+                ", previousMemberEpoch=" + previousMemberEpoch + '\'' +
+                ", state='" + state + '\'' +
+                ", rackId='" + rackId + '\'' +
+                ", clientId='" + clientId + '\'' +
+                ", clientHost='" + clientHost + '\'' +
+                ", subscribedTopicNames=" + subscribedTopicNames + '\'' +
+                ", assignedPartitions=" + assignedPartitions +
+                ')';
     }
 }

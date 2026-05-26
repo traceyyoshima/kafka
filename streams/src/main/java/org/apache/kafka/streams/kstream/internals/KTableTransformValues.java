@@ -66,8 +66,8 @@ class KTableTransformValues<K, V, VOut> implements KTableProcessorSupplier<K, V,
 
             public KTableValueGetter<K, VOut> get() {
                 return new KTableTransformValuesGetter(
-                    parentValueGetterSupplier.get(),
-                    transformerSupplier.get());
+                        parentValueGetterSupplier.get(),
+                        transformerSupplier.get());
             }
 
             @Override
@@ -107,10 +107,10 @@ class KTableTransformValues<K, V, VOut> implements KTableProcessorSupplier<K, V,
             if (queryableName != null) {
                 store = new KeyValueStoreWrapper<>(context, queryableName);
                 tupleForwarder = new TimestampedTupleForwarder<>(
-                    store.store(),
-                    context,
-                    store.isHeadersStore() ? new TimestampedCacheFlushListenerWithHeaders<>(context) : new TimestampedCacheFlushListener<>(context),
-                    sendOldValues);
+                        store.store(),
+                        context,
+                        store.isHeadersStore() ? new TimestampedCacheFlushListenerWithHeaders<>(context) : new TimestampedCacheFlushListener<>(context),
+                        sendOldValues);
             }
         }
 
@@ -136,7 +136,6 @@ class KTableTransformValues<K, V, VOut> implements KTableProcessorSupplier<K, V,
             valueTransformer.close();
         }
     }
-
 
     private class KTableTransformValuesGetter implements KTableValueGetter<K, VOut> {
         private final KTableValueGetter<K, V> parentGetter;
@@ -181,21 +180,21 @@ class KTableTransformValues<K, V, VOut> implements KTableProcessorSupplier<K, V,
             final ProcessorRecordContext currentContext = internalProcessorContext.recordContext();
 
             internalProcessorContext.setRecordContext(new ProcessorRecordContext(
-                valueTimestampHeaders == null ? UNKNOWN : valueTimestampHeaders.timestamp(),
-                -1L, // we don't know the original offset
-                // technically, we know the partition, but in the new `api.Processor` class,
-                // we move to `RecordMetadata` than would be `null` for this case and thus
-                // we won't have the partition information, so it's better to not provide it
-                // here either, to not introduce a regression later on
-                -1,
-                null, // we don't know the upstream input topic
-                valueTimestampHeaders == null ? new RecordHeaders() : valueTimestampHeaders.headers()
+                    valueTimestampHeaders == null ? UNKNOWN : valueTimestampHeaders.timestamp(),
+                    -1L, // we don't know the original offset
+                    // technically, we know the partition, but in the new `api.Processor` class,
+                    // we move to `RecordMetadata` than would be `null` for this case and thus
+                    // we won't have the partition information, so it's better to not provide it
+                    // here either, to not introduce a regression later on
+                    -1,
+                    null, // we don't know the upstream input topic
+                    valueTimestampHeaders == null ? new RecordHeaders() : valueTimestampHeaders.headers()
             ));
 
             final ValueTimestampHeaders<VOut> result = ValueTimestampHeaders.make(
-                valueTransformer.transform(key, getValueOrNull(valueTimestampHeaders)),
-                valueTimestampHeaders == null ? UNKNOWN : valueTimestampHeaders.timestamp(),
-                valueTimestampHeaders == null ? currentContext.headers() : valueTimestampHeaders.headers()
+                    valueTransformer.transform(key, getValueOrNull(valueTimestampHeaders)),
+                    valueTimestampHeaders == null ? UNKNOWN : valueTimestampHeaders.timestamp(),
+                    valueTimestampHeaders == null ? currentContext.headers() : valueTimestampHeaders.headers()
                 );
 
             internalProcessorContext.setRecordContext(currentContext);

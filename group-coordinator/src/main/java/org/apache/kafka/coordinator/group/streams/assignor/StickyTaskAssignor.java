@@ -38,7 +38,6 @@ public class StickyTaskAssignor implements TaskAssignor {
 
     private LocalState localState;
 
-
     @Override
     public String name() {
         return STICKY_ASSIGNOR_NAME;
@@ -52,7 +51,7 @@ public class StickyTaskAssignor implements TaskAssignor {
     @Override
     public GroupAssignment assign(final GroupSpec groupSpec, final TopologyDescriber topologyDescriber) throws TaskAssignorException {
         initialize(groupSpec, topologyDescriber);
-        final GroupAssignment assignments =  doAssign(groupSpec, topologyDescriber);
+        final GroupAssignment assignments = doAssign(groupSpec, topologyDescriber);
         localState = null;
         return assignments;
     }
@@ -85,7 +84,7 @@ public class StickyTaskAssignor implements TaskAssignor {
     private void initialize(final GroupSpec groupSpec, final TopologyDescriber topologyDescriber) {
         localState = new LocalState();
         localState.numStandbyReplicas =
-            groupSpec.assignmentConfigs().isEmpty() ? 0
+                groupSpec.assignmentConfigs().isEmpty() ? 0
                 : Integer.parseInt(groupSpec.assignmentConfigs().get("num.standby.replicas"));
 
         // Helpers for computing active tasks per member, and tasks per member
@@ -318,7 +317,7 @@ public class StickyTaskAssignor implements TaskAssignor {
 
     private void assignStandby(final LinkedList<TaskId> standbyTasks) {
         final ArrayList<StandbyToAssign> toLeastLoaded = new ArrayList<>(standbyTasks.size() * localState.numStandbyReplicas);
-        
+
         // Assuming our current assignment is range-based, we want to sort by partition first.
         standbyTasks.sort(Comparator.comparing(TaskId::partition).thenComparing(TaskId::subtopologyId).reversed());
 
@@ -366,7 +365,7 @@ public class StickyTaskAssignor implements TaskAssignor {
                 if (!assignStandbyToMemberWithLeastLoad(processByLoad, toAssign.taskId)) {
                     log.warn("{} There is not enough available capacity. " +
                             "You should increase the number of threads and/or application instances to maintain the requested number of standby replicas.",
-                        errorMessage(localState.numStandbyReplicas, i, toAssign.taskId));
+                            errorMessage(localState.numStandbyReplicas, i, toAssign.taskId));
                     break;
                 }
             }
@@ -375,7 +374,7 @@ public class StickyTaskAssignor implements TaskAssignor {
 
     private String errorMessage(final int numStandbyReplicas, final int i, final TaskId task) {
         return "Unable to assign " + (numStandbyReplicas - i) +
-            " of " + numStandbyReplicas + " standby tasks for task [" + task + "].";
+                " of " + numStandbyReplicas + " standby tasks for task [" + task + "].";
     }
 
     private static int computeTasksPerMember(final int numberOfTasks, final int numberOfMembers) {

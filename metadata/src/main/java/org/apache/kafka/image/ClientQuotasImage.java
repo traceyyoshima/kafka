@@ -113,34 +113,34 @@ public final class ClientQuotasImage {
             if (component.entityType().isEmpty()) {
                 throw new InvalidRequestException("Invalid empty entity type.");
             } else if (exactMatch.containsKey(component.entityType()) ||
-                typeMatch.contains(component.entityType())) {
+                    typeMatch.contains(component.entityType())) {
                 throw new InvalidRequestException("Entity type " + component.entityType() +
-                    " cannot appear more than once in the filter.");
+                        " cannot appear more than once in the filter.");
             }
             if (!(component.entityType().equals(IP) || component.entityType().equals(USER) ||
-                component.entityType().equals(CLIENT_ID))) {
+                    component.entityType().equals(CLIENT_ID))) {
                 throw new UnsupportedVersionException("Unsupported entity type " +
-                    component.entityType());
+                        component.entityType());
             }
             switch (component.matchType()) {
                 case MATCH_TYPE_EXACT:
                     if (component.match() == null) {
                         throw new InvalidRequestException("Request specified " +
-                            "MATCH_TYPE_EXACT, but set match string to null.");
+                                "MATCH_TYPE_EXACT, but set match string to null.");
                     }
                     exactMatch.put(component.entityType(), component.match());
                     break;
                 case MATCH_TYPE_DEFAULT:
                     if (component.match() != null) {
                         throw new InvalidRequestException("Request specified " +
-                            "MATCH_TYPE_DEFAULT, but also specified a match string.");
+                                "MATCH_TYPE_DEFAULT, but also specified a match string.");
                     }
                     exactMatch.put(component.entityType(), null);
                     break;
                 case MATCH_TYPE_SPECIFIED:
                     if (component.match() != null) {
                         throw new InvalidRequestException("Request specified " +
-                            "MATCH_TYPE_SPECIFIED, but also specified a match string.");
+                                "MATCH_TYPE_SPECIFIED, but also specified a match string.");
                     }
                     typeMatch.add(component.entityType());
                     break;
@@ -150,10 +150,10 @@ public final class ClientQuotasImage {
         }
         if (exactMatch.containsKey(IP) || typeMatch.contains(IP)) {
             if ((exactMatch.containsKey(USER) || typeMatch.contains(USER)) ||
-                (exactMatch.containsKey(CLIENT_ID) || typeMatch.contains(CLIENT_ID))) {
+                    (exactMatch.containsKey(CLIENT_ID) || typeMatch.contains(CLIENT_ID))) {
                 throw new InvalidRequestException("Invalid entity filter component " +
-                    "combination. IP filter component should not be used with " +
-                    "user or clientId filter component.");
+                        "combination. IP filter component should not be used with " +
+                        "user or clientId filter component.");
             }
         }
 

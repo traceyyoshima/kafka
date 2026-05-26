@@ -30,7 +30,6 @@ class LRUCacheEntry {
     private final long sizeBytes;
     private boolean isDirty;
 
-
     LRUCacheEntry(final byte[] value) {
         this(value, new RecordHeaders(), false, -1, -1, -1, "", null, null);
     }
@@ -45,23 +44,23 @@ class LRUCacheEntry {
                   final byte[] rawKey,
                   final byte[] rawValue) {
         final ProcessorRecordContext context = new ProcessorRecordContext(
-            timestamp,
-            offset,
-            partition,
-            topic,
-            headers,
-            rawKey,
-            rawValue
+                timestamp,
+                offset,
+                partition,
+                topic,
+                headers,
+                rawKey,
+                rawValue
         );
 
         this.record = new ContextualRecord(
-            value,
-            context
+                value,
+                context
         );
 
         this.isDirty = isDirty;
         this.sizeBytes = 1 + // isDirty
-            record.residentMemorySizeEstimate();
+                record.residentMemorySizeEstimate();
     }
 
     void markClean() {
@@ -94,8 +93,8 @@ class LRUCacheEntry {
         }
         final LRUCacheEntry that = (LRUCacheEntry) o;
         return sizeBytes == that.sizeBytes &&
-            isDirty() == that.isDirty() &&
-            Objects.equals(record, that.record);
+                isDirty() == that.isDirty() &&
+                Objects.equals(record, that.record);
     }
 
     @Override

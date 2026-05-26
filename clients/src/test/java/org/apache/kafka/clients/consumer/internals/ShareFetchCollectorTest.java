@@ -364,7 +364,6 @@ public class ShareFetchCollectorTest {
         return errors.stream().map(Arguments::of);
     }
 
-
     /**
      * Supplies the {@link Arguments} to {@link #testErrorInInitialize(RuntimeException)}.
      */

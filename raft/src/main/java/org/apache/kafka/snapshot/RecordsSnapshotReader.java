@@ -65,15 +65,15 @@ public final class RecordsSnapshotReader<T> implements SnapshotReader<T> {
         if (lastContainedLogTimestamp.isEmpty()) {
             nextBatch.ifPresent(batch -> {
                 throw new IllegalStateException(
-                    String.format(
-                        "nextBatch was present when last contained log timestamp was not present: Batch(baseOffset=%d" +
-                        ", epoch=%d, appendTimestamp=%d, sizeInBytes=%d, lastOffset=%d)",
-                        batch.baseOffset(),
-                        batch.epoch(),
-                        batch.appendTimestamp(),
-                        batch.sizeInBytes(),
-                        batch.lastOffset()
-                    )
+                        String.format(
+                                "nextBatch was present when last contained log timestamp was not present: Batch(baseOffset=%d" +
+                                ", epoch=%d, appendTimestamp=%d, sizeInBytes=%d, lastOffset=%d)",
+                                batch.baseOffset(),
+                                batch.epoch(),
+                                batch.appendTimestamp(),
+                                batch.sizeInBytes(),
+                                batch.lastOffset()
+                        )
                 );
             });
             nextBatch = nextBatch();
@@ -117,8 +117,8 @@ public final class RecordsSnapshotReader<T> implements SnapshotReader<T> {
         LogContext logContext
     ) {
         return new RecordsSnapshotReader<>(
-            snapshot.snapshotId(),
-            new RecordsIterator<>(snapshot.records(), serde, bufferSupplier, maxBatchSize, doCrcValidation, logContext)
+                snapshot.snapshotId(),
+                new RecordsIterator<>(snapshot.records(), serde, bufferSupplier, maxBatchSize, doCrcValidation, logContext)
         );
     }
 
@@ -134,19 +134,19 @@ public final class RecordsSnapshotReader<T> implements SnapshotReader<T> {
                 // the snapshot header.
                 if (batch.controlRecords().isEmpty()) {
                     throw new IllegalStateException(
-                        "First batch is not a control batch with at least one record"
+                            "First batch is not a control batch with at least one record"
                     );
                 } else if (ControlRecordType.SNAPSHOT_HEADER != batch.controlRecords().get(0).type()) {
                     throw new IllegalStateException(
-                        String.format(
-                            "First control record is not a snapshot header (%s)",
-                            batch.controlRecords().get(0).type()
-                        )
+                            String.format(
+                                    "First control record is not a snapshot header (%s)",
+                                    batch.controlRecords().get(0).type()
+                            )
                     );
                 }
 
                 lastContainedLogTimestamp = OptionalLong.of(
-                    ((SnapshotHeaderRecord) batch.controlRecords().get(0).message()).lastContainedLogTimestamp()
+                        ((SnapshotHeaderRecord) batch.controlRecords().get(0).message()).lastContainedLogTimestamp()
                 );
             }
 

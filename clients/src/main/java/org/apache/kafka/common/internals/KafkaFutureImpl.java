@@ -106,7 +106,6 @@ public class KafkaFutureImpl<T> extends KafkaFuture<T> {
         return new KafkaFutureImpl<>(true, toKafkaCompletableFuture(tCompletableFuture));
     }
 
-
     @Override
     public boolean complete(T newValue) {
         return completableFuture.kafkaComplete(newValue);
@@ -258,7 +257,7 @@ public class KafkaFutureImpl<T> extends KafkaFuture<T> {
             // see https://bugs.openjdk.org/browse/JDK-8331987
             if (e.getCause() instanceof CancellationException) {
                 exception = e.getCause();
-            } else { 
+            } else {
                 exception = e;
             }
         } catch (CompletionException e) {

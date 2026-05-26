@@ -80,7 +80,7 @@ final class ClusterConnectionStates {
             return true;
         else
             return state.state.isDisconnected() &&
-                   now - state.lastConnectAttemptMs >= state.reconnectBackoffMs;
+                    now - state.lastConnectAttemptMs >= state.reconnectBackoffMs;
     }
 
     /**
@@ -557,11 +557,11 @@ final class ClusterConnectionStates {
 
         public String toString() {
             return "NodeConnectionState(" +
-                "state=" + state + ", " +
-                "lastConnectAttemptMs=" + lastConnectAttemptMs + ", " +
-                "failedAttempts=" + failedAttempts + ", " +
-                "failedConnectAttempts=" + failedConnectAttempts + ", " +
-                "throttleUntilTimeMs=" + throttleUntilTimeMs + ")";
+                    "state=" + state + ", " +
+                    "lastConnectAttemptMs=" + lastConnectAttemptMs + ", " +
+                    "failedAttempts=" + failedAttempts + ", " +
+                    "failedConnectAttempts=" + failedConnectAttempts + ", " +
+                    "throttleUntilTimeMs=" + throttleUntilTimeMs + ")";
         }
     }
 }

@@ -92,7 +92,7 @@ public class ConsumerMetadataTest {
         topics.add(topicMetadata("non_matching_topic", false));
 
         MetadataResponse response = RequestTestUtils.metadataResponse(singletonList(node),
-            "clusterId", node.id(), topics);
+                "clusterId", node.id(), topics);
         metadata.updateWithCurrentRequestVersion(response, false, time.milliseconds());
 
         if (includeInternalTopics)
@@ -249,7 +249,7 @@ public class ConsumerMetadataTest {
             topics.add(topicMetadata(expectedInternalTopic, true));
 
         MetadataResponse response = RequestTestUtils.metadataResponse(singletonList(node),
-            "clusterId", node.id(), topics);
+                "clusterId", node.id(), topics);
         metadata.updateWithCurrentRequestVersion(response, false, time.milliseconds());
 
         assertEquals(allTopics, metadata.fetch().topics());
@@ -305,7 +305,6 @@ public class ConsumerMetadataTest {
                 updatedCluster.controller(),
                 metadata.topicIds());
     }
-
 
     @Test
     public void testValidPartitionLeadershipUpdate() {

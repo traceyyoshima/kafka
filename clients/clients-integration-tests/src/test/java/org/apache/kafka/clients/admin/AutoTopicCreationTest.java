@@ -32,12 +32,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class AutoTopicCreationTest {
 
     @ClusterTest(
-        serverProperties = {
-            @ClusterConfigProperty(id = 0, key = "num.partitions", value = "5"),
-            @ClusterConfigProperty(id = 0, key = "default.replication.factor", value = "2"),
-            @ClusterConfigProperty(id = 1, key = "num.partitions", value = "5"),
-            @ClusterConfigProperty(id = 1, key = "default.replication.factor", value = "2"),
-        }
+            serverProperties = {
+                @ClusterConfigProperty(id = 0, key = "num.partitions", value = "5"),
+                @ClusterConfigProperty(id = 0, key = "default.replication.factor", value = "2"),
+                @ClusterConfigProperty(id = 1, key = "num.partitions", value = "5"),
+                @ClusterConfigProperty(id = 1, key = "default.replication.factor", value = "2"),
+            }
     )
     public void testAutoCreateTopicWithExplicitBrokerConfig(ClusterInstance cluster) throws Exception {
         String topic = "explicit-broker-topic";
@@ -45,17 +45,17 @@ public class AutoTopicCreationTest {
         try (Admin admin = cluster.admin()) {
             TopicDescription desc = admin.describeTopics(List.of(topic)).allTopicNames().get().get(topic);
             assertEquals(5, desc.partitions().size(),
-                "num.partitions explicitly set on broker should be used");
+                    "num.partitions explicitly set on broker should be used");
             assertEquals(2, desc.partitions().get(0).replicas().size(),
-                "default.replication.factor explicitly set on broker should be used");
+                    "default.replication.factor explicitly set on broker should be used");
         }
     }
 
     @ClusterTest(
-        serverProperties = {
-            @ClusterConfigProperty(id = 3000, key = "num.partitions", value = "5"),
-            @ClusterConfigProperty(id = 3000, key = "default.replication.factor", value = "2"),
-        }
+            serverProperties = {
+                @ClusterConfigProperty(id = 3000, key = "num.partitions", value = "5"),
+                @ClusterConfigProperty(id = 3000, key = "default.replication.factor", value = "2"),
+            }
     )
     public void testAutoCreateTopicWithImplicitBrokerConfig(ClusterInstance cluster) throws Exception {
         String topic = "implicit-broker-topic";
@@ -63,18 +63,18 @@ public class AutoTopicCreationTest {
         try (Admin admin = cluster.admin()) {
             TopicDescription desc = admin.describeTopics(List.of(topic)).allTopicNames().get().get(topic);
             assertEquals(5, desc.partitions().size(),
-                "Controller num.partitions should be used when broker does not explicitly set it");
+                    "Controller num.partitions should be used when broker does not explicitly set it");
             assertEquals(2, desc.partitions().get(0).replicas().size(),
-                "Controller default.replication.factor should be used when broker does not explicitly set it");
+                    "Controller default.replication.factor should be used when broker does not explicitly set it");
         }
     }
 
     @ClusterTest(
-        serverProperties = {
-            @ClusterConfigProperty(id = 0, key = "num.partitions", value = "5"),
-            @ClusterConfigProperty(id = 1, key = "num.partitions", value = "5"),
-            @ClusterConfigProperty(id = 3000, key = "default.replication.factor", value = "2"),
-        }
+            serverProperties = {
+                @ClusterConfigProperty(id = 0, key = "num.partitions", value = "5"),
+                @ClusterConfigProperty(id = 1, key = "num.partitions", value = "5"),
+                @ClusterConfigProperty(id = 3000, key = "default.replication.factor", value = "2"),
+            }
     )
     public void testAutoCreateTopicWithMixedConfig(ClusterInstance cluster) throws Exception {
         String topic = "mixed-config-topic";
@@ -82,9 +82,9 @@ public class AutoTopicCreationTest {
         try (Admin admin = cluster.admin()) {
             TopicDescription desc = admin.describeTopics(List.of(topic)).allTopicNames().get().get(topic);
             assertEquals(5, desc.partitions().size(),
-                "num.partitions explicitly set on broker should be used");
+                    "num.partitions explicitly set on broker should be used");
             assertEquals(2, desc.partitions().get(0).replicas().size(),
-                "Controller default.replication.factor should be used when broker does not set it");
+                    "Controller default.replication.factor should be used when broker does not set it");
         }
     }
 
@@ -95,9 +95,9 @@ public class AutoTopicCreationTest {
         try (Admin admin = cluster.admin()) {
             TopicDescription desc = admin.describeTopics(List.of(topic)).allTopicNames().get().get(topic);
             assertEquals(1, desc.partitions().size(),
-                "Default num.partitions of 1 should be used when neither broker nor controller sets it");
+                    "Default num.partitions of 1 should be used when neither broker nor controller sets it");
             assertEquals(1, desc.partitions().get(0).replicas().size(),
-                "Default default.replication.factor of 1 should be used when neither broker nor controller sets it");
+                    "Default default.replication.factor of 1 should be used when neither broker nor controller sets it");
         }
     }
 
@@ -105,7 +105,7 @@ public class AutoTopicCreationTest {
         // Sends a produce request to a non-existent topic so that auto topic creation is triggered.
         try (Producer<byte[], byte[]> producer = cluster.producer()) {
             ProducerRecord<byte[], byte[]> record =
-                new ProducerRecord<>(topic, null, "key".getBytes(), "value".getBytes());
+                    new ProducerRecord<>(topic, null, "key".getBytes(), "value".getBytes());
             producer.send(record).get();
         }
     }

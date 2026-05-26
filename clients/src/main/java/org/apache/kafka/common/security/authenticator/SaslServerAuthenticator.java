@@ -206,7 +206,7 @@ public class SaslServerAuthenticator implements Authenticator {
         } else {
             try {
                 saslServer = SecurityManagerCompatibility.get().callAs(subject, () ->
-                    Sasl.createSaslServer(saslMechanism, "kafka", serverAddress().getHostName(), configs, callbackHandler));
+                        Sasl.createSaslServer(saslMechanism, "kafka", serverAddress().getHostName(), configs, callbackHandler));
                 if (saslServer == null) {
                     throw new SaslException("Kafka Server failed to create a SaslServer to interact with a client during session authentication with server mechanism " + saslMechanism);
                 }
@@ -540,7 +540,7 @@ public class SaslServerAuthenticator implements Authenticator {
                 // If it's the initial request, this could be an ancient client (see method documentation for more details),
                 // a client configured with the wrong security protocol or a non kafka-client altogether (eg http client).
                 throw new InvalidRequestException("Invalid request, potential reasons: kafka client configured with the " +
-                    "wrong security protocol, it does not support KIP-43 or it is not a kafka client.", e);
+                        "wrong security protocol, it does not support KIP-43 or it is not a kafka client.", e);
             }
             throw e;
         }
@@ -579,7 +579,7 @@ public class SaslServerAuthenticator implements Authenticator {
             sendKafkaResponse(context, apiVersionsRequest.getErrorResponse(0, Errors.INVALID_REQUEST.exception()));
         else {
             metadataRegistry.registerClientInformation(new ClientInformation(apiVersionsRequest.data().clientSoftwareName(),
-                apiVersionsRequest.data().clientSoftwareVersion()));
+                    apiVersionsRequest.data().clientSoftwareVersion()));
             sendKafkaResponse(context, apiVersionSupplier.apply(apiVersionsRequest.version()));
             setSaslState(SaslState.HANDSHAKE_REQUEST);
         }
@@ -715,6 +715,6 @@ public class SaslServerAuthenticator implements Authenticator {
 
         private long zeroIfNegative(long value) {
             return Math.max(0L, value);
-        }        
+        }
     }
 }

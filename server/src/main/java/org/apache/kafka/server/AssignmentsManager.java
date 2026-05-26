@@ -154,12 +154,12 @@ public final class AssignmentsManager {
         Function<Uuid, String> directoryIdToDescription
     ) {
         this(STANDARD_BACKOFF,
-            time,
-            channelManager,
-            nodeId,
-            metadataImageSupplier,
-            directoryIdToDescription,
-            KafkaYammerMetrics.defaultRegistry());
+                time,
+                channelManager,
+                nodeId,
+                metadataImageSupplier,
+                directoryIdToDescription,
+                KafkaYammerMetrics.defaultRegistry());
     }
 
     AssignmentsManager(
@@ -196,9 +196,9 @@ public final class AssignmentsManager {
         });
         this.previousGlobalFailures = 0;
         this.eventQueue = new KafkaEventQueue(time,
-            new LogContext("[AssignmentsManager id=" + nodeId + "]"),
-            "broker-" + nodeId + "-directory-assignments-manager-",
-            new ShutdownEvent());
+                new LogContext("[AssignmentsManager id=" + nodeId + "]"),
+                "broker-" + nodeId + "-directory-assignments-manager-",
+                new ShutdownEvent());
         channelManager.start();
     }
 
@@ -225,20 +225,20 @@ public final class AssignmentsManager {
                 getTopic(assignment.topicIdPartition().topicId())).
                     map(TopicImage::name).orElse(assignment.topicIdPartition().topicId().toString());
             log.trace("Registered assignment {}: {}, moving {}-{} into {}",
-                assignment,
-                reason,
-                topicDescription,
-                topicIdPartition.partitionId(),
-                directoryIdToDescription.apply(assignment.directoryId()));
+                    assignment,
+                    reason,
+                    topicDescription,
+                    topicIdPartition.partitionId(),
+                    directoryIdToDescription.apply(assignment.directoryId()));
         }
         rescheduleMaybeSendAssignmentsEvent(nowNs);
     }
 
     void rescheduleMaybeSendAssignmentsEvent(long nowNs) {
         eventQueue.scheduleDeferred(MAYBE_SEND_ASSIGNMENTS_EVENT,
-            new AssignmentsManagerDeadlineFunction(backoff,
-                nowNs, previousGlobalFailures, !inflight.isEmpty(), ready.size()),
-            new MaybeSendAssignmentsEvent());
+                new AssignmentsManagerDeadlineFunction(backoff,
+                        nowNs, previousGlobalFailures, !inflight.isEmpty(), ready.size()),
+                new MaybeSendAssignmentsEvent());
     }
 
     /**
@@ -333,14 +333,14 @@ public final class AssignmentsManager {
         }
         if (inflightSize > 0) {
             log.trace("maybeSendAssignments: cannot send new assignments because there are " +
-                "{} still in flight.", inflightSize);
+                    "{} still in flight.", inflightSize);
             return;
         }
         MetadataImage image = metadataImageSupplier.get();
         Map<TopicIdPartition, Assignment> newInFlight = new HashMap<>();
         int numInvalid = 0;
         for (Iterator<Assignment> iterator = ready.values().iterator();
-             iterator.hasNext() && newInFlight.size() < MAX_ASSIGNMENTS_PER_REQUEST;
+            iterator.hasNext() && newInFlight.size() < MAX_ASSIGNMENTS_PER_REQUEST;
              ) {
             Assignment assignment = iterator.next();
             iterator.remove();
@@ -351,7 +351,7 @@ public final class AssignmentsManager {
             }
         }
         log.info("maybeSendAssignments: sending {} assignments; invalidated {} assignments " +
-            "prior to sending.", newInFlight.size(), numInvalid);
+                "prior to sending.", newInFlight.size(), numInvalid);
         if (!newInFlight.isEmpty()) {
             sendAssignments(image.cluster().brokerEpoch(nodeId), newInFlight);
         }
@@ -360,8 +360,8 @@ public final class AssignmentsManager {
     void sendAssignments(long brokerEpoch, Map<TopicIdPartition, Assignment> newInflight) {
         CompletionHandler completionHandler = new CompletionHandler(newInflight);
         channelManager.sendRequest(new AssignReplicasToDirsRequest.Builder(
-            buildRequestData(nodeId, brokerEpoch, newInflight)),
-            completionHandler);
+                buildRequestData(nodeId, brokerEpoch, newInflight)),
+                completionHandler);
         inflight = newInflight;
     }
 
@@ -374,19 +374,19 @@ public final class AssignmentsManager {
         if (globalResponseError.isPresent()) {
             previousGlobalFailures++;
             log.error("handleResponse: {} assignments failed; global error: {}. Retrying.",
-                sent.size(), globalResponseError.get());
+                    sent.size(), globalResponseError.get());
             sent.forEach(ready::putIfAbsent);
             return;
         }
         previousGlobalFailures = 0;
         AssignReplicasToDirsResponseData responseData =
-            ((AssignReplicasToDirsResponse) assignmentResponse.get().responseBody()).data();
+                ((AssignReplicasToDirsResponse) assignmentResponse.get().responseBody()).data();
         long nowNs = time.nanoseconds();
         for (AssignReplicasToDirsResponseData.DirectoryData directoryData : responseData.directories()) {
             for (AssignReplicasToDirsResponseData.TopicData topicData : directoryData.topics()) {
                 for (AssignReplicasToDirsResponseData.PartitionData partitionData : topicData.partitions()) {
                     TopicIdPartition topicIdPartition =
-                        new TopicIdPartition(topicData.topicId(), partitionData.partitionIndex());
+                            new TopicIdPartition(topicData.topicId(), partitionData.partitionIndex());
                     handleAssignmentResponse(topicIdPartition, sent,
                             Errors.forCode(partitionData.errorCode()), nowNs);
                     sent.remove(topicIdPartition);
@@ -396,7 +396,7 @@ public final class AssignmentsManager {
         for (Assignment assignment : sent.values()) {
             ready.putIfAbsent(assignment.topicIdPartition(), assignment);
             log.error("handleResponse: no result in response for partition {}.",
-                assignment.topicIdPartition());
+                    assignment.topicIdPartition());
         }
     }
 
@@ -409,7 +409,7 @@ public final class AssignmentsManager {
         Assignment assignment = sent.get(topicIdPartition);
         if (assignment == null) {
             log.error("handleResponse: response contained topicIdPartition {}, but this was not " +
-                "in the request.", topicIdPartition);
+                    "in the request.", topicIdPartition);
         } else if (error.equals(Errors.NONE)) {
             try {
                 assignment.successCallback().run();
@@ -457,7 +457,7 @@ public final class AssignmentsManager {
             return Optional.of("ClassCastException");
         }
         AssignReplicasToDirsResponseData data = ((AssignReplicasToDirsResponse)
-            response.get().responseBody()).data();
+                    response.get().responseBody()).data();
         Errors error = Errors.forCode(data.errorCode());
         if (error != Errors.NONE) {
             return Optional.of("Response-level error: " + error.name());

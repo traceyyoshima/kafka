@@ -93,10 +93,10 @@ public final class AddVoterHandler {
         // Check if there are any pending voter change requests
         if (leaderState.isOperationPending(currentTimeMs)) {
             return CompletableFuture.completedFuture(
-                RaftUtil.addVoterResponse(
-                    Errors.REQUEST_TIMED_OUT,
-                    "Request timed out waiting for leader to handle previous voter change request"
-                )
+                    RaftUtil.addVoterResponse(
+                            Errors.REQUEST_TIMED_OUT,
+                            "Request timed out waiting for leader to handle previous voter change request"
+                    )
             );
         }
 
@@ -104,10 +104,10 @@ public final class AddVoterHandler {
         Optional<Long> highWatermark = leaderState.highWatermark().map(LogOffsetMetadata::offset);
         if (highWatermark.isEmpty()) {
             return CompletableFuture.completedFuture(
-                RaftUtil.addVoterResponse(
-                    Errors.REQUEST_TIMED_OUT,
-                    "Request timed out waiting for leader to establish HWM and fence previous voter changes"
-                )
+                    RaftUtil.addVoterResponse(
+                            Errors.REQUEST_TIMED_OUT,
+                            "Request timed out waiting for leader to establish HWM and fence previous voter changes"
+                    )
             );
         }
 
@@ -115,14 +115,14 @@ public final class AddVoterHandler {
         KRaftVersion kraftVersion = partitionState.lastKraftVersion();
         if (!kraftVersion.isReconfigSupported()) {
             return CompletableFuture.completedFuture(
-                RaftUtil.addVoterResponse(
-                    Errors.UNSUPPORTED_VERSION,
-                    String.format(
-                        "Cluster doesn't support adding voter because the %s feature is %s",
-                        kraftVersion.featureName(),
-                        kraftVersion.featureLevel()
+                    RaftUtil.addVoterResponse(
+                            Errors.UNSUPPORTED_VERSION,
+                            String.format(
+                                    "Cluster doesn't support adding voter because the %s feature is %s",
+                                    kraftVersion.featureName(),
+                                    kraftVersion.featureLevel()
+                            )
                     )
-                )
             );
         }
 
@@ -130,14 +130,14 @@ public final class AddVoterHandler {
         Optional<LogHistory.Entry<VoterSet>> votersEntry = partitionState.lastVoterSetEntry();
         if (votersEntry.isEmpty() || votersEntry.get().offset() >= highWatermark.get()) {
             return CompletableFuture.completedFuture(
-                RaftUtil.addVoterResponse(
-                    Errors.REQUEST_TIMED_OUT,
-                    String.format(
-                        "Request timed out waiting for voters to commit the latest voter change at %s with HWM %d",
-                        votersEntry.map(LogHistory.Entry::offset),
-                        highWatermark.get()
+                    RaftUtil.addVoterResponse(
+                            Errors.REQUEST_TIMED_OUT,
+                            String.format(
+                                    "Request timed out waiting for voters to commit the latest voter change at %s with HWM %d",
+                                    votersEntry.map(LogHistory.Entry::offset),
+                                    highWatermark.get()
+                            )
                     )
-                )
             );
         }
 
@@ -145,53 +145,53 @@ public final class AddVoterHandler {
         VoterSet voters = votersEntry.get().value();
         if (voters.voterIds().contains(voterKey.id())) {
             return CompletableFuture.completedFuture(
-                RaftUtil.addVoterResponse(
-                    Errors.DUPLICATE_VOTER,
-                    String.format(
-                        "The voter id for %s is already part of the set of voters %s.",
-                        voterKey,
-                        voters.voterKeys()
+                    RaftUtil.addVoterResponse(
+                            Errors.DUPLICATE_VOTER,
+                            String.format(
+                                    "The voter id for %s is already part of the set of voters %s.",
+                                    voterKey,
+                                    voters.voterKeys()
+                            )
                     )
-                )
             );
         }
 
         // Send API_VERSIONS request to new voter to discover their supported kraft.version range
         OptionalLong timeout = requestSender.send(
-            voterEndpoints
-                .address(requestSender.listenerName())
-                .map(address -> new Node(voterKey.id(), address.getHostName(), address.getPort()))
-                .orElseThrow(
-                    () -> new IllegalArgumentException(
-                        String.format(
-                            "Provided listeners %s do not contain a listener for %s",
-                            voterEndpoints,
-                            requestSender.listenerName()
+                voterEndpoints
+                    .address(requestSender.listenerName())
+                    .map(address -> new Node(voterKey.id(), address.getHostName(), address.getPort()))
+                    .orElseThrow(
+                        () -> new IllegalArgumentException(
+                            String.format(
+                                    "Provided listeners %s do not contain a listener for %s",
+                                    voterEndpoints,
+                                    requestSender.listenerName()
+                            )
                         )
-                    )
                 ),
-            this::buildApiVersionsRequest,
-            currentTimeMs
+                this::buildApiVersionsRequest,
+                currentTimeMs
         );
         if (timeout.isEmpty()) {
             return CompletableFuture.completedFuture(
-                RaftUtil.addVoterResponse(
-                    Errors.REQUEST_TIMED_OUT,
-                    String.format("New voter %s is not ready to receive requests", voterKey)
-                )
+                    RaftUtil.addVoterResponse(
+                            Errors.REQUEST_TIMED_OUT,
+                            String.format("New voter %s is not ready to receive requests", voterKey)
+                    )
             );
         }
 
         AddVoterHandlerState state = new AddVoterHandlerState(
-            voterKey,
-            voterEndpoints,
-            ackWhenCommitted,
-            time.timer(timeout.getAsLong())
+                voterKey,
+                voterEndpoints,
+                ackWhenCommitted,
+                time.timer(timeout.getAsLong())
         );
         leaderState.resetAddVoterHandlerState(
-            Errors.UNKNOWN_SERVER_ERROR,
-            null,
-            Optional.of(state)
+                Errors.UNKNOWN_SERVER_ERROR,
+                null,
+                Optional.of(state)
         );
 
         return state.future();
@@ -214,10 +214,10 @@ public final class AddVoterHandler {
         AddVoterHandlerState current = handlerState.get();
         if (!current.expectingApiResponse(source.id())) {
             logger.info(
-                "API_VERSIONS response is not expected from {}: voterKey is {}, lastOffset is {}",
-                source,
-                current.voterKey(),
-                current.lastOffset()
+                    "API_VERSIONS response is not expected from {}: voterKey is {}, lastOffset is {}",
+                    source,
+                    current.voterKey(),
+                    current.lastOffset()
             );
 
             return true;
@@ -226,19 +226,19 @@ public final class AddVoterHandler {
         // Abort operation if the API_VERSIONS returned an error
         if (error != Errors.NONE) {
             logger.info(
-                "Aborting add voter operation for {} at {} since API_VERSIONS returned an error {}",
-                current.voterKey(),
-                current.voterEndpoints(),
-                error
+                    "Aborting add voter operation for {} at {} since API_VERSIONS returned an error {}",
+                    current.voterKey(),
+                    current.voterEndpoints(),
+                    error
             );
 
             leaderState.resetAddVoterHandlerState(
-                Errors.REQUEST_TIMED_OUT,
-                String.format(
-                    "Aborted add voter operation for since API_VERSIONS returned an error %s",
-                    error
-                ),
-                Optional.empty()
+                    Errors.REQUEST_TIMED_OUT,
+                    String.format(
+                            "Aborted add voter operation for since API_VERSIONS returned an error %s",
+                            error
+                    ),
+                    Optional.empty()
             );
 
             return false;
@@ -248,32 +248,32 @@ public final class AddVoterHandler {
         KRaftVersion kraftVersion = partitionState.lastKraftVersion();
         if (!validVersionRange(kraftVersion, supportedKraftVersions)) {
             logger.info(
-                "Aborting add voter operation for {} at {} since kraft.version range {} doesn't " +
-                "support reconfiguration",
-                current.voterKey(),
-                current.voterEndpoints(),
-                supportedKraftVersions
+                    "Aborting add voter operation for {} at {} since kraft.version range {} doesn't " +
+                    "support reconfiguration",
+                    current.voterKey(),
+                    current.voterEndpoints(),
+                    supportedKraftVersions
             );
 
             leaderState.resetAddVoterHandlerState(
-                Errors.INVALID_REQUEST,
-                String.format(
-                    "Aborted add voter operation for %s since the %s range %s doesn't " +
-                    "support the finalized version %s",
-                    current.voterKey(),
-                    KRaftVersion.FEATURE_NAME,
-                    supportedKraftVersions
-                        .map(
-                            range -> String.format(
-                                "(min: %s, max: %s",
-                                range.minVersion(),
-                                range.maxVersion()
+                    Errors.INVALID_REQUEST,
+                    String.format(
+                            "Aborted add voter operation for %s since the %s range %s doesn't " +
+                            "support the finalized version %s",
+                            current.voterKey(),
+                            KRaftVersion.FEATURE_NAME,
+                            supportedKraftVersions
+                                .map(
+                                range -> String.format(
+                                    "(min: %s, max: %s",
+                                    range.minVersion(),
+                                    range.maxVersion()
+                                )
                             )
-                        )
-                        .orElse("(min: 0, max: 0)"),
-                    kraftVersion.featureLevel()
-                ),
-                Optional.empty()
+                                .orElse("(min: 0, max: 0)"),
+                            kraftVersion.featureLevel()
+                    ),
+                    Optional.empty()
             );
 
             return true;
@@ -282,19 +282,19 @@ public final class AddVoterHandler {
         // Check that the new voter is caught up to the LEO to avoid delays in HWM increases
         if (!leaderState.isReplicaCaughtUp(current.voterKey(), currentTimeMs)) {
             logger.info(
-                "Aborting add voter operation for {} at {} since it is lagging behind: {}",
-                current.voterKey(),
-                current.voterEndpoints(),
-                leaderState.getReplicaState(current.voterKey())
+                    "Aborting add voter operation for {} at {} since it is lagging behind: {}",
+                    current.voterKey(),
+                    current.voterEndpoints(),
+                    leaderState.getReplicaState(current.voterKey())
             );
 
             leaderState.resetAddVoterHandlerState(
-                Errors.REQUEST_TIMED_OUT,
-                String.format(
-                    "Aborted add voter operation for %s since it is lagging behind",
-                    current.voterKey()
-                ),
-                Optional.empty()
+                    Errors.REQUEST_TIMED_OUT,
+                    String.format(
+                            "Aborted add voter operation for %s since it is lagging behind",
+                            current.voterKey()
+                    ),
+                    Optional.empty()
             );
 
             return true;
@@ -304,24 +304,24 @@ public final class AddVoterHandler {
         VoterSet newVoters = partitionState
             .lastVoterSet()
             .addVoter(
-                VoterSet.VoterNode.of(
-                    current.voterKey(),
-                    current.voterEndpoints(),
-                    new SupportedVersionRange(
-                        supportedKraftVersions.get().minVersion(),
-                        supportedKraftVersions.get().maxVersion()
+                    VoterSet.VoterNode.of(
+                            current.voterKey(),
+                            current.voterEndpoints(),
+                            new SupportedVersionRange(
+                                    supportedKraftVersions.get().minVersion(),
+                                    supportedKraftVersions.get().maxVersion()
+                            )
                     )
-                )
-            )
+        )
             .orElseThrow(() ->
                 new IllegalStateException(
-                    String.format(
-                        "Unable to add %s to the set of voters %s",
-                        current.voterKey(),
-                        partitionState.lastVoterSet()
-                    )
+                        String.format(
+                                "Unable to add %s to the set of voters %s",
+                                current.voterKey(),
+                                partitionState.lastVoterSet()
+                        )
                 )
-            );
+        );
         current.setLastOffset(leaderState.appendVotersRecord(newVoters, currentTimeMs));
         if (!current.ackWhenCommitted()) {
             // complete the future to send response, but do not reset the state,
@@ -333,14 +333,14 @@ public final class AddVoterHandler {
 
     public void highWatermarkUpdated(LeaderState<?> leaderState) {
         leaderState.addVoterHandlerState().ifPresent(current ->
-            leaderState.highWatermark().ifPresent(highWatermark ->
-                current.lastOffset().ifPresent(lastOffset -> {
-                    if (highWatermark.offset() > lastOffset) {
-                        // VotersRecord with the added voter was committed; complete the RPC
-                        leaderState.resetAddVoterHandlerState(Errors.NONE, null, Optional.empty());
-                    }
-                })
-            )
+                leaderState.highWatermark().ifPresent(highWatermark ->
+                        current.lastOffset().ifPresent(lastOffset -> {
+                            if (highWatermark.offset() > lastOffset) {
+                                // VotersRecord with the added voter was committed; complete the RPC
+                                leaderState.resetAddVoterHandlerState(Errors.NONE, null, Optional.empty());
+                            }
+                        })
+                )
         );
     }
 
@@ -353,7 +353,7 @@ public final class AddVoterHandler {
         Optional<ApiVersionsResponseData.SupportedFeatureKey> supportedKraftVersions
     ) {
         return supportedKraftVersions.isPresent() &&
-            (supportedKraftVersions.get().minVersion() <= finalizedVersion.featureLevel() &&
-             supportedKraftVersions.get().maxVersion() >= finalizedVersion.featureLevel());
+                (supportedKraftVersions.get().minVersion() <= finalizedVersion.featureLevel() &&
+                supportedKraftVersions.get().maxVersion() >= finalizedVersion.featureLevel());
     }
 }

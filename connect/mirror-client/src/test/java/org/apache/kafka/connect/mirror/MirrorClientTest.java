@@ -58,7 +58,7 @@ public class MirrorClientTest {
 
         FakeMirrorClient() {
             this(List.of());
-        } 
+        }
 
         @Override
         protected Set<String> listTopics() {
@@ -115,27 +115,27 @@ public class MirrorClientTest {
     @Test
     public void heartbeatTopicsTest() throws InterruptedException {
         MirrorClient client = new FakeMirrorClient(List.of("topic1", "topic2", "heartbeats",
-            "source1.heartbeats", "source2.source1.heartbeats", "source3.heartbeats"));
+                "source1.heartbeats", "source2.source1.heartbeats", "source3.heartbeats"));
         Set<String> heartbeatTopics = client.heartbeatTopics();
         assertEquals(heartbeatTopics, Set.of("heartbeats", "source1.heartbeats",
-            "source2.source1.heartbeats", "source3.heartbeats"));
+                "source2.source1.heartbeats", "source3.heartbeats"));
     }
 
     @Test
     public void checkpointsTopicsTest() throws InterruptedException {
         MirrorClient client = new FakeMirrorClient(List.of("topic1", "topic2", "checkpoints.internal",
-            "source1.checkpoints.internal", "source2.source1.checkpoints.internal", "source3.checkpoints.internal"));
+                "source1.checkpoints.internal", "source2.source1.checkpoints.internal", "source3.checkpoints.internal"));
         Set<String> checkpointTopics = client.checkpointTopics();
         assertEquals(Set.of("source1.checkpoints.internal",
-            "source2.source1.checkpoints.internal", "source3.checkpoints.internal"), checkpointTopics);
+                "source2.source1.checkpoints.internal", "source3.checkpoints.internal"), checkpointTopics);
     }
 
     @Test
     public void replicationHopsTest() throws InterruptedException {
         MirrorClient client = new FakeMirrorClient(List.of("topic1", "topic2", "heartbeats",
-            "source1.heartbeats", "source1.source2.heartbeats", "source3.heartbeats"));
+                "source1.heartbeats", "source1.source2.heartbeats", "source3.heartbeats"));
         assertEquals(1, client.replicationHops("source1"));
-        assertEquals(2, client.replicationHops("source2")); 
+        assertEquals(2, client.replicationHops("source2"));
         assertEquals(1, client.replicationHops("source3"));
         assertEquals(-1, client.replicationHops("source4"));
     }
@@ -143,7 +143,7 @@ public class MirrorClientTest {
     @Test
     public void upstreamClustersTest() throws InterruptedException {
         MirrorClient client = new FakeMirrorClient(List.of("topic1", "topic2", "heartbeats",
-            "source1.heartbeats", "source1.source2.heartbeats", "source3.source4.source5.heartbeats"));
+                "source1.heartbeats", "source1.source2.heartbeats", "source3.source4.source5.heartbeats"));
         Set<String> sources = client.upstreamClusters();
         assertTrue(sources.contains("source1"));
         assertTrue(sources.contains("source2"));
@@ -159,8 +159,8 @@ public class MirrorClientTest {
     public void testIdentityReplicationUpstreamClusters() throws InterruptedException {
         // IdentityReplicationPolicy treats heartbeats as a special case, so these should work as usual.
         MirrorClient client = new FakeMirrorClient(identityReplicationPolicy("source"), List.of("topic1",
-            "topic2", "heartbeats", "source1.heartbeats", "source1.source2.heartbeats",
-            "source3.source4.source5.heartbeats"));
+                "topic2", "heartbeats", "source1.heartbeats", "source1.source2.heartbeats",
+                "source3.source4.source5.heartbeats"));
         Set<String> sources = client.upstreamClusters();
         assertTrue(sources.contains("source1"));
         assertTrue(sources.contains("source2"));
@@ -175,7 +175,7 @@ public class MirrorClientTest {
     @Test
     public void remoteTopicsTest() throws InterruptedException {
         MirrorClient client = new FakeMirrorClient(List.of("topic1", "topic2", "topic3",
-            "source1.topic4", "source1.source2.topic5", "source3.source4.source5.topic6"));
+                "source1.topic4", "source1.source2.topic5", "source3.source4.source5.topic6"));
         Set<String> remoteTopics = client.remoteTopics();
         assertFalse(remoteTopics.contains("topic1"));
         assertFalse(remoteTopics.contains("topic2"));
@@ -189,7 +189,7 @@ public class MirrorClientTest {
     public void testIdentityReplicationRemoteTopics() throws InterruptedException {
         // IdentityReplicationPolicy should consider any topic to be remote.
         MirrorClient client = new FakeMirrorClient(identityReplicationPolicy("source"), List.of(
-            "topic1", "topic2", "topic3", "heartbeats", "backup.heartbeats"));
+                "topic1", "topic2", "topic3", "heartbeats", "backup.heartbeats"));
         Set<String> remoteTopics = client.remoteTopics();
         assertTrue(remoteTopics.contains("topic1"));
         assertTrue(remoteTopics.contains("topic2"));
@@ -202,9 +202,9 @@ public class MirrorClientTest {
     @Test
     public void remoteTopicsSeparatorTest() throws InterruptedException {
         MirrorClient client = new FakeMirrorClient(List.of("topic1", "topic2", "topic3",
-            "source1__topic4", "source1__source2__topic5", "source3__source4__source5__topic6"));
+                "source1__topic4", "source1__source2__topic5", "source3__source4__source5__topic6"));
         ((Configurable) client.replicationPolicy()).configure(
-            Map.of("replication.policy.separator", "__"));
+                Map.of("replication.policy.separator", "__"));
         Set<String> remoteTopics = client.remoteTopics();
         assertFalse(remoteTopics.contains("topic1"));
         assertFalse(remoteTopics.contains("topic2"));
@@ -217,7 +217,7 @@ public class MirrorClientTest {
     @Test
     public void testIdentityReplicationTopicSource() {
         MirrorClient client = new FakeMirrorClient(
-            identityReplicationPolicy("primary"), List.of());
+                identityReplicationPolicy("primary"), List.of());
         assertEquals("topic1", client.replicationPolicy()
             .formatRemoteTopic("primary", "topic1"));
         assertEquals("primary", client.replicationPolicy()
@@ -261,8 +261,7 @@ public class MirrorClientTest {
                 grp0, Map.of(
                         t0p0, cp1.offsetAndMetadata(),
                         t0p1, cp2.offsetAndMetadata()
-                )
-        );
+        ));
         assertEquals(expectedOffsets, offsets);
 
         // Batch translation matches all groups
@@ -272,11 +271,10 @@ public class MirrorClientTest {
                 grp0, Map.of(
                         t0p0, cp1.offsetAndMetadata(),
                         t0p1, cp2.offsetAndMetadata()
-                ),
+        ),
                 grp1, Map.of(
                         t0p1, cp3.offsetAndMetadata()
-                )
-        );
+        ));
         assertEquals(expectedOffsets, offsets);
 
         // Batch translation matches nothing

@@ -139,17 +139,17 @@ public class BrokerRegistration {
 
         public BrokerRegistration build() {
             return new BrokerRegistration(
-                id,
-                epoch,
-                incarnationId,
-                listeners,
-                supportedFeatures,
-                rack,
-                fenced,
-                inControlledShutdown,
-                isMigratingZkBroker,
-                directories,
-                cordonedDirectories);
+                    id,
+                    epoch,
+                    incarnationId,
+                    listeners,
+                    supportedFeatures,
+                    rack,
+                    fenced,
+                    inControlledShutdown,
+                    isMigratingZkBroker,
+                    directories,
+                    cordonedDirectories);
         }
     }
 
@@ -205,26 +205,26 @@ public class BrokerRegistration {
         Map<String, Endpoint> listeners = new HashMap<>();
         for (BrokerEndpoint endpoint : record.endPoints()) {
             listeners.put(endpoint.name(), new Endpoint(endpoint.name(),
-                SecurityProtocol.forId(endpoint.securityProtocol()),
-                endpoint.host(),
-                endpoint.port()));
+                    SecurityProtocol.forId(endpoint.securityProtocol()),
+                    endpoint.host(),
+                    endpoint.port()));
         }
         Map<String, VersionRange> supportedFeatures = new HashMap<>();
         for (BrokerFeature feature : record.features()) {
             supportedFeatures.put(feature.name(), VersionRange.of(
-                feature.minSupportedVersion(), feature.maxSupportedVersion()));
+                    feature.minSupportedVersion(), feature.maxSupportedVersion()));
         }
         return new BrokerRegistration(record.brokerId(),
-            record.brokerEpoch(),
-            record.incarnationId(),
-            listeners,
-            supportedFeatures,
-            Optional.ofNullable(record.rack()),
-            record.fenced(),
-            record.inControlledShutdown(),
-            record.isMigratingZkBroker(),
-            record.logDirs(),
-            record.cordonedLogDirs());
+                record.brokerEpoch(),
+                record.incarnationId(),
+                listeners,
+                supportedFeatures,
+                Optional.ofNullable(record.rack()),
+                record.fenced(),
+                record.inControlledShutdown(),
+                record.isMigratingZkBroker(),
+                record.logDirs(),
+                record.cordonedLogDirs());
     }
 
     public int id() {
@@ -250,7 +250,7 @@ public class BrokerRegistration {
         }
         return Optional.of(new Node(id, endpoint.host(), endpoint.port(), rack.orElse(null), fenced));
     }
-    
+
     public List<Node> nodes() {
         return listeners.keySet().stream().flatMap(l -> node(l).stream()).toList();
     }
@@ -365,29 +365,29 @@ public class BrokerRegistration {
         }
 
         return new ApiMessageAndVersion(registrationRecord,
-            options.metadataVersion().registerBrokerRecordVersion());
+                options.metadataVersion().registerBrokerRecordVersion());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, epoch, incarnationId, listeners, supportedFeatures,
-            rack, fenced, inControlledShutdown, isMigratingZkBroker, directories, cordonedDirectories);
+                rack, fenced, inControlledShutdown, isMigratingZkBroker, directories, cordonedDirectories);
     }
 
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof BrokerRegistration other)) return false;
         return other.id == id &&
-            other.epoch == epoch &&
-            other.incarnationId.equals(incarnationId) &&
-            other.listeners.equals(listeners) &&
-            other.supportedFeatures.equals(supportedFeatures) &&
-            other.rack.equals(rack) &&
-            other.fenced == fenced &&
-            other.inControlledShutdown == inControlledShutdown &&
-            other.isMigratingZkBroker == isMigratingZkBroker &&
-            other.directories.equals(directories) &&
-            Objects.equals(other.cordonedDirectories, cordonedDirectories);
+                other.epoch == epoch &&
+                other.incarnationId.equals(incarnationId) &&
+                other.listeners.equals(listeners) &&
+                other.supportedFeatures.equals(supportedFeatures) &&
+                other.rack.equals(rack) &&
+                other.fenced == fenced &&
+                other.inControlledShutdown == inControlledShutdown &&
+                other.isMigratingZkBroker == isMigratingZkBroker &&
+                other.directories.equals(directories) &&
+                Objects.equals(other.cordonedDirectories, cordonedDirectories);
     }
 
     @Override
@@ -431,17 +431,17 @@ public class BrokerRegistration {
             return this;
 
         return new BrokerRegistration(
-            id,
-            epoch,
-            incarnationId,
-            listeners,
-            supportedFeatures,
-            rack,
-            newFenced,
-            newInControlledShutdownChange,
-            isMigratingZkBroker,
-            newDirectories,
-            newCordonedDirectories
+                id,
+                epoch,
+                incarnationId,
+                listeners,
+                supportedFeatures,
+                rack,
+                newFenced,
+                newInControlledShutdownChange,
+                isMigratingZkBroker,
+                newDirectories,
+                newCordonedDirectories
         );
     }
 }

@@ -235,7 +235,7 @@ public class MirrorCheckpointTask extends SourceTask {
     }
 
     private Map<TopicPartition, OffsetAndMetadata> listConsumerGroupOffsets(String group)
-            throws InterruptedException, ExecutionException {
+        throws InterruptedException, ExecutionException {
         if (stopping) {
             // short circuit if stopping
             return Map.of();
@@ -251,10 +251,10 @@ public class MirrorCheckpointTask extends SourceTask {
         if (offsetAndMetadata != null) {
             long upstreamOffset = offsetAndMetadata.offset();
             OptionalLong downstreamOffset =
-                offsetSyncStore.translateDownstream(group, topicPartition, upstreamOffset);
+                    offsetSyncStore.translateDownstream(group, topicPartition, upstreamOffset);
             if (downstreamOffset.isPresent()) {
                 return Optional.of(new Checkpoint(group, renameTopicPartition(topicPartition),
-                    upstreamOffset, downstreamOffset.getAsLong(), offsetAndMetadata.metadata()));
+                        upstreamOffset, downstreamOffset.getAsLong(), offsetAndMetadata.metadata()));
             }
         }
         return Optional.empty();
@@ -262,22 +262,22 @@ public class MirrorCheckpointTask extends SourceTask {
 
     SourceRecord checkpointRecord(Checkpoint checkpoint, long timestamp) {
         return new SourceRecord(
-            checkpoint.connectPartition(), MirrorUtils.wrapOffset(0),
-            checkpointsTopic, 0,
-            Schema.BYTES_SCHEMA, checkpoint.recordKey(),
-            Schema.BYTES_SCHEMA, checkpoint.recordValue(),
-            timestamp);
+                checkpoint.connectPartition(), MirrorUtils.wrapOffset(0),
+                checkpointsTopic, 0,
+                Schema.BYTES_SCHEMA, checkpoint.recordKey(),
+                Schema.BYTES_SCHEMA, checkpoint.recordValue(),
+                timestamp);
     }
 
     TopicPartition renameTopicPartition(TopicPartition upstreamTopicPartition) {
         if (targetClusterAlias.equals(replicationPolicy.topicSource(upstreamTopicPartition.topic()))) {
             // this topic came from the target cluster, so we rename like us-west.topic1 -> topic1
             return new TopicPartition(replicationPolicy.originalTopic(upstreamTopicPartition.topic()),
-                upstreamTopicPartition.partition());
+                    upstreamTopicPartition.partition());
         } else {
             // rename like topic1 -> us-west.topic1
             return new TopicPartition(replicationPolicy.formatRemoteTopic(sourceClusterAlias,
-                upstreamTopicPartition.topic()), upstreamTopicPartition.partition());
+                    upstreamTopicPartition.topic()), upstreamTopicPartition.partition());
         }
     }
 

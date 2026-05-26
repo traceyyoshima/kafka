@@ -49,7 +49,6 @@ class StreamsThreadMetricsDelegatingReporterTest {
     private final Object lock = new Object();
     private final MetricConfig metricConfig = new MetricConfig();
 
-
     @BeforeEach
     public void setUp() {
         final Map<String, String> threadIdTagMap = new HashMap<>();
@@ -82,21 +81,20 @@ class StreamsThreadMetricsDelegatingReporterTest {
         mockConsumer.close();
     }
 
-
     @Test
     public void shouldInitMetrics() {
         final List<KafkaMetric> allMetrics = Arrays.asList(kafkaMetricOneHasThreadIdTag, kafkaMetricTwoHasThreadIdTag, kafkaMetricThreeHasThreadIdTag);
         final List<KafkaMetric> expectedMetrics = Arrays.asList(kafkaMetricOneHasThreadIdTag, kafkaMetricTwoHasThreadIdTag, kafkaMetricThreeHasThreadIdTag);
         streamsThreadMetricsDelegatingReporter.init(allMetrics);
         assertEquals(expectedMetrics, mockConsumer.addedMetrics(),
-            "Init method should register metrics it receives as parameters");
+                "Init method should register metrics it receives as parameters");
     }
 
     @Test
     public void shouldRegisterMetrics() {
         streamsThreadMetricsDelegatingReporter.metricChange(kafkaMetricOneHasThreadIdTag);
         assertEquals(kafkaMetricOneHasThreadIdTag, mockConsumer.addedMetrics().get(0),
-            "Should register metrics with thread-id in tag map");
+                "Should register metrics with thread-id in tag map");
     }
 
     @Test
@@ -109,13 +107,13 @@ class StreamsThreadMetricsDelegatingReporterTest {
         streamsThreadMetricsDelegatingReporter.metricRemoval(kafkaMetricOneHasThreadIdTag);
         expected = Arrays.asList(kafkaMetricTwoHasThreadIdTag, kafkaMetricThreeHasThreadIdTag);
         assertEquals(expected, mockConsumer.addedMetrics(),
-            "Should remove metrics");
+                "Should remove metrics");
     }
 
     @Test
     public void shouldNotRegisterMetricsWithoutThreadIdTag() {
         streamsThreadMetricsDelegatingReporter.metricChange(kafkaMetricWithoutThreadIdTag);
         assertEquals(0, mockConsumer.addedMetrics().size(),
-            "Should not register metrics without thread-id tag");
+                "Should not register metrics without thread-id tag");
     }
 }

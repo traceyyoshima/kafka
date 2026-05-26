@@ -118,8 +118,8 @@ public class TopicPartitionInfo {
         String elrString = elr != null ? elr.stream().map(Node::toString).collect(Collectors.joining(", ")) : "N/A";
         String lastKnownElrString = lastKnownElr != null ? lastKnownElr.stream().map(Node::toString).collect(Collectors.joining(", ")) : "N/A";
         return "(partition=" + partition + ", leader=" + leader + ", replicas=" +
-            replicas.stream().map(Node::toString).collect(Collectors.joining(", ")) + ", isr=" + isr.stream().map(Node::toString).collect(Collectors.joining(", ")) +
-            ", elr=" + elrString + ", lastKnownElr=" + lastKnownElrString + ")";
+                replicas.stream().map(Node::toString).collect(Collectors.joining(", ")) + ", isr=" + isr.stream().map(Node::toString).collect(Collectors.joining(", ")) +
+                ", elr=" + elrString + ", lastKnownElr=" + lastKnownElrString + ")";
     }
 
     @Override
@@ -130,11 +130,11 @@ public class TopicPartitionInfo {
         TopicPartitionInfo that = (TopicPartitionInfo) o;
 
         return partition == that.partition &&
-            Objects.equals(leader, that.leader) &&
-            Objects.equals(replicas, that.replicas) &&
-            Objects.equals(isr, that.isr) &&
-            Objects.equals(elr, that.elr) &&
-            Objects.equals(lastKnownElr, that.lastKnownElr);
+                Objects.equals(leader, that.leader) &&
+                Objects.equals(replicas, that.replicas) &&
+                Objects.equals(isr, that.isr) &&
+                Objects.equals(elr, that.elr) &&
+                Objects.equals(lastKnownElr, that.lastKnownElr);
     }
 
     @Override

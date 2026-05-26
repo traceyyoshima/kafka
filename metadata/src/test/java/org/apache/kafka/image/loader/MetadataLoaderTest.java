@@ -251,41 +251,41 @@ public class MetadataLoaderTest {
             loader.installPublishers(List.of(publisher)).get();
             if (loadSnapshot) {
                 MockSnapshotReader snapshotReader = new MockSnapshotReader(
-                    new MetadataProvenance(200, 100, 4000, true),
-                    List.of(
-                        Batch.control(
-                            200,
-                            100,
-                            4000,
-                            10,
-                            List.of(ControlRecord.of(new SnapshotHeaderRecord()))
-                        ),
-                        Batch.data(0, 0, 0, 0,
-                            List.of(new ApiMessageAndVersion(new FeatureLevelRecord().
-                                setName(MetadataVersion.FEATURE_NAME).
-                                setFeatureLevel(MINIMUM_VERSION.featureLevel()), (short) 0))
+                        new MetadataProvenance(200, 100, 4000, true),
+                        List.of(
+                                Batch.control(
+                                        200,
+                                        100,
+                                        4000,
+                                        10,
+                                        List.of(ControlRecord.of(new SnapshotHeaderRecord()))
+                                ),
+                                Batch.data(0, 0, 0, 0,
+                                        List.of(new ApiMessageAndVersion(new FeatureLevelRecord().
+                                            setName(MetadataVersion.FEATURE_NAME).
+                                            setFeatureLevel(MINIMUM_VERSION.featureLevel()), (short) 0))
+                                )
                         )
-                    )
                 );
                 loader.handleLoadSnapshot(snapshotReader);
                 TestUtils.retryOnExceptionWithTimeout(30_000, () ->
-                    assertEquals(1L, loader.metrics().handleLoadSnapshotCount())
+                        assertEquals(1L, loader.metrics().handleLoadSnapshotCount())
                 );
             } else {
                 TestUtils.retryOnExceptionWithTimeout(30_000, () ->
-                    assertEquals(0L, loader.metrics().handleLoadSnapshotCount())
+                        assertEquals(0L, loader.metrics().handleLoadSnapshotCount())
                 );
             }
             loader.waitForAllEventsToBeHandled();
             if (sameObject) {
                 assertEquals("testPublisherCannotBeInstalledMoreThanOnce: Attempted to install " +
-                    "publisher MockPublisher, which is already installed.",
+                        "publisher MockPublisher, which is already installed.",
                         assertThrows(ExecutionException.class,
                                 () -> loader.installPublishers(List.of(publisher)).get()).
                                 getCause().getMessage());
             } else {
                 assertEquals("testPublisherCannotBeInstalledMoreThanOnce: Attempted to install " +
-                    "a new publisher named MockPublisher, but there is already a publisher with that name.",
+                        "a new publisher named MockPublisher, but there is already a publisher with that name.",
                         assertThrows(ExecutionException.class,
                                 () -> loader.installPublishers(List.of(new MockPublisher())).get()).
                                 getCause().getMessage());
@@ -309,11 +309,11 @@ public class MetadataLoaderTest {
             loader.installPublishers(publishers.subList(0, 2)).get();
             loader.removeAndClosePublisher(publishers.get(1)).get();
             MockSnapshotReader snapshotReader = MockSnapshotReader.fromRecordLists(
-                new MetadataProvenance(100, 50, 2000, true),
-                List.of(List.of(new ApiMessageAndVersion(
-                    new FeatureLevelRecord().
-                        setName(MetadataVersion.FEATURE_NAME).
-                        setFeatureLevel(MINIMUM_VERSION.featureLevel()), (short) 0))));
+                    new MetadataProvenance(100, 50, 2000, true),
+                    List.of(List.of(new ApiMessageAndVersion(
+                        new FeatureLevelRecord().
+                            setName(MetadataVersion.FEATURE_NAME).
+                            setFeatureLevel(MINIMUM_VERSION.featureLevel()), (short) 0))));
             assertFalse(snapshotReader.closed);
             loader.handleLoadSnapshot(snapshotReader);
             loader.waitForAllEventsToBeHandled();
@@ -349,20 +349,20 @@ public class MetadataLoaderTest {
             loader.waitForAllEventsToBeHandled();
             assertFalse(publishers.get(0).firstPublish.isDone());
             loader.handleCommit(MockBatchReader.newSingleBatchReader(250, 50, List.of(
-                new ApiMessageAndVersion(new FeatureLevelRecord()
-                    .setName(MetadataVersion.FEATURE_NAME)
-                    .setFeatureLevel(MINIMUM_VERSION.featureLevel()), (short) 0)))
+                    new ApiMessageAndVersion(new FeatureLevelRecord()
+                        .setName(MetadataVersion.FEATURE_NAME)
+                        .setFeatureLevel(MINIMUM_VERSION.featureLevel()), (short) 0)))
             );
             publishers.get(0).firstPublish.get(10, TimeUnit.SECONDS);
             assertEquals(250L, loader.lastAppliedOffset());
             loadEmptySnapshot(loader, 300);
             assertEquals(300L, loader.lastAppliedOffset());
             assertEquals(new SnapshotManifest(new MetadataProvenance(300, 100, 4000, true), 3000000L),
-                publishers.get(0).latestSnapshotManifest);
+                    publishers.get(0).latestSnapshotManifest);
             assertEquals(MINIMUM_VERSION,
-                loader.metrics().currentMetadataVersion());
+                    loader.metrics().currentMetadataVersion());
             assertEquals(MINIMUM_VERSION.featureLevel(),
-                loader.metrics().finalizedFeatureLevel(FEATURE_NAME));
+                    loader.metrics().finalizedFeatureLevel(FEATURE_NAME));
         }
         assertTrue(publishers.get(0).closed);
         assertEquals(Optional.of(MINIMUM_VERSION), publishers.get(0).latestImage.features().metadataVersion());
@@ -386,16 +386,16 @@ public class MetadataLoaderTest {
         long offset
     ) throws Exception {
         MockSnapshotReader snapshotReader = new MockSnapshotReader(
-            new MetadataProvenance(offset, 100, 4000, true),
-            List.of(
-                Batch.control(
-                    200,
-                    100,
-                    4000,
-                    10,
-                    List.of(ControlRecord.of(new SnapshotHeaderRecord()))
+                new MetadataProvenance(offset, 100, 4000, true),
+                List.of(
+                        Batch.control(
+                                200,
+                                100,
+                                4000,
+                                10,
+                                List.of(ControlRecord.of(new SnapshotHeaderRecord()))
+                        )
                 )
-            )
         );
         if (loader.time() instanceof MockTime) {
             snapshotReader.setTime((MockTime) loader.time());
@@ -416,7 +416,7 @@ public class MetadataLoaderTest {
             List<ApiMessageAndVersion> records
         ) {
             return new MockBatchReader(batchBaseOffset,
-                List.of(newBatch(batchBaseOffset, epoch, records)));
+                    List.of(newBatch(batchBaseOffset, epoch, records)));
         }
 
         static Batch<ApiMessageAndVersion> newBatch(
@@ -485,16 +485,16 @@ public class MetadataLoaderTest {
             loadTestSnapshot(loader, 200);
             publishers.get(0).firstPublish.get(10, TimeUnit.SECONDS);
             MockBatchReader batchReader = new MockBatchReader(
-                300,
-                List.of(
-                    Batch.control(
-                        300,
-                        100,
-                        4000,
-                        10,
-                        List.of(ControlRecord.of(new SnapshotHeaderRecord()))
+                    300,
+                    List.of(
+                            Batch.control(
+                                    300,
+                                    100,
+                                    4000,
+                                    10,
+                                    List.of(ControlRecord.of(new SnapshotHeaderRecord()))
+                            )
                     )
-                )
             ).setTime(time);
             loader.handleCommit(batchReader);
             loader.waitForAllEventsToBeHandled();
@@ -503,16 +503,16 @@ public class MetadataLoaderTest {
         }
         assertTrue(publishers.get(0).closed);
         assertEquals(
-            LogDeltaManifest.newBuilder()
-                .provenance(new MetadataProvenance(300, 100, 4000, true))
-                .leaderAndEpoch(LeaderAndEpoch.UNKNOWN)
-                .numBatches(1)
-                .elapsedNs(0L)
-                .numBytes(10)
-                .build(),
-            publishers.get(0).latestLogDeltaManifest);
+                LogDeltaManifest.newBuilder()
+                    .provenance(new MetadataProvenance(300, 100, 4000, true))
+                    .leaderAndEpoch(LeaderAndEpoch.UNKNOWN)
+                    .numBatches(1)
+                    .elapsedNs(0L)
+                    .numBytes(10)
+                    .build(),
+                publishers.get(0).latestLogDeltaManifest);
         assertEquals(Optional.of(MINIMUM_VERSION),
-            publishers.get(0).latestImage.features().metadataVersion());
+                publishers.get(0).latestImage.features().metadataVersion());
         faultHandler.maybeRethrowFirstException();
     }
 
@@ -533,21 +533,21 @@ public class MetadataLoaderTest {
             loader.installPublishers(publishers).get();
             loadTestSnapshot(loader, 200);
             assertThrows(
-                NullPointerException.class,
-                () -> loader.metrics().finalizedFeatureLevel(KRaftVersion.FEATURE_NAME)
+                    NullPointerException.class,
+                    () -> loader.metrics().finalizedFeatureLevel(KRaftVersion.FEATURE_NAME)
             );
             publishers.get(0).firstPublish.get(10, TimeUnit.SECONDS);
             MockBatchReader batchReader = new MockBatchReader(
-                300,
-                List.of(
-                    Batch.control(
-                        300,
-                        100,
-                        4000,
-                        10,
-                        List.of(ControlRecord.of(new KRaftVersionRecord()))
+                    300,
+                    List.of(
+                            Batch.control(
+                                    300,
+                                    100,
+                                    4000,
+                                    10,
+                                    List.of(ControlRecord.of(new KRaftVersionRecord()))
+                            )
                     )
-                )
             ).setTime(time);
             loader.handleCommit(batchReader);
             loader.waitForAllEventsToBeHandled();
@@ -555,19 +555,19 @@ public class MetadataLoaderTest {
             assertEquals(300L, loader.lastAppliedOffset());
             assertEquals((short) 0, loader.metrics().finalizedFeatureLevel(KRaftVersion.FEATURE_NAME));
             loader.handleCommit(new MockBatchReader(301, List.of(
-                MockBatchReader.newBatch(301, 100, List.of(
-                    new ApiMessageAndVersion(new RemoveTopicRecord().
-                        setTopicId(Uuid.fromString("Uum7sfhHQP-obSvfywmNUA")), (short) 0))))));
+                    MockBatchReader.newBatch(301, 100, List.of(
+                        new ApiMessageAndVersion(new RemoveTopicRecord().
+                            setTopicId(Uuid.fromString("Uum7sfhHQP-obSvfywmNUA")), (short) 0))))));
             loader.waitForAllEventsToBeHandled();
             assertEquals(301L, loader.lastAppliedOffset());
             assertEquals((short) 0, loader.metrics().finalizedFeatureLevel(KRaftVersion.FEATURE_NAME));
             loader.handleCommit(new MockBatchReader(302, List.of(
-                Batch.control(
-                    302,
-                    100,
-                    4000,
-                    10,
-                    List.of(ControlRecord.of(new KRaftVersionRecord().setKRaftVersion((short) 1)))))));
+                    Batch.control(
+                            302,
+                            100,
+                            4000,
+                            10,
+                            List.of(ControlRecord.of(new KRaftVersionRecord().setKRaftVersion((short) 1)))))));
             loader.waitForAllEventsToBeHandled();
             assertEquals(302L, loader.lastAppliedOffset());
             assertEquals((short) 1, loader.metrics().finalizedFeatureLevel(KRaftVersion.FEATURE_NAME));
@@ -589,23 +589,23 @@ public class MetadataLoaderTest {
                 build()) {
             loader.installPublishers(publishers).get();
             loader.handleLoadSnapshot(MockSnapshotReader.fromRecordLists(
-                new MetadataProvenance(200, 100, 4000, true), List.of(
-                    List.of(new ApiMessageAndVersion(new FeatureLevelRecord().
-                        setName(MetadataVersion.FEATURE_NAME).
-                        setFeatureLevel(MINIMUM_VERSION.featureLevel()), (short) 0)),
-                    List.of(new ApiMessageAndVersion(new TopicRecord().
-                        setName("foo").
-                        setTopicId(Uuid.fromString("Uum7sfhHQP-obSvfywmNUA")), (short) 0))
-                )));
+                    new MetadataProvenance(200, 100, 4000, true), List.of(
+                        List.of(new ApiMessageAndVersion(new FeatureLevelRecord().
+                            setName(MetadataVersion.FEATURE_NAME).
+                            setFeatureLevel(MINIMUM_VERSION.featureLevel()), (short) 0)),
+                        List.of(new ApiMessageAndVersion(new TopicRecord().
+                            setName("foo").
+                            setTopicId(Uuid.fromString("Uum7sfhHQP-obSvfywmNUA")), (short) 0))
+            )));
             for (MockPublisher publisher : publishers) {
                 publisher.firstPublish.get(1, TimeUnit.MINUTES);
             }
             loader.waitForAllEventsToBeHandled();
             assertEquals(200L, loader.lastAppliedOffset());
             loader.handleCommit(new MockBatchReader(201, List.of(
-                MockBatchReader.newBatch(201, 100, List.of(
-                    new ApiMessageAndVersion(new RemoveTopicRecord().
-                        setTopicId(Uuid.fromString("Uum7sfhHQP-obSvfywmNUA")), (short) 0))))));
+                    MockBatchReader.newBatch(201, 100, List.of(
+                        new ApiMessageAndVersion(new RemoveTopicRecord().
+                            setTopicId(Uuid.fromString("Uum7sfhHQP-obSvfywmNUA")), (short) 0))))));
             loader.waitForAllEventsToBeHandled();
             assertEquals(201L, loader.lastAppliedOffset());
         }
@@ -665,7 +665,7 @@ public class MetadataLoaderTest {
                         List.of(new ApiMessageAndVersion(new TopicRecord().
                                 setName("foo").
                                 setTopicId(Uuid.fromString("Uum7sfhHQP-obSvfywmNUA")), (short) 0))
-                )));
+        )));
         loader.waitForAllEventsToBeHandled();
     }
 
@@ -681,7 +681,7 @@ public class MetadataLoaderTest {
                         List.of(new ApiMessageAndVersion(new TopicRecord().
                                 setName("bar").
                                 setTopicId(Uuid.fromString("VcL2Mw-cT4aL6XV9VujzoQ")), (short) 0))
-                )));
+        )));
         loader.waitForAllEventsToBeHandled();
     }
 
@@ -706,32 +706,32 @@ public class MetadataLoaderTest {
             loadTestSnapshot(loader, 200);
             assertEquals(200L, loader.lastAppliedOffset());
             assertEquals(MINIMUM_VERSION.featureLevel(),
-                loader.metrics().currentMetadataVersion().featureLevel());
+                    loader.metrics().currentMetadataVersion().featureLevel());
             assertEquals(MINIMUM_VERSION.featureLevel(),
-                loader.metrics().finalizedFeatureLevel(FEATURE_NAME));
+                    loader.metrics().finalizedFeatureLevel(FEATURE_NAME));
             assertFalse(publishers.get(0).latestDelta.image().isEmpty());
 
             loadTestSnapshot2(loader, 400);
             assertEquals(400L, loader.lastAppliedOffset());
             assertEquals(MetadataVersion.latestProduction().featureLevel(),
-                loader.metrics().currentMetadataVersion().featureLevel());
+                    loader.metrics().currentMetadataVersion().featureLevel());
             assertEquals(MetadataVersion.latestProduction().featureLevel(),
-                loader.metrics().finalizedFeatureLevel(FEATURE_NAME));
+                    loader.metrics().finalizedFeatureLevel(FEATURE_NAME));
 
             // Make sure the topic in the initial snapshot was overwritten by loading the new snapshot.
             assertFalse(publishers.get(0).latestImage.topics().topicsByName().containsKey("foo"));
             assertTrue(publishers.get(0).latestImage.topics().topicsByName().containsKey("bar"));
 
             loader.handleCommit(new MockBatchReader(500, List.of(
-                MockBatchReader.newBatch(500, 100, List.of(
-                    new ApiMessageAndVersion(new FeatureLevelRecord().
-                        setName(MetadataVersion.FEATURE_NAME).
-                        setFeatureLevel(IBP_3_5_IV0.featureLevel()), (short) 0))))));
+                    MockBatchReader.newBatch(500, 100, List.of(
+                        new ApiMessageAndVersion(new FeatureLevelRecord().
+                            setName(MetadataVersion.FEATURE_NAME).
+                            setFeatureLevel(IBP_3_5_IV0.featureLevel()), (short) 0))))));
             loader.waitForAllEventsToBeHandled();
             assertEquals(IBP_3_5_IV0.featureLevel(),
-                loader.metrics().currentMetadataVersion().featureLevel());
+                    loader.metrics().currentMetadataVersion().featureLevel());
             assertEquals(IBP_3_5_IV0.featureLevel(),
-                loader.metrics().finalizedFeatureLevel(FEATURE_NAME));
+                    loader.metrics().finalizedFeatureLevel(FEATURE_NAME));
         }
         faultHandler.maybeRethrowFirstException();
     }
@@ -748,57 +748,57 @@ public class MetadataLoaderTest {
                 build()) {
             loader.installPublishers(publishers).get();
             loader.handleCommit(
-                MockBatchReader.newSingleBatchReader(400, 50, List.of(
-                    new ApiMessageAndVersion(new FeatureLevelRecord()
-                        .setName(MetadataVersion.FEATURE_NAME)
-                        .setFeatureLevel(MINIMUM_VERSION.featureLevel()), (short) 0)))
+                    MockBatchReader.newSingleBatchReader(400, 50, List.of(
+                        new ApiMessageAndVersion(new FeatureLevelRecord()
+                            .setName(MetadataVersion.FEATURE_NAME)
+                            .setFeatureLevel(MINIMUM_VERSION.featureLevel()), (short) 0)))
             );
             loader.waitForAllEventsToBeHandled();
 
             loader.handleCommit(
-                MockBatchReader.newSingleBatchReader(500, 100, List.of(
-                    new ApiMessageAndVersion(new BeginTransactionRecord()
-                        .setName("testTransactions"), (short) 0),
-                    new ApiMessageAndVersion(new TopicRecord()
-                        .setName("foo")
-                        .setTopicId(Uuid.fromString("dMCqhcK4T5miGH5wEX7NsQ")), (short) 0)
+                    MockBatchReader.newSingleBatchReader(500, 100, List.of(
+                        new ApiMessageAndVersion(new BeginTransactionRecord()
+                            .setName("testTransactions"), (short) 0),
+                        new ApiMessageAndVersion(new TopicRecord()
+                            .setName("foo")
+                            .setTopicId(Uuid.fromString("dMCqhcK4T5miGH5wEX7NsQ")), (short) 0)
             )));
             loader.waitForAllEventsToBeHandled();
             publisher.firstPublish.get(30, TimeUnit.SECONDS);
             assertNull(publisher.latestImage.topics().getTopic("foo"),
-                "Topic should not be visible since we started transaction");
+                    "Topic should not be visible since we started transaction");
 
             loader.handleCommit(
-                MockBatchReader.newSingleBatchReader(500, 100, List.of(
-                    new ApiMessageAndVersion(new PartitionRecord()
-                        .setTopicId(Uuid.fromString("dMCqhcK4T5miGH5wEX7NsQ"))
-                        .setPartitionId(0), (short) 0),
-                    new ApiMessageAndVersion(new PartitionRecord()
-                        .setTopicId(Uuid.fromString("dMCqhcK4T5miGH5wEX7NsQ"))
-                        .setPartitionId(1), (short) 0)
-                )));
+                    MockBatchReader.newSingleBatchReader(500, 100, List.of(
+                        new ApiMessageAndVersion(new PartitionRecord()
+                            .setTopicId(Uuid.fromString("dMCqhcK4T5miGH5wEX7NsQ"))
+                            .setPartitionId(0), (short) 0),
+                        new ApiMessageAndVersion(new PartitionRecord()
+                            .setTopicId(Uuid.fromString("dMCqhcK4T5miGH5wEX7NsQ"))
+                            .setPartitionId(1), (short) 0)
+                    )));
             loader.waitForAllEventsToBeHandled();
             assertNull(publisher.latestImage.topics().getTopic("foo"),
-                "Topic should not be visible after subsequent batch");
+                    "Topic should not be visible after subsequent batch");
 
             if (abortTxn) {
                 loader.handleCommit(
-                    MockBatchReader.newSingleBatchReader(500, 100, List.of(
-                        new ApiMessageAndVersion(new AbortTransactionRecord(), (short) 0)
-                    )));
+                        MockBatchReader.newSingleBatchReader(500, 100, List.of(
+                            new ApiMessageAndVersion(new AbortTransactionRecord(), (short) 0)
+                        )));
                 loader.waitForAllEventsToBeHandled();
 
                 assertNull(publisher.latestImage.topics().getTopic("foo"),
-                    "Topic should not be visible since the transaction was aborted");
+                        "Topic should not be visible since the transaction was aborted");
             } else {
                 loader.handleCommit(
-                    MockBatchReader.newSingleBatchReader(500, 100, List.of(
-                        new ApiMessageAndVersion(new EndTransactionRecord(), (short) 0)
-                    )));
+                        MockBatchReader.newSingleBatchReader(500, 100, List.of(
+                            new ApiMessageAndVersion(new EndTransactionRecord(), (short) 0)
+                        )));
                 loader.waitForAllEventsToBeHandled();
 
                 assertNotNull(publisher.latestImage.topics().getTopic("foo"),
-                    "Topic should be visible now that transaction has ended");
+                        "Topic should be visible now that transaction has ended");
             }
         }
         faultHandler.maybeRethrowFirstException();
@@ -815,22 +815,22 @@ public class MetadataLoaderTest {
                 build()) {
             loader.installPublishers(publishers).get();
             loader.handleCommit(
-                MockBatchReader.newSingleBatchReader(400, 50, List.of(
-                    new ApiMessageAndVersion(new FeatureLevelRecord().
-                        setName(MetadataVersion.FEATURE_NAME).
-                        setFeatureLevel(MINIMUM_VERSION.featureLevel()), (short) 0)))
+                    MockBatchReader.newSingleBatchReader(400, 50, List.of(
+                        new ApiMessageAndVersion(new FeatureLevelRecord().
+                            setName(MetadataVersion.FEATURE_NAME).
+                            setFeatureLevel(MINIMUM_VERSION.featureLevel()), (short) 0)))
             );
             loader.waitForAllEventsToBeHandled();
 
             loader.handleCommit(
-                MockBatchReader.newSingleBatchReader(500, 100, List.of(
-                    new ApiMessageAndVersion(new BeginTransactionRecord()
-                        .setName("txn-1"), (short) 0),
-                    new ApiMessageAndVersion(new TopicRecord()
-                        .setName("foo")
-                        .setTopicId(Uuid.fromString("HQSM3ccPQISrHqYK_C8GpA")), (short) 0),
-                    new ApiMessageAndVersion(new EndTransactionRecord(), (short) 0)
-                )));
+                    MockBatchReader.newSingleBatchReader(500, 100, List.of(
+                        new ApiMessageAndVersion(new BeginTransactionRecord()
+                            .setName("txn-1"), (short) 0),
+                        new ApiMessageAndVersion(new TopicRecord()
+                            .setName("foo")
+                            .setTopicId(Uuid.fromString("HQSM3ccPQISrHqYK_C8GpA")), (short) 0),
+                        new ApiMessageAndVersion(new EndTransactionRecord(), (short) 0)
+                    )));
             loader.waitForAllEventsToBeHandled();
 
             // After MetadataLoader is fixed to handle arbitrary transactions, we would expect "foo"
@@ -852,35 +852,35 @@ public class MetadataLoaderTest {
                 build()) {
             loader.installPublishers(publishers).get();
             loader.handleCommit(
-                MockBatchReader.newSingleBatchReader(400, 50, List.of(
-                    new ApiMessageAndVersion(new FeatureLevelRecord().
-                        setName(MetadataVersion.FEATURE_NAME).
-                        setFeatureLevel(MINIMUM_VERSION.featureLevel()), (short) 0)))
+                    MockBatchReader.newSingleBatchReader(400, 50, List.of(
+                        new ApiMessageAndVersion(new FeatureLevelRecord().
+                            setName(MetadataVersion.FEATURE_NAME).
+                            setFeatureLevel(MINIMUM_VERSION.featureLevel()), (short) 0)))
             );
             loader.waitForAllEventsToBeHandled();
 
             loader.handleCommit(
-                MockBatchReader.newSingleBatchReader(500, 100, List.of(
-                    new ApiMessageAndVersion(new BeginTransactionRecord()
-                        .setName("txn-1"), (short) 0),
-                    new ApiMessageAndVersion(new TopicRecord()
-                        .setName("foo")
-                        .setTopicId(Uuid.fromString("HQSM3ccPQISrHqYK_C8GpA")), (short) 0)
-                )));
+                    MockBatchReader.newSingleBatchReader(500, 100, List.of(
+                        new ApiMessageAndVersion(new BeginTransactionRecord()
+                            .setName("txn-1"), (short) 0),
+                        new ApiMessageAndVersion(new TopicRecord()
+                            .setName("foo")
+                            .setTopicId(Uuid.fromString("HQSM3ccPQISrHqYK_C8GpA")), (short) 0)
+                    )));
             loader.waitForAllEventsToBeHandled();
             publisher.firstPublish.get(30, TimeUnit.SECONDS);
             assertNull(publisher.latestImage.topics().getTopic("foo"));
 
             // loading a snapshot discards any in-flight transaction
             loader.handleLoadSnapshot(MockSnapshotReader.fromRecordLists(
-                new MetadataProvenance(600, 101, 4000, true), List.of(
-                    List.of(new ApiMessageAndVersion(new TopicRecord().
-                        setName("foo").
-                        setTopicId(Uuid.fromString("Uum7sfhHQP-obSvfywmNUA")), (short) 0))
-                )));
+                    new MetadataProvenance(600, 101, 4000, true), List.of(
+                        List.of(new ApiMessageAndVersion(new TopicRecord().
+                            setName("foo").
+                            setTopicId(Uuid.fromString("Uum7sfhHQP-obSvfywmNUA")), (short) 0))
+            )));
             loader.waitForAllEventsToBeHandled();
             assertEquals("Uum7sfhHQP-obSvfywmNUA",
-                publisher.latestImage.topics().getTopic("foo").id().toString());
+                    publisher.latestImage.topics().getTopic("foo").id().toString());
         }
         faultHandler.maybeRethrowFirstException();
     }
@@ -911,17 +911,17 @@ public class MetadataLoaderTest {
                 build()) {
             loader.installPublishers(List.of(capturingPublisher)).get();
             loader.handleCommit(
-                MockBatchReader.newSingleBatchReader(0, 1, List.of(
-                    // Any record will work here
-                    new ApiMessageAndVersion(new FeatureLevelRecord()
-                        .setName(MetadataVersion.FEATURE_NAME)
-                        .setFeatureLevel(MINIMUM_VERSION.featureLevel()), (short) 0)))
+                    MockBatchReader.newSingleBatchReader(0, 1, List.of(
+                        // Any record will work here
+                        new ApiMessageAndVersion(new FeatureLevelRecord()
+                            .setName(MetadataVersion.FEATURE_NAME)
+                            .setFeatureLevel(MINIMUM_VERSION.featureLevel()), (short) 0)))
             );
             firstPublish.get(30, TimeUnit.SECONDS);
 
             assertFalse(capturedImages.isEmpty());
             capturedImages.forEach(metadataImage ->
-                assertFalse(metadataImage.isEmpty())
+                    assertFalse(metadataImage.isEmpty())
             );
 
         }
@@ -948,17 +948,17 @@ public class MetadataLoaderTest {
 
             // Commit a batch containing ConfigRecord with message.format.version
             loader.handleCommit(MockBatchReader.newSingleBatchReader(200, 100, List.of(
-                new ApiMessageAndVersion(new ConfigRecord().
-                    setResourceType(ConfigResource.Type.TOPIC.id()).
-                    setResourceName("test-topic").
-                    setName("message.format.version").
-                    setValue("2.8"), (short) 0)
+                    new ApiMessageAndVersion(new ConfigRecord().
+                        setResourceType(ConfigResource.Type.TOPIC.id()).
+                        setResourceName("test-topic").
+                        setName("message.format.version").
+                        setValue("2.8"), (short) 0)
             )));
             loader.waitForAllEventsToBeHandled();
 
             // Verify config was filtered out
             assertTrue(publisher.latestImage.configs().configMapForResource(
-                new ConfigResource(ConfigResource.Type.TOPIC, "test-topic")).isEmpty());
+                    new ConfigResource(ConfigResource.Type.TOPIC, "test-topic")).isEmpty());
         }
         faultHandler.maybeRethrowFirstException();
     }
@@ -981,21 +981,21 @@ public class MetadataLoaderTest {
 
             // Load a snapshot containing ConfigRecord with message.format.version
             loader.handleLoadSnapshot(MockSnapshotReader.fromRecordLists(
-                new MetadataProvenance(200, 100, 4000, true), List.of(
-                    List.of(new ApiMessageAndVersion(new FeatureLevelRecord().
-                        setName(MetadataVersion.FEATURE_NAME).
-                        setFeatureLevel(MINIMUM_VERSION.featureLevel()), (short) 0)),
-                    List.of(new ApiMessageAndVersion(new ConfigRecord().
-                        setResourceType(ConfigResource.Type.TOPIC.id()).
-                        setResourceName("test-topic").
-                        setName("message.format.version").
-                        setValue("2.8"), (short) 0))
-                )));
+                    new MetadataProvenance(200, 100, 4000, true), List.of(
+                        List.of(new ApiMessageAndVersion(new FeatureLevelRecord().
+                            setName(MetadataVersion.FEATURE_NAME).
+                            setFeatureLevel(MINIMUM_VERSION.featureLevel()), (short) 0)),
+                        List.of(new ApiMessageAndVersion(new ConfigRecord().
+                            setResourceType(ConfigResource.Type.TOPIC.id()).
+                            setResourceName("test-topic").
+                            setName("message.format.version").
+                            setValue("2.8"), (short) 0))
+            )));
             loader.waitForAllEventsToBeHandled();
 
             // Verify config was filtered out
             assertTrue(publisher.latestImage.configs().configMapForResource(
-                new ConfigResource(ConfigResource.Type.TOPIC, "test-topic")).isEmpty());
+                    new ConfigResource(ConfigResource.Type.TOPIC, "test-topic")).isEmpty());
         }
         faultHandler.maybeRethrowFirstException();
     }

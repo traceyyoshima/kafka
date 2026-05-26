@@ -81,14 +81,14 @@ public class DefaultApiVersionManager implements ApiVersionManager {
         boolean clientTelemetryEnabled = clientMetricsManager.map(ClientMetricsManager::isTelemetryExporterConfigured).orElse(false);
         ApiVersionsResponseData.ApiVersionCollection apiVersions = controllerApiVersions
                 .map(nodeApiVersions -> ApiVersionsResponse.controllerApiVersions(
-                    nodeApiVersions,
-                    listenerType,
-                    enableUnstableLastVersion,
-                    clientTelemetryEnabled))
+                        nodeApiVersions,
+                        listenerType,
+                        enableUnstableLastVersion,
+                        clientTelemetryEnabled))
                 .orElseGet(() -> ApiVersionsResponse.brokerApiVersions(
-                    listenerType,
-                    enableUnstableLastVersion,
-                    clientTelemetryEnabled));
+                        listenerType,
+                        enableUnstableLastVersion,
+                        clientTelemetryEnabled));
 
         return new ApiVersionsResponse.Builder()
             .setThrottleTimeMs(throttleTimeMs)

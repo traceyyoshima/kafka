@@ -81,28 +81,28 @@ public class UniformHomogeneousAssignmentBuilderTest {
             .addTopic(topic1Uuid, topic1Name, 3)
             .build();
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            new KRaftCoordinatorMetadataImage(metadataImage)
+                new KRaftCoordinatorMetadataImage(metadataImage)
         );
 
         Map<String, MemberSubscriptionAndAssignmentImpl> members = Map.of(
-            memberA,
-            new MemberSubscriptionAndAssignmentImpl(
-                Optional.empty(),
-                Optional.empty(),
-                Set.of(),
-                Assignment.EMPTY
-            )
+                memberA,
+                new MemberSubscriptionAndAssignmentImpl(
+                        Optional.empty(),
+                        Optional.empty(),
+                        Set.of(),
+                        Assignment.EMPTY
+                )
         );
 
         GroupSpec groupSpec = new GroupSpecImpl(
-            members,
-            HOMOGENEOUS,
-            Map.of()
+                members,
+                HOMOGENEOUS,
+                Map.of()
         );
 
         GroupAssignment groupAssignment = assignor.assign(
-            groupSpec,
-            subscribedTopicMetadata
+                groupSpec,
+                subscribedTopicMetadata
         );
 
         assertEquals(Map.of(), groupAssignment.members());
@@ -114,27 +114,27 @@ public class UniformHomogeneousAssignmentBuilderTest {
             .addTopic(topic1Uuid, topic1Name, 3)
             .build();
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            new KRaftCoordinatorMetadataImage(metadataImage)
+                new KRaftCoordinatorMetadataImage(metadataImage)
         );
 
         Map<String, MemberSubscriptionAndAssignmentImpl> members = Map.of(
-            memberA,
-            new MemberSubscriptionAndAssignmentImpl(
-                Optional.empty(),
-                Optional.empty(),
-                Set.of(topic2Uuid),
-                Assignment.EMPTY
-            )
+                memberA,
+                new MemberSubscriptionAndAssignmentImpl(
+                        Optional.empty(),
+                        Optional.empty(),
+                        Set.of(topic2Uuid),
+                        Assignment.EMPTY
+                )
         );
 
         GroupSpec groupSpec = new GroupSpecImpl(
-            members,
-            HOMOGENEOUS,
-            Map.of()
+                members,
+                HOMOGENEOUS,
+                Map.of()
         );
 
         assertThrows(PartitionAssignorException.class,
-            () -> assignor.assign(groupSpec, subscribedTopicMetadata));
+                () -> assignor.assign(groupSpec, subscribedTopicMetadata));
     }
 
     @Test
@@ -147,39 +147,39 @@ public class UniformHomogeneousAssignmentBuilderTest {
         Map<String, MemberSubscriptionAndAssignmentImpl> members = new TreeMap<>();
 
         members.put(memberA, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            Set.of(topic1Uuid, topic3Uuid),
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                Set.of(topic1Uuid, topic3Uuid),
+                Assignment.EMPTY
         ));
 
         members.put(memberB, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            Set.of(topic1Uuid, topic3Uuid),
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                Set.of(topic1Uuid, topic3Uuid),
+                Assignment.EMPTY
         ));
 
         Map<String, Map<Uuid, Set<Integer>>> expectedAssignment = new HashMap<>();
         expectedAssignment.put(memberA, mkAssignment(
-            mkTopicAssignment(topic3Uuid, 0, 1)
+                mkTopicAssignment(topic3Uuid, 0, 1)
         ));
         expectedAssignment.put(memberB, mkAssignment(
-            mkTopicAssignment(topic1Uuid, 0, 1, 2)
+                mkTopicAssignment(topic1Uuid, 0, 1, 2)
         ));
 
         GroupSpec groupSpec = new GroupSpecImpl(
-            members,
-            HOMOGENEOUS,
-            Map.of()
+                members,
+                HOMOGENEOUS,
+                Map.of()
         );
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            new KRaftCoordinatorMetadataImage(metadataImage)
+                new KRaftCoordinatorMetadataImage(metadataImage)
         );
 
         GroupAssignment computedAssignment = assignor.assign(
-            groupSpec,
-            subscribedTopicMetadata
+                groupSpec,
+                subscribedTopicMetadata
         );
 
         assertAssignment(expectedAssignment, computedAssignment);
@@ -195,50 +195,50 @@ public class UniformHomogeneousAssignmentBuilderTest {
         Map<String, MemberSubscriptionAndAssignmentImpl> members = new TreeMap<>();
 
         members.put(memberA, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            Set.of(topic3Uuid),
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                Set.of(topic3Uuid),
+                Assignment.EMPTY
         ));
 
         members.put(memberB, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            Set.of(topic3Uuid),
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                Set.of(topic3Uuid),
+                Assignment.EMPTY
         ));
 
         members.put(memberC, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            Set.of(topic3Uuid),
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                Set.of(topic3Uuid),
+                Assignment.EMPTY
         ));
 
         // Topic 3 has 2 partitions but three members subscribed to it - one of them should not get an assignment.
         Map<String, Map<Uuid, Set<Integer>>> expectedAssignment = new HashMap<>();
         expectedAssignment.put(memberA,
-            Map.of()
+                Map.of()
         );
         expectedAssignment.put(memberB, mkAssignment(
-            mkTopicAssignment(topic3Uuid, 0)
+                mkTopicAssignment(topic3Uuid, 0)
         ));
         expectedAssignment.put(memberC, mkAssignment(
-            mkTopicAssignment(topic3Uuid, 1)
+                mkTopicAssignment(topic3Uuid, 1)
         ));
 
         GroupSpec groupSpec = new GroupSpecImpl(
-            members,
-            HOMOGENEOUS,
-            Map.of()
+                members,
+                HOMOGENEOUS,
+                Map.of()
         );
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            new KRaftCoordinatorMetadataImage(metadataImage)
+                new KRaftCoordinatorMetadataImage(metadataImage)
         );
 
         GroupAssignment computedAssignment = assignor.assign(
-            groupSpec,
-            subscribedTopicMetadata
+                groupSpec,
+                subscribedTopicMetadata
         );
 
         assertAssignment(expectedAssignment, computedAssignment);
@@ -259,25 +259,25 @@ public class UniformHomogeneousAssignmentBuilderTest {
         Map<String, MemberSubscriptionAndAssignmentImpl> members = new TreeMap<>();
         for (int i = 1; i < 50; i++) {
             members.put("member" + i, new MemberSubscriptionAndAssignmentImpl(
-                Optional.empty(),
-                Optional.empty(),
-                topicIds,
-                Assignment.EMPTY
+                    Optional.empty(),
+                    Optional.empty(),
+                    topicIds,
+                    Assignment.EMPTY
             ));
         }
 
         GroupSpec groupSpec = new GroupSpecImpl(
-            members,
-            HOMOGENEOUS,
-            Map.of()
+                members,
+                HOMOGENEOUS,
+                Map.of()
         );
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            new KRaftCoordinatorMetadataImage(metadataImage)
+                new KRaftCoordinatorMetadataImage(metadataImage)
         );
 
         GroupAssignment computedAssignment = assignor.assign(
-            groupSpec,
-            subscribedTopicMetadata
+                groupSpec,
+                subscribedTopicMetadata
         );
 
         checkValidityAndBalance(members, computedAssignment);
@@ -293,47 +293,47 @@ public class UniformHomogeneousAssignmentBuilderTest {
         Map<String, MemberSubscriptionAndAssignmentImpl> members = new TreeMap<>();
 
         members.put(memberA, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            Set.of(topic1Uuid, topic2Uuid),
-            new Assignment(mkOrderedAssignment(
-                mkTopicAssignment(topic1Uuid, 0, 1),
-                mkTopicAssignment(topic2Uuid, 0, 1)
-            ))
+                Optional.empty(),
+                Optional.empty(),
+                Set.of(topic1Uuid, topic2Uuid),
+                new Assignment(mkOrderedAssignment(
+                    mkTopicAssignment(topic1Uuid, 0, 1),
+                    mkTopicAssignment(topic2Uuid, 0, 1)
+                ))
         ));
 
         members.put(memberB, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            Set.of(topic1Uuid, topic2Uuid),
-            new Assignment(mkOrderedAssignment(
-                mkTopicAssignment(topic1Uuid, 2),
-                mkTopicAssignment(topic2Uuid, 2)
-            ))
+                Optional.empty(),
+                Optional.empty(),
+                Set.of(topic1Uuid, topic2Uuid),
+                new Assignment(mkOrderedAssignment(
+                    mkTopicAssignment(topic1Uuid, 2),
+                    mkTopicAssignment(topic2Uuid, 2)
+                ))
         ));
 
         Map<String, Map<Uuid, Set<Integer>>> expectedAssignment = new HashMap<>();
         expectedAssignment.put(memberA, mkAssignment(
-            mkTopicAssignment(topic1Uuid, 0, 1),
-            mkTopicAssignment(topic2Uuid, 0)
+                mkTopicAssignment(topic1Uuid, 0, 1),
+                mkTopicAssignment(topic2Uuid, 0)
         ));
         expectedAssignment.put(memberB, mkAssignment(
-            mkTopicAssignment(topic1Uuid, 2),
-            mkTopicAssignment(topic2Uuid, 1, 2)
+                mkTopicAssignment(topic1Uuid, 2),
+                mkTopicAssignment(topic2Uuid, 1, 2)
         ));
 
         GroupSpec groupSpec = new GroupSpecImpl(
-            members,
-            HOMOGENEOUS,
-            invertedTargetAssignment(members)
+                members,
+                HOMOGENEOUS,
+                invertedTargetAssignment(members)
         );
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            new KRaftCoordinatorMetadataImage(metadataImage)
+                new KRaftCoordinatorMetadataImage(metadataImage)
         );
 
         GroupAssignment computedAssignment = assignor.assign(
-            groupSpec,
-            subscribedTopicMetadata
+                groupSpec,
+                subscribedTopicMetadata
         );
 
         assertAssignment(expectedAssignment, computedAssignment);
@@ -351,47 +351,47 @@ public class UniformHomogeneousAssignmentBuilderTest {
         Map<String, MemberSubscriptionAndAssignmentImpl> members = new TreeMap<>();
 
         members.put(memberA, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            Set.of(topic1Uuid, topic2Uuid),
-            new Assignment(mkOrderedAssignment(
-                mkTopicAssignment(topic1Uuid, 0, 2),
-                mkTopicAssignment(topic2Uuid, 0)
-            ))
+                Optional.empty(),
+                Optional.empty(),
+                Set.of(topic1Uuid, topic2Uuid),
+                new Assignment(mkOrderedAssignment(
+                    mkTopicAssignment(topic1Uuid, 0, 2),
+                    mkTopicAssignment(topic2Uuid, 0)
+                ))
         ));
 
         members.put(memberB, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            Set.of(topic1Uuid, topic2Uuid),
-            new Assignment(mkOrderedAssignment(
-                mkTopicAssignment(topic1Uuid, 1),
-                mkTopicAssignment(topic2Uuid, 1, 2)
-            ))
+                Optional.empty(),
+                Optional.empty(),
+                Set.of(topic1Uuid, topic2Uuid),
+                new Assignment(mkOrderedAssignment(
+                    mkTopicAssignment(topic1Uuid, 1),
+                    mkTopicAssignment(topic2Uuid, 1, 2)
+                ))
         ));
 
         Map<String, Map<Uuid, Set<Integer>>> expectedAssignment = new HashMap<>();
         expectedAssignment.put(memberA, mkAssignment(
-            mkTopicAssignment(topic1Uuid, 0, 2),
-            mkTopicAssignment(topic2Uuid, 0, 3, 4)
+                mkTopicAssignment(topic1Uuid, 0, 2),
+                mkTopicAssignment(topic2Uuid, 0, 3, 4)
         ));
         expectedAssignment.put(memberB, mkAssignment(
-            mkTopicAssignment(topic1Uuid, 1, 3, 4, 5),
-            mkTopicAssignment(topic2Uuid, 1, 2)
+                mkTopicAssignment(topic1Uuid, 1, 3, 4, 5),
+                mkTopicAssignment(topic2Uuid, 1, 2)
         ));
 
         GroupSpec groupSpec = new GroupSpecImpl(
-            members,
-            HOMOGENEOUS,
-            invertedTargetAssignment(members)
+                members,
+                HOMOGENEOUS,
+                invertedTargetAssignment(members)
         );
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            new KRaftCoordinatorMetadataImage(metadataImage)
+                new KRaftCoordinatorMetadataImage(metadataImage)
         );
 
         GroupAssignment computedAssignment = assignor.assign(
-            groupSpec,
-            subscribedTopicMetadata
+                groupSpec,
+                subscribedTopicMetadata
         );
 
         assertAssignment(expectedAssignment, computedAssignment);
@@ -408,57 +408,57 @@ public class UniformHomogeneousAssignmentBuilderTest {
         Map<String, MemberSubscriptionAndAssignmentImpl> members = new TreeMap<>();
 
         members.put(memberA, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            Set.of(topic1Uuid, topic2Uuid),
-            new Assignment(mkOrderedAssignment(
-                mkTopicAssignment(topic1Uuid, 0, 2),
-                mkTopicAssignment(topic2Uuid, 0)
-            ))
+                Optional.empty(),
+                Optional.empty(),
+                Set.of(topic1Uuid, topic2Uuid),
+                new Assignment(mkOrderedAssignment(
+                    mkTopicAssignment(topic1Uuid, 0, 2),
+                    mkTopicAssignment(topic2Uuid, 0)
+                ))
         ));
 
         members.put(memberB, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            Set.of(topic1Uuid, topic2Uuid),
-            new Assignment(mkOrderedAssignment(
-                mkTopicAssignment(topic1Uuid, 1),
-                mkTopicAssignment(topic2Uuid, 1, 2)
-            ))
+                Optional.empty(),
+                Optional.empty(),
+                Set.of(topic1Uuid, topic2Uuid),
+                new Assignment(mkOrderedAssignment(
+                    mkTopicAssignment(topic1Uuid, 1),
+                    mkTopicAssignment(topic2Uuid, 1, 2)
+                ))
         ));
 
         // Add a new member to trigger a re-assignment.
         members.put(memberC, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            Set.of(topic1Uuid, topic2Uuid),
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                Set.of(topic1Uuid, topic2Uuid),
+                Assignment.EMPTY
         ));
 
         Map<String, Map<Uuid, Set<Integer>>> expectedAssignment = new HashMap<>();
         expectedAssignment.put(memberA, mkAssignment(
-            mkTopicAssignment(topic1Uuid, 0, 2)
+                mkTopicAssignment(topic1Uuid, 0, 2)
         ));
         expectedAssignment.put(memberB, mkAssignment(
-            mkTopicAssignment(topic1Uuid, 1),
-            mkTopicAssignment(topic2Uuid, 1)
+                mkTopicAssignment(topic1Uuid, 1),
+                mkTopicAssignment(topic2Uuid, 1)
         ));
         expectedAssignment.put(memberC, mkAssignment(
-            mkTopicAssignment(topic2Uuid, 0, 2)
+                mkTopicAssignment(topic2Uuid, 0, 2)
         ));
 
         GroupSpec groupSpec = new GroupSpecImpl(
-            members,
-            HOMOGENEOUS,
-            invertedTargetAssignment(members)
+                members,
+                HOMOGENEOUS,
+                invertedTargetAssignment(members)
         );
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            new KRaftCoordinatorMetadataImage(metadataImage)
+                new KRaftCoordinatorMetadataImage(metadataImage)
         );
 
         GroupAssignment computedAssignment = assignor.assign(
-            groupSpec,
-            subscribedTopicMetadata
+                groupSpec,
+                subscribedTopicMetadata
         );
 
         assertAssignment(expectedAssignment, computedAssignment);
@@ -475,49 +475,49 @@ public class UniformHomogeneousAssignmentBuilderTest {
         Map<String, MemberSubscriptionAndAssignmentImpl> members = new TreeMap<>();
 
         members.put(memberA, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            Set.of(topic1Uuid, topic2Uuid),
-            new Assignment(mkAssignment(
-                mkTopicAssignment(topic1Uuid, 0),
-                mkTopicAssignment(topic2Uuid, 0)
-            ))
+                Optional.empty(),
+                Optional.empty(),
+                Set.of(topic1Uuid, topic2Uuid),
+                new Assignment(mkAssignment(
+                    mkTopicAssignment(topic1Uuid, 0),
+                    mkTopicAssignment(topic2Uuid, 0)
+                ))
         ));
 
         members.put(memberB, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            Set.of(topic1Uuid, topic2Uuid),
-            new Assignment(mkAssignment(
-                mkTopicAssignment(topic1Uuid, 1),
-                mkTopicAssignment(topic2Uuid, 1)
-            ))
+                Optional.empty(),
+                Optional.empty(),
+                Set.of(topic1Uuid, topic2Uuid),
+                new Assignment(mkAssignment(
+                    mkTopicAssignment(topic1Uuid, 1),
+                    mkTopicAssignment(topic2Uuid, 1)
+                ))
         ));
 
         // Member C was removed
 
         Map<String, Map<Uuid, Set<Integer>>> expectedAssignment = new HashMap<>();
         expectedAssignment.put(memberA, mkAssignment(
-            mkTopicAssignment(topic1Uuid, 0),
-            mkTopicAssignment(topic2Uuid, 0, 2)
+                mkTopicAssignment(topic1Uuid, 0),
+                mkTopicAssignment(topic2Uuid, 0, 2)
         ));
         expectedAssignment.put(memberB, mkAssignment(
-            mkTopicAssignment(topic1Uuid, 1, 2),
-            mkTopicAssignment(topic2Uuid, 1)
+                mkTopicAssignment(topic1Uuid, 1, 2),
+                mkTopicAssignment(topic2Uuid, 1)
         ));
 
         GroupSpec groupSpec = new GroupSpecImpl(
-            members,
-            HOMOGENEOUS,
-            invertedTargetAssignment(members)
+                members,
+                HOMOGENEOUS,
+                invertedTargetAssignment(members)
         );
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            new KRaftCoordinatorMetadataImage(metadataImage)
+                new KRaftCoordinatorMetadataImage(metadataImage)
         );
 
         GroupAssignment computedAssignment = assignor.assign(
-            groupSpec,
-            subscribedTopicMetadata
+                groupSpec,
+                subscribedTopicMetadata
         );
 
         assertAssignment(expectedAssignment, computedAssignment);
@@ -535,45 +535,45 @@ public class UniformHomogeneousAssignmentBuilderTest {
         Map<String, MemberSubscriptionAndAssignmentImpl> members = new TreeMap<>();
 
         members.put(memberA, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            Set.of(topic2Uuid),
-            new Assignment(mkAssignment(
-                mkTopicAssignment(topic1Uuid, 0),
-                mkTopicAssignment(topic2Uuid, 0)
-            ))
+                Optional.empty(),
+                Optional.empty(),
+                Set.of(topic2Uuid),
+                new Assignment(mkAssignment(
+                    mkTopicAssignment(topic1Uuid, 0),
+                    mkTopicAssignment(topic2Uuid, 0)
+                ))
         ));
 
         members.put(memberB, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            Set.of(topic2Uuid),
-            new Assignment(mkAssignment(
-                mkTopicAssignment(topic1Uuid, 1),
-                mkTopicAssignment(topic2Uuid, 1)
-            ))
+                Optional.empty(),
+                Optional.empty(),
+                Set.of(topic2Uuid),
+                new Assignment(mkAssignment(
+                    mkTopicAssignment(topic1Uuid, 1),
+                    mkTopicAssignment(topic2Uuid, 1)
+                ))
         ));
 
         Map<String, Map<Uuid, Set<Integer>>> expectedAssignment = new HashMap<>();
         expectedAssignment.put(memberA, mkAssignment(
-            mkTopicAssignment(topic2Uuid, 0)
+                mkTopicAssignment(topic2Uuid, 0)
         ));
         expectedAssignment.put(memberB, mkAssignment(
-            mkTopicAssignment(topic2Uuid, 1)
+                mkTopicAssignment(topic2Uuid, 1)
         ));
 
         GroupSpec groupSpec = new GroupSpecImpl(
-            members,
-            HOMOGENEOUS,
-            invertedTargetAssignment(members)
+                members,
+                HOMOGENEOUS,
+                invertedTargetAssignment(members)
         );
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            new KRaftCoordinatorMetadataImage(metadataImage)
+                new KRaftCoordinatorMetadataImage(metadataImage)
         );
 
         GroupAssignment computedAssignment = assignor.assign(
-            groupSpec,
-            subscribedTopicMetadata
+                groupSpec,
+                subscribedTopicMetadata
         );
 
         assertAssignment(expectedAssignment, computedAssignment);
@@ -609,12 +609,12 @@ public class UniformHomogeneousAssignmentBuilderTest {
         for (int i = 0; i < numMembers; i++) {
             String memberId = membersList.get(i);
             Map<Uuid, Set<Integer>> computedAssignmentForMember =
-                computedGroupAssignment.members().get(memberId).partitions();
+                    computedGroupAssignment.members().get(memberId).partitions();
             // Each member is subscribed to topics of all the partitions assigned to it.
             computedAssignmentForMember.keySet().forEach(topicId -> {
                 // Check if the topic exists in the subscription.
                 assertTrue(memberSubscriptionSpec.get(memberId).subscribedTopicIds().contains(topicId),
-                    "Error: Partitions for topic " + topicId + " are assigned to member " + memberId +
+                        "Error: Partitions for topic " + topicId + " are assigned to member " + memberId +
                         " but it is not part of the members subscription ");
             });
 
@@ -630,8 +630,8 @@ public class UniformHomogeneousAssignmentBuilderTest {
                         intersection.retainAll(computedAssignmentForOtherMember.get(topicId));
                     }
                     assertTrue(
-                        intersection.isEmpty(),
-                        "Error : Member 1 " + memberId + " and Member 2 " + otherMemberId +
+                            intersection.isEmpty(),
+                            "Error : Member 1 " + memberId + " and Member 2 " + otherMemberId +
                             "have common partitions assigned to them " + computedAssignmentForOtherMember.get(topicId)
                     );
                 });
@@ -640,8 +640,8 @@ public class UniformHomogeneousAssignmentBuilderTest {
                 int size1 = totalAssignmentSizesOfAllMembers.get(i);
                 int size2 = totalAssignmentSizesOfAllMembers.get(j);
                 assertTrue(
-                    Math.abs(size1 - size2) <= 1,
-                    "Size of one assignment is greater than the other assignment by more than one partition "
+                        Math.abs(size1 - size2) <= 1,
+                        "Size of one assignment is greater than the other assignment by more than one partition "
                         + size1 + " " + size2 + "abs = " + Math.abs(size1 - size2)
                 );
             }

@@ -69,8 +69,8 @@ public class MemoryRecordsBuilderTest {
         @Override
         public String toString() {
             return "magic=" + magic +
-                ", bufferOffset=" + bufferOffset +
-                ", compression=" + compression;
+                    ", bufferOffset=" + bufferOffset +
+                    ", compression=" + compression;
         }
     }
 
@@ -94,8 +94,8 @@ public class MemoryRecordsBuilderTest {
     public void testUnsupportedCompress() {
         BiFunction<Byte, Compression, MemoryRecordsBuilder> builderBiFunction = (magic, compression) ->
                 new MemoryRecordsBuilder(ByteBuffer.allocate(128), magic, compression, TimestampType.CREATE_TIME, 0L, 0L,
-                RecordBatch.NO_PRODUCER_ID, RecordBatch.NO_PRODUCER_EPOCH, RecordBatch.NO_SEQUENCE,
-                false, false, RecordBatch.NO_PARTITION_LEADER_EPOCH, 128);
+                        RecordBatch.NO_PRODUCER_ID, RecordBatch.NO_PRODUCER_EPOCH, RecordBatch.NO_SEQUENCE,
+                        false, false, RecordBatch.NO_PARTITION_LEADER_EPOCH, 128);
 
         Arrays.asList(MAGIC_VALUE_V0, MAGIC_VALUE_V1).forEach(magic -> {
             Exception e = assertThrows(IllegalArgumentException.class, () -> builderBiFunction.apply(magic, Compression.zstd().build()));
@@ -110,9 +110,9 @@ public class MemoryRecordsBuilderTest {
         ByteBuffer buffer = allocateBuffer(128, args);
 
         MemoryRecords records = new MemoryRecordsBuilder(buffer, magic,
-            args.compression, TimestampType.CREATE_TIME, 0L, 0L,
-            RecordBatch.NO_PRODUCER_ID, RecordBatch.NO_PRODUCER_EPOCH, RecordBatch.NO_SEQUENCE,
-            false, false, RecordBatch.NO_PARTITION_LEADER_EPOCH, buffer.capacity()).build();
+                args.compression, TimestampType.CREATE_TIME, 0L, 0L,
+                RecordBatch.NO_PRODUCER_ID, RecordBatch.NO_PRODUCER_EPOCH, RecordBatch.NO_SEQUENCE,
+                false, false, RecordBatch.NO_PARTITION_LEADER_EPOCH, buffer.capacity()).build();
 
         assertEquals(0, records.sizeInBytes());
         assertEquals(args.bufferOffset, buffer.position());
@@ -126,7 +126,7 @@ public class MemoryRecordsBuilderTest {
         short epoch = 15;
         int sequence = 2342;
 
-        Supplier<MemoryRecordsBuilder> supplier = () ->  new MemoryRecordsBuilder(buffer, args.magic, args.compression,
+        Supplier<MemoryRecordsBuilder> supplier = () -> new MemoryRecordsBuilder(buffer, args.magic, args.compression,
                 TimestampType.CREATE_TIME, 0L, 0L, pid, epoch, sequence, true, false,
                 RecordBatch.NO_PARTITION_LEADER_EPOCH, buffer.capacity());
 
@@ -151,7 +151,7 @@ public class MemoryRecordsBuilderTest {
         short epoch = 15;
         int sequence = 2342;
 
-        Supplier<MemoryRecordsBuilder> supplier = () ->  new MemoryRecordsBuilder(buffer, args.magic, args.compression, TimestampType.CREATE_TIME,
+        Supplier<MemoryRecordsBuilder> supplier = () -> new MemoryRecordsBuilder(buffer, args.magic, args.compression, TimestampType.CREATE_TIME,
                 0L, 0L, pid, epoch, sequence, true, false, RecordBatch.NO_PARTITION_LEADER_EPOCH, buffer.capacity());
         if (args.magic < MAGIC_VALUE_V2) {
             assertThrows(IllegalArgumentException.class, supplier::get);
@@ -216,7 +216,7 @@ public class MemoryRecordsBuilderTest {
         } else {
             MemoryRecordsBuilder builder = supplier.get();
             assertThrows(IllegalArgumentException.class, () -> builder.appendEndTxnMarker(RecordBatch.NO_TIMESTAMP,
-                new EndTransactionMarker(ControlRecordType.ABORT, 0)));
+                    new EndTransactionMarker(ControlRecordType.ABORT, 0)));
         }
     }
 
@@ -267,7 +267,7 @@ public class MemoryRecordsBuilderTest {
         final int leaderEpoch = 5;
         final List<Integer> voters = Arrays.asList(2, 3);
 
-        Supplier<MemoryRecordsBuilder> supplier = () ->  new MemoryRecordsBuilder(buffer, args.magic, args.compression,
+        Supplier<MemoryRecordsBuilder> supplier = () -> new MemoryRecordsBuilder(buffer, args.magic, args.compression,
                 TimestampType.CREATE_TIME, 0L, 0L, RecordBatch.NO_PRODUCER_ID, RecordBatch.NO_PRODUCER_EPOCH,
                 RecordBatch.NO_SEQUENCE, false, true, leaderEpoch, buffer.capacity());
 
@@ -276,10 +276,10 @@ public class MemoryRecordsBuilderTest {
         } else {
             MemoryRecordsBuilder builder = supplier.get();
             builder.appendLeaderChangeMessage(RecordBatch.NO_TIMESTAMP,
-                new LeaderChangeMessage()
-                    .setLeaderId(leaderId)
-                    .setVoters(voters.stream().map(
-                        voterId -> new Voter().setVoterId(voterId)).collect(Collectors.toList())));
+                    new LeaderChangeMessage()
+                        .setLeaderId(leaderId)
+                        .setVoters(voters.stream().map(
+                            voterId -> new Voter().setVoterId(voterId)).collect(Collectors.toList())));
 
             MemoryRecords built = builder.build();
             List<Record> records = TestUtils.toList(built.records());
@@ -354,7 +354,6 @@ public class MemoryRecordsBuilderTest {
             assertEquals(records.sizeInBytes(), bytesWrittenBeforeClose);
     }
 
-
     @ParameterizedTest
     @ArgumentsSource(MemoryRecordsBuilderArgumentsProvider.class)
     public void buildUsingLogAppendTime(Args args) {
@@ -388,6 +387,7 @@ public class MemoryRecordsBuilderTest {
             }
         }
     }
+
     @ParameterizedTest
     @ArgumentsSource(MemoryRecordsBuilderArgumentsProvider.class)
     public void buildUsingCreateTime(Args args) {
@@ -526,7 +526,7 @@ public class MemoryRecordsBuilderTest {
 
         // offsets must increase monotonically
         assertThrows(IllegalArgumentException.class, () -> builder.appendWithOffset(0L, System.currentTimeMillis(),
-            "b".getBytes(), null));
+                "b".getBytes(), null));
     }
 
     @ParameterizedTest

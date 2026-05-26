@@ -181,8 +181,8 @@ public class ShareFetch<K, V> {
             TopicIdPartition tip = tipBatch.getKey();
             ShareInFlightBatchException exception = tipBatch.getValue().getException();
             if (tip.topic().equals(topic) && (tip.partition() == partition) &&
-                exception != null &&
-                exception.offsets().contains(offset)) {
+                    exception != null &&
+                    exception.offsets().contains(offset)) {
 
                 tipBatch.getValue().addAcknowledgement(offset, type);
                 return;

@@ -101,7 +101,7 @@ public class RemoveMembersFromConsumerGroupResult {
                                                MemberIdentity member,
                                                KafkaFutureImpl<Void> result) {
         Throwable exception = KafkaAdminClient.getSubLevelError(memberErrors, member,
-            "Member \"" + member + "\" was not included in the removal response");
+                "Member \"" + member + "\" was not included in the removal response");
         if (exception != null) {
             result.completeExceptionally(exception);
             return true;

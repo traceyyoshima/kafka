@@ -186,35 +186,35 @@ public class RecordAccumulator {
                              TransactionManager transactionManager,
                              BufferPool bufferPool) {
         this(logContext,
-            batchSize,
-            compression,
-            lingerMs,
-            retryBackoffMs,
-            retryBackoffMaxMs,
-            deliveryTimeoutMs,
-            new PartitionerConfig(),
-            metrics,
-            metricGrpName,
-            time,
-            transactionManager,
-            bufferPool);
+                batchSize,
+                compression,
+                lingerMs,
+                retryBackoffMs,
+                retryBackoffMaxMs,
+                deliveryTimeoutMs,
+                new PartitionerConfig(),
+                metrics,
+                metricGrpName,
+                time,
+                transactionManager,
+                bufferPool);
     }
 
     private void registerMetrics(Metrics metrics, String metricGrpName) {
         metrics.addMetric(
-            metrics.metricName("waiting-threads", metricGrpName,
-                "The number of user threads blocked waiting for buffer memory to enqueue their records"),
-            (config, now) -> free.queued());
+                metrics.metricName("waiting-threads", metricGrpName,
+                        "The number of user threads blocked waiting for buffer memory to enqueue their records"),
+                (config, now) -> free.queued());
 
         metrics.addMetric(
-            metrics.metricName("buffer-total-bytes", metricGrpName,
-                "The maximum amount of buffer memory the client can use (whether or not it is currently used)."),
-            (config, now) -> free.totalMemory());
+                metrics.metricName("buffer-total-bytes", metricGrpName,
+                        "The maximum amount of buffer memory the client can use (whether or not it is currently used)."),
+                (config, now) -> free.totalMemory());
 
         metrics.addMetric(
-            metrics.metricName("buffer-available-bytes", metricGrpName,
-                "The total amount of buffer memory that is not being used (either unallocated or in the free list)."),
-            (config, now) -> free.availableMemory());
+                metrics.metricName("buffer-available-bytes", metricGrpName,
+                        "The total amount of buffer memory that is not being used (either unallocated or in the free list)."),
+                (config, now) -> free.availableMemory());
     }
 
     private void setPartition(AppendCallbacks callbacks, int partition) {
@@ -454,13 +454,13 @@ public class RecordAccumulator {
     }
 
     public void maybeUpdateNextBatchExpiryTime(ProducerBatch batch) {
-        if (batch.createdMs + deliveryTimeoutMs  > 0) {
+        if (batch.createdMs + deliveryTimeoutMs > 0) {
             // the non-negative check is to guard us against potential overflow due to setting
             // a large value for deliveryTimeoutMs
             nextBatchExpiryTimeMs = Math.min(nextBatchExpiryTimeMs, batch.createdMs + deliveryTimeoutMs);
         } else {
             log.warn("Skipping next batch expiry time update due to addition overflow: "
-                + "batch.createMs={}, deliveryTimeoutMs={}", batch.createdMs, deliveryTimeoutMs);
+                    + "batch.createMs={}, deliveryTimeoutMs={}", batch.createdMs, deliveryTimeoutMs);
         }
     }
 
@@ -558,11 +558,11 @@ public class RecordAccumulator {
         // When we are re-enqueueing and have enabled idempotence, the re-enqueued batch must always have a sequence.
         if (batch.baseSequence() == RecordBatch.NO_SEQUENCE)
             throw new IllegalStateException("Trying to re-enqueue a batch which doesn't have a sequence even " +
-                "though idempotency is enabled.");
+                    "though idempotency is enabled.");
 
         if (!transactionManager.hasInflightBatches(batch.topicPartition))
             throw new IllegalStateException("We are re-enqueueing a batch which is not tracked as part of the in flight " +
-                "requests. batch.topicPartition: " + batch.topicPartition + "; batch.baseSequence: " + batch.baseSequence());
+                    "requests. batch.topicPartition: " + batch.topicPartition + "; batch.baseSequence: " + batch.baseSequence());
 
         ProducerBatch firstBatchInQueue = deque.peekFirst();
         if (firstBatchInQueue != null && firstBatchInQueue.hasSequence() && firstBatchInQueue.baseSequence() < batch.baseSequence()) {
@@ -579,7 +579,7 @@ public class RecordAccumulator {
                 orderedBatches.add(deque.pollFirst());
 
             log.debug("Reordered incoming batch with sequence {} for partition {}. It was placed in the queue at " +
-                "position {}", batch.baseSequence(), batch.topicPartition, orderedBatches.size());
+                    "position {}", batch.baseSequence(), batch.topicPartition, orderedBatches.size());
             // Either we have reached a point where there are batches without a sequence (ie. never been drained
             // and are hence in order by default), or the batch at the front of the queue has a sequence greater
             // than the incoming batch. This is the right place to add the incoming batch.
@@ -741,7 +741,7 @@ public class RecordAccumulator {
                 }
 
                 nextReadyCheckDelayMs = batchReady(exhausted, part, leader, waitedTimeMs, backingOff,
-                    backoffAttempts, full, nextReadyCheckDelayMs, readyNodes);
+                        backoffAttempts, full, nextReadyCheckDelayMs, readyNodes);
             }
         }
 
@@ -807,11 +807,11 @@ public class RecordAccumulator {
         if (log.isTraceEnabled()) {
             if (shouldBackoff) {
                 log.trace(
-                    "For {}, will backoff", batch);
+                        "For {}, will backoff", batch);
             } else {
                 log.trace(
-                    "For {}, will not backoff, shouldWaitMore {}, hasLeaderChanged {}", batch,
-                    shouldWaitMore, hasLeaderChanged);
+                        "For {}, will not backoff, shouldWaitMore {}, hasLeaderChanged {}", batch,
+                        shouldWaitMore, hasLeaderChanged);
             }
         } else if (log.isDebugEnabled() && hasLeaderChanged) {
             // Add less-verbose log at DEBUG.
@@ -907,7 +907,7 @@ public class RecordAccumulator {
 
                 boolean isTransactional = transactionManager != null && transactionManager.isTransactional();
                 ProducerIdAndEpoch producerIdAndEpoch =
-                    transactionManager != null ? transactionManager.producerIdAndEpoch() : null;
+                        transactionManager != null ? transactionManager.producerIdAndEpoch() : null;
                 if (producerIdAndEpoch != null && !batch.hasSequence()) {
                     // If the producer id/epoch of the partition do not match the latest one
                     // of the producer, we update it and reset the sequence. This should be
@@ -927,7 +927,7 @@ public class RecordAccumulator {
                     transactionManager.incrementSequenceNumber(batch.topicPartition, batch.recordCount);
                     log.debug("Assigned producerId {} and producerEpoch {} to batch with base sequence " +
                             "{} being sent to partition {}", producerIdAndEpoch.producerId,
-                        producerIdAndEpoch.epoch, batch.baseSequence(), tp);
+                            producerIdAndEpoch.epoch, batch.baseSequence(), tp);
 
                     transactionManager.addInFlightBatch(batch);
                 }

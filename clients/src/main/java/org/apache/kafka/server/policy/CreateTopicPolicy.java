@@ -108,7 +108,7 @@ public interface CreateTopicPolicy extends Configurable, AutoCloseable {
         @Override
         public int hashCode() {
             return Objects.hash(topic, numPartitions, replicationFactor,
-                replicasAssignments, configs);
+                    replicasAssignments, configs);
         }
 
         @Override
@@ -117,10 +117,10 @@ public interface CreateTopicPolicy extends Configurable, AutoCloseable {
             if (o == null || getClass() != o.getClass()) return false;
             RequestMetadata other = (RequestMetadata) o;
             return topic.equals(other.topic) &&
-                Objects.equals(numPartitions, other.numPartitions) &&
-                Objects.equals(replicationFactor, other.replicationFactor) &&
-                Objects.equals(replicasAssignments, other.replicasAssignments) &&
-                configs.equals(other.configs);
+                    Objects.equals(numPartitions, other.numPartitions) &&
+                    Objects.equals(replicationFactor, other.replicationFactor) &&
+                    Objects.equals(replicasAssignments, other.replicasAssignments) &&
+                    configs.equals(other.configs);
         }
 
         @Override

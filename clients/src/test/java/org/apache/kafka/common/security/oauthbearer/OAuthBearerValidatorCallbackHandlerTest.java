@@ -59,11 +59,11 @@ public class OAuthBearerValidatorCallbackHandlerTest extends OAuthBearerTest {
         JwtValidator jwtValidator = createJwtValidator(verificationKeyResolver);
         OAuthBearerValidatorCallbackHandler handler = new OAuthBearerValidatorCallbackHandler();
         handler.configure(
-            configs,
-            OAUTHBEARER_MECHANISM,
-            getJaasConfigEntries(),
-            verificationKeyResolver,
-            jwtValidator
+                configs,
+                OAUTHBEARER_MECHANISM,
+                getJaasConfigEntries(),
+                verificationKeyResolver,
+                jwtValidator
         );
 
         try {
@@ -115,14 +115,14 @@ public class OAuthBearerValidatorCallbackHandlerTest extends OAuthBearerTest {
 
         // An error initializing the JwtValidator should cause OAuthBearerValidatorCallbackHandler.init() to fail.
         KafkaException error = assertThrows(
-            KafkaException.class,
-            () -> handler.configure(
-                getSaslConfigs(),
-                OAUTHBEARER_MECHANISM,
-                getJaasConfigEntries(),
-                verificationKeyResolver,
-                jwtValidator
-            )
+                KafkaException.class,
+                () -> handler.configure(
+                    getSaslConfigs(),
+                    OAUTHBEARER_MECHANISM,
+                    getJaasConfigEntries(),
+                    verificationKeyResolver,
+                    jwtValidator
+                )
         );
         assertEquals(configureError, error);
     }
@@ -146,11 +146,11 @@ public class OAuthBearerValidatorCallbackHandlerTest extends OAuthBearerTest {
 
         OAuthBearerValidatorCallbackHandler handler = new OAuthBearerValidatorCallbackHandler();
         handler.configure(
-            getSaslConfigs(),
-            OAUTHBEARER_MECHANISM,
-            getJaasConfigEntries(),
-            verificationKeyResolver,
-            jwtValidator
+                getSaslConfigs(),
+                OAUTHBEARER_MECHANISM,
+                getJaasConfigEntries(),
+                verificationKeyResolver,
+                jwtValidator
         );
 
         // An error closings the JwtValidator should *not* cause OAuthBearerValidatorCallbackHandler.close() to fail.
@@ -166,11 +166,11 @@ public class OAuthBearerValidatorCallbackHandlerTest extends OAuthBearerTest {
 
         OAuthBearerValidatorCallbackHandler handler = new OAuthBearerValidatorCallbackHandler();
         handler.configure(
-            configs,
-            OAUTHBEARER_MECHANISM,
-            getJaasConfigEntries(),
-            verificationKeyResolver,
-            jwtValidator
+                configs,
+                OAUTHBEARER_MECHANISM,
+                getJaasConfigEntries(),
+                verificationKeyResolver,
+                jwtValidator
         );
 
         try {

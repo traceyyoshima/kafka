@@ -466,8 +466,8 @@ public class KafkaShareConsumer<K, V> implements ShareConsumer<K, V> {
     }
 
     KafkaShareConsumer(ShareConsumerConfig config,
-                              Deserializer<K> keyDeserializer,
-                              Deserializer<V> valueDeserializer) {
+                       Deserializer<K> keyDeserializer,
+                       Deserializer<V> valueDeserializer) {
         delegate = CREATOR.create(config, keyDeserializer, valueDeserializer);
     }
 

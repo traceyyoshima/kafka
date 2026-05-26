@@ -78,7 +78,7 @@ public class AclBinding {
         if (o == null || getClass() != o.getClass()) return false;
         AclBinding that = (AclBinding) o;
         return Objects.equals(pattern, that.pattern) &&
-            Objects.equals(entry, that.entry);
+                Objects.equals(entry, that.entry);
     }
 
     @Override

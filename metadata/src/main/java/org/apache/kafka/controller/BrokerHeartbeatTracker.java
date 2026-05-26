@@ -109,7 +109,7 @@ class BrokerHeartbeatTracker {
      */
     Optional<BrokerIdAndEpoch> maybeRemoveExpired(long nowNs) {
         Iterator<Entry<BrokerIdAndEpoch, Long>> iterator =
-            contactTimes.entrySet().iterator();
+                contactTimes.entrySet().iterator();
         while (iterator.hasNext()) {
             Entry<BrokerIdAndEpoch, Long> entry = iterator.next();
             if (isExpired(entry.getValue(), nowNs)) {

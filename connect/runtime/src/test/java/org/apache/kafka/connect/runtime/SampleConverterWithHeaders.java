@@ -74,7 +74,6 @@ public class SampleConverterWithHeaders implements Converter {
         return new String(header.value());
     }
 
-
     @Override
     public SchemaAndValue toConnectData(String topic, byte[] value) {
         throw new DataException("Headers are required for this converter!");

@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-
 package org.apache.kafka.streams.query;
 
 
@@ -118,7 +117,6 @@ public final class TimestampedRangeQuery<K, V> implements Query<KeyValueIterator
     public static <K, V> TimestampedRangeQuery<K, V> withNoBounds() {
         return new TimestampedRangeQuery<>(Optional.empty(), Optional.empty(), ResultOrder.ANY);
     }
-
 
     /**
      * The lower bound of the query, if specified.

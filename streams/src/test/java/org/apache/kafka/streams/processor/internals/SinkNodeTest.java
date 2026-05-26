@@ -83,12 +83,12 @@ public class SinkNodeTest {
         final Throwable exception = assertThrows(StreamsException.class, () -> sink.init(context));
 
         assertThat(
-            exception.getMessage(),
-            equalTo("Failed to initialize key serdes for sink node anyNodeName")
+                exception.getMessage(),
+                equalTo("Failed to initialize key serdes for sink node anyNodeName")
         );
         assertThat(
-            exception.getCause().getMessage(),
-            equalTo("Please set StreamsConfig#DEFAULT_KEY_SERDE_CLASS_CONFIG")
+                exception.getCause().getMessage(),
+                equalTo("Please set StreamsConfig#DEFAULT_KEY_SERDE_CLASS_CONFIG")
         );
     }
 
@@ -100,12 +100,12 @@ public class SinkNodeTest {
         final Throwable exception = assertThrows(StreamsException.class, () -> sink.init(context));
 
         assertThat(
-            exception.getMessage(),
-            equalTo("Failed to initialize value serdes for sink node anyNodeName")
+                exception.getMessage(),
+                equalTo("Failed to initialize value serdes for sink node anyNodeName")
         );
         assertThat(
-            exception.getCause().getMessage(),
-            equalTo("Please set StreamsConfig#DEFAULT_VALUE_SERDE_CLASS_CONFIG")
+                exception.getCause().getMessage(),
+                equalTo("Please set StreamsConfig#DEFAULT_VALUE_SERDE_CLASS_CONFIG")
         );
     }
 

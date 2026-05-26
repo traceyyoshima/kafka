@@ -69,27 +69,27 @@ public class CompositeReadOnlyKeyValueStoreTest {
         otherUnderlyingStore = newStoreInstance();
         stubProviderOne.addStore("other-store", otherUnderlyingStore);
         theStore = new CompositeReadOnlyKeyValueStore<>(
-            new WrappingStoreProvider(asList(stubProviderOne, stubProviderTwo), StoreQueryParameters.fromNameAndType(storeName, QueryableStoreTypes.keyValueStore())),
-            QueryableStoreTypes.keyValueStore(),
-            storeName
+                new WrappingStoreProvider(asList(stubProviderOne, stubProviderTwo), StoreQueryParameters.fromNameAndType(storeName, QueryableStoreTypes.keyValueStore())),
+                QueryableStoreTypes.keyValueStore(),
+                storeName
         );
     }
 
     private KeyValueStore<String, String> newStoreInstance() {
         final KeyValueStore<String, String> store = Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore(storeName),
-            Serdes.String(),
-            Serdes.String())
+                Serdes.String(),
+                Serdes.String())
             .build();
 
         final InternalMockProcessorContext<String, String> context =
-            new InternalMockProcessorContext<>(
-                new StateSerdes<>(
-                    ProcessorStateManager.storeChangelogTopic("appId", storeName, null),
-                    Serdes.String(),
-                    Serdes.String()
-                ),
-                new MockRecordCollector()
-            );
+                new InternalMockProcessorContext<>(
+                        new StateSerdes<>(
+                                ProcessorStateManager.storeChangelogTopic("appId", storeName, null),
+                                Serdes.String(),
+                                Serdes.String()
+                        ),
+                        new MockRecordCollector()
+                );
         context.setTime(1L);
 
         store.init(context, store);
@@ -292,11 +292,11 @@ public class CompositeReadOnlyKeyValueStoreTest {
 
         final List<KeyValue<String, String>> results = toListAndCloseIterator(theStore.reverseRange("a", "b"));
         assertArrayEquals(
-            asList(
-                new KeyValue<>("b", "b"),
-                new KeyValue<>("a", "a")
-            ).toArray(),
-            results.toArray());
+                asList(
+                    new KeyValue<>("b", "b"),
+                    new KeyValue<>("a", "a")
+                ).toArray(),
+                results.toArray());
     }
 
     @Test
@@ -337,13 +337,13 @@ public class CompositeReadOnlyKeyValueStoreTest {
 
         final List<KeyValue<String, String>> results = toListAndCloseIterator(theStore.range("a", "e"));
         assertArrayEquals(
-            asList(
-                new KeyValue<>("a", "a"),
-                new KeyValue<>("b", "b"),
-                new KeyValue<>("c", "c"),
-                new KeyValue<>("d", "d")
-            ).toArray(),
-            results.toArray());
+                asList(
+                    new KeyValue<>("a", "a"),
+                    new KeyValue<>("b", "b"),
+                    new KeyValue<>("c", "c"),
+                    new KeyValue<>("d", "d")
+                ).toArray(),
+                results.toArray());
     }
 
     @Test
@@ -361,12 +361,12 @@ public class CompositeReadOnlyKeyValueStoreTest {
 
         final List<KeyValue<String, String>> results = toListAndCloseIterator(theStore.prefixScan("a", new StringSerializer()));
         assertArrayEquals(
-            asList(
-                new KeyValue<>("a", "a"),
-                new KeyValue<>("aa", "c"),
-                new KeyValue<>("ab", "d")
-            ).toArray(),
-            results.toArray());
+                asList(
+                    new KeyValue<>("a", "a"),
+                    new KeyValue<>("aa", "c"),
+                    new KeyValue<>("ab", "d")
+                ).toArray(),
+                results.toArray());
     }
 
     @Test
@@ -526,7 +526,7 @@ public class CompositeReadOnlyKeyValueStoreTest {
     @Test
     public void readOnlyShouldReturnNewInstanceWithOverride() {
         final CompositeReadOnlyKeyValueStore<String, String> override =
-            (CompositeReadOnlyKeyValueStore<String, String>) theStore.readOnly(IsolationLevel.READ_COMMITTED);
+                (CompositeReadOnlyKeyValueStore<String, String>) theStore.readOnly(IsolationLevel.READ_COMMITTED);
         assertNotSame(theStore, override);
     }
 
@@ -536,9 +536,9 @@ public class CompositeReadOnlyKeyValueStoreTest {
         final NoOpReadOnlyStore<String, String> recorder = new NoOpReadOnlyStore<>();
         stub.addStore(storeName, recorder);
         final CompositeReadOnlyKeyValueStore<String, String> store = new CompositeReadOnlyKeyValueStore<>(
-            new WrappingStoreProvider(singletonList(stub), StoreQueryParameters.fromNameAndType(storeName, QueryableStoreTypes.keyValueStore())),
-            QueryableStoreTypes.keyValueStore(),
-            storeName
+                new WrappingStoreProvider(singletonList(stub), StoreQueryParameters.fromNameAndType(storeName, QueryableStoreTypes.keyValueStore())),
+                QueryableStoreTypes.keyValueStore(),
+                storeName
         );
 
         store.readOnly(IsolationLevel.READ_COMMITTED).get("k");
@@ -552,11 +552,11 @@ public class CompositeReadOnlyKeyValueStoreTest {
         final NoOpReadOnlyStore<String, String> recorder = new NoOpReadOnlyStore<>();
         stub.addStore(storeName, recorder);
         final CompositeReadOnlyKeyValueStore<String, String> store = new CompositeReadOnlyKeyValueStore<>(
-            new WrappingStoreProvider(singletonList(stub),
-                StoreQueryParameters.fromNameAndType(storeName, QueryableStoreTypes.keyValueStore()),
-                IsolationLevel.READ_UNCOMMITTED),
-            QueryableStoreTypes.keyValueStore(),
-            storeName
+                new WrappingStoreProvider(singletonList(stub),
+                        StoreQueryParameters.fromNameAndType(storeName, QueryableStoreTypes.keyValueStore()),
+                        IsolationLevel.READ_UNCOMMITTED),
+                QueryableStoreTypes.keyValueStore(),
+                storeName
         );
 
         store.readOnly(IsolationLevel.READ_COMMITTED).get("k");
@@ -571,11 +571,11 @@ public class CompositeReadOnlyKeyValueStoreTest {
 
     private CompositeReadOnlyKeyValueStore<Object, Object> rebalancing() {
         return new CompositeReadOnlyKeyValueStore<>(
-            new WrappingStoreProvider(
-                singletonList(new StateStoreProviderStub(true)),
-                StoreQueryParameters.fromNameAndType(storeName, QueryableStoreTypes.keyValueStore())),
-            QueryableStoreTypes.keyValueStore(),
-            storeName
+                new WrappingStoreProvider(
+                        singletonList(new StateStoreProviderStub(true)),
+                        StoreQueryParameters.fromNameAndType(storeName, QueryableStoreTypes.keyValueStore())),
+                QueryableStoreTypes.keyValueStore(),
+                storeName
         );
     }
 }

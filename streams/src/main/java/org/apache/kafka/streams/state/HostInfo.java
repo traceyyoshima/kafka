@@ -61,7 +61,7 @@ public class HostInfo {
 
         if (host == null || port == null) {
             throw new ConfigException(
-                String.format("Error parsing host address %s. Expected format host:port.", endPoint)
+                    String.format("Error parsing host address %s. Expected format host:port.", endPoint)
             );
         }
         return new HostInfo(host, port);

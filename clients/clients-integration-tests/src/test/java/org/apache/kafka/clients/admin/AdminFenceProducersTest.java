@@ -61,7 +61,7 @@ public class AdminFenceProducersTest {
 
     private Producer<byte[], byte[]> createProducer() {
         return clusterInstance.producer(Map.of(ProducerConfig.TRANSACTIONAL_ID_CONFIG, TXN_ID,
-            ProducerConfig.TRANSACTION_TIMEOUT_CONFIG, "2000"));
+                ProducerConfig.TRANSACTION_TIMEOUT_CONFIG, "2000"));
     }
 
     @ClusterTest

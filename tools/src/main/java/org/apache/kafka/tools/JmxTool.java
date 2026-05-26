@@ -350,7 +350,7 @@ public class JmxTool {
                 .ofType(Boolean.class)
                 .defaultsTo(false);
             waitOpt = parser.accepts("wait", "Wait for requested JMX objects to become available before starting output. " +
-                "Only supported when the list of objects is non-empty and contains no object name patterns.");
+                    "Only supported when the list of objects is non-empty and contains no object name patterns.");
             options = parser.parse(args);
         }
 
@@ -378,8 +378,8 @@ public class JmxTool {
 
         public Optional<DateFormat> dateFormat() {
             return options.has(dateFormatOpt)
-                ? Optional.of(new SimpleDateFormat(options.valueOf(dateFormatOpt)))
-                : Optional.empty();
+                    ? Optional.of(new SimpleDateFormat(options.valueOf(dateFormatOpt)))
+                    : Optional.empty();
         }
 
         public boolean hasWait() {

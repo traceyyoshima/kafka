@@ -393,11 +393,11 @@ public class KRaftMetadataCache implements MetadataCache {
         return Optional.ofNullable(currentImage.topics().getTopic(topicName))
             .flatMap(topic -> Optional.ofNullable(topic.partitions().get(partitionId)))
             .map(partition -> new LeaderAndIsr(
-                partition.leader,
-                partition.leaderEpoch,
-                Arrays.stream(partition.isr).boxed().collect(Collectors.toList()),
-                partition.leaderRecoveryState,
-                partition.partitionEpoch
+                    partition.leader,
+                    partition.leaderEpoch,
+                    Arrays.stream(partition.isr).boxed().collect(Collectors.toList()),
+                    partition.leaderRecoveryState,
+                    partition.partitionEpoch
             ));
     }
 

@@ -35,15 +35,15 @@ public class ServerLogConfigs {
     public static final String NUM_PARTITIONS_CONFIG = "num.partitions";
     public static final int NUM_PARTITIONS_DEFAULT = 1;
     public static final String NUM_PARTITIONS_DOC =
-        "The default number of log partitions per topic. This configuration affects the following paths:"
-        + "<ul>"
-        + "  <li>1. Auto topic creation</li>"
-        + "  <li>2. Internal streams topic creation</li>"
-        + "  <li>3. Topic creation via <code>AdminClient#createTopics</code> when the number of partition is set to -1</li>"
-        + "</ul>"
-        + "<p>For (1), the value from the broker configuration is used only when it is explicitly set. "
-        + "If it is not explicitly configured on the broker, the value from the controller configuration is used.<br/>"
-        + "For (2) and (3), the value from the controller configuration is always used.</p>";
+            "The default number of log partitions per topic. This configuration affects the following paths:"
+            + "<ul>"
+            + "  <li>1. Auto topic creation</li>"
+            + "  <li>2. Internal streams topic creation</li>"
+            + "  <li>3. Topic creation via <code>AdminClient#createTopics</code> when the number of partition is set to -1</li>"
+            + "</ul>"
+            + "<p>For (1), the value from the broker configuration is used only when it is explicitly set. "
+            + "If it is not explicitly configured on the broker, the value from the controller configuration is used.<br/>"
+            + "For (2) and (3), the value from the controller configuration is always used.</p>";
 
     public static final String LOG_DIRS_CONFIG = LOG_PREFIX + "dirs";
     public static final String LOG_DIR_CONFIG = LOG_PREFIX + "dir";
@@ -68,7 +68,6 @@ public class ServerLogConfigs {
     public static final String LOG_ROLL_TIME_JITTER_HOURS_CONFIG = LOG_PREFIX + "roll.jitter.hours";
     public static final String LOG_ROLL_TIME_JITTER_MILLIS_DOC = "The maximum jitter to subtract from logRollTimeMillis (in milliseconds). If not set, the value in " + LOG_ROLL_TIME_JITTER_HOURS_CONFIG + " is used";
     public static final String LOG_ROLL_TIME_JITTER_HOURS_DOC = "The maximum jitter to subtract from logRollTimeMillis (in hours), secondary to " + LOG_ROLL_TIME_JITTER_MILLIS_CONFIG + " property";
-
 
     public static final String LOG_RETENTION_TIME_MILLIS_CONFIG = ServerTopicConfigSynonyms.serverSynonym(TopicConfig.RETENTION_MS_CONFIG);
     public static final String LOG_RETENTION_TIME_MINUTES_CONFIG = LOG_PREFIX + "retention.minutes";
@@ -172,7 +171,7 @@ public class ServerLogConfigs {
     public static final String LOG_DIR_FAILURE_TIMEOUT_MS_CONFIG = LOG_PREFIX + "dir.failure.timeout.ms";
     public static final Long LOG_DIR_FAILURE_TIMEOUT_MS_DEFAULT = 30000L;
     public static final String LOG_DIR_FAILURE_TIMEOUT_MS_DOC = "If the broker is unable to successfully communicate to the controller that some log " +
-        "directory has failed for longer than this time, the broker will fail and shut down.";
+            "directory has failed for longer than this time, the broker will fail and shut down.";
 
     public static final int MAX_MESSAGE_BYTES_DEFAULT = 1024 * 1024 + Records.LOG_OVERHEAD;
     public static final String COMPRESSION_TYPE_DEFAULT = BrokerCompressionType.PRODUCER.name;

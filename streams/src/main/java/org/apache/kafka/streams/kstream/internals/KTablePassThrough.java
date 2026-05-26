@@ -29,7 +29,6 @@ public class KTablePassThrough<KIn, VIn> implements KTableProcessorSupplier<KIn,
     private final Collection<KStreamAggProcessorSupplier> parents;
     private final String storeName;
 
-
     KTablePassThrough(final Collection<KStreamAggProcessorSupplier> parents, final String storeName) {
         this.parents = parents;
         this.storeName = storeName;

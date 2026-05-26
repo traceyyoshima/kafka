@@ -107,7 +107,7 @@ public class KStreamSplitTest {
                         // "foo-bar"
                         .branch(isEven, Branched.as("bar"))
                         // no entry: a Consumer is provided
-                        .branch(isMultipleOfThree, Branched.withConsumer(ks -> { }))
+                        .branch(isMultipleOfThree, Branched.withConsumer(ks -> {}))
                         // no entry: chain function returns null
                         .branch(isMultipleOfFive, Branched.withFunction(ks -> null))
                         // "foo-4": chain function returns non-null value

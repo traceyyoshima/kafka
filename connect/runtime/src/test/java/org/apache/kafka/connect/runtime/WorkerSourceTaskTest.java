@@ -187,7 +187,6 @@ public class WorkerSourceTaskTest {
             new SourceRecord(PARTITION, OFFSET, "topic", null, KEY_SCHEMA, KEY, RECORD_SCHEMA, RECORD)
     );
 
-
     public void setup(boolean enableTopicCreation) {
         Map<String, String> workerProps = workerProps(enableTopicCreation);
         plugins = new Plugins(workerProps);

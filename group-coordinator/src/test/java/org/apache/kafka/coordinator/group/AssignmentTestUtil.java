@@ -38,8 +38,8 @@ public class AssignmentTestUtil {
         Integer... partitions
     ) {
         return new AbstractMap.SimpleEntry<>(
-            topicId,
-            new HashSet<>(Arrays.asList(partitions))
+                topicId,
+                new HashSet<>(Arrays.asList(partitions))
         );
     }
 
@@ -48,8 +48,8 @@ public class AssignmentTestUtil {
         Integer... partitions
     ) {
         return new AbstractMap.SimpleEntry<>(
-            topicId,
-            new LinkedHashSet<>(Arrays.asList(partitions))
+                topicId,
+                new LinkedHashSet<>(Arrays.asList(partitions))
         );
     }
 

@@ -66,7 +66,7 @@ public class BatchMemoryPool implements MemoryPool {
     public ByteBuffer tryAllocate(int sizeBytes) {
         if (sizeBytes > batchSize) {
             throw new IllegalArgumentException("Cannot allocate buffers larger than max " +
-                "batch size of " + batchSize);
+                    "batch size of " + batchSize);
         }
 
         lock.lock();
@@ -98,7 +98,7 @@ public class BatchMemoryPool implements MemoryPool {
 
             if (previouslyAllocated.capacity() != batchSize) {
                 throw new IllegalArgumentException("Released buffer with unexpected size "
-                    + previouslyAllocated.capacity());
+                        + previouslyAllocated.capacity());
             }
 
             // Free the buffer if the number of pooled buffers is already the maximum number of batches.

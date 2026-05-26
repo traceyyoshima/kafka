@@ -155,9 +155,9 @@ public class KStreamKStreamIntegrationTest {
         IntegrationTestUtils.produceKeyValuesSynchronously(LEFT_STREAM, left2, PRODUCER_CONFIG, MOCK_TIME);
 
         final Set<KeyValue<String, String>> result = new HashSet<>(waitUntilMinKeyValueRecordsReceived(
-            CONSUMER_CONFIG,
-            OUTPUT,
-            expectedResult.size()));
+                CONSUMER_CONFIG,
+                OUTPUT,
+                expectedResult.size()));
 
         assertThat(expectedResult, equalTo(result));
     }

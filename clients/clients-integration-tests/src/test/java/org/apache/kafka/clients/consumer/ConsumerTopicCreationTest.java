@@ -93,7 +93,7 @@ public class ConsumerTopicCreationTest {
 
     private void assertTopicNotCreate(ClusterInstance cluster) throws Exception {
         assertFalse(getAllTopics(cluster).contains(TOPIC),
-            "Both " + AUTO_CREATE_TOPICS_ENABLE_CONFIG + " and " + ALLOW_AUTO_CREATE_TOPICS_CONFIG + " need to be true to create topic automatically");
+                "Both " + AUTO_CREATE_TOPICS_ENABLE_CONFIG + " and " + ALLOW_AUTO_CREATE_TOPICS_CONFIG + " need to be true to create topic automatically");
     }
 
     private List<String> getAllTopics(ClusterInstance cluster) throws Exception {
@@ -104,21 +104,21 @@ public class ConsumerTopicCreationTest {
 
     private static List<ClusterConfig> autoCreateTopicsConfigs() {
         return List.of(
-            ClusterConfig.defaultBuilder()
-                .setTypes(Set.of(KRAFT))
-                .setServerProperties(Map.of(AUTO_CREATE_TOPICS_ENABLE_CONFIG, "true"))
-                .build(),
-            ClusterConfig.defaultBuilder()
-                .setTypes(Set.of(KRAFT))
-                .setServerProperties(Map.of(AUTO_CREATE_TOPICS_ENABLE_CONFIG, "false"))
-                .build()
+                ClusterConfig.defaultBuilder()
+                    .setTypes(Set.of(KRAFT))
+                    .setServerProperties(Map.of(AUTO_CREATE_TOPICS_ENABLE_CONFIG, "true"))
+                    .build(),
+                ClusterConfig.defaultBuilder()
+                    .setTypes(Set.of(KRAFT))
+                    .setServerProperties(Map.of(AUTO_CREATE_TOPICS_ENABLE_CONFIG, "false"))
+                    .build()
         );
     }
 
     private Consumer<byte[], byte[]> createConsumer(ClusterInstance cluster, GroupProtocol protocol, boolean allowConsumerAutoCreateTopics) {
         Map<String, Object> consumerConfig = Map.of(
-            ALLOW_AUTO_CREATE_TOPICS_CONFIG, allowConsumerAutoCreateTopics,
-            GROUP_PROTOCOL_CONFIG, protocol.name().toLowerCase(Locale.ROOT)
+                ALLOW_AUTO_CREATE_TOPICS_CONFIG, allowConsumerAutoCreateTopics,
+                GROUP_PROTOCOL_CONFIG, protocol.name().toLowerCase(Locale.ROOT)
         );
         return cluster.consumer(consumerConfig);
     }

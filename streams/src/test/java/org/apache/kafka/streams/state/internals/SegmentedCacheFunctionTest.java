@@ -40,17 +40,17 @@ class SegmentedCacheFunctionTest {
     private static final Bytes THE_SESSION_KEY = toStoreKeyBinary(new byte[]{0xA, 0xB, 0xC}, END_TIMESTAMP, START_TIMESTAMP);
 
     private static final Bytes THE_WINDOW_CACHE_KEY = Bytes.wrap(
-        ByteBuffer.allocate(8 + THE_WINDOW_KEY.get().length)
-            .putLong(START_TIMESTAMP / SEGMENT_INTERVAL)
-            .put(THE_WINDOW_KEY.get()).array()
+            ByteBuffer.allocate(8 + THE_WINDOW_KEY.get().length)
+                .putLong(START_TIMESTAMP / SEGMENT_INTERVAL)
+                .put(THE_WINDOW_KEY.get()).array()
     );
 
     private static final Bytes THE_SESSION_CACHE_KEY = Bytes.wrap(
-        ByteBuffer.allocate(8 + THE_SESSION_KEY.get().length)
-                .putLong(END_TIMESTAMP / SEGMENT_INTERVAL)
-                .put(THE_SESSION_KEY.get()).array()
+            ByteBuffer.allocate(8 + THE_SESSION_KEY.get().length)
+                    .putLong(END_TIMESTAMP / SEGMENT_INTERVAL)
+                    .put(THE_SESSION_KEY.get()).array()
     );
-    
+
     private SegmentedCacheFunction createCacheFunction(final SegmentedBytesStore.KeySchema keySchema) {
         return new SegmentedCacheFunction(keySchema, SEGMENT_INTERVAL);
     }
@@ -75,7 +75,7 @@ class SegmentedCacheFunctionTest {
 
         final Bytes lowerKeyInSameSegmentWindow = WindowKeySchema.toStoreKeyBinary(new byte[]{0xA, 0xB, 0xB}, START_TIMESTAMP - 1, 0);
         final Bytes lowerKeyInSameSegmentSession = toStoreKeyBinary(new byte[]{0xA, 0xB, 0xB}, END_TIMESTAMP - 1, START_TIMESTAMP + 1);
-        
+
         return Stream.of(
                 Arguments.of(THE_WINDOW_KEY, new WindowKeySchema(), sameKeyInPriorSegmentWindow, lowerKeyInSameSegmentWindow),
                 Arguments.of(THE_SESSION_KEY, new SessionKeySchema(), sameKeyInPriorSegmentSession, lowerKeyInSameSegmentSession)
@@ -122,13 +122,13 @@ class SegmentedCacheFunctionTest {
         final SegmentedCacheFunction cacheFunction = createCacheFunction(keySchema);
 
         assertThat(
-            cacheFunction.key(cacheFunction.cacheKey(key)),
-            equalTo(key)
+                cacheFunction.key(cacheFunction.cacheKey(key)),
+                equalTo(key)
         );
 
         assertThat(
-            cacheFunction.cacheKey(cacheFunction.key(cacheKey)),
-            equalTo(cacheKey)
+                cacheFunction.cacheKey(cacheFunction.key(cacheKey)),
+                equalTo(cacheKey)
         );
     }
 
@@ -137,43 +137,43 @@ class SegmentedCacheFunctionTest {
     void compareSegmentedKeys(final Bytes key, final SegmentedBytesStore.KeySchema keySchema, final Bytes sameKeyInPriorSegment, final Bytes lowerKeyInSameSegment) {
         final SegmentedCacheFunction cacheFunction = createCacheFunction(keySchema);
         assertThat(
-            "same key in same segment should be ranked the same",
-            cacheFunction.compareSegmentedKeys(
-                cacheFunction.cacheKey(key),
-                key
-            ) == 0
+                "same key in same segment should be ranked the same",
+                cacheFunction.compareSegmentedKeys(
+                    cacheFunction.cacheKey(key),
+                    key
+                ) == 0
         );
 
         assertThat(
-            "same keys in different segments should be ordered according to segment",
-            cacheFunction.compareSegmentedKeys(
-                cacheFunction.cacheKey(sameKeyInPriorSegment),
-                key
-            ) < 0
+                "same keys in different segments should be ordered according to segment",
+                cacheFunction.compareSegmentedKeys(
+                    cacheFunction.cacheKey(sameKeyInPriorSegment),
+                    key
+                ) < 0
         );
 
         assertThat(
-            "same keys in different segments should be ordered according to segment",
-            cacheFunction.compareSegmentedKeys(
-                cacheFunction.cacheKey(key),
-                sameKeyInPriorSegment
-            ) > 0
+                "same keys in different segments should be ordered according to segment",
+                cacheFunction.compareSegmentedKeys(
+                    cacheFunction.cacheKey(key),
+                    sameKeyInPriorSegment
+                ) > 0
         );
 
         assertThat(
-            "different keys in same segments should be ordered according to key",
-            cacheFunction.compareSegmentedKeys(
-                cacheFunction.cacheKey(key),
-                lowerKeyInSameSegment
-            ) > 0
+                "different keys in same segments should be ordered according to key",
+                cacheFunction.compareSegmentedKeys(
+                    cacheFunction.cacheKey(key),
+                    lowerKeyInSameSegment
+                ) > 0
         );
 
         assertThat(
-            "different keys in same segments should be ordered according to key",
-            cacheFunction.compareSegmentedKeys(
-                cacheFunction.cacheKey(lowerKeyInSameSegment),
-                key
-            ) < 0
+                "different keys in same segments should be ordered according to key",
+                cacheFunction.compareSegmentedKeys(
+                    cacheFunction.cacheKey(lowerKeyInSameSegment),
+                    key
+                ) < 0
         );
     }
 }

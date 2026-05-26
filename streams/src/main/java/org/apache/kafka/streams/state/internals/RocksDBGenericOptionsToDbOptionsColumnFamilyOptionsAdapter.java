@@ -1653,7 +1653,7 @@ public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter extends 
     public boolean memtableWholeKeyFiltering() {
         return columnFamilyOptions.memtableWholeKeyFiltering();
     }
-    
+
     @Override
     public Options setExperimentalMempurgeThreshold(final double experimentalMempurgeThreshold) {
         columnFamilyOptions.setExperimentalMempurgeThreshold(experimentalMempurgeThreshold);
@@ -1745,7 +1745,6 @@ public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter extends 
     public double blobGarbageCollectionForceThreshold() {
         return columnFamilyOptions.blobGarbageCollectionForceThreshold();
     }
-
 
     @Override
     public Options setPrepopulateBlobCache(final PrepopulateBlobCache prepopulateBlobCache) {

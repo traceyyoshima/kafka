@@ -125,7 +125,7 @@ public class Cleaner {
 
         assert offsetMap.slots() * dupBufferLoadFactor > 1 :
                 "offset map is too small to fit in even a single message, so log cleaning will never make progress. " +
-                        "You can increase log.cleaner.dedupe.buffer.size or decrease log.cleaner.threads";
+                "You can increase log.cleaner.dedupe.buffer.size or decrease log.cleaner.threads";
     }
 
     public int id() {
@@ -489,7 +489,6 @@ public class Cleaner {
         return Optional.empty();
     }
 
-
     /**
      * Grow buffers to process next batch of records from `sourceRecords.` Buffers are doubled in size
      * up to a maximum of `maxLogMessageSize`. In some scenarios, a record could be bigger than the
@@ -658,7 +657,7 @@ public class Cleaner {
                     //if first segment size is 0, we don't need to do the index offset range check.
                     //this will avoid empty log left every 2^31 message.
                     (segments.get(0).size() == 0 ||
-                            lastOffsetForFirstSegment(segments, firstUncleanableOffset) - group.get(group.size() - 1).baseOffset() <= Integer.MAX_VALUE)) {
+                    lastOffsetForFirstSegment(segments, firstUncleanableOffset) - group.get(group.size() - 1).baseOffset() <= Integer.MAX_VALUE)) {
                 group.add(0, segments.get(0));
                 logSize += segments.get(0).size();
                 indexSize += segments.get(0).offsetIndex().sizeInBytes();

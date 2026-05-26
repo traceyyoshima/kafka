@@ -80,12 +80,12 @@ public class Features<VersionRangeType extends BaseVersionRange> {
 
     public String toString() {
         return String.format(
-            "Features{%s}",
-            features
-                .entrySet()
-                .stream()
-                .map(entry -> String.format("(%s -> %s)", entry.getKey(), entry.getValue()))
-                .collect(joining(", "))
+                "Features{%s}",
+                features
+                    .entrySet()
+                    .stream()
+                    .map(entry -> String.format("(%s -> %s)", entry.getKey(), entry.getValue()))
+                    .collect(joining(", "))
         );
     }
 
@@ -95,9 +95,9 @@ public class Features<VersionRangeType extends BaseVersionRange> {
      */
     public Map<String, Map<String, Short>> toMap() {
         return features.entrySet().stream().collect(
-            Collectors.toMap(
-                Map.Entry::getKey,
-                entry -> entry.getValue().toMap()));
+                Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue().toMap()));
     }
 
     /**
@@ -118,9 +118,9 @@ public class Features<VersionRangeType extends BaseVersionRange> {
     private static <V extends BaseVersionRange> Features<V> fromFeaturesMap(
         Map<String, Map<String, Short>> featuresMap, MapToBaseVersionRangeConverter<V> converter) {
         return new Features<>(featuresMap.entrySet().stream().collect(
-            Collectors.toMap(
-                Map.Entry::getKey,
-                entry -> converter.fromMap(entry.getValue()))));
+                Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> converter.fromMap(entry.getValue()))));
     }
 
     /**

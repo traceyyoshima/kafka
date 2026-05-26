@@ -135,7 +135,7 @@ public class MetadataRequest extends AbstractRequest {
                                 " does not support null topic names.");
                     if (!Uuid.ZERO_UUID.equals(topic.topicId()) && version < 12)
                         throw new UnsupportedVersionException("MetadataRequest version " + version +
-                            " does not support non-zero topic IDs.");
+                                " does not support non-zero topic IDs.");
                 });
             }
             return new MetadataRequest(data, version);
@@ -183,7 +183,7 @@ public class MetadataRequest extends AbstractRequest {
 
     public boolean isAllTopics() {
         return (data.topics() == null) ||
-            (data.topics().isEmpty() && version() == 0); // In version 0, an empty topic list indicates
+                (data.topics().isEmpty() && version() == 0); // In version 0, an empty topic list indicates
                                                          // "request metadata for all topics."
     }
 

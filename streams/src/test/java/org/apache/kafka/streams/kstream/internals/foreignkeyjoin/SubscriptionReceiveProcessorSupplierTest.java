@@ -65,10 +65,10 @@ public class SubscriptionReceiveProcessorSupplierTest {
 
     private static final Supplier<String> PK_SERDE_TOPIC_SUPPLIER = () -> "pk-topic";
     private static final CombinedKeySchema<String, String> COMBINED_KEY_SCHEMA = new CombinedKeySchema<>(
-        () -> "fk-topic",
-        Serdes.String(),
-        PK_SERDE_TOPIC_SUPPLIER,
-        Serdes.String()
+            () -> "fk-topic",
+            Serdes.String(),
+            PK_SERDE_TOPIC_SUPPLIER,
+            Serdes.String()
     );
 
     @BeforeEach
@@ -96,19 +96,19 @@ public class SubscriptionReceiveProcessorSupplierTest {
         final StoreBuilder<TimestampedKeyValueStoreWithHeaders<Bytes, SubscriptionWrapper<String>>> storeBuilder = storeBuilder();
         final SubscriptionReceiveProcessorSupplier<String, String> supplier = supplier(storeBuilder);
         final Processor<String,
-                        SubscriptionWrapper<String>,
-                        CombinedKey<String, String>,
-                        Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>> processor = supplier.get();
+                SubscriptionWrapper<String>,
+                CombinedKey<String, String>,
+                Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>> processor = supplier.get();
         stateStore = storeBuilder.build();
         context.addStateStore(stateStore);
         stateStore.init(context, stateStore);
 
         final SubscriptionWrapper<String> oldWrapper = new SubscriptionWrapper<>(
-            new long[]{1L, 2L},
-            Instruction.DELETE_KEY_AND_PROPAGATE,
-            PK2,
-            SubscriptionWrapper.VERSION_0,
-            null
+                new long[]{1L, 2L},
+                Instruction.DELETE_KEY_AND_PROPAGATE,
+                PK2,
+                SubscriptionWrapper.VERSION_0,
+                null
         );
         final ValueTimestampHeaders<SubscriptionWrapper<String>> oldValue = ValueTimestampHeaders.make(oldWrapper, 0, new RecordHeaders());
 
@@ -117,29 +117,29 @@ public class SubscriptionReceiveProcessorSupplierTest {
         processor.init(context);
 
         final SubscriptionWrapper<String> newWrapper = new SubscriptionWrapper<>(
-            new long[]{1L, 2L},
-            Instruction.DELETE_KEY_AND_PROPAGATE,
-            PK1,
-            SubscriptionWrapper.VERSION_0,
-            null
+                new long[]{1L, 2L},
+                Instruction.DELETE_KEY_AND_PROPAGATE,
+                PK1,
+                SubscriptionWrapper.VERSION_0,
+                null
         );
         final ValueTimestampHeaders<SubscriptionWrapper<String>> newValue = ValueTimestampHeaders.make(
                 newWrapper, 1L, null);
         final Record<String, SubscriptionWrapper<String>> record = new Record<>(
-            FK,
-            newWrapper,
-            1L
+                FK,
+                newWrapper,
+                1L
         );
         processor.process(record);
 
         final List<CapturedForward<? extends CombinedKey<String, String>,
-                                   ? extends Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>>> forwarded = context.forwarded();
+                ? extends Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>>> forwarded = context.forwarded();
         assertNull(stateStore.get(key));
         assertEquals(1, forwarded.size());
         assertEquals(
-            record.withKey(new CombinedKey<>(FK, PK1))
-                  .withValue(new Change<>(newValue, oldValue)),
-            forwarded.get(0).record()
+                record.withKey(new CombinedKey<>(FK, PK1))
+                      .withValue(new Change<>(newValue, oldValue)),
+                forwarded.get(0).record()
         );
     }
 
@@ -148,18 +148,18 @@ public class SubscriptionReceiveProcessorSupplierTest {
         final StoreBuilder<TimestampedKeyValueStoreWithHeaders<Bytes, SubscriptionWrapper<String>>> storeBuilder = storeBuilder();
         final SubscriptionReceiveProcessorSupplier<String, String> supplier = supplier(storeBuilder);
         final Processor<String,
-            SubscriptionWrapper<String>,
-            CombinedKey<String, String>,
-            Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>> processor = supplier.get();
+                SubscriptionWrapper<String>,
+                CombinedKey<String, String>,
+                Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>> processor = supplier.get();
         stateStore = storeBuilder.build();
         context.addStateStore(stateStore);
         stateStore.init(context, stateStore);
         final SubscriptionWrapper<String> oldWrapper = new SubscriptionWrapper<>(
-            new long[]{1L, 2L},
-            Instruction.DELETE_KEY_AND_PROPAGATE,
-            PK2,
-            SubscriptionWrapper.VERSION_1,
-            1
+                new long[]{1L, 2L},
+                Instruction.DELETE_KEY_AND_PROPAGATE,
+                PK2,
+                SubscriptionWrapper.VERSION_1,
+                1
         );
         final ValueTimestampHeaders<SubscriptionWrapper<String>> oldValue = ValueTimestampHeaders.make(oldWrapper, 0, new RecordHeaders());
 
@@ -168,29 +168,29 @@ public class SubscriptionReceiveProcessorSupplierTest {
         processor.init(context);
 
         final SubscriptionWrapper<String> newWrapper = new SubscriptionWrapper<>(
-            new long[]{1L, 2L},
-            Instruction.DELETE_KEY_AND_PROPAGATE,
-            PK1,
-            SubscriptionWrapper.VERSION_1,
-            1
+                new long[]{1L, 2L},
+                Instruction.DELETE_KEY_AND_PROPAGATE,
+                PK1,
+                SubscriptionWrapper.VERSION_1,
+                1
         );
         final ValueTimestampHeaders<SubscriptionWrapper<String>> newValue = ValueTimestampHeaders.make(
-            newWrapper, 1L, null);
+                newWrapper, 1L, null);
         final Record<String, SubscriptionWrapper<String>> record = new Record<>(
-            FK,
-            newWrapper,
-            1L
+                FK,
+                newWrapper,
+                1L
         );
         processor.process(record);
 
         final List<CapturedForward<? extends CombinedKey<String, String>,
-            ? extends Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>>> forwarded = context.forwarded();
+                ? extends Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>>> forwarded = context.forwarded();
         assertNull(stateStore.get(key));
         assertEquals(1, forwarded.size());
         assertEquals(
-            record.withKey(new CombinedKey<>(FK, PK1))
-                .withValue(new Change<>(newValue, oldValue)),
-            forwarded.get(0).record()
+                record.withKey(new CombinedKey<>(FK, PK1))
+                    .withValue(new Change<>(newValue, oldValue)),
+                forwarded.get(0).record()
         );
     }
 
@@ -199,19 +199,19 @@ public class SubscriptionReceiveProcessorSupplierTest {
         final StoreBuilder<TimestampedKeyValueStoreWithHeaders<Bytes, SubscriptionWrapper<String>>> storeBuilder = storeBuilder();
         final SubscriptionReceiveProcessorSupplier<String, String> supplier = supplier(storeBuilder);
         final Processor<String,
-            SubscriptionWrapper<String>,
-            CombinedKey<String, String>,
-            Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>> processor = supplier.get();
+                SubscriptionWrapper<String>,
+                CombinedKey<String, String>,
+                Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>> processor = supplier.get();
         stateStore = storeBuilder.build();
         context.addStateStore(stateStore);
         stateStore.init(context, stateStore);
 
         final SubscriptionWrapper<String> oldWrapper = new SubscriptionWrapper<>(
-            new long[]{1L, 2L},
-            Instruction.DELETE_KEY_NO_PROPAGATE,
-            PK2,
-            SubscriptionWrapper.VERSION_0,
-            null
+                new long[]{1L, 2L},
+                Instruction.DELETE_KEY_NO_PROPAGATE,
+                PK2,
+                SubscriptionWrapper.VERSION_0,
+                null
         );
         final ValueTimestampHeaders<SubscriptionWrapper<String>> oldValue = ValueTimestampHeaders.make(oldWrapper, 0, new RecordHeaders());
 
@@ -220,29 +220,29 @@ public class SubscriptionReceiveProcessorSupplierTest {
         processor.init(context);
 
         final SubscriptionWrapper<String> newWrapper = new SubscriptionWrapper<>(
-            new long[]{1L, 2L},
-            Instruction.DELETE_KEY_NO_PROPAGATE,
-            PK1,
-            SubscriptionWrapper.VERSION_0,
-            null
+                new long[]{1L, 2L},
+                Instruction.DELETE_KEY_NO_PROPAGATE,
+                PK1,
+                SubscriptionWrapper.VERSION_0,
+                null
         );
         final ValueTimestampHeaders<SubscriptionWrapper<String>> newValue = ValueTimestampHeaders.make(
-            newWrapper, 1L, null);
+                newWrapper, 1L, null);
         final Record<String, SubscriptionWrapper<String>> record = new Record<>(
-            FK,
-            newWrapper,
-            1L
+                FK,
+                newWrapper,
+                1L
         );
         processor.process(record);
 
         final List<CapturedForward<? extends CombinedKey<String, String>,
-            ? extends Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>>> forwarded = context.forwarded();
+                ? extends Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>>> forwarded = context.forwarded();
         assertNull(stateStore.get(key));
         assertEquals(1, forwarded.size());
         assertEquals(
-            record.withKey(new CombinedKey<>(FK, PK1))
-                .withValue(new Change<>(newValue, oldValue)),
-            forwarded.get(0).record()
+                record.withKey(new CombinedKey<>(FK, PK1))
+                    .withValue(new Change<>(newValue, oldValue)),
+                forwarded.get(0).record()
         );
     }
 
@@ -251,19 +251,19 @@ public class SubscriptionReceiveProcessorSupplierTest {
         final StoreBuilder<TimestampedKeyValueStoreWithHeaders<Bytes, SubscriptionWrapper<String>>> storeBuilder = storeBuilder();
         final SubscriptionReceiveProcessorSupplier<String, String> supplier = supplier(storeBuilder);
         final Processor<String,
-            SubscriptionWrapper<String>,
-            CombinedKey<String, String>,
-            Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>> processor = supplier.get();
+                SubscriptionWrapper<String>,
+                CombinedKey<String, String>,
+                Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>> processor = supplier.get();
         stateStore = storeBuilder.build();
         context.addStateStore(stateStore);
         stateStore.init(context, stateStore);
 
         final SubscriptionWrapper<String> oldWrapper = new SubscriptionWrapper<>(
-            new long[]{1L, 2L},
-            Instruction.DELETE_KEY_NO_PROPAGATE,
-            PK2,
-            SubscriptionWrapper.VERSION_1,
-            1
+                new long[]{1L, 2L},
+                Instruction.DELETE_KEY_NO_PROPAGATE,
+                PK2,
+                SubscriptionWrapper.VERSION_1,
+                1
         );
         final ValueTimestampHeaders<SubscriptionWrapper<String>> oldValue = ValueTimestampHeaders.make(oldWrapper, 0, new RecordHeaders());
 
@@ -272,29 +272,29 @@ public class SubscriptionReceiveProcessorSupplierTest {
         processor.init(context);
 
         final SubscriptionWrapper<String> newWrapper = new SubscriptionWrapper<>(
-            new long[]{1L, 2L},
-            Instruction.DELETE_KEY_NO_PROPAGATE,
-            PK1,
-            SubscriptionWrapper.VERSION_1,
-            1
+                new long[]{1L, 2L},
+                Instruction.DELETE_KEY_NO_PROPAGATE,
+                PK1,
+                SubscriptionWrapper.VERSION_1,
+                1
         );
         final ValueTimestampHeaders<SubscriptionWrapper<String>> newValue = ValueTimestampHeaders.make(
-            newWrapper, 1L, null);
+                newWrapper, 1L, null);
         final Record<String, SubscriptionWrapper<String>> record = new Record<>(
-            FK,
-            newWrapper,
-            1L
+                FK,
+                newWrapper,
+                1L
         );
         processor.process(record);
 
         final List<CapturedForward<? extends CombinedKey<String, String>,
-            ? extends Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>>> forwarded = context.forwarded();
+                ? extends Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>>> forwarded = context.forwarded();
         assertNull(stateStore.get(key));
         assertEquals(1, forwarded.size());
         assertEquals(
-            record.withKey(new CombinedKey<>(FK, PK1))
-                .withValue(new Change<>(newValue, oldValue)),
-            forwarded.get(0).record()
+                record.withKey(new CombinedKey<>(FK, PK1))
+                    .withValue(new Change<>(newValue, oldValue)),
+                forwarded.get(0).record()
         );
     }
 
@@ -303,19 +303,19 @@ public class SubscriptionReceiveProcessorSupplierTest {
         final StoreBuilder<TimestampedKeyValueStoreWithHeaders<Bytes, SubscriptionWrapper<String>>> storeBuilder = storeBuilder();
         final SubscriptionReceiveProcessorSupplier<String, String> supplier = supplier(storeBuilder);
         final Processor<String,
-            SubscriptionWrapper<String>,
-            CombinedKey<String, String>,
-            Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>> processor = supplier.get();
+                SubscriptionWrapper<String>,
+                CombinedKey<String, String>,
+                Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>> processor = supplier.get();
         stateStore = storeBuilder.build();
         context.addStateStore(stateStore);
         stateStore.init(context, stateStore);
 
         final SubscriptionWrapper<String> oldWrapper = new SubscriptionWrapper<>(
-            new long[]{1L, 2L},
-            Instruction.PROPAGATE_ONLY_IF_FK_VAL_AVAILABLE,
-            PK2,
-            SubscriptionWrapper.VERSION_0,
-            null
+                new long[]{1L, 2L},
+                Instruction.PROPAGATE_ONLY_IF_FK_VAL_AVAILABLE,
+                PK2,
+                SubscriptionWrapper.VERSION_0,
+                null
         );
         final ValueTimestampHeaders<SubscriptionWrapper<String>> oldValue = ValueTimestampHeaders.make(oldWrapper, 0, null);
 
@@ -324,29 +324,29 @@ public class SubscriptionReceiveProcessorSupplierTest {
         processor.init(context);
 
         final SubscriptionWrapper<String> newWrapper = new SubscriptionWrapper<>(
-            new long[]{1L, 2L},
-            Instruction.PROPAGATE_ONLY_IF_FK_VAL_AVAILABLE,
-            PK1,
-            SubscriptionWrapper.VERSION_0,
-            null
+                new long[]{1L, 2L},
+                Instruction.PROPAGATE_ONLY_IF_FK_VAL_AVAILABLE,
+                PK1,
+                SubscriptionWrapper.VERSION_0,
+                null
         );
         final ValueTimestampHeaders<SubscriptionWrapper<String>> newValue = ValueTimestampHeaders.make(
-            newWrapper, 1L, null);
+                newWrapper, 1L, null);
         final Record<String, SubscriptionWrapper<String>> record = new Record<>(
-            FK,
-            newWrapper,
-            1L
+                FK,
+                newWrapper,
+                1L
         );
         processor.process(record);
         final List<CapturedForward<? extends CombinedKey<String, String>,
-            ? extends Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>>> forwarded = context.forwarded();
+                ? extends Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>>> forwarded = context.forwarded();
 
         assertEquals(newValue, stateStore.get(key));
         assertEquals(1, forwarded.size());
         assertEquals(
-            record.withKey(new CombinedKey<>(FK, PK1))
-                .withValue(new Change<>(newValue, oldValue)),
-            forwarded.get(0).record()
+                record.withKey(new CombinedKey<>(FK, PK1))
+                    .withValue(new Change<>(newValue, oldValue)),
+                forwarded.get(0).record()
         );
     }
 
@@ -355,19 +355,19 @@ public class SubscriptionReceiveProcessorSupplierTest {
         final StoreBuilder<TimestampedKeyValueStoreWithHeaders<Bytes, SubscriptionWrapper<String>>> storeBuilder = storeBuilder();
         final SubscriptionReceiveProcessorSupplier<String, String> supplier = supplier(storeBuilder);
         final Processor<String,
-            SubscriptionWrapper<String>,
-            CombinedKey<String, String>,
-            Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>> processor = supplier.get();
+                SubscriptionWrapper<String>,
+                CombinedKey<String, String>,
+                Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>> processor = supplier.get();
         stateStore = storeBuilder.build();
         context.addStateStore(stateStore);
         stateStore.init(context, stateStore);
 
         final SubscriptionWrapper<String> oldWrapper = new SubscriptionWrapper<>(
-            new long[]{1L, 2L},
-            Instruction.PROPAGATE_ONLY_IF_FK_VAL_AVAILABLE,
-            PK2,
-            SubscriptionWrapper.VERSION_1,
-            1
+                new long[]{1L, 2L},
+                Instruction.PROPAGATE_ONLY_IF_FK_VAL_AVAILABLE,
+                PK2,
+                SubscriptionWrapper.VERSION_1,
+                1
         );
         final ValueTimestampHeaders<SubscriptionWrapper<String>> oldValue = ValueTimestampHeaders.make(oldWrapper, 0, null);
 
@@ -376,29 +376,29 @@ public class SubscriptionReceiveProcessorSupplierTest {
         processor.init(context);
 
         final SubscriptionWrapper<String> newWrapper = new SubscriptionWrapper<>(
-            new long[]{1L, 2L},
-            Instruction.PROPAGATE_ONLY_IF_FK_VAL_AVAILABLE,
-            PK1,
-            SubscriptionWrapper.VERSION_1,
-            1
+                new long[]{1L, 2L},
+                Instruction.PROPAGATE_ONLY_IF_FK_VAL_AVAILABLE,
+                PK1,
+                SubscriptionWrapper.VERSION_1,
+                1
         );
         final ValueTimestampHeaders<SubscriptionWrapper<String>> newValue = ValueTimestampHeaders.make(
-            newWrapper, 1L, null);
+                newWrapper, 1L, null);
         final Record<String, SubscriptionWrapper<String>> record = new Record<>(
-            FK,
-            newWrapper,
-            1L
+                FK,
+                newWrapper,
+                1L
         );
         processor.process(record);
         final List<CapturedForward<? extends CombinedKey<String, String>,
-            ? extends Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>>> forwarded = context.forwarded();
+                ? extends Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>>> forwarded = context.forwarded();
 
         assertEquals(newValue, stateStore.get(key));
         assertEquals(1, forwarded.size());
         assertEquals(
-            record.withKey(new CombinedKey<>(FK, PK1))
-                .withValue(new Change<>(newValue, oldValue)),
-            forwarded.get(0).record()
+                record.withKey(new CombinedKey<>(FK, PK1))
+                    .withValue(new Change<>(newValue, oldValue)),
+                forwarded.get(0).record()
         );
     }
 
@@ -407,19 +407,19 @@ public class SubscriptionReceiveProcessorSupplierTest {
         final StoreBuilder<TimestampedKeyValueStoreWithHeaders<Bytes, SubscriptionWrapper<String>>> storeBuilder = storeBuilder();
         final SubscriptionReceiveProcessorSupplier<String, String> supplier = supplier(storeBuilder);
         final Processor<String,
-            SubscriptionWrapper<String>,
-            CombinedKey<String, String>,
-            Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>> processor = supplier.get();
+                SubscriptionWrapper<String>,
+                CombinedKey<String, String>,
+                Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>> processor = supplier.get();
         stateStore = storeBuilder.build();
         context.addStateStore(stateStore);
         stateStore.init(context, stateStore);
 
         final SubscriptionWrapper<String> oldWrapper = new SubscriptionWrapper<>(
-            new long[]{1L, 2L},
-            Instruction.PROPAGATE_NULL_IF_NO_FK_VAL_AVAILABLE,
-            PK2,
-            SubscriptionWrapper.VERSION_0,
-            null
+                new long[]{1L, 2L},
+                Instruction.PROPAGATE_NULL_IF_NO_FK_VAL_AVAILABLE,
+                PK2,
+                SubscriptionWrapper.VERSION_0,
+                null
         );
         final ValueTimestampHeaders<SubscriptionWrapper<String>> oldValue = ValueTimestampHeaders.make(oldWrapper, 0, null);
 
@@ -428,29 +428,29 @@ public class SubscriptionReceiveProcessorSupplierTest {
         processor.init(context);
 
         final SubscriptionWrapper<String> newWrapper = new SubscriptionWrapper<>(
-            new long[]{1L, 2L},
-            Instruction.PROPAGATE_NULL_IF_NO_FK_VAL_AVAILABLE,
-            PK1,
-            SubscriptionWrapper.VERSION_0,
-            null
+                new long[]{1L, 2L},
+                Instruction.PROPAGATE_NULL_IF_NO_FK_VAL_AVAILABLE,
+                PK1,
+                SubscriptionWrapper.VERSION_0,
+                null
         );
         final ValueTimestampHeaders<SubscriptionWrapper<String>> newValue = ValueTimestampHeaders.make(
-            newWrapper, 1L, null);
+                newWrapper, 1L, null);
         final Record<String, SubscriptionWrapper<String>> record = new Record<>(
-            FK,
-            newWrapper,
-            1L
+                FK,
+                newWrapper,
+                1L
         );
         processor.process(record);
         final List<CapturedForward<? extends CombinedKey<String, String>,
-            ? extends Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>>> forwarded = context.forwarded();
+                ? extends Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>>> forwarded = context.forwarded();
 
         assertEquals(newValue, stateStore.get(key));
         assertEquals(1, forwarded.size());
         assertEquals(
-            record.withKey(new CombinedKey<>(FK, PK1))
-                .withValue(new Change<>(newValue, oldValue)),
-            forwarded.get(0).record()
+                record.withKey(new CombinedKey<>(FK, PK1))
+                    .withValue(new Change<>(newValue, oldValue)),
+                forwarded.get(0).record()
         );
     }
 
@@ -459,19 +459,19 @@ public class SubscriptionReceiveProcessorSupplierTest {
         final StoreBuilder<TimestampedKeyValueStoreWithHeaders<Bytes, SubscriptionWrapper<String>>> storeBuilder = storeBuilder();
         final SubscriptionReceiveProcessorSupplier<String, String> supplier = supplier(storeBuilder);
         final Processor<String,
-            SubscriptionWrapper<String>,
-            CombinedKey<String, String>,
-            Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>> processor = supplier.get();
+                SubscriptionWrapper<String>,
+                CombinedKey<String, String>,
+                Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>> processor = supplier.get();
         stateStore = storeBuilder.build();
         context.addStateStore(stateStore);
         stateStore.init(context, stateStore);
 
         final SubscriptionWrapper<String> oldWrapper = new SubscriptionWrapper<>(
-            new long[]{1L, 2L},
-            Instruction.PROPAGATE_NULL_IF_NO_FK_VAL_AVAILABLE,
-            PK2,
-            SubscriptionWrapper.VERSION_1,
-            1
+                new long[]{1L, 2L},
+                Instruction.PROPAGATE_NULL_IF_NO_FK_VAL_AVAILABLE,
+                PK2,
+                SubscriptionWrapper.VERSION_1,
+                1
         );
         final ValueTimestampHeaders<SubscriptionWrapper<String>> oldValue = ValueTimestampHeaders.make(oldWrapper, 0, null);
 
@@ -480,51 +480,50 @@ public class SubscriptionReceiveProcessorSupplierTest {
         processor.init(context);
 
         final SubscriptionWrapper<String> newWrapper = new SubscriptionWrapper<>(
-            new long[]{1L, 2L},
-            Instruction.PROPAGATE_NULL_IF_NO_FK_VAL_AVAILABLE,
-            PK1,
-            SubscriptionWrapper.VERSION_1,
-            1
+                new long[]{1L, 2L},
+                Instruction.PROPAGATE_NULL_IF_NO_FK_VAL_AVAILABLE,
+                PK1,
+                SubscriptionWrapper.VERSION_1,
+                1
         );
         final ValueTimestampHeaders<SubscriptionWrapper<String>> newValue = ValueTimestampHeaders.make(
-            newWrapper, 1L, null);
+                newWrapper, 1L, null);
         final Record<String, SubscriptionWrapper<String>> record = new Record<>(
-            FK,
-            newWrapper,
-            1L
+                FK,
+                newWrapper,
+                1L
         );
         processor.process(record);
         final List<CapturedForward<? extends CombinedKey<String, String>,
-            ? extends Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>>> forwarded = context.forwarded();
+                ? extends Change<ValueTimestampHeaders<SubscriptionWrapper<String>>>>> forwarded = context.forwarded();
 
         assertEquals(newValue, stateStore.get(key));
         assertEquals(1, forwarded.size());
         assertEquals(
-            record.withKey(new CombinedKey<>(FK, PK1))
-                .withValue(new Change<>(newValue, oldValue)),
-            forwarded.get(0).record()
+                record.withKey(new CombinedKey<>(FK, PK1))
+                    .withValue(new Change<>(newValue, oldValue)),
+                forwarded.get(0).record()
         );
     }
-
 
     private SubscriptionReceiveProcessorSupplier<String, String> supplier(
         final StoreBuilder<TimestampedKeyValueStoreWithHeaders<Bytes, SubscriptionWrapper<String>>> storeBuilder) {
 
         return new SubscriptionReceiveProcessorSupplier<>(
-            StoreBuilderWrapper.wrapStoreBuilder(storeBuilder),
-            COMBINED_KEY_SCHEMA
+                StoreBuilderWrapper.wrapStoreBuilder(storeBuilder),
+                COMBINED_KEY_SCHEMA
         );
     }
 
     private StoreBuilder<TimestampedKeyValueStoreWithHeaders<Bytes, SubscriptionWrapper<String>>> storeBuilder() {
         final Serde<SubscriptionWrapper<String>> subscriptionWrapperSerde = new SubscriptionWrapperSerde<>(
-            PK_SERDE_TOPIC_SUPPLIER, Serdes.String());
+                PK_SERDE_TOPIC_SUPPLIER, Serdes.String());
         return Stores.timestampedKeyValueStoreWithHeadersBuilder(
-            Stores.persistentTimestampedKeyValueStoreWithHeaders(
-                "Store"
-            ),
-            new Serdes.BytesSerde(),
-            subscriptionWrapperSerde
+                Stores.persistentTimestampedKeyValueStoreWithHeaders(
+                        "Store"
+                ),
+                new Serdes.BytesSerde(),
+                subscriptionWrapperSerde
         );
     }
 }

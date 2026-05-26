@@ -192,7 +192,7 @@ public final class WorkerUtils {
             while (!topicsToCreate.isEmpty()) {
                 List<NewTopic> newTopicsBatch = new ArrayList<>();
                 for (int i = 0; (i < MAX_CREATE_TOPICS_BATCH_SIZE) &&
-                                !topicsToCreate.isEmpty(); i++) {
+                        !topicsToCreate.isEmpty(); i++) {
                     String topicName = topicsToCreate.remove(0);
                     newTopicsBatch.add(newTopics.get(topicName));
                 }
@@ -208,7 +208,7 @@ public final class WorkerUtils {
                     log.debug("Successfully created {}.", topicName);
                 } catch (Exception e) {
                     if ((e.getCause() instanceof TimeoutException)
-                        || (e.getCause() instanceof NotEnoughReplicasException)) {
+                            || (e.getCause() instanceof NotEnoughReplicasException)) {
                         log.warn("Attempt to create topic `{}` failed: {}", topicName,
                                  e.getCause().getMessage());
                         topicsToCreate.add(topicName);
@@ -226,7 +226,7 @@ public final class WorkerUtils {
             }
             if (Time.SYSTEM.milliseconds() > startMs + CREATE_TOPICS_CALL_TIMEOUT) {
                 String str = "Unable to create topic(s): " +
-                             String.join(", ", topicsToCreate) + "after " + tries + " attempt(s)";
+                        String.join(", ", topicsToCreate) + "after " + tries + " attempt(s)";
                 log.warn(str);
                 throw new TimeoutException(str);
             }
@@ -262,8 +262,8 @@ public final class WorkerUtils {
             int partitions = topicsInfo.get(desc.name()).numPartitions();
             if (partitions != CreateTopicsRequest.NO_NUM_PARTITIONS && desc.partitions().size() != partitions) {
                 String str = "Topic '" + desc.name() + "' exists, but has "
-                             + desc.partitions().size() + " partitions, while requested "
-                             + " number of partitions is " + partitions;
+                        + desc.partitions().size() + " partitions, while requested "
+                        + " number of partitions is " + partitions;
                 log.warn(str);
                 throw new RuntimeException(str);
             }
@@ -273,7 +273,7 @@ public final class WorkerUtils {
     private static Map<String, TopicDescription> topicDescriptions(Collection<String> topicsToVerify,
                                                                    Admin adminClient,
                                                                    int retryCount, long retryBackoffMs)
-            throws ExecutionException, InterruptedException {
+        throws ExecutionException, InterruptedException {
         UnknownTopicOrPartitionException lastException = null;
         for (int i = 0; i < retryCount; i++) {
             try {
@@ -308,11 +308,11 @@ public final class WorkerUtils {
         // first get list of matching topics
         List<String> matchedTopics = new ArrayList<>();
         ListTopicsResult res = adminClient.listTopics(
-            new ListTopicsOptions().timeoutMs(ADMIN_REQUEST_TIMEOUT));
+                new ListTopicsOptions().timeoutMs(ADMIN_REQUEST_TIMEOUT));
         Map<String, TopicListing> topicListingMap = res.namesToListings().get();
         for (Map.Entry<String, TopicListing> topicListingEntry: topicListingMap.entrySet()) {
             if (!topicListingEntry.getValue().isInternal()
-                && topicNamePattern.matcher(topicListingEntry.getKey()).matches()) {
+                    && topicNamePattern.matcher(topicListingEntry.getKey()).matches()) {
                 matchedTopics.add(topicListingEntry.getKey());
             }
         }
@@ -320,7 +320,7 @@ public final class WorkerUtils {
         // create a list of topic/partitions
         List<TopicPartition> out = new ArrayList<>();
         DescribeTopicsResult topicsResult = adminClient.describeTopics(
-            matchedTopics, new DescribeTopicsOptions().timeoutMs(ADMIN_REQUEST_TIMEOUT));
+                matchedTopics, new DescribeTopicsOptions().timeoutMs(ADMIN_REQUEST_TIMEOUT));
         Map<String, TopicDescription> topicDescriptionMap = topicsResult.allTopicNames().get();
         for (TopicDescription desc: topicDescriptionMap.values()) {
             List<TopicPartitionInfo> partitions = desc.partitions();

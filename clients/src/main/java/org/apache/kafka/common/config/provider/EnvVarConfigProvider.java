@@ -69,7 +69,7 @@ public class EnvVarConfigProvider implements ConfigProvider {
         filteredEnvVarMap = envVarMap.entrySet().stream()
                 .filter(envVar -> envVarPattern.matcher(envVar.getKey()).matches())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)
-                );
+        );
     }
 
     @Override

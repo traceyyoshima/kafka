@@ -84,7 +84,7 @@ public class ConnectHeadersTest {
     @Test
     public void shouldNotAllowNullKey() {
         assertThrows(NullPointerException.class,
-            () -> headers.add(null, "value", Schema.STRING_SCHEMA));
+                () -> headers.add(null, "value", Schema.STRING_SCHEMA));
     }
 
     protected void populate(Headers headers) {

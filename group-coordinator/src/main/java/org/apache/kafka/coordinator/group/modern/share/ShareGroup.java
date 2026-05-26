@@ -175,7 +175,7 @@ public class ShareGroup extends ModernGroup<ShareGroupMember> {
 
         if (!createIfNotExists) {
             throw new UnknownMemberIdException(
-                String.format("Member %s is not a member of group %s.", memberId, groupId));
+                    String.format("Member %s is not a member of group %s.", memberId, groupId));
         }
 
         member = new ShareGroupMember.Builder(memberId).build();
@@ -259,16 +259,16 @@ public class ShareGroup extends ModernGroup<ShareGroupMember> {
     @Override
     public void createGroupTombstoneRecords(List<CoordinatorRecord> records) {
         members().forEach((memberId, member) ->
-            records.add(GroupCoordinatorRecordHelpers.newShareGroupCurrentAssignmentTombstoneRecord(groupId(), memberId))
+                records.add(GroupCoordinatorRecordHelpers.newShareGroupCurrentAssignmentTombstoneRecord(groupId(), memberId))
         );
 
         members().forEach((memberId, member) ->
-            records.add(GroupCoordinatorRecordHelpers.newShareGroupTargetAssignmentTombstoneRecord(groupId(), memberId))
+                records.add(GroupCoordinatorRecordHelpers.newShareGroupTargetAssignmentTombstoneRecord(groupId(), memberId))
         );
         records.add(GroupCoordinatorRecordHelpers.newShareGroupTargetAssignmentMetadataTombstoneRecord(groupId()));
 
         members().forEach((memberId, member) ->
-            records.add(GroupCoordinatorRecordHelpers.newShareGroupMemberSubscriptionTombstoneRecord(groupId(), memberId))
+                records.add(GroupCoordinatorRecordHelpers.newShareGroupMemberSubscriptionTombstoneRecord(groupId(), memberId))
         );
 
         records.add(GroupCoordinatorRecordHelpers.newShareGroupStatePartitionMetadataTombstoneRecord(groupId()));
@@ -315,11 +315,11 @@ public class ShareGroup extends ModernGroup<ShareGroupMember> {
             .setGroupState(state.get(committedOffset).toString())
             .setAssignmentEpoch(targetAssignmentMetadata.get(committedOffset).assignmentEpoch());
         members.entrySet(committedOffset).forEach(
-            entry -> describedGroup.members().add(
-                entry.getValue().asShareGroupDescribeMember(
-                    image
+                entry -> describedGroup.members().add(
+                    entry.getValue().asShareGroupDescribeMember(
+                            image
+                    )
                 )
-            )
         );
         return describedGroup;
     }

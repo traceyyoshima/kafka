@@ -58,9 +58,9 @@ public final class ProcessorContextUtils {
             return applicationId;
         } else {
             return StreamsConfig.InternalConfig.getString(
-                configs,
-                StreamsConfig.InternalConfig.TOPIC_PREFIX_ALTERNATIVE,
-                applicationId
+                    configs,
+                    StreamsConfig.InternalConfig.TOPIC_PREFIX_ALTERNATIVE,
+                    applicationId
             );
         }
     }
@@ -72,7 +72,7 @@ public final class ProcessorContextUtils {
             return (InternalProcessorContext<K, V>) context;
         } else {
             throw new IllegalArgumentException(
-                "This component requires internal features of Kafka Streams and must be disabled for unit tests."
+                    "This component requires internal features of Kafka Streams and must be disabled for unit tests."
             );
         }
     }
@@ -82,7 +82,7 @@ public final class ProcessorContextUtils {
             return (InternalProcessorContext<?, ?>) context;
         } else {
             throw new IllegalArgumentException(
-                "This component requires internal features of Kafka Streams and must be disabled for unit tests."
+                    "This component requires internal features of Kafka Streams and must be disabled for unit tests."
             );
         }
     }

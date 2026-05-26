@@ -70,8 +70,8 @@ public class EndpointToPartitionsManager {
         StreamsGroupHeartbeatResponseData.EndpointToPartitions endpointToPartitions = new StreamsGroupHeartbeatResponseData.EndpointToPartitions();
         Map<String, Set<Integer>> activeTasks = streamsGroupMember.assignedTasks().activeTasksWithEpochs().entrySet().stream()
             .collect(java.util.stream.Collectors.toUnmodifiableMap(
-                Map.Entry::getKey,
-                entry -> entry.getValue().keySet()
+                    Map.Entry::getKey,
+                    entry -> entry.getValue().keySet()
             ));
         Map<String, Set<Integer>> standbyTasks = streamsGroupMember.assignedTasks().standbyTasks();
         endpointToPartitions.setUserEndpoint(responseEndpoint);

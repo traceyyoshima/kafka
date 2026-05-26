@@ -51,18 +51,17 @@ class RocksDBTimeOrderedKeyValueBytesStoreTest {
     private static final String METRICS_SCOPE = "metrics-scope";
     private final String topic = "changelog";
 
-
     @BeforeEach
     public void before() {
         bytesStore = new RocksDBTimeOrderedKeyValueBytesStore(storeName, METRICS_SCOPE);
 
         stateDir = TestUtils.tempDirectory();
         context = new InternalMockProcessorContext<>(
-            stateDir,
-            Serdes.String(),
-            Serdes.Long(),
-            new MockRecordCollector(),
-            new ThreadCache(new LogContext("testCache "), 0, new MockStreamsMetrics(new Metrics()))
+                stateDir,
+                Serdes.String(),
+                Serdes.Long(),
+                new MockRecordCollector(),
+                new ThreadCache(new LogContext("testCache "), 0, new MockStreamsMetrics(new Metrics()))
         );
         bytesStore.init(context, bytesStore);
     }
@@ -105,8 +104,8 @@ class RocksDBTimeOrderedKeyValueBytesStoreTest {
     private Bytes serializeKey(final String key, final int seqnum, final long timestamp) {
         final Serde<String> keySerde = new Serdes.StringSerde();
         return Bytes.wrap(
-            PrefixedWindowKeySchemas.TimeFirstWindowKeySchema.toStoreKeyBinary(keySerde.serializer().serialize(topic, key),
-                timestamp,
-                seqnum).get());
+                PrefixedWindowKeySchemas.TimeFirstWindowKeySchema.toStoreKeyBinary(keySerde.serializer().serialize(topic, key),
+                    timestamp,
+                    seqnum).get());
     }
 }

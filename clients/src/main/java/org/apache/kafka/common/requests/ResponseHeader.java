@@ -90,15 +90,15 @@ public class ResponseHeader implements AbstractRequestResponse {
     @Override
     public String toString() {
         return "ResponseHeader("
-            + "correlationId=" + data.correlationId()
-            + ", headerVersion=" + headerVersion
-            + ")";
+                + "correlationId=" + data.correlationId()
+                + ", headerVersion=" + headerVersion
+                + ")";
     }
 
     public static ResponseHeader parse(ByteBuffer buffer, short headerVersion) {
         final int bufferStartPositionForHeader = buffer.position();
         final ResponseHeader header = new ResponseHeader(
-            new ResponseHeaderData(new ByteBufferAccessor(buffer), headerVersion), headerVersion);
+                new ResponseHeaderData(new ByteBufferAccessor(buffer), headerVersion), headerVersion);
         // Size of header is calculated by the shift in the position of buffer's start position during parsing.
         // Prior to parsing, the buffer's start position points to header data and after the parsing operation
         // the buffer's start position points to api message. For more information on how the buffer is
@@ -113,7 +113,7 @@ public class ResponseHeader implements AbstractRequestResponse {
         if (o == null || getClass() != o.getClass()) return false;
         ResponseHeader that = (ResponseHeader) o;
         return headerVersion == that.headerVersion &&
-            Objects.equals(data, that.data);
+                Objects.equals(data, that.data);
     }
 
     @Override

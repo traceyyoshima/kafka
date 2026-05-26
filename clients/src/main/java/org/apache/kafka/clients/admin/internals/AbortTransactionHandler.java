@@ -107,8 +107,8 @@ public class AbortTransactionHandler extends AdminApiHandler.Batched<TopicPartit
 
         if (markerResponses.size() != 1 || markerResponses.get(0).producerId() != abortSpec.producerId()) {
             return ApiResult.failed(abortSpec.topicPartition(), new KafkaException("WriteTxnMarkers response " +
-                "included unexpected marker entries: " + markerResponses + "(expected to find exactly one " +
-                "entry with producerId " + abortSpec.producerId() + ")"));
+                    "included unexpected marker entries: " + markerResponses + "(expected to find exactly one " +
+                    "entry with producerId " + abortSpec.producerId() + ")"));
         }
 
         WriteTxnMarkersResponseData.WritableTxnMarkerResult markerResponse = markerResponses.get(0);
@@ -116,19 +116,19 @@ public class AbortTransactionHandler extends AdminApiHandler.Batched<TopicPartit
 
         if (topicResponses.size() != 1 || !topicResponses.get(0).name().equals(abortSpec.topicPartition().topic())) {
             return ApiResult.failed(abortSpec.topicPartition(), new KafkaException("WriteTxnMarkers response " +
-                "included unexpected topic entries: " + markerResponses + "(expected to find exactly one " +
-                "entry with topic partition " + abortSpec.topicPartition() + ")"));
+                    "included unexpected topic entries: " + markerResponses + "(expected to find exactly one " +
+                    "entry with topic partition " + abortSpec.topicPartition() + ")"));
         }
 
         WriteTxnMarkersResponseData.WritableTxnMarkerTopicResult topicResponse = topicResponses.get(0);
         List<WriteTxnMarkersResponseData.WritableTxnMarkerPartitionResult> partitionResponses =
-            topicResponse.partitions();
+                topicResponse.partitions();
 
         if (partitionResponses.size() != 1 || partitionResponses.get(0).partitionIndex() != abortSpec.topicPartition().partition()) {
             return ApiResult.failed(abortSpec.topicPartition(), new KafkaException("WriteTxnMarkers response " +
-                "included unexpected partition entries for topic " + abortSpec.topicPartition().topic() +
-                ": " + markerResponses + "(expected to find exactly one entry with partition " +
-                abortSpec.topicPartition().partition() + ")"));
+                    "included unexpected partition entries for topic " + abortSpec.topicPartition().topic() +
+                    ": " + markerResponses + "(expected to find exactly one entry with partition " +
+                    abortSpec.topicPartition().partition() + ")"));
         }
 
         WriteTxnMarkersResponseData.WritableTxnMarkerPartitionResult partitionResponse = partitionResponses.get(0);
@@ -146,20 +146,20 @@ public class AbortTransactionHandler extends AdminApiHandler.Batched<TopicPartit
             case CLUSTER_AUTHORIZATION_FAILED:
                 log.error("WriteTxnMarkers request for abort spec {} failed cluster authorization", abortSpec);
                 return ApiResult.failed(abortSpec.topicPartition(), new ClusterAuthorizationException(
-                    "WriteTxnMarkers request with " + abortSpec + " failed due to cluster " +
+                        "WriteTxnMarkers request with " + abortSpec + " failed due to cluster " +
                         "authorization error"));
 
             case INVALID_PRODUCER_EPOCH:
                 log.error("WriteTxnMarkers request for abort spec {} failed due to an invalid producer epoch",
-                    abortSpec);
+                        abortSpec);
                 return ApiResult.failed(abortSpec.topicPartition(), new InvalidProducerEpochException(
-                    "WriteTxnMarkers request with " + abortSpec + " failed due an invalid producer epoch"));
+                        "WriteTxnMarkers request with " + abortSpec + " failed due an invalid producer epoch"));
 
             case TRANSACTION_COORDINATOR_FENCED:
                 log.error("WriteTxnMarkers request for abort spec {} failed because the coordinator epoch is fenced",
-                    abortSpec);
+                        abortSpec);
                 return ApiResult.failed(abortSpec.topicPartition(), new TransactionCoordinatorFencedException(
-                    "WriteTxnMarkers request with " + abortSpec + " failed since the provided " +
+                        "WriteTxnMarkers request with " + abortSpec + " failed since the provided " +
                         "coordinator epoch " + abortSpec.coordinatorEpoch() + " has been fenced " +
                         "by the active coordinator"));
 
@@ -173,16 +173,16 @@ public class AbortTransactionHandler extends AdminApiHandler.Batched<TopicPartit
 
             default:
                 log.error("WriteTxnMarkers request for abort spec {} failed due to an unexpected error {}",
-                    abortSpec, error);
+                        abortSpec, error);
                 return ApiResult.failed(abortSpec.topicPartition(), error.exception(
-                    "WriteTxnMarkers request with " + abortSpec + " failed due to unexpected error: " + error.message()));
+                        "WriteTxnMarkers request with " + abortSpec + " failed due to unexpected error: " + error.message()));
         }
     }
 
     private void validateTopicPartitions(Set<TopicPartition> topicPartitions) {
         if (!topicPartitions.equals(singleton(abortSpec.topicPartition()))) {
             throw new IllegalArgumentException("Received unexpected topic partitions " + topicPartitions +
-                " (expected only " + singleton(abortSpec.topicPartition()) + ")");
+                    " (expected only " + singleton(abortSpec.topicPartition()) + ")");
         }
     }
 

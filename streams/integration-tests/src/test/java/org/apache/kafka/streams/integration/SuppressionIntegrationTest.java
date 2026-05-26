@@ -98,6 +98,7 @@ public class SuppressionIntegrationTest {
     public static void closeCluster() {
         CLUSTER.stop();
     }
+
     private static final StringSerializer STRING_SERIALIZER = new StringSerializer();
     private static final Serde<String> STRING_SERDE = Serdes.String();
     private static final int COMMIT_INTERVAL = 100;
@@ -105,12 +106,12 @@ public class SuppressionIntegrationTest {
     private static KTable<String, Long> buildCountsTable(final String input, final StreamsBuilder builder) {
         return builder
             .table(
-                input,
-                Consumed.with(STRING_SERDE, STRING_SERDE),
-                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>with(STRING_SERDE, STRING_SERDE)
-                    .withCachingDisabled()
-                    .withLoggingDisabled()
-            )
+                    input,
+                    Consumed.with(STRING_SERDE, STRING_SERDE),
+                    Materialized.<String, String, KeyValueStore<Bytes, byte[]>>with(STRING_SERDE, STRING_SERDE)
+                        .withCachingDisabled()
+                        .withLoggingDisabled()
+        )
             .groupBy((k, v) -> new KeyValue<>(v, k), Grouped.with(STRING_SERDE, STRING_SERDE))
             .count(Materialized.<String, Long, KeyValueStore<Bytes, byte[]>>as("counts").withCachingDisabled());
     }
@@ -150,13 +151,13 @@ public class SuppressionIntegrationTest {
         final KafkaStreams driver = IntegrationTestUtils.getStartedStreams(streamsConfig, builder, true);
         try {
             produceSynchronously(
-                input,
-                asList(
-                    new KeyValueTimestamp<>("k1", "v1", scaledTime(0L)),
-                    new KeyValueTimestamp<>("k1", "v2", scaledTime(1L)),
-                    new KeyValueTimestamp<>("k2", "v1", scaledTime(2L)),
-                    new KeyValueTimestamp<>("x", "x", scaledTime(3L))
-                )
+                    input,
+                    asList(
+                            new KeyValueTimestamp<>("k1", "v1", scaledTime(0L)),
+                            new KeyValueTimestamp<>("k1", "v2", scaledTime(1L)),
+                            new KeyValueTimestamp<>("k2", "v1", scaledTime(2L)),
+                            new KeyValueTimestamp<>("x", "x", scaledTime(3L))
+                    )
             );
             final boolean rawRecords = waitForAnyRecord(outputRaw);
             final boolean suppressedRecords = waitForAnyRecord(outputSuppressed);
@@ -204,13 +205,13 @@ public class SuppressionIntegrationTest {
         final KafkaStreams driver = IntegrationTestUtils.getStartedStreams(streamsConfig, builder, true);
         try {
             produceSynchronously(
-                input,
-                asList(
-                    new KeyValueTimestamp<>("k1", "v1", scaledTime(0L)),
-                    new KeyValueTimestamp<>("k1", "v2", scaledTime(1L)),
-                    new KeyValueTimestamp<>("k2", "v1", scaledTime(2L)),
-                    new KeyValueTimestamp<>("x", "x", scaledTime(3L))
-                )
+                    input,
+                    asList(
+                            new KeyValueTimestamp<>("k1", "v1", scaledTime(0L)),
+                            new KeyValueTimestamp<>("k1", "v2", scaledTime(1L)),
+                            new KeyValueTimestamp<>("k2", "v1", scaledTime(2L)),
+                            new KeyValueTimestamp<>("x", "x", scaledTime(3L))
+                    )
             );
             final boolean rawRecords = waitForAnyRecord(outputRaw);
             final boolean suppressedRecords = waitForAnyRecord(outputSuppressed);
@@ -231,10 +232,10 @@ public class SuppressionIntegrationTest {
 
         try (final Consumer<Object, Object> consumer = new KafkaConsumer<>(properties)) {
             final List<TopicPartition> partitions =
-                consumer.partitionsFor(topic)
-                        .stream()
-                        .map(pi -> new TopicPartition(pi.topic(), pi.partition()))
-                        .collect(Collectors.toList());
+                    consumer.partitionsFor(topic)
+                            .stream()
+                            .map(pi -> new TopicPartition(pi.topic(), pi.partition()))
+                            .collect(Collectors.toList());
             consumer.assign(partitions);
             consumer.seekToBeginning(partitions);
             final long start = System.currentTimeMillis();
@@ -278,13 +279,13 @@ public class SuppressionIntegrationTest {
         final KafkaStreams driver = IntegrationTestUtils.getStartedStreams(streamsConfig, builder, true);
         try {
             produceSynchronously(
-                input,
-                asList(
-                    new KeyValueTimestamp<>("k1", "v1", scaledTime(0L)),
-                    new KeyValueTimestamp<>("k1", "v2", scaledTime(1L)),
-                    new KeyValueTimestamp<>("k2", "v1", scaledTime(2L)),
-                    new KeyValueTimestamp<>("x", "x", scaledTime(3L))
-                )
+                    input,
+                    asList(
+                            new KeyValueTimestamp<>("k1", "v1", scaledTime(0L)),
+                            new KeyValueTimestamp<>("k1", "v2", scaledTime(1L)),
+                            new KeyValueTimestamp<>("k2", "v1", scaledTime(2L)),
+                            new KeyValueTimestamp<>("x", "x", scaledTime(3L))
+                    )
             );
             verifyErrorShutdown(driver);
         } finally {
@@ -322,13 +323,13 @@ public class SuppressionIntegrationTest {
         final KafkaStreams driver = IntegrationTestUtils.getStartedStreams(streamsConfig, builder, true);
         try {
             produceSynchronously(
-                input,
-                asList(
-                    new KeyValueTimestamp<>("k1", "v1", scaledTime(0L)),
-                    new KeyValueTimestamp<>("k1", "v2", scaledTime(1L)),
-                    new KeyValueTimestamp<>("k2", "v1", scaledTime(2L)),
-                    new KeyValueTimestamp<>("x", "x", scaledTime(3L))
-                )
+                    input,
+                    asList(
+                            new KeyValueTimestamp<>("k1", "v1", scaledTime(0L)),
+                            new KeyValueTimestamp<>("k1", "v2", scaledTime(1L)),
+                            new KeyValueTimestamp<>("k2", "v1", scaledTime(2L)),
+                            new KeyValueTimestamp<>("x", "x", scaledTime(3L))
+                    )
             );
             verifyErrorShutdown(driver);
         } finally {
@@ -376,13 +377,13 @@ public class SuppressionIntegrationTest {
         final KafkaStreams driver = IntegrationTestUtils.getStartedStreams(streamsConfig, builder, true);
         try {
             produceSynchronously(
-                input,
-                asList(
-                    new KeyValueTimestamp<>("k1", "v1", scaledTime(0L)),
-                    new KeyValueTimestamp<>("k1", "v2", scaledTime(1L)),
-                    new KeyValueTimestamp<>("k2", "v1", scaledTime(2L)),
-                    new KeyValueTimestamp<>("x", "x", scaledTime(3L))
-                )
+                    input,
+                    asList(
+                            new KeyValueTimestamp<>("k1", "v1", scaledTime(0L)),
+                            new KeyValueTimestamp<>("k1", "v2", scaledTime(1L)),
+                            new KeyValueTimestamp<>("k2", "v1", scaledTime(2L)),
+                            new KeyValueTimestamp<>("x", "x", scaledTime(3L))
+                    )
             );
             final boolean rawRecords = waitForAnyRecord(outputRaw);
             final boolean suppressedRecords = waitForAnyRecord(outputSuppressed);
@@ -435,13 +436,13 @@ public class SuppressionIntegrationTest {
         final KafkaStreams driver = IntegrationTestUtils.getStartedStreams(streamsConfig, builder, true);
         try {
             produceSynchronously(
-                input,
-                asList(
-                    new KeyValueTimestamp<>("k1", "v1", scaledTime(0L)),
-                    new KeyValueTimestamp<>("k1", "v2", scaledTime(1L)),
-                    new KeyValueTimestamp<>("k2", "v1", scaledTime(2L)),
-                    new KeyValueTimestamp<>("x", "x", scaledTime(3L))
-                )
+                    input,
+                    asList(
+                            new KeyValueTimestamp<>("k1", "v1", scaledTime(0L)),
+                            new KeyValueTimestamp<>("k1", "v2", scaledTime(1L)),
+                            new KeyValueTimestamp<>("k2", "v1", scaledTime(2L)),
+                            new KeyValueTimestamp<>("x", "x", scaledTime(3L))
+                    )
             );
             final boolean rawRecords = waitForAnyRecord(outputRaw);
             final boolean suppressedRecords = waitForAnyRecord(outputSuppressed);
@@ -492,13 +493,13 @@ public class SuppressionIntegrationTest {
         final KafkaStreams driver = IntegrationTestUtils.getStartedStreams(streamsConfig, builder, true);
         try {
             produceSynchronously(
-                input,
-                asList(
-                    new KeyValueTimestamp<>("k1", "v1", scaledTime(0L)),
-                    new KeyValueTimestamp<>("k1", "v2", scaledTime(1L)),
-                    new KeyValueTimestamp<>("k2", "v1", scaledTime(2L)),
-                    new KeyValueTimestamp<>("x", "x", scaledTime(3L))
-                )
+                    input,
+                    asList(
+                            new KeyValueTimestamp<>("k1", "v1", scaledTime(0L)),
+                            new KeyValueTimestamp<>("k1", "v2", scaledTime(1L)),
+                            new KeyValueTimestamp<>("k2", "v1", scaledTime(2L)),
+                            new KeyValueTimestamp<>("x", "x", scaledTime(3L))
+                    )
             );
             final boolean rawRecords = waitForAnyRecord(outputRaw);
             final boolean suppressedRecords = waitForAnyRecord(outputSuppressed);
@@ -519,12 +520,12 @@ public class SuppressionIntegrationTest {
 
     private static Properties getStreamsConfig(final String appId, final boolean withHeaders) {
         final Properties props = mkProperties(mkMap(
-            mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, appId),
-            mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
-            mkEntry(StreamsConfig.POLL_MS_CONFIG, Integer.toString(COMMIT_INTERVAL)),
-            mkEntry(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, Long.toString(COMMIT_INTERVAL)),
-            mkEntry(StreamsConfig.PROCESSING_GUARANTEE_CONFIG, AT_LEAST_ONCE),
-            mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath())
+                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, appId),
+                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
+                mkEntry(StreamsConfig.POLL_MS_CONFIG, Integer.toString(COMMIT_INTERVAL)),
+                mkEntry(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, Long.toString(COMMIT_INTERVAL)),
+                mkEntry(StreamsConfig.PROCESSING_GUARANTEE_CONFIG, AT_LEAST_ONCE),
+                mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath())
         ));
         StreamsTestUtils.maybeSetDslStoreFormatHeaders(props, withHeaders);
         return props;
@@ -540,10 +541,10 @@ public class SuppressionIntegrationTest {
 
     private static void produceSynchronously(final String topic, final List<KeyValueTimestamp<String, String>> toProduce) {
         final Properties producerConfig = mkProperties(mkMap(
-            mkEntry(ProducerConfig.CLIENT_ID_CONFIG, "anything"),
-            mkEntry(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, ((Serializer<String>) STRING_SERIALIZER).getClass().getName()),
-            mkEntry(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ((Serializer<String>) STRING_SERIALIZER).getClass().getName()),
-            mkEntry(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers())
+                mkEntry(ProducerConfig.CLIENT_ID_CONFIG, "anything"),
+                mkEntry(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, ((Serializer<String>) STRING_SERIALIZER).getClass().getName()),
+                mkEntry(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ((Serializer<String>) STRING_SERIALIZER).getClass().getName()),
+                mkEntry(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers())
         ));
         IntegrationTestUtils.produceSynchronously(producerConfig, false, topic, Optional.empty(), toProduce);
     }

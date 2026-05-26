@@ -98,8 +98,8 @@ public class MetricsTest {
         assertEquals(n1, n2, "metric names created in two different ways should be equal");
 
         assertThrows(IllegalArgumentException.class,
-            () -> metrics.metricName("name", "group", "description", "key1"),
-            "Creating MetricName with an odd number of keyValue should fail, IllegalArgumentException expected.");
+                () -> metrics.metricName("name", "group", "description", "key1"),
+                "Creating MetricName with an odd number of keyValue should fail, IllegalArgumentException expected.");
     }
 
     @Test
@@ -121,8 +121,8 @@ public class MetricsTest {
                 metrics.metricName("test.occurrences.total", "grp1")));
         s.add(metrics.metricName("test.count", "grp1"), new WindowedCount());
         s.add(new Percentiles(100, -100, 100, BucketSizing.CONSTANT,
-                             new Percentile(metrics.metricName("test.median", "grp1"), 50.0),
-                             new Percentile(metrics.metricName("test.perc99_9", "grp1"), 99.9)));
+                new Percentile(metrics.metricName("test.median", "grp1"), 50.0),
+                new Percentile(metrics.metricName("test.perc99_9", "grp1"), 99.9)));
 
         Sensor s2 = metrics.sensor("test.sensor2");
         s2.add(metrics.metricName("s2.total", "grp1"), new CumulativeSum());
@@ -137,7 +137,7 @@ public class MetricsTest {
         // prior to any time passing
         double elapsedSecs = (config.timeWindowMs() * (config.samples() - 1)) / 1000.0;
         assertEquals(count / elapsedSecs, metricValueFunc.apply(metrics.metrics().get(metrics.metricName("test.occurrences", "grp1"))), EPS,
-            String.format("Occurrences(0...%d) = %f", count, count / elapsedSecs));
+                String.format("Occurrences(0...%d) = %f", count, count / elapsedSecs));
 
         // pretend 2 seconds passed...
         long sleepTimeMs = 2;
@@ -145,19 +145,19 @@ public class MetricsTest {
         elapsedSecs += sleepTimeMs;
 
         assertEquals(5.0, metricValueFunc.apply(metrics.metric(metrics.metricName("s2.total", "grp1"))), EPS,
-            "s2 reflects the constant value");
+                "s2 reflects the constant value");
         assertEquals(4.5, metricValueFunc.apply(metrics.metric(metrics.metricName("test.avg", "grp1"))), EPS,
-            "Avg(0...9) = 4.5");
+                "Avg(0...9) = 4.5");
         assertEquals(count - 1,  metricValueFunc.apply(metrics.metric(metrics.metricName("test.max", "grp1"))), EPS,
-            "Max(0...9) = 9");
+                "Max(0...9) = 9");
         assertEquals(0.0, metricValueFunc.apply(metrics.metric(metrics.metricName("test.min", "grp1"))), EPS,
-            "Min(0...9) = 0");
+                "Min(0...9) = 0");
         assertEquals(sum / elapsedSecs, metricValueFunc.apply(metrics.metric(metrics.metricName("test.rate", "grp1"))), EPS,
-            "Rate(0...9) = 1.40625");
+                "Rate(0...9) = 1.40625");
         assertEquals(count / elapsedSecs, metricValueFunc.apply(metrics.metric(metrics.metricName("test.occurrences", "grp1"))), EPS,
-            String.format("Occurrences(0...%d) = %f", count, count / elapsedSecs));
+                String.format("Occurrences(0...%d) = %f", count, count / elapsedSecs));
         assertEquals(count, metricValueFunc.apply(metrics.metric(metrics.metricName("test.count", "grp1"))), EPS,
-            "Count(0...9) = 10");
+                "Count(0...9) = 10");
     }
 
     @Test
@@ -416,13 +416,13 @@ public class MetricsTest {
         sensor.add(metrics.metricName("test2.total", "grp1"), new CumulativeSum(), new MetricConfig().quota(Quota.lowerBound(0.0)));
         sensor.record(5.0);
         assertThrows(QuotaViolationException.class,
-            () -> sensor.record(1.0),
-            "Should have gotten a quota violation.");
+                () -> sensor.record(1.0),
+                "Should have gotten a quota violation.");
         assertEquals(6.0, (Double) metrics.metrics().get(metrics.metricName("test1.total", "grp1")).metricValue(), EPS);
         sensor.record(-6.0);
         assertThrows(QuotaViolationException.class,
-            () -> sensor.record(-1.0),
-            "Should have gotten a quota violation.");
+                () -> sensor.record(-1.0),
+                "Should have gotten a quota violation.");
     }
 
     @Test
@@ -671,8 +671,8 @@ public class MetricsTest {
         assertEquals(n1, n2, "metric names created in two different ways should be equal");
 
         assertThrows(IllegalArgumentException.class,
-            () -> metrics.metricInstance(SampleMetrics.METRIC1, "key1"),
-            "Creating MetricName with an odd number of keyValue should fail, IllegalArgumentException expected.");
+                () -> metrics.metricInstance(SampleMetrics.METRIC1, "key1"),
+                "Creating MetricName with an odd number of keyValue should fail, IllegalArgumentException expected.");
 
         Map<String, String> parentTagsWithValues = new HashMap<>();
         parentTagsWithValues.put("parent-tag", "parent-tag-value");
@@ -688,16 +688,16 @@ public class MetricsTest {
             assertEquals("child-tag-value", filledOutTags.get("child-tag"), "child-tag should be set properly");
 
             assertThrows(IllegalArgumentException.class,
-                () -> inherited.metricInstance(SampleMetrics.METRIC_WITH_INHERITED_TAGS, parentTagsWithValues),
-                "Creating MetricName should throw IllegalArgumentException if the child metrics are not defined at runtime.");
+                    () -> inherited.metricInstance(SampleMetrics.METRIC_WITH_INHERITED_TAGS, parentTagsWithValues),
+                    "Creating MetricName should throw IllegalArgumentException if the child metrics are not defined at runtime.");
 
             Map<String, String> runtimeTags = new HashMap<>();
             runtimeTags.put("child-tag", "child-tag-value");
             runtimeTags.put("tag-not-in-template", "unexpected-value");
 
             assertThrows(IllegalArgumentException.class,
-                () -> inherited.metricInstance(SampleMetrics.METRIC_WITH_INHERITED_TAGS, runtimeTags),
-                "Creating MetricName should throw IllegalArgumentException if there is a tag at runtime that is not in the template.");
+                    () -> inherited.metricInstance(SampleMetrics.METRIC_WITH_INHERITED_TAGS, runtimeTags),
+                    "Creating MetricName should throw IllegalArgumentException if there is a tag at runtime that is not in the template.");
         }
     }
 
@@ -715,7 +715,7 @@ public class MetricsTest {
         final AtomicBoolean alive = new AtomicBoolean(true);
         executorService = Executors.newSingleThreadExecutor();
         executorService.submit(new ConcurrentMetricOperation(alive, "record",
-            () -> sensors.forEach(sensor -> sensor.record(random.nextInt(10000)))));
+                () -> sensors.forEach(sensor -> sensor.record(random.nextInt(10000)))));
 
         for (int i = 0; i < 10000; i++) {
             if (sensors.size() > 5) {
@@ -742,6 +742,7 @@ public class MetricsTest {
 
         class LockingReporter implements MetricsReporter {
             final Map<MetricName, KafkaMetric> activeMetrics = new HashMap<>();
+
             @Override
             public synchronized void init(List<KafkaMetric> metrics) {
             }
@@ -782,10 +783,10 @@ public class MetricsTest {
         executorService = Executors.newFixedThreadPool(3);
 
         Future<?> writeFuture = executorService.submit(new ConcurrentMetricOperation(alive, "record",
-            () -> sensors.forEach(sensor -> sensor.record(random.nextInt(10000)))));
+                () -> sensors.forEach(sensor -> sensor.record(random.nextInt(10000)))));
         Future<?> readFuture = executorService.submit(new ConcurrentMetricOperation(alive, "read",
-            () -> sensors.forEach(sensor -> sensor.metrics().forEach(metric ->
-                assertNotNull(metric.metricValue(), "Invalid metric value")))));
+                () -> sensors.forEach(sensor -> sensor.metrics().forEach(metric ->
+                        assertNotNull(metric.metricValue(), "Invalid metric value")))));
         Future<?> reportFuture = executorService.submit(new ConcurrentMetricOperation(alive, "report",
                 reporter::processMetrics));
 
@@ -808,11 +809,13 @@ public class MetricsTest {
         private final AtomicBoolean alive;
         private final String opName;
         private final Runnable op;
+
         ConcurrentMetricOperation(AtomicBoolean alive, String opName, Runnable op) {
             this.alive = alive;
             this.opName = opName;
             this.op = op;
         }
+
         @Override
         public void run() {
             try {
@@ -839,6 +842,7 @@ public class MetricsTest {
         METER(10);
 
         final int id;
+
         StatType(int id) {
             this.id = id;
         }
@@ -899,7 +903,7 @@ public class MetricsTest {
                     break;
                 case METER:
                     sensor.add(new Meter(metrics.metricName("test.metric.meter.rate", "meter", tags),
-                               metrics.metricName("test.metric.meter.total", "meter", tags)));
+                            metrics.metricName("test.metric.meter.total", "meter", tags)));
                     break;
                 default:
                     throw new IllegalStateException("Invalid stat type " + statType);

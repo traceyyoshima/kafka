@@ -56,7 +56,7 @@ public class Graph<V extends Comparable<V>> {
             }
             if (flow > capacity) {
                 throw new IllegalArgumentException(String.format("Edge flow %d cannot exceed capacity %d",
-                    flow, capacity));
+                        flow, capacity));
             }
 
             this.destination = destination;
@@ -79,11 +79,11 @@ public class Graph<V extends Comparable<V>> {
             final Graph<?>.Edge otherEdge = (Graph<?>.Edge) other;
 
             return destination.equals(otherEdge.destination)
-                && capacity == otherEdge.capacity
-                && cost == otherEdge.cost
-                && residualFlow == otherEdge.residualFlow
-                && flow == otherEdge.flow
-                && forwardEdge == otherEdge.forwardEdge;
+                    && capacity == otherEdge.capacity
+                    && cost == otherEdge.cost
+                    && residualFlow == otherEdge.residualFlow
+                    && flow == otherEdge.flow
+                    && forwardEdge == otherEdge.forwardEdge;
         }
 
         @Override
@@ -94,13 +94,13 @@ public class Graph<V extends Comparable<V>> {
         @Override
         public String toString() {
             return "Edge {"
-                + "destination= " + destination
-                + ", capacity=" + capacity
-                + ", cost=" + cost
-                + ", residualFlow=" + residualFlow
-                + ", flow=" + flow
-                + ", forwardEdge=" + forwardEdge
-                + "}";
+                    + "destination= " + destination
+                    + ", capacity=" + capacity
+                    + ", cost=" + cost
+                    + ", residualFlow=" + residualFlow
+                    + ", flow=" + flow
+                    + ", forwardEdge=" + forwardEdge
+                    + "}";
 
         }
     }
@@ -164,7 +164,7 @@ public class Graph<V extends Comparable<V>> {
             final Map<V, Edge> edgeMap = adjList.get(edge.destination);
             if (edgeMap != null && edgeMap.containsKey(u)) {
                 throw new IllegalArgumentException(
-                    "There is already an edge from " + edge.destination
+                        "There is already an edge from " + edge.destination
                         + " to " + u + ". Can not add an edge from " + u + " to " + edge.destination
                         + " since there will create a cycle between two nodes");
             }
@@ -397,7 +397,7 @@ public class Graph<V extends Comparable<V>> {
             final Long out = outFlow.get(in.getKey());
             if (!Objects.equals(in.getValue(), out)) {
                 throw new IllegalStateException("Input flow for node " + in.getKey() + " is " +
-                    in.getValue() + " which doesn't match output flow " + out);
+                        in.getValue() + " which doesn't match output flow " + out);
             }
         }
 
@@ -405,7 +405,7 @@ public class Graph<V extends Comparable<V>> {
         final Long sinkInput = inFlow.get(sinkNode);
         if (!Objects.equals(sourceOutput, sinkInput)) {
             throw new IllegalStateException("Output flow for source " + sourceNode + " is " + sourceOutput
-                + " which doesn't match input flow " + sinkInput + " for sink " + sinkNode);
+                    + " which doesn't match input flow " + sinkInput + " for sink " + sinkNode);
         }
     }
 

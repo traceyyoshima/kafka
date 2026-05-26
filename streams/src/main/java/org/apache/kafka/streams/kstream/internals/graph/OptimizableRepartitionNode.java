@@ -34,15 +34,15 @@ public class OptimizableRepartitionNode<K, V> extends BaseRepartitionNode<K, V> 
                                        final String repartitionTopic,
                                        final StreamPartitioner<K, V> partitioner) {
         super(
-            nodeName,
-            sourceName,
-            processorParameters,
-            keySerde,
-            valueSerde,
-            sinkName,
-            repartitionTopic,
-            partitioner,
-            InternalTopicProperties.empty()
+                nodeName,
+                sourceName,
+                processorParameters,
+                keySerde,
+                valueSerde,
+                sinkName,
+                repartitionTopic,
+                partitioner,
+                InternalTopicProperties.empty()
         );
     }
 
@@ -70,21 +70,21 @@ public class OptimizableRepartitionNode<K, V> extends BaseRepartitionNode<K, V> 
         processorParameters.addProcessorTo(topologyBuilder, parentNodeNames());
 
         topologyBuilder.addSink(
-            sinkName,
-            repartitionTopic,
-            keySerializer(),
-            valueSerializer(),
-            partitioner,
-            processorParameters.processorName()
+                sinkName,
+                repartitionTopic,
+                keySerializer(),
+                valueSerializer(),
+                partitioner,
+                processorParameters.processorName()
         );
 
         topologyBuilder.addSource(
-            null,
-            sourceName,
-            new FailOnInvalidTimestamp(),
-            keyDeserializer(),
-            valueDeserializer(),
-            repartitionTopic
+                null,
+                sourceName,
+                new FailOnInvalidTimestamp(),
+                keyDeserializer(),
+                valueDeserializer(),
+                repartitionTopic
         );
 
     }
@@ -97,14 +97,14 @@ public class OptimizableRepartitionNode<K, V> extends BaseRepartitionNode<K, V> 
         @Override
         public OptimizableRepartitionNode<K, V> build() {
             return new OptimizableRepartitionNode<>(
-                nodeName,
-                sourceName,
-                processorParameters,
-                keySerde,
-                valueSerde,
-                sinkName,
-                repartitionTopic,
-                partitioner
+                    nodeName,
+                    sourceName,
+                    processorParameters,
+                    keySerde,
+                    valueSerde,
+                    sinkName,
+                    repartitionTopic,
+                    partitioner
             );
         }
     }

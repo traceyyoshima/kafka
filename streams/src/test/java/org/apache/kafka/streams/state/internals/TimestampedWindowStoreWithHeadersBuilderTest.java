@@ -60,10 +60,10 @@ public class TimestampedWindowStoreWithHeadersBuilderTest {
             when(supplier.get()).thenReturn(timestampedStoreWithHeaders);
 
             builder = new TimestampedWindowStoreWithHeadersBuilder<>(
-                supplier,
-                Serdes.String(),
-                Serdes.String(),
-                new MockTime());
+                    supplier,
+                    Serdes.String(),
+                    Serdes.String(),
+                    new MockTime());
         }
 
         @Test
@@ -130,20 +130,20 @@ public class TimestampedWindowStoreWithHeadersBuilderTest {
             when(supplier.name()).thenReturn(STORE_NAME);
             when(supplier.metricsScope()).thenReturn(METRICS_SCOPE);
             when(supplier.get()).thenReturn(new RocksDBTimestampedWindowStoreWithHeaders(
-                new RocksDBTimestampedSegmentedBytesStoreWithHeaders(
-                    "name",
-                    "metric-scope",
-                    10L,
-                    5L,
-                    new WindowKeySchema()),
-                false,
-                1L));
+                    new RocksDBTimestampedSegmentedBytesStoreWithHeaders(
+                            "name",
+                            "metric-scope",
+                            10L,
+                            5L,
+                            new WindowKeySchema()),
+                    false,
+                    1L));
 
             builder = new TimestampedWindowStoreWithHeadersBuilder<>(
-                supplier,
-                Serdes.String(),
-                Serdes.String(),
-                new MockTime());
+                    supplier,
+                    Serdes.String(),
+                    Serdes.String(),
+                    new MockTime());
 
             final TimestampedWindowStoreWithHeaders<String, String> store = builder
                 .withLoggingDisabled()
@@ -157,20 +157,20 @@ public class TimestampedWindowStoreWithHeadersBuilderTest {
             when(supplier.name()).thenReturn(STORE_NAME);
             when(supplier.metricsScope()).thenReturn(METRICS_SCOPE);
             when(supplier.get()).thenReturn(new RocksDBTimestampedWindowStore(
-                new RocksDBTimestampedSegmentedBytesStore(
-                    "name",
-                    "metric-scope",
-                    10L,
-                    5L,
-                    new WindowKeySchema()),
-                false,
-                1L));
+                    new RocksDBTimestampedSegmentedBytesStore(
+                            "name",
+                            "metric-scope",
+                            10L,
+                            5L,
+                            new WindowKeySchema()),
+                    false,
+                    1L));
 
             builder = new TimestampedWindowStoreWithHeadersBuilder<>(
-                supplier,
-                Serdes.String(),
-                Serdes.String(),
-                new MockTime());
+                    supplier,
+                    Serdes.String(),
+                    Serdes.String(),
+                    new MockTime());
 
             final TimestampedWindowStoreWithHeaders<String, String> store = builder
                 .withLoggingDisabled()
@@ -187,10 +187,10 @@ public class TimestampedWindowStoreWithHeadersBuilderTest {
             when(supplier.get()).thenReturn(timestampedStoreWithHeaders);
 
             builder = new TimestampedWindowStoreWithHeadersBuilder<>(
-                supplier,
-                Serdes.String(),
-                Serdes.String(),
-                new MockTime());
+                    supplier,
+                    Serdes.String(),
+                    Serdes.String(),
+                    new MockTime());
 
             final TimestampedWindowStoreWithHeaders<String, String> store = builder
                 .withCachingEnabled()

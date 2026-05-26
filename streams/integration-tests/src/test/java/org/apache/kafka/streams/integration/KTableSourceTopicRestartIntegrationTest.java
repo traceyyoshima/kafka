@@ -89,7 +89,6 @@ public class KTableSourceTopicRestartIntegrationTest {
         CLUSTER.stop();
     }
 
-
     private final Time time = CLUSTER.time;
     private final StreamsBuilder streamsBuilder = new StreamsBuilder();
     private final Map<String, String> readKeyValues = new ConcurrentHashMap<>();
@@ -137,9 +136,9 @@ public class KTableSourceTopicRestartIntegrationTest {
             produceKeyValues("f", "g", "h");
 
             assertNumberValuesRead(
-                readKeyValues,
-                expectedResultsWithDataWrittenDuringRestoreMap,
-                "Table did not get all values after restart");
+                    readKeyValues,
+                    expectedResultsWithDataWrittenDuringRestoreMap,
+                    "Table did not get all values after restart");
         } finally {
             streams.close(Duration.ofSeconds(5));
         }
@@ -165,9 +164,9 @@ public class KTableSourceTopicRestartIntegrationTest {
             produceKeyValues("f", "g", "h");
 
             assertNumberValuesRead(
-                readKeyValues,
-                expectedResultsWithDataWrittenDuringRestoreMap,
-                "Table did not get all values after restart");
+                    readKeyValues,
+                    expectedResultsWithDataWrittenDuringRestoreMap,
+                    "Table did not get all values after restart");
         } finally {
             streams.close(Duration.ofSeconds(5));
         }
@@ -199,9 +198,9 @@ public class KTableSourceTopicRestartIntegrationTest {
                                         final Map<String, String> expectedMap,
                                         final String errorMessage) throws InterruptedException {
         TestUtils.waitForCondition(
-            () -> valueMap.equals(expectedMap),
-            30 * 1000L,
-            errorMessage);
+                () -> valueMap.equals(expectedMap),
+                30 * 1000L,
+                errorMessage);
     }
 
     private void produceKeyValues(final String... keys) {

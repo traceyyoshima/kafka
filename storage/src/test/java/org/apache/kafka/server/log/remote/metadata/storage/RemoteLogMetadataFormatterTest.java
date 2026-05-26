@@ -61,16 +61,16 @@ public class RemoteLogMetadataFormatterTest {
 
         String expected = String.format(
                 "partition: 0, offset: 0, value: " +
-                        "RemoteLogSegmentMetadata{remoteLogSegmentId=RemoteLogSegmentId{topicIdPartition=%s:foo-0, id=%s}, " +
-                        "startOffset=0, endOffset=100, brokerId=1, maxTimestampMs=-1, " +
-                        "eventTimestampMs=123, segmentLeaderEpochs={0=0, 1=20, 2=80}, segmentSizeInBytes=1024, " +
-                        "customMetadata=Optional[CustomMetadata{10 bytes}], " +
-                        "state=COPY_SEGMENT_STARTED, txnIdxEmpty=true}\n",
+                "RemoteLogSegmentMetadata{remoteLogSegmentId=RemoteLogSegmentId{topicIdPartition=%s:foo-0, id=%s}, " +
+                "startOffset=0, endOffset=100, brokerId=1, maxTimestampMs=-1, " +
+                "eventTimestampMs=123, segmentLeaderEpochs={0=0, 1=20, 2=80}, segmentSizeInBytes=1024, " +
+                "customMetadata=Optional[CustomMetadata{10 bytes}], " +
+                "state=COPY_SEGMENT_STARTED, txnIdxEmpty=true}\n",
                 TOPIC_ID, SEGMENT_ID);
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
              PrintStream ps = new PrintStream(baos)) {
             try (RemoteLogMetadataSerde.RemoteLogMetadataFormatter formatter =
-                         new RemoteLogMetadataSerde.RemoteLogMetadataFormatter()) {
+                    new RemoteLogMetadataSerde.RemoteLogMetadataFormatter()) {
                 formatter.writeTo(metadataRecord, ps);
                 assertEquals(expected, baos.toString());
             }

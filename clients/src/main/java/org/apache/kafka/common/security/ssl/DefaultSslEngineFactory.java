@@ -91,7 +91,6 @@ public class DefaultSslEngineFactory implements SslEngineFactory {
     private SSLContext sslContext;
     private SslClientAuth sslClientAuth;
 
-
     @Override
     public SSLEngine createClientSslEngine(String peerHost, int peerPort, String endpointIdentification) {
         return createSslEngine(ConnectionMode.CLIENT, peerHost, peerPort, endpointIdentification);
@@ -211,6 +210,7 @@ public class DefaultSslEngineFactory implements SslEngineFactory {
         }
         return sslEngine;
     }
+
     private static SslClientAuth createSslClientAuth(String key) {
         SslClientAuth auth = SslClientAuth.forConfig(key);
         if (auth != null) {
@@ -219,7 +219,7 @@ public class DefaultSslEngineFactory implements SslEngineFactory {
         log.warn("Unrecognized client authentication configuration {}.  Falling " +
                 "back to NONE.  Recognized client authentication configurations are {}.",
                 key, SslClientAuth.VALUES.stream().
-                        map(Enum::name).collect(Collectors.joining(", ")));
+                                map(Enum::name).collect(Collectors.joining(", ")));
         return SslClientAuth.NONE;
     }
 
@@ -329,7 +329,9 @@ public class DefaultSslEngineFactory implements SslEngineFactory {
 
     interface SecurityStore {
         KeyStore get();
+
         char[] keyPassword();
+
         boolean modified();
     }
 
@@ -565,10 +567,10 @@ public class DefaultSslEngineFactory implements SslEngineFactory {
 
             String encodingParams = "\\s*[^\\r\\n]*:[^\\r\\n]*[\\r\\n]+";
             String base64Pattern = "([a-zA-Z0-9/+=\\s]*)";
-            String patternStr =  String.format(beginOrEndFormat, "BEGIN", nameIgnoreSpace) +
-                String.format("(?:%s)*", encodingParams) +
-                base64Pattern +
-                String.format(beginOrEndFormat, "END", nameIgnoreSpace);
+            String patternStr = String.format(beginOrEndFormat, "BEGIN", nameIgnoreSpace) +
+                    String.format("(?:%s)*", encodingParams) +
+                    base64Pattern +
+                    String.format(beginOrEndFormat, "END", nameIgnoreSpace);
             pattern = Pattern.compile(patternStr);
         }
 

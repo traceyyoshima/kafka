@@ -385,7 +385,7 @@ class OffsetControlManager {
         }
         if (transactionStartOffset != -1L) {
             throw new RuntimeException("Can't replay a BeginTransactionRecord at " + offset +
-                " because the transaction at " + transactionStartOffset + " was never closed.");
+                    " because the transaction at " + transactionStartOffset + " was never closed.");
         }
         snapshotRegistry.idempotentCreateSnapshot(offset - 1);
         transactionStartOffset = offset;

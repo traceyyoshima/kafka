@@ -86,7 +86,7 @@ public class ClientCredentialsRequestFormatterFactory {
             if (assertionFile != null && cu.containsKey(SASL_OAUTHBEARER_ASSERTION_CLAIM_ISS)) {
                 LOG.warn("Both {} and {} are configured. Using file-based assertion (first preference); " +
                          "locally-generated assertion configs will be ignored.",
-                    SASL_OAUTHBEARER_ASSERTION_FILE, SASL_OAUTHBEARER_ASSERTION_CLAIM_ISS);
+                        SASL_OAUTHBEARER_ASSERTION_FILE, SASL_OAUTHBEARER_ASSERTION_CLAIM_ISS);
             }
 
             // Log which assertion path is being used

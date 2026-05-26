@@ -571,7 +571,7 @@ public class RequestConvertToJson {
                 WriteTxnMarkersRequestDataJsonConverter.write(((WriteTxnMarkersRequest) request).data(), request.version());
             default ->
                 throw new IllegalStateException("ApiKey " + request.apiKey() + " is not currently handled in `request`, the " +
-                    "code should be updated to do so.");
+                        "code should be updated to do so.");
         };
     }
 
@@ -748,13 +748,13 @@ public class RequestConvertToJson {
                 WriteTxnMarkersResponseDataJsonConverter.write(((WriteTxnMarkersResponse) response).data(), version);
             default ->
                 throw new IllegalStateException("ApiKey " + response.apiKey() + " is not currently handled in `response`, the " +
-                    "code should be updated to do so.");
+                        "code should be updated to do so.");
         };
     }
 
     public static JsonNode requestHeaderNode(RequestHeader header) {
         ObjectNode node = (ObjectNode) RequestHeaderDataJsonConverter.write(
-            header.data(), header.headerVersion(), false
+                header.data(), header.headerVersion(), false
         );
         node.set("requestApiKeyName", new TextNode(header.apiKey().toString()));
         if (header.isApiVersionDeprecated()) {

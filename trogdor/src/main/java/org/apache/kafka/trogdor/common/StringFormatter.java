@@ -84,7 +84,7 @@ public class StringFormatter {
                 numColumns = col.size();
             } else if (numColumns != col.size()) {
                 throw new RuntimeException("Expected " + numColumns + " columns in row " +
-                    rowIndex + ", but got " + col.size());
+                        rowIndex + ", but got " + col.size());
             }
             rowIndex++;
         }

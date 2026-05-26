@@ -139,11 +139,11 @@ public class RocksDBVersionedStore implements VersionedKeyValueStore<Bytes, byte
             observedStreamTime = Math.max(observedStreamTime, timestamp);
 
             final long foundTs = doPut(
-                versionedStoreClient,
-                observedStreamTime,
-                key,
-                value,
-                timestamp
+                    versionedStoreClient,
+                    observedStreamTime,
+                    key,
+                    value,
+                    timestamp
             );
 
             StoreQueryUtils.updatePosition(position, internalProcessorContext);
@@ -168,11 +168,11 @@ public class RocksDBVersionedStore implements VersionedKeyValueStore<Bytes, byte
 
             observedStreamTime = Math.max(observedStreamTime, timestamp);
             doPut(
-                versionedStoreClient,
-                observedStreamTime,
-                key,
-                null,
-                timestamp
+                    versionedStoreClient,
+                    observedStreamTime,
+                    key,
+                    null,
+                    timestamp
             );
 
             StoreQueryUtils.updatePosition(position, internalProcessorContext);
@@ -190,8 +190,8 @@ public class RocksDBVersionedStore implements VersionedKeyValueStore<Bytes, byte
         final byte[] rawLatestValueAndTimestamp = latestValueStore.get(key);
         if (rawLatestValueAndTimestamp != null) {
             return new VersionedRecord<>(
-                LatestValueFormatter.value(rawLatestValueAndTimestamp),
-                LatestValueFormatter.timestamp(rawLatestValueAndTimestamp)
+                    LatestValueFormatter.value(rawLatestValueAndTimestamp),
+                    LatestValueFormatter.timestamp(rawLatestValueAndTimestamp)
             );
         } else {
             return null;
@@ -213,8 +213,8 @@ public class RocksDBVersionedStore implements VersionedKeyValueStore<Bytes, byte
                 if (latestTimestamp <= asOfTimestamp) {
                     // latest value satisfies timestamp bound
                     return new VersionedRecord<>(
-                        LatestValueFormatter.value(rawLatestValueAndTimestamp),
-                        latestTimestamp
+                            LatestValueFormatter.value(rawLatestValueAndTimestamp),
+                            latestTimestamp
                     );
                 }
             }
@@ -335,12 +335,12 @@ public class RocksDBVersionedStore implements VersionedKeyValueStore<Bytes, byte
             final PositionBound positionBound,
             final QueryConfig config) {
         return StoreQueryUtils.handleBasicQueries(
-            query,
-            positionBound,
-            config,
-            this,
-            position,
-            internalProcessorContext
+                query,
+                positionBound,
+                config,
+                this,
+                position,
+                internalProcessorContext
         );
     }
 
@@ -425,18 +425,18 @@ public class RocksDBVersionedStore implements VersionedKeyValueStore<Bytes, byte
                 observedStreamTime = Math.max(observedStreamTime, record.timestamp());
 
                 ChangelogRecordDeserializationHelper.applyChecksAndUpdatePosition(
-                    record,
-                    consistencyEnabled,
-                    position
+                        record,
+                        consistencyEnabled,
+                        position
                 );
 
                 // put records to write buffer
                 doPut(
-                    restoreClient,
-                    endOfBatchStreamTime,
-                    new Bytes(record.key()),
-                    record.value(),
-                    record.timestamp()
+                        restoreClient,
+                        endOfBatchStreamTime,
+                        new Bytes(record.key()),
+                        record.value(),
+                        record.timestamp()
                 );
             }
 

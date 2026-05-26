@@ -190,7 +190,7 @@ public class VersionedKeyValueToBytesStoreAdapter implements VersionedBytesStore
             return null;
         }
         return VALUE_AND_TIMESTAMP_SERIALIZER.serialize(
-            null,
-            ValueAndTimestamp.make(versionedRecord.value(), versionedRecord.timestamp()));
+                null,
+                ValueAndTimestamp.make(versionedRecord.value(), versionedRecord.timestamp()));
     }
 }

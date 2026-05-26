@@ -96,7 +96,7 @@ public enum Feature {
 
         PRODUCTION_FEATURES = Arrays.stream(FEATURES).filter(feature ->
             !feature.name.equals(TEST_VERSION.featureName()) &&
-            !feature.name.startsWith("unit." + TestFeatureVersion.FEATURE_NAME)
+                !feature.name.startsWith("unit." + TestFeatureVersion.FEATURE_NAME)
         ).toList();
         PRODUCTION_FEATURE_NAMES = PRODUCTION_FEATURES.stream().map(feature ->
                 feature.name).toList();
@@ -129,8 +129,8 @@ public enum Feature {
 
     public SupportedVersionRange supportedVersionRange() {
         return new SupportedVersionRange(
-            minimumProduction(),
-            latestTesting()
+                minimumProduction(),
+                latestTesting()
         );
     }
 
@@ -146,7 +146,7 @@ public enum Feature {
                                            boolean allowUnstableFeatureVersions) {
         return Arrays.stream(featureVersions).filter(featureVersion ->
             featureVersion.featureLevel() == level && (allowUnstableFeatureVersions || level <= latestProduction())).findFirst().orElseThrow(
-                () -> new IllegalArgumentException("No feature:" + featureName() + " with feature level " + level));
+                    () -> new IllegalArgumentException("No feature:" + featureName() + " with feature level " + level));
     }
 
     /**
@@ -189,7 +189,7 @@ public enum Feature {
      */
     public FeatureVersion defaultVersion(MetadataVersion metadataVersion) {
         FeatureVersion version = featureVersions[0];
-        for (Iterator<FeatureVersion> it = Arrays.stream(featureVersions).iterator(); it.hasNext(); ) {
+        for (Iterator<FeatureVersion> it = Arrays.stream(featureVersions).iterator(); it.hasNext();) {
             FeatureVersion feature = it.next();
             if (feature.bootstrapMetadataVersion().isLessThan(metadataVersion) || feature.bootstrapMetadataVersion().equals(metadataVersion))
                 version = feature;
@@ -272,7 +272,7 @@ public enum Feature {
         if (latestProduction.featureLevel() < defaultVersion.featureLevel()) {
             throw new IllegalArgumentException(String.format("Feature %s has latest production value %s " +
                     "smaller than its default version %s with latest production MV.",
-                feature.name(), latestProduction, defaultVersion));
+                    feature.name(), latestProduction, defaultVersion));
         }
 
         for (Map.Entry<String, Short> dependency: latestProduction.dependencies().entrySet()) {
@@ -282,15 +282,15 @@ public enum Feature {
                 if (!dependencyFeature.isProductionReady(dependency.getValue())) {
                     throw new IllegalArgumentException(String.format("Feature %s has latest production FeatureVersion %s " +
                             "with dependency %s that is not production ready. (%s latest production: %s)",
-                        feature.name(), latestProduction, dependencyFeature.fromFeatureLevel(dependency.getValue(), true),
-                        dependencyFeature, dependencyFeature.latestProduction));
+                            feature.name(), latestProduction, dependencyFeature.fromFeatureLevel(dependency.getValue(), true),
+                            dependencyFeature, dependencyFeature.latestProduction));
                 }
             } else {
                 if (dependency.getValue() > MetadataVersion.LATEST_PRODUCTION.featureLevel()) {
                     throw new IllegalArgumentException(String.format("Feature %s has latest production FeatureVersion %s " +
                             "with MV dependency %s that is not production ready. (MV latest production: %s)",
-                        feature.name(), latestProduction, MetadataVersion.fromFeatureLevel(dependency.getValue()),
-                        MetadataVersion.LATEST_PRODUCTION));
+                            feature.name(), latestProduction, MetadataVersion.fromFeatureLevel(dependency.getValue()),
+                            MetadataVersion.LATEST_PRODUCTION));
                 }
             }
         }
@@ -304,17 +304,17 @@ public enum Feature {
                     if (dependency.getValue() > dependencyFeature.defaultLevel(metadataVersion)) {
                         throw new IllegalArgumentException(String.format("Feature %s has default FeatureVersion %s " +
                                 "when MV=%s with dependency %s that is behind its default version %s.",
-                            feature.name(), defaultVersion, metadataVersion,
-                            dependencyFeature.fromFeatureLevel(dependency.getValue(), true),
-                            dependencyFeature.defaultVersion(metadataVersion)));
+                                feature.name(), defaultVersion, metadataVersion,
+                                dependencyFeature.fromFeatureLevel(dependency.getValue(), true),
+                                dependencyFeature.defaultVersion(metadataVersion)));
                     }
                 } else {
                     if (dependency.getValue() > defaultVersion.bootstrapMetadataVersion().featureLevel()) {
                         throw new IllegalArgumentException(String.format("Feature %s has default FeatureVersion %s " +
                                 "when MV=%s with MV dependency %s that is behind its bootstrap MV %s.",
-                            feature.name(), defaultVersion, metadataVersion,
-                            MetadataVersion.fromFeatureLevel(dependency.getValue()),
-                            defaultVersion.bootstrapMetadataVersion()));
+                                feature.name(), defaultVersion, metadataVersion,
+                                MetadataVersion.fromFeatureLevel(dependency.getValue()),
+                                defaultVersion.bootstrapMetadataVersion()));
                     }
                 }
             }

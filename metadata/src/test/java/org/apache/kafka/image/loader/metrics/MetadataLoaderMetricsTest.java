@@ -44,7 +44,7 @@ public class MetadataLoaderMetricsTest {
         final AtomicLong batchProcessingTimeNs = new AtomicLong(0L);
         final AtomicInteger batchSize = new AtomicInteger(0);
         final AtomicReference<MetadataProvenance> provenance =
-            new AtomicReference<>(MetadataProvenance.EMPTY);
+                new AtomicReference<>(MetadataProvenance.EMPTY);
         final MockTime time = new MockTime();
         final MetadataLoaderMetrics metrics;
 
@@ -54,10 +54,10 @@ public class MetadataLoaderMetricsTest {
 
         FakeMetadataLoaderMetrics(Optional<MetricsRegistry> registry) {
             metrics = new MetadataLoaderMetrics(
-                registry,
-                batchProcessingTimeNs::set,
-                batchSize::set,
-                provenance);
+                    registry,
+                    batchProcessingTimeNs::set,
+                    batchSize::set,
+                    provenance);
         }
 
         @Override
@@ -72,12 +72,12 @@ public class MetadataLoaderMetricsTest {
         try {
             try (FakeMetadataLoaderMetrics fakeMetrics = new FakeMetadataLoaderMetrics(registry)) {
                 ControllerMetricsTestUtils.assertMetricsForTypeEqual(registry, "kafka.server",
-                    Set.of(
-                        "kafka.server:type=MetadataLoader,name=CurrentControllerId",
-                        "kafka.server:type=MetadataLoader,name=CurrentMetadataVersion",
-                        "kafka.server:type=MetadataLoader,name=HandleLoadSnapshotCount",
-                        "kafka.server:type=MetadataLoader,name=AvgIdleRatio"
-                    )
+                        Set.of(
+                                "kafka.server:type=MetadataLoader,name=CurrentControllerId",
+                                "kafka.server:type=MetadataLoader,name=CurrentMetadataVersion",
+                                "kafka.server:type=MetadataLoader,name=HandleLoadSnapshotCount",
+                                "kafka.server:type=MetadataLoader,name=AvgIdleRatio"
+                        )
                 );
 
                 // Record some feature levels and verify their metrics are registered
@@ -85,14 +85,14 @@ public class MetadataLoaderMetricsTest {
                 fakeMetrics.metrics.recordFinalizedFeatureLevel("kraft.version", (short) 4);
 
                 ControllerMetricsTestUtils.assertMetricsForTypeEqual(registry, "kafka.server",
-                    Set.of(
-                        "kafka.server:type=MetadataLoader,name=CurrentControllerId",
-                        "kafka.server:type=MetadataLoader,name=CurrentMetadataVersion",
-                        "kafka.server:type=MetadataLoader,name=HandleLoadSnapshotCount",
-                        "kafka.server:type=MetadataLoader,name=AvgIdleRatio",
-                        "kafka.server:type=MetadataLoader,name=FinalizedLevel,featureName=metadataVersion",
-                        "kafka.server:type=MetadataLoader,name=FinalizedLevel,featureName=kraftVersion"
-                    )
+                        Set.of(
+                                "kafka.server:type=MetadataLoader,name=CurrentControllerId",
+                                "kafka.server:type=MetadataLoader,name=CurrentMetadataVersion",
+                                "kafka.server:type=MetadataLoader,name=HandleLoadSnapshotCount",
+                                "kafka.server:type=MetadataLoader,name=AvgIdleRatio",
+                                "kafka.server:type=MetadataLoader,name=FinalizedLevel,featureName=metadataVersion",
+                                "kafka.server:type=MetadataLoader,name=FinalizedLevel,featureName=kraftVersion"
+                        )
                 );
             }
             ControllerMetricsTestUtils.assertMetricsForTypeEqual(registry, "kafka.server",
@@ -144,7 +144,7 @@ public class MetadataLoaderMetricsTest {
                     .allMetrics()
                     .get(metricName("MetadataLoader", "CurrentMetadataVersion"));
                 assertEquals(MetadataVersion.IBP_3_7_IV0.featureLevel(),
-                    currentMetadataVersion.value().shortValue());
+                        currentMetadataVersion.value().shortValue());
 
                 @SuppressWarnings("unchecked")
                 Gauge<Long> loadSnapshotCount = (Gauge<Long>) registry
@@ -153,7 +153,7 @@ public class MetadataLoaderMetricsTest {
                 assertEquals(2L, loadSnapshotCount.value().longValue());
             }
             ControllerMetricsTestUtils.assertMetricsForTypeEqual(registry, "kafka.server",
-                Set.of());
+                    Set.of());
         } finally {
             registry.shutdown();
         }
@@ -181,12 +181,12 @@ public class MetadataLoaderMetricsTest {
             try (FakeMetadataLoaderMetrics fakeMetrics = new FakeMetadataLoaderMetrics(registry)) {
                 // Initially no finalized level metrics should be registered
                 ControllerMetricsTestUtils.assertMetricsForTypeEqual(registry, "kafka.server",
-                    Set.of(
-                        "kafka.server:type=MetadataLoader,name=CurrentControllerId",
-                        "kafka.server:type=MetadataLoader,name=CurrentMetadataVersion",
-                        "kafka.server:type=MetadataLoader,name=HandleLoadSnapshotCount",
-                        "kafka.server:type=MetadataLoader,name=AvgIdleRatio"
-                    )
+                        Set.of(
+                                "kafka.server:type=MetadataLoader,name=CurrentControllerId",
+                                "kafka.server:type=MetadataLoader,name=CurrentMetadataVersion",
+                                "kafka.server:type=MetadataLoader,name=HandleLoadSnapshotCount",
+                                "kafka.server:type=MetadataLoader,name=AvgIdleRatio"
+                        )
                 );
 
                 // Record metadata version and verify its metric
@@ -214,29 +214,29 @@ public class MetadataLoaderMetricsTest {
                 assertEquals((short) 1, finalizedTransactionVersion.value());
 
                 ControllerMetricsTestUtils.assertMetricsForTypeEqual(registry, "kafka.server",
-                    Set.of(
-                        "kafka.server:type=MetadataLoader,name=CurrentControllerId",
-                        "kafka.server:type=MetadataLoader,name=CurrentMetadataVersion",
-                        "kafka.server:type=MetadataLoader,name=HandleLoadSnapshotCount",
-                        "kafka.server:type=MetadataLoader,name=AvgIdleRatio",
-                        "kafka.server:type=MetadataLoader,name=FinalizedLevel,featureName=metadataVersion",
-                        "kafka.server:type=MetadataLoader,name=FinalizedLevel,featureName=kraftVersion",
-                        "kafka.server:type=MetadataLoader,name=FinalizedLevel,featureName=transactionVersion"
-                    )
+                        Set.of(
+                                "kafka.server:type=MetadataLoader,name=CurrentControllerId",
+                                "kafka.server:type=MetadataLoader,name=CurrentMetadataVersion",
+                                "kafka.server:type=MetadataLoader,name=HandleLoadSnapshotCount",
+                                "kafka.server:type=MetadataLoader,name=AvgIdleRatio",
+                                "kafka.server:type=MetadataLoader,name=FinalizedLevel,featureName=metadataVersion",
+                                "kafka.server:type=MetadataLoader,name=FinalizedLevel,featureName=kraftVersion",
+                                "kafka.server:type=MetadataLoader,name=FinalizedLevel,featureName=transactionVersion"
+                        )
                 );
 
                 // When a feature's finalized level is not present in the new image, its metric should be removed
                 // This does not apply to metadataVersion and kraftVersion
                 fakeMetrics.metrics.maybeRemoveFinalizedFeatureLevelMetrics(Map.of());
                 ControllerMetricsTestUtils.assertMetricsForTypeEqual(registry, "kafka.server",
-                    Set.of(
-                        "kafka.server:type=MetadataLoader,name=CurrentControllerId",
-                        "kafka.server:type=MetadataLoader,name=CurrentMetadataVersion",
-                        "kafka.server:type=MetadataLoader,name=HandleLoadSnapshotCount",
-                        "kafka.server:type=MetadataLoader,name=AvgIdleRatio",
-                        "kafka.server:type=MetadataLoader,name=FinalizedLevel,featureName=kraftVersion",
-                        "kafka.server:type=MetadataLoader,name=FinalizedLevel,featureName=metadataVersion"
-                    )
+                        Set.of(
+                                "kafka.server:type=MetadataLoader,name=CurrentControllerId",
+                                "kafka.server:type=MetadataLoader,name=CurrentMetadataVersion",
+                                "kafka.server:type=MetadataLoader,name=HandleLoadSnapshotCount",
+                                "kafka.server:type=MetadataLoader,name=AvgIdleRatio",
+                                "kafka.server:type=MetadataLoader,name=FinalizedLevel,featureName=kraftVersion",
+                                "kafka.server:type=MetadataLoader,name=FinalizedLevel,featureName=metadataVersion"
+                        )
                 );
 
                 // Set the finalized feature level and check the metric is added back with its correct value
@@ -247,23 +247,24 @@ public class MetadataLoaderMetricsTest {
                     .get(metricName("MetadataLoader", "FinalizedLevel", "featureName=transactionVersion"));
                 assertEquals((short) 2, finalizedTransactionVersion2.value());
                 ControllerMetricsTestUtils.assertMetricsForTypeEqual(registry, "kafka.server",
-                    Set.of(
-                        "kafka.server:type=MetadataLoader,name=CurrentControllerId",
-                        "kafka.server:type=MetadataLoader,name=CurrentMetadataVersion",
-                        "kafka.server:type=MetadataLoader,name=HandleLoadSnapshotCount",
-                        "kafka.server:type=MetadataLoader,name=AvgIdleRatio",
-                        "kafka.server:type=MetadataLoader,name=FinalizedLevel,featureName=metadataVersion",
-                        "kafka.server:type=MetadataLoader,name=FinalizedLevel,featureName=kraftVersion",
-                        "kafka.server:type=MetadataLoader,name=FinalizedLevel,featureName=transactionVersion"
-                    )
+                        Set.of(
+                                "kafka.server:type=MetadataLoader,name=CurrentControllerId",
+                                "kafka.server:type=MetadataLoader,name=CurrentMetadataVersion",
+                                "kafka.server:type=MetadataLoader,name=HandleLoadSnapshotCount",
+                                "kafka.server:type=MetadataLoader,name=AvgIdleRatio",
+                                "kafka.server:type=MetadataLoader,name=FinalizedLevel,featureName=metadataVersion",
+                                "kafka.server:type=MetadataLoader,name=FinalizedLevel,featureName=kraftVersion",
+                                "kafka.server:type=MetadataLoader,name=FinalizedLevel,featureName=transactionVersion"
+                        )
                 );
             }
             ControllerMetricsTestUtils.assertMetricsForTypeEqual(registry, "kafka.server",
-                Set.of());
+                    Set.of());
         } finally {
             registry.shutdown();
         }
     }
+
     @Test
     public void testAvgIdleRatio() {
         final double delta = 0.001;

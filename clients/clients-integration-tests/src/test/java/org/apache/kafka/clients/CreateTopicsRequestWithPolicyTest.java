@@ -44,10 +44,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ClusterTestDefaults(
-    brokers = 3,
-    serverProperties = {
-        @ClusterConfigProperty(key = ServerLogConfigs.CREATE_TOPIC_POLICY_CLASS_NAME_CONFIG, value = "org.apache.kafka.clients.CreateTopicsRequestWithPolicyTest$Policy"),
-    }
+        brokers = 3,
+        serverProperties = {
+            @ClusterConfigProperty(key = ServerLogConfigs.CREATE_TOPIC_POLICY_CLASS_NAME_CONFIG, value = "org.apache.kafka.clients.CreateTopicsRequestWithPolicyTest$Policy"),
+        }
 )
 public class CreateTopicsRequestWithPolicyTest {
 
@@ -114,8 +114,8 @@ public class CreateTopicsRequestWithPolicyTest {
 
     private void validateValidCreateTopicsRequests(NewTopic topic, Admin admin, boolean validateOnly) throws Exception {
         admin.createTopics(
-            List.of(topic),
-            new CreateTopicsOptions().validateOnly(validateOnly)
+                List.of(topic),
+                new CreateTopicsOptions().validateOnly(validateOnly)
         ).all().get();
     }
 
@@ -125,25 +125,25 @@ public class CreateTopicsRequestWithPolicyTest {
             cluster.createTopic("topic1", 5, (short) 1);
 
             validateValidCreateTopicsRequests(
-                new NewTopic("topic2", 5, (short) 3),
-                admin,
-                true
+                    new NewTopic("topic2", 5, (short) 3),
+                    admin,
+                    true
             );
 
             validateValidCreateTopicsRequests(
-                new NewTopic("topic3", 11, (short) 2)
-                    .configs(Map.of(TopicConfig.RETENTION_MS_CONFIG, "4999")),
-                admin,
-                true
+                    new NewTopic("topic3", 11, (short) 2)
+                        .configs(Map.of(TopicConfig.RETENTION_MS_CONFIG, "4999")),
+                    admin,
+                    true
             );
 
             validateValidCreateTopicsRequests(
-                new NewTopic("topic4", Map.of(
-                    0, List.of(1, 0),
-                    1, List.of(0, 1)
-                )),
-                admin,
-                false
+                    new NewTopic("topic4", Map.of(
+                        0, List.of(1, 0),
+                        1, List.of(0, 1)
+                    )),
+                    admin,
+                    false
             );
         }
     }
@@ -167,73 +167,73 @@ public class CreateTopicsRequestWithPolicyTest {
 
             // Policy violations
             validateErrorCreateTopicsRequests(
-                new NewTopic("policy-topic1", 4, (short) 1),
-                admin,
-                false,
-                PolicyViolationException.class,
-                "Topics should have at least 5 partitions, received 4"
+                    new NewTopic("policy-topic1", 4, (short) 1),
+                    admin,
+                    false,
+                    PolicyViolationException.class,
+                    "Topics should have at least 5 partitions, received 4"
             );
 
             validateErrorCreateTopicsRequests(
-                new NewTopic("policy-topic2", 4, (short) 3),
-                admin,
-                true,
-                PolicyViolationException.class,
-                "Topics should have at least 5 partitions, received 4"
+                    new NewTopic("policy-topic2", 4, (short) 3),
+                    admin,
+                    true,
+                    PolicyViolationException.class,
+                    "Topics should have at least 5 partitions, received 4"
             );
 
             validateErrorCreateTopicsRequests(
-                new NewTopic("policy-topic3", 11, (short) 2)
-                    .configs(Map.of(TopicConfig.RETENTION_MS_CONFIG, "5001")),
-                admin,
-                true,
-                PolicyViolationException.class,
-                "RetentionMs should be less than 5000ms if partitions > 10"
+                    new NewTopic("policy-topic3", 11, (short) 2)
+                        .configs(Map.of(TopicConfig.RETENTION_MS_CONFIG, "5001")),
+                    admin,
+                    true,
+                    PolicyViolationException.class,
+                    "RetentionMs should be less than 5000ms if partitions > 10"
             );
 
             validateErrorCreateTopicsRequests(
-                new NewTopic("policy-topic4", Map.of(
-                    0, List.of(1),
-                    1, List.of(0)
-                )).configs(Map.of(TopicConfig.RETENTION_MS_CONFIG, "5001")),
-                admin,
-                true,
-                PolicyViolationException.class,
-                "Topic partitions should have at least 2 replicas, received 1 for partition 0"
+                    new NewTopic("policy-topic4", Map.of(
+                        0, List.of(1),
+                        1, List.of(0)
+                    )).configs(Map.of(TopicConfig.RETENTION_MS_CONFIG, "5001")),
+                    admin,
+                    true,
+                    PolicyViolationException.class,
+                    "Topic partitions should have at least 2 replicas, received 1 for partition 0"
             );
 
             // Check that basic errors still work
             validateErrorCreateTopicsRequests(
-                new NewTopic(existingTopic, 5, (short) 1),
-                admin,
-                false,
-                TopicExistsException.class,
-                "Topic 'existing-topic' already exists."
+                    new NewTopic(existingTopic, 5, (short) 1),
+                    admin,
+                    false,
+                    TopicExistsException.class,
+                    "Topic 'existing-topic' already exists."
             );
 
             validateErrorCreateTopicsRequests(
-                new NewTopic("error-replication", 10, (short) 4),
-                admin,
-                true,
-                InvalidReplicationFactorException.class,
-                "Unable to replicate the partition 4 time(s): The target replication factor of 4 cannot be "
+                    new NewTopic("error-replication", 10, (short) 4),
+                    admin,
+                    true,
+                    InvalidReplicationFactorException.class,
+                    "Unable to replicate the partition 4 time(s): The target replication factor of 4 cannot be "
                     + "reached because only 3 broker(s) are registered or some brokers have all their log directories cordoned."
             );
 
             validateErrorCreateTopicsRequests(
-                new NewTopic("error-replication2", 10, (short) -2),
-                admin,
-                true,
-                InvalidReplicationFactorException.class,
-                "Replication factor must be larger than 0, or -1 to use the default value."
+                    new NewTopic("error-replication2", 10, (short) -2),
+                    admin,
+                    true,
+                    InvalidReplicationFactorException.class,
+                    "Replication factor must be larger than 0, or -1 to use the default value."
             );
 
             validateErrorCreateTopicsRequests(
-                new NewTopic("error-partitions", -2, (short) 1),
-                admin,
-                true,
-                InvalidPartitionsException.class,
-                "Number of partitions was set to an invalid non-positive value."
+                    new NewTopic("error-partitions", -2, (short) 1),
+                    admin,
+                    true,
+                    InvalidPartitionsException.class,
+                    "Number of partitions was set to an invalid non-positive value."
             );
         }
     }

@@ -31,10 +31,10 @@ public final class InternalFixedKeyRecordFactory {
      */
     public static <KIn, VIn> FixedKeyRecord<KIn, VIn> create(final Record<KIn, VIn> record) {
         return new FixedKeyRecord<>(
-            record.key(),
-            record.value(),
-            record.timestamp(),
-            record.headers()
+                record.key(),
+                record.value(),
+                record.timestamp(),
+                record.headers()
         );
     }
 }

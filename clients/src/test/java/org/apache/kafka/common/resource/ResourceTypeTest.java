@@ -36,21 +36,21 @@ public class ResourceTypeTest {
     }
 
     private static final AclResourceTypeTestInfo[] INFOS = {
-        new AclResourceTypeTestInfo(ResourceType.UNKNOWN, 0, "unknown", true),
-        new AclResourceTypeTestInfo(ResourceType.ANY, 1, "any", false),
-        new AclResourceTypeTestInfo(ResourceType.TOPIC, 2, "topic", false),
-        new AclResourceTypeTestInfo(ResourceType.GROUP, 3, "group", false),
-        new AclResourceTypeTestInfo(ResourceType.CLUSTER, 4, "cluster", false),
-        new AclResourceTypeTestInfo(ResourceType.TRANSACTIONAL_ID, 5, "transactional_id", false),
-        new AclResourceTypeTestInfo(ResourceType.DELEGATION_TOKEN, 6, "delegation_token", false),
-        new AclResourceTypeTestInfo(ResourceType.USER, 7, "user", false)
+            new AclResourceTypeTestInfo(ResourceType.UNKNOWN, 0, "unknown", true),
+            new AclResourceTypeTestInfo(ResourceType.ANY, 1, "any", false),
+            new AclResourceTypeTestInfo(ResourceType.TOPIC, 2, "topic", false),
+            new AclResourceTypeTestInfo(ResourceType.GROUP, 3, "group", false),
+            new AclResourceTypeTestInfo(ResourceType.CLUSTER, 4, "cluster", false),
+            new AclResourceTypeTestInfo(ResourceType.TRANSACTIONAL_ID, 5, "transactional_id", false),
+            new AclResourceTypeTestInfo(ResourceType.DELEGATION_TOKEN, 6, "delegation_token", false),
+            new AclResourceTypeTestInfo(ResourceType.USER, 7, "user", false)
     };
 
     @Test
     public void testIsUnknown() {
         for (AclResourceTypeTestInfo info : INFOS) {
             assertEquals(info.unknown, info.resourceType.isUnknown(),
-                info.resourceType + " was supposed to have unknown == " + info.unknown);
+                    info.resourceType + " was supposed to have unknown == " + info.unknown);
         }
     }
 
@@ -59,9 +59,9 @@ public class ResourceTypeTest {
         assertEquals(ResourceType.values().length, INFOS.length);
         for (AclResourceTypeTestInfo info : INFOS) {
             assertEquals(info.code, info.resourceType.code(),
-                info.resourceType + " was supposed to have code == " + info.code);
+                    info.resourceType + " was supposed to have code == " + info.code);
             assertEquals(info.resourceType, ResourceType.fromCode((byte) info.code), "AclResourceType.fromCode(" + info.code + ") was supposed to be " +
-                info.resourceType);
+                    info.resourceType);
         }
         assertEquals(ResourceType.UNKNOWN, ResourceType.fromCode((byte) 120));
     }
@@ -70,7 +70,7 @@ public class ResourceTypeTest {
     public void testName() {
         for (AclResourceTypeTestInfo info : INFOS) {
             assertEquals(info.resourceType, ResourceType.fromString(info.name), "ResourceType.fromString(" + info.name + ") was supposed to be " +
-                info.resourceType);
+                    info.resourceType);
         }
         assertEquals(ResourceType.UNKNOWN, ResourceType.fromString("something"));
     }

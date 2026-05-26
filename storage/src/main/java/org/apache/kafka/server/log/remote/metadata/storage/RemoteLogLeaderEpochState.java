@@ -61,7 +61,7 @@ class RemoteLogLeaderEpochState {
      *                            for an id to be used for sorting.
      */
     Iterator<RemoteLogSegmentMetadata> listAllRemoteLogSegments(Map<RemoteLogSegmentId, RemoteLogSegmentMetadata> idToSegmentMetadata)
-            throws RemoteResourceNotFoundException {
+        throws RemoteResourceNotFoundException {
         // Return all the segments including unreferenced metadata.
         int size = offsetToId.size() + unreferencedSegmentIds.size();
         if (size == 0) {

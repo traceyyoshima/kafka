@@ -82,13 +82,13 @@ public class MockStateRestoreListener implements StateRestoreListener {
     @Override
     public String toString() {
         return "MockStateRestoreListener{" +
-               "storeNameCalledStates=" + storeNameCalledStates +
-               ", restoreStartOffset=" + restoreStartOffset +
-               ", restoreEndOffset=" + restoreEndOffset +
-               ", restoredBatchOffset=" + restoredBatchOffset +
-               ", numBatchRestored=" + numBatchRestored +
-               ", totalNumRestored=" + totalNumRestored +
-               ", restoreTopicPartition=" + restoreTopicPartition +
-               '}';
+                "storeNameCalledStates=" + storeNameCalledStates +
+                ", restoreStartOffset=" + restoreStartOffset +
+                ", restoreEndOffset=" + restoreEndOffset +
+                ", restoredBatchOffset=" + restoredBatchOffset +
+                ", numBatchRestored=" + numBatchRestored +
+                ", totalNumRestored=" + totalNumRestored +
+                ", restoreTopicPartition=" + restoreTopicPartition +
+                '}';
     }
 }

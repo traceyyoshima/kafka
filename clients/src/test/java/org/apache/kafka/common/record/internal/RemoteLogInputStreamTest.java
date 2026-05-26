@@ -125,14 +125,14 @@ public class RemoteLogInputStreamTest {
             return;
 
         SimpleRecord[] firstBatchRecords = new SimpleRecord[]{
-            new SimpleRecord(3241324L, "a".getBytes(), "1".getBytes()),
-            new SimpleRecord(234280L, "b".getBytes(), "2".getBytes())
+                new SimpleRecord(3241324L, "a".getBytes(), "1".getBytes()),
+                new SimpleRecord(234280L, "b".getBytes(), "2".getBytes())
         };
 
         SimpleRecord[] secondBatchRecords = new SimpleRecord[]{
-            new SimpleRecord(238423489L, "c".getBytes(), "3".getBytes()),
-            new SimpleRecord(897839L, null, "4".getBytes()),
-            new SimpleRecord(8234020L, "e".getBytes(), null)
+                new SimpleRecord(238423489L, "c".getBytes(), "3".getBytes()),
+                new SimpleRecord(897839L, null, "4".getBytes()),
+                new SimpleRecord(8234020L, "e".getBytes(), null)
         };
 
         File file = tempFile();
@@ -173,15 +173,15 @@ public class RemoteLogInputStreamTest {
         Header[] headers = new Header[]{new RecordHeader("header-key",
                 "header-value".getBytes(StandardCharsets.UTF_8))};
         SimpleRecord[] firstBatchRecords = new SimpleRecord[]{
-            new SimpleRecord(3241324L, "a".getBytes(), "1".getBytes()),
-            // Add a record with headers.
-            new SimpleRecord(234280L, "b".getBytes(), "2".getBytes(), headers)
+                new SimpleRecord(3241324L, "a".getBytes(), "1".getBytes()),
+                // Add a record with headers.
+                new SimpleRecord(234280L, "b".getBytes(), "2".getBytes(), headers)
         };
 
         SimpleRecord[] secondBatchRecords = new SimpleRecord[]{
-            new SimpleRecord(238423489L, "c".getBytes(), "3".getBytes()),
-            new SimpleRecord(897839L, null, "4".getBytes()),
-            new SimpleRecord(8234020L, "e".getBytes(), null)
+                new SimpleRecord(238423489L, "c".getBytes(), "3".getBytes()),
+                new SimpleRecord(897839L, null, "4".getBytes()),
+                new SimpleRecord(8234020L, "e".getBytes(), null)
         };
 
         File file = tempFile();

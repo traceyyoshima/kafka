@@ -29,7 +29,7 @@ public class AccessControlEntryFilter {
      * Matches any access control entry.
      */
     public static final AccessControlEntryFilter ANY =
-        new AccessControlEntryFilter(null, null, AclOperation.ANY, AclPermissionType.ANY);
+            new AccessControlEntryFilter(null, null, AclOperation.ANY, AclPermissionType.ANY);
 
     /**
      * Create an instance of an access control entry filter with the provided parameters.

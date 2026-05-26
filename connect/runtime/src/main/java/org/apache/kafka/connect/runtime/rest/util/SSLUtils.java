@@ -36,7 +36,6 @@ public class SSLUtils {
 
     private static final Pattern COMMA_WITH_WHITESPACE = Pattern.compile("\\s*,\\s*");
 
-
     /**
      * Configures SSL/TLS for HTTPS Jetty Server using configs with the given prefix
      */
@@ -124,7 +123,7 @@ public class SSLUtils {
     protected static void configureSslContextFactoryAlgorithms(SslContextFactory ssl, Map<String, Object> sslConfigValues) {
         List<String> sslEnabledProtocols = (List<String>) getOrDefault(sslConfigValues, SslConfigs.SSL_ENABLED_PROTOCOLS_CONFIG, List.of(COMMA_WITH_WHITESPACE.split(SslConfigs.DEFAULT_SSL_ENABLED_PROTOCOLS)));
 
-        if (!sslEnabledProtocols.isEmpty()) 
+        if (!sslEnabledProtocols.isEmpty())
             ssl.setIncludeProtocols(sslEnabledProtocols.toArray(new String[0]));
 
         String sslProvider = (String) sslConfigValues.get(SslConfigs.SSL_PROVIDER_CONFIG);

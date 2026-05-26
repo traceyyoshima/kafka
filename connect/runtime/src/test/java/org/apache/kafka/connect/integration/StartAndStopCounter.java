@@ -139,7 +139,6 @@ public class StartAndStopCounter {
         return expectedRestarts(expectedStarts, 0, dependents);
     }
 
-
     /**
      * Obtain a {@link StartAndStopLatch} that can be used to wait until the expected number of
      * stops has been completed.

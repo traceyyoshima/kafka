@@ -106,9 +106,9 @@ public class BootstrapDirectory {
             }
 
             Files.move(
-                tempPath,
-                Paths.get(directoryPath, BINARY_BOOTSTRAP_FILENAME),
-                ATOMIC_MOVE, REPLACE_EXISTING
+                    tempPath,
+                    Paths.get(directoryPath, BINARY_BOOTSTRAP_FILENAME),
+                    ATOMIC_MOVE, REPLACE_EXISTING
             );
         } finally {
             Files.deleteIfExists(tempPath);

@@ -84,7 +84,7 @@ public class ReplicationQuotaManager implements ReplicaQuota {
             return false;
         } catch (QuotaViolationException qve) {
             LOGGER.trace("{}: Quota violated for sensor ({}), metric: ({}), metric-value: ({}), bound: ({})",
-                replicationType, sensor().name(), qve.metric().metricName(), qve.value(), qve.bound());
+                    replicationType, sensor().name(), qve.metric().metricName(), qve.value(), qve.bound());
             return true;
         }
     }
@@ -144,9 +144,9 @@ public class ReplicationQuotaManager implements ReplicaQuota {
 
     private Sensor sensor() {
         return sensorAccess.getOrCreate(
-            replicationType.toString(),
-            ReplicationQuotaManagerConfig.INACTIVE_SENSOR_EXPIRATION_TIME_SECONDS,
-            sensor -> sensor.add(rateMetricName, new SimpleRate(), getQuotaMetricConfig(quota))
+                replicationType.toString(),
+                ReplicationQuotaManagerConfig.INACTIVE_SENSOR_EXPIRATION_TIME_SECONDS,
+                sensor -> sensor.add(rateMetricName, new SimpleRate(), getQuotaMetricConfig(quota))
         );
     }
 }

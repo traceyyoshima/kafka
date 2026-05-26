@@ -268,10 +268,10 @@ public class CoordinatorRequestManagerTest {
 
     private CoordinatorRequestManager setupCoordinatorManager(String groupId) {
         return new CoordinatorRequestManager(
-            new LogContext(),
-            RETRY_BACKOFF_MS,
-            RETRY_BACKOFF_MS,
-            groupId
+                new LogContext(),
+                RETRY_BACKOFF_MS,
+                RETRY_BACKOFF_MS,
+                groupId
         );
     }
 
@@ -284,17 +284,17 @@ public class CoordinatorRequestManagerTest {
         FindCoordinatorRequest findCoordinatorRequest = (FindCoordinatorRequest) abstractRequest;
 
         FindCoordinatorResponse findCoordinatorResponse =
-            FindCoordinatorResponse.prepareResponse(error, GROUP_ID, node);
+                FindCoordinatorResponse.prepareResponse(error, GROUP_ID, node);
         return new ClientResponse(
-            new RequestHeader(ApiKeys.FIND_COORDINATOR, findCoordinatorRequest.version(), "", 1),
-            request.handler(),
-            node.idString(),
-            time.milliseconds(),
-            time.milliseconds(),
-            false,
-            null,
-            null,
-            findCoordinatorResponse
+                new RequestHeader(ApiKeys.FIND_COORDINATOR, findCoordinatorRequest.version(), "", 1),
+                request.handler(),
+                node.idString(),
+                time.milliseconds(),
+                time.milliseconds(),
+                false,
+                null,
+                null,
+                findCoordinatorResponse
         );
     }
 }

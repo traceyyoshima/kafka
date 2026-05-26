@@ -105,7 +105,7 @@ public class ShareConsumerPerformance {
             double elapsedSec = (endMs - startMs) / 1_000.0;
             long fetchTimeInMs = endMs - startMs;
             printStatsForShareGroup(totalBytesRead.get(), totalRecordsRead.get(), elapsedSec, fetchTimeInMs, startMs,
-                endMs, options.dateFormat());
+                    endMs, options.dateFormat());
 
             shareConsumersMetrics.forEach(ToolsUtils::printMetrics);
 
@@ -137,7 +137,6 @@ public class ShareConsumerPerformance {
         AtomicLong bytesRead = new AtomicLong(0);
         List<ShareConsumerConsumption> shareConsumersConsumptionDetails = new ArrayList<>();
 
-
         ExecutorService executorService = Executors.newFixedThreadPool(shareConsumers.size());
         List<Future<?>> futures = new ArrayList<>();
         for (int i = 0; i < shareConsumers.size(); i++) {
@@ -146,7 +145,7 @@ public class ShareConsumerPerformance {
             futures.add(executorService.submit(() -> {
                 try {
                     consumeRecordsForSingleShareConsumer(shareConsumers.get(index), recordsRead, bytesRead, options,
-                        shareConsumerConsumption, index + 1);
+                            shareConsumerConsumption, index + 1);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -198,11 +197,11 @@ public class ShareConsumerPerformance {
     }
 
     private static void consumeRecordsForSingleShareConsumer(ShareConsumer<byte[], byte[]> shareConsumer,
-                                                              AtomicLong totalRecordsRead,
-                                                              AtomicLong totalBytesRead,
-                                                              ShareConsumerPerfOptions options,
-                                                              ShareConsumerConsumption shareConsumerConsumption,
-                                                              int index) throws InterruptedException {
+                                                             AtomicLong totalRecordsRead,
+                                                             AtomicLong totalBytesRead,
+                                                             ShareConsumerPerfOptions options,
+                                                             ShareConsumerConsumption shareConsumerConsumption,
+                                                             int index) throws InterruptedException {
         SimpleDateFormat dateFormat = options.dateFormat();
         long currentTimeMs = System.currentTimeMillis();
         long lastConsumedTimeMs = currentTimeMs;
@@ -258,7 +257,7 @@ public class ShareConsumerPerformance {
         long fetchTimeMs = endMs - startMs;
 
         System.out.printf("%s, %s, %.4f, %.4f, %.4f, %d, %d for share consumer %d", dateFormat.format(startMs), dateFormat.format(endMs),
-            totalMbRead, intervalMbPerSec, intervalRecordsPerSec, recordsRead, fetchTimeMs, index);
+                totalMbRead, intervalMbPerSec, intervalRecordsPerSec, recordsRead, fetchTimeMs, index);
         System.out.println();
     }
 
@@ -296,13 +295,13 @@ public class ShareConsumerPerformance {
         SimpleDateFormat dateFormat) {
         double totalMbRead = (bytesRead * 1.0) / (1024 * 1024);
         System.out.printf("%s, %s, %.4f, %.4f, %.4f, %d, %d%n",
-            dateFormat.format(startMs),
-            dateFormat.format(endMs),
-            totalMbRead,
-            totalMbRead / elapsedSec,
-            recordsRead / elapsedSec,
-            recordsRead,
-            fetchTimeInMs
+                dateFormat.format(startMs),
+                dateFormat.format(endMs),
+                totalMbRead,
+                totalMbRead / elapsedSec,
+                recordsRead / elapsedSec,
+                recordsRead,
+                fetchTimeInMs
         );
     }
 
@@ -349,7 +348,7 @@ public class ShareConsumerPerformance {
                     .ofType(Integer.class)
                     .defaultsTo(1024 * 1024);
             commandPropertiesOpt = parser.accepts("command-property", "Kafka share consumer related configuration properties like client.id. " +
-                            "These configs take precedence over those passed via --command-config or --consumer.config.")
+                    "These configs take precedence over those passed via --command-config or --consumer.config.")
                     .withRequiredArg()
                     .describedAs("prop1=val1")
                     .ofType(String.class);
@@ -376,7 +375,7 @@ public class ShareConsumerPerformance {
                     .ofType(Long.class)
                     .defaultsTo(10_000L);
             numMessagesOpt = parser.accepts("messages", "(DEPRECATED) The number of records to consume. " +
-                            "This option will be removed in a future version. Use --num-records instead.")
+                    "This option will be removed in a future version. Use --num-records instead.")
                     .withRequiredArg()
                     .describedAs("count")
                     .ofType(Long.class);
@@ -391,7 +390,7 @@ public class ShareConsumerPerformance {
                     .ofType(Long.class)
                     .defaultsTo(5_000L);
             dateFormatOpt = parser.accepts("date-format", "The date format to use for formatting the time field. " +
-                            "See java.text.SimpleDateFormat for options.")
+                    "See java.text.SimpleDateFormat for options.")
                     .withRequiredArg()
                     .describedAs("date format")
                     .ofType(String.class)

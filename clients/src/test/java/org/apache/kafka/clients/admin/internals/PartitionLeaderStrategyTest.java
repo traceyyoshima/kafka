@@ -55,10 +55,10 @@ public class PartitionLeaderStrategyTest {
     @Test
     public void testBuildLookupRequest() {
         Set<TopicPartition> topicPartitions = Set.of(
-            new TopicPartition("foo", 0),
-            new TopicPartition("bar", 0),
-            new TopicPartition("foo", 1),
-            new TopicPartition("baz", 0)
+                new TopicPartition("foo", 0),
+                new TopicPartition("bar", 0),
+                new TopicPartition("foo", 1),
+                new TopicPartition("baz", 0)
         );
 
         PartitionLeaderStrategy strategy = newStrategy();
@@ -68,7 +68,7 @@ public class PartitionLeaderStrategyTest {
         assertFalse(allRequest.allowAutoTopicCreation());
 
         MetadataRequest partialRequest = strategy.buildRequest(
-            topicPartitions.stream().filter(tp -> tp.topic().equals("foo")).collect(Collectors.toSet())
+                topicPartitions.stream().filter(tp -> tp.topic().equals("foo")).collect(Collectors.toSet())
         ).build();
         assertEquals(Set.of("foo"), new HashSet<>(partialRequest.topics()));
         assertFalse(partialRequest.allowAutoTopicCreation());
@@ -131,13 +131,13 @@ public class PartitionLeaderStrategyTest {
 
         Map<TopicPartition, MetadataResponsePartition> responsePartitions = new HashMap<>(2);
         responsePartitions.put(topicPartition1, partitionResponseDataWithLeader(
-            topicPartition1, 5, Arrays.asList(5, 6, 7)));
+                topicPartition1, 5, Arrays.asList(5, 6, 7)));
         responsePartitions.put(topicPartition2, partitionResponseDataWithLeader(
-            topicPartition2, 1, Arrays.asList(2, 1, 3)));
+                topicPartition2, 1, Arrays.asList(2, 1, 3)));
 
         LookupResult<TopicPartition> result = handleLookupResponse(
-            Set.of(topicPartition1, topicPartition2),
-            responseWithPartitionData(responsePartitions)
+                Set.of(topicPartition1, topicPartition2),
+                responseWithPartitionData(responsePartitions)
         );
 
         assertEquals(emptyMap(), result.failedKeys);
@@ -153,13 +153,13 @@ public class PartitionLeaderStrategyTest {
 
         Map<TopicPartition, MetadataResponsePartition> responsePartitions = new HashMap<>(2);
         responsePartitions.put(requestedTopicPartition, partitionResponseDataWithLeader(
-            requestedTopicPartition, 5, Arrays.asList(5, 6, 7)));
+                requestedTopicPartition, 5, Arrays.asList(5, 6, 7)));
         responsePartitions.put(unrequestedTopicPartition, partitionResponseDataWithError(
-            unrequestedTopicPartition, Errors.UNKNOWN_SERVER_ERROR));
+                unrequestedTopicPartition, Errors.UNKNOWN_SERVER_ERROR));
 
         LookupResult<TopicPartition> result = handleLookupResponse(
-            Set.of(requestedTopicPartition),
-            responseWithPartitionData(responsePartitions)
+                Set.of(requestedTopicPartition),
+                responseWithPartitionData(responsePartitions)
         );
 
         assertEquals(emptyMap(), result.failedKeys);
@@ -172,13 +172,13 @@ public class PartitionLeaderStrategyTest {
         TopicPartition topicPartition = new TopicPartition("foo", 0);
 
         Map<TopicPartition, MetadataResponsePartition> responsePartitions = singletonMap(
-            topicPartition,
-            partitionResponseDataWithLeader(topicPartition, -1, Arrays.asList(5, 6, 7))
+                topicPartition,
+                partitionResponseDataWithLeader(topicPartition, -1, Arrays.asList(5, 6, 7))
         );
 
         LookupResult<TopicPartition> result = handleLookupResponse(
-            Set.of(topicPartition),
-            responseWithPartitionData(responsePartitions)
+                Set.of(topicPartition),
+                responseWithPartitionData(responsePartitions)
         );
 
         assertEquals(emptyMap(), result.failedKeys);
@@ -190,8 +190,8 @@ public class PartitionLeaderStrategyTest {
         Errors error
     ) {
         assertRetriableError(
-            topicPartition,
-            responseWithTopicError(topicPartition.topic(), error)
+                topicPartition,
+                responseWithTopicError(topicPartition.topic(), error)
         );
     }
 
@@ -200,8 +200,8 @@ public class PartitionLeaderStrategyTest {
         Errors error
     ) {
         MetadataResponse response = responseWithPartitionData(singletonMap(
-            topicPartition,
-            partitionResponseDataWithError(topicPartition, error)
+                topicPartition,
+                partitionResponseDataWithError(topicPartition, error)
         ));
         assertRetriableError(topicPartition, response);
     }
@@ -211,8 +211,8 @@ public class PartitionLeaderStrategyTest {
         Errors error
     ) {
         return assertFatalError(
-            topicPartition,
-            responseWithTopicError(topicPartition.topic(), error)
+                topicPartition,
+                responseWithTopicError(topicPartition.topic(), error)
         );
     }
 
@@ -221,8 +221,8 @@ public class PartitionLeaderStrategyTest {
         Errors error
     ) {
         MetadataResponse response = responseWithPartitionData(singletonMap(
-            topicPartition,
-            partitionResponseDataWithError(topicPartition, error)
+                topicPartition,
+                partitionResponseDataWithError(topicPartition, error)
         ));
         return assertFatalError(topicPartition, response);
     }

@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class TimestampedKeyValueStoreBuilder<K, V>
-    extends AbstractStoreBuilder<K, ValueAndTimestamp<V>, TimestampedKeyValueStore<K, V>> {
+        extends AbstractStoreBuilder<K, ValueAndTimestamp<V>, TimestampedKeyValueStore<K, V>> {
 
     private final KeyValueBytesStoreSupplier storeSupplier;
 
@@ -45,10 +45,10 @@ public class TimestampedKeyValueStoreBuilder<K, V>
                                            final Serde<V> valueSerde,
                                            final Time time) {
         super(
-            storeSupplier.name(),
-            keySerde,
-            valueSerde == null ? null : new ValueAndTimestampSerde<>(valueSerde),
-            time);
+                storeSupplier.name(),
+                keySerde,
+                valueSerde == null ? null : new ValueAndTimestampSerde<>(valueSerde),
+                time);
         Objects.requireNonNull(storeSupplier, "storeSupplier can't be null");
         Objects.requireNonNull(storeSupplier.metricsScope(), "storeSupplier's metricsScope can't be null");
         this.storeSupplier = storeSupplier;
@@ -65,11 +65,11 @@ public class TimestampedKeyValueStoreBuilder<K, V>
             }
         }
         return new MeteredTimestampedKeyValueStore<>(
-            maybeWrapCaching(maybeWrapLogging(store)),
-            storeSupplier.metricsScope(),
-            time,
-            keySerde,
-            valueSerde);
+                maybeWrapCaching(maybeWrapLogging(store)),
+                storeSupplier.metricsScope(),
+                time,
+                keySerde,
+                valueSerde);
     }
 
     private KeyValueStore<Bytes, byte[]> maybeWrapCaching(final KeyValueStore<Bytes, byte[]> inner) {
@@ -87,8 +87,8 @@ public class TimestampedKeyValueStoreBuilder<K, V>
     }
 
     private static final class InMemoryTimestampedKeyValueStoreMarker
-        extends WrappedStateStore<KeyValueStore<Bytes, byte[]>, Bytes, byte[]>
-        implements KeyValueStore<Bytes, byte[]>, TimestampedBytesStore {
+            extends WrappedStateStore<KeyValueStore<Bytes, byte[]>, Bytes, byte[]>
+            implements KeyValueStore<Bytes, byte[]>, TimestampedBytesStore {
 
         private InMemoryTimestampedKeyValueStoreMarker(final KeyValueStore<Bytes, byte[]> wrapped) {
             super(wrapped);

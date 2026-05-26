@@ -53,17 +53,20 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class OAuthBearerSaslServerTest {
     private static final String USER = "user";
     private static final String JAAS_CONFIG_TEXT = "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule Required"
-                + " unsecuredLoginStringClaim_sub=\"" + USER + "\";";
+            + " unsecuredLoginStringClaim_sub=\"" + USER + "\";";
     private static final Map<String, ?> CONFIGS = Map.of(SaslConfigs.SASL_JAAS_CONFIG, new Password(JAAS_CONFIG_TEXT));
 
     private static final AuthenticateCallbackHandler LOGIN_CALLBACK_HANDLER;
+
     static {
         LOGIN_CALLBACK_HANDLER = new OAuthBearerUnsecuredLoginCallbackHandler();
         LOGIN_CALLBACK_HANDLER.configure(CONFIGS, OAuthBearerLoginModule.OAUTHBEARER_MECHANISM,
                 JaasContext.loadClientContext(CONFIGS).configurationEntries());
     }
+
     private static final AuthenticateCallbackHandler VALIDATOR_CALLBACK_HANDLER;
     private static final AuthenticateCallbackHandler EXTENSIONS_VALIDATOR_CALLBACK_HANDLER;
+
     static {
         VALIDATOR_CALLBACK_HANDLER = new OAuthBearerUnsecuredValidatorCallbackHandler();
         VALIDATOR_CALLBACK_HANDLER.configure(CONFIGS, OAuthBearerLoginModule.OAUTHBEARER_MECHANISM,
@@ -86,6 +89,7 @@ public class OAuthBearerSaslServerTest {
             }
         };
     }
+
     private OAuthBearerSaslServer saslServer;
 
     @BeforeEach
@@ -174,7 +178,7 @@ public class OAuthBearerSaslServerTest {
         customExtensions.put("secondKey", "value");
 
         assertThrows(SaslAuthenticationException.class,
-            () -> saslServer.evaluateResponse(clientInitialResponse(null, false, customExtensions)));
+                () -> saslServer.evaluateResponse(clientInitialResponse(null, false, customExtensions)));
     }
 
     @Test
@@ -187,7 +191,7 @@ public class OAuthBearerSaslServerTest {
     @Test
     public void authorizationIdNotEqualsAuthenticationId() {
         assertThrows(SaslAuthenticationException.class,
-            () -> saslServer.evaluateResponse(clientInitialResponse(USER + "x")));
+                () -> saslServer.evaluateResponse(clientInitialResponse(USER + "x")));
     }
 
     @Test
@@ -198,12 +202,12 @@ public class OAuthBearerSaslServerTest {
     }
 
     private byte[] clientInitialResponse(String authorizationId)
-            throws OAuthBearerConfigException, IOException, UnsupportedCallbackException {
+        throws OAuthBearerConfigException, IOException, UnsupportedCallbackException {
         return clientInitialResponse(authorizationId, false, Collections.emptyMap());
     }
 
     private byte[] clientInitialResponse(String authorizationId, boolean illegalToken, Map<String, String> customExtensions)
-            throws OAuthBearerConfigException, IOException, UnsupportedCallbackException {
+        throws OAuthBearerConfigException, IOException, UnsupportedCallbackException {
         OAuthBearerTokenCallback callback = new OAuthBearerTokenCallback();
         LOGIN_CALLBACK_HANDLER.handle(new Callback[] {callback});
         OAuthBearerToken token = callback.token();

@@ -206,7 +206,7 @@ public class ExactlyOnceSourceIntegrationTest {
         validation = connect.validateConnectorConfig(TestableSourceConnector.class.getSimpleName(), props);
         assertEquals(1, validation.errorCount(), "Preflight validation should have exactly one error");
         propertyValidation = findConfigInfo(EXACTLY_ONCE_SUPPORT_CONFIG, validation);
-        assertFalse(propertyValidation.configValue().errors().isEmpty(), 
+        assertFalse(propertyValidation.configValue().errors().isEmpty(),
                 "Preflight validation for exactly-once support property should have at least one error message");
 
         // Connector will throw an exception from SourceConnector::exactlyOnceSupport
@@ -246,7 +246,7 @@ public class ExactlyOnceSourceIntegrationTest {
         validation = connect.validateConnectorConfig(TestableSourceConnector.class.getSimpleName(), props);
         assertEquals(1, validation.errorCount(), "Preflight validation should have exactly one error");
         propertyValidation = findConfigInfo(TRANSACTION_BOUNDARY_CONFIG, validation);
-        assertFalse(propertyValidation.configValue().errors().isEmpty(), 
+        assertFalse(propertyValidation.configValue().errors().isEmpty(),
                 "Preflight validation for transaction boundary property should have at least one error message");
 
         // Connector will return SUPPORTED from SourceConnector::canDefineTransactionBoundaries
@@ -425,10 +425,10 @@ public class ExactlyOnceSourceIntegrationTest {
         consumerProps.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_committed");
         // consume all records from the source topic or fail, to ensure that they were correctly produced
         ConsumerRecords<byte[], byte[]> sourceRecords = connect.kafka().consumeAll(
-            CONSUME_RECORDS_TIMEOUT_MS,
-            Map.of(ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_committed"),
-            null,
-            topic
+                CONSUME_RECORDS_TIMEOUT_MS,
+                Map.of(ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_committed"),
+                null,
+                topic
         );
         assertTrue(sourceRecords.count() >= MINIMUM_MESSAGES,
                 "Not enough records produced by source connector. Expected at least: " + MINIMUM_MESSAGES + " + but got " + sourceRecords.count());
@@ -449,7 +449,7 @@ public class ExactlyOnceSourceIntegrationTest {
                         TimeUnit.MINUTES.toMillis(1),
                         consumerProps,
                         offsetsTopic
-                );
+        );
 
         List<Long> actualOffsetSeqnos = parseAndAssertOffsetsForSingleTask(offsetRecords);
 
@@ -649,8 +649,8 @@ public class ExactlyOnceSourceIntegrationTest {
         superUserClientConfig.put("security.protocol", "SASL_PLAINTEXT");
         superUserClientConfig.put("sasl.jaas.config",
                 "org.apache.kafka.common.security.plain.PlainLoginModule required "
-                        + "username=\"super\" "
-                        + "password=\"super_pwd\";");
+                + "username=\"super\" "
+                + "password=\"super_pwd\";");
         // Give the worker super-user privileges
         workerProps.putAll(superUserClientConfig);
 
@@ -684,8 +684,8 @@ public class ExactlyOnceSourceIntegrationTest {
         props.put(CONNECTOR_CLIENT_ADMIN_OVERRIDES_PREFIX + "security.protocol", "SASL_PLAINTEXT");
         props.put(CONNECTOR_CLIENT_ADMIN_OVERRIDES_PREFIX + "sasl.jaas.config",
                 "org.apache.kafka.common.security.plain.PlainLoginModule required "
-                        + "username=\"connector\" "
-                        + "password=\"connector_pwd\";");
+                + "username=\"connector\" "
+                + "password=\"connector_pwd\";");
         // Grant the connector's admin permissions to access the topics for its records and offsets
         // Intentionally leave out permissions required for fencing
         try (Admin admin = connect.kafka().createAdminClient()) {
@@ -721,7 +721,7 @@ public class ExactlyOnceSourceIntegrationTest {
                 },
                 ACL_PROPAGATION_TIMEOUT_MS,
                 "Connector was not able to start in time, "
-                        + "or ACL updates were not propagated across the Kafka cluster soon enough"
+                + "or ACL updates were not propagated across the Kafka cluster soon enough"
         );
 
         // Also verify that the connector's tasks have been able to start successfully
@@ -861,7 +861,7 @@ public class ExactlyOnceSourceIntegrationTest {
             // consume at least the expected number of records from the source topic or fail, to ensure that they were correctly produced
             int recordNum = connectorTargetedCluster
                     .consume(
-                        MINIMUM_MESSAGES,
+                            MINIMUM_MESSAGES,
                             TimeUnit.MINUTES.toMillis(1),
                             Map.of(ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_committed"),
                             "test-topic")
@@ -876,19 +876,19 @@ public class ExactlyOnceSourceIntegrationTest {
                             Map.of(ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_committed"),
                             null,
                             offsetsTopic
-                    );
+            );
             List<Long> seqnos = parseAndAssertOffsetsForSingleTask(offsetRecords);
             seqnos.forEach(seqno ->
-                assertEquals(0, seqno % MINIMUM_MESSAGES,
-                        "Offset commits should occur on connector-defined poll boundaries, which happen every " + MINIMUM_MESSAGES + " records")
+                    assertEquals(0, seqno % MINIMUM_MESSAGES,
+                            "Offset commits should occur on connector-defined poll boundaries, which happen every " + MINIMUM_MESSAGES + " records")
             );
 
             // also consume from the cluster's global offsets topic
             offsetRecords = connect.kafka().consumeAll(TimeUnit.MINUTES.toMillis(1), globalOffsetsTopic);
             seqnos = parseAndAssertOffsetsForSingleTask(offsetRecords);
             seqnos.forEach(seqno ->
-                assertEquals(0, seqno % MINIMUM_MESSAGES,
-                        "Offset commits should occur on connector-defined poll boundaries, which happen every " + MINIMUM_MESSAGES + " records")
+                    assertEquals(0, seqno % MINIMUM_MESSAGES,
+                            "Offset commits should occur on connector-defined poll boundaries, which happen every " + MINIMUM_MESSAGES + " records")
             );
 
             // Shut down the whole cluster
@@ -986,7 +986,7 @@ public class ExactlyOnceSourceIntegrationTest {
         connect.configureConnector(CONNECTOR_NAME, props);
 
         connect.assertions().assertConnectorIsRunningAndTasksHaveFailed(
-            CONNECTOR_NAME, 1, "Task should have failed after trying to produce to its own offsets topic");
+                CONNECTOR_NAME, 1, "Task should have failed after trying to produce to its own offsets topic");
     }
 
     private ConfigInfo findConfigInfo(String property, ConfigInfos validationResult) {
@@ -1019,7 +1019,7 @@ public class ExactlyOnceSourceIntegrationTest {
                 .entrySet().stream().collect(Collectors.toMap(
                         Map.Entry::getKey,
                         e -> Collections.max(e.getValue())
-                ));
+        ));
         parsedValues.replaceAll((task, values) -> {
             Long committedValue = lastCommittedValues.get(task);
             assertNotNull(committedValue, "No committed offset found for task " + task);
@@ -1047,9 +1047,9 @@ public class ExactlyOnceSourceIntegrationTest {
             assertTrue(
                     missingSeqnos.isEmpty() && extraSeqnos.isEmpty(),
                     "Seqnos for task " + taskId + " should start at 1 and increase strictly by 1 with each record, " +
-                            "but the actual seqnos did not.\n" +
-                            "Seqnos that should have been emitted but were not: " + missingSeqnos + "\n" +
-                            "seqnos that should not have been emitted but were: " + extraSeqnos
+                    "but the actual seqnos did not.\n" +
+                    "Seqnos that should have been emitted but were not: " + missingSeqnos + "\n" +
+                    "seqnos that should not have been emitted but were: " + extraSeqnos
             );
         });
     }

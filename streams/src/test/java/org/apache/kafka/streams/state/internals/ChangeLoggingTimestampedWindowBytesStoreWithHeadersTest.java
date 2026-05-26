@@ -91,9 +91,9 @@ public class ChangeLoggingTimestampedWindowBytesStoreWithHeadersTest {
     @BeforeEach
     public void setUp() {
         final ValueTimestampHeaders<byte[]> valueWithHeaders =
-            ValueTimestampHeaders.make(value, testTimestamp, testHeaders);
+                ValueTimestampHeaders.make(value, testTimestamp, testHeaders);
         final ValueTimestampHeadersSerializer<byte[]> serializer =
-            new ValueTimestampHeadersSerializer<>(new ByteArraySerializer());
+                new ValueTimestampHeadersSerializer<>(new ByteArraySerializer());
         valueTimestampHeaders = serializer.serialize("topic", valueWithHeaders);
 
         store = new ChangeLoggingTimestampedWindowBytesStoreWithHeaders(inner, false);
@@ -127,12 +127,12 @@ public class ChangeLoggingTimestampedWindowBytesStoreWithHeadersTest {
 
         final ArgumentCaptor<Headers> headersCaptor = ArgumentCaptor.forClass(Headers.class);
         verify(context).logChange(
-            eq(store.name()),
-            eq(key),
-            eq(value),
-            eq(testTimestamp),
-            headersCaptor.capture(),
-            eq(Position.emptyPosition())
+                eq(store.name()),
+                eq(key),
+                eq(value),
+                eq(testTimestamp),
+                headersCaptor.capture(),
+                eq(Position.emptyPosition())
         );
 
         final Headers capturedHeaders = headersCaptor.getValue();
@@ -153,12 +153,12 @@ public class ChangeLoggingTimestampedWindowBytesStoreWithHeadersTest {
 
         final ArgumentCaptor<Headers> headersCaptor = ArgumentCaptor.forClass(Headers.class);
         verify(context).logChange(
-            eq(store.name()),
-            eq(key),
-            eq(value),
-            eq(testTimestamp),
-            headersCaptor.capture(),
-            eq(POSITION)
+                eq(store.name()),
+                eq(key),
+                eq(value),
+                eq(testTimestamp),
+                headersCaptor.capture(),
+                eq(POSITION)
         );
 
         final Headers capturedHeaders = headersCaptor.getValue();
@@ -213,12 +213,12 @@ public class ChangeLoggingTimestampedWindowBytesStoreWithHeadersTest {
 
         final ArgumentCaptor<Headers> headersCaptor = ArgumentCaptor.forClass(Headers.class);
         verify(context, times(2)).logChange(
-            eq(store.name()),
-            any(Bytes.class),
-            eq(value),
-            eq(testTimestamp),
-            headersCaptor.capture(),
-            eq(Position.emptyPosition())
+                eq(store.name()),
+                any(Bytes.class),
+                eq(value),
+                eq(testTimestamp),
+                headersCaptor.capture(),
+                eq(Position.emptyPosition())
         );
 
         final Headers capturedHeaders = headersCaptor.getValue();
@@ -229,14 +229,14 @@ public class ChangeLoggingTimestampedWindowBytesStoreWithHeadersTest {
 
     private InternalMockProcessorContext mockContext() {
         return new InternalMockProcessorContext<>(
-            TestUtils.tempDirectory(),
-            Serdes.String(),
-            Serdes.Long(),
-            new StreamsMetricsImpl(new Metrics(), "mock", new MockTime()),
-            streamsConfig,
-            MockRecordCollector::new,
-            new ThreadCache(new LogContext("testCache "), 0, new MockStreamsMetrics(new Metrics())),
-            Time.SYSTEM
+                TestUtils.tempDirectory(),
+                Serdes.String(),
+                Serdes.Long(),
+                new StreamsMetricsImpl(new Metrics(), "mock", new MockTime()),
+                streamsConfig,
+                MockRecordCollector::new,
+                new ThreadCache(new LogContext("testCache "), 0, new MockStreamsMetrics(new Metrics())),
+                Time.SYSTEM
         );
     }
 

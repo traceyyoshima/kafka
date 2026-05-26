@@ -54,27 +54,27 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class SessionKeySchemaTest {
     private static final Map<SchemaType, KeySchema> SCHEMA_TYPE_MAP = mkMap(
-        mkEntry(SchemaType.SessionKeySchema, new SessionKeySchema()),
-        mkEntry(SchemaType.PrefixedKeyFirstSchema, new KeyFirstSessionKeySchema()),
-        mkEntry(SchemaType.PrefixedTimeFirstSchema, new TimeFirstSessionKeySchema())
+            mkEntry(SchemaType.SessionKeySchema, new SessionKeySchema()),
+            mkEntry(SchemaType.PrefixedKeyFirstSchema, new KeyFirstSessionKeySchema()),
+            mkEntry(SchemaType.PrefixedTimeFirstSchema, new TimeFirstSessionKeySchema())
     );
 
     private static final Map<SchemaType, Function<Windowed<Bytes>, Bytes>> WINDOW_TO_STORE_BINARY_MAP = mkMap(
-        mkEntry(SchemaType.SessionKeySchema, SessionKeySchema::toBinary),
-        mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstSessionKeySchema::toBinary),
-        mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstSessionKeySchema::toBinary)
+            mkEntry(SchemaType.SessionKeySchema, SessionKeySchema::toBinary),
+            mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstSessionKeySchema::toBinary),
+            mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstSessionKeySchema::toBinary)
     );
 
     private static final Map<SchemaType, Function<byte[], Long>> EXTRACT_END_TS_MAP = mkMap(
-        mkEntry(SchemaType.SessionKeySchema, SessionKeySchema::extractEndTimestamp),
-        mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstSessionKeySchema::extractEndTimestamp),
-        mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstSessionKeySchema::extractEndTimestamp)
+            mkEntry(SchemaType.SessionKeySchema, SessionKeySchema::extractEndTimestamp),
+            mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstSessionKeySchema::extractEndTimestamp),
+            mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstSessionKeySchema::extractEndTimestamp)
     );
 
     private static final Map<SchemaType, Function<byte[], Long>> EXTRACT_START_TS_MAP = mkMap(
-        mkEntry(SchemaType.SessionKeySchema, SessionKeySchema::extractStartTimestamp),
-        mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstSessionKeySchema::extractStartTimestamp),
-        mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstSessionKeySchema::extractStartTimestamp)
+            mkEntry(SchemaType.SessionKeySchema, SessionKeySchema::extractStartTimestamp),
+            mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstSessionKeySchema::extractStartTimestamp),
+            mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstSessionKeySchema::extractStartTimestamp)
     );
 
     @FunctionalInterface
@@ -83,33 +83,33 @@ public class SessionKeySchemaTest {
     }
 
     private static final Map<SchemaType, QuadFunction<Windowed<String>, Serializer<String>, Headers, String, byte[]>> SERDE_TO_STORE_BINARY_MAP = mkMap(
-        mkEntry(SchemaType.SessionKeySchema, SessionKeySchema::toBinary),
-        mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstSessionKeySchema::toBinary),
-        mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstSessionKeySchema::toBinary)
+            mkEntry(SchemaType.SessionKeySchema, SessionKeySchema::toBinary),
+            mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstSessionKeySchema::toBinary),
+            mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstSessionKeySchema::toBinary)
     );
 
     private static final Map<SchemaType, QuadFunction<byte[], Deserializer<String>, Headers, String, Windowed<String>>> SERDE_FROM_BYTES_MAP = mkMap(
-        mkEntry(SchemaType.SessionKeySchema, SessionKeySchema::from),
-        mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstSessionKeySchema::from),
-        mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstSessionKeySchema::from)
+            mkEntry(SchemaType.SessionKeySchema, SessionKeySchema::from),
+            mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstSessionKeySchema::from),
+            mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstSessionKeySchema::from)
     );
 
     private static final Map<SchemaType, Function<Bytes, Windowed<Bytes>>> FROM_BYTES_MAP = mkMap(
-        mkEntry(SchemaType.SessionKeySchema, SessionKeySchema::from),
-        mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstSessionKeySchema::from),
-        mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstSessionKeySchema::from)
+            mkEntry(SchemaType.SessionKeySchema, SessionKeySchema::from),
+            mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstSessionKeySchema::from),
+            mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstSessionKeySchema::from)
     );
 
     private static final Map<SchemaType, Function<byte[], Window>> EXTRACT_WINDOW = mkMap(
-        mkEntry(SchemaType.SessionKeySchema, SessionKeySchema::extractWindow),
-        mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstSessionKeySchema::extractWindow),
-        mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstSessionKeySchema::extractWindow)
+            mkEntry(SchemaType.SessionKeySchema, SessionKeySchema::extractWindow),
+            mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstSessionKeySchema::extractWindow),
+            mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstSessionKeySchema::extractWindow)
     );
 
     private static final Map<SchemaType, Function<byte[], byte[]>> EXTRACT_KEY_BYTES = mkMap(
-        mkEntry(SchemaType.SessionKeySchema, SessionKeySchema::extractKeyBytes),
-        mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstSessionKeySchema::extractKeyBytes),
-        mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstSessionKeySchema::extractKeyBytes)
+            mkEntry(SchemaType.SessionKeySchema, SessionKeySchema::extractKeyBytes),
+            mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstSessionKeySchema::extractKeyBytes),
+            mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstSessionKeySchema::extractKeyBytes)
     );
 
     private final String key = "key";
@@ -194,7 +194,7 @@ public class SessionKeySchemaTest {
         final List<Integer> results = getValues(hasNextCondition);
         assertThat(results, equalTo(asList(1, 2, 3, 4, 5, 6)));
     }
-    
+
     @ParameterizedTest
     @EnumSource(SchemaType.class)
     public void testUpperBoundWithLargeTimestamps(final SchemaType type) {
@@ -202,33 +202,33 @@ public class SessionKeySchemaTest {
         final Bytes upper = keySchema.upperRange(Bytes.wrap(new byte[]{0xA, 0xB, 0xC}), Long.MAX_VALUE);
 
         assertThat(
-            "shorter key with max timestamp should be in range",
-            upper.compareTo(toBinary.apply(
-                new Windowed<>(
-                    Bytes.wrap(new byte[]{0xA}),
-                    new SessionWindow(Long.MAX_VALUE, Long.MAX_VALUE))
-            )) >= 0
+                "shorter key with max timestamp should be in range",
+                upper.compareTo(toBinary.apply(
+                    new Windowed<>(
+                            Bytes.wrap(new byte[]{0xA}),
+                            new SessionWindow(Long.MAX_VALUE, Long.MAX_VALUE))
+                )) >= 0
         );
 
         assertThat(
-            "shorter key with max timestamp should be in range",
-            upper.compareTo(toBinary.apply(
-                new Windowed<>(
-                    Bytes.wrap(new byte[]{0xA, 0xB}),
-                    new SessionWindow(Long.MAX_VALUE, Long.MAX_VALUE))
+                "shorter key with max timestamp should be in range",
+                upper.compareTo(toBinary.apply(
+                    new Windowed<>(
+                            Bytes.wrap(new byte[]{0xA, 0xB}),
+                            new SessionWindow(Long.MAX_VALUE, Long.MAX_VALUE))
 
-            )) >= 0
+                )) >= 0
         );
 
         if (schemaType == SchemaType.PrefixedTimeFirstSchema) {
             assertThat(upper, equalTo(toBinary.apply(
-                new Windowed<>(Bytes.wrap(new byte[]{0xA, 0xB, 0xC}),
-                    new SessionWindow(Long.MAX_VALUE, Long.MAX_VALUE))))
+                    new Windowed<>(Bytes.wrap(new byte[]{0xA, 0xB, 0xC}),
+                            new SessionWindow(Long.MAX_VALUE, Long.MAX_VALUE))))
             );
         } else {
             assertThat(upper, equalTo(toBinary.apply(
-                new Windowed<>(Bytes.wrap(new byte[]{0xA}),
-                    new SessionWindow(Long.MAX_VALUE, Long.MAX_VALUE))))
+                    new Windowed<>(Bytes.wrap(new byte[]{0xA}),
+                            new SessionWindow(Long.MAX_VALUE, Long.MAX_VALUE))))
             );
         }
     }
@@ -240,17 +240,16 @@ public class SessionKeySchemaTest {
         final Bytes upper = keySchema.upperRange(Bytes.wrap(new byte[]{0xA, (byte) 0x8F, (byte) 0x9F}), Long.MAX_VALUE);
 
         assertThat(
-            "shorter key with max timestamp should be in range",
-            upper.compareTo(toBinary.apply(
-                new Windowed<>(
-                    Bytes.wrap(new byte[]{0xA, (byte) 0x8F}),
-                    new SessionWindow(Long.MAX_VALUE, Long.MAX_VALUE))
-                )
-            ) >= 0
+                "shorter key with max timestamp should be in range",
+                upper.compareTo(toBinary.apply(
+                    new Windowed<>(
+                            Bytes.wrap(new byte[]{0xA, (byte) 0x8F}),
+                            new SessionWindow(Long.MAX_VALUE, Long.MAX_VALUE))
+                )) >= 0
         );
 
         assertThat(upper, equalTo(toBinary.apply(
-            new Windowed<>(Bytes.wrap(new byte[]{0xA, (byte) 0x8F, (byte) 0x9F}), new SessionWindow(Long.MAX_VALUE, Long.MAX_VALUE))))
+                new Windowed<>(Bytes.wrap(new byte[]{0xA, (byte) 0x8F, (byte) 0x9F}), new SessionWindow(Long.MAX_VALUE, Long.MAX_VALUE))))
         );
     }
 
@@ -263,11 +262,11 @@ public class SessionKeySchemaTest {
 
         if (schemaType == SchemaType.PrefixedTimeFirstSchema) {
             assertThat(upper, equalTo(toBinary.apply(
-                new Windowed<>(Bytes.wrap(new byte[]{0xA, 0xB, 0xC}), new SessionWindow(0, Long.MAX_VALUE))))
+                    new Windowed<>(Bytes.wrap(new byte[]{0xA, 0xB, 0xC}), new SessionWindow(0, Long.MAX_VALUE))))
             );
         } else {
             assertThat(upper, equalTo(toBinary.apply(
-                new Windowed<>(Bytes.wrap(new byte[]{0xA}), new SessionWindow(0, Long.MAX_VALUE))))
+                    new Windowed<>(Bytes.wrap(new byte[]{0xA}), new SessionWindow(0, Long.MAX_VALUE))))
             );
         }
     }
@@ -287,20 +286,20 @@ public class SessionKeySchemaTest {
         final Bytes lower = keySchema.lowerRange(Bytes.wrap(new byte[]{0xA, 0xB, 0xC}), Long.MAX_VALUE);
 
         assertThat(
-            "appending zeros to key should still be in range",
-            lower.compareTo(toBinary.apply(
-                new Windowed<>(
-                    Bytes.wrap(new byte[]{0xA, 0xB, 0xC, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
-                    new SessionWindow(Long.MAX_VALUE, Long.MAX_VALUE))
-            )) < 0
+                "appending zeros to key should still be in range",
+                lower.compareTo(toBinary.apply(
+                    new Windowed<>(
+                            Bytes.wrap(new byte[]{0xA, 0xB, 0xC, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
+                            new SessionWindow(Long.MAX_VALUE, Long.MAX_VALUE))
+                )) < 0
         );
 
         if (schemaType == SchemaType.PrefixedTimeFirstSchema) {
             assertThat(lower, equalTo(toBinary.apply(
-                new Windowed<>(Bytes.wrap(new byte[]{0xA, 0xB, 0xC}), new SessionWindow(0, Long.MAX_VALUE)))));
+                    new Windowed<>(Bytes.wrap(new byte[]{0xA, 0xB, 0xC}), new SessionWindow(0, Long.MAX_VALUE)))));
         } else {
             assertThat(lower, equalTo(toBinary.apply(
-                new Windowed<>(Bytes.wrap(new byte[]{0xA, 0xB, 0xC}), new SessionWindow(0, 0)))));
+                    new Windowed<>(Bytes.wrap(new byte[]{0xA, 0xB, 0xC}), new SessionWindow(0, 0)))));
         }
     }
 

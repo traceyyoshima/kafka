@@ -66,8 +66,8 @@ public class StateRestoreCallbackAdapterTest {
         final byte[] value2 = {4};
 
         final List<ConsumerRecord<byte[], byte[]>> recordList = asList(
-            new ConsumerRecord<>("topic1", 0, 0L, key1, value1),
-            new ConsumerRecord<>("topic2", 1, 1L, key2, value2)
+                new ConsumerRecord<>("topic1", 0, 0L, key1, value1),
+                new ConsumerRecord<>("topic2", 1, 1L, key2, value2)
         );
 
         adapted.restoreBatch(recordList);
@@ -97,16 +97,16 @@ public class StateRestoreCallbackAdapterTest {
         final byte[] key2 = {3};
         final byte[] value2 = {4};
         adapted.restoreBatch(asList(
-            new ConsumerRecord<>("topic1", 0, 0L, key1, value1),
-            new ConsumerRecord<>("topic2", 1, 1L, key2, value2)
+                new ConsumerRecord<>("topic1", 0, 0L, key1, value1),
+                new ConsumerRecord<>("topic2", 1, 1L, key2, value2)
         ));
 
         assertThat(
-            actual,
-            is(asList(
-                new KeyValue<>(key1, value1),
-                new KeyValue<>(key2, value2)
-            ))
+                actual,
+                is(asList(
+                    new KeyValue<>(key1, value1),
+                    new KeyValue<>(key2, value2)
+                ))
         );
     }
 
@@ -122,16 +122,16 @@ public class StateRestoreCallbackAdapterTest {
         final byte[] key2 = {3};
         final byte[] value2 = {4};
         adapted.restoreBatch(asList(
-            new ConsumerRecord<>("topic1", 0, 0L, key1, value1),
-            new ConsumerRecord<>("topic2", 1, 1L, key2, value2)
+                new ConsumerRecord<>("topic1", 0, 0L, key1, value1),
+                new ConsumerRecord<>("topic2", 1, 1L, key2, value2)
         ));
 
         assertThat(
-            actual,
-            is(asList(
-                new KeyValue<>(key1, value1),
-                new KeyValue<>(key2, value2)
-            ))
+                actual,
+                is(asList(
+                    new KeyValue<>(key1, value1),
+                    new KeyValue<>(key2, value2)
+                ))
         );
     }
 

@@ -39,7 +39,7 @@ public class SystemTimerReaperTest {
             // We use org.apache.kafka.common.errors.TimeoutException to differentiate
             // from java.util.concurrent.TimeoutException.
             future.completeExceptionally(new TimeoutException(
-                String.format("Future failed to be completed before timeout of %sMs ms was reached", delayMs)));
+                    String.format("Future failed to be completed before timeout of %sMs ms was reached", delayMs)));
         }
     }
 

@@ -62,9 +62,9 @@ public class DescribeTransactionsRequest extends AbstractRequest {
 
         for (String transactionalId : data.transactionalIds()) {
             DescribeTransactionsResponseData.TransactionState transactionState =
-                new DescribeTransactionsResponseData.TransactionState()
-                    .setTransactionalId(transactionalId)
-                    .setErrorCode(error.code());
+                    new DescribeTransactionsResponseData.TransactionState()
+                        .setTransactionalId(transactionalId)
+                        .setErrorCode(error.code());
             response.transactionStates().add(transactionState);
         }
         return new DescribeTransactionsResponse(response);
@@ -72,7 +72,7 @@ public class DescribeTransactionsRequest extends AbstractRequest {
 
     public static DescribeTransactionsRequest parse(Readable readable, short version) {
         return new DescribeTransactionsRequest(new DescribeTransactionsRequestData(
-            readable, version), version);
+                readable, version), version);
     }
 
     @Override

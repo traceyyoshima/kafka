@@ -47,7 +47,7 @@ public class TelemetryMetricNamingConvention {
                 Objects.requireNonNull(metricName, "metric name cannot be null");
 
                 return new MetricKey(fullMetricName(prefix, metricName.group(), metricName.name()),
-                    Collections.unmodifiableMap(cleanTags(metricName.tags())));
+                        Collections.unmodifiableMap(cleanTags(metricName.tags())));
             }
 
             @Override
@@ -72,10 +72,10 @@ public class TelemetryMetricNamingConvention {
      */
     private static String fullMetricName(String prefix, String group, String name) {
         return prefix
-            + NAME_JOINER
-            + cleanGroup(group)
-            + NAME_JOINER
-            + cleanMetric(name);
+                + NAME_JOINER
+                + cleanGroup(group)
+                + NAME_JOINER
+                + cleanMetric(name);
     }
 
     /**

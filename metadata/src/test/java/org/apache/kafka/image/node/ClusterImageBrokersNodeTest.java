@@ -62,16 +62,16 @@ public class ClusterImageBrokersNodeTest {
         MetadataNode child = NODE.child("1");
         assertNotNull(child);
         assertEquals("BrokerRegistration(id=1, epoch=1001, " +
-            "incarnationId=MJkaH0j0RwuC3W2GHQHtWA, " +
-            "listeners=[], " +
-            "supportedFeatures={metadata.version: 1-4}, " +
-            "rack=Optional.empty, " +
-            "fenced=false, " +
-            "inControlledShutdown=false, " +
-            "isMigratingZkBroker=false, " +
-            "directories=[JsnDDNVyTL289kYk6sPzig, anCdBWcFTlu8gE1wP6bh3g], " +
-            "cordonedDirectories=null)",
-            child.stringify());
+                "incarnationId=MJkaH0j0RwuC3W2GHQHtWA, " +
+                "listeners=[], " +
+                "supportedFeatures={metadata.version: 1-4}, " +
+                "rack=Optional.empty, " +
+                "fenced=false, " +
+                "inControlledShutdown=false, " +
+                "isMigratingZkBroker=false, " +
+                "directories=[JsnDDNVyTL289kYk6sPzig, anCdBWcFTlu8gE1wP6bh3g], " +
+                "cordonedDirectories=null)",
+                child.stringify());
     }
 
     @Test

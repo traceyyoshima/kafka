@@ -57,14 +57,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @ClusterTestDefaults(
-    types = {Type.CO_KRAFT},
-    serverProperties = {
-        @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, value = "1000"),
-        @ClusterConfigProperty(key = CONSUMER_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
-        @ClusterConfigProperty(key = CONSUMER_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
-    }
+        types = {Type.CO_KRAFT},
+        serverProperties = {
+            @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+            @ClusterConfigProperty(key = OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1"),
+            @ClusterConfigProperty(key = GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, value = "1000"),
+            @ClusterConfigProperty(key = CONSUMER_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
+            @ClusterConfigProperty(key = CONSUMER_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
+        }
 )
 public class DeleteOffsetsConsumerGroupCommandIntegrationTest {
     public static final String TOPIC_PREFIX = "foo.";
@@ -175,17 +175,17 @@ public class DeleteOffsetsConsumerGroupCommandIntegrationTest {
 
     private String[] getArgs(String group, String topic) {
         return new String[] {
-            "--bootstrap-server", clusterInstance.bootstrapServers(),
-            "--delete-offsets",
-            "--group", group,
-            "--topic", topic
+                "--bootstrap-server", clusterInstance.bootstrapServers(),
+                "--delete-offsets",
+                "--group", group,
+                "--topic", topic
         };
     }
 
     private static ConsumerGroupCommand.ConsumerGroupService consumerGroupService(String[] args) {
         return new ConsumerGroupCommand.ConsumerGroupService(
-            ConsumerGroupCommandOptions.fromArgs(args),
-            Map.of(AdminClientConfig.RETRIES_CONFIG, Integer.toString(Integer.MAX_VALUE))
+                ConsumerGroupCommandOptions.fromArgs(args),
+                Map.of(AdminClientConfig.RETRIES_CONFIG, Integer.toString(Integer.MAX_VALUE))
         );
     }
 
@@ -212,6 +212,7 @@ public class DeleteOffsetsConsumerGroupCommandIntegrationTest {
             }
         };
     }
+
     private void testWithConsumerGroup(String inputTopic,
                                        String inputGroup,
                                        GroupProtocol groupProtocol,

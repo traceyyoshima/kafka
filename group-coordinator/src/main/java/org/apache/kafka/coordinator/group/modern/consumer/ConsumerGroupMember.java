@@ -77,8 +77,8 @@ public class ConsumerGroupMember extends ModernGroupMember {
 
         public Builder(ConsumerGroupMember member) {
             this(
-                Objects.requireNonNull(member),
-                member.memberId
+                    Objects.requireNonNull(member),
+                    member.memberId
             );
         }
 
@@ -253,31 +253,31 @@ public class ConsumerGroupMember extends ModernGroupMember {
             setPreviousMemberEpoch(record.previousMemberEpoch());
             setState(MemberState.fromValue(record.state()));
             setAssignedPartitions(
-                Utils.assignmentFromTopicPartitions(log, groupId, record.assignedPartitions(), record.memberEpoch())
+                    Utils.assignmentFromTopicPartitions(log, groupId, record.assignedPartitions(), record.memberEpoch())
             );
             setPartitionsPendingRevocation(
-                Utils.assignmentFromTopicPartitions(log, groupId, record.partitionsPendingRevocation(), record.memberEpoch())
+                    Utils.assignmentFromTopicPartitions(log, groupId, record.partitionsPendingRevocation(), record.memberEpoch())
             );
             return this;
         }
 
         public ConsumerGroupMember build() {
             return new ConsumerGroupMember(
-                memberId,
-                memberEpoch,
-                previousMemberEpoch,
-                instanceId,
-                rackId,
-                rebalanceTimeoutMs,
-                clientId,
-                clientHost,
-                subscribedTopicNames,
-                subscribedTopicRegex,
-                serverAssignorName,
-                state,
-                assignedPartitions,
-                partitionsPendingRevocation,
-                classicMemberMetadata
+                    memberId,
+                    memberEpoch,
+                    previousMemberEpoch,
+                    instanceId,
+                    rackId,
+                    rebalanceTimeoutMs,
+                    clientId,
+                    clientHost,
+                    subscribedTopicNames,
+                    subscribedTopicRegex,
+                    serverAssignorName,
+                    state,
+                    assignedPartitions,
+                    partitionsPendingRevocation,
+                    classicMemberMetadata
             );
         }
     }
@@ -332,15 +332,15 @@ public class ConsumerGroupMember extends ModernGroupMember {
         ConsumerGroupMemberMetadataValue.ClassicMemberMetadata classicMemberMetadata
     ) {
         super(
-            memberId,
-            memberEpoch,
-            previousMemberEpoch,
-            instanceId,
-            rackId,
-            clientId,
-            clientHost,
-            subscribedTopicNames,
-            state
+                memberId,
+                memberEpoch,
+                previousMemberEpoch,
+                instanceId,
+                rackId,
+                clientId,
+                clientHost,
+                subscribedTopicNames,
+                state
         );
         this.rebalanceTimeoutMs = rebalanceTimeoutMs;
         this.subscribedTopicRegex = subscribedTopicRegex;
@@ -431,13 +431,13 @@ public class ConsumerGroupMember extends ModernGroupMember {
      */
     public JoinGroupRequestData.JoinGroupRequestProtocolCollection supportedJoinGroupRequestProtocols() {
         JoinGroupRequestData.JoinGroupRequestProtocolCollection protocols =
-            new JoinGroupRequestData.JoinGroupRequestProtocolCollection();
+                new JoinGroupRequestData.JoinGroupRequestProtocolCollection();
         supportedClassicProtocols().ifPresent(classicProtocols -> classicProtocols.forEach(protocol ->
-            protocols.add(
-                new JoinGroupRequestData.JoinGroupRequestProtocol()
-                    .setName(protocol.name())
-                    .setMetadata(protocol.metadata())
-            )
+                protocols.add(
+                        new JoinGroupRequestData.JoinGroupRequestProtocol()
+                            .setName(protocol.name())
+                            .setMetadata(protocol.metadata())
+                )
         ));
         return protocols;
     }
@@ -494,8 +494,8 @@ public class ConsumerGroupMember extends ModernGroupMember {
                 .setTopicPartitions(new ArrayList<>(topicPartitionsMap.values())))
             .setTargetAssignment(new ConsumerGroupDescribeResponseData.Assignment()
                 .setTopicPartitions(topicPartitionsFromAssignment(
-                    targetAssignment != null ? targetAssignment.partitions() : Map.of(),
-                    image
+                        targetAssignment != null ? targetAssignment.partitions() : Map.of(),
+                        image
                 )))
             .setClientHost(clientHost)
             .setClientId(clientId)
@@ -512,13 +512,13 @@ public class ConsumerGroupMember extends ModernGroupMember {
         CoordinatorMetadataImage image
     ) {
         source.forEach((topicId, eps) ->
-            image.topicMetadata(topicId).ifPresent(metadata ->
-                target.computeIfAbsent(topicId, __ ->
-                    new ConsumerGroupDescribeResponseData.TopicPartitions()
-                        .setTopicId(topicId)
-                        .setTopicName(metadata.name())
-                        .setPartitions(new ArrayList<>())
-                ).partitions().addAll(eps.keySet())));
+                image.topicMetadata(topicId).ifPresent(metadata ->
+                        target.computeIfAbsent(topicId, __ ->
+                                new ConsumerGroupDescribeResponseData.TopicPartitions()
+                                    .setTopicId(topicId)
+                                    .setTopicName(metadata.name())
+                                    .setPartitions(new ArrayList<>())
+                        ).partitions().addAll(eps.keySet())));
     }
 
     private static List<ConsumerGroupDescribeResponseData.TopicPartitions> topicPartitionsFromAssignment(
@@ -546,11 +546,11 @@ public class ConsumerGroupMember extends ModernGroupMember {
     ) {
         List<ConsumerGroupMemberMetadataValue.ClassicProtocol> newSupportedProtocols = new ArrayList<>();
         protocols.forEach(protocol ->
-            newSupportedProtocols.add(
-                new ConsumerGroupMemberMetadataValue.ClassicProtocol()
-                    .setName(protocol.name())
-                    .setMetadata(protocol.metadata())
-            )
+                newSupportedProtocols.add(
+                        new ConsumerGroupMemberMetadataValue.ClassicProtocol()
+                            .setName(protocol.name())
+                            .setMetadata(protocol.metadata())
+                )
         );
         return newSupportedProtocols;
     }
@@ -568,20 +568,20 @@ public class ConsumerGroupMember extends ModernGroupMember {
         if (o == null || getClass() != o.getClass()) return false;
         ConsumerGroupMember that = (ConsumerGroupMember) o;
         return memberEpoch == that.memberEpoch
-            && previousMemberEpoch == that.previousMemberEpoch
-            && state == that.state
-            && rebalanceTimeoutMs == that.rebalanceTimeoutMs
-            && Objects.equals(memberId, that.memberId)
-            && Objects.equals(instanceId, that.instanceId)
-            && Objects.equals(rackId, that.rackId)
-            && Objects.equals(clientId, that.clientId)
-            && Objects.equals(clientHost, that.clientHost)
-            && Objects.equals(subscribedTopicNames, that.subscribedTopicNames)
-            && Objects.equals(subscribedTopicRegex, that.subscribedTopicRegex)
-            && Objects.equals(serverAssignorName, that.serverAssignorName)
-            && Objects.equals(assignedPartitions, that.assignedPartitions)
-            && Objects.equals(partitionsPendingRevocation, that.partitionsPendingRevocation)
-            && Objects.equals(classicMemberMetadata, that.classicMemberMetadata);
+                && previousMemberEpoch == that.previousMemberEpoch
+                && state == that.state
+                && rebalanceTimeoutMs == that.rebalanceTimeoutMs
+                && Objects.equals(memberId, that.memberId)
+                && Objects.equals(instanceId, that.instanceId)
+                && Objects.equals(rackId, that.rackId)
+                && Objects.equals(clientId, that.clientId)
+                && Objects.equals(clientHost, that.clientHost)
+                && Objects.equals(subscribedTopicNames, that.subscribedTopicNames)
+                && Objects.equals(subscribedTopicRegex, that.subscribedTopicRegex)
+                && Objects.equals(serverAssignorName, that.serverAssignorName)
+                && Objects.equals(assignedPartitions, that.assignedPartitions)
+                && Objects.equals(partitionsPendingRevocation, that.partitionsPendingRevocation)
+                && Objects.equals(classicMemberMetadata, that.classicMemberMetadata);
     }
 
     @Override
@@ -607,22 +607,22 @@ public class ConsumerGroupMember extends ModernGroupMember {
     @Override
     public String toString() {
         return "ConsumerGroupMember(" +
-            "memberId='" + memberId + '\'' +
-            ", memberEpoch=" + memberEpoch +
-            ", previousMemberEpoch=" + previousMemberEpoch +
-            ", state='" + state + '\'' +
-            ", instanceId='" + instanceId + '\'' +
-            ", rackId='" + rackId + '\'' +
-            ", rebalanceTimeoutMs=" + rebalanceTimeoutMs +
-            ", clientId='" + clientId + '\'' +
-            ", clientHost='" + clientHost + '\'' +
-            ", subscribedTopicNames=" + subscribedTopicNames +
-            ", subscribedTopicRegex='" + subscribedTopicRegex + '\'' +
-            ", serverAssignorName='" + serverAssignorName + '\'' +
-            ", assignedPartitions=" + assignedPartitions +
-            ", partitionsPendingRevocation=" + partitionsPendingRevocation +
-            ", classicMemberMetadata='" + classicMemberMetadata + '\'' +
-            ')';
+                "memberId='" + memberId + '\'' +
+                ", memberEpoch=" + memberEpoch +
+                ", previousMemberEpoch=" + previousMemberEpoch +
+                ", state='" + state + '\'' +
+                ", instanceId='" + instanceId + '\'' +
+                ", rackId='" + rackId + '\'' +
+                ", rebalanceTimeoutMs=" + rebalanceTimeoutMs +
+                ", clientId='" + clientId + '\'' +
+                ", clientHost='" + clientHost + '\'' +
+                ", subscribedTopicNames=" + subscribedTopicNames +
+                ", subscribedTopicRegex='" + subscribedTopicRegex + '\'' +
+                ", serverAssignorName='" + serverAssignorName + '\'' +
+                ", assignedPartitions=" + assignedPartitions +
+                ", partitionsPendingRevocation=" + partitionsPendingRevocation +
+                ", classicMemberMetadata='" + classicMemberMetadata + '\'' +
+                ')';
     }
 
     public static String subscribedTopicRegexOrNull(ConsumerGroupMember member) {

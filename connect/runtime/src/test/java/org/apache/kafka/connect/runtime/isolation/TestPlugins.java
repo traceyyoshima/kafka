@@ -311,7 +311,7 @@ public class TestPlugins {
     private static void assertAvailable() throws AssertionError {
         if (INITIALIZATION_EXCEPTION != null) {
             throw new AssertionError("TestPlugins did not initialize completely",
-                INITIALIZATION_EXCEPTION);
+                    INITIALIZATION_EXCEPTION);
         }
         if (PLUGIN_JARS.isEmpty()) {
             throw new AssertionError("No test plugins loaded");
@@ -384,7 +384,6 @@ public class TestPlugins {
                 .filter(TestPlugin::includeByDefault)
                 .toArray(TestPlugin[]::new);
     }
-
 
     static Path createPluginJar(String resourceDir, Predicate<String> removeRuntimeClasses, Map<String, String> replacements) throws IOException {
         Path inputDir = resourceDirectoryPath("test-plugins/" + resourceDir);
@@ -463,16 +462,16 @@ public class TestPlugins {
 
         StringWriter writer = new StringWriter();
         List<String> options = List.of(
-            "-d", binDir.toString() // Write class output to a different directory.
+                "-d", binDir.toString() // Write class output to a different directory.
         );
         try (StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null)) {
             boolean success = compiler.getTask(
-                writer,
-                fileManager,
-                null,
-                options,
-                null,
-                fileManager.getJavaFileObjectsFromFiles(sourceFiles)
+                    writer,
+                    fileManager,
+                    null,
+                    options,
+                    null,
+                    fileManager.getJavaFileObjectsFromFiles(sourceFiles)
             ).call();
             if (!success) {
                 throw new RuntimeException("Failed to compile test plugin:\n" + writer);
@@ -507,13 +506,13 @@ public class TestPlugins {
         for (Path path : paths) {
             try (InputStream in = new BufferedInputStream(Files.newInputStream(path))) {
                 jar.putNextEntry(new JarEntry(
-                    inputDir.relativize(path)
-                        .toFile()
-                        .getPath()
-                        .replace(File.separator, "/")
+                        inputDir.relativize(path)
+                            .toFile()
+                            .getPath()
+                            .replace(File.separator, "/")
                 ));
                 byte[] buffer = new byte[1024];
-                for (int count; (count = in.read(buffer)) != -1; ) {
+                for (int count; (count = in.read(buffer)) != -1;) {
                     jar.write(buffer, 0, count);
                 }
                 jar.closeEntry();

@@ -32,8 +32,8 @@ import static org.apache.kafka.streams.processor.internals.ProcessorContextUtils
  * updates to a changelog
  */
 public class ChangeLoggingSessionBytesStore
-    extends WrappedStateStore<SessionStore<Bytes, byte[]>, byte[], byte[]>
-    implements SessionStore<Bytes, byte[]> {
+        extends WrappedStateStore<SessionStore<Bytes, byte[]>, byte[], byte[]>
+        implements SessionStore<Bytes, byte[]> {
 
     protected InternalProcessorContext<?, ?> internalContext;
 

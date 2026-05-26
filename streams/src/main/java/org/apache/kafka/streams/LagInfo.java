@@ -71,8 +71,8 @@ public class LagInfo {
         }
         final LagInfo other = (LagInfo) obj;
         return currentOffsetPosition == other.currentOffsetPosition
-            && endOffsetPosition == other.endOffsetPosition
-            && this.offsetLag == other.offsetLag;
+                && endOffsetPosition == other.endOffsetPosition
+                && this.offsetLag == other.offsetLag;
     }
 
     @Override
@@ -83,9 +83,9 @@ public class LagInfo {
     @Override
     public String toString() {
         return "LagInfo {" +
-            " currentOffsetPosition=" + currentOffsetPosition +
-            ", endOffsetPosition=" + endOffsetPosition +
-            ", offsetLag=" + offsetLag +
-            '}';
+                " currentOffsetPosition=" + currentOffsetPosition +
+                ", endOffsetPosition=" + endOffsetPosition +
+                ", offsetLag=" + offsetLag +
+                '}';
     }
 }

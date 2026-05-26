@@ -65,11 +65,11 @@ public class RocksDBTimeOrderedWindowSegmentedBytesStore<S extends Segment> exte
                                                 final boolean withIndex,
                                                 final AbstractSegments<S> segments) {
         super(
-            name,
-            retention,
-            new TimeFirstWindowKeySchema(),
-            Optional.ofNullable(withIndex ? new KeyFirstWindowKeySchema() : null),
-            segments
+                name,
+                retention,
+                new TimeFirstWindowKeySchema(),
+                Optional.ofNullable(withIndex ? new KeyFirstWindowKeySchema() : null),
+                segments
         );
     }
 
@@ -95,10 +95,10 @@ public class RocksDBTimeOrderedWindowSegmentedBytesStore<S extends Segment> exte
     @Override
     Map<S, WriteBatch> getWriteBatches(final Collection<ConsumerRecord<byte[], byte[]>> records) {
         return getWriteBatches(
-            records,
-            WindowKeySchema::extractStoreTimestamp,
-            KeyFirstWindowKeySchema::fromNonPrefixWindowKey,
-            TimeFirstWindowKeySchema::fromNonPrefixWindowKey
+                records,
+                WindowKeySchema::extractStoreTimestamp,
+                KeyFirstWindowKeySchema::fromNonPrefixWindowKey,
+                TimeFirstWindowKeySchema::fromNonPrefixWindowKey
         );
     }
 

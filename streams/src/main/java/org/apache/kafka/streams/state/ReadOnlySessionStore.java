@@ -62,7 +62,7 @@ public interface ReadOnlySessionStore<K, AGG> {
                                                             final long earliestSessionEndTime,
                                                             final long latestSessionStartTime) {
         throw new UnsupportedOperationException(
-            "This API is not supported by this implementation of ReadOnlySessionStore.");
+                "This API is not supported by this implementation of ReadOnlySessionStore.");
     }
 
     /**
@@ -96,7 +96,7 @@ public interface ReadOnlySessionStore<K, AGG> {
                                                             final Instant earliestSessionEndTime,
                                                             final Instant latestSessionStartTime) {
         throw new UnsupportedOperationException(
-            "This API is not supported by this implementation of ReadOnlySessionStore.");
+                "This API is not supported by this implementation of ReadOnlySessionStore.");
     }
 
     /**
@@ -130,7 +130,7 @@ public interface ReadOnlySessionStore<K, AGG> {
                                                                     final long earliestSessionEndTime,
                                                                     final long latestSessionStartTime) {
         throw new UnsupportedOperationException(
-            "This API is not supported by this implementation of ReadOnlySessionStore.");
+                "This API is not supported by this implementation of ReadOnlySessionStore.");
     }
 
     /**
@@ -164,7 +164,7 @@ public interface ReadOnlySessionStore<K, AGG> {
                                                                     final Instant earliestSessionEndTime,
                                                                     final Instant latestSessionStartTime) {
         throw new UnsupportedOperationException(
-            "This API is not supported by this implementation of ReadOnlySessionStore.");
+                "This API is not supported by this implementation of ReadOnlySessionStore.");
     }
 
     /**
@@ -202,7 +202,7 @@ public interface ReadOnlySessionStore<K, AGG> {
                                                             final long earliestSessionEndTime,
                                                             final long latestSessionStartTime) {
         throw new UnsupportedOperationException(
-            "This API is not supported by this implementation of ReadOnlySessionStore.");
+                "This API is not supported by this implementation of ReadOnlySessionStore.");
     }
 
     /**
@@ -240,7 +240,7 @@ public interface ReadOnlySessionStore<K, AGG> {
                                                             final Instant earliestSessionEndTime,
                                                             final Instant latestSessionStartTime) {
         throw new UnsupportedOperationException(
-            "This API is not supported by this implementation of ReadOnlySessionStore.");
+                "This API is not supported by this implementation of ReadOnlySessionStore.");
     }
 
     /**
@@ -278,7 +278,7 @@ public interface ReadOnlySessionStore<K, AGG> {
                                                                     final long earliestSessionEndTime,
                                                                     final long latestSessionStartTime) {
         throw new UnsupportedOperationException(
-            "This API is not supported by this implementation of ReadOnlySessionStore.");
+                "This API is not supported by this implementation of ReadOnlySessionStore.");
     }
 
     /**
@@ -316,7 +316,7 @@ public interface ReadOnlySessionStore<K, AGG> {
                                                                     final Instant earliestSessionEndTime,
                                                                     final Instant latestSessionStartTime) {
         throw new UnsupportedOperationException(
-            "This API is not supported by this implementation of ReadOnlySessionStore.");
+                "This API is not supported by this implementation of ReadOnlySessionStore.");
     }
 
     /**
@@ -333,7 +333,7 @@ public interface ReadOnlySessionStore<K, AGG> {
                              final long sessionStartTime,
                              final long sessionEndTime) {
         throw new UnsupportedOperationException(
-            "This API is not supported by this implementation of ReadOnlySessionStore.");
+                "This API is not supported by this implementation of ReadOnlySessionStore.");
     }
 
     /**
@@ -350,7 +350,7 @@ public interface ReadOnlySessionStore<K, AGG> {
                              final Instant sessionStartTime,
                              final Instant sessionEndTime) {
         throw new UnsupportedOperationException(
-            "This API is not supported by this implementation of ReadOnlySessionStore.");
+                "This API is not supported by this implementation of ReadOnlySessionStore.");
     }
 
     /**
@@ -381,7 +381,7 @@ public interface ReadOnlySessionStore<K, AGG> {
      */
     default KeyValueIterator<Windowed<K>, AGG> backwardFetch(final K key) {
         throw new UnsupportedOperationException(
-            "This API is not supported by this implementation of ReadOnlySessionStore.");
+                "This API is not supported by this implementation of ReadOnlySessionStore.");
     }
 
     /**
@@ -416,7 +416,7 @@ public interface ReadOnlySessionStore<K, AGG> {
      */
     default KeyValueIterator<Windowed<K>, AGG> backwardFetch(final K keyFrom, final K keyTo) {
         throw new UnsupportedOperationException(
-            "This API is not supported by this implementation of ReadOnlySessionStore.");
+                "This API is not supported by this implementation of ReadOnlySessionStore.");
     }
 
     /**

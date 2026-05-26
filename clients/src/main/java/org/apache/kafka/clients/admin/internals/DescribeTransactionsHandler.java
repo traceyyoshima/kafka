@@ -86,7 +86,7 @@ public class DescribeTransactionsHandler extends AdminApiHandler.Batched<Coordin
         List<String> transactionalIds = keys.stream().map(key -> {
             if (key.type != FindCoordinatorRequest.CoordinatorType.TRANSACTION) {
                 throw new IllegalArgumentException("Invalid group coordinator key " + key +
-                    " when building `DescribeTransaction` request");
+                        " when building `DescribeTransaction` request");
             }
             return key.idValue;
         }).collect(Collectors.toList());
@@ -107,10 +107,10 @@ public class DescribeTransactionsHandler extends AdminApiHandler.Batched<Coordin
 
         for (DescribeTransactionsResponseData.TransactionState transactionState : response.data().transactionStates()) {
             CoordinatorKey transactionalIdKey = CoordinatorKey.byTransactionalId(
-                transactionState.transactionalId());
+                    transactionState.transactionalId());
             if (!keys.contains(transactionalIdKey)) {
                 log.warn("Response included transactionalId `{}`, which was not requested",
-                    transactionState.transactionalId());
+                        transactionState.transactionalId());
                 continue;
             }
 
@@ -125,13 +125,13 @@ public class DescribeTransactionsHandler extends AdminApiHandler.Batched<Coordin
                 OptionalLong.of(transactionState.transactionStartTimeMs());
 
             completed.put(transactionalIdKey, new TransactionDescription(
-                broker.id(),
-                TransactionState.parse(transactionState.transactionState()),
-                transactionState.producerId(),
-                transactionState.producerEpoch(),
-                transactionState.transactionTimeoutMs(),
-                transactionStartTimeMs,
-                collectTopicPartitions(transactionState)
+                    broker.id(),
+                    TransactionState.parse(transactionState.transactionState()),
+                    transactionState.producerId(),
+                    transactionState.producerEpoch(),
+                    transactionState.transactionTimeoutMs(),
+                    transactionStartTimeMs,
+                    collectTopicPartitions(transactionState)
             ));
         }
 
@@ -160,13 +160,13 @@ public class DescribeTransactionsHandler extends AdminApiHandler.Batched<Coordin
         switch (error) {
             case TRANSACTIONAL_ID_AUTHORIZATION_FAILED:
                 failed.put(transactionalIdKey, new TransactionalIdAuthorizationException(
-                    "DescribeTransactions request for transactionalId `" + transactionalIdKey.idValue + "` " +
+                        "DescribeTransactions request for transactionalId `" + transactionalIdKey.idValue + "` " +
                         "failed due to authorization failure"));
                 break;
 
             case TRANSACTIONAL_ID_NOT_FOUND:
                 failed.put(transactionalIdKey, new TransactionalIdNotFoundException(
-                    "DescribeTransactions request for transactionalId `" + transactionalIdKey.idValue + "` " +
+                        "DescribeTransactions request for transactionalId `" + transactionalIdKey.idValue + "` " +
                         "failed because the ID could not be found"));
                 break;
 
@@ -174,7 +174,7 @@ public class DescribeTransactionsHandler extends AdminApiHandler.Batched<Coordin
                 // If the coordinator is in the middle of loading, then we just need to retry
                 log.debug("DescribeTransactions request for transactionalId `{}` failed because the " +
                         "coordinator is still in the process of loading state. Will retry",
-                    transactionalIdKey.idValue);
+                        transactionalIdKey.idValue);
                 break;
 
             case NOT_COORDINATOR:
@@ -188,7 +188,7 @@ public class DescribeTransactionsHandler extends AdminApiHandler.Batched<Coordin
 
             default:
                 failed.put(transactionalIdKey, error.exception("DescribeTransactions request for " +
-                    "transactionalId `" + transactionalIdKey.idValue + "` failed due to unexpected error"));
+                        "transactionalId `" + transactionalIdKey.idValue + "` failed due to unexpected error"));
         }
     }
 

@@ -75,7 +75,7 @@ public class DeleteShareGroupOffsetsHandler extends AdminApiHandler.Batched<Coor
     private void validateKeys(Set<CoordinatorKey> groupIds) {
         if (!groupIds.equals(Collections.singleton(groupId))) {
             throw new IllegalArgumentException("Received unexpected group ids " + groupIds +
-                " (expected only " + Collections.singleton(groupId) + ")");
+                    " (expected only " + Collections.singleton(groupId) + ")");
         }
     }
 
@@ -84,16 +84,16 @@ public class DeleteShareGroupOffsetsHandler extends AdminApiHandler.Batched<Coor
         validateKeys(groupIds);
 
         final List<DeleteShareGroupOffsetsRequestData.DeleteShareGroupOffsetsRequestTopic> requestTopics =
-            new ArrayList<>();
+                new ArrayList<>();
         topics.forEach(topic -> requestTopics.add(
-            new DeleteShareGroupOffsetsRequestData.DeleteShareGroupOffsetsRequestTopic()
-                .setTopicName(topic)
+                new DeleteShareGroupOffsetsRequestData.DeleteShareGroupOffsetsRequestTopic()
+                    .setTopicName(topic)
         ));
 
         return new DeleteShareGroupOffsetsRequest.Builder(
-            new DeleteShareGroupOffsetsRequestData()
-                .setGroupId(groupId.idValue)
-                .setTopics(requestTopics)
+                new DeleteShareGroupOffsetsRequestData()
+                    .setGroupId(groupId.idValue)
+                    .setTopics(requestTopics)
         );
     }
 
@@ -123,11 +123,11 @@ public class DeleteShareGroupOffsetsHandler extends AdminApiHandler.Batched<Coor
                     final Errors topicError = Errors.forCode(topic.errorCode());
                     final String topicErrorMessage = topic.errorMessage();
                     log.debug("DeleteShareGroupOffsets request for group id {} and topic {} failed and returned error {}. {}",
-                        groupId.idValue, topic.topicName(), topicError, topicErrorMessage);
+                            groupId.idValue, topic.topicName(), topicError, topicErrorMessage);
                 }
                 topicResults.put(
-                    topic.topicName(),
-                    Errors.forCode(topic.errorCode()).exception(topic.errorMessage())
+                        topic.topicName(),
+                        Errors.forCode(topic.errorCode()).exception(topic.errorMessage())
                 );
             });
 
@@ -147,14 +147,14 @@ public class DeleteShareGroupOffsetsHandler extends AdminApiHandler.Batched<Coor
             case REBALANCE_IN_PROGRESS:
                 // If the coordinator is in the middle of loading, then we just need to retry
                 log.debug("DeleteShareGroupOffsets request for group id {} failed because the coordinator" +
-                    " is still in the process of loading state. Will retry. {}", groupId.idValue, errorMessage);
+                        " is still in the process of loading state. Will retry. {}", groupId.idValue, errorMessage);
                 break;
             case COORDINATOR_NOT_AVAILABLE:
             case NOT_COORDINATOR:
                 // If the coordinator is unavailable or there was a coordinator change, then we unmap
                 // the key so that we retry the `FindCoordinator` request
                 log.debug("DeleteShareGroupOffsets request for group id {} returned error {}. Will rediscover the coordinator and retry. {}",
-                    groupId.idValue, error, errorMessage);
+                        groupId.idValue, error, errorMessage);
                 groupsToUnmap.add(groupId);
                 break;
             case INVALID_GROUP_ID:

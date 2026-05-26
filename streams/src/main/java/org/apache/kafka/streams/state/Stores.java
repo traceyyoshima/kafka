@@ -388,26 +388,26 @@ public final class Stores {
         }
         if (windowSizeMs > retentionMs) {
             throw new IllegalArgumentException("The retention period of the window store "
-                + name + " must be no smaller than its window size. Got size=["
-                + windowSize + "], retention=[" + retentionPeriod + "]");
+                    + name + " must be no smaller than its window size. Got size=["
+                    + windowSize + "], retention=[" + retentionPeriod + "]");
         }
 
         if (storeType == TIMESTAMPED_WINDOW_STORE_WITH_HEADERS) {
             return new RocksDbWindowHeadersBytesStoreSupplier(
-                name,
-                retentionMs,
-                defaultSegmentInterval,
-                windowSizeMs,
-                retainDuplicates
+                    name,
+                    retentionMs,
+                    defaultSegmentInterval,
+                    windowSizeMs,
+                    retainDuplicates
             );
         } else {
             return new RocksDbWindowBytesStoreSupplier(
-                name,
-                retentionMs,
-                defaultSegmentInterval,
-                windowSizeMs,
-                retainDuplicates,
-                storeType
+                    name,
+                    retentionMs,
+                    defaultSegmentInterval,
+                    windowSizeMs,
+                    retainDuplicates,
+                    storeType
             );
         }
     }
@@ -452,8 +452,8 @@ public final class Stores {
 
         if (windowSizeMs > retentionMs) {
             throw new IllegalArgumentException("The retention period of the window store "
-                + name + " must be no smaller than its window size. Got size=["
-                + windowSize + "], retention=[" + retentionPeriod + "]");
+                    + name + " must be no smaller than its window size. Got size=["
+                    + windowSize + "], retention=[" + retentionPeriod + "]");
         }
 
         return new InMemoryWindowBytesStoreSupplier(name, retentionMs, windowSizeMs, retainDuplicates);

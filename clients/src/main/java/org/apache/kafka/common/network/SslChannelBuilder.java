@@ -120,7 +120,7 @@ public class SslChannelBuilder implements ChannelBuilder, ListenerReconfigurable
     protected SslTransportLayer buildTransportLayer(SslFactory sslFactory, String id, SelectionKey key, ChannelMetadataRegistry metadataRegistry) throws IOException {
         SocketChannel socketChannel = (SocketChannel) key.channel();
         return SslTransportLayer.create(id, key, sslFactory.createSslEngine(socketChannel.socket()),
-            metadataRegistry);
+                metadataRegistry);
     }
 
     /**
@@ -137,6 +137,7 @@ public class SslChannelBuilder implements ChannelBuilder, ListenerReconfigurable
             this.principalBuilder = ChannelBuilders.createPrincipalBuilder(configs, null, sslPrincipalMapper);
             this.listenerName = listenerName;
         }
+
         /**
          * No-Op for plaintext authenticator
          */

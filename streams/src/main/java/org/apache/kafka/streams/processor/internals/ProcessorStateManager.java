@@ -107,7 +107,6 @@ public class ProcessorStateManager implements StateManager {
 
         private final long retentionPeriod;
 
-
         private StateStoreMetadata(final StateStore stateStore,
                                    final CommitCallback commitCallback) {
             this.stateStore = stateStore;
@@ -350,7 +349,7 @@ public class ProcessorStateManager implements StateManager {
                         throw new TaskCorruptedException(Collections.singleton(taskId));
                     } else {
                         log.info("State store {} did not find checkpoint offset, hence would " +
-                                        "default to the starting offset at changelog {}",
+                                "default to the starting offset at changelog {}",
                                 store.stateStore.name(), store.changelogPartition);
                     }
                 }
@@ -361,7 +360,7 @@ public class ProcessorStateManager implements StateManager {
             stateDirectory.updateTaskOffsets(taskId, changelogOffsets());
         } catch (final RuntimeException e) {
             throw new ProcessorStateException(format("%sError updating state directory offsets when creating the state manager",
-                logPrefix), e);
+                    logPrefix), e);
         }
     }
 
@@ -381,7 +380,7 @@ public class ProcessorStateManager implements StateManager {
         if (LegacyCheckpointingStateStore.CHECKPOINT_FILE_NAME.startsWith(storeName)) {
             store.close();
             throw new IllegalArgumentException(format("%sIllegal store name: %s, which collides with the pre-defined " +
-                "checkpoint file name", logPrefix, storeName));
+                    "checkpoint file name", logPrefix, storeName));
         }
 
         if (stores.containsKey(storeName)) {
@@ -396,11 +395,11 @@ public class ProcessorStateManager implements StateManager {
 
         final StateStoreMetadata storeMetadata = isLoggingEnabled(storeName) ?
             new StateStoreMetadata(
-                store,
-                getStorePartition(storeName),
-                stateRestoreCallback,
-                commitCallback,
-                converterForStore(store)) :
+                    store,
+                    getStorePartition(storeName),
+                    stateRestoreCallback,
+                    commitCallback,
+                    converterForStore(store)) :
             new StateStoreMetadata(store, commitCallback);
 
         // register the store first, so that if later an exception is thrown then eventually while we call `close`
@@ -438,7 +437,7 @@ public class ProcessorStateManager implements StateManager {
 
         if (!partitionsToMarkAsCorrupted.isEmpty()) {
             throw new IllegalStateException("Some partitions " + partitionsToMarkAsCorrupted + " are not contained in " +
-                "the store list of task " + taskId + " marking as corrupted, this is not expected");
+                    "the store list of task " + taskId + " marking as corrupted, this is not expected");
         }
     }
 
@@ -451,8 +450,8 @@ public class ProcessorStateManager implements StateManager {
                 // for changelog whose offset is unknown, use 0L indicating earliest offset
                 // otherwise return the current offset + 1 as the next offset to fetch
                 changelogOffsets.put(
-                    storeMetadata.changelogPartition,
-                    storeMetadata.offset == null ? 0L : storeMetadata.offset + 1L);
+                        storeMetadata.changelogPartition,
+                        storeMetadata.offset == null ? 0L : storeMetadata.offset + 1L);
             }
         }
         return changelogOffsets;
@@ -494,7 +493,7 @@ public class ProcessorStateManager implements StateManager {
     void restore(final StateStoreMetadata storeMetadata, final List<ConsumerRecord<byte[], byte[]>> restoreRecords, final OptionalLong optionalLag) {
         if (!stores.containsValue(storeMetadata)) {
             throw new IllegalStateException("Restoring " + storeMetadata + " which is not registered in this state manager, " +
-                "this should not happen.");
+                    "this should not happen.");
         }
 
         if (!restoreRecords.isEmpty()) {
@@ -509,8 +508,8 @@ public class ProcessorStateManager implements StateManager {
                 restoreCallback.restoreBatch(convertedRecords);
             } catch (final RuntimeException e) {
                 throw new ProcessorStateException(
-                    format("%sException caught while trying to restore state from %s", logPrefix, storeMetadata.changelogPartition),
-                    e
+                        format("%sException caught while trying to restore state from %s", logPrefix, storeMetadata.changelogPartition),
+                        e
                 );
             }
 
@@ -606,14 +605,14 @@ public class ProcessorStateManager implements StateManager {
                         // In case of FailedProcessingException Do not keep the failed processing exception in the stack trace
                         if (exception instanceof FailedProcessingException) {
                             firstException = new ProcessorStateException(
-                                format("%sFailed to flush cache of store %s", logPrefix, store.name()),
-                                exception.getCause());
+                                    format("%sFailed to flush cache of store %s", logPrefix, store.name()),
+                                    exception.getCause());
                         } else if (exception instanceof StreamsException) {
                             firstException = exception;
                         } else {
                             firstException = new ProcessorStateException(
-                                format("%sFailed to flush cache of store %s", logPrefix, store.name()),
-                                exception
+                                    format("%sFailed to flush cache of store %s", logPrefix, store.name()),
+                                    exception
                             );
                         }
                         log.error("Failed to flush cache of store {}: ", store.name(), firstException);
@@ -656,13 +655,13 @@ public class ProcessorStateManager implements StateManager {
                         // In case of FailedProcessingException Do not keep the failed processing exception in the stack trace
                         if (exception instanceof FailedProcessingException)
                             firstException = new ProcessorStateException(
-                                format("%sFailed to close state store %s", logPrefix, store.name()),
-                                exception.getCause());
+                                    format("%sFailed to close state store %s", logPrefix, store.name()),
+                                    exception.getCause());
                         else if (exception instanceof StreamsException)
                             firstException = exception;
                         else
                             firstException = new ProcessorStateException(
-                                format("%sFailed to close state store %s", logPrefix, store.name()), exception);
+                                    format("%sFailed to close state store %s", logPrefix, store.name()), exception);
                         log.error("Failed to close state store {}: ", store.name(), firstException);
                     } else {
                         log.error("Failed to close state store {}: ", store.name(), exception);
@@ -763,7 +762,7 @@ public class ProcessorStateManager implements StateManager {
 
         if (found.size() > 1) {
             throw new IllegalStateException("Multiple state stores are found for changelog partition " + changelogPartition +
-                ", this should never happen: " + found);
+                    ", this should never happen: " + found);
         }
 
         return found.isEmpty() ? null : found.get(0);
@@ -773,14 +772,14 @@ public class ProcessorStateManager implements StateManager {
         final StateStoreMetadata storeMetadata = stores.get(storeName);
         if (storeMetadata == null) {
             throw new IllegalStateException("State store " + storeName
-                + " for which the registered changelog partition should be"
-                + " retrieved has not been registered"
+                    + " for which the registered changelog partition should be"
+                    + " retrieved has not been registered"
             );
         }
         if (storeMetadata.changelogPartition == null) {
             throw new IllegalStateException("Registered state store " + storeName
-                + " does not have a registered changelog partition."
-                + " This may happen if logging is disabled for the state store."
+                    + " does not have a registered changelog partition."
+                    + " This may happen if logging is disabled for the state store."
             );
         }
         return storeMetadata.changelogPartition;

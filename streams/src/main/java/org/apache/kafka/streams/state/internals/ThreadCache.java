@@ -126,7 +126,6 @@ public class ThreadCache {
         return tokens[1];
     }
 
-
     /**
      * Add a listener that is called each time an entry is evicted from the cache or an explicit flush is called
      */
@@ -339,7 +338,6 @@ public class ThreadCache {
             }
             return nextEntry.key;
         }
-
 
         public KeyValue<Bytes, LRUCacheEntry> peekNext() {
             if (!hasNext()) {

@@ -73,10 +73,10 @@ public class MemoryBatchReader<T> implements BatchReader<T> {
         CloseListener<BatchReader<T>> closeListener
     ) {
         return new MemoryBatchReader<>(
-            baseOffset,
-            lastOffset,
-            Collections.emptyIterator(),
-            closeListener
+                baseOffset,
+                lastOffset,
+                Collections.emptyIterator(),
+                closeListener
         );
     }
 
@@ -86,14 +86,14 @@ public class MemoryBatchReader<T> implements BatchReader<T> {
     ) {
         if (batches.isEmpty()) {
             throw new IllegalArgumentException("MemoryBatchReader requires at least " +
-                "one batch to iterate, but an empty list was provided");
+                    "one batch to iterate, but an empty list was provided");
         }
 
         return new MemoryBatchReader<>(
-            batches.get(0).baseOffset(),
-            batches.get(batches.size() - 1).lastOffset(),
-            batches.iterator(),
-            closeListener
+                batches.get(0).baseOffset(),
+                batches.get(batches.size() - 1).lastOffset(),
+                batches.iterator(),
+                closeListener
         );
     }
 }

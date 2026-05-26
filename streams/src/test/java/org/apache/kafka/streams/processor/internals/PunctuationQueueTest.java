@@ -85,7 +85,7 @@ public class PunctuationQueueTest {
         assertCanPunctuateAtPrecisely(now + 50L);
 
         final ProcessorNodePunctuator processorNodePunctuator =
-            (node, timestamp, type, punctuator) -> punctuator.punctuate(timestamp);
+                (node, timestamp, type, punctuator) -> punctuator.punctuate(timestamp);
 
         queue.maybePunctuate(now, PunctuationType.STREAM_TIME, processorNodePunctuator);
         assertEquals(0, node.mockProcessor.punctuatedStreamTime().size());

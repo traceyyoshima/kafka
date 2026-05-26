@@ -43,9 +43,9 @@ public class TopicDescription {
         if (o == null || getClass() != o.getClass()) return false;
         final TopicDescription that = (TopicDescription) o;
         return internal == that.internal &&
-            Objects.equals(name, that.name) &&
-            Objects.equals(partitions, that.partitions) &&
-            Objects.equals(authorizedOperations, that.authorizedOperations);
+                Objects.equals(name, that.name) &&
+                Objects.equals(partitions, that.partitions) &&
+                Objects.equals(authorizedOperations, that.authorizedOperations);
     }
 
     @Override

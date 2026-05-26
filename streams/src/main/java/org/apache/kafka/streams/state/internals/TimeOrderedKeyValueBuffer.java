@@ -72,8 +72,8 @@ public interface TimeOrderedKeyValueBuffer<K, V, T> extends StateStore {
             if (o == null || getClass() != o.getClass()) return false;
             final Eviction<?, ?> eviction = (Eviction<?, ?>) o;
             return Objects.equals(key, eviction.key) &&
-                Objects.equals(value, eviction.value) &&
-                Objects.equals(recordContext, eviction.recordContext);
+                    Objects.equals(value, eviction.value) &&
+                    Objects.equals(recordContext, eviction.recordContext);
         }
 
         @Override

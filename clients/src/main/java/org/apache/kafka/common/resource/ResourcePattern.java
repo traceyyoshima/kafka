@@ -103,8 +103,8 @@ public class ResourcePattern {
 
         final ResourcePattern resource = (ResourcePattern) o;
         return resourceType == resource.resourceType &&
-            Objects.equals(name, resource.name) &&
-            patternType == resource.patternType;
+                Objects.equals(name, resource.name) &&
+                patternType == resource.patternType;
     }
 
     @Override

@@ -59,6 +59,6 @@ public class SubscriptionPattern {
     @Override
     public boolean equals(Object obj) {
         return obj instanceof SubscriptionPattern &&
-            Objects.equals(pattern, ((SubscriptionPattern) obj).pattern);
+                Objects.equals(pattern, ((SubscriptionPattern) obj).pattern);
     }
 }

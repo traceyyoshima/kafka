@@ -113,7 +113,7 @@ public class BrokerJwtValidator implements JwtValidator {
         String subClaimName = cu.validateString(SASL_OAUTHBEARER_SUB_CLAIM_NAME);
 
         CloseableVerificationKeyResolver verificationKeyResolver = verificationKeyResolverOpt.orElseGet(
-            () -> VerificationKeyResolverFactory.get(configs, saslMechanism, jaasConfigEntries)
+                () -> VerificationKeyResolverFactory.get(configs, saslMechanism, jaasConfigEntries)
         );
 
         final JwtConsumerBuilder jwtConsumerBuilder = new JwtConsumerBuilder();
@@ -176,16 +176,16 @@ public class BrokerJwtValidator implements JwtValidator {
 
         Set<String> scopes = ClaimValidationUtils.validateScopes(scopeClaimName, scopeRawCollection);
         long expiration = ClaimValidationUtils.validateExpiration(ReservedClaimNames.EXPIRATION_TIME,
-            expirationRaw != null ? expirationRaw.getValueInMillis() : null);
+                expirationRaw != null ? expirationRaw.getValueInMillis() : null);
         String sub = ClaimValidationUtils.validateSubject(subClaimName, subRaw);
         Long issuedAt = ClaimValidationUtils.validateIssuedAt(ReservedClaimNames.ISSUED_AT,
-            issuedAtRaw != null ? issuedAtRaw.getValueInMillis() : null);
+                issuedAtRaw != null ? issuedAtRaw.getValueInMillis() : null);
 
         return new BasicOAuthBearerToken(accessToken,
-            scopes,
-            expiration,
-            sub,
-            issuedAt);
+                scopes,
+                expiration,
+                sub,
+                issuedAt);
     }
 
     private <T> T getClaim(ClaimSupplier<T> supplier, String claimName) throws JwtValidatorException {

@@ -66,6 +66,6 @@ class StateQueryResultTest {
         stringStateQueryResult.addResult(0, validResult);
         stringStateQueryResult.addResult(1, validResult);
         assertThrows(IllegalArgumentException.class, () -> stringStateQueryResult.getOnlyPartitionResult(),
-            "More than one query result throws IllegalArgumentException");
+                "More than one query result throws IllegalArgumentException");
     }
 }

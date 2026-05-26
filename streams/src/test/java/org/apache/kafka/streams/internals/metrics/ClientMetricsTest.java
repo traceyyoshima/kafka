@@ -46,7 +46,6 @@ public class ClientMetricsTest {
     private final Sensor expectedSensor = mock(Sensor.class);
     private final Map<String, String> tagMap = Collections.singletonMap("hello", "world");
 
-
     @Test
     public void shouldAddVersionMetric() {
         final String name = "version";
@@ -67,10 +66,10 @@ public class ClientMetricsTest {
         final String description = "The application ID of the Kafka Streams client";
         final String applicationId = "thisIsAnID";
         setUpAndVerifyImmutableMetric(
-            name,
-            description,
-            applicationId,
-            () -> ClientMetrics.addApplicationIdMetric(streamsMetrics, applicationId)
+                name,
+                description,
+                applicationId,
+                () -> ClientMetrics.addApplicationIdMetric(streamsMetrics, applicationId)
         );
     }
 
@@ -81,10 +80,10 @@ public class ClientMetricsTest {
         final String topologyDescription = "thisIsATopologyDescription";
         final Gauge<String> topologyDescriptionProvider = (c, n) -> topologyDescription;
         setUpAndVerifyMutableMetric(
-            name,
-            description,
-            topologyDescriptionProvider,
-            () -> ClientMetrics.addTopologyDescriptionMetric(streamsMetrics, topologyDescriptionProvider)
+                name,
+                description,
+                topologyDescriptionProvider,
+                () -> ClientMetrics.addTopologyDescriptionMetric(streamsMetrics, topologyDescriptionProvider)
         );
     }
 
@@ -94,10 +93,10 @@ public class ClientMetricsTest {
         final String description = "The state of the Kafka Streams client";
         final Gauge<String> stateProvider = (config, now) -> State.RUNNING.name();
         setUpAndVerifyMutableMetric(
-            name,
-            description,
-            stateProvider,
-            () -> ClientMetrics.addStateMetric(streamsMetrics, stateProvider)
+                name,
+                description,
+                stateProvider,
+                () -> ClientMetrics.addStateMetric(streamsMetrics, stateProvider)
         );
     }
 
@@ -107,10 +106,10 @@ public class ClientMetricsTest {
         final String description = "The current number of alive stream threads that are running or participating in rebalance";
         final Gauge<Integer> valueProvider = (config, now) -> 1;
         setUpAndVerifyMutableMetric(
-            name,
-            description,
-            valueProvider,
-            () -> ClientMetrics.addNumAliveStreamThreadMetric(streamsMetrics, valueProvider)
+                name,
+                description,
+                valueProvider,
+                () -> ClientMetrics.addNumAliveStreamThreadMetric(streamsMetrics, valueProvider)
         );
     }
 
@@ -127,11 +126,11 @@ public class ClientMetricsTest {
         ClientMetrics.addClientStateTelemetryMetric(PROCESS_ID, APPLICATION_ID, streamsMetrics, stateProvider);
 
         verify(streamsMetrics).addClientLevelMutableMetric(
-            eq(name),
-            eq(description),
-            eq(additionalTags),
-            eq(RecordingLevel.INFO),
-            eq(stateProvider)
+                eq(name),
+                eq(description),
+                eq(additionalTags),
+                eq(RecordingLevel.INFO),
+                eq(stateProvider)
         );
     }
 
@@ -144,11 +143,11 @@ public class ClientMetricsTest {
         ClientMetrics.addClientRecordingLevelMetric(PROCESS_ID, streamsMetrics, recordingLevel);
 
         verify(streamsMetrics).addClientLevelImmutableMetric(
-            eq(name),
-            eq(description),
-            eq(Collections.singletonMap("process-id", PROCESS_ID)),
-            eq(RecordingLevel.INFO),
-            eq(recordingLevel)
+                eq(name),
+                eq(description),
+                eq(Collections.singletonMap("process-id", PROCESS_ID)),
+                eq(RecordingLevel.INFO),
+                eq(recordingLevel)
         );
     }
 
@@ -159,12 +158,12 @@ public class ClientMetricsTest {
         when(streamsMetrics.clientLevelSensor(name, RecordingLevel.INFO)).thenReturn(expectedSensor);
         when(streamsMetrics.clientLevelTagMap()).thenReturn(tagMap);
         StreamsMetricsImpl.addSumMetricToSensor(
-            expectedSensor,
-            CLIENT_LEVEL_GROUP,
-            tagMap,
-            name,
-            false,
-            description
+                expectedSensor,
+                CLIENT_LEVEL_GROUP,
+                tagMap,
+                name,
+                false,
+                description
         );
 
         final Sensor sensor = ClientMetrics.failedStreamThreadSensor(streamsMetrics);

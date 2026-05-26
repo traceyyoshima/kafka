@@ -64,7 +64,6 @@ public class Grouped<K, V> implements NamedOperation<Grouped<K, V>> {
         return new Grouped<>(name, null, null);
     }
 
-
     /**
      * Create a {@link Grouped} instance with the provided keySerde. If {@code null} the default key serde from config will be used.
      *
@@ -83,7 +82,6 @@ public class Grouped<K, V> implements NamedOperation<Grouped<K, V>> {
     public static <K, V> Grouped<K, V> keySerde(final Serde<K> keySerde) {
         return new Grouped<>(null, keySerde, null);
     }
-
 
     /**
      * Create a {@link Grouped} instance with the provided valueSerde.  If {@code null} the default value serde from config will be used.
@@ -129,7 +127,6 @@ public class Grouped<K, V> implements NamedOperation<Grouped<K, V>> {
                                             final Serde<V> valueSerde) {
         return new Grouped<>(name, keySerde, valueSerde);
     }
-
 
     /**
      * Create a {@link Grouped} instance with the provided keySerde and valueSerde.  If the keySerde and/or the valueSerde is

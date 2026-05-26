@@ -436,7 +436,6 @@ public interface Admin extends AutoCloseable {
      */
     DeleteAclsResult deleteAcls(Collection<AclBindingFilter> filters, DeleteAclsOptions options);
 
-
     /**
      * Get the configuration for the specified resources with the default options.
      * <p>
@@ -716,7 +715,6 @@ public interface Admin extends AutoCloseable {
         return createDelegationToken(new CreateDelegationTokenOptions());
     }
 
-
     /**
      * Create a Delegation Token.
      * <p>
@@ -739,7 +737,6 @@ public interface Admin extends AutoCloseable {
      * @return The CreateDelegationTokenResult.
      */
     CreateDelegationTokenResult createDelegationToken(CreateDelegationTokenOptions options);
-
 
     /**
      * Renew a Delegation Token.
@@ -1047,8 +1044,8 @@ public interface Admin extends AutoCloseable {
      * @return The DeleteStreamsGroupOffsetsResult.
      */
     DeleteStreamsGroupOffsetsResult deleteStreamsGroupOffsets(String groupId,
-                                                                Set<TopicPartition> partitions,
-                                                                DeleteStreamsGroupOffsetsOptions options);
+                                                              Set<TopicPartition> partitions,
+                                                              DeleteStreamsGroupOffsetsOptions options);
 
     /**
      * Delete committed offsets for a set of partitions in a streams group with the default
@@ -1136,7 +1133,6 @@ public interface Admin extends AutoCloseable {
         Set<TopicPartition> partitions,
         ElectLeadersOptions options);
 
-
     /**
      * Change the reassignments for one or more partitions.
      * Providing an empty Optional (e.g via {@link Optional#empty()}) will <bold>revert</bold> the reassignment for the associated partition.
@@ -1182,7 +1178,6 @@ public interface Admin extends AutoCloseable {
     AlterPartitionReassignmentsResult alterPartitionReassignments(
         Map<TopicPartition, Optional<NewPartitionReassignment>> reassignments,
         AlterPartitionReassignmentsOptions options);
-
 
     /**
      * List all of the current partition reassignments
@@ -1514,6 +1509,7 @@ public interface Admin extends AutoCloseable {
      */
     AlterUserScramCredentialsResult alterUserScramCredentials(List<UserScramCredentialAlteration> alterations,
                                                               AlterUserScramCredentialsOptions options);
+
     /**
      * Describes finalized as well as supported features.
      * <p>
@@ -2161,6 +2157,6 @@ public interface Admin extends AutoCloseable {
      * @param options               The options to use when terminating the transaction.
      * @return The TerminateTransactionResult.
      */
-    TerminateTransactionResult forceTerminateTransaction(String transactionalId, 
+    TerminateTransactionResult forceTerminateTransaction(String transactionalId,
                                                          TerminateTransactionOptions options);
 }

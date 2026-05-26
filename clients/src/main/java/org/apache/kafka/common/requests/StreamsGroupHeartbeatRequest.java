@@ -64,9 +64,9 @@ public class StreamsGroupHeartbeatRequest extends AbstractRequest {
     @Override
     public AbstractResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         return new StreamsGroupHeartbeatResponse(
-            new StreamsGroupHeartbeatResponseData()
-                .setThrottleTimeMs(throttleTimeMs)
-                .setErrorCode(Errors.forException(e).code())
+                new StreamsGroupHeartbeatResponseData()
+                    .setThrottleTimeMs(throttleTimeMs)
+                    .setErrorCode(Errors.forException(e).code())
         );
     }
 
@@ -77,6 +77,6 @@ public class StreamsGroupHeartbeatRequest extends AbstractRequest {
 
     public static StreamsGroupHeartbeatRequest parse(Readable readable, short version) {
         return new StreamsGroupHeartbeatRequest(new StreamsGroupHeartbeatRequestData(
-            readable, version), version);
+                readable, version), version);
     }
 }

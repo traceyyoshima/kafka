@@ -84,7 +84,7 @@ public final class ControlRecord {
         if (other == null || getClass() != other.getClass()) return false;
         ControlRecord that = (ControlRecord) other;
         return Objects.equals(recordType, that.recordType) &&
-            Objects.equals(message, that.message);
+                Objects.equals(message, that.message);
     }
 
     @Override

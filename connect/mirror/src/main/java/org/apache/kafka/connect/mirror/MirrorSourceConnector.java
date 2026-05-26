@@ -85,7 +85,7 @@ public class MirrorSourceConnector extends SourceConnector {
 
     private static final Logger log = LoggerFactory.getLogger(MirrorSourceConnector.class);
     private static final ResourcePatternFilter ANY_TOPIC = new ResourcePatternFilter(ResourceType.TOPIC,
-        null, PatternType.ANY);
+            null, PatternType.ANY);
     private static final AclBindingFilter ANY_TOPIC_ACL = new AclBindingFilter(ANY_TOPIC, AccessControlEntryFilter.ANY);
     private static final String READ_COMMITTED = IsolationLevel.READ_COMMITTED.toString();
     private static final String EXACTLY_ONCE_SUPPORT_CONFIG = "exactly.once.support";
@@ -163,9 +163,9 @@ public class MirrorSourceConnector extends SourceConnector {
         scheduler.execute(this::refreshKnownTargetTopics, "refreshing known target topics");
         scheduler.scheduleRepeating(this::syncTopicAcls, config.syncTopicAclsInterval(), "syncing topic ACLs");
         scheduler.scheduleRepeating(this::syncTopicConfigs, config.syncTopicConfigsInterval(),
-            "syncing topic configs");
+                "syncing topic configs");
         scheduler.scheduleRepeatingDelayed(this::refreshTopicPartitions, config.refreshTopicsInterval(),
-            "refreshing topics");
+                "refreshing topics");
         log.info("Started {} with {} topic-partitions.", connectorName, knownSourceTopicPartitions.size());
         log.info("Starting {} took {} ms.", connectorName, System.currentTimeMillis() - start);
     }
@@ -267,9 +267,9 @@ public class MirrorSourceConnector extends SourceConnector {
                 // guarantees with the given configuration
                 exactlyOnceSupport.addErrorMessage(
                         "MirrorSourceConnector can only provide exactly-once guarantees when its source consumer is configured with "
-                                + ConsumerConfig.ISOLATION_LEVEL_CONFIG + " set to '" + READ_COMMITTED + "'; "
-                                + "otherwise, records from aborted and uncommitted transactions will be replicated from the "
-                                + "source cluster to the target cluster."
+                        + ConsumerConfig.ISOLATION_LEVEL_CONFIG + " set to '" + READ_COMMITTED + "'; "
+                        + "otherwise, records from aborted and uncommitted transactions will be replicated from the "
+                        + "source cluster to the target cluster."
                 );
             }
         }
@@ -322,7 +322,7 @@ public class MirrorSourceConnector extends SourceConnector {
 
     // visible for testing
     List<TopicPartition> findSourceTopicPartitions()
-            throws InterruptedException, ExecutionException {
+        throws InterruptedException, ExecutionException {
         Set<String> topics = listTopics(sourceAdminClient).stream()
             .filter(this::shouldReplicateTopic)
             .collect(Collectors.toSet());
@@ -333,7 +333,7 @@ public class MirrorSourceConnector extends SourceConnector {
 
     // visible for testing
     List<TopicPartition> findTargetTopicPartitions()
-            throws InterruptedException, ExecutionException {
+        throws InterruptedException, ExecutionException {
         Set<String> topics = listTopics(targetAdminClient).stream()
             .filter(t -> sourceAndTarget.source().equals(replicationPolicy.topicSource(t)))
             .filter(t -> !t.equals(config.checkpointsTopic()))
@@ -345,7 +345,7 @@ public class MirrorSourceConnector extends SourceConnector {
 
     // visible for testing
     void refreshTopicPartitions()
-            throws InterruptedException, ExecutionException {
+        throws InterruptedException, ExecutionException {
 
         List<TopicPartition> sourceTopicPartitions = findSourceTopicPartitions();
         List<TopicPartition> targetTopicPartitions = findTargetTopicPartitions();
@@ -390,13 +390,13 @@ public class MirrorSourceConnector extends SourceConnector {
     }
 
     private void loadTopicPartitions()
-            throws InterruptedException, ExecutionException {
+        throws InterruptedException, ExecutionException {
         knownSourceTopicPartitions = findSourceTopicPartitions();
         knownTargetTopicPartitions = findTargetTopicPartitions();
     }
 
     private void refreshKnownTargetTopics()
-            throws InterruptedException, ExecutionException {
+        throws InterruptedException, ExecutionException {
         knownTargetTopicPartitions = findTargetTopicPartitions();
     }
 
@@ -417,7 +417,7 @@ public class MirrorSourceConnector extends SourceConnector {
 
     // Visible for testing
     void syncTopicAcls()
-            throws InterruptedException, ExecutionException {
+        throws InterruptedException, ExecutionException {
         Optional<Collection<AclBinding>> rawBindings = listTopicAclBindings();
         if (rawBindings.isEmpty())
             return;
@@ -433,7 +433,7 @@ public class MirrorSourceConnector extends SourceConnector {
 
     // visible for testing
     void syncTopicConfigs()
-            throws InterruptedException, ExecutionException {
+        throws InterruptedException, ExecutionException {
         Map<String, Config> sourceConfigs = describeTopicConfigs(topicsBeingReplicated());
         Map<String, Config> targetConfigs = sourceConfigs.entrySet().stream()
             .collect(Collectors.toMap(x -> formatRemoteTopic(x.getKey()), x -> targetConfig(x.getValue(), true)));
@@ -489,14 +489,14 @@ public class MirrorSourceConnector extends SourceConnector {
         if (!sourceTopicsWithNewPartitions.isEmpty()) {
             Map<String, NewPartitions> newTargetPartitions = sourceTopicsWithNewPartitions.entrySet().stream()
                     .collect(Collectors.toMap(sourceTopicAndPartitionCount -> sourceToRemoteTopics.get(sourceTopicAndPartitionCount.getKey()),
-                        sourceTopicAndPartitionCount -> NewPartitions.increaseTo(sourceTopicAndPartitionCount.getValue().intValue())));
+                            sourceTopicAndPartitionCount -> NewPartitions.increaseTo(sourceTopicAndPartitionCount.getValue().intValue())));
             createNewPartitions(newTargetPartitions);
         }
     }
 
     // visible for testing
     void createNewTopics(Set<String> newSourceTopics, Map<String, Long> sourceTopicToPartitionCounts)
-            throws ExecutionException, InterruptedException {
+        throws ExecutionException, InterruptedException {
         Map<String, Config> sourceTopicToConfig = describeTopicConfigs(newSourceTopics);
         Map<String, NewTopic> newTopics = newSourceTopics.stream()
                 .map(sourceTopic -> {
@@ -547,7 +547,7 @@ public class MirrorSourceConnector extends SourceConnector {
     }
 
     private Set<String> listTopics(Admin adminClient)
-            throws InterruptedException, ExecutionException {
+        throws InterruptedException, ExecutionException {
         return adminCall(
                 () -> adminClient.listTopics().names().get(),
                 () -> "list topics on " + actualClusterAlias(adminClient) + " cluster"
@@ -555,7 +555,7 @@ public class MirrorSourceConnector extends SourceConnector {
     }
 
     private Optional<Collection<AclBinding>> listTopicAclBindings()
-            throws InterruptedException, ExecutionException {
+        throws InterruptedException, ExecutionException {
         return adminCall(
                 () -> {
                     Collection<AclBinding> bindings;
@@ -566,7 +566,7 @@ public class MirrorSourceConnector extends SourceConnector {
                             if (noAclAuthorizer.compareAndSet(false, true)) {
                                 log.info(
                                         "No ACL authorizer is configured on the source Kafka cluster, so no topic ACL syncing will take place. "
-                                                + "Consider disabling topic ACL syncing by setting " + SYNC_TOPIC_ACLS_ENABLED + " to 'false'."
+                                        + "Consider disabling topic ACL syncing by setting " + SYNC_TOPIC_ACLS_ENABLED + " to 'false'."
                                 );
                             } else {
                                 log.debug("Source-side ACL authorizer still not found; skipping topic ACL sync");
@@ -583,7 +583,7 @@ public class MirrorSourceConnector extends SourceConnector {
     }
 
     private Collection<TopicDescription> describeTopics(Admin adminClient, Collection<String> topics)
-            throws InterruptedException, ExecutionException {
+        throws InterruptedException, ExecutionException {
         return adminCall(
                 () -> adminClient.describeTopics(topics).allTopicNames().get().values(),
                 () -> String.format("describe topics %s on %s cluster", topics, actualClusterAlias(adminClient))
@@ -594,7 +594,6 @@ public class MirrorSourceConnector extends SourceConnector {
         return config.entries().stream()
                 .collect(Collectors.toMap(ConfigEntry::name, ConfigEntry::value));
     }
-
 
     // visible for testing
     void incrementalAlterConfigs(Map<String, Config> topicConfigs) throws ExecutionException, InterruptedException {
@@ -630,7 +629,7 @@ public class MirrorSourceConnector extends SourceConnector {
                 }));
             return null;
         },
-            () -> String.format("incremental alter topic configs %s on %s cluster", topicConfigs,
+                () -> String.format("incremental alter topic configs %s on %s cluster", topicConfigs,
                     config.targetClusterAlias()));
     }
 
@@ -656,7 +655,7 @@ public class MirrorSourceConnector extends SourceConnector {
     }
 
     Map<String, Config> describeTopicConfigs(Set<String> topics)
-            throws InterruptedException, ExecutionException {
+        throws InterruptedException, ExecutionException {
         Set<ConfigResource> resources = topics.stream()
             .map(x -> new ConfigResource(ConfigResource.Type.TOPIC, x))
             .collect(Collectors.toSet());
@@ -699,12 +698,12 @@ public class MirrorSourceConnector extends SourceConnector {
     boolean shouldReplicateTopic(String topic) {
         return (topicFilter.shouldReplicateTopic(topic)
                 || (heartbeatsReplicationEnabled && replicationPolicy.isHeartbeatsTopic(topic)))
-            && !replicationPolicy.isInternalTopic(topic) && !isCycle(topic);
+                && !replicationPolicy.isInternalTopic(topic) && !isCycle(topic);
     }
 
     boolean shouldReplicateAcl(AclBinding aclBinding) {
         return !(aclBinding.entry().permissionType() == AclPermissionType.ALLOW
-            && aclBinding.entry().operation() == AclOperation.WRITE);
+                && aclBinding.entry().operation() == AclOperation.WRITE);
     }
 
     boolean shouldReplicateTopicConfigurationProperty(String property) {

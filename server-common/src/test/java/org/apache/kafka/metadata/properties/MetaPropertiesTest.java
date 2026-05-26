@@ -32,41 +32,41 @@ public final class MetaPropertiesTest {
     @Test
     public void testV0SerializationWithNothing() {
         testV0Serialization(Optional.empty(),
-            OptionalInt.empty(),
-             Optional.empty(),
-            "MetaProperties(version=0)");
+                OptionalInt.empty(),
+                Optional.empty(),
+                "MetaProperties(version=0)");
     }
 
     @Test
     public void testV0SerializationWithJustClusterId() {
         testV0Serialization(Optional.of("zd2vLVrZQlCLJj8-k7A10w"),
-            OptionalInt.empty(),
-            Optional.empty(),
-            "MetaProperties(version=0, clusterId=zd2vLVrZQlCLJj8-k7A10w)");
+                OptionalInt.empty(),
+                Optional.empty(),
+                "MetaProperties(version=0, clusterId=zd2vLVrZQlCLJj8-k7A10w)");
     }
 
     @Test
     public void testV0SerializationWithJustNodeId() {
         testV0Serialization(Optional.empty(),
-            OptionalInt.of(0),
-            Optional.empty(),
-            "MetaProperties(version=0, nodeId=0)");
+                OptionalInt.of(0),
+                Optional.empty(),
+                "MetaProperties(version=0, nodeId=0)");
     }
 
     @Test
     public void testV0SerializationWithJustClusterIdAndNodeId() {
         testV0Serialization(Optional.of("zd2vLVrZQlCLJj8-k7A10w"),
-            OptionalInt.of(0),
-            Optional.empty(),
-            "MetaProperties(version=0, clusterId=zd2vLVrZQlCLJj8-k7A10w, nodeId=0)");
+                OptionalInt.of(0),
+                Optional.empty(),
+                "MetaProperties(version=0, clusterId=zd2vLVrZQlCLJj8-k7A10w, nodeId=0)");
     }
 
     @Test
     public void testV0SerializationWithAll() {
         testV0Serialization(Optional.of("zd2vLVrZQlCLJj8-k7A10w"),
-            OptionalInt.of(0),
-            Optional.of(Uuid.fromString("3Adc4FjfTeypRWROmQDNIQ")),
-            "MetaProperties(version=0, clusterId=zd2vLVrZQlCLJj8-k7A10w, nodeId=0, " +
+                OptionalInt.of(0),
+                Optional.of(Uuid.fromString("3Adc4FjfTeypRWROmQDNIQ")),
+                "MetaProperties(version=0, clusterId=zd2vLVrZQlCLJj8-k7A10w, nodeId=0, " +
                 "directoryId=3Adc4FjfTeypRWROmQDNIQ)");
     }
 
@@ -105,26 +105,26 @@ public final class MetaPropertiesTest {
     @Test
     public void testV1SerializationWithoutDirectoryId() {
         testV1Serialization("zd2vLVrZQlCLJj8-k7A10w",
-            0,
-            Optional.empty(),
-            "MetaProperties(version=1, clusterId=zd2vLVrZQlCLJj8-k7A10w, nodeId=0)");
+                0,
+                Optional.empty(),
+                "MetaProperties(version=1, clusterId=zd2vLVrZQlCLJj8-k7A10w, nodeId=0)");
     }
 
     @Test
     public void testV1SerializationWithDirectoryId() {
         testV1Serialization("zd2vLVrZQlCLJj8-k7A10w",
-            1,
-            Optional.of(Uuid.fromString("3Adc4FjfTeypRWROmQDNIQ")),
-            "MetaProperties(version=1, clusterId=zd2vLVrZQlCLJj8-k7A10w, nodeId=1, " +
+                1,
+                Optional.of(Uuid.fromString("3Adc4FjfTeypRWROmQDNIQ")),
+                "MetaProperties(version=1, clusterId=zd2vLVrZQlCLJj8-k7A10w, nodeId=1, " +
                 "directoryId=3Adc4FjfTeypRWROmQDNIQ)");
     }
 
     @Test
     public void testV1SerializationWithNonUuidClusterId() {
         testV1Serialization("my@cluster@id",
-            2,
-            Optional.empty(),
-            "MetaProperties(version=1, clusterId=my@cluster@id, nodeId=2)");
+                2,
+                Optional.empty(),
+                "MetaProperties(version=1, clusterId=my@cluster@id, nodeId=2)");
     }
 
     private void testV1Serialization(
@@ -160,18 +160,18 @@ public final class MetaPropertiesTest {
     @Test
     public void testClusterIdRequiredInV1() {
         assertEquals("cluster.id was not found.", assertThrows(RuntimeException.class,
-            () -> new MetaProperties.Builder().
-                setVersion(MetaPropertiesVersion.V1).
-                setNodeId(1).
-                build()).getMessage());
+                () -> new MetaProperties.Builder().
+                    setVersion(MetaPropertiesVersion.V1).
+                    setNodeId(1).
+                    build()).getMessage());
     }
 
     @Test
     public void testNodeIdRequiredInV1() {
         assertEquals("node.id was not found.", assertThrows(RuntimeException.class,
-            () -> new MetaProperties.Builder().
-                setVersion(MetaPropertiesVersion.V1).
-                setClusterId("zd2vLVrZQlCLJj8-k7A10w").
-                build()).getMessage());
+                () -> new MetaProperties.Builder().
+                    setVersion(MetaPropertiesVersion.V1).
+                    setClusterId("zd2vLVrZQlCLJj8-k7A10w").
+                    build()).getMessage());
     }
 }

@@ -123,16 +123,16 @@ public class StreamsUncaughtExceptionHandlerIntegrationTest {
             protocol = GroupProtocol.CLASSIC.name().toLowerCase(Locale.getDefault());
         }
         final Properties props = mkObjectProperties(
-            mkMap(
-                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
-                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, appId),
-                mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
-                mkEntry(StreamsConfig.NUM_STREAM_THREADS_CONFIG, 2),
-                mkEntry(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.StringSerde.class),
-                mkEntry(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.StringSerde.class),
-                mkEntry(StreamsConfig.consumerPrefix(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG), 10000),
-                mkEntry(StreamsConfig.GROUP_PROTOCOL_CONFIG, protocol)
-            )
+                mkMap(
+                        mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
+                        mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, appId),
+                        mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
+                        mkEntry(StreamsConfig.NUM_STREAM_THREADS_CONFIG, 2),
+                        mkEntry(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.StringSerde.class),
+                        mkEntry(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.StringSerde.class),
+                        mkEntry(StreamsConfig.consumerPrefix(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG), 10000),
+                        mkEntry(StreamsConfig.GROUP_PROTOCOL_CONFIG, protocol)
+                )
         );
         StreamsTestUtils.maybeSetDslStoreFormatHeaders(props, withHeaders);
         return props;
@@ -295,68 +295,68 @@ public class StreamsUncaughtExceptionHandlerIntegrationTest {
             startApplicationAndWaitUntilRunning(kafkaStreams);
 
             IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-                inputTopic,
-                asList(
-                    new KeyValue<>(1, "A"),
-                    new KeyValue<>(1, "B")
-                ),
-                TestUtils.producerConfig(
-                    CLUSTER.bootstrapServers(),
-                    IntegerSerializer.class,
-                    StringSerializer.class,
-                    new Properties()),
+                    inputTopic,
+                    asList(
+                            new KeyValue<>(1, "A"),
+                            new KeyValue<>(1, "B")
+                    ),
+                    TestUtils.producerConfig(
+                            CLUSTER.bootstrapServers(),
+                            IntegerSerializer.class,
+                            StringSerializer.class,
+                            new Properties()),
                     NOW);
 
             IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-                inputTopic2,
-                asList(
-                    new KeyValue<>(1, "A"),
-                    new KeyValue<>(1, "B")
-                ),
-                TestUtils.producerConfig(
-                    CLUSTER.bootstrapServers(),
-                    IntegerSerializer.class,
-                    StringSerializer.class,
-                    new Properties()),
+                    inputTopic2,
+                    asList(
+                            new KeyValue<>(1, "A"),
+                            new KeyValue<>(1, "B")
+                    ),
+                    TestUtils.producerConfig(
+                            CLUSTER.bootstrapServers(),
+                            IntegerSerializer.class,
+                            StringSerializer.class,
+                            new Properties()),
                     NOW);
 
             IntegrationTestUtils.waitUntilFinalKeyValueRecordsReceived(
-                TestUtils.consumerConfig(
-                    CLUSTER.bootstrapServers(),
-                    IntegerDeserializer.class,
-                    StringDeserializer.class
-                ),
-                outputTopic,
-                asList(
-                    new KeyValue<>(1, "A"),
-                    new KeyValue<>(1, "B")
-                )
+                    TestUtils.consumerConfig(
+                            CLUSTER.bootstrapServers(),
+                            IntegerDeserializer.class,
+                            StringDeserializer.class
+                    ),
+                    outputTopic,
+                    asList(
+                            new KeyValue<>(1, "A"),
+                            new KeyValue<>(1, "B")
+                    )
             );
             IntegrationTestUtils.waitUntilFinalKeyValueRecordsReceived(
-                TestUtils.consumerConfig(
-                    CLUSTER.bootstrapServers(),
-                    IntegerDeserializer.class,
-                    StringDeserializer.class
-                ),
-                outputTopic2,
-                asList(
-                    new KeyValue<>(1, "A"),
-                    new KeyValue<>(1, "B")
-                )
+                    TestUtils.consumerConfig(
+                            CLUSTER.bootstrapServers(),
+                            IntegerDeserializer.class,
+                            StringDeserializer.class
+                    ),
+                    outputTopic2,
+                    asList(
+                            new KeyValue<>(1, "A"),
+                            new KeyValue<>(1, "B")
+                    )
             );
         }
     }
 
     private void produceMessages(final long timestamp, final String streamOneInput, final String msg) {
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-            streamOneInput,
-            Collections.singletonList(new KeyValue<>("1", msg)),
-            TestUtils.producerConfig(
-                CLUSTER.bootstrapServers(),
-                StringSerializer.class,
-                StringSerializer.class,
-                new Properties()),
-            timestamp);
+                streamOneInput,
+                Collections.singletonList(new KeyValue<>("1", msg)),
+                TestUtils.producerConfig(
+                        CLUSTER.bootstrapServers(),
+                        StringSerializer.class,
+                        StringSerializer.class,
+                        new Properties()),
+                timestamp);
     }
 
     private void testShutdownApplication(final int numThreads) throws Exception {
@@ -364,7 +364,7 @@ public class StreamsUncaughtExceptionHandlerIntegrationTest {
 
         final Topology topology = builder.build();
         final MockTime time = new MockTime(0L);
-        
+
         try (final KafkaStreams kafkaStreams1 = new KafkaStreams(topology, properties, time);
              final KafkaStreams kafkaStreams2 = new KafkaStreams(topology, properties, time);
              final LogCaptureAppender logCaptureAppender = LogCaptureAppender.createAndRegister()) {
@@ -402,7 +402,7 @@ public class StreamsUncaughtExceptionHandlerIntegrationTest {
             waitForApplicationState(Collections.singletonList(kafkaStreams), KafkaStreams.State.NOT_RUNNING, DEFAULT_DURATION);
 
             assertThat("All initial threads have failed and the replacement thread had processed on record",
-                processorValueCollector.size(), equalTo(numThreads + 1));
+                    processorValueCollector.size(), equalTo(numThreads + 1));
         }
     }
 }

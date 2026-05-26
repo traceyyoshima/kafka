@@ -59,8 +59,8 @@ public class ListTopicsOptions extends AbstractOptions<ListTopicsOptions> {
     @Override
     public String toString() {
         return "ListTopicsOptions(" +
-            "listInternal=" + listInternal +
-            ')';
+                "listInternal=" + listInternal +
+                ')';
     }
 
     @Override

@@ -61,29 +61,29 @@ public abstract class AbstractJoinIntegrationTest {
     static final long ANY_UNIQUE_KEY = 0L;
 
     protected final List<Input<String>> input = Arrays.asList(
-        new Input<>(INPUT_TOPIC_LEFT, null, 1),
-        new Input<>(INPUT_TOPIC_RIGHT, null, 2),
-        new Input<>(INPUT_TOPIC_LEFT, "A", 3),
-        new Input<>(INPUT_TOPIC_RIGHT, "a", 4),
-        new Input<>(INPUT_TOPIC_LEFT, "B", 5),
-        new Input<>(INPUT_TOPIC_RIGHT, "b", 6),
-        new Input<>(INPUT_TOPIC_LEFT, null, 7),
-        new Input<>(INPUT_TOPIC_RIGHT, null, 8),
-        new Input<>(INPUT_TOPIC_LEFT, "C", 9),
-        new Input<>(INPUT_TOPIC_RIGHT, "c", 10),
-        new Input<>(INPUT_TOPIC_RIGHT, null, 11),
-        new Input<>(INPUT_TOPIC_LEFT, null, 12),
-        new Input<>(INPUT_TOPIC_RIGHT, null, 13),
-        new Input<>(INPUT_TOPIC_RIGHT, "d", 7), // out-of-order data with null as latest
-        new Input<>(INPUT_TOPIC_LEFT, "D", 6),
-        new Input<>(INPUT_TOPIC_LEFT, null, 2),
-        new Input<>(INPUT_TOPIC_RIGHT, null, 3),
-        new Input<>(INPUT_TOPIC_RIGHT, "e", 14),
-        new Input<>(INPUT_TOPIC_LEFT, "E", 15),
-        new Input<>(INPUT_TOPIC_LEFT, null, 10), // out-of-order data with non-null as latest
-        new Input<>(INPUT_TOPIC_RIGHT, null, 9),
-        new Input<>(INPUT_TOPIC_LEFT, "F", 4),
-        new Input<>(INPUT_TOPIC_RIGHT, "f", 3)
+            new Input<>(INPUT_TOPIC_LEFT, null, 1),
+            new Input<>(INPUT_TOPIC_RIGHT, null, 2),
+            new Input<>(INPUT_TOPIC_LEFT, "A", 3),
+            new Input<>(INPUT_TOPIC_RIGHT, "a", 4),
+            new Input<>(INPUT_TOPIC_LEFT, "B", 5),
+            new Input<>(INPUT_TOPIC_RIGHT, "b", 6),
+            new Input<>(INPUT_TOPIC_LEFT, null, 7),
+            new Input<>(INPUT_TOPIC_RIGHT, null, 8),
+            new Input<>(INPUT_TOPIC_LEFT, "C", 9),
+            new Input<>(INPUT_TOPIC_RIGHT, "c", 10),
+            new Input<>(INPUT_TOPIC_RIGHT, null, 11),
+            new Input<>(INPUT_TOPIC_LEFT, null, 12),
+            new Input<>(INPUT_TOPIC_RIGHT, null, 13),
+            new Input<>(INPUT_TOPIC_RIGHT, "d", 7), // out-of-order data with null as latest
+            new Input<>(INPUT_TOPIC_LEFT, "D", 6),
+            new Input<>(INPUT_TOPIC_LEFT, null, 2),
+            new Input<>(INPUT_TOPIC_RIGHT, null, 3),
+            new Input<>(INPUT_TOPIC_RIGHT, "e", 14),
+            new Input<>(INPUT_TOPIC_LEFT, "E", 15),
+            new Input<>(INPUT_TOPIC_LEFT, null, 10), // out-of-order data with non-null as latest
+            new Input<>(INPUT_TOPIC_RIGHT, null, 9),
+            new Input<>(INPUT_TOPIC_LEFT, "F", 4),
+            new Input<>(INPUT_TOPIC_RIGHT, "f", 3)
     );
 
     // used for stream-stream join tests where out-of-order data does not meaningfully affect
@@ -91,36 +91,35 @@ public abstract class AbstractJoinIntegrationTest {
     // also used for table-table multi-join tests, since out-of-order data with table-table
     // joins is already tested in non-multi-join settings.
     protected final List<Input<String>> inputWithoutOutOfOrderData = Arrays.asList(
-        new Input<>(INPUT_TOPIC_LEFT, null, 1),
-        new Input<>(INPUT_TOPIC_RIGHT, null, 2),
-        new Input<>(INPUT_TOPIC_LEFT, "A", 3),
-        new Input<>(INPUT_TOPIC_RIGHT, "a", 4),
-        new Input<>(INPUT_TOPIC_LEFT, "B", 5),
-        new Input<>(INPUT_TOPIC_RIGHT, "b", 6),
-        new Input<>(INPUT_TOPIC_LEFT, null, 7),
-        new Input<>(INPUT_TOPIC_RIGHT, null, 8),
-        new Input<>(INPUT_TOPIC_LEFT, "C", 9),
-        new Input<>(INPUT_TOPIC_RIGHT, "c", 10),
-        new Input<>(INPUT_TOPIC_RIGHT, null, 11),
-        new Input<>(INPUT_TOPIC_LEFT, null, 12),
-        new Input<>(INPUT_TOPIC_RIGHT, null, 13),
-        new Input<>(INPUT_TOPIC_RIGHT, "d", 14),
-        new Input<>(INPUT_TOPIC_LEFT, "D", 15),
-        new Input<>(INPUT_TOPIC_LEFT, null, "E", 16),
-        new Input<>(INPUT_TOPIC_RIGHT, null, "e", 17)
+            new Input<>(INPUT_TOPIC_LEFT, null, 1),
+            new Input<>(INPUT_TOPIC_RIGHT, null, 2),
+            new Input<>(INPUT_TOPIC_LEFT, "A", 3),
+            new Input<>(INPUT_TOPIC_RIGHT, "a", 4),
+            new Input<>(INPUT_TOPIC_LEFT, "B", 5),
+            new Input<>(INPUT_TOPIC_RIGHT, "b", 6),
+            new Input<>(INPUT_TOPIC_LEFT, null, 7),
+            new Input<>(INPUT_TOPIC_RIGHT, null, 8),
+            new Input<>(INPUT_TOPIC_LEFT, "C", 9),
+            new Input<>(INPUT_TOPIC_RIGHT, "c", 10),
+            new Input<>(INPUT_TOPIC_RIGHT, null, 11),
+            new Input<>(INPUT_TOPIC_LEFT, null, 12),
+            new Input<>(INPUT_TOPIC_RIGHT, null, 13),
+            new Input<>(INPUT_TOPIC_RIGHT, "d", 14),
+            new Input<>(INPUT_TOPIC_LEFT, "D", 15),
+            new Input<>(INPUT_TOPIC_LEFT, null, "E", 16),
+            new Input<>(INPUT_TOPIC_RIGHT, null, "e", 17)
     );
 
     // used for stream-stream self joins where only one input topic is needed
     private final List<Input<String>> leftInput = Arrays.asList(
-        new Input<>(INPUT_TOPIC_LEFT, null, 1),
-        new Input<>(INPUT_TOPIC_LEFT, "A", 2),
-        new Input<>(INPUT_TOPIC_LEFT, "B", 3),
-        new Input<>(INPUT_TOPIC_LEFT, null, 4),
-        new Input<>(INPUT_TOPIC_LEFT, "C", 5),
-        new Input<>(INPUT_TOPIC_LEFT, null, 6),
-        new Input<>(INPUT_TOPIC_LEFT, "D", 7)
+            new Input<>(INPUT_TOPIC_LEFT, null, 1),
+            new Input<>(INPUT_TOPIC_LEFT, "A", 2),
+            new Input<>(INPUT_TOPIC_LEFT, "B", 3),
+            new Input<>(INPUT_TOPIC_LEFT, null, 4),
+            new Input<>(INPUT_TOPIC_LEFT, "C", 5),
+            new Input<>(INPUT_TOPIC_LEFT, null, 6),
+            new Input<>(INPUT_TOPIC_LEFT, "D", 7)
     );
-
 
     final ValueJoiner<String, String, String> valueJoiner = (value1, value2) -> value1 + "-" + value2;
 
@@ -219,11 +218,11 @@ public abstract class AbstractJoinIntegrationTest {
             }
 
             final TestRecord<Long, String> updatedExpectedFinalResult =
-                new TestRecord<>(
-                    expectedFinalResult.key(),
-                    expectedFinalResult.value(),
-                    null,
-                    baseTimestamp + expectedFinalResult.timestamp());
+                    new TestRecord<>(
+                            expectedFinalResult.key(),
+                            expectedFinalResult.value(),
+                            null,
+                            baseTimestamp + expectedFinalResult.timestamp());
 
             final List<TestRecord<Long, String>> output = outputTopic.readRecordsToList();
 

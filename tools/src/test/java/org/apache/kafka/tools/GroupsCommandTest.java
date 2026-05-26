@@ -108,15 +108,15 @@ public class GroupsCommandTest {
     @Test
     public void testOptionsListShareFilterSucceeds() {
         GroupsCommand.GroupsCommandOptions opts = new GroupsCommand.GroupsCommandOptions(
-            new String[] {"--bootstrap-server", bootstrapServer, "--list", "--share"});
+                new String[] {"--bootstrap-server", bootstrapServer, "--list", "--share"});
         assertTrue(opts.hasListOption());
         assertTrue(opts.hasShareOption());
     }
-    
+
     @Test
     public void testOptionsListStreamsFilterSucceeds() {
         GroupsCommand.GroupsCommandOptions opts = new GroupsCommand.GroupsCommandOptions(
-            new String[] {"--bootstrap-server", bootstrapServer, "--list", "--streams"});
+                new String[] {"--bootstrap-server", bootstrapServer, "--list", "--streams"});
         assertTrue(opts.hasListOption());
         assertTrue(opts.hasStreamsOption());
     }
@@ -142,7 +142,7 @@ public class GroupsCommandTest {
     @Test
     public void testOptionsListTypeStreamsFilterSucceeds() {
         GroupsCommand.GroupsCommandOptions opts = new GroupsCommand.GroupsCommandOptions(
-            new String[] {"--bootstrap-server", bootstrapServer, "--list", "--group-type", "streams"});
+                new String[] {"--bootstrap-server", bootstrapServer, "--list", "--group-type", "streams"});
         assertTrue(opts.hasListOption());
         assertTrue(opts.groupType().isPresent());
         assertEquals(GroupType.STREAMS, opts.groupType().get());
@@ -168,19 +168,19 @@ public class GroupsCommandTest {
     @Test
     public void testOptionsListConsumerAndShareFilterFails() {
         assertInitializeInvalidOptionsExitCode(1,
-            new String[] {"--bootstrap-server", bootstrapServer, "--list", "--consumer", "--share"});
+                new String[] {"--bootstrap-server", bootstrapServer, "--list", "--consumer", "--share"});
     }
 
     @Test
     public void testOptionsListShareAndStreamsFilterFails() {
         assertInitializeInvalidOptionsExitCode(1,
-            new String[] {"--bootstrap-server", bootstrapServer, "--list", "--share", "--streams"});
+                new String[] {"--bootstrap-server", bootstrapServer, "--list", "--share", "--streams"});
     }
 
     @Test
     public void testOptionsListConsumerAndStreamsFilterFails() {
         assertInitializeInvalidOptionsExitCode(1,
-            new String[] {"--bootstrap-server", bootstrapServer, "--list", "--consumer", "--streams"});
+                new String[] {"--bootstrap-server", bootstrapServer, "--list", "--consumer", "--streams"});
     }
 
     @Test
@@ -198,27 +198,27 @@ public class GroupsCommandTest {
     @Test
     public void testOptionsListShareAndProtocolFilterFails() {
         assertInitializeInvalidOptionsExitCode(1,
-            new String[] {"--bootstrap-server", bootstrapServer, "--list", "--share", "--protocol", "anyproto"});
+                new String[] {"--bootstrap-server", bootstrapServer, "--list", "--share", "--protocol", "anyproto"});
     }
 
     @Test
     public void testOptionsListShareAndTypeFilterFails() {
         assertInitializeInvalidOptionsExitCode(1,
-            new String[] {"--bootstrap-server", bootstrapServer, "--list", "--share", "--group-type", "classic"});
+                new String[] {"--bootstrap-server", bootstrapServer, "--list", "--share", "--group-type", "classic"});
     }
-    
+
     @Test
     public void testOptionsListStreamsAndProtocolFilterFails() {
         assertInitializeInvalidOptionsExitCode(1,
-            new String[] {"--bootstrap-server", bootstrapServer, "--list", "--streams", "--protocol", "anyproto"});
+                new String[] {"--bootstrap-server", bootstrapServer, "--list", "--streams", "--protocol", "anyproto"});
     }
 
     @Test
     public void testOptionsListStreamsAndTypeFilterFails() {
         assertInitializeInvalidOptionsExitCode(1,
-            new String[] {"--bootstrap-server", bootstrapServer, "--list", "--streams", "--group-type", "classic"});
+                new String[] {"--bootstrap-server", bootstrapServer, "--list", "--streams", "--group-type", "classic"});
     }
-    
+
     @Test
     public void testListGroupsEmpty() {
         Admin adminClient = mock(Admin.class);
@@ -301,24 +301,24 @@ public class GroupsCommandTest {
         GroupsCommand.GroupsService service = new GroupsCommand.GroupsService(adminClient);
 
         ListGroupsResult result = AdminClientTestUtils.listGroupsResult(
-            new GroupListing("CGclassic", Optional.of(GroupType.CLASSIC), "consumer", Optional.of(GroupState.STABLE)),
-            new GroupListing("CGconsumer", Optional.of(GroupType.CONSUMER), "consumer", Optional.of(GroupState.STABLE)),
-            new GroupListing("SG", Optional.of(GroupType.SHARE), "share", Optional.of(GroupState.STABLE)),
-            new GroupListing("StrG", Optional.of(GroupType.STREAMS), "streams", Optional.of(GroupState.STABLE))
+                new GroupListing("CGclassic", Optional.of(GroupType.CLASSIC), "consumer", Optional.of(GroupState.STABLE)),
+                new GroupListing("CGconsumer", Optional.of(GroupType.CONSUMER), "consumer", Optional.of(GroupState.STABLE)),
+                new GroupListing("SG", Optional.of(GroupType.SHARE), "share", Optional.of(GroupState.STABLE)),
+                new GroupListing("StrG", Optional.of(GroupType.STREAMS), "streams", Optional.of(GroupState.STABLE))
         );
         when(adminClient.listGroups()).thenReturn(result);
 
         String capturedOutput = ToolsTestUtils.captureStandardOut(() -> {
             try {
                 service.listGroups(new GroupsCommand.GroupsCommandOptions(
-                    new String[]{"--bootstrap-server", bootstrapServer, "--list", "--share"}
+                        new String[]{"--bootstrap-server", bootstrapServer, "--list", "--share"}
                 ));
             } catch (Throwable t) {
                 fail(t);
             }
         });
         assertCapturedListOutput(capturedOutput,
-            new String[]{"SG", "Share", "share"});
+                new String[]{"SG", "Share", "share"});
     }
 
     @Test
@@ -327,24 +327,24 @@ public class GroupsCommandTest {
         GroupsCommand.GroupsService service = new GroupsCommand.GroupsService(adminClient);
 
         ListGroupsResult result = AdminClientTestUtils.listGroupsResult(
-            new GroupListing("CGclassic", Optional.of(GroupType.CLASSIC), "consumer", Optional.of(GroupState.STABLE)),
-            new GroupListing("CGconsumer", Optional.of(GroupType.CONSUMER), "consumer", Optional.of(GroupState.STABLE)),
-            new GroupListing("SG", Optional.of(GroupType.SHARE), "share", Optional.of(GroupState.STABLE)),
-            new GroupListing("StrG", Optional.of(GroupType.STREAMS), "streams", Optional.of(GroupState.STABLE))
+                new GroupListing("CGclassic", Optional.of(GroupType.CLASSIC), "consumer", Optional.of(GroupState.STABLE)),
+                new GroupListing("CGconsumer", Optional.of(GroupType.CONSUMER), "consumer", Optional.of(GroupState.STABLE)),
+                new GroupListing("SG", Optional.of(GroupType.SHARE), "share", Optional.of(GroupState.STABLE)),
+                new GroupListing("StrG", Optional.of(GroupType.STREAMS), "streams", Optional.of(GroupState.STABLE))
         );
         when(adminClient.listGroups()).thenReturn(result);
 
         String capturedOutput = ToolsTestUtils.captureStandardOut(() -> {
             try {
                 service.listGroups(new GroupsCommand.GroupsCommandOptions(
-                    new String[]{"--bootstrap-server", bootstrapServer, "--list", "--streams"}
+                        new String[]{"--bootstrap-server", bootstrapServer, "--list", "--streams"}
                 ));
             } catch (Throwable t) {
                 fail(t);
             }
         });
         assertCapturedListOutput(capturedOutput,
-            new String[]{"StrG", "Streams", "streams"});
+                new String[]{"StrG", "Streams", "streams"});
     }
 
     @Test
@@ -459,16 +459,16 @@ public class GroupsCommandTest {
         when(adminClient.listGroups()).thenReturn(result);
 
         assertThrows(ExecutionException.class, () -> service.listGroups(new GroupsCommand.GroupsCommandOptions(
-            new String[]{"--bootstrap-server", bootstrapServer, "--list"}
+                new String[]{"--bootstrap-server", bootstrapServer, "--list"}
         )));
     }
 
     @SuppressWarnings({"NPathComplexity", "CyclomaticComplexity"})
     @ClusterTest(
-        serverProperties = {
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1")
-        }
+            serverProperties = {
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1")
+            }
     )
     public void testGroupCommand(ClusterInstance clusterInstance) throws Exception {
         String topic = "topic";
@@ -505,15 +505,15 @@ public class GroupsCommandTest {
 
             TestUtils.waitForCondition(() -> {
                 Map.Entry<String, String> res = ToolsTestUtils.grabConsoleOutputAndError(() ->
-                    assertDoesNotThrow(() -> groupsCommand.listGroups(new GroupsCommand.GroupsCommandOptions(
-                        List.of("--bootstrap-server", clusterInstance.bootstrapServers(), "--list").toArray(new String[0])))));
+                        assertDoesNotThrow(() -> groupsCommand.listGroups(new GroupsCommand.GroupsCommandOptions(
+                            List.of("--bootstrap-server", clusterInstance.bootstrapServers(), "--list").toArray(new String[0])))));
                 if (res.getKey().split("\n").length == 6 && res.getValue().isEmpty()) {
                     assertCapturedListOutput(res.getKey(),
-                        new String[]{classicGroupId, "Classic", "consumer"},
-                        new String[]{consumerGroupId, "Consumer", "consumer"},
-                        new String[]{simpleGroupId, "Classic"},
-                        new String[]{shareGroupId, "Share", "share"},
-                        new String[]{streamsGroupId, "Streams", "streams"});
+                            new String[]{classicGroupId, "Classic", "consumer"},
+                            new String[]{consumerGroupId, "Consumer", "consumer"},
+                            new String[]{simpleGroupId, "Classic"},
+                            new String[]{shareGroupId, "Share", "share"},
+                            new String[]{streamsGroupId, "Streams", "streams"});
                     return true;
                 }
                 return false;
@@ -521,13 +521,13 @@ public class GroupsCommandTest {
 
             TestUtils.waitForCondition(() -> {
                 Map.Entry<String, String> res = ToolsTestUtils.grabConsoleOutputAndError(() ->
-                    assertDoesNotThrow(() -> groupsCommand.listGroups(new GroupsCommand.GroupsCommandOptions(
-                        List.of("--bootstrap-server", clusterInstance.bootstrapServers(), "--list", "--consumer").toArray(new String[0])))));
+                        assertDoesNotThrow(() -> groupsCommand.listGroups(new GroupsCommand.GroupsCommandOptions(
+                            List.of("--bootstrap-server", clusterInstance.bootstrapServers(), "--list", "--consumer").toArray(new String[0])))));
                 if (res.getKey().split("\n").length == 4 && res.getValue().isEmpty()) {
                     assertCapturedListOutput(res.getKey(),
-                        new String[]{classicGroupId, "Classic", "consumer"},
-                        new String[]{consumerGroupId, "Consumer", "consumer"},
-                        new String[]{simpleGroupId, "Classic"});
+                            new String[]{classicGroupId, "Classic", "consumer"},
+                            new String[]{consumerGroupId, "Consumer", "consumer"},
+                            new String[]{simpleGroupId, "Classic"});
                     return true;
                 }
                 return false;
@@ -535,12 +535,12 @@ public class GroupsCommandTest {
 
             TestUtils.waitForCondition(() -> {
                 Map.Entry<String, String> res = ToolsTestUtils.grabConsoleOutputAndError(() ->
-                    assertDoesNotThrow(() -> groupsCommand.listGroups(new GroupsCommand.GroupsCommandOptions(
-                        List.of("--bootstrap-server", clusterInstance.bootstrapServers(), "--list", "--group-type", "classic").toArray(new String[0])))));
+                        assertDoesNotThrow(() -> groupsCommand.listGroups(new GroupsCommand.GroupsCommandOptions(
+                            List.of("--bootstrap-server", clusterInstance.bootstrapServers(), "--list", "--group-type", "classic").toArray(new String[0])))));
                 if (res.getKey().split("\n").length == 3 && res.getValue().isEmpty()) {
                     assertCapturedListOutput(res.getKey(),
-                        new String[]{classicGroupId, "Classic", "consumer"},
-                        new String[]{simpleGroupId, "Classic"});
+                            new String[]{classicGroupId, "Classic", "consumer"},
+                            new String[]{simpleGroupId, "Classic"});
                     return true;
                 }
                 return false;
@@ -548,11 +548,11 @@ public class GroupsCommandTest {
 
             TestUtils.waitForCondition(() -> {
                 Map.Entry<String, String> res = ToolsTestUtils.grabConsoleOutputAndError(() ->
-                    assertDoesNotThrow(() -> groupsCommand.listGroups(new GroupsCommand.GroupsCommandOptions(
-                        List.of("--bootstrap-server", clusterInstance.bootstrapServers(), "--list", "--group-type", "consumer").toArray(new String[0])))));
+                        assertDoesNotThrow(() -> groupsCommand.listGroups(new GroupsCommand.GroupsCommandOptions(
+                            List.of("--bootstrap-server", clusterInstance.bootstrapServers(), "--list", "--group-type", "consumer").toArray(new String[0])))));
                 if (res.getKey().split("\n").length == 2 && res.getValue().isEmpty()) {
                     assertCapturedListOutput(res.getKey(),
-                        new String[]{consumerGroupId, "Consumer", "consumer"});
+                            new String[]{consumerGroupId, "Consumer", "consumer"});
                     return true;
                 }
                 return false;
@@ -560,11 +560,11 @@ public class GroupsCommandTest {
 
             TestUtils.waitForCondition(() -> {
                 Map.Entry<String, String> res = ToolsTestUtils.grabConsoleOutputAndError(() ->
-                    assertDoesNotThrow(() -> groupsCommand.listGroups(new GroupsCommand.GroupsCommandOptions(
-                        List.of("--bootstrap-server", clusterInstance.bootstrapServers(), "--list", "--group-type", "share").toArray(new String[0])))));
+                        assertDoesNotThrow(() -> groupsCommand.listGroups(new GroupsCommand.GroupsCommandOptions(
+                            List.of("--bootstrap-server", clusterInstance.bootstrapServers(), "--list", "--group-type", "share").toArray(new String[0])))));
                 if (res.getKey().split("\n").length == 2 && res.getValue().isEmpty()) {
                     assertCapturedListOutput(res.getKey(),
-                        new String[]{shareGroupId, "Share", "share"});
+                            new String[]{shareGroupId, "Share", "share"});
                     return true;
                 }
                 return false;
@@ -572,11 +572,11 @@ public class GroupsCommandTest {
 
             TestUtils.waitForCondition(() -> {
                 Map.Entry<String, String> res = ToolsTestUtils.grabConsoleOutputAndError(() ->
-                    assertDoesNotThrow(() -> groupsCommand.listGroups(new GroupsCommand.GroupsCommandOptions(
-                        List.of("--bootstrap-server", clusterInstance.bootstrapServers(), "--list", "--group-type", "streams").toArray(new String[0])))));
+                        assertDoesNotThrow(() -> groupsCommand.listGroups(new GroupsCommand.GroupsCommandOptions(
+                            List.of("--bootstrap-server", clusterInstance.bootstrapServers(), "--list", "--group-type", "streams").toArray(new String[0])))));
                 if (res.getKey().split("\n").length == 2 && res.getValue().isEmpty()) {
                     assertCapturedListOutput(res.getKey(),
-                        new String[]{streamsGroupId, "Streams", "streams"});
+                            new String[]{streamsGroupId, "Streams", "streams"});
                     return true;
                 }
                 return false;
@@ -584,24 +584,23 @@ public class GroupsCommandTest {
 
             TestUtils.waitForCondition(() -> {
                 Map.Entry<String, String> res = ToolsTestUtils.grabConsoleOutputAndError(() ->
-                    assertDoesNotThrow(() -> groupsCommand.listGroups(new GroupsCommand.GroupsCommandOptions(
-                        List.of("--bootstrap-server", clusterInstance.bootstrapServers(), "--list", "--share").toArray(new String[0])))));
+                        assertDoesNotThrow(() -> groupsCommand.listGroups(new GroupsCommand.GroupsCommandOptions(
+                            List.of("--bootstrap-server", clusterInstance.bootstrapServers(), "--list", "--share").toArray(new String[0])))));
                 if (res.getKey().split("\n").length == 2 && res.getValue().isEmpty()) {
                     assertCapturedListOutput(res.getKey(),
-                        new String[]{shareGroupId, "Share", "share"});
+                            new String[]{shareGroupId, "Share", "share"});
                     return true;
                 }
                 return false;
             }, "Waiting for listing groups to return share type groups");
 
-
             TestUtils.waitForCondition(() -> {
                 Map.Entry<String, String> res = ToolsTestUtils.grabConsoleOutputAndError(() ->
-                    assertDoesNotThrow(() -> groupsCommand.listGroups(new GroupsCommand.GroupsCommandOptions(
-                        List.of("--bootstrap-server", clusterInstance.bootstrapServers(), "--list", "--streams").toArray(new String[0])))));
+                        assertDoesNotThrow(() -> groupsCommand.listGroups(new GroupsCommand.GroupsCommandOptions(
+                            List.of("--bootstrap-server", clusterInstance.bootstrapServers(), "--list", "--streams").toArray(new String[0])))));
                 if (res.getKey().split("\n").length == 2 && res.getValue().isEmpty()) {
                     assertCapturedListOutput(res.getKey(),
-                        new String[]{streamsGroupId, "Streams", "streams"});
+                            new String[]{streamsGroupId, "Streams", "streams"});
                     return true;
                 }
                 return false;
@@ -633,19 +632,19 @@ public class GroupsCommandTest {
 
     private KafkaConsumer<String, String> createKafkaConsumer(ClusterInstance clusterInstance, String groupId, GroupProtocol groupProtocol) {
         return new KafkaConsumer<>(Map.of(
-            ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, clusterInstance.bootstrapServers(),
-            ConsumerConfig.GROUP_ID_CONFIG, groupId,
-            ConsumerConfig.GROUP_PROTOCOL_CONFIG, groupProtocol.name,
-            ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName(),
-            ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName()));
+                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, clusterInstance.bootstrapServers(),
+                ConsumerConfig.GROUP_ID_CONFIG, groupId,
+                ConsumerConfig.GROUP_PROTOCOL_CONFIG, groupProtocol.name,
+                ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName(),
+                ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName()));
     }
 
     private KafkaShareConsumer<String, String> createKafkaShareConsumer(ClusterInstance clusterInstance, String groupId) {
         return new KafkaShareConsumer<>(Map.of(
-            ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, clusterInstance.bootstrapServers(),
-            ConsumerConfig.GROUP_ID_CONFIG, groupId,
-            ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName(),
-            ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName()));
+                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, clusterInstance.bootstrapServers(),
+                ConsumerConfig.GROUP_ID_CONFIG, groupId,
+                ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName(),
+                ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName()));
     }
 
     private KafkaStreams createKafkaStreams(ClusterInstance clusterInstance, String groupId, String inputTopic, String outputTopic) {

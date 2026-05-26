@@ -55,9 +55,9 @@ public class DefaultAssertionCreator implements AssertionCreator {
         this.algorithm = algorithm;
 
         this.privateKeyFile = new CachedFile<>(
-            privateKeyFile,
-            new PrivateKeyTransformer(algorithm, passphrase),
-            lastModifiedPolicy()
+                privateKeyFile,
+                new PrivateKeyTransformer(algorithm, passphrase),
+                lastModifiedPolicy()
         );
     }
 

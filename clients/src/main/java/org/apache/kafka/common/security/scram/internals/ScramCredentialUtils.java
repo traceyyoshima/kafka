@@ -42,14 +42,14 @@ public final class ScramCredentialUtils {
 
     public static String credentialToString(ScramCredential credential) {
         return String.format("%s=%s,%s=%s,%s=%s,%s=%d",
-               SALT,
-               Base64.getEncoder().encodeToString(credential.salt()),
-               STORED_KEY,
-               Base64.getEncoder().encodeToString(credential.storedKey()),
-               SERVER_KEY,
-               Base64.getEncoder().encodeToString(credential.serverKey()),
-               ITERATIONS,
-               credential.iterations());
+                SALT,
+                Base64.getEncoder().encodeToString(credential.salt()),
+                STORED_KEY,
+                Base64.getEncoder().encodeToString(credential.storedKey()),
+                SERVER_KEY,
+                Base64.getEncoder().encodeToString(credential.serverKey()),
+                ITERATIONS,
+                credential.iterations());
     }
 
     public static ScramCredential credentialFromString(String str) {

@@ -165,7 +165,7 @@ public class VerifiableSourceTask extends SourceTask {
     private Object completeValue(Map<String, Object> data) {
         Struct result = new Struct(COMPLETE_VALUE_SCHEMA);
         Stream.of("name", "task", "topic", "time_ms", "seqno").forEach(
-            field -> result.put(field, data.get(field))
+                field -> result.put(field, data.get(field))
         );
         return result;
     }

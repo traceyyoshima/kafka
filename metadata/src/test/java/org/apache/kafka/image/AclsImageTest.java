@@ -75,8 +75,8 @@ public class AclsImageTest {
     private static void testToImage(AclsImage image, List<ApiMessageAndVersion> fromRecords) {
         // test from empty image stopping each of the various intermediate images along the way
         new RecordTestUtils.TestThroughAllIntermediateImagesLeadingToFinalImageHelper<>(
-            () -> AclsImage.EMPTY,
-            AclsDelta::new
+                () -> AclsImage.EMPTY,
+                AclsDelta::new
         ).test(image, fromRecords);
     }
 

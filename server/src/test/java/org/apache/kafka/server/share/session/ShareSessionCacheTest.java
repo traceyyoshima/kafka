@@ -293,7 +293,7 @@ public class ShareSessionCacheTest {
 
     private ImplicitLinkedHashCollection<CachedSharePartition> mockedSharePartitionMap(int size) {
         ImplicitLinkedHashCollection<CachedSharePartition> cacheMap = new
-                ImplicitLinkedHashCollection<>(size);
+                        ImplicitLinkedHashCollection<>(size);
         for (int i = 0; i < size; i++)
             cacheMap.add(new CachedSharePartition("test", Uuid.randomUuid(), i, false));
         return cacheMap;
@@ -316,9 +316,9 @@ public class ShareSessionCacheTest {
         ShareSessionCache cache
     ) throws InterruptedException {
         TestUtils.waitForCondition(() -> yammerMetricValue(ShareSessionCache.SHARE_SESSIONS_COUNT).intValue() == shareSessionsCount,
-            "Share session count should be " + shareSessionsCount);
+                "Share session count should be " + shareSessionsCount);
         TestUtils.waitForCondition(() -> yammerMetricValue(ShareSessionCache.SHARE_PARTITIONS_COUNT).intValue() == sharePartitionsCount,
-            "Share partition count should be " + sharePartitionsCount);
+                "Share partition count should be " + sharePartitionsCount);
         assertEquals(evictionsCount, cache.evictionsMeter().count());
     }
 }

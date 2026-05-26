@@ -135,7 +135,6 @@ public enum MetadataVersion {
     // is finalized, so will the DLQ support.
     IBP_4_4_IV0(31, "4.4", "IV0", false);
 
-
     // NOTES when adding a new version:
     //   Update the default version in @ClusterTest annotation to point to the latest version
     //   Change expected message in org.apache.kafka.tools.FeatureCommandTest in multiple places (search for "Change expected message")
@@ -362,8 +361,8 @@ public enum MetadataVersion {
         MetadataVersion metadataVersion = IBP_VERSIONS.get(key);
         if (metadataVersion == null || (!unstableFeatureVersionsEnabled && !metadataVersion.isProduction())) {
             String errorMsg = "Unknown metadata.version '" + versionString + "'. Supported metadata.version are: "
-                + metadataVersionsToString(MetadataVersion.MINIMUM_VERSION,
-                unstableFeatureVersionsEnabled ? MetadataVersion.latestTesting() : MetadataVersion.latestProduction());
+                    + metadataVersionsToString(MetadataVersion.MINIMUM_VERSION,
+                        unstableFeatureVersionsEnabled ? MetadataVersion.latestTesting() : MetadataVersion.latestProduction());
             throw new IllegalArgumentException(errorMsg);
         }
         return metadataVersion;
@@ -383,7 +382,7 @@ public enum MetadataVersion {
             }
         }
         throw new IllegalArgumentException("No MetadataVersion with feature level " + version + ". Valid feature levels are from "
-            + MINIMUM_VERSION.featureLevel + " to " + latestTesting().featureLevel + ".");
+                + MINIMUM_VERSION.featureLevel + " to " + latestTesting().featureLevel + ".");
     }
 
     // Testing only

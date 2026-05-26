@@ -67,12 +67,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ClusterTestDefaults(
-    types = {Type.CO_KRAFT},
-    serverProperties = {
-        @ClusterConfigProperty(key = OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = CONSUMER_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
-        @ClusterConfigProperty(key = CONSUMER_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
-    }
+        types = {Type.CO_KRAFT},
+        serverProperties = {
+            @ClusterConfigProperty(key = OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1"),
+            @ClusterConfigProperty(key = CONSUMER_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
+            @ClusterConfigProperty(key = CONSUMER_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
+        }
 )
 public class DeleteConsumerGroupsTest {
 
@@ -81,7 +81,6 @@ public class DeleteConsumerGroupsTest {
         String[] cgcArgs = new String[]{"--bootstrap-server", "localhost:62241", "--delete", "--group", getDummyGroupId(), "--topic"};
         assertThrows(OptionException.class, () -> ConsumerGroupCommandOptions.fromArgs(cgcArgs));
     }
-
 
     @ClusterTest
     public void testDeleteCmdNonExistingGroup(ClusterInstance cluster) {
@@ -188,7 +187,7 @@ public class DeleteConsumerGroupsTest {
             try (ConsumerGroupCommand.ConsumerGroupService service = getConsumerGroupService(cgcArgs)) {
                 TestUtils.waitForCondition(() ->
                                 new HashSet<>(service.listConsumerGroups()).equals(groupIdToExecutor.keySet()) &&
-                                        groupIdToExecutor.keySet().stream().allMatch(groupId -> assertDoesNotThrow(() -> checkGroupState(service, groupId, STABLE))),
+                        groupIdToExecutor.keySet().stream().allMatch(groupId -> assertDoesNotThrow(() -> checkGroupState(service, groupId, STABLE))),
                         "The group did not initialize as expected.");
 
                 // Shutdown consumers to empty out groups
@@ -197,7 +196,7 @@ public class DeleteConsumerGroupsTest {
                 }
 
                 TestUtils.waitForCondition(() ->
-                                groupIdToExecutor.keySet().stream().allMatch(groupId -> assertDoesNotThrow(() -> checkGroupState(service, groupId, EMPTY))),
+                        groupIdToExecutor.keySet().stream().allMatch(groupId -> assertDoesNotThrow(() -> checkGroupState(service, groupId, EMPTY))),
                         "The group did not become empty as expected.");
 
                 String output = ToolsTestUtils.grabConsoleOutput(service::deleteGroups).trim();
@@ -207,7 +206,7 @@ public class DeleteConsumerGroupsTest {
                         .collect(Collectors.toSet());
 
                 assertTrue(output.matches("Deletion of requested consumer groups (.*) was successful.")
-                                && Objects.equals(deletedGroupsGrepped, expectedGroupsForDeletion),
+                        && Objects.equals(deletedGroupsGrepped, expectedGroupsForDeletion),
                         "The consumer group(s) could not be deleted as expected");
             }
         }
@@ -238,8 +237,8 @@ public class DeleteConsumerGroupsTest {
                 try (ConsumerGroupCommand.ConsumerGroupService service2 = getConsumerGroupService(cgcArgs)) {
                     String output = ToolsTestUtils.grabConsoleOutput(service2::deleteGroups);
                     assertTrue(output.contains("Group '" + missingGroupId + "' could not be deleted due to:")
-                                    && output.contains(Errors.GROUP_ID_NOT_FOUND.message())
-                                    && output.contains("These consumer groups were deleted successfully: '" + groupId + "'"),
+                            && output.contains(Errors.GROUP_ID_NOT_FOUND.message())
+                            && output.contains("These consumer groups were deleted successfully: '" + groupId + "'"),
                             "The consumer group deletion did not work as expected");
                 }
             }
@@ -272,9 +271,9 @@ public class DeleteConsumerGroupsTest {
                 try (ConsumerGroupCommand.ConsumerGroupService service2 = getConsumerGroupService(cgcArgs)) {
                     Map<String, Throwable> result = service2.deleteGroups();
                     assertTrue(result.size() == 2 &&
-                                    result.containsKey(groupId) && result.get(groupId) == null &&
-                                    result.containsKey(missingGroupId) &&
-                                    result.get(missingGroupId).getMessage().contains(Errors.GROUP_ID_NOT_FOUND.message()),
+                            result.containsKey(groupId) && result.get(groupId) == null &&
+                            result.containsKey(missingGroupId) &&
+                            result.get(missingGroupId).getMessage().contains(Errors.GROUP_ID_NOT_FOUND.message()),
                             "The consumer group deletion did not work as expected");
                 }
             }

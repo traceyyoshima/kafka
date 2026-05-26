@@ -338,13 +338,13 @@ public final class Worker {
 
                         // Set up the offset backing store for this connector instance
                         offsetStore = config.exactlyOnceSourceEnabled()
-                            ? offsetStoreForExactlyOnceSourceConnector(sourceConfig, connName, connector, null)
-                            : offsetStoreForRegularSourceConnector(sourceConfig, connName, connector, null);
+                                ? offsetStoreForExactlyOnceSourceConnector(sourceConfig, connName, connector, null)
+                                : offsetStoreForRegularSourceConnector(sourceConfig, connName, connector, null);
                         offsetStore.configure(config);
                         offsetReader = new OffsetStorageReaderImpl(offsetStore, connName, internalKeyConverter, internalValueConverter);
                     }
                     workerConnector = new WorkerConnector(
-                        connName, connector, connConfig, ctx, metrics, connectorStatusListener, offsetReader, offsetStore, connectorLoader);
+                            connName, connector, connConfig, ctx, metrics, connectorStatusListener, offsetReader, offsetStore, connectorLoader);
                     log.info("Instantiated connector {} with version {} of type {}", connName, workerConnector.connectorVersion(), connector.getClass());
                     workerConnector.transitionTo(initialState, onConnectorStateChange);
                 }
@@ -442,11 +442,11 @@ public final class Worker {
             } else {
                 log.warn(
                         "The connector {} has generated {} tasks, which is greater than {}, "
-                                + "the maximum number of tasks it is configured to create. "
-                                + "This behavior should be considered a bug and will be disallowed "
-                                + "in future releases of Kafka Connect. Please report this to the "
-                                + "maintainers of the connector and request that they adjust their "
-                                + "connector's taskConfigs() method to respect the maxTasks parameter.",
+                        + "the maximum number of tasks it is configured to create. "
+                        + "This behavior should be considered a bug and will be disallowed "
+                        + "in future releases of Kafka Connect. Please report this to the "
+                        + "maintainers of the connector and request that they adjust their "
+                        + "connector's taskConfigs() method to respect the maxTasks parameter.",
                         connName,
                         numTasks,
                         maxTasks
@@ -695,7 +695,6 @@ public final class Worker {
                     final Task task = plugins.newTask(taskClass);
                     log.info("Instantiated task {} with version {} of type {}", id, task.version(), taskClass.getName());
 
-
                     // By maintaining connector's specific class loader for this thread here, we first
                     // search for converters within the connector dependencies.
                     // If any of these aren't found, that means the connector didn't configure specific converters,
@@ -865,9 +864,9 @@ public final class Worker {
 
         // Connector-specified overrides
         Map<String, Object> producerOverrides =
-            connectorClientConfigOverrides(connName, connConfig, connectorClass, ConnectorConfig.CONNECTOR_CLIENT_PRODUCER_OVERRIDES_PREFIX,
-                                           ConnectorType.SOURCE, ConnectorClientConfigRequest.ClientType.PRODUCER,
-                                           connectorClientConfigOverridePolicy);
+                connectorClientConfigOverrides(connName, connConfig, connectorClass, ConnectorConfig.CONNECTOR_CLIENT_PRODUCER_OVERRIDES_PREFIX,
+                        ConnectorType.SOURCE, ConnectorClientConfigRequest.ClientType.PRODUCER,
+                        connectorClientConfigOverridePolicy);
         producerProps.putAll(producerOverrides);
 
         return producerProps;
@@ -933,9 +932,9 @@ public final class Worker {
         ConnectUtils.addMetricsContextProperties(consumerProps, config, clusterId);
         // Connector-specified overrides
         Map<String, Object> consumerOverrides =
-            connectorClientConfigOverrides(connName, connConfig, connectorClass, ConnectorConfig.CONNECTOR_CLIENT_CONSUMER_OVERRIDES_PREFIX,
-                                           connectorType, ConnectorClientConfigRequest.ClientType.CONSUMER,
-                                           connectorClientConfigOverridePolicy);
+                connectorClientConfigOverrides(connName, connConfig, connectorClass, ConnectorConfig.CONNECTOR_CLIENT_CONSUMER_OVERRIDES_PREFIX,
+                        connectorType, ConnectorClientConfigRequest.ClientType.CONSUMER,
+                        connectorClientConfigOverridePolicy);
         consumerProps.putAll(consumerOverrides);
 
         return consumerProps;
@@ -989,11 +988,11 @@ public final class Worker {
                                                                       ConnectorClientConfigOverridePolicy connectorClientConfigOverridePolicy) {
         Map<String, Object> clientOverrides = connConfig.originalsWithPrefix(clientConfigPrefix);
         ConnectorClientConfigRequest connectorClientConfigRequest = new ConnectorClientConfigRequest(
-            connName,
-            connectorType,
-            connectorClass,
-            clientOverrides,
-            clientType
+                connName,
+                connectorType,
+                connectorClass,
+                clientOverrides,
+                clientType
         );
         List<ConfigValue> configValues = connectorClientConfigOverridePolicy.validate(connectorClientConfigRequest);
         List<ConfigValue> errorConfigs = configValues.stream().
@@ -1033,7 +1032,7 @@ public final class Worker {
         String topic = connConfig.dlqTopicName();
         if (topic != null && !topic.isEmpty()) {
             Map<String, Object> producerProps = baseProducerConfigs(id.connector(), "connector-dlq-producer-" + id, config, connConfig, connectorClass,
-                                                                connectorClientConfigOverridePolicy, kafkaClusterId);
+                    connectorClientConfigOverridePolicy, kafkaClusterId);
             Map<String, Object> adminProps = adminConfigs(id.connector(), "connector-dlq-adminclient-" + id, config, connConfig, connectorClass, connectorClientConfigOverridePolicy, kafkaClusterId, ConnectorType.SINK);
             DeadLetterQueueReporter reporter = DeadLetterQueueReporter.createAndSetup(adminProps, id, connConfig, producerProps, errorHandlingMetrics);
 
@@ -1263,7 +1262,7 @@ public final class Worker {
             return plugins.connectorClass(klass, PluginUtils.connectorVersionRequirement(version));
         } catch (InvalidVersionSpecificationException | VersionedPluginLoadingException e) {
             throw new ConnectException(
-                String.format("Failed to get class for connector %s, class %s", klass, connProps.get(ConnectorConfig.NAME_CONFIG)), e);
+                    String.format("Failed to get class for connector %s, class %s", klass, connProps.get(ConnectorConfig.NAME_CONFIG)), e);
         }
     }
 
@@ -1606,9 +1605,9 @@ public final class Worker {
         SourceConnectorConfig sourceConfig = new SourceConnectorConfig(plugins, connectorConfig, config.topicCreationEnable());
         Map<String, Object> producerProps = config.exactlyOnceSourceEnabled()
                 ? exactlyOnceSourceTaskProducerConfigs(new ConnectorTaskId(connName, 0), config, sourceConfig,
-                connector.getClass(), connectorClientConfigOverridePolicy, kafkaClusterId)
+                        connector.getClass(), connectorClientConfigOverridePolicy, kafkaClusterId)
                 : baseProducerConfigs(connName, "connector-offset-producer-" + connName, config, sourceConfig,
-                connector.getClass(), connectorClientConfigOverridePolicy, kafkaClusterId);
+                        connector.getClass(), connectorClientConfigOverridePolicy, kafkaClusterId);
         KafkaProducer<byte[], byte[]> producer = new KafkaProducer<>(producerProps);
 
         ConnectorOffsetBackingStore offsetStore = config.exactlyOnceSourceEnabled()
@@ -1834,7 +1833,6 @@ public final class Worker {
             return this;
         }
 
-
         public WorkerTask<T, R> build() {
             Objects.requireNonNull(task, "Task cannot be null");
             Objects.requireNonNull(connectorConfig, "Connector config used by task cannot be null");
@@ -1856,9 +1854,9 @@ public final class Worker {
                     connectorClass, task, keyConverterPlugin.get(), valueConverterPlugin.get(), headerConverterPlugin.get(), transformationChain.transformationChainInfo(), plugins);
 
             return doBuild(task, id, configState, statusListener, initialState,
-                connectorConfig, keyConverterPlugin, valueConverterPlugin, headerConverterPlugin, classLoader,
-                retryWithToleranceOperator, transformationChain,
-                errorHandlingMetrics, connectorClass, taskPluginsMetadata);
+                    connectorConfig, keyConverterPlugin, valueConverterPlugin, headerConverterPlugin, classLoader,
+                    retryWithToleranceOperator, transformationChain,
+                    errorHandlingMetrics, connectorClass, taskPluginsMetadata);
         }
 
         abstract WorkerTask<T, R> doBuild(
@@ -2083,8 +2081,8 @@ public final class Worker {
 
         if (usesConnectorSpecificStore) {
             Map<String, Object> consumerProps = regularSourceOffsetsConsumerConfigs(
-                        connName, "connector-consumer-" + connName, config, sourceConfig, connector.getClass(),
-                        connectorClientConfigOverridePolicy, kafkaClusterId);
+                    connName, "connector-consumer-" + connName, config, sourceConfig, connector.getClass(),
+                    connectorClientConfigOverridePolicy, kafkaClusterId);
             KafkaConsumer<byte[], byte[]> consumer = new KafkaConsumer<>(consumerProps);
 
             Map<String, Object> adminOverrides = adminConfigs(connName, "connector-adminclient-" + connName, config,
@@ -2155,8 +2153,8 @@ public final class Worker {
                 connectorClientConfigOverridePolicy, kafkaClusterId);
 
         Map<String, Object> consumerProps = exactlyOnceSourceOffsetsConsumerConfigs(
-                    connName, "connector-consumer-" + connName, config, sourceConfig, connector.getClass(),
-                    connectorClientConfigOverridePolicy, kafkaClusterId);
+                connName, "connector-consumer-" + connName, config, sourceConfig, connector.getClass(),
+                connectorClientConfigOverridePolicy, kafkaClusterId);
         KafkaConsumer<byte[], byte[]> consumer = new KafkaConsumer<>(consumerProps);
 
         Map<String, Object> adminOverrides = adminConfigs(connName, "connector-adminclient-" + connName, config,
@@ -2349,7 +2347,6 @@ public final class Worker {
         private final Herder herder;
         private final ConcurrentMap<ConnectorTaskId, WorkerTask<?, ?>> tasks;
 
-
         protected ConnectorStatusMetricsGroup(
                 ConnectMetrics connectMetrics, ConcurrentMap<ConnectorTaskId, WorkerTask<?, ?>> tasks, Herder herder) {
             this.connectMetrics = connectMetrics;
@@ -2370,7 +2367,7 @@ public final class Worker {
                 .stream()
                 .filter(task ->
                     task.id().connector().equals(connName) &&
-                    herder.taskStatus(task.id()).state().equalsIgnoreCase(state.toString()))
+                        herder.taskStatus(task.id()).state().equalsIgnoreCase(state.toString()))
                 .count();
         }
 
@@ -2382,13 +2379,13 @@ public final class Worker {
             String connName = connectorTaskId.connector();
 
             MetricGroup metricGroup = connectMetrics.group(registry.workerGroupName(),
-                registry.connectorTagName(), connName);
+                    registry.connectorTagName(), connName);
 
             metricGroup.addValueMetric(registry.connectorTotalTaskCount, taskCounter(connName));
             for (Map.Entry<MetricNameTemplate, TaskStatus.State> statusMetric : registry.connectorStatusMetrics
                 .entrySet()) {
                 metricGroup.addValueMetric(statusMetric.getKey(), taskStatusCounter(connName,
-                    statusMetric.getValue()));
+                        statusMetric.getValue()));
             }
             connectorStatusMetrics.put(connectorTaskId.connector(), metricGroup);
         }

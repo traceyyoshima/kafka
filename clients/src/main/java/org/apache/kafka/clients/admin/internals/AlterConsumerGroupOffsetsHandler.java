@@ -79,7 +79,7 @@ public class AlterConsumerGroupOffsetsHandler extends AdminApiHandler.Batched<Co
     private void validateKeys(Set<CoordinatorKey> groupIds) {
         if (!groupIds.equals(singleton(groupId))) {
             throw new IllegalArgumentException("Received unexpected group ids " + groupIds +
-                " (expected only " + singleton(groupId) + ")");
+                    " (expected only " + singleton(groupId) + ")");
         }
     }
 
@@ -93,8 +93,8 @@ public class AlterConsumerGroupOffsetsHandler extends AdminApiHandler.Batched<Co
         Map<String, OffsetCommitRequestTopic> offsetData = new HashMap<>();
         offsets.forEach((topicPartition, offsetAndMetadata) -> {
             OffsetCommitRequestTopic topic = offsetData.computeIfAbsent(
-                topicPartition.topic(),
-                key -> new OffsetCommitRequestTopic().setName(topicPartition.topic())
+                    topicPartition.topic(),
+                    key -> new OffsetCommitRequestTopic().setName(topicPartition.topic())
             );
 
             topic.partitions().add(new OffsetCommitRequestPartition()
@@ -131,12 +131,12 @@ public class AlterConsumerGroupOffsetsHandler extends AdminApiHandler.Batched<Co
 
                 if (error != Errors.NONE) {
                     handleError(
-                        groupId,
-                        topicPartition,
-                        error,
-                        partitionResults,
-                        groupsToUnmap,
-                        groupsToRetry
+                            groupId,
+                            topicPartition,
+                            error,
+                            partitionResults,
+                            groupsToUnmap,
+                            groupsToRetry
                     );
                 } else {
                     partitionResults.put(topicPartition, error);
@@ -164,7 +164,7 @@ public class AlterConsumerGroupOffsetsHandler extends AdminApiHandler.Batched<Co
             case COORDINATOR_LOAD_IN_PROGRESS:
             case REBALANCE_IN_PROGRESS:
                 log.debug("OffsetCommit request for group id {} returned error {}. Will retry.",
-                    groupId.idValue, error);
+                        groupId.idValue, error);
                 groupsToRetry.add(groupId);
                 break;
 
@@ -172,7 +172,7 @@ public class AlterConsumerGroupOffsetsHandler extends AdminApiHandler.Batched<Co
             case COORDINATOR_NOT_AVAILABLE:
             case NOT_COORDINATOR:
                 log.debug("OffsetCommit request for group id {} returned error {}. Will rediscover the coordinator and retry.",
-                    groupId.idValue, error);
+                        groupId.idValue, error);
                 groupsToUnmap.add(groupId);
                 break;
 
@@ -185,7 +185,7 @@ public class AlterConsumerGroupOffsetsHandler extends AdminApiHandler.Batched<Co
             case UNKNOWN_MEMBER_ID:
             case STALE_MEMBER_EPOCH:
                 log.debug("OffsetCommit request for group id {} failed due to error {}.",
-                    groupId.idValue, error);
+                        groupId.idValue, error);
                 partitionResults.put(topicPartition, error);
                 break;
 
@@ -194,14 +194,14 @@ public class AlterConsumerGroupOffsetsHandler extends AdminApiHandler.Batched<Co
             case OFFSET_METADATA_TOO_LARGE:
             case TOPIC_AUTHORIZATION_FAILED:
                 log.debug("OffsetCommit request for group id {} and partition {} failed due" +
-                    " to error {}.", groupId.idValue, topicPartition, error);
+                        " to error {}.", groupId.idValue, topicPartition, error);
                 partitionResults.put(topicPartition, error);
                 break;
 
             // Unexpected errors.
             default:
                 log.error("OffsetCommit request for group id {} and partition {} failed due" +
-                    " to unexpected error {}.", groupId.idValue, topicPartition, error);
+                        " to unexpected error {}.", groupId.idValue, topicPartition, error);
                 partitionResults.put(topicPartition, error);
         }
     }

@@ -89,14 +89,14 @@ public class WorkerErrantRecordReporter implements ErrantRecordReporter {
             String topic = record.topic();
             byte[] key = keyConverter.fromConnectData(topic, record.keySchema(), record.key());
             byte[] value = valueConverter.fromConnectData(topic,
-                record.valueSchema(), record.value());
+                    record.valueSchema(), record.value());
 
             RecordHeaders headers = new RecordHeaders();
             if (record.headers() != null) {
                 for (Header header : record.headers()) {
                     String headerKey = header.key();
                     byte[] rawHeader = headerConverter.fromConnectHeader(topic, headerKey,
-                        header.schema(), header.value());
+                            header.schema(), header.value());
                     headers.add(headerKey, rawHeader);
                 }
             }
@@ -105,8 +105,8 @@ public class WorkerErrantRecordReporter implements ErrantRecordReporter {
             int valLength = value != null ? value.length : -1;
 
             ConsumerRecord<byte[], byte[]> consumerRecord = new ConsumerRecord<>(record.topic(), record.kafkaPartition(),
-                record.kafkaOffset(), record.timestamp(), record.timestampType(), keyLength,
-                valLength, key, value, headers, Optional.empty());
+                    record.kafkaOffset(), record.timestamp(), record.timestampType(), keyLength,
+                    valLength, key, value, headers, Optional.empty());
             context = new ProcessingContext<>(consumerRecord);
         }
 

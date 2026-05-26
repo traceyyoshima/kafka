@@ -107,12 +107,12 @@ public class MeteredWindowStoreTest {
     private final WindowStore<Bytes, byte[]> innerStoreMock = mock(WindowStore.class);
     private final MockTime mockTime = new MockTime();
     private MeteredWindowStore<String, String> store = new MeteredWindowStore<>(
-        innerStoreMock,
-        WINDOW_SIZE_MS, // any size
-        STORE_TYPE,
-        mockTime,
-        Serdes.String(),
-        new SerdeThatDoesntHandleNull()
+            innerStoreMock,
+            WINDOW_SIZE_MS, // any size
+            STORE_TYPE,
+            mockTime,
+            Serdes.String(),
+            new SerdeThatDoesntHandleNull()
     );
     private final Metrics metrics = new Metrics(new MetricConfig().recordLevel(Sensor.RecordingLevel.DEBUG));
     private Map<String, String> tags;
@@ -124,33 +124,33 @@ public class MeteredWindowStoreTest {
     @BeforeEach
     public void setUp() {
         final StreamsMetricsImpl streamsMetrics =
-            new StreamsMetricsImpl(metrics, "test", new MockTime());
+                new StreamsMetricsImpl(metrics, "test", new MockTime());
         context = new InternalMockProcessorContext<>(
-            TestUtils.tempDirectory(),
-            Serdes.String(),
-            Serdes.Long(),
-            streamsMetrics,
-            new StreamsConfig(StreamsTestUtils.getStreamsConfig()),
-            MockRecordCollector::new,
-            new ThreadCache(new LogContext("testCache "), 0, streamsMetrics),
-            Time.SYSTEM
+                TestUtils.tempDirectory(),
+                Serdes.String(),
+                Serdes.Long(),
+                streamsMetrics,
+                new StreamsConfig(StreamsTestUtils.getStreamsConfig()),
+                MockRecordCollector::new,
+                new ThreadCache(new LogContext("testCache "), 0, streamsMetrics),
+                Time.SYSTEM
         );
         tags = mkMap(
-            mkEntry(THREAD_ID_TAG_KEY, threadId),
-            mkEntry("task-id", context.taskId().toString()),
-            mkEntry(STORE_TYPE + "-state-id", STORE_NAME)
+                mkEntry(THREAD_ID_TAG_KEY, threadId),
+                mkEntry("task-id", context.taskId().toString()),
+                mkEntry(STORE_TYPE + "-state-id", STORE_NAME)
         );
     }
 
     @Test
     public void shouldDelegateInit() {
         final MeteredWindowStore<String, String> outer = new MeteredWindowStore<>(
-            innerStoreMock,
-            WINDOW_SIZE_MS, // any size
-            STORE_TYPE,
-            new MockTime(),
-            Serdes.String(),
-            new SerdeThatDoesntHandleNull()
+                innerStoreMock,
+                WINDOW_SIZE_MS, // any size
+                STORE_TYPE,
+                new MockTime(),
+                Serdes.String(),
+                new SerdeThatDoesntHandleNull()
         );
         when(innerStoreMock.name()).thenReturn("store");
         doNothing().when(innerStoreMock).init(context, outer);
@@ -166,7 +166,7 @@ public class MeteredWindowStoreTest {
     @Test
     public void shouldPassDefaultChangelogTopicNameToStateStoreSerdeIfLoggingDisabled() {
         final String defaultChangelogTopicName =
-            ProcessorStateManager.storeChangelogTopic(context.applicationId(), STORE_NAME, context.taskId().topologyName());
+                ProcessorStateManager.storeChangelogTopic(context.applicationId(), STORE_NAME, context.taskId().topologyName());
         doShouldPassChangelogTopicNameToStateStoreSerde(defaultChangelogTopicName);
     }
 
@@ -185,12 +185,12 @@ public class MeteredWindowStoreTest {
         when(valueSerializer.serialize(topic, new RecordHeaders(), VALUE)).thenReturn(VALUE_BYTES);
         when(innerStoreMock.fetch(KEY_BYTES, TIMESTAMP)).thenReturn(VALUE_BYTES);
         store = new MeteredWindowStore<>(
-            innerStoreMock,
-            WINDOW_SIZE_MS,
-            STORE_TYPE,
-            new MockTime(),
-            keySerde,
-            valueSerde
+                innerStoreMock,
+                WINDOW_SIZE_MS,
+                STORE_TYPE,
+                new MockTime(),
+                keySerde,
+                valueSerde
         );
         store.init(context, store);
 
@@ -207,13 +207,13 @@ public class MeteredWindowStoreTest {
 
         metrics.addReporter(reporter);
         assertTrue(reporter.containsMbean(String.format(
-            "kafka.streams:type=%s,%s=%s,task-id=%s,%s-state-id=%s",
-            STORE_LEVEL_GROUP,
-            THREAD_ID_TAG_KEY,
-            threadId,
-            context.taskId().toString(),
-            STORE_TYPE,
-            STORE_NAME
+                "kafka.streams:type=%s,%s=%s,task-id=%s,%s-state-id=%s",
+                STORE_LEVEL_GROUP,
+                THREAD_ID_TAG_KEY,
+                threadId,
+                context.taskId().toString(),
+                STORE_TYPE,
+                STORE_NAME
         )));
     }
 
@@ -386,12 +386,12 @@ public class MeteredWindowStoreTest {
         when(cachedWindowStore.setFlushListener(any(CacheFlushListener.class), eq(false))).thenReturn(true);
 
         final MeteredWindowStore<String, String> metered = new MeteredWindowStore<>(
-            cachedWindowStore,
-            10L, // any size
-            STORE_TYPE,
-            new MockTime(),
-            Serdes.String(),
-            new SerdeThatDoesntHandleNull()
+                cachedWindowStore,
+                10L, // any size
+                STORE_TYPE,
+                new MockTime(),
+                Serdes.String(),
+                new SerdeThatDoesntHandleNull()
         );
         assertTrue(metered.setFlushListener(null, false));
     }
@@ -404,27 +404,27 @@ public class MeteredWindowStoreTest {
         when(valueDeserializer.deserialize(anyString(), any(Headers.class), any(byte[].class))).thenReturn("value");
 
         final InMemoryWindowStore inner = new InMemoryWindowStore(
-            "flush-listener-inner",
-            RETENTION_PERIOD,
-            WINDOW_SIZE_MS,
-            false,
-            STORE_TYPE
+                "flush-listener-inner",
+                RETENTION_PERIOD,
+                WINDOW_SIZE_MS,
+                false,
+                STORE_TYPE
         );
         final CachingWindowStore cachingStore = new CachingWindowStore(inner, WINDOW_SIZE_MS, 100L);
         final MeteredWindowStore<String, String> metered = new MeteredWindowStore<>(
-            cachingStore,
-            WINDOW_SIZE_MS,
-            STORE_TYPE,
-            new MockTime(),
-            Serdes.String(),
-            valueSerde
+                cachingStore,
+                WINDOW_SIZE_MS,
+                STORE_TYPE,
+                new MockTime(),
+                Serdes.String(),
+                valueSerde
         );
         metered.init(context, metered);
-        assertTrue(metered.setFlushListener(record -> { }, false));
+        assertTrue(metered.setFlushListener(record -> {}, false));
 
         final RecordHeaders headers = new RecordHeaders();
         headers.add(headerKey, "new".getBytes(StandardCharsets.UTF_8));
-        
+
         context.setRecordContext(new ProcessorRecordContext(TIMESTAMP, 0L, 0, "topic", headers));
         metered.put(KEY, "value", TIMESTAMP);
 

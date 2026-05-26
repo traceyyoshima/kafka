@@ -103,10 +103,10 @@ public class Action {
 
         Action that = (Action) o;
         return Objects.equals(this.resourcePattern, that.resourcePattern) &&
-            Objects.equals(this.operation, that.operation) &&
-            this.resourceReferenceCount == that.resourceReferenceCount &&
-            this.logIfAllowed == that.logIfAllowed &&
-            this.logIfDenied == that.logIfDenied;
+                Objects.equals(this.operation, that.operation) &&
+                this.resourceReferenceCount == that.resourceReferenceCount &&
+                this.logIfAllowed == that.logIfAllowed &&
+                this.logIfDenied == that.logIfDenied;
 
     }
 
@@ -118,11 +118,11 @@ public class Action {
     @Override
     public String toString() {
         return "Action(" +
-            "resourcePattern='" + resourcePattern + '\'' +
-            ", operation='" + operation + '\'' +
-            ", resourceReferenceCount='" + resourceReferenceCount + '\'' +
-            ", logIfAllowed='" + logIfAllowed + '\'' +
-            ", logIfDenied='" + logIfDenied + '\'' +
-            ')';
+                "resourcePattern='" + resourcePattern + '\'' +
+                ", operation='" + operation + '\'' +
+                ", resourceReferenceCount='" + resourceReferenceCount + '\'' +
+                ", logIfAllowed='" + logIfAllowed + '\'' +
+                ", logIfDenied='" + logIfDenied + '\'' +
+                ')';
     }
 }

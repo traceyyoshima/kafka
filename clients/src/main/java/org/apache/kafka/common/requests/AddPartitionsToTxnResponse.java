@@ -77,7 +77,7 @@ public class AddPartitionsToTxnResponse extends AbstractResponse {
         for (AddPartitionsToTxnResult result : this.data.resultsByTransaction()) {
             errorsMap.put(result.transactionalId(), errorsForTransaction(result.topicResults()));
         }
-        
+
         return errorsMap;
     }
 
@@ -123,7 +123,7 @@ public class AddPartitionsToTxnResponse extends AbstractResponse {
         for (AddPartitionsToTxnTopicResult topicResult : topicCollection) {
             for (AddPartitionsToTxnPartitionResult partitionResult : topicResult.resultsByPartition()) {
                 topicResults.put(
-                    new TopicPartition(topicResult.name(), partitionResult.partitionIndex()), Errors.forCode(partitionResult.partitionErrorCode()));
+                        new TopicPartition(topicResult.name(), partitionResult.partitionIndex()), Errors.forCode(partitionResult.partitionErrorCode()));
             }
         }
         return topicResults;
@@ -137,9 +137,9 @@ public class AddPartitionsToTxnResponse extends AbstractResponse {
         if (this.data.resultsByTopicV3AndBelow().isEmpty()) {
             allErrors.add(Errors.forCode(data.errorCode()));
         }
-        
-        errors().forEach((txnId, errors) -> 
-            allErrors.addAll(errors.values())
+
+        errors().forEach((txnId, errors) ->
+                allErrors.addAll(errors.values())
         );
         return errorCounts(allErrors);
     }

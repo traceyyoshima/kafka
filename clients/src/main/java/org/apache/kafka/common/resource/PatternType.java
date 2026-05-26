@@ -67,16 +67,16 @@ public enum PatternType {
     PREFIXED((byte) 4);
 
     private static final Map<Byte, PatternType> CODE_TO_VALUE =
-        Collections.unmodifiableMap(
-            Arrays.stream(PatternType.values())
-                .collect(Collectors.toMap(PatternType::code, Function.identity()))
-        );
+            Collections.unmodifiableMap(
+                    Arrays.stream(PatternType.values())
+                        .collect(Collectors.toMap(PatternType::code, Function.identity()))
+            );
 
     private static final Map<String, PatternType> NAME_TO_VALUE =
-        Collections.unmodifiableMap(
-            Arrays.stream(PatternType.values())
-                .collect(Collectors.toMap(PatternType::name, Function.identity()))
-        );
+            Collections.unmodifiableMap(
+                    Arrays.stream(PatternType.values())
+                        .collect(Collectors.toMap(PatternType::name, Function.identity()))
+            );
 
     private final byte code;
 

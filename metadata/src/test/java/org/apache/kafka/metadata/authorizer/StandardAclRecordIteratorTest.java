@@ -37,27 +37,27 @@ public class StandardAclRecordIteratorTest {
     @Test
     public void testIteration() {
         StandardAclRecordIterator iterator =
-            new StandardAclRecordIterator(TEST_ACLS.iterator(), 2);
+                new StandardAclRecordIterator(TEST_ACLS.iterator(), 2);
         assertTrue(iterator.hasNext());
         assertEquals(List.of(
-            new ApiMessageAndVersion(TEST_ACLS.get(0).toRecord(), (short) 0),
-            new ApiMessageAndVersion(TEST_ACLS.get(1).toRecord(), (short) 0)),
-            iterator.next());
+                new ApiMessageAndVersion(TEST_ACLS.get(0).toRecord(), (short) 0),
+                new ApiMessageAndVersion(TEST_ACLS.get(1).toRecord(), (short) 0)),
+                iterator.next());
         assertEquals(List.of(
-            new ApiMessageAndVersion(TEST_ACLS.get(2).toRecord(), (short) 0),
-            new ApiMessageAndVersion(TEST_ACLS.get(3).toRecord(), (short) 0)),
-            iterator.next());
+                new ApiMessageAndVersion(TEST_ACLS.get(2).toRecord(), (short) 0),
+                new ApiMessageAndVersion(TEST_ACLS.get(3).toRecord(), (short) 0)),
+                iterator.next());
         assertTrue(iterator.hasNext());
         assertEquals(List.of(
-            new ApiMessageAndVersion(TEST_ACLS.get(4).toRecord(), (short) 0)),
-            iterator.next());
+                new ApiMessageAndVersion(TEST_ACLS.get(4).toRecord(), (short) 0)),
+                iterator.next());
         assertFalse(iterator.hasNext());
     }
 
     @Test
     public void testNoSuchElementException() {
         StandardAclRecordIterator iterator =
-            new StandardAclRecordIterator(TEST_ACLS.iterator(), 2);
+                new StandardAclRecordIterator(TEST_ACLS.iterator(), 2);
         iterator.next();
         iterator.next();
         iterator.next();

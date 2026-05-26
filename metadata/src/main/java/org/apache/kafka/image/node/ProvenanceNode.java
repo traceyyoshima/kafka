@@ -49,7 +49,7 @@ public class ProvenanceNode implements MetadataNode {
     @Override
     public void print(MetadataNodePrinter printer) {
         ZonedDateTime zonedDateTime =
-            Instant.ofEpochMilli(provenance.lastContainedLogTimeMs()).atZone(ZoneId.of("UTC"));
+                Instant.ofEpochMilli(provenance.lastContainedLogTimeMs()).atZone(ZoneId.of("UTC"));
         printer.output("offset " + provenance.lastContainedOffset() +
                 ", epoch " + provenance.lastContainedEpoch() +
                 ", time " + DateTimeFormatter.ISO_ZONED_DATE_TIME.format(zonedDateTime));

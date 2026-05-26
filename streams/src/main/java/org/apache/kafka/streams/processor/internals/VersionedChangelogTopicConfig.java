@@ -29,11 +29,13 @@ import java.util.Objects;
  */
 public class VersionedChangelogTopicConfig extends InternalTopicConfig {
     private static final Map<String, String> VERSIONED_STORE_CHANGELOG_TOPIC_DEFAULT_OVERRIDES;
+
     static {
         final Map<String, String> tempTopicDefaultOverrides = new HashMap<>(INTERNAL_TOPIC_DEFAULT_OVERRIDES);
         tempTopicDefaultOverrides.put(TopicConfig.CLEANUP_POLICY_CONFIG, TopicConfig.CLEANUP_POLICY_COMPACT);
         VERSIONED_STORE_CHANGELOG_TOPIC_DEFAULT_OVERRIDES = Collections.unmodifiableMap(tempTopicDefaultOverrides);
     }
+
     private static final long VERSIONED_STORE_CHANGE_LOG_ADDITIONAL_COMPACTION_LAG_MS = 24 * 60 * 60 * 1000L;
 
     private final long minCompactionLagMs;
@@ -90,9 +92,9 @@ public class VersionedChangelogTopicConfig extends InternalTopicConfig {
         }
         final VersionedChangelogTopicConfig that = (VersionedChangelogTopicConfig) o;
         return Objects.equals(name, that.name) &&
-            Objects.equals(topicConfigs, that.topicConfigs) &&
-            Objects.equals(minCompactionLagMs, that.minCompactionLagMs) &&
-            Objects.equals(enforceNumberOfPartitions, that.enforceNumberOfPartitions);
+                Objects.equals(topicConfigs, that.topicConfigs) &&
+                Objects.equals(minCompactionLagMs, that.minCompactionLagMs) &&
+                Objects.equals(enforceNumberOfPartitions, that.enforceNumberOfPartitions);
     }
 
     @Override
@@ -103,10 +105,10 @@ public class VersionedChangelogTopicConfig extends InternalTopicConfig {
     @Override
     public String toString() {
         return "VersionedChangelogTopicConfig(" +
-            "name=" + name +
-            ", topicConfigs=" + topicConfigs +
-            ", minCompactionLagMs=" + minCompactionLagMs +
-            ", enforceNumberOfPartitions=" + enforceNumberOfPartitions +
-            ")";
+                "name=" + name +
+                ", topicConfigs=" + topicConfigs +
+                ", minCompactionLagMs=" + minCompactionLagMs +
+                ", enforceNumberOfPartitions=" + enforceNumberOfPartitions +
+                ")";
     }
 }

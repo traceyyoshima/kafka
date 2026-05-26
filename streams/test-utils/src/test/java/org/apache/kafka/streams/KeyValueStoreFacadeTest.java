@@ -96,8 +96,8 @@ public class KeyValueStoreFacadeTest {
     @Test
     public void shouldPutAllWithUnknownTimestamp() {
         keyValueStoreFacade.putAll(asList(
-            KeyValue.pair("key1", "value1"),
-            KeyValue.pair("key2", "value2")
+                KeyValue.pair("key1", "value1"),
+                KeyValue.pair("key2", "value2")
         ));
         verify(mockedKeyValueTimestampStore)
             .put("key1", ValueAndTimestamp.make("value1", ConsumerRecord.NO_TIMESTAMP));
@@ -190,12 +190,12 @@ public class KeyValueStoreFacadeTest {
         when(mockedKeyValueTimestampStore.<Integer>query(any(), any(), any())).thenReturn(queryResult);
 
         assertThat(
-            keyValueStoreFacade.query(
-                query,
-                PositionBound.unbounded(),
-                queryConfig
-            ),
-            is(queryResult));
+                keyValueStoreFacade.query(
+                        query,
+                        PositionBound.unbounded(),
+                        queryConfig
+                ),
+                is(queryResult));
         verify(mockedKeyValueTimestampStore).query(query, PositionBound.unbounded(), queryConfig);
     }
 }

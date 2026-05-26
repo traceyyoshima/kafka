@@ -66,9 +66,9 @@ public class InMemoryKeyValueStoreTest extends AbstractKeyValueStoreTest {
         super.before();
         final StateStoreContext byteStoreContext = byteStoreDriver.context();
         final StoreBuilder<KeyValueStore<Bytes, byte[]>> storeBuilder = Stores.keyValueStoreBuilder(
-            Stores.inMemoryKeyValueStore("in-memory-byte-store"),
-            new Serdes.BytesSerde(),
-            new Serdes.ByteArraySerde());
+                Stores.inMemoryKeyValueStore("in-memory-byte-store"),
+                new Serdes.BytesSerde(),
+                new Serdes.ByteArraySerde());
         byteStore = storeBuilder.build();
         byteStore.init(byteStoreContext, byteStore);
         this.inMemoryKeyValueStore = getInMemoryStore();
@@ -85,9 +85,9 @@ public class InMemoryKeyValueStoreTest extends AbstractKeyValueStoreTest {
     @Override
     protected <K, V> KeyValueStore<K, V> createKeyValueStore(final StateStoreContext context) {
         final StoreBuilder<KeyValueStore<K, V>> storeBuilder = Stores.keyValueStoreBuilder(
-            Stores.inMemoryKeyValueStore("my-store"),
-            (Serde<K>) context.keySerde(),
-            (Serde<V>) context.valueSerde());
+                Stores.inMemoryKeyValueStore("my-store"),
+                (Serde<K>) context.keySerde(),
+                (Serde<V>) context.valueSerde());
 
         final KeyValueStore<K, V> store = storeBuilder.build();
         store.init(context, store);
@@ -117,29 +117,28 @@ public class InMemoryKeyValueStoreTest extends AbstractKeyValueStoreTest {
         assertThat(store.get(0), nullValue());
     }
 
-
     @Test
     public void shouldReturnKeysWithGivenPrefix() {
 
         final List<KeyValue<Bytes, byte[]>> entries = new ArrayList<>();
         entries.add(new KeyValue<>(
-            new Bytes(stringSerializer.serialize(null, "k1")),
-            stringSerializer.serialize(null, "a")));
+                new Bytes(stringSerializer.serialize(null, "k1")),
+                stringSerializer.serialize(null, "a")));
         entries.add(new KeyValue<>(
-            new Bytes(stringSerializer.serialize(null, "prefix_3")),
-            stringSerializer.serialize(null, "b")));
+                new Bytes(stringSerializer.serialize(null, "prefix_3")),
+                stringSerializer.serialize(null, "b")));
         entries.add(new KeyValue<>(
-            new Bytes(stringSerializer.serialize(null, "k2")),
-            stringSerializer.serialize(null, "c")));
+                new Bytes(stringSerializer.serialize(null, "k2")),
+                stringSerializer.serialize(null, "c")));
         entries.add(new KeyValue<>(
-            new Bytes(stringSerializer.serialize(null, "prefix_2")),
-            stringSerializer.serialize(null, "d")));
+                new Bytes(stringSerializer.serialize(null, "prefix_2")),
+                stringSerializer.serialize(null, "d")));
         entries.add(new KeyValue<>(
-            new Bytes(stringSerializer.serialize(null, "k3")),
-            stringSerializer.serialize(null, "e")));
+                new Bytes(stringSerializer.serialize(null, "k3")),
+                stringSerializer.serialize(null, "e")));
         entries.add(new KeyValue<>(
-            new Bytes(stringSerializer.serialize(null, "prefix_1")),
-            stringSerializer.serialize(null, "f")));
+                new Bytes(stringSerializer.serialize(null, "prefix_1")),
+                stringSerializer.serialize(null, "f")));
 
         byteStore.putAll(entries);
         byteStore.commit(Map.of());
@@ -165,16 +164,16 @@ public class InMemoryKeyValueStoreTest extends AbstractKeyValueStoreTest {
     public void shouldReturnKeysWithGivenPrefixExcludingNextKeyLargestKey() {
         final List<KeyValue<Bytes, byte[]>> entries = new ArrayList<>();
         entries.add(new KeyValue<>(
-            new Bytes(stringSerializer.serialize(null, "abc")),
-            stringSerializer.serialize(null, "f")));
+                new Bytes(stringSerializer.serialize(null, "abc")),
+                stringSerializer.serialize(null, "f")));
 
         entries.add(new KeyValue<>(
-            new Bytes(stringSerializer.serialize(null, "abcd")),
-            stringSerializer.serialize(null, "f")));
+                new Bytes(stringSerializer.serialize(null, "abcd")),
+                stringSerializer.serialize(null, "f")));
 
         entries.add(new KeyValue<>(
-            new Bytes(stringSerializer.serialize(null, "abce")),
-            stringSerializer.serialize(null, "f")));
+                new Bytes(stringSerializer.serialize(null, "abce")),
+                stringSerializer.serialize(null, "f")));
 
         byteStore.putAll(entries);
         byteStore.commit(Map.of());
@@ -200,11 +199,11 @@ public class InMemoryKeyValueStoreTest extends AbstractKeyValueStoreTest {
         final UUID uuid2 = UUID.randomUUID();
         final String prefix = uuid1.toString().substring(0, 4);
         entries.add(new KeyValue<>(
-            new Bytes(uuidSerializer.serialize(null, uuid1)),
-            stringSerializer.serialize(null, "a")));
+                new Bytes(uuidSerializer.serialize(null, uuid1)),
+                stringSerializer.serialize(null, "a")));
         entries.add(new KeyValue<>(
-            new Bytes(uuidSerializer.serialize(null, uuid2)),
-            stringSerializer.serialize(null, "b")));
+                new Bytes(uuidSerializer.serialize(null, uuid2)),
+                stringSerializer.serialize(null, "b")));
 
         byteStore.putAll(entries);
         byteStore.commit(Map.of());
@@ -228,14 +227,14 @@ public class InMemoryKeyValueStoreTest extends AbstractKeyValueStoreTest {
     public void shouldReturnNoKeys() {
         final List<KeyValue<Bytes, byte[]>> entries = new ArrayList<>();
         entries.add(new KeyValue<>(
-            new Bytes(stringSerializer.serialize(null, "a")),
-            stringSerializer.serialize(null, "a")));
+                new Bytes(stringSerializer.serialize(null, "a")),
+                stringSerializer.serialize(null, "a")));
         entries.add(new KeyValue<>(
-            new Bytes(stringSerializer.serialize(null, "b")),
-            stringSerializer.serialize(null, "c")));
+                new Bytes(stringSerializer.serialize(null, "b")),
+                stringSerializer.serialize(null, "c")));
         entries.add(new KeyValue<>(
-            new Bytes(stringSerializer.serialize(null, "c")),
-            stringSerializer.serialize(null, "e")));
+                new Bytes(stringSerializer.serialize(null, "c")),
+                stringSerializer.serialize(null, "e")));
         byteStore.putAll(entries);
         byteStore.commit(Map.of());
 

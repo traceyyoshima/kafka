@@ -52,6 +52,6 @@ public class FilteringJmxReporter extends JmxReporter {
                     super.onMetricRemoved(name);
                 }
             }
-            );
+        );
     }
 }

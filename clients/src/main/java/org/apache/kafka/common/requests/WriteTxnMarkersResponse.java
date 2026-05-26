@@ -61,7 +61,7 @@ public class WriteTxnMarkersResponse extends AbstractResponse {
                 String topicName = topicPartition.topic();
 
                 WritableTxnMarkerTopicResult topic =
-                    responseTopicDataMap.getOrDefault(topicName, new WritableTxnMarkerTopicResult().setName(topicName));
+                        responseTopicDataMap.getOrDefault(topicName, new WritableTxnMarkerTopicResult().setName(topicName));
                 topic.partitions().add(new WritableTxnMarkerPartitionResult()
                                            .setErrorCode(topicEntry.getValue().code())
                                            .setPartitionIndex(topicPartition.partition())
@@ -75,7 +75,7 @@ public class WriteTxnMarkersResponse extends AbstractResponse {
             );
         }
         this.data = new WriteTxnMarkersResponseData()
-                        .setMarkers(markers);
+                .setMarkers(markers);
     }
 
     public WriteTxnMarkersResponse(WriteTxnMarkersResponseData data) {

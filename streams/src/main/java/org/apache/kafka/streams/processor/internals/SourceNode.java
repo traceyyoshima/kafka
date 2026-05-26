@@ -68,10 +68,10 @@ public class SourceNode<KIn, VIn> extends ProcessorNode<KIn, VIn, KIn, VIn> {
         // Once the backwards compatibility is not needed anymore it might be possible to
         // change this.
         processAtSourceSensor = ProcessorNodeMetrics.processAtSourceSensor(
-            Thread.currentThread().getName(),
-            context.taskId().toString(),
-            context.currentNode().name(),
-            context.metrics()
+                Thread.currentThread().getName(),
+                context.taskId().toString(),
+                context.currentNode().name(),
+                context.metrics()
         );
         super.init(context);
         this.context = context;
@@ -88,7 +88,6 @@ public class SourceNode<KIn, VIn> extends ProcessorNode<KIn, VIn, KIn, VIn> {
             throw new StreamsException(String.format("Failed to initialize value serdes for source node %s", name()), e, context.taskId());
         }
     }
-
 
     @Override
     public void process(final Record<KIn, VIn> record) {

@@ -59,7 +59,7 @@ public class TimeWindow extends Window {
     public boolean overlap(final Window other) throws IllegalArgumentException {
         if (getClass() != other.getClass()) {
             throw new IllegalArgumentException("Cannot compare windows of different type. Other window has type "
-                + other.getClass() + ".");
+                    + other.getClass() + ".");
         }
         final TimeWindow otherWindow = (TimeWindow) other;
         return startMs < otherWindow.endMs && otherWindow.startMs < endMs;

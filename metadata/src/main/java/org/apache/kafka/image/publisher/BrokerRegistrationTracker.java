@@ -75,7 +75,7 @@ public class BrokerRegistrationTracker implements MetadataPublisher {
             if (delta.metadataVersionChanged().isPresent()) {
                 if (log.isTraceEnabled()) {
                     log.trace("Metadata version change is present: {}",
-                        delta.metadataVersionChanged());
+                            delta.metadataVersionChanged());
                 }
                 checkBrokerRegistration = true;
             }
@@ -84,7 +84,7 @@ public class BrokerRegistrationTracker implements MetadataPublisher {
             if (delta.clusterDelta().changedBrokers().get(id) != null) {
                 if (log.isTraceEnabled()) {
                     log.trace("Broker change is present: {}",
-                        delta.clusterDelta().changedBrokers().get(id));
+                            delta.clusterDelta().changedBrokers().get(id));
                 }
                 checkBrokerRegistration = true;
             }

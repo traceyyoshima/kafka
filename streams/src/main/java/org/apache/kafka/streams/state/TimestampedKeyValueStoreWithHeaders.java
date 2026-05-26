@@ -23,5 +23,5 @@ package org.apache.kafka.streams.state;
  * @param <V> The value type
  */
 public interface TimestampedKeyValueStoreWithHeaders<K, V>
-    extends KeyValueStore<K, ValueTimestampHeaders<V>> {
+        extends KeyValueStore<K, ValueTimestampHeaders<V>> {
 }

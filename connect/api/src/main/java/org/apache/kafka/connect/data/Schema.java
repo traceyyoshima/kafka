@@ -124,7 +124,6 @@ public interface Schema {
         }
     }
 
-
     Schema INT8_SCHEMA = SchemaBuilder.int8().build();
     Schema INT16_SCHEMA = SchemaBuilder.int16().build();
     Schema INT32_SCHEMA = SchemaBuilder.int32().build();

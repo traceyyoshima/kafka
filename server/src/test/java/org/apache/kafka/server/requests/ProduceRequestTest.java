@@ -80,30 +80,30 @@ public class ProduceRequestTest {
         int partition = partitionAndLeader.partition();
         int leaderId = partitionAndLeader.leader().id();
         sendAndCheckProduceResponse(leaderId, partition,
-            MemoryRecords.withRecords(Compression.NONE,
-                new SimpleRecord(System.currentTimeMillis(), "key".getBytes(), "value".getBytes())),
-            0L);
+                MemoryRecords.withRecords(Compression.NONE,
+                        new SimpleRecord(System.currentTimeMillis(), "key".getBytes(), "value".getBytes())),
+                0L);
 
         sendAndCheckProduceResponse(leaderId, partition,
-            MemoryRecords.withRecords(Compression.gzip().build(),
-                new SimpleRecord(System.currentTimeMillis(), "key1".getBytes(), "value1".getBytes()),
-                new SimpleRecord(System.currentTimeMillis(), "key2".getBytes(), "value2".getBytes())),
-            1L);
+                MemoryRecords.withRecords(Compression.gzip().build(),
+                        new SimpleRecord(System.currentTimeMillis(), "key1".getBytes(), "value1".getBytes()),
+                        new SimpleRecord(System.currentTimeMillis(), "key2".getBytes(), "value2".getBytes())),
+                1L);
     }
 
     @ClusterTest
     public void testProduceWithTimestampTooOld() throws Exception {
         doTestProduceWithInvalidTimestamp(
-            TopicConfig.MESSAGE_TIMESTAMP_BEFORE_MAX_MS_CONFIG,
-            System.currentTimeMillis() - FIVE_HOURS_IN_MS
+                TopicConfig.MESSAGE_TIMESTAMP_BEFORE_MAX_MS_CONFIG,
+                System.currentTimeMillis() - FIVE_HOURS_IN_MS
         );
     }
 
     @ClusterTest
     public void testProduceWithTimestampTooNew() throws Exception {
         doTestProduceWithInvalidTimestamp(
-            TopicConfig.MESSAGE_TIMESTAMP_AFTER_MAX_MS_CONFIG,
-            System.currentTimeMillis() + FIVE_HOURS_IN_MS
+                TopicConfig.MESSAGE_TIMESTAMP_AFTER_MAX_MS_CONFIG,
+                System.currentTimeMillis() + FIVE_HOURS_IN_MS
         );
     }
 
@@ -119,16 +119,16 @@ public class ProduceRequestTest {
             .orElseThrow(() -> new AssertionError("No non-replica broker found"));
 
         MemoryRecords records = MemoryRecords.withRecords(Compression.NONE,
-            new SimpleRecord("key".getBytes(), "value".getBytes()));
+                new SimpleRecord("key".getBytes(), "value".getBytes()));
         ProduceRequest request = ProduceRequest.builder(new ProduceRequestData()
             .setTopicData(new ProduceRequestData.TopicProduceDataCollection(Collections.singletonList(
-                new ProduceRequestData.TopicProduceData()
-                    .setTopicId(topicId)
-                    .setPartitionData(Collections.singletonList(
-                        new ProduceRequestData.PartitionProduceData()
-                            .setIndex(0)
-                            .setRecords(records))))
-                .iterator()))
+                    new ProduceRequestData.TopicProduceData()
+                        .setTopicId(topicId)
+                        .setPartitionData(Collections.singletonList(
+                            new ProduceRequestData.PartitionProduceData()
+                                .setIndex(0)
+                                .setRecords(records))))
+                                    .iterator()))
             .setAcks((short) -1)
             .setTimeoutMs(3000)
             .setTransactionalId(null)).build();
@@ -150,20 +150,20 @@ public class ProduceRequestTest {
         Uuid topicId = getTopicId();
 
         MemoryRecords memoryRecords = MemoryRecords.withRecords(Compression.lz4().build(),
-            new SimpleRecord(1000000L, "key".getBytes(), "value".getBytes()));
+                new SimpleRecord(1000000L, "key".getBytes(), "value".getBytes()));
         // Corrupt the lz4 frame checksum (not the kafka record CRC) to trigger CORRUPT_MESSAGE
         int lz4ChecksumOffset = 6;
         memoryRecords.buffer().array()[DefaultRecordBatch.RECORD_BATCH_OVERHEAD + lz4ChecksumOffset] = 0;
 
         ProduceRequest request = ProduceRequest.builder(new ProduceRequestData()
             .setTopicData(new ProduceRequestData.TopicProduceDataCollection(Collections.singletonList(
-                new ProduceRequestData.TopicProduceData()
-                    .setTopicId(topicId)
-                    .setPartitionData(Collections.singletonList(
-                        new ProduceRequestData.PartitionProduceData()
-                            .setIndex(partition)
-                            .setRecords(memoryRecords))))
-                .iterator()))
+                    new ProduceRequestData.TopicProduceData()
+                        .setTopicId(topicId)
+                        .setPartitionData(Collections.singletonList(
+                            new ProduceRequestData.PartitionProduceData()
+                                .setIndex(partition)
+                                .setRecords(memoryRecords))))
+                                    .iterator()))
             .setAcks((short) -1)
             .setTimeoutMs(3000)
             .setTransactionalId(null)).build();
@@ -194,22 +194,22 @@ public class ProduceRequestTest {
     @ClusterTest
     public void testZSTDProduceRequest() throws Exception {
         cluster.createTopic(TOPIC, 1, (short) 1,
-            Map.of(TopicConfig.COMPRESSION_TYPE_CONFIG, "zstd"));
+                Map.of(TopicConfig.COMPRESSION_TYPE_CONFIG, "zstd"));
         int leaderId = cluster.getLeaderBrokerId(new TopicPartition(TOPIC, 0));
 
         MemoryRecords memoryRecords = MemoryRecords.withRecords(Compression.zstd().build(),
-            new SimpleRecord(System.currentTimeMillis(), "key".getBytes(), "value".getBytes()));
+                new SimpleRecord(System.currentTimeMillis(), "key".getBytes(), "value".getBytes()));
 
         // v7 uses topic name rather than topic ID
         ProduceRequestData data = new ProduceRequestData()
             .setTopicData(new ProduceRequestData.TopicProduceDataCollection(Collections.singletonList(
-                new ProduceRequestData.TopicProduceData()
-                    .setName(TOPIC)
-                    .setPartitionData(Collections.singletonList(
-                        new ProduceRequestData.PartitionProduceData()
-                            .setIndex(0)
-                            .setRecords(memoryRecords))))
-                .iterator()))
+                    new ProduceRequestData.TopicProduceData()
+                        .setName(TOPIC)
+                        .setPartitionData(Collections.singletonList(
+                            new ProduceRequestData.PartitionProduceData()
+                                .setIndex(0)
+                                .setRecords(memoryRecords))))
+                                    .iterator()))
             .setAcks((short) -1)
             .setTimeoutMs(3000)
             .setTransactionalId(null);
@@ -235,13 +235,13 @@ public class ProduceRequestTest {
         Uuid topicId = getTopicId();
         ProduceRequest request = ProduceRequest.builder(new ProduceRequestData()
             .setTopicData(new ProduceRequestData.TopicProduceDataCollection(Collections.singletonList(
-                new ProduceRequestData.TopicProduceData()
-                    .setTopicId(topicId)
-                    .setPartitionData(Collections.singletonList(
-                        new ProduceRequestData.PartitionProduceData()
-                            .setIndex(partition)
-                            .setRecords(records))))
-                .iterator()))
+                    new ProduceRequestData.TopicProduceData()
+                        .setTopicId(topicId)
+                        .setPartitionData(Collections.singletonList(
+                            new ProduceRequestData.PartitionProduceData()
+                                .setIndex(partition)
+                                .setRecords(records))))
+                                    .iterator()))
             .setAcks((short) -1)
             .setTimeoutMs(3000)
             .setTransactionalId(null)).build();
@@ -267,7 +267,7 @@ public class ProduceRequestTest {
 
         ByteBuffer buf = ByteBuffer.allocate(512);
         var builder = MemoryRecords.builder(buf, RecordBatch.MAGIC_VALUE_V2,
-            Compression.gzip().build(), TimestampType.CREATE_TIME, 0L);
+                Compression.gzip().build(), TimestampType.CREATE_TIME, 0L);
         builder.appendWithOffset(0, recordTimestamp, null, "hello".getBytes());
         builder.appendWithOffset(1, recordTimestamp, null, "there".getBytes());
         builder.appendWithOffset(2, recordTimestamp, null, "beautiful".getBytes());
@@ -275,13 +275,13 @@ public class ProduceRequestTest {
 
         ProduceResponse response = sendProduceRequest(leaderId, ProduceRequest.builder(new ProduceRequestData()
             .setTopicData(new ProduceRequestData.TopicProduceDataCollection(Collections.singletonList(
-                new ProduceRequestData.TopicProduceData()
-                    .setTopicId(topicId)
-                    .setPartitionData(Collections.singletonList(
-                        new ProduceRequestData.PartitionProduceData()
-                            .setIndex(0)
-                            .setRecords(records))))
-                .iterator()))
+                    new ProduceRequestData.TopicProduceData()
+                        .setTopicId(topicId)
+                        .setPartitionData(Collections.singletonList(
+                            new ProduceRequestData.PartitionProduceData()
+                                .setIndex(0)
+                                .setRecords(records))))
+                                    .iterator()))
             .setAcks((short) -1)
             .setTimeoutMs(3000)
             .setTransactionalId(null)).build());
@@ -299,7 +299,7 @@ public class ProduceRequestTest {
             assertNotNull(partitionResponse.recordErrors().get(i).batchIndexErrorMessage());
         }
         assertEquals("One or more records have been rejected due to invalid timestamp",
-            partitionResponse.errorMessage());
+                partitionResponse.errorMessage());
     }
 
     private Uuid getTopicId() throws ExecutionException, InterruptedException {

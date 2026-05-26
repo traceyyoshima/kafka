@@ -94,9 +94,9 @@ public class ReplicasTest {
         assertArrayEquals(new int[] {}, Replicas.copyWithout(new int[] {}, new int[] {}));
         assertArrayEquals(new int[] {}, Replicas.copyWithout(new int[] {1}, new int[] {1}));
         assertArrayEquals(new int[] {1, 3},
-            Replicas.copyWithout(new int[] {1, 2, 3}, new int[]{2, 4}));
+                Replicas.copyWithout(new int[] {1, 2, 3}, new int[]{2, 4}));
         assertArrayEquals(new int[] {4},
-            Replicas.copyWithout(new int[] {4, 2, 2, 1}, new int[]{2, 1}));
+                Replicas.copyWithout(new int[] {4, 2, 2, 1}, new int[]{2, 1}));
     }
 
     @Test
@@ -109,9 +109,9 @@ public class ReplicasTest {
     public void testToSet() {
         assertEquals(Set.of(), Replicas.toSet(new int[] {}));
         assertEquals(Set.of(3, 1, 5),
-            Replicas.toSet(new int[] {1, 3, 5}));
+                Replicas.toSet(new int[] {1, 3, 5}));
         assertEquals(Set.of(1, 2, 10),
-            Replicas.toSet(new int[] {1, 1, 2, 10, 10}));
+                Replicas.toSet(new int[] {1, 1, 2, 10, 10}));
     }
 
     @Test

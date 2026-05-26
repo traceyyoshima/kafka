@@ -180,8 +180,8 @@ public class ControllerMutationQuotaManager extends ClientQuotaManager {
     public static long throttleTimeMs(QuotaViolationException e) {
         if (e.metric().measurable() instanceof TokenBucket) {
             return Math.round(-e.value() / e.bound() * 1000);
-        } 
-        throw new IllegalArgumentException("Metric " + e.metric().metricName() + 
-            " is not a TokenBucket metric, value " + e.metric().measurable());
+        }
+        throw new IllegalArgumentException("Metric " + e.metric().metricName() +
+                " is not a TokenBucket metric, value " + e.metric().measurable());
     }
 }

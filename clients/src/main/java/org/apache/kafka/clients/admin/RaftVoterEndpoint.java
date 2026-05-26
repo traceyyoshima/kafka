@@ -91,8 +91,8 @@ public class RaftVoterEndpoint {
         if (o == null || (!o.getClass().equals(getClass()))) return false;
         RaftVoterEndpoint other = (RaftVoterEndpoint) o;
         return listener.equals(other.listener) &&
-            host.equals(other.host) &&
-            port == other.port;
+                host.equals(other.host) &&
+                port == other.port;
     }
 
     @Override

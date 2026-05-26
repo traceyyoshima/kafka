@@ -100,11 +100,11 @@ public class DelegationTokenControlManager {
             if (logContext == null) logContext = new LogContext();
             if (tokenCache == null) tokenCache = new DelegationTokenCache(Set.of());
             return new DelegationTokenControlManager(
-                logContext,
-                tokenCache,
-                tokenSecretKeyString,
-                tokenDefaultMaxLifetimeMs,
-                tokenDefaultRenewLifetimeMs);
+                    logContext,
+                    tokenCache,
+                    tokenSecretKeyString,
+                    tokenDefaultMaxLifetimeMs,
+                    tokenDefaultRenewLifetimeMs);
         }
     }
 
@@ -164,8 +164,8 @@ public class DelegationTokenControlManager {
     ) {
         long now = time.milliseconds();
         KafkaPrincipal owner = context.principal();
-        if ((requestData.ownerPrincipalName() != null) && 
-            (!requestData.ownerPrincipalName().isEmpty())) {
+        if ((requestData.ownerPrincipalName() != null) &&
+                (!requestData.ownerPrincipalName().isEmpty())) {
 
             owner = new KafkaPrincipal(requestData.ownerPrincipalType(), requestData.ownerPrincipalName());
         }
@@ -214,7 +214,7 @@ public class DelegationTokenControlManager {
         }
 
         TokenInformation newTokenInformation = new TokenInformation(tokenId, owner,
-            context.principal(), renewers, now, maxTimestamp, expiryTimestamp);
+                context.principal(), renewers, now, maxTimestamp, expiryTimestamp);
 
         DelegationTokenData newDelegationTokenData = new DelegationTokenData(newTokenInformation);
 
@@ -312,8 +312,8 @@ public class DelegationTokenControlManager {
 
         if (requestData.expiryTimePeriodMs() < 0) { // expire immediately
             responseData
-                .setErrorCode(NONE.code())
-                .setExpiryTimestampMs(now);
+                    .setErrorCode(NONE.code())
+                    .setExpiryTimestampMs(now);
             records.add(new ApiMessageAndVersion(new RemoveDelegationTokenRecord().
                 setTokenId(myTokenInformation.tokenId()), (short) 0));
         } else if (myTokenInformation.maxTimestamp() < now || myTokenInformation.expiryTimestamp() < now) {
@@ -340,9 +340,9 @@ public class DelegationTokenControlManager {
 
         for (TokenInformation oldTokenInformation: tokenCache.tokens()) {
             if ((oldTokenInformation.maxTimestamp() < now) ||
-                (oldTokenInformation.expiryTimestamp() < now)) {
+                    (oldTokenInformation.expiryTimestamp() < now)) {
                 log.info("Delegation token expired for token: {} for owner: {}",
-                    oldTokenInformation.tokenId(), oldTokenInformation.ownerAsString());
+                        oldTokenInformation.tokenId(), oldTokenInformation.ownerAsString());
                 records.add(new ApiMessageAndVersion(new RemoveDelegationTokenRecord().
                     setTokenId(oldTokenInformation.tokenId()), (short) 0));
                 if (records.size() >= MAX_RECORDS_PER_EXPIRATION) {

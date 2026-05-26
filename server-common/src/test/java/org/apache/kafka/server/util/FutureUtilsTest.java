@@ -48,11 +48,11 @@ public class FutureUtilsTest {
         CompletableFuture<Integer> future = new CompletableFuture<>();
         executorService.schedule(() -> future.complete(123), 1000, TimeUnit.NANOSECONDS);
         assertEquals(123, FutureUtils.waitWithLogging(log,
-            "[FutureUtilsTest] ",
-            "the future to be completed",
-            future,
-            Deadline.fromDelay(Time.SYSTEM, 30, TimeUnit.SECONDS),
-            Time.SYSTEM));
+                "[FutureUtilsTest] ",
+                "the future to be completed",
+                future,
+                Deadline.fromDelay(Time.SYSTEM, 30, TimeUnit.SECONDS),
+                Time.SYSTEM));
         executorService.shutdownNow();
         executorService.awaitTermination(1, TimeUnit.MINUTES);
     }
@@ -65,13 +65,13 @@ public class FutureUtilsTest {
         executorService.schedule(() -> future.complete(456), 10000, TimeUnit.MILLISECONDS);
         assertThrows(TimeoutException.class, () -> {
             FutureUtils.waitWithLogging(log,
-                "[FutureUtilsTest] ",
-                "the future to be completed",
-                future,
-                immediateTimeout ?
-                    Deadline.fromDelay(Time.SYSTEM, 0, TimeUnit.SECONDS) :
-                    Deadline.fromDelay(Time.SYSTEM, 1, TimeUnit.MILLISECONDS),
-                Time.SYSTEM);
+                    "[FutureUtilsTest] ",
+                    "the future to be completed",
+                    future,
+                    immediateTimeout ?
+                            Deadline.fromDelay(Time.SYSTEM, 0, TimeUnit.SECONDS) :
+                            Deadline.fromDelay(Time.SYSTEM, 1, TimeUnit.MILLISECONDS),
+                    Time.SYSTEM);
         });
         executorService.shutdownNow();
         executorService.awaitTermination(1, TimeUnit.MINUTES);
@@ -85,14 +85,14 @@ public class FutureUtilsTest {
             future.completeExceptionally(new IllegalArgumentException("uh oh"));
         }, 1, TimeUnit.NANOSECONDS);
         assertEquals("Received a fatal error while waiting for the future to be completed",
-            assertThrows(RuntimeException.class, () -> {
-                FutureUtils.waitWithLogging(log,
-                    "[FutureUtilsTest] ",
-                    "the future to be completed",
-                    future,
-                    Deadline.fromDelay(Time.SYSTEM, 30, TimeUnit.SECONDS),
-                    Time.SYSTEM);
-            }).getMessage());
+                assertThrows(RuntimeException.class, () -> {
+                    FutureUtils.waitWithLogging(log,
+                        "[FutureUtilsTest] ",
+                        "the future to be completed",
+                        future,
+                        Deadline.fromDelay(Time.SYSTEM, 30, TimeUnit.SECONDS),
+                        Time.SYSTEM);
+                }).getMessage());
         executorService.shutdown();
         executorService.awaitTermination(1, TimeUnit.MINUTES);
     }

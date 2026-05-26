@@ -45,7 +45,7 @@ public record EpochElection(Map<Integer, VoterState> voterStates) {
         VoterState voterState = getVoterStateOrThrow(voterId);
         boolean wasUnrecorded = voterState.state == VoterState.State.UNRECORDED;
         voterState.setState(
-            isGranted ? VoterState.State.GRANTED : VoterState.State.REJECTED
+                isGranted ? VoterState.State.GRANTED : VoterState.State.REJECTED
         );
         return wasUnrecorded;
     }
@@ -180,9 +180,9 @@ public record EpochElection(Map<Integer, VoterState> voterStates) {
         @Override
         public String toString() {
             return String.format(
-                "VoterState(replicaKey=%s, state=%s)",
-                replicaKey,
-                state
+                    "VoterState(replicaKey=%s, state=%s)",
+                    replicaKey,
+                    state
             );
         }
     }

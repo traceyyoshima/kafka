@@ -124,7 +124,7 @@ class HealthCheckThread extends Thread {
         } catch (InterruptedException e) {
             log.warn(
                     "Interrupted during graceful shutdown; will interrupt health check thread "
-                            + "and then return immediately without waiting for thread to terminate",
+                    + "and then return immediately without waiting for thread to terminate",
                     e
             );
             this.interrupt();

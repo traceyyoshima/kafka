@@ -57,9 +57,9 @@ public class KStreamMapValuesTest {
             }
         }
         final KeyValueTimestamp[] expected = {new KeyValueTimestamp<>(1, 1, 0),
-            new KeyValueTimestamp<>(10, 2, 5),
-            new KeyValueTimestamp<>(100, 3, 50),
-            new KeyValueTimestamp<>(1000, 4, 500)};
+                new KeyValueTimestamp<>(10, 2, 5),
+                new KeyValueTimestamp<>(100, 3, 50),
+                new KeyValueTimestamp<>(1000, 4, 500)};
 
         assertArrayEquals(expected, supplier.theCapturedProcessor().processed().toArray());
     }
@@ -83,9 +83,9 @@ public class KStreamMapValuesTest {
             }
         }
         final KeyValueTimestamp[] expected = {new KeyValueTimestamp<>(1, 2, 0),
-            new KeyValueTimestamp<>(10, 12, 5),
-            new KeyValueTimestamp<>(100, 103, 50),
-            new KeyValueTimestamp<>(1000, 1004, 500)};
+                new KeyValueTimestamp<>(10, 12, 5),
+                new KeyValueTimestamp<>(100, 103, 50),
+                new KeyValueTimestamp<>(1000, 1004, 500)};
 
         assertArrayEquals(expected, supplier.theCapturedProcessor().processed().toArray());
     }

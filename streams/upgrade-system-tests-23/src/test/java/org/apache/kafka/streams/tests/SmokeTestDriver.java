@@ -61,16 +61,16 @@ import static org.apache.kafka.common.utils.Utils.mkEntry;
 
 public class SmokeTestDriver extends SmokeTestUtil {
     private static final String[] TOPICS = {
-        "data",
-        "echo",
-        "max",
-        "min", "min-suppressed", "min-raw",
-        "dif",
-        "sum",
-        "sws-raw", "sws-suppressed",
-        "cnt",
-        "avg",
-        "tagg"
+            "data",
+            "echo",
+            "max",
+            "min", "min-suppressed", "min-raw",
+            "dif",
+            "sum",
+            "sws-raw", "sws-suppressed",
+            "cnt",
+            "avg",
+            "tagg"
     };
 
     private static final int MAX_RECORD_EMPTY_RETRIES = 30;
@@ -125,11 +125,11 @@ public class SmokeTestDriver extends SmokeTestUtil {
                 final int value = data[index].next();
 
                 final ProducerRecord<byte[], byte[]> record =
-                    new ProducerRecord<>(
-                        "data",
-                        stringSerde.serializer().serialize("", key),
-                        intSerde.serializer().serialize("", value)
-                    );
+                        new ProducerRecord<>(
+                                "data",
+                                stringSerde.serializer().serialize("", key),
+                                intSerde.serializer().serialize("", value)
+                        );
 
                 producer.send(record);
 
@@ -147,7 +147,6 @@ public class SmokeTestDriver extends SmokeTestUtil {
                                                      final int maxRecordsPerKey,
                                                      final Duration timeToSpend) {
         final Properties producerProps = generatorProperties(kafka);
-
 
         int numRecordsProduced = 0;
 
@@ -177,11 +176,11 @@ public class SmokeTestDriver extends SmokeTestUtil {
                 } else {
 
                     final ProducerRecord<byte[], byte[]> record =
-                        new ProducerRecord<>(
-                            "data",
-                            stringSerde.serializer().serialize("", key),
-                            intSerde.serializer().serialize("", value)
-                        );
+                            new ProducerRecord<>(
+                                    "data",
+                                    stringSerde.serializer().serialize("", key),
+                                    intSerde.serializer().serialize("", value)
+                            );
 
                     producer.send(record, new TestCallback(record, needRetry));
 
@@ -216,11 +215,11 @@ public class SmokeTestDriver extends SmokeTestUtil {
             final List<PartitionInfo> partitions = producer.partitionsFor("data");
             for (final PartitionInfo partition : partitions) {
                 producer.send(new ProducerRecord<>(
-                    partition.topic(),
-                    partition.partition(),
-                    System.currentTimeMillis() + Duration.ofDays(2).toMillis(),
-                    stringSerde.serializer().serialize("", "flush"),
-                    intSerde.serializer().serialize("", 0)
+                        partition.topic(),
+                        partition.partition(),
+                        System.currentTimeMillis() + Duration.ofDays(2).toMillis(),
+                        stringSerde.serializer().serialize("", "flush"),
+                        intSerde.serializer().serialize("", 0)
                 ));
             }
         }
@@ -322,8 +321,8 @@ public class SmokeTestDriver extends SmokeTestUtil {
         final int recordsGenerated = inputs.size() * maxRecordsPerKey;
         int recordsProcessed = 0;
         final Map<String, AtomicInteger> processed =
-            Stream.of(TOPICS)
-                  .collect(Collectors.toMap(t -> t, t -> new AtomicInteger(0)));
+                Stream.of(TOPICS)
+                      .collect(Collectors.toMap(t -> t, t -> new AtomicInteger(0)));
 
         final Map<String, Map<String, LinkedList<ConsumerRecord<String, Number>>>> events = new HashMap<>();
 
@@ -385,14 +384,14 @@ public class SmokeTestDriver extends SmokeTestUtil {
         boolean success;
 
         final Map<String, Set<Number>> received =
-            events.get("echo")
-                  .entrySet()
-                  .stream()
-                  .map(entry -> mkEntry(
-                      entry.getKey(),
-                      entry.getValue().stream().map(ConsumerRecord::value).collect(Collectors.toSet()))
-                  )
-                  .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                events.get("echo")
+                      .entrySet()
+                      .stream()
+                      .map(entry -> mkEntry(
+                          entry.getKey(),
+                          entry.getValue().stream().map(ConsumerRecord::value).collect(Collectors.toSet()))
+                )
+                      .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         success = inputs.equals(received);
 
@@ -488,13 +487,13 @@ public class SmokeTestDriver extends SmokeTestUtil {
                     if (printResults) {
                         resultStream.printf("\t inputEvents=%n%s%n\t" +
                                 "echoEvents=%n%s%n\tmaxEvents=%n%s%n\tminEvents=%n%s%n\tdifEvents=%n%s%n\tcntEvents=%n%s%n\ttaggEvents=%n%s%n",
-                            indent("\t\t", observedInputEvents.get(key)),
-                            indent("\t\t", events.getOrDefault("echo", emptyMap()).getOrDefault(key, new LinkedList<>())),
-                            indent("\t\t", events.getOrDefault("max", emptyMap()).getOrDefault(key, new LinkedList<>())),
-                            indent("\t\t", events.getOrDefault("min", emptyMap()).getOrDefault(key, new LinkedList<>())),
-                            indent("\t\t", events.getOrDefault("dif", emptyMap()).getOrDefault(key, new LinkedList<>())),
-                            indent("\t\t", events.getOrDefault("cnt", emptyMap()).getOrDefault(key, new LinkedList<>())),
-                            indent("\t\t", events.getOrDefault("tagg", emptyMap()).getOrDefault(key, new LinkedList<>())));
+                                indent("\t\t", observedInputEvents.get(key)),
+                                indent("\t\t", events.getOrDefault("echo", emptyMap()).getOrDefault(key, new LinkedList<>())),
+                                indent("\t\t", events.getOrDefault("max", emptyMap()).getOrDefault(key, new LinkedList<>())),
+                                indent("\t\t", events.getOrDefault("min", emptyMap()).getOrDefault(key, new LinkedList<>())),
+                                indent("\t\t", events.getOrDefault("dif", emptyMap()).getOrDefault(key, new LinkedList<>())),
+                                indent("\t\t", events.getOrDefault("cnt", emptyMap()).getOrDefault(key, new LinkedList<>())),
+                                indent("\t\t", events.getOrDefault("tagg", emptyMap()).getOrDefault(key, new LinkedList<>())));
 
                         if (!Set.of("echo", "max", "min", "dif", "cnt", "tagg").contains(topic))
                             resultStream.printf("%sEvents=%n%s%n", topic, indent("\t\t", entry.getValue()));
@@ -506,7 +505,6 @@ public class SmokeTestDriver extends SmokeTestUtil {
             return true;
         }
     }
-
 
     private static boolean verifySuppressed(final PrintStream resultStream,
                                             @SuppressWarnings("SameParameterValue") final String topic,
@@ -525,8 +523,8 @@ public class SmokeTestDriver extends SmokeTestUtil {
 
                 if (printResults)
                     resultStream.printf("\tresultEvents:%n%s%n\tinputEvents:%n%s%n",
-                        indent("\t\t", events.get(unsuppressedTopic).get(key)),
-                        indent("\t\t", events.get("data").get(unwindowedKey)));
+                            indent("\t\t", events.get(unsuppressedTopic).get(key)),
+                            indent("\t\t", events.get("data").get(unwindowedKey)));
 
                 return false;
             }
@@ -554,7 +552,6 @@ public class SmokeTestDriver extends SmokeTestUtil {
         final int max = getMax(key).intValue();
         return ((long) min + max) / 2.0;
     }
-
 
     private static boolean verifyTAgg(final PrintStream resultStream,
                                       final Map<String, Set<Integer>> allData,

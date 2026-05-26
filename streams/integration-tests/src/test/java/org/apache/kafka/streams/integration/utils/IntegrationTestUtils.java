@@ -177,15 +177,15 @@ public class IntegrationTestUtils {
         } while (System.currentTimeMillis() < deadline);
 
         throw new TimeoutException(
-            "The query never returned within the bound. Last result: "
-            + result
+                "The query never returned within the bound. Last result: "
+                + result
         );
     }
 
     private static <R> LinkedList<QueryResult<R>> getAllResults(
         final StateQueryResult<R> result) {
         final LinkedList<QueryResult<R>> allResults =
-            new LinkedList<>(result.getPartitionResults().values());
+                new LinkedList<>(result.getPartitionResults().values());
         if (result.getGlobalResult() != null) {
             allResults.add(result.getGlobalResult());
         }
@@ -194,7 +194,7 @@ public class IntegrationTestUtils {
 
     private static <R> boolean needToWait(final QueryResult<R> queryResult) {
         return queryResult.isFailure()
-            && (
+                && (
             FailureReason.NOT_UP_TO_BOUND.equals(queryResult.getFailureReason())
                 || FailureReason.NOT_PRESENT.equals(queryResult.getFailureReason()));
     }
@@ -204,6 +204,7 @@ public class IntegrationTestUtils {
      */
     public static class StateListenerStub implements StreamThread.StateListener {
         boolean toPendingShutdownSeen = false;
+
         @Override
         public void onChange(final Thread thread,
                              final ThreadStateTransitionValidator newState,
@@ -437,14 +438,14 @@ public class IntegrationTestUtils {
             final LinkedList<Future<RecordMetadata>> futures = new LinkedList<>();
             for (final KeyValueTimestamp<K, V> record : toProduce) {
                 final Future<RecordMetadata> f = producer.send(
-                    new ProducerRecord<>(
-                        topic,
-                        partition.orElse(null),
-                        record.timestamp(),
-                        record.key(),
-                        record.value(),
-                        null
-                    )
+                        new ProducerRecord<>(
+                                topic,
+                                partition.orElse(null),
+                                record.timestamp(),
+                                record.key(),
+                                record.value(),
+                                null
+                        )
                 );
                 futures.add(f);
             }
@@ -558,8 +559,8 @@ public class IntegrationTestUtils {
             }
             if (System.currentTimeMillis() - start >= timeoutMilliseconds) {
                 throw new RuntimeException(String.format(
-                    "Timed out waiting for completion. lagMetrics=[%s/%s] totalLag=[%s]",
-                    lagMetrics, expectedPartitions, totalLag
+                        "Timed out waiting for completion. lagMetrics=[%s/%s] totalLag=[%s]",
+                        lagMetrics, expectedPartitions, totalLag
                 ));
             }
         }
@@ -595,8 +596,8 @@ public class IntegrationTestUtils {
             }
             if (System.currentTimeMillis() - start >= timeoutMilliseconds) {
                 throw new RuntimeException(String.format(
-                    "Timed out waiting for completion. lagMetrics=[%s/%s] totalLag=[%s]",
-                    lagMetrics, expectedPartitions, totalLag
+                        "Timed out waiting for completion. lagMetrics=[%s/%s] totalLag=[%s]",
+                        lagMetrics, expectedPartitions, totalLag
                 ));
             }
         }
@@ -649,15 +650,15 @@ public class IntegrationTestUtils {
                                                                                 final long waitTime) throws Exception {
         final List<ConsumerRecord<K, V>> accumData = new ArrayList<>();
         final String reason = String.format(
-            "Did not receive all %d records from topic %s within %d ms",
-            expectedNumRecords,
-            topic,
-            waitTime
+                "Did not receive all %d records from topic %s within %d ms",
+                expectedNumRecords,
+                topic,
+                waitTime
         );
         try (final Consumer<K, V> consumer = createConsumer(consumerConfig)) {
             retryOnExceptionWithTimeout(waitTime, () -> {
                 final List<ConsumerRecord<K, V>> readData =
-                    readRecords(topic, consumer, waitTime, expectedNumRecords);
+                        readRecords(topic, consumer, waitTime, expectedNumRecords);
                 accumData.addAll(readData);
                 assertThat(reason, accumData.size(), is(greaterThanOrEqualTo(expectedNumRecords)));
             });
@@ -699,15 +700,15 @@ public class IntegrationTestUtils {
                                                                                   final long waitTime) throws Exception {
         final List<KeyValue<K, V>> accumData = new ArrayList<>();
         final String reason = String.format(
-            "Did not receive all %d records from topic %s within %d ms",
-            expectedNumRecords,
-            topic,
-            waitTime
+                "Did not receive all %d records from topic %s within %d ms",
+                expectedNumRecords,
+                topic,
+                waitTime
         );
         try (final Consumer<K, V> consumer = createConsumer(consumerConfig)) {
             retryOnExceptionWithTimeout(waitTime, () -> {
                 final List<KeyValue<K, V>> readData =
-                    readKeyValues(topic, consumer, waitTime, expectedNumRecords);
+                        readKeyValues(topic, consumer, waitTime, expectedNumRecords);
                 accumData.addAll(readData);
                 assertThat(reason + ",  currently accumulated data is " + accumData, accumData.size(), is(greaterThanOrEqualTo(expectedNumRecords)));
             });
@@ -732,15 +733,15 @@ public class IntegrationTestUtils {
                                                                                                         final long waitTime) throws Exception {
         final List<KeyValueTimestamp<K, V>> accumData = new ArrayList<>();
         final String reason = String.format(
-            "Did not receive all %d records from topic %s within %d ms",
-            expectedNumRecords,
-            topic,
-            waitTime
+                "Did not receive all %d records from topic %s within %d ms",
+                expectedNumRecords,
+                topic,
+                waitTime
         );
         try (final Consumer<K, V> consumer = createConsumer(consumerConfig)) {
             retryOnExceptionWithTimeout(waitTime, () -> {
                 final List<KeyValueTimestamp<K, V>> readData =
-                    readKeyValuesWithTimestamp(topic, consumer, waitTime, expectedNumRecords);
+                        readKeyValuesWithTimestamp(topic, consumer, waitTime, expectedNumRecords);
                 accumData.addAll(readData);
                 assertThat(reason, accumData.size(), is(greaterThanOrEqualTo(expectedNumRecords)));
             });
@@ -870,15 +871,15 @@ public class IntegrationTestUtils {
                                                                 final long waitTime) throws Exception {
         final List<V> accumData = new ArrayList<>();
         final String reason = String.format(
-            "Did not receive all %d records from topic %s within %d ms",
-            expectedNumRecords,
-            topic,
-            waitTime
+                "Did not receive all %d records from topic %s within %d ms",
+                expectedNumRecords,
+                topic,
+                waitTime
         );
         try (final Consumer<Object, V> consumer = createConsumer(consumerConfig)) {
             retryOnExceptionWithTimeout(waitTime, () -> {
                 final List<V> readData =
-                    readValues(topic, consumer, waitTime, expectedNumRecords);
+                        readValues(topic, consumer, waitTime, expectedNumRecords);
                 accumData.addAll(readData);
                 assertThat(reason, accumData.size(), is(greaterThanOrEqualTo(expectedNumRecords)));
             });
@@ -928,8 +929,8 @@ public class IntegrationTestUtils {
             };
 
             streams.setStateListener(prevStateListener != null
-                ? new CompositeStateListener(prevStateListener, newStateListener)
-                : newStateListener);
+                    ? new CompositeStateListener(prevStateListener, newStateListener)
+                    : newStateListener);
         }
 
         for (final KafkaStreams streams : streamsList) {
@@ -956,7 +957,7 @@ public class IntegrationTestUtils {
                 final long millisRemaining = expectedEnd - System.currentTimeMillis();
                 if (millisRemaining <= 0) {
                     fail(
-                        nonRunningStreams.size() + " out of " + streamsList.size() + " Streams clients did not reach the RUNNING state. " +
+                            nonRunningStreams.size() + " out of " + streamsList.size() + " Streams clients did not reach the RUNNING state. " +
                             "Non-running Streams clients: " + nonRunningStreams
                     );
                 }
@@ -988,9 +989,9 @@ public class IntegrationTestUtils {
                                                  final String applicationId,
                                                  final long timeoutMs) throws Exception {
         TestUtils.waitForCondition(
-            new IntegrationTestUtils.ConsumerGroupInactiveCondition(adminClient, applicationId),
-            timeoutMs,
-            "Test consumer group " + applicationId + " still active even after waiting " + timeoutMs + " ms."
+                new IntegrationTestUtils.ConsumerGroupInactiveCondition(adminClient, applicationId),
+                timeoutMs,
+                "Test consumer group " + applicationId + " still active even after waiting " + timeoutMs + " ms."
         );
     }
 
@@ -1064,7 +1065,7 @@ public class IntegrationTestUtils {
         final V recordValue = record.value();
         final long recordTimestamp = record.timestamp();
         final AssertionError error = new AssertionError(
-            "Expected <" + expectedKey + ", " + expectedValue + "> with timestamp=" + expectedTimestamp +
+                "Expected <" + expectedKey + ", " + expectedValue + "> with timestamp=" + expectedTimestamp +
                 " but was <" + recordKey + ", " + recordValue + "> with timestamp=" + recordTimestamp
         );
         if (recordKey != null) {
@@ -1171,7 +1172,7 @@ public class IntegrationTestUtils {
         consumerRecords = new ArrayList<>();
         int totalPollTimeMs = 0;
         while (totalPollTimeMs < waitTime &&
-            continueConsuming(consumerRecords.size(), maxMessages)) {
+                continueConsuming(consumerRecords.size(), maxMessages)) {
             totalPollTimeMs += pollIntervalMs;
             final ConsumerRecords<K, V> records = consumer.poll(Duration.ofMillis(pollIntervalMs));
 
@@ -1393,7 +1394,6 @@ public class IntegrationTestUtils {
 
     public static class TrackingStandbyUpdateListener implements StandbyUpdateListener {
         public final List<TopicPartition> promotedPartitions = new ArrayList<>();
-
 
         @Override
         public void onUpdateStart(final TopicPartition topicPartition, final String storeName, final long startingOffset) {

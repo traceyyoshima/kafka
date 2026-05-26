@@ -35,7 +35,7 @@ import java.util.Properties;
  */
 public final class ConfigurationsImage {
     public static final ConfigurationsImage EMPTY =
-        new ConfigurationsImage(Map.of());
+            new ConfigurationsImage(Map.of());
 
     private final Map<ConfigResource, ConfigurationImage> data;
 

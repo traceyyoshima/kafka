@@ -33,9 +33,9 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public final class SnapshotEmitterMetrics implements AutoCloseable {
     private static final MetricName LATEST_SNAPSHOT_GENERATED_BYTES = getMetricName(
-        "SnapshotEmitter", "LatestSnapshotGeneratedBytes");
+            "SnapshotEmitter", "LatestSnapshotGeneratedBytes");
     private static final MetricName LATEST_SNAPSHOT_GENERATED_AGE_MS = getMetricName(
-        "SnapshotEmitter", "LatestSnapshotGeneratedAgeMs");
+            "SnapshotEmitter", "LatestSnapshotGeneratedAgeMs");
 
     private final Optional<MetricsRegistry> registry;
     private final Time time;
@@ -92,8 +92,8 @@ public final class SnapshotEmitterMetrics implements AutoCloseable {
     @Override
     public void close() {
         registry.ifPresent(r -> List.of(
-            LATEST_SNAPSHOT_GENERATED_BYTES,
-            LATEST_SNAPSHOT_GENERATED_AGE_MS
+                LATEST_SNAPSHOT_GENERATED_BYTES,
+                LATEST_SNAPSHOT_GENERATED_AGE_MS
         ).forEach(r::removeMetric));
     }
 

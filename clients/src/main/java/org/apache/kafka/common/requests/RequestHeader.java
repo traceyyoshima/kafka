@@ -41,7 +41,7 @@ public class RequestHeader implements AbstractRequestResponse {
                 setRequestApiVersion(requestVersion).
                 setClientId(clientId).
                 setCorrelationId(correlationId),
-            requestApiKey.requestHeaderVersion(requestVersion));
+                requestApiKey.requestHeaderVersion(requestVersion));
     }
 
     public RequestHeader(RequestHeaderData data, short headerVersion) {
@@ -176,7 +176,7 @@ public class RequestHeader implements AbstractRequestResponse {
         if (o == null || getClass() != o.getClass()) return false;
         RequestHeader that = (RequestHeader) o;
         return headerVersion == that.headerVersion &&
-            Objects.equals(data, that.data);
+                Objects.equals(data, that.data);
     }
 
     @Override

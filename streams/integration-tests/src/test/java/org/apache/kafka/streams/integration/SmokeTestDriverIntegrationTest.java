@@ -107,7 +107,7 @@ public class SmokeTestDriverIntegrationTest {
         public void run() {
             try {
                 final Map<String, Set<Integer>> allData =
-                    generate(bootstrapServers, numKeys, maxRecordsPerKey, Duration.ofSeconds(20));
+                        generate(bootstrapServers, numKeys, maxRecordsPerKey, Duration.ofSeconds(20));
                 result = verify(bootstrapServers, allData, maxRecordsPerKey, false);
 
             } catch (final Exception ex) {
@@ -156,7 +156,6 @@ public class SmokeTestDriverIntegrationTest {
         final Driver driver = new Driver(bootstrapServers, numKeys, maxRecordsPerKey);
         driver.start();
         System.out.println("started driver");
-
 
         final Properties props = new Properties();
         final String appId = safeUniqueTestName(testInfo);
@@ -228,9 +227,9 @@ public class SmokeTestDriverIntegrationTest {
         // We check that we did no have to reprocess any records, which would indicate a bug since everything
         // runs locally in this test.
         assertEquals(expectedRecords, numDataRecordsProcessed,
-            String.format("It seems we had to reprocess records, expected %d records, processed %d records.",
-                expectedRecords,
-                numDataRecordsProcessed)
+                String.format("It seems we had to reprocess records, expected %d records, processed %d records.",
+                        expectedRecords,
+                        numDataRecordsProcessed)
         );
     }
 }

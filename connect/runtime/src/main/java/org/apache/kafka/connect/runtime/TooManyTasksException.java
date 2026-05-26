@@ -28,11 +28,11 @@ public class TooManyTasksException extends ConnectException {
     public TooManyTasksException(String connName, int numTasks, int maxTasks) {
         super(String.format(
                 "The connector %s has generated %d tasks, which is greater than %d, "
-                        + "the maximum number of tasks it is configured to create. "
-                        + "This behaviour should be considered a bug and is disallowed. "
-                        + "If necessary, it can be permitted by reconfiguring the connector "
-                        + "with '%s' set to false; however, this option will be removed in a "
-                        + "future release of Kafka Connect.",
+                + "the maximum number of tasks it is configured to create. "
+                + "This behaviour should be considered a bug and is disallowed. "
+                + "If necessary, it can be permitted by reconfiguring the connector "
+                + "with '%s' set to false; however, this option will be removed in a "
+                + "future release of Kafka Connect.",
                 connName,
                 numTasks,
                 maxTasks,

@@ -105,14 +105,14 @@ public class CreateAclsRequest extends AbstractRequest {
 
     public static AclBinding aclBinding(AclCreation acl) {
         ResourcePattern pattern = new ResourcePattern(
-            ResourceType.fromCode(acl.resourceType()),
-            acl.resourceName(),
-            PatternType.fromCode(acl.resourcePatternType()));
+                ResourceType.fromCode(acl.resourceType()),
+                acl.resourceName(),
+                PatternType.fromCode(acl.resourcePatternType()));
         AccessControlEntry entry = new AccessControlEntry(
-            acl.principal(),
-            acl.host(),
-            AclOperation.fromCode(acl.operation()),
-            AclPermissionType.fromCode(acl.permissionType()));
+                acl.principal(),
+                acl.host(),
+                AclOperation.fromCode(acl.operation()),
+                AclPermissionType.fromCode(acl.permissionType()));
         return new AclBinding(pattern, entry);
     }
 

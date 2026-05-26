@@ -57,8 +57,8 @@ public class StandbyTaskAssignmentUtilsTest {
 
         clients = getClientStatesMap(ACTIVE_TASKS.stream().map(StandbyTaskAssignmentUtilsTest::mkState).toArray(ClientState[]::new));
         clientsByTaskLoad = new ConstrainedPrioritySet(
-            (client, task) -> !clients.get(client).hasAssignedTask(task),
-            client -> clients.get(client).assignedTaskLoad()
+                (client, task) -> !clients.get(client).hasAssignedTask(task),
+                client -> clients.get(client).assignedTaskLoad()
         );
         clientsByTaskLoad.offerAll(clients.keySet());
     }
@@ -102,16 +102,16 @@ public class StandbyTaskAssignmentUtilsTest {
     @Test
     public void shouldComputeTasksToRemainingStandbys() {
         assertThat(
-            computeTasksToRemainingStandbys(0, ACTIVE_TASKS),
-            equalTo(
-                ACTIVE_TASKS.stream().collect(Collectors.toMap(Function.identity(), it -> 0))
-            )
+                computeTasksToRemainingStandbys(0, ACTIVE_TASKS),
+                equalTo(
+                        ACTIVE_TASKS.stream().collect(Collectors.toMap(Function.identity(), it -> 0))
+                )
         );
         assertThat(
-            computeTasksToRemainingStandbys(5, ACTIVE_TASKS),
-            equalTo(
-                ACTIVE_TASKS.stream().collect(Collectors.toMap(Function.identity(), it -> 5))
-            )
+                computeTasksToRemainingStandbys(5, ACTIVE_TASKS),
+                equalTo(
+                        ACTIVE_TASKS.stream().collect(Collectors.toMap(Function.identity(), it -> 5))
+                )
         );
     }
 

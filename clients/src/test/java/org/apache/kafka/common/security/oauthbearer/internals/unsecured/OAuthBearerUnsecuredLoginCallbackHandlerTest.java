@@ -93,7 +93,7 @@ public class OAuthBearerUnsecuredLoginCallbackHandlerTest {
     @SuppressWarnings("unchecked")
     @Test
     public void validOptionsWithExplicitOptionValues()
-            throws IOException, UnsupportedCallbackException {
+        throws IOException, UnsupportedCallbackException {
         String explicitScope1 = "scope1";
         String explicitScope2 = "scope2";
         String explicitScopeClaimName = "putScopeInHere";

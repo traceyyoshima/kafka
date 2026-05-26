@@ -96,9 +96,9 @@ public class KeyValueStoreWrapperTest {
     public void shouldGetFromVersionedStore() {
         givenWrapperWithVersionedStore();
         when(versionedStore.get(KEY)).thenReturn(
-            new VersionedRecord<>(
-                VALUE_TIMESTAMP_HEADERS.value(),
-                VALUE_TIMESTAMP_HEADERS.timestamp())
+                new VersionedRecord<>(
+                        VALUE_TIMESTAMP_HEADERS.value(),
+                        VALUE_TIMESTAMP_HEADERS.timestamp())
         );
 
         assertThat(wrapper.get(KEY), equalTo(VALUE_TIMESTAMP_HEADERS));

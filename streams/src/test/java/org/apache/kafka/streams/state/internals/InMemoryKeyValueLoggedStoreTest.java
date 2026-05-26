@@ -30,9 +30,9 @@ public class InMemoryKeyValueLoggedStoreTest extends AbstractKeyValueStoreTest {
     @Override
     protected <K, V> KeyValueStore<K, V> createKeyValueStore(final StateStoreContext context) {
         final StoreBuilder<KeyValueStore<K, V>> storeBuilder = Stores.keyValueStoreBuilder(
-            Stores.inMemoryKeyValueStore("my-store"),
-            (Serde<K>) context.keySerde(),
-            (Serde<V>) context.valueSerde())
+                Stores.inMemoryKeyValueStore("my-store"),
+                (Serde<K>) context.keySerde(),
+                (Serde<V>) context.valueSerde())
             .withLoggingEnabled(Collections.singletonMap("retention.ms", "1000"));
 
         final KeyValueStore<K, V> store = storeBuilder.build();

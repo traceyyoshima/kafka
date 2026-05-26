@@ -110,7 +110,7 @@ public final class Sensor {
         public static RecordingLevel forId(int id) {
             if (id < MIN_RECORDING_LEVEL_KEY || id > MAX_RECORDING_LEVEL_KEY)
                 throw new IllegalArgumentException(String.format("Unexpected RecordLevel id `%d`, it should be between `%d` " +
-                    "and `%d` (inclusive)", id, MIN_RECORDING_LEVEL_KEY, MAX_RECORDING_LEVEL_KEY));
+                        "and `%d` (inclusive)", id, MIN_RECORDING_LEVEL_KEY, MAX_RECORDING_LEVEL_KEY));
             return ID_TO_TYPE[id];
         }
 
@@ -333,11 +333,11 @@ public final class Sensor {
         } else {
             final MetricConfig statConfig = config == null ? this.config : config;
             final KafkaMetric metric = new KafkaMetric(
-                metricLock(),
-                Objects.requireNonNull(metricName),
-                Objects.requireNonNull(stat),
-                statConfig,
-                time
+                    metricLock(),
+                    Objects.requireNonNull(metricName),
+                    Objects.requireNonNull(stat),
+                    statConfig,
+                    time
             );
             KafkaMetric existingMetric = registry.registerMetric(metric);
             if (existingMetric != null) {

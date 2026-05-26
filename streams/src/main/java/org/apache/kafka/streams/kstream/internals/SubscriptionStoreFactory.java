@@ -48,9 +48,9 @@ public class SubscriptionStoreFactory<K> extends AbstractConfigurableStoreFactor
     public StoreBuilder<?> builder() {
         StoreBuilder<?> builder;
         builder = Stores.timestampedKeyValueStoreWithHeadersBuilder(
-            dslStoreSuppliers().keyValueStore(new DslKeyValueParams(name, dslStoreFormat())),
-            new Serdes.BytesSerde(),
-            subscriptionWrapperSerde
+                dslStoreSuppliers().keyValueStore(new DslKeyValueParams(name, dslStoreFormat())),
+                new Serdes.BytesSerde(),
+                subscriptionWrapperSerde
         );
         if (loggingEnabled) {
             builder = builder.withLoggingEnabled(logConfig);
@@ -69,7 +69,7 @@ public class SubscriptionStoreFactory<K> extends AbstractConfigurableStoreFactor
     @Override
     public long historyRetention() {
         throw new IllegalStateException(
-            "historyRetention is not supported when not a versioned store");
+                "historyRetention is not supported when not a versioned store");
     }
 
     @Override
@@ -112,6 +112,6 @@ public class SubscriptionStoreFactory<K> extends AbstractConfigurableStoreFactor
     @Override
     public boolean isCompatibleWith(final StoreFactory other) {
         return other instanceof SubscriptionStoreFactory
-            && ((SubscriptionStoreFactory<?>) other).name.equals(name);
+                && ((SubscriptionStoreFactory<?>) other).name.equals(name);
     }
 }

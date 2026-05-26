@@ -117,15 +117,15 @@ public class ProcessorNode<KIn, VIn, KOut, VOut> {
             threadId = Thread.currentThread().getName();
             internalProcessorContext = context;
             droppedRecordsSensor = TaskMetrics.droppedRecordsSensor(threadId,
-                internalProcessorContext.taskId().toString(),
-                internalProcessorContext.metrics());
+                    internalProcessorContext.taskId().toString(),
+                    internalProcessorContext.metrics());
 
             if (processor != null) {
                 processor.init(context);
             }
             if (fixedKeyProcessor != null) {
                 @SuppressWarnings("unchecked") final FixedKeyProcessorContext<KIn, VOut> fixedKeyProcessorContext =
-                    (FixedKeyProcessorContext<KIn, VOut>) context;
+                        (FixedKeyProcessorContext<KIn, VOut>) context;
                 fixedKeyProcessor.init(fixedKeyProcessorContext);
             }
         } catch (final Exception e) {
@@ -153,9 +153,9 @@ public class ProcessorNode<KIn, VIn, KOut, VOut> {
                 fixedKeyProcessor.close();
             }
             internalProcessorContext.metrics().removeAllNodeLevelSensors(
-                threadId,
-                internalProcessorContext.taskId().toString(),
-                name
+                    threadId,
+                    internalProcessorContext.taskId().toString(),
+                    name
             );
         } catch (final Exception e) {
             throw new StreamsException(String.format("failed to close processor %s", name), e);
@@ -170,7 +170,6 @@ public class ProcessorNode<KIn, VIn, KOut, VOut> {
         }
     }
 
-
     public void process(final Record<KIn, VIn> record) {
         throwIfClosed();
 
@@ -179,11 +178,11 @@ public class ProcessorNode<KIn, VIn, KOut, VOut> {
                 processor.process(record);
             } else if (fixedKeyProcessor != null) {
                 fixedKeyProcessor.process(
-                    InternalFixedKeyRecordFactory.create(record)
+                        InternalFixedKeyRecordFactory.create(record)
                 );
             } else {
                 throw new IllegalStateException(
-                    "neither the processor nor the fixed key processor were set."
+                        "neither the processor nor the fixed key processor were set."
                 );
             }
         } catch (final ClassCastException e) {
@@ -200,7 +199,7 @@ public class ProcessorNode<KIn, VIn, KOut, VOut> {
                     this.name(),
                     keyClass,
                     valueClass),
-                e);
+                    e);
         } catch (final FailedProcessingException | TaskCorruptedException | TaskMigratedException e) {
             // Rethrow exceptions that should not be handled here
             throw e;
@@ -216,37 +215,37 @@ public class ProcessorNode<KIn, VIn, KOut, VOut> {
             }
 
             final ErrorHandlerContext errorHandlerContext = new DefaultErrorHandlerContext(
-                null, // only required to pass for DeserializationExceptionHandler
-                internalProcessorContext.recordContext().topic(),
-                internalProcessorContext.recordContext().partition(),
-                internalProcessorContext.recordContext().offset(),
-                internalProcessorContext.recordContext().headers(),
-                internalProcessorContext.currentNode().name(),
-                internalProcessorContext.taskId(),
-                internalProcessorContext.recordContext().timestamp(),
-                internalProcessorContext.recordContext().sourceRawKey(),
-                internalProcessorContext.recordContext().sourceRawValue()
+                    null, // only required to pass for DeserializationExceptionHandler
+                    internalProcessorContext.recordContext().topic(),
+                    internalProcessorContext.recordContext().partition(),
+                    internalProcessorContext.recordContext().offset(),
+                    internalProcessorContext.recordContext().headers(),
+                    internalProcessorContext.currentNode().name(),
+                    internalProcessorContext.taskId(),
+                    internalProcessorContext.recordContext().timestamp(),
+                    internalProcessorContext.recordContext().sourceRawKey(),
+                    internalProcessorContext.recordContext().sourceRawValue()
             );
 
             final ProcessingExceptionHandler.Response response;
             try {
                 response = Objects.requireNonNull(
-                    processingExceptionHandler.handleError(errorHandlerContext, record, processingException),
-                    "Invalid ProcessingExceptionHandler response."
+                        processingExceptionHandler.handleError(errorHandlerContext, record, processingException),
+                        "Invalid ProcessingExceptionHandler response."
                 );
             } catch (final Exception fatalUserException) {
                 // while Java distinguishes checked vs unchecked exceptions, other languages
                 // like Scala or Kotlin do not, and thus we need to catch `Exception`
                 // (instead of `RuntimeException`) to work well with those languages
                 log.error(
-                    "Processing error callback failed after processing error for record: {}",
-                    errorHandlerContext,
-                    processingException
+                        "Processing error callback failed after processing error for record: {}",
+                        errorHandlerContext,
+                        processingException
                 );
                 throw new FailedProcessingException(
-                    "Fatal user code error in processing error callback",
-                    internalProcessorContext.currentNode().name(),
-                    fatalUserException
+                        "Fatal user code error in processing error callback",
+                        internalProcessorContext.currentNode().name(),
+                        fatalUserException
                 );
             }
 

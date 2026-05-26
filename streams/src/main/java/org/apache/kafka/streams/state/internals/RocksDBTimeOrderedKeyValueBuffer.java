@@ -125,12 +125,12 @@ public class RocksDBTimeOrderedKeyValueBuffer<K, V> implements TimeOrderedKeyVal
         @Override
         public TimeOrderedKeyValueBuffer<K, V, V> build() {
             return new RocksDBTimeOrderedKeyValueBuffer<>(
-                new RocksDBTimeOrderedKeyValueBytesStoreSupplier(storeName).get(),
-                keySerde,
-                valueSerde,
-                grace,
-                topic,
-                loggingEnabled);
+                    new RocksDBTimeOrderedKeyValueBytesStoreSupplier(storeName).get(),
+                    keySerde,
+                    valueSerde,
+                    grace,
+                    topic,
+                    loggingEnabled);
         }
 
         @Override
@@ -148,7 +148,6 @@ public class RocksDBTimeOrderedKeyValueBuffer<K, V> implements TimeOrderedKeyVal
             return storeName;
         }
     }
-
 
     public RocksDBTimeOrderedKeyValueBuffer(final RocksDBTimeOrderedKeyValueBytesStore store,
                                             final Serde<K> keySerde,
@@ -231,12 +230,12 @@ public class RocksDBTimeOrderedKeyValueBuffer<K, V> implements TimeOrderedKeyVal
 
                     final BufferValue bufferValue = BufferValue.deserialize(ByteBuffer.wrap(keyValue.value));
                     final K key = keySerde.deserializer().deserialize(topic,
-                        internalContext.headers(),
-                        PrefixedWindowKeySchemas.TimeFirstWindowKeySchema.extractStoreKeyBytes(keyValue.key.get()));
+                            internalContext.headers(),
+                            PrefixedWindowKeySchemas.TimeFirstWindowKeySchema.extractStoreKeyBytes(keyValue.key.get()));
 
                     if (bufferValue.context().timestamp() < minTimestamp && minValid) {
                         throw new IllegalStateException(
-                            "minTimestamp [" + minTimestamp + "] did not match the actual min timestamp [" +
+                                "minTimestamp [" + minTimestamp + "] did not match the actual min timestamp [" +
                                 bufferValue.context().timestamp() + "]"
                         );
                     }
@@ -265,7 +264,6 @@ public class RocksDBTimeOrderedKeyValueBuffer<K, V> implements TimeOrderedKeyVal
         }
     }
 
-
     @Override
     public Maybe<ValueTimestampHeaders<V>> priorValueForBuffered(final K key) {
         return Maybe.undefined();
@@ -281,9 +279,9 @@ public class RocksDBTimeOrderedKeyValueBuffer<K, V> implements TimeOrderedKeyVal
         }
         maybeUpdateSeqnumForDups();
         final Bytes serializedKey = Bytes.wrap(
-            PrefixedWindowKeySchemas.TimeFirstWindowKeySchema.toStoreKeyBinary(keySerde.serializer().serialize(topic, record.headers(), record.key()),
-                record.timestamp(),
-                seqnum).get());
+                PrefixedWindowKeySchemas.TimeFirstWindowKeySchema.toStoreKeyBinary(keySerde.serializer().serialize(topic, record.headers(), record.key()),
+                    record.timestamp(),
+                    seqnum).get());
         final byte[] valueBytes = valueSerde.serializer().serialize(topic, record.headers(), record.value());
         final BufferValue buffered = new BufferValue(null, null, valueBytes, recordContext);
         store.put(serializedKey, buffered.serialize(0).array());
@@ -333,30 +331,30 @@ public class RocksDBTimeOrderedKeyValueBuffer<K, V> implements TimeOrderedKeyVal
         buffer.putLong(bufferKey.time());
         final byte[] array = buffer.array();
         ((RecordCollector.Supplier) internalContext).recordCollector().send(
-            changelogTopic,
-            key,
-            array,
-            null,
-            partition,
-            null,
-            KEY_SERIALIZER,
-            VALUE_SERIALIZER,
-            null,
-            null);
+                changelogTopic,
+                key,
+                array,
+                null,
+                partition,
+                null,
+                KEY_SERIALIZER,
+                VALUE_SERIALIZER,
+                null,
+                null);
     }
 
     private void logTombstone(final Bytes key) {
         ((RecordCollector.Supplier) internalContext).recordCollector().send(
-            changelogTopic,
-            key,
-            null,
-            null,
-            partition,
-            null,
-            KEY_SERIALIZER,
-            VALUE_SERIALIZER,
-            null,
-            null);
+                changelogTopic,
+                key,
+                null,
+                null,
+                partition,
+                null,
+                KEY_SERIALIZER,
+                VALUE_SERIALIZER,
+                null,
+                null);
     }
 
 }

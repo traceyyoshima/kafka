@@ -66,38 +66,38 @@ public class CommonAssignorTests {
             .build();
 
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            new KRaftCoordinatorMetadataImage(metadataImage)
+                new KRaftCoordinatorMetadataImage(metadataImage)
         );
 
         Map<String, MemberSubscriptionAndAssignmentImpl> members = new HashMap<>();
         members.put(MEMBER_A, new MemberSubscriptionAndAssignmentImpl(
-            rackAware ? Optional.of("rack1") : Optional.empty(),
-            Optional.empty(),
-            Set.of(TOPIC_1_UUID, TOPIC_2_UUID, TOPIC_3_UUID),
-            Assignment.EMPTY
+                rackAware ? Optional.of("rack1") : Optional.empty(),
+                Optional.empty(),
+                Set.of(TOPIC_1_UUID, TOPIC_2_UUID, TOPIC_3_UUID),
+                Assignment.EMPTY
         ));
         members.put(MEMBER_B, new MemberSubscriptionAndAssignmentImpl(
-            rackAware ? Optional.of("rack2") : Optional.empty(),
-            Optional.empty(),
-            Set.of(TOPIC_1_UUID, TOPIC_2_UUID, TOPIC_3_UUID),
-            Assignment.EMPTY
+                rackAware ? Optional.of("rack2") : Optional.empty(),
+                Optional.empty(),
+                Set.of(TOPIC_1_UUID, TOPIC_2_UUID, TOPIC_3_UUID),
+                Assignment.EMPTY
         ));
         members.put(MEMBER_C, new MemberSubscriptionAndAssignmentImpl(
-            rackAware ? Optional.of("rack3") : Optional.empty(),
-            Optional.empty(),
-            Set.of(TOPIC_1_UUID, TOPIC_2_UUID, TOPIC_3_UUID),
-            Assignment.EMPTY
+                rackAware ? Optional.of("rack3") : Optional.empty(),
+                Optional.empty(),
+                Set.of(TOPIC_1_UUID, TOPIC_2_UUID, TOPIC_3_UUID),
+                Assignment.EMPTY
         ));
 
         GroupSpec groupSpec = new GroupSpecImpl(
-            members,
-            subscriptionType,
-            Map.of()
+                members,
+                subscriptionType,
+                Map.of()
         );
 
         GroupAssignment firstAssignment = assignor.assign(
-            groupSpec,
-            subscribedTopicMetadata
+                groupSpec,
+                subscribedTopicMetadata
         );
 
         Map<String, MemberSubscriptionAndAssignmentImpl> membersWithAssignment = new LinkedHashMap<>();
@@ -105,21 +105,21 @@ public class CommonAssignorTests {
             String memberId = entry.getKey();
             MemberSubscriptionAndAssignmentImpl memberSubscriptionAndAssignment = entry.getValue();
             membersWithAssignment.put(memberId, new MemberSubscriptionAndAssignmentImpl(
-                memberSubscriptionAndAssignment.rackId(),
-                memberSubscriptionAndAssignment.instanceId(),
-                memberSubscriptionAndAssignment.subscribedTopicIds(),
-                new Assignment(firstAssignment.members().get(memberId).partitions())
+                    memberSubscriptionAndAssignment.rackId(),
+                    memberSubscriptionAndAssignment.instanceId(),
+                    memberSubscriptionAndAssignment.subscribedTopicIds(),
+                    new Assignment(firstAssignment.members().get(memberId).partitions())
             ));
         }
         GroupSpec groupSpecWithAssignment = new GroupSpecImpl(
-            membersWithAssignment,
-            subscriptionType,
-            invertedTargetAssignment(membersWithAssignment)
+                membersWithAssignment,
+                subscriptionType,
+                invertedTargetAssignment(membersWithAssignment)
         );
 
         GroupAssignment secondAssignment = assignor.assign(
-            groupSpecWithAssignment,
-            subscribedTopicMetadata
+                groupSpecWithAssignment,
+                subscribedTopicMetadata
         );
 
         for (String memberId : members.keySet()) {
@@ -145,78 +145,78 @@ public class CommonAssignorTests {
             .build();
 
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            new KRaftCoordinatorMetadataImage(metadataImage)
+                new KRaftCoordinatorMetadataImage(metadataImage)
         );
 
         Map<String, MemberSubscriptionAndAssignmentImpl> members = new HashMap<>();
         members.put(MEMBER_A, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            Set.of(TOPIC_1_UUID, TOPIC_2_UUID, TOPIC_3_UUID),
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                Set.of(TOPIC_1_UUID, TOPIC_2_UUID, TOPIC_3_UUID),
+                Assignment.EMPTY
         ));
         members.put(MEMBER_B, new MemberSubscriptionAndAssignmentImpl(
-            // We want there to be multiple valid assignments, otherwise we aren't really
-            // testing stickiness. Only give a single member a rack, so that the other members
-            // are interchangeable.
-            rackAware ? Optional.of("rack1") : Optional.empty(),
-            Optional.empty(),
-            Set.of(TOPIC_1_UUID, TOPIC_2_UUID, TOPIC_3_UUID),
-            Assignment.EMPTY
+                // We want there to be multiple valid assignments, otherwise we aren't really
+                // testing stickiness. Only give a single member a rack, so that the other members
+                // are interchangeable.
+                rackAware ? Optional.of("rack1") : Optional.empty(),
+                Optional.empty(),
+                Set.of(TOPIC_1_UUID, TOPIC_2_UUID, TOPIC_3_UUID),
+                Assignment.EMPTY
         ));
         members.put(MEMBER_C, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            Set.of(TOPIC_1_UUID, TOPIC_2_UUID, TOPIC_3_UUID),
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                Set.of(TOPIC_1_UUID, TOPIC_2_UUID, TOPIC_3_UUID),
+                Assignment.EMPTY
         ));
 
         GroupSpec groupSpec = new GroupSpecImpl(
-            members,
-            subscriptionType,
-            Map.of()
+                members,
+                subscriptionType,
+                Map.of()
         );
 
         GroupAssignment firstAssignment = assignor.assign(
-            groupSpec,
-            subscribedTopicMetadata
+                groupSpec,
+                subscribedTopicMetadata
         );
 
         Map<String, Map<Uuid, Set<Integer>>> expectedAssignment = new HashMap<>();
         firstAssignment.members().forEach((memberId, memberAssignment) ->
-            expectedAssignment.put(memberId, memberAssignment.partitions())
+                expectedAssignment.put(memberId, memberAssignment.partitions())
         );
 
         // Try running the assignor with the members in different orders. The assignment should be
         // the same every time.
         List<List<String>> memberIdOrders = List.of(
-            List.of(MEMBER_A, MEMBER_B, MEMBER_C),
-            List.of(MEMBER_A, MEMBER_C, MEMBER_B),
-            List.of(MEMBER_B, MEMBER_A, MEMBER_C),
-            List.of(MEMBER_B, MEMBER_C, MEMBER_A),
-            List.of(MEMBER_C, MEMBER_A, MEMBER_B),
-            List.of(MEMBER_C, MEMBER_B, MEMBER_A)
+                List.of(MEMBER_A, MEMBER_B, MEMBER_C),
+                List.of(MEMBER_A, MEMBER_C, MEMBER_B),
+                List.of(MEMBER_B, MEMBER_A, MEMBER_C),
+                List.of(MEMBER_B, MEMBER_C, MEMBER_A),
+                List.of(MEMBER_C, MEMBER_A, MEMBER_B),
+                List.of(MEMBER_C, MEMBER_B, MEMBER_A)
         );
         for (List<String> memberIdOrder : memberIdOrders) {
             Map<String, MemberSubscriptionAndAssignmentImpl> membersWithAssignment = new LinkedHashMap<>();
             for (String memberId : memberIdOrder) {
                 MemberSubscriptionAndAssignmentImpl memberSubscriptionAndAssignment = members.get(memberId);
                 membersWithAssignment.put(memberId, new MemberSubscriptionAndAssignmentImpl(
-                    memberSubscriptionAndAssignment.rackId(),
-                    memberSubscriptionAndAssignment.instanceId(),
-                    memberSubscriptionAndAssignment.subscribedTopicIds(),
-                    new Assignment(firstAssignment.members().get(memberId).partitions())
+                        memberSubscriptionAndAssignment.rackId(),
+                        memberSubscriptionAndAssignment.instanceId(),
+                        memberSubscriptionAndAssignment.subscribedTopicIds(),
+                        new Assignment(firstAssignment.members().get(memberId).partitions())
                 ));
             }
             GroupSpec groupSpecWithAssignment = new GroupSpecImpl(
-                membersWithAssignment,
-                subscriptionType,
-                invertedTargetAssignment(membersWithAssignment)
+                    membersWithAssignment,
+                    subscriptionType,
+                    invertedTargetAssignment(membersWithAssignment)
             );
 
             GroupAssignment secondAssignment = assignor.assign(
-                groupSpecWithAssignment,
-                subscribedTopicMetadata
+                    groupSpecWithAssignment,
+                    subscribedTopicMetadata
             );
 
             // The second assignment should be the same as the first

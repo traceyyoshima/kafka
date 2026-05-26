@@ -46,12 +46,12 @@ public class CoordinatorBackgroundThreadPoolExecutor extends ThreadPoolExecutor 
         CoordinatorRuntimeMetrics metrics
     ) {
         super(
-            numThreads,
-            numThreads,
-            0L,
-            TimeUnit.MILLISECONDS,
-            new LinkedBlockingQueue<>(),
-            ThreadUtils.createThreadFactory(Objects.requireNonNull(threadPrefix) + "%d", false)
+                numThreads,
+                numThreads,
+                0L,
+                TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<>(),
+                ThreadUtils.createThreadFactory(Objects.requireNonNull(threadPrefix) + "%d", false)
         );
         this.time = Objects.requireNonNull(time);
         this.metrics = Objects.requireNonNull(metrics);

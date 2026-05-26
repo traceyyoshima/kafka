@@ -72,8 +72,8 @@ public class ActiveTaskCreatorTest {
     private final MockClientSupplier mockClientSupplier = new MockClientSupplier();
     private final StreamsMetricsImpl streamsMetrics = new StreamsMetricsImpl(new Metrics(), "clientId", new MockTime());
     private final Map<String, Object> properties = mkMap(
-        mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
-        mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234")
+            mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
+            mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234")
     );
     final UUID uuid = UUID.randomUUID();
 
@@ -134,15 +134,13 @@ public class ActiveTaskCreatorTest {
         mockClientSupplier.producers.get(0).closeException = new RuntimeException("KABOOM!");
 
         final StreamsException thrown = assertThrows(
-            StreamsException.class,
-            activeTaskCreator::close
+                StreamsException.class,
+                activeTaskCreator::close
         );
 
         assertThat(thrown.getMessage(), is("Thread producer encounter error trying to close."));
         assertThat(thrown.getCause().getMessage(), is("KABOOM!"));
     }
-
-
 
     // eos-v2 test
 
@@ -204,8 +202,8 @@ public class ActiveTaskCreatorTest {
         // Verifies that disableReset() prevents reInitializeProducer() from creating a new producer instance
         // Without disabling reset, the producers collection would contain more than one producer
         assertThat("Producer should not be recreated after disabling reset",
-            mockClientSupplier.producers.size(),
-            is(1));
+                mockClientSupplier.producers.size(),
+                is(1));
     }
 
     // error handling
@@ -218,8 +216,8 @@ public class ActiveTaskCreatorTest {
         mockClientSupplier.producers.get(0).closeException = new RuntimeException("KABOOM!");
 
         final StreamsException thrown = assertThrows(
-            StreamsException.class,
-            activeTaskCreator::close
+                StreamsException.class,
+                activeTaskCreator::close
         );
 
         assertThat(thrown.getMessage(), is("Thread producer encounter error trying to close."));
@@ -231,11 +229,11 @@ public class ActiveTaskCreatorTest {
 
         final MetricName testMetricName = new MetricName("test_metric", "", "", new HashMap<>());
         final Metric testMetric = new KafkaMetric(
-            new Object(),
-            testMetricName,
-            (Measurable) (config, now) -> 0,
-            null,
-            new MockTime());
+                new Object(),
+                testMetricName,
+                (Measurable) (config, now) -> 0,
+                null,
+                new MockTime());
         mockClientSupplier.producers.get(0).setMockMetrics(testMetricName, testMetric);
         assertThat(mockClientSupplier.producers.size(), is(1));
 
@@ -264,28 +262,28 @@ public class ActiveTaskCreatorTest {
 
         final StreamsConfig config = new StreamsConfig(properties);
         activeTaskCreator = new ActiveTaskCreator(
-            new TopologyMetadata(builder, config),
-            config,
-            streamsMetrics,
-            stateDirectory,
-            new ThreadCache(new LogContext(), 0L, streamsMetrics),
-            new MockTime(),
-            mockClientSupplier,
-            "clientId-StreamThread-0",
-            0,
-            uuid,
-            new LogContext(),
-            false);
+                new TopologyMetadata(builder, config),
+                config,
+                streamsMetrics,
+                stateDirectory,
+                new ThreadCache(new LogContext(), 0L, streamsMetrics),
+                new MockTime(),
+                mockClientSupplier,
+                "clientId-StreamThread-0",
+                0,
+                uuid,
+                new LogContext(),
+                false);
 
         assertThat(
-            activeTaskCreator.createTasks(
-                mockClientSupplier.consumer,
-                mkMap(
-                    mkEntry(task00, Collections.singleton(new TopicPartition("topic", 0))),
-                    mkEntry(task01, Collections.singleton(new TopicPartition("topic", 1)))
-                )
-            ).stream().map(Task::id).collect(Collectors.toSet()),
-            equalTo(Set.of(task00, task01))
+                activeTaskCreator.createTasks(
+                    mockClientSupplier.consumer,
+                    mkMap(
+                            mkEntry(task00, Collections.singleton(new TopicPartition("topic", 0))),
+                            mkEntry(task01, Collections.singleton(new TopicPartition("topic", 1)))
+                    )
+                ).stream().map(Task::id).collect(Collectors.toSet()),
+                equalTo(Set.of(task00, task01))
         );
     }
 

@@ -85,7 +85,7 @@ import static org.apache.kafka.common.protocol.Errors.INVALID_REQUEST;
 
 public class MockController implements Controller {
     private static final NotControllerException NOT_CONTROLLER_EXCEPTION =
-        new NotControllerException("This is not the correct controller for this cluster.");
+            new NotControllerException("This is not the correct controller for this cluster.");
 
     private final AtomicLong nextTopicId = new AtomicLong(1);
 
@@ -204,7 +204,7 @@ public class MockController implements Controller {
                             creatableTopicResult.
                                 setTopicConfigErrorCode(Errors.NONE.code()).
                                 setReplicationFactor((short)
-                                    topic.assignments().iterator().next().brokerIds().size()).
+                                        topic.assignments().iterator().next().brokerIds().size()).
                                 setNumPartitions(topic.assignments().size());
                         } else {
                             creatableTopicResult.
@@ -361,7 +361,7 @@ public class MockController implements Controller {
     ) {
         Map<ConfigResource, ApiError> results = new HashMap<>();
         for (Entry<ConfigResource, Map<String, Entry<AlterConfigOp.OpType, String>>> entry :
-                configChanges.entrySet()) {
+            configChanges.entrySet()) {
             ConfigResource resource = entry.getKey();
             results.put(resource, incrementalAlterResource(resource, entry.getValue(), validateOnly));
         }
@@ -376,7 +376,7 @@ public class MockController implements Controller {
             AlterConfigOp.OpType opType = entry.getValue().getKey();
             if (opType != SET && opType != DELETE) {
                 return new ApiError(INVALID_REQUEST, "This mock does not " +
-                    "support the " + opType + " config operation.");
+                        "support the " + opType + " config operation.");
             }
         }
         if (!validateOnly) {

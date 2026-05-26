@@ -75,7 +75,7 @@ public class TimestampedKeyAndJoinSideSerializerTest {
     @Test
     public void shouldThrowIfSerializeNullData() {
         assertThrows(NullPointerException.class,
-            () -> STRING_SERDE.serializer().serialize(TOPIC, HEADERS, TimestampedKeyAndJoinSide.makeLeft(null, 0)));
+                () -> STRING_SERDE.serializer().serialize(TOPIC, HEADERS, TimestampedKeyAndJoinSide.makeLeft(null, 0)));
     }
 
     @Test

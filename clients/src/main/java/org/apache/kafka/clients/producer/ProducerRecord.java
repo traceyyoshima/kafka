@@ -109,7 +109,7 @@ public class ProducerRecord<K, V> {
     public ProducerRecord(String topic, Integer partition, K key, V value, Iterable<Header> headers) {
         this(topic, partition, null, key, value, headers);
     }
-    
+
     /**
      * Creates a record to be sent to a specified topic and partition
      *
@@ -121,7 +121,7 @@ public class ProducerRecord<K, V> {
     public ProducerRecord(String topic, Integer partition, K key, V value) {
         this(topic, partition, null, key, value, null);
     }
-    
+
     /**
      * Create a record to be sent to Kafka
      * 
@@ -132,7 +132,7 @@ public class ProducerRecord<K, V> {
     public ProducerRecord(String topic, K key, V value) {
         this(topic, null, null, key, value, null);
     }
-    
+
     /**
      * Create a record with no key
      * 
@@ -192,7 +192,7 @@ public class ProducerRecord<K, V> {
         String value = this.value == null ? "null" : this.value.toString();
         String timestamp = this.timestamp == null ? "null" : this.timestamp.toString();
         return "ProducerRecord(topic=" + topic + ", partition=" + partition + ", headers=" + headers + ", key=" + key + ", value=" + value +
-            ", timestamp=" + timestamp + ")";
+                ", timestamp=" + timestamp + ")";
     }
 
     @Override
@@ -205,11 +205,11 @@ public class ProducerRecord<K, V> {
         ProducerRecord<?, ?> that = (ProducerRecord<?, ?>) o;
 
         return Objects.equals(key, that.key) &&
-            Objects.equals(partition, that.partition) &&
-            Objects.equals(topic, that.topic) &&
-            Objects.equals(headers, that.headers) &&
-            Objects.equals(value, that.value) &&
-            Objects.equals(timestamp, that.timestamp);
+                Objects.equals(partition, that.partition) &&
+                Objects.equals(topic, that.topic) &&
+                Objects.equals(headers, that.headers) &&
+                Objects.equals(value, that.value) &&
+                Objects.equals(timestamp, that.timestamp);
     }
 
     @Override

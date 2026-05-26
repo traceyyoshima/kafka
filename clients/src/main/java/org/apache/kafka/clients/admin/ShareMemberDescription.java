@@ -54,11 +54,11 @@ public class ShareMemberDescription {
         if (o == null || getClass() != o.getClass()) return false;
         ShareMemberDescription that = (ShareMemberDescription) o;
         return memberId.equals(that.memberId) &&
-            rackId.equals(that.rackId) &&
-            clientId.equals(that.clientId) &&
-            host.equals(that.host) &&
-            assignment.equals(that.assignment) &&
-            memberEpoch == that.memberEpoch;
+                rackId.equals(that.rackId) &&
+                clientId.equals(that.clientId) &&
+                host.equals(that.host) &&
+                assignment.equals(that.assignment) &&
+                memberEpoch == that.memberEpoch;
     }
 
     @Override
@@ -111,11 +111,11 @@ public class ShareMemberDescription {
     @Override
     public String toString() {
         return "(memberId=" + memberId +
-            ", rackId=" + rackId.orElse("null") +
-            ", clientId=" + clientId +
-            ", host=" + host +
-            ", assignment=" + assignment +
-            ", memberEpoch=" + memberEpoch +
-            ")";
+                ", rackId=" + rackId.orElse("null") +
+                ", clientId=" + clientId +
+                ", host=" + host +
+                ", assignment=" + assignment +
+                ", memberEpoch=" + memberEpoch +
+                ")";
     }
 }

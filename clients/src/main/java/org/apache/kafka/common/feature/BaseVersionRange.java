@@ -62,9 +62,9 @@ class BaseVersionRange {
     protected BaseVersionRange(String minKeyLabel, short minValue, String maxKeyLabel, short maxValue) {
         if (minValue < 0 || maxValue < 0 || maxValue < minValue) {
             throw new IllegalArgumentException(
-                String.format(
-                    "Expected minValue >= 0, maxValue >= 0 and maxValue >= minValue, but received" +
-                    " minValue: %d, maxValue: %d", minValue, maxValue));
+                    String.format(
+                            "Expected minValue >= 0, maxValue >= 0 and maxValue >= minValue, but received" +
+                            " minValue: %d, maxValue: %d", minValue, maxValue));
         }
         if (minKeyLabel.isEmpty()) {
             throw new IllegalArgumentException("Expected minKeyLabel to be non-empty.");
@@ -89,9 +89,9 @@ class BaseVersionRange {
     @Override
     public String toString() {
         return String.format(
-            "%s[%s]",
-            this.getClass().getSimpleName(),
-            mapToString(toMap()));
+                "%s[%s]",
+                this.getClass().getSimpleName(),
+                mapToString(toMap()));
     }
 
     // Uses Utils.mkMap to preserve insertion order so that min version appears
@@ -120,9 +120,9 @@ class BaseVersionRange {
 
         final BaseVersionRange that = (BaseVersionRange) other;
         return Objects.equals(this.minKeyLabel, that.minKeyLabel) &&
-            this.minValue == that.minValue &&
-            Objects.equals(this.maxKeyLabel, that.maxKeyLabel) &&
-            this.maxValue == that.maxValue;
+                this.minValue == that.minValue &&
+                Objects.equals(this.maxKeyLabel, that.maxKeyLabel) &&
+                this.maxValue == that.maxValue;
     }
 
     @Override

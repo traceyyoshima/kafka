@@ -189,7 +189,6 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
         }
     }
 
-
     private void closeStreams(final KafkaStreams kafkaStreams) {
         kafkaStreams.close(STREAMS_CLOSE_TIMEOUT);
     }
@@ -223,18 +222,18 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
     private void produceRecords(final List<KeyValue<String, String>> records) {
         IntegrationTestUtils.produceKeyValuesSynchronously(
-            INPUT_TOPIC,
-            records,
-            producerConfig(),
-            CLUSTER.time
+                INPUT_TOPIC,
+                records,
+                producerConfig(),
+                CLUSTER.time
         );
     }
 
     private List<KeyValue<String, Long>> waitForOutput(final int expectedCount) throws Exception {
         return IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(
-            readCommittedConsumerConfig(),
-            OUTPUT_TOPIC,
-            expectedCount
+                readCommittedConsumerConfig(),
+                OUTPUT_TOPIC,
+                expectedCount
         );
     }
 
@@ -259,9 +258,9 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Phase 1: start, produce, verify output
         final List<KeyValue<String, String>> initialRecords = Arrays.asList(
-            new KeyValue<>("A", "v1"),
-            new KeyValue<>("B", "v1"),
-            new KeyValue<>("A", "v2")
+                new KeyValue<>("A", "v1"),
+                new KeyValue<>("B", "v1"),
+                new KeyValue<>("A", "v2")
         );
 
         startStreams();
@@ -281,8 +280,8 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Phase 4: produce more records, verify processing continues
         final List<KeyValue<String, String>> additionalRecords = Arrays.asList(
-            new KeyValue<>("A", "v3"),
-            new KeyValue<>("C", "v1")
+                new KeyValue<>("A", "v3"),
+                new KeyValue<>("C", "v1")
         );
         produceRecords(additionalRecords);
 
@@ -311,9 +310,9 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Phase 1: start with EOS, produce records, verify committed output
         final List<KeyValue<String, String>> initialRecords = Arrays.asList(
-            new KeyValue<>("A", "v1"),
-            new KeyValue<>("B", "v1"),
-            new KeyValue<>("A", "v2")
+                new KeyValue<>("A", "v1"),
+                new KeyValue<>("B", "v1"),
+                new KeyValue<>("A", "v2")
         );
 
         startStreams();
@@ -333,8 +332,8 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Phase 4: produce more records and verify processing continues correctly
         final List<KeyValue<String, String>> additionalRecords = Arrays.asList(
-            new KeyValue<>("A", "v3"),
-            new KeyValue<>("C", "v1")
+                new KeyValue<>("A", "v3"),
+                new KeyValue<>("C", "v1")
         );
         produceRecords(additionalRecords);
 
@@ -359,9 +358,9 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Phase 1: start with EOS, produce records, verify committed output
         final List<KeyValue<String, String>> initialRecords = Arrays.asList(
-            new KeyValue<>("A", "v1"),
-            new KeyValue<>("B", "v1"),
-            new KeyValue<>("A", "v2")
+                new KeyValue<>("A", "v1"),
+                new KeyValue<>("B", "v1"),
+                new KeyValue<>("A", "v2")
         );
 
         startStreams();
@@ -381,8 +380,8 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Phase 4: produce more records, verify data is re-bootstrapped from changelog
         final List<KeyValue<String, String>> additionalRecords = Arrays.asList(
-            new KeyValue<>("A", "v3"),
-            new KeyValue<>("C", "v1")
+                new KeyValue<>("A", "v3"),
+                new KeyValue<>("C", "v1")
         );
         produceRecords(additionalRecords);
 
@@ -407,9 +406,9 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Phase 1: start with EOS, produce records, verify committed output
         final List<KeyValue<String, String>> initialRecords = Arrays.asList(
-            new KeyValue<>("A", "v1"),
-            new KeyValue<>("B", "v1"),
-            new KeyValue<>("A", "v2")
+                new KeyValue<>("A", "v1"),
+                new KeyValue<>("B", "v1"),
+                new KeyValue<>("A", "v2")
         );
 
         startStreams();
@@ -430,8 +429,8 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Phase 4: produce more records, verify data is re-bootstrapped correctly
         final List<KeyValue<String, String>> additionalRecords = Arrays.asList(
-            new KeyValue<>("A", "v3"),
-            new KeyValue<>("C", "v1")
+                new KeyValue<>("A", "v3"),
+                new KeyValue<>("C", "v1")
         );
         produceRecords(additionalRecords);
 
@@ -455,9 +454,9 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Phase 1: start with dual-store topology, produce records
         final List<KeyValue<String, String>> initialRecords = Arrays.asList(
-            new KeyValue<>("A", "v1"),
-            new KeyValue<>("B", "v2"),
-            new KeyValue<>("A", "v1")
+                new KeyValue<>("A", "v1"),
+                new KeyValue<>("B", "v2"),
+                new KeyValue<>("A", "v1")
         );
 
         final StreamsBuilder builder1 = buildDualStoreTopology();
@@ -483,8 +482,8 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Phase 4: produce more records, verify both stores produce correct output
         final List<KeyValue<String, String>> additionalRecords = Arrays.asList(
-            new KeyValue<>("C", "v3"),
-            new KeyValue<>("A", "v1")
+                new KeyValue<>("C", "v3"),
+                new KeyValue<>("A", "v1")
         );
         produceRecords(additionalRecords);
 
@@ -533,9 +532,9 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Phase 2: produce data, wait for processing
         final List<KeyValue<String, String>> initialRecords = Arrays.asList(
-            new KeyValue<>("A", "v1"),
-            new KeyValue<>("B", "v1"),
-            new KeyValue<>("A", "v2")
+                new KeyValue<>("A", "v1"),
+                new KeyValue<>("B", "v1"),
+                new KeyValue<>("A", "v2")
         );
         produceRecords(initialRecords);
         waitForOutput(initialRecords.size());
@@ -559,8 +558,8 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Produce more records and verify instance 1 processes them as active
         final List<KeyValue<String, String>> additionalRecords = Arrays.asList(
-            new KeyValue<>("A", "v3"),
-            new KeyValue<>("C", "v1")
+                new KeyValue<>("A", "v3"),
+                new KeyValue<>("C", "v1")
         );
         produceRecords(additionalRecords);
 
@@ -614,9 +613,9 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
         IntegrationTestUtils.startApplicationAndWaitUntilRunning(Arrays.asList(streams1, streams2));
 
         final List<KeyValue<String, String>> initialRecords = Arrays.asList(
-            new KeyValue<>("A", "v1"),
-            new KeyValue<>("B", "v1"),
-            new KeyValue<>("A", "v2")
+                new KeyValue<>("A", "v1"),
+                new KeyValue<>("B", "v1"),
+                new KeyValue<>("A", "v2")
         );
         produceRecords(initialRecords);
         waitForOutput(initialRecords.size());
@@ -629,9 +628,9 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
         final String appId = streamsConfig.getProperty(StreamsConfig.APPLICATION_ID_CONFIG);
         final File stateDirForStreamsOne = new File(stateDir1, appId);
         final List<File> storeDirsAfterCleanup = RocksDBStoreTestingUtils.findAllStoreDirs(
-            stateDir1, appId, STORE_NAME);
+                stateDir1, appId, STORE_NAME);
         assertTrue(storeDirsAfterCleanup.isEmpty(),
-            "No store directories should exist after cleanUp, but found: " + storeDirsAfterCleanup);
+                "No store directories should exist after cleanUp, but found: " + storeDirsAfterCleanup);
 
         final StreamsBuilder builder1Restart = buildCountTopology();
         final KafkaStreams streams1Restart = new KafkaStreams(builder1Restart.build(), config1);
@@ -639,9 +638,9 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Wait for instance 1 to have standby tasks
         TestUtils.waitForCondition(() ->
-            streams1Restart.metadataForLocalThreads().stream()
-                .anyMatch(t -> !t.standbyTasks().isEmpty()),
-            60_000, "Instance 1 should have standby tasks after restart");
+                streams1Restart.metadataForLocalThreads().stream()
+                    .anyMatch(t -> !t.standbyTasks().isEmpty()),
+                60_000, "Instance 1 should have standby tasks after restart");
 
         // Verify that store directories now exist for the standby tasks —
         // these were freshly created from changelog restoration, not carried over.
@@ -652,11 +651,11 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
             }
         }
         assertFalse(standbyPartitions.isEmpty(),
-            "Instance 1 should have standby partitions after restart");
+                "Instance 1 should have standby partitions after restart");
         for (final TopicPartition tp : standbyPartitions) {
             final File storeDir = new File(stateDirForStreamsOne, "0_" + tp.partition() + "/rocksdb/" + STORE_NAME);
             assertTrue(storeDir.exists(),
-                "Standby store directory should exist after changelog restore: " + storeDir);
+                    "Standby store directory should exist after changelog restore: " + storeDir);
         }
 
         // Phase 3: trigger a rebalance by shutting down instance 2 and restarting it.
@@ -669,13 +668,13 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
         IntegrationTestUtils.startApplicationAndWaitUntilRunning(streams2Restart);
         // streams1Restart is already running — just wait for it to stabilize after rebalance
         TestUtils.waitForCondition(
-            () -> streams1Restart.state() == KafkaStreams.State.RUNNING,
-            60_000, "Instance 1 should return to RUNNING after rebalance");
+                () -> streams1Restart.state() == KafkaStreams.State.RUNNING,
+                60_000, "Instance 1 should return to RUNNING after rebalance");
 
         // Phase 4: verify processing still works after rebalance
         final List<KeyValue<String, String>> additionalRecords = Arrays.asList(
-            new KeyValue<>("A", "v3"),
-            new KeyValue<>("C", "v1")
+                new KeyValue<>("A", "v3"),
+                new KeyValue<>("C", "v1")
         );
         produceRecords(additionalRecords);
 

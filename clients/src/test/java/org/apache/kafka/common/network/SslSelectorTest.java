@@ -127,7 +127,7 @@ public abstract class SslSelectorTest extends SelectorTest {
         waitForBytesBuffered(selector, node);
 
         TestUtils.waitForCondition(() -> cipherMetrics(metrics).size() == 1,
-            "Waiting for cipher metrics to be created.");
+                "Waiting for cipher metrics to be created.");
         assertEquals(1, cipherMetrics(metrics).get(0).metricValue());
         assertNotNull(selector.channel(node).channelMetadataRegistry().cipherInformation());
 
@@ -177,7 +177,7 @@ public abstract class SslSelectorTest extends SelectorTest {
     @Test
     public void testBytesBufferedChannelWithNoIncomingBytes() throws Exception {
         verifyNoUnnecessaryPollWithBytesBuffered(key ->
-            key.interestOps(key.interestOps() & ~SelectionKey.OP_READ));
+                key.interestOps(key.interestOps() & ~SelectionKey.OP_READ));
     }
 
     @Test
@@ -186,7 +186,7 @@ public abstract class SslSelectorTest extends SelectorTest {
     }
 
     private void verifyNoUnnecessaryPollWithBytesBuffered(Consumer<SelectionKey> disableRead)
-            throws Exception {
+        throws Exception {
         this.selector.close();
 
         String node1 = "1";

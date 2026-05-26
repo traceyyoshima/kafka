@@ -151,9 +151,9 @@ public final class RecordsIterator<T> implements Iterator<Batch<T>>, AutoCloseab
             return memoryRecords;
         } else {
             logger.info(
-                "Creating a new buffer; previous buffer {} cannot fit at least {} bytes",
-                buffer,
-                firstBatchSize
+                    "Creating a new buffer; previous buffer {} cannot fit at least {} bytes",
+                    buffer,
+                    firstBatchSize
             );
             // Not enough bytes read; create a bigger buffer
             ByteBuffer newBuffer = bufferSupplier.get(memoryRecords.firstBatchSize());
@@ -197,7 +197,7 @@ public final class RecordsIterator<T> implements Iterator<Batch<T>>, AutoCloseab
 
             if (!(nextBatch instanceof DefaultRecordBatch)) {
                 throw new IllegalStateException(
-                    String.format("DefaultRecordBatch expected by record type was %s", nextBatch.getClass())
+                        String.format("DefaultRecordBatch expected by record type was %s", nextBatch.getClass())
                 );
             }
 
@@ -225,18 +225,18 @@ public final class RecordsIterator<T> implements Iterator<Batch<T>>, AutoCloseab
                 List<ControlRecord> records = new ArrayList<>(numRecords);
                 for (int i = 0; i < numRecords; i++) {
                     ControlRecord record = readRecord(
-                        input,
-                        batch.sizeInBytes(),
-                        RecordsIterator::decodeControlRecord
+                            input,
+                            batch.sizeInBytes(),
+                            RecordsIterator::decodeControlRecord
                     );
                     records.add(record);
                 }
                 result = Batch.control(
-                    batch.baseOffset(),
-                    batch.partitionLeaderEpoch(),
-                    batch.maxTimestamp(),
-                    batch.sizeInBytes(),
-                    records
+                        batch.baseOffset(),
+                        batch.partitionLeaderEpoch(),
+                        batch.maxTimestamp(),
+                        batch.sizeInBytes(),
+                        records
                 );
             } else {
                 List<T> records = new ArrayList<>(numRecords);
@@ -246,11 +246,11 @@ public final class RecordsIterator<T> implements Iterator<Batch<T>>, AutoCloseab
                 }
 
                 result = Batch.data(
-                    batch.baseOffset(),
-                    batch.partitionLeaderEpoch(),
-                    batch.maxTimestamp(),
-                    batch.sizeInBytes(),
-                    records
+                        batch.baseOffset(),
+                        batch.partitionLeaderEpoch(),
+                        batch.maxTimestamp(),
+                        batch.sizeInBytes(),
+                        records
                 );
             }
         } finally {

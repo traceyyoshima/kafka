@@ -41,7 +41,7 @@ public class ShareCoordinatorConfig {
     public static final String STATE_TOPIC_REPLICATION_FACTOR_CONFIG = "share.coordinator.state.topic.replication.factor";
     public static final short STATE_TOPIC_REPLICATION_FACTOR_DEFAULT = 3;
     public static final String STATE_TOPIC_REPLICATION_FACTOR_DOC = "Replication factor for the share-group state topic. " +
-        "Topic creation will fail until the cluster size meets this replication factor requirement.";
+            "Topic creation will fail until the cluster size meets this replication factor requirement.";
 
     public static final String STATE_TOPIC_MIN_ISR_CONFIG = "share.coordinator.state.topic.min.isr";
     public static final short STATE_TOPIC_MIN_ISR_DEFAULT = 2;
@@ -74,7 +74,7 @@ public class ShareCoordinatorConfig {
     public static final String APPEND_LINGER_MS_CONFIG = "share.coordinator.append.linger.ms";
     public static final int APPEND_LINGER_MS_DEFAULT = -1;
     public static final String APPEND_LINGER_MS_DOC = "The duration in milliseconds that the share coordinator will wait for writes to accumulate before flushing them to disk. " +
-        "Set to -1 for an adaptive linger time that minimizes latency based on the workload.";
+            "Set to -1 for an adaptive linger time that minimizes latency based on the workload.";
 
     public static final String STATE_TOPIC_PRUNE_INTERVAL_MS_CONFIG = "share.coordinator.state.topic.prune.interval.ms";
     public static final int STATE_TOPIC_PRUNE_INTERVAL_MS_DEFAULT = 5 * 60 * 1000; // 5 minutes
@@ -87,11 +87,11 @@ public class ShareCoordinatorConfig {
     public static final String CACHED_BUFFER_MAX_BYTES_CONFIG = "share.coordinator.cached.buffer.max.bytes";
     public static final int CACHED_BUFFER_MAX_BYTES_DEFAULT = 1024 * 1024 + Records.LOG_OVERHEAD;
     public static final String CACHED_BUFFER_MAX_BYTES_DOC = "The maximum buffer size that the ShareCoordinator will retain for reuse. " +
-        "Note: Setting this larger than the maximum message size is not recommended. In this case, every write buffer will be eligible " +
-        "for recycling, which renders this configuration ineffective as a size limit.";
+            "Note: Setting this larger than the maximum message size is not recommended. In this case, every write buffer will be eligible " +
+            "for recycling, which renders this configuration ineffective as a size limit.";
 
     public static final Set<String> RECONFIGURABLE_CONFIGS = Set.of(
-        CACHED_BUFFER_MAX_BYTES_CONFIG
+            CACHED_BUFFER_MAX_BYTES_CONFIG
     );
 
     public static final ConfigDef CONFIG_DEF = new ConfigDef()

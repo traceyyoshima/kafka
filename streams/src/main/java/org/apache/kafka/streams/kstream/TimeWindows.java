@@ -80,7 +80,7 @@ public final class TimeWindows extends Windows<TimeWindow> {
 
         if (advanceMs <= 0 || advanceMs > sizeMs) {
             throw new IllegalArgumentException(String.format("Window advancement interval should be more than zero " +
-                "and less than window duration which is %d ms, but given advancement interval is: %d ms", sizeMs, advanceMs));
+                    "and less than window duration which is %d ms, but given advancement interval is: %d ms", sizeMs, advanceMs));
         }
 
         if (graceMs < 0) {
@@ -184,8 +184,8 @@ public final class TimeWindows extends Windows<TimeWindow> {
         }
         final TimeWindows that = (TimeWindows) o;
         return sizeMs == that.sizeMs &&
-            advanceMs == that.advanceMs &&
-            graceMs == that.graceMs;
+                advanceMs == that.advanceMs &&
+                graceMs == that.graceMs;
     }
 
     @Override
@@ -196,9 +196,9 @@ public final class TimeWindows extends Windows<TimeWindow> {
     @Override
     public String toString() {
         return "TimeWindows{" +
-            ", sizeMs=" + sizeMs +
-            ", advanceMs=" + advanceMs +
-            ", graceMs=" + graceMs +
-            '}';
+                ", sizeMs=" + sizeMs +
+                ", advanceMs=" + advanceMs +
+                ", graceMs=" + graceMs +
+                '}';
     }
 }

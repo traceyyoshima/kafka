@@ -89,8 +89,8 @@ public class ConsumerConfig extends AbstractConfig {
     /** <code>max.poll.records</code> */
     public static final String MAX_POLL_RECORDS_CONFIG = "max.poll.records";
     private static final String MAX_POLL_RECORDS_DOC = "The maximum number of records returned in a single call to poll()."
-        + " Note, that <code>" + MAX_POLL_RECORDS_CONFIG + "</code> does not impact the underlying fetching behavior."
-        + " The consumer will cache the records from each fetch request and returns them incrementally from each poll.";
+            + " Note, that <code>" + MAX_POLL_RECORDS_CONFIG + "</code> does not impact the underlying fetching behavior."
+            + " The consumer will cache the records from each fetch request and returns them incrementally from each poll.";
     public static final int DEFAULT_MAX_POLL_RECORDS = 500;
 
     /** <code>max.poll.interval.ms</code> */
@@ -114,7 +114,7 @@ public class ConsumerConfig extends AbstractConfig {
     public static final String GROUP_PROTOCOL_CONFIG = "group.protocol";
     public static final String DEFAULT_GROUP_PROTOCOL = GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT);
     public static final String GROUP_PROTOCOL_DOC = "The group protocol that the consumer uses. The " +
-        "supported values are <code>classic</code> or <code>consumer</code>. The default value is <code>classic</code>.";
+            "supported values are <code>classic</code> or <code>consumer</code>. The default value is <code>classic</code>.";
 
     /**
     * <code>group.remote.assignor</code>
@@ -122,8 +122,8 @@ public class ConsumerConfig extends AbstractConfig {
     public static final String GROUP_REMOTE_ASSIGNOR_CONFIG = "group.remote.assignor";
     public static final String DEFAULT_GROUP_REMOTE_ASSIGNOR = null;
     public static final String GROUP_REMOTE_ASSIGNOR_DOC = "The name of the server-side assignor to use. " +
-        "If not specified, the group coordinator will pick the first assignor defined in the broker config group.consumer.assignors." +
-        "This configuration is applied only if <code>group.protocol</code> is set to \"consumer\".";
+            "If not specified, the group coordinator will pick the first assignor defined in the broker config group.consumer.assignors." +
+            "This configuration is applied only if <code>group.protocol</code> is set to \"consumer\".";
 
     /**
      * <code>bootstrap.servers</code>
@@ -150,20 +150,20 @@ public class ConsumerConfig extends AbstractConfig {
      */
     public static final String PARTITION_ASSIGNMENT_STRATEGY_CONFIG = "partition.assignment.strategy";
     private static final String PARTITION_ASSIGNMENT_STRATEGY_DOC = "A list of class names or class types, " +
-        "ordered by preference, of supported partition assignment strategies that the client will use to distribute " +
-        "partition ownership amongst consumer instances when group management is used. Available options are:" +
-        "<ul>" +
-        "<li><code>org.apache.kafka.clients.consumer.RangeAssignor</code>: Assigns partitions on a per-topic basis.</li>" +
-        "<li><code>org.apache.kafka.clients.consumer.RoundRobinAssignor</code>: Assigns partitions to consumers in a round-robin fashion.</li>" +
-        "<li><code>org.apache.kafka.clients.consumer.StickyAssignor</code>: Guarantees an assignment that is " +
-        "maximally balanced while preserving as many existing partition assignments as possible.</li>" +
-        "<li><code>org.apache.kafka.clients.consumer.CooperativeStickyAssignor</code>: Follows the same StickyAssignor " +
-        "logic, but allows for cooperative rebalancing.</li>" +
-        "</ul>" +
-        "<p>The default assignor is [RangeAssignor, CooperativeStickyAssignor], which will use the RangeAssignor by default, " +
-        "but allows upgrading to the CooperativeStickyAssignor with just a single rolling bounce that removes the RangeAssignor from the list.</p>" +
-        "<p>Implementing the <code>org.apache.kafka.clients.consumer.ConsumerPartitionAssignor</code> " +
-        "interface allows you to plug in a custom assignment strategy.</p>";
+            "ordered by preference, of supported partition assignment strategies that the client will use to distribute " +
+            "partition ownership amongst consumer instances when group management is used. Available options are:" +
+            "<ul>" +
+            "<li><code>org.apache.kafka.clients.consumer.RangeAssignor</code>: Assigns partitions on a per-topic basis.</li>" +
+            "<li><code>org.apache.kafka.clients.consumer.RoundRobinAssignor</code>: Assigns partitions to consumers in a round-robin fashion.</li>" +
+            "<li><code>org.apache.kafka.clients.consumer.StickyAssignor</code>: Guarantees an assignment that is " +
+            "maximally balanced while preserving as many existing partition assignments as possible.</li>" +
+            "<li><code>org.apache.kafka.clients.consumer.CooperativeStickyAssignor</code>: Follows the same StickyAssignor " +
+            "logic, but allows for cooperative rebalancing.</li>" +
+            "</ul>" +
+            "<p>The default assignor is [RangeAssignor, CooperativeStickyAssignor], which will use the RangeAssignor by default, " +
+            "but allows upgrading to the CooperativeStickyAssignor with just a single rolling bounce that removes the RangeAssignor from the list.</p>" +
+            "<p>Implementing the <code>org.apache.kafka.clients.consumer.ConsumerPartitionAssignor</code> " +
+            "interface allows you to plug in a custom assignment strategy.</p>";
 
     /**
      * <code>auto.offset.reset</code>
@@ -320,9 +320,8 @@ public class ConsumerConfig extends AbstractConfig {
     /** <code>interceptor.classes</code> */
     public static final String INTERCEPTOR_CLASSES_CONFIG = "interceptor.classes";
     public static final String INTERCEPTOR_CLASSES_DOC = "A list of classes to use as interceptors. "
-                                                        + "Implementing the <code>org.apache.kafka.clients.consumer.ConsumerInterceptor</code> interface allows you to intercept (and possibly mutate) records "
-                                                        + "received by the consumer. By default, there are no interceptors.";
-
+            + "Implementing the <code>org.apache.kafka.clients.consumer.ConsumerInterceptor</code> interface allows you to intercept (and possibly mutate) records "
+            + "received by the consumer. By default, there are no interceptors.";
 
     /** <code>exclude.internal.topics</code> */
     public static final String EXCLUDE_INTERNAL_TOPICS_CONFIG = "exclude.internal.topics";

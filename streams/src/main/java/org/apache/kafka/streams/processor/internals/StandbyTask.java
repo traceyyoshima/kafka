@@ -71,14 +71,14 @@ public class StandbyTask extends AbstractTask implements Task {
                 final ThreadCache cache,
                 final InternalProcessorContext<?, ?> processorContext) {
         super(
-            id,
-            topology,
-            stateDirectory,
-            stateMgr,
-            inputPartitions,
-            config,
-            "standby-task",
-            StandbyTask.class
+                id,
+                topology,
+                stateDirectory,
+                stateMgr,
+                inputPartitions,
+                config,
+                "standby-task",
+                StandbyTask.class
         );
         this.processorContext = processorContext;
         this.streamsMetrics = streamsMetrics;
@@ -267,19 +267,19 @@ public class StandbyTask extends AbstractTask implements Task {
         switch (state()) {
             case SUSPENDED:
                 TaskManager.executeAndMaybeSwallow(
-                    clean,
-                    () -> StateManagerUtil.closeStateManager(
-                        log,
-                        logPrefix,
                         clean,
-                        eosEnabled,
-                        transactionalStateStoresEnabled,
-                        stateMgr,
-                        stateDirectory,
-                        TaskType.STANDBY
-                    ),
-                    "state manager close",
-                    log
+                        () -> StateManagerUtil.closeStateManager(
+                            log,
+                            logPrefix,
+                            clean,
+                            eosEnabled,
+                            transactionalStateStoresEnabled,
+                            stateMgr,
+                            stateDirectory,
+                            TaskType.STANDBY
+                        ),
+                        "state manager close",
+                        log
                 );
 
                 break;

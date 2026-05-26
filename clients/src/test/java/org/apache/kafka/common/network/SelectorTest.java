@@ -182,7 +182,7 @@ public class SelectorTest {
     @Test
     public void testNoRouteToHost() {
         assertThrows(IOException.class,
-            () -> selector.connect("0", new InetSocketAddress("some.invalid.hostname.foo.bar.local", server.port), BUFFER_SIZE, BUFFER_SIZE));
+                () -> selector.connect("0", new InetSocketAddress("some.invalid.hostname.foo.bar.local", server.port), BUFFER_SIZE, BUFFER_SIZE));
     }
 
     /**
@@ -261,7 +261,7 @@ public class SelectorTest {
             assertEquals(0, cipherMetrics(metrics).size());
         } else {
             waitForCondition(() -> cipherMetrics(metrics).size() == 1,
-                "Waiting for cipher metrics to be created.");
+                    "Waiting for cipher metrics to be created.");
             assertEquals(5, cipherMetrics(metrics).get(0).metricValue());
         }
     }
@@ -269,7 +269,7 @@ public class SelectorTest {
     static List<KafkaMetric> cipherMetrics(Metrics metrics) {
         return metrics.metrics().entrySet().stream().
             filter(e -> e.getKey().description().
-                contains("The number of connections with this SSL cipher and protocol.")).
+                    contains("The number of connections with this SSL cipher and protocol.")).
             map(Map.Entry::getValue).
             collect(Collectors.toList());
     }
@@ -389,7 +389,7 @@ public class SelectorTest {
             selector.poll(5);
         assertEquals(1, selector.completedReceives().size(), "We should have only one response");
         assertEquals("0", selector.completedReceives().iterator().next().source(),
-            "The response should not be from the muted node");
+                "The response should not be from the muted node");
 
         selector.unmute("1");
         do {
@@ -404,11 +404,13 @@ public class SelectorTest {
         AtomicInteger closedChannelsCount = new AtomicInteger(0);
         ChannelBuilder channelBuilder = new PlaintextChannelBuilder(null) {
             private int channelIndex = 0;
+
             @Override
             KafkaChannel buildChannel(String id, TransportLayer transportLayer, Supplier<Authenticator> authenticatorCreator,
                                       int maxReceiveSize, MemoryPool memoryPool, ChannelMetadataRegistry metadataRegistry) {
                 return new KafkaChannel(id, transportLayer, authenticatorCreator, maxReceiveSize, memoryPool, metadataRegistry) {
                     private final int index = channelIndex++;
+
                     @Override
                     public void close() throws IOException {
                         closedChannelsCount.getAndIncrement();
@@ -436,7 +438,7 @@ public class SelectorTest {
                 any(ChannelMetadataRegistry.class))).thenThrow(new RuntimeException("Test exception"));
 
         try (MockedConstruction<Selector.SelectorChannelMetadataRegistry> mockedMetadataRegistry =
-                     mockConstruction(Selector.SelectorChannelMetadataRegistry.class)) {
+                mockConstruction(Selector.SelectorChannelMetadataRegistry.class)) {
             Selector selector = new Selector(CONNECTION_MAX_IDLE_MS, new Metrics(), new MockTime(), "MetricGroup", channelBuilder, new LogContext());
             final SocketChannel socketChannel = SocketChannel.open();
             socketChannel.configureBlocking(false);
@@ -685,7 +687,7 @@ public class SelectorTest {
         selector.close();
         MemoryPool pool = new SimpleMemoryPool(900, 900, false, null);
         selector = new Selector(NetworkReceive.UNLIMITED, CONNECTION_MAX_IDLE_MS, metrics, time, "MetricGroup",
-            new HashMap<>(), true, false, channelBuilder, pool, new LogContext());
+                new HashMap<>(), true, false, channelBuilder, pool, new LogContext());
 
         try (ServerSocketChannel ss = ServerSocketChannel.open()) {
             ss.bind(new InetSocketAddress(0));
@@ -845,7 +847,7 @@ public class SelectorTest {
     public void testConnectionsByClientMetric() throws Exception {
         String node = "0";
         Map<String, String> unknownNameAndVersion = softwareNameAndVersionTags(
-            ClientInformation.UNKNOWN_NAME_OR_VERSION, ClientInformation.UNKNOWN_NAME_OR_VERSION);
+                ClientInformation.UNKNOWN_NAME_OR_VERSION, ClientInformation.UNKNOWN_NAME_OR_VERSION);
         Map<String, String> knownNameAndVersion = softwareNameAndVersionTags("A", "B");
 
         try (ServerSocketChannel ss = ServerSocketChannel.open()) {
@@ -860,16 +862,16 @@ public class SelectorTest {
             // Metric with unknown / unknown should be there
             selector.register(node, channel);
             assertEquals(1,
-                getMetric("connections", unknownNameAndVersion).metricValue());
+                    getMetric("connections", unknownNameAndVersion).metricValue());
             assertEquals(ClientInformation.EMPTY,
-                selector.channel(node).channelMetadataRegistry().clientInformation());
+                    selector.channel(node).channelMetadataRegistry().clientInformation());
 
             // Metric with unknown / unknown should not be there, metric with A / B should be there
             ClientInformation clientInformation = new ClientInformation("A", "B");
             selector.channel(node).channelMetadataRegistry()
                 .registerClientInformation(clientInformation);
             assertEquals(clientInformation,
-                selector.channel(node).channelMetadataRegistry().clientInformation());
+                    selector.channel(node).channelMetadataRegistry().clientInformation());
             assertEquals(0, getMetric("connections", unknownNameAndVersion).metricValue());
             assertEquals(1, getMetric("connections", knownNameAndVersion).metricValue());
 
@@ -907,7 +909,7 @@ public class SelectorTest {
         }
         assertNotNull(selector.lowestPriorityChannel());
         for (int i = conns - 1; i >= 0; i--) {
-            if (i != 2) 
+            if (i != 2)
                 assertEquals("", blockingRequest(String.valueOf(i), ""));
             time.sleep(10);
         }

@@ -53,15 +53,15 @@ public class StaticBrokerConfigTest {
     private static final String LOG_SEGMENT_BYTES = "log.segment.bytes";
 
     @ClusterTest(types = {Type.KRAFT},
-        serverProperties = {
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-            @ClusterConfigProperty(id = 3000, key = LOG_SEGMENT_BYTES, value = CUSTOM_VALUE)
-        })
+            serverProperties = {
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+                @ClusterConfigProperty(id = 3000, key = LOG_SEGMENT_BYTES, value = CUSTOM_VALUE)
+            })
     public void testTopicConfigsGetImpactedIfStaticConfigsAddToController(ClusterInstance cluster)
         throws ExecutionException, InterruptedException {
         try (
-            Admin admin = cluster.admin();
-            Admin adminUsingBootstrapController = cluster.admin(Map.of(), true)
+                Admin admin = cluster.admin();
+                Admin adminUsingBootstrapController = cluster.admin(Map.of(), true)
         ) {
             ConfigEntry configEntry = admin.createTopics(List.of(new NewTopic(TOPIC, 1, (short) 1)))
                 .config(TOPIC).get().get(TopicConfig.SEGMENT_BYTES_CONFIG);
@@ -72,51 +72,51 @@ public class StaticBrokerConfigTest {
             configEntry = admin.describeConfigs(List.of(brokerResource)).all().get().get(brokerResource).get(LOG_SEGMENT_BYTES);
             assertEquals(ConfigEntry.ConfigSource.DEFAULT_CONFIG, configEntry.source());
             assertNotEquals(CUSTOM_VALUE,
-                configEntry.value(),
-                "Config value should not be custom value since broker doesn't have related static config");
+                    configEntry.value(),
+                    "Config value should not be custom value since broker doesn't have related static config");
 
             ConfigResource controllerResource = new ConfigResource(ConfigResource.Type.BROKER, "3000");
             configEntry = adminUsingBootstrapController.describeConfigs(List.of(controllerResource))
                 .all().get().get(controllerResource).get(LOG_SEGMENT_BYTES);
             assertEquals(ConfigEntry.ConfigSource.STATIC_BROKER_CONFIG, configEntry.source());
             assertEquals(CUSTOM_VALUE,
-                configEntry.value(),
-                "Config value should be custom value since controller has related static config");
+                    configEntry.value(),
+                    "Config value should be custom value since controller has related static config");
         }
     }
 
     @ClusterTest(types = {Type.KRAFT},
-        serverProperties = {
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-            @ClusterConfigProperty(id = 0, key = LOG_SEGMENT_BYTES, value = CUSTOM_VALUE)
-        })
+            serverProperties = {
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+                @ClusterConfigProperty(id = 0, key = LOG_SEGMENT_BYTES, value = CUSTOM_VALUE)
+            })
     public void testTopicConfigsGetImpactedIfStaticConfigsAddToBroker(ClusterInstance cluster)
         throws ExecutionException, InterruptedException {
         try (
-            Admin admin = cluster.admin();
-            Admin adminUsingBootstrapController = cluster.admin(Map.of(), true)
+                Admin admin = cluster.admin();
+                Admin adminUsingBootstrapController = cluster.admin(Map.of(), true)
         ) {
             ConfigEntry configEntry = admin.createTopics(List.of(new NewTopic(TOPIC, 1, (short) 1)))
                 .config(TOPIC).get().get(TopicConfig.SEGMENT_BYTES_CONFIG);
             assertEquals(ConfigEntry.ConfigSource.DEFAULT_CONFIG, configEntry.source());
             assertNotEquals(CUSTOM_VALUE,
-                configEntry.value(),
-                "Config value should not be custom value since controller doesn't have static config");
+                    configEntry.value(),
+                    "Config value should not be custom value since controller doesn't have static config");
 
             ConfigResource brokerResource = new ConfigResource(ConfigResource.Type.BROKER, "0");
             configEntry = admin.describeConfigs(List.of(brokerResource)).all().get().get(brokerResource).get(LOG_SEGMENT_BYTES);
             assertEquals(ConfigEntry.ConfigSource.STATIC_BROKER_CONFIG, configEntry.source());
             assertEquals(CUSTOM_VALUE,
-                configEntry.value(),
-                "Config value should be custom value since broker has related static config");
+                    configEntry.value(),
+                    "Config value should be custom value since broker has related static config");
 
             ConfigResource controllerResource = new ConfigResource(ConfigResource.Type.BROKER, "3000");
             configEntry = adminUsingBootstrapController.describeConfigs(List.of(controllerResource))
                 .all().get().get(controllerResource).get(LOG_SEGMENT_BYTES);
             assertEquals(ConfigEntry.ConfigSource.DEFAULT_CONFIG, configEntry.source());
             assertNotEquals(CUSTOM_VALUE,
-                configEntry.value(),
-                "Config value should not be custom value since controller doesn't have related static config");
+                    configEntry.value(),
+                    "Config value should not be custom value since controller doesn't have related static config");
         }
     }
 

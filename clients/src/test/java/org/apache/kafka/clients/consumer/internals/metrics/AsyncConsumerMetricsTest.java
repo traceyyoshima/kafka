@@ -40,8 +40,8 @@ public class AsyncConsumerMetricsTest extends AbstractConsumerMetricsManagerTest
 
     public static Stream<String> groupNameProvider() {
         return Stream.of(
-            CONSUMER_METRIC_GROUP,
-            CONSUMER_SHARE_METRIC_GROUP
+                CONSUMER_METRIC_GROUP,
+                CONSUMER_SHARE_METRIC_GROUP
         );
     }
 
@@ -64,36 +64,36 @@ public class AsyncConsumerMetricsTest extends AbstractConsumerMetricsManagerTest
         // create
         consumerMetrics = new AsyncConsumerMetrics(metrics, groupName);
         Set<MetricName> expectedMetrics = Set.of(
-            metrics.metricName("time-between-network-thread-poll-avg", groupName),
-            metrics.metricName("time-between-network-thread-poll-max", groupName),
-            metrics.metricName("application-event-queue-size", groupName),
-            metrics.metricName("application-event-queue-time-avg", groupName),
-            metrics.metricName("application-event-queue-time-max", groupName),
-            metrics.metricName("application-event-queue-processing-time-avg", groupName),
-            metrics.metricName("application-event-queue-processing-time-max", groupName),
-            metrics.metricName("unsent-requests-queue-size", groupName),
-            metrics.metricName("unsent-requests-queue-time-avg", groupName),
-            metrics.metricName("unsent-requests-queue-time-max", groupName),
-            metrics.metricName("background-event-queue-size", groupName),
-            metrics.metricName("background-event-queue-time-avg", groupName),
-            metrics.metricName("background-event-queue-time-max", groupName),
-            metrics.metricName("background-event-queue-processing-time-avg", groupName),
-            metrics.metricName("background-event-queue-processing-time-max", groupName)
+                metrics.metricName("time-between-network-thread-poll-avg", groupName),
+                metrics.metricName("time-between-network-thread-poll-max", groupName),
+                metrics.metricName("application-event-queue-size", groupName),
+                metrics.metricName("application-event-queue-time-avg", groupName),
+                metrics.metricName("application-event-queue-time-max", groupName),
+                metrics.metricName("application-event-queue-processing-time-avg", groupName),
+                metrics.metricName("application-event-queue-processing-time-max", groupName),
+                metrics.metricName("unsent-requests-queue-size", groupName),
+                metrics.metricName("unsent-requests-queue-time-avg", groupName),
+                metrics.metricName("unsent-requests-queue-time-max", groupName),
+                metrics.metricName("background-event-queue-size", groupName),
+                metrics.metricName("background-event-queue-time-avg", groupName),
+                metrics.metricName("background-event-queue-time-max", groupName),
+                metrics.metricName("background-event-queue-processing-time-avg", groupName),
+                metrics.metricName("background-event-queue-processing-time-max", groupName)
         );
         expectedMetrics.forEach(
-            metricName -> assertTrue(
-                metrics.metrics().containsKey(metricName),
-                "Missing metric: " + metricName
-            )
+                metricName -> assertTrue(
+                    metrics.metrics().containsKey(metricName),
+                    "Missing metric: " + metricName
+                )
         );
 
         // close
         consumerMetrics.close();
         expectedMetrics.forEach(
-            metricName -> assertFalse(
-                metrics.metrics().containsKey(metricName),
-                "Metric present after close: " + metricName
-            )
+                metricName -> assertFalse(
+                    metrics.metrics().containsKey(metricName),
+                    "Metric present after close: " + metricName
+                )
         );
     }
 
@@ -118,13 +118,13 @@ public class AsyncConsumerMetricsTest extends AbstractConsumerMetricsManagerTest
 
         // Then:
         assertEquals(
-            (double) 10,
-            metrics.metric(
-                metrics.metricName(
-                    "application-event-queue-size",
-                    groupName
-                )
-            ).metricValue()
+                (double) 10,
+                metrics.metric(
+                    metrics.metricName(
+                            "application-event-queue-size",
+                            groupName
+                    )
+                ).metricValue()
         );
     }
 
@@ -161,13 +161,13 @@ public class AsyncConsumerMetricsTest extends AbstractConsumerMetricsManagerTest
 
         // Then:
         assertEquals(
-            (double) 10,
-            metrics.metric(
-                metrics.metricName(
-                    "unsent-requests-queue-size",
-                    groupName
-                )
-            ).metricValue()
+                (double) 10,
+                metrics.metric(
+                    metrics.metricName(
+                            "unsent-requests-queue-size",
+                            groupName
+                    )
+                ).metricValue()
         );
     }
 
@@ -192,13 +192,13 @@ public class AsyncConsumerMetricsTest extends AbstractConsumerMetricsManagerTest
 
         // Then:
         assertEquals(
-            (double) 10,
-            metrics.metric(
-                metrics.metricName(
-                    "background-event-queue-size",
-                    groupName
-                )
-            ).metricValue()
+                (double) 10,
+                metrics.metric(
+                    metrics.metricName(
+                            "background-event-queue-size",
+                            groupName
+                    )
+                ).metricValue()
         );
     }
 
@@ -228,13 +228,13 @@ public class AsyncConsumerMetricsTest extends AbstractConsumerMetricsManagerTest
 
     private void assertMetricValue(final String name, final String groupName) {
         assertEquals(
-            (double) METRIC_VALUE,
-            metrics.metric(
-                metrics.metricName(
-                    name,
-                    groupName
-                )
-            ).metricValue()
+                (double) METRIC_VALUE,
+                metrics.metric(
+                    metrics.metricName(
+                            name,
+                            groupName
+                    )
+                ).metricValue()
         );
     }
 }

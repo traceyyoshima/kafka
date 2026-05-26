@@ -55,17 +55,17 @@ public class BrokerToElrsTest {
         brokersToElrs.update(UUIDS[0], 0, null, new int[] {1, 2, 3});
         brokersToElrs.update(UUIDS[1], 1, null, new int[] {2, 3, 4});
         assertEquals(toSet(new TopicIdPartition(UUIDS[0], 0)),
-            toSet(brokersToElrs.partitionsWithBrokerInElr(1)));
+                toSet(brokersToElrs.partitionsWithBrokerInElr(1)));
         assertEquals(toSet(new TopicIdPartition(UUIDS[0], 0),
                 new TopicIdPartition(UUIDS[1], 1)),
-            toSet(brokersToElrs.partitionsWithBrokerInElr(2)));
+                toSet(brokersToElrs.partitionsWithBrokerInElr(2)));
         assertEquals(toSet(new TopicIdPartition(UUIDS[1], 1)),
-            toSet(brokersToElrs.partitionsWithBrokerInElr(4)));
+                toSet(brokersToElrs.partitionsWithBrokerInElr(4)));
         assertEquals(toSet(), toSet(brokersToElrs.partitionsWithBrokerInElr(5)));
         brokersToElrs.update(UUIDS[1], 2, null, new int[] {3, 2, 1});
         assertEquals(toSet(new TopicIdPartition(UUIDS[0], 0),
                 new TopicIdPartition(UUIDS[1], 1),
                 new TopicIdPartition(UUIDS[1], 2)),
-            toSet(brokersToElrs.partitionsWithBrokerInElr(2)));
+                toSet(brokersToElrs.partitionsWithBrokerInElr(2)));
     }
 }

@@ -74,6 +74,7 @@ public class ConsumeBenchWorker implements TaskWorker {
     private Future<?> statusUpdaterFuture;
     private KafkaFutureImpl<String> doneFuture;
     private ThreadSafeConsumer consumer;
+
     public ConsumeBenchWorker(String id, ConsumeBenchSpec spec) {
         this.id = id;
         this.spec = spec;
@@ -88,8 +89,8 @@ public class ConsumeBenchWorker implements TaskWorker {
         log.info("{}: Activating ConsumeBenchWorker with {}", id, spec);
         this.statusUpdater = new StatusUpdater();
         this.executor = Executors.newScheduledThreadPool(
-            spec.threadsPerWorker() + 2, // 1 thread for all the ConsumeStatusUpdater and 1 for the StatusUpdater
-            ThreadUtils.createThreadFactory("ConsumeBenchWorkerThread%d", false));
+                spec.threadsPerWorker() + 2, // 1 thread for all the ConsumeStatusUpdater and 1 for the StatusUpdater
+                ThreadUtils.createThreadFactory("ConsumeBenchWorkerThread%d", false));
         this.statusUpdaterFuture = executor.scheduleAtFixedRate(this.statusUpdater, 1, 1, TimeUnit.MINUTES);
         this.workerStatus = status;
         this.doneFuture = doneFuture;
@@ -119,7 +120,7 @@ public class ConsumeBenchWorker implements TaskWorker {
 
             if (!toUseGroupPartitionAssignment && !toUseRandomConsumeGroup() && consumerCount > 1)
                 throw new ConfigException("You may not specify an explicit partition assignment when using multiple consumers in the same group."
-                    + "Please leave the consumer group unset, specify topics instead of partitions or use a single consumer.");
+                        + "Please leave the consumer group unset, specify topics instead of partitions or use a single consumer.");
 
             consumer = consumer(consumerGroup, clientId(0));
             if (toUseGroupPartitionAssignment) {
@@ -163,8 +164,8 @@ public class ConsumeBenchWorker implements TaskWorker {
 
         private String consumerGroup() {
             return toUseRandomConsumeGroup()
-                ? "consume-bench-" + UUID.randomUUID()
-                : spec.consumerGroup();
+                    ? "consume-bench-" + UUID.randomUUID()
+                    : spec.consumerGroup();
         }
 
         private boolean toUseRandomConsumeGroup() {
@@ -207,7 +208,7 @@ public class ConsumeBenchWorker implements TaskWorker {
             this.messageSizeHistogram = new Histogram(2 * 1024 * 1024);
             this.clientId = consumer.clientId();
             this.statusUpdaterFuture = executor.scheduleAtFixedRate(
-                new ConsumeStatusUpdater(latencyHistogram, messageSizeHistogram, consumer, recordProcessor), 1, 1, TimeUnit.MINUTES);
+                    new ConsumeStatusUpdater(latencyHistogram, messageSizeHistogram, consumer, recordProcessor), 1, 1, TimeUnit.MINUTES);
             int perPeriod;
             if (spec.targetMessagesPerSec() <= 0)
                 perPeriod = Integer.MAX_VALUE;
@@ -226,6 +227,7 @@ public class ConsumeBenchWorker implements TaskWorker {
             log.info("Will consume from topics {} via dynamic group assignment.", topics);
             this.consumer.subscribe(topics);
         }
+
         ConsumeMessages(ThreadSafeConsumer consumer,
                         Optional<RecordProcessor> recordProcessor,
                         List<TopicPartition> partitions) {
@@ -277,7 +279,7 @@ public class ConsumeBenchWorker implements TaskWorker {
             } finally {
                 statusUpdaterFuture.cancel(false);
                 StatusData statusData =
-                    new ConsumeStatusUpdater(latencyHistogram, messageSizeHistogram, consumer, spec.recordProcessor()).update();
+                        new ConsumeStatusUpdater(latencyHistogram, messageSizeHistogram, consumer, spec.recordProcessor()).update();
                 long curTimeMs = Time.SYSTEM.milliseconds();
                 log.info("{} Consumed total number of messages={}, bytes={} in {} ms.  status: {}",
                          clientId, messagesConsumed, bytesConsumed, curTimeMs - startTimeMs, statusData);
@@ -374,15 +376,15 @@ public class ConsumeBenchWorker implements TaskWorker {
             }
 
             StatusData statusData = new StatusData(
-                consumer.assignedPartitions(),
-                latSummary.numSamples(),
-                (long) (msgSummary.numSamples() * msgSummary.average()),
-                (long) msgSummary.average(),
-                latSummary.average(),
-                latSummary.percentiles().get(0).value(),
-                latSummary.percentiles().get(1).value(),
-                latSummary.percentiles().get(2).value(),
-                recordProcessorStatus);
+                    consumer.assignedPartitions(),
+                    latSummary.numSamples(),
+                    (long) (msgSummary.numSamples() * msgSummary.average()),
+                    (long) msgSummary.average(),
+                    latSummary.average(),
+                    latSummary.percentiles().get(0).value(),
+                    latSummary.percentiles().get(1).value(),
+                    latSummary.percentiles().get(2).value(),
+                    recordProcessorStatus);
             statusUpdater.updateConsumeStatus(consumer.clientId(), statusData);
             log.info("Status={}", JsonUtil.toJsonString(statusData));
             return statusData;
@@ -405,6 +407,7 @@ public class ConsumeBenchWorker implements TaskWorker {
          * These should match up with the p50LatencyMs, p95LatencyMs, etc. fields.
          */
         static final float[] PERCENTILES = {0.5f, 0.95f, 0.99f};
+
         @JsonCreator
         StatusData(@JsonProperty("assignedPartitions") List<String> assignedPartitions,
                    @JsonProperty("totalMessagesReceived") long totalMessagesReceived,

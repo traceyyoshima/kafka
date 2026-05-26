@@ -111,8 +111,8 @@ public class GetOffsetShell {
                     .describedAs("HOST1:PORT1,...,HOST3:PORT3")
                     .ofType(String.class);
             topicPartitionsOpt = parser.accepts("topic-partitions", "Comma separated list of topic-partition patterns to get the offsets for, with the format of '" + TOPIC_PARTITION_PATTERN + "'." +
-                            " The first group is an optional regex for the topic name, if omitted, it matches any topic name." +
-                            " The section after ':' describes a 'partition' pattern, which can be: a number, a range in the format of 'NUMBER-NUMBER' (lower inclusive, upper exclusive), an inclusive lower bound in the format of 'NUMBER-', an exclusive upper bound in the format of '-NUMBER' or may be omitted to accept all partitions.")
+                    " The first group is an optional regex for the topic name, if omitted, it matches any topic name." +
+                    " The section after ':' describes a 'partition' pattern, which can be: a number, a range in the format of 'NUMBER-NUMBER' (lower inclusive, upper exclusive), an inclusive lower bound in the format of 'NUMBER-', an exclusive upper bound in the format of '-NUMBER' or may be omitted to accept all partitions.")
                     .withRequiredArg()
                     .describedAs("topic1:1,topic2:0-3,topic3,topic4:5-,topic5:-3")
                     .ofType(String.class);

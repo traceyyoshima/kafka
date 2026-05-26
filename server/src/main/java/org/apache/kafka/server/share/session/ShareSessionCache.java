@@ -209,7 +209,7 @@ public class ShareSessionCache {
     ) {
         if (sessions.size() < maxEntries) {
             ShareSession session = new ShareSession(new ShareSessionKey(groupId, memberId), partitionMap,
-                ShareRequestMetadata.nextEpoch(ShareRequestMetadata.INITIAL_EPOCH), clientConnectionId);
+                    ShareRequestMetadata.nextEpoch(ShareRequestMetadata.INITIAL_EPOCH), clientConnectionId);
             sessions.put(session.key(), session);
             updateNumPartitions(session);
             numMembersPerGroup.compute(session.key().groupId(), (k, v) -> v != null ? v + 1 : 1);

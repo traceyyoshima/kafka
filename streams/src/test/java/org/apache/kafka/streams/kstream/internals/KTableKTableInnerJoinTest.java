@@ -63,9 +63,8 @@ public class KTableKTableInnerJoinTest {
     private final String output = "output";
     private final Consumed<Integer, String> consumed = Consumed.with(Serdes.Integer(), Serdes.String());
     private final Materialized<Integer, String, KeyValueStore<Bytes, byte[]>> materialized =
-        Materialized.with(Serdes.Integer(), Serdes.String());
+            Materialized.with(Serdes.Integer(), Serdes.String());
     private Properties props = StreamsTestUtils.getStreamsConfig(Serdes.Integer(), Serdes.String());
-
 
     @ParameterizedTest
     @ValueSource(booleans = {false, true})
@@ -194,7 +193,7 @@ public class KTableKTableInnerJoinTest {
             // left: X0:0 (ts: 5), X1:1 (ts: 6)
             // right: Y0:0 (ts: 0), Y1:1 (ts: 10)
             proc.checkAndClearProcessResult(new KeyValueTimestamp<>(0, new Change<>("X0+Y0", null), 5),
-                new KeyValueTimestamp<>(1, new Change<>("X1+Y1", null), 10));
+                    new KeyValueTimestamp<>(1, new Change<>("X1+Y1", null), 10));
             // push all four items to the primary stream. this should produce two items.
             for (final int expectedKey : expectedKeys) {
                 inputTopic1.pipeInput(expectedKey, "XX" + expectedKey, 7L);
@@ -202,7 +201,7 @@ public class KTableKTableInnerJoinTest {
             // left: XX0:0 (ts: 7), XX1:1 (ts: 7), XX2:2 (ts: 7), XX3:3 (ts: 7)
             // right: Y0:0 (ts: 0), Y1:1 (ts: 10)
             proc.checkAndClearProcessResult(new KeyValueTimestamp<>(0, new Change<>("XX0+Y0", "X0+Y0"), 7),
-                new KeyValueTimestamp<>(1, new Change<>("XX1+Y1", "X1+Y1"), 10));
+                    new KeyValueTimestamp<>(1, new Change<>("XX1+Y1", "X1+Y1"), 10));
             // push all items to the other stream. this should produce four items.
             for (final int expectedKey : expectedKeys) {
                 inputTopic2.pipeInput(expectedKey, "YY" + expectedKey, expectedKey * 5L);
@@ -210,10 +209,10 @@ public class KTableKTableInnerJoinTest {
             // left: XX0:0 (ts: 7), XX1:1 (ts: 7), XX2:2 (ts: 7), XX3:3 (ts: 7)
             // right: YY0:0 (ts: 0), YY1:1 (ts: 5), YY2:2 (ts: 10), YY3:3 (ts: 15)
             proc.checkAndClearProcessResult(
-                new KeyValueTimestamp<>(0, new Change<>("XX0+YY0", "XX0+Y0"), 7),
-                new KeyValueTimestamp<>(1, new Change<>("XX1+YY1", "XX1+Y1"), 7),
-                new KeyValueTimestamp<>(2, new Change<>("XX2+YY2", null), 10),
-                new KeyValueTimestamp<>(3, new Change<>("XX3+YY3", null), 15));
+                    new KeyValueTimestamp<>(0, new Change<>("XX0+YY0", "XX0+Y0"), 7),
+                    new KeyValueTimestamp<>(1, new Change<>("XX1+YY1", "XX1+Y1"), 7),
+                    new KeyValueTimestamp<>(2, new Change<>("XX2+YY2", null), 10),
+                    new KeyValueTimestamp<>(3, new Change<>("XX3+YY3", null), 15));
 
             // push all four items to the primary stream. this should produce four items.
             for (final int expectedKey : expectedKeys) {
@@ -222,10 +221,10 @@ public class KTableKTableInnerJoinTest {
             // left: XXX0:0 (ts: 6), XXX1:1 (ts: 6), XXX2:2 (ts: 6), XXX3:3 (ts: 6)
             // right: YY0:0 (ts: 0), YY1:1 (ts: 5), YY2:2 (ts: 10), YY3:3 (ts: 15)
             proc.checkAndClearProcessResult(
-                new KeyValueTimestamp<>(0, new Change<>("XXX0+YY0", "XX0+YY0"), 6),
-                new KeyValueTimestamp<>(1, new Change<>("XXX1+YY1", "XX1+YY1"), 6),
-                new KeyValueTimestamp<>(2, new Change<>("XXX2+YY2", "XX2+YY2"), 10),
-                new KeyValueTimestamp<>(3, new Change<>("XXX3+YY3", "XX3+YY3"), 15));
+                    new KeyValueTimestamp<>(0, new Change<>("XXX0+YY0", "XX0+YY0"), 6),
+                    new KeyValueTimestamp<>(1, new Change<>("XXX1+YY1", "XX1+YY1"), 6),
+                    new KeyValueTimestamp<>(2, new Change<>("XXX2+YY2", "XX2+YY2"), 10),
+                    new KeyValueTimestamp<>(3, new Change<>("XXX3+YY3", "XX3+YY3"), 15));
 
             // push two items with null to the other stream as deletes. this should produce two item.
             inputTopic2.pipeInput(expectedKeys[0], null, 5L);
@@ -233,7 +232,7 @@ public class KTableKTableInnerJoinTest {
             // left: XXX0:0 (ts: 6), XXX1:1 (ts: 6), XXX2:2 (ts: 6), XXX3:3 (ts: 6)
             // right: YY2:2 (ts: 10), YY3:3 (ts: 15)
             proc.checkAndClearProcessResult(new KeyValueTimestamp<>(0, new Change<>(null, "XXX0+YY0"), 6),
-                new KeyValueTimestamp<>(1, new Change<>(null, "XXX1+YY1"), 7));
+                    new KeyValueTimestamp<>(1, new Change<>(null, "XXX1+YY1"), 7));
             // push all four items to the primary stream. this should produce two items.
             for (final int expectedKey : expectedKeys) {
                 inputTopic1.pipeInput(expectedKey, "XXXX" + expectedKey, 13L);
@@ -241,7 +240,7 @@ public class KTableKTableInnerJoinTest {
             // left: XXXX0:0 (ts: 13), XXXX1:1 (ts: 13), XXXX2:2 (ts: 13), XXXX3:3 (ts: 13)
             // right: YY2:2 (ts: 10), YY3:3 (ts: 15)
             proc.checkAndClearProcessResult(new KeyValueTimestamp<>(2, new Change<>("XXXX2+YY2", "XXX2+YY2"), 13),
-                new KeyValueTimestamp<>(3, new Change<>("XXXX3+YY3", "XXX3+YY3"), 15));
+                    new KeyValueTimestamp<>(3, new Change<>("XXXX3+YY3", "XXX3+YY3"), 15));
             // push four items to the primary stream with null. this should produce two items.
             inputTopic1.pipeInput(expectedKeys[0], null, 0L);
             inputTopic1.pipeInput(expectedKeys[1], null, 42L);
@@ -250,7 +249,7 @@ public class KTableKTableInnerJoinTest {
             // left:
             // right: YY2:2 (ts: 10), YY3:3 (ts: 15)
             proc.checkAndClearProcessResult(new KeyValueTimestamp<>(2, new Change<>(null, "XXXX2+YY2"), 10),
-                new KeyValueTimestamp<>(3, new Change<>(null, "XXXX3+YY3"), 20));
+                    new KeyValueTimestamp<>(3, new Change<>(null, "XXXX3+YY3"), 20));
         }
     }
 
@@ -261,9 +260,9 @@ public class KTableKTableInnerJoinTest {
 
         @SuppressWarnings("unchecked")
         final Processor<String, Change<String>, String, Change<Object>> join = new KTableKTableInnerJoin<>(
-            (KTableImpl<String, String, String>) builder.table("left", Consumed.with(Serdes.String(), Serdes.String())),
-            (KTableImpl<String, String, String>) builder.table("right", Consumed.with(Serdes.String(), Serdes.String())),
-            null
+                (KTableImpl<String, String, String>) builder.table("left", Consumed.with(Serdes.String(), Serdes.String())),
+                (KTableImpl<String, String, String>) builder.table("right", Consumed.with(Serdes.String(), Serdes.String())),
+                null
         ).get();
 
         setDslStoreFormat(withHeaders);
@@ -275,8 +274,8 @@ public class KTableKTableInnerJoinTest {
             join.process(new Record<>(null, new Change<>("new", "old"), 0));
 
             assertThat(
-                appender.getMessages(),
-                hasItem("Skipping record due to null key. topic=[left] partition=[-1] offset=[-2]")
+                    appender.getMessages(),
+                    hasItem("Skipping record due to null key. topic=[left] partition=[-1] offset=[-2]")
             );
         }
     }
@@ -320,7 +319,7 @@ public class KTableKTableInnerJoinTest {
             // left: X0:0 (ts: 5), X1:1 (ts: 6)
             // right: Y0:0 (ts: 0), Y1:1 (ts: 10)
             proc.checkAndClearProcessResult(new KeyValueTimestamp<>(0, new Change<>("X0+Y0", null), 5),
-                new KeyValueTimestamp<>(1, new Change<>("X1+Y1", null), 10));
+                    new KeyValueTimestamp<>(1, new Change<>("X1+Y1", null), 10));
             // push all four items to the primary stream. this should produce two items.
             for (final int expectedKey : expectedKeys) {
                 inputTopic1.pipeInput(expectedKey, "XX" + expectedKey, 7L);
@@ -328,7 +327,7 @@ public class KTableKTableInnerJoinTest {
             // left: XX0:0 (ts: 7), XX1:1 (ts: 7), XX2:2 (ts: 7), XX3:3 (ts: 7)
             // right: Y0:0 (ts: 0), Y1:1 (ts: 10)
             proc.checkAndClearProcessResult(new KeyValueTimestamp<>(0, new Change<>("XX0+Y0", null), 7),
-                new KeyValueTimestamp<>(1, new Change<>("XX1+Y1", null), 10));
+                    new KeyValueTimestamp<>(1, new Change<>("XX1+Y1", null), 10));
             // push all items to the other stream. this should produce four items.
             for (final int expectedKey : expectedKeys) {
                 inputTopic2.pipeInput(expectedKey, "YY" + expectedKey, expectedKey * 5L);
@@ -336,10 +335,10 @@ public class KTableKTableInnerJoinTest {
             // left: XX0:0 (ts: 7), XX1:1 (ts: 7), XX2:2 (ts: 7), XX3:3 (ts: 7)
             // right: YY0:0 (ts: 0), YY1:1 (ts: 5), YY2:2 (ts: 10), YY3:3 (ts: 15)
             proc.checkAndClearProcessResult(
-                new KeyValueTimestamp<>(0, new Change<>("XX0+YY0", null), 7),
-                new KeyValueTimestamp<>(1, new Change<>("XX1+YY1", null), 7),
-                new KeyValueTimestamp<>(2, new Change<>("XX2+YY2", null), 10),
-                new KeyValueTimestamp<>(3, new Change<>("XX3+YY3", null), 15));
+                    new KeyValueTimestamp<>(0, new Change<>("XX0+YY0", null), 7),
+                    new KeyValueTimestamp<>(1, new Change<>("XX1+YY1", null), 7),
+                    new KeyValueTimestamp<>(2, new Change<>("XX2+YY2", null), 10),
+                    new KeyValueTimestamp<>(3, new Change<>("XX3+YY3", null), 15));
 
             // push all four items to the primary stream. this should produce four items.
             for (final int expectedKey : expectedKeys) {
@@ -348,10 +347,10 @@ public class KTableKTableInnerJoinTest {
             // left: XXX0:0 (ts: 6), XXX1:1 (ts: 6), XXX2:2 (ts: 6), XXX3:3 (ts: 6)
             // right: YY0:0 (ts: 0), YY1:1 (ts: 5), YY2:2 (ts: 10), YY3:3 (ts: 15)
             proc.checkAndClearProcessResult(
-                new KeyValueTimestamp<>(0, new Change<>("XXX0+YY0", null), 6),
-                new KeyValueTimestamp<>(1, new Change<>("XXX1+YY1", null), 6),
-                new KeyValueTimestamp<>(2, new Change<>("XXX2+YY2", null), 10),
-                new KeyValueTimestamp<>(3, new Change<>("XXX3+YY3", null), 15));
+                    new KeyValueTimestamp<>(0, new Change<>("XXX0+YY0", null), 6),
+                    new KeyValueTimestamp<>(1, new Change<>("XXX1+YY1", null), 6),
+                    new KeyValueTimestamp<>(2, new Change<>("XXX2+YY2", null), 10),
+                    new KeyValueTimestamp<>(3, new Change<>("XXX3+YY3", null), 15));
 
             // push two items with null to the other stream as deletes. this should produce two item.
             inputTopic2.pipeInput(expectedKeys[0], null, 5L);
@@ -359,7 +358,7 @@ public class KTableKTableInnerJoinTest {
             // left: XXX0:0 (ts: 6), XXX1:1 (ts: 6), XXX2:2 (ts: 6), XXX3:3 (ts: 6)
             // right: YY2:2 (ts: 10), YY3:3 (ts: 15)
             proc.checkAndClearProcessResult(new KeyValueTimestamp<>(0, new Change<>(null, null), 6),
-                new KeyValueTimestamp<>(1, new Change<>(null, null), 7));
+                    new KeyValueTimestamp<>(1, new Change<>(null, null), 7));
             // push all four items to the primary stream. this should produce two items.
             for (final int expectedKey : expectedKeys) {
                 inputTopic1.pipeInput(expectedKey, "XXXX" + expectedKey, 13L);
@@ -367,7 +366,7 @@ public class KTableKTableInnerJoinTest {
             // left: XXXX0:0 (ts: 13), XXXX1:1 (ts: 13), XXXX2:2 (ts: 13), XXXX3:3 (ts: 13)
             // right: YY2:2 (ts: 10), YY3:3 (ts: 15)
             proc.checkAndClearProcessResult(new KeyValueTimestamp<>(2, new Change<>("XXXX2+YY2", null), 13),
-                new KeyValueTimestamp<>(3, new Change<>("XXXX3+YY3", null), 15));
+                    new KeyValueTimestamp<>(3, new Change<>("XXXX3+YY3", null), 15));
             // push four items to the primary stream with null. this should produce two items.
             inputTopic1.pipeInput(expectedKeys[0], null, 0L);
             inputTopic1.pipeInput(expectedKeys[1], null, 42L);
@@ -376,13 +375,13 @@ public class KTableKTableInnerJoinTest {
             // left:
             // right: YY2:2 (ts: 10), YY3:3 (ts: 15)
             proc.checkAndClearProcessResult(new KeyValueTimestamp<>(2, new Change<>(null, null), 10),
-                new KeyValueTimestamp<>(3, new Change<>(null, null), 20));
+                    new KeyValueTimestamp<>(3, new Change<>(null, null), 20));
         }
     }
 
     private void doTestJoin(final StreamsBuilder builder, final int[] expectedKeys, final boolean withHeaders) {
         final Collection<Set<String>> copartitionGroups =
-            TopologyWrapper.getInternalTopologyBuilder(builder.build()).copartitionGroups();
+                TopologyWrapper.getInternalTopologyBuilder(builder.build()).copartitionGroups();
 
         assertEquals(1, copartitionGroups.size());
         assertEquals(Set.of(topic1, topic2), copartitionGroups.iterator().next());

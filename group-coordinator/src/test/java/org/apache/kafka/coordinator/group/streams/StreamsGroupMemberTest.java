@@ -65,7 +65,7 @@ public class StreamsGroupMemberTest {
     private static final String SUBTOPOLOGY2 = "subtopology2";
     private static final String SUBTOPOLOGY3 = "subtopology3";
     private static final StreamsGroupMemberMetadataValue.Endpoint USER_ENDPOINT =
-        new StreamsGroupMemberMetadataValue.Endpoint().setHost("host").setPort(9090);
+            new StreamsGroupMemberMetadataValue.Endpoint().setHost("host").setPort(9090);
     private static final String CLIENT_TAG_KEY = "client";
     private static final String CLIENT_TAG_VALUE = "tag";
     private static final Map<String, String> CLIENT_TAGS = mkMap(mkEntry(CLIENT_TAG_KEY, CLIENT_TAG_VALUE));
@@ -76,23 +76,23 @@ public class StreamsGroupMemberTest {
     private static final List<Integer> TASKS5 = List.of(6, 5, 4);
     private static final List<Integer> TASKS6 = List.of(9, 7);
     private static final TasksTupleWithEpochs ASSIGNED_TASKS =
-        new TasksTupleWithEpochs(
-            mkMap(mkEntry(SUBTOPOLOGY1, mkMap(mkEntry(1, 5), mkEntry(2, 6), mkEntry(3, 7)))),
-            mkTasksPerSubtopology(mkTasks(SUBTOPOLOGY2, TASKS2.toArray(Integer[]::new))),
-            mkTasksPerSubtopology(mkTasks(SUBTOPOLOGY1, TASKS3.toArray(Integer[]::new)))
-        );
+            new TasksTupleWithEpochs(
+                    mkMap(mkEntry(SUBTOPOLOGY1, mkMap(mkEntry(1, 5), mkEntry(2, 6), mkEntry(3, 7)))),
+                    mkTasksPerSubtopology(mkTasks(SUBTOPOLOGY2, TASKS2.toArray(Integer[]::new))),
+                    mkTasksPerSubtopology(mkTasks(SUBTOPOLOGY1, TASKS3.toArray(Integer[]::new)))
+            );
     private static final TasksTupleWithEpochs TASKS_PENDING_REVOCATION =
-        new TasksTupleWithEpochs(
-            mkMap(mkEntry(SUBTOPOLOGY2, mkMap(mkEntry(3, 4), mkEntry(2, 3), mkEntry(1, 2)))),
-            mkTasksPerSubtopology(mkTasks(SUBTOPOLOGY1, TASKS5.toArray(Integer[]::new))),
-            mkTasksPerSubtopology(mkTasks(SUBTOPOLOGY2, TASKS6.toArray(Integer[]::new)))
-        );
+            new TasksTupleWithEpochs(
+                    mkMap(mkEntry(SUBTOPOLOGY2, mkMap(mkEntry(3, 4), mkEntry(2, 3), mkEntry(1, 2)))),
+                    mkTasksPerSubtopology(mkTasks(SUBTOPOLOGY1, TASKS5.toArray(Integer[]::new))),
+                    mkTasksPerSubtopology(mkTasks(SUBTOPOLOGY2, TASKS6.toArray(Integer[]::new)))
+            );
 
     @Test
     public void testBuilderWithMemberIdIsNull() {
         final Exception exception = assertThrows(
-            NullPointerException.class,
-            () -> new StreamsGroupMember.Builder((String) null).build()
+                NullPointerException.class,
+                () -> new StreamsGroupMember.Builder((String) null).build()
         );
         assertEquals("memberId cannot be null", exception.getMessage());
     }
@@ -100,8 +100,8 @@ public class StreamsGroupMemberTest {
     @Test
     public void testBuilderWithMemberIsNull() {
         final Exception exception = assertThrows(
-            NullPointerException.class,
-            () -> new StreamsGroupMember.Builder((StreamsGroupMember) null).build()
+                NullPointerException.class,
+                () -> new StreamsGroupMember.Builder((StreamsGroupMember) null).build()
         );
         assertEquals("member cannot be null", exception.getMessage());
     }
@@ -196,8 +196,8 @@ public class StreamsGroupMemberTest {
         assertEquals(record.processId(), member.processId());
         assertEquals(Optional.of(record.userEndpoint()), member.userEndpoint());
         assertEquals(
-            record.clientTags().stream().collect(Collectors.toMap(KeyValue::key, KeyValue::value)),
-            member.clientTags()
+                record.clientTags().stream().collect(Collectors.toMap(KeyValue::key, KeyValue::value)),
+                member.clientTags()
         );
         assertEquals(MEMBER_ID, member.memberId());
         assertNull(member.memberEpoch());
@@ -211,7 +211,7 @@ public class StreamsGroupMemberTest {
     public void testBuilderUpdateWithConsumerGroupCurrentMemberAssignmentValue() {
         List<Integer> assignmentEpochsForTasks1 = List.of(5, 6, 7);
         List<Integer> assignmentEpochsForTasks4 = List.of(4, 3, 2);
-        
+
         StreamsGroupCurrentMemberAssignmentValue record = new StreamsGroupCurrentMemberAssignmentValue()
             .setMemberEpoch(MEMBER_EPOCH)
             .setPreviousMemberEpoch(PREVIOUS_MEMBER_EPOCH)
@@ -273,7 +273,7 @@ public class StreamsGroupMemberTest {
         final String newProcessId = "new" + member.processId();
         final Integer newTopologyEpoch = member.topologyEpoch() + 1;
         final StreamsGroupMemberMetadataValue.Endpoint newUserEndpoint =
-            new StreamsGroupMemberMetadataValue.Endpoint().setHost(member.userEndpoint().get().host() + "2").setPort(9090);
+                new StreamsGroupMemberMetadataValue.Endpoint().setHost(member.userEndpoint().get().host() + "2").setPort(9090);
         final Map<String, String> newClientTags = new HashMap<>(member.clientTags());
         newClientTags.put("client2", "tag2");
 
@@ -339,9 +339,9 @@ public class StreamsGroupMemberTest {
         List<Integer> assignedTasks2 = Arrays.asList(13, 14, 15);
         List<Integer> assignedTasks3 = Arrays.asList(16, 17, 18);
         TasksTuple targetAssignment = new TasksTuple(
-            mkMap(mkEntry(SUBTOPOLOGY1, new HashSet<>(assignedTasks3))),
-            mkMap(mkEntry(SUBTOPOLOGY2, new HashSet<>(assignedTasks2))),
-            mkMap(mkEntry(SUBTOPOLOGY3, new HashSet<>(assignedTasks1)))
+                mkMap(mkEntry(SUBTOPOLOGY1, new HashSet<>(assignedTasks3))),
+                mkMap(mkEntry(SUBTOPOLOGY2, new HashSet<>(assignedTasks2))),
+                mkMap(mkEntry(SUBTOPOLOGY3, new HashSet<>(assignedTasks1)))
         );
 
         StreamsGroupDescribeResponseData.Member actual = member.asStreamsGroupDescribeMember(targetAssignment);
@@ -355,48 +355,48 @@ public class StreamsGroupMemberTest {
             .setProcessId(PROCESS_ID)
             .setTopologyEpoch(TOPOLOGY_EPOCH)
             .setClientTags(List.of(
-                new StreamsGroupDescribeResponseData.KeyValue().setKey(CLIENT_TAG_KEY).setValue(CLIENT_TAG_VALUE))
-            )
+                    new StreamsGroupDescribeResponseData.KeyValue().setKey(CLIENT_TAG_KEY).setValue(CLIENT_TAG_VALUE))
+        )
             .setAssignment(
-                new StreamsGroupDescribeResponseData.Assignment()
-                    .setActiveTasks(List.of(
-                        new StreamsGroupDescribeResponseData.TaskIds()
-                            .setSubtopologyId(SUBTOPOLOGY1)
-                            .setPartitions(TASKS1))
+                    new StreamsGroupDescribeResponseData.Assignment()
+                        .setActiveTasks(List.of(
+                            new StreamsGroupDescribeResponseData.TaskIds()
+                                .setSubtopologyId(SUBTOPOLOGY1)
+                                .setPartitions(TASKS1))
                     )
-                    .setStandbyTasks(List.of(
-                        new StreamsGroupDescribeResponseData.TaskIds()
-                            .setSubtopologyId(SUBTOPOLOGY2)
-                            .setPartitions(TASKS2))
+                        .setStandbyTasks(List.of(
+                            new StreamsGroupDescribeResponseData.TaskIds()
+                                .setSubtopologyId(SUBTOPOLOGY2)
+                                .setPartitions(TASKS2))
                     )
-                    .setWarmupTasks(List.of(
-                        new StreamsGroupDescribeResponseData.TaskIds()
-                            .setSubtopologyId(SUBTOPOLOGY1)
-                            .setPartitions(TASKS3))
+                        .setWarmupTasks(List.of(
+                            new StreamsGroupDescribeResponseData.TaskIds()
+                                .setSubtopologyId(SUBTOPOLOGY1)
+                                .setPartitions(TASKS3))
                     )
-            )
+        )
             .setTargetAssignment(
-                new StreamsGroupDescribeResponseData.Assignment()
-                    .setActiveTasks(List.of(
-                        new StreamsGroupDescribeResponseData.TaskIds()
-                            .setSubtopologyId(SUBTOPOLOGY1)
-                            .setPartitions(assignedTasks3))
+                    new StreamsGroupDescribeResponseData.Assignment()
+                        .setActiveTasks(List.of(
+                            new StreamsGroupDescribeResponseData.TaskIds()
+                                .setSubtopologyId(SUBTOPOLOGY1)
+                                .setPartitions(assignedTasks3))
                     )
-                    .setStandbyTasks(List.of(
-                        new StreamsGroupDescribeResponseData.TaskIds()
-                            .setSubtopologyId(SUBTOPOLOGY2)
-                            .setPartitions(assignedTasks2))
+                        .setStandbyTasks(List.of(
+                            new StreamsGroupDescribeResponseData.TaskIds()
+                                .setSubtopologyId(SUBTOPOLOGY2)
+                                .setPartitions(assignedTasks2))
                     )
-                    .setWarmupTasks(List.of(
-                        new StreamsGroupDescribeResponseData.TaskIds()
-                            .setSubtopologyId(SUBTOPOLOGY3)
-                            .setPartitions(assignedTasks1))
+                        .setWarmupTasks(List.of(
+                            new StreamsGroupDescribeResponseData.TaskIds()
+                                .setSubtopologyId(SUBTOPOLOGY3)
+                                .setPartitions(assignedTasks1))
                     )
-            )
+        )
             .setUserEndpoint(new StreamsGroupDescribeResponseData.Endpoint()
                 .setHost(USER_ENDPOINT.host())
                 .setPort(USER_ENDPOINT.port())
-            );
+        );
 
         assertEquals(expected, actual);
     }
@@ -412,9 +412,9 @@ public class StreamsGroupMemberTest {
     @Test
     public void testHasAssignedTasksChanged() {
         TasksTupleWithEpochs assignedTasks1 = new TasksTupleWithEpochs(
-            mkTasksPerSubtopologyWithCommonEpoch(MEMBER_EPOCH, mkEntry(SUBTOPOLOGY1, new HashSet<>(TASKS1))),
-            mkTasksPerSubtopology(mkEntry(SUBTOPOLOGY2, new HashSet<>(TASKS2))),
-            mkTasksPerSubtopology(mkEntry(SUBTOPOLOGY1, new HashSet<>(TASKS3)))
+                mkTasksPerSubtopologyWithCommonEpoch(MEMBER_EPOCH, mkEntry(SUBTOPOLOGY1, new HashSet<>(TASKS1))),
+                mkTasksPerSubtopology(mkEntry(SUBTOPOLOGY2, new HashSet<>(TASKS2))),
+                mkTasksPerSubtopology(mkEntry(SUBTOPOLOGY1, new HashSet<>(TASKS3)))
         );
         StreamsGroupMember member1 = new StreamsGroupMember.Builder(MEMBER_ID)
             .setMemberEpoch(MEMBER_EPOCH)
@@ -422,9 +422,9 @@ public class StreamsGroupMemberTest {
             .build();
 
         TasksTupleWithEpochs assignedTasks2 = new TasksTupleWithEpochs(
-            mkTasksPerSubtopologyWithCommonEpoch(MEMBER_EPOCH, mkEntry(SUBTOPOLOGY1, new HashSet<>(TASKS4))),
-            mkTasksPerSubtopology(mkEntry(SUBTOPOLOGY2, new HashSet<>(TASKS5))),
-            mkTasksPerSubtopology(mkEntry(SUBTOPOLOGY1, new HashSet<>(TASKS6)))
+                mkTasksPerSubtopologyWithCommonEpoch(MEMBER_EPOCH, mkEntry(SUBTOPOLOGY1, new HashSet<>(TASKS4))),
+                mkTasksPerSubtopology(mkEntry(SUBTOPOLOGY2, new HashSet<>(TASKS5))),
+                mkTasksPerSubtopology(mkEntry(SUBTOPOLOGY1, new HashSet<>(TASKS6)))
         );
         StreamsGroupMember member2 = new StreamsGroupMember.Builder(MEMBER_ID)
             .setMemberEpoch(MEMBER_EPOCH)
@@ -434,9 +434,9 @@ public class StreamsGroupMemberTest {
         assertTrue(StreamsGroupMember.hasAssignedTasksChanged(member1, member2));
 
         TasksTupleWithEpochs assignedTasks3 = new TasksTupleWithEpochs(
-            mkTasksPerSubtopologyWithCommonEpoch(MEMBER_EPOCH, mkEntry(SUBTOPOLOGY1, new HashSet<>(TASKS1))),
-            mkTasksPerSubtopology(mkEntry(SUBTOPOLOGY2, new HashSet<>(TASKS2))),
-            mkTasksPerSubtopology(mkEntry(SUBTOPOLOGY1, new HashSet<>(TASKS3)))
+                mkTasksPerSubtopologyWithCommonEpoch(MEMBER_EPOCH, mkEntry(SUBTOPOLOGY1, new HashSet<>(TASKS1))),
+                mkTasksPerSubtopology(mkEntry(SUBTOPOLOGY2, new HashSet<>(TASKS2))),
+                mkTasksPerSubtopology(mkEntry(SUBTOPOLOGY1, new HashSet<>(TASKS3)))
         );
         StreamsGroupMember member3 = new StreamsGroupMember.Builder(MEMBER_ID)
             .setMemberEpoch(MEMBER_EPOCH)
@@ -444,9 +444,9 @@ public class StreamsGroupMemberTest {
             .build();
 
         TasksTupleWithEpochs assignedTasks4 = new TasksTupleWithEpochs(
-            mkTasksPerSubtopologyWithCommonEpoch(MEMBER_EPOCH, mkEntry(SUBTOPOLOGY1, new HashSet<>(TASKS1))),
-            mkTasksPerSubtopology(mkEntry(SUBTOPOLOGY2, new HashSet<>(TASKS2))),
-            mkTasksPerSubtopology(mkEntry(SUBTOPOLOGY1, new HashSet<>(TASKS3)))
+                mkTasksPerSubtopologyWithCommonEpoch(MEMBER_EPOCH, mkEntry(SUBTOPOLOGY1, new HashSet<>(TASKS1))),
+                mkTasksPerSubtopology(mkEntry(SUBTOPOLOGY2, new HashSet<>(TASKS2))),
+                mkTasksPerSubtopology(mkEntry(SUBTOPOLOGY1, new HashSet<>(TASKS3)))
         );
         StreamsGroupMember member4 = new StreamsGroupMember.Builder(MEMBER_ID)
             .setMemberEpoch(MEMBER_EPOCH)

@@ -300,7 +300,6 @@ public interface KGroupedStream<K, V> {
     KTable<K, V> reduce(final Reducer<V> reducer,
                         final Materialized<K, V, KeyValueStore<Bytes, byte[]>> materialized);
 
-
     /**
      * Combine the value of records in this stream by the grouped key.
      * Records with {@code null} key or value are ignored.

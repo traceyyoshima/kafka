@@ -44,7 +44,7 @@ public class TopologyMetadataTest {
         final StreamsConfig config = new DummyStreamsConfig();
 
         final TopologyMetadata topologyMetadata = new TopologyMetadata(internalTopologyBuilder,
-            config);
+                config);
 
         assertFalse(topologyMetadata.isPaused(TOPOLOGY1));
         assertFalse(topologyMetadata.isPaused(TOPOLOGY2));

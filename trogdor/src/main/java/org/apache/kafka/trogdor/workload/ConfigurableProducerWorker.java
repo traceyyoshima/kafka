@@ -90,7 +90,7 @@ public class ConfigurableProducerWorker implements TaskWorker {
         // Create an executor with 2 threads.  We need the second thread so
         // that the StatusUpdater can run in parallel with SendRecords.
         this.executor = Executors.newScheduledThreadPool(2,
-            ThreadUtils.createThreadFactory("ConfigurableProducerWorkerThread%d", false));
+                ThreadUtils.createThreadFactory("ConfigurableProducerWorkerThread%d", false));
         this.status = status;
         this.doneFuture = doneFuture;
         executor.submit(new Prepare());
@@ -106,7 +106,7 @@ public class ConfigurableProducerWorker implements TaskWorker {
                 }
                 List<TopicPartition> active = new ArrayList<>();
                 for (Map.Entry<String, PartitionsSpec> entry :
-                        spec.activeTopic().materialize().entrySet()) {
+                    spec.activeTopic().materialize().entrySet()) {
                     String topicName = entry.getKey();
                     PartitionsSpec partSpec = entry.getValue();
                     newTopics.put(topicName, partSpec.newTopic(topicName));
@@ -167,7 +167,7 @@ public class ConfigurableProducerWorker implements TaskWorker {
             this.histogram = new Histogram(10000);
 
             this.statusUpdaterFuture = executor.scheduleWithFixedDelay(
-                new StatusUpdater(histogram), 30, 30, TimeUnit.SECONDS);
+                    new StatusUpdater(histogram), 30, 30, TimeUnit.SECONDS);
 
             Properties props = new Properties();
             props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, spec.bootstrapServers());
@@ -204,7 +204,7 @@ public class ConfigurableProducerWorker implements TaskWorker {
                 StatusData statusData = new StatusUpdater(histogram).update();
                 long curTimeMs = Time.SYSTEM.milliseconds();
                 log.info("Sent {} total record(s) in {} ms.  status: {}",
-                    histogram.summarize().numSamples(), curTimeMs - startTimeMs, statusData);
+                        histogram.summarize().numSamples(), curTimeMs - startTimeMs, statusData);
             }
             doneFuture.complete("");
             return null;
@@ -246,9 +246,9 @@ public class ConfigurableProducerWorker implements TaskWorker {
         StatusData update() {
             Histogram.Summary summary = histogram.summarize(StatusData.PERCENTILES);
             StatusData statusData = new StatusData(summary.numSamples(), summary.average(),
-                summary.percentiles().get(0).value(),
-                summary.percentiles().get(1).value(),
-                summary.percentiles().get(2).value());
+                    summary.percentiles().get(0).value(),
+                    summary.percentiles().get(1).value(),
+                    summary.percentiles().get(2).value());
             status.update(JsonUtil.JSON_SERDE.valueToTree(statusData));
             return statusData;
         }

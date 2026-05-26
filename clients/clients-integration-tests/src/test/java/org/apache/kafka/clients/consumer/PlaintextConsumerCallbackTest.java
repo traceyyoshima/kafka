@@ -44,8 +44,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ClusterTestDefaults(
-    types = {Type.KRAFT},
-    brokers = 3
+        types = {Type.KRAFT},
+        brokers = 3
 )
 public class PlaintextConsumerCallbackTest {
 
@@ -89,7 +89,7 @@ public class PlaintextConsumerCallbackTest {
     private void testRebalanceListenerAssignmentOnPartitionsAssigned(GroupProtocol groupProtocol) throws InterruptedException {
         try (var consumer = createConsumer(groupProtocol)) {
             triggerOnPartitionsAssigned(tp, consumer,
-                (executeConsumer, partitions) -> assertTrue(executeConsumer.assignment().contains(tp))
+                    (executeConsumer, partitions) -> assertTrue(executeConsumer.assignment().contains(tp))
             );
         }
     }
@@ -134,14 +134,14 @@ public class PlaintextConsumerCallbackTest {
     @ClusterTest
     public void testClassicConsumerRebalanceListenerAssignmentOnPartitionsRevoked() throws InterruptedException {
         triggerOnPartitionsRevoked(tp, CLASSIC,
-            (consumer, partitions) -> assertTrue(consumer.assignment().contains(tp))
+                (consumer, partitions) -> assertTrue(consumer.assignment().contains(tp))
         );
     }
 
     @ClusterTest
     public void testAsyncConsumerRebalanceListenerAssignmentOnPartitionsRevoked() throws InterruptedException {
         triggerOnPartitionsRevoked(tp, CONSUMER,
-            (consumer, partitions) -> assertTrue(consumer.assignment().contains(tp))
+                (consumer, partitions) -> assertTrue(consumer.assignment().contains(tp))
         );
     }
 
@@ -250,7 +250,7 @@ public class PlaintextConsumerCallbackTest {
     private void testGetPositionOfNewlyAssignedPartitionOnPartitionsAssignedCallback(GroupProtocol groupProtocol) throws InterruptedException {
         try (var consumer = createConsumer(groupProtocol)) {
             triggerOnPartitionsAssigned(tp, consumer,
-                (executeConsumer, partitions) -> assertDoesNotThrow(() -> executeConsumer.position(tp))
+                    (executeConsumer, partitions) -> assertDoesNotThrow(() -> executeConsumer.position(tp))
             );
         }
     }
@@ -281,12 +281,12 @@ public class PlaintextConsumerCallbackTest {
             assertTrue(consumer.paused().contains(tp));
             consumer.resume(List.of(tp));
             consumeAndVerifyRecords(
-                consumer,
-                tp,
-                (int) (totalRecords - startingOffset),
-                (int) startingOffset,
-                (int) startingOffset,
-                startingOffset
+                    consumer,
+                    tp,
+                    (int) (totalRecords - startingOffset),
+                    (int) startingOffset,
+                    (int) startingOffset,
+                    startingOffset
             );
         }
     }
@@ -313,9 +313,9 @@ public class PlaintextConsumerCallbackTest {
             }
         });
         ClientsTestUtils.pollUntilTrue(
-            consumer, 
-            partitionsAssigned::get, 
-            "Timed out before expected rebalance completed"
+                consumer,
+                partitionsAssigned::get,
+                "Timed out before expected rebalance completed"
         );
     }
 
@@ -346,9 +346,9 @@ public class PlaintextConsumerCallbackTest {
                 }
             });
             ClientsTestUtils.pollUntilTrue(
-                consumer,
-                partitionsAssigned::get,
-                "Timed out before expected rebalance completed"
+                    consumer,
+                    partitionsAssigned::get,
+                    "Timed out before expected rebalance completed"
             );
         }
         assertTrue(partitionsRevoked.get());
@@ -356,8 +356,8 @@ public class PlaintextConsumerCallbackTest {
 
     private Consumer<byte[], byte[]> createConsumer(GroupProtocol protocol) {
         return cluster.consumer(Map.of(
-            GROUP_PROTOCOL_CONFIG, protocol.name().toLowerCase(Locale.ROOT),
-            ENABLE_AUTO_COMMIT_CONFIG, "false"
+                GROUP_PROTOCOL_CONFIG, protocol.name().toLowerCase(Locale.ROOT),
+                ENABLE_AUTO_COMMIT_CONFIG, "false"
         ));
     }
 

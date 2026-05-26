@@ -738,13 +738,13 @@ public class FetchCollectorTest {
     private FetchCollector<String, String> createFetchCollector(final SubscriptionState subscriptions) {
         final Properties consumerProps = consumerProps();
         return new FetchCollector<>(
-            logContext,
-            mock(ConsumerMetadata.class),
-            subscriptions,
-            new FetchConfig(new ConsumerConfig(consumerProps)),
-            new Deserializers<>(new StringDeserializer(), new StringDeserializer(), null),
-            mock(FetchMetricsManager.class),
-            new MockTime()
+                logContext,
+                mock(ConsumerMetadata.class),
+                subscriptions,
+                new FetchConfig(new ConsumerConfig(consumerProps)),
+                new Deserializers<>(new StringDeserializer(), new StringDeserializer(), null),
+                mock(FetchMetricsManager.class),
+                new MockTime()
         );
     }
 
@@ -799,14 +799,14 @@ public class FetchCollectorTest {
 
     private FetchConfig createFetchConfig(ConsumerConfig config, IsolationLevel isolationLevel) {
         return new FetchConfig(
-            config.getInt(ConsumerConfig.FETCH_MIN_BYTES_CONFIG),
-            config.getInt(ConsumerConfig.FETCH_MAX_BYTES_CONFIG),
-            config.getInt(ConsumerConfig.FETCH_MAX_WAIT_MS_CONFIG),
-            config.getInt(ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG),
-            config.getInt(ConsumerConfig.MAX_POLL_RECORDS_CONFIG),
-            config.getBoolean(ConsumerConfig.CHECK_CRCS_CONFIG),
-            config.getString(ConsumerConfig.CLIENT_RACK_CONFIG),
-            isolationLevel
+                config.getInt(ConsumerConfig.FETCH_MIN_BYTES_CONFIG),
+                config.getInt(ConsumerConfig.FETCH_MAX_BYTES_CONFIG),
+                config.getInt(ConsumerConfig.FETCH_MAX_WAIT_MS_CONFIG),
+                config.getInt(ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG),
+                config.getInt(ConsumerConfig.MAX_POLL_RECORDS_CONFIG),
+                config.getBoolean(ConsumerConfig.CHECK_CRCS_CONFIG),
+                config.getString(ConsumerConfig.CLIENT_RACK_CONFIG),
+                isolationLevel
         );
     }
 
@@ -875,7 +875,6 @@ public class FetchCollectorTest {
 
         return errors.stream().map(Arguments::of);
     }
-
 
     /**
      * Supplies the {@link Arguments} to {@link #testErrorInInitialize(int, RuntimeException)}.
@@ -963,9 +962,9 @@ public class FetchCollectorTest {
         ByteBuffer allocate = ByteBuffer.allocate(1024);
 
         try (MemoryRecordsBuilder builder = MemoryRecords.builder(allocate,
-            Compression.NONE,
-            TimestampType.CREATE_TIME,
-            0)) {
+                Compression.NONE,
+                TimestampType.CREATE_TIME,
+                0)) {
             for (int i = 0; i < recordCount; i++)
                 builder.append(0L, "key".getBytes(), ("value-" + i).getBytes());
 
@@ -984,16 +983,16 @@ public class FetchCollectorTest {
         }
 
         try (MemoryRecordsBuilder builder = MemoryRecords.builder(buffer,
-            RecordBatch.CURRENT_MAGIC_VALUE,
-            Compression.NONE,
-            TimestampType.CREATE_TIME,
-            baseOffset,
-            time.milliseconds(),
-            PRODUCER_ID,
-            (short) 0,
-            0,
-            true,
-            0)) {
+                RecordBatch.CURRENT_MAGIC_VALUE,
+                Compression.NONE,
+                TimestampType.CREATE_TIME,
+                baseOffset,
+                time.milliseconds(),
+                PRODUCER_ID,
+                (short) 0,
+                0,
+                true,
+                0)) {
             for (int i = 0; i < recordCount; i++)
                 builder.append(new SimpleRecord(time.milliseconds(), "key".getBytes(), "value".getBytes()));
 
@@ -1011,11 +1010,11 @@ public class FetchCollectorTest {
                                         int offset,
                                         Time time) {
         MemoryRecords.writeEndTransactionalMarker(buffer,
-            offset,
-            time.milliseconds(),
-            0,
-            PRODUCER_ID,
-            (short) 0,
-            new EndTransactionMarker(controlRecordType, 0));
+                offset,
+                time.milliseconds(),
+                0,
+                PRODUCER_ID,
+                (short) 0,
+                new EndTransactionMarker(controlRecordType, 0));
     }
 }

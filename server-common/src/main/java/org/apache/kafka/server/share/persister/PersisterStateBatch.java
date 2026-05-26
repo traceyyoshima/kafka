@@ -56,18 +56,18 @@ public class PersisterStateBatch implements Comparable<PersisterStateBatch> {
 
     public static PersisterStateBatch from(ReadShareGroupStateResponseData.StateBatch batch) {
         return new PersisterStateBatch(
-            batch.firstOffset(),
-            batch.lastOffset(),
-            batch.deliveryState(),
-            batch.deliveryCount());
+                batch.firstOffset(),
+                batch.lastOffset(),
+                batch.deliveryState(),
+                batch.deliveryCount());
     }
 
     public static PersisterStateBatch from(WriteShareGroupStateRequestData.StateBatch batch) {
         return new PersisterStateBatch(
-            batch.firstOffset(),
-            batch.lastOffset(),
-            batch.deliveryState(),
-            batch.deliveryCount());
+                batch.firstOffset(),
+                batch.lastOffset(),
+                batch.deliveryState(),
+                batch.deliveryCount());
     }
 
     @Override
@@ -76,9 +76,9 @@ public class PersisterStateBatch implements Comparable<PersisterStateBatch> {
         if (o == null || getClass() != o.getClass()) return false;
         PersisterStateBatch that = (PersisterStateBatch) o;
         return firstOffset == that.firstOffset &&
-            lastOffset == that.lastOffset &&
-            deliveryCount == that.deliveryCount &&
-            deliveryState == that.deliveryState;
+                lastOffset == that.lastOffset &&
+                deliveryCount == that.deliveryCount &&
+                deliveryState == that.deliveryState;
     }
 
     @Override
@@ -89,11 +89,11 @@ public class PersisterStateBatch implements Comparable<PersisterStateBatch> {
     @Override
     public String toString() {
         return "PersisterStateBatch(" +
-            "firstOffset=" + firstOffset + "," +
-            "lastOffset=" + lastOffset + "," +
-            "deliveryCount=" + deliveryCount + "," +
-            "deliveryState=" + deliveryState +
-            ")";
+                "firstOffset=" + firstOffset + "," +
+                "lastOffset=" + lastOffset + "," +
+                "deliveryCount=" + deliveryCount + "," +
+                "deliveryState=" + deliveryState +
+                ")";
     }
 
     /**

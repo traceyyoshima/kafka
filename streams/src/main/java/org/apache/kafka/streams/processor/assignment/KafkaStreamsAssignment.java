@@ -113,10 +113,10 @@ public class KafkaStreamsAssignment {
     @Override
     public String toString() {
         return String.format(
-            "KafkaStreamsAssignment{%s, %s, %s}",
-            processId,
-            Arrays.toString(tasks.values().toArray(new AssignedTask[0])),
-            followupRebalanceDeadline
+                "KafkaStreamsAssignment{%s, %s, %s}",
+                processId,
+                Arrays.toString(tasks.values().toArray(new AssignedTask[0])),
+                followupRebalanceDeadline
         );
     }
 

@@ -47,7 +47,7 @@ public enum ShareAcquireMode {
             return ShareAcquireMode.valueOf(name.toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Invalid value `" + name + "` for configuration " +
-                name + ". The value must either be 'batch_optimized' or 'record_limit'.");
+                    name + ". The value must either be 'batch_optimized' or 'record_limit'.");
         }
     }
 
@@ -79,7 +79,7 @@ public enum ShareAcquireMode {
                 of(acquireMode);
             } catch (Exception e) {
                 throw new ConfigException(name, value, "Invalid value `" + acquireMode + "` for configuration " +
-                    name + ". The value must either be 'batch_optimized' or 'record_limit'.");
+                        name + ". The value must either be 'batch_optimized' or 'record_limit'.");
             }
         }
 

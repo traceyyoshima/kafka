@@ -28,10 +28,10 @@ public class ExponentialBackoffManager {
     public ExponentialBackoffManager(int maxAttempts, long initialInterval, int multiplier, long maxInterval, double jitter) {
         this.maxAttempts = maxAttempts;
         this.backoff = new ExponentialBackoff(
-            initialInterval,
-            multiplier,
-            maxInterval,
-            jitter);
+                initialInterval,
+                multiplier,
+                maxInterval,
+                jitter);
     }
 
     public void incrementAttempt() {

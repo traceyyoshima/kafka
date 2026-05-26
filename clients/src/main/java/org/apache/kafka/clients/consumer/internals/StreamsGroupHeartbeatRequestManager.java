@@ -67,9 +67,9 @@ import static org.apache.kafka.clients.consumer.internals.RequestState.RETRY_BAC
 public class StreamsGroupHeartbeatRequestManager implements RequestManager {
 
     private static final String UNSUPPORTED_VERSION_ERROR_MESSAGE = "The cluster does not support the STREAMS group " +
-        "protocol or does not support the versions of the STREAMS group protocol used by this client " +
-        "(used versions: " + StreamsGroupHeartbeatRequestData.LOWEST_SUPPORTED_VERSION + " to " +
-        StreamsGroupHeartbeatRequestData.HIGHEST_SUPPORTED_VERSION + ").";
+            "protocol or does not support the versions of the STREAMS group protocol used by this client " +
+            "(used versions: " + StreamsGroupHeartbeatRequestData.LOWEST_SUPPORTED_VERSION + " to " +
+            StreamsGroupHeartbeatRequestData.HIGHEST_SUPPORTED_VERSION + ").";
 
     static class HeartbeatState {
 
@@ -91,7 +91,6 @@ public class StreamsGroupHeartbeatRequestManager implements RequestManager {
         private final StreamsRebalanceData streamsRebalanceData;
         private final LastSentFields lastSentFields = new LastSentFields();
         private int endpointInformationEpoch = -1;
-
 
         public HeartbeatState(final StreamsRebalanceData streamsRebalanceData,
                               final StreamsMembershipManager membershipManager,
@@ -141,7 +140,7 @@ public class StreamsGroupHeartbeatRequestManager implements RequestManager {
                     .map(entry -> new StreamsGroupHeartbeatRequestData.KeyValue()
                         .setKey(entry.getKey())
                         .setValue(entry.getValue())
-                    )
+                )
                     .collect(Collectors.toList()));
                 data.setActiveTasks(fromStreamsToHeartbeatRequest(Set.of()));
                 data.setStandbyTasks(fromStreamsToHeartbeatRequest(Set.of()));
@@ -162,9 +161,9 @@ public class StreamsGroupHeartbeatRequestManager implements RequestManager {
         private static List<StreamsGroupHeartbeatRequestData.TaskIds> fromStreamsToHeartbeatRequest(final Set<StreamsRebalanceData.TaskId> tasks) {
             return tasks.stream()
                 .collect(
-                    Collectors.groupingBy(StreamsRebalanceData.TaskId::subtopologyId,
-                        Collectors.mapping(StreamsRebalanceData.TaskId::partitionId, Collectors.toList()))
-                )
+                        Collectors.groupingBy(StreamsRebalanceData.TaskId::subtopologyId,
+                                Collectors.mapping(StreamsRebalanceData.TaskId::partitionId, Collectors.toList()))
+            )
                 .entrySet()
                 .stream()
                 .map(entry -> {
@@ -197,23 +196,23 @@ public class StreamsGroupHeartbeatRequestManager implements RequestManager {
             subtopologyData.setRepartitionSourceTopics(getRepartitionTopicsInfoFromStreams(subtopology));
             subtopologyData.setStateChangelogTopics(getChangelogTopicsInfoFromStreams(subtopology));
             subtopologyData.setCopartitionGroups(
-                getCopartitionGroupsFromStreams(subtopology.copartitionGroups(), subtopologyData));
+                    getCopartitionGroupsFromStreams(subtopology.copartitionGroups(), subtopologyData));
             return subtopologyData;
         }
 
         private static List<StreamsGroupHeartbeatRequestData.CopartitionGroup> getCopartitionGroupsFromStreams(final Collection<Set<String>> copartitionGroups,
                                                                                                                final StreamsGroupHeartbeatRequestData.Subtopology subtopologyData) {
             final Map<String, Short> sourceTopicsMap =
-                IntStream.range(0, subtopologyData.sourceTopics().size())
-                    .boxed()
-                    .collect(Collectors.toMap(subtopologyData.sourceTopics()::get, Integer::shortValue));
+                    IntStream.range(0, subtopologyData.sourceTopics().size())
+                        .boxed()
+                        .collect(Collectors.toMap(subtopologyData.sourceTopics()::get, Integer::shortValue));
 
             final Map<String, Short> repartitionSourceTopics =
-                IntStream.range(0, subtopologyData.repartitionSourceTopics().size())
-                    .boxed()
-                    .collect(
-                        Collectors.toMap(x -> subtopologyData.repartitionSourceTopics().get(x).name(),
-                            Integer::shortValue));
+                    IntStream.range(0, subtopologyData.repartitionSourceTopics().size())
+                        .boxed()
+                        .collect(
+                            Collectors.toMap(x -> subtopologyData.repartitionSourceTopics().get(x).name(),
+                                    Integer::shortValue));
 
             return copartitionGroups.stream()
                 .map(x -> getCopartitionGroupFromStreams(x, sourceTopicsMap, repartitionSourceTopics))
@@ -233,7 +232,7 @@ public class StreamsGroupHeartbeatRequestManager implements RequestManager {
                         .add(repartitionSourceTopics.get(topicName));
                 } else {
                     throw new IllegalStateException(
-                        "Source topic not found in subtopology: " + topicName);
+                            "Source topic not found in subtopology: " + topicName);
                 }
             });
 
@@ -248,7 +247,7 @@ public class StreamsGroupHeartbeatRequestManager implements RequestManager {
                 repartitionTopic.getValue().numPartitions().ifPresent(repartitionTopicInfo::setPartitions);
                 repartitionTopic.getValue().replicationFactor().ifPresent(repartitionTopicInfo::setReplicationFactor);
                 repartitionTopic.getValue().topicConfigs().forEach((k, v) ->
-                    repartitionTopicInfo.topicConfigs().add(new StreamsGroupHeartbeatRequestData.KeyValue().setKey(k).setValue(v))
+                        repartitionTopicInfo.topicConfigs().add(new StreamsGroupHeartbeatRequestData.KeyValue().setKey(k).setValue(v))
                 );
                 repartitionTopicsInfo.add(repartitionTopicInfo);
                 repartitionTopicInfo.topicConfigs().sort(Comparator.comparing(StreamsGroupHeartbeatRequestData.KeyValue::key));
@@ -264,7 +263,7 @@ public class StreamsGroupHeartbeatRequestManager implements RequestManager {
                 changelogTopicInfo.setName(changelogTopic.getKey());
                 changelogTopic.getValue().replicationFactor().ifPresent(changelogTopicInfo::setReplicationFactor);
                 changelogTopic.getValue().topicConfigs().forEach((k, v) ->
-                    changelogTopicInfo.topicConfigs().add(new StreamsGroupHeartbeatRequestData.KeyValue().setKey(k).setValue(v))
+                        changelogTopicInfo.topicConfigs().add(new StreamsGroupHeartbeatRequestData.KeyValue().setKey(k).setValue(v))
                 );
                 changelogTopicInfo.topicConfigs().sort(Comparator.comparing(StreamsGroupHeartbeatRequestData.KeyValue::key));
                 changelogTopicsInfo.add(changelogTopicInfo);
@@ -308,19 +307,19 @@ public class StreamsGroupHeartbeatRequestManager implements RequestManager {
                                                final StreamsRebalanceData streamsRebalanceData) {
         this.logger = logContext.logger(getClass());
         this.coordinatorRequestManager = Objects.requireNonNull(
-            coordinatorRequestManager,
-            "Coordinator request manager cannot be null"
+                coordinatorRequestManager,
+                "Coordinator request manager cannot be null"
         );
         this.membershipManager = Objects.requireNonNull(
-            membershipManager,
-            "Streams membership manager cannot be null"
+                membershipManager,
+                "Streams membership manager cannot be null"
         );
         this.backgroundEventHandler = Objects.requireNonNull(
-            backgroundEventHandler,
-            "Background event handler cannot be null"
+                backgroundEventHandler,
+                "Background event handler cannot be null"
         );
         this.metricsManager = new HeartbeatMetricsManager(
-            Objects.requireNonNull(metrics, "Metrics cannot be null")
+                Objects.requireNonNull(metrics, "Metrics cannot be null")
         );
         this.streamsRebalanceData = Objects.requireNonNull(streamsRebalanceData, "Streams rebalance data cannot be null");
         this.maxPollIntervalMs = config.getInt(CommonClientConfigs.MAX_POLL_INTERVAL_MS_CONFIG);
@@ -328,12 +327,12 @@ public class StreamsGroupHeartbeatRequestManager implements RequestManager {
         long retryBackoffMaxMs = config.getLong(ConsumerConfig.RETRY_BACKOFF_MAX_MS_CONFIG);
         this.heartbeatState = new HeartbeatState(streamsRebalanceData, membershipManager, maxPollIntervalMs);
         this.heartbeatRequestState = new HeartbeatRequestState(
-            logContext,
-            time,
-            0,
-            retryBackoffMs,
-            retryBackoffMaxMs,
-            RETRY_BACKOFF_JITTER
+                logContext,
+                time,
+                0,
+                retryBackoffMs,
+                retryBackoffMaxMs,
+                RETRY_BACKOFF_JITTER
         );
         this.pollTimer = time.timer(maxPollIntervalMs);
     }
@@ -371,10 +370,10 @@ public class StreamsGroupHeartbeatRequestManager implements RequestManager {
         pollTimer.update(currentTimeMs);
         if (pollTimer.isExpired() && !membershipManager.isLeavingGroup()) {
             logger.warn("Consumer poll timeout has expired. This means the time between " +
-                "subsequent calls to poll() was longer than the configured max.poll.interval.ms, " +
-                "which typically implies that the poll loop is spending too much time processing " +
-                "messages. You can address this either by increasing max.poll.interval.ms or by " +
-                "reducing the maximum size of batches returned in poll() with max.poll.records.");
+                    "subsequent calls to poll() was longer than the configured max.poll.interval.ms, " +
+                    "which typically implies that the poll loop is spending too much time processing " +
+                    "messages. You can address this either by increasing max.poll.interval.ms or by " +
+                    "reducing the maximum size of batches returned in poll() with max.poll.records.");
 
             membershipManager.onPollTimerExpired();
             NetworkClientDelegate.UnsentRequest leaveHeartbeat = makeHeartbeatRequestAndLogResponse(currentTimeMs);
@@ -438,7 +437,7 @@ public class StreamsGroupHeartbeatRequestManager implements RequestManager {
     public long maximumTimeToWait(long currentTimeMs) {
         pollTimer.update(currentTimeMs);
         if (pollTimer.isExpired() ||
-            membershipManager.shouldNotWaitForHeartbeatInterval() && !heartbeatRequestState.requestInFlight()) {
+                membershipManager.shouldNotWaitForHeartbeatInterval() && !heartbeatRequestState.requestInFlight()) {
 
             return 0L;
         }
@@ -450,7 +449,7 @@ public class StreamsGroupHeartbeatRequestManager implements RequestManager {
         if (pollTimer.isExpired()) {
             logger.warn("Time between subsequent calls to poll() was longer than the configured " +
                     "max.poll.interval.ms, exceeded approximately by {} ms. Member {} will rejoin the group now.",
-                pollTimer.isExpiredBy(), membershipManager.memberId());
+                    pollTimer.isExpiredBy(), membershipManager.memberId());
             membershipManager.maybeRejoinStaleMember();
         }
         pollTimer.reset(maxPollIntervalMs);
@@ -467,8 +466,8 @@ public class StreamsGroupHeartbeatRequestManager implements RequestManager {
      */
     private boolean shouldHeartbeatBeforeIntervalExpires() {
         return membershipManager.state() == MemberState.LEAVING
-            ||
-            (membershipManager.state() == MemberState.JOINING || membershipManager.state() == MemberState.ACKNOWLEDGING)
+                ||
+                (membershipManager.state() == MemberState.JOINING || membershipManager.state() == MemberState.ACKNOWLEDGING)
                 && !heartbeatRequestState.requestInFlight();
     }
 
@@ -507,8 +506,8 @@ public class StreamsGroupHeartbeatRequestManager implements RequestManager {
 
     private NetworkClientDelegate.UnsentRequest makeHeartbeatRequest(final long currentTimeMs) {
         NetworkClientDelegate.UnsentRequest request = new NetworkClientDelegate.UnsentRequest(
-            new StreamsGroupHeartbeatRequest.Builder(this.heartbeatState.buildRequestData()),
-            coordinatorRequestManager.coordinator()
+                new StreamsGroupHeartbeatRequest.Builder(this.heartbeatState.buildRequestData()),
+                coordinatorRequestManager.coordinator()
         );
         heartbeatRequestState.onSendAttempt(currentTimeMs);
         membershipManager.onHeartbeatRequestGenerated();
@@ -561,10 +560,10 @@ public class StreamsGroupHeartbeatRequestManager implements RequestManager {
         switch (error) {
             case NOT_COORDINATOR:
                 logInfo(
-                    String.format("StreamsGroupHeartbeatRequest failed because the group coordinator %s is incorrect. " +
-                        "Will attempt to find the coordinator again and retry", coordinatorRequestManager.coordinator()),
-                    response,
-                    currentTimeMs
+                        String.format("StreamsGroupHeartbeatRequest failed because the group coordinator %s is incorrect. " +
+                                "Will attempt to find the coordinator again and retry", coordinatorRequestManager.coordinator()),
+                        response,
+                        currentTimeMs
                 );
                 coordinatorRequestManager.markCoordinatorUnknown(errorMessage, currentTimeMs);
                 // Skip backoff so that the next HB is sent as soon as the new coordinator is discovered
@@ -573,10 +572,10 @@ public class StreamsGroupHeartbeatRequestManager implements RequestManager {
 
             case COORDINATOR_NOT_AVAILABLE:
                 logInfo(
-                    String.format("StreamsGroupHeartbeatRequest failed because the group coordinator %s is not available. " +
-                        "Will attempt to find the coordinator again and retry", coordinatorRequestManager.coordinator()),
-                    response,
-                    currentTimeMs
+                        String.format("StreamsGroupHeartbeatRequest failed because the group coordinator %s is not available. " +
+                                "Will attempt to find the coordinator again and retry", coordinatorRequestManager.coordinator()),
+                        response,
+                        currentTimeMs
                 );
                 coordinatorRequestManager.markCoordinatorUnknown(errorMessage, currentTimeMs);
                 // Skip backoff so that the next HB is sent as soon as the new coordinator is discovered
@@ -585,24 +584,24 @@ public class StreamsGroupHeartbeatRequestManager implements RequestManager {
 
             case COORDINATOR_LOAD_IN_PROGRESS:
                 logInfo(
-                    String.format("StreamsGroupHeartbeatRequest failed because the group coordinator %s is still loading. " +
-                    "Will retry", coordinatorRequestManager.coordinator()),
-                    response,
-                    currentTimeMs
+                        String.format("StreamsGroupHeartbeatRequest failed because the group coordinator %s is still loading. " +
+                                "Will retry", coordinatorRequestManager.coordinator()),
+                        response,
+                        currentTimeMs
                 );
                 break;
 
             case GROUP_AUTHORIZATION_FAILED:
                 GroupAuthorizationException exception =
-                    GroupAuthorizationException.forGroupId(membershipManager.groupId());
+                        GroupAuthorizationException.forGroupId(membershipManager.groupId());
                 logger.error("StreamsGroupHeartbeatRequest failed due to group authorization failure: {}",
-                    exception.getMessage());
+                        exception.getMessage());
                 handleFatalFailure(error.exception(exception.getMessage()));
                 break;
 
             case TOPIC_AUTHORIZATION_FAILED:
                 logger.error("StreamsGroupHeartbeatRequest failed for member {} with state {} due to {}: {}",
-                    membershipManager.memberId(), membershipManager.state(), error, errorMessage);
+                        membershipManager.memberId(), membershipManager.state(), error, errorMessage);
                 // Propagate auth error received in HB so that it's returned on poll.
                 // Member should stay in its current state so it can recover if ever the missing ACLs are added.
                 backgroundEventHandler.add(new ErrorEvent(error.exception()));
@@ -619,10 +618,10 @@ public class StreamsGroupHeartbeatRequestManager implements RequestManager {
 
             case FENCED_MEMBER_EPOCH:
                 logInfo(
-                    String.format("StreamsGroupHeartbeatRequest failed for member %s because epoch %s is fenced.",
-                        membershipManager.memberId(), membershipManager.memberEpoch()),
-                    response,
-                    currentTimeMs
+                        String.format("StreamsGroupHeartbeatRequest failed for member %s because epoch %s is fenced.",
+                                membershipManager.memberId(), membershipManager.memberEpoch()),
+                        response,
+                        currentTimeMs
                 );
                 membershipManager.onFenced();
                 // Skip backoff so that a next HB to rejoin is sent as soon as the fenced member releases its assignment
@@ -631,10 +630,10 @@ public class StreamsGroupHeartbeatRequestManager implements RequestManager {
 
             case UNKNOWN_MEMBER_ID:
                 logInfo(
-                    String.format("StreamsGroupHeartbeatRequest failed because member %s is unknown.",
-                        membershipManager.memberId()),
-                    response,
-                    currentTimeMs
+                        String.format("StreamsGroupHeartbeatRequest failed because member %s is unknown.",
+                                membershipManager.memberId()),
+                        response,
+                        currentTimeMs
                 );
                 membershipManager.onFenced();
                 // Skip backoff so that a next HB to rejoin is sent as soon as the fenced member releases its assignment
@@ -657,9 +656,9 @@ public class StreamsGroupHeartbeatRequestManager implements RequestManager {
                          final StreamsGroupHeartbeatResponse response,
                          final long currentTimeMs) {
         logger.info("{} in {}ms: {}",
-            message,
-            heartbeatRequestState.remainingBackoffMs(currentTimeMs),
-            response.data().errorMessage());
+                message,
+                heartbeatRequestState.remainingBackoffMs(currentTimeMs),
+                response.data().errorMessage());
     }
 
     private void onFailure(final Throwable exception, final long responseTimeMs) {
@@ -668,18 +667,18 @@ public class StreamsGroupHeartbeatRequestManager implements RequestManager {
         if (exception instanceof RetriableException) {
             coordinatorRequestManager.handleCoordinatorDisconnect(exception, responseTimeMs);
             String message = String.format("StreamsGroupHeartbeatRequest failed because of a retriable exception. Will retry in %s ms: %s",
-                heartbeatRequestState.remainingBackoffMs(responseTimeMs),
-                exception.getMessage());
+                    heartbeatRequestState.remainingBackoffMs(responseTimeMs),
+                    exception.getMessage());
             logger.debug(message);
             membershipManager.onRetriableHeartbeatFailure();
         } else {
             if (exception instanceof UnsupportedVersionException) {
                 logger.error("StreamsGroupHeartbeatRequest failed because of an unsupported version exception: {}",
-                    exception.getMessage());
+                        exception.getMessage());
                 handleFatalFailure(new UnsupportedVersionException(UNSUPPORTED_VERSION_ERROR_MESSAGE));
             } else {
                 logger.error("StreamsGroupHeartbeatRequest failed because of a fatal exception while sending request: {}",
-                    exception.getMessage());
+                        exception.getMessage());
                 handleFatalFailure(exception);
             }
             membershipManager.onFatalHeartbeatFailure();

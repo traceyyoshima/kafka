@@ -92,24 +92,24 @@ public class RemoveMembersFromConsumerGroupHandlerTest {
 
     private LeaveGroupResponse buildResponse(Errors error) {
         return new LeaveGroupResponse(
-            new LeaveGroupResponseData()
-                .setErrorCode(error.code())
-                .setMembers(singletonList(
-                    new MemberResponse()
-                        .setErrorCode(Errors.NONE.code())
-                        .setMemberId("m1")
-                        .setGroupInstanceId("m1-gii"))));
+                new LeaveGroupResponseData()
+                    .setErrorCode(error.code())
+                    .setMembers(singletonList(
+                        new MemberResponse()
+                            .setErrorCode(Errors.NONE.code())
+                            .setMemberId("m1")
+                            .setGroupInstanceId("m1-gii"))));
     }
 
     private LeaveGroupResponse buildResponseWithMemberError(Errors error) {
         return new LeaveGroupResponse(
-            new LeaveGroupResponseData()
-                .setErrorCode(Errors.NONE.code())
-                .setMembers(singletonList(
-                    new MemberResponse()
-                        .setErrorCode(error.code())
-                        .setMemberId("m1")
-                        .setGroupInstanceId("m1-gii"))));
+                new LeaveGroupResponseData()
+                    .setErrorCode(Errors.NONE.code())
+                    .setMembers(singletonList(
+                        new MemberResponse()
+                            .setErrorCode(error.code())
+                            .setMemberId("m1")
+                            .setGroupInstanceId("m1-gii"))));
     }
 
     private AdminApiHandler.ApiResult<CoordinatorKey, Map<MemberIdentity, Errors>> handleWithGroupError(

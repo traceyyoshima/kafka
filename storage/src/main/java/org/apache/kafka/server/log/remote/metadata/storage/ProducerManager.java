@@ -69,7 +69,7 @@ public class ProducerManager implements Closeable {
         if (metadataPartitionNum >= rlmmConfig.metadataTopicPartitionsCount()) {
             // This should never occur as long as metadata partitions always remain the same.
             throw new KafkaException("Chosen partition no " + metadataPartitionNum +
-                                             " must be less than the partition count: " + rlmmConfig.metadataTopicPartitionsCount());
+                    " must be less than the partition count: " + rlmmConfig.metadataTopicPartitionsCount());
         }
 
         try {

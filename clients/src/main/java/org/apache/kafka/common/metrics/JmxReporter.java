@@ -56,9 +56,8 @@ public class JmxReporter implements MetricsReporter {
 
     public static final String INCLUDE_CONFIG = METRICS_CONFIG_PREFIX + "include";
 
-
     public static final Set<String> RECONFIGURABLE_CONFIGS = Set.of(INCLUDE_CONFIG,
-                                                                         EXCLUDE_CONFIG);
+            EXCLUDE_CONFIG);
 
     public static final String DEFAULT_INCLUDE = ".*";
     public static final String DEFAULT_EXCLUDE = "";
@@ -309,10 +308,10 @@ public class JmxReporter implements MetricsReporter {
             Pattern excludePattern = Pattern.compile(exclude);
 
             return s -> includePattern.matcher(s).matches()
-                        && !excludePattern.matcher(s).matches();
+                    && !excludePattern.matcher(s).matches();
         } catch (PatternSyntaxException e) {
             throw new ConfigException("JMX filter for configuration" + METRICS_CONFIG_PREFIX
-                                      + ".(include/exclude) is not a valid regular expression");
+                    + ".(include/exclude) is not a valid regular expression");
         }
     }
 

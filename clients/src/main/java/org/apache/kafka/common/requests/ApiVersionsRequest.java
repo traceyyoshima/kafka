@@ -39,8 +39,8 @@ public class ApiVersionsRequest extends AbstractRequest {
 
         public Builder() {
             this(DEFAULT_DATA,
-                ApiKeys.API_VERSIONS.oldestVersion(),
-                ApiKeys.API_VERSIONS.latestVersion());
+                    ApiKeys.API_VERSIONS.oldestVersion(),
+                    ApiKeys.API_VERSIONS.latestVersion());
         }
 
         public Builder(short version) {
@@ -96,7 +96,7 @@ public class ApiVersionsRequest extends AbstractRequest {
     public boolean isValid() {
         if (version() >= 3) {
             return SOFTWARE_NAME_VERSION_PATTERN.matcher(data.clientSoftwareName()).matches() &&
-                SOFTWARE_NAME_VERSION_PATTERN.matcher(data.clientSoftwareVersion()).matches();
+                    SOFTWARE_NAME_VERSION_PATTERN.matcher(data.clientSoftwareVersion()).matches();
         } else {
             return true;
         }

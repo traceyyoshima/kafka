@@ -116,8 +116,8 @@ public class WorkerCoordinatorTest {
     // - Expected metadata size
     static Stream<Arguments> mode() {
         return Stream.of(
-            Arguments.of(EAGER, 1),
-            Arguments.of(COMPATIBLE, 2)
+                Arguments.of(EAGER, 1),
+                Arguments.of(COMPATIBLE, 2)
         );
     }
 
@@ -545,7 +545,7 @@ public class WorkerCoordinatorTest {
         coordinator.metadata();
 
         assertThrows(IllegalStateException.class,
-            () -> coordinator.onLeaderElected("leader", EAGER.protocol(), List.of(), true));
+                () -> coordinator.onLeaderElected("leader", EAGER.protocol(), List.of(), true));
 
         verify(configStorage).snapshot();
     }

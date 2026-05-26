@@ -121,7 +121,7 @@ public class DescribeClientQuotasRequest extends AbstractRequest {
 
     public static DescribeClientQuotasRequest parse(Readable readable, short version) {
         return new DescribeClientQuotasRequest(new DescribeClientQuotasRequestData(readable, version),
-            version);
+                version);
     }
 
 }

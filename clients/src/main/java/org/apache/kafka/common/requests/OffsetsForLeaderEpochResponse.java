@@ -58,8 +58,8 @@ public class OffsetsForLeaderEpochResponse extends AbstractResponse {
     public Map<Errors, Integer> errorCounts() {
         Map<Errors, Integer> errorCounts = new EnumMap<>(Errors.class);
         data.topics().forEach(topic ->
-            topic.partitions().forEach(partition ->
-                updateErrorCounts(errorCounts, Errors.forCode(partition.errorCode()))));
+                topic.partitions().forEach(partition ->
+                        updateErrorCounts(errorCounts, Errors.forCode(partition.errorCode()))));
         return errorCounts;
     }
 

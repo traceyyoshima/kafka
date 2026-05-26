@@ -32,10 +32,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class MetadataVersionChangeTest {
 
     private static final MetadataVersionChange CHANGE_MINIMUM_TO_LATEST =
-        new MetadataVersionChange(MetadataVersion.MINIMUM_VERSION, MetadataVersion.latestProduction());
+            new MetadataVersionChange(MetadataVersion.MINIMUM_VERSION, MetadataVersion.latestProduction());
 
     private static final MetadataVersionChange CHANGE_LATEST_TO_MINIMUM =
-        new MetadataVersionChange(MetadataVersion.latestProduction(), MetadataVersion.MINIMUM_VERSION);
+            new MetadataVersionChange(MetadataVersion.latestProduction(), MetadataVersion.MINIMUM_VERSION);
 
     @Test
     public void testIsUpgrade() {
@@ -52,28 +52,28 @@ public class MetadataVersionChangeTest {
     @Test
     public void testMetadataVersionChangeExceptionToString() {
         assertEquals("org.apache.kafka.image.MetadataVersionChangeException: The metadata.version " +
-            "is changing from " + MetadataVersion.MINIMUM_VERSION + " to " + MetadataVersion.latestProduction(),
+                "is changing from " + MetadataVersion.MINIMUM_VERSION + " to " + MetadataVersion.latestProduction(),
                 new MetadataVersionChangeException(CHANGE_MINIMUM_TO_LATEST).toString());
         assertEquals("org.apache.kafka.image.MetadataVersionChangeException: The metadata.version " +
-            "is changing from " + MetadataVersion.latestProduction() + " to " + MetadataVersion.MINIMUM_VERSION,
+                "is changing from " + MetadataVersion.latestProduction() + " to " + MetadataVersion.MINIMUM_VERSION,
                 new MetadataVersionChangeException(CHANGE_LATEST_TO_MINIMUM).toString());
     }
 
     @Test
     public void testConstructorThrowsExceptionWhenOldVersionIsNull() {
-        assertThrows(NullPointerException.class, () -> 
+        assertThrows(NullPointerException.class, () ->
             new MetadataVersionChange(null, MetadataVersion.MINIMUM_VERSION));
     }
 
     @Test
     public void testConstructorThrowsExceptionWhenNewVersionIsNull() {
-        assertThrows(NullPointerException.class, () -> 
+        assertThrows(NullPointerException.class, () ->
             new MetadataVersionChange(MetadataVersion.MINIMUM_VERSION, null));
     }
 
     @Test
     public void testConstructorThrowsExceptionWhenBothVersionsAreNull() {
-        assertThrows(NullPointerException.class, () -> 
+        assertThrows(NullPointerException.class, () ->
             new MetadataVersionChange(null, null));
     }
 }

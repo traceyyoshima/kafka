@@ -90,7 +90,7 @@ public class OAuthBearerUnsecuredJwsTest {
         List<String> scope = Arrays.asList("scopeValue1", "scopeValue2");
         String validCompactSerialization = compactSerialization(subject, issuedAt, expirationTime, scope);
         assertThrows(OAuthBearerIllegalTokenException.class,
-            () -> new OAuthBearerUnsecuredJws(validCompactSerialization, "sub", "scope"));
+                () -> new OAuthBearerUnsecuredJws(validCompactSerialization, "sub", "scope"));
     }
 
     @Test
@@ -101,7 +101,7 @@ public class OAuthBearerUnsecuredJwsTest {
         List<String> scope = Arrays.asList("scopeValue1", "scopeValue2");
         String validCompactSerialization = compactSerialization(subject, issuedAt, expirationTime, scope);
         assertThrows(OAuthBearerIllegalTokenException.class,
-            () -> new OAuthBearerUnsecuredJws(validCompactSerialization, "sub", "scope"));
+                () -> new OAuthBearerUnsecuredJws(validCompactSerialization, "sub", "scope"));
     }
 
     private static String compactSerialization(String subject, Long issuedAt, Long expirationTime, List<String> scope) {

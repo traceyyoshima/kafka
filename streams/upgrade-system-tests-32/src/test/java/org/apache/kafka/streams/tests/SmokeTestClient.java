@@ -181,13 +181,13 @@ public class SmokeTestClient extends SmokeTestUtil {
         final KTable<Windowed<String>, Integer> minAggregation = groupedData
             .windowedBy(TimeWindows.ofSizeAndGrace(Duration.ofDays(1), Duration.ofMinutes(1)))
             .aggregate(
-                () -> Integer.MAX_VALUE,
-                (aggKey, value, aggregate) -> (value < aggregate) ? value : aggregate,
-                Materialized
-                    .<String, Integer, WindowStore<Bytes, byte[]>>as("uwin-min")
-                    .withValueSerde(intSerde)
-                    .withRetention(Duration.ofHours(25))
-            );
+                    () -> Integer.MAX_VALUE,
+                    (aggKey, value, aggregate) -> (value < aggregate) ? value : aggregate,
+                    Materialized
+                        .<String, Integer, WindowStore<Bytes, byte[]>>as("uwin-min")
+                        .withValueSerde(intSerde)
+                        .withRetention(Duration.ofHours(25))
+        );
 
         streamify(minAggregation, "min-raw");
 
@@ -206,9 +206,9 @@ public class SmokeTestClient extends SmokeTestUtil {
         streamify(smallWindowSum.suppress(untilWindowCloses(BufferConfig.unbounded())), "sws-suppressed");
 
         final KTable<String, Integer> minTable = builder.table(
-            "min",
-            Consumed.with(stringSerde, intSerde),
-            Materialized.as("minStoreName"));
+                "min",
+                Consumed.with(stringSerde, intSerde),
+                Materialized.as("minStoreName"));
 
         minTable.toStream().process(SmokeTestUtil.printProcessorSupplier("min", name));
 
@@ -216,26 +216,26 @@ public class SmokeTestClient extends SmokeTestUtil {
         groupedData
             .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofDays(2)))
             .aggregate(
-                () -> Integer.MIN_VALUE,
-                (aggKey, value, aggregate) -> (value > aggregate) ? value : aggregate,
-                Materialized.<String, Integer, WindowStore<Bytes, byte[]>>as("uwin-max").withValueSerde(intSerde))
+                    () -> Integer.MIN_VALUE,
+                    (aggKey, value, aggregate) -> (value > aggregate) ? value : aggregate,
+                    Materialized.<String, Integer, WindowStore<Bytes, byte[]>>as("uwin-max").withValueSerde(intSerde))
             .toStream(new Unwindow<>())
             .filterNot((k, v) -> k.equals("flush"))
             .to("max", Produced.with(stringSerde, intSerde));
 
         final KTable<String, Integer> maxTable = builder.table(
-            "max",
-            Consumed.with(stringSerde, intSerde),
-            Materialized.as("maxStoreName"));
+                "max",
+                Consumed.with(stringSerde, intSerde),
+                Materialized.as("maxStoreName"));
         maxTable.toStream().process(SmokeTestUtil.printProcessorSupplier("max", name));
 
         // sum
         groupedData
             .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofDays(2)))
             .aggregate(
-                () -> 0L,
-                (aggKey, value, aggregate) -> (long) value + aggregate,
-                Materialized.<String, Long, WindowStore<Bytes, byte[]>>as("win-sum").withValueSerde(longSerde))
+                    () -> 0L,
+                    (aggKey, value, aggregate) -> (long) value + aggregate,
+                    Materialized.<String, Long, WindowStore<Bytes, byte[]>>as("win-sum").withValueSerde(longSerde))
             .toStream(new Unwindow<>())
             .filterNot((k, v) -> k.equals("flush"))
             .to("sum", Produced.with(stringSerde, longSerde));
@@ -253,16 +253,16 @@ public class SmokeTestClient extends SmokeTestUtil {
             .to("cnt", Produced.with(stringSerde, longSerde));
 
         final KTable<String, Long> cntTable = builder.table(
-            "cnt",
-            Consumed.with(stringSerde, longSerde),
-            Materialized.as("cntStoreName"));
+                "cnt",
+                Consumed.with(stringSerde, longSerde),
+                Materialized.as("cntStoreName"));
         cntTable.toStream().process(SmokeTestUtil.printProcessorSupplier("cnt", name));
 
         // dif
         maxTable
             .join(
-                minTable,
-                (value1, value2) -> value1 - value2)
+                    minTable,
+                    (value1, value2) -> value1 - value2)
             .toStream()
             .filterNot((k, v) -> k.equals("flush"))
             .to("dif", Produced.with(stringSerde, intSerde));
@@ -270,8 +270,8 @@ public class SmokeTestClient extends SmokeTestUtil {
         // avg
         sumTable
             .join(
-                cntTable,
-                (value1, value2) -> (double) value1 / (double) value2)
+                    cntTable,
+                    (value1, value2) -> (double) value1 / (double) value2)
             .toStream()
             .filterNot((k, v) -> k.equals("flush"))
             .to("avg", Produced.with(stringSerde, doubleSerde));

@@ -44,7 +44,6 @@ public class RocksDBMetricsRecordingTriggerTest {
     @Mock
     private RocksDBMetricsRecorder recorder2;
 
-
     private final Time time = new MockTime();
     private final RocksDBMetricsRecordingTrigger recordingTrigger = new RocksDBMetricsRecordingTrigger(time);
 
@@ -71,11 +70,11 @@ public class RocksDBMetricsRecordingTriggerTest {
     public void shouldThrowIfRecorderToAddHasBeenAlreadyAdded() {
         when(recorder1.storeName()).thenReturn(STORE_NAME1);
         when(recorder1.taskId()).thenReturn(TASK_ID1);
-        
+
         recordingTrigger.addMetricsRecorder(recorder1);
         assertThrows(
-            IllegalStateException.class,
-            () -> recordingTrigger.addMetricsRecorder(recorder1)
+                IllegalStateException.class,
+                () -> recordingTrigger.addMetricsRecorder(recorder1)
         );
     }
 
@@ -84,8 +83,8 @@ public class RocksDBMetricsRecordingTriggerTest {
         setUp();
         recordingTrigger.addMetricsRecorder(recorder1);
         assertThrows(
-            IllegalStateException.class,
-            () -> recordingTrigger.removeMetricsRecorder(recorder2)
+                IllegalStateException.class,
+                () -> recordingTrigger.removeMetricsRecorder(recorder2)
         );
     }
 }

@@ -122,8 +122,8 @@ public final class BrokerLocalStorage {
         if (relativePos.isPresent()) {
             String pos = relativePos.get();
             String message = String.format("[BrokerId=%d] The base offset of the first log segment of %s " +
-                            "in the log directory is %d which is %s the expected offset %s. The directory of %s is " +
-                            "made of the following files: %s", brokerId, topicPartition,
+                    "in the log directory is %d which is %s the expected offset %s. The directory of %s is " +
+                    "made of the following files: %s", brokerId, topicPartition,
                     offsetHolder.firstLogFileBaseOffset, pos, offset, topicPartition,
                     String.join(System.lineSeparator(), offsetHolder.partitionFiles));
             throw new AssertionError(message);
@@ -150,7 +150,7 @@ public final class BrokerLocalStorage {
                 .filter(dir -> dirContainsTopicPartition(topicPartition, dir))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("[BrokerId=%d] Directory for the topic-partition %s " +
-                "was not found", brokerId, topicPartition)));
+                        "was not found", brokerId, topicPartition)));
         File partitionDir = new File(logDir.getAbsolutePath(), topicPartition.toString());
         File firstSegmentFile = new File(partitionDir.getAbsolutePath(),
                 LogFileUtils.filenamePrefixFromOffset(firstLogFileBaseOffset) + LogFileUtils.LOG_FILE_SUFFIX);

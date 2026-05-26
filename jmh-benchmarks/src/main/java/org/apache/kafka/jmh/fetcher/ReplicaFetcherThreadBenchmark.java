@@ -121,7 +121,7 @@ public class ReplicaFetcherThreadBenchmark {
     public void setup() throws IOException {
         scheduler.startup();
         Properties configs = BenchmarkConfigUtils.createDummyBrokerConfig();
-        KafkaConfig config =  KafkaConfig.fromProps(configs);
+        KafkaConfig config = KafkaConfig.fromProps(configs);
         LogConfig logConfig = createLogConfig();
 
         BrokerTopicStats brokerTopicStats = new BrokerTopicStats(false);
@@ -243,7 +243,6 @@ public class ReplicaFetcherThreadBenchmark {
     private static LogConfig createLogConfig() {
         return new LogConfig(new Properties());
     }
-
 
     static class ReplicaFetcherBenchThread extends ReplicaFetcherThread {
         private final ConcurrentMap<TopicPartition, Partition> pool;

@@ -155,11 +155,11 @@ public class ConsumerGroupListing {
     @Override
     public String toString() {
         return "(" +
-            "groupId='" + groupId + '\'' +
-            ", isSimpleConsumerGroup=" + isSimpleConsumerGroup +
-            ", groupState=" + groupState +
-            ", type=" + type +
-            ')';
+                "groupId='" + groupId + '\'' +
+                ", isSimpleConsumerGroup=" + isSimpleConsumerGroup +
+                ", groupState=" + groupState +
+                ", type=" + type +
+                ')';
     }
 
     @Override
@@ -173,8 +173,8 @@ public class ConsumerGroupListing {
         if (!(o instanceof ConsumerGroupListing)) return false;
         ConsumerGroupListing that = (ConsumerGroupListing) o;
         return isSimpleConsumerGroup() == that.isSimpleConsumerGroup() &&
-            Objects.equals(groupId, that.groupId) &&
-            Objects.equals(groupState, that.groupState) &&
-            Objects.equals(type, that.type);
+                Objects.equals(groupId, that.groupId) &&
+                Objects.equals(groupState, that.groupState) &&
+                Objects.equals(type, that.type);
     }
 }

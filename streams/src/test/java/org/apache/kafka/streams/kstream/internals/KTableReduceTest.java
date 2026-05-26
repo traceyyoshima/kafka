@@ -43,14 +43,14 @@ public class KTableReduceTest {
         final InternalMockProcessorContext<String, Change<Set<String>>> context = new InternalMockProcessorContext<>();
 
         final Processor<String, Change<Set<String>>, String, Change<Set<String>>> reduceProcessor =
-            new KTableReduce<String, Set<String>>(
-                new MaterializedInternal<>(Materialized.as("myStore")),
-                this::unionNotNullArgs,
-                this::differenceNotNullArgs
-            ).get();
+                new KTableReduce<String, Set<String>>(
+                    new MaterializedInternal<>(Materialized.as("myStore")),
+                    this::unionNotNullArgs,
+                    this::differenceNotNullArgs
+                ).get();
 
         final TimestampedKeyValueStoreWithHeaders<String, Set<String>> myStore =
-            new GenericInMemoryTimestampedKeyValueStoreWithHeaders<>("myStore");
+                new GenericInMemoryTimestampedKeyValueStoreWithHeaders<>("myStore");
 
         context.register(myStore, null);
         reduceProcessor.init(context);

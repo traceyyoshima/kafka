@@ -54,7 +54,7 @@ class ClientTagAwareStandbyTaskAssignor implements StandbyTaskAssignor {
 
     public ClientTagAwareStandbyTaskAssignor() {
         this((uuid, clientState) -> clientState.clientTags(),
-            AssignmentConfigs::rackAwareAssignmentTags
+                AssignmentConfigs::rackAwareAssignmentTags
         );
     }
 
@@ -81,8 +81,8 @@ class ClientTagAwareStandbyTaskAssignor implements StandbyTaskAssignor {
         final Set<String> rackAwareAssignmentTags = new HashSet<>(tagsFunction.apply(configs));
 
         final Map<TaskId, Integer> tasksToRemainingStandbys = computeTasksToRemainingStandbys(
-            numStandbyReplicas,
-            statefulTaskIds
+                numStandbyReplicas,
+                statefulTaskIds
         );
 
         final Map<String, Set<String>> tagKeyToValues = new HashMap<>();
@@ -101,16 +101,16 @@ class ClientTagAwareStandbyTaskAssignor implements StandbyTaskAssignor {
 
                 if (clientState.activeTasks().contains(statefulTaskId)) {
                     assignStandbyTasksToClientsWithDifferentTags(
-                        numStandbyReplicas,
-                        standbyTaskClientsByTaskLoad,
-                        statefulTaskId,
-                        clientId,
-                        rackAwareAssignmentTags,
-                        clients,
-                        tasksToRemainingStandbys,
-                        tagKeyToValues,
-                        tagEntryToClients,
-                        pendingStandbyTasksToClientId
+                            numStandbyReplicas,
+                            standbyTaskClientsByTaskLoad,
+                            statefulTaskId,
+                            clientId,
+                            rackAwareAssignmentTags,
+                            clients,
+                            tasksToRemainingStandbys,
+                            tagKeyToValues,
+                            tagEntryToClients,
+                            pendingStandbyTasksToClientId
                     );
                 }
             }
@@ -138,12 +138,12 @@ class ClientTagAwareStandbyTaskAssignor implements StandbyTaskAssignor {
             final TaskId activeTaskId = pendingStandbyTaskAssignmentEntry.getKey();
 
             pollClientAndMaybeAssignAndUpdateRemainingStandbyTasks(
-                numStandbyReplicas,
-                clients,
-                pendingStandbyTaskToNumberRemainingStandbys,
-                standbyTaskClientsByTaskLoad,
-                activeTaskId,
-                log
+                    numStandbyReplicas,
+                    clients,
+                    pendingStandbyTaskToNumberRemainingStandbys,
+                    standbyTaskClientsByTaskLoad,
+                    activeTaskId,
+                    log
             );
         }
     }
@@ -192,8 +192,8 @@ class ClientTagAwareStandbyTaskAssignor implements StandbyTaskAssignor {
         final Set<KeyValue<String, String>> tagsWithDestination = new HashSet<>();
         for (final ClientState clientState : clientStateMap.values()) {
             if (clientState.hasAssignedTask(sourceTask)
-                && !clientState.processId().equals(source.processId())
-                && !clientState.processId().equals(destination.processId())) {
+                    && !clientState.processId().equals(source.processId())
+                    && !clientState.processId().equals(destination.processId())) {
                 addTags.accept(clientState, tagsWithSource);
                 addTags.accept(clientState, tagsWithDestination);
             }
@@ -241,17 +241,17 @@ class ClientTagAwareStandbyTaskAssignor implements StandbyTaskAssignor {
         ProcessId lastUsedClient = activeTaskClient;
         do {
             updateClientsOnAlreadyUsedTagEntries(
-                lastUsedClient,
-                countOfUsedClients,
-                rackAwareAssignmentTags,
-                clientStates,
-                tagEntryToClients,
-                tagKeyToValues,
-                tagEntryToUsedClients
+                    lastUsedClient,
+                    countOfUsedClients,
+                    rackAwareAssignmentTags,
+                    clientStates,
+                    tagEntryToClients,
+                    tagKeyToValues,
+                    tagEntryToUsedClients
             );
 
             final ProcessId clientOnUnusedTagDimensions = standbyTaskClientsByTaskLoad.poll(
-                activeTaskId, uuid -> !isClientUsedOnAnyOfTheTagEntries(uuid, tagEntryToUsedClients)
+                    activeTaskId, uuid -> !isClientUsedOnAnyOfTheTagEntries(uuid, tagEntryToUsedClients)
             );
 
             if (clientOnUnusedTagDimensions == null) {
@@ -296,12 +296,12 @@ class ClientTagAwareStandbyTaskAssignor implements StandbyTaskAssignor {
     }
 
     private void updateClientsOnAlreadyUsedTagEntries(final ProcessId usedClient,
-                                                             final int countOfUsedClients,
-                                                             final Set<String> rackAwareAssignmentTags,
-                                                             final Map<ProcessId, ClientState> clientStates,
-                                                             final Map<TagEntry, Set<ProcessId>> tagEntryToClients,
-                                                             final Map<String, Set<String>> tagKeyToValues,
-                                                             final Map<TagEntry, Set<ProcessId>> tagEntryToUsedClients) {
+                                                      final int countOfUsedClients,
+                                                      final Set<String> rackAwareAssignmentTags,
+                                                      final Map<ProcessId, ClientState> clientStates,
+                                                      final Map<TagEntry, Set<ProcessId>> tagEntryToClients,
+                                                      final Map<String, Set<String>> tagKeyToValues,
+                                                      final Map<TagEntry, Set<ProcessId>> tagEntryToUsedClients) {
         final Map<String, String> usedClientTags = clientTagFunction.apply(usedClient, clientStates.get(usedClient));
 
         for (final Entry<String, String> usedClientTagEntry : usedClientTags.entrySet()) {

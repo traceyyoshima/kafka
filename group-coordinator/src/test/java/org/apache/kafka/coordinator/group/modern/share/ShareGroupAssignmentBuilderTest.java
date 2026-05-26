@@ -52,28 +52,28 @@ public class ShareGroupAssignmentBuilderTest {
             .setPreviousMemberEpoch(10)
             .setSubscribedTopicNames(List.of(topic1, topic2))
             .setAssignedPartitions(mkAssignment(
-                mkTopicAssignment(topicId1, 1, 2, 3),
-                mkTopicAssignment(topicId2, 4, 5, 6)))
+                    mkTopicAssignment(topicId1, 1, 2, 3),
+                    mkTopicAssignment(topicId2, 4, 5, 6)))
             .build();
 
         ShareGroupMember updatedMember = new ShareGroupAssignmentBuilder(member)
             .withMetadataImage(metadataImage)
             .withTargetAssignment(11, new Assignment(mkAssignment(
-                mkTopicAssignment(topicId1, 1, 2, 3),
-                mkTopicAssignment(topicId2, 4, 5, 6))))
+                    mkTopicAssignment(topicId1, 1, 2, 3),
+                    mkTopicAssignment(topicId2, 4, 5, 6))))
             .build();
 
         assertEquals(
-            new ShareGroupMember.Builder("member")
-                .setState(MemberState.STABLE)
-                .setMemberEpoch(11)
-                .setPreviousMemberEpoch(10)
-                .setSubscribedTopicNames(List.of(topic1, topic2))
-                .setAssignedPartitions(mkAssignment(
-                    mkTopicAssignment(topicId1, 1, 2, 3),
-                    mkTopicAssignment(topicId2, 4, 5, 6)))
-                .build(),
-            updatedMember
+                new ShareGroupMember.Builder("member")
+                    .setState(MemberState.STABLE)
+                    .setMemberEpoch(11)
+                    .setPreviousMemberEpoch(10)
+                    .setSubscribedTopicNames(List.of(topic1, topic2))
+                    .setAssignedPartitions(mkAssignment(
+                        mkTopicAssignment(topicId1, 1, 2, 3),
+                        mkTopicAssignment(topicId2, 4, 5, 6)))
+                    .build(),
+                updatedMember
         );
     }
 
@@ -95,28 +95,28 @@ public class ShareGroupAssignmentBuilderTest {
             .setPreviousMemberEpoch(10)
             .setSubscribedTopicNames(List.of(topic1, topic2))
             .setAssignedPartitions(mkAssignment(
-                mkTopicAssignment(topicId1, 1, 2, 3),
-                mkTopicAssignment(topicId2, 4, 5, 6)))
+                    mkTopicAssignment(topicId1, 1, 2, 3),
+                    mkTopicAssignment(topicId2, 4, 5, 6)))
             .build();
 
         ShareGroupMember updatedMember = new ShareGroupAssignmentBuilder(member)
             .withMetadataImage(metadataImage)
             .withTargetAssignment(11, new Assignment(mkAssignment(
-                mkTopicAssignment(topicId1, 1, 2, 3, 4),
-                mkTopicAssignment(topicId2, 4, 5, 6, 7))))
+                    mkTopicAssignment(topicId1, 1, 2, 3, 4),
+                    mkTopicAssignment(topicId2, 4, 5, 6, 7))))
             .build();
 
         assertEquals(
-            new ShareGroupMember.Builder("member")
-                .setState(MemberState.STABLE)
-                .setMemberEpoch(11)
-                .setPreviousMemberEpoch(10)
-                .setSubscribedTopicNames(List.of(topic1, topic2))
-                .setAssignedPartitions(mkAssignment(
-                    mkTopicAssignment(topicId1, 1, 2, 3, 4),
-                    mkTopicAssignment(topicId2, 4, 5, 6, 7)))
-                .build(),
-            updatedMember
+                new ShareGroupMember.Builder("member")
+                    .setState(MemberState.STABLE)
+                    .setMemberEpoch(11)
+                    .setPreviousMemberEpoch(10)
+                    .setSubscribedTopicNames(List.of(topic1, topic2))
+                    .setAssignedPartitions(mkAssignment(
+                        mkTopicAssignment(topicId1, 1, 2, 3, 4),
+                        mkTopicAssignment(topicId2, 4, 5, 6, 7)))
+                    .build(),
+                updatedMember
         );
     }
 
@@ -147,28 +147,28 @@ public class ShareGroupAssignmentBuilderTest {
             .setPreviousMemberEpoch(memberEpoch)
             .setSubscribedTopicNames(List.of(topic2))
             .setAssignedPartitions(mkAssignment(
-                mkTopicAssignment(topicId1, 1, 2, 3),
-                mkTopicAssignment(topicId2, 4, 5, 6)))
+                    mkTopicAssignment(topicId1, 1, 2, 3),
+                    mkTopicAssignment(topicId2, 4, 5, 6)))
             .build();
 
         ShareGroupMember updatedMember = new ShareGroupAssignmentBuilder(member)
             .withMetadataImage(metadataImage)
             .withTargetAssignment(targetAssignmentEpoch, new Assignment(mkAssignment(
-                mkTopicAssignment(topicId1, 1, 2, 3),
-                mkTopicAssignment(topicId2, 4, 5, 6))))
+                    mkTopicAssignment(topicId1, 1, 2, 3),
+                    mkTopicAssignment(topicId2, 4, 5, 6))))
             .withHasSubscriptionChanged(hasSubscriptionChanged)
             .build();
 
         assertEquals(
-            new ShareGroupMember.Builder("member")
-                .setState(MemberState.STABLE)
-                .setMemberEpoch(targetAssignmentEpoch)
-                .setPreviousMemberEpoch(memberEpoch)
-                .setSubscribedTopicNames(List.of(topic2))
-                .setAssignedPartitions(mkAssignment(
-                    mkTopicAssignment(topicId2, 4, 5, 6)))
-                .build(),
-            updatedMember
+                new ShareGroupMember.Builder("member")
+                    .setState(MemberState.STABLE)
+                    .setMemberEpoch(targetAssignmentEpoch)
+                    .setPreviousMemberEpoch(memberEpoch)
+                    .setSubscribedTopicNames(List.of(topic2))
+                    .setAssignedPartitions(mkAssignment(
+                        mkTopicAssignment(topicId2, 4, 5, 6)))
+                    .build(),
+                updatedMember
         );
     }
 }

@@ -74,12 +74,12 @@ public class ClientJwtValidator implements JwtValidator {
     public void configure(Map<String, ?> configs, String saslMechanism, List<AppConfigurationEntry> jaasConfigEntries) {
         ConfigurationUtils cu = new ConfigurationUtils(configs, saslMechanism);
         this.scopeClaimName = ClaimValidationUtils.validateClaimNameOverride(
-            DEFAULT_SASL_OAUTHBEARER_SCOPE_CLAIM_NAME,
-            cu.get(SASL_OAUTHBEARER_SCOPE_CLAIM_NAME)
+                DEFAULT_SASL_OAUTHBEARER_SCOPE_CLAIM_NAME,
+                cu.get(SASL_OAUTHBEARER_SCOPE_CLAIM_NAME)
         );
         this.subClaimName = ClaimValidationUtils.validateClaimNameOverride(
-            DEFAULT_SASL_OAUTHBEARER_SUB_CLAIM_NAME,
-            cu.get(SASL_OAUTHBEARER_SUB_CLAIM_NAME)
+                DEFAULT_SASL_OAUTHBEARER_SUB_CLAIM_NAME,
+                cu.get(SASL_OAUTHBEARER_SUB_CLAIM_NAME)
         );
     }
 
@@ -119,16 +119,16 @@ public class ClientJwtValidator implements JwtValidator {
 
         Set<String> scopes = ClaimValidationUtils.validateScopes(scopeClaimName, scopeRawCollection);
         long expiration = ClaimValidationUtils.validateExpiration(EXPIRATION_CLAIM_NAME,
-            expirationRaw != null ? expirationRaw.longValue() * 1000L : null);
+                expirationRaw != null ? expirationRaw.longValue() * 1000L : null);
         String subject = ClaimValidationUtils.validateSubject(subClaimName, subRaw);
         Long issuedAt = ClaimValidationUtils.validateIssuedAt(ISSUED_AT_CLAIM_NAME,
-            issuedAtRaw != null ? issuedAtRaw.longValue() * 1000L : null);
+                issuedAtRaw != null ? issuedAtRaw.longValue() * 1000L : null);
 
         return new BasicOAuthBearerToken(accessToken,
-            scopes,
-            expiration,
-            subject,
-            issuedAt);
+                scopes,
+                expiration,
+                subject,
+                issuedAt);
     }
 
     private Object getClaim(Map<String, Object> payload, String claimName) {

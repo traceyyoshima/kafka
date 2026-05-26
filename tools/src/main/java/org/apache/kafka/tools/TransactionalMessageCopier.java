@@ -166,7 +166,7 @@ public class TransactionalMessageCopier {
                 .metavar("GROUP-MODE")
                 .dest("groupMode")
                 .help("Whether to let consumer subscribe to the input topic or do manual assign. If we do" +
-                          " subscription based consumption, the input partition shall be ignored");
+                        " subscription based consumption, the input partition shall be ignored");
 
         parser.addArgument("--use-group-metadata")
                 .action(storeTrue())
@@ -296,7 +296,7 @@ public class TransactionalMessageCopier {
         } catch (Exception e) {
             log.error("Shutting down after unexpected error in event loop", e);
             System.err.println("Shutting down after unexpected error " + e.getClass().getSimpleName()
-                + ": " + e.getMessage() + " (see the log for additional detail)");
+                    + ": " + e.getMessage() + " (see the log for additional detail)");
             Exit.exit(1);
         }
     }
@@ -312,7 +312,7 @@ public class TransactionalMessageCopier {
         final KafkaConsumer<String, String> consumer = createConsumer(parsedArgs);
 
         final AtomicLong remainingMessages = new AtomicLong(
-            parsedArgs.getInt("maxMessages") == -1 ? Long.MAX_VALUE : parsedArgs.getInt("maxMessages"));
+                parsedArgs.getInt("maxMessages") == -1 ? Long.MAX_VALUE : parsedArgs.getInt("maxMessages"));
 
         boolean groupMode = parsedArgs.getBoolean("groupMode");
         String topicName = parsedArgs.getString("inputTopic");
@@ -331,11 +331,11 @@ public class TransactionalMessageCopier {
                     numMessagesProcessedSinceLastRebalance.set(0);
                     // We use message cap for remaining here as the remainingMessages are not set yet.
                     System.out.println(statusAsJson(
-                        "RebalanceComplete",
-                        totalMessageProcessed.get(),
-                        numMessagesProcessedSinceLastRebalance.get(),
-                        remainingMessages.get(),
-                        transactionalId
+                            "RebalanceComplete",
+                            totalMessageProcessed.get(),
+                            numMessagesProcessedSinceLastRebalance.get(),
+                            remainingMessages.get(),
+                            transactionalId
                     ));
                 }
             });
@@ -355,11 +355,11 @@ public class TransactionalMessageCopier {
             isShuttingDown.set(true);
             consumer.wakeup();
             System.out.println(statusAsJson(
-                "ShutdownComplete",
-                totalMessageProcessed.get(),
-                numMessagesProcessedSinceLastRebalance.get(),
-                remainingMessages.get(),
-                transactionalId
+                    "ShutdownComplete",
+                    totalMessageProcessed.get(),
+                    numMessagesProcessedSinceLastRebalance.get(),
+                    remainingMessages.get(),
+                    transactionalId
             ));
         });
 
@@ -368,11 +368,11 @@ public class TransactionalMessageCopier {
             Random random = new Random();
             while (!isShuttingDown.get() && remainingMessages.get() > 0) {
                 System.out.println(statusAsJson(
-                    "ProcessLoop",
-                    totalMessageProcessed.get(),
-                    numMessagesProcessedSinceLastRebalance.get(),
-                    remainingMessages.get(),
-                    transactionalId
+                        "ProcessLoop",
+                        totalMessageProcessed.get(),
+                        numMessagesProcessedSinceLastRebalance.get(),
+                        remainingMessages.get(),
+                        transactionalId
                 ));
 
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(200));

@@ -50,10 +50,10 @@ public class StreamTableJoinNode<K, V, VOut> extends GraphNode {
     @Override
     public String toString() {
         return "StreamTableJoinNode{" +
-               "storeNames=" + Arrays.toString(storeNames) +
-               ", processorParameters=" + processorParameters +
-               ", otherJoinSideNodeName='" + otherJoinSideNodeName + '\'' +
-               "} " + super.toString();
+                "storeNames=" + Arrays.toString(storeNames) +
+                ", processorParameters=" + processorParameters +
+                ", otherJoinSideNodeName='" + otherJoinSideNodeName + '\'' +
+                "} " + super.toString();
     }
 
     @Override

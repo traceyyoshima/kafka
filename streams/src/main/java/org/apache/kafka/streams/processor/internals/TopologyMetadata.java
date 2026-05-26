@@ -135,7 +135,7 @@ public class TopologyMetadata {
     public void setLog(final LogContext logContext) {
         log = logContext.logger(getClass());
     }
-    
+
     public ProcessingMode processingMode() {
         return processingMode;
     }
@@ -364,14 +364,14 @@ public class TopologyMetadata {
             if (hasNoLocalTopology()) {
                 log.error("Detected a named topology with no input topics, a named topology may not be empty.");
                 throw new TopologyException("Topology has no stream threads and no global threads, " +
-                                                "must subscribe to at least one source topic or pattern.");
+                        "must subscribe to at least one source topic or pattern.");
             }
         } else {
             // If both the global and non-global topologies are empty, this indicates a bug in user code
             if (hasNoLocalTopology() && !hasGlobalTopology()) {
                 log.error("Topology with no input topics will create no stream threads and no global thread.");
                 throw new TopologyException("Topology has no stream threads and no global threads, " +
-                                                "must subscribe to at least one source topic or global table.");
+                        "must subscribe to at least one source topic or global table.");
             }
         }
 
@@ -434,17 +434,16 @@ public class TopologyMetadata {
             }
         }
         log.warn("Unable to look up offset reset strategy for topic {} " +
-            "as this topic does not appear in the sources of any of the current topologies: {}\n " +
+                "as this topic does not appear in the sources of any of the current topologies: {}\n " +
                 "This may be due to natural race condition when removing a topology but it should not " +
                 "persist or appear frequently.",
-            topic, namedTopologiesView()
+                topic, namedTopologiesView()
         );
         // returning `null` for an Optional return type triggers spotbugs
         // we added an exception for NP_OPTIONAL_RETURN_NULL for this method
         // when we remove NamedTopologies, we can remove this exception
         return null;
     }
-
 
     public Collection<String> fullSourceTopicNamesForTopology(final String topologyName) {
         Objects.requireNonNull(topologyName, "topology name must not be null");
@@ -576,7 +575,7 @@ public class TopologyMetadata {
     public Map<String, Map<Subtopology, TopicsInfo>> topologyToSubtopologyTopicsInfoMap() {
         final Map<String, Map<Subtopology, TopicsInfo>> topologyToSubtopologyTopicsInfoMap = new HashMap<>();
         applyToEachBuilder(b -> topologyToSubtopologyTopicsInfoMap.put(b.topologyName(), b.subtopologyToTopicsInfo()));
-        return  topologyToSubtopologyTopicsInfoMap;
+        return topologyToSubtopologyTopicsInfoMap;
     }
 
     public Map<String, List<String>> nodeToSourceTopics(final TaskId task) {
@@ -620,7 +619,6 @@ public class TopologyMetadata {
             .map(InternalTopologyBuilder::namedTopology)
             .collect(Collectors.toSet());
     }
-
 
     /**
      * @return the InternalTopologyBuilder for the NamedTopology with the given {@code topologyName}

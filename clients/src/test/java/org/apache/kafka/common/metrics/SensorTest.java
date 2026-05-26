@@ -71,55 +71,55 @@ public class SensorTest {
         assertTrue(Sensor.RecordingLevel.TRACE.shouldRecord(configLevel.id));
 
         assertEquals(Sensor.RecordingLevel.DEBUG,
-            Sensor.RecordingLevel.valueOf(Sensor.RecordingLevel.DEBUG.toString()));
+                Sensor.RecordingLevel.valueOf(Sensor.RecordingLevel.DEBUG.toString()));
         assertEquals(Sensor.RecordingLevel.INFO,
-            Sensor.RecordingLevel.valueOf(Sensor.RecordingLevel.INFO.toString()));
+                Sensor.RecordingLevel.valueOf(Sensor.RecordingLevel.INFO.toString()));
         assertEquals(Sensor.RecordingLevel.TRACE,
-            Sensor.RecordingLevel.valueOf(Sensor.RecordingLevel.TRACE.toString()));
+                Sensor.RecordingLevel.valueOf(Sensor.RecordingLevel.TRACE.toString()));
     }
 
     @Test
     public void testShouldRecordForInfoLevelSensor() {
         Sensor infoSensor = new Sensor(null, "infoSensor", null, INFO_CONFIG,  Time.SYSTEM,
-            0, Sensor.RecordingLevel.INFO);
+                0, Sensor.RecordingLevel.INFO);
         assertTrue(infoSensor.shouldRecord());
 
         infoSensor = new Sensor(null, "infoSensor", null, DEBUG_CONFIG,  Time.SYSTEM,
-            0, Sensor.RecordingLevel.INFO);
+                0, Sensor.RecordingLevel.INFO);
         assertTrue(infoSensor.shouldRecord());
 
         infoSensor = new Sensor(null, "infoSensor", null, TRACE_CONFIG, Time.SYSTEM,
-            0, Sensor.RecordingLevel.INFO);
+                0, Sensor.RecordingLevel.INFO);
         assertTrue(infoSensor.shouldRecord());
     }
 
     @Test
     public void testShouldRecordForDebugLevelSensor() {
         Sensor debugSensor = new Sensor(null, "debugSensor", null, INFO_CONFIG, Time.SYSTEM,
-            0, Sensor.RecordingLevel.DEBUG);
+                0, Sensor.RecordingLevel.DEBUG);
         assertFalse(debugSensor.shouldRecord());
 
         debugSensor = new Sensor(null, "debugSensor", null, DEBUG_CONFIG, Time.SYSTEM,
-             0, Sensor.RecordingLevel.DEBUG);
+                0, Sensor.RecordingLevel.DEBUG);
         assertTrue(debugSensor.shouldRecord());
 
         debugSensor = new Sensor(null, "debugSensor", null, TRACE_CONFIG, Time.SYSTEM,
-             0, Sensor.RecordingLevel.DEBUG);
+                0, Sensor.RecordingLevel.DEBUG);
         assertTrue(debugSensor.shouldRecord());
     }
 
     @Test
     public void testShouldRecordForTraceLevelSensor() {
         Sensor traceSensor = new Sensor(null, "traceSensor", null, INFO_CONFIG, Time.SYSTEM,
-             0, Sensor.RecordingLevel.TRACE);
+                0, Sensor.RecordingLevel.TRACE);
         assertFalse(traceSensor.shouldRecord());
 
         traceSensor = new Sensor(null, "traceSensor", null, DEBUG_CONFIG, Time.SYSTEM,
-             0, Sensor.RecordingLevel.TRACE);
+                0, Sensor.RecordingLevel.TRACE);
         assertFalse(traceSensor.shouldRecord());
 
         traceSensor = new Sensor(null, "traceSensor", null, TRACE_CONFIG, Time.SYSTEM,
-             0, Sensor.RecordingLevel.TRACE);
+                0, Sensor.RecordingLevel.TRACE);
         assertTrue(traceSensor.shouldRecord());
     }
 
@@ -155,7 +155,6 @@ public class SensorTest {
 
         // adding the same metric to the same sensor is a no-op
         assertTrue(sensor.add(metrics.metricName("test-metric", "test-group"), new Avg()));
-
 
         // but adding the same metric to a DIFFERENT sensor is an error
         final Sensor anotherSensor = metrics.sensor("another-sensor");
@@ -231,15 +230,15 @@ public class SensorTest {
         assertFalse(sensor.hasMetrics());
 
         sensor.add(
-            new MetricName("name1", "group1", "description1", Collections.emptyMap()),
-            new WindowedSum()
+                new MetricName("name1", "group1", "description1", Collections.emptyMap()),
+                new WindowedSum()
         );
 
         assertTrue(sensor.hasMetrics());
 
         sensor.add(
-            new MetricName("name2", "group2", "description2", Collections.emptyMap()),
-            new CumulativeCount()
+                new MetricName("name2", "group2", "description2", Collections.emptyMap()),
+                new CumulativeCount()
         );
 
         assertTrue(sensor.hasMetrics());

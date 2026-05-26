@@ -63,9 +63,9 @@ public class KStreamMapTest {
         }
 
         final KeyValueTimestamp[] expected = new KeyValueTimestamp[] {new KeyValueTimestamp<>("V0", 0, 10),
-            new KeyValueTimestamp<>("V1", 1, 9),
-            new KeyValueTimestamp<>("V2", 2, 8),
-            new KeyValueTimestamp<>("V3", 3, 7)};
+                new KeyValueTimestamp<>("V1", 1, 9),
+                new KeyValueTimestamp<>("V2", 2, 8),
+                new KeyValueTimestamp<>("V3", 3, 7)};
         assertEquals(4, supplier.theCapturedProcessor().processed().size());
         for (int i = 0; i < expected.length; i++) {
             assertEquals(expected[i], supplier.theCapturedProcessor().processed().get(i));

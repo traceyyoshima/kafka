@@ -37,9 +37,9 @@ public class TimestampRouter<R extends ConnectRecord<R>> implements Transformati
 
     public static final String OVERVIEW_DOC =
             "Update the record's topic field as a function of the original topic value and the record timestamp."
-                    + "<p/>"
-                    + "This is mainly useful for sink connectors, since the topic field is often used to determine the equivalent entity name in the destination system"
-                    + "(e.g. database table or search index name).";
+            + "<p/>"
+            + "This is mainly useful for sink connectors, since the topic field is often used to determine the equivalent entity name in the destination system"
+            + "(e.g. database table or search index name).";
 
     public static final ConfigDef CONFIG_DEF = new ConfigDef()
             .define(ConfigName.TOPIC_FORMAT, ConfigDef.Type.STRING, "${topic}-${timestamp}", ConfigDef.Importance.HIGH,

@@ -36,7 +36,6 @@ public class MockReducer {
         }
     }
 
-
     private static class IntegerAdd implements Reducer<Integer> {
 
         @Override

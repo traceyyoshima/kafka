@@ -50,22 +50,22 @@ public class CopartitionedTopicsEnforcer {
         }
 
         final Map<Object, InternalTopicConfig> repartitionTopicConfigs =
-            copartitionGroup.stream()
-                            .filter(allRepartitionTopicsNumPartitions::containsKey)
-                            .collect(Collectors.toMap(topic -> topic, allRepartitionTopicsNumPartitions::get));
+                copartitionGroup.stream()
+                                .filter(allRepartitionTopicsNumPartitions::containsKey)
+                                .collect(Collectors.toMap(topic -> topic, allRepartitionTopicsNumPartitions::get));
 
         final Map<String, Integer> nonRepartitionTopicPartitions =
-            copartitionGroup.stream().filter(topic -> !allRepartitionTopicsNumPartitions.containsKey(topic))
-                            .collect(Collectors.toMap(topic -> topic, topic -> {
-                                final Integer partitions = metadata.partitionCountForTopic(topic);
-                                if (partitions == null) {
-                                    final String str = String.format("%sTopic not found: %s", logPrefix, topic);
-                                    log.error(str);
-                                    throw new IllegalStateException(str);
-                                } else {
-                                    return partitions;
-                                }
-                            }));
+                copartitionGroup.stream().filter(topic -> !allRepartitionTopicsNumPartitions.containsKey(topic))
+                                .collect(Collectors.toMap(topic -> topic, topic -> {
+                                    final Integer partitions = metadata.partitionCountForTopic(topic);
+                                    if (partitions == null) {
+                                        final String str = String.format("%sTopic not found: %s", logPrefix, topic);
+                                        log.error(str);
+                                        throw new IllegalStateException(str);
+                                    } else {
+                                        return partitions;
+                                    }
+                                }));
 
         final int numPartitionsToUseForRepartitionTopics;
         final Collection<InternalTopicConfig> internalTopicConfigs = repartitionTopicConfigs.values();
@@ -80,8 +80,8 @@ public class CopartitionedTopicsEnforcer {
             // validate that they all have same number of partitions
             if (!internalTopicConfigsWithEnforcedNumberOfPartitions.isEmpty()) {
                 numPartitionsToUseForRepartitionTopics = validateAndGetNumOfPartitions(
-                    repartitionTopicConfigs,
-                    internalTopicConfigsWithEnforcedNumberOfPartitions
+                        repartitionTopicConfigs,
+                        internalTopicConfigsWithEnforcedNumberOfPartitions
                 );
             } else {
                 // If all topics for this co-partition group are repartition topics,
@@ -159,8 +159,8 @@ public class CopartitionedTopicsEnforcer {
             if (entry.getValue() != partitions) {
                 final TreeMap<String, Integer> sorted = new TreeMap<>(nonRepartitionTopicsInCopartitionGroup);
                 throw new TopologyException(
-                    String.format("%sTopics not co-partitioned: [%s]",
-                                  logPrefix, sorted)
+                        String.format("%sTopics not co-partitioned: [%s]",
+                                logPrefix, sorted)
                 );
             }
         }

@@ -146,9 +146,9 @@ public class StreamsMetadataStateTest {
     @Test
     public void shouldNotThrowExceptionWhenOnChangeNotCalled() {
         final Collection<StreamsMetadata> metadata = new StreamsMetadataState(
-            new TopologyMetadata(TopologyWrapper.getInternalTopologyBuilder(builder.build()), new DummyStreamsConfig()),
-            hostOne,
-            logContext
+                new TopologyMetadata(TopologyWrapper.getInternalTopologyBuilder(builder.build()), new DummyStreamsConfig()),
+                hostOne,
+                logContext
         ).allMetadataForStore("store");
         assertEquals(0, metadata.size());
     }
@@ -156,20 +156,20 @@ public class StreamsMetadataStateTest {
     @Test
     public void shouldGetAllStreamInstances() {
         final StreamsMetadata one = new StreamsMetadataImpl(hostOne,
-            Set.of(globalTable, "table-one", "table-two", "merged-table"),
-            Set.of(topic1P0, topic2P1, topic4P0),
-            Set.of("table-one", "table-two", "merged-table"),
-            Set.of(topic2P0, topic1P1));
+                Set.of(globalTable, "table-one", "table-two", "merged-table"),
+                Set.of(topic1P0, topic2P1, topic4P0),
+                Set.of("table-one", "table-two", "merged-table"),
+                Set.of(topic2P0, topic1P1));
         final StreamsMetadata two = new StreamsMetadataImpl(hostTwo,
-            Set.of(globalTable, "table-two", "table-one", "merged-table"),
-            Set.of(topic2P0, topic1P1),
-            Set.of("table-three"),
-            Set.of(topic3P0));
+                Set.of(globalTable, "table-two", "table-one", "merged-table"),
+                Set.of(topic2P0, topic1P1),
+                Set.of("table-three"),
+                Set.of(topic3P0));
         final StreamsMetadata three = new StreamsMetadataImpl(hostThree,
-            Set.of(globalTable, "table-three"),
-            Collections.singleton(topic3P0),
-            Set.of("table-one", "table-two", "merged-table"),
-            Set.of(topic1P0, topic2P1, topic4P0));
+                Set.of(globalTable, "table-three"),
+                Collections.singleton(topic3P0),
+                Set.of("table-one", "table-two", "merged-table"),
+                Set.of(topic1P0, topic2P1, topic4P0));
 
         final Collection<StreamsMetadata> actual = metadataState.allMetadata();
         assertEquals(3, actual.size());
@@ -187,7 +187,7 @@ public class StreamsMetadataStateTest {
         hostToActivePartitions.put(hostFour, Set.of(tp5));
 
         metadataState.onChange(hostToActivePartitions, Collections.emptyMap(),
-            Collections.singletonMap(tp5, new PartitionInfo("topic-five", 1, null, null, null)));
+                Collections.singletonMap(tp5, new PartitionInfo("topic-five", 1, null, null, null)));
 
         final StreamsMetadata expected = new StreamsMetadataImpl(hostFour, Collections.singleton(globalTable),
                 Collections.singleton(tp5), Collections.emptySet(), Collections.emptySet());
@@ -198,15 +198,15 @@ public class StreamsMetadataStateTest {
     @Test
     public void shouldGetInstancesForStoreName() {
         final StreamsMetadata one = new StreamsMetadataImpl(hostOne,
-            Set.of(globalTable, "table-one", "table-two", "merged-table"),
-            Set.of(topic1P0, topic2P1, topic4P0),
-            Set.of("table-one", "table-two", "merged-table"),
-            Set.of(topic2P0, topic1P1));
+                Set.of(globalTable, "table-one", "table-two", "merged-table"),
+                Set.of(topic1P0, topic2P1, topic4P0),
+                Set.of("table-one", "table-two", "merged-table"),
+                Set.of(topic2P0, topic1P1));
         final StreamsMetadata two = new StreamsMetadataImpl(hostTwo,
-            Set.of(globalTable, "table-two", "table-one", "merged-table"),
-            Set.of(topic2P0, topic1P1),
-            Set.of("table-three"),
-            Set.of(topic3P0));
+                Set.of(globalTable, "table-two", "table-one", "merged-table"),
+                Set.of(topic2P0, topic1P1),
+                Set.of("table-three"),
+                Set.of(topic3P0));
         final Collection<StreamsMetadata> actual = metadataState.allMetadataForStore("table-one");
         final Map<HostInfo, StreamsMetadata> actualAsMap = actual.stream()
             .collect(Collectors.toMap(StreamsMetadata::hostInfo, Function.identity()));
@@ -214,7 +214,7 @@ public class StreamsMetadataStateTest {
         assertTrue(actual.contains(one), "expected " + actual + " to contain " + one);
         assertTrue(actual.contains(two), "expected " + actual + " to contain " + two);
         assertTrue(actualAsMap.get(hostThree).standbyStateStoreNames().contains("table-one"),
-            "expected " + hostThree + " to contain as standby");
+                "expected " + hostThree + " to contain as standby");
     }
 
     @Test
@@ -234,12 +234,12 @@ public class StreamsMetadataStateTest {
         hostToActivePartitions.put(hostTwo, Set.of(topic2P0, tp4));
 
         metadataState.onChange(hostToActivePartitions, hostToStandbyPartitions,
-            Collections.singletonMap(tp4, new PartitionInfo("topic-three", 1, null, null, null)));
+                Collections.singletonMap(tp4, new PartitionInfo("topic-three", 1, null, null, null)));
 
         final KeyQueryMetadata expected = new KeyQueryMetadata(hostThree, Set.of(hostTwo), 0);
         final KeyQueryMetadata actual = metadataState.keyQueryMetadataForKey("table-three",
-                                                                    "the-key",
-                                                                    Serdes.String().serializer());
+                "the-key",
+                Serdes.String().serializer());
         assertEquals(expected, actual);
     }
 
@@ -249,7 +249,7 @@ public class StreamsMetadataStateTest {
         hostToActivePartitions.put(hostTwo, Set.of(topic2P0, tp4));
 
         metadataState.onChange(hostToActivePartitions, hostToStandbyPartitions,
-            Collections.singletonMap(tp4, new PartitionInfo("topic-three", 1, null, null, null)));
+                Collections.singletonMap(tp4, new PartitionInfo("topic-three", 1, null, null, null)));
 
         final KeyQueryMetadata expected = new KeyQueryMetadata(hostTwo, Collections.emptySet(), 1);
 
@@ -267,7 +267,6 @@ public class StreamsMetadataStateTest {
 
         metadataState.onChange(hostToActivePartitions, hostToStandbyPartitions,
                 Collections.singletonMap(tp4, new PartitionInfo("topic-three", 1, null, null, null)));
-
 
         assertThrows(IllegalArgumentException.class, () -> metadataState.keyQueryMetadataForKey("table-three",
                 "the-key",
@@ -292,7 +291,7 @@ public class StreamsMetadataStateTest {
         final KeyQueryMetadata expected = new KeyQueryMetadata(hostTwo, Set.of(hostOne), 2);
 
         final KeyQueryMetadata actual = metadataState.keyQueryMetadataForKey("merged-table",  "the-key",
-            (topic, key, value, numPartitions) -> Optional.of(Collections.singleton(2)));
+                (topic, key, value, numPartitions) -> Optional.of(Collections.singleton(2)));
 
         assertEquals(expected, actual);
     }
@@ -342,7 +341,7 @@ public class StreamsMetadataStateTest {
         assertEquals(hostToStandbyPartitions.get(hostOne), metadataState.getLocalMetadata().standbyTopicPartitions());
         assertEquals(storeNames, metadataState.getLocalMetadata().stateStoreNames());
         assertEquals(storeNames.stream().filter(s -> !s.equals(globalTable)).collect(Collectors.toSet()),
-            metadataState.getLocalMetadata().standbyStateStoreNames());
+                metadataState.getLocalMetadata().standbyStateStoreNames());
     }
 
     @Test
@@ -355,9 +354,9 @@ public class StreamsMetadataStateTest {
     @Test
     public void shouldGetAnyHostForGlobalStoreByKeyIfMyHostUnknown() {
         final StreamsMetadataState streamsMetadataState = new StreamsMetadataState(
-            new TopologyMetadata(TopologyWrapper.getInternalTopologyBuilder(builder.build()), new DummyStreamsConfig()),
-            StreamsMetadataState.UNKNOWN_HOST,
-            logContext
+                new TopologyMetadata(TopologyWrapper.getInternalTopologyBuilder(builder.build()), new DummyStreamsConfig()),
+                StreamsMetadataState.UNKNOWN_HOST,
+                logContext
         );
         streamsMetadataState.onChange(hostToActivePartitions, hostToStandbyPartitions, partitionInfos);
         assertNotNull(streamsMetadataState.keyQueryMetadataForKey(globalTable, "key", Serdes.String().serializer()));
@@ -373,9 +372,9 @@ public class StreamsMetadataStateTest {
     @Test
     public void shouldGetAnyHostForGlobalStoreByKeyAndPartitionerIfMyHostUnknown() {
         final StreamsMetadataState streamsMetadataState = new StreamsMetadataState(
-            new TopologyMetadata(TopologyWrapper.getInternalTopologyBuilder(builder.build()), new DummyStreamsConfig()),
-            StreamsMetadataState.UNKNOWN_HOST,
-            logContext
+                new TopologyMetadata(TopologyWrapper.getInternalTopologyBuilder(builder.build()), new DummyStreamsConfig()),
+                StreamsMetadataState.UNKNOWN_HOST,
+                logContext
         );
         streamsMetadataState.onChange(hostToActivePartitions, hostToStandbyPartitions, partitionInfos);
         assertNotNull(streamsMetadataState.keyQueryMetadataForKey(globalTable, "key", partitioner));

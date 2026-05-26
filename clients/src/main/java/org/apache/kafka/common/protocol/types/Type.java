@@ -967,8 +967,8 @@ public abstract class Type {
         @Override
         public String documentation() {
             return "Represents a sequence of Kafka records as " + COMPACT_BYTES + ". " +
-                "For a detailed description of records see " +
-                "<a href=\"/documentation/#messageformat\">Message Sets</a>.";
+                    "For a detailed description of records see " +
+                    "<a href=\"/documentation/#messageformat\">Message Sets</a>.";
         }
     };
 
@@ -1023,8 +1023,8 @@ public abstract class Type {
         @Override
         public String documentation() {
             return "Represents a sequence of Kafka records as " + NULLABLE_BYTES + ". " +
-                "For a detailed description of records see " +
-                "<a href=\"/documentation/#messageformat\">Message Sets</a>.";
+                    "For a detailed description of records see " +
+                    "<a href=\"/documentation/#messageformat\">Message Sets</a>.";
         }
     };
 
@@ -1080,8 +1080,8 @@ public abstract class Type {
         @Override
         public String documentation() {
             return "Represents a sequence of Kafka records as " + COMPACT_NULLABLE_BYTES + ". " +
-                "For a detailed description of records see " +
-                "<a href=\"/documentation/#messageformat\">Message Sets</a>.";
+                    "For a detailed description of records see " +
+                    "<a href=\"/documentation/#messageformat\">Message Sets</a>.";
         }
     };
 
@@ -1157,13 +1157,13 @@ public abstract class Type {
 
     private static String toHtml() {
         DocumentedType[] types = {
-            BOOLEAN, INT8, INT16, INT32, INT64,
-            UINT16, UNSIGNED_INT32, VARINT, VARLONG, UUID, FLOAT64,
-            STRING, COMPACT_STRING, NULLABLE_STRING, COMPACT_NULLABLE_STRING,
-            BYTES, COMPACT_BYTES, NULLABLE_BYTES, COMPACT_NULLABLE_BYTES,
-            RECORDS, COMPACT_RECORDS, NULLABLE_RECORDS, COMPACT_NULLABLE_RECORDS,
-            new ArrayOf(STRING), new CompactArrayOf(COMPACT_STRING), ArrayOf.nullable(STRING), CompactArrayOf.nullable(STRING),
-            new Schema(), new NullableSchema(new Schema())};
+                BOOLEAN, INT8, INT16, INT32, INT64,
+                UINT16, UNSIGNED_INT32, VARINT, VARLONG, UUID, FLOAT64,
+                STRING, COMPACT_STRING, NULLABLE_STRING, COMPACT_NULLABLE_STRING,
+                BYTES, COMPACT_BYTES, NULLABLE_BYTES, COMPACT_NULLABLE_BYTES,
+                RECORDS, COMPACT_RECORDS, NULLABLE_RECORDS, COMPACT_NULLABLE_RECORDS,
+                new ArrayOf(STRING), new CompactArrayOf(COMPACT_STRING), ArrayOf.nullable(STRING), CompactArrayOf.nullable(STRING),
+                new Schema(), new NullableSchema(new Schema())};
 
         final StringBuilder b = new StringBuilder();
         b.append("<table class=\"data-table\"><tbody>\n");

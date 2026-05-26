@@ -60,8 +60,8 @@ public class ImageWriterOptionsTest {
         String expectedMessage = "stuff";
 
         for (int i = MetadataVersion.MINIMUM_VERSION.ordinal();
-             i < MetadataVersion.VERSIONS.length;
-             i++) {
+            i < MetadataVersion.VERSIONS.length;
+            i++) {
             MetadataVersion version = MetadataVersion.VERSIONS[i];
             String formattedMessage = String.format("Metadata has been lost because the following could not be represented in metadata.version %s: %s", version, expectedMessage);
             Consumer<UnwritableMetadataException> customLossHandler = e -> assertEquals(formattedMessage, e.getMessage());
@@ -91,23 +91,22 @@ public class ImageWriterOptionsTest {
             setName(EligibleLeaderReplicasVersion.FEATURE_NAME).
             setFeatureLevel(isElrEnabled ?
                 EligibleLeaderReplicasVersion.ELRV_1.featureLevel() : EligibleLeaderReplicasVersion.ELRV_0.featureLevel()
-            )
-        );
+        ));
         featuresDelta.replay(new FeatureLevelRecord().
             setName(MetadataVersion.FEATURE_NAME).
             setFeatureLevel(MetadataVersion.IBP_4_0_IV1.featureLevel())
         );
         MetadataImage metadataImage = new MetadataImage(
-            new MetadataProvenance(100, 4, 2000, true),
-            featuresDelta.apply(),
-            ClusterImageTest.IMAGE1,
-            TopicsImageTest.IMAGE1,
-            ConfigurationsImageTest.IMAGE1,
-            ClientQuotasImageTest.IMAGE1,
-            ProducerIdsImageTest.IMAGE1,
-            AclsImageTest.IMAGE1,
-            ScramImageTest.IMAGE1,
-            DelegationTokenImageTest.IMAGE1
+                new MetadataProvenance(100, 4, 2000, true),
+                featuresDelta.apply(),
+                ClusterImageTest.IMAGE1,
+                TopicsImageTest.IMAGE1,
+                ConfigurationsImageTest.IMAGE1,
+                ClientQuotasImageTest.IMAGE1,
+                ProducerIdsImageTest.IMAGE1,
+                AclsImageTest.IMAGE1,
+                ScramImageTest.IMAGE1,
+                DelegationTokenImageTest.IMAGE1
         );
 
         ImageWriterOptions options = new ImageWriterOptions.Builder(metadataImage).build();

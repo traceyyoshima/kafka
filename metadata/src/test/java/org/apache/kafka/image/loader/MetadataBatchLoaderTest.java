@@ -67,45 +67,45 @@ public class MetadataBatchLoaderTest {
     static {
         {
             TOPIC_TXN_BATCH_1 = List.of(
-                new ApiMessageAndVersion(new BeginTransactionRecord().setName("txn-1"), (short) 0),
-                new ApiMessageAndVersion(new TopicRecord()
-                    .setName("foo")
-                    .setTopicId(TOPIC_FOO), (short) 0),
-                new ApiMessageAndVersion(new PartitionRecord()
-                    .setPartitionId(0)
-                    .setTopicId(TOPIC_FOO), (short) 0)
+                    new ApiMessageAndVersion(new BeginTransactionRecord().setName("txn-1"), (short) 0),
+                    new ApiMessageAndVersion(new TopicRecord()
+                        .setName("foo")
+                        .setTopicId(TOPIC_FOO), (short) 0),
+                    new ApiMessageAndVersion(new PartitionRecord()
+                        .setPartitionId(0)
+                        .setTopicId(TOPIC_FOO), (short) 0)
             );
 
             TOPIC_TXN_BATCH_2 = List.of(
-                new ApiMessageAndVersion(new PartitionRecord()
-                    .setPartitionId(1)
-                    .setTopicId(TOPIC_FOO), (short) 0),
-                new ApiMessageAndVersion(new PartitionRecord()
-                    .setPartitionId(2)
-                    .setTopicId(TOPIC_FOO), (short) 0),
-                new ApiMessageAndVersion(new EndTransactionRecord(), (short) 0)
+                    new ApiMessageAndVersion(new PartitionRecord()
+                        .setPartitionId(1)
+                        .setTopicId(TOPIC_FOO), (short) 0),
+                    new ApiMessageAndVersion(new PartitionRecord()
+                        .setPartitionId(2)
+                        .setTopicId(TOPIC_FOO), (short) 0),
+                    new ApiMessageAndVersion(new EndTransactionRecord(), (short) 0)
             );
 
             TOPIC_NO_TXN_BATCH = List.of(
-                new ApiMessageAndVersion(new TopicRecord()
-                    .setName("bar")
-                    .setTopicId(TOPIC_BAR), (short) 0),
-                new ApiMessageAndVersion(new PartitionRecord()
-                    .setPartitionId(0)
-                    .setTopicId(TOPIC_BAR), (short) 0),
-                new ApiMessageAndVersion(new PartitionRecord()
-                    .setPartitionId(1)
-                    .setTopicId(TOPIC_BAR), (short) 0)
+                    new ApiMessageAndVersion(new TopicRecord()
+                        .setName("bar")
+                        .setTopicId(TOPIC_BAR), (short) 0),
+                    new ApiMessageAndVersion(new PartitionRecord()
+                        .setPartitionId(0)
+                        .setTopicId(TOPIC_BAR), (short) 0),
+                    new ApiMessageAndVersion(new PartitionRecord()
+                        .setPartitionId(1)
+                        .setTopicId(TOPIC_BAR), (short) 0)
             );
 
             TXN_BEGIN_SINGLETON = List.of(
-                new ApiMessageAndVersion(new BeginTransactionRecord().setName("txn-1"), (short) 0));
+                    new ApiMessageAndVersion(new BeginTransactionRecord().setName("txn-1"), (short) 0));
 
             TXN_END_SINGLETON = List.of(
-                new ApiMessageAndVersion(new EndTransactionRecord(), (short) 0));
+                    new ApiMessageAndVersion(new EndTransactionRecord(), (short) 0));
 
             TXN_ABORT_SINGLETON = List.of(
-                new ApiMessageAndVersion(new AbortTransactionRecord(), (short) 0));
+                    new ApiMessageAndVersion(new AbortTransactionRecord(), (short) 0));
         }
     }
 
@@ -114,7 +114,6 @@ public class MetadataBatchLoaderTest {
                 .mapToObj(__ -> new ApiMessageAndVersion(new NoOpRecord(), (short) 0))
                 .toList();
     }
-
 
     static class MockMetadataUpdater implements MetadataBatchLoader.MetadataUpdater {
         MetadataImage latestImage = null;
@@ -141,19 +140,19 @@ public class MetadataBatchLoaderTest {
     @Test
     public void testAlignedTransactionBatches() {
         Batch<ApiMessageAndVersion> batch1 = Batch.data(
-            10, 1, 0, 10, TOPIC_TXN_BATCH_1);
+                10, 1, 0, 10, TOPIC_TXN_BATCH_1);
         Batch<ApiMessageAndVersion> batch2 = Batch.data(
-            13, 2, 0, 10, noOpRecords(3));
+                13, 2, 0, 10, noOpRecords(3));
         Batch<ApiMessageAndVersion> batch3 = Batch.data(
-            16, 2, 0, 30, TOPIC_TXN_BATCH_2);
+                16, 2, 0, 30, TOPIC_TXN_BATCH_2);
 
         MockMetadataUpdater updater = new MockMetadataUpdater();
         MetadataBatchLoader batchLoader = new MetadataBatchLoader(
-            new LogContext(),
-            new MockTime(),
-            new MockFaultHandler("testAlignedTransactionBatches"),
-            updater,
-            SupportedConfigChecker.TRUE
+                new LogContext(),
+                new MockTime(),
+                new MockFaultHandler("testAlignedTransactionBatches"),
+                updater,
+                SupportedConfigChecker.TRUE
         );
 
         batchLoader.resetToImage(MetadataImage.EMPTY);
@@ -174,23 +173,23 @@ public class MetadataBatchLoaderTest {
     @Test
     public void testSingletonBeginAndEnd() {
         Batch<ApiMessageAndVersion> batch1 = Batch.data(
-            13, 1, 0, 30, noOpRecords(3));
+                13, 1, 0, 30, noOpRecords(3));
 
         Batch<ApiMessageAndVersion> batch2 = Batch.data(
-            16, 2, 0, 30, TXN_BEGIN_SINGLETON);
+                16, 2, 0, 30, TXN_BEGIN_SINGLETON);
 
         Batch<ApiMessageAndVersion> batch3 = Batch.data(
-            17, 3, 0, 10, TOPIC_NO_TXN_BATCH);
+                17, 3, 0, 10, TOPIC_NO_TXN_BATCH);
 
         Batch<ApiMessageAndVersion> batch4 = Batch.data(
-            20, 4, 0, 10, TXN_END_SINGLETON);
+                20, 4, 0, 10, TXN_END_SINGLETON);
         MockMetadataUpdater updater = new MockMetadataUpdater();
         MetadataBatchLoader batchLoader = new MetadataBatchLoader(
-            new LogContext(),
-            new MockTime(),
-            new MockFaultHandler("testSingletonBeginAndEnd"),
-            updater,
-            SupportedConfigChecker.TRUE
+                new LogContext(),
+                new MockTime(),
+                new MockFaultHandler("testSingletonBeginAndEnd"),
+                updater,
+                SupportedConfigChecker.TRUE
         );
 
         // All in one commit
@@ -236,18 +235,18 @@ public class MetadataBatchLoaderTest {
         MockMetadataUpdater updater = new MockMetadataUpdater();
         MockFaultHandler faultHandler = new MockFaultHandler("testUnexpectedBeginTransaction");
         MetadataBatchLoader batchLoader = new MetadataBatchLoader(
-            new LogContext(),
-            new MockTime(),
-            faultHandler,
-            updater,
-            SupportedConfigChecker.TRUE
+                new LogContext(),
+                new MockTime(),
+                faultHandler,
+                updater,
+                SupportedConfigChecker.TRUE
         );
 
         Batch<ApiMessageAndVersion> batch1 = Batch.data(
-            10, 2, 0, 30, TOPIC_TXN_BATCH_1);
+                10, 2, 0, 30, TOPIC_TXN_BATCH_1);
 
         Batch<ApiMessageAndVersion> batch2 = Batch.data(
-            13, 2, 0, 30, TXN_BEGIN_SINGLETON);
+                13, 2, 0, 30, TXN_BEGIN_SINGLETON);
 
         batchLoader.resetToImage(MetadataImage.EMPTY);
         batchLoader.loadBatch(batch1, LEADER_AND_EPOCH);
@@ -255,8 +254,8 @@ public class MetadataBatchLoaderTest {
         batchLoader.loadBatch(batch2, LEADER_AND_EPOCH);
         assertEquals(RuntimeException.class, faultHandler.firstException().getCause().getClass());
         assertEquals(
-            "Encountered BeginTransactionRecord while already in a transaction",
-            faultHandler.firstException().getCause().getMessage()
+                "Encountered BeginTransactionRecord while already in a transaction",
+                faultHandler.firstException().getCause().getMessage()
         );
         batchLoader.maybeFlushBatches(LEADER_AND_EPOCH, true);
         assertEquals(0, updater.updates);
@@ -276,11 +275,11 @@ public class MetadataBatchLoaderTest {
 
         // First batch gets loaded fine
         Batch<ApiMessageAndVersion> batch1 = Batch.data(
-            10, 2, 0, 30, TOPIC_NO_TXN_BATCH);
+                10, 2, 0, 30, TOPIC_NO_TXN_BATCH);
 
         // Second batch throws an error, but shouldn't interfere with prior batches
         Batch<ApiMessageAndVersion> batch2 = Batch.data(
-            13, 2, 0, 30, TXN_END_SINGLETON);
+                13, 2, 0, 30, TXN_END_SINGLETON);
 
         batchLoader.resetToImage(MetadataImage.EMPTY);
         batchLoader.loadBatch(batch1, LEADER_AND_EPOCH);
@@ -288,8 +287,8 @@ public class MetadataBatchLoaderTest {
         batchLoader.loadBatch(batch2, LEADER_AND_EPOCH);
         assertEquals(RuntimeException.class, faultHandler.firstException().getCause().getClass());
         assertEquals(
-            "Encountered EndTransactionRecord without having seen a BeginTransactionRecord",
-            faultHandler.firstException().getCause().getMessage()
+                "Encountered EndTransactionRecord without having seen a BeginTransactionRecord",
+                faultHandler.firstException().getCause().getMessage()
         );
         batchLoader.maybeFlushBatches(LEADER_AND_EPOCH, true);
         assertEquals(1, updater.updates);
@@ -301,20 +300,20 @@ public class MetadataBatchLoaderTest {
         MockMetadataUpdater updater = new MockMetadataUpdater();
         MockFaultHandler faultHandler = new MockFaultHandler("testUnexpectedAbortTransaction");
         MetadataBatchLoader batchLoader = new MetadataBatchLoader(
-            new LogContext(),
-            new MockTime(),
-            faultHandler,
-            updater,
-            SupportedConfigChecker.TRUE
+                new LogContext(),
+                new MockTime(),
+                faultHandler,
+                updater,
+                SupportedConfigChecker.TRUE
         );
 
         // First batch gets loaded fine
         Batch<ApiMessageAndVersion> batch1 = Batch.data(
-            10, 2, 0, 30, TOPIC_NO_TXN_BATCH);
+                10, 2, 0, 30, TOPIC_NO_TXN_BATCH);
 
         // Second batch throws an error, but shouldn't interfere with prior batches
         Batch<ApiMessageAndVersion> batch2 = Batch.data(
-            13, 2, 0, 30, TXN_ABORT_SINGLETON);
+                13, 2, 0, 30, TXN_ABORT_SINGLETON);
 
         batchLoader.resetToImage(MetadataImage.EMPTY);
         batchLoader.loadBatch(batch1, LEADER_AND_EPOCH);
@@ -322,8 +321,8 @@ public class MetadataBatchLoaderTest {
         batchLoader.loadBatch(batch2, LEADER_AND_EPOCH);
         assertEquals(RuntimeException.class, faultHandler.firstException().getCause().getClass());
         assertEquals(
-            "Encountered AbortTransactionRecord without having seen a BeginTransactionRecord",
-            faultHandler.firstException().getCause().getMessage()
+                "Encountered AbortTransactionRecord without having seen a BeginTransactionRecord",
+                faultHandler.firstException().getCause().getMessage()
         );
         batchLoader.maybeFlushBatches(LEADER_AND_EPOCH, true);
         assertEquals(1, updater.updates);
@@ -336,14 +335,14 @@ public class MetadataBatchLoaderTest {
         List<ApiMessageAndVersion> batchRecords
     ) {
         Batch<ApiMessageAndVersion> batch = Batch.data(
-            10, 42, 0, 100, batchRecords);
+                10, 42, 0, 100, batchRecords);
 
         MetadataBatchLoader batchLoader = new MetadataBatchLoader(
-            new LogContext(),
-            new MockTime(),
-            faultHandler,
-            updater,
-            SupportedConfigChecker.TRUE
+                new LogContext(),
+                new MockTime(),
+                faultHandler,
+                updater,
+                SupportedConfigChecker.TRUE
         );
 
         batchLoader.resetToImage(MetadataImage.EMPTY);
@@ -424,26 +423,26 @@ public class MetadataBatchLoaderTest {
     public void testOneTransactionInMultipleBatches(boolean abortTxn) {
         MockMetadataUpdater updater = new MockMetadataUpdater();
         MetadataBatchLoader batchLoader = new MetadataBatchLoader(
-            new LogContext(),
-            new MockTime(),
-            new MockFaultHandler("testOneTransactionInMultipleBatches"),
-            updater,
-            SupportedConfigChecker.TRUE
+                new LogContext(),
+                new MockTime(),
+                new MockFaultHandler("testOneTransactionInMultipleBatches"),
+                updater,
+                SupportedConfigChecker.TRUE
         );
 
         batchLoader.resetToImage(MetadataImage.EMPTY);
         batchLoader.loadBatch(Batch.data(
-            16, 2, 0, 10, TXN_BEGIN_SINGLETON), LEADER_AND_EPOCH);
+                16, 2, 0, 10, TXN_BEGIN_SINGLETON), LEADER_AND_EPOCH);
         assertEquals(0, updater.updates);
         batchLoader.loadBatch(Batch.data(
-            17, 3, 0, 30, TOPIC_NO_TXN_BATCH), LEADER_AND_EPOCH);
+                17, 3, 0, 30, TOPIC_NO_TXN_BATCH), LEADER_AND_EPOCH);
         assertEquals(0, updater.updates);
         if (abortTxn) {
             batchLoader.loadBatch(Batch.data(
-                20, 4, 0, 10, TXN_ABORT_SINGLETON), LEADER_AND_EPOCH);
+                    20, 4, 0, 10, TXN_ABORT_SINGLETON), LEADER_AND_EPOCH);
         } else {
             batchLoader.loadBatch(Batch.data(
-                20, 4, 0, 10, TXN_END_SINGLETON), LEADER_AND_EPOCH);
+                    20, 4, 0, 10, TXN_END_SINGLETON), LEADER_AND_EPOCH);
         }
         assertEquals(0, updater.updates);
         batchLoader.maybeFlushBatches(LEADER_AND_EPOCH, true);
@@ -467,27 +466,27 @@ public class MetadataBatchLoaderTest {
 
         MockMetadataUpdater updater = new MockMetadataUpdater();
         MetadataBatchLoader batchLoader = new MetadataBatchLoader(
-            new LogContext(),
-            new MockTime(),
-            new MockFaultHandler("testUnsupportedConfigFilteredInBatch"),
-            updater,
-            checker
+                new LogContext(),
+                new MockTime(),
+                new MockFaultHandler("testUnsupportedConfigFilteredInBatch"),
+                updater,
+                checker
         );
 
         List<ApiMessageAndVersion> records = List.of(
-            new ApiMessageAndVersion(new TopicRecord()
-                .setName("foo")
-                .setTopicId(TOPIC_FOO), (short) 0),
-            new ApiMessageAndVersion(new ConfigRecord()
-                .setResourceType(ConfigResource.Type.TOPIC.id())
-                .setResourceName("foo")
-                .setName("unsupported.config")
-                .setValue("some-value"), (short) 0),
-            new ApiMessageAndVersion(new ConfigRecord()
-                .setResourceType(ConfigResource.Type.TOPIC.id())
-                .setResourceName("foo")
-                .setName("retention.ms")
-                .setValue("1000"), (short) 0)
+                new ApiMessageAndVersion(new TopicRecord()
+                    .setName("foo")
+                    .setTopicId(TOPIC_FOO), (short) 0),
+                new ApiMessageAndVersion(new ConfigRecord()
+                    .setResourceType(ConfigResource.Type.TOPIC.id())
+                    .setResourceName("foo")
+                    .setName("unsupported.config")
+                    .setValue("some-value"), (short) 0),
+                new ApiMessageAndVersion(new ConfigRecord()
+                    .setResourceType(ConfigResource.Type.TOPIC.id())
+                    .setResourceName("foo")
+                    .setName("retention.ms")
+                    .setValue("1000"), (short) 0)
         );
 
         Batch<ApiMessageAndVersion> batch = Batch.data(10, 42, 0, 100, records);

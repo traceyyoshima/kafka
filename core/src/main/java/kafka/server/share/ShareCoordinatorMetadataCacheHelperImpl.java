@@ -113,10 +113,10 @@ public class ShareCoordinatorMetadataCacheHelperImpl implements ShareCoordinator
                 topicSet.add(internalTopicName);
 
                 List<MetadataResponseData.MetadataResponseTopic> topicMetadata = metadataCache.getTopicMetadata(
-                    topicSet,
-                    interBrokerListenerName,
-                    false,
-                    false
+                        topicSet,
+                        interBrokerListenerName,
+                        false,
+                        false
                 );
 
                 if (topicMetadata == null || topicMetadata.isEmpty() || topicMetadata.get(0).errorCode() != Errors.NONE.code()) {
@@ -125,7 +125,7 @@ public class ShareCoordinatorMetadataCacheHelperImpl implements ShareCoordinator
                     int partition = keyToPartitionMapper.apply(key);
                     Optional<MetadataResponseData.MetadataResponsePartition> response = topicMetadata.get(0).partitions().stream()
                         .filter(responsePart -> responsePart.partitionIndex() == partition
-                            && responsePart.leaderId() != MetadataResponse.NO_LEADER_ID)
+                                && responsePart.leaderId() != MetadataResponse.NO_LEADER_ID)
                         .findFirst();
 
                     if (response.isPresent()) {

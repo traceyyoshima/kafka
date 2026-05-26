@@ -66,7 +66,7 @@ public class NamedCacheTest {
             final byte[] key = stringStringKeyValue.key.getBytes();
             final byte[] value = stringStringKeyValue.value.getBytes();
             cache.put(Bytes.wrap(key),
-                new LRUCacheEntry(value, new RecordHeaders(), true, 1, 1, 1, "", rawKey, rawValue));
+                    new LRUCacheEntry(value, new RecordHeaders(), true, 1, 1, 1, "", rawKey, rawValue));
             final LRUCacheEntry head = cache.first();
             final LRUCacheEntry tail = cache.last();
             assertEquals(new String(head.value()), stringStringKeyValue.value);
@@ -133,8 +133,8 @@ public class NamedCacheTest {
     @Test
     public void shouldOverwriteAll() {
         cache.putAll(Arrays.asList(KeyValue.pair(new byte[] {0}, new LRUCacheEntry(new byte[]{0})),
-            KeyValue.pair(new byte[] {0}, new LRUCacheEntry(new byte[]{1})),
-            KeyValue.pair(new byte[] {0}, new LRUCacheEntry(new byte[]{2}))));
+                KeyValue.pair(new byte[] {0}, new LRUCacheEntry(new byte[]{1})),
+                KeyValue.pair(new byte[] {0}, new LRUCacheEntry(new byte[]{2}))));
 
         assertArrayEquals(new byte[]{2}, cache.get(Bytes.wrap(new byte[]{0})).value());
         assertEquals(2, cache.overwrites());
@@ -180,7 +180,7 @@ public class NamedCacheTest {
     public void shouldThrowIllegalStateExceptionWhenTryingToOverwriteDirtyEntryWithCleanEntry() {
         cache.put(Bytes.wrap(new byte[]{0}), new LRUCacheEntry(new byte[]{10}, headers, true, 0, 0, 0, "", rawKey, rawValue));
         assertThrows(IllegalStateException.class, () -> cache.put(Bytes.wrap(new byte[]{0}),
-            new LRUCacheEntry(new byte[]{10}, new RecordHeaders(), false, 0, 0, 0, "", rawKey, rawValue)));
+                new LRUCacheEntry(new byte[]{10}, new RecordHeaders(), false, 0, 0, 0, "", rawKey, rawValue)));
     }
 
     @Test

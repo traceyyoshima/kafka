@@ -103,12 +103,12 @@ public interface ClusterMetadataAuthorizer extends Authorizer {
         AclMutator aclMutator = aclMutatorOrException();
         aclBindings.forEach(b -> futures.add(new CompletableFuture<>()));
         ControllerRequestContext context = new ControllerRequestContext(
-            requestContext, OptionalLong.empty());
+                requestContext, OptionalLong.empty());
         aclMutator.createAcls(context, aclBindings).whenComplete((results, throwable) -> {
             if (throwable == null && results.size() != futures.size()) {
                 throwable = new UnknownServerException("Invalid size " +
-                    "of result set from controller. Expected " + futures.size() +
-                    "; got " + results.size());
+                        "of result set from controller. Expected " + futures.size() +
+                        "; got " + results.size());
             }
             if (throwable == null) {
                 for (int i = 0; i < futures.size(); i++) {
@@ -143,12 +143,12 @@ public interface ClusterMetadataAuthorizer extends Authorizer {
         AclMutator aclMutator = aclMutatorOrException();
         filters.forEach(b -> futures.add(new CompletableFuture<>()));
         ControllerRequestContext context = new ControllerRequestContext(
-            requestContext, OptionalLong.empty());
+                requestContext, OptionalLong.empty());
         aclMutator.deleteAcls(context, filters).whenComplete((results, throwable) -> {
             if (throwable == null && results.size() != futures.size()) {
                 throwable = new UnknownServerException("Invalid size " +
-                    "of result set from controller. Expected " + futures.size() +
-                    "; got " + results.size());
+                        "of result set from controller. Expected " + futures.size() +
+                        "; got " + results.size());
             }
             if (throwable == null) {
                 for (int i = 0; i < futures.size(); i++) {

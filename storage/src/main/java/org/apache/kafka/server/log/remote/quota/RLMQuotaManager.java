@@ -83,7 +83,7 @@ public class RLMQuotaManager {
             sensorInstance.checkQuotas();
         } catch (QuotaViolationException qve) {
             LOGGER.debug("Quota violated for sensor ({}), metric: ({}), metric-value: ({}), bound: ({})",
-                sensorInstance.name(), qve.metric().metricName(), qve.value(), qve.bound());
+                    sensorInstance.name(), qve.metric().metricName(), qve.value(), qve.bound());
             return QuotaUtils.throttleTime(qve, time.milliseconds());
         }
         return 0L;
@@ -106,9 +106,9 @@ public class RLMQuotaManager {
 
     private Sensor sensor() {
         return sensorAccess.getOrCreate(
-            quotaType.toString(),
-            RLMQuotaManagerConfig.INACTIVE_SENSOR_EXPIRATION_TIME_SECONDS,
-            sensor -> sensor.add(metricName(), new SimpleRate(), getQuotaMetricConfig(quota))
+                quotaType.toString(),
+                RLMQuotaManagerConfig.INACTIVE_SENSOR_EXPIRATION_TIME_SECONDS,
+                sensor -> sensor.add(metricName(), new SimpleRate(), getQuotaMetricConfig(quota))
         );
     }
 }

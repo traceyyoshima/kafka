@@ -85,12 +85,12 @@ public class TasksTest {
         assertEquals(Set.of(statefulTask, standbyTask), tasks.initializedTasks(Set.of(statefulTask.id(), standbyTask.id())));
         assertEquals(Set.of(statefulTask.id(), statelessTask.id(), standbyTask.id()), tasks.allInitializedTaskIds());
         assertEquals(
-            mkMap(
-                mkEntry(statefulTask.id(), statefulTask),
-                mkEntry(statelessTask.id(), statelessTask),
-                mkEntry(standbyTask.id(), standbyTask)
-            ),
-            tasks.allInitializedTasksPerId());
+                mkMap(
+                        mkEntry(statefulTask.id(), statefulTask),
+                        mkEntry(statelessTask.id(), statelessTask),
+                        mkEntry(standbyTask.id(), standbyTask)
+                ),
+                tasks.allInitializedTasksPerId());
         assertTrue(tasks.containsInitialized(statefulTask.id()));
         assertTrue(tasks.containsInitialized(statelessTask.id()));
         assertTrue(tasks.containsInitialized(statefulTask.id()));
@@ -99,27 +99,27 @@ public class TasksTest {
     @Test
     public void shouldDrainPendingTasksToCreate() {
         tasks.addPendingActiveTasksToCreate(mkMap(
-            mkEntry(new TaskId(0, 0, "A"), Set.of(TOPIC_PARTITION_A_0)),
-            mkEntry(new TaskId(0, 1, "A"), Set.of(TOPIC_PARTITION_A_1)),
-            mkEntry(new TaskId(0, 0, "B"), Set.of(TOPIC_PARTITION_B_0)),
-            mkEntry(new TaskId(0, 1, "B"), Set.of(TOPIC_PARTITION_B_1))
+                mkEntry(new TaskId(0, 0, "A"), Set.of(TOPIC_PARTITION_A_0)),
+                mkEntry(new TaskId(0, 1, "A"), Set.of(TOPIC_PARTITION_A_1)),
+                mkEntry(new TaskId(0, 0, "B"), Set.of(TOPIC_PARTITION_B_0)),
+                mkEntry(new TaskId(0, 1, "B"), Set.of(TOPIC_PARTITION_B_1))
         ));
 
         tasks.addPendingStandbyTasksToCreate(mkMap(
-            mkEntry(new TaskId(0, 0, "A"), Set.of(TOPIC_PARTITION_A_0)),
-            mkEntry(new TaskId(0, 1, "A"), Set.of(TOPIC_PARTITION_A_1)),
-            mkEntry(new TaskId(0, 0, "B"), Set.of(TOPIC_PARTITION_B_0)),
-            mkEntry(new TaskId(0, 1, "B"), Set.of(TOPIC_PARTITION_B_1))
+                mkEntry(new TaskId(0, 0, "A"), Set.of(TOPIC_PARTITION_A_0)),
+                mkEntry(new TaskId(0, 1, "A"), Set.of(TOPIC_PARTITION_A_1)),
+                mkEntry(new TaskId(0, 0, "B"), Set.of(TOPIC_PARTITION_B_0)),
+                mkEntry(new TaskId(0, 1, "B"), Set.of(TOPIC_PARTITION_B_1))
         ));
 
         assertEquals(mkMap(
-            mkEntry(new TaskId(0, 0, "A"), Set.of(TOPIC_PARTITION_A_0)),
-            mkEntry(new TaskId(0, 1, "A"), Set.of(TOPIC_PARTITION_A_1))
+                mkEntry(new TaskId(0, 0, "A"), Set.of(TOPIC_PARTITION_A_0)),
+                mkEntry(new TaskId(0, 1, "A"), Set.of(TOPIC_PARTITION_A_1))
         ), tasks.drainPendingActiveTasksForTopologies(Set.of("A")));
 
         assertEquals(mkMap(
-            mkEntry(new TaskId(0, 0, "A"), Set.of(TOPIC_PARTITION_A_0)),
-            mkEntry(new TaskId(0, 1, "A"), Set.of(TOPIC_PARTITION_A_1))
+                mkEntry(new TaskId(0, 0, "A"), Set.of(TOPIC_PARTITION_A_0)),
+                mkEntry(new TaskId(0, 1, "A"), Set.of(TOPIC_PARTITION_A_1))
         ), tasks.drainPendingStandbyTasksForTopologies(Set.of("A")));
 
         tasks.clearPendingTasksToCreate();
@@ -233,11 +233,11 @@ public class TasksTest {
         tasks.addPendingTasksToInit(Collections.singleton(task));
         final TaskId taskId1 = new TaskId(0, 0, "A");
         tasks.addPendingActiveTasksToCreate(mkMap(
-            mkEntry(taskId1, Set.of(TOPIC_PARTITION_A_0))
+                mkEntry(taskId1, Set.of(TOPIC_PARTITION_A_0))
         ));
         final TaskId taskId2 = new TaskId(0, 1, "A");
         tasks.addPendingStandbyTasksToCreate(mkMap(
-            mkEntry(taskId2, Set.of(TOPIC_PARTITION_A_0))
+                mkEntry(taskId2, Set.of(TOPIC_PARTITION_A_0))
         ));
 
         assertTrue(tasks.pendingTasksToInit().contains(task));

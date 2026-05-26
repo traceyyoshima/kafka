@@ -164,7 +164,7 @@ public class StreamsResetter {
 
                 final HashMap<Object, Object> consumerConfig = new HashMap<>(config);
                 if (consumerConfig.containsKey(GROUP_PROTOCOL_CONFIG) &&
-                    !consumerConfig.get(GROUP_PROTOCOL_CONFIG).toString().equalsIgnoreCase(GroupProtocol.CLASSIC.name())
+                        !consumerConfig.get(GROUP_PROTOCOL_CONFIG).toString().equalsIgnoreCase(GroupProtocol.CLASSIC.name())
                 ) {
                     System.out.println("WARNING: provided group protocol will be ignored. Using supported " + GroupProtocol.CLASSIC.name() + " protocol instead");
                 }
@@ -289,7 +289,7 @@ public class StreamsResetter {
         config.setProperty(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
 
         try (final KafkaConsumer<byte[], byte[]> client =
-                 new KafkaConsumer<>(config, new ByteArrayDeserializer(), new ByteArrayDeserializer())) {
+                new KafkaConsumer<>(config, new ByteArrayDeserializer(), new ByteArrayDeserializer())) {
 
             final Collection<TopicPartition> partitions = topicsToSubscribe.stream().map(client::partitionsFor)
                     .flatMap(Collection::stream)
@@ -368,7 +368,7 @@ public class StreamsResetter {
             } else if (options.hasFromFile()) {
                 final String resetPlanPath = options.fromFile();
                 final Map<TopicPartition, Long> topicPartitionsAndOffset =
-                    getTopicPartitionOffsetFromResetPlan(resetPlanPath);
+                        getTopicPartitionOffsetFromResetPlan(resetPlanPath);
                 resetOffsetsFromResetPlan(client, inputTopicPartitions, topicPartitionsAndOffset);
             } else {
                 client.seekToBeginning(inputTopicPartitions);
@@ -388,7 +388,7 @@ public class StreamsResetter {
         final Map<TopicPartition, Long> beginningOffsets = client.beginningOffsets(inputTopicPartitions);
 
         final Map<TopicPartition, Long> validatedTopicPartitionsAndOffset =
-            checkOffsetRange(topicPartitionsAndOffset, beginningOffsets, endOffsets);
+                checkOffsetRange(topicPartitionsAndOffset, beginningOffsets, endOffsets);
 
         for (final TopicPartition topicPartition : inputTopicPartitions) {
             client.seek(topicPartition, validatedTopicPartitionsAndOffset.get(topicPartition));
@@ -447,7 +447,7 @@ public class StreamsResetter {
         }
 
         final Map<TopicPartition, Long> validatedTopicPartitionsAndOffset =
-            checkOffsetRange(topicPartitionsAndOffset, beginningOffsets, endOffsets);
+                checkOffsetRange(topicPartitionsAndOffset, beginningOffsets, endOffsets);
 
         for (final TopicPartition topicPartition : inputTopicPartitions) {
             client.seek(topicPartition, validatedTopicPartitionsAndOffset.get(topicPartition));
@@ -467,7 +467,7 @@ public class StreamsResetter {
         }
 
         final Map<TopicPartition, Long> validatedTopicPartitionsAndOffset =
-            checkOffsetRange(topicPartitionsAndOffset, beginningOffsets, endOffsets);
+                checkOffsetRange(topicPartitionsAndOffset, beginningOffsets, endOffsets);
 
         for (final TopicPartition topicPartition : inputTopicPartitions) {
             client.seek(topicPartition, validatedTopicPartitionsAndOffset.get(topicPartition));
@@ -574,10 +574,10 @@ public class StreamsResetter {
     // visible for testing
     public static boolean matchesInternalTopicFormat(final String topicName) {
         return topicName.endsWith("-changelog") || topicName.endsWith("-repartition")
-               || topicName.endsWith("-subscription-registration-topic")
-               || topicName.endsWith("-subscription-response-topic")
-               || topicName.matches(".+-KTABLE-FK-JOIN-SUBSCRIPTION-REGISTRATION-\\d+-topic")
-               || topicName.matches(".+-KTABLE-FK-JOIN-SUBSCRIPTION-RESPONSE-\\d+-topic");
+                || topicName.endsWith("-subscription-registration-topic")
+                || topicName.endsWith("-subscription-response-topic")
+                || topicName.matches(".+-KTABLE-FK-JOIN-SUBSCRIPTION-REGISTRATION-\\d+-topic")
+                || topicName.matches(".+-KTABLE-FK-JOIN-SUBSCRIPTION-RESPONSE-\\d+-topic");
     }
 
     private static class StreamsResetterOptions extends CommandDefaultOptions {
@@ -657,7 +657,7 @@ public class StreamsResetter {
                 .ofType(String.class)
                 .describedAs("file name");
             forceOption = parser.accepts("force", "Force the removal of members of the consumer group (intended to remove stopped members if a long session timeout was used). " +
-                "Make sure to shut down all stream applications when this option is specified to avoid unexpected rebalances.");
+                    "Make sure to shut down all stream applications when this option is specified to avoid unexpected rebalances.");
 
             dryRunOption = parser.accepts("dry-run", "Display the actions that would be performed without executing the reset commands.");
 
@@ -782,7 +782,7 @@ public class StreamsResetter {
             // and don't consider them as internal topics even if they follow the same naming schema.
             // Cf. https://issues.apache.org/jira/browse/KAFKA-7930
             return !isInputTopic(topicName) && !isIntermediateTopic(topicName) && topicName.startsWith(options.valueOf(applicationIdOption) + "-")
-                && matchesInternalTopicFormat(topicName);
+                    && matchesInternalTopicFormat(topicName);
         }
 
         public List<String> internalTopics() {

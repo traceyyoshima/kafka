@@ -54,7 +54,7 @@ public class DirectoryConfigProvider implements ConfigProvider {
     }
 
     @Override
-    public void close() throws IOException { }
+    public void close() throws IOException {}
 
     /**
      * Retrieves the data contained in regular files in the directory given by {@code path}.
@@ -78,7 +78,7 @@ public class DirectoryConfigProvider implements ConfigProvider {
     public ConfigData get(String path, Set<String> keys) {
         return get(path, pathname ->
                 Files.isRegularFile(pathname)
-                        && keys.contains(pathname.getFileName().toString()));
+                && keys.contains(pathname.getFileName().toString()));
     }
 
     private ConfigData get(String path, Predicate<Path> fileFilter) {
@@ -102,8 +102,8 @@ public class DirectoryConfigProvider implements ConfigProvider {
                     map = stream
                         .filter(fileFilter)
                         .collect(Collectors.toMap(
-                            p -> p.getFileName().toString(),
-                            p -> read(p)));
+                                p -> p.getFileName().toString(),
+                                p -> read(p)));
                 } catch (IOException e) {
                     log.error("Could not list directory {}", dir, e);
                     throw new ConfigException("Could not list directory " + dir);

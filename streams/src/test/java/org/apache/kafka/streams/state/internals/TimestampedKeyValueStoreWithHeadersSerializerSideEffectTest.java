@@ -132,11 +132,11 @@ public class TimestampedKeyValueStoreWithHeadersSerializerSideEffectTest {
 
         // Create a timestamped key-value store with headers using our custom serializer
         builder.addStateStore(
-            Stores.timestampedKeyValueStoreWithHeadersBuilder(
-                Stores.inMemoryKeyValueStore(STORE_NAME),
-                new HeaderAddingSerde(),  // Custom key serializer that adds headers
-                Serdes.String()
-            )
+                Stores.timestampedKeyValueStoreWithHeadersBuilder(
+                        Stores.inMemoryKeyValueStore(STORE_NAME),
+                        new HeaderAddingSerde(),  // Custom key serializer that adds headers
+                        Serdes.String()
+                )
         );
 
         // Add a processor that uses the store and forwards to output
@@ -151,25 +151,25 @@ public class TimestampedKeyValueStoreWithHeadersSerializerSideEffectTest {
 
         try (TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
             final TestInputTopic<String, String> inputTopic = driver.createInputTopic(
-                INPUT_TOPIC,
-                Serdes.String().serializer(),
-                Serdes.String().serializer()
+                    INPUT_TOPIC,
+                    Serdes.String().serializer(),
+                    Serdes.String().serializer()
             );
 
             final String changelogTopic = "test-app-" + STORE_NAME + "-changelog";
             final TestOutputTopic<String, String> changelogOutputTopic =
-                driver.createOutputTopic(
-                    changelogTopic,
-                    Serdes.String().deserializer(),
-                    Serdes.String().deserializer()
-                );
+                    driver.createOutputTopic(
+                            changelogTopic,
+                            Serdes.String().deserializer(),
+                            Serdes.String().deserializer()
+                    );
 
             final TestOutputTopic<String, String> outputTopic =
-                driver.createOutputTopic(
-                    OUTPUT_TOPIC,
-                    Serdes.String().deserializer(),
-                    Serdes.String().deserializer()
-                );
+                    driver.createOutputTopic(
+                            OUTPUT_TOPIC,
+                            Serdes.String().deserializer(),
+                            Serdes.String().deserializer()
+                    );
 
             inputTopic.pipeInput("key1", "value1");
 

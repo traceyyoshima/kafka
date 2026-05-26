@@ -202,7 +202,7 @@ public class NetworkClientDelegate implements AutoCloseable {
                 iterator.remove();
                 asyncConsumerMetrics.recordUnsentRequestsQueueTime(time.milliseconds() - unsent.enqueueTimeMs());
                 unsent.handler.onFailure(currentTimeMs, new TimeoutException(
-                    "Failed to send request after " + unsent.timer.timeoutMs() + " ms."));
+                        "Failed to send request after " + unsent.timer.timeoutMs() + " ms."));
                 continue;
             }
 
@@ -257,15 +257,15 @@ public class NetworkClientDelegate implements AutoCloseable {
         final long currentTimeMs
     ) {
         return client.newClientRequest(
-            node.idString(),
-            unsent.requestBuilder,
-            currentTimeMs,
-            true,
-            (int) unsent.timer.remainingMs(),
-            unsent.handler
+                node.idString(),
+                unsent.requestBuilder,
+                currentTimeMs,
+                true,
+                (int) unsent.timer.remainingMs(),
+                unsent.handler
         );
     }
-    
+
     public Optional<Exception> getAndClearMetadataError() {
         Optional<Exception> metadataError = this.metadataError;
         this.metadataError = Optional.empty();
@@ -506,14 +506,14 @@ public class NetworkClientDelegate implements AutoCloseable {
             @Override
             protected NetworkClientDelegate create() {
                 return new NetworkClientDelegate(
-                    time,
-                    config,
-                    logContext,
-                    client,
-                    metadata,
-                    backgroundEventHandler,
-                    notifyMetadataErrorsViaErrorQueue,
-                    asyncConsumerMetrics
+                        time,
+                        config,
+                        logContext,
+                        client,
+                        metadata,
+                        backgroundEventHandler,
+                        notifyMetadataErrorsViaErrorQueue,
+                        asyncConsumerMetrics
                 );
             }
         };

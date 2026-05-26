@@ -185,13 +185,13 @@ public class StickyAssignor extends AbstractStickyAssignor {
     private static final String GENERATION_KEY_NAME = "generation";
 
     static final Schema TOPIC_ASSIGNMENT = new Schema(
-        new Field(TOPIC_KEY_NAME, Type.STRING),
-        new Field(PARTITIONS_KEY_NAME, new ArrayOf(Type.INT32)));
+            new Field(TOPIC_KEY_NAME, Type.STRING),
+            new Field(PARTITIONS_KEY_NAME, new ArrayOf(Type.INT32)));
     static final Schema STICKY_ASSIGNOR_USER_DATA_V0 = new Schema(
-        new Field(TOPIC_PARTITIONS_KEY_NAME, new ArrayOf(TOPIC_ASSIGNMENT)));
+            new Field(TOPIC_PARTITIONS_KEY_NAME, new ArrayOf(TOPIC_ASSIGNMENT)));
     private static final Schema STICKY_ASSIGNOR_USER_DATA_V1 = new Schema(
-        new Field(TOPIC_PARTITIONS_KEY_NAME, new ArrayOf(TOPIC_ASSIGNMENT)),
-        new Field(GENERATION_KEY_NAME, Type.INT32));
+            new Field(TOPIC_PARTITIONS_KEY_NAME, new ArrayOf(TOPIC_ASSIGNMENT)),
+            new Field(GENERATION_KEY_NAME, Type.INT32));
 
     private List<TopicPartition> memberAssignment = null;
     private int generation = DEFAULT_GENERATION; // consumer group generation

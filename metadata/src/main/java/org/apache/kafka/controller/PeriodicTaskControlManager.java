@@ -95,7 +95,7 @@ class PeriodicTaskControlManager {
                 // that it is handled correctly in QuorumController::handleEventException. We want it to
                 // cause the metadata error metric to be incremented, but not cause a controller failover.
                 throw new PeriodicControlTaskException(task.name() + ": periodic task failed: " +
-                    e.getMessage(), e);
+                        e.getMessage(), e);
             }
             if (log.isDebugEnabled() || task.flags().contains(PeriodicTaskFlag.VERBOSE)) {
                 long endNs = time.nanoseconds();

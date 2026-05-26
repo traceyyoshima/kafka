@@ -58,14 +58,14 @@ public class KeyValueStoreMaterializer<K, V> extends MaterializedStoreFactory<K,
                     materialized.valueSerde());
         } else if (supplier instanceof HeadersBytesStoreSupplier) {
             builder = Stores.timestampedKeyValueStoreWithHeadersBuilder(
-                supplier,
-                materialized.keySerde(),
-                materialized.valueSerde());
+                    supplier,
+                    materialized.keySerde(),
+                    materialized.valueSerde());
         } else {
             builder = Stores.timestampedKeyValueStoreBuilder(
-                supplier,
-                materialized.keySerde(),
-                materialized.valueSerde());
+                    supplier,
+                    materialized.keySerde(),
+                    materialized.valueSerde());
         }
 
         if (materialized.loggingEnabled()) {
@@ -81,7 +81,6 @@ public class KeyValueStoreMaterializer<K, V> extends MaterializedStoreFactory<K,
                 builder.withCachingEnabled();
             }
         }
-
 
         return builder;
     }

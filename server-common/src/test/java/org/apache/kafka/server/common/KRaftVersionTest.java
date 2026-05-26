@@ -71,15 +71,15 @@ public final class KRaftVersionTest {
             switch (kraftVersion) {
                 case KRAFT_VERSION_0:
                     assertThrows(
-                        IllegalStateException.class,
-                        () -> kraftVersion.kraftVersionRecordVersion()
+                            IllegalStateException.class,
+                            () -> kraftVersion.kraftVersionRecordVersion()
                     );
                     break;
 
                 case KRAFT_VERSION_1:
                     assertEquals(
-                        ControlRecordUtils.KRAFT_VERSION_CURRENT_VERSION,
-                        kraftVersion.kraftVersionRecordVersion()
+                            ControlRecordUtils.KRAFT_VERSION_CURRENT_VERSION,
+                            kraftVersion.kraftVersionRecordVersion()
                     );
                     break;
 
@@ -95,15 +95,15 @@ public final class KRaftVersionTest {
             switch (kraftVersion) {
                 case KRAFT_VERSION_0:
                     assertThrows(
-                        IllegalStateException.class,
-                        () -> kraftVersion.votersRecordVersion()
+                            IllegalStateException.class,
+                            () -> kraftVersion.votersRecordVersion()
                     );
                     break;
 
                 case KRAFT_VERSION_1:
                     assertEquals(
-                        ControlRecordUtils.KRAFT_VOTERS_CURRENT_VERSION,
-                        kraftVersion.votersRecordVersion()
+                            ControlRecordUtils.KRAFT_VOTERS_CURRENT_VERSION,
+                            kraftVersion.votersRecordVersion()
                     );
                     break;
 

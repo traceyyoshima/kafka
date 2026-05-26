@@ -192,7 +192,7 @@ public class TopologyTest {
         try {
             topology.addSource("source", "topic-2");
             fail("Should throw TopologyException for duplicate source name");
-        } catch (final TopologyException expected) { }
+        } catch (final TopologyException expected) {}
     }
 
     @Test
@@ -201,7 +201,7 @@ public class TopologyTest {
         try {
             topology.addSource("source-2", "topic-1");
             fail("Should throw TopologyException for already used topic");
-        } catch (final TopologyException expected) { }
+        } catch (final TopologyException expected) {}
     }
 
     @Test
@@ -210,7 +210,7 @@ public class TopologyTest {
         try {
             topology.addSource("source-2", Pattern.compile("f.*"));
             fail("Should have thrown TopologyException for overlapping pattern with already registered topic");
-        } catch (final TopologyException expected) { }
+        } catch (final TopologyException expected) {}
     }
 
     @Test
@@ -219,7 +219,7 @@ public class TopologyTest {
         try {
             topology.addSource("source-2", "foo");
             fail("Should have thrown TopologyException for overlapping topic with already registered pattern");
-        } catch (final TopologyException expected) { }
+        } catch (final TopologyException expected) {}
     }
 
     @Test
@@ -229,7 +229,7 @@ public class TopologyTest {
         try {
             topology.addProcessor("processor", new MockApiProcessorSupplier<>(), "source");
             fail("Should throw TopologyException for duplicate processor name");
-        } catch (final TopologyException expected) { }
+        } catch (final TopologyException expected) {}
     }
 
     @Test
@@ -238,7 +238,7 @@ public class TopologyTest {
         try {
             topology.addProcessor("processor", new MockApiProcessorSupplier<>());
             fail("Should throw TopologyException for processor without at least one parent node");
-        } catch (final TopologyException expected) { }
+        } catch (final TopologyException expected) {}
     }
 
     @Test
@@ -247,7 +247,7 @@ public class TopologyTest {
         try {
             topology.addProcessor("processor", new MockApiProcessorSupplier<>(), (String) null);
             fail("Should throw NullPointerException for processor when null parent names are provided");
-        } catch (final NullPointerException expected) { }
+        } catch (final NullPointerException expected) {}
     }
 
     @Test
@@ -267,7 +267,7 @@ public class TopologyTest {
         try {
             topology.addSink("sink", "topic-3", "source");
             fail("Should throw TopologyException for duplicate sink name");
-        } catch (final TopologyException expected) { }
+        } catch (final TopologyException expected) {}
     }
 
     @Test
@@ -277,7 +277,7 @@ public class TopologyTest {
         try {
             topology.addSink("sink", "topic-2");
             fail("Should throw TopologyException for sink without at least one parent node");
-        } catch (final TopologyException expected) { }
+        } catch (final TopologyException expected) {}
     }
 
     @Test
@@ -287,7 +287,7 @@ public class TopologyTest {
         try {
             topology.addSink("sink", "topic-2", (String) null);
             fail("Should throw NullPointerException for sink when null parent names are provided");
-        } catch (final NullPointerException expected) { }
+        } catch (final NullPointerException expected) {}
     }
 
     @Test
@@ -307,7 +307,7 @@ public class TopologyTest {
         try {
             topology.addSink("sink-2", "topic-3", "sink-1");
             fail("Should throw TopologyException for using sink as parent");
-        } catch (final TopologyException expected) { }
+        } catch (final TopologyException expected) {}
     }
 
     @Test
@@ -323,7 +323,7 @@ public class TopologyTest {
         try {
             topology.addStateStore(storeBuilder, "source-1");
             fail("Should have thrown TopologyException for adding store to source node");
-        } catch (final TopologyException expected) { }
+        } catch (final TopologyException expected) {}
     }
 
     @Test
@@ -334,7 +334,7 @@ public class TopologyTest {
         try {
             topology.addStateStore(storeBuilder, "sink-1");
             fail("Should have thrown TopologyException for adding store to sink node");
-        } catch (final TopologyException expected) { }
+        } catch (final TopologyException expected) {}
     }
 
     private void mockStoreBuilder() {
@@ -351,7 +351,7 @@ public class TopologyTest {
         try {
             topology.addStateStore(otherStoreBuilder);
             fail("Should have thrown TopologyException for same store name with different StoreBuilder");
-        } catch (final TopologyException expected) { }
+        } catch (final TopologyException expected) {}
     }
 
     @Test
@@ -390,8 +390,8 @@ public class TopologyTest {
             .addSource(sourceNodeName, "topic")
             .addProcessor(goodNodeName, new LocalMockProcessorSupplier(), sourceNodeName)
             .addStateStore(
-                storeBuilder,
-                goodNodeName)
+                    storeBuilder,
+                    goodNodeName)
             .addProcessor(badNodeName, new LocalMockProcessorSupplier(), sourceNodeName);
 
         final Properties config = new Properties();
@@ -420,7 +420,7 @@ public class TopologyTest {
                 }
 
                 @Override
-                public void process(final Record<Object, Object> record) { }
+                public void process(final Record<Object, Object> record) {}
             };
         }
     }
@@ -428,13 +428,13 @@ public class TopologyTest {
     @Test
     public void shouldNotAllowToAddGlobalStoreWithSourceNameEqualsProcessorName() {
         assertThrows(TopologyException.class, () -> topology.addGlobalStore(
-            globalStoreBuilder,
-            "sameName",
-            null,
-            null,
-            "anyTopicName",
-            "sameName",
-            new MockProcessorSupplier<>()));
+                globalStoreBuilder,
+                "sameName",
+                null,
+                null,
+                "anyTopicName",
+                "sameName",
+                new MockProcessorSupplier<>()));
     }
 
     @Test
@@ -445,7 +445,7 @@ public class TopologyTest {
     @Test
     public void sinkShouldReturnNullTopicWithDynamicRouting() {
         final TopologyDescription.Sink expectedSinkNode =
-            new InternalTopologyBuilder.Sink<>("sink", (key, value, record) -> record.topic() + "-" + key);
+                new InternalTopologyBuilder.Sink<>("sink", (key, value, record) -> record.topic() + "-" + key);
 
         assertThat(expectedSinkNode.topic(), equalTo(null));
     }
@@ -454,7 +454,7 @@ public class TopologyTest {
     public void sinkShouldReturnTopicNameExtractorWithDynamicRouting() {
         final TopicNameExtractor<?, ?> topicNameExtractor = (key, value, record) -> record.topic() + "-" + key;
         final TopologyDescription.Sink expectedSinkNode =
-            new InternalTopologyBuilder.Sink<>("sink", topicNameExtractor);
+                new InternalTopologyBuilder.Sink<>("sink", topicNameExtractor);
 
         assertThat(expectedSinkNode.topicNameExtractor(), equalTo(topicNameExtractor));
     }
@@ -464,8 +464,8 @@ public class TopologyTest {
         final TopologyDescription.Source expectedSourceNode = addSource("source", "topic");
 
         expectedDescription.addSubtopology(
-            new SubtopologyDescription(0,
-                                       Collections.singleton(expectedSourceNode)));
+                new SubtopologyDescription(0,
+                        Collections.singleton(expectedSourceNode)));
 
         assertThat(topology.describe(), equalTo(expectedDescription));
         assertThat(topology.describe().hashCode(), equalTo(expectedDescription.hashCode()));
@@ -476,8 +476,8 @@ public class TopologyTest {
         final TopologyDescription.Source expectedSourceNode = addSource("source", "topic1", "topic2", "topic3");
 
         expectedDescription.addSubtopology(
-            new SubtopologyDescription(0,
-                                       Collections.singleton(expectedSourceNode)));
+                new SubtopologyDescription(0,
+                        Collections.singleton(expectedSourceNode)));
 
         assertThat(topology.describe(), equalTo(expectedDescription));
         assertThat(topology.describe().hashCode(), equalTo(expectedDescription.hashCode()));
@@ -488,8 +488,8 @@ public class TopologyTest {
         final TopologyDescription.Source expectedSourceNode = addSource("source", Pattern.compile("topic[0-9]"));
 
         expectedDescription.addSubtopology(
-            new SubtopologyDescription(0,
-                                       Collections.singleton(expectedSourceNode)));
+                new SubtopologyDescription(0,
+                        Collections.singleton(expectedSourceNode)));
 
         assertThat(topology.describe(), equalTo(expectedDescription));
         assertThat(topology.describe().hashCode(), equalTo(expectedDescription.hashCode()));
@@ -499,18 +499,18 @@ public class TopologyTest {
     public void multipleSourcesShouldHaveDistinctSubtopologies() {
         final TopologyDescription.Source expectedSourceNode1 = addSource("source1", "topic1");
         expectedDescription.addSubtopology(
-            new SubtopologyDescription(0,
-                                       Collections.singleton(expectedSourceNode1)));
+                new SubtopologyDescription(0,
+                        Collections.singleton(expectedSourceNode1)));
 
         final TopologyDescription.Source expectedSourceNode2 = addSource("source2", "topic2");
         expectedDescription.addSubtopology(
-            new SubtopologyDescription(1,
-                                       Collections.singleton(expectedSourceNode2)));
+                new SubtopologyDescription(1,
+                        Collections.singleton(expectedSourceNode2)));
 
         final TopologyDescription.Source expectedSourceNode3 = addSource("source3", "topic3");
         expectedDescription.addSubtopology(
-            new SubtopologyDescription(2,
-                                       Collections.singleton(expectedSourceNode3)));
+                new SubtopologyDescription(2,
+                        Collections.singleton(expectedSourceNode3)));
 
         assertThat(topology.describe(), equalTo(expectedDescription));
         assertThat(topology.describe().hashCode(), equalTo(expectedDescription.hashCode()));
@@ -535,7 +535,7 @@ public class TopologyTest {
         final TopologyDescription.Source expectedSourceNode = addSource("source", "topic");
         final String[] store = new String[] {"store"};
         final TopologyDescription.Processor expectedProcessorNode =
-            addProcessorWithNewStore("processor", store, expectedSourceNode);
+                addProcessorWithNewStore("processor", store, expectedSourceNode);
 
         final Set<TopologyDescription.Node> allNodes = new HashSet<>();
         allNodes.add(expectedSourceNode);
@@ -546,13 +546,12 @@ public class TopologyTest {
         assertThat(topology.describe().hashCode(), equalTo(expectedDescription.hashCode()));
     }
 
-
     @Test
     public void sourceAndProcessorWithMultipleStatesShouldHaveSingleSubtopology() {
         final TopologyDescription.Source expectedSourceNode = addSource("source", "topic");
         final String[] stores = new String[] {"store1", "store2"};
         final TopologyDescription.Processor expectedProcessorNode =
-            addProcessorWithNewStore("processor", stores, expectedSourceNode);
+                addProcessorWithNewStore("processor", stores, expectedSourceNode);
 
         final Set<TopologyDescription.Node> allNodes = new HashSet<>();
         allNodes.add(expectedSourceNode);
@@ -667,11 +666,11 @@ public class TopologyTest {
         final TopologyDescription.Processor expectedProcessorNode3 = addProcessor("processor3", expectedSourceNode3);
 
         final TopologyDescription.Sink expectedSinkNode = addSink(
-            "sink",
-            "sinkTopic",
-            expectedProcessorNode1,
-            expectedProcessorNode2,
-            expectedProcessorNode3);
+                "sink",
+                "sinkTopic",
+                expectedProcessorNode1,
+                expectedProcessorNode2,
+                expectedProcessorNode3);
 
         final Set<TopologyDescription.Node> allNodes = new HashSet<>();
         allNodes.add(expectedSourceNode1);
@@ -695,15 +694,15 @@ public class TopologyTest {
 
         final TopologyDescription.Source expectedSourceNode1 = addSource("source", "topic");
         final TopologyDescription.Processor expectedProcessorNode1 =
-            addProcessorWithNewStore("processor1", store1, expectedSourceNode1);
+                addProcessorWithNewStore("processor1", store1, expectedSourceNode1);
 
         final TopologyDescription.Source expectedSourceNode2 = addSource("source2", "topic2");
         final TopologyDescription.Processor expectedProcessorNode2 =
-            addProcessorWithNewStore("processor2", store2, expectedSourceNode2);
+                addProcessorWithNewStore("processor2", store2, expectedSourceNode2);
 
         final TopologyDescription.Source expectedSourceNode3 = addSource("source3", "topic3");
         final TopologyDescription.Processor expectedProcessorNode3 =
-            addProcessorWithExistingStore("processor3", bothStores, expectedSourceNode3);
+                addProcessorWithExistingStore("processor3", bothStores, expectedSourceNode3);
 
         final Set<TopologyDescription.Node> allNodes = new HashSet<>();
         allNodes.add(expectedSourceNode1);
@@ -736,7 +735,7 @@ public class TopologyTest {
     @SuppressWarnings("deprecation")
     @Test
     public void streamStreamJoinTopologyWithDefaultStoresNames() {
-        final StreamsBuilder builder  = new StreamsBuilder();
+        final StreamsBuilder builder = new StreamsBuilder();
         final KStream<Integer, String> stream1;
         final KStream<Integer, String> stream2;
 
@@ -744,15 +743,15 @@ public class TopologyTest {
         stream2 = builder.stream("input-topic2");
 
         stream1.join(
-            stream2,
-            MockValueJoiner.TOSTRING_JOINER,
-            JoinWindows.of(ofMillis(100)),
-            StreamJoined.with(Serdes.Integer(), Serdes.String(), Serdes.String()));
+                stream2,
+                MockValueJoiner.TOSTRING_JOINER,
+                JoinWindows.of(ofMillis(100)),
+                StreamJoined.with(Serdes.Integer(), Serdes.String(), Serdes.String()));
 
         final TopologyDescription describe = builder.build().describe();
 
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic1])\n" +
                 "      --> KSTREAM-WINDOWED-0000000002\n" +
@@ -773,13 +772,13 @@ public class TopologyTest {
                 "    Processor: KSTREAM-MERGE-0000000006 (stores: [])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-JOINTHIS-0000000004, KSTREAM-JOINOTHER-0000000005\n\n",
-            describe.toString());
+                describe.toString());
     }
 
     @SuppressWarnings("deprecation")
     @Test
     public void streamStreamJoinTopologyWithCustomStoresNames() {
-        final StreamsBuilder builder  = new StreamsBuilder();
+        final StreamsBuilder builder = new StreamsBuilder();
         final KStream<Integer, String> stream1;
         final KStream<Integer, String> stream2;
 
@@ -787,16 +786,16 @@ public class TopologyTest {
         stream2 = builder.stream("input-topic2");
 
         stream1.join(
-            stream2,
-            MockValueJoiner.TOSTRING_JOINER,
-            JoinWindows.of(ofMillis(100)),
-            StreamJoined.with(Serdes.Integer(), Serdes.String(), Serdes.String())
-                .withStoreName("custom-name"));
+                stream2,
+                MockValueJoiner.TOSTRING_JOINER,
+                JoinWindows.of(ofMillis(100)),
+                StreamJoined.with(Serdes.Integer(), Serdes.String(), Serdes.String())
+                    .withStoreName("custom-name"));
 
         final TopologyDescription describe = builder.build().describe();
 
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic1])\n" +
                 "      --> KSTREAM-WINDOWED-0000000002\n" +
@@ -817,13 +816,13 @@ public class TopologyTest {
                 "    Processor: KSTREAM-MERGE-0000000006 (stores: [])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-JOINTHIS-0000000004, KSTREAM-JOINOTHER-0000000005\n\n",
-            describe.toString());
+                describe.toString());
     }
 
     @SuppressWarnings("deprecation")
     @Test
     public void streamStreamJoinTopologyWithCustomStoresSuppliers() {
-        final StreamsBuilder builder  = new StreamsBuilder();
+        final StreamsBuilder builder = new StreamsBuilder();
         final KStream<Integer, String> stream1;
         final KStream<Integer, String> stream2;
 
@@ -833,25 +832,25 @@ public class TopologyTest {
         final JoinWindows joinWindows = JoinWindows.of(ofMillis(100));
 
         final WindowBytesStoreSupplier thisStoreSupplier = Stores.inMemoryWindowStore("in-memory-join-store",
-            Duration.ofMillis(joinWindows.size() + joinWindows.gracePeriodMs()),
-            Duration.ofMillis(joinWindows.size()), true);
+                Duration.ofMillis(joinWindows.size() + joinWindows.gracePeriodMs()),
+                Duration.ofMillis(joinWindows.size()), true);
 
         final WindowBytesStoreSupplier otherStoreSupplier = Stores.inMemoryWindowStore("in-memory-join-store-other",
-            Duration.ofMillis(joinWindows.size() + joinWindows.gracePeriodMs()),
-            Duration.ofMillis(joinWindows.size()), true);
+                Duration.ofMillis(joinWindows.size() + joinWindows.gracePeriodMs()),
+                Duration.ofMillis(joinWindows.size()), true);
 
         stream1.join(
-            stream2,
-            MockValueJoiner.TOSTRING_JOINER,
-            joinWindows,
-            StreamJoined.with(Serdes.Integer(), Serdes.String(), Serdes.String())
-                .withThisStoreSupplier(thisStoreSupplier)
-                .withOtherStoreSupplier(otherStoreSupplier));
+                stream2,
+                MockValueJoiner.TOSTRING_JOINER,
+                joinWindows,
+                StreamJoined.with(Serdes.Integer(), Serdes.String(), Serdes.String())
+                    .withThisStoreSupplier(thisStoreSupplier)
+                    .withOtherStoreSupplier(otherStoreSupplier));
 
         final TopologyDescription describe = builder.build().describe();
 
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic1])\n" +
                 "      --> KSTREAM-WINDOWED-0000000002\n" +
@@ -872,12 +871,12 @@ public class TopologyTest {
                 "    Processor: KSTREAM-MERGE-0000000006 (stores: [])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-JOINTHIS-0000000004, KSTREAM-JOINOTHER-0000000005\n\n",
-            describe.toString());
+                describe.toString());
     }
 
     @Test
     public void streamStreamLeftJoinTopologyWithDefaultStoresNames() {
-        final StreamsBuilder builder  = new StreamsBuilder();
+        final StreamsBuilder builder = new StreamsBuilder();
         final KStream<Integer, String> stream1;
         final KStream<Integer, String> stream2;
 
@@ -885,15 +884,15 @@ public class TopologyTest {
         stream2 = builder.stream("input-topic2");
 
         stream1.leftJoin(
-            stream2,
-            MockValueJoiner.TOSTRING_JOINER,
-            JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(100)),
-            StreamJoined.with(Serdes.Integer(), Serdes.String(), Serdes.String()));
+                stream2,
+                MockValueJoiner.TOSTRING_JOINER,
+                JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(100)),
+                StreamJoined.with(Serdes.Integer(), Serdes.String(), Serdes.String()));
 
         final TopologyDescription describe = builder.build().describe();
 
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic1])\n" +
                 "      --> KSTREAM-WINDOWED-0000000002\n" +
@@ -914,12 +913,12 @@ public class TopologyTest {
                 "    Processor: KSTREAM-MERGE-0000000006 (stores: [])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-JOINTHIS-0000000004, KSTREAM-OUTEROTHER-0000000005\n\n",
-            describe.toString());
+                describe.toString());
     }
 
     @Test
     public void streamStreamLeftJoinTopologyWithCustomStoresNames() {
-        final StreamsBuilder builder  = new StreamsBuilder();
+        final StreamsBuilder builder = new StreamsBuilder();
         final KStream<Integer, String> stream1;
         final KStream<Integer, String> stream2;
 
@@ -927,16 +926,16 @@ public class TopologyTest {
         stream2 = builder.stream("input-topic2");
 
         stream1.leftJoin(
-            stream2,
-            MockValueJoiner.TOSTRING_JOINER,
-            JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(100)),
-            StreamJoined.with(Serdes.Integer(), Serdes.String(), Serdes.String())
-                .withStoreName("custom-name"));
+                stream2,
+                MockValueJoiner.TOSTRING_JOINER,
+                JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(100)),
+                StreamJoined.with(Serdes.Integer(), Serdes.String(), Serdes.String())
+                    .withStoreName("custom-name"));
 
         final TopologyDescription describe = builder.build().describe();
 
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic1])\n" +
                 "      --> KSTREAM-WINDOWED-0000000002\n" +
@@ -957,12 +956,12 @@ public class TopologyTest {
                 "    Processor: KSTREAM-MERGE-0000000006 (stores: [])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-JOINTHIS-0000000004, KSTREAM-OUTEROTHER-0000000005\n\n",
-            describe.toString());
+                describe.toString());
     }
 
     @Test
     public void streamStreamLeftJoinTopologyWithCustomStoresSuppliers() {
-        final StreamsBuilder builder  = new StreamsBuilder();
+        final StreamsBuilder builder = new StreamsBuilder();
         final KStream<Integer, String> stream1;
         final KStream<Integer, String> stream2;
 
@@ -972,25 +971,25 @@ public class TopologyTest {
         final JoinWindows joinWindows = JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(100));
 
         final WindowBytesStoreSupplier thisStoreSupplier = Stores.inMemoryWindowStore("in-memory-join-store",
-            Duration.ofMillis(joinWindows.size() + joinWindows.gracePeriodMs()),
-            Duration.ofMillis(joinWindows.size()), true);
+                Duration.ofMillis(joinWindows.size() + joinWindows.gracePeriodMs()),
+                Duration.ofMillis(joinWindows.size()), true);
 
         final WindowBytesStoreSupplier otherStoreSupplier = Stores.inMemoryWindowStore("in-memory-join-store-other",
-            Duration.ofMillis(joinWindows.size() + joinWindows.gracePeriodMs()),
-            Duration.ofMillis(joinWindows.size()), true);
+                Duration.ofMillis(joinWindows.size() + joinWindows.gracePeriodMs()),
+                Duration.ofMillis(joinWindows.size()), true);
 
         stream1.leftJoin(
-            stream2,
-            MockValueJoiner.TOSTRING_JOINER,
-            joinWindows,
-            StreamJoined.with(Serdes.Integer(), Serdes.String(), Serdes.String())
-                .withThisStoreSupplier(thisStoreSupplier)
-                .withOtherStoreSupplier(otherStoreSupplier));
+                stream2,
+                MockValueJoiner.TOSTRING_JOINER,
+                joinWindows,
+                StreamJoined.with(Serdes.Integer(), Serdes.String(), Serdes.String())
+                    .withThisStoreSupplier(thisStoreSupplier)
+                    .withOtherStoreSupplier(otherStoreSupplier));
 
         final TopologyDescription describe = builder.build().describe();
 
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic1])\n" +
                 "      --> KSTREAM-WINDOWED-0000000002\n" +
@@ -1011,12 +1010,12 @@ public class TopologyTest {
                 "    Processor: KSTREAM-MERGE-0000000006 (stores: [])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-JOINTHIS-0000000004, KSTREAM-OUTEROTHER-0000000005\n\n",
-            describe.toString());
+                describe.toString());
     }
 
     @Test
     public void streamStreamOuterJoinTopologyWithDefaultStoresNames() {
-        final StreamsBuilder builder  = new StreamsBuilder();
+        final StreamsBuilder builder = new StreamsBuilder();
         final KStream<Integer, String> stream1;
         final KStream<Integer, String> stream2;
 
@@ -1024,15 +1023,15 @@ public class TopologyTest {
         stream2 = builder.stream("input-topic2");
 
         stream1.outerJoin(
-            stream2,
-            MockValueJoiner.TOSTRING_JOINER,
-            JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(100)),
-            StreamJoined.with(Serdes.Integer(), Serdes.String(), Serdes.String()));
+                stream2,
+                MockValueJoiner.TOSTRING_JOINER,
+                JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(100)),
+                StreamJoined.with(Serdes.Integer(), Serdes.String(), Serdes.String()));
 
         final TopologyDescription describe = builder.build().describe();
 
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic1])\n" +
                 "      --> KSTREAM-WINDOWED-0000000002\n" +
@@ -1053,12 +1052,12 @@ public class TopologyTest {
                 "    Processor: KSTREAM-MERGE-0000000006 (stores: [])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-OUTERTHIS-0000000004, KSTREAM-OUTEROTHER-0000000005\n\n",
-            describe.toString());
+                describe.toString());
     }
 
     @Test
     public void streamStreamOuterJoinTopologyWithCustomStoresNames() {
-        final StreamsBuilder builder  = new StreamsBuilder();
+        final StreamsBuilder builder = new StreamsBuilder();
         final KStream<Integer, String> stream1;
         final KStream<Integer, String> stream2;
 
@@ -1066,16 +1065,16 @@ public class TopologyTest {
         stream2 = builder.stream("input-topic2");
 
         stream1.outerJoin(
-            stream2,
-            MockValueJoiner.TOSTRING_JOINER,
-            JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(100)),
-            StreamJoined.with(Serdes.Integer(), Serdes.String(), Serdes.String())
-                .withStoreName("custom-name"));
+                stream2,
+                MockValueJoiner.TOSTRING_JOINER,
+                JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(100)),
+                StreamJoined.with(Serdes.Integer(), Serdes.String(), Serdes.String())
+                    .withStoreName("custom-name"));
 
         final TopologyDescription describe = builder.build().describe();
 
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic1])\n" +
                 "      --> KSTREAM-WINDOWED-0000000002\n" +
@@ -1096,12 +1095,12 @@ public class TopologyTest {
                 "    Processor: KSTREAM-MERGE-0000000006 (stores: [])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-OUTERTHIS-0000000004, KSTREAM-OUTEROTHER-0000000005\n\n",
-            describe.toString());
+                describe.toString());
     }
 
     @Test
     public void streamStreamOuterJoinTopologyWithCustomStoresSuppliers() {
-        final StreamsBuilder builder  = new StreamsBuilder();
+        final StreamsBuilder builder = new StreamsBuilder();
         final KStream<Integer, String> stream1;
         final KStream<Integer, String> stream2;
 
@@ -1111,25 +1110,25 @@ public class TopologyTest {
         final JoinWindows joinWindows = JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(100));
 
         final WindowBytesStoreSupplier thisStoreSupplier = Stores.inMemoryWindowStore("in-memory-join-store",
-            Duration.ofMillis(joinWindows.size() + joinWindows.gracePeriodMs()),
-            Duration.ofMillis(joinWindows.size()), true);
+                Duration.ofMillis(joinWindows.size() + joinWindows.gracePeriodMs()),
+                Duration.ofMillis(joinWindows.size()), true);
 
         final WindowBytesStoreSupplier otherStoreSupplier = Stores.inMemoryWindowStore("in-memory-join-store-other",
-            Duration.ofMillis(joinWindows.size() + joinWindows.gracePeriodMs()),
-            Duration.ofMillis(joinWindows.size()), true);
+                Duration.ofMillis(joinWindows.size() + joinWindows.gracePeriodMs()),
+                Duration.ofMillis(joinWindows.size()), true);
 
         stream1.outerJoin(
-            stream2,
-            MockValueJoiner.TOSTRING_JOINER,
-            joinWindows,
-            StreamJoined.with(Serdes.Integer(), Serdes.String(), Serdes.String())
-                .withThisStoreSupplier(thisStoreSupplier)
-                .withOtherStoreSupplier(otherStoreSupplier));
+                stream2,
+                MockValueJoiner.TOSTRING_JOINER,
+                joinWindows,
+                StreamJoined.with(Serdes.Integer(), Serdes.String(), Serdes.String())
+                    .withThisStoreSupplier(thisStoreSupplier)
+                    .withOtherStoreSupplier(otherStoreSupplier));
 
         final TopologyDescription describe = builder.build().describe();
 
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic1])\n" +
                 "      --> KSTREAM-WINDOWED-0000000002\n" +
@@ -1150,12 +1149,12 @@ public class TopologyTest {
                 "    Processor: KSTREAM-MERGE-0000000006 (stores: [])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-OUTERTHIS-0000000004, KSTREAM-OUTEROTHER-0000000005\n\n",
-            describe.toString());
+                describe.toString());
     }
 
     @Test
     public void topologyWithDynamicRoutingShouldDescribeExtractorClass() {
-        final StreamsBuilder builder  = new StreamsBuilder();
+        final StreamsBuilder builder = new StreamsBuilder();
 
         final TopicNameExtractor<Object, Object> topicNameExtractor = new TopicNameExtractor<>() {
             @Override
@@ -1191,14 +1190,14 @@ public class TopologyTest {
 
         final TopologyDescription describe = topology.describe();
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> KSTREAM-AGGREGATE-0000000002\n" +
                 "    Processor: KSTREAM-AGGREGATE-0000000002 (stores: [KSTREAM-AGGREGATE-STATE-STORE-0000000001])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-SOURCE-0000000000\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1216,14 +1215,14 @@ public class TopologyTest {
         final Topology topology = builder.build();
         final TopologyDescription describe = topology.describe();
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> KSTREAM-AGGREGATE-0000000001\n" +
                 "    Processor: KSTREAM-AGGREGATE-0000000001 (stores: [count-store])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-SOURCE-0000000000\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1241,14 +1240,14 @@ public class TopologyTest {
         final Topology topology = builder.build();
         final TopologyDescription describe = topology.describe();
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> KSTREAM-AGGREGATE-0000000003\n" +
                 "    Processor: KSTREAM-AGGREGATE-0000000003 (stores: [KSTREAM-AGGREGATE-STATE-STORE-0000000002])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-SOURCE-0000000000\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1265,14 +1264,14 @@ public class TopologyTest {
         final Topology topology = builder.build();
         final TopologyDescription describe = topology.describe();
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> KSTREAM-AGGREGATE-0000000003\n" +
                 "    Processor: KSTREAM-AGGREGATE-0000000003 (stores: [KSTREAM-AGGREGATE-STATE-STORE-0000000002])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-SOURCE-0000000000\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1291,14 +1290,14 @@ public class TopologyTest {
 
         final TopologyDescription describe = topology.describe();
         assertEquals(
-            "Topology: my-topology:\n" +
+                "Topology: my-topology:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> KSTREAM-AGGREGATE-0000000002\n" +
                 "    Processor: KSTREAM-AGGREGATE-0000000002 (stores: [KSTREAM-AGGREGATE-STATE-STORE-0000000001])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-SOURCE-0000000000\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1315,14 +1314,14 @@ public class TopologyTest {
         final Topology topology = builder.build();
         final TopologyDescription describe = topology.describe();
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> KSTREAM-AGGREGATE-0000000002\n" +
                 "    Processor: KSTREAM-AGGREGATE-0000000002 (stores: [KSTREAM-AGGREGATE-STATE-STORE-0000000001])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-SOURCE-0000000000\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1340,14 +1339,14 @@ public class TopologyTest {
         final Topology topology = builder.build();
         final TopologyDescription describe = topology.describe();
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> KSTREAM-AGGREGATE-0000000001\n" +
                 "    Processor: KSTREAM-AGGREGATE-0000000001 (stores: [count-store])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-SOURCE-0000000000\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1366,14 +1365,14 @@ public class TopologyTest {
         final Topology topology = builder.build();
         final TopologyDescription describe = topology.describe();
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> KSTREAM-AGGREGATE-0000000003\n" +
                 "    Processor: KSTREAM-AGGREGATE-0000000003 (stores: [KSTREAM-AGGREGATE-STATE-STORE-0000000002])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-SOURCE-0000000000\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1391,14 +1390,14 @@ public class TopologyTest {
         final Topology topology = builder.build();
         final TopologyDescription describe = topology.describe();
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> KSTREAM-AGGREGATE-0000000003\n" +
                 "    Processor: KSTREAM-AGGREGATE-0000000003 (stores: [KSTREAM-AGGREGATE-STATE-STORE-0000000002])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-SOURCE-0000000000\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1417,14 +1416,14 @@ public class TopologyTest {
         final Topology topology = builder.build();
         final TopologyDescription describe = topology.describe();
         assertEquals(
-            "Topology: my-topology:\n" +
+                "Topology: my-topology:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> KSTREAM-AGGREGATE-0000000002\n" +
                 "    Processor: KSTREAM-AGGREGATE-0000000002 (stores: [KSTREAM-AGGREGATE-STATE-STORE-0000000001])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-SOURCE-0000000000\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1441,14 +1440,14 @@ public class TopologyTest {
         final Topology topology = builder.build();
         final TopologyDescription describe = topology.describe();
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> KSTREAM-AGGREGATE-0000000002\n" +
                 "    Processor: KSTREAM-AGGREGATE-0000000002 (stores: [KSTREAM-AGGREGATE-STATE-STORE-0000000001])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-SOURCE-0000000000\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1466,14 +1465,14 @@ public class TopologyTest {
         final Topology topology = builder.build();
         final TopologyDescription describe = topology.describe();
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> KSTREAM-AGGREGATE-0000000001\n" +
                 "    Processor: KSTREAM-AGGREGATE-0000000001 (stores: [count-store])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-SOURCE-0000000000\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1492,14 +1491,14 @@ public class TopologyTest {
         final Topology topology = builder.build();
         final TopologyDescription describe = topology.describe();
         assertEquals(
-            "Topology: my-topology:\n" +
+                "Topology: my-topology:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> KSTREAM-AGGREGATE-0000000002\n" +
                 "    Processor: KSTREAM-AGGREGATE-0000000002 (stores: [KSTREAM-AGGREGATE-STATE-STORE-0000000001])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-SOURCE-0000000000\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1518,7 +1517,7 @@ public class TopologyTest {
         final TopologyDescription describe = topology.describe();
 
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> COGROUPKSTREAM-AGGREGATE-0000000002\n" +
@@ -1528,7 +1527,7 @@ public class TopologyTest {
                 "    Processor: COGROUPKSTREAM-MERGE-0000000003 (stores: [])\n" +
                 "      --> none\n" +
                 "      <-- COGROUPKSTREAM-AGGREGATE-0000000002\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1549,7 +1548,7 @@ public class TopologyTest {
         final TopologyDescription describe = topology.describe();
 
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> COGROUPKSTREAM-AGGREGATE-0000000001\n" +
@@ -1559,7 +1558,7 @@ public class TopologyTest {
                 "    Processor: COGROUPKSTREAM-MERGE-0000000002 (stores: [])\n" +
                 "      --> none\n" +
                 "      <-- COGROUPKSTREAM-AGGREGATE-0000000001\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1580,7 +1579,7 @@ public class TopologyTest {
         final TopologyDescription describe = topology.describe();
 
         assertEquals(
-            "Topology: my-topology:\n" +
+                "Topology: my-topology:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> COGROUPKSTREAM-AGGREGATE-0000000002\n" +
@@ -1590,7 +1589,7 @@ public class TopologyTest {
                 "    Processor: COGROUPKSTREAM-MERGE-0000000003 (stores: [])\n" +
                 "      --> none\n" +
                 "      <-- COGROUPKSTREAM-AGGREGATE-0000000002\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1609,7 +1608,7 @@ public class TopologyTest {
         final TopologyDescription describe = topology.describe();
 
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> COGROUPKSTREAM-AGGREGATE-0000000002\n" +
@@ -1619,7 +1618,7 @@ public class TopologyTest {
                 "    Processor: COGROUPKSTREAM-MERGE-0000000003 (stores: [])\n" +
                 "      --> none\n" +
                 "      <-- COGROUPKSTREAM-AGGREGATE-0000000002\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1640,7 +1639,7 @@ public class TopologyTest {
         final TopologyDescription describe = topology.describe();
 
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> COGROUPKSTREAM-AGGREGATE-0000000001\n" +
@@ -1650,7 +1649,7 @@ public class TopologyTest {
                 "    Processor: COGROUPKSTREAM-MERGE-0000000002 (stores: [])\n" +
                 "      --> none\n" +
                 "      <-- COGROUPKSTREAM-AGGREGATE-0000000001\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1670,7 +1669,7 @@ public class TopologyTest {
         final Topology topology = builder.build();
         final TopologyDescription describe = topology.describe();
         assertEquals(
-            "Topology: my-topology:\n" +
+                "Topology: my-topology:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> COGROUPKSTREAM-AGGREGATE-0000000002\n" +
@@ -1680,7 +1679,7 @@ public class TopologyTest {
                 "    Processor: COGROUPKSTREAM-MERGE-0000000003 (stores: [])\n" +
                 "      --> none\n" +
                 "      <-- COGROUPKSTREAM-AGGREGATE-0000000002\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1699,7 +1698,7 @@ public class TopologyTest {
         final TopologyDescription describe = topology.describe();
 
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> COGROUPKSTREAM-AGGREGATE-0000000002\n" +
@@ -1709,7 +1708,7 @@ public class TopologyTest {
                 "    Processor: COGROUPKSTREAM-MERGE-0000000003 (stores: [])\n" +
                 "      --> none\n" +
                 "      <-- COGROUPKSTREAM-AGGREGATE-0000000002\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1730,7 +1729,7 @@ public class TopologyTest {
         final TopologyDescription describe = topology.describe();
 
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> COGROUPKSTREAM-AGGREGATE-0000000001\n" +
@@ -1740,7 +1739,7 @@ public class TopologyTest {
                 "    Processor: COGROUPKSTREAM-MERGE-0000000002 (stores: [])\n" +
                 "      --> none\n" +
                 "      <-- COGROUPKSTREAM-AGGREGATE-0000000001\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1760,7 +1759,7 @@ public class TopologyTest {
         final Topology topology = builder.build();
         final TopologyDescription describe = topology.describe();
         assertEquals(
-            "Topology: my-topology:\n" +
+                "Topology: my-topology:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> COGROUPKSTREAM-AGGREGATE-0000000002\n" +
@@ -1770,7 +1769,7 @@ public class TopologyTest {
                 "    Processor: COGROUPKSTREAM-MERGE-0000000003 (stores: [])\n" +
                 "      --> none\n" +
                 "      <-- COGROUPKSTREAM-AGGREGATE-0000000002\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1787,14 +1786,14 @@ public class TopologyTest {
         final Topology topology = builder.build();
         final TopologyDescription describe = topology.describe();
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> KSTREAM-AGGREGATE-0000000002\n" +
                 "    Processor: KSTREAM-AGGREGATE-0000000002 (stores: [KSTREAM-AGGREGATE-STATE-STORE-0000000001])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-SOURCE-0000000000\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1813,14 +1812,14 @@ public class TopologyTest {
         final Topology topology = builder.build();
         final TopologyDescription describe = topology.describe();
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> KSTREAM-AGGREGATE-0000000001\n" +
                 "    Processor: KSTREAM-AGGREGATE-0000000001 (stores: [count-store])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-SOURCE-0000000000\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1839,14 +1838,14 @@ public class TopologyTest {
         final Topology topology = builder.build();
         final TopologyDescription describe = topology.describe();
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> KSTREAM-AGGREGATE-0000000003\n" +
                 "    Processor: KSTREAM-AGGREGATE-0000000003 (stores: [KSTREAM-AGGREGATE-STATE-STORE-0000000002])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-SOURCE-0000000000\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1864,14 +1863,14 @@ public class TopologyTest {
         final Topology topology = builder.build();
         final TopologyDescription describe = topology.describe();
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> KSTREAM-AGGREGATE-0000000003\n" +
                 "    Processor: KSTREAM-AGGREGATE-0000000003 (stores: [KSTREAM-AGGREGATE-STATE-STORE-0000000002])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-SOURCE-0000000000\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1890,14 +1889,14 @@ public class TopologyTest {
         final Topology topology = builder.build();
         final TopologyDescription describe = topology.describe();
         assertEquals(
-            "Topology: my-topology:\n" +
+                "Topology: my-topology:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> KSTREAM-AGGREGATE-0000000002\n" +
                 "    Processor: KSTREAM-AGGREGATE-0000000002 (stores: [KSTREAM-AGGREGATE-STATE-STORE-0000000001])\n" +
                 "      --> none\n" +
                 "      <-- KSTREAM-SOURCE-0000000000\n\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1913,7 +1912,7 @@ public class TopologyTest {
         final Topology topology = builder.build();
         final TopologyDescription describe = topology.describe();
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000001 (topics: [input-topic])\n" +
                 "      --> KTABLE-SOURCE-0000000002\n" +
@@ -1933,7 +1932,7 @@ public class TopologyTest {
                 "      --> none\n" +
                 "      <-- KSTREAM-SOURCE-0000000006\n" +
                 "\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -1957,7 +1956,7 @@ public class TopologyTest {
         final Topology topology = builder.build();
         final TopologyDescription describe = topology.describe();
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000001 (topics: [input-topic])\n" +
                 "      --> KTABLE-SOURCE-0000000002\n" +
@@ -1977,7 +1976,7 @@ public class TopologyTest {
                 "      --> none\n" +
                 "      <-- KSTREAM-SOURCE-0000000005\n" +
                 "\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -2003,7 +2002,7 @@ public class TopologyTest {
         final Topology topology = builder.build();
         final TopologyDescription describe = topology.describe();
         assertEquals(
-            "Topology: my-topology:\n" +
+                "Topology: my-topology:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000001 (topics: [input-topic])\n" +
                 "      --> KTABLE-SOURCE-0000000002\n" +
@@ -2023,7 +2022,7 @@ public class TopologyTest {
                 "      --> none\n" +
                 "      <-- KSTREAM-SOURCE-0000000006\n" +
                 "\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -2047,7 +2046,7 @@ public class TopologyTest {
         final Topology topology = builder.build();
         final TopologyDescription describe = topology.describe();
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000001 (topics: [input-topic])\n" +
                 "      --> KTABLE-SOURCE-0000000002\n" +
@@ -2067,7 +2066,7 @@ public class TopologyTest {
                 "      --> none\n" +
                 "      <-- KSTREAM-SOURCE-0000000006\n" +
                 "\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -2090,7 +2089,7 @@ public class TopologyTest {
         final Topology topology = builder.build();
         final TopologyDescription describe = topology.describe();
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000001 (topics: [input-topic])\n" +
                 "      --> KTABLE-SOURCE-0000000002\n" +
@@ -2110,7 +2109,7 @@ public class TopologyTest {
                 "      --> none\n" +
                 "      <-- KSTREAM-SOURCE-0000000006\n" +
                 "\n",
-            describe.toString()
+                describe.toString()
         );
 
         topology.internalTopologyBuilder.setStreamsConfig(streamsConfig);
@@ -2130,15 +2129,15 @@ public class TopologyTest {
         table.mapValues((readOnlyKey, value) -> null);
         final TopologyDescription describe = builder.build().describe();
         assertEquals("Topologies:\n" +
-            "   Sub-topology: 0\n" +
-            "    Source: KSTREAM-SOURCE-0000000001 (topics: [input-topic])\n" +
-            "      --> KTABLE-SOURCE-0000000002\n" +
-            "    Processor: KTABLE-SOURCE-0000000002 (stores: [])\n" +
-            "      --> KTABLE-MAPVALUES-0000000003\n" +
-            "      <-- KSTREAM-SOURCE-0000000001\n" +
-            "    Processor: KTABLE-MAPVALUES-0000000003 (stores: [])\n" +
-            "      --> none\n" +
-            "      <-- KTABLE-SOURCE-0000000002\n\n", describe.toString());
+                "   Sub-topology: 0\n" +
+                "    Source: KSTREAM-SOURCE-0000000001 (topics: [input-topic])\n" +
+                "      --> KTABLE-SOURCE-0000000002\n" +
+                "    Processor: KTABLE-SOURCE-0000000002 (stores: [])\n" +
+                "      --> KTABLE-MAPVALUES-0000000003\n" +
+                "      <-- KSTREAM-SOURCE-0000000001\n" +
+                "    Processor: KTABLE-MAPVALUES-0000000003 (stores: [])\n" +
+                "      --> none\n" +
+                "      <-- KTABLE-SOURCE-0000000002\n\n", describe.toString());
     }
 
     @Test
@@ -2146,12 +2145,12 @@ public class TopologyTest {
         final StreamsBuilder builder = new StreamsBuilder();
         final KTable<Object, Object> table = builder.table("input-topic");
         table.mapValues(
-            (readOnlyKey, value) -> null,
-            Materialized.<Object, Object, KeyValueStore<Bytes, byte[]>>with(null, null)
-                .withStoreType(Materialized.StoreType.IN_MEMORY));
+                (readOnlyKey, value) -> null,
+                Materialized.<Object, Object, KeyValueStore<Bytes, byte[]>>with(null, null)
+                    .withStoreType(Materialized.StoreType.IN_MEMORY));
         final TopologyDescription describe = builder.build().describe();
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000001 (topics: [input-topic])\n" +
                 "      --> KTABLE-SOURCE-0000000002\n" +
@@ -2165,7 +2164,7 @@ public class TopologyTest {
                 "      --> none\n" +
                 "      <-- KTABLE-SOURCE-0000000002\n" +
                 "\n",
-            describe.toString());
+                describe.toString());
     }
 
     @Test
@@ -2173,11 +2172,11 @@ public class TopologyTest {
         final StreamsBuilder builder = new StreamsBuilder();
         final KTable<Object, Object> table = builder.table("input-topic");
         table.mapValues(
-            (readOnlyKey, value) -> null,
-            Materialized.<Object, Object, KeyValueStore<Bytes, byte[]>>as("store-name").withKeySerde(null).withValueSerde(null));
+                (readOnlyKey, value) -> null,
+                Materialized.<Object, Object, KeyValueStore<Bytes, byte[]>>as("store-name").withKeySerde(null).withValueSerde(null));
         final TopologyDescription describe = builder.build().describe();
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000001 (topics: [input-topic])\n" +
                 "      --> KTABLE-SOURCE-0000000002\n" +
@@ -2188,7 +2187,7 @@ public class TopologyTest {
                 "      --> none\n" +
                 "      <-- KTABLE-SOURCE-0000000002\n" +
                 "\n",
-            describe.toString());
+                describe.toString());
     }
 
     @Test
@@ -2198,7 +2197,7 @@ public class TopologyTest {
         table.filter((key, value) -> false);
         final TopologyDescription describe = builder.build().describe();
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000001 (topics: [input-topic])\n" +
                 "      --> KTABLE-SOURCE-0000000002\n" +
@@ -2208,7 +2207,7 @@ public class TopologyTest {
                 "    Processor: KTABLE-FILTER-0000000003 (stores: [])\n" +
                 "      --> none\n" +
                 "      <-- KTABLE-SOURCE-0000000002\n\n",
-            describe.toString());
+                describe.toString());
     }
 
     @Test
@@ -2218,7 +2217,7 @@ public class TopologyTest {
         table.filter((key, value) -> false, Materialized.with(null, null));
         final TopologyDescription describe = builder.build().describe();
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000001 (topics: [input-topic])\n" +
                 "      --> KTABLE-SOURCE-0000000002\n" +
@@ -2232,7 +2231,7 @@ public class TopologyTest {
                 "      --> none\n" +
                 "      <-- KTABLE-SOURCE-0000000002\n" +
                 "\n",
-            describe.toString());
+                describe.toString());
     }
 
     @Test
@@ -2243,7 +2242,7 @@ public class TopologyTest {
         final TopologyDescription describe = builder.build().describe();
 
         assertEquals(
-            "Topologies:\n" +
+                "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000001 (topics: [input-topic])\n" +
                 "      --> KTABLE-SOURCE-0000000002\n" +
@@ -2254,7 +2253,7 @@ public class TopologyTest {
                 "      --> none\n" +
                 "      <-- KTABLE-SOURCE-0000000002\n" +
                 "\n",
-            describe.toString());
+                describe.toString());
     }
 
     @Test
@@ -2324,7 +2323,7 @@ public class TopologyTest {
             topology.connectProcessorAndStateStores(processorName, storeNames);
         }
         final TopologyDescription.Processor expectedProcessorNode =
-            new InternalTopologyBuilder.Processor(processorName, Set.of(storeNames));
+                new InternalTopologyBuilder.Processor(processorName, Set.of(storeNames));
 
         for (final TopologyDescription.Node parent : parents) {
             ((InternalTopologyBuilder.AbstractNode) parent).addSuccessor(expectedProcessorNode);
@@ -2344,7 +2343,7 @@ public class TopologyTest {
 
         topology.addSink(sinkName, sinkTopic, null, null, null, parentNames);
         final TopologyDescription.Sink expectedSinkNode =
-            new InternalTopologyBuilder.Sink<>(sinkName, sinkTopic);
+                new InternalTopologyBuilder.Sink<>(sinkName, sinkTopic);
 
         for (final TopologyDescription.Node parent : parents) {
             ((InternalTopologyBuilder.AbstractNode) parent).addSuccessor(expectedSinkNode);
@@ -2362,21 +2361,21 @@ public class TopologyTest {
         final KeyValueStoreBuilder<?, ?> globalStoreBuilder = mock(KeyValueStoreBuilder.class);
         when(globalStoreBuilder.name()).thenReturn(globalStoreName);
         topology.addGlobalStore(
-            globalStoreBuilder,
-            sourceName,
-            null,
-            null,
-            null,
-            globalTopicName,
-            processorName,
-            new MockProcessorSupplier<>());
+                globalStoreBuilder,
+                sourceName,
+                null,
+                null,
+                null,
+                globalTopicName,
+                processorName,
+                new MockProcessorSupplier<>());
 
         final TopologyDescription.GlobalStore expectedGlobalStore = new InternalTopologyBuilder.GlobalStore(
-            sourceName,
-            processorName,
-            globalStoreName,
-            globalTopicName,
-            id);
+                sourceName,
+                processorName,
+                globalStoreName,
+                globalTopicName,
+                id);
 
         expectedDescription.addGlobalStore(expectedGlobalStore);
     }
@@ -2455,19 +2454,19 @@ public class TopologyTest {
 
         topology.addSource("source", "topic");
         topology.addProcessor(
-            "p1",
-            () -> record -> System.out.println("Processing: " + random.nextInt()),
-            "source"
+                "p1",
+                () -> record -> System.out.println("Processing: " + random.nextInt()),
+                "source"
         );
         topology.addProcessor(
-            "p2",
-            () -> record -> System.out.println("Processing: " + random.nextInt()),
-            "p1"
+                "p2",
+                () -> record -> System.out.println("Processing: " + random.nextInt()),
+                "p1"
         );
         topology.addProcessor(
-            "p3",
-            () -> record -> System.out.println("Processing: " + random.nextInt()),
-            "p2"
+                "p3",
+                () -> record -> System.out.println("Processing: " + random.nextInt()),
+                "p2"
         );
         assertThat(counter.numWrappedProcessors(), is(3));
         assertThat(counter.wrappedProcessorNames(), Matchers.containsInAnyOrder("p1", "p2", "p3"));
@@ -2481,8 +2480,8 @@ public class TopologyTest {
         final StreamsConfig config = new StreamsConfig(StreamsTestUtils.getStreamsConfig());
 
         return new TopologyConfig(
-            "my-topology",
-            config,
-            topologyOverrides);
+                "my-topology",
+                config,
+                topologyOverrides);
     }
 }

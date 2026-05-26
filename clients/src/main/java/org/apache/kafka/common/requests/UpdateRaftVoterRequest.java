@@ -65,7 +65,7 @@ public class UpdateRaftVoterRequest extends AbstractRequest {
 
     public static UpdateRaftVoterRequest parse(Readable readable, short version) {
         return new UpdateRaftVoterRequest(
-            new UpdateRaftVoterRequestData(readable, version),
-            version);
+                new UpdateRaftVoterRequestData(readable, version),
+                version);
     }
 }

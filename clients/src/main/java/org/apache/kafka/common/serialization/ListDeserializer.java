@@ -44,12 +44,12 @@ public class ListDeserializer<Inner> implements Deserializer<List<Inner>> {
     final Logger log = LoggerFactory.getLogger(ListDeserializer.class);
 
     private static final Map<Class<? extends Deserializer<?>>, Integer> FIXED_LENGTH_DESERIALIZERS = Map.of(
-        ShortDeserializer.class, Short.BYTES,
-        IntegerDeserializer.class, Integer.BYTES,
-        FloatDeserializer.class, Float.BYTES,
-        LongDeserializer.class, Long.BYTES,
-        DoubleDeserializer.class, Double.BYTES,
-        UUIDDeserializer.class, 36
+            ShortDeserializer.class, Short.BYTES,
+            IntegerDeserializer.class, Integer.BYTES,
+            FloatDeserializer.class, Float.BYTES,
+            LongDeserializer.class, Long.BYTES,
+            DoubleDeserializer.class, Double.BYTES,
+            UUIDDeserializer.class, 36
     );
 
     private Deserializer<Inner> inner;

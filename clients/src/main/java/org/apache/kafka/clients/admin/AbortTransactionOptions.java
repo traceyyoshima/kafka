@@ -21,8 +21,8 @@ public class AbortTransactionOptions extends AbstractOptions<AbortTransactionOpt
     @Override
     public String toString() {
         return "AbortTransactionOptions(" +
-            "timeoutMs=" + timeoutMs +
-            ')';
+                "timeoutMs=" + timeoutMs +
+                ')';
     }
 
 }

@@ -204,7 +204,7 @@ public class WindowToTimestampedWindowByteStoreAdapter implements WindowStore<By
         if (config.isCollectExecutionInfo()) {
             final long end = System.nanoTime();
             result.addExecutionInfo(
-                "Handled in " + getClass() + " in " + (end - start) + "ns"
+                    "Handled in " + getClass() + " in " + (end - start) + "ns"
             );
         }
         return result;
@@ -215,10 +215,9 @@ public class WindowToTimestampedWindowByteStoreAdapter implements WindowStore<By
         return store.getPosition();
     }
 
-
     private static class WindowToTimestampedWindowIteratorAdapter
-        extends KeyValueToTimestampedKeyValueIteratorAdapter<Long>
-        implements WindowStoreIterator<byte[]> {
+            extends KeyValueToTimestampedKeyValueIteratorAdapter<Long>
+            implements WindowStoreIterator<byte[]> {
 
         WindowToTimestampedWindowIteratorAdapter(final KeyValueIterator<Long, byte[]> innerIterator) {
             super(innerIterator);

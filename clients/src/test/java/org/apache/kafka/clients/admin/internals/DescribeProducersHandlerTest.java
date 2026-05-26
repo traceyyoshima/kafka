@@ -58,61 +58,60 @@ public class DescribeProducersHandlerTest {
         DescribeProducersOptions options
     ) {
         return new DescribeProducersHandler(
-            options,
-            new LogContext()
+                options,
+                new LogContext()
         );
     }
-    
 
     @Test
     public void testBrokerIdSetInOptions() {
         int brokerId = 3;
         Set<TopicPartition> topicPartitions = Set.of(
-            new TopicPartition("foo", 5),
-            new TopicPartition("bar", 3),
-            new TopicPartition("foo", 4)
+                new TopicPartition("foo", 5),
+                new TopicPartition("bar", 3),
+                new TopicPartition("foo", 4)
         );
 
         DescribeProducersHandler handler = newHandler(
-            new DescribeProducersOptions().brokerId(brokerId)
+                new DescribeProducersOptions().brokerId(brokerId)
         );
 
         topicPartitions.forEach(topicPartition -> {
             ApiRequestScope scope = handler.lookupStrategy().lookupScope(topicPartition);
             assertEquals(OptionalInt.of(brokerId), scope.destinationBrokerId(),
-                "Unexpected brokerId for " + topicPartition);
+                    "Unexpected brokerId for " + topicPartition);
         });
     }
 
     @Test
     public void testBrokerIdNotSetInOptions() {
         Set<TopicPartition> topicPartitions = Set.of(
-            new TopicPartition("foo", 5),
-            new TopicPartition("bar", 3),
-            new TopicPartition("foo", 4)
+                new TopicPartition("foo", 5),
+                new TopicPartition("bar", 3),
+                new TopicPartition("foo", 4)
         );
 
         DescribeProducersHandler handler = newHandler(
-            new DescribeProducersOptions()
+                new DescribeProducersOptions()
         );
 
         topicPartitions.forEach(topicPartition -> {
             ApiRequestScope scope = handler.lookupStrategy().lookupScope(topicPartition);
             assertEquals(OptionalInt.empty(), scope.destinationBrokerId(),
-                "Unexpected brokerId for " + topicPartition);
+                    "Unexpected brokerId for " + topicPartition);
         });
     }
 
     @Test
     public void testBuildRequest() {
         Set<TopicPartition> topicPartitions = Set.of(
-            new TopicPartition("foo", 5),
-            new TopicPartition("bar", 3),
-            new TopicPartition("foo", 4)
+                new TopicPartition("foo", 5),
+                new TopicPartition("bar", 3),
+                new TopicPartition("foo", 4)
         );
 
         DescribeProducersHandler handler = newHandler(
-            new DescribeProducersOptions()
+                new DescribeProducersOptions()
         );
 
         int brokerId = 3;
@@ -166,7 +165,7 @@ public class DescribeProducersHandlerTest {
     public void testUnmappedAfterNotLeaderError() {
         TopicPartition topicPartition = new TopicPartition("foo", 5);
         ApiResult<TopicPartition, PartitionProducerState> result =
-            handleResponseWithError(new DescribeProducersOptions(), topicPartition, Errors.NOT_LEADER_OR_FOLLOWER);
+                handleResponseWithError(new DescribeProducersOptions(), topicPartition, Errors.NOT_LEADER_OR_FOLLOWER);
         assertEquals(emptyMap(), result.failedKeys);
         assertEquals(emptyMap(), result.completedKeys);
         assertEquals(singletonList(topicPartition), result.unmappedKeys);
@@ -178,7 +177,7 @@ public class DescribeProducersHandlerTest {
         DescribeProducersOptions options = new DescribeProducersOptions().brokerId(1);
 
         ApiResult<TopicPartition, PartitionProducerState> result =
-            handleResponseWithError(options, topicPartition, Errors.NOT_LEADER_OR_FOLLOWER);
+                handleResponseWithError(options, topicPartition, Errors.NOT_LEADER_OR_FOLLOWER);
         assertEquals(emptyMap(), result.completedKeys);
         assertEquals(emptyList(), result.unmappedKeys);
         assertEquals(Set.of(topicPartition), result.failedKeys.keySet());
@@ -197,7 +196,7 @@ public class DescribeProducersHandlerTest {
         Node node = new Node(3, "host", 1);
 
         ApiResult<TopicPartition, PartitionProducerState> result =
-            handler.handleResponse(node, Set.of(topicPartition), response);
+                handler.handleResponse(node, Set.of(topicPartition), response);
 
         assertEquals(Set.of(topicPartition), result.completedKeys.keySet());
         assertEquals(emptyMap(), result.failedKeys);
@@ -212,7 +211,7 @@ public class DescribeProducersHandlerTest {
         Errors error
     ) {
         ApiResult<TopicPartition, PartitionProducerState> result =
-            handleResponseWithError(new DescribeProducersOptions(), topicPartition, error);
+                handleResponseWithError(new DescribeProducersOptions(), topicPartition, error);
         assertEquals(emptyMap(), result.failedKeys);
         assertEquals(emptyMap(), result.completedKeys);
         assertEquals(emptyList(), result.unmappedKeys);
@@ -223,7 +222,7 @@ public class DescribeProducersHandlerTest {
         Errors error
     ) {
         ApiResult<TopicPartition, PartitionProducerState> result = handleResponseWithError(
-            new DescribeProducersOptions(), topicPartition, error);
+                new DescribeProducersOptions(), topicPartition, error);
         assertEquals(emptyMap(), result.completedKeys);
         assertEquals(emptyList(), result.unmappedKeys);
         assertEquals(Set.of(topicPartition), result.failedKeys.keySet());
@@ -257,18 +256,18 @@ public class DescribeProducersHandlerTest {
             .setErrorCode(Errors.NONE.code());
 
         partitionResponse.setActiveProducers(asList(
-            new ProducerState()
-                .setProducerId(12345L)
-                .setProducerEpoch(15)
-                .setLastSequence(75)
-                .setLastTimestamp(System.currentTimeMillis())
-                .setCurrentTxnStartOffset(-1L),
-            new ProducerState()
-                .setProducerId(98765L)
-                .setProducerEpoch(30)
-                .setLastSequence(150)
-                .setLastTimestamp(System.currentTimeMillis() - 5000)
-                .setCurrentTxnStartOffset(5000)
+                new ProducerState()
+                    .setProducerId(12345L)
+                    .setProducerEpoch(15)
+                    .setLastSequence(75)
+                    .setLastTimestamp(System.currentTimeMillis())
+                    .setCurrentTxnStartOffset(-1L),
+                new ProducerState()
+                    .setProducerId(98765L)
+                    .setProducerEpoch(30)
+                    .setLastSequence(150)
+                    .setLastTimestamp(System.currentTimeMillis() - 5000)
+                    .setCurrentTxnStartOffset(5000)
         ));
 
         return partitionResponse;
@@ -284,8 +283,8 @@ public class DescribeProducersHandlerTest {
         assertEquals(expectedProducers.size(), actualProducers.size());
 
         Map<Long, ProducerState> expectedByProducerId = expectedProducers.stream().collect(Collectors.toMap(
-            ProducerState::producerId,
-            Function.identity()
+                ProducerState::producerId,
+                Function.identity()
         ));
 
         for (org.apache.kafka.clients.admin.ProducerState actualProducerState : actualProducers) {
@@ -295,7 +294,7 @@ public class DescribeProducersHandlerTest {
             assertEquals(expectedProducerState.lastSequence(), actualProducerState.lastSequence());
             assertEquals(expectedProducerState.lastTimestamp(), actualProducerState.lastTimestamp());
             assertEquals(expectedProducerState.currentTxnStartOffset(),
-                actualProducerState.currentTransactionStartOffset().orElse(-1L));
+                    actualProducerState.currentTransactionStartOffset().orElse(-1L));
         }
     }
 

@@ -78,7 +78,7 @@ public class To {
         }
         final To to = (To) o;
         return timestamp == to.timestamp &&
-            Objects.equals(childName, to.childName);
+                Objects.equals(childName, to.childName);
     }
 
     /**
@@ -92,8 +92,8 @@ public class To {
     @Override
     public String toString() {
         return "To{" +
-               "childName='" + childName + '\'' +
-               ", timestamp=" + timestamp +
-               '}';
+                "childName='" + childName + '\'' +
+                ", timestamp=" + timestamp +
+                '}';
     }
 }

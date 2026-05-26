@@ -293,11 +293,11 @@ public class AdminClientConfig extends AbstractConfig {
                                         true,
                                         Importance.LOW,
                                         METADATA_CLUSTER_CHECK_ENABLE_DOC)
-                                .define(CONFIG_PROVIDERS_CONFIG, 
+                                .define(CONFIG_PROVIDERS_CONFIG,
                                         ConfigDef.Type.LIST,
                                         List.of(),
                                         ConfigDef.ValidList.anyNonDuplicateValues(true, false),
-                                        ConfigDef.Importance.LOW, 
+                                        ConfigDef.Importance.LOW,
                                         CONFIG_PROVIDERS_DOC);
     }
 
@@ -321,7 +321,7 @@ public class AdminClientConfig extends AbstractConfig {
     }
 
     public static ConfigDef configDef() {
-        return  new ConfigDef(CONFIG);
+        return new ConfigDef(CONFIG);
     }
 
     public static void main(String[] args) {

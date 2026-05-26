@@ -125,7 +125,7 @@ public final class UnlimitedWindows extends Windows<UnlimitedWindow> {
     @Override
     public String toString() {
         return "UnlimitedWindows{" +
-            "startMs=" + startMs +
-            '}';
+                "startMs=" + startMs +
+                '}';
     }
 }

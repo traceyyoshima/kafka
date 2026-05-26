@@ -33,8 +33,8 @@ import static java.util.Objects.requireNonNull;
 public class ValueTimestampHeadersSerde<V> extends WrappingNullableSerde<ValueTimestampHeaders<V>, Void, V> {
     public ValueTimestampHeadersSerde(final Serde<V> valueSerde) {
         super(
-            new ValueTimestampHeadersSerializer<>(requireNonNull(valueSerde, "valueSerde was null").serializer()),
-            new ValueTimestampHeadersDeserializer<>(requireNonNull(valueSerde, "valueSerde was null").deserializer())
+                new ValueTimestampHeadersSerializer<>(requireNonNull(valueSerde, "valueSerde was null").serializer()),
+                new ValueTimestampHeadersDeserializer<>(requireNonNull(valueSerde, "valueSerde was null").deserializer())
         );
     }
 }

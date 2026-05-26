@@ -203,7 +203,7 @@ public class FeatureCommand {
                 .help("Look up the corresponding features for a given metadata version. " +
                         "Using the command with no --release-version  argument will return the mapping for " +
                         "the latest stable metadata version"
-                );
+        );
         versionMappingParser.addArgument("--release-version")
                 .help("The release version to use for the corresponding feature mapping. The minimum is " +
                         MetadataVersion.MINIMUM_VERSION + "; the default is " + MetadataVersion.LATEST_PRODUCTION)
@@ -215,11 +215,11 @@ public class FeatureCommand {
                 .help("Look up dependencies for a given feature version. " +
                         "If the feature is not known or the version not yet defined, an error is thrown. " +
                         "Multiple features can be specified."
-                );
+        );
         featureDependenciesParser.addArgument("--feature")
                 .help("The feature and version to look up dependencies for, in feature=version format. " +
                         "For example: `metadata.version=5`."
-                )
+        )
                 .required(true)
                 .action(append());
     }
@@ -319,7 +319,7 @@ public class FeatureCommand {
                 }
             } catch (Throwable e) {
                 throw new TerseException(upgradeType.name() + " for release version " + releaseVersion +
-                    " failed because at least one feature had the following error: " + e.getMessage());
+                        " failed because at least one feature had the following error: " + e.getMessage());
             }
         } else {
             if (metadata != null) {

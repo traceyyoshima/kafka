@@ -67,24 +67,24 @@ public class DescribeAuthorizedOperationsTest {
 
     static List<ClusterConfig> generator() {
         return List.of(
-            ClusterConfig.defaultBuilder()
-                .setTypes(Set.of(Type.KRAFT))
-                .setServerProperties(Map.of(
-                    GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, "1",
-                    GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, "1"
-                ))
-                .setBrokerSecurityProtocol(SecurityProtocol.SASL_PLAINTEXT)
-                .setControllerSecurityProtocol(SecurityProtocol.SASL_PLAINTEXT)
-                .build()
+                ClusterConfig.defaultBuilder()
+                    .setTypes(Set.of(Type.KRAFT))
+                    .setServerProperties(Map.of(
+                        GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, "1",
+                        GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, "1"
+                    ))
+                    .setBrokerSecurityProtocol(SecurityProtocol.SASL_PLAINTEXT)
+                    .setControllerSecurityProtocol(SecurityProtocol.SASL_PLAINTEXT)
+                    .build()
         );
     }
 
     private static AccessControlEntry createAccessControlEntry(String username, AclOperation operation) {
         return new AccessControlEntry(
-            new KafkaPrincipal(KafkaPrincipal.USER_TYPE, username).toString(),
-            AclEntry.WILDCARD_HOST,
-            operation,
-            ALLOW
+                new KafkaPrincipal(KafkaPrincipal.USER_TYPE, username).toString(),
+                AclEntry.WILDCARD_HOST,
+                operation,
+                ALLOW
         );
     }
 
@@ -93,7 +93,7 @@ public class DescribeAuthorizedOperationsTest {
         configs.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_PLAINTEXT.name);
         configs.put(SaslConfigs.SASL_MECHANISM, "PLAIN");
         configs.put(SaslConfigs.SASL_JAAS_CONFIG,
-            String.format("org.apache.kafka.common.security.plain.PlainLoginModule required username=\"%s\" password=\"%s\";", username, password));
+                String.format("org.apache.kafka.common.security.plain.PlainLoginModule required username=\"%s\" password=\"%s\";", username, password));
         return configs;
     }
 
@@ -102,8 +102,8 @@ public class DescribeAuthorizedOperationsTest {
             ResourcePattern topicResource = new ResourcePattern(ResourceType.TOPIC, AclEntry.WILDCARD_RESOURCE, PatternType.LITERAL);
 
             admin.createAcls(List.of(
-                new AclBinding(CLUSTER_PATTERN, ALTER_ENTRY),
-                new AclBinding(topicResource, DESCRIBE_ENTRY)
+                    new AclBinding(CLUSTER_PATTERN, ALTER_ENTRY),
+                    new AclBinding(topicResource, DESCRIBE_ENTRY)
             )).all().get();
 
             clusterInstance.waitAcls(new AclBindingFilter(CLUSTER_PATTERN.toFilter(), ANY), Set.of(ALTER_ENTRY));
@@ -131,16 +131,16 @@ public class DescribeAuthorizedOperationsTest {
             AccessControlEntry describeEntry = createAccessControlEntry(JaasUtils.KAFKA_PLAIN_USER1, DESCRIBE);
             AccessControlEntry deleteEntry = createAccessControlEntry(JaasUtils.KAFKA_PLAIN_USER1, DELETE);
             user1.createAcls(List.of(
-                new AclBinding(GROUP1_PATTERN, allOperationsEntry),
-                new AclBinding(GROUP2_PATTERN, describeEntry),
-                new AclBinding(GROUP3_PATTERN, deleteEntry)
+                    new AclBinding(GROUP1_PATTERN, allOperationsEntry),
+                    new AclBinding(GROUP2_PATTERN, describeEntry),
+                    new AclBinding(GROUP3_PATTERN, deleteEntry)
             )).all();
             clusterInstance.waitAcls(new AclBindingFilter(GROUP1_PATTERN.toFilter(), ANY), Set.of(allOperationsEntry));
             clusterInstance.waitAcls(new AclBindingFilter(GROUP2_PATTERN.toFilter(), ANY), Set.of(describeEntry));
             clusterInstance.waitAcls(new AclBindingFilter(GROUP3_PATTERN.toFilter(), ANY), Set.of(deleteEntry));
 
             DescribeConsumerGroupsResult describeConsumerGroupsResult = user1.describeConsumerGroups(
-                List.of(GROUP1, GROUP2, GROUP3), new DescribeConsumerGroupsOptions().includeAuthorizedOperations(true));
+                    List.of(GROUP1, GROUP2, GROUP3), new DescribeConsumerGroupsOptions().includeAuthorizedOperations(true));
             assertEquals(3, describeConsumerGroupsResult.describedGroups().size());
 
             ConsumerGroupDescription group1Description = describeConsumerGroupsResult.describedGroups().get(GROUP1).get();
@@ -172,8 +172,8 @@ public class DescribeAuthorizedOperationsTest {
             AccessControlEntry allOperationEntry = createAccessControlEntry(JaasUtils.KAFKA_PLAIN_USER1, ALL);
             admin.createAcls(List.of(new AclBinding(CLUSTER_PATTERN, allOperationEntry))).all().get();
             clusterInstance.waitAcls(
-                new AclBindingFilter(CLUSTER_PATTERN.toFilter(), ANY),
-                Set.of(allOperationEntry, ALTER_ENTRY)
+                    new AclBindingFilter(CLUSTER_PATTERN.toFilter(), ANY),
+                    Set.of(allOperationEntry, ALTER_ENTRY)
             );
         }
 
@@ -190,8 +190,8 @@ public class DescribeAuthorizedOperationsTest {
         setupSecurity(clusterInstance);
         try (Admin admin = clusterInstance.admin(createAdminConfig(JaasUtils.KAFKA_PLAIN_ADMIN, JaasUtils.KAFKA_PLAIN_ADMIN_PASSWORD))) {
             admin.createTopics(List.of(
-                new NewTopic(topic1, 1, (short) 1),
-                new NewTopic(topic2, 1, (short) 1)
+                    new NewTopic(topic1, 1, (short) 1),
+                    new NewTopic(topic2, 1, (short) 1)
             ));
             clusterInstance.waitTopicCreation(topic1, 1);
             clusterInstance.waitTopicCreation(topic2, 1);
@@ -205,8 +205,8 @@ public class DescribeAuthorizedOperationsTest {
 
             // test with includeAuthorizedOperations flag
             topicDescriptions = admin.describeTopics(
-                List.of(topic1, topic2),
-                new DescribeTopicsOptions().includeAuthorizedOperations(true)).allTopicNames().get();
+                    List.of(topic1, topic2),
+                    new DescribeTopicsOptions().includeAuthorizedOperations(true)).allTopicNames().get();
             assertEquals(Set.of(DESCRIBE), topicDescriptions.get(topic1).authorizedOperations());
             assertEquals(Set.of(DESCRIBE), topicDescriptions.get(topic2).authorizedOperations());
         }
@@ -218,23 +218,23 @@ public class DescribeAuthorizedOperationsTest {
             AccessControlEntry allOperationEntry = createAccessControlEntry(JaasUtils.KAFKA_PLAIN_USER1, ALL);
             AccessControlEntry deleteEntry = createAccessControlEntry(JaasUtils.KAFKA_PLAIN_USER1, DELETE);
             admin.createAcls(List.of(
-                new AclBinding(topic1Resource, allOperationEntry),
-                new AclBinding(topic2Resource, deleteEntry)
+                    new AclBinding(topic1Resource, allOperationEntry),
+                    new AclBinding(topic2Resource, deleteEntry)
             )).all().get();
             clusterInstance.waitAcls(
-                new AclBindingFilter(topic1Resource.toFilter(), ANY),
-                Set.of(allOperationEntry)
+                    new AclBindingFilter(topic1Resource.toFilter(), ANY),
+                    Set.of(allOperationEntry)
             );
             clusterInstance.waitAcls(
-                new AclBindingFilter(topic2Resource.toFilter(), ANY),
-                Set.of(deleteEntry)
+                    new AclBindingFilter(topic2Resource.toFilter(), ANY),
+                    Set.of(deleteEntry)
             );
         }
 
         try (Admin admin = clusterInstance.admin(createAdminConfig(JaasUtils.KAFKA_PLAIN_USER1, JaasUtils.KAFKA_PLAIN_USER1_PASSWORD))) {
             Map<String, TopicDescription> topicDescriptions = admin.describeTopics(
-                List.of(topic1, topic2),
-                new DescribeTopicsOptions().includeAuthorizedOperations(true)).allTopicNames().get();
+                    List.of(topic1, topic2),
+                    new DescribeTopicsOptions().includeAuthorizedOperations(true)).allTopicNames().get();
             assertEquals(AclEntry.supportedOperations(ResourceType.TOPIC), topicDescriptions.get(topic1).authorizedOperations());
             assertEquals(Set.of(DESCRIBE, DELETE), topicDescriptions.get(topic2).authorizedOperations());
         }

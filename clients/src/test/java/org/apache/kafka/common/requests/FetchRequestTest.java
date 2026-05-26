@@ -230,7 +230,7 @@ public class FetchRequestTest {
         FetchRequestData fetchRequestData = new FetchRequestData().setReplicaId(1);
         FetchRequest.SimpleBuilder builder = new FetchRequest.SimpleBuilder(fetchRequestData);
         assertThrows(IllegalStateException.class, () ->
-            builder.build(version)
+                builder.build(version)
         );
     }
 
@@ -240,7 +240,7 @@ public class FetchRequestTest {
                 new FetchRequest.PartitionData(Uuid.ZERO_UUID, 300, 0L, 300, Optional.of(300)));
 
         assertNotEquals(new FetchRequest.PartitionData(Uuid.randomUuid(), 300, 0L, 300, Optional.of(300)),
-            new FetchRequest.PartitionData(Uuid.randomUuid(), 300, 0L, 300, Optional.of(300)));
+                new FetchRequest.PartitionData(Uuid.randomUuid(), 300, 0L, 300, Optional.of(300)));
     }
 
     @ParameterizedTest
@@ -249,9 +249,9 @@ public class FetchRequestTest {
         Uuid topicId = Uuid.randomUuid();
         int partition = 0;
         TopicIdPartition tp = new TopicIdPartition(topicId, partition, "topic");
-        
+
         FetchRequest fetchRequest = createFetchRequestByVersion(version, topicId, tp);
-        
+
         Map<Uuid, String> topicNames = Collections.singletonMap(topicId, tp.topic());
         List<TopicIdPartition> requestsWithTopicsName = fetchRequest.forgottenTopics(topicNames);
         assertEquals(topicNames.size(), requestsWithTopicsName.size());

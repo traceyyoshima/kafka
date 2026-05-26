@@ -35,9 +35,9 @@ public abstract class ExtractField<R extends ConnectRecord<R>> implements Transf
 
     public static final String OVERVIEW_DOC =
             "Extract the specified field from a Struct when schema present, or a Map in the case of schemaless data. "
-                    + "Any null values are passed through unmodified."
-                    + "<p/>Use the concrete transformation type designed for the record key (<code>" + Key.class.getName() + "</code>) "
-                    + "or value (<code>" + Value.class.getName() + "</code>).";
+            + "Any null values are passed through unmodified."
+            + "<p/>Use the concrete transformation type designed for the record key (<code>" + Key.class.getName() + "</code>) "
+            + "or value (<code>" + Value.class.getName() + "</code>).";
 
     private static final String FIELD_CONFIG = "field";
     private static final String REPLACE_NULL_WITH_DEFAULT_CONFIG = "replace.null.with.default";
@@ -50,7 +50,7 @@ public abstract class ExtractField<R extends ConnectRecord<R>> implements Transf
                             ConfigDef.NO_DEFAULT_VALUE,
                             ConfigDef.Importance.MEDIUM,
                             "Field name to extract."
-                    )
+            )
                     .define(REPLACE_NULL_WITH_DEFAULT_CONFIG,
                             ConfigDef.Type.BOOLEAN,
                             true,

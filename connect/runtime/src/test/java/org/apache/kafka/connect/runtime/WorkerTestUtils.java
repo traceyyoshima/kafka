@@ -98,7 +98,7 @@ public class WorkerTestUtils {
                 .mapToObj(i -> new SimpleEntry<>(
                         new ConnectorTaskId("connector" + i / connectorNum + 1, i),
                         new HashMap<String, String>())
-                ).collect(Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue));
+        ).collect(Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue));
     }
 
     public static String expectedLeaderUrl(String givenLeader) {

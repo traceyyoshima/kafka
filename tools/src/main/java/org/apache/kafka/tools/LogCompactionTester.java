@@ -278,8 +278,8 @@ public class LogCompactionTester {
         double reduction = 100 * (1.0 - (double) consumedLines / producedLines);
 
         System.out.printf(
-            "%d rows of data produced, %d rows of data consumed (%.1f%% reduction).%n",
-            producedLines, consumedLines, reduction);
+                "%d rows of data produced, %d rows of data consumed (%.1f%% reduction).%n",
+                producedLines, consumedLines, reduction);
 
         System.out.println("De-duplicating and validating output files...");
         validateOutput(producedDataFilePath.toFile(), consumedDataFilePath.toFile());
@@ -289,7 +289,6 @@ public class LogCompactionTester {
         // if you change this line, we need to update test_log_compaction_tool.py system test
         System.out.println("Data verification is completed");
     }
-
 
     private static void createTopics(String brokerUrl, Set<String> topics) throws Exception {
         Properties adminConfig = new Properties();
@@ -372,7 +371,7 @@ public class LogCompactionTester {
                 "sort", "--key=1,2", "--stable", "--buffer-size=20%",
                 "--temporary-directory=" + tempDir.toString(), file.getAbsolutePath());
         builder.redirectError(ProcessBuilder.Redirect.INHERIT);
-        
+
         Process process;
         try {
             process = builder.start();
@@ -412,14 +411,14 @@ public class LogCompactionTester {
         producerProps.put(ProducerConfig.MAX_BLOCK_MS_CONFIG, String.valueOf(Long.MAX_VALUE));
         producerProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, brokerUrl);
         producerProps.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, compressionType.name);
-        
+
         if (compressionLevel != null) {
             switch (compressionType) {
                 case GZIP -> producerProps.put(ProducerConfig.COMPRESSION_GZIP_LEVEL_CONFIG, compressionLevel);
                 case LZ4 -> producerProps.put(ProducerConfig.COMPRESSION_LZ4_LEVEL_CONFIG, compressionLevel);
                 case ZSTD -> producerProps.put(ProducerConfig.COMPRESSION_ZSTD_LEVEL_CONFIG, compressionLevel);
                 default -> System.out.println("Warning: Compression level " + compressionLevel + " is ignored for compression type "
-                    + compressionType.name + ". Only gzip, lz4, and zstd support compression levels.");
+                        + compressionType.name + ". Only gzip, lz4, and zstd support compression levels.");
             }
         }
 
@@ -467,18 +466,18 @@ public class LogCompactionTester {
                 ConsumerRecords<String, String> consumerRecords = consumer.poll(Duration.ofSeconds(20));
                 if (consumerRecords.isEmpty()) return consumedFilePath;
                 consumerRecords.forEach(
-                    record -> {
-                        try {
-                            boolean delete = record.value() == null;
-                            long value = delete ? -1L : Long.parseLong(record.value());
-                            TestRecord testRecord = new TestRecord(
+                        record -> {
+                            try {
+                                boolean delete = record.value() == null;
+                                long value = delete ? -1L : Long.parseLong(record.value());
+                                TestRecord testRecord = new TestRecord(
                                     record.topic(), Integer.parseInt(record.key()), value, delete);
-                            consumedWriter.write(testRecord.toString());
-                            consumedWriter.newLine();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
+                                consumedWriter.write(testRecord.toString());
+                                consumedWriter.newLine();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
-                    }
                 );
             }
         }

@@ -46,10 +46,10 @@ public class ScramCredentialDataNodeTest {
         NodeStringifier stringifier = new NodeStringifier();
         new ScramCredentialDataNode(DATA).print(stringifier);
         assertEquals("ScramCredentialData(" +
-            "salt=[redacted], " +
-            "storedKey=[redacted], " +
-            "serverKey=[redacted], " +
-            "iterations=[redacted])", stringifier.toString());
+                "salt=[redacted], " +
+                "storedKey=[redacted], " +
+                "serverKey=[redacted], " +
+                "iterations=[redacted])", stringifier.toString());
     }
 
     @Test
@@ -57,9 +57,9 @@ public class ScramCredentialDataNodeTest {
         NodeStringifier stringifier = new NodeStringifier(Disabled.INSTANCE);
         new ScramCredentialDataNode(DATA).print(stringifier);
         assertEquals("ScramCredentialData(" +
-            "salt=4f1d6ea31e58c5ad3aaeb3266f55cce6, " +
-            "storedKey=3cfa1c3421b512d1d1dfc3355138b4ad, " +
-            "serverKey=2d9781209073e8d03aee3cbc63a1d4ca, " +
-            "iterations=16)", stringifier.toString());
+                "salt=4f1d6ea31e58c5ad3aaeb3266f55cce6, " +
+                "storedKey=3cfa1c3421b512d1d1dfc3355138b4ad, " +
+                "serverKey=2d9781209073e8d03aee3cbc63a1d4ca, " +
+                "iterations=16)", stringifier.toString());
     }
 }

@@ -45,10 +45,11 @@ public class DescribeTransactionsResult {
         KafkaFuture<TransactionDescription> future = futures.get(key);
         if (future == null) {
             throw new IllegalArgumentException("TransactionalId " +
-                "`" + transactionalId + "` was not included in the request");
+                    "`" + transactionalId + "` was not included in the request");
         }
         return future;
     }
+
     /**
      * Get a future which returns a map of the transaction descriptions requested in the respective
      * call to {@link Admin#describeTransactions(Collection, DescribeTransactionsOptions)}.

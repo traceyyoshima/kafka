@@ -240,7 +240,7 @@ public class SaslChannelBuilder implements ChannelBuilder, ListenerReconfigurabl
                         subjects.get(clientSaslMechanism));
             }
             return new KafkaChannel(id, transportLayer, authenticatorCreator, maxReceiveSize,
-                memoryPool != null ? memoryPool : MemoryPool.NONE, metadataRegistry);
+                    memoryPool != null ? memoryPool : MemoryPool.NONE, metadataRegistry);
         } catch (Exception e) {
             // Ideally these resources are closed by the KafkaChannel but this builder should close the resources instead
             // if an error occurs due to which KafkaChannel is not created.
@@ -264,8 +264,8 @@ public class SaslChannelBuilder implements ChannelBuilder, ListenerReconfigurabl
                                                  ChannelMetadataRegistry metadataRegistry) throws IOException {
         if (this.securityProtocol == SecurityProtocol.SASL_SSL) {
             return SslTransportLayer.create(id, key,
-                sslFactory.createSslEngine(socketChannel.socket()),
-                metadataRegistry);
+                    sslFactory.createSslEngine(socketChannel.socket()),
+                    metadataRegistry);
         } else {
             return new PlaintextTransportLayer(key);
         }

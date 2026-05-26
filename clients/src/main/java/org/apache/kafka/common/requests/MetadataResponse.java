@@ -282,7 +282,7 @@ public class MetadataResponse extends AbstractResponse {
 
     public static MetadataResponse parse(Readable readable, short version) {
         return new MetadataResponse(new MetadataResponseData(readable, version),
-            hasReliableLeaderEpochs(version));
+                hasReliableLeaderEpochs(version));
     }
 
     public static class TopicMetadata {
@@ -348,11 +348,11 @@ public class MetadataResponse extends AbstractResponse {
             if (o == null || getClass() != o.getClass()) return false;
             final TopicMetadata that = (TopicMetadata) o;
             return isInternal == that.isInternal &&
-                error == that.error &&
-                Objects.equals(topic, that.topic) &&
-                Objects.equals(topicId, that.topicId) &&
-                Objects.equals(partitionMetadata, that.partitionMetadata) &&
-                Objects.equals(authorizedOperations, that.authorizedOperations);
+                    error == that.error &&
+                    Objects.equals(topic, that.topic) &&
+                    Objects.equals(topicId, that.topicId) &&
+                    Objects.equals(partitionMetadata, that.partitionMetadata) &&
+                    Objects.equals(authorizedOperations, that.authorizedOperations);
         }
 
         @Override
@@ -363,13 +363,13 @@ public class MetadataResponse extends AbstractResponse {
         @Override
         public String toString() {
             return "TopicMetadata{" +
-                "error=" + error +
-                ", topic='" + topic + '\'' +
-                ", topicId='" + topicId + '\'' +
-                ", isInternal=" + isInternal +
-                ", partitionMetadata=" + partitionMetadata +
-                ", authorizedOperations=" + authorizedOperations +
-                '}';
+                    "error=" + error +
+                    ", topic='" + topic + '\'' +
+                    ", topicId='" + topicId + '\'' +
+                    ", isInternal=" + isInternal +
+                    ", partitionMetadata=" + partitionMetadata +
+                    ", authorizedOperations=" + authorizedOperations +
+                    '}';
         }
     }
 
@@ -499,11 +499,11 @@ public class MetadataResponse extends AbstractResponse {
         MetadataResponseData responseData = new MetadataResponseData();
         responseData.setThrottleTimeMs(throttleTimeMs);
         brokers.forEach(broker ->
-            responseData.brokers().add(new MetadataResponseBroker()
-                .setNodeId(broker.id())
-                .setHost(broker.host())
-                .setPort(broker.port())
-                .setRack(broker.rack()))
+                responseData.brokers().add(new MetadataResponseBroker()
+                    .setNodeId(broker.id())
+                    .setHost(broker.host())
+                    .setPort(broker.port())
+                    .setRack(broker.rack()))
         );
 
         responseData.setClusterId(clusterId);

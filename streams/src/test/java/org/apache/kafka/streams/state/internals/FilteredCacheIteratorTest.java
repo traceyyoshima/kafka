@@ -69,8 +69,8 @@ public class FilteredCacheIteratorTest {
         store.putAll(entries);
         final HasNextCondition allCondition = Iterator::hasNext;
         allIterator = new FilteredCacheIterator(
-            new DelegatingPeekingKeyValueIterator<>("",
-                                                    store.all()), allCondition, IDENTITY_FUNCTION);
+                new DelegatingPeekingKeyValueIterator<>("",
+                        store.all()), allCondition, IDENTITY_FUNCTION);
 
         final HasNextCondition firstEntryCondition = iterator -> iterator.hasNext() && iterator.peekNextKey().equals(firstEntry.key);
         firstEntryIterator = new FilteredCacheIterator(

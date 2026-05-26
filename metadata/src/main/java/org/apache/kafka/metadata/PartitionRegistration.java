@@ -135,17 +135,17 @@ public class PartitionRegistration {
             }
 
             return new PartitionRegistration(
-                replicas,
-                directories,
-                isr,
-                removingReplicas,
-                addingReplicas,
-                leader,
-                leaderRecoveryState,
-                leaderEpoch,
-                partitionEpoch,
-                elr,
-                lastKnownElr
+                    replicas,
+                    directories,
+                    isr,
+                    removingReplicas,
+                    addingReplicas,
+                    leader,
+                    leaderRecoveryState,
+                    leaderEpoch,
+                    partitionEpoch,
+                    elr,
+                    lastKnownElr
             );
         }
     }
@@ -201,16 +201,16 @@ public class PartitionRegistration {
 
     public PartitionRegistration(PartitionRecord record) {
         this(Replicas.toArray(record.replicas()),
-            defaultToMigrating(Uuid.toArray(checkDirectories(record)), record.replicas().size()),
-            Replicas.toArray(record.isr()),
-            Replicas.toArray(record.removingReplicas()),
-            Replicas.toArray(record.addingReplicas()),
-            record.leader(),
-            LeaderRecoveryState.of(record.leaderRecoveryState()),
-            record.leaderEpoch(),
-            record.partitionEpoch(),
-            Replicas.toArray(record.eligibleLeaderReplicas()),
-            Replicas.toArray(record.lastKnownElr()));
+                defaultToMigrating(Uuid.toArray(checkDirectories(record)), record.replicas().size()),
+                Replicas.toArray(record.isr()),
+                Replicas.toArray(record.removingReplicas()),
+                Replicas.toArray(record.addingReplicas()),
+                record.leader(),
+                LeaderRecoveryState.of(record.leaderRecoveryState()),
+                record.leaderEpoch(),
+                record.partitionEpoch(),
+                Replicas.toArray(record.eligibleLeaderReplicas()),
+                Replicas.toArray(record.lastKnownElr()));
     }
 
     private PartitionRegistration(int[] replicas, Uuid[] directories, int[] isr, int[] removingReplicas,
@@ -264,16 +264,16 @@ public class PartitionRegistration {
         int[] newElr = (record.eligibleLeaderReplicas() == null) ? elr : Replicas.toArray(record.eligibleLeaderReplicas());
         int[] newLastKnownElr = (record.lastKnownElr() == null) ? lastKnownElr : Replicas.toArray(record.lastKnownElr());
         return new PartitionRegistration(newReplicas,
-            newDirectories,
-            newIsr,
-            newRemovingReplicas,
-            newAddingReplicas,
-            newLeader,
-            newLeaderRecoveryState,
-            newLeaderEpoch,
-            partitionEpoch + 1,
-            newElr,
-            newLastKnownElr);
+                newDirectories,
+                newIsr,
+                newRemovingReplicas,
+                newAddingReplicas,
+                newLeader,
+                newLeaderRecoveryState,
+                newLeaderEpoch,
+                partitionEpoch + 1,
+                newElr,
+                newLastKnownElr);
     }
 
     public String diff(PartitionRegistration prev) {
@@ -411,24 +411,24 @@ public class PartitionRegistration {
     @Override
     public int hashCode() {
         return Objects.hash(Arrays.hashCode(replicas), Arrays.hashCode(isr), Arrays.hashCode(removingReplicas),
-            Arrays.hashCode(directories), Arrays.hashCode(elr), Arrays.hashCode(lastKnownElr),
-            Arrays.hashCode(addingReplicas), leader, leaderRecoveryState, leaderEpoch, partitionEpoch);
+                Arrays.hashCode(directories), Arrays.hashCode(elr), Arrays.hashCode(lastKnownElr),
+                Arrays.hashCode(addingReplicas), leader, leaderRecoveryState, leaderEpoch, partitionEpoch);
     }
 
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof PartitionRegistration other)) return false;
         return Arrays.equals(replicas, other.replicas) &&
-            Arrays.equals(directories, other.directories) &&
-            Arrays.equals(isr, other.isr) &&
-            Arrays.equals(removingReplicas, other.removingReplicas) &&
-            Arrays.equals(addingReplicas, other.addingReplicas) &&
-            Arrays.equals(elr, other.elr) &&
-            Arrays.equals(lastKnownElr, other.lastKnownElr) &&
-            leader == other.leader &&
-            leaderRecoveryState == other.leaderRecoveryState &&
-            leaderEpoch == other.leaderEpoch &&
-            partitionEpoch == other.partitionEpoch;
+                Arrays.equals(directories, other.directories) &&
+                Arrays.equals(isr, other.isr) &&
+                Arrays.equals(removingReplicas, other.removingReplicas) &&
+                Arrays.equals(addingReplicas, other.addingReplicas) &&
+                Arrays.equals(elr, other.elr) &&
+                Arrays.equals(lastKnownElr, other.lastKnownElr) &&
+                leader == other.leader &&
+                leaderRecoveryState == other.leaderRecoveryState &&
+                leaderEpoch == other.leaderEpoch &&
+                partitionEpoch == other.partitionEpoch;
     }
 
     @Override

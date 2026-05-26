@@ -65,13 +65,13 @@ public final class ClientRequest {
     @Override
     public String toString() {
         return "ClientRequest(expectResponse=" + expectResponse +
-            ", callback=" + callback +
-            ", destination=" + destination +
-            ", correlationId=" + correlationId +
-            ", clientId=" + clientId +
-            ", createdTimeMs=" + createdTimeMs +
-            ", requestBuilder=" + requestBuilder +
-            ")";
+                ", callback=" + callback +
+                ", destination=" + destination +
+                ", correlationId=" + correlationId +
+                ", clientId=" + clientId +
+                ", createdTimeMs=" + createdTimeMs +
+                ", requestBuilder=" + requestBuilder +
+                ")";
     }
 
     public boolean expectResponse() {
@@ -85,12 +85,12 @@ public final class ClientRequest {
     public RequestHeader makeHeader(short version) {
         ApiKeys requestApiKey = apiKey();
         return new RequestHeader(
-            new RequestHeaderData()
-                .setRequestApiKey(requestApiKey.id)
-                .setRequestApiVersion(version)
-                .setClientId(clientId)
-                .setCorrelationId(correlationId),
-            requestApiKey.requestHeaderVersion(version));
+                new RequestHeaderData()
+                    .setRequestApiKey(requestApiKey.id)
+                    .setRequestApiVersion(version)
+                    .setClientId(clientId)
+                    .setCorrelationId(correlationId),
+                requestApiKey.requestHeaderVersion(version));
     }
 
     public AbstractRequest.Builder<?> requestBuilder() {

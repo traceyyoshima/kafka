@@ -101,7 +101,6 @@ public class JoinGroupRequest extends AbstractRequest {
         return apiVersion >= 4;
     }
 
-
     /**
      * Since JoinGroupRequest version 4, a client that sends a join group request with
      * {@link #UNKNOWN_MEMBER_ID} needs to rejoin with a new member id generated
@@ -121,8 +120,8 @@ public class JoinGroupRequest extends AbstractRequest {
         int apiVersion
     ) {
         return request.groupInstanceId() == null
-            && request.memberId().equals(UNKNOWN_MEMBER_ID)
-            && requiresKnownMemberId(apiVersion);
+                && request.memberId().equals(UNKNOWN_MEMBER_ID)
+                && requiresKnownMemberId(apiVersion);
     }
 
     /**

@@ -66,9 +66,9 @@ public class MockApiFixedKeyProcessor<KIn, VIn, VOut> implements FixedKeyProcess
         this.context = context;
         if (scheduleInterval > 0L) {
             scheduleCancellable = context.schedule(
-                Duration.ofMillis(scheduleInterval),
-                punctuationType,
-                (punctuationType == PunctuationType.STREAM_TIME ? punctuatedStreamTime : punctuatedSystemTime)::add
+                    Duration.ofMillis(scheduleInterval),
+                    punctuationType,
+                    (punctuationType == PunctuationType.STREAM_TIME ? punctuatedStreamTime : punctuatedSystemTime)::add
             );
         }
     }
@@ -97,9 +97,9 @@ public class MockApiFixedKeyProcessor<KIn, VIn, VOut> implements FixedKeyProcess
         for (int i = 0; i < expected.length; i++) {
             final FixedKeyRecord<KIn, VIn> record = processed.get(i);
             assertThat(
-                "output[" + i + "]:",
-                new KeyValueTimestamp<>(record.key(), record.value(), record.timestamp()),
-                is(expected[i])
+                    "output[" + i + "]:",
+                    new KeyValueTimestamp<>(record.key(), record.value(), record.timestamp()),
+                    is(expected[i])
             );
         }
 

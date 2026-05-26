@@ -139,12 +139,12 @@ public class KafkaPostDiscoveryFilter implements PostDiscoveryFilter {
 
         if (verbose) {
             log.info(
-                "{} Test '{}' with reason '{}'. Flaky tag is {}, catalog filter has {} this test.",
-                result.included() ? "Including" : "Excluding",
-                testDescriptor.getDisplayName(),
-                result.getReason().orElse("null"),
-                hasFlakyTag ? "present" : "not present",
-                catalogFilterResult.included() ? "included" : "not included"
+                    "{} Test '{}' with reason '{}'. Flaky tag is {}, catalog filter has {} this test.",
+                    result.included() ? "Including" : "Excluding",
+                    testDescriptor.getDisplayName(),
+                    result.getReason().orElse("null"),
+                    hasFlakyTag ? "present" : "not present",
+                    catalogFilterResult.included() ? "included" : "not included"
             );
         }
         return result;

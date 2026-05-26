@@ -171,7 +171,7 @@ public abstract class Loggers {
                             this::loggerLevel,
                             (existing, replacing) -> replacing,
                             TreeMap::new)
-                    );
+            );
         }
 
         @Override

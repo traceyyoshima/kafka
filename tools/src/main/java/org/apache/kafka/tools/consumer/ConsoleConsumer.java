@@ -119,7 +119,7 @@ public class ConsoleConsumer {
             messageCount += 1;
             try {
                 formatter.writeTo(new ConsumerRecord<>(msg.topic(), msg.partition(), msg.offset(), msg.timestamp(), msg.timestampType(),
-                    0, 0, msg.key(), msg.value(), msg.headers(), Optional.empty()), output);
+                        0, 0, msg.key(), msg.value(), msg.headers(), Optional.empty()), output);
             } catch (Throwable t) {
                 if (skipMessageOnError) {
                     LOG.error("Error processing message, skipping this message: ", t);

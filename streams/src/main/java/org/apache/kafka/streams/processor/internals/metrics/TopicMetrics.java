@@ -47,20 +47,20 @@ public class TopicMetrics {
                                         final String topic,
                                         final StreamsMetricsImpl streamsMetrics) {
         final Sensor sensor = streamsMetrics.topicLevelSensor(
-            threadId,
-            taskId,
-            processorNodeId,
-            topic,
-            CONSUMED,
-            RecordingLevel.INFO);
+                threadId,
+                taskId,
+                processorNodeId,
+                topic,
+                CONSUMED,
+                RecordingLevel.INFO);
         addTotalCountAndSumMetricsToSensor(
-            sensor,
-            TOPIC_LEVEL_GROUP,
-            streamsMetrics.topicLevelTagMap(threadId, taskId, processorNodeId, topic),
-            RECORDS_CONSUMED,
-            BYTES_CONSUMED,
-            RECORDS_CONSUMED_TOTAL_DESCRIPTION,
-            BYTES_CONSUMED_TOTAL_DESCRIPTION
+                sensor,
+                TOPIC_LEVEL_GROUP,
+                streamsMetrics.topicLevelTagMap(threadId, taskId, processorNodeId, topic),
+                RECORDS_CONSUMED,
+                BYTES_CONSUMED,
+                RECORDS_CONSUMED_TOTAL_DESCRIPTION,
+                BYTES_CONSUMED_TOTAL_DESCRIPTION
         );
         return sensor;
     }
@@ -71,20 +71,20 @@ public class TopicMetrics {
                                         final String topic,
                                         final StreamsMetricsImpl streamsMetrics) {
         final Sensor sensor = streamsMetrics.topicLevelSensor(
-            threadId,
-            taskId,
-            processorNodeId,
-            topic,
-            PRODUCED,
-            RecordingLevel.INFO);
+                threadId,
+                taskId,
+                processorNodeId,
+                topic,
+                PRODUCED,
+                RecordingLevel.INFO);
         addTotalCountAndSumMetricsToSensor(
-            sensor,
-            TOPIC_LEVEL_GROUP,
-            streamsMetrics.topicLevelTagMap(threadId, taskId, processorNodeId, topic),
-            RECORDS_PRODUCED,
-            BYTES_PRODUCED,
-            RECORDS_PRODUCED_TOTAL_DESCRIPTION,
-            BYTES_PRODUCED_TOTAL_DESCRIPTION
+                sensor,
+                TOPIC_LEVEL_GROUP,
+                streamsMetrics.topicLevelTagMap(threadId, taskId, processorNodeId, topic),
+                RECORDS_PRODUCED,
+                BYTES_PRODUCED,
+                RECORDS_PRODUCED_TOTAL_DESCRIPTION,
+                BYTES_PRODUCED_TOTAL_DESCRIPTION
         );
         return sensor;
     }

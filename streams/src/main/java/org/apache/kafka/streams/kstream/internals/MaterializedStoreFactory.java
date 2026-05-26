@@ -85,7 +85,7 @@ public abstract class MaterializedStoreFactory<K, V, S extends StateStore> exten
     @Override
     public boolean isCompatibleWith(final StoreFactory storeFactory) {
         return (storeFactory instanceof MaterializedStoreFactory)
-            && ((MaterializedStoreFactory<?, ?, ?>) storeFactory).materialized.equals(materialized);
+                && ((MaterializedStoreFactory<?, ?, ?>) storeFactory).materialized.equals(materialized);
     }
 
 }

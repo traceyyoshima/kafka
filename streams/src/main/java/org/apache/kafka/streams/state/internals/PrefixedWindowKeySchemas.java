@@ -130,10 +130,10 @@ public class PrefixedWindowKeySchemas {
                     }
 
                     final Bytes keyBytes = Bytes.wrap(
-                        TimeFirstWindowKeySchema.extractStoreKeyBytes(bytes.get()));
+                            TimeFirstWindowKeySchema.extractStoreKeyBytes(bytes.get()));
                     if ((binaryKeyFrom == null || keyBytes.compareTo(binaryKeyFrom) >= 0)
-                        && (binaryKeyTo == null || keyBytes.compareTo(binaryKeyTo) <= 0)
-                        && time >= from && time <= to) {
+                            && (binaryKeyTo == null || keyBytes.compareTo(binaryKeyTo) <= 0)
+                            && time >= from && time <= to) {
                         return true;
                     }
                     iterator.next();
@@ -203,7 +203,7 @@ public class PrefixedWindowKeySchemas {
                                       final long timestamp,
                                       final int seqnum) {
             final ByteBuffer buf = ByteBuffer.allocate(
-                PREFIX_SIZE + TIMESTAMP_SIZE + serializedKey.length + SEQNUM_SIZE);
+                    PREFIX_SIZE + TIMESTAMP_SIZE + serializedKey.length + SEQNUM_SIZE);
             buf.put(TIME_FIRST_PREFIX);
             buf.putLong(timestamp);
             buf.put(serializedKey);
@@ -290,9 +290,9 @@ public class PrefixedWindowKeySchemas {
                     final Bytes keyBytes = Bytes.wrap(KeyFirstWindowKeySchema.extractStoreKeyBytes(bytes.get()));
                     final long time = KeyFirstWindowKeySchema.extractStoreTimestamp(bytes.get());
                     if ((binaryKeyFrom == null || keyBytes.compareTo(binaryKeyFrom) >= 0)
-                        && (binaryKeyTo == null || keyBytes.compareTo(binaryKeyTo) <= 0)
-                        && time >= from
-                        && time <= to) {
+                            && (binaryKeyTo == null || keyBytes.compareTo(binaryKeyTo) <= 0)
+                            && time >= from
+                            && time <= to) {
                         return true;
                     }
                     iterator.next();

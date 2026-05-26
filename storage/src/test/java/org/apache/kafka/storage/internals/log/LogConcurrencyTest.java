@@ -134,10 +134,10 @@ public class LogConcurrencyTest {
                         } else {
                             log.appendAsFollower(
                                     MemoryRecords.withRecords(
-                                        logEndOffset,
-                                        Compression.NONE,
-                                        leaderEpoch,
-                                        records
+                                            logEndOffset,
+                                            Compression.NONE,
+                                            leaderEpoch,
+                                            records
                                     ),
                                     Integer.MAX_VALUE
                             );
@@ -163,19 +163,19 @@ public class LogConcurrencyTest {
 
     private UnifiedLog createLog(LogConfig config) throws IOException {
         log = UnifiedLog.create(
-            logDir,
-            config,
-            0L,
-            0L,
-            scheduler,
-            brokerTopicStats,
-            Time.SYSTEM,
-            5 * 60 * 1000,
-            new ProducerStateManagerConfig(TransactionLogConfig.PRODUCER_ID_EXPIRATION_MS_DEFAULT, false),
-            TransactionLogConfig.PRODUCER_ID_EXPIRATION_CHECK_INTERVAL_MS_DEFAULT,
-            new LogDirFailureChannel(10),
-            true,
-            Optional.empty()
+                logDir,
+                config,
+                0L,
+                0L,
+                scheduler,
+                brokerTopicStats,
+                Time.SYSTEM,
+                5 * 60 * 1000,
+                new ProducerStateManagerConfig(TransactionLogConfig.PRODUCER_ID_EXPIRATION_MS_DEFAULT, false),
+                TransactionLogConfig.PRODUCER_ID_EXPIRATION_CHECK_INTERVAL_MS_DEFAULT,
+                new LogDirFailureChannel(10),
+                true,
+                Optional.empty()
         );
 
         return log;

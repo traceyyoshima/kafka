@@ -137,8 +137,8 @@ public class SnapshotEmitter implements SnapshotGenerator.Emitter {
     public void maybeEmit(MetadataImage image) {
         MetadataProvenance provenance = image.provenance();
         Optional<SnapshotWriter<ApiMessageAndVersion>> snapshotWriter = raftClient.createSnapshot(
-            provenance.snapshotId(),
-            provenance.lastContainedLogTimeMs()
+                provenance.snapshotId(),
+                provenance.lastContainedLogTimeMs()
         );
         if (snapshotWriter.isEmpty()) {
             log.error("Not generating {} because it already exists.", provenance.snapshotName());

@@ -31,16 +31,16 @@ public class ConsumerGroupDescriptionTest {
     public void testGroupState() {
         for (GroupState groupState : GroupState.values()) {
             ConsumerGroupDescription description = new ConsumerGroupDescription(
-                "groupId",
-                false,
-                Set.of(),
-                "assignor",
-                GroupType.CONSUMER,
-                groupState,
-                null,
-                Set.of(),
-                Optional.empty(),
-                Optional.empty()
+                    "groupId",
+                    false,
+                    Set.of(),
+                    "assignor",
+                    GroupType.CONSUMER,
+                    groupState,
+                    null,
+                    Set.of(),
+                    Optional.empty(),
+                    Optional.empty()
             );
             assertEquals(groupState, description.groupState());
         }

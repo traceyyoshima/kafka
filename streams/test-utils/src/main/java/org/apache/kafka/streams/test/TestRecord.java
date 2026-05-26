@@ -65,7 +65,7 @@ public class TestRecord<K, V> {
         if (timestampMs != null) {
             if (timestampMs < 0) {
                 throw new IllegalArgumentException(
-                    String.format("Invalid timestamp: %d. Timestamp should always be non-negative or null.", timestampMs));
+                        String.format("Invalid timestamp: %d. Timestamp should always be non-negative or null.", timestampMs));
             }
             this.recordTime = Instant.ofEpochMilli(timestampMs);
         } else {
@@ -100,7 +100,7 @@ public class TestRecord<K, V> {
         this.headers = new RecordHeaders(headers);
         this.recordTime = null;
     }
-    
+
     /**
      * Creates a record.
      *
@@ -225,9 +225,9 @@ public class TestRecord<K, V> {
         }
         final TestRecord<?, ?> that = (TestRecord<?, ?>) o;
         return Objects.equals(headers, that.headers) &&
-            Objects.equals(key, that.key) &&
-            Objects.equals(value, that.value) &&
-            Objects.equals(recordTime, that.recordTime);
+                Objects.equals(key, that.key) &&
+                Objects.equals(value, that.value) &&
+                Objects.equals(recordTime, that.recordTime);
     }
 
     @Override

@@ -37,7 +37,7 @@ public class DescribeProducersResult {
         KafkaFuture<PartitionProducerState> future = futures.get(partition);
         if (future == null) {
             throw new IllegalArgumentException("Topic partition " + partition +
-                " was not included in the request");
+                    " was not included in the request");
         }
         return future;
     }
@@ -72,8 +72,8 @@ public class DescribeProducersResult {
         @Override
         public String toString() {
             return "PartitionProducerState(" +
-                "activeProducers=" + activeProducers +
-                ')';
+                    "activeProducers=" + activeProducers +
+                    ')';
         }
     }
 

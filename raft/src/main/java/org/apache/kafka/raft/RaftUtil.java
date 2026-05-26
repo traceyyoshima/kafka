@@ -52,7 +52,7 @@ import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
-@SuppressWarnings({ "ClassDataAbstractionCoupling", "ClassFanOutComplexity" })
+@SuppressWarnings({"ClassDataAbstractionCoupling", "ClassFanOutComplexity"})
 public class RaftUtil {
 
     public static ApiMessage errorResponse(ApiKeys apiKey, Errors error) {
@@ -76,15 +76,15 @@ public class RaftUtil {
         Consumer<FetchRequestData.FetchPartition> partitionConsumer
     ) {
         FetchRequestData.FetchPartition fetchPartition =
-            new FetchRequestData.FetchPartition()
-                .setPartition(topicPartition.partition());
+                new FetchRequestData.FetchPartition()
+                    .setPartition(topicPartition.partition());
         partitionConsumer.accept(fetchPartition);
 
         FetchRequestData.FetchTopic fetchTopic =
-            new FetchRequestData.FetchTopic()
-                .setTopic(topicPartition.topic())
-                .setTopicId(topicId)
-                .setPartitions(List.of(fetchPartition));
+                new FetchRequestData.FetchTopic()
+                    .setTopic(topicPartition.topic())
+                    .setTopicId(topicId)
+                    .setPartitions(List.of(fetchPartition));
 
         return new FetchRequestData()
             .setTopics(List.of(fetchTopic));
@@ -101,17 +101,17 @@ public class RaftUtil {
         Consumer<FetchResponseData.PartitionData> partitionConsumer
     ) {
         FetchResponseData.PartitionData fetchablePartition =
-            new FetchResponseData.PartitionData();
+                new FetchResponseData.PartitionData();
 
         fetchablePartition.setPartitionIndex(topicPartition.partition());
 
         partitionConsumer.accept(fetchablePartition);
 
         FetchResponseData.FetchableTopicResponse fetchableTopic =
-            new FetchResponseData.FetchableTopicResponse()
-                .setTopic(topicPartition.topic())
-                .setTopicId(topicId)
-                .setPartitions(List.of(fetchablePartition));
+                new FetchResponseData.FetchableTopicResponse()
+                    .setTopic(topicPartition.topic())
+                    .setTopicId(topicId)
+                    .setPartitions(List.of(fetchablePartition));
 
         FetchResponseData response = new FetchResponseData();
 
@@ -121,10 +121,10 @@ public class RaftUtil {
                 // Populate the node endpoints
                 FetchResponseData.NodeEndpointCollection nodeEndpoints = new FetchResponseData.NodeEndpointCollection(1);
                 nodeEndpoints.add(
-                    new FetchResponseData.NodeEndpoint()
-                        .setNodeId(leaderId)
-                        .setHost(address.get().getHostString())
-                        .setPort(address.get().getPort())
+                        new FetchResponseData.NodeEndpoint()
+                            .setNodeId(leaderId)
+                            .setHost(address.get().getHostString())
+                            .setPort(address.get().getPort())
                 );
                 response.setNodeEndpoints(nodeEndpoints);
             }
@@ -149,32 +149,32 @@ public class RaftUtil {
             .setClusterId(clusterId)
             .setVoterId(voterKey.id())
             .setTopics(
-                List.of(
-                    new VoteRequestData.TopicData()
-                        .setTopicName(topicPartition.topic())
-                        .setPartitions(
-                            List.of(
-                                new VoteRequestData.PartitionData()
-                                    .setPartitionIndex(topicPartition.partition())
-                                    .setReplicaEpoch(replicaEpoch)
-                                    .setReplicaId(replicaKey.id())
-                                    .setReplicaDirectoryId(
-                                        replicaKey
-                                            .directoryId()
-                                            .orElse(ReplicaKey.NO_DIRECTORY_ID)
+                    List.of(
+                            new VoteRequestData.TopicData()
+                                .setTopicName(topicPartition.topic())
+                                .setPartitions(
+                                    List.of(
+                                            new VoteRequestData.PartitionData()
+                                                .setPartitionIndex(topicPartition.partition())
+                                                .setReplicaEpoch(replicaEpoch)
+                                                .setReplicaId(replicaKey.id())
+                                                .setReplicaDirectoryId(
+                                            replicaKey
+                                                .directoryId()
+                                                .orElse(ReplicaKey.NO_DIRECTORY_ID)
+                                            )
+                                                .setVoterDirectoryId(
+                                            voterKey
+                                                .directoryId()
+                                                .orElse(ReplicaKey.NO_DIRECTORY_ID)
+                                            )
+                                                .setLastOffsetEpoch(lastEpoch)
+                                                .setLastOffset(lastEpochEndOffset)
+                                                .setPreVote(preVote)
                                     )
-                                    .setVoterDirectoryId(
-                                        voterKey
-                                            .directoryId()
-                                            .orElse(ReplicaKey.NO_DIRECTORY_ID)
-                                    )
-                                    .setLastOffsetEpoch(lastEpoch)
-                                    .setLastOffset(lastEpochEndOffset)
-                                    .setPreVote(preVote)
                             )
-                        )
-                )
-            );
+                    )
+        );
     }
 
     public static VoteResponseData singletonVoteResponse(
@@ -197,9 +197,9 @@ public class RaftUtil {
         VoteResponseData response = new VoteResponseData()
             .setErrorCode(topLevelError.code())
             .setTopics(List.of(
-                new VoteResponseData.TopicData()
-                    .setTopicName(topicPartition.topic())
-                    .setPartitions(List.of(partitionData))));
+                    new VoteResponseData.TopicData()
+                        .setTopicName(topicPartition.topic())
+                        .setPartitions(List.of(partitionData))));
 
         if (apiVersion >= 1) {
             Optional<InetSocketAddress> address = endpoints.address(listenerName);
@@ -207,10 +207,10 @@ public class RaftUtil {
                 // Populate the node endpoints
                 VoteResponseData.NodeEndpointCollection nodeEndpoints = new VoteResponseData.NodeEndpointCollection(1);
                 nodeEndpoints.add(
-                    new VoteResponseData.NodeEndpoint()
-                        .setNodeId(leaderId)
-                        .setHost(address.get().getHostString())
-                        .setPort(address.get().getPort())
+                        new VoteResponseData.NodeEndpoint()
+                            .setNodeId(leaderId)
+                            .setHost(address.get().getHostString())
+                            .setPort(address.get().getPort())
                 );
                 response.setNodeEndpoints(nodeEndpoints);
             }
@@ -244,12 +244,12 @@ public class RaftUtil {
             .setReplicaId(replicaKey.id())
             .setMaxBytes(maxBytes)
             .setTopics(
-                List.of(
-                    new FetchSnapshotRequestData.TopicSnapshot()
-                        .setName(topicPartition.topic())
-                        .setPartitions(List.of(partitionSnapshot))
-                )
-            );
+                    List.of(
+                            new FetchSnapshotRequestData.TopicSnapshot()
+                                .setName(topicPartition.topic())
+                                .setPartitions(List.of(partitionSnapshot))
+                    )
+        );
     }
 
     /**
@@ -274,29 +274,29 @@ public class RaftUtil {
         UnaryOperator<FetchSnapshotResponseData.PartitionSnapshot> operator
     ) {
         FetchSnapshotResponseData.PartitionSnapshot partitionSnapshot = operator.apply(
-            new FetchSnapshotResponseData.PartitionSnapshot().setIndex(topicPartition.partition())
+                new FetchSnapshotResponseData.PartitionSnapshot().setIndex(topicPartition.partition())
         );
 
         FetchSnapshotResponseData response = new FetchSnapshotResponseData()
             .setTopics(
-                List.of(
-                    new FetchSnapshotResponseData.TopicSnapshot()
-                        .setName(topicPartition.topic())
-                        .setPartitions(List.of(partitionSnapshot))
-                )
-            );
+                    List.of(
+                            new FetchSnapshotResponseData.TopicSnapshot()
+                                .setName(topicPartition.topic())
+                                .setPartitions(List.of(partitionSnapshot))
+                    )
+        );
 
         if (apiVersion >= 1) {
             Optional<InetSocketAddress> address = endpoints.address(listenerName);
             if (address.isPresent() && leaderId >= 0) {
                 // Populate the node endpoints
                 FetchSnapshotResponseData.NodeEndpointCollection nodeEndpoints =
-                    new FetchSnapshotResponseData.NodeEndpointCollection(1);
+                        new FetchSnapshotResponseData.NodeEndpointCollection(1);
                 nodeEndpoints.add(
-                    new FetchSnapshotResponseData.NodeEndpoint()
-                        .setNodeId(leaderId)
-                        .setHost(address.get().getHostString())
-                        .setPort(address.get().getPort())
+                        new FetchSnapshotResponseData.NodeEndpoint()
+                            .setNodeId(leaderId)
+                            .setHost(address.get().getHostString())
+                            .setPort(address.get().getPort())
                 );
                 response.setNodeEndpoints(nodeEndpoints);
             }
@@ -317,20 +317,20 @@ public class RaftUtil {
             .setClusterId(clusterId)
             .setVoterId(voterKey.id())
             .setTopics(
-                List.of(
-                    new BeginQuorumEpochRequestData.TopicData()
-                        .setTopicName(topicPartition.topic())
-                        .setPartitions(
-                            List.of(
-                                new BeginQuorumEpochRequestData.PartitionData()
-                                    .setPartitionIndex(topicPartition.partition())
-                                    .setLeaderEpoch(leaderEpoch)
-                                    .setLeaderId(leaderId)
-                                    .setVoterDirectoryId(voterKey.directoryId().orElse(ReplicaKey.NO_DIRECTORY_ID))
+                    List.of(
+                            new BeginQuorumEpochRequestData.TopicData()
+                                .setTopicName(topicPartition.topic())
+                                .setPartitions(
+                                    List.of(
+                                            new BeginQuorumEpochRequestData.PartitionData()
+                                                .setPartitionIndex(topicPartition.partition())
+                                                .setLeaderEpoch(leaderEpoch)
+                                                .setLeaderId(leaderId)
+                                                .setVoterDirectoryId(voterKey.directoryId().orElse(ReplicaKey.NO_DIRECTORY_ID))
+                                    )
                             )
-                        )
-                )
-            )
+                    )
+        )
             .setLeaderEndpoints(leaderEndpoints.toBeginQuorumEpochRequest());
     }
 
@@ -347,31 +347,31 @@ public class RaftUtil {
         BeginQuorumEpochResponseData response = new BeginQuorumEpochResponseData()
             .setErrorCode(topLevelError.code())
             .setTopics(
-                List.of(
-                    new BeginQuorumEpochResponseData.TopicData()
-                        .setTopicName(topicPartition.topic())
-                        .setPartitions(
-                            List.of(
-                                new BeginQuorumEpochResponseData.PartitionData()
-                                    .setErrorCode(partitionLevelError.code())
-                                    .setLeaderId(leaderId)
-                                    .setLeaderEpoch(leaderEpoch)
+                    List.of(
+                            new BeginQuorumEpochResponseData.TopicData()
+                                .setTopicName(topicPartition.topic())
+                                .setPartitions(
+                                    List.of(
+                                            new BeginQuorumEpochResponseData.PartitionData()
+                                                .setErrorCode(partitionLevelError.code())
+                                                .setLeaderId(leaderId)
+                                                .setLeaderEpoch(leaderEpoch)
+                                    )
                             )
-                        )
-                )
-            );
+                    )
+        );
 
         if (apiVersion >= 1) {
             Optional<InetSocketAddress> address = endpoints.address(listenerName);
             if (address.isPresent() && leaderId >= 0) {
                 // Populate the node endpoints
                 BeginQuorumEpochResponseData.NodeEndpointCollection nodeEndpoints =
-                    new BeginQuorumEpochResponseData.NodeEndpointCollection(1);
+                        new BeginQuorumEpochResponseData.NodeEndpointCollection(1);
                 nodeEndpoints.add(
-                    new BeginQuorumEpochResponseData.NodeEndpoint()
-                        .setNodeId(leaderId)
-                        .setHost(address.get().getHostString())
-                        .setPort(address.get().getPort())
+                        new BeginQuorumEpochResponseData.NodeEndpoint()
+                            .setNodeId(leaderId)
+                            .setHost(address.get().getHostString())
+                            .setPort(address.get().getPort())
                 );
                 response.setNodeEndpoints(nodeEndpoints);
             }
@@ -397,27 +397,27 @@ public class RaftUtil {
                 .map(replicaKey -> new EndQuorumEpochRequestData.ReplicaInfo()
                     .setCandidateId(replicaKey.id())
                     .setCandidateDirectoryId(replicaKey.directoryId().orElse(ReplicaKey.NO_DIRECTORY_ID))
-                )
+        )
                 .collect(Collectors.toList());
 
         return new EndQuorumEpochRequestData()
             .setClusterId(clusterId)
             .setTopics(
-                List.of(
-                    new EndQuorumEpochRequestData.TopicData()
-                        .setTopicName(topicPartition.topic())
-                        .setPartitions(
-                            List.of(
-                                new EndQuorumEpochRequestData.PartitionData()
-                                    .setPartitionIndex(topicPartition.partition())
-                                    .setLeaderEpoch(leaderEpoch)
-                                    .setLeaderId(leaderId)
-                                    .setPreferredSuccessors(preferredSuccessors)
-                                    .setPreferredCandidates(preferredCandidates)
+                    List.of(
+                            new EndQuorumEpochRequestData.TopicData()
+                                .setTopicName(topicPartition.topic())
+                                .setPartitions(
+                                    List.of(
+                                            new EndQuorumEpochRequestData.PartitionData()
+                                                .setPartitionIndex(topicPartition.partition())
+                                                .setLeaderEpoch(leaderEpoch)
+                                                .setLeaderId(leaderId)
+                                                .setPreferredSuccessors(preferredSuccessors)
+                                                .setPreferredCandidates(preferredCandidates)
+                                    )
                             )
-                        )
-                )
-            );
+                    )
+        );
 
     }
 
@@ -434,27 +434,27 @@ public class RaftUtil {
         EndQuorumEpochResponseData response = new EndQuorumEpochResponseData()
                    .setErrorCode(topLevelError.code())
                    .setTopics(List.of(
-                       new EndQuorumEpochResponseData.TopicData()
-                           .setTopicName(topicPartition.topic())
-                           .setPartitions(List.of(
-                               new EndQuorumEpochResponseData.PartitionData()
-                                   .setErrorCode(partitionLevelError.code())
-                                   .setLeaderId(leaderId)
-                                   .setLeaderEpoch(leaderEpoch)
-                           )))
-                   );
+                           new EndQuorumEpochResponseData.TopicData()
+                               .setTopicName(topicPartition.topic())
+                               .setPartitions(List.of(
+                                   new EndQuorumEpochResponseData.PartitionData()
+                                       .setErrorCode(partitionLevelError.code())
+                                       .setLeaderId(leaderId)
+                                       .setLeaderEpoch(leaderEpoch)
+                               )))
+        );
 
         if (apiVersion >= 1) {
             Optional<InetSocketAddress> address = endpoints.address(listenerName);
             if (address.isPresent() && leaderId >= 0) {
                 // Populate the node endpoints
                 EndQuorumEpochResponseData.NodeEndpointCollection nodeEndpoints =
-                    new EndQuorumEpochResponseData.NodeEndpointCollection(1);
+                        new EndQuorumEpochResponseData.NodeEndpointCollection(1);
                 nodeEndpoints.add(
-                    new EndQuorumEpochResponseData.NodeEndpoint()
-                        .setNodeId(leaderId)
-                        .setHost(address.get().getHostString())
-                        .setPort(address.get().getPort())
+                        new EndQuorumEpochResponseData.NodeEndpoint()
+                            .setNodeId(leaderId)
+                            .setHost(address.get().getHostString())
+                            .setPort(address.get().getPort())
                 );
                 response.setNodeEndpoints(nodeEndpoints);
             }
@@ -463,24 +463,23 @@ public class RaftUtil {
         return response;
     }
 
-
     public static DescribeQuorumRequestData singletonDescribeQuorumRequest(
         TopicPartition topicPartition
     ) {
 
         return new DescribeQuorumRequestData()
             .setTopics(
-                List.of(
-                    new DescribeQuorumRequestData.TopicData()
-                        .setTopicName(topicPartition.topic())
-                        .setPartitions(
-                            List.of(
-                                new DescribeQuorumRequestData.PartitionData()
-                                    .setPartitionIndex(topicPartition.partition())
+                    List.of(
+                            new DescribeQuorumRequestData.TopicData()
+                                .setTopicName(topicPartition.topic())
+                                .setPartitions(
+                                    List.of(
+                                            new DescribeQuorumRequestData.PartitionData()
+                                                .setPartitionIndex(topicPartition.partition())
+                                    )
                             )
-                        )
-                )
-            );
+                    )
+        );
     }
 
     public static DescribeQuorumResponseData singletonDescribeQuorumResponse(
@@ -495,26 +494,26 @@ public class RaftUtil {
     ) {
         DescribeQuorumResponseData response = new DescribeQuorumResponseData()
             .setTopics(
-                List.of(
-                    new DescribeQuorumResponseData.TopicData()
-                        .setTopicName(topicPartition.topic())
-                        .setPartitions(
-                            List.of(
-                                new DescribeQuorumResponseData.PartitionData()
-                                    .setPartitionIndex(topicPartition.partition())
-                                    .setErrorCode(Errors.NONE.code())
-                                    .setLeaderId(leaderId)
-                                    .setLeaderEpoch(leaderEpoch)
-                                    .setHighWatermark(highWatermark)
-                                    .setCurrentVoters(toReplicaStates(apiVersion, leaderId, voters, currentTimeMs))
-                                    .setObservers(toReplicaStates(apiVersion, leaderId, observers, currentTimeMs))))));
+                    List.of(
+                            new DescribeQuorumResponseData.TopicData()
+                                .setTopicName(topicPartition.topic())
+                                .setPartitions(
+                                    List.of(
+                                            new DescribeQuorumResponseData.PartitionData()
+                                                .setPartitionIndex(topicPartition.partition())
+                                                .setErrorCode(Errors.NONE.code())
+                                                .setLeaderId(leaderId)
+                                                .setLeaderEpoch(leaderEpoch)
+                                                .setHighWatermark(highWatermark)
+                                                .setCurrentVoters(toReplicaStates(apiVersion, leaderId, voters, currentTimeMs))
+                                                .setObservers(toReplicaStates(apiVersion, leaderId, observers, currentTimeMs))))));
         if (apiVersion >= 2) {
             DescribeQuorumResponseData.NodeCollection nodes = new DescribeQuorumResponseData.NodeCollection(voters.size());
             for (LeaderState.ReplicaState voter : voters) {
                 nodes.add(
-                    new DescribeQuorumResponseData.Node()
-                        .setNodeId(voter.replicaKey().id())
-                        .setListeners(voter.listeners().toDescribeQuorumResponseListeners())
+                        new DescribeQuorumResponseData.Node()
+                            .setNodeId(voter.replicaKey().id())
+                            .setListeners(voter.listeners().toDescribeQuorumResponseListeners())
                 );
             }
             response.setNodes(nodes);
@@ -703,64 +702,64 @@ public class RaftUtil {
 
     static boolean hasValidTopicPartition(FetchRequestData data, TopicPartition topicPartition, Uuid topicId) {
         return data.topics().size() == 1 &&
-            data.topics().get(0).topicId().equals(topicId) &&
-            data.topics().get(0).partitions().size() == 1 &&
-            data.topics().get(0).partitions().get(0).partition() == topicPartition.partition();
+                data.topics().get(0).topicId().equals(topicId) &&
+                data.topics().get(0).partitions().size() == 1 &&
+                data.topics().get(0).partitions().get(0).partition() == topicPartition.partition();
     }
 
     static boolean hasValidTopicPartition(FetchResponseData data, TopicPartition topicPartition, Uuid topicId) {
         return data.responses().size() == 1 &&
-            data.responses().get(0).topicId().equals(topicId) &&
-            data.responses().get(0).partitions().size() == 1 &&
-            data.responses().get(0).partitions().get(0).partitionIndex() == topicPartition.partition();
+                data.responses().get(0).topicId().equals(topicId) &&
+                data.responses().get(0).partitions().size() == 1 &&
+                data.responses().get(0).partitions().get(0).partitionIndex() == topicPartition.partition();
     }
 
     static boolean hasValidTopicPartition(VoteResponseData data, TopicPartition topicPartition) {
         return data.topics().size() == 1 &&
-                   data.topics().get(0).topicName().equals(topicPartition.topic()) &&
-                   data.topics().get(0).partitions().size() == 1 &&
-                   data.topics().get(0).partitions().get(0).partitionIndex() == topicPartition.partition();
+                data.topics().get(0).topicName().equals(topicPartition.topic()) &&
+                data.topics().get(0).partitions().size() == 1 &&
+                data.topics().get(0).partitions().get(0).partitionIndex() == topicPartition.partition();
     }
 
     static boolean hasValidTopicPartition(VoteRequestData data, TopicPartition topicPartition) {
         return data.topics().size() == 1 &&
-                   data.topics().get(0).topicName().equals(topicPartition.topic()) &&
-                   data.topics().get(0).partitions().size() == 1 &&
-                   data.topics().get(0).partitions().get(0).partitionIndex() == topicPartition.partition();
+                data.topics().get(0).topicName().equals(topicPartition.topic()) &&
+                data.topics().get(0).partitions().size() == 1 &&
+                data.topics().get(0).partitions().get(0).partitionIndex() == topicPartition.partition();
     }
 
     static boolean hasValidTopicPartition(BeginQuorumEpochRequestData data, TopicPartition topicPartition) {
         return data.topics().size() == 1 &&
-                   data.topics().get(0).topicName().equals(topicPartition.topic()) &&
-                   data.topics().get(0).partitions().size() == 1 &&
-                   data.topics().get(0).partitions().get(0).partitionIndex() == topicPartition.partition();
+                data.topics().get(0).topicName().equals(topicPartition.topic()) &&
+                data.topics().get(0).partitions().size() == 1 &&
+                data.topics().get(0).partitions().get(0).partitionIndex() == topicPartition.partition();
     }
 
     static boolean hasValidTopicPartition(BeginQuorumEpochResponseData data, TopicPartition topicPartition) {
         return data.topics().size() == 1 &&
-                   data.topics().get(0).topicName().equals(topicPartition.topic()) &&
-                   data.topics().get(0).partitions().size() == 1 &&
-                   data.topics().get(0).partitions().get(0).partitionIndex() == topicPartition.partition();
+                data.topics().get(0).topicName().equals(topicPartition.topic()) &&
+                data.topics().get(0).partitions().size() == 1 &&
+                data.topics().get(0).partitions().get(0).partitionIndex() == topicPartition.partition();
     }
 
     static boolean hasValidTopicPartition(EndQuorumEpochRequestData data, TopicPartition topicPartition) {
         return data.topics().size() == 1 &&
-                   data.topics().get(0).topicName().equals(topicPartition.topic()) &&
-                   data.topics().get(0).partitions().size() == 1 &&
-                   data.topics().get(0).partitions().get(0).partitionIndex() == topicPartition.partition();
+                data.topics().get(0).topicName().equals(topicPartition.topic()) &&
+                data.topics().get(0).partitions().size() == 1 &&
+                data.topics().get(0).partitions().get(0).partitionIndex() == topicPartition.partition();
     }
 
     static boolean hasValidTopicPartition(EndQuorumEpochResponseData data, TopicPartition topicPartition) {
         return data.topics().size() == 1 &&
-                   data.topics().get(0).topicName().equals(topicPartition.topic()) &&
-                   data.topics().get(0).partitions().size() == 1 &&
-                   data.topics().get(0).partitions().get(0).partitionIndex() == topicPartition.partition();
+                data.topics().get(0).topicName().equals(topicPartition.topic()) &&
+                data.topics().get(0).partitions().size() == 1 &&
+                data.topics().get(0).partitions().get(0).partitionIndex() == topicPartition.partition();
     }
 
     static boolean hasValidTopicPartition(DescribeQuorumRequestData data, TopicPartition topicPartition) {
         return data.topics().size() == 1 &&
-                   data.topics().get(0).topicName().equals(topicPartition.topic()) &&
-                   data.topics().get(0).partitions().size() == 1 &&
-                   data.topics().get(0).partitions().get(0).partitionIndex() == topicPartition.partition();
+                data.topics().get(0).topicName().equals(topicPartition.topic()) &&
+                data.topics().get(0).partitions().size() == 1 &&
+                data.topics().get(0).partitions().get(0).partitionIndex() == topicPartition.partition();
     }
 }

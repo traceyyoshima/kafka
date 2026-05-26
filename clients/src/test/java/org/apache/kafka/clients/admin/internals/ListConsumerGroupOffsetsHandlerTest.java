@@ -75,37 +75,37 @@ public class ListConsumerGroupOffsetsHandlerTest {
     private final TopicPartition t3p1 = new TopicPartition("t3", 1);
 
     private final Map<String, ListConsumerGroupOffsetsSpec> singleGroupSpec = Map.of(
-        group0, new ListConsumerGroupOffsetsSpec().topicPartitions(Arrays.asList(t0p0, t0p1, t1p0, t1p1))
+            group0, new ListConsumerGroupOffsetsSpec().topicPartitions(Arrays.asList(t0p0, t0p1, t1p0, t1p1))
     );
     private final Map<String, ListConsumerGroupOffsetsSpec> multiGroupSpecs = Map.of(
-        group0, new ListConsumerGroupOffsetsSpec().topicPartitions(singletonList(t0p0)),
-        group1, new ListConsumerGroupOffsetsSpec().topicPartitions(Arrays.asList(t0p0, t1p0, t1p1)),
-        group2, new ListConsumerGroupOffsetsSpec().topicPartitions(Arrays.asList(t0p0, t1p0, t1p1, t2p0, t2p1, t2p2))
+            group0, new ListConsumerGroupOffsetsSpec().topicPartitions(singletonList(t0p0)),
+            group1, new ListConsumerGroupOffsetsSpec().topicPartitions(Arrays.asList(t0p0, t1p0, t1p1)),
+            group2, new ListConsumerGroupOffsetsSpec().topicPartitions(Arrays.asList(t0p0, t1p0, t1p1, t2p0, t2p1, t2p2))
     );
 
     @Test
     public void testBuildRequest() {
         var handler = new ListConsumerGroupOffsetsHandler(
-            singleGroupSpec,
-            false,
-            logContext
+                singleGroupSpec,
+                false,
+                logContext
         );
 
         assertEquals(
-            new OffsetFetchRequestData()
-                .setGroups(List.of(
-                    new OffsetFetchRequestData.OffsetFetchRequestGroup()
-                        .setGroupId(group0)
-                        .setTopics(List.of(
-                            new OffsetFetchRequestData.OffsetFetchRequestTopics()
-                                .setName(t0p0.topic())
-                                .setPartitionIndexes(List.of(t0p0.partition(), t0p1.partition())),
-                            new OffsetFetchRequestData.OffsetFetchRequestTopics()
-                                .setName(t1p0.topic())
-                                .setPartitionIndexes(List.of(t1p0.partition(), t1p1.partition()))
-                        ))
-                )),
-            handler.buildBatchedRequest(coordinatorKeys(group0)).build().data()
+                new OffsetFetchRequestData()
+                    .setGroups(List.of(
+                        new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                            .setGroupId(group0)
+                            .setTopics(List.of(
+                                new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                                    .setName(t0p0.topic())
+                                    .setPartitionIndexes(List.of(t0p0.partition(), t0p1.partition())),
+                                new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                                    .setName(t1p0.topic())
+                                    .setPartitionIndexes(List.of(t1p0.partition(), t1p1.partition()))
+                            ))
+                    )),
+                handler.buildBatchedRequest(coordinatorKeys(group0)).build().data()
         );
     }
 
@@ -113,67 +113,67 @@ public class ListConsumerGroupOffsetsHandlerTest {
     public void testBuildRequestWithMultipleGroups() {
         var groupSpecs = new HashMap<>(multiGroupSpecs);
         groupSpecs.put(
-            group3,
-            new ListConsumerGroupOffsetsSpec().topicPartitions(List.of(t3p0, t3p1))
+                group3,
+                new ListConsumerGroupOffsetsSpec().topicPartitions(List.of(t3p0, t3p1))
         );
 
         var handler = new ListConsumerGroupOffsetsHandler(
-            groupSpecs,
-            false,
-            logContext
+                groupSpecs,
+                false,
+                logContext
         );
 
         var request1 = handler.buildBatchedRequest(coordinatorKeys(group0, group1, group2)).build();
 
         assertEquals(
-            Set.of(
-                new OffsetFetchRequestData.OffsetFetchRequestGroup()
-                    .setGroupId(group0)
-                    .setTopics(List.of(
-                        new OffsetFetchRequestData.OffsetFetchRequestTopics()
-                            .setName(t0p0.topic())
-                            .setPartitionIndexes(List.of(t0p0.partition()))
-                    )),
-                new OffsetFetchRequestData.OffsetFetchRequestGroup()
-                    .setGroupId(group1)
-                    .setTopics(List.of(
-                        new OffsetFetchRequestData.OffsetFetchRequestTopics()
-                            .setName(t0p0.topic())
-                            .setPartitionIndexes(List.of(t0p0.partition())),
-                        new OffsetFetchRequestData.OffsetFetchRequestTopics()
-                            .setName(t1p0.topic())
-                            .setPartitionIndexes(List.of(t1p0.partition(), t1p1.partition()))
-                    )),
-                new OffsetFetchRequestData.OffsetFetchRequestGroup()
-                    .setGroupId(group2)
-                    .setTopics(List.of(
-                        new OffsetFetchRequestData.OffsetFetchRequestTopics()
-                            .setName(t0p0.topic())
-                            .setPartitionIndexes(List.of(t0p0.partition())),
-                        new OffsetFetchRequestData.OffsetFetchRequestTopics()
-                            .setName(t1p0.topic())
-                            .setPartitionIndexes(List.of(t1p0.partition(), t1p1.partition())),
-                        new OffsetFetchRequestData.OffsetFetchRequestTopics()
-                            .setName(t2p0.topic())
-                            .setPartitionIndexes(List.of(t2p0.partition(), t2p1.partition(), t2p2.partition()))
-                    ))
-            ),
-            Set.copyOf(request1.data().groups())
+                Set.of(
+                        new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                            .setGroupId(group0)
+                            .setTopics(List.of(
+                            new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                                .setName(t0p0.topic())
+                                .setPartitionIndexes(List.of(t0p0.partition()))
+                            )),
+                        new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                            .setGroupId(group1)
+                            .setTopics(List.of(
+                            new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                                .setName(t0p0.topic())
+                                .setPartitionIndexes(List.of(t0p0.partition())),
+                            new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                                .setName(t1p0.topic())
+                                .setPartitionIndexes(List.of(t1p0.partition(), t1p1.partition()))
+                            )),
+                        new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                            .setGroupId(group2)
+                            .setTopics(List.of(
+                            new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                                .setName(t0p0.topic())
+                                .setPartitionIndexes(List.of(t0p0.partition())),
+                            new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                                .setName(t1p0.topic())
+                                .setPartitionIndexes(List.of(t1p0.partition(), t1p1.partition())),
+                            new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                                .setName(t2p0.topic())
+                                .setPartitionIndexes(List.of(t2p0.partition(), t2p1.partition(), t2p2.partition()))
+                            ))
+                ),
+                Set.copyOf(request1.data().groups())
         );
 
         var request2 = handler.buildBatchedRequest(coordinatorKeys(group3)).build();
 
         assertEquals(
-            Set.of(
-                new OffsetFetchRequestData.OffsetFetchRequestGroup()
-                    .setGroupId(group3)
-                    .setTopics(List.of(
-                        new OffsetFetchRequestData.OffsetFetchRequestTopics()
-                            .setName(t3p0.topic())
-                            .setPartitionIndexes(List.of(t3p0.partition(), t3p1.partition()))
-                    ))
-            ),
-            Set.copyOf(request2.data().groups())
+                Set.of(
+                        new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                            .setGroupId(group3)
+                            .setTopics(List.of(
+                            new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                                .setName(t3p0.topic())
+                                .setPartitionIndexes(List.of(t3p0.partition(), t3p1.partition()))
+                            ))
+                ),
+                Set.copyOf(request2.data().groups())
         );
     }
 
@@ -193,8 +193,8 @@ public class ListConsumerGroupOffsetsHandlerTest {
         Collection<RequestAndKeys<CoordinatorKey>> requests = handler.buildRequest(1, coordinatorKeys(group0, group1, group2));
         assertEquals(3, requests.size());
         assertEquals(
-            Set.of(Set.of(group0), Set.of(group1), Set.of(group2)),
-            requests.stream().map(requestAndKey -> requestGroups((OffsetFetchRequest) requestAndKey.request.build())).collect(Collectors.toSet())
+                Set.of(Set.of(group0), Set.of(group1), Set.of(group2)),
+                requests.stream().map(requestAndKey -> requestGroups((OffsetFetchRequest) requestAndKey.request.build())).collect(Collectors.toSet())
         );
     }
 
@@ -217,22 +217,22 @@ public class ListConsumerGroupOffsetsHandlerTest {
     @Test
     public void testSuccessfulHandleResponseWithOnePartitionErrorWithMultipleGroups() {
         var expectedResult = Map.of(
-            group0, Map.of(t0p0, new OffsetAndMetadata(10L)),
-            group1, Map.of(t1p1, new OffsetAndMetadata(10L)),
-            group2, Map.of(t2p2, new OffsetAndMetadata(10L))
+                group0, Map.of(t0p0, new OffsetAndMetadata(10L)),
+                group1, Map.of(t1p1, new OffsetAndMetadata(10L)),
+                group2, Map.of(t2p2, new OffsetAndMetadata(10L))
         );
 
         assertCompletedForMultipleGroups(
-            handleWithPartitionErrorMultipleGroups(Errors.UNKNOWN_TOPIC_OR_PARTITION),
-            expectedResult
+                handleWithPartitionErrorMultipleGroups(Errors.UNKNOWN_TOPIC_OR_PARTITION),
+                expectedResult
         );
         assertCompletedForMultipleGroups(
-            handleWithPartitionErrorMultipleGroups(Errors.TOPIC_AUTHORIZATION_FAILED),
-            expectedResult
+                handleWithPartitionErrorMultipleGroups(Errors.TOPIC_AUTHORIZATION_FAILED),
+                expectedResult
         );
         assertCompletedForMultipleGroups(
-            handleWithPartitionErrorMultipleGroups(Errors.UNSTABLE_OFFSET_COMMIT),
-            expectedResult
+                handleWithPartitionErrorMultipleGroups(Errors.UNSTABLE_OFFSET_COMMIT),
+                expectedResult
         );
     }
 
@@ -252,9 +252,9 @@ public class ListConsumerGroupOffsetsHandlerTest {
     @Test
     public void testUnmappedHandleResponseWithMultipleGroups() {
         var errorMap = Map.of(
-            group0, Errors.NOT_COORDINATOR,
-            group1, Errors.COORDINATOR_NOT_AVAILABLE,
-            group2, Errors.NOT_COORDINATOR
+                group0, Errors.NOT_COORDINATOR,
+                group1, Errors.COORDINATOR_NOT_AVAILABLE,
+                group2, Errors.NOT_COORDINATOR
         );
         assertUnmappedWithMultipleGroups(handleWithErrorWithMultipleGroups(errorMap, multiGroupSpecs));
     }
@@ -280,30 +280,30 @@ public class ListConsumerGroupOffsetsHandlerTest {
     @Test
     public void testFailedHandleResponseWithMultipleGroups() {
         var errorMap = Map.of(
-            group0, Errors.GROUP_AUTHORIZATION_FAILED,
-            group1, Errors.GROUP_ID_NOT_FOUND,
-            group2, Errors.INVALID_GROUP_ID
+                group0, Errors.GROUP_AUTHORIZATION_FAILED,
+                group1, Errors.GROUP_ID_NOT_FOUND,
+                group2, Errors.INVALID_GROUP_ID
         );
         var groupToExceptionMap = Map.of(
-            group0, (Class<? extends Throwable>) GroupAuthorizationException.class,
-            group1, (Class<? extends Throwable>) GroupIdNotFoundException.class,
-            group2, (Class<? extends Throwable>) InvalidGroupIdException.class
+                group0, (Class<? extends Throwable>) GroupAuthorizationException.class,
+                group1, (Class<? extends Throwable>) GroupIdNotFoundException.class,
+                group2, (Class<? extends Throwable>) InvalidGroupIdException.class
         );
         assertFailedForMultipleGroups(
-            groupToExceptionMap,
-            handleWithErrorWithMultipleGroups(errorMap, multiGroupSpecs)
+                groupToExceptionMap,
+                handleWithErrorWithMultipleGroups(errorMap, multiGroupSpecs)
         );
     }
 
     private OffsetFetchResponse buildResponse(Errors error) {
         return new OffsetFetchResponse(
-            new OffsetFetchResponseData()
-                .setGroups(List.of(
-                    new OffsetFetchResponseData.OffsetFetchResponseGroup()
-                        .setGroupId(group0)
-                        .setErrorCode(error.code())
-                )),
-            ApiKeys.OFFSET_FETCH.latestVersion()
+                new OffsetFetchResponseData()
+                    .setGroups(List.of(
+                        new OffsetFetchResponseData.OffsetFetchResponseGroup()
+                            .setGroupId(group0)
+                            .setErrorCode(error.code())
+                    )),
+                ApiKeys.OFFSET_FETCH.latestVersion()
         );
     }
 
@@ -312,32 +312,55 @@ public class ListConsumerGroupOffsetsHandlerTest {
         Map<String, ListConsumerGroupOffsetsSpec> groupSpecs
     ) {
         var handler = new ListConsumerGroupOffsetsHandler(
-            groupSpecs,
-            false,
-            logContext
+                groupSpecs,
+                false,
+                logContext
         );
         var response = new OffsetFetchResponse(
-            new OffsetFetchResponseData()
-                .setGroups(errorMap.entrySet().stream().map(entry ->
-                    new OffsetFetchResponseData.OffsetFetchResponseGroup()
-                        .setGroupId(entry.getKey())
-                        .setErrorCode(entry.getValue().code())
-                ).collect(Collectors.toList())),
-            ApiKeys.OFFSET_FETCH.latestVersion()
+                new OffsetFetchResponseData()
+                    .setGroups(errorMap.entrySet().stream().map(entry ->
+                            new OffsetFetchResponseData.OffsetFetchResponseGroup()
+                                .setGroupId(entry.getKey())
+                                .setErrorCode(entry.getValue().code())
+                    ).collect(Collectors.toList())),
+                ApiKeys.OFFSET_FETCH.latestVersion()
         );
         return handler.handleResponse(new Node(1, "host", 1234),
-            errorMap.keySet()
-                    .stream()
-                    .map(CoordinatorKey::byGroupId)
-                    .collect(Collectors.toSet()),
-            response
+                errorMap.keySet()
+                        .stream()
+                        .map(CoordinatorKey::byGroupId)
+                        .collect(Collectors.toSet()),
+                response
         );
     }
 
     private OffsetFetchResponse buildResponseWithPartitionError(Errors error) {
         return new OffsetFetchResponse(
-            new OffsetFetchResponseData()
-                .setGroups(List.of(
+                new OffsetFetchResponseData()
+                    .setGroups(List.of(
+                        new OffsetFetchResponseData.OffsetFetchResponseGroup()
+                            .setGroupId(group0)
+                            .setTopics(List.of(
+                                new OffsetFetchResponseData.OffsetFetchResponseTopics()
+                                    .setName(t0p0.topic())
+                                    .setPartitions(List.of(
+                                        new OffsetFetchResponseData.OffsetFetchResponsePartitions()
+                                            .setPartitionIndex(t0p0.partition())
+                                            .setCommittedOffset(10),
+                                        new OffsetFetchResponseData.OffsetFetchResponsePartitions()
+                                            .setPartitionIndex(t0p1.partition())
+                                            .setCommittedOffset(10)
+                                            .setErrorCode(error.code())
+                                    ))
+                            ))
+                    )),
+                ApiKeys.OFFSET_FETCH.latestVersion()
+        );
+    }
+
+    private OffsetFetchResponse buildResponseWithPartitionErrorWithMultipleGroups(Errors error) {
+        var data = new OffsetFetchResponseData()
+            .setGroups(List.of(
                     new OffsetFetchResponseData.OffsetFetchResponseGroup()
                         .setGroupId(group0)
                         .setTopics(List.of(
@@ -346,117 +369,94 @@ public class ListConsumerGroupOffsetsHandlerTest {
                                 .setPartitions(List.of(
                                     new OffsetFetchResponseData.OffsetFetchResponsePartitions()
                                         .setPartitionIndex(t0p0.partition())
-                                        .setCommittedOffset(10),
-                                    new OffsetFetchResponseData.OffsetFetchResponsePartitions()
-                                        .setPartitionIndex(t0p1.partition())
                                         .setCommittedOffset(10)
+                                        .setCommittedLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH)
+                                        .setMetadata(OffsetFetchResponse.NO_METADATA)
+                                        .setErrorCode(Errors.NONE.code())
+                                ))
+                        )),
+                    new OffsetFetchResponseData.OffsetFetchResponseGroup()
+                        .setGroupId(group1)
+                        .setTopics(List.of(
+                            new OffsetFetchResponseData.OffsetFetchResponseTopics()
+                                .setName(t0p0.topic())
+                                .setPartitions(List.of(
+                                    new OffsetFetchResponseData.OffsetFetchResponsePartitions()
+                                        .setPartitionIndex(t0p0.partition())
+                                        .setCommittedOffset(10)
+                                        .setCommittedLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH)
+                                        .setMetadata(OffsetFetchResponse.NO_METADATA)
                                         .setErrorCode(error.code())
+                                )),
+                            new OffsetFetchResponseData.OffsetFetchResponseTopics()
+                                .setName(t1p0.topic())
+                                .setPartitions(List.of(
+                                    new OffsetFetchResponseData.OffsetFetchResponsePartitions()
+                                        .setPartitionIndex(t1p0.partition())
+                                        .setCommittedOffset(10)
+                                        .setCommittedLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH)
+                                        .setMetadata(OffsetFetchResponse.NO_METADATA)
+                                        .setErrorCode(error.code()),
+                                    new OffsetFetchResponseData.OffsetFetchResponsePartitions()
+                                        .setPartitionIndex(t1p1.partition())
+                                        .setCommittedOffset(10)
+                                        .setCommittedLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH)
+                                        .setMetadata(OffsetFetchResponse.NO_METADATA)
+                                        .setErrorCode(Errors.NONE.code())
+                                ))
+                        )),
+                    new OffsetFetchResponseData.OffsetFetchResponseGroup()
+                        .setGroupId(group2)
+                        .setTopics(List.of(
+                            new OffsetFetchResponseData.OffsetFetchResponseTopics()
+                                .setName(t0p0.topic())
+                                .setPartitions(List.of(
+                                    new OffsetFetchResponseData.OffsetFetchResponsePartitions()
+                                        .setPartitionIndex(t0p0.partition())
+                                        .setCommittedOffset(10)
+                                        .setCommittedLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH)
+                                        .setMetadata(OffsetFetchResponse.NO_METADATA)
+                                        .setErrorCode(error.code())
+                                )),
+                            new OffsetFetchResponseData.OffsetFetchResponseTopics()
+                                .setName(t1p0.topic())
+                                .setPartitions(List.of(
+                                    new OffsetFetchResponseData.OffsetFetchResponsePartitions()
+                                        .setPartitionIndex(t1p0.partition())
+                                        .setCommittedOffset(10)
+                                        .setCommittedLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH)
+                                        .setMetadata(OffsetFetchResponse.NO_METADATA)
+                                        .setErrorCode(error.code()),
+                                    new OffsetFetchResponseData.OffsetFetchResponsePartitions()
+                                        .setPartitionIndex(t1p1.partition())
+                                        .setCommittedOffset(10)
+                                        .setCommittedLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH)
+                                        .setMetadata(OffsetFetchResponse.NO_METADATA)
+                                        .setErrorCode(error.code())
+                                )),
+                            new OffsetFetchResponseData.OffsetFetchResponseTopics()
+                                .setName(t2p0.topic())
+                                .setPartitions(List.of(
+                                    new OffsetFetchResponseData.OffsetFetchResponsePartitions()
+                                        .setPartitionIndex(t2p0.partition())
+                                        .setCommittedOffset(10)
+                                        .setCommittedLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH)
+                                        .setMetadata(OffsetFetchResponse.NO_METADATA)
+                                        .setErrorCode(error.code()),
+                                    new OffsetFetchResponseData.OffsetFetchResponsePartitions()
+                                        .setPartitionIndex(t2p1.partition())
+                                        .setCommittedOffset(10)
+                                        .setCommittedLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH)
+                                        .setMetadata(OffsetFetchResponse.NO_METADATA)
+                                        .setErrorCode(error.code()),
+                                    new OffsetFetchResponseData.OffsetFetchResponsePartitions()
+                                        .setPartitionIndex(t2p2.partition())
+                                        .setCommittedOffset(10)
+                                        .setCommittedLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH)
+                                        .setMetadata(OffsetFetchResponse.NO_METADATA)
+                                        .setErrorCode(Errors.NONE.code())
                                 ))
                         ))
-                )),
-            ApiKeys.OFFSET_FETCH.latestVersion()
-        );
-    }
-
-    private OffsetFetchResponse buildResponseWithPartitionErrorWithMultipleGroups(Errors error) {
-        var data = new OffsetFetchResponseData()
-            .setGroups(List.of(
-                new OffsetFetchResponseData.OffsetFetchResponseGroup()
-                    .setGroupId(group0)
-                    .setTopics(List.of(
-                        new OffsetFetchResponseData.OffsetFetchResponseTopics()
-                            .setName(t0p0.topic())
-                            .setPartitions(List.of(
-                                new OffsetFetchResponseData.OffsetFetchResponsePartitions()
-                                    .setPartitionIndex(t0p0.partition())
-                                    .setCommittedOffset(10)
-                                    .setCommittedLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH)
-                                    .setMetadata(OffsetFetchResponse.NO_METADATA)
-                                    .setErrorCode(Errors.NONE.code())
-                            ))
-                    )),
-                new OffsetFetchResponseData.OffsetFetchResponseGroup()
-                    .setGroupId(group1)
-                    .setTopics(List.of(
-                        new OffsetFetchResponseData.OffsetFetchResponseTopics()
-                            .setName(t0p0.topic())
-                            .setPartitions(List.of(
-                                new OffsetFetchResponseData.OffsetFetchResponsePartitions()
-                                    .setPartitionIndex(t0p0.partition())
-                                    .setCommittedOffset(10)
-                                    .setCommittedLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH)
-                                    .setMetadata(OffsetFetchResponse.NO_METADATA)
-                                    .setErrorCode(error.code())
-                            )),
-                        new OffsetFetchResponseData.OffsetFetchResponseTopics()
-                            .setName(t1p0.topic())
-                            .setPartitions(List.of(
-                                new OffsetFetchResponseData.OffsetFetchResponsePartitions()
-                                    .setPartitionIndex(t1p0.partition())
-                                    .setCommittedOffset(10)
-                                    .setCommittedLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH)
-                                    .setMetadata(OffsetFetchResponse.NO_METADATA)
-                                    .setErrorCode(error.code()),
-                                new OffsetFetchResponseData.OffsetFetchResponsePartitions()
-                                    .setPartitionIndex(t1p1.partition())
-                                    .setCommittedOffset(10)
-                                    .setCommittedLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH)
-                                    .setMetadata(OffsetFetchResponse.NO_METADATA)
-                                    .setErrorCode(Errors.NONE.code())
-                            ))
-                        )),
-                new OffsetFetchResponseData.OffsetFetchResponseGroup()
-                    .setGroupId(group2)
-                    .setTopics(List.of(
-                        new OffsetFetchResponseData.OffsetFetchResponseTopics()
-                            .setName(t0p0.topic())
-                            .setPartitions(List.of(
-                                new OffsetFetchResponseData.OffsetFetchResponsePartitions()
-                                    .setPartitionIndex(t0p0.partition())
-                                    .setCommittedOffset(10)
-                                    .setCommittedLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH)
-                                    .setMetadata(OffsetFetchResponse.NO_METADATA)
-                                    .setErrorCode(error.code())
-                            )),
-                        new OffsetFetchResponseData.OffsetFetchResponseTopics()
-                            .setName(t1p0.topic())
-                            .setPartitions(List.of(
-                                new OffsetFetchResponseData.OffsetFetchResponsePartitions()
-                                    .setPartitionIndex(t1p0.partition())
-                                    .setCommittedOffset(10)
-                                    .setCommittedLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH)
-                                    .setMetadata(OffsetFetchResponse.NO_METADATA)
-                                    .setErrorCode(error.code()),
-                                new OffsetFetchResponseData.OffsetFetchResponsePartitions()
-                                    .setPartitionIndex(t1p1.partition())
-                                    .setCommittedOffset(10)
-                                    .setCommittedLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH)
-                                    .setMetadata(OffsetFetchResponse.NO_METADATA)
-                                    .setErrorCode(error.code())
-                            )),
-                        new OffsetFetchResponseData.OffsetFetchResponseTopics()
-                            .setName(t2p0.topic())
-                            .setPartitions(List.of(
-                                new OffsetFetchResponseData.OffsetFetchResponsePartitions()
-                                    .setPartitionIndex(t2p0.partition())
-                                    .setCommittedOffset(10)
-                                    .setCommittedLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH)
-                                    .setMetadata(OffsetFetchResponse.NO_METADATA)
-                                    .setErrorCode(error.code()),
-                                new OffsetFetchResponseData.OffsetFetchResponsePartitions()
-                                    .setPartitionIndex(t2p1.partition())
-                                    .setCommittedOffset(10)
-                                    .setCommittedLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH)
-                                    .setMetadata(OffsetFetchResponse.NO_METADATA)
-                                    .setErrorCode(error.code()),
-                                new OffsetFetchResponseData.OffsetFetchResponsePartitions()
-                                    .setPartitionIndex(t2p2.partition())
-                                    .setCommittedOffset(10)
-                                    .setCommittedLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH)
-                                    .setMetadata(OffsetFetchResponse.NO_METADATA)
-                                    .setErrorCode(Errors.NONE.code())
-                            ))
-                    ))
             ));
 
         return new OffsetFetchResponse(data, ApiKeys.OFFSET_FETCH.latestVersion());
@@ -466,28 +466,28 @@ public class ListConsumerGroupOffsetsHandlerTest {
         Errors error
     ) {
         ListConsumerGroupOffsetsHandler handler = new ListConsumerGroupOffsetsHandler(
-            singleGroupSpec,
-            false,
-            logContext
+                singleGroupSpec,
+                false,
+                logContext
         );
         OffsetFetchResponse response = buildResponseWithPartitionError(error);
         return handler.handleResponse(new Node(1, "host", 1234),
-            singleton(CoordinatorKey.byGroupId(group0)), response);
+                singleton(CoordinatorKey.byGroupId(group0)), response);
     }
 
     private AdminApiHandler.ApiResult<CoordinatorKey, Map<TopicPartition, OffsetAndMetadata>> handleWithPartitionErrorMultipleGroups(
         Errors error
     ) {
         ListConsumerGroupOffsetsHandler handler = new ListConsumerGroupOffsetsHandler(
-            multiGroupSpecs,
-            false,
-            logContext
+                multiGroupSpecs,
+                false,
+                logContext
         );
         OffsetFetchResponse response = buildResponseWithPartitionErrorWithMultipleGroups(error);
         return handler.handleResponse(
-            new Node(1, "host", 1234),
-            coordinatorKeys(group0, group1, group2),
-            response
+                new Node(1, "host", 1234),
+                coordinatorKeys(group0, group1, group2),
+                response
         );
     }
 
@@ -495,11 +495,11 @@ public class ListConsumerGroupOffsetsHandlerTest {
         Errors error
     ) {
         ListConsumerGroupOffsetsHandler handler = new ListConsumerGroupOffsetsHandler(
-            singleGroupSpec, false, logContext);
+                singleGroupSpec, false, logContext);
         OffsetFetchResponse response = buildResponse(error);
         return handler.handleResponse(new Node(1, "host", 1234),
-            singleton(CoordinatorKey.byGroupId(group0)),
-            response);
+                singleton(CoordinatorKey.byGroupId(group0)),
+                response);
     }
 
     private void assertUnmapped(

@@ -93,10 +93,10 @@ class ActiveTaskCreator {
         createTaskSensor = ThreadMetrics.createTaskSensor(threadId, streamsMetrics);
 
         streamsProducer = new StreamsProducer(
-            producer(),
-            processingMode(applicationConfig),
-            time,
-            logContext
+                producer(),
+                processingMode(applicationConfig),
+                time,
+                logContext
         );
     }
 
@@ -104,13 +104,12 @@ class ActiveTaskCreator {
         final Map<String, Object> producerConfig = applicationConfig.getProducerConfigs(producerClientId(threadId));
         if (eosEnabled(applicationConfig)) {
             producerConfig.put(
-                ProducerConfig.TRANSACTIONAL_ID_CONFIG,
-                applicationConfig.getString(StreamsConfig.APPLICATION_ID_CONFIG) + "-" + processId + "-" + threadIdx
+                    ProducerConfig.TRANSACTIONAL_ID_CONFIG,
+                    applicationConfig.getString(StreamsConfig.APPLICATION_ID_CONFIG) + "-" + processId + "-" + threadIdx
             );
         }
         return clientSupplier.getProducer(producerConfig);
     }
-
 
     /**
      * When {@link org.apache.kafka.streams.processor.internals.StreamThread} is shutting down,
@@ -146,34 +145,34 @@ class ActiveTaskCreator {
             final ProcessorTopology topology = topologyMetadata.buildSubtopology(taskId);
 
             final ProcessorStateManager stateManager = new ProcessorStateManager(
-                taskId,
-                Task.TaskType.ACTIVE,
-                eosEnabled(applicationConfig),
-                applicationConfig.getBoolean(StreamsConfig.TRANSACTIONAL_STATE_STORES_CONFIG),
-                logContext,
-                stateDirectory,
-                topology.storeToChangelogTopic(),
-                partitions,
-                upgradeFrom);
+                    taskId,
+                    Task.TaskType.ACTIVE,
+                    eosEnabled(applicationConfig),
+                    applicationConfig.getBoolean(StreamsConfig.TRANSACTIONAL_STATE_STORES_CONFIG),
+                    logContext,
+                    stateDirectory,
+                    topology.storeToChangelogTopic(),
+                    partitions,
+                    upgradeFrom);
 
             final InternalProcessorContext<Object, Object> context = new ProcessorContextImpl(
-                taskId,
-                applicationConfig,
-                stateManager,
-                streamsMetrics,
-                cache
+                    taskId,
+                    applicationConfig,
+                    stateManager,
+                    streamsMetrics,
+                    cache
             );
 
             createdTasks.add(
-                createActiveTask(
-                    taskId,
-                    partitions,
-                    consumer,
-                    logContext,
-                    topology,
-                    stateManager,
-                    context
-                )
+                    createActiveTask(
+                            taskId,
+                            partitions,
+                            consumer,
+                            logContext,
+                            topology,
+                            stateManager,
+                            context
+                    )
             );
         }
         return createdTasks;
@@ -183,12 +182,12 @@ class ActiveTaskCreator {
                                                   final LogContext logContext,
                                                   final ProcessorTopology topology) {
         return new RecordCollectorImpl(
-            logContext,
-            taskId,
-            streamsProducer,
-            applicationConfig.productionExceptionHandler(),
-            streamsMetrics,
-            topology
+                logContext,
+                taskId,
+                streamsProducer,
+                applicationConfig.productionExceptionHandler(),
+                streamsMetrics,
+                topology
         );
     }
 
@@ -209,20 +208,20 @@ class ActiveTaskCreator {
 
         final RecordCollector recordCollector = createRecordCollector(standbyTask.id, getLogContext(standbyTask.id), standbyTask.topology);
         final StreamTask task = new StreamTask(
-            standbyTask.id,
-            inputPartitions,
-            standbyTask.topology,
-            consumer,
-            standbyTask.config,
-            streamsMetrics,
-            stateDirectory,
-            cache,
-            time,
-            standbyTask.stateMgr,
-            recordCollector,
-            standbyTask.processorContext,
-            standbyTask.logContext,
-            processingThreadsEnabled
+                standbyTask.id,
+                inputPartitions,
+                standbyTask.topology,
+                consumer,
+                standbyTask.config,
+                streamsMetrics,
+                stateDirectory,
+                cache,
+                time,
+                standbyTask.stateMgr,
+                recordCollector,
+                standbyTask.processorContext,
+                standbyTask.logContext,
+                processingThreadsEnabled
         );
 
         log.trace("Created active task {} from recycled standby task with assigned partitions {}", task.id, inputPartitions);
@@ -240,20 +239,20 @@ class ActiveTaskCreator {
         final RecordCollector recordCollector = createRecordCollector(taskId, logContext, topology);
 
         final StreamTask task = new StreamTask(
-            taskId,
-            inputPartitions,
-            topology,
-            consumer,
-            topologyMetadata.taskConfig(taskId),
-            streamsMetrics,
-            stateDirectory,
-            cache,
-            time,
-            stateManager,
-            recordCollector,
-            context,
-            logContext,
-            processingThreadsEnabled
+                taskId,
+                inputPartitions,
+                topology,
+                consumer,
+                topologyMetadata.taskConfig(taskId),
+                streamsMetrics,
+                stateDirectory,
+                cache,
+                time,
+                stateManager,
+                recordCollector,
+                context,
+                logContext,
+                processingThreadsEnabled
         );
 
         log.trace("Created active task {} with assigned partitions {}", taskId, inputPartitions);

@@ -79,8 +79,8 @@ public class NetworkPartitionFaultWorker implements TaskWorker {
             Node node = topology.node(nodeName);
             InetAddress addr = InetAddress.getByName(node.hostname());
             platform.runCommand(new String[] {
-                "sudo", "iptables", iptablesAction, "INPUT", "-p", "tcp", "-s",
-                addr.getHostAddress(), "-j", "DROP", "-m", "comment", "--comment", nodeName
+                    "sudo", "iptables", iptablesAction, "INPUT", "-p", "tcp", "-s",
+                    addr.getHostAddress(), "-j", "DROP", "-m", "comment", "--comment", nodeName
             });
         }
     }

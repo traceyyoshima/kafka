@@ -254,12 +254,12 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
 
     private static final String SEND_OFFSETS_TIMEOUT_MSG =
             "SendOffsetsToTransaction timed out - did not reach the coordinator or " +
-                    "receive the TxnOffsetCommit/AddOffsetsToTxn response within max.block.ms";
+            "receive the TxnOffsetCommit/AddOffsetsToTxn response within max.block.ms";
     private static final String COMMIT_TXN_TIMEOUT_MSG =
             "CommitTransaction timed out - did not complete EndTxn with the transaction coordinator within max.block.ms";
     private static final String ABORT_TXN_TIMEOUT_MSG =
             "AbortTransaction timed out - did not complete EndTxn(abort) with the transaction coordinator within max.block.ms";
-    
+
     private final String clientId;
     // Visible for testing
     final Metrics metrics;
@@ -383,9 +383,9 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
             this.producerMetrics = new KafkaProducerMetrics(metrics);
             this.partitionerPlugin = Plugin.wrapInstance(
                     config.getConfiguredInstance(
-                        ProducerConfig.PARTITIONER_CLASS_CONFIG,
-                        Partitioner.class,
-                        Collections.singletonMap(ProducerConfig.CLIENT_ID_CONFIG, clientId)),
+                            ProducerConfig.PARTITIONER_CLASS_CONFIG,
+                            Partitioner.class,
+                            Collections.singletonMap(ProducerConfig.CLIENT_ID_CONFIG, clientId)),
                     metrics,
                     ProducerConfig.PARTITIONER_CLASS_CONFIG);
             this.partitionerIgnoreKeys = config.getBoolean(ProducerConfig.PARTITIONER_IGNORE_KEYS_CONFIG);
@@ -406,7 +406,6 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
                 config.ignore(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG);
             }
             this.valueSerializerPlugin = Plugin.wrapInstance(valueSerializer, metrics, ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG);
-
 
             List<ProducerInterceptor<K, V>> interceptorList = (List<ProducerInterceptor<K, V>>) ClientUtils.configuredInterceptors(config,
                     ProducerConfig.INTERCEPTOR_CLASSES_CONFIG,
@@ -430,12 +429,12 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
             this.transactionManager = configureTransactionState(config, logContext);
             // There is no need to do work required for adaptive partitioning, if we use a custom partitioner.
             boolean enableAdaptivePartitioning = partitionerPlugin.get() == null &&
-                config.getBoolean(ProducerConfig.PARTITIONER_ADAPTIVE_PARTITIONING_ENABLE_CONFIG);
+                    config.getBoolean(ProducerConfig.PARTITIONER_ADAPTIVE_PARTITIONING_ENABLE_CONFIG);
             RecordAccumulator.PartitionerConfig partitionerConfig = new RecordAccumulator.PartitionerConfig(
-                enableAdaptivePartitioning,
-                config.getLong(ProducerConfig.PARTITIONER_AVAILABILITY_TIMEOUT_MS_CONFIG),
-                config.getBoolean(ProducerConfig.PARTITIONER_RACK_AWARE_CONFIG),
-                config.getString(ProducerConfig.CLIENT_RACK_CONFIG)
+                    enableAdaptivePartitioning,
+                    config.getLong(ProducerConfig.PARTITIONER_AVAILABILITY_TIMEOUT_MS_CONFIG),
+                    config.getBoolean(ProducerConfig.PARTITIONER_RACK_AWARE_CONFIG),
+                    config.getString(ProducerConfig.CLIENT_RACK_CONFIG)
             );
             // As per Kafka producer configuration documentation batch.size may be set to 0 to explicitly disable
             // batching which in practice actually means using a batch size of 1.
@@ -593,14 +592,14 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
             if (config.originals().containsKey(ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG)) {
                 // throw an exception if the user explicitly set an inconsistent value
                 throw new ConfigException(ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG
-                    + " should be equal to or larger than " + ProducerConfig.LINGER_MS_CONFIG
-                    + " + " + ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG);
+                        + " should be equal to or larger than " + ProducerConfig.LINGER_MS_CONFIG
+                        + " + " + ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG);
             } else {
                 // override deliveryTimeoutMs default value to lingerMs + requestTimeoutMs for backward compatibility
                 deliveryTimeoutMs = lingerAndRequestTimeoutMs;
                 log.warn("{} should be equal to or larger than {} + {}. Setting it to {}.",
-                    ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG, ProducerConfig.LINGER_MS_CONFIG,
-                    ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, deliveryTimeoutMs);
+                        ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG, ProducerConfig.LINGER_MS_CONFIG,
+                        ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, deliveryTimeoutMs);
             }
         }
         return deliveryTimeoutMs;
@@ -615,14 +614,14 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
             final boolean enable2PC = config.getBoolean(ProducerConfig.TRANSACTION_TWO_PHASE_COMMIT_ENABLE_CONFIG);
             final int transactionTimeoutMs = config.getInt(ProducerConfig.TRANSACTION_TIMEOUT_CONFIG);
             final long retryBackoffMs = config.getLong(ProducerConfig.RETRY_BACKOFF_MS_CONFIG);
-            
+
             transactionManager = new TransactionManager(
-                logContext,
-                transactionalId,
-                transactionTimeoutMs,
-                retryBackoffMs,
-                apiVersions,
-                enable2PC
+                    logContext,
+                    transactionalId,
+                    transactionTimeoutMs,
+                    retryBackoffMs,
+                    apiVersions,
+                    enable2PC
             );
 
             if (transactionManager.isTransactional())
@@ -917,16 +916,16 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
     public void completeTransaction(PreparedTxnState preparedTxnState) throws ProducerFencedException {
         throwIfNoTransactionManager();
         throwIfProducerClosed();
-        
+
         if (!transactionManager.isPrepared()) {
             throw new InvalidTxnStateException("Cannot complete transaction because no transaction has been prepared. " +
-                "Call prepareTransaction() first, or make sure initTransaction(true) was called.");
+                    "Call prepareTransaction() first, or make sure initTransaction(true) was called.");
         }
-        
+
         // Get the current prepared transaction state
         ProducerIdAndEpoch currentProducerIdAndEpoch = transactionManager.preparedTransactionState();
         PreparedTxnState currentPreparedState = new PreparedTxnState(currentProducerIdAndEpoch.producerId, currentProducerIdAndEpoch.epoch);
-        
+
         // Compare the prepared transaction state token and commit or abort accordingly
         if (currentPreparedState.equals(preparedTxnState)) {
             commitTransaction();
@@ -1081,11 +1080,11 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
      */
     private void throwIfInPreparedState() {
         if (transactionManager != null &&
-            transactionManager.isTransactional() &&
-            transactionManager.isPrepared()
+                transactionManager.isTransactional() &&
+                transactionManager.isPrepared()
         ) {
             throw new IllegalStateException("Cannot perform operation while the transaction is in a prepared state. " +
-                "Only commitTransaction(), abortTransaction(), or completeTransaction() are permitted.");
+                    "Only commitTransaction(), abortTransaction(), or completeTransaction() are permitted.");
         }
     }
 
@@ -1273,10 +1272,11 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
     private String getErrorMessage(Integer partitionsCount, String topic, Integer partition, long maxWaitMs) {
         return partitionsCount == null ?
             String.format("Topic %s not present in metadata after %d ms.",
-                topic, maxWaitMs) :
+                    topic, maxWaitMs) :
             String.format("Partition %d of topic %s with partition count %d is not present in metadata after %d ms.",
-                partition, topic, partitionsCount, maxWaitMs);
+                    partition, topic, partitionsCount, maxWaitMs);
     }
+
     /**
      * Validate that the record size isn't too large
      */
@@ -1387,7 +1387,6 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
     public Map<MetricName, ? extends Metric> metrics() {
         return Collections.unmodifiableMap(this.metrics.metrics());
     }
-
 
     /**
      * Add the provided application metric for subscription.
@@ -1598,10 +1597,10 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
 
         if (partitionerPlugin.get() != null) {
             int customPartition = partitionerPlugin.get().partition(
-                record.topic(), record.key(), serializedKey, record.value(), serializedValue, cluster);
+                    record.topic(), record.key(), serializedKey, record.value(), serializedValue, cluster);
             if (customPartition < 0) {
                 throw new IllegalArgumentException(String.format(
-                    "The partitioner generated an invalid partition number: %d. Partition number should always be non-negative.", customPartition));
+                        "The partitioner generated an invalid partition number: %d. Partition number should always be non-negative.", customPartition));
             }
             return customPartition;
         }
@@ -1618,7 +1617,7 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
         if (groupMetadata == null) {
             throw new IllegalArgumentException("Consumer group metadata could not be null");
         } else if (groupMetadata.generationId() > 0
-            && JoinGroupRequest.UNKNOWN_MEMBER_ID.equals(groupMetadata.memberId())) {
+                && JoinGroupRequest.UNKNOWN_MEMBER_ID.equals(groupMetadata.memberId())) {
             throw new IllegalArgumentException("Passed in group metadata " + groupMetadata + " has generationId > 0 but the member.id is unknown");
         }
     }
@@ -1637,6 +1636,7 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
     private static class ClusterAndWaitTime {
         final Cluster cluster;
         final long waitedOnMetadataMs;
+
         ClusterAndWaitTime(Cluster cluster, long waitedOnMetadataMs) {
             this.cluster = cluster;
             this.waitedOnMetadataMs = waitedOnMetadataMs;

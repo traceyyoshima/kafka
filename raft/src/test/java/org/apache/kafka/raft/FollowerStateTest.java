@@ -43,10 +43,10 @@ public class FollowerStateTest {
     private final int fetchTimeoutMs = 15000;
     private final int leaderId = 3;
     private final Endpoints leaderEndpoints = Endpoints.fromInetSocketAddresses(
-        Map.of(
-            ListenerName.normalised("CONTROLLER"),
-            InetSocketAddress.createUnresolved("mock-host-3", 1234)
-        )
+            Map.of(
+                    ListenerName.normalised("CONTROLLER"),
+                    InetSocketAddress.createUnresolved("mock-host-3", 1234)
+            )
     );
     private final ReplicaKey votedKey = ReplicaKey.of(2, Uuid.randomUuid());
 
@@ -54,15 +54,15 @@ public class FollowerStateTest {
         Set<Integer> voters
     ) {
         return new FollowerState(
-            time,
-            epoch,
-            leaderId,
-            leaderEndpoints,
-            Optional.of(votedKey),
-            voters,
-            Optional.empty(),
-            fetchTimeoutMs,
-            logContext
+                time,
+                epoch,
+                leaderId,
+                leaderEndpoints,
+                Optional.of(votedKey),
+                voters,
+                Optional.empty(),
+                fetchTimeoutMs,
+                logContext
         );
     }
 

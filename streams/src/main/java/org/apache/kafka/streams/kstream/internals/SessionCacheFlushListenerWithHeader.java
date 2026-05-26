@@ -44,14 +44,14 @@ class SessionCacheFlushListenerWithHeader<KOut, VOut> implements CacheFlushListe
             final VOut oldValue = AggregationWithHeaders.getAggregationOrNull(record.value().oldValue);
 
             final Headers headers = record.value().newValue != null
-                ? record.value().newValue.headers()
-                : new RecordHeaders();
+                    ? record.value().newValue.headers()
+                    : new RecordHeaders();
 
             context.forward(
-                record
-                    .withValue(new Change<>(newValue, oldValue, record.value().isLatest))
-                    .withTimestamp(record.key().window().end())
-                    .withHeaders(headers));
+                    record
+                        .withValue(new Change<>(newValue, oldValue, record.value().isLatest))
+                        .withTimestamp(record.key().window().end())
+                        .withHeaders(headers));
         } finally {
             context.setCurrentNode(prev);
         }

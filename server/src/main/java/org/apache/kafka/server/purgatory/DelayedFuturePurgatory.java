@@ -34,12 +34,12 @@ public class DelayedFuturePurgatory {
     public DelayedFuturePurgatory(String purgatoryName, int brokerId) {
         this.purgatory = new DelayedOperationPurgatory<>(purgatoryName, brokerId);
         this.executor = new ThreadPoolExecutor(
-            1,
-            1,
-            0,
-            TimeUnit.MILLISECONDS,
-            new LinkedBlockingQueue<>(),
-            r -> new KafkaThread("DelayedExecutor-" + purgatoryName, r, true));
+                1,
+                1,
+                0,
+                TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<>(),
+                r -> new KafkaThread("DelayedExecutor-" + purgatoryName, r, true));
         this.purgatoryKey = () -> "delayed-future-key";
     }
 

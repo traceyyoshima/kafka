@@ -84,8 +84,8 @@ public class TopicPartitionMetadata {
                     break;
                 default:
                     LOG.warn(
-                        "Unsupported offset metadata version found. Supported version <= {}. Found version {}.",
-                        LATEST_MAGIC_BYTE, version);
+                            "Unsupported offset metadata version found. Supported version <= {}. Found version {}.",
+                            LATEST_MAGIC_BYTE, version);
             }
         } catch (final Exception exception) {
             LOG.warn("Unsupported offset metadata found");
@@ -109,6 +109,6 @@ public class TopicPartitionMetadata {
         }
 
         return partitionTime == ((TopicPartitionMetadata) obj).partitionTime
-            && Objects.equals(processorMetadata, ((TopicPartitionMetadata) obj).processorMetadata);
+                && Objects.equals(processorMetadata, ((TopicPartitionMetadata) obj).processorMetadata);
     }
 }

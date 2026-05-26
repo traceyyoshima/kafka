@@ -56,9 +56,9 @@ class AutoOffsetResetTest {
     @Test
     void shouldThrowExceptionIfDurationIsNegative() {
         final IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> AutoOffsetReset.byDuration(Duration.ofSeconds(-1)),
-            "Creating an AutoOffsetReset with a negative duration should throw an IllegalArgumentException."
+                IllegalArgumentException.class,
+                () -> AutoOffsetReset.byDuration(Duration.ofSeconds(-1)),
+                "Creating an AutoOffsetReset with a negative duration should throw an IllegalArgumentException."
         );
         assertEquals("Duration cannot be negative", exception.getMessage(), "Exception message should indicate the duration cannot be negative.");
     }

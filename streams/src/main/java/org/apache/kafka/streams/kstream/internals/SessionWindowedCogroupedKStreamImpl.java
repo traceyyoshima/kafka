@@ -37,7 +37,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public class SessionWindowedCogroupedKStreamImpl<K, V> extends
-    AbstractStream<K, V> implements SessionWindowedCogroupedKStream<K, V> {
+        AbstractStream<K, V> implements SessionWindowedCogroupedKStream<K, V> {
 
     private final SessionWindows sessionWindows;
     private final CogroupedStreamAggregateBuilder<K, V> aggregateBuilder;
@@ -85,25 +85,25 @@ public class SessionWindowedCogroupedKStreamImpl<K, V> extends
         Objects.requireNonNull(materialized, "materialized can't be null");
         Objects.requireNonNull(named, "named can't be null");
         final MaterializedInternal<K, V, SessionStore<Bytes, byte[]>> materializedInternal = new MaterializedInternal<>(
-            materialized,
-            builder,
-            CogroupedKStreamImpl.AGGREGATE_NAME);
+                materialized,
+                builder,
+                CogroupedKStreamImpl.AGGREGATE_NAME);
         return aggregateBuilder.build(
-            groupPatterns,
-            initializer,
-            new NamedInternal(named),
-            new SessionStoreMaterializer<>(
-                    materializedInternal,
-                    sessionWindows,
-                    EmitStrategy.onWindowUpdate()),
-            materializedInternal.keySerde() != null ?
-                new WindowedSerdes.SessionWindowedSerde<>(
-                    materializedInternal.keySerde()) :
-                null,
-            materializedInternal.valueSerde(),
-            materializedInternal.queryableStoreName(),
-            sessionWindows,
-            sessionMerger);
+                groupPatterns,
+                initializer,
+                new NamedInternal(named),
+                new SessionStoreMaterializer<>(
+                        materializedInternal,
+                        sessionWindows,
+                        EmitStrategy.onWindowUpdate()),
+                materializedInternal.keySerde() != null ?
+                        new WindowedSerdes.SessionWindowedSerde<>(
+                                materializedInternal.keySerde()) :
+                        null,
+                materializedInternal.valueSerde(),
+                materializedInternal.queryableStoreName(),
+                sessionWindows,
+                sessionMerger);
     }
 
 }

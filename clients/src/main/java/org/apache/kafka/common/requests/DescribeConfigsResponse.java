@@ -200,9 +200,11 @@ public class DescribeConfigsResponse extends AbstractResponse {
         public String name() {
             return name;
         }
+
         public String value() {
             return value;
         }
+
         public ConfigSource source() {
             return source;
         }
@@ -210,10 +212,10 @@ public class DescribeConfigsResponse extends AbstractResponse {
 
     public Map<ConfigResource, DescribeConfigsResponseData.DescribeConfigsResult> resultMap() {
         return data().results().stream().collect(Collectors.toMap(
-            configsResult ->
+                configsResult ->
                     new ConfigResource(ConfigResource.Type.forId(configsResult.resourceType()),
                             configsResult.resourceName()),
-            Function.identity()));
+                Function.identity()));
     }
 
     private final DescribeConfigsResponseData data;
@@ -242,7 +244,7 @@ public class DescribeConfigsResponse extends AbstractResponse {
     public Map<Errors, Integer> errorCounts() {
         Map<Errors, Integer> errorCounts = new EnumMap<>(Errors.class);
         data.results().forEach(response ->
-            updateErrorCounts(errorCounts, Errors.forCode(response.errorCode()))
+                updateErrorCounts(errorCounts, Errors.forCode(response.errorCode()))
         );
         return errorCounts;
     }

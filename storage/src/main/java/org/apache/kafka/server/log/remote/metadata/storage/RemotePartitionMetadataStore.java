@@ -107,17 +107,17 @@ public class RemotePartitionMetadataStore extends RemotePartitionMetadataEventHa
     }
 
     Iterator<RemoteLogSegmentMetadata> listRemoteLogSegments(TopicIdPartition topicIdPartition)
-            throws RemoteStorageException {
+        throws RemoteStorageException {
         return getRemoteLogMetadataCache(topicIdPartition).listAllRemoteLogSegments();
     }
 
     Iterator<RemoteLogSegmentMetadata> listRemoteLogSegments(TopicIdPartition topicIdPartition, int leaderEpoch)
-            throws RemoteStorageException {
+        throws RemoteStorageException {
         return getRemoteLogMetadataCache(topicIdPartition).listRemoteLogSegments(leaderEpoch);
     }
 
     private RemoteLogMetadataCache getRemoteLogMetadataCache(TopicIdPartition topicIdPartition)
-            throws RemoteResourceNotFoundException {
+        throws RemoteResourceNotFoundException {
         Objects.requireNonNull(topicIdPartition, "topicIdPartition can not be null");
         RemoteLogMetadataCache remoteLogMetadataCache = idToRemoteLogMetadataCache.get(topicIdPartition);
         if (remoteLogMetadataCache == null) {
@@ -140,7 +140,7 @@ public class RemotePartitionMetadataStore extends RemotePartitionMetadataEventHa
     Optional<RemoteLogSegmentMetadata> remoteLogSegmentMetadata(TopicIdPartition topicIdPartition,
                                                                 long offset,
                                                                 int epochForOffset)
-            throws RemoteStorageException {
+        throws RemoteStorageException {
         return getRemoteLogMetadataCache(topicIdPartition).remoteLogSegmentMetadata(epochForOffset, offset);
     }
 

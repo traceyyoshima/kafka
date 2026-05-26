@@ -56,19 +56,19 @@ public class FrequenciesTest {
     @Test
     public void testFrequencyCenterValueAboveMax() {
         assertThrows(IllegalArgumentException.class,
-            () -> new Frequencies(4, 1.0, 4.0, freq("1", 1.0), freq("2", 20.0)));
+                () -> new Frequencies(4, 1.0, 4.0, freq("1", 1.0), freq("2", 20.0)));
     }
 
     @Test
     public void testFrequencyCenterValueBelowMin() {
         assertThrows(IllegalArgumentException.class,
-            () -> new Frequencies(4, 1.0, 4.0, freq("1", 1.0), freq("2", -20.0)));
+                () -> new Frequencies(4, 1.0, 4.0, freq("1", 1.0), freq("2", -20.0)));
     }
 
     @Test
     public void testMoreFrequencyParametersThanBuckets() {
         assertThrows(IllegalArgumentException.class,
-            () -> new Frequencies(1, 1.0, 4.0, freq("1", 1.0), freq("2", -20.0)));
+                () -> new Frequencies(1, 1.0, 4.0, freq("1", 1.0), freq("2", -20.0)));
     }
 
     @Test

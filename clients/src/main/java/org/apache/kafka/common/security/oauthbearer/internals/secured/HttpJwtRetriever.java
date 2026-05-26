@@ -260,27 +260,27 @@ public class HttpJwtRetriever implements JwtRetriever {
 
         if (responseCode == HttpURLConnection.HTTP_OK || responseCode == HttpURLConnection.HTTP_CREATED) {
             log.debug("handleOutput - responseCode: {}, error response: {}", responseCode,
-                errorResponseBody);
+                    errorResponseBody);
 
             if (responseBody == null || responseBody.isEmpty())
                 throw new IOException(String.format("The token endpoint response was unexpectedly empty despite response code %d from %s and error message %s",
-                    responseCode, con.getURL(), formatErrorMessage(errorResponseBody)));
+                        responseCode, con.getURL(), formatErrorMessage(errorResponseBody)));
 
             return responseBody;
         } else {
             log.warn("handleOutput - error response code: {}, error response body: {}", responseCode,
-                formatErrorMessage(errorResponseBody));
+                    formatErrorMessage(errorResponseBody));
 
             if (UNRETRYABLE_HTTP_CODES.contains(responseCode)) {
                 // We know that this is a non-transient error, so let's not keep retrying the
                 // request unnecessarily.
                 throw new UnretryableException(new IOException(String.format("The response code %s and error response %s was encountered reading the token endpoint response; will not attempt further retries",
-                    responseCode, formatErrorMessage(errorResponseBody))));
+                        responseCode, formatErrorMessage(errorResponseBody))));
             } else {
                 // We don't know if this is a transient (retryable) error or not, so let's assume
                 // it is.
                 throw new IOException(String.format("The unexpected response code %s and error message %s was encountered reading the token endpoint response",
-                    responseCode, formatErrorMessage(errorResponseBody)));
+                        responseCode, formatErrorMessage(errorResponseBody)));
             }
         }
     }

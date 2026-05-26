@@ -39,8 +39,8 @@ public record TopicsImage(ImmutableMap<Uuid, TopicImage> topicsById, ImmutableMa
 
     public TopicsImage including(TopicImage topic) {
         return new TopicsImage(
-            this.topicsById.updated(topic.id(), topic),
-            this.topicsByName.updated(topic.name(), topic));
+                this.topicsById.updated(topic.id(), topic),
+                this.topicsByName.updated(topic.name(), topic));
     }
 
     public boolean isEmpty() {

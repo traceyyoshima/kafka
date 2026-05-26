@@ -42,7 +42,7 @@ public class ClientTelemetryEmitterTest {
     @Test
     public void testShouldEmitMetric() {
         Predicate<? super MetricKeyable> selector = ClientTelemetryUtils.getSelectorFromRequestedMetrics(
-            Collections.singletonList("io.test.metric"));
+                Collections.singletonList("io.test.metric"));
         ClientTelemetryEmitter emitter = new ClientTelemetryEmitter(selector, true);
 
         assertTrue(emitter.shouldEmitMetric(new MetricKey("io.test.metric")));
@@ -86,7 +86,7 @@ public class ClientTelemetryEmitterTest {
     @Test
     public void testEmitMetric() {
         Predicate<? super MetricKeyable> selector = ClientTelemetryUtils.getSelectorFromRequestedMetrics(
-            Collections.singletonList("name"));
+                Collections.singletonList("name"));
         ClientTelemetryEmitter emitter = new ClientTelemetryEmitter(selector, true);
 
         SinglePointMetric gauge = SinglePointMetric.gauge(metricKey, Long.valueOf(1), now, Collections.emptySet());

@@ -63,10 +63,10 @@ public class AlterShareGroupOffsetsRequest extends AbstractRequest {
 
     public AlterShareGroupOffsetsResponse getErrorResponse(int throttleTimeMs, short errorCode, String message) {
         return new AlterShareGroupOffsetsResponse(
-            new AlterShareGroupOffsetsResponseData()
-                .setThrottleTimeMs(throttleTimeMs)
-                .setErrorCode(errorCode)
-                .setErrorMessage(message)
+                new AlterShareGroupOffsetsResponseData()
+                    .setThrottleTimeMs(throttleTimeMs)
+                    .setErrorCode(errorCode)
+                    .setErrorMessage(message)
         );
     }
 
@@ -82,8 +82,8 @@ public class AlterShareGroupOffsetsRequest extends AbstractRequest {
 
     public static AlterShareGroupOffsetsRequest parse(Readable readable, short version) {
         return new AlterShareGroupOffsetsRequest(
-            new AlterShareGroupOffsetsRequestData(readable, version),
-            version
+                new AlterShareGroupOffsetsRequestData(readable, version),
+                version
         );
     }
 

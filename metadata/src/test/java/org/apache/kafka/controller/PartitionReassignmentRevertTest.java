@@ -88,11 +88,11 @@ public class PartitionReassignmentRevertTest {
         PartitionRegistration registration = new PartitionRegistration.Builder().
             setReplicas(new int[] {4, 5, 3, 2, 1}).setIsr(new int[] {4, 5, 2}).
             setDirectories(new Uuid[]{
-                Uuid.fromString("IHR5DKGdQju05pbDpwfdbA"),
-                Uuid.fromString("9zsVmGReTDOAyuPEtp58Cw"),
-                Uuid.fromString("bsUouEfRSLi50Pj3nqke2A"),
-                Uuid.fromString("8l9R5BMcQZGbICOXPmxZNw"),
-                Uuid.fromString("3n5Gwv8jRMiIFMgoTxVCdA")
+                    Uuid.fromString("IHR5DKGdQju05pbDpwfdbA"),
+                    Uuid.fromString("9zsVmGReTDOAyuPEtp58Cw"),
+                    Uuid.fromString("bsUouEfRSLi50Pj3nqke2A"),
+                    Uuid.fromString("8l9R5BMcQZGbICOXPmxZNw"),
+                    Uuid.fromString("3n5Gwv8jRMiIFMgoTxVCdA")
             }).
             setRemovingReplicas(new int[]{2}).setAddingReplicas(new int[]{4, 5}).setLeader(3).setLeaderRecoveryState(LeaderRecoveryState.RECOVERED).setLeaderEpoch(100).setPartitionEpoch(200).build();
         PartitionReassignmentRevert revert = new PartitionReassignmentRevert(registration);

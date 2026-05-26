@@ -71,8 +71,8 @@ public class Meter implements CompoundStat {
     @Override
     public List<NamedMeasurable> stats() {
         return Arrays.asList(
-            new NamedMeasurable(totalMetricName, total),
-            new NamedMeasurable(rateMetricName, rate));
+                new NamedMeasurable(totalMetricName, total),
+                new NamedMeasurable(rateMetricName, rate));
     }
 
     @Override
@@ -86,10 +86,10 @@ public class Meter implements CompoundStat {
     @Override
     public String toString() {
         return "Meter(" +
-            "rate=" + rate +
-            ", total=" + total +
-            ", rateMetricName=" + rateMetricName +
-            ", totalMetricName=" + totalMetricName +
-            ')';
+                "rate=" + rate +
+                ", total=" + total +
+                ", rateMetricName=" + rateMetricName +
+                ", totalMetricName=" + totalMetricName +
+                ')';
     }
 }

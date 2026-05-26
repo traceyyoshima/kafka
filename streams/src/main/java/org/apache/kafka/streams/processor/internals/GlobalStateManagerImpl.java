@@ -155,7 +155,7 @@ public class GlobalStateManagerImpl implements GlobalStateManager {
         final int requestTimeoutMs = new ClientUtils.QuietConsumerConfig(consumerProps)
             .getInt(ConsumerConfig.REQUEST_TIMEOUT_MS_CONFIG);
         pollMsPlusRequestTimeout = Duration.ofMillis(
-            config.getLong(StreamsConfig.POLL_MS_CONFIG) + requestTimeoutMs
+                config.getLong(StreamsConfig.POLL_MS_CONFIG) + requestTimeoutMs
         );
         taskTimeoutMs = config.getLong(StreamsConfig.TASK_TIMEOUT_MS_CONFIG);
         deserializationExceptionHandler = config.deserializationExceptionHandler();
@@ -175,9 +175,9 @@ public class GlobalStateManagerImpl implements GlobalStateManager {
     @Override
     public Set<String> initialize() {
         droppedRecordsSensor = droppedRecordsSensor(
-            Thread.currentThread().getName(),
-            globalProcessorContext.taskId().toString(),
-            globalProcessorContext.metrics()
+                Thread.currentThread().getName(),
+                globalProcessorContext.taskId().toString(),
+                globalProcessorContext.metrics()
         );
 
         final Map<TopicPartition, StateStore> wrappedStores = new HashMap<>();
@@ -276,11 +276,11 @@ public class GlobalStateManagerImpl implements GlobalStateManager {
 
         final List<TopicPartition> topicPartitions = topicPartitionsForStore(store);
         final Map<TopicPartition, Long> highWatermarks = retryUntilSuccessOrThrowOnTaskTimeout(
-            () -> globalConsumer.endOffsets(topicPartitions),
-            String.format(
-                "Failed to get offsets for partitions %s. The broker may be transiently unavailable at the moment.",
-                topicPartitions
-            )
+                () -> globalConsumer.endOffsets(topicPartitions),
+                String.format(
+                        "Failed to get offsets for partitions %s. The broker may be transiently unavailable at the moment.",
+                        topicPartitions
+                )
         );
 
         final Optional<InternalTopologyBuilder.ReprocessFactory<?, ?, ?, ?>> reprocessFactory = topology
@@ -293,11 +293,11 @@ public class GlobalStateManagerImpl implements GlobalStateManager {
         final String sourceTopic = storeToChangelogTopic.get(store.name());
 
         final List<PartitionInfo> partitionInfos = retryUntilSuccessOrThrowOnTaskTimeout(
-            () -> globalConsumer.partitionsFor(sourceTopic),
-            String.format(
-                "Failed to get partitions for topic %s. The broker may be transiently unavailable at the moment.",
-                sourceTopic
-            )
+                () -> globalConsumer.partitionsFor(sourceTopic),
+                String.format(
+                        "Failed to get partitions for topic %s. The broker may be transiently unavailable at the moment.",
+                        sourceTopic
+                )
         );
 
         if (partitionInfos == null || partitionInfos.isEmpty()) {
@@ -358,12 +358,12 @@ public class GlobalStateManagerImpl implements GlobalStateManager {
                 long batchRestoreCount = 0;
                 for (final ConsumerRecord<byte[], byte[]> record : records.records(topicPartition)) {
                     final ProcessorRecordContext recordContext =
-                        new ProcessorRecordContext(
-                            record.timestamp(),
-                            record.offset(),
-                            record.partition(),
-                            record.topic(),
-                            record.headers());
+                            new ProcessorRecordContext(
+                                    record.timestamp(),
+                                    record.offset(),
+                                    record.partition(),
+                                    record.topic(),
+                                    record.headers());
                     globalProcessorContext.setRecordContext(recordContext);
 
                     if (record.key() != null) {
@@ -371,22 +371,22 @@ public class GlobalStateManagerImpl implements GlobalStateManager {
                         final Record<?, ?> deserializedRecord;
                         try {
                             deserializedRecord = new Record<>(
-                                reprocessFactory.keyDeserializer().deserialize(record.topic(), record.headers(), record.key()),
-                                reprocessFactory.valueDeserializer().deserialize(record.topic(), record.headers(), record.value()),
-                                record.timestamp(),
-                                record.headers());
+                                    reprocessFactory.keyDeserializer().deserialize(record.topic(), record.headers(), record.key()),
+                                    reprocessFactory.valueDeserializer().deserialize(record.topic(), record.headers(), record.value()),
+                                    record.timestamp(),
+                                    record.headers());
                         } catch (final Exception deserializationException) {
                             // while Java distinguishes checked vs unchecked exceptions, other languages
                             // like Scala or Kotlin do not, and thus we need to catch `Exception`
                             // (instead of `RuntimeException`) to work well with those languages
                             handleDeserializationFailure(
-                                deserializationExceptionHandler,
-                                globalProcessorContext,
-                                deserializationException,
-                                record,
-                                log,
-                                droppedRecordsSensor,
-                                null
+                                    deserializationExceptionHandler,
+                                    globalProcessorContext,
+                                    deserializationException,
+                                    record,
+                                    log,
+                                    droppedRecordsSensor,
+                                    null
                             );
                             continue; // Skip this record
                         }
@@ -402,28 +402,28 @@ public class GlobalStateManagerImpl implements GlobalStateManager {
                             // (instead of `RuntimeException`) to work well with those languages
                             if (processingExceptionHandler != null) {
                                 final ErrorHandlerContext errorHandlerContext = new DefaultErrorHandlerContext(
-                                    globalProcessorContext,
-                                    record.topic(),
-                                    record.partition(),
-                                    record.offset(),
-                                    record.headers(),
-                                    reprocessFactory.processorName(),
-                                    globalProcessorContext.taskId(),
-                                    record.timestamp(),
-                                    record.key(),
-                                    record.value()
+                                        globalProcessorContext,
+                                        record.topic(),
+                                        record.partition(),
+                                        record.offset(),
+                                        record.headers(),
+                                        reprocessFactory.processorName(),
+                                        globalProcessorContext.taskId(),
+                                        record.timestamp(),
+                                        record.key(),
+                                        record.value()
                                 );
                                 try {
                                     response =
-                                        Objects.requireNonNull(processingExceptionHandler.handleError(
-                                            errorHandlerContext,
-                                            deserializedRecord,
-                                            processingException
-                                        ), "Invalid ProcessingExceptionHandler response");
+                                            Objects.requireNonNull(processingExceptionHandler.handleError(
+                                                errorHandlerContext,
+                                                deserializedRecord,
+                                                processingException
+                                            ), "Invalid ProcessingExceptionHandler response");
                                     if (!response.deadLetterQueueRecords().isEmpty()) {
                                         log.warn("Dead letter queue records cannot be sent for global state/KTable processors. " +
                                                 "DLQ support for global store/KTable will be added in a future release. " + "Record context: {}",
-                                            errorHandlerContext);
+                                                errorHandlerContext);
                                     }
                                 } catch (final Exception fatalUserException) {
                                     log.error(
@@ -437,7 +437,7 @@ public class GlobalStateManagerImpl implements GlobalStateManager {
                                             fatalUserException
                                     );
                                 }
-                                
+
                                 if (response.result() == ProcessingExceptionHandler.Result.FAIL) {
                                     log.error("Processing exception handler is set to fail upon" +
                                             " a processing error. If you would rather have the streaming pipeline" +
@@ -480,7 +480,7 @@ public class GlobalStateManagerImpl implements GlobalStateManager {
 
             final Long highWatermark = storeMetadata.highWatermarks.get(topicPartition);
             final RecordBatchingStateRestoreCallback stateRestoreAdapter =
-                StateRestoreCallbackAdapter.adapt(storeMetadata.restoreCallback);
+                    StateRestoreCallbackAdapter.adapt(storeMetadata.restoreCallback);
 
             stateRestoreListener.onRestoreStart(topicPartition, storeMetadata.stateStore.name(), offset, highWatermark);
             long restoreCount = 0L;
@@ -520,11 +520,11 @@ public class GlobalStateManagerImpl implements GlobalStateManager {
 
     private long getGlobalConsumerOffset(final TopicPartition topicPartition) {
         return retryUntilSuccessOrThrowOnTaskTimeout(
-            () -> globalConsumer.position(topicPartition),
-            String.format(
-                "Failed to get position for partition %s. The broker may be transiently unavailable at the moment.",
-                topicPartition
-            )
+                () -> globalConsumer.position(topicPartition),
+                String.format(
+                        "Failed to get position for partition %s. The broker may be transiently unavailable at the moment.",
+                        topicPartition
+                )
         );
     }
 
@@ -538,11 +538,11 @@ public class GlobalStateManagerImpl implements GlobalStateManager {
             } catch (final TimeoutException retriableException) {
                 if (taskTimeoutMs == 0L) {
                     throw new StreamsException(
-                        String.format(
-                            "Retrying is disabled. You can enable it by setting `%s` to a value larger than zero.",
-                            StreamsConfig.TASK_TIMEOUT_MS_CONFIG
-                        ),
-                        retriableException
+                            String.format(
+                                    "Retrying is disabled. You can enable it by setting `%s` to a value larger than zero.",
+                                    StreamsConfig.TASK_TIMEOUT_MS_CONFIG
+                            ),
+                            retriableException
                     );
                 }
 
@@ -561,9 +561,9 @@ public class GlobalStateManagerImpl implements GlobalStateManager {
             return newDeadlineMs < 0L ? Long.MAX_VALUE : newDeadlineMs;
         } else if (currentWallClockMs >= currentDeadlineMs) {
             throw new TimeoutException(String.format(
-                "Global task did not make progress to restore state within %d ms. Adjust `%s` if needed.",
-                currentWallClockMs - currentDeadlineMs + taskTimeoutMs,
-                StreamsConfig.TASK_TIMEOUT_MS_CONFIG
+                    "Global task did not make progress to restore state within %d ms. Adjust `%s` if needed.",
+                    currentWallClockMs - currentDeadlineMs + taskTimeoutMs,
+                    StreamsConfig.TASK_TIMEOUT_MS_CONFIG
             ));
         }
 
@@ -594,8 +594,8 @@ public class GlobalStateManagerImpl implements GlobalStateManager {
                     store.commit(storeOffsets);
                 } catch (final RuntimeException e) {
                     throw new ProcessorStateException(
-                        String.format("Failed to commit global state store %s", store.name()),
-                        e
+                            String.format("Failed to commit global state store %s", store.name()),
+                            e
                     );
                 }
             } else {

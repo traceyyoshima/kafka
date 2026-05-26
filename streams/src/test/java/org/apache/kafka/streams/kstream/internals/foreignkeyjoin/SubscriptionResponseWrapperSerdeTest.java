@@ -50,10 +50,10 @@ public class SubscriptionResponseWrapperSerdeTest {
         }
 
         @Override
-        public void configure(final Map<String, ?> configs, final boolean isKey) { }
+        public void configure(final Map<String, ?> configs, final boolean isKey) {}
 
         @Override
-        public void close() { }
+        public void close() {}
 
         @Override
         public Serializer<T> serializer() {
@@ -141,8 +141,8 @@ public class SubscriptionResponseWrapperSerdeTest {
     public void shouldThrowExceptionWithBadVersionTest() {
         final long[] hashedValue = null;
         assertThrows(
-            UnsupportedVersionException.class,
-            () -> new SubscriptionResponseWrapper<>(hashedValue, "foreignValue", (byte) -1, 1)
+                UnsupportedVersionException.class,
+                () -> new SubscriptionResponseWrapper<>(hashedValue, "foreignValue", (byte) -1, 1)
         );
     }
 
@@ -151,8 +151,8 @@ public class SubscriptionResponseWrapperSerdeTest {
         final SubscriptionResponseWrapper<String> srw = new InvalidSubscriptionResponseWrapper(null, null, 1);
         try (final SubscriptionResponseWrapperSerde<String> srwSerde = new SubscriptionResponseWrapperSerde<>(null)) {
             assertThrows(
-                UnsupportedVersionException.class,
-                () -> srwSerde.serializer().serialize(null, HEADERS, srw)
+                    UnsupportedVersionException.class,
+                    () -> srwSerde.serializer().serialize(null, HEADERS, srw)
             );
         }
     }

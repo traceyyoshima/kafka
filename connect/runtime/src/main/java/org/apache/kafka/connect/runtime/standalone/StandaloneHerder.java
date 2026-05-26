@@ -211,7 +211,7 @@ public final class StandaloneHerder extends AbstractHerder {
                 }
 
                 requestExecutorService.submit(
-                    () -> putConnectorConfig(connName, config, targetState, allowReplace, callback, configInfos)
+                        () -> putConnectorConfig(connName, config, targetState, allowReplace, callback, configInfos)
                 );
             });
         } catch (Throwable t) {
@@ -363,7 +363,7 @@ public final class StandaloneHerder extends AbstractHerder {
     @Override
     public synchronized HerderRequest restartConnector(long delayMs, final String connName, final Callback<Void> cb) {
         ScheduledFuture<?> future = requestExecutorService.schedule(
-            () -> restartConnector(connName, cb), delayMs, TimeUnit.MILLISECONDS);
+                () -> restartConnector(connName, cb), delayMs, TimeUnit.MILLISECONDS);
 
         return new StandaloneHerderRequest(requestSeqNum.incrementAndGet(), future);
     }

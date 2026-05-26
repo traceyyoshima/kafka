@@ -42,19 +42,19 @@ public class CheckerTestUtils {
         String type
     ) {
         return new FieldSpec(name,
-            versions,
-            null,
-            type,
-            false,
-            null,
-            null,
-            false,
-            null,
-            "",
-            null,
-            null,
-            null,
-            false);
+                versions,
+                null,
+                type,
+                false,
+                null,
+                null,
+                false,
+                null,
+                "",
+                null,
+                null,
+                null,
+                false);
     }
 
     static FieldSpec fieldWithTag(
@@ -62,19 +62,19 @@ public class CheckerTestUtils {
         OptionalInt tag
     ) {
         return new FieldSpec(name,
-            "0+",
-            null,
-            "int8",
-            false,
-            null,
-            null,
-            false,
-            null,
-            null,
-            tag.isPresent() ? "0+" : "",
-            null,
-            tag.isPresent() ? tag.getAsInt() : null,
-            false);
+                "0+",
+                null,
+                "int8",
+                false,
+                null,
+                null,
+                false,
+                null,
+                null,
+                tag.isPresent() ? "0+" : "",
+                null,
+                tag.isPresent() ? tag.getAsInt() : null,
+                false);
     }
 
     static FieldSpec fieldWithTag(
@@ -84,19 +84,19 @@ public class CheckerTestUtils {
         String taggedVersions
     ) {
         return new FieldSpec(name,
-            validVersions,
-            null,
-            "int8",
-            false,
-            null,
-            null,
-            false,
-            null,
-            null,
-            taggedVersions,
-            null,
-            tag,
-            false);
+                validVersions,
+                null,
+                "int8",
+                false,
+                null,
+                null,
+                false,
+                null,
+                null,
+                taggedVersions,
+                null,
+                tag,
+                false);
     }
 
     static FieldSpec fieldWithNulls(
@@ -106,19 +106,19 @@ public class CheckerTestUtils {
         String nullableVersions
     ) {
         return new FieldSpec(name,
-            versions,
-            null,
-            type,
-            false,
-            nullableVersions,
-            null,
-            false,
-            null,
-            "",
-            null,
-            null,
-            null,
-            false);
+                versions,
+                null,
+                type,
+                false,
+                nullableVersions,
+                null,
+                false,
+                null,
+                "",
+                null,
+                null,
+                null,
+                false);
     }
 
     static FieldSpec fieldWithDefaults(
@@ -128,19 +128,19 @@ public class CheckerTestUtils {
         String flexibleVersions
     ) {
         return new FieldSpec(name,
-            versions,
-            null,
-            "string",
-            false,
-            null,
-            fieldDefault,
-            false,
-            null,
-            "",
-            null,
-            flexibleVersions,
-            null,
-            false);
+                versions,
+                null,
+                "string",
+                false,
+                null,
+                fieldDefault,
+                false,
+                null,
+                "",
+                null,
+                flexibleVersions,
+                null,
+                false);
     }
 
     static String messageSpecStringToTempFile(String input) throws IOException {

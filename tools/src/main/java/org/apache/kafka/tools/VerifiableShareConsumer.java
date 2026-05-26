@@ -178,7 +178,7 @@ public class VerifiableShareConsumer implements Closeable, AcknowledgementCommit
         }
     }
 
-    @JsonPropertyOrder({ "timestamp", "name" })
+    @JsonPropertyOrder({"timestamp", "name"})
     private abstract static class ShareConsumerEvent {
         private final long timestamp = System.currentTimeMillis();
 
@@ -199,7 +199,7 @@ public class VerifiableShareConsumer implements Closeable, AcknowledgementCommit
         }
     }
 
-    @JsonPropertyOrder({ "timestamp", "name", "offsetResetStrategy" })
+    @JsonPropertyOrder({"timestamp", "name", "offsetResetStrategy"})
     protected static class OffsetResetStrategySet extends ShareConsumerEvent {
 
         private final String offsetResetStrategy;
@@ -235,7 +235,7 @@ public class VerifiableShareConsumer implements Closeable, AcknowledgementCommit
         }
     }
 
-    @JsonPropertyOrder({ "timestamp", "name", "count", "partitions" })
+    @JsonPropertyOrder({"timestamp", "name", "count", "partitions"})
     public static class RecordsConsumed extends ShareConsumerEvent {
         private final long count;
         private final List<RecordSetSummary> partitionSummaries;
@@ -261,7 +261,7 @@ public class VerifiableShareConsumer implements Closeable, AcknowledgementCommit
         }
     }
 
-    @JsonPropertyOrder({ "timestamp", "name", "count", "partitions", "success", "error" })
+    @JsonPropertyOrder({"timestamp", "name", "count", "partitions", "success", "error"})
     protected static class OffsetsAcknowledged extends ShareConsumerEvent {
 
         private final long count;
@@ -304,7 +304,7 @@ public class VerifiableShareConsumer implements Closeable, AcknowledgementCommit
 
     }
 
-    @JsonPropertyOrder({ "timestamp", "name", "key", "value", "topic", "partition", "offset" })
+    @JsonPropertyOrder({"timestamp", "name", "key", "value", "topic", "partition", "offset"})
     public static class RecordData extends ShareConsumerEvent {
 
         private final ConsumerRecord<String, String> record;
@@ -434,12 +434,12 @@ public class VerifiableShareConsumer implements Closeable, AcknowledgementCommit
 
             if (!Objects.equals(offsetResetStrategy, "")) {
                 ShareGroupAutoOffsetResetStrategy offsetResetStrategy =
-                    ShareGroupAutoOffsetResetStrategy.fromString(this.offsetResetStrategy);
+                        ShareGroupAutoOffsetResetStrategy.fromString(this.offsetResetStrategy);
 
                 ConfigResource configResource = new ConfigResource(ConfigResource.Type.GROUP, groupId);
                 Map<ConfigResource, Collection<AlterConfigOp>> alterEntries = new HashMap<>();
                 alterEntries.put(configResource, List.of(new AlterConfigOp(new ConfigEntry(
-                    GroupConfig.SHARE_AUTO_OFFSET_RESET_CONFIG, offsetResetStrategy.type().toString()), AlterConfigOp.OpType.SET)));
+                        GroupConfig.SHARE_AUTO_OFFSET_RESET_CONFIG, offsetResetStrategy.type().toString()), AlterConfigOp.OpType.SET)));
                 AlterConfigsOptions alterOptions = new AlterConfigsOptions();
 
                 // Setting the share group auto offset reset strategy
@@ -597,7 +597,7 @@ public class VerifiableShareConsumer implements Closeable, AcknowledgementCommit
         Namespace res = parser.parseArgs(args);
 
         AcknowledgementMode acknowledgementMode =
-            AcknowledgementMode.valueOf(res.getString("acknowledgementMode").toUpperCase(Locale.ROOT));
+                AcknowledgementMode.valueOf(res.getString("acknowledgementMode").toUpperCase(Locale.ROOT));
         String offsetResetStrategy = res.getString("offsetResetStrategy").toLowerCase(Locale.ROOT);
         String configFile = res.getString("commandConfig");
         String brokerHostAndPort = res.getString("bootstrapServer");
@@ -637,15 +637,15 @@ public class VerifiableShareConsumer implements Closeable, AcknowledgementCommit
         Admin adminClient = Admin.create(adminClientProps);
 
         return new VerifiableShareConsumer(
-            consumer,
-            adminClient,
-            System.out,
-            maxMessages,
-            topic,
-            acknowledgementMode,
-            offsetResetStrategy,
-            groupId,
-            verbose);
+                consumer,
+                adminClient,
+                System.out,
+                maxMessages,
+                topic,
+                acknowledgementMode,
+                offsetResetStrategy,
+                groupId,
+                verbose);
     }
 
     public static void main(String[] args) {

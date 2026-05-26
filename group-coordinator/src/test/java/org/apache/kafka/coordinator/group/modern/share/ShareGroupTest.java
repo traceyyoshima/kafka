@@ -82,7 +82,7 @@ public class ShareGroupTest {
         assertEquals("member-id", member.memberId());
 
         assertThrows(UnknownMemberIdException.class, () ->
-            shareGroup.getOrMaybeCreateMember("does-not-exist", false));
+                shareGroup.getOrMaybeCreateMember("does-not-exist", false));
     }
 
     @Test
@@ -158,43 +158,43 @@ public class ShareGroupTest {
 
         // It should be empty by default.
         assertEquals(
-            Map.of(),
-            shareGroup.subscribedTopicNames()
+                Map.of(),
+                shareGroup.subscribedTopicNames()
         );
 
         // It should be Homogeneous by default.
         assertEquals(
-            HOMOGENEOUS,
-            shareGroup.subscriptionType()
+                HOMOGENEOUS,
+                shareGroup.subscriptionType()
         );
 
         shareGroup.updateMember(member1);
 
         // It should be Homogeneous since there is just 1 member
         assertEquals(
-            HOMOGENEOUS,
-            shareGroup.subscriptionType()
+                HOMOGENEOUS,
+                shareGroup.subscriptionType()
         );
 
         shareGroup.updateMember(member2);
 
         assertEquals(
-            HETEROGENEOUS,
-            shareGroup.subscriptionType()
+                HETEROGENEOUS,
+                shareGroup.subscriptionType()
         );
 
         shareGroup.updateMember(member3);
 
         assertEquals(
-            HETEROGENEOUS,
-            shareGroup.subscriptionType()
+                HETEROGENEOUS,
+                shareGroup.subscriptionType()
         );
 
         shareGroup.removeMember(member1.memberId());
 
         assertEquals(
-            HOMOGENEOUS,
-            shareGroup.subscriptionType()
+                HOMOGENEOUS,
+                shareGroup.subscriptionType()
         );
 
         ShareGroupMember member4 = new ShareGroupMember.Builder("member2")
@@ -204,8 +204,8 @@ public class ShareGroupTest {
         shareGroup.updateMember(member4);
 
         assertEquals(
-            HETEROGENEOUS,
-            shareGroup.subscriptionType()
+                HETEROGENEOUS,
+                shareGroup.subscriptionType()
         );
     }
 
@@ -219,65 +219,65 @@ public class ShareGroupTest {
 
         // Initial assignment for member1
         Assignment initialAssignment = new Assignment(Map.of(
-            topicId,
-            Set.of(0)
+                topicId,
+                Set.of(0)
         ));
         shareGroup.updateTargetAssignment(memberId1, initialAssignment);
 
         // Verify that partition 0 is assigned to member1.
         assertEquals(
-            mkMap(
-                mkEntry(topicId, mkMap(mkEntry(0, memberId1)))
-            ),
-            shareGroup.invertedTargetAssignment()
+                mkMap(
+                        mkEntry(topicId, mkMap(mkEntry(0, memberId1)))
+                ),
+                shareGroup.invertedTargetAssignment()
         );
 
         // New assignment for member1
         Assignment newAssignment = new Assignment(Map.of(
-            topicId,
-            Set.of(1)
+                topicId,
+                Set.of(1)
         ));
         shareGroup.updateTargetAssignment(memberId1, newAssignment);
 
         // Verify that partition 0 is no longer assigned and partition 1 is assigned to member1
         assertEquals(
-            mkMap(
-                mkEntry(topicId, mkMap(mkEntry(1, memberId1)))
-            ),
-            shareGroup.invertedTargetAssignment()
+                mkMap(
+                        mkEntry(topicId, mkMap(mkEntry(1, memberId1)))
+                ),
+                shareGroup.invertedTargetAssignment()
         );
 
         // New assignment for member2 to add partition 1
         Assignment newAssignment2 = new Assignment(Map.of(
-            topicId,
-            Set.of(1)
+                topicId,
+                Set.of(1)
         ));
         shareGroup.updateTargetAssignment(memberId2, newAssignment2);
 
         // Verify that partition 1 is assigned to member2
         assertEquals(
-            mkMap(
-                mkEntry(topicId, mkMap(mkEntry(1, memberId2)))
-            ),
-            shareGroup.invertedTargetAssignment()
+                mkMap(
+                        mkEntry(topicId, mkMap(mkEntry(1, memberId2)))
+                ),
+                shareGroup.invertedTargetAssignment()
         );
 
         // New assignment for member1 to revoke partition 1 and assign partition 0
         Assignment newAssignment1 = new Assignment(Map.of(
-            topicId,
-            Set.of(0)
+                topicId,
+                Set.of(0)
         ));
         shareGroup.updateTargetAssignment(memberId1, newAssignment1);
 
         // Verify that partition 1 is still assigned to member2 and partition 0 is assigned to member1
         assertEquals(
-            mkMap(
-                mkEntry(topicId, mkMap(
-                    mkEntry(0, memberId1),
-                    mkEntry(1, memberId2)
-                ))
-            ),
-            shareGroup.invertedTargetAssignment()
+                mkMap(
+                        mkEntry(topicId, mkMap(
+                        mkEntry(0, memberId1),
+                        mkEntry(1, memberId2)
+                        ))
+                ),
+                shareGroup.invertedTargetAssignment()
         );
 
         // Test remove target assignment for member1
@@ -285,10 +285,10 @@ public class ShareGroupTest {
 
         // Verify that partition 0 is no longer assigned and partition 1 is still assigned to member2
         assertEquals(
-            mkMap(
-                mkEntry(topicId, mkMap(mkEntry(1, memberId2)))
-            ),
-            shareGroup.invertedTargetAssignment()
+                mkMap(
+                        mkEntry(topicId, mkMap(mkEntry(1, memberId2)))
+                ),
+                shareGroup.invertedTargetAssignment()
         );
     }
 
@@ -346,7 +346,7 @@ public class ShareGroupTest {
     public void testValidateOffsetCommit(short version) {
         ShareGroup shareGroup = createShareGroup("group-foo");
         assertThrows(GroupIdNotFoundException.class, () ->
-            shareGroup.validateOffsetCommit(null, null, -1, false, version));
+                shareGroup.validateOffsetCommit(null, null, -1, false, version));
     }
 
     @Test
@@ -376,7 +376,7 @@ public class ShareGroupTest {
     public void testValidateOffsetFetch() {
         ShareGroup shareGroup = createShareGroup("group-foo");
         assertThrows(GroupIdNotFoundException.class, () ->
-            shareGroup.validateOffsetFetch(null, -1, -1));
+                shareGroup.validateOffsetFetch(null, -1, -1));
     }
 
     @Test
@@ -457,13 +457,13 @@ public class ShareGroupTest {
             .setAssignmentEpoch(1)
             .setAssignorName("assignorName")
             .setMembers(Arrays.asList(
-                new ShareGroupDescribeResponseData.Member()
-                    .setMemberId("member1")
-                    .setSubscribedTopicNames(List.of("foo")),
-                new ShareGroupDescribeResponseData.Member().setMemberId("member2")
+                    new ShareGroupDescribeResponseData.Member()
+                        .setMemberId("member1")
+                        .setSubscribedTopicNames(List.of("foo")),
+                    new ShareGroupDescribeResponseData.Member().setMemberId("member2")
             ));
         ShareGroupDescribeResponseData.DescribedGroup actual = shareGroup.asDescribedGroup(1, "assignorName",
-            new KRaftCoordinatorMetadataImage(new MetadataImageBuilder().build()));
+                new KRaftCoordinatorMetadataImage(new MetadataImageBuilder().build()));
 
         assertEquals(expected, actual);
     }
@@ -488,8 +488,8 @@ public class ShareGroupTest {
     private ShareGroup createShareGroup(String groupId) {
         SnapshotRegistry snapshotRegistry = new SnapshotRegistry(new LogContext());
         return new ShareGroup(
-            snapshotRegistry,
-            groupId
+                snapshotRegistry,
+                groupId
         );
     }
 }

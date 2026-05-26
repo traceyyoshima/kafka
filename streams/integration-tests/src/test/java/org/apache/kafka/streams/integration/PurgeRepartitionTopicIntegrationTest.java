@@ -90,7 +90,6 @@ public class PurgeRepartitionTopicIntegrationTest {
         CLUSTER.stop();
     }
 
-
     private final Time time = new MockTime(1);
 
     private class RepartitionTopicCreatedWithExpectedConfigs implements TestCondition {
@@ -139,11 +138,11 @@ public class PurgeRepartitionTopicIntegrationTest {
 
             try {
                 final Collection<LogDirDescription> logDirInfo =
-                    adminClient.describeLogDirs(Collections.singleton(0)).descriptions().get(0).get().values();
+                        adminClient.describeLogDirs(Collections.singleton(0)).descriptions().get(0).get().values();
 
                 for (final LogDirDescription partitionInfo : logDirInfo) {
                     final ReplicaInfo replicaInfo =
-                        partitionInfo.replicaInfos().get(new TopicPartition(REPARTITION_TOPIC, 0));
+                            partitionInfo.replicaInfos().get(new TopicPartition(REPARTITION_TOPIC, 0));
                     if (replicaInfo != null && verifier.verify(replicaInfo.size())) {
                         return true;
                     }
@@ -214,16 +213,16 @@ public class PurgeRepartitionTopicIntegrationTest {
 
         // wait until we received more than 1 segment of data, so that we can confirm the purge succeeds in next verification
         TestUtils.waitForCondition(
-            new RepartitionTopicVerified(currentSize -> currentSize > PURGE_SEGMENT_BYTES),
-            60000,
-            "Repartition topic " + REPARTITION_TOPIC + " not received more than " + PURGE_SEGMENT_BYTES + "B of data after 60000 ms."
+                new RepartitionTopicVerified(currentSize -> currentSize > PURGE_SEGMENT_BYTES),
+                60000,
+                "Repartition topic " + REPARTITION_TOPIC + " not received more than " + PURGE_SEGMENT_BYTES + "B of data after 60000 ms."
         );
-        
+
         final long waitForPurgeMs = 60000;
         TestUtils.waitForCondition(
-            new RepartitionTopicVerified(currentSize -> currentSize <= PURGE_SEGMENT_BYTES),
-            waitForPurgeMs,
-            "Repartition topic " + REPARTITION_TOPIC + " not purged data after " + waitForPurgeMs + " ms."
+                new RepartitionTopicVerified(currentSize -> currentSize <= PURGE_SEGMENT_BYTES),
+                waitForPurgeMs,
+                "Repartition topic " + REPARTITION_TOPIC + " not purged data after " + waitForPurgeMs + " ms."
         );
     }
 }

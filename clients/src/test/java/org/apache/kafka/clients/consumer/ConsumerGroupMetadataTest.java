@@ -39,7 +39,7 @@ public class ConsumerGroupMetadataTest {
         String groupInstanceId = "instance";
 
         ConsumerGroupMetadata groupMetadata = new ConsumerGroupMetadata(groupId,
-            generationId, memberId, Optional.of(groupInstanceId));
+                generationId, memberId, Optional.of(groupInstanceId));
 
         assertEquals(groupId, groupMetadata.groupId());
         assertEquals(generationId, groupMetadata.generationId());
@@ -64,7 +64,7 @@ public class ConsumerGroupMetadataTest {
         int generationId = 2;
 
         assertThrows(NullPointerException.class, () -> new ConsumerGroupMetadata(
-            null, generationId, memberId, Optional.empty())
+                null, generationId, memberId, Optional.empty())
         );
     }
 
@@ -73,7 +73,7 @@ public class ConsumerGroupMetadataTest {
         int generationId = 2;
 
         assertThrows(NullPointerException.class, () -> new ConsumerGroupMetadata(
-            groupId, generationId, null, Optional.empty())
+                groupId, generationId, null, Optional.empty())
         );
     }
 
@@ -83,7 +83,7 @@ public class ConsumerGroupMetadataTest {
         int generationId = 2;
 
         assertThrows(NullPointerException.class, () -> new ConsumerGroupMetadata(
-            groupId, generationId, memberId, null)
+                groupId, generationId, memberId, null)
         );
     }
 }

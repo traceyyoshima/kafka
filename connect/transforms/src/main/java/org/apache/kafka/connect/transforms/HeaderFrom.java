@@ -52,11 +52,11 @@ public abstract class HeaderFrom<R extends ConnectRecord<R>> implements Transfor
 
     public static final String OVERVIEW_DOC =
             "Moves or copies fields in the key/value of a record into that record's headers. " +
-                    "Corresponding elements of <code>" + FIELDS_FIELD + "</code> and " +
-                    "<code>" + HEADERS_FIELD + "</code> together identify a field and the header it should be " +
-                    "moved or copied to. " +
-                    "Use the concrete transformation type designed for the record " +
-                    "key (<code>" + Key.class.getName() + "</code>) or value (<code>" + Value.class.getName() + "</code>).";
+            "Corresponding elements of <code>" + FIELDS_FIELD + "</code> and " +
+            "<code>" + HEADERS_FIELD + "</code> together identify a field and the header it should be " +
+            "moved or copied to. " +
+            "Use the concrete transformation type designed for the record " +
+            "key (<code>" + Key.class.getName() + "</code>) or value (<code>" + Value.class.getName() + "</code>).";
 
     public static final ConfigDef CONFIG_DEF = new ConfigDef()
             .define(FIELDS_FIELD, ConfigDef.Type.LIST,
@@ -70,11 +70,12 @@ public abstract class HeaderFrom<R extends ConnectRecord<R>> implements Transfor
             .define(OPERATION_FIELD, ConfigDef.Type.STRING, NO_DEFAULT_VALUE,
                     ConfigDef.ValidString.in(MOVE_OPERATION, COPY_OPERATION), ConfigDef.Importance.HIGH,
                     "Either <code>move</code> if the fields are to be moved to the headers (removed from the key/value), " +
-                            "or <code>copy</code> if the fields are to be copied to the headers (retained in the key/value).")
+                    "or <code>copy</code> if the fields are to be copied to the headers (retained in the key/value).")
             .define(REPLACE_NULL_WITH_DEFAULT_FIELD, ConfigDef.Type.BOOLEAN, true, ConfigDef.Importance.MEDIUM,
                     "Whether to replace fields that have a default value and that are null to the default value. When set to true, the default value is used, otherwise null is used.");
 
     private final Cache<Schema, Schema> moveSchemaCache = new SynchronizedCache<>(new LRUCache<>(16));
+
     enum Operation {
         MOVE(MOVE_OPERATION),
         COPY(COPY_OPERATION);
@@ -187,7 +188,9 @@ public abstract class HeaderFrom<R extends ConnectRecord<R>> implements Transfor
     }
 
     protected abstract Object operatingValue(R record);
+
     protected abstract Schema operatingSchema(R record);
+
     protected abstract R newRecord(R record, Schema updatedSchema, Object updatedValue, Iterable<Header> updatedHeaders);
 
     public static class Key<R extends ConnectRecord<R>> extends HeaderFrom<R> {

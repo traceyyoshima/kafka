@@ -282,7 +282,7 @@ public class Selector implements Selectable, AutoCloseable {
     }
 
     private void configureSocketChannel(SocketChannel socketChannel, int sendBufferSize, int receiveBufferSize)
-            throws IOException {
+        throws IOException {
         socketChannel.configureBlocking(false);
         Socket socket = socketChannel.socket();
         socket.setKeepAlive(true);
@@ -554,7 +554,7 @@ public class Selector implements Selectable, AutoCloseable {
                             channel.maybeAddWriteInterestAfterReauth();
                             if (channel.reauthenticationLatencyMs() == null)
                                 log.warn(
-                                    "Should never happen: re-authentication latency for a re-authenticated channel was null; continuing...");
+                                        "Should never happen: re-authentication latency for a re-authenticated channel was null; continuing...");
                             else
                                 sensors.reauthenticationLatency
                                     .record(channel.reauthenticationLatencyMs().doubleValue(), readyTimeMs);
@@ -620,7 +620,7 @@ public class Selector implements Selectable, AutoCloseable {
                     if (e instanceof DelayedResponseAuthenticationException)
                         exceptionMessage = e.getCause().getMessage();
                     log.info("Failed {}authentication with {} ({})", isReauthentication ? "re-" : "",
-                        desc, exceptionMessage);
+                            desc, exceptionMessage);
                 } else {
                     log.warn("Unexpected error from {}; closing connection", desc, e);
                 }
@@ -846,7 +846,7 @@ public class Selector implements Selectable, AutoCloseable {
         this.disconnected.clear();
 
         // Remove closed channels after all their buffered receives have been processed or if a send was requested
-        for (Iterator<Map.Entry<String, KafkaChannel>> it = closingChannels.entrySet().iterator(); it.hasNext(); ) {
+        for (Iterator<Map.Entry<String, KafkaChannel>> it = closingChannels.entrySet().iterator(); it.hasNext();) {
             KafkaChannel channel = it.next().getValue();
             boolean sendFailed = failedSends.remove(channel.id());
             boolean hasPending = false;
@@ -1066,7 +1066,6 @@ public class Selector implements Selectable, AutoCloseable {
         return new HashSet<>(nioSelector.keys());
     }
 
-
     class SelectorChannelMetadataRegistry implements ChannelMetadataRegistry {
         private CipherInformation cipherInformation;
         private ClientInformation clientInformation;
@@ -1240,22 +1239,22 @@ public class Selector implements Selectable, AutoCloseable {
             this.ioTime.add(createIOThreadRatioMeter(metrics, metricGrpName, metricTags, "io", "doing I/O"));
 
             this.connectionsByCipher = new IntGaugeSuite<>(log, "sslCiphers", metrics,
-                cipherInformation -> {
-                    Map<String, String> tags = new LinkedHashMap<>();
-                    tags.put("cipher", cipherInformation.cipher());
-                    tags.put("protocol", cipherInformation.protocol());
-                    tags.putAll(metricTags);
-                    return metrics.metricName("connections", metricGrpName, "The number of connections with this SSL cipher and protocol.", tags);
-                }, 100);
+                    cipherInformation -> {
+                        Map<String, String> tags = new LinkedHashMap<>();
+                        tags.put("cipher", cipherInformation.cipher());
+                        tags.put("protocol", cipherInformation.protocol());
+                        tags.putAll(metricTags);
+                        return metrics.metricName("connections", metricGrpName, "The number of connections with this SSL cipher and protocol.", tags);
+                    }, 100);
 
             this.connectionsByClient = new IntGaugeSuite<>(log, "clients", metrics,
-                clientInformation -> {
-                    Map<String, String> tags = new LinkedHashMap<>();
-                    tags.put("clientSoftwareName", clientInformation.softwareName());
-                    tags.put("clientSoftwareVersion", clientInformation.softwareVersion());
-                    tags.putAll(metricTags);
-                    return metrics.metricName("connections", metricGrpName, "The number of connections with this client and version.", tags);
-                }, 100);
+                    clientInformation -> {
+                        Map<String, String> tags = new LinkedHashMap<>();
+                        tags.put("clientSoftwareName", clientInformation.softwareName());
+                        tags.put("clientSoftwareVersion", clientInformation.softwareVersion());
+                        tags.putAll(metricTags);
+                        return metrics.metricName("connections", metricGrpName, "The number of connections with this client and version.", tags);
+                    }, 100);
 
             metricName = metrics.metricName("connection-count", metricGrpName, "The current number of active connections.", metricTags);
             topLevelMetricNames.add(metricName);
@@ -1265,9 +1264,9 @@ public class Selector implements Selectable, AutoCloseable {
         private Meter createMeter(Metrics metrics, String groupName, Map<String, String> metricTags,
                 SampledStat stat, String baseName, String descriptiveName) {
             MetricName rateMetricName = metrics.metricName(baseName + "-rate", groupName,
-                            String.format("The number of %s per second", descriptiveName), metricTags);
+                    String.format("The number of %s per second", descriptiveName), metricTags);
             MetricName totalMetricName = metrics.metricName(baseName + "-total", groupName,
-                            String.format("The total number of %s", descriptiveName), metricTags);
+                    String.format("The total number of %s", descriptiveName), metricTags);
             if (stat == null)
                 return new Meter(rateMetricName, totalMetricName);
             else
@@ -1282,9 +1281,9 @@ public class Selector implements Selectable, AutoCloseable {
         private Meter createIOThreadRatioMeter(Metrics metrics, String groupName,  Map<String, String> metricTags,
                                                String baseName, String action) {
             MetricName rateMetricName = metrics.metricName(baseName + "-ratio", groupName,
-                String.format("The fraction of time the I/O thread spent %s", action), metricTags);
+                    String.format("The fraction of time the I/O thread spent %s", action), metricTags);
             MetricName totalMetricName = metrics.metricName(baseName + "-time-ns-total", groupName,
-                String.format("The total time the I/O thread spent %s", action), metricTags);
+                    String.format("The total time the I/O thread spent %s", action), metricTags);
             return new Meter(TimeUnit.NANOSECONDS, rateMetricName, totalMetricName);
         }
 

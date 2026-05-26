@@ -79,9 +79,9 @@ public class MemberSubscriptionAndAssignmentImpl implements MemberSubscription, 
         if (o == null || getClass() != o.getClass()) return false;
         MemberSubscriptionAndAssignmentImpl that = (MemberSubscriptionAndAssignmentImpl) o;
         return rackId.equals(that.rackId) &&
-            instanceId.equals(that.instanceId) &&
-            subscribedTopicIds.equals(that.subscribedTopicIds) &&
-            memberAssignment.equals(that.memberAssignment);
+                instanceId.equals(that.instanceId) &&
+                subscribedTopicIds.equals(that.subscribedTopicIds) &&
+                memberAssignment.equals(that.memberAssignment);
     }
 
     @Override
@@ -96,9 +96,9 @@ public class MemberSubscriptionAndAssignmentImpl implements MemberSubscription, 
     @Override
     public String toString() {
         return "MemberSubscriptionAndAssignmentImpl(rackId=" + rackId.orElse("N/A") +
-            ", instanceId=" + instanceId +
-            ", subscribedTopicIds=" + subscribedTopicIds +
-            ", memberAssignment=" + memberAssignment +
-            ')';
+                ", instanceId=" + instanceId +
+                ", subscribedTopicIds=" + subscribedTopicIds +
+                ", memberAssignment=" + memberAssignment +
+                ')';
     }
 }

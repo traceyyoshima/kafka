@@ -110,7 +110,7 @@ public interface RemoteLogMetadataManager extends Configurable, Closeable {
      * @return a CompletableFuture which will complete once this operation is finished.
      */
     CompletableFuture<Void> updateRemoteLogSegmentMetadata(RemoteLogSegmentMetadataUpdate remoteLogSegmentMetadataUpdate)
-            throws RemoteStorageException;
+        throws RemoteStorageException;
 
     /**
      * Returns {@link RemoteLogSegmentMetadata} if it exists for the given topic partition containing the offset with
@@ -125,7 +125,7 @@ public interface RemoteLogMetadataManager extends Configurable, Closeable {
     Optional<RemoteLogSegmentMetadata> remoteLogSegmentMetadata(TopicIdPartition topicIdPartition,
                                                                 int epochForOffset,
                                                                 long offset)
-            throws RemoteStorageException;
+        throws RemoteStorageException;
 
     /**
      * Returns the highest log offset of topic partition for the given leader epoch in remote storage. This is used by
@@ -160,7 +160,7 @@ public interface RemoteLogMetadataManager extends Configurable, Closeable {
      * @return a CompletableFuture which will complete once this operation is finished.
      */
     CompletableFuture<Void> putRemotePartitionDeleteMetadata(RemotePartitionDeleteMetadata remotePartitionDeleteMetadata)
-            throws RemoteStorageException;
+        throws RemoteStorageException;
 
     /**
      * Returns all the remote log segment metadata of the given topicIdPartition.
@@ -171,7 +171,7 @@ public interface RemoteLogMetadataManager extends Configurable, Closeable {
      * @return Iterator of all the remote log segment metadata for the given topic partition.
      */
     Iterator<RemoteLogSegmentMetadata> listRemoteLogSegments(TopicIdPartition topicIdPartition)
-            throws RemoteStorageException;
+        throws RemoteStorageException;
 
     /**
      * Returns iterator of remote log segment metadata, sorted by {@link RemoteLogSegmentMetadata#startOffset()} in

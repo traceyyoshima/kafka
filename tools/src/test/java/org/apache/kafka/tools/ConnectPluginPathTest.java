@@ -682,7 +682,6 @@ public class ConnectPluginPathTest {
                 .collect(Collectors.toSet());
     }
 
-
     /**
      * Parse the main table of the list command.
      * <p>Map is keyed on the plugin name, with a list of rows which referred to that name if there are multiple.

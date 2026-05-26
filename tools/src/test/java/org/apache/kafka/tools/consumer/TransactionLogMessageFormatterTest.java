@@ -46,15 +46,15 @@ public class TransactionLogMessageFormatterTest extends CoordinatorRecordMessage
     @Override
     protected Stream<Arguments> parameters() {
         return Stream.of(
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 10, TXN_LOG_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 10, TXN_LOG_VALUE).array(),
-                ""
-            ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, TXN_LOG_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 1, TXN_LOG_VALUE).array(),
-                """
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 10, TXN_LOG_KEY).array(),
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 10, TXN_LOG_VALUE).array(),
+                        ""
+                ),
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 0, TXN_LOG_KEY).array(),
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 1, TXN_LOG_VALUE).array(),
+                        """
                     {"key":{"type":0,"data":{"transactionalId":"TXNID"}},
                      "value":{"version":1,
                               "data":{"producerId":100,
@@ -65,11 +65,11 @@ public class TransactionLogMessageFormatterTest extends CoordinatorRecordMessage
                                       "transactionLastUpdateTimestampMs":1000,
                                       "transactionStartTimestampMs":750}}}
                 """
-            ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, TXN_LOG_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 1, TXN_LOG_VALUE).array(),
-                """
+                ),
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 0, TXN_LOG_KEY).array(),
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 1, TXN_LOG_VALUE).array(),
+                        """
                     {"key":{"type":0,"data":{"transactionalId":"TXNID"}},
                      "value":{"version":1,
                               "data":{"producerId":100,
@@ -80,30 +80,30 @@ public class TransactionLogMessageFormatterTest extends CoordinatorRecordMessage
                                       "transactionLastUpdateTimestampMs":1000,
                                       "transactionStartTimestampMs":750}}}
                 """
-            ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 1, TXN_LOG_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 1, TXN_LOG_VALUE).array(),
-                ""
-            ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, TXN_LOG_KEY).array(),
-                null,
-                """
+                ),
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 1, TXN_LOG_KEY).array(),
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 1, TXN_LOG_VALUE).array(),
+                        ""
+                ),
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 0, TXN_LOG_KEY).array(),
+                        null,
+                        """
                     {"key":{"type":0,"data":{"transactionalId":"TXNID"}},"value":null}
                 """
-            ),
-            Arguments.of(
-                null,
-                MessageUtil.toVersionPrefixedByteBuffer((short) 1, TXN_LOG_VALUE).array(),
-                ""
-            ),
-            Arguments.of(null, null, ""),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer(Short.MAX_VALUE, TXN_LOG_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 1, TXN_LOG_VALUE).array(),
-                ""
-            )
+                ),
+                Arguments.of(
+                        null,
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 1, TXN_LOG_VALUE).array(),
+                        ""
+                ),
+                Arguments.of(null, null, ""),
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer(Short.MAX_VALUE, TXN_LOG_KEY).array(),
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 1, TXN_LOG_VALUE).array(),
+                        ""
+                )
         );
     }
 }

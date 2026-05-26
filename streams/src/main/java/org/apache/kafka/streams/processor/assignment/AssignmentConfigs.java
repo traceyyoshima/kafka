@@ -46,14 +46,14 @@ public class AssignmentConfigs {
         final Integer rackAwareNonOverlapCost = configs.getInt(StreamsConfig.RACK_AWARE_ASSIGNMENT_NON_OVERLAP_COST_CONFIG);
 
         return new AssignmentConfigs(
-            acceptableRecoveryLag,
-            maxWarmupReplicas,
-            numStandbyReplicas,
-            probingRebalanceIntervalMs,
-            rackAwareAssignmentTags,
-            rackAwareTrafficCost != null ? OptionalInt.of(rackAwareTrafficCost) : OptionalInt.empty(),
-            rackAwareNonOverlapCost != null ? OptionalInt.of(rackAwareNonOverlapCost) : OptionalInt.empty(),
-            rackAwareAssignmentStrategy
+                acceptableRecoveryLag,
+                maxWarmupReplicas,
+                numStandbyReplicas,
+                probingRebalanceIntervalMs,
+                rackAwareAssignmentTags,
+                rackAwareTrafficCost != null ? OptionalInt.of(rackAwareTrafficCost) : OptionalInt.empty(),
+                rackAwareNonOverlapCost != null ? OptionalInt.of(rackAwareNonOverlapCost) : OptionalInt.empty(),
+                rackAwareAssignmentStrategy
         );
     }
 
@@ -71,13 +71,13 @@ public class AssignmentConfigs {
         this.probingRebalanceIntervalMs = validated(StreamsConfig.PROBING_REBALANCE_INTERVAL_MS_CONFIG, probingRebalanceIntervalMs);
         this.rackAwareAssignmentTags = validated(StreamsConfig.RACK_AWARE_ASSIGNMENT_TAGS_CONFIG, rackAwareAssignmentTags);
         this.rackAwareTrafficCost = validated(StreamsConfig.RACK_AWARE_ASSIGNMENT_TRAFFIC_COST_CONFIG,
-            defaultRackAwareTrafficCost(rackAwareTrafficCost)
+                defaultRackAwareTrafficCost(rackAwareTrafficCost)
         );
         this.rackAwareNonOverlapCost = validated(StreamsConfig.RACK_AWARE_ASSIGNMENT_NON_OVERLAP_COST_CONFIG,
-            defaultRackAwareNonOverlapCost(rackAwareNonOverlapCost)
+                defaultRackAwareNonOverlapCost(rackAwareNonOverlapCost)
         );
         this.rackAwareAssignmentStrategy = validated(StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_CONFIG,
-            rackAwareAssignmentStrategy
+                rackAwareAssignmentStrategy
         );
     }
 
@@ -90,7 +90,7 @@ public class AssignmentConfigs {
                              final int rackAwareNonOverlapCost,
                              final String rackAwareAssignmentStrategy) {
         this(acceptableRecoveryLag, maxWarmupReplicas, numStandbyReplicas, probingRebalanceIntervalMs, rackAwareAssignmentTags,
-            OptionalInt.of(rackAwareTrafficCost), OptionalInt.of(rackAwareNonOverlapCost), rackAwareAssignmentStrategy);
+                OptionalInt.of(rackAwareTrafficCost), OptionalInt.of(rackAwareNonOverlapCost), rackAwareAssignmentStrategy);
     }
 
     public AssignmentConfigs(final Long acceptableRecoveryLag,
@@ -177,15 +177,15 @@ public class AssignmentConfigs {
     @Override
     public String toString() {
         return "AssignmentConfigs{" +
-               "\n  acceptableRecoveryLag=" + acceptableRecoveryLag +
-               "\n  maxWarmupReplicas=" + maxWarmupReplicas +
-               "\n  numStandbyReplicas=" + numStandbyReplicas +
-               "\n  probingRebalanceIntervalMs=" + probingRebalanceIntervalMs +
-               "\n  rackAwareAssignmentTags=" + rackAwareAssignmentTags +
-               "\n  rackAwareTrafficCost=" + rackAwareTrafficCost +
-               "\n  rackAwareNonOverlapCost=" + rackAwareNonOverlapCost +
-               "\n  rackAwareAssignmentStrategy=" + rackAwareAssignmentStrategy +
-               "\n}";
+                "\n  acceptableRecoveryLag=" + acceptableRecoveryLag +
+                "\n  maxWarmupReplicas=" + maxWarmupReplicas +
+                "\n  numStandbyReplicas=" + numStandbyReplicas +
+                "\n  probingRebalanceIntervalMs=" + probingRebalanceIntervalMs +
+                "\n  rackAwareAssignmentTags=" + rackAwareAssignmentTags +
+                "\n  rackAwareTrafficCost=" + rackAwareTrafficCost +
+                "\n  rackAwareNonOverlapCost=" + rackAwareNonOverlapCost +
+                "\n  rackAwareAssignmentStrategy=" + rackAwareAssignmentStrategy +
+                "\n}";
     }
 
     private static OptionalInt defaultRackAwareTrafficCost(final OptionalInt rackAwareTrafficCost) {

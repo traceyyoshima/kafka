@@ -48,22 +48,22 @@ import static org.apache.kafka.coordinator.group.GroupCoordinatorConfig.GROUP_MI
 import static org.apache.kafka.coordinator.group.GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG;
 
 @ClusterTestDefaults(
-    types = {Type.KRAFT},
-    brokers = ClientsTestUtils.BaseConsumerTestcase.BROKER_COUNT,
-    serverProperties = {
-        @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG, value = "100"),
-        @ClusterConfigProperty(key = SASL_ENABLED_MECHANISMS_CONFIG, value = MECHANISMS),
-        @ClusterConfigProperty(key = SASL_MECHANISM_INTER_BROKER_PROTOCOL_CONFIG, value = MECHANISMS),
-    }
+        types = {Type.KRAFT},
+        brokers = ClientsTestUtils.BaseConsumerTestcase.BROKER_COUNT,
+        serverProperties = {
+            @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+            @ClusterConfigProperty(key = GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG, value = "100"),
+            @ClusterConfigProperty(key = SASL_ENABLED_MECHANISMS_CONFIG, value = MECHANISMS),
+            @ClusterConfigProperty(key = SASL_MECHANISM_INTER_BROKER_PROTOCOL_CONFIG, value = MECHANISMS),
+        }
 )
 public class SaslPlainPlaintextConsumerTest {
 
     private final ClusterInstance cluster;
     public static final String MECHANISMS = "PLAIN";
     public static final String SASL_JAAS = "org.apache.kafka.common.security.plain.PlainLoginModule required "
-        + "username=\"" + KAFKA_PLAIN_ADMIN + "\" "
-        + "password=\"" + KAFKA_PLAIN_ADMIN_PASSWORD + "\";";
+            + "username=\"" + KAFKA_PLAIN_ADMIN + "\" "
+            + "password=\"" + KAFKA_PLAIN_ADMIN_PASSWORD + "\";";
 
     public SaslPlainPlaintextConsumerTest(ClusterInstance cluster) {
         this.cluster = cluster;
@@ -75,81 +75,81 @@ public class SaslPlainPlaintextConsumerTest {
     }
 
     @ClusterTest(
-        brokerSecurityProtocol = SecurityProtocol.SASL_PLAINTEXT
+            brokerSecurityProtocol = SecurityProtocol.SASL_PLAINTEXT
     )
     public void testClassicConsumerSimpleConsumption() throws InterruptedException {
         testSimpleConsumption(cluster, Map.of(
-            SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_PLAINTEXT.name,
-            SASL_MECHANISM, MECHANISMS,
-            SASL_JAAS_CONFIG, SASL_JAAS,
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT))
+                SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_PLAINTEXT.name,
+                SASL_MECHANISM, MECHANISMS,
+                SASL_JAAS_CONFIG, SASL_JAAS,
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT))
         );
     }
 
     @ClusterTest(
-        brokerSecurityProtocol = SecurityProtocol.SASL_PLAINTEXT
+            brokerSecurityProtocol = SecurityProtocol.SASL_PLAINTEXT
     )
     public void testAsyncConsumerSimpleConsumption() throws InterruptedException {
         testSimpleConsumption(cluster, Map.of(
-            SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_PLAINTEXT.name,
-            SASL_MECHANISM, MECHANISMS,
-            SASL_JAAS_CONFIG, SASL_JAAS,
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT))
+                SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_PLAINTEXT.name,
+                SASL_MECHANISM, MECHANISMS,
+                SASL_JAAS_CONFIG, SASL_JAAS,
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT))
         );
     }
 
     @ClusterTest(
-        brokerSecurityProtocol = SecurityProtocol.SASL_PLAINTEXT
+            brokerSecurityProtocol = SecurityProtocol.SASL_PLAINTEXT
     )
     public void testClassicConsumerClusterResourceListener() throws InterruptedException {
         testClusterResourceListener(cluster, Map.of(
-            SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_PLAINTEXT.name,
-            SASL_MECHANISM, MECHANISMS,
-            SASL_JAAS_CONFIG, SASL_JAAS,
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT))
+                SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_PLAINTEXT.name,
+                SASL_MECHANISM, MECHANISMS,
+                SASL_JAAS_CONFIG, SASL_JAAS,
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT))
         );
     }
 
     @ClusterTest(
-        brokerSecurityProtocol = SecurityProtocol.SASL_PLAINTEXT
+            brokerSecurityProtocol = SecurityProtocol.SASL_PLAINTEXT
     )
     public void testAsyncConsumerClusterResourceListener() throws InterruptedException {
         testClusterResourceListener(cluster, Map.of(
-            SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_PLAINTEXT.name,
-            SASL_MECHANISM, MECHANISMS,
-            SASL_JAAS_CONFIG, SASL_JAAS,
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT))
+                SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_PLAINTEXT.name,
+                SASL_MECHANISM, MECHANISMS,
+                SASL_JAAS_CONFIG, SASL_JAAS,
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT))
         );
     }
 
     @ClusterTest(
-        brokerSecurityProtocol = SecurityProtocol.SASL_PLAINTEXT
+            brokerSecurityProtocol = SecurityProtocol.SASL_PLAINTEXT
     )
     public void testClassicConsumerCoordinatorFailover() throws InterruptedException {
         Map<String, Object> config = Map.of(
-            SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_PLAINTEXT.name,
-            SASL_MECHANISM, MECHANISMS,
-            SASL_JAAS_CONFIG, SASL_JAAS,
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
-            SESSION_TIMEOUT_MS_CONFIG, 5001,
-            HEARTBEAT_INTERVAL_MS_CONFIG, 1000,
-            // Use higher poll timeout to avoid consumer leaving the group due to timeout
-            MAX_POLL_INTERVAL_MS_CONFIG, 15000
+                SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_PLAINTEXT.name,
+                SASL_MECHANISM, MECHANISMS,
+                SASL_JAAS_CONFIG, SASL_JAAS,
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
+                SESSION_TIMEOUT_MS_CONFIG, 5001,
+                HEARTBEAT_INTERVAL_MS_CONFIG, 1000,
+                // Use higher poll timeout to avoid consumer leaving the group due to timeout
+                MAX_POLL_INTERVAL_MS_CONFIG, 15000
         );
         testCoordinatorFailover(cluster, config);
     }
 
     @ClusterTest(
-        brokerSecurityProtocol = SecurityProtocol.SASL_PLAINTEXT
+            brokerSecurityProtocol = SecurityProtocol.SASL_PLAINTEXT
     )
     public void testAsyncConsumeCoordinatorFailover() throws InterruptedException {
         Map<String, Object> config = Map.of(
-            SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_PLAINTEXT.name,
-            SASL_MECHANISM, MECHANISMS,
-            SASL_JAAS_CONFIG, SASL_JAAS,
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
-            // Use higher poll timeout to avoid consumer leaving the group due to timeout
-            MAX_POLL_INTERVAL_MS_CONFIG, 15000
+                SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_PLAINTEXT.name,
+                SASL_MECHANISM, MECHANISMS,
+                SASL_JAAS_CONFIG, SASL_JAAS,
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
+                // Use higher poll timeout to avoid consumer leaving the group due to timeout
+                MAX_POLL_INTERVAL_MS_CONFIG, 15000
         );
         testCoordinatorFailover(cluster, config);
     }

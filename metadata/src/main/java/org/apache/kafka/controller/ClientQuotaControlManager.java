@@ -107,7 +107,7 @@ public class ClientQuotaControlManager {
                 if (alterations.containsKey(op.key())) {
                     outputResults.put(quotaAlteration.entity(), ApiError.fromThrowable(
                             new InvalidRequestException("Duplicate quota key " + op.key() +
-                                " not updating quota for this entity " + quotaAlteration.entity())));
+                                    " not updating quota for this entity " + quotaAlteration.entity())));
                 } else {
                     alterations.put(op.key(), op.value());
                 }
@@ -192,7 +192,7 @@ public class ClientQuotaControlManager {
                             .setEntity(recordEntitySupplier.get())
                             .setKey(key)
                             .setRemove(true),
-                        (short) 0));
+                            (short) 0));
                 }
             } else {
                 ApiError validationError = validateQuotaKeyValue(configKeys, key, newValue);
@@ -207,7 +207,7 @@ public class ClientQuotaControlManager {
                                 .setEntity(recordEntitySupplier.get())
                                 .setKey(key)
                                 .setValue(newValue),
-                            (short) 0));
+                                (short) 0));
                     }
                 }
             }
@@ -228,7 +228,7 @@ public class ClientQuotaControlManager {
         if (hasIp) {
             if (hasUser || hasClientId) {
                 return new ApiError(Errors.INVALID_REQUEST, "Invalid quota entity combination, IP entity should" +
-                    "not be combined with User or ClientId");
+                        "not be combined with User or ClientId");
             } else {
                 if (isValidIpEntity(entity.get(ClientQuotaEntity.IP))) {
                     configKeys = QuotaConfig.ipConfigs().configKeys();
@@ -266,21 +266,21 @@ public class ClientQuotaControlManager {
             case SHORT -> {
                 if (value > Short.MAX_VALUE) {
                     yield new ApiError(Errors.INVALID_REQUEST,
-                        "Proposed value for " + key + " is too large for a SHORT.");
+                            "Proposed value for " + key + " is too large for a SHORT.");
                 }
                 yield getErrorForIntegralQuotaValue(value, key);
             }
             case INT -> {
                 if (value > Integer.MAX_VALUE) {
                     yield new ApiError(Errors.INVALID_REQUEST,
-                        "Proposed value for " + key + " is too large for an INT.");
+                            "Proposed value for " + key + " is too large for an INT.");
                 }
                 yield getErrorForIntegralQuotaValue(value, key);
             }
             case LONG -> {
                 if (value > Long.MAX_VALUE) {
                     yield new ApiError(Errors.INVALID_REQUEST,
-                        "Proposed value for " + key + " is too large for a LONG.");
+                            "Proposed value for " + key + " is too large for a LONG.");
                 }
                 yield getErrorForIntegralQuotaValue(value, key);
             }

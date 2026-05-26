@@ -51,7 +51,7 @@ public final class ConfigurationsDelta {
             ConfigResource resource = entry.getKey();
             ConfigurationImage configImage = entry.getValue();
             ConfigurationDelta configDelta = changes.computeIfAbsent(resource,
-                __ -> new ConfigurationDelta(configImage, supportedConfigChecker));
+                    __ -> new ConfigurationDelta(configImage, supportedConfigChecker));
             configDelta.finishSnapshot();
         }
     }
@@ -62,21 +62,21 @@ public final class ConfigurationsDelta {
 
     public void replay(ConfigRecord record) {
         ConfigResource resource =
-            new ConfigResource(Type.forId(record.resourceType()), record.resourceName());
+                new ConfigResource(Type.forId(record.resourceType()), record.resourceName());
         ConfigurationImage configImage = image.resourceData().getOrDefault(resource,
                 new ConfigurationImage(resource, Map.of()));
         ConfigurationDelta delta = changes.computeIfAbsent(resource,
-            __ -> new ConfigurationDelta(configImage, supportedConfigChecker));
+                __ -> new ConfigurationDelta(configImage, supportedConfigChecker));
         delta.replay(record);
     }
 
     public void replay(RemoveTopicRecord record, String topicName) {
         ConfigResource resource =
-            new ConfigResource(Type.TOPIC, topicName);
+                new ConfigResource(Type.TOPIC, topicName);
         if (image.resourceData().containsKey(resource)) {
             ConfigurationImage configImage = image.resourceData().get(resource);
             ConfigurationDelta delta = changes.computeIfAbsent(resource,
-                __ -> new ConfigurationDelta(configImage, supportedConfigChecker));
+                    __ -> new ConfigurationDelta(configImage, supportedConfigChecker));
             delta.deleteAll();
         }
     }
@@ -109,7 +109,7 @@ public final class ConfigurationsDelta {
     @Override
     public String toString() {
         return "ConfigurationsDelta(" +
-            "changes=" + changes +
-            ')';
+                "changes=" + changes +
+                ')';
     }
 }

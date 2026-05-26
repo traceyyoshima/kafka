@@ -102,9 +102,9 @@ public abstract class AbstractResponse implements AbstractRequestResponse {
 
         if (requestHeader.correlationId() != responseHeader.correlationId()) {
             throw new CorrelationIdMismatchException("Correlation id for response ("
-                + responseHeader.correlationId() + ") does not match request ("
-                + requestHeader.correlationId() + "), request header: " + requestHeader,
-                requestHeader.correlationId(), responseHeader.correlationId());
+                    + responseHeader.correlationId() + ") does not match request ("
+                    + requestHeader.correlationId() + "), request header: " + requestHeader,
+                    requestHeader.correlationId(), responseHeader.correlationId());
         }
 
         return AbstractResponse.parseResponse(apiKey, new ByteBufferAccessor(buffer), apiVersion);

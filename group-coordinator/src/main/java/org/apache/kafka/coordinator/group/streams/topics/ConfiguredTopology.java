@@ -67,10 +67,10 @@ public record ConfiguredTopology(int topologyEpoch,
         return new StreamsGroupDescribeResponseData.Topology()
             .setEpoch(topologyEpoch)
             .setSubtopologies(
-                subtopologies.map(stringConfiguredSubtopologyMap -> stringConfiguredSubtopologyMap.entrySet().stream().map(
-                    entry -> entry.getValue().asStreamsGroupDescribeSubtopology(entry.getKey())
-                ).toList()).orElse(List.of())
-            );
+                    subtopologies.map(stringConfiguredSubtopologyMap -> stringConfiguredSubtopologyMap.entrySet().stream().map(
+                        entry -> entry.getValue().asStreamsGroupDescribeSubtopology(entry.getKey())
+                    ).toList()).orElse(List.of())
+        );
     }
 
 }

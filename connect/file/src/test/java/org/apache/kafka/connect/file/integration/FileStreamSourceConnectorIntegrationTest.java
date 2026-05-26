@@ -70,7 +70,7 @@ public class FileStreamSourceConnectorIntegrationTest {
         Map<String, String> connectorConfigs = baseConnectorConfigs(sourceFile.getAbsolutePath());
         connect.configureConnector(CONNECTOR_NAME, connectorConfigs);
         connect.assertions().assertConnectorAndExactlyNumTasksAreRunning(CONNECTOR_NAME, 1,
-            "Connector and task did not start in time");
+                "Connector and task did not start in time");
 
         int i = 0;
         for (ConsumerRecord<byte[], byte[]> record : connect.kafka().consume(NUM_LINES, TIMEOUT_MS, TOPIC)) {
@@ -83,7 +83,7 @@ public class FileStreamSourceConnectorIntegrationTest {
         Map<String, String> connectorConfigs = baseConnectorConfigs(sourceFile.getAbsolutePath());
         connect.configureConnector(CONNECTOR_NAME, connectorConfigs);
         connect.assertions().assertConnectorAndExactlyNumTasksAreRunning(CONNECTOR_NAME, 1,
-            "Connector and task did not start in time");
+                "Connector and task did not start in time");
 
         // Wait for the initially written records to be sourced by the connector and produced to the configured Kafka topic
         connect.kafka().consume(NUM_LINES, TIMEOUT_MS, TOPIC);
@@ -100,7 +100,7 @@ public class FileStreamSourceConnectorIntegrationTest {
 
         connect.resumeConnector(CONNECTOR_NAME);
         connect.assertions().assertConnectorAndExactlyNumTasksAreRunning(CONNECTOR_NAME, 1,
-            "Connector and task did not resume in time");
+                "Connector and task did not resume in time");
 
         int i = 0;
         for (ConsumerRecord<byte[], byte[]> record : connect.kafka().consume(2 * NUM_LINES, TIMEOUT_MS, TOPIC)) {
@@ -118,7 +118,7 @@ public class FileStreamSourceConnectorIntegrationTest {
         Map<String, String> connectorConfigs = baseConnectorConfigs(sourceFile.getAbsolutePath());
         connect.configureConnector(CONNECTOR_NAME, connectorConfigs);
         connect.assertions().assertConnectorAndExactlyNumTasksAreRunning(CONNECTOR_NAME, 1,
-            "Connector and task did not start in time");
+                "Connector and task did not start in time");
 
         // Wait for the initially written records to be sourced by the connector and produced to the configured Kafka topic
         connect.kafka().consume(NUM_LINES, TIMEOUT_MS, TOPIC);
@@ -128,14 +128,14 @@ public class FileStreamSourceConnectorIntegrationTest {
 
         // Alter the offsets to make the connector re-process the last line in the file
         connect.alterSourceConnectorOffset(
-            CONNECTOR_NAME,
-            Map.of(FILENAME_FIELD, sourceFile.getAbsolutePath()),
-            Map.of(POSITION_FIELD, 28L)
+                CONNECTOR_NAME,
+                Map.of(FILENAME_FIELD, sourceFile.getAbsolutePath()),
+                Map.of(POSITION_FIELD, 28L)
         );
 
         connect.resumeConnector(CONNECTOR_NAME);
         connect.assertions().assertConnectorAndExactlyNumTasksAreRunning(CONNECTOR_NAME, 1,
-            "Connector and task did not resume in time");
+                "Connector and task did not resume in time");
 
         Iterator<ConsumerRecord<byte[], byte[]>> recordIterator = connect.kafka().consume(NUM_LINES + 1, TIMEOUT_MS, TOPIC).iterator();
 
@@ -152,7 +152,7 @@ public class FileStreamSourceConnectorIntegrationTest {
         Map<String, String> connectorConfigs = baseConnectorConfigs(sourceFile.getAbsolutePath());
         connect.configureConnector(CONNECTOR_NAME, connectorConfigs);
         connect.assertions().assertConnectorAndExactlyNumTasksAreRunning(CONNECTOR_NAME, 1,
-            "Connector and task did not start in time");
+                "Connector and task did not start in time");
 
         // Wait for the initially written records to be sourced by the connector and produced to the configured Kafka topic
         connect.kafka().consume(NUM_LINES, TIMEOUT_MS, TOPIC);
@@ -165,7 +165,7 @@ public class FileStreamSourceConnectorIntegrationTest {
 
         connect.resumeConnector(CONNECTOR_NAME);
         connect.assertions().assertConnectorAndExactlyNumTasksAreRunning(CONNECTOR_NAME, 1,
-            "Connector and task did not resume in time");
+                "Connector and task did not resume in time");
 
         Iterator<ConsumerRecord<byte[], byte[]>> recordIterator = connect.kafka().consume(2 * NUM_LINES, TIMEOUT_MS, TOPIC).iterator();
 

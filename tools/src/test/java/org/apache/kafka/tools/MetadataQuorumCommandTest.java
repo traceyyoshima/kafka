@@ -50,7 +50,7 @@ class MetadataQuorumCommandTest {
     public void testDescribeQuorumReplicationSuccessful(ClusterInstance cluster) throws InterruptedException {
         cluster.waitForReadyBrokers();
         String describeOutput = ToolsTestUtils.captureStandardOut(() ->
-            MetadataQuorumCommand.mainNoExit("--bootstrap-server", cluster.bootstrapServers(), "describe", "--replication")
+                MetadataQuorumCommand.mainNoExit("--bootstrap-server", cluster.bootstrapServers(), "describe", "--replication")
         );
 
         List<String> outputs = Arrays.stream(describeOutput.split("\n")).toList();
@@ -59,9 +59,9 @@ class MetadataQuorumCommandTest {
 
         assertTrue(header.matches("NodeId\\s+DirectoryId\\s+LogEndOffset\\s+Lag\\s+LastFetchTimestamp\\s+LastCaughtUpTimestamp\\s+Status\\s+"));
 
-        if (cluster.type() == Type.CO_KRAFT) 
+        if (cluster.type() == Type.CO_KRAFT)
             assertEquals(Math.max(cluster.config().numControllers(), cluster.config().numBrokers()), data.size());
-        else 
+        else
             assertEquals(cluster.config().numBrokers() + cluster.config().numControllers(), data.size());
 
         Pattern leaderPattern = Pattern.compile("\\d+\\s+\\S+\\s+\\d+\\s+\\d+\\s+-?\\d+\\s+-?\\d+\\s+Leader\\s*");
@@ -74,7 +74,7 @@ class MetadataQuorumCommandTest {
         Pattern observerPattern = Pattern.compile("\\d+\\s+\\S+\\s+\\d+\\s+\\d+\\s+-?\\d+\\s+-?\\d+\\s+Observer\\s*");
         if (cluster.type() == Type.CO_KRAFT)
             assertEquals(Math.max(0, cluster.config().numBrokers() - cluster.config().numControllers()),
-                data.stream().filter(o -> observerPattern.matcher(o).find()).count());
+                    data.stream().filter(o -> observerPattern.matcher(o).find()).count());
         else
             assertEquals(cluster.config().numBrokers(), data.stream().filter(o -> observerPattern.matcher(o).find()).count());
     }
@@ -98,12 +98,12 @@ class MetadataQuorumCommandTest {
         cluster.waitForReadyBrokers();
 
         String describeOutput = ToolsTestUtils.captureStandardOut(
-            () -> MetadataQuorumCommand.mainNoExit(
-                usingBootstrapController ? "--bootstrap-controller" : "--bootstrap-server",
-                usingBootstrapController ? cluster.bootstrapControllers() : cluster.bootstrapServers(),
-                "describe",
-                "--status"
-            )
+                () -> MetadataQuorumCommand.mainNoExit(
+                    usingBootstrapController ? "--bootstrap-controller" : "--bootstrap-server",
+                    usingBootstrapController ? cluster.bootstrapControllers() : cluster.bootstrapServers(),
+                    "describe",
+                    "--status"
+                )
         );
         String[] outputs = describeOutput.split("\n");
 
@@ -115,9 +115,9 @@ class MetadataQuorumCommandTest {
         assertTrue(outputs[4].matches("MaxFollowerLag:\\s+\\d+"), describeOutput);
         assertTrue(outputs[5].matches("MaxFollowerLagTimeMs:\\s+-?\\d+"), describeOutput);
         assertTrue(
-            outputs[6].matches("CurrentVoters:\\s+\\[\\{\"id\":\\s+\\d+,\\s+" +
-                "\"endpoints\":\\s+\\[\"\\S+://\\[?\\S+]?:\\d+\",?.*]"),
-            describeOutput
+                outputs[6].matches("CurrentVoters:\\s+\\[\\{\"id\":\\s+\\d+,\\s+" +
+                        "\"endpoints\":\\s+\\[\"\\S+://\\[?\\S+]?:\\d+\",?.*]"),
+                describeOutput
         );
 
         // There are no observers if we have fewer brokers than controllers
@@ -125,9 +125,9 @@ class MetadataQuorumCommandTest {
             assertTrue(outputs[7].matches("CurrentObservers:\\s+\\[]"), describeOutput);
         } else {
             assertTrue(
-                outputs[7].matches("CurrentObservers:\\s+\\[\\{\"id\":\\s+\\d+,\\s+\"directoryId\":\\s+\\S+}" +
-                    "(,\\s+\\{\"id\":\\s+\\d+,\\s+\"directoryId\":\\s+\\S+})*]"),
-                describeOutput
+                    outputs[7].matches("CurrentObservers:\\s+\\[\\{\"id\":\\s+\\d+,\\s+\"directoryId\":\\s+\\S+}" +
+                            "(,\\s+\\{\"id\":\\s+\\d+,\\s+\"directoryId\":\\s+\\S+})*]"),
+                    describeOutput
             );
         }
     }
@@ -140,19 +140,19 @@ class MetadataQuorumCommandTest {
 
     public void testOnlyOneBrokerAndOneController(ClusterInstance cluster, boolean usingBootstrapController) {
         String statusOutput = ToolsTestUtils.captureStandardOut(() ->
-            MetadataQuorumCommand.mainNoExit(
-                    usingBootstrapController ? "--bootstrap-controller" : "--bootstrap-server",
-                    usingBootstrapController ? cluster.bootstrapControllers() : cluster.bootstrapServers(),
-                    "describe", "--status")
+                MetadataQuorumCommand.mainNoExit(
+                        usingBootstrapController ? "--bootstrap-controller" : "--bootstrap-server",
+                        usingBootstrapController ? cluster.bootstrapControllers() : cluster.bootstrapServers(),
+                        "describe", "--status")
         );
         assertEquals("MaxFollowerLag:         0", statusOutput.split("\n")[4]);
         assertEquals("MaxFollowerLagTimeMs:   0", statusOutput.split("\n")[5]);
 
         String replicationOutput = ToolsTestUtils.captureStandardOut(() ->
-            MetadataQuorumCommand.mainNoExit(
-                    usingBootstrapController ? "--bootstrap-controller" : "--bootstrap-server",
-                    usingBootstrapController ? cluster.bootstrapControllers() : cluster.bootstrapServers(),
-                    "describe", "--replication")
+                MetadataQuorumCommand.mainNoExit(
+                        usingBootstrapController ? "--bootstrap-controller" : "--bootstrap-server",
+                        usingBootstrapController ? cluster.bootstrapControllers() : cluster.bootstrapServers(),
+                        "describe", "--replication")
         );
         assertEquals("0", replicationOutput.split("\n")[1].split("\\s+")[3]);
     }
@@ -162,7 +162,7 @@ class MetadataQuorumCommandTest {
         // specifying a --command-config containing properties that would prevent login must fail
         File tmpfile = TestUtils.tempFile(AdminClientConfig.SECURITY_PROTOCOL_CONFIG + "=SSL_PLAINTEXT");
         assertEquals(1, MetadataQuorumCommand.mainNoExit("--bootstrap-server", "localhost:9092",
-                        "--command-config", tmpfile.getAbsolutePath(), "describe", "--status"));
+                "--command-config", tmpfile.getAbsolutePath(), "describe", "--status"));
     }
 
     @ClusterTest(types = {Type.CO_KRAFT})
@@ -170,15 +170,15 @@ class MetadataQuorumCommandTest {
         assertEquals(1, MetadataQuorumCommand.mainNoExit("--bootstrap-server", cluster.bootstrapServers(), "describe", "--human-readable"));
         assertEquals(1, MetadataQuorumCommand.mainNoExit("--bootstrap-server", cluster.bootstrapServers(), "describe", "--status", "--human-readable"));
         String out0 = ToolsTestUtils.captureStandardOut(() ->
-            MetadataQuorumCommand.mainNoExit("--bootstrap-server", cluster.bootstrapServers(), "describe", "--replication")
+                MetadataQuorumCommand.mainNoExit("--bootstrap-server", cluster.bootstrapServers(), "describe", "--replication")
         );
         assertFalse(out0.split("\n")[1].matches("\\d*"));
         String out1 = ToolsTestUtils.captureStandardOut(() ->
-            MetadataQuorumCommand.mainNoExit("--bootstrap-server", cluster.bootstrapServers(), "describe", "--replication", "--human-readable")
+                MetadataQuorumCommand.mainNoExit("--bootstrap-server", cluster.bootstrapServers(), "describe", "--replication", "--human-readable")
         );
         assertHumanReadable(out1);
         String out2 = ToolsTestUtils.captureStandardOut(() ->
-            MetadataQuorumCommand.mainNoExit("--bootstrap-server", cluster.bootstrapServers(), "describe", "--re", "--hu")
+                MetadataQuorumCommand.mainNoExit("--bootstrap-server", cluster.bootstrapServers(), "describe", "--re", "--hu")
          );
         assertHumanReadable(out2);
     }

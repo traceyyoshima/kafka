@@ -63,7 +63,6 @@ public class CompositeReadOnlyKeyValueStore<K, V> implements ReadOnlyKeyValueSto
         return new CompositeReadOnlyKeyValueStore<>(storeProvider, storeType, storeName, isolationLevel);
     }
 
-
     @Override
     public V get(final K key) {
         Objects.requireNonNull(key);
@@ -96,8 +95,8 @@ public class CompositeReadOnlyKeyValueStore<K, V> implements ReadOnlyKeyValueSto
         };
         final List<ReadOnlyKeyValueStore<K, V>> stores = readOnlyStores();
         return new DelegatingPeekingKeyValueIterator<>(
-            storeName,
-            new CompositeKeyValueIterator<>(stores.iterator(), nextIteratorFunction));
+                storeName,
+                new CompositeKeyValueIterator<>(stores.iterator(), nextIteratorFunction));
     }
 
     @Override
@@ -114,8 +113,8 @@ public class CompositeReadOnlyKeyValueStore<K, V> implements ReadOnlyKeyValueSto
         };
         final List<ReadOnlyKeyValueStore<K, V>> stores = readOnlyStores();
         return new DelegatingPeekingKeyValueIterator<>(
-            storeName,
-            new CompositeKeyValueIterator<>(stores.iterator(), nextIteratorFunction));
+                storeName,
+                new CompositeKeyValueIterator<>(stores.iterator(), nextIteratorFunction));
     }
 
     @Override
@@ -134,8 +133,8 @@ public class CompositeReadOnlyKeyValueStore<K, V> implements ReadOnlyKeyValueSto
         };
         final List<ReadOnlyKeyValueStore<K, V>> stores = readOnlyStores();
         return new DelegatingPeekingKeyValueIterator<>(
-            storeName,
-            new CompositeKeyValueIterator<>(stores.iterator(), nextIteratorFunction));
+                storeName,
+                new CompositeKeyValueIterator<>(stores.iterator(), nextIteratorFunction));
     }
 
     @Override
@@ -152,8 +151,8 @@ public class CompositeReadOnlyKeyValueStore<K, V> implements ReadOnlyKeyValueSto
         };
         final List<ReadOnlyKeyValueStore<K, V>> stores = readOnlyStores();
         return new DelegatingPeekingKeyValueIterator<>(
-            storeName,
-            new CompositeKeyValueIterator<>(stores.iterator(), nextIteratorFunction));
+                storeName,
+                new CompositeKeyValueIterator<>(stores.iterator(), nextIteratorFunction));
     }
 
     @Override
@@ -170,13 +169,13 @@ public class CompositeReadOnlyKeyValueStore<K, V> implements ReadOnlyKeyValueSto
         };
         final List<ReadOnlyKeyValueStore<K, V>> stores = readOnlyStores();
         return new DelegatingPeekingKeyValueIterator<>(
-            storeName,
-            new CompositeKeyValueIterator<>(stores.iterator(), nextIteratorFunction));
+                storeName,
+                new CompositeKeyValueIterator<>(stores.iterator(), nextIteratorFunction));
     }
 
     private List<ReadOnlyKeyValueStore<K, V>> readOnlyStores() {
         final IsolationLevel level =
-            isolationOverride != null ? isolationOverride : storeProvider.defaultIsolationLevel();
+                isolationOverride != null ? isolationOverride : storeProvider.defaultIsolationLevel();
         return storeProvider.stores(storeName, storeType).stream()
             .map(s -> s.readOnly(level))
             .collect(Collectors.toList());

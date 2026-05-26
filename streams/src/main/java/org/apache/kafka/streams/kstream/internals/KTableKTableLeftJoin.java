@@ -65,7 +65,6 @@ class KTableKTableLeftJoin<K, V1, V2, VOut> extends KTableKTableAbstractJoin<K, 
         }
     }
 
-
     private class KTableKTableLeftJoinProcessor extends ContextualProcessor<K, Change<V1>, K, Change<VOut>> {
 
         private final KTableValueGetter<K, V2> valueGetter;
@@ -79,9 +78,9 @@ class KTableKTableLeftJoin<K, V1, V2, VOut> extends KTableKTableAbstractJoin<K, 
         public void init(final ProcessorContext<K, Change<VOut>> context) {
             super.init(context);
             droppedRecordsSensor = droppedRecordsSensor(
-                Thread.currentThread().getName(),
-                context.taskId().toString(),
-                (StreamsMetricsImpl) context.metrics()
+                    Thread.currentThread().getName(),
+                    context.taskId().toString(),
+                    (StreamsMetricsImpl) context.metrics()
             );
             valueGetter.init(context);
         }
@@ -93,13 +92,13 @@ class KTableKTableLeftJoin<K, V1, V2, VOut> extends KTableKTableAbstractJoin<K, 
                 if (context().recordMetadata().isPresent()) {
                     final RecordMetadata recordMetadata = context().recordMetadata().get();
                     LOG.warn(
-                        "Skipping record due to null key. "
+                            "Skipping record due to null key. "
                             + "topic=[{}] partition=[{}] offset=[{}]",
-                        recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
+                            recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
                     );
                 } else {
                     LOG.warn(
-                        "Skipping record due to null key. Topic, partition, and offset not known."
+                            "Skipping record due to null key. Topic, partition, and offset not known."
                     );
                 }
                 droppedRecordsSensor.record();

@@ -116,8 +116,8 @@ public class Rate implements MeasurableStat {
     @Override
     public String toString() {
         return "Rate(" +
-            "unit=" + unit +
-            ", stat=" + stat +
-            ')';
+                "unit=" + unit +
+                ", stat=" + stat +
+                ')';
     }
 }

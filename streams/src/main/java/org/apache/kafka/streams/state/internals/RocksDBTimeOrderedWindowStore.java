@@ -36,8 +36,8 @@ import java.util.Objects;
 
 
 public class RocksDBTimeOrderedWindowStore<S extends Segment>
-    extends WrappedStateStore<AbstractRocksDBTimeOrderedSegmentedBytesStore<S>, Object, Object>
-    implements WindowStore<Bytes, byte[]>, TimestampedBytesStore {
+        extends WrappedStateStore<AbstractRocksDBTimeOrderedSegmentedBytesStore<S>, Object, Object>
+        implements WindowStore<Bytes, byte[]>, TimestampedBytesStore {
 
     private final boolean retainDuplicates;
     private final long windowSize;
@@ -100,18 +100,18 @@ public class RocksDBTimeOrderedWindowStore<S extends Segment>
     public WindowStoreIterator<byte[]> fetch(final Bytes key, final long timeFrom, final long timeTo) {
         final KeyValueIterator<Bytes, byte[]> bytesIterator = wrapped().fetch(key, timeFrom, timeTo);
         return new WindowStoreIteratorWrapper(bytesIterator,
-            windowSize,
-            TimeFirstWindowKeySchema::extractStoreTimestamp,
-            TimeFirstWindowKeySchema::fromStoreBytesKey).valuesIterator();
+                windowSize,
+                TimeFirstWindowKeySchema::extractStoreTimestamp,
+                TimeFirstWindowKeySchema::fromStoreBytesKey).valuesIterator();
     }
 
     @Override
     public WindowStoreIterator<byte[]> backwardFetch(final Bytes key, final long timeFrom, final long timeTo) {
         final KeyValueIterator<Bytes, byte[]> bytesIterator = wrapped().backwardFetch(key, timeFrom, timeTo);
         return new WindowStoreIteratorWrapper(bytesIterator,
-            windowSize,
-            TimeFirstWindowKeySchema::extractStoreTimestamp,
-            TimeFirstWindowKeySchema::fromStoreBytesKey).valuesIterator();
+                windowSize,
+                TimeFirstWindowKeySchema::extractStoreTimestamp,
+                TimeFirstWindowKeySchema::fromStoreBytesKey).valuesIterator();
     }
 
     @Override
@@ -121,9 +121,9 @@ public class RocksDBTimeOrderedWindowStore<S extends Segment>
                                                            final long timeTo) {
         final KeyValueIterator<Bytes, byte[]> bytesIterator = wrapped().fetch(keyFrom, keyTo, timeFrom, timeTo);
         return new WindowStoreIteratorWrapper(bytesIterator,
-            windowSize,
-            TimeFirstWindowKeySchema::extractStoreTimestamp,
-            TimeFirstWindowKeySchema::fromStoreBytesKey).keyValueIterator();
+                windowSize,
+                TimeFirstWindowKeySchema::extractStoreTimestamp,
+                TimeFirstWindowKeySchema::fromStoreBytesKey).keyValueIterator();
     }
 
     @Override
@@ -133,45 +133,45 @@ public class RocksDBTimeOrderedWindowStore<S extends Segment>
                                                                    final long timeTo) {
         final KeyValueIterator<Bytes, byte[]> bytesIterator = wrapped().backwardFetch(keyFrom, keyTo, timeFrom, timeTo);
         return new WindowStoreIteratorWrapper(bytesIterator,
-            windowSize,
-            TimeFirstWindowKeySchema::extractStoreTimestamp,
-            TimeFirstWindowKeySchema::fromStoreBytesKey).keyValueIterator();
+                windowSize,
+                TimeFirstWindowKeySchema::extractStoreTimestamp,
+                TimeFirstWindowKeySchema::fromStoreBytesKey).keyValueIterator();
     }
 
     @Override
     public KeyValueIterator<Windowed<Bytes>, byte[]> all() {
         final KeyValueIterator<Bytes, byte[]> bytesIterator = wrapped().all();
         return new WindowStoreIteratorWrapper(bytesIterator,
-            windowSize,
-            TimeFirstWindowKeySchema::extractStoreTimestamp,
-            TimeFirstWindowKeySchema::fromStoreBytesKey).keyValueIterator();
+                windowSize,
+                TimeFirstWindowKeySchema::extractStoreTimestamp,
+                TimeFirstWindowKeySchema::fromStoreBytesKey).keyValueIterator();
     }
 
     @Override
     public KeyValueIterator<Windowed<Bytes>, byte[]> backwardAll() {
         final KeyValueIterator<Bytes, byte[]> bytesIterator = wrapped().backwardAll();
         return new WindowStoreIteratorWrapper(bytesIterator,
-            windowSize,
-            TimeFirstWindowKeySchema::extractStoreTimestamp,
-            TimeFirstWindowKeySchema::fromStoreBytesKey).keyValueIterator();
+                windowSize,
+                TimeFirstWindowKeySchema::extractStoreTimestamp,
+                TimeFirstWindowKeySchema::fromStoreBytesKey).keyValueIterator();
     }
 
     @Override
     public KeyValueIterator<Windowed<Bytes>, byte[]> fetchAll(final long timeFrom, final long timeTo) {
         final KeyValueIterator<Bytes, byte[]> bytesIterator = wrapped().fetchAll(timeFrom, timeTo);
         return new WindowStoreIteratorWrapper(bytesIterator,
-            windowSize,
-            TimeFirstWindowKeySchema::extractStoreTimestamp,
-            TimeFirstWindowKeySchema::fromStoreBytesKey).keyValueIterator();
+                windowSize,
+                TimeFirstWindowKeySchema::extractStoreTimestamp,
+                TimeFirstWindowKeySchema::fromStoreBytesKey).keyValueIterator();
     }
 
     @Override
     public KeyValueIterator<Windowed<Bytes>, byte[]> backwardFetchAll(final long timeFrom, final long timeTo) {
         final KeyValueIterator<Bytes, byte[]> bytesIterator = wrapped().backwardFetchAll(timeFrom, timeTo);
         return new WindowStoreIteratorWrapper(bytesIterator,
-            windowSize,
-            TimeFirstWindowKeySchema::extractStoreTimestamp,
-            TimeFirstWindowKeySchema::fromStoreBytesKey).keyValueIterator();
+                windowSize,
+                TimeFirstWindowKeySchema::extractStoreTimestamp,
+                TimeFirstWindowKeySchema::fromStoreBytesKey).keyValueIterator();
     }
 
     public boolean hasIndex() {
@@ -184,12 +184,12 @@ public class RocksDBTimeOrderedWindowStore<S extends Segment>
                                     final QueryConfig config) {
 
         return StoreQueryUtils.handleBasicQueries(
-            query,
-            positionBound,
-            config,
-            this,
-            getPosition(),
-            stateStoreContext
+                query,
+                positionBound,
+                config,
+                this,
+                getPosition(),
+                stateStoreContext
         );
     }
 

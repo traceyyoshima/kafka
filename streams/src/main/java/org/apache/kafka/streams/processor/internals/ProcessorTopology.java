@@ -170,7 +170,7 @@ public class ProcessorTopology {
                     log.error("Tried to subscribe topic {} to two nodes when updating topics from {}",
                               topic, allSourceTopicsByNodeName);
                     throw new IllegalStateException("Topic " + topic + " was already registered to source node "
-                                                        + sourceNodesByTopic.get(topic).name());
+                            + sourceNodesByTopic.get(topic).name());
                 }
                 sourceNodesByTopic.put(topic, sourceNode);
             }

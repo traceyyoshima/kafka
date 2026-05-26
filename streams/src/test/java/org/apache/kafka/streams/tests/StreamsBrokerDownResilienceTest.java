@@ -70,7 +70,6 @@ public class StreamsBrokerDownResilienceTest {
         streamsProperties.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         streamsProperties.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 100L);
 
-
         // it is expected that max.poll.interval, retries, request.timeout and max.block.ms set
         // streams_broker_down_resilience_test and passed as args
         if (additionalConfigs != null && !additionalConfigs.equalsIgnoreCase("none")) {
@@ -81,10 +80,10 @@ public class StreamsBrokerDownResilienceTest {
 
         if (!confirmCorrectConfigs(streamsProperties)) {
             System.err.printf("ERROR: Did not have all required configs expected  to contain %s %s %s %s%n",
-                                             StreamsConfig.consumerPrefix(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG),
-                                             StreamsConfig.producerPrefix(ProducerConfig.RETRIES_CONFIG),
-                                             StreamsConfig.producerPrefix(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG),
-                                             StreamsConfig.producerPrefix(ProducerConfig.MAX_BLOCK_MS_CONFIG));
+                    StreamsConfig.consumerPrefix(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG),
+                    StreamsConfig.producerPrefix(ProducerConfig.RETRIES_CONFIG),
+                    StreamsConfig.producerPrefix(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG),
+                    StreamsConfig.producerPrefix(ProducerConfig.MAX_BLOCK_MS_CONFIG));
 
             Exit.exit(1);
         }
@@ -95,6 +94,7 @@ public class StreamsBrokerDownResilienceTest {
         builder.stream(Collections.singletonList(SOURCE_TOPIC_1), Consumed.with(stringSerde, stringSerde))
             .peek(new ForeachAction<>() {
                 int messagesProcessed = 0;
+
                 @Override
                 public void apply(final String key, final String value) {
                     System.out.println("received key " + key + " and value " + value);
@@ -110,8 +110,7 @@ public class StreamsBrokerDownResilienceTest {
                 System.err.println("FATAL: An unexpected exception " + e);
                 System.err.flush();
                 return StreamsUncaughtExceptionHandler.StreamThreadExceptionResponse.SHUTDOWN_CLIENT;
-            }
-        );
+        });
 
         System.out.println("Start Kafka Streams");
         streams.start();
@@ -125,9 +124,9 @@ public class StreamsBrokerDownResilienceTest {
 
     private static boolean confirmCorrectConfigs(final Properties properties) {
         return properties.containsKey(StreamsConfig.consumerPrefix(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG)) &&
-               properties.containsKey(StreamsConfig.producerPrefix(ProducerConfig.RETRIES_CONFIG)) &&
-               properties.containsKey(StreamsConfig.producerPrefix(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG)) &&
-               properties.containsKey(StreamsConfig.producerPrefix(ProducerConfig.MAX_BLOCK_MS_CONFIG));
+                properties.containsKey(StreamsConfig.producerPrefix(ProducerConfig.RETRIES_CONFIG)) &&
+                properties.containsKey(StreamsConfig.producerPrefix(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG)) &&
+                properties.containsKey(StreamsConfig.producerPrefix(ProducerConfig.MAX_BLOCK_MS_CONFIG));
     }
 
     /**

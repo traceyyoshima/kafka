@@ -53,7 +53,7 @@ public class ConfigUtilsTest {
         testMap1.put("myString2", null);
         testMap1.put("myUnknown", 456);
         assertEquals("{myInt=123, myPassword=(redacted), myString=\"whatever\", myString2=null, myUnknown=(redacted)}",
-            ConfigUtils.configMapToRedactedString(testMap1, CONFIG));
+                ConfigUtils.configMapToRedactedString(testMap1, CONFIG));
     }
 
     @Test

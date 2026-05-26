@@ -45,7 +45,6 @@ public class ConnectRestConfigurable implements Configurable<ResourceConfig> {
         this.resourceConfig = resourceConfig;
     }
 
-
     @Override
     public Configuration getConfiguration() {
         return resourceConfig.getConfiguration();

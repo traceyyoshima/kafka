@@ -44,7 +44,6 @@ public class AdminFetchMetricsManagerTest {
     private AdminFetchMetricsManager adminFetchMetricsManager;
     private final String group = "group";
 
-
     @BeforeEach
     public void setup() {
         metrics = new Metrics(time);

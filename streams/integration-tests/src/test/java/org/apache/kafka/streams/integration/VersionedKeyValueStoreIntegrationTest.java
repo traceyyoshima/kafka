@@ -132,12 +132,12 @@ public class VersionedKeyValueStoreIntegrationTest {
 
         streamsBuilder
             .addStateStore(
-                Stores.versionedKeyValueStoreBuilder(
-                    Stores.persistentVersionedKeyValueStore(STORE_NAME, Duration.ofMillis(HISTORY_RETENTION)),
-                    Serdes.Integer(),
-                    Serdes.String()
-                )
-            )
+                    Stores.versionedKeyValueStoreBuilder(
+                            Stores.persistentVersionedKeyValueStore(STORE_NAME, Duration.ofMillis(HISTORY_RETENTION)),
+                            Serdes.Integer(),
+                            Serdes.String()
+                    )
+        )
             .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
             .process(() -> new VersionedStoreContentCheckerProcessor(true), STORE_NAME)
             .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
@@ -156,12 +156,12 @@ public class VersionedKeyValueStoreIntegrationTest {
 
         // wait for output and verify
         final List<KeyValue<Integer, Integer>> receivedRecords = IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(
-            TestUtils.consumerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerDeserializer.class,
-                IntegerDeserializer.class),
-            outputStream,
-            numRecordsProduced);
+                TestUtils.consumerConfig(
+                        CLUSTER.bootstrapServers(),
+                        IntegerDeserializer.class,
+                        IntegerDeserializer.class),
+                outputStream,
+                numRecordsProduced);
 
         for (final KeyValue<Integer, Integer> receivedRecord : receivedRecords) {
             // verify zero failed checks for each record
@@ -176,12 +176,12 @@ public class VersionedKeyValueStoreIntegrationTest {
 
         streamsBuilder
             .addStateStore(
-                Stores.versionedKeyValueStoreBuilder(
-                    Stores.persistentVersionedKeyValueStore(STORE_NAME, Duration.ofMillis(HISTORY_RETENTION)),
-                    Serdes.Integer(),
-                    Serdes.String()
-                )
-            )
+                    Stores.versionedKeyValueStoreBuilder(
+                            Stores.persistentVersionedKeyValueStore(STORE_NAME, Duration.ofMillis(HISTORY_RETENTION)),
+                            Serdes.Integer(),
+                            Serdes.String()
+                    )
+        )
             .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
             .process(() -> new VersionedStoreContentCheckerProcessor(false), STORE_NAME)
             .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
@@ -194,12 +194,12 @@ public class VersionedKeyValueStoreIntegrationTest {
         produceDataToTopic(inputStream, baseTimestamp, KeyValue.pair(0, "foo"));
 
         IntegrationTestUtils.waitUntilMinRecordsReceived(
-            TestUtils.consumerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerDeserializer.class,
-                IntegerDeserializer.class),
-            outputStream,
-            1);
+                TestUtils.consumerConfig(
+                        CLUSTER.bootstrapServers(),
+                        IntegerDeserializer.class,
+                        IntegerDeserializer.class),
+                outputStream,
+                1);
 
         // verify changelog topic properties
         final String changelogTopic = props.getProperty(StreamsConfig.APPLICATION_ID_CONFIG) + "-versioned-store-changelog";
@@ -215,12 +215,12 @@ public class VersionedKeyValueStoreIntegrationTest {
 
         streamsBuilder
             .addStateStore(
-                Stores.versionedKeyValueStoreBuilder(
-                    Stores.persistentVersionedKeyValueStore(STORE_NAME, Duration.ofMillis(HISTORY_RETENTION)),
-                    Serdes.Integer(),
-                    Serdes.String()
-                )
-            )
+                    Stores.versionedKeyValueStoreBuilder(
+                            Stores.persistentVersionedKeyValueStore(STORE_NAME, Duration.ofMillis(HISTORY_RETENTION)),
+                            Serdes.Integer(),
+                            Serdes.String()
+                    )
+        )
             .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
             .process(() -> new VersionedStoreContentCheckerProcessor(true), STORE_NAME)
             .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
@@ -241,12 +241,12 @@ public class VersionedKeyValueStoreIntegrationTest {
 
         // wait for output
         IntegrationTestUtils.waitUntilMinRecordsReceived(
-            TestUtils.consumerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerDeserializer.class,
-                IntegerDeserializer.class),
-            outputStream,
-            initialRecordsProduced);
+                TestUtils.consumerConfig(
+                        CLUSTER.bootstrapServers(),
+                        IntegerDeserializer.class,
+                        IntegerDeserializer.class),
+                outputStream,
+                initialRecordsProduced);
 
         // wipe out state store to trigger restore process on restart
         kafkaStreams.close();
@@ -257,12 +257,12 @@ public class VersionedKeyValueStoreIntegrationTest {
 
         streamsBuilder
             .addStateStore(
-                Stores.versionedKeyValueStoreBuilder(
-                    Stores.persistentVersionedKeyValueStore(STORE_NAME, Duration.ofMillis(HISTORY_RETENTION)),
-                    Serdes.Integer(),
-                    Serdes.String()
-                )
-            )
+                    Stores.versionedKeyValueStoreBuilder(
+                            Stores.persistentVersionedKeyValueStore(STORE_NAME, Duration.ofMillis(HISTORY_RETENTION)),
+                            Serdes.Integer(),
+                            Serdes.String()
+                    )
+        )
             .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
             .process(() -> new VersionedStoreContentCheckerProcessor(true, data), STORE_NAME)
             .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
@@ -275,12 +275,12 @@ public class VersionedKeyValueStoreIntegrationTest {
 
         // wait for output and verify
         final List<KeyValue<Integer, Integer>> receivedRecords = IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(
-            TestUtils.consumerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerDeserializer.class,
-                IntegerDeserializer.class),
-            outputStream,
-            initialRecordsProduced + additionalRecordsProduced);
+                TestUtils.consumerConfig(
+                        CLUSTER.bootstrapServers(),
+                        IntegerDeserializer.class,
+                        IntegerDeserializer.class),
+                outputStream,
+                initialRecordsProduced + additionalRecordsProduced);
 
         for (final KeyValue<Integer, Integer> receivedRecord : receivedRecords) {
             // verify zero failed checks for each record
@@ -295,12 +295,12 @@ public class VersionedKeyValueStoreIntegrationTest {
 
         streamsBuilder
             .addStateStore(
-                Stores.versionedKeyValueStoreBuilder(
-                    new CustomIQv2VersionedStoreSupplier(),
-                    Serdes.Integer(),
-                    Serdes.String()
-                )
-            )
+                    Stores.versionedKeyValueStoreBuilder(
+                            new CustomIQv2VersionedStoreSupplier(),
+                            Serdes.Integer(),
+                            Serdes.String()
+                    )
+        )
             .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
             .process(() -> new VersionedStoreContentCheckerProcessor(false), STORE_NAME);
 
@@ -310,11 +310,11 @@ public class VersionedKeyValueStoreIntegrationTest {
 
         // issue IQv2 query and verify result
         final StateQueryRequest<String> request =
-            StateQueryRequest.inStore(STORE_NAME)
-                .withQuery(new TestQuery())
-                .withPartitions(Collections.singleton(0));
+                StateQueryRequest.inStore(STORE_NAME)
+                    .withQuery(new TestQuery())
+                    .withPartitions(Collections.singleton(0));
         final StateQueryResult<String> result =
-            IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
+                IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
         assertThat(result.getOnlyPartitionResult().getResult(), equalTo("success"));
     }
 
@@ -325,12 +325,12 @@ public class VersionedKeyValueStoreIntegrationTest {
 
         streamsBuilder
             .addStateStore(
-                Stores.timestampedKeyValueStoreBuilder(
-                    Stores.persistentTimestampedKeyValueStore(STORE_NAME),
-                    Serdes.Integer(),
-                    Serdes.String()
-                )
-            )
+                    Stores.timestampedKeyValueStoreBuilder(
+                            Stores.persistentTimestampedKeyValueStore(STORE_NAME),
+                            Serdes.Integer(),
+                            Serdes.String()
+                    )
+        )
             .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
             .process(TimestampedStoreContentCheckerProcessor::new, STORE_NAME)
             .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
@@ -345,12 +345,12 @@ public class VersionedKeyValueStoreIntegrationTest {
 
         streamsBuilder
             .addStateStore(
-                Stores.keyValueStoreBuilder(
-                    Stores.persistentKeyValueStore(STORE_NAME),
-                    Serdes.Integer(),
-                    Serdes.String()
-                )
-            )
+                    Stores.keyValueStoreBuilder(
+                            Stores.persistentKeyValueStore(STORE_NAME),
+                            Serdes.Integer(),
+                            Serdes.String()
+                    )
+        )
             .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
             .process(KeyValueStoreContentCheckerProcessor::new, STORE_NAME)
             .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
@@ -375,12 +375,12 @@ public class VersionedKeyValueStoreIntegrationTest {
 
         // wait for output and verify
         List<KeyValue<Integer, Integer>> receivedRecords = IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(
-            TestUtils.consumerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerDeserializer.class,
-                IntegerDeserializer.class),
-            outputStream,
-            initialRecordsProduced);
+                TestUtils.consumerConfig(
+                        CLUSTER.bootstrapServers(),
+                        IntegerDeserializer.class,
+                        IntegerDeserializer.class),
+                outputStream,
+                initialRecordsProduced);
 
         for (final KeyValue<Integer, Integer> receivedRecord : receivedRecords) {
             // verify zero failed checks for each record
@@ -396,12 +396,12 @@ public class VersionedKeyValueStoreIntegrationTest {
 
         streamsBuilder
             .addStateStore(
-                Stores.versionedKeyValueStoreBuilder(
-                    Stores.persistentVersionedKeyValueStore(STORE_NAME, Duration.ofMillis(HISTORY_RETENTION)),
-                    Serdes.Integer(),
-                    Serdes.String()
-                )
-            )
+                    Stores.versionedKeyValueStoreBuilder(
+                            Stores.persistentVersionedKeyValueStore(STORE_NAME, Duration.ofMillis(HISTORY_RETENTION)),
+                            Serdes.Integer(),
+                            Serdes.String()
+                    )
+        )
             .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
             .process(() -> new VersionedStoreContentCheckerProcessor(true, data), STORE_NAME)
             .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
@@ -414,12 +414,12 @@ public class VersionedKeyValueStoreIntegrationTest {
 
         // wait for output and verify
         receivedRecords = IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(
-            TestUtils.consumerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerDeserializer.class,
-                IntegerDeserializer.class),
-            outputStream,
-            initialRecordsProduced + additionalRecordsProduced);
+                TestUtils.consumerConfig(
+                        CLUSTER.bootstrapServers(),
+                        IntegerDeserializer.class,
+                        IntegerDeserializer.class),
+                outputStream,
+                initialRecordsProduced + additionalRecordsProduced);
 
         for (final KeyValue<Integer, Integer> receivedRecord : receivedRecords) {
             // verify zero failed checks for each record
@@ -447,12 +447,12 @@ public class VersionedKeyValueStoreIntegrationTest {
                                          final long timestamp,
                                          final KeyValue<Integer, String>... keyValues) {
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-            topic,
-            Arrays.asList(keyValues),
-            TestUtils.producerConfig(CLUSTER.bootstrapServers(),
-                IntegerSerializer.class,
-                StringSerializer.class),
-            timestamp);
+                topic,
+                Arrays.asList(keyValues),
+                TestUtils.producerConfig(CLUSTER.bootstrapServers(),
+                        IntegerSerializer.class,
+                        StringSerializer.class),
+                timestamp);
         return keyValues.length;
     }
 
@@ -590,7 +590,7 @@ public class VersionedKeyValueStoreIntegrationTest {
                     return false;
                 }
                 return expectedValue.equals(versionedRecord.value())
-                    && expectedTimestamp == versionedRecord.timestamp();
+                        && expectedTimestamp == versionedRecord.timestamp();
             }
         }
     }
@@ -624,8 +624,8 @@ public class VersionedKeyValueStoreIntegrationTest {
                 // special value "delete" is interpreted as a delete() call from
                 // VersionedStoreContentCheckerProcessor but we do not support it here
                 throw new IllegalArgumentException("Using 'delete' keyword for "
-                    + "TimestampedStoreContentCheckerProcessor will result in the record "
-                    + "timestamp being ignored. Use regular put with null value instead.");
+                        + "TimestampedStoreContentCheckerProcessor will result in the record "
+                        + "timestamp being ignored. Use regular put with null value instead.");
             }
             final ValueAndTimestamp<String> valueAndTimestamp = ValueAndTimestamp.make(record.value(), record.timestamp());
             store.put(record.key(), valueAndTimestamp);
@@ -685,8 +685,8 @@ public class VersionedKeyValueStoreIntegrationTest {
                 // special value "delete" is interpreted as a delete() call from
                 // VersionedStoreContentCheckerProcessor but we do not support it here
                 throw new IllegalArgumentException("Using 'delete' keyword for "
-                    + "KeyValueStoreContentCheckerProcessor will result in the record "
-                    + "timestamp being ignored. Use regular put with null value instead.");
+                        + "KeyValueStoreContentCheckerProcessor will result in the record "
+                        + "timestamp being ignored. Use regular put with null value instead.");
             }
             store.put(record.key(), record.value());
             data.put(record.key(), Optional.ofNullable(record.value()));
@@ -816,8 +816,8 @@ public class VersionedKeyValueStoreIntegrationTest {
             @Override
             public void init(final StateStoreContext stateStoreContext, final StateStore root) {
                 stateStoreContext.register(
-                    root,
-                    (key, value) -> { }
+                        root,
+                        (key, value) -> {}
                 );
             }
 

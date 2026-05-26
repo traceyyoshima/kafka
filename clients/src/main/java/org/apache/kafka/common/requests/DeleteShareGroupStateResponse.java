@@ -72,11 +72,11 @@ public class DeleteShareGroupStateResponse extends AbstractResponse {
     public static DeleteShareGroupStateResponseData toResponseData(Uuid topicId, int partitionId) {
         return new DeleteShareGroupStateResponseData()
             .setResults(List.of(
-                new DeleteShareGroupStateResponseData.DeleteStateResult()
-                    .setTopicId(topicId)
-                    .setPartitions(List.of(
-                        new DeleteShareGroupStateResponseData.PartitionResult()
-                            .setPartition(partitionId)))));
+                    new DeleteShareGroupStateResponseData.DeleteStateResult()
+                        .setTopicId(topicId)
+                        .setPartitions(List.of(
+                            new DeleteShareGroupStateResponseData.PartitionResult()
+                                .setPartition(partitionId)))));
     }
 
     public static DeleteShareGroupStateResponseData.PartitionResult toErrorResponsePartitionResult(
@@ -103,12 +103,12 @@ public class DeleteShareGroupStateResponse extends AbstractResponse {
 
     public static DeleteShareGroupStateResponseData toErrorResponseData(Uuid topicId, int partitionId, Errors error, String errorMessage) {
         return new DeleteShareGroupStateResponseData().setResults(
-            List.of(new DeleteShareGroupStateResponseData.DeleteStateResult()
-                .setTopicId(topicId)
-                .setPartitions(List.of(new DeleteShareGroupStateResponseData.PartitionResult()
-                    .setPartition(partitionId)
-                    .setErrorCode(error.code())
-                    .setErrorMessage(errorMessage)))));
+                List.of(new DeleteShareGroupStateResponseData.DeleteStateResult()
+                    .setTopicId(topicId)
+                    .setPartitions(List.of(new DeleteShareGroupStateResponseData.PartitionResult()
+                        .setPartition(partitionId)
+                        .setErrorCode(error.code())
+                        .setErrorMessage(errorMessage)))));
     }
 
     public static DeleteShareGroupStateResponseData toGlobalErrorResponse(DeleteShareGroupStateRequestData request, Errors error) {
@@ -116,7 +116,7 @@ public class DeleteShareGroupStateResponse extends AbstractResponse {
         request.topics().forEach(topicData -> {
             List<DeleteShareGroupStateResponseData.PartitionResult> partitionResults = new ArrayList<>();
             topicData.partitions().forEach(partitionData -> partitionResults.add(
-                toErrorResponsePartitionResult(partitionData.partition(), error, error.message()))
+                    toErrorResponsePartitionResult(partitionData.partition(), error, error.message()))
             );
             deleteStateResults.add(toResponseDeleteStateResult(topicData.topicId(), partitionResults));
         });

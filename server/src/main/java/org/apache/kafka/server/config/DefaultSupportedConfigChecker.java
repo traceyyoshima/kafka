@@ -61,10 +61,10 @@ public final class DefaultSupportedConfigChecker implements SupportedConfigCheck
 
     public DefaultSupportedConfigChecker() {
         this.validConfigsByType = Map.of(
-            ConfigResource.Type.TOPIC, new SetContainsPredicate(LogConfig.configNames()),
-            ConfigResource.Type.BROKER, ignore -> true,
-            ConfigResource.Type.CLIENT_METRICS, new SetContainsPredicate(ClientMetricsConfigs.configNames()),
-            ConfigResource.Type.GROUP, new SetContainsPredicate(GroupConfig.configNames())
+                ConfigResource.Type.TOPIC, new SetContainsPredicate(LogConfig.configNames()),
+                ConfigResource.Type.BROKER, ignore -> true,
+                ConfigResource.Type.CLIENT_METRICS, new SetContainsPredicate(ClientMetricsConfigs.configNames()),
+                ConfigResource.Type.GROUP, new SetContainsPredicate(GroupConfig.configNames())
         );
     }
 

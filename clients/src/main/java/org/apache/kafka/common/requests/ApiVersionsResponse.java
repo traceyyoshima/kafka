@@ -104,9 +104,9 @@ public class ApiVersionsResponse extends AbstractResponse {
             data.setApiKeys(Objects.requireNonNull(apiVersions));
             data.setThrottleTimeMs(throttleTimeMs);
             data.setSupportedFeatures(
-                maybeFilterSupportedFeatureKeys(Objects.requireNonNull(supportedFeatures), alterFeatureLevel0));
+                    maybeFilterSupportedFeatureKeys(Objects.requireNonNull(supportedFeatures), alterFeatureLevel0));
             data.setFinalizedFeatures(
-                createFinalizedFeatureKeys(Objects.requireNonNull(finalizedFeatures)));
+                    createFinalizedFeatureKeys(Objects.requireNonNull(finalizedFeatures)));
             data.setFinalizedFeaturesEpoch(finalizedFeaturesEpoch);
             data.setZkMigrationReady(zkMigrationEnabled);
             return new ApiVersionsResponse(data);
@@ -175,10 +175,10 @@ public class ApiVersionsResponse extends AbstractResponse {
         boolean clientTelemetryEnabled
     ) {
         return intersectForwardableApis(
-            listenerType,
-            controllerApiVersions.allSupportedApiVersions(),
-            enableUnstableLastVersion,
-            clientTelemetryEnabled);
+                listenerType,
+                controllerApiVersions.allSupportedApiVersions(),
+                enableUnstableLastVersion,
+                clientTelemetryEnabled);
     }
 
     public static ApiVersionCollection brokerApiVersions(
@@ -187,9 +187,9 @@ public class ApiVersionsResponse extends AbstractResponse {
         boolean clientTelemetryEnabled
     ) {
         return filterApis(
-            listenerType,
-            enableUnstableLastVersion,
-            clientTelemetryEnabled);
+                listenerType,
+                enableUnstableLastVersion,
+                clientTelemetryEnabled);
     }
 
     public static ApiVersionCollection filterApis(
@@ -252,8 +252,8 @@ public class ApiVersionsResponse extends AbstractResponse {
                 finalApiVersion = brokerApiVersion.get();
             } else {
                 Optional<ApiVersion> intersectVersion = intersect(
-                    brokerApiVersion.get(),
-                    activeControllerApiVersions.getOrDefault(apiKey, null)
+                        brokerApiVersion.get(),
+                        activeControllerApiVersions.getOrDefault(apiKey, null)
                 );
                 if (intersectVersion.isPresent()) {
                     finalApiVersion = intersectVersion.get();
@@ -313,7 +313,7 @@ public class ApiVersionsResponse extends AbstractResponse {
         if (thisVersion == null || other == null) return Optional.empty();
         if (thisVersion.apiKey() != other.apiKey())
             throw new IllegalArgumentException("thisVersion.apiKey: " + thisVersion.apiKey()
-                + " must be equal to other.apiKey: " + other.apiKey());
+                    + " must be equal to other.apiKey: " + other.apiKey());
         short minVersion = (short) Math.max(thisVersion.minVersion(), other.minVersion());
         short maxVersion = (short) Math.min(thisVersion.maxVersion(), other.maxVersion());
         return minVersion > maxVersion

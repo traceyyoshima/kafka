@@ -322,8 +322,8 @@ public class WorkerSinkTaskThreadedTest {
         expectInitialAssignment();
         expectPolls(WorkerConfig.OFFSET_COMMIT_INTERVAL_MS_DEFAULT);
         ExpectOffsetCommitCommand[] commands = new ExpectOffsetCommitCommand[]{
-            new ExpectOffsetCommitCommand(1L, null, null, 0, true),
-            new ExpectOffsetCommitCommand(2L, new RuntimeException(), null, 0, true)
+                new ExpectOffsetCommitCommand(1L, null, null, 0, true),
+                new ExpectOffsetCommitCommand(2L, new RuntimeException(), null, 0, true)
         };
         expectPreCommit(commands);
         expectOffsetCommit(commands);
@@ -560,7 +560,6 @@ public class WorkerSinkTaskThreadedTest {
         verify(sinkTask).start(TASK_PROPS);
     }
 
-
     private void expectInitialAssignment() {
         when(consumer.assignment()).thenReturn(INITIAL_ASSIGNMENT);
         INITIAL_ASSIGNMENT.forEach(tp -> when(consumer.position(tp)).thenReturn(FIRST_OFFSET));
@@ -601,7 +600,7 @@ public class WorkerSinkTaskThreadedTest {
             TopicPartition topicPartition = new TopicPartition(TOPIC, PARTITION);
             ConsumerRecord<byte[], byte[]> consumerRecord = new ConsumerRecord<>(TOPIC, PARTITION, FIRST_OFFSET + recordsReturned, TIMESTAMP, TIMESTAMP_TYPE, 0, 0, RAW_KEY, RAW_VALUE, emptyHeaders(), Optional.empty());
             ConsumerRecords<byte[], byte[]> records = new ConsumerRecords<>(Map.of(topicPartition, List.of(consumerRecord)),
-                Map.of(topicPartition, new OffsetAndMetadata(FIRST_OFFSET + recordsReturned + 1, Optional.empty(), "")));
+                    Map.of(topicPartition, new OffsetAndMetadata(FIRST_OFFSET + recordsReturned + 1, Optional.empty(), "")));
             recordsReturned++;
             return records;
         });
@@ -633,7 +632,7 @@ public class WorkerSinkTaskThreadedTest {
                     0, 0, RAW_KEY, RAW_VALUE, emptyHeaders(), Optional.empty());
             ConsumerRecords<byte[], byte[]> records =
                     new ConsumerRecords<>(Map.of(topicPartition, List.of(consumerRecord)),
-                        Map.of(topicPartition, new OffsetAndMetadata(FIRST_OFFSET + recordsReturned + 1, Optional.empty(), "")));
+                            Map.of(topicPartition, new OffsetAndMetadata(FIRST_OFFSET + recordsReturned + 1, Optional.empty(), "")));
             recordsReturned++;
             return records;
         });

@@ -120,28 +120,28 @@ public class NodeApiVersionsTest {
     public void testLatestUsableVersionOutOfRangeLow() {
         NodeApiVersions apiVersions = NodeApiVersions.create(ApiKeys.PRODUCE.id, (short) 1, (short) 2);
         assertThrows(UnsupportedVersionException.class,
-            () -> apiVersions.latestUsableVersion(ApiKeys.PRODUCE, (short) 3, (short) 4));
+                () -> apiVersions.latestUsableVersion(ApiKeys.PRODUCE, (short) 3, (short) 4));
     }
 
     @Test
     public void testLatestUsableVersionOutOfRangeHigh() {
         NodeApiVersions apiVersions = NodeApiVersions.create(ApiKeys.PRODUCE.id, (short) 2, (short) 3);
         assertThrows(UnsupportedVersionException.class,
-            () -> apiVersions.latestUsableVersion(ApiKeys.PRODUCE, (short) 0, (short) 1));
+                () -> apiVersions.latestUsableVersion(ApiKeys.PRODUCE, (short) 0, (short) 1));
     }
 
     @Test
     public void testUsableVersionCalculationNoKnownVersions() {
         NodeApiVersions versions = new NodeApiVersions(new ApiVersionCollection(), Collections.emptyList());
         assertThrows(UnsupportedVersionException.class,
-            () -> versions.latestUsableVersion(ApiKeys.FETCH));
+                () -> versions.latestUsableVersion(ApiKeys.FETCH));
     }
 
     @Test
     public void testLatestUsableVersionOutOfRange() {
         NodeApiVersions apiVersions = NodeApiVersions.create(ApiKeys.PRODUCE.id, (short) 300, (short) 300);
         assertThrows(UnsupportedVersionException.class,
-            () -> apiVersions.latestUsableVersion(ApiKeys.PRODUCE));
+                () -> apiVersions.latestUsableVersion(ApiKeys.PRODUCE));
     }
 
     @ParameterizedTest
@@ -177,16 +177,16 @@ public class NodeApiVersionsTest {
     @Test
     public void testFeatures() {
         NodeApiVersions versions = new NodeApiVersions(
-            Collections.emptyList(),
-            Arrays.asList(new ApiVersionsResponseData.SupportedFeatureKey()
-                .setName("transaction.version")
-                .setMaxVersion((short) 2)
-                .setMinVersion((short) 0)),
-            Arrays.asList(new ApiVersionsResponseData.FinalizedFeatureKey()
-                .setName("transaction.version")
-                .setMaxVersionLevel((short) 2)
-                .setMinVersionLevel((short) 2)),
-            0);
+                Collections.emptyList(),
+                Arrays.asList(new ApiVersionsResponseData.SupportedFeatureKey()
+                    .setName("transaction.version")
+                    .setMaxVersion((short) 2)
+                    .setMinVersion((short) 0)),
+                Arrays.asList(new ApiVersionsResponseData.FinalizedFeatureKey()
+                    .setName("transaction.version")
+                    .setMaxVersionLevel((short) 2)
+                    .setMinVersionLevel((short) 2)),
+                0);
         SupportedVersionRange supportedVersionRange = versions.supportedFeatures().get("transaction.version");
         assertEquals(0, supportedVersionRange.min());
         assertEquals(2, supportedVersionRange.max());

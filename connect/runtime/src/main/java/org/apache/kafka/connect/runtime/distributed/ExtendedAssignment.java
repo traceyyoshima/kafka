@@ -212,8 +212,8 @@ public class ExtendedAssignment extends ConnectProtocol.Assignment {
      */
     public static ExtendedAssignment fromStruct(short version, Struct struct) {
         return struct == null
-               ? null
-               : new ExtendedAssignment(
+                ? null
+                : new ExtendedAssignment(
                        version,
                        struct.getShort(ERROR_KEY_NAME),
                        struct.getString(LEADER_KEY_NAME),
@@ -228,8 +228,8 @@ public class ExtendedAssignment extends ConnectProtocol.Assignment {
 
     private static Collection<Struct> taskAssignments(Map<String, Collection<Integer>> assignments) {
         return assignments == null
-               ? null
-               : assignments.entrySet().stream()
+                ? null
+                : assignments.entrySet().stream()
                        .map(connectorEntry -> {
                            Struct taskAssignment = new Struct(CONNECTOR_ASSIGNMENT_V1);
                            taskAssignment.set(CONNECTOR_KEY_NAME, connectorEntry.getKey());

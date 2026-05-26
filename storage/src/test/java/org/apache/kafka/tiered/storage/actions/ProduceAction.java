@@ -72,7 +72,7 @@ public final class ProduceAction implements TieredStorageTestAction {
 
     @Override
     public void doExecute(TieredStorageTestContext context)
-            throws InterruptedException, ExecutionException, TimeoutException {
+        throws InterruptedException, ExecutionException, TimeoutException {
         List<LocalTieredStorage> tieredStorages = context.remoteStorageManagers();
         List<BrokerLocalStorage> localStorages = context.localStorages();
 

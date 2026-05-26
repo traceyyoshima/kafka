@@ -175,7 +175,7 @@ public class ConfigCommand {
 
             //Create properties, parsing square brackets from values if necessary
             Stream.of(configsToBeAdded).forEach(pair ->
-                props.setProperty(pair[0].trim(), pair[1].replaceAll("\\[?\\]?", "").trim())
+                    props.setProperty(pair[0].trim(), pair[1].replaceAll("\\[?\\]?", "").trim())
             );
         }
         validatePropsKey(props);
@@ -201,8 +201,8 @@ public class ConfigCommand {
 
     private static void processCommand(ConfigCommandOptions opts) throws Exception {
         Properties props = opts.options.has(opts.commandConfigOpt)
-            ? Utils.loadProps(opts.options.valueOf(opts.commandConfigOpt))
-            : new Properties();
+                ? Utils.loadProps(opts.options.valueOf(opts.commandConfigOpt))
+                : new Properties();
         CommandLineUtils.initializeBootstrapProperties(opts.parser,
                 opts.options,
                 props,
@@ -370,8 +370,8 @@ public class ConfigCommand {
         String password = matcher.group(2);
 
         int iterations = (iterationsStr != null && !"-1".equals(iterationsStr))
-            ? Integer.parseInt(iterationsStr)
-            : DEFAULT_SCRAM_ITERATIONS;
+                ? Integer.parseInt(iterationsStr)
+                : DEFAULT_SCRAM_ITERATIONS;
 
         if (iterations < mechanism.minIterations()) {
             throw new IllegalArgumentException("Iterations " + iterations + " is less than the minimum " + mechanism.minIterations() + " required for " + mechanism.mechanismName());
@@ -673,7 +673,7 @@ public class ConfigCommand {
                 : Optional.of(context.dynamicConfigSource());
         DescribeConfigsOptions describeOptions = new DescribeConfigsOptions().includeSynonyms(includeSynonyms);
         Map<ConfigResource, Config> configs = adminClient.describeConfigs(Collections.singleton(context.configResource()), describeOptions)
-                    .all().get(30, TimeUnit.SECONDS);
+                .all().get(30, TimeUnit.SECONDS);
 
         return filterAndSortEntries(configs.get(context.configResource()), configSourceFilter);
     }
@@ -839,7 +839,7 @@ public class ConfigCommand {
                     .describedAs("controller to connect to")
                     .ofType(String.class);
             commandConfigOpt = parser.accepts("command-config", "Property file containing configs to be passed to Admin Client. " +
-                            "This is used only with --bootstrap-server option for describing and altering broker configs.")
+                    "This is used only with --bootstrap-server option for describing and altering broker configs.")
                     .withRequiredArg()
                     .describedAs("command config property file")
                     .ofType(String.class);
@@ -856,14 +856,14 @@ public class ConfigCommand {
             entityDefault = parser.accepts("entity-default", "Default entity name for clients/users/brokers/ips (applies to corresponding entity type)");
 
             addConfig = parser.accepts("add-config", "Key Value pairs of configs to add. Square brackets can be used to group values which contain commas: 'k1=v1,k2=[v1,v2,v2],k3=v3'. The following is a list of valid configurations: " +
-                            "For entity-type '" + TOPIC_TYPE + "': " + formatConfigNames(LogConfig.nonInternalConfigNames()) +
-                            "For entity-type '" + BROKER_TYPE + "': " + formatConfigNames(DynamicConfig.Broker.names()) +
-                            "For entity-type '" + USER_TYPE + "': " + formatConfigNames(QuotaConfig.scramMechanismsPlusUserAndClientQuotaConfigs().names()) +
-                            "For entity-type '" + CLIENT_TYPE + "': " + formatConfigNames(QuotaConfig.userAndClientQuotaConfigs().names()) +
-                            "For entity-type '" + IP_TYPE + "': " + formatConfigNames(QuotaConfig.ipConfigs().names()) +
-                            "For entity-type '" + CLIENT_METRICS_TYPE + "': " + formatConfigNames(ClientMetricsConfigs.configNames()) +
-                            "For entity-type '" + GROUP_TYPE + "': " + formatConfigNames(GroupConfig.configNames()) +
-                            "Entity types '" + USER_TYPE + "' and '" + CLIENT_TYPE + "' may be specified together to update config for clients of a specific user.")
+                    "For entity-type '" + TOPIC_TYPE + "': " + formatConfigNames(LogConfig.nonInternalConfigNames()) +
+                    "For entity-type '" + BROKER_TYPE + "': " + formatConfigNames(DynamicConfig.Broker.names()) +
+                    "For entity-type '" + USER_TYPE + "': " + formatConfigNames(QuotaConfig.scramMechanismsPlusUserAndClientQuotaConfigs().names()) +
+                    "For entity-type '" + CLIENT_TYPE + "': " + formatConfigNames(QuotaConfig.userAndClientQuotaConfigs().names()) +
+                    "For entity-type '" + IP_TYPE + "': " + formatConfigNames(QuotaConfig.ipConfigs().names()) +
+                    "For entity-type '" + CLIENT_METRICS_TYPE + "': " + formatConfigNames(ClientMetricsConfigs.configNames()) +
+                    "For entity-type '" + GROUP_TYPE + "': " + formatConfigNames(GroupConfig.configNames()) +
+                    "Entity types '" + USER_TYPE + "' and '" + CLIENT_TYPE + "' may be specified together to update config for clients of a specific user.")
                     .withRequiredArg()
                     .ofType(String.class);
             addConfigFile = parser.accepts("add-config-file", "Path to a properties file with configs to add. See add-config for a list of valid configurations.")
@@ -909,23 +909,23 @@ public class ConfigCommand {
 
         private List<EntityFlag> entityFlags() {
             return List.of(
-                new EntityFlag(topic, TOPIC_TYPE),
-                new EntityFlag(client, CLIENT_TYPE),
-                new EntityFlag(user, USER_TYPE),
-                new EntityFlag(broker, BROKER_TYPE),
-                new EntityFlag(brokerLogger, BROKER_LOGGER_CONFIG_TYPE),
-                new EntityFlag(ip, IP_TYPE),
-                new EntityFlag(clientMetrics, CLIENT_METRICS_TYPE),
-                new EntityFlag(group, GROUP_TYPE)
+                    new EntityFlag(topic, TOPIC_TYPE),
+                    new EntityFlag(client, CLIENT_TYPE),
+                    new EntityFlag(user, USER_TYPE),
+                    new EntityFlag(broker, BROKER_TYPE),
+                    new EntityFlag(brokerLogger, BROKER_LOGGER_CONFIG_TYPE),
+                    new EntityFlag(ip, IP_TYPE),
+                    new EntityFlag(clientMetrics, CLIENT_METRICS_TYPE),
+                    new EntityFlag(group, GROUP_TYPE)
             );
         }
 
         private List<EntityFlag> entityDefaultsFlags() {
             return List.of(
-                new EntityFlag(clientDefaults, CLIENT_TYPE),
-                new EntityFlag(userDefaults, USER_TYPE),
-                new EntityFlag(brokerDefaults, BROKER_TYPE),
-                new EntityFlag(ipDefaults, IP_TYPE)
+                    new EntityFlag(clientDefaults, CLIENT_TYPE),
+                    new EntityFlag(userDefaults, USER_TYPE),
+                    new EntityFlag(brokerDefaults, BROKER_TYPE),
+                    new EntityFlag(ipDefaults, IP_TYPE)
             );
         }
 

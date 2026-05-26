@@ -431,13 +431,13 @@ public class StripedReplicaPlacer implements ReplicaPlacer {
         throwInvalidReplicationFactorIfNonPositive(placement.numReplicas());
         throwInvalidReplicationFactorIfZero(rackList.numUnfencedBrokers());
         throwInvalidReplicationFactorIfTooFewBrokers(placement.numReplicas(),
-            rackList.numTotalBrokers());
+                rackList.numTotalBrokers());
         List<List<Integer>> placements = new ArrayList<>(placement.numPartitions());
         for (int partition = 0; partition < placement.numPartitions(); partition++) {
             placements.add(rackList.place(placement.numReplicas()));
         }
         return new TopicAssignment(
-            placements.stream().map(replicas -> new PartitionAssignment(replicas, cluster)).toList()
+                placements.stream().map(replicas -> new PartitionAssignment(replicas, cluster)).toList()
         );
     }
 }

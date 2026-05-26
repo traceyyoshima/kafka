@@ -38,9 +38,10 @@ public final class UpdateTopicConfigAction implements TieredStorageTestAction {
         this.configsToBeAdded = configsToBeAdded;
         this.configsToBeDeleted = configsToBeDeleted;
     }
+
     @Override
     public void doExecute(TieredStorageTestContext context)
-            throws ExecutionException, InterruptedException, TimeoutException {
+        throws ExecutionException, InterruptedException, TimeoutException {
         context.updateTopicConfig(topic, configsToBeAdded, configsToBeDeleted);
     }
 

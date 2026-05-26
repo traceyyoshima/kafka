@@ -81,7 +81,6 @@ public class IncrementalCooperativeConnectProtocol {
     private static final Struct CONNECT_PROTOCOL_HEADER_V2 = new Struct(CONNECT_PROTOCOL_HEADER_SCHEMA)
         .set(VERSION_KEY_NAME, CONNECT_PROTOCOL_V2);
 
-
     /**
      * Config State V1:
      * <pre>
@@ -157,8 +156,8 @@ public class IncrementalCooperativeConnectProtocol {
                 .set(ALLOCATION_KEY_NAME, serializeAssignment(workerState.assignment(), sessioned));
         Struct connectProtocolHeader = sessioned ? CONNECT_PROTOCOL_HEADER_V2 : CONNECT_PROTOCOL_HEADER_V1;
         ByteBuffer buffer = ByteBuffer.allocate(connectProtocolHeader.sizeOf()
-                                                + CONFIG_STATE_V1.sizeOf(configState)
-                                                + ALLOCATION_V1.sizeOf(allocation));
+                + CONFIG_STATE_V1.sizeOf(configState)
+                + ALLOCATION_V1.sizeOf(allocation));
         connectProtocolHeader.writeTo(buffer);
         CONFIG_STATE_V1.write(buffer, configState);
         ALLOCATION_V1.write(buffer, allocation);
@@ -238,7 +237,7 @@ public class IncrementalCooperativeConnectProtocol {
         Struct struct = assignment.toStruct();
         Struct protocolHeader = sessioned ? CONNECT_PROTOCOL_HEADER_V2 : CONNECT_PROTOCOL_HEADER_V1;
         ByteBuffer buffer = ByteBuffer.allocate(protocolHeader.sizeOf()
-                                                + ASSIGNMENT_V1.sizeOf(struct));
+                + ASSIGNMENT_V1.sizeOf(struct));
         protocolHeader.writeTo(buffer);
         ASSIGNMENT_V1.write(buffer, struct);
         buffer.flip();

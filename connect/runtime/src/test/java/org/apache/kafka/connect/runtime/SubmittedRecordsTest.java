@@ -281,7 +281,7 @@ public class SubmittedRecordsTest {
         assertFalse(
                 submittedRecords.awaitAllMessages(0, TimeUnit.MILLISECONDS),
                 "Await should fail since only one of the two submitted records has been removed so far, "
-                        + "even though that record has been removed twice"
+                + "even though that record has been removed twice"
         );
 
         recordToRemove2.drop();
@@ -324,7 +324,7 @@ public class SubmittedRecordsTest {
         assertTrue(
                 awaitComplete.getCount() > 0,
                 "Should not have finished awaiting message delivery before one in-flight record was acknowledged, "
-                        + "even though the other record has been acknowledged twice"
+                + "even though the other record has been acknowledged twice"
         );
 
         inFlightRecord2.ack();
@@ -351,7 +351,7 @@ public class SubmittedRecordsTest {
 
     private void assertNoEmptyDeques() {
         submittedRecords.records.forEach((partition, deque) ->
-            assertFalse(deque.isEmpty(), "Empty deque for partition " + partition + " should have been cleaned up from internal records map")
+                assertFalse(deque.isEmpty(), "Empty deque for partition " + partition + " should have been cleaned up from internal records map")
         );
     }
 

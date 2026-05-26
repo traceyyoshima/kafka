@@ -149,7 +149,7 @@ public abstract class SourceTask implements Task {
      * @throws InterruptedException
      */
     public void commitRecord(SourceRecord record, RecordMetadata metadata)
-            throws InterruptedException {
+        throws InterruptedException {
         // by default, just do nothing
     }
 }

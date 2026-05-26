@@ -124,7 +124,7 @@ public class LineMessageReaderTest {
 
         String input =
                 "headerKey0.0:headerValue0.0&headerKey0.1:headerValue0.1!key0#value0\n" +
-                        "headerKey1.0:headerValue1.0!key1#value1";
+                "headerKey1.0:headerValue1.0!key1#value1";
 
         ProducerRecord<String, String> record0 = record(
                 "key0",
@@ -148,7 +148,7 @@ public class LineMessageReaderTest {
         RecordReader lineReader = new LineMessageReader();
         String input =
                 "headerKey0.0:headerValue0.0,headerKey0.1:headerValue0.1\tkey0\tvalue0\n" +
-                        "headerKey1.0:headerValue1.0\tkey1[MISSING-DELIMITER]value1";
+                "headerKey1.0:headerValue1.0\tkey1[MISSING-DELIMITER]value1";
 
         lineReader.configure(propsToStringMap(defaultTestProps()));
         Iterator<ProducerRecord<byte[], byte[]>> iter = lineReader.readRecords(new ByteArrayInputStream(input.getBytes()));
@@ -197,9 +197,9 @@ public class LineMessageReaderTest {
     public void testIgnoreErrorInInput() {
         String input =
                 "headerKey0.0:headerValue0.0\tkey0\tvalue0\n" +
-                        "headerKey1.0:headerValue1.0,headerKey1.1:headerValue1.1[MISSING-HEADER-DELIMITER]key1\tvalue1\n" +
-                        "headerKey2.0:headerValue2.0\tkey2[MISSING-KEY-DELIMITER]value2\n" +
-                        "headerKey3.0:headerValue3.0[MISSING-HEADER-DELIMITER]key3[MISSING-KEY-DELIMITER]value3\n";
+                "headerKey1.0:headerValue1.0,headerKey1.1:headerValue1.1[MISSING-HEADER-DELIMITER]key1\tvalue1\n" +
+                "headerKey2.0:headerValue2.0\tkey2[MISSING-KEY-DELIMITER]value2\n" +
+                "headerKey3.0:headerValue3.0[MISSING-HEADER-DELIMITER]key3[MISSING-KEY-DELIMITER]value3\n";
 
         Properties props = defaultTestProps();
         props.put("ignore.error", "true");
@@ -247,10 +247,10 @@ public class LineMessageReaderTest {
     public void testNullMarker() {
         String input =
                 "key\t\n" +
-                        "key\t<NULL>\n" +
-                        "key\t<NULL>value\n" +
-                        "<NULL>\tvalue\n" +
-                        "<NULL>\t<NULL>";
+                "key\t<NULL>\n" +
+                "key\t<NULL>value\n" +
+                "<NULL>\tvalue\n" +
+                "<NULL>\t<NULL>";
 
         Properties props = defaultTestProps();
         props.put("null.marker", "<NULL>");
@@ -276,10 +276,10 @@ public class LineMessageReaderTest {
     public void testNullMarkerWithHeaders() {
         String input =
                 "h0:v0,h1:v1\t<NULL>\tvalue\n" +
-                        "<NULL>\tkey\t<NULL>\n" +
-                        "h0:,h1:v1\t<NULL>\t<NULL>\n" +
-                        "h0:<NULL>,h1:v1\tkey\t<NULL>\n" +
-                        "h0:<NULL>,h1:<NULL>value\tkey\t<NULL>\n";
+                "<NULL>\tkey\t<NULL>\n" +
+                "h0:,h1:v1\t<NULL>\t<NULL>\n" +
+                "h0:<NULL>,h1:v1\tkey\t<NULL>\n" +
+                "h0:<NULL>,h1:<NULL>value\tkey\t<NULL>\n";
         Header header = new RecordHeader("h1", "v1".getBytes(UTF_8));
 
         Properties props = defaultTestProps();

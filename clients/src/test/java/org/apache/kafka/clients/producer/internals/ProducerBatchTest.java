@@ -253,7 +253,7 @@ public class ProducerBatchTest {
         recordExceptionMap.put(3, new RuntimeException());
 
         Function<Integer, RuntimeException> recordExceptions = batchIndex ->
-            recordExceptionMap.getOrDefault(batchIndex, topLevelException);
+                recordExceptionMap.getOrDefault(batchIndex, topLevelException);
 
         testCompleteExceptionally(recordCount, topLevelException, recordExceptions);
     }
@@ -263,7 +263,7 @@ public class ProducerBatchTest {
         int recordCount = 5;
         RuntimeException topLevelException = new RuntimeException();
         assertThrows(NullPointerException.class, () ->
-            testCompleteExceptionally(recordCount, topLevelException, null));
+                testCompleteExceptionally(recordCount, topLevelException, null));
     }
 
     /**
@@ -336,9 +336,9 @@ public class ProducerBatchTest {
         Function<Integer, RuntimeException> recordExceptions
     ) {
         ProducerBatch batch = new ProducerBatch(
-            new TopicPartition("topic", 1),
-            memoryRecordsBuilder,
-            now
+                new TopicPartition("topic", 1),
+                memoryRecordsBuilder,
+                now
         );
 
         List<FutureRecordMetadata> futures = new ArrayList<>(recordCount);

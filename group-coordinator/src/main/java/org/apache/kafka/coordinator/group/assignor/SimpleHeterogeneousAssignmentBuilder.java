@@ -141,7 +141,7 @@ public class SimpleHeterogeneousAssignmentBuilder {
         // Compute the partition assignments for each topic separately.
         subscribedTopicIds.forEach(topicId -> {
             TopicAssignmentPartialBuilder topicAssignmentBuilder =
-                new TopicAssignmentPartialBuilder(topicId, numGroupMembers, targetPartitionsByTopic.get(topicId), subscribedMembersByTopic.get(topicId));
+                    new TopicAssignmentPartialBuilder(topicId, numGroupMembers, targetPartitionsByTopic.get(topicId), subscribedMembersByTopic.get(topicId));
             topicAssignmentBuilder.build();
         });
 
@@ -177,7 +177,7 @@ public class SimpleHeterogeneousAssignmentBuilder {
             int numPartitions = subscribedTopicDescriber.numPartitions(topicId);
             if (numPartitions == -1) {
                 throw new PartitionAssignorException(
-                    "Members are subscribed to topic " + topicId + " which doesn't exist in the topic metadata."
+                        "Members are subscribed to topic " + topicId + " which doesn't exist in the topic metadata."
                 );
             }
 
@@ -211,7 +211,7 @@ public class SimpleHeterogeneousAssignmentBuilder {
             int memberIndex = memberIndices.get(memberId);
             MemberSubscription memberSubscription = groupSpec.memberSubscription(memberId);
             memberSubscription.subscribedTopicIds().forEach(topicId ->
-                subscribedMembersByTopic.computeIfAbsent(topicId, k -> new ArrayList<>(numMembers)).add(memberIndex));
+                    subscribedMembersByTopic.computeIfAbsent(topicId, k -> new ArrayList<>(numMembers)).add(memberIndex));
         });
 
         return subscribedMembersByTopic;
@@ -284,7 +284,7 @@ public class SimpleHeterogeneousAssignmentBuilder {
             double preciseDesiredAssignmentCount = desiredSharing * numTargetPartitions / (double) numSubscribedMembers;
             for (int memberIndex = 0; memberIndex < numSubscribedMembers; memberIndex++) {
                 desiredAssignmentCounts[subscribedMembers.get(memberIndex)] =
-                    (int) Math.ceil(preciseDesiredAssignmentCount * (double) (memberIndex + 1)) -
+                        (int) Math.ceil(preciseDesiredAssignmentCount * (double) (memberIndex + 1)) -
                         (int) Math.ceil(preciseDesiredAssignmentCount * (double) memberIndex);
             }
         }
@@ -299,7 +299,7 @@ public class SimpleHeterogeneousAssignmentBuilder {
 
             // Add in any partitions which are currently not in the assignment.
             targetPartitions.forEach(topicPartition ->
-                finalAssignmentByPartition.computeIfAbsent(topicPartition.partitionId(), k -> AssignorHelpers.newHashSet(subscribedMembers.size())));
+                    finalAssignmentByPartition.computeIfAbsent(topicPartition.partitionId(), k -> AssignorHelpers.newHashSet(subscribedMembers.size())));
 
             assignRemainingPartitions();
         }

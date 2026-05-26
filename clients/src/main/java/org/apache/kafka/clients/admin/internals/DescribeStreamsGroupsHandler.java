@@ -85,7 +85,7 @@ public class DescribeStreamsGroupsHandler extends AdminApiHandler.Batched<Coordi
         List<String> groupIds = keys.stream().map(key -> {
             if (key.type != CoordinatorType.GROUP) {
                 throw new IllegalArgumentException("Invalid group coordinator key " + key +
-                    " when building `DescribeStreamsGroups` request");
+                        " when building `DescribeStreamsGroups` request");
             }
             return key.idValue;
         }).collect(Collectors.toList());
@@ -140,23 +140,23 @@ public class DescribeStreamsGroupsHandler extends AdminApiHandler.Batched<Coordi
     private Collection<StreamsGroupMemberDescription> convertMembers(final List<StreamsGroupDescribeResponseData.Member> members) {
         final List<StreamsGroupMemberDescription> memberDescriptions = new ArrayList<>(members.size());
         members.forEach(groupMember ->
-            memberDescriptions.add(new StreamsGroupMemberDescription(
-                groupMember.memberId(),
-                groupMember.memberEpoch(),
-                Optional.ofNullable(groupMember.instanceId()),
-                Optional.ofNullable(groupMember.rackId()),
-                groupMember.clientId(),
-                groupMember.clientHost(),
-                groupMember.topologyEpoch(),
-                groupMember.processId(),
-                Optional.ofNullable(groupMember.userEndpoint()).map(this::convertEndpoint),
-                convertClientTags(groupMember.clientTags()),
-                convertTaskOffsets(groupMember.taskOffsets()),
-                convertTaskOffsets(groupMember.taskEndOffsets()),
-                convertAssignment(groupMember.assignment()),
-                convertAssignment(groupMember.targetAssignment()),
-                groupMember.isClassic()
-            ))
+                memberDescriptions.add(new StreamsGroupMemberDescription(
+                    groupMember.memberId(),
+                    groupMember.memberEpoch(),
+                    Optional.ofNullable(groupMember.instanceId()),
+                    Optional.ofNullable(groupMember.rackId()),
+                    groupMember.clientId(),
+                    groupMember.clientHost(),
+                    groupMember.topologyEpoch(),
+                    groupMember.processId(),
+                    Optional.ofNullable(groupMember.userEndpoint()).map(this::convertEndpoint),
+                    convertClientTags(groupMember.clientTags()),
+                    convertTaskOffsets(groupMember.taskOffsets()),
+                    convertTaskOffsets(groupMember.taskEndOffsets()),
+                    convertAssignment(groupMember.assignment()),
+                    convertAssignment(groupMember.targetAssignment()),
+                    groupMember.isClassic()
+                ))
         );
         return memberDescriptions;
     }
@@ -164,67 +164,66 @@ public class DescribeStreamsGroupsHandler extends AdminApiHandler.Batched<Coordi
     private Collection<StreamsGroupSubtopologyDescription> convertSubtopologies(final List<StreamsGroupDescribeResponseData.Subtopology> subtopologies) {
         final List<StreamsGroupSubtopologyDescription> subtopologyDescriptions = new ArrayList<>(subtopologies.size());
         subtopologies.forEach(subtopology ->
-            subtopologyDescriptions.add(new StreamsGroupSubtopologyDescription(
-                subtopology.subtopologyId(),
-                subtopology.sourceTopics(),
-                subtopology.repartitionSinkTopics(),
-                convertTopicInfos(subtopology.stateChangelogTopics()),
-                convertTopicInfos(subtopology.repartitionSourceTopics())
-            ))
+                subtopologyDescriptions.add(new StreamsGroupSubtopologyDescription(
+                    subtopology.subtopologyId(),
+                    subtopology.sourceTopics(),
+                    subtopology.repartitionSinkTopics(),
+                    convertTopicInfos(subtopology.stateChangelogTopics()),
+                    convertTopicInfos(subtopology.repartitionSourceTopics())
+                ))
         );
         return subtopologyDescriptions;
     }
 
     private Map<String, StreamsGroupSubtopologyDescription.TopicInfo> convertTopicInfos(final List<StreamsGroupDescribeResponseData.TopicInfo> topicInfos) {
         return topicInfos.stream().collect(Collectors.toMap(
-            StreamsGroupDescribeResponseData.TopicInfo::name,
-            topicInfo -> new StreamsGroupSubtopologyDescription.TopicInfo(
-                topicInfo.partitions(),
-                topicInfo.replicationFactor(),
-                topicInfo.topicConfigs().stream().collect(Collectors.toMap(
-                    StreamsGroupDescribeResponseData.KeyValue::key,
-                    StreamsGroupDescribeResponseData.KeyValue::value
-                ))
-            )
+                StreamsGroupDescribeResponseData.TopicInfo::name,
+                topicInfo -> new StreamsGroupSubtopologyDescription.TopicInfo(
+                    topicInfo.partitions(),
+                    topicInfo.replicationFactor(),
+                    topicInfo.topicConfigs().stream().collect(Collectors.toMap(
+                        StreamsGroupDescribeResponseData.KeyValue::key,
+                        StreamsGroupDescribeResponseData.KeyValue::value
+                    ))
+                )
         ));
     }
 
     private StreamsGroupMemberAssignment.TaskIds convertTaskIds(final StreamsGroupDescribeResponseData.TaskIds taskIds) {
         return new StreamsGroupMemberAssignment.TaskIds(
-            taskIds.subtopologyId(),
-            taskIds.partitions()
+                taskIds.subtopologyId(),
+                taskIds.partitions()
         );
     }
 
     private StreamsGroupMemberAssignment convertAssignment(final StreamsGroupDescribeResponseData.Assignment assignment) {
         return new StreamsGroupMemberAssignment(
-            assignment.activeTasks().stream().map(this::convertTaskIds).collect(Collectors.toList()),
-            assignment.standbyTasks().stream().map(this::convertTaskIds).collect(Collectors.toList()),
-            assignment.warmupTasks().stream().map(this::convertTaskIds).collect(Collectors.toList())
+                assignment.activeTasks().stream().map(this::convertTaskIds).collect(Collectors.toList()),
+                assignment.standbyTasks().stream().map(this::convertTaskIds).collect(Collectors.toList()),
+                assignment.warmupTasks().stream().map(this::convertTaskIds).collect(Collectors.toList())
         );
     }
 
     private List<StreamsGroupMemberDescription.TaskOffset> convertTaskOffsets(final List<StreamsGroupDescribeResponseData.TaskOffset> taskOffsets) {
         return taskOffsets.stream().map(taskOffset ->
             new StreamsGroupMemberDescription.TaskOffset(
-                taskOffset.subtopologyId(),
-                taskOffset.partition(),
-                taskOffset.offset()
+                    taskOffset.subtopologyId(),
+                    taskOffset.partition(),
+                    taskOffset.offset()
             )
         ).collect(Collectors.toList());
     }
 
     private Map<String, String> convertClientTags(final List<StreamsGroupDescribeResponseData.KeyValue> keyValues) {
         return keyValues.stream().collect(Collectors.toMap(
-            StreamsGroupDescribeResponseData.KeyValue::key,
-            StreamsGroupDescribeResponseData.KeyValue::value
+                StreamsGroupDescribeResponseData.KeyValue::key,
+                StreamsGroupDescribeResponseData.KeyValue::value
         ));
     }
 
     private StreamsGroupMemberDescription.Endpoint convertEndpoint(final StreamsGroupDescribeResponseData.Endpoint endpoint) {
         return new StreamsGroupMemberDescription.Endpoint(endpoint.host(), endpoint.port());
     }
-
 
     private void handleError(
             CoordinatorKey groupId,
@@ -245,7 +244,7 @@ public class DescribeStreamsGroupsHandler extends AdminApiHandler.Batched<Coordi
             case COORDINATOR_LOAD_IN_PROGRESS:
                 // If the coordinator is in the middle of loading, then we just need to retry
                 log.debug("`DescribeStreamsGroups` request for group id {} failed because the coordinator " +
-                    "is still in the process of loading state. Will retry", groupId.idValue);
+                        "is still in the process of loading state. Will retry", groupId.idValue);
                 break;
 
             case COORDINATOR_NOT_AVAILABLE:
@@ -253,13 +252,13 @@ public class DescribeStreamsGroupsHandler extends AdminApiHandler.Batched<Coordi
                 // If the coordinator is unavailable or there was a coordinator change, then we unmap
                 // the key so that we retry the `FindCoordinator` request
                 log.debug("`DescribeStreamsGroups` request for group id {} returned error {}. " +
-                    "Will attempt to find the coordinator again and retry", groupId.idValue, error);
+                        "Will attempt to find the coordinator again and retry", groupId.idValue, error);
                 groupsToUnmap.add(groupId);
                 break;
 
             case GROUP_ID_NOT_FOUND:
                 log.debug("`DescribeStreamsGroups` request for group id {} failed because the group does not exist. {}",
-                    groupId.idValue, errorMsg != null ? errorMsg : "");
+                        groupId.idValue, errorMsg != null ? errorMsg : "");
                 failed.put(groupId, error.exception(errorMsg));
                 break;
 

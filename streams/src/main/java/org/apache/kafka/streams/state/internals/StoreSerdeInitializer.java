@@ -33,9 +33,9 @@ public class StoreSerdeInitializer {
                                                       final Serde<V> valueSerde,
                                                       final PrepareFunc<V> prepareValueSerdeFunc) {
         return new StateSerdes<>(
-            changelogTopic,
-            prepareSerde(WrappingNullableUtils::prepareKeySerde, storeName, keySerde, new SerdeGetter(context), true, context.taskId()),
-            prepareSerde(prepareValueSerdeFunc, storeName, valueSerde, new SerdeGetter(context), false, context.taskId())
+                changelogTopic,
+                prepareSerde(WrappingNullableUtils::prepareKeySerde, storeName, keySerde, new SerdeGetter(context), true, context.taskId()),
+                prepareSerde(prepareValueSerdeFunc, storeName, valueSerde, new SerdeGetter(context), false, context.taskId())
         );
     }
 

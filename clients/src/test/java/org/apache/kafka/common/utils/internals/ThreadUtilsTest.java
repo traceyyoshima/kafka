@@ -30,7 +30,6 @@ public class ThreadUtilsTest {
     private static final String THREAD_NAME = "ThreadName";
     private static final String THREAD_NAME_WITH_NUMBER = THREAD_NAME + "%d";
 
-
     @Test
     public void testThreadNameWithoutNumberNoDemon() {
         assertEquals(THREAD_NAME, ThreadUtils.createThreadFactory(THREAD_NAME, false).

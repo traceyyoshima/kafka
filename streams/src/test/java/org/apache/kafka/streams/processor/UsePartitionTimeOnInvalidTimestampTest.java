@@ -38,7 +38,7 @@ public class UsePartitionTimeOnInvalidTimestampTest extends TimestampExtractorTe
 
         final TimestampExtractor extractor = new UsePartitionTimeOnInvalidTimestamp();
         final long timestamp = extractor.extract(
-            new ConsumerRecord<>("anyTopic", 0, 0, null, null),
+                new ConsumerRecord<>("anyTopic", 0, 0, null, null),
                 partitionTime
         );
 
@@ -52,6 +52,6 @@ public class UsePartitionTimeOnInvalidTimestampTest extends TimestampExtractorTe
         try {
             extractor.extract(record, -1);
             fail("should have thrown StreamsException");
-        } catch (final StreamsException expected) { }
+        } catch (final StreamsException expected) {}
     }
 }

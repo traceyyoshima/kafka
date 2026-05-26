@@ -253,9 +253,9 @@ public class LegacyStickyTaskAssignorTest {
 
         // one client should get 3 tasks and the other should have 4
         assertThat(
-            (client1Tasks.size() == 3 && client2Tasks.size() == 4) ||
+                (client1Tasks.size() == 3 && client2Tasks.size() == 4) ||
                 (client1Tasks.size() == 4 && client2Tasks.size() == 3),
-            is(true));
+                is(true));
         allTasks.removeAll(client1Tasks);
         // client2 should have all the remaining tasks not assigned to client 1
         assertThat(client2Tasks, equalTo(allTasks));
@@ -356,7 +356,6 @@ public class LegacyStickyTaskAssignorTest {
 
         final boolean probingRebalanceNeeded = assign(1, rackAwareStrategy, TASK_0_0, TASK_0_1, TASK_0_2, TASK_0_3);
         assertThat(probingRebalanceNeeded, is(false));
-
 
         assertThat(clients.get(PID_1).standbyTasks(), not(hasItems(TASK_0_0)));
         assertThat(clients.get(PID_1).standbyTasks().size(), lessThanOrEqualTo(2));
@@ -504,19 +503,19 @@ public class LegacyStickyTaskAssignorTest {
         createClient(PID_1, 1);
 
         final boolean probingRebalanceNeeded = assign(
-            rackAwareStrategy,
-            TASK_0_0,
-            TASK_0_1,
-            TASK_0_2,
-            TASK_1_0,
-            TASK_1_1,
-            TASK_1_2,
-            TASK_2_0,
-            TASK_2_1,
-            TASK_2_2,
-            TASK_3_0,
-            TASK_3_1,
-            TASK_3_2
+                rackAwareStrategy,
+                TASK_0_0,
+                TASK_0_1,
+                TASK_0_2,
+                TASK_1_0,
+                TASK_1_1,
+                TASK_1_2,
+                TASK_2_0,
+                TASK_2_1,
+                TASK_2_2,
+                TASK_3_0,
+                TASK_3_1,
+                TASK_3_2
         );
 
         assertThat(probingRebalanceNeeded, is(false));
@@ -559,24 +558,24 @@ public class LegacyStickyTaskAssignorTest {
         final Map<ProcessId, Map<String, Optional<String>>> racksForProcessConsumer = getRandomProcessRacks(clientSize, nodeSize);
         final InternalTopicManager internalTopicManager = mockInternalTopicManagerForRandomChangelog(nodeSize, topicSize, partitionSize);
         final AssignmentConfigs configs = new AssignmentConfigs(
-            0L,
-            1,
-            1,
-            60_000L,
-            EMPTY_RACK_AWARE_ASSIGNMENT_TAGS,
-            null,
-            null,
-            rackAwareStrategy
+                0L,
+                1,
+                1,
+                60_000L,
+                EMPTY_RACK_AWARE_ASSIGNMENT_TAGS,
+                null,
+                null,
+                rackAwareStrategy
         );
         final RackAwareTaskAssignor rackAwareTaskAssignor = new RackAwareTaskAssignor(
-            cluster,
-            partitionsForTask,
-            changelogPartitionsForTask,
-            getTasksForTopicGroup(topicSize, partitionSize),
-            racksForProcessConsumer,
-            internalTopicManager,
-            configs,
-            time
+                cluster,
+                partitionsForTask,
+                changelogPartitionsForTask,
+                getTasksForTopicGroup(topicSize, partitionSize),
+                racksForProcessConsumer,
+                internalTopicManager,
+                configs,
+                time
         );
 
         final boolean probingRebalanceNeeded = assign(configs, rackAwareTaskAssignor, taskIdArray);
@@ -971,32 +970,32 @@ public class LegacyStickyTaskAssignorTest {
         final InternalTopicManager internalTopicManager = mockInternalTopicManagerForRandomChangelog(nodeSize, topicSize, partitionSize);
 
         final AssignmentConfigs configs = new AssignmentConfigs(
-            0L,
-            1,
-            0,
-            60_000L,
-            EMPTY_RACK_AWARE_ASSIGNMENT_TAGS,
-            null,
-            null,
-            rackAwareStrategy
+                0L,
+                1,
+                0,
+                60_000L,
+                EMPTY_RACK_AWARE_ASSIGNMENT_TAGS,
+                null,
+                null,
+                rackAwareStrategy
         );
         final RackAwareTaskAssignor rackAwareTaskAssignor = new RackAwareTaskAssignor(
-            cluster,
-            partitionsForTask,
-            changelogPartitionsForTask,
-            getTasksForTopicGroup(),
-            racksForProcessConsumer,
-            internalTopicManager,
-            configs,
-            time
+                cluster,
+                partitionsForTask,
+                changelogPartitionsForTask,
+                getTasksForTopicGroup(),
+                racksForProcessConsumer,
+                internalTopicManager,
+                configs,
+                time
         );
 
         final boolean probingRebalanceNeeded = new LegacyStickyTaskAssignor(true).assign(
-            clients,
-            new HashSet<>(taskIds),
-            new HashSet<>(taskIds),
-            rackAwareTaskAssignor,
-            configs
+                clients,
+                new HashSet<>(taskIds),
+                new HashSet<>(taskIds),
+                rackAwareTaskAssignor,
+                configs
         );
         assertThat(probingRebalanceNeeded, is(false));
 
@@ -1027,32 +1026,32 @@ public class LegacyStickyTaskAssignorTest {
         final InternalTopicManager internalTopicManager = mockInternalTopicManagerForChangelog();
 
         final AssignmentConfigs configs = new AssignmentConfigs(
-            0L,
-            1,
-            1,
-            60_000L,
-            EMPTY_RACK_AWARE_ASSIGNMENT_TAGS,
-            10,
-            1,
-            rackAwareStrategy
+                0L,
+                1,
+                1,
+                60_000L,
+                EMPTY_RACK_AWARE_ASSIGNMENT_TAGS,
+                10,
+                1,
+                rackAwareStrategy
         );
         final RackAwareTaskAssignor rackAwareTaskAssignor = new RackAwareTaskAssignor(
-            cluster,
-            partitionsForTask,
-            changelogPartitionsForTask,
-            getTasksForTopicGroup(),
-            racksForProcessConsumer,
-            internalTopicManager,
-            configs,
-            time
+                cluster,
+                partitionsForTask,
+                changelogPartitionsForTask,
+                getTasksForTopicGroup(),
+                racksForProcessConsumer,
+                internalTopicManager,
+                configs,
+                time
         );
 
         final boolean probingRebalanceNeeded = new LegacyStickyTaskAssignor().assign(
-            clients,
-            new HashSet<>(taskIds),
-            new HashSet<>(statefulTaskIds),
-            rackAwareTaskAssignor,
-            configs
+                clients,
+                new HashSet<>(taskIds),
+                new HashSet<>(statefulTaskIds),
+                rackAwareTaskAssignor,
+                configs
         );
         assertThat(probingRebalanceNeeded, is(false));
 
@@ -1102,27 +1101,27 @@ public class LegacyStickyTaskAssignorTest {
         final int replicaCount = 1;
         final int maxCapacity = 3;
         final SortedMap<TaskId, Set<TopicPartition>> taskTopicPartitionMap = getTaskTopicPartitionMap(
-            tpSize, partitionSize, false);
+                tpSize, partitionSize, false);
         final AssignmentConfigs configs = new AssignmentConfigs(
-            0L,
-            1,
-            replicaCount,
-            60_000L,
-            EMPTY_RACK_AWARE_ASSIGNMENT_TAGS,
-            10,
-            1,
-            rackAwareStrategy
+                0L,
+                1,
+                replicaCount,
+                60_000L,
+                EMPTY_RACK_AWARE_ASSIGNMENT_TAGS,
+                10,
+                1,
+                rackAwareStrategy
         );
 
         final RackAwareTaskAssignor rackAwareTaskAssignor = spy(new RackAwareTaskAssignor(
-            getRandomCluster(nodeSize, tpSize, partitionSize),
-            taskTopicPartitionMap,
-            getTaskTopicPartitionMap(tpSize, partitionSize, true),
-            getTasksForTopicGroup(tpSize, partitionSize),
-            getRandomProcessRacks(clientSize, nodeSize),
-            mockInternalTopicManagerForRandomChangelog(nodeSize, tpSize, partitionSize),
-            configs,
-            time
+                getRandomCluster(nodeSize, tpSize, partitionSize),
+                taskTopicPartitionMap,
+                getTaskTopicPartitionMap(tpSize, partitionSize, true),
+                getTasksForTopicGroup(tpSize, partitionSize),
+                getRandomProcessRacks(clientSize, nodeSize),
+                mockInternalTopicManagerForRandomChangelog(nodeSize, tpSize, partitionSize),
+                configs,
+                time
         ));
 
         final SortedSet<TaskId> taskIds = (SortedSet<TaskId>) taskTopicPartitionMap.keySet();
@@ -1130,24 +1129,23 @@ public class LegacyStickyTaskAssignorTest {
         final Set<TaskId> statefulTasks = statefulAndStatelessTasks.get(0);
         final Set<TaskId> statelessTasks = statefulAndStatelessTasks.get(1);
         final SortedMap<ProcessId, ClientState> clientStateMap = getRandomClientState(clientSize,
-            tpSize, partitionSize, maxCapacity, false, statefulTasks);
-
+                tpSize, partitionSize, maxCapacity, false, statefulTasks);
 
         final boolean probing = new LegacyStickyTaskAssignor().assign(
-            clientStateMap,
-            taskIds,
-            statefulTasks,
-            rackAwareTaskAssignor,
-            configs
+                clientStateMap,
+                taskIds,
+                statefulTasks,
+                rackAwareTaskAssignor,
+                configs
         );
 
         assertFalse(probing);
         assertValidAssignment(
-            replicaCount,
-            statefulTasks,
-            statelessTasks,
-            clientStateMap,
-            new StringBuilder()
+                replicaCount,
+                statefulTasks,
+                statelessTasks,
+                clientStateMap,
+                new StringBuilder()
         );
         verifyTaskPlacementWithRackAwareAssignor(rackAwareTaskAssignor, taskIds, clientStateMap, true, enableRackAwareTaskAssignor);
         if (rackAwareStrategy.equals(StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_BALANCE_SUBTOPOLOGY)) {
@@ -1172,32 +1170,32 @@ public class LegacyStickyTaskAssignorTest {
         final int replicaCount = 1;
         final int maxCapacity = 3;
         final SortedMap<TaskId, Set<TopicPartition>> taskTopicPartitionMap = getTaskTopicPartitionMap(
-            tpSize, partitionSize, false);
+                tpSize, partitionSize, false);
         final Cluster cluster = getRandomCluster(nodeSize, tpSize, partitionSize);
         final Map<TaskId, Set<TopicPartition>> taskChangelogTopicPartitionMap = getTaskTopicPartitionMap(tpSize, partitionSize, true);
         final Map<ProcessId, Map<String, Optional<String>>> processRackMap = getRandomProcessRacks(clientSize, nodeSize);
         final InternalTopicManager mockInternalTopicManager = mockInternalTopicManagerForRandomChangelog(nodeSize, tpSize, partitionSize);
 
         AssignmentConfigs configs = new AssignmentConfigs(
-            0L,
-            1,
-            replicaCount,
-            60_000L,
-            EMPTY_RACK_AWARE_ASSIGNMENT_TAGS,
-            0, // Override traffic cost to 0 to maintain original assignment
-            10,
-            rackAwareStrategy
+                0L,
+                1,
+                replicaCount,
+                60_000L,
+                EMPTY_RACK_AWARE_ASSIGNMENT_TAGS,
+                0, // Override traffic cost to 0 to maintain original assignment
+                10,
+                rackAwareStrategy
         );
 
         RackAwareTaskAssignor rackAwareTaskAssignor = spy(new RackAwareTaskAssignor(
-            cluster,
-            taskTopicPartitionMap,
-            taskChangelogTopicPartitionMap,
-            getTasksForTopicGroup(tpSize, partitionSize),
-            processRackMap,
-            mockInternalTopicManager,
-            configs,
-            time
+                cluster,
+                taskTopicPartitionMap,
+                taskChangelogTopicPartitionMap,
+                getTasksForTopicGroup(tpSize, partitionSize),
+                processRackMap,
+                mockInternalTopicManager,
+                configs,
+                time
         ));
 
         final SortedSet<TaskId> taskIds = (SortedSet<TaskId>) taskTopicPartitionMap.keySet();
@@ -1205,14 +1203,14 @@ public class LegacyStickyTaskAssignorTest {
         final Set<TaskId> statefulTasks = statefulAndStatelessTasks.get(0);
         final Set<TaskId> statelessTasks = statefulAndStatelessTasks.get(1);
         final SortedMap<ProcessId, ClientState> clientStateMap = getRandomClientState(clientSize,
-            tpSize, partitionSize, maxCapacity, false, statefulTasks);
+                tpSize, partitionSize, maxCapacity, false, statefulTasks);
 
         new LegacyStickyTaskAssignor().assign(
-            clientStateMap,
-            taskIds,
-            statefulTasks,
-            rackAwareTaskAssignor,
-            configs
+                clientStateMap,
+                taskIds,
+                statefulTasks,
+                rackAwareTaskAssignor,
+                configs
         );
 
         assertValidAssignment(1, statefulTasks, statelessTasks, clientStateMap, new StringBuilder());
@@ -1228,33 +1226,33 @@ public class LegacyStickyTaskAssignorTest {
 
         final SortedMap<ProcessId, ClientState> clientStateMapCopy = copyClientStateMap(clientStateMap);
         configs = new AssignmentConfigs(
-            0L,
-            1,
-            replicaCount,
-            60_000L,
-            EMPTY_RACK_AWARE_ASSIGNMENT_TAGS,
-            0,
-            10,
-            StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_NONE
+                0L,
+                1,
+                replicaCount,
+                60_000L,
+                EMPTY_RACK_AWARE_ASSIGNMENT_TAGS,
+                0,
+                10,
+                StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_NONE
         );
 
         rackAwareTaskAssignor = spy(new RackAwareTaskAssignor(
-            cluster,
-            taskTopicPartitionMap,
-            taskChangelogTopicPartitionMap,
-            getTasksForTopicGroup(tpSize, partitionSize),
-            processRackMap,
-            mockInternalTopicManager,
-            configs,
-            time
+                cluster,
+                taskTopicPartitionMap,
+                taskChangelogTopicPartitionMap,
+                getTasksForTopicGroup(tpSize, partitionSize),
+                processRackMap,
+                mockInternalTopicManager,
+                configs,
+                time
         ));
 
         new LegacyStickyTaskAssignor().assign(
-            clientStateMapCopy,
-            taskIds,
-            statefulTasks,
-            rackAwareTaskAssignor,
-            configs
+                clientStateMapCopy,
+                taskIds,
+                statefulTasks,
+                rackAwareTaskAssignor,
+                configs
         );
 
         for (final Map.Entry<ProcessId, ClientState> entry : clientStateMap.entrySet()) {
@@ -1322,19 +1320,19 @@ public class LegacyStickyTaskAssignorTest {
     })
     public void shouldRangeAssignTasksWhenStartingEmpty(final String rackAwareStrategy) {
         setUp(rackAwareStrategy);
-        
+
         // Two clients with capacity 1 each, starting empty (no previous tasks)
         createClient(PID_1, 1);
         createClient(PID_2, 1);
-        
+
         // Two subtopologies with 2 tasks each (4 tasks total)
         final boolean probingRebalanceNeeded = assign(1, rackAwareStrategy, TASK_0_0, TASK_0_1, TASK_1_0, TASK_1_1);
         assertThat(probingRebalanceNeeded, is(false));
-        
+
         // Each client should get one active task from each subtopology
         final ClientState client1 = clients.get(PID_1);
         final ClientState client2 = clients.get(PID_2);
-        
+
         // Check that each client has one active task from subtopology 0
         final long client1Subtopology0ActiveCount = client1.activeTasks().stream()
             .filter(task -> task.subtopology() == 0)
@@ -1344,7 +1342,7 @@ public class LegacyStickyTaskAssignorTest {
             .count();
         assertThat(client1Subtopology0ActiveCount, equalTo(1L));
         assertThat(client2Subtopology0ActiveCount, equalTo(1L));
-        
+
         // Check that each client has one active task from subtopology 1
         final long client1Subtopology1ActiveCount = client1.activeTasks().stream()
             .filter(task -> task.subtopology() == 1)
@@ -1354,7 +1352,7 @@ public class LegacyStickyTaskAssignorTest {
             .count();
         assertThat(client1Subtopology1ActiveCount, equalTo(1L));
         assertThat(client2Subtopology1ActiveCount, equalTo(1L));
-        
+
         // Check that each client has one standby task from subtopology 0
         final long client1Subtopology0StandbyCount = client1.standbyTasks().stream()
             .filter(task -> task.subtopology() == 0)
@@ -1364,7 +1362,7 @@ public class LegacyStickyTaskAssignorTest {
             .count();
         assertThat(client1Subtopology0StandbyCount, equalTo(1L));
         assertThat(client2Subtopology0StandbyCount, equalTo(1L));
-        
+
         // Check that each client has one standby task from subtopology 1
         final long client1Subtopology1StandbyCount = client1.standbyTasks().stream()
             .filter(task -> task.subtopology() == 1)
@@ -1384,14 +1382,14 @@ public class LegacyStickyTaskAssignorTest {
         final List<TaskId> taskIds = asList(tasks);
         Collections.shuffle(taskIds);
         final AssignmentConfigs configs = new AssignmentConfigs(
-            0L,
-            1,
-            numStandbys,
-            60_000L,
-            EMPTY_RACK_AWARE_ASSIGNMENT_TAGS,
-            null,
-            null,
-            rackAwareStrategy
+                0L,
+                1,
+                numStandbys,
+                60_000L,
+                EMPTY_RACK_AWARE_ASSIGNMENT_TAGS,
+                null,
+                null,
+                rackAwareStrategy
         );
 
         return assign(configs, getRackAwareTaskAssignor(configs, getTasksForTopicGroup()), tasks);
@@ -1401,11 +1399,11 @@ public class LegacyStickyTaskAssignorTest {
         final List<TaskId> taskIds = asList(tasks);
         Collections.shuffle(taskIds);
         return new LegacyStickyTaskAssignor().assign(
-            clients,
-            new HashSet<>(taskIds),
-            new HashSet<>(taskIds),
-            rackAwareTaskAssignor,
-            configs
+                clients,
+                new HashSet<>(taskIds),
+                new HashSet<>(taskIds),
+                rackAwareTaskAssignor,
+                configs
         );
     }
 

@@ -24,10 +24,10 @@ public class FloatSerializer implements Serializer<Float> {
 
         int bits = Float.floatToRawIntBits(data);
         return new byte[] {
-            (byte) (bits >>> 24),
-            (byte) (bits >>> 16),
-            (byte) (bits >>> 8),
-            (byte) bits
+                (byte) (bits >>> 24),
+                (byte) (bits >>> 16),
+                (byte) (bits >>> 8),
+                (byte) bits
         };
     }
 }

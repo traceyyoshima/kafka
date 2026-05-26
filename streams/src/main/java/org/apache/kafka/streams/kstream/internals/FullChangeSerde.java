@@ -55,7 +55,6 @@ public final class FullChangeSerde<T> {
         return new Change<>(newBytes, oldBytes);
     }
 
-
     public Change<T> deserializeParts(final String topic, final Headers headers, final Change<byte[]> serialChange) {
         if (serialChange == null) {
             return null;
@@ -63,9 +62,9 @@ public final class FullChangeSerde<T> {
         final Deserializer<T> innerDeserializer = innerSerde().deserializer();
 
         final T oldValue =
-            serialChange.oldValue == null ? null : innerDeserializer.deserialize(topic, headers, serialChange.oldValue);
+                serialChange.oldValue == null ? null : innerDeserializer.deserialize(topic, headers, serialChange.oldValue);
         final T newValue =
-            serialChange.newValue == null ? null : innerDeserializer.deserialize(topic, headers, serialChange.newValue);
+                serialChange.newValue == null ? null : innerDeserializer.deserialize(topic, headers, serialChange.newValue);
 
         return new Change<>(newValue, oldValue);
     }

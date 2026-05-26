@@ -109,10 +109,10 @@ public class OuterJoinListValueStoreRestorationTest {
 
     private static Stream<Arguments> processingGuaranteeAndStoreFormat() {
         return Stream.of(
-            Arguments.of(StreamsConfig.EXACTLY_ONCE_V2, StreamsConfig.DSL_STORE_FORMAT_DEFAULT),
-            Arguments.of(StreamsConfig.EXACTLY_ONCE_V2, StreamsConfig.DSL_STORE_FORMAT_HEADERS),
-            Arguments.of(StreamsConfig.AT_LEAST_ONCE, StreamsConfig.DSL_STORE_FORMAT_DEFAULT),
-            Arguments.of(StreamsConfig.AT_LEAST_ONCE, StreamsConfig.DSL_STORE_FORMAT_HEADERS)
+                Arguments.of(StreamsConfig.EXACTLY_ONCE_V2, StreamsConfig.DSL_STORE_FORMAT_DEFAULT),
+                Arguments.of(StreamsConfig.EXACTLY_ONCE_V2, StreamsConfig.DSL_STORE_FORMAT_HEADERS),
+                Arguments.of(StreamsConfig.AT_LEAST_ONCE, StreamsConfig.DSL_STORE_FORMAT_DEFAULT),
+                Arguments.of(StreamsConfig.AT_LEAST_ONCE, StreamsConfig.DSL_STORE_FORMAT_HEADERS)
         );
     }
 
@@ -135,10 +135,10 @@ public class OuterJoinListValueStoreRestorationTest {
         final KStream<String, String> rightStream = builder.stream(rightTopic);
 
         leftStream.outerJoin(
-            rightStream,
-            (leftValue, rightValue) -> "left=" + leftValue + ", right=" + rightValue,
-            JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofSeconds(60)),
-            StreamJoined.with(Serdes.String(), Serdes.String(), Serdes.String())
+                rightStream,
+                (leftValue, rightValue) -> "left=" + leftValue + ", right=" + rightValue,
+                JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofSeconds(60)),
+                StreamJoined.with(Serdes.String(), Serdes.String(), Serdes.String())
         ).to(outputTopic);
 
         return new KafkaStreams(builder.build(), streamsConfig);
@@ -167,7 +167,6 @@ public class OuterJoinListValueStoreRestorationTest {
             timestamp += 100;
         }
 
-
         // Wait for processing and commit to changelog
 
         // 1- Use a probe record to verify end-to-end: process + commit
@@ -175,10 +174,10 @@ public class OuterJoinListValueStoreRestorationTest {
         produceRecord(rightTopic, "probe", "probe-right", timestamp);
         // 2- Wait for the join result - this proves processing happened
         waitUntilMinKeyValueRecordsReceived(
-            getConsumerConfig(),
-            outputTopic,
-            1,
-            30000
+                getConsumerConfig(),
+                outputTopic,
+                1,
+                30000
         );
         // 3- Wait for all records to be processed and committed (zero lag)
         // This ensures changelog commits have completed before we close
@@ -199,10 +198,10 @@ public class OuterJoinListValueStoreRestorationTest {
         produceRecord(leftTopic, "trigger", "trigger-value", timestampBeyondWindow);
 
         final List<KeyValue<String, String>> results = waitUntilMinKeyValueRecordsReceived(
-            getConsumerConfig(),
-            outputTopic,
-            10,
-            30000
+                getConsumerConfig(),
+                outputTopic,
+                10,
+                30000
         );
 
         final Set<String> expectedKeys = IntStream.range(0, 10)
@@ -216,7 +215,7 @@ public class OuterJoinListValueStoreRestorationTest {
 
         // assert based on record shape
         assertEquals(expectedKeys, unmatchedKeys,
-            "All 10 unmatched left records should be emitted after restoration with right=null shape");
+                "All 10 unmatched left records should be emitted after restoration with right=null shape");
 
         final Set<String> nonProbeKeys = results.stream()
             .filter(kv -> !"probe".equals(kv.key))
@@ -225,7 +224,7 @@ public class OuterJoinListValueStoreRestorationTest {
 
         // assert based on keys
         assertEquals(expectedKeys, nonProbeKeys,
-            "No unexpected keys should appear on the output topic after restoration");
+                "No unexpected keys should appear on the output topic after restoration");
     }
 
     private void produceRecord(final String topic, final String key, final String value, final long timestamp) {
@@ -236,10 +235,10 @@ public class OuterJoinListValueStoreRestorationTest {
         producerConfig.put(ProducerConfig.ACKS_CONFIG, "all");
 
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-            topic,
-            List.of(new KeyValue<>(key, value)),
-            producerConfig,
-            timestamp
+                topic,
+                List.of(new KeyValue<>(key, value)),
+                producerConfig,
+                timestamp
         );
     }
 

@@ -55,7 +55,7 @@ public class BeginQuorumEpochResponse extends AbstractResponse {
         for (BeginQuorumEpochResponseData.TopicData topicResponse : data.topics()) {
             for (BeginQuorumEpochResponseData.PartitionData partitionResponse : topicResponse.partitions()) {
                 errors.compute(Errors.forCode(partitionResponse.errorCode()),
-                    (error, count) -> count == null ? 1 : count + 1);
+                        (error, count) -> count == null ? 1 : count + 1);
             }
         }
         return errors;

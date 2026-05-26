@@ -37,8 +37,8 @@ public class InitializeShareGroupStateParameters implements PersisterParameters 
     public static InitializeShareGroupStateParameters from(InitializeShareGroupStateRequestData data) {
         return new Builder().setGroupTopicPartitionData(new GroupTopicPartitionData<>(data.groupId(), data.topics().stream()
             .map(readStateData -> new TopicData<>(readStateData.topicId(),
-                readStateData.partitions().stream()
-                    .map(partitionData -> PartitionFactory.newPartitionStateData(partitionData.partition(), partitionData.stateEpoch(), partitionData.startOffset())).toList()
+                    readStateData.partitions().stream()
+                        .map(partitionData -> PartitionFactory.newPartitionStateData(partitionData.partition(), partitionData.stateEpoch(), partitionData.startOffset())).toList()
             )).toList()
         )).build();
     }
@@ -59,7 +59,7 @@ public class InitializeShareGroupStateParameters implements PersisterParameters 
     @Override
     public String toString() {
         return "InitializeShareGroupStateParameters{" +
-            "groupTopicPartitionData=" + groupTopicPartitionData +
-            '}';
+                "groupTopicPartitionData=" + groupTopicPartitionData +
+                '}';
     }
 }

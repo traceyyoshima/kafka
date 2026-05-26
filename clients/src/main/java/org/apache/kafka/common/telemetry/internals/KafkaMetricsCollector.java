@@ -230,12 +230,12 @@ public class KafkaMetricsCollector implements MetricsCollector {
             InstantAndValue<Double> instantAndValue = ledger.delta(metricKey, timestamp, value);
 
             metricsEmitter.emitMetric(
-                SinglePointMetric.deltaSum(metricKey, instantAndValue.getValue(), true, timestamp,
-                    instantAndValue.getIntervalStart(), excludeLabels)
+                    SinglePointMetric.deltaSum(metricKey, instantAndValue.getValue(), true, timestamp,
+                            instantAndValue.getIntervalStart(), excludeLabels)
             );
         } else {
             metricsEmitter.emitMetric(
-                SinglePointMetric.sum(metricKey, value, true, timestamp, ledger.instantAdded(metricKey), excludeLabels)
+                    SinglePointMetric.sum(metricKey, value, true, timestamp, ledger.instantAdded(metricKey), excludeLabels)
             );
         }
     }
@@ -246,7 +246,7 @@ public class KafkaMetricsCollector implements MetricsCollector {
         }
 
         metricsEmitter.emitMetric(
-            SinglePointMetric.gauge(metricKey, value, timestamp, excludeLabels)
+                SinglePointMetric.gauge(metricKey, value, timestamp, excludeLabels)
         );
     }
 
@@ -278,7 +278,7 @@ public class KafkaMetricsCollector implements MetricsCollector {
             metricMap.put(metricKey, metric);
             if (doubleDeltas.contains(metricKey)) {
                 log.warn("Registering a new metric {} which already has a last value tracked. " +
-                    "Removing metric from delta register.", metric.metricName(), new Exception());
+                        "Removing metric from delta register.", metric.metricName(), new Exception());
 
                 /*
                  This scenario shouldn't occur while registering a metric since it should

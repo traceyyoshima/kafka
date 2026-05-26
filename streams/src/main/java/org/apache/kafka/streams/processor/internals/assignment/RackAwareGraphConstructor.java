@@ -113,7 +113,7 @@ public interface RackAwareGraphConstructor<T> {
         // Validate task assigned
         if (tasksAssigned != taskIdList.size()) {
             throw new IllegalStateException("Computed active task assignment number "
-                + tasksAssigned + " is different size " + taskIdList.size());
+                    + tasksAssigned + " is different size " + taskIdList.size());
         }
 
         // Validate original assigned task number matches
@@ -128,16 +128,16 @@ public interface RackAwareGraphConstructor<T> {
 
         if (originalAssignedTaskNumber.size() != assignedTaskNumber.size()) {
             throw new IllegalStateException("There are " + originalAssignedTaskNumber.size() + " clients have "
-                + " active tasks before assignment, but " + assignedTaskNumber.size() + " clients have"
-                + " active tasks after assignment");
+                    + " active tasks before assignment, but " + assignedTaskNumber.size() + " clients have"
+                    + " active tasks after assignment");
         }
 
         for (final Entry<ProcessId, Integer> originalCapacity : originalAssignedTaskNumber.entrySet()) {
             final int capacity = assignedTaskNumber.getOrDefault(originalCapacity.getKey(), 0);
             if (!Objects.equals(originalCapacity.getValue(), capacity)) {
                 throw new IllegalStateException("There are " + originalCapacity.getValue() + " tasks assigned to"
-                    + " client " + originalCapacity.getKey() + " before assignment, but " + capacity + " tasks "
-                    + " are assigned to it after assignment");
+                        + " client " + originalCapacity.getKey() + " before assignment, but " + capacity + " tasks "
+                        + " are assigned to it after assignment");
             }
         }
     }

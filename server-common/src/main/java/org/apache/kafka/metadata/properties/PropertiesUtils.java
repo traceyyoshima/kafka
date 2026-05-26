@@ -45,9 +45,9 @@ public final class PropertiesUtils {
     ) throws IOException {
         File tempFile = new File(path + ".tmp");
         try (
-            FileOutputStream fos = new FileOutputStream(tempFile, false);
-            OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
-            PrintWriter pw = new PrintWriter(osw)
+                FileOutputStream fos = new FileOutputStream(tempFile, false);
+                OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+                PrintWriter pw = new PrintWriter(osw)
         ) {
             props.store(pw, "");
             fos.flush();

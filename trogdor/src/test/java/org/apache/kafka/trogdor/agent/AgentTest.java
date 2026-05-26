@@ -81,10 +81,10 @@ public class AgentTest {
         HashMap<String, String> config = new HashMap<>();
         config.put(Platform.Config.TROGDOR_AGENT_PORT, Integer.toString(Agent.DEFAULT_PORT));
         nodes.put("node01", new BasicNode("node01", "localhost",
-            config, Set.of()));
+                config, Set.of()));
         BasicTopology topology = new BasicTopology(nodes);
         return new BasicPlatform("node01", topology,
-            scheduler, new BasicPlatform.ShellCommandRunner());
+                scheduler, new BasicPlatform.ShellCommandRunner());
     }
 
     private Agent createAgent(Scheduler scheduler) {
@@ -163,7 +163,7 @@ public class AgentTest {
         long doneMs = actualStartTimeMs + 2 * tickMs;
         new ExpectedTasks().addTask(new ExpectedTaskBuilder("foo").
             workerState(new WorkerDone("foo", fooSpec, actualStartTimeMs,
-                doneMs, null, "worker expired")).
+                    doneMs, null, "worker expired")).
             taskState(new TaskDone(fooSpec, actualStartTimeMs, doneMs, "worker expired", false, null)).
             build()).
             waitFor(client);
@@ -207,33 +207,33 @@ public class AgentTest {
         client.createWorker(new CreateWorkerRequest(1, "bar", barSpec));
 
         assertThrows(RequestConflictException.class,
-            () -> client.createWorker(new CreateWorkerRequest(1, "foo", barSpec)),
-            "Recreating a request with a different taskId is not allowed");
+                () -> client.createWorker(new CreateWorkerRequest(1, "foo", barSpec)),
+                "Recreating a request with a different taskId is not allowed");
         assertThrows(RequestConflictException.class,
-            () -> client.createWorker(new CreateWorkerRequest(1, "bar", fooSpec)),
-            "Recreating a request with a different spec is not allowed");
+                () -> client.createWorker(new CreateWorkerRequest(1, "bar", fooSpec)),
+                "Recreating a request with a different spec is not allowed");
 
         new ExpectedTasks().
             addTask(new ExpectedTaskBuilder("foo").
-                workerState(new WorkerRunning("foo", fooSpec, 0, new TextNode("active"))).
-                build()).
+                    workerState(new WorkerRunning("foo", fooSpec, 0, new TextNode("active"))).
+                    build()).
             addTask(new ExpectedTaskBuilder("bar").
-                workerState(new WorkerRunning("bar", barSpec, 0, new TextNode("active"))).
-                build()).
+                    workerState(new WorkerRunning("bar", barSpec, 0, new TextNode("active"))).
+                    build()).
             waitFor(client);
 
         final NoOpTaskSpec bazSpec = new NoOpTaskSpec(1, 450000);
         client.createWorker(new CreateWorkerRequest(2, "baz", bazSpec));
         new ExpectedTasks().
             addTask(new ExpectedTaskBuilder("foo").
-                workerState(new WorkerRunning("foo", fooSpec, 0, new TextNode("active"))).
-                build()).
+                    workerState(new WorkerRunning("foo", fooSpec, 0, new TextNode("active"))).
+                    build()).
             addTask(new ExpectedTaskBuilder("bar").
-                workerState(new WorkerRunning("bar", barSpec, 0, new TextNode("active"))).
-                build()).
+                    workerState(new WorkerRunning("bar", barSpec, 0, new TextNode("active"))).
+                    build()).
             addTask(new ExpectedTaskBuilder("baz").
-                workerState(new WorkerRunning("baz", bazSpec, 0, new TextNode("active"))).
-                build()).
+                    workerState(new WorkerRunning("baz", bazSpec, 0, new TextNode("active"))).
+                    build()).
             waitFor(client);
     }
 
@@ -252,8 +252,8 @@ public class AgentTest {
         client.createWorker(new CreateWorkerRequest(0, "foo", fooSpec));
         new ExpectedTasks().
             addTask(new ExpectedTaskBuilder("foo").
-                workerState(new WorkerRunning("foo", fooSpec, startTimeMs, new TextNode("active"))).
-                build()).
+                    workerState(new WorkerRunning("foo", fooSpec, startTimeMs, new TextNode("active"))).
+                    build()).
             waitFor(client);
 
         time.sleep(1);
@@ -264,11 +264,11 @@ public class AgentTest {
         client.createWorker(new CreateWorkerRequest(barSpecWorkerId, "bar", barSpec));
         new ExpectedTasks().
             addTask(new ExpectedTaskBuilder("foo").
-                workerState(new WorkerRunning("foo", fooSpec, fooSpecStartTimeMs, new TextNode("active"))).
-                build()).
+                    workerState(new WorkerRunning("foo", fooSpec, fooSpecStartTimeMs, new TextNode("active"))).
+                    build()).
             addTask(new ExpectedTaskBuilder("bar").
-                workerState(new WorkerRunning("bar", barSpec, barSpecStartTimeMs, new TextNode("active"))).
-                build()).
+                    workerState(new WorkerRunning("bar", barSpec, barSpecStartTimeMs, new TextNode("active"))).
+                    build()).
             waitFor(client);
 
         time.sleep(1);
@@ -276,22 +276,22 @@ public class AgentTest {
         // foo task expired
         new ExpectedTasks().
             addTask(new ExpectedTaskBuilder("foo").
-                workerState(new WorkerDone("foo", fooSpec, fooSpecStartTimeMs, fooSpecStartTimeMs + 2, new TextNode("done"), "")).
-                build()).
+                    workerState(new WorkerDone("foo", fooSpec, fooSpecStartTimeMs, fooSpecStartTimeMs + 2, new TextNode("done"), "")).
+                    build()).
             addTask(new ExpectedTaskBuilder("bar").
-                workerState(new WorkerRunning("bar", barSpec, barSpecStartTimeMs, new TextNode("active"))).
-                build()).
+                    workerState(new WorkerRunning("bar", barSpec, barSpecStartTimeMs, new TextNode("active"))).
+                    build()).
             waitFor(client);
 
         time.sleep(5);
         client.stopWorker(new StopWorkerRequest(barSpecWorkerId));
         new ExpectedTasks().
             addTask(new ExpectedTaskBuilder("foo").
-                workerState(new WorkerDone("foo", fooSpec, fooSpecStartTimeMs, fooSpecStartTimeMs + 2, new TextNode("done"), "")).
-                build()).
+                    workerState(new WorkerDone("foo", fooSpec, fooSpecStartTimeMs, fooSpecStartTimeMs + 2, new TextNode("done"), "")).
+                    build()).
             addTask(new ExpectedTaskBuilder("bar").
-                workerState(new WorkerDone("bar", barSpec, barSpecStartTimeMs, startTimeMs + 7, new TextNode("done"), "")).
-                build()).
+                    workerState(new WorkerDone("bar", barSpec, barSpecStartTimeMs, startTimeMs + 7, new TextNode("done"), "")).
+                    build()).
             waitFor(client);
     }
 
@@ -305,40 +305,40 @@ public class AgentTest {
         new ExpectedTasks().waitFor(client);
 
         SampleTaskSpec fooSpec = new SampleTaskSpec(0, 900000,
-            Map.of("node01", 1L), "");
+                Map.of("node01", 1L), "");
         client.createWorker(new CreateWorkerRequest(0, "foo", fooSpec));
         new ExpectedTasks().
             addTask(new ExpectedTaskBuilder("foo").
-                workerState(new WorkerRunning("foo", fooSpec, 0, new TextNode("active"))).
-                build()).
+                    workerState(new WorkerRunning("foo", fooSpec, 0, new TextNode("active"))).
+                    build()).
             waitFor(client);
 
         SampleTaskSpec barSpec = new SampleTaskSpec(0, 900000,
-            Map.of("node01", 2L), "baz");
+                Map.of("node01", 2L), "baz");
         client.createWorker(new CreateWorkerRequest(1, "bar", barSpec));
 
         time.sleep(1);
         new ExpectedTasks().
             addTask(new ExpectedTaskBuilder("foo").
-                workerState(new WorkerDone("foo", fooSpec, 0, 1,
-                    new TextNode("halted"), "")).
-                build()).
+                    workerState(new WorkerDone("foo", fooSpec, 0, 1,
+                        new TextNode("halted"), "")).
+                    build()).
             addTask(new ExpectedTaskBuilder("bar").
-                workerState(new WorkerRunning("bar", barSpec, 0,
-                    new TextNode("active"))).
-                build()).
+                    workerState(new WorkerRunning("bar", barSpec, 0,
+                        new TextNode("active"))).
+                    build()).
             waitFor(client);
 
         time.sleep(1);
         new ExpectedTasks().
             addTask(new ExpectedTaskBuilder("foo").
-                workerState(new WorkerDone("foo", fooSpec, 0, 1,
-                    new TextNode("halted"), "")).
-                build()).
+                    workerState(new WorkerDone("foo", fooSpec, 0, 1,
+                        new TextNode("halted"), "")).
+                    build()).
             addTask(new ExpectedTaskBuilder("bar").
-                workerState(new WorkerDone("bar", barSpec, 0, 2,
-                    new TextNode("halted"), "baz")).
-                build()).
+                    workerState(new WorkerDone("bar", barSpec, 0, 2,
+                        new TextNode("halted"), "baz")).
+                    build()).
             waitFor(client);
     }
 
@@ -374,38 +374,38 @@ public class AgentTest {
         try (MockKibosh mockKibosh = new MockKibosh()) {
             assertEquals(KiboshControlFile.EMPTY, mockKibosh.read());
             FilesUnreadableFaultSpec fooSpec = new FilesUnreadableFaultSpec(0, 900000,
-                Set.of("myAgent"), mockKibosh.tempDir.getPath(), "/foo", 123);
+                    Set.of("myAgent"), mockKibosh.tempDir.getPath(), "/foo", 123);
             client.createWorker(new CreateWorkerRequest(0, "foo", fooSpec));
             new ExpectedTasks().
                 addTask(new ExpectedTaskBuilder("foo").
-                    workerState(new WorkerRunning("foo", fooSpec, 0, new TextNode("Added fault foo"))).
-                    build()).
+                        workerState(new WorkerRunning("foo", fooSpec, 0, new TextNode("Added fault foo"))).
+                        build()).
                 waitFor(client);
             assertEquals(new KiboshControlFile(List.of(
-                new KiboshFilesUnreadableFaultSpec("/foo", 123))), mockKibosh.read());
+                    new KiboshFilesUnreadableFaultSpec("/foo", 123))), mockKibosh.read());
             FilesUnreadableFaultSpec barSpec = new FilesUnreadableFaultSpec(0, 900000,
-                Set.of("myAgent"), mockKibosh.tempDir.getPath(), "/bar", 456);
+                    Set.of("myAgent"), mockKibosh.tempDir.getPath(), "/bar", 456);
             client.createWorker(new CreateWorkerRequest(1, "bar", barSpec));
             new ExpectedTasks().
                 addTask(new ExpectedTaskBuilder("foo").
-                    workerState(new WorkerRunning("foo", fooSpec, 0, new TextNode("Added fault foo"))).build()).
+                        workerState(new WorkerRunning("foo", fooSpec, 0, new TextNode("Added fault foo"))).build()).
                 addTask(new ExpectedTaskBuilder("bar").
-                    workerState(new WorkerRunning("bar", barSpec, 0, new TextNode("Added fault bar"))).build()).
+                        workerState(new WorkerRunning("bar", barSpec, 0, new TextNode("Added fault bar"))).build()).
                 waitFor(client);
             assertEquals(new KiboshControlFile(List.of(
-                new KiboshFilesUnreadableFaultSpec("/foo", 123),
-                new KiboshFilesUnreadableFaultSpec("/bar", 456))
+                    new KiboshFilesUnreadableFaultSpec("/foo", 123),
+                    new KiboshFilesUnreadableFaultSpec("/bar", 456))
             ), mockKibosh.read());
             time.sleep(1);
             client.stopWorker(new StopWorkerRequest(0));
             new ExpectedTasks().
                 addTask(new ExpectedTaskBuilder("foo").
-                    workerState(new WorkerDone("foo", fooSpec, 0, 1, new TextNode("Removed fault foo"), "")).build()).
+                        workerState(new WorkerDone("foo", fooSpec, 0, 1, new TextNode("Removed fault foo"), "")).build()).
                 addTask(new ExpectedTaskBuilder("bar").
-                    workerState(new WorkerRunning("bar", barSpec, 0, new TextNode("Added fault bar"))).build()).
+                        workerState(new WorkerRunning("bar", barSpec, 0, new TextNode("Added fault bar"))).build()).
                 waitFor(client);
             assertEquals(new KiboshControlFile(List.of(
-                new KiboshFilesUnreadableFaultSpec("/bar", 456))), mockKibosh.read());
+                    new KiboshFilesUnreadableFaultSpec("/bar", 456))), mockKibosh.read());
         }
     }
 
@@ -422,8 +422,8 @@ public class AgentTest {
         client.createWorker(new CreateWorkerRequest(0, "foo", fooSpec));
         new ExpectedTasks().
             addTask(new ExpectedTaskBuilder("foo").
-                workerState(new WorkerRunning("foo", fooSpec, 0, new TextNode("active"))).
-                build()).
+                    workerState(new WorkerRunning("foo", fooSpec, 0, new TextNode("active"))).
+                    build()).
             waitFor(client);
         time.sleep(1);
 
@@ -437,15 +437,15 @@ public class AgentTest {
         client.createWorker(new CreateWorkerRequest(1, "foo", fooSpec2));
         new ExpectedTasks().
             addTask(new ExpectedTaskBuilder("foo").
-                workerState(new WorkerRunning("foo", fooSpec2, 2, new TextNode("active"))).
-                build()).
+                    workerState(new WorkerRunning("foo", fooSpec2, 2, new TextNode("active"))).
+                    build()).
             waitFor(client);
 
         time.sleep(2);
         new ExpectedTasks().
             addTask(new ExpectedTaskBuilder("foo").
-                workerState(new WorkerDone("foo", fooSpec2, 2, 4, new TextNode("done"), "")).
-                build()).
+                    workerState(new WorkerDone("foo", fooSpec2, 2, 4, new TextNode("done"), "")).
+                    build()).
             waitFor(client);
 
         time.sleep(1);
@@ -467,23 +467,23 @@ public class AgentTest {
         NoOpTaskSpec spec = new NoOpTaskSpec(0, 1);
         TaskSpec rebasedSpec = agent.rebaseTaskSpecTime(spec);
         testExec(agent,
-            String.format("Waiting for completion of task:%s%n",
-                JsonUtil.toPrettyJsonString(rebasedSpec)) +
-            String.format("Task failed with status null and error worker expired%n"),
-            false, rebasedSpec);
+                String.format("Waiting for completion of task:%s%n",
+                    JsonUtil.toPrettyJsonString(rebasedSpec)) +
+                String.format("Task failed with status null and error worker expired%n"),
+                false, rebasedSpec);
     }
 
     @Test
     public void testAgentExecWithNormalExit() throws Exception {
         Agent agent = createAgent(Scheduler.SYSTEM);
         SampleTaskSpec spec = new SampleTaskSpec(0, 120000,
-            Map.of("node01", 1L), "");
+                Map.of("node01", 1L), "");
         TaskSpec rebasedSpec = agent.rebaseTaskSpecTime(spec);
         testExec(agent,
-            String.format("Waiting for completion of task:%s%n",
-                JsonUtil.toPrettyJsonString(rebasedSpec)) +
+                String.format("Waiting for completion of task:%s%n",
+                    JsonUtil.toPrettyJsonString(rebasedSpec)) +
                 String.format("Task succeeded with status \"halted\"%n"),
-            true, rebasedSpec);
+                true, rebasedSpec);
     }
 
 }

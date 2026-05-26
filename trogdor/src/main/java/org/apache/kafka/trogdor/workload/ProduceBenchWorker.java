@@ -59,7 +59,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class ProduceBenchWorker implements TaskWorker {
     private static final Logger log = LoggerFactory.getLogger(ProduceBenchWorker.class);
-    
+
     private static final int THROTTLE_PERIOD_MS = 100;
 
     private final String id;
@@ -89,7 +89,7 @@ public class ProduceBenchWorker implements TaskWorker {
         // Create an executor with 2 threads.  We need the second thread so
         // that the StatusUpdater can run in parallel with SendRecords.
         this.executor = Executors.newScheduledThreadPool(2,
-            ThreadUtils.createThreadFactory("ProduceBenchWorkerThread%d", false));
+                ThreadUtils.createThreadFactory("ProduceBenchWorkerThread%d", false));
         this.status = status;
         this.doneFuture = doneFuture;
         executor.submit(new Prepare());
@@ -102,7 +102,7 @@ public class ProduceBenchWorker implements TaskWorker {
                 Map<String, NewTopic> newTopics = new HashMap<>();
                 HashSet<TopicPartition> active = new HashSet<>();
                 for (Map.Entry<String, PartitionsSpec> entry :
-                        spec.activeTopics().materialize().entrySet()) {
+                    spec.activeTopics().materialize().entrySet()) {
                     String topicName = entry.getKey();
                     PartitionsSpec partSpec = entry.getValue();
                     newTopics.put(topicName, partSpec.newTopic(topicName));
@@ -114,7 +114,7 @@ public class ProduceBenchWorker implements TaskWorker {
                     throw new RuntimeException("You must specify at least one active topic.");
                 }
                 for (Map.Entry<String, PartitionsSpec> entry :
-                        spec.inactiveTopics().materialize().entrySet()) {
+                    spec.inactiveTopics().materialize().entrySet()) {
                     String topicName = entry.getKey();
                     PartitionsSpec partSpec = entry.getValue();
                     newTopics.put(topicName, partSpec.newTopic(topicName));
@@ -205,7 +205,7 @@ public class ProduceBenchWorker implements TaskWorker {
 
             int perPeriod = WorkerUtils.perSecToPerPeriod(spec.targetMessagesPerSec(), THROTTLE_PERIOD_MS);
             this.statusUpdaterFuture = executor.scheduleWithFixedDelay(
-                new StatusUpdater(histogram, transactionsCommitted), 30, 30, TimeUnit.SECONDS);
+                    new StatusUpdater(histogram, transactionsCommitted), 30, 30, TimeUnit.SECONDS);
 
             Properties props = new Properties();
             props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, spec.bootstrapServers());
@@ -264,7 +264,7 @@ public class ProduceBenchWorker implements TaskWorker {
                 StatusData statusData = new StatusUpdater(histogram, transactionsCommitted).update();
                 long curTimeMs = Time.SYSTEM.milliseconds();
                 log.info("Sent {} total record(s) in {} ms.  status: {}",
-                    histogram.summarize().numSamples(), curTimeMs - startTimeMs, statusData);
+                        histogram.summarize().numSamples(), curTimeMs - startTimeMs, statusData);
             }
             doneFuture.complete("");
             return null;
@@ -302,13 +302,13 @@ public class ProduceBenchWorker implements TaskWorker {
             ProducerRecord<byte[], byte[]> record;
             if (spec.useConfiguredPartitioner()) {
                 record = new ProducerRecord<>(
-                    partition.topic(), keys.next(), values.next());
+                        partition.topic(), keys.next(), values.next());
             } else {
                 record = new ProducerRecord<>(
-                    partition.topic(), partition.partition(), keys.next(), values.next());
+                        partition.topic(), partition.partition(), keys.next(), values.next());
             }
             sendFuture = producer.send(record,
-                new SendRecordsCallback(this, Time.SYSTEM.milliseconds()));
+                    new SendRecordsCallback(this, Time.SYSTEM.milliseconds()));
             throttle.increment();
         }
 
@@ -338,10 +338,10 @@ public class ProduceBenchWorker implements TaskWorker {
         StatusData update() {
             Histogram.Summary summary = histogram.summarize(StatusData.PERCENTILES);
             StatusData statusData = new StatusData(summary.numSamples(), summary.average(),
-                summary.percentiles().get(0).value(),
-                summary.percentiles().get(1).value(),
-                summary.percentiles().get(2).value(),
-                transactionsCommitted.get());
+                    summary.percentiles().get(0).value(),
+                    summary.percentiles().get(1).value(),
+                    summary.percentiles().get(2).value(),
+                    transactionsCommitted.get());
             status.update(JsonUtil.JSON_SERDE.valueToTree(statusData));
             return statusData;
         }

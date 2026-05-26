@@ -99,8 +99,8 @@ public class DeferredEventQueue {
             long lastKey = pending.lastKey();
             if (offset < lastKey) {
                 throw new IllegalArgumentException("There is already a deferred event with " +
-                    "offset " + lastKey + ". We should not add one with an offset of " +
-                    offset + " which is lower than that.");
+                        "offset " + lastKey + ". We should not add one with an offset of " +
+                        offset + " which is lower than that.");
             }
         }
         List<DeferredEvent> events = pending.computeIfAbsent(offset, k -> new ArrayList<>());

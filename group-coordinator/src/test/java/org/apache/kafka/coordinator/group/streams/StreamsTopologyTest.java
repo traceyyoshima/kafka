@@ -59,7 +59,7 @@ public class StreamsTopologyTest {
     @Test
     public void topologyEpochShouldNotBeNegative() {
         Map<String, Subtopology> subtopologies = mkMap(
-            mkEntry(SUBTOPOLOGY_ID_1, mkSubtopology1())
+                mkEntry(SUBTOPOLOGY_ID_1, mkSubtopology1())
         );
         final Exception exception = assertThrows(IllegalArgumentException.class, () -> new StreamsTopology(-1, subtopologies));
         assertEquals("Topology epoch must be non-negative.", exception.getMessage());
@@ -68,25 +68,25 @@ public class StreamsTopologyTest {
     @Test
     public void subtopologiesMapShouldBeImmutable() {
         Map<String, Subtopology> subtopologies = mkMap(
-            mkEntry(SUBTOPOLOGY_ID_1, mkSubtopology1())
+                mkEntry(SUBTOPOLOGY_ID_1, mkSubtopology1())
         );
         assertThrows(
-            UnsupportedOperationException.class,
-            () -> new StreamsTopology(1, subtopologies).subtopologies().put("subtopology-2", mkSubtopology2())
+                UnsupportedOperationException.class,
+                () -> new StreamsTopology(1, subtopologies).subtopologies().put("subtopology-2", mkSubtopology2())
         );
     }
 
     @Test
     public void requiredTopicsShouldBeCorrect() {
         Map<String, Subtopology> subtopologies = mkMap(
-            mkEntry(SUBTOPOLOGY_ID_1, mkSubtopology1()),
-            mkEntry(SUBTOPOLOGY_ID_2, mkSubtopology2())
+                mkEntry(SUBTOPOLOGY_ID_1, mkSubtopology1()),
+                mkEntry(SUBTOPOLOGY_ID_2, mkSubtopology2())
         );
         StreamsTopology topology = new StreamsTopology(1, subtopologies);
         Set<String> expectedTopics = Set.of(
-            SOURCE_TOPIC_1, SOURCE_TOPIC_2, SOURCE_TOPIC_3,
-            REPARTITION_TOPIC_1, REPARTITION_TOPIC_2, REPARTITION_TOPIC_3,
-            CHANGELOG_TOPIC_1, CHANGELOG_TOPIC_2, CHANGELOG_TOPIC_3
+                SOURCE_TOPIC_1, SOURCE_TOPIC_2, SOURCE_TOPIC_3,
+                REPARTITION_TOPIC_1, REPARTITION_TOPIC_2, REPARTITION_TOPIC_3,
+                CHANGELOG_TOPIC_1, CHANGELOG_TOPIC_2, CHANGELOG_TOPIC_3
         );
 
         assertEquals(expectedTopics, topology.requiredTopics());
@@ -125,8 +125,8 @@ public class StreamsTopologyTest {
     @Test
     public void asStreamsGroupDescribeTopologyShouldReturnCorrectStructure() {
         Map<String, Subtopology> subtopologies = mkMap(
-            mkEntry(SUBTOPOLOGY_ID_1, mkSubtopology1()),
-            mkEntry(SUBTOPOLOGY_ID_2, mkSubtopology2())
+                mkEntry(SUBTOPOLOGY_ID_1, mkSubtopology1()),
+                mkEntry(SUBTOPOLOGY_ID_2, mkSubtopology2())
         );
         StreamsTopology topology = new StreamsTopology(1, subtopologies);
 
@@ -136,17 +136,17 @@ public class StreamsTopologyTest {
         assertEquals(2, describeTopology.subtopologies().size());
 
         // Verify subtopologies are correctly converted and sorted
-        List<StreamsGroupDescribeResponseData.Subtopology> sortedSubtopologies = 
-            describeTopology.subtopologies().stream()
-                .sorted(Comparator.comparing(StreamsGroupDescribeResponseData.Subtopology::subtopologyId))
-                .toList();
+        List<StreamsGroupDescribeResponseData.Subtopology> sortedSubtopologies =
+                describeTopology.subtopologies().stream()
+                    .sorted(Comparator.comparing(StreamsGroupDescribeResponseData.Subtopology::subtopologyId))
+                    .toList();
 
         // Verify first subtopology
         StreamsGroupDescribeResponseData.Subtopology sub1 = sortedSubtopologies.get(0);
         assertEquals(SUBTOPOLOGY_ID_1, sub1.subtopologyId());
         // Source topics are sorted alphabetically
-        assertEquals(List.of(REPARTITION_TOPIC_1, REPARTITION_TOPIC_2, SOURCE_TOPIC_1, SOURCE_TOPIC_2), 
-            sub1.sourceTopics());
+        assertEquals(List.of(REPARTITION_TOPIC_1, REPARTITION_TOPIC_2, SOURCE_TOPIC_1, SOURCE_TOPIC_2),
+                sub1.sourceTopics());
         assertEquals(List.of(REPARTITION_TOPIC_3), sub1.repartitionSinkTopics());
         assertEquals(2, sub1.repartitionSourceTopics().size());
         assertEquals(2, sub1.stateChangelogTopics().size());
@@ -164,7 +164,7 @@ public class StreamsTopologyTest {
     @Test
     public void asStreamsGroupDescribeTopicInfoShouldConvertCorrectly() {
         Map<String, Subtopology> subtopologies = mkMap(
-            mkEntry(SUBTOPOLOGY_ID_1, mkSubtopology1())
+                mkEntry(SUBTOPOLOGY_ID_1, mkSubtopology1())
         );
         StreamsTopology topology = new StreamsTopology(1, subtopologies);
 
@@ -174,7 +174,7 @@ public class StreamsTopologyTest {
         // Verify repartition source topics are correctly converted
         List<StreamsGroupDescribeResponseData.TopicInfo> repartitionTopics = describedSub.repartitionSourceTopics();
         assertEquals(2, repartitionTopics.size());
-        
+
         // Find the first repartition topic (they should be sorted by name)
         StreamsGroupDescribeResponseData.TopicInfo firstTopic = repartitionTopics.stream()
             .filter(topic -> topic.name().equals(REPARTITION_TOPIC_1))
@@ -185,7 +185,7 @@ public class StreamsTopologyTest {
         // Verify changelog topics are correctly converted
         List<StreamsGroupDescribeResponseData.TopicInfo> changelogTopics = describedSub.stateChangelogTopics();
         assertEquals(2, changelogTopics.size());
-        
+
         // Find the first changelog topic (they should be sorted by name)
         StreamsGroupDescribeResponseData.TopicInfo firstChangelog = changelogTopics.stream()
             .filter(topic -> topic.name().equals(CHANGELOG_TOPIC_1))
@@ -207,18 +207,18 @@ public class StreamsTopologyTest {
     @Test
     public void sourceTopicMapShouldBeComputedCorrectly() {
         Map<String, Subtopology> subtopologies = mkMap(
-            mkEntry(SUBTOPOLOGY_ID_1, mkSubtopology1()),
-            mkEntry(SUBTOPOLOGY_ID_2, mkSubtopology2())
+                mkEntry(SUBTOPOLOGY_ID_1, mkSubtopology1()),
+                mkEntry(SUBTOPOLOGY_ID_2, mkSubtopology2())
         );
         StreamsTopology topology = new StreamsTopology(1, subtopologies);
-        
+
         // Verify sourceTopicMap contains all source topics from both subtopologies
         Map<String, Subtopology> sourceTopicMap = topology.sourceTopicMap();
-        
+
         // From subtopology 1: SOURCE_TOPIC_1, SOURCE_TOPIC_2, REPARTITION_TOPIC_1, REPARTITION_TOPIC_2
         // From subtopology 2: SOURCE_TOPIC_3, REPARTITION_TOPIC_3
         assertEquals(6, sourceTopicMap.size());
-        
+
         // Verify regular source topics
         assertTrue(sourceTopicMap.containsKey(SOURCE_TOPIC_1));
         assertEquals(mkSubtopology1(), sourceTopicMap.get(SOURCE_TOPIC_1));
@@ -226,7 +226,7 @@ public class StreamsTopologyTest {
         assertEquals(mkSubtopology1(), sourceTopicMap.get(SOURCE_TOPIC_2));
         assertTrue(sourceTopicMap.containsKey(SOURCE_TOPIC_3));
         assertEquals(mkSubtopology2(), sourceTopicMap.get(SOURCE_TOPIC_3));
-        
+
         // Verify repartition source topics
         assertTrue(sourceTopicMap.containsKey(REPARTITION_TOPIC_1));
         assertEquals(mkSubtopology1(), sourceTopicMap.get(REPARTITION_TOPIC_1));
@@ -239,13 +239,13 @@ public class StreamsTopologyTest {
     @Test
     public void sourceTopicMapShouldBeImmutable() {
         Map<String, Subtopology> subtopologies = mkMap(
-            mkEntry(SUBTOPOLOGY_ID_1, mkSubtopology1())
+                mkEntry(SUBTOPOLOGY_ID_1, mkSubtopology1())
         );
         StreamsTopology topology = new StreamsTopology(1, subtopologies);
-        
+
         assertThrows(
-            UnsupportedOperationException.class,
-            () -> topology.sourceTopicMap().put("test-topic", mkSubtopology1())
+                UnsupportedOperationException.class,
+                () -> topology.sourceTopicMap().put("test-topic", mkSubtopology1())
         );
     }
 
@@ -253,29 +253,29 @@ public class StreamsTopologyTest {
         return new Subtopology()
             .setSubtopologyId(SUBTOPOLOGY_ID_1)
             .setSourceTopics(List.of(
-                SOURCE_TOPIC_1,
-                SOURCE_TOPIC_2,
-                REPARTITION_TOPIC_1,
-                REPARTITION_TOPIC_2
+                    SOURCE_TOPIC_1,
+                    SOURCE_TOPIC_2,
+                    REPARTITION_TOPIC_1,
+                    REPARTITION_TOPIC_2
             ))
             .setRepartitionSourceTopics(List.of(
-                new TopicInfo().setName(REPARTITION_TOPIC_1),
-                new TopicInfo().setName(REPARTITION_TOPIC_2)
+                    new TopicInfo().setName(REPARTITION_TOPIC_1),
+                    new TopicInfo().setName(REPARTITION_TOPIC_2)
             ))
             .setRepartitionSinkTopics(List.of(
-                REPARTITION_TOPIC_3
+                    REPARTITION_TOPIC_3
             ))
             .setStateChangelogTopics(List.of(
-                new TopicInfo().setName(CHANGELOG_TOPIC_1),
-                new TopicInfo().setName(CHANGELOG_TOPIC_2)
+                    new TopicInfo().setName(CHANGELOG_TOPIC_1),
+                    new TopicInfo().setName(CHANGELOG_TOPIC_2)
             ))
             .setCopartitionGroups(List.of(
-                new StreamsGroupTopologyValue.CopartitionGroup()
-                    .setRepartitionSourceTopics(List.of((short) 0))
-                    .setSourceTopics(List.of((short) 0)),
-                new StreamsGroupTopologyValue.CopartitionGroup()
-                    .setRepartitionSourceTopics(List.of((short) 1))
-                    .setSourceTopics(List.of((short) 1))
+                    new StreamsGroupTopologyValue.CopartitionGroup()
+                        .setRepartitionSourceTopics(List.of((short) 0))
+                        .setSourceTopics(List.of((short) 0)),
+                    new StreamsGroupTopologyValue.CopartitionGroup()
+                        .setRepartitionSourceTopics(List.of((short) 1))
+                        .setSourceTopics(List.of((short) 1))
             ));
     }
 
@@ -283,14 +283,14 @@ public class StreamsTopologyTest {
         return new Subtopology()
             .setSubtopologyId(SUBTOPOLOGY_ID_2)
             .setSourceTopics(List.of(
-                SOURCE_TOPIC_3,
-                REPARTITION_TOPIC_3
+                    SOURCE_TOPIC_3,
+                    REPARTITION_TOPIC_3
             ))
             .setRepartitionSourceTopics(List.of(
-                new TopicInfo().setName(REPARTITION_TOPIC_3)
+                    new TopicInfo().setName(REPARTITION_TOPIC_3)
             ))
             .setStateChangelogTopics(List.of(
-                new TopicInfo().setName(CHANGELOG_TOPIC_3)
+                    new TopicInfo().setName(CHANGELOG_TOPIC_3)
             ));
     }
 
@@ -298,29 +298,29 @@ public class StreamsTopologyTest {
         return new StreamsGroupHeartbeatRequestData.Subtopology()
             .setSubtopologyId(SUBTOPOLOGY_ID_1)
             .setSourceTopics(List.of(
-                SOURCE_TOPIC_1,
-                SOURCE_TOPIC_2,
-                REPARTITION_TOPIC_1,
-                REPARTITION_TOPIC_2
+                    SOURCE_TOPIC_1,
+                    SOURCE_TOPIC_2,
+                    REPARTITION_TOPIC_1,
+                    REPARTITION_TOPIC_2
             ))
             .setRepartitionSourceTopics(List.of(
-                new StreamsGroupHeartbeatRequestData.TopicInfo().setName(REPARTITION_TOPIC_1),
-                new StreamsGroupHeartbeatRequestData.TopicInfo().setName(REPARTITION_TOPIC_2)
+                    new StreamsGroupHeartbeatRequestData.TopicInfo().setName(REPARTITION_TOPIC_1),
+                    new StreamsGroupHeartbeatRequestData.TopicInfo().setName(REPARTITION_TOPIC_2)
             ))
             .setRepartitionSinkTopics(List.of(
-                REPARTITION_TOPIC_3
+                    REPARTITION_TOPIC_3
             ))
             .setStateChangelogTopics(List.of(
-                new StreamsGroupHeartbeatRequestData.TopicInfo().setName(CHANGELOG_TOPIC_1),
-                new StreamsGroupHeartbeatRequestData.TopicInfo().setName(CHANGELOG_TOPIC_2)
+                    new StreamsGroupHeartbeatRequestData.TopicInfo().setName(CHANGELOG_TOPIC_1),
+                    new StreamsGroupHeartbeatRequestData.TopicInfo().setName(CHANGELOG_TOPIC_2)
             ))
             .setCopartitionGroups(List.of(
-                new StreamsGroupHeartbeatRequestData.CopartitionGroup()
-                    .setRepartitionSourceTopics(List.of((short) 0))
-                    .setSourceTopics(List.of((short) 0)),
-                new StreamsGroupHeartbeatRequestData.CopartitionGroup()
-                    .setRepartitionSourceTopics(List.of((short) 1))
-                    .setSourceTopics(List.of((short) 1))
+                    new StreamsGroupHeartbeatRequestData.CopartitionGroup()
+                        .setRepartitionSourceTopics(List.of((short) 0))
+                        .setSourceTopics(List.of((short) 0)),
+                    new StreamsGroupHeartbeatRequestData.CopartitionGroup()
+                        .setRepartitionSourceTopics(List.of((short) 1))
+                        .setSourceTopics(List.of((short) 1))
             ));
     }
 
@@ -328,14 +328,14 @@ public class StreamsTopologyTest {
         return new StreamsGroupHeartbeatRequestData.Subtopology()
             .setSubtopologyId(SUBTOPOLOGY_ID_2)
             .setSourceTopics(List.of(
-                SOURCE_TOPIC_3,
-                REPARTITION_TOPIC_3
+                    SOURCE_TOPIC_3,
+                    REPARTITION_TOPIC_3
             ))
             .setRepartitionSourceTopics(List.of(
-                new StreamsGroupHeartbeatRequestData.TopicInfo().setName(REPARTITION_TOPIC_3)
+                    new StreamsGroupHeartbeatRequestData.TopicInfo().setName(REPARTITION_TOPIC_3)
             ))
             .setStateChangelogTopics(List.of(
-                new StreamsGroupHeartbeatRequestData.TopicInfo().setName(CHANGELOG_TOPIC_3)
+                    new StreamsGroupHeartbeatRequestData.TopicInfo().setName(CHANGELOG_TOPIC_3)
             ));
     }
 }

@@ -49,9 +49,9 @@ public abstract class RestServerConfig extends AbstractConfig {
     public static final String LISTENERS_CONFIG = "listeners";
     private static final String LISTENERS_DOC
             = "List of comma-separated URIs the REST API will listen on. The supported protocols are HTTP and HTTPS.\n" +
-            " Specify hostname as 0.0.0.0 to bind to all interfaces.\n" +
-            " Leave hostname empty to bind to default interface.\n" +
-            " Examples of legal listener lists: HTTP://myhost:8083,HTTPS://myhost:8084";
+                    " Specify hostname as 0.0.0.0 to bind to all interfaces.\n" +
+                    " Leave hostname empty to bind to default interface.\n" +
+                    " Examples of legal listener lists: HTTP://myhost:8083,HTTPS://myhost:8084";
     // Visible for testing
     static final List<String> LISTENERS_DEFAULT = List.of("http://:8083");
 
@@ -70,15 +70,15 @@ public abstract class RestServerConfig extends AbstractConfig {
     public static final String ACCESS_CONTROL_ALLOW_ORIGIN_CONFIG = "access.control.allow.origin";
     private static final String ACCESS_CONTROL_ALLOW_ORIGIN_DOC =
             "Value to set the Access-Control-Allow-Origin header to for REST API requests." +
-                    "To enable cross origin access, set this to the domain of the application that should be permitted" +
-                    " to access the API, or '*' to allow access from any domain. The default value only allows access" +
-                    " from the domain of the REST API.";
+            "To enable cross origin access, set this to the domain of the application that should be permitted" +
+            " to access the API, or '*' to allow access from any domain. The default value only allows access" +
+            " from the domain of the REST API.";
     protected static final String ACCESS_CONTROL_ALLOW_ORIGIN_DEFAULT = "";
 
     public static final String ACCESS_CONTROL_ALLOW_METHODS_CONFIG = "access.control.allow.methods";
     private static final String ACCESS_CONTROL_ALLOW_METHODS_DOC =
             "Sets the methods supported for cross origin requests by setting the Access-Control-Allow-Methods header. "
-                    + "The default value of the Access-Control-Allow-Methods header allows cross origin requests for GET, POST and HEAD.";
+            + "The default value of the Access-Control-Allow-Methods header allows cross origin requests for GET, POST and HEAD.";
     private static final String ACCESS_CONTROL_ALLOW_METHODS_DEFAULT = "";
 
     public static final String ADMIN_LISTENERS_CONFIG = "admin.listeners";
@@ -92,9 +92,9 @@ public abstract class RestServerConfig extends AbstractConfig {
     public static final String REST_EXTENSION_CLASSES_CONFIG = "rest.extension.classes";
     private static final String REST_EXTENSION_CLASSES_DOC =
             "Comma-separated names of <code>ConnectRestExtension</code> classes, loaded and called "
-                    + "in the order specified. Implementing the interface  "
-                    + "<code>ConnectRestExtension</code> allows you to inject into Connect's REST API user defined resources like filters. "
-                    + "Typically used to add custom capability like logging, security, etc. ";
+            + "in the order specified. Implementing the interface  "
+            + "<code>ConnectRestExtension</code> allows you to inject into Connect's REST API user defined resources like filters. "
+            + "Typically used to add custom capability like logging, security, etc. ";
 
     // Visible for testing
     static final String RESPONSE_HTTP_HEADERS_CONFIG = "response.http.headers.config";
@@ -103,7 +103,6 @@ public abstract class RestServerConfig extends AbstractConfig {
     // Visible for testing
     static final String RESPONSE_HTTP_HEADERS_DEFAULT = "";
     private static final Collection<String> HEADER_ACTIONS = List.of("set", "add", "setDate", "addDate");
-
 
     /**
      * @return the listeners to use for this server, or empty if no admin endpoints should be exposed,
@@ -166,44 +165,44 @@ public abstract class RestServerConfig extends AbstractConfig {
                         new ListenersValidator(),
                         ConfigDef.Importance.LOW,
                         LISTENERS_DOC
-                ).define(
+        ).define(
                         REST_ADVERTISED_HOST_NAME_CONFIG,
                         ConfigDef.Type.STRING,
                         null,
                         ConfigDef.Importance.LOW,
                         REST_ADVERTISED_HOST_NAME_DOC
-                ).define(
+        ).define(
                         REST_ADVERTISED_PORT_CONFIG,
                         ConfigDef.Type.INT,
                         null,
                         ConfigDef.Importance.LOW,
                         REST_ADVERTISED_PORT_DOC
-                ).define(
+        ).define(
                         REST_ADVERTISED_LISTENER_CONFIG,
                         ConfigDef.Type.STRING,
                         null,
                         ConfigDef.Importance.LOW,
                         REST_ADVERTISED_LISTENER_DOC
-                ).define(
+        ).define(
                         ACCESS_CONTROL_ALLOW_ORIGIN_CONFIG,
                         ConfigDef.Type.STRING,
                         ACCESS_CONTROL_ALLOW_ORIGIN_DEFAULT,
                         ConfigDef.Importance.LOW,
                         ACCESS_CONTROL_ALLOW_ORIGIN_DOC
-                ).define(
+        ).define(
                         ACCESS_CONTROL_ALLOW_METHODS_CONFIG,
                         ConfigDef.Type.STRING,
                         ACCESS_CONTROL_ALLOW_METHODS_DEFAULT,
                         ConfigDef.Importance.LOW,
                         ACCESS_CONTROL_ALLOW_METHODS_DOC
-                ).define(
+        ).define(
                         RESPONSE_HTTP_HEADERS_CONFIG,
                         ConfigDef.Type.STRING,
                         RESPONSE_HTTP_HEADERS_DEFAULT,
                         new ResponseHttpHeadersValidator(),
                         ConfigDef.Importance.LOW,
                         RESPONSE_HTTP_HEADERS_DOC
-                ).define(
+        ).define(
                         BrokerSecurityConfigs.SSL_CLIENT_AUTH_CONFIG,
                         ConfigDef.Type.STRING,
                         BrokerSecurityConfigs.SSL_CLIENT_AUTH_DEFAULT,
@@ -389,6 +388,7 @@ public abstract class RestServerConfig extends AbstractConfig {
     private static class PublicConfig extends RestServerConfig {
 
         private final Integer rebalanceTimeoutMs;
+
         private static ConfigDef config() {
             ConfigDef result = new ConfigDef().withClientSslSupport();
             addPublicConfig(result);

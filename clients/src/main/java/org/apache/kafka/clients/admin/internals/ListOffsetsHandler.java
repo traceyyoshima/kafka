@@ -82,7 +82,7 @@ public final class ListOffsetsHandler extends Batched<TopicPartition, ListOffset
         Map<String, ListOffsetsTopic> topicsByName = new HashMap<>();
         for (TopicPartition topicPartition : keys) {
             ListOffsetsTopic topic = topicsByName.computeIfAbsent(
-                topicPartition.topic(), t -> new ListOffsetsTopic().setName(t));
+                    topicPartition.topic(), t -> new ListOffsetsTopic().setName(t));
             long offsetTimestamp = offsetTimestampsByPartition.get(topicPartition);
             topic.partitions().add(new ListOffsetsPartition()
                 .setPartitionIndex(topicPartition.partition())
@@ -106,11 +106,11 @@ public final class ListOffsetsHandler extends Batched<TopicPartition, ListOffset
 
         int timeoutMs = options.timeoutMs() != null ? options.timeoutMs() : defaultApiTimeoutMs;
         return ListOffsetsRequest.Builder.forConsumer(true,
-                        options.isolationLevel(),
-                        supportsMaxTimestamp,
-                        requireEarliestLocalTimestamp,
-                        requireTieredStorageTimestamp,
-                        requireEarliestPendingUploadTimestamp)
+                options.isolationLevel(),
+                supportsMaxTimestamp,
+                requireEarliestLocalTimestamp,
+                requireTieredStorageTimestamp,
+                requireEarliestPendingUploadTimestamp)
                 .setTargetTimes(new ArrayList<>(topicsByName.values()))
                 .setTimeoutMs(timeoutMs);
     }
@@ -135,11 +135,11 @@ public final class ListOffsetsHandler extends Batched<TopicPartition, ListOffset
                     log.warn("ListOffsets response includes unknown topic partition {}", topicPartition);
                 } else if (error == Errors.NONE) {
                     Optional<Integer> leaderEpoch = (partition.leaderEpoch() == ListOffsetsResponse.UNKNOWN_EPOCH)
-                        ? Optional.empty()
-                        : Optional.of(partition.leaderEpoch());
+                            ? Optional.empty()
+                            : Optional.of(partition.leaderEpoch());
                     completed.put(
-                        topicPartition,
-                        new ListOffsetsResultInfo(partition.offset(), partition.timestamp(), leaderEpoch));
+                            topicPartition,
+                            new ListOffsetsResultInfo(partition.offset(), partition.timestamp(), leaderEpoch));
                 } else {
                     handlePartitionError(topicPartition, error, failed, unmapped, retriable);
                 }
@@ -149,17 +149,17 @@ public final class ListOffsetsHandler extends Batched<TopicPartition, ListOffset
         // Sanity-check if the current leader for these partitions returned results for all of them
         for (TopicPartition topicPartition : keys) {
             if (unmapped.isEmpty()
-                && !completed.containsKey(topicPartition)
-                && !failed.containsKey(topicPartition)
-                && !retriable.contains(topicPartition)
+                    && !completed.containsKey(topicPartition)
+                    && !failed.containsKey(topicPartition)
+                    && !retriable.contains(topicPartition)
             ) {
                 ApiException sanityCheckException = new ApiException(
-                    "The response from broker " + broker.id() +
+                        "The response from broker " + broker.id() +
                         " did not contain a result for topic partition " + topicPartition);
                 log.error(
-                    "ListOffsets request for topic partition {} failed sanity check",
-                    topicPartition,
-                    sanityCheckException);
+                        "ListOffsets request for topic partition {} failed sanity check",
+                        topicPartition,
+                        sanityCheckException);
                 failed.put(topicPartition, sanityCheckException);
             }
         }
@@ -176,21 +176,21 @@ public final class ListOffsetsHandler extends Batched<TopicPartition, ListOffset
     ) {
         if (error == Errors.NOT_LEADER_OR_FOLLOWER || error == Errors.LEADER_NOT_AVAILABLE) {
             log.debug(
-                "ListOffsets lookup request for topic partition {} will be retried due to invalid leader metadata {}",
-                topicPartition,
-                error);
+                    "ListOffsets lookup request for topic partition {} will be retried due to invalid leader metadata {}",
+                    topicPartition,
+                    error);
             unmapped.add(topicPartition);
         } else if (error.exception() instanceof RetriableException) {
             log.debug(
-                "ListOffsets fulfillment request for topic partition {} will be retried due to {}",
-                topicPartition,
-                error);
+                    "ListOffsets fulfillment request for topic partition {} will be retried due to {}",
+                    topicPartition,
+                    error);
             retriable.add(topicPartition);
         } else {
             log.error(
-                "ListOffsets request for topic partition {} failed due to an unexpected error {}",
-                topicPartition,
-                error);
+                    "ListOffsets request for topic partition {} failed due to an unexpected error {}",
+                    topicPartition,
+                    error);
             failed.put(topicPartition, error.exception());
         }
     }

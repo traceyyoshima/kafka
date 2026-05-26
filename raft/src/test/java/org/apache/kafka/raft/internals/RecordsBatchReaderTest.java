@@ -88,7 +88,7 @@ class RecordsBatchReaderTest {
                 serde,
                 BufferSupplier.NO_CACHING,
                 MAX_BATCH_BYTES,
-                ignore -> { },
+                ignore -> {},
                 true,
                 new LogContext()
             )
@@ -124,14 +124,14 @@ class RecordsBatchReaderTest {
         CloseListener<BatchReader<String>> closeListener = Mockito.mock(CloseListener.class);
 
         RecordsBatchReader<String> reader = RecordsBatchReader.of(
-            baseOffset,
-            records,
-            serde,
-            bufferSupplier,
-            MAX_BATCH_BYTES,
-            closeListener,
-            true,
-            new LogContext()
+                baseOffset,
+                records,
+                serde,
+                bufferSupplier,
+                MAX_BATCH_BYTES,
+                closeListener,
+                true,
+                new LogContext()
         );
         try (reader) {
             for (TestBatch<String> batch : expectedBatches) {

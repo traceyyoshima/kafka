@@ -114,8 +114,8 @@ public class EmbeddedKafkaCluster {
     }
 
     public EmbeddedKafkaCluster(final int numBrokers,
-                                   final Properties brokerConfig,
-                                   final Map<String, String> clientConfigs) {
+                                final Properties brokerConfig,
+                                final Map<String, String> clientConfigs) {
         addDefaultBrokerPropsIfAbsent(brokerConfig, numBrokers);
         try {
             KafkaClusterTestKit.Builder clusterBuilder = new KafkaClusterTestKit.Builder(
@@ -195,9 +195,9 @@ public class EmbeddedKafkaCluster {
         } catch (Throwable e) {
             fail(
                     "The Kafka cluster used in this test was not able to start successfully in time. "
-                            + "If no recent changes have altered the behavior of Kafka brokers or clients, and this error "
-                            + "is not occurring frequently, it is probably the result of the testing machine being temporarily "
-                            + "overloaded and can be safely ignored.",
+                    + "If no recent changes have altered the behavior of Kafka brokers or clients, and this error "
+                    + "is not occurring frequently, it is probably the result of the testing machine being temporarily "
+                    + "overloaded and can be safely ignored.",
                     e
             );
         }

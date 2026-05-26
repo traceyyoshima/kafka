@@ -126,7 +126,6 @@ public class CompletedFetch {
         return exhausted;
     }
 
-
     /**
      * After each partition is parsed, we update the current metric totals with the total bytes
      * and number of records parsed. After all partitions have reported, we write the metric.
@@ -216,7 +215,7 @@ public class CompletedFetch {
                         abortedProducerIds.remove(producerId);
                     } else if (isBatchAborted(currentBatch)) {
                         log.debug("Skipping aborted record batch from partition {} with producerId {} and " +
-                                        "offsets {} to {}",
+                                "offsets {} to {}",
                                 partition, producerId, currentBatch.baseOffset(), currentBatch.lastOffset());
                         nextFetchOffset = currentBatch.nextOffset();
                         continue;
@@ -346,7 +345,7 @@ public class CompletedFetch {
                                                                                     Headers headers) {
         return new RecordDeserializationException(origin, partition, record.offset(), record.timestamp(), timestampType, record.key(), record.value(), headers,
                 "Error deserializing " + origin.name() + " for partition " + partition + " at offset " + record.offset()
-                        + ". If needed, please seek past the record to continue consumption.", e);
+                + ". If needed, please seek past the record to continue consumption.", e);
     }
 
     private Optional<Integer> maybeLeaderEpoch(int leaderEpoch) {

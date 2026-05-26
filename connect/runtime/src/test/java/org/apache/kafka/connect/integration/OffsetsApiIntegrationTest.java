@@ -939,7 +939,7 @@ public class OffsetsApiIntegrationTest {
     private String modifySinkConnectorOffsetsWithRetry(ConnectorOffsets offsetsToAlter) throws InterruptedException {
         // Some retry logic is necessary to account for KAFKA-15826,
         // where laggy sink task startup/shutdown can leave consumers running
-        String modifyVerb = offsetsToAlter != null ?  "alter" : "reset";
+        String modifyVerb = offsetsToAlter != null ? "alter" : "reset";
         String conditionDetails = "Failed to " + modifyVerb + " sink connector offsets in time";
         AtomicReference<String> responseReference = new AtomicReference<>();
         waitForCondition(

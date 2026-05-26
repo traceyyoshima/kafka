@@ -107,14 +107,14 @@ public class KTableSource<KIn, VIn> implements ProcessorSupplier<KIn, VIn, KIn, 
             this.context = context;
             final StreamsMetricsImpl metrics = (StreamsMetricsImpl) context.metrics();
             droppedRecordsSensor = droppedRecordsSensor(Thread.currentThread().getName(),
-                context.taskId().toString(), metrics);
+                    context.taskId().toString(), metrics);
             if (queryableName != null) {
                 store = new KeyValueStoreWrapper<>(context, queryableName);
                 tupleForwarder = new TimestampedTupleForwarder<>(
-                    store.store(),
-                    context,
-                    store.isHeadersStore() ? new TimestampedCacheFlushListenerWithHeaders<>(context) : new TimestampedCacheFlushListener<>(context),
-                    sendOldValues);
+                        store.store(),
+                        context,
+                        store.isHeadersStore() ? new TimestampedCacheFlushListenerWithHeaders<>(context) : new TimestampedCacheFlushListener<>(context),
+                        sendOldValues);
             }
         }
 
@@ -125,13 +125,13 @@ public class KTableSource<KIn, VIn> implements ProcessorSupplier<KIn, VIn, KIn, 
                 if (context.recordMetadata().isPresent()) {
                     final RecordMetadata recordMetadata = context.recordMetadata().get();
                     LOG.warn(
-                        "Skipping record due to null key. "
+                            "Skipping record due to null key. "
                             + "topic=[{}] partition=[{}] offset=[{}]",
-                        recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
+                            recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
                     );
                 } else {
                     LOG.warn(
-                        "Skipping record due to null key. Topic, partition, and offset not known."
+                            "Skipping record due to null key. Topic, partition, and offset not known."
                     );
                 }
                 droppedRecordsSensor.record();
@@ -147,20 +147,20 @@ public class KTableSource<KIn, VIn> implements ProcessorSupplier<KIn, VIn, KIn, 
                         if (context.recordMetadata().isPresent()) {
                             final RecordMetadata recordMetadata = context.recordMetadata().get();
                             LOG.warn(
-                                "Detected out-of-order KTable update for {}, "
+                                    "Detected out-of-order KTable update for {}, "
                                     + "old timestamp=[{}] new timestamp=[{}]. "
                                     + "topic=[{}] partition=[{}] offset=[{}].",
-                                store.name(),
-                                oldValueAndTimestamp.timestamp(), record.timestamp(),
-                                recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset() 
+                                    store.name(),
+                                    oldValueAndTimestamp.timestamp(), record.timestamp(),
+                                    recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
                             );
                         } else {
                             LOG.warn(
-                                "Detected out-of-order KTable update for {}, "
+                                    "Detected out-of-order KTable update for {}, "
                                     + "old timestamp=[{}] new timestamp=[{}]. "
                                     + "Topic, partition and offset not known.",
-                                store.name(),
-                                oldValueAndTimestamp.timestamp(), record.timestamp()
+                                    store.name(),
+                                    oldValueAndTimestamp.timestamp(), record.timestamp()
                             );
                         }
                     }

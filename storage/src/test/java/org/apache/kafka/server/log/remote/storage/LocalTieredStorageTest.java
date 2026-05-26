@@ -335,7 +335,7 @@ public final class LocalTieredStorageTest {
         final RemoteLogSegmentMetadata metadata = newRemoteLogSegmentMetadata(newRemoteLogSegmentId());
 
         assertThrows(RemoteResourceNotFoundException.class,
-            () -> tieredStorage.fetchLogSegment(metadata, 0, metadata.segmentSizeInBytes()));
+                () -> tieredStorage.fetchLogSegment(metadata, 0, metadata.segmentSizeInBytes()));
         assertThrows(RemoteResourceNotFoundException.class, () -> tieredStorage.fetchIndex(metadata, OFFSET));
         assertThrows(RemoteResourceNotFoundException.class, () -> tieredStorage.fetchIndex(metadata, TIMESTAMP));
         assertThrows(RemoteResourceNotFoundException.class, () -> tieredStorage.fetchIndex(metadata, LEADER_EPOCH));

@@ -139,8 +139,8 @@ public class ProcessState {
         }
         if (membersByLoad == null) {
             membersByLoad = new PriorityQueue<>(
-                memberToTaskCounts.size(),
-                Map.Entry.comparingByValue()
+                    memberToTaskCounts.size(),
+                    Map.Entry.comparingByValue()
             );
             for (Map.Entry<String, Integer> entry : memberToTaskCounts.entrySet()) {
                 // Copy here, since map entry objects are allowed to be reused by the underlying map implementation.

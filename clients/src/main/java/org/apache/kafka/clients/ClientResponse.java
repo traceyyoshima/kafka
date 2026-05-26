@@ -157,17 +157,17 @@ public class ClientResponse {
     @Override
     public String toString() {
         return "ClientResponse(receivedTimeMs=" + receivedTimeMs +
-               ", latencyMs=" +
-               latencyMs +
-               ", disconnected=" +
-               disconnected +
-               ", timedOut=" +
-               timedOut +
-               ", requestHeader=" +
-               requestHeader +
-               ", responseBody=" +
-               responseBody +
-               ")";
+                ", latencyMs=" +
+                latencyMs +
+                ", disconnected=" +
+                disconnected +
+                ", timedOut=" +
+                timedOut +
+                ", requestHeader=" +
+                requestHeader +
+                ", responseBody=" +
+                responseBody +
+                ")";
     }
 
 }

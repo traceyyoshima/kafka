@@ -69,24 +69,24 @@ public class PlainToHeadersWindowStoreAdapterTest {
         final Properties props = StreamsTestUtils.getStreamsConfig();
         baseDir = TestUtils.tempDirectory();
         context = new InternalMockProcessorContext<>(
-            baseDir,
-            Serdes.String(),
-            Serdes.String(),
-            new StreamsConfig(props)
+                baseDir,
+                Serdes.String(),
+                Serdes.String(),
+                new StreamsConfig(props)
         );
 
         final SegmentedBytesStore segmentedBytesStore = new RocksDBSegmentedBytesStore(
-            "iqv2-test-store",
-            "test-metrics-scope",
-            RETENTION_PERIOD,
-            SEGMENT_INTERVAL,
-            new WindowKeySchema()
+                "iqv2-test-store",
+                "test-metrics-scope",
+                RETENTION_PERIOD,
+                SEGMENT_INTERVAL,
+                new WindowKeySchema()
         );
 
         underlyingStore = new RocksDBWindowStore(
-            segmentedBytesStore,
-            false,
-            WINDOW_SIZE
+                segmentedBytesStore,
+                false,
+                WINDOW_SIZE
         );
 
         adapter = new PlainToHeadersWindowStoreAdapter(underlyingStore);
@@ -105,10 +105,10 @@ public class PlainToHeadersWindowStoreAdapterTest {
     public void shouldHandleWindowKeyQuerySuccessfully() {
         final TimestampedWindowStoreWithHeaders<String, String> store = Stores.timestampedWindowStoreWithHeadersBuilder(
                 Stores.persistentWindowStore(
-                    "typed-adapter-test",
-                    ofMillis(RETENTION_PERIOD),
-                    ofMillis(WINDOW_SIZE),
-                    false),
+                        "typed-adapter-test",
+                        ofMillis(RETENTION_PERIOD),
+                        ofMillis(WINDOW_SIZE),
+                        false),
                 Serdes.String(),
                 Serdes.String())
             .withLoggingDisabled()
@@ -127,16 +127,16 @@ public class PlainToHeadersWindowStoreAdapterTest {
 
             final StateStore wrapped = ((WrappedStateStore) store).wrapped();
             assertInstanceOf(PlainToHeadersWindowStoreAdapter.class, wrapped,
-                "Expected PlainToHeadersWindowStoreAdapter for plain window store");
+                    "Expected PlainToHeadersWindowStoreAdapter for plain window store");
 
             // Query at typed level - For plain stores, WindowKeyQuery returns plain V (String), not ValueTimestampHeaders
             final WindowKeyQuery<String, ValueTimestampHeaders<String>> query = WindowKeyQuery.withKeyAndWindowStartRange(
-                "test-key",
-                Instant.ofEpochMilli(0),
-                Instant.ofEpochMilli(10000L)
+                    "test-key",
+                    Instant.ofEpochMilli(0),
+                    Instant.ofEpochMilli(10000L)
             );
             final QueryResult<WindowStoreIterator<String>> result =
-                (QueryResult<WindowStoreIterator<String>>) (QueryResult<?>) store.query(query, PositionBound.unbounded(), new QueryConfig(false));
+                    (QueryResult<WindowStoreIterator<String>>) (QueryResult<?>) store.query(query, PositionBound.unbounded(), new QueryConfig(false));
 
             assertTrue(result.isSuccess(), "Expected query to succeed");
             assertNotNull(result.getPosition(), "Expected position to be set");
@@ -166,10 +166,10 @@ public class PlainToHeadersWindowStoreAdapterTest {
     public void shouldHandleWindowRangeQuerySuccessfully() {
         final TimestampedWindowStoreWithHeaders<String, String> store = Stores.timestampedWindowStoreWithHeadersBuilder(
                 Stores.persistentWindowStore(
-                    "typed-range-adapter-test",
-                    ofMillis(RETENTION_PERIOD),
-                    ofMillis(WINDOW_SIZE),
-                    false),
+                        "typed-range-adapter-test",
+                        ofMillis(RETENTION_PERIOD),
+                        ofMillis(WINDOW_SIZE),
+                        false),
                 Serdes.String(),
                 Serdes.String())
             .withLoggingDisabled()
@@ -192,15 +192,15 @@ public class PlainToHeadersWindowStoreAdapterTest {
 
             final StateStore wrapped = ((WrappedStateStore) store).wrapped();
             assertInstanceOf(PlainToHeadersWindowStoreAdapter.class, wrapped,
-                "Expected PlainToHeadersWindowStoreAdapter for plain window store");
+                    "Expected PlainToHeadersWindowStoreAdapter for plain window store");
 
             // Query at typed level - For plain stores, WindowRangeQuery returns plain V (String), not ValueTimestampHeaders
             final WindowRangeQuery<String, ValueTimestampHeaders<String>> query = WindowRangeQuery.withWindowStartRange(
-                Instant.ofEpochMilli(0),
-                Instant.ofEpochMilli(10000L)
+                    Instant.ofEpochMilli(0),
+                    Instant.ofEpochMilli(10000L)
             );
             final QueryResult<KeyValueIterator<Windowed<String>, String>> result =
-                (QueryResult<KeyValueIterator<Windowed<String>, String>>) (QueryResult<?>) store.query(query, PositionBound.unbounded(), new QueryConfig(false));
+                    (QueryResult<KeyValueIterator<Windowed<String>, String>>) (QueryResult<?>) store.query(query, PositionBound.unbounded(), new QueryConfig(false));
 
             assertTrue(result.isSuccess(), "Expected query to succeed");
             assertNotNull(result.getResult(), "Expected result iterator to be present");
@@ -236,9 +236,9 @@ public class PlainToHeadersWindowStoreAdapterTest {
     @Test
     public void shouldCollectExecutionInfoForWindowKeyQueryWhenRequested() {
         final WindowKeyQuery<Bytes, byte[]> query = WindowKeyQuery.withKeyAndWindowStartRange(
-            new Bytes("test-key".getBytes()),
-            Instant.ofEpochMilli(0),
-            Instant.ofEpochMilli(Long.MAX_VALUE)
+                new Bytes("test-key".getBytes()),
+                Instant.ofEpochMilli(0),
+                Instant.ofEpochMilli(Long.MAX_VALUE)
         );
         final PositionBound positionBound = PositionBound.unbounded();
         final QueryConfig config = new QueryConfig(true); // Enable execution info
@@ -259,14 +259,14 @@ public class PlainToHeadersWindowStoreAdapterTest {
     @Test
     public void shouldCollectExecutionInfoForWindowRangeQueryWhenRequested() {
         final WindowRangeQuery<Bytes, byte[]> query = WindowRangeQuery.withWindowStartRange(
-            Instant.ofEpochMilli(0),
-            Instant.ofEpochMilli(Long.MAX_VALUE)
+                Instant.ofEpochMilli(0),
+                Instant.ofEpochMilli(Long.MAX_VALUE)
         );
         final PositionBound positionBound = PositionBound.unbounded();
         final QueryConfig config = new QueryConfig(true); // Enable execution info
 
         final QueryResult<KeyValueIterator<Windowed<Bytes>, byte[]>> result =
-            adapter.query(query, positionBound, config);
+                adapter.query(query, positionBound, config);
 
         assertFalse(result.getExecutionInfo().isEmpty(), "Expected execution info to be collected");
         boolean foundAdapterInfo = false;
@@ -282,9 +282,9 @@ public class PlainToHeadersWindowStoreAdapterTest {
     @Test
     public void shouldNotCollectExecutionInfoWhenNotRequested() {
         final WindowKeyQuery<Bytes, byte[]> query = WindowKeyQuery.withKeyAndWindowStartRange(
-            new Bytes("test-key".getBytes()),
-            Instant.ofEpochMilli(0),
-            Instant.ofEpochMilli(Long.MAX_VALUE)
+                new Bytes("test-key".getBytes()),
+                Instant.ofEpochMilli(0),
+                Instant.ofEpochMilli(Long.MAX_VALUE)
         );
         final PositionBound positionBound = PositionBound.unbounded();
         final QueryConfig config = new QueryConfig(false); // Disable execution info

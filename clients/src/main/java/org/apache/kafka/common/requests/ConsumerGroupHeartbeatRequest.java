@@ -45,8 +45,8 @@ public class ConsumerGroupHeartbeatRequest extends AbstractRequest {
     public static final int CONSUMER_GENERATED_MEMBER_ID_REQUIRED_VERSION = 1;
 
     public static final String REGEX_RESOLUTION_NOT_SUPPORTED_MSG = "The cluster does not support " +
-        "regular expressions resolution on ConsumerGroupHeartbeat API version 0. It must be upgraded to use " +
-        "ConsumerGroupHeartbeat API version >= 1 to allow to subscribe to a SubscriptionPattern.";
+            "regular expressions resolution on ConsumerGroupHeartbeat API version 0. It must be upgraded to use " +
+            "ConsumerGroupHeartbeat API version >= 1 to allow to subscribe to a SubscriptionPattern.";
 
     public static class Builder extends AbstractRequest.Builder<ConsumerGroupHeartbeatRequest> {
         private final ConsumerGroupHeartbeatRequestData data;
@@ -84,9 +84,9 @@ public class ConsumerGroupHeartbeatRequest extends AbstractRequest {
     @Override
     public AbstractResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         return new ConsumerGroupHeartbeatResponse(
-            new ConsumerGroupHeartbeatResponseData()
-                .setThrottleTimeMs(throttleTimeMs)
-                .setErrorCode(Errors.forException(e).code())
+                new ConsumerGroupHeartbeatResponseData()
+                    .setThrottleTimeMs(throttleTimeMs)
+                    .setErrorCode(Errors.forException(e).code())
         );
     }
 
@@ -97,6 +97,6 @@ public class ConsumerGroupHeartbeatRequest extends AbstractRequest {
 
     public static ConsumerGroupHeartbeatRequest parse(Readable readable, short version) {
         return new ConsumerGroupHeartbeatRequest(new ConsumerGroupHeartbeatRequestData(
-            readable, version), version);
+                readable, version), version);
     }
 }

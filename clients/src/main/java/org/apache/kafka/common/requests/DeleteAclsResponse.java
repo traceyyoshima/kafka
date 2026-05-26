@@ -99,9 +99,9 @@ public class DeleteAclsResponse extends AbstractResponse {
         final boolean unknown = filterResults().stream()
                 .flatMap(r -> r.matchingAcls().stream())
                 .anyMatch(matchingAcl -> matchingAcl.patternType() == PatternType.UNKNOWN.code()
-                    || matchingAcl.resourceType() == ResourceType.UNKNOWN.code()
-                    || matchingAcl.permissionType() == AclPermissionType.UNKNOWN.code()
-                    || matchingAcl.operation() == AclOperation.UNKNOWN.code());
+                        || matchingAcl.resourceType() == ResourceType.UNKNOWN.code()
+                        || matchingAcl.permissionType() == AclPermissionType.UNKNOWN.code()
+                        || matchingAcl.operation() == AclOperation.UNKNOWN.code());
         if (unknown)
             throw new IllegalArgumentException("DeleteAclsMatchingAcls contain UNKNOWN elements");
     }
@@ -139,9 +139,9 @@ public class DeleteAclsResponse extends AbstractResponse {
 
     public static AclBinding aclBinding(DeleteAclsMatchingAcl matchingAcl) {
         ResourcePattern resourcePattern = new ResourcePattern(ResourceType.fromCode(matchingAcl.resourceType()),
-            matchingAcl.resourceName(), PatternType.fromCode(matchingAcl.patternType()));
+                matchingAcl.resourceName(), PatternType.fromCode(matchingAcl.patternType()));
         AccessControlEntry accessControlEntry = new AccessControlEntry(matchingAcl.principal(), matchingAcl.host(),
-            AclOperation.fromCode(matchingAcl.operation()), AclPermissionType.fromCode(matchingAcl.permissionType()));
+                AclOperation.fromCode(matchingAcl.operation()), AclPermissionType.fromCode(matchingAcl.permissionType()));
         return new AclBinding(resourcePattern, accessControlEntry);
     }
 

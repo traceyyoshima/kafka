@@ -41,7 +41,7 @@ public final class UpdateBrokerConfigAction implements TieredStorageTestAction {
 
     @Override
     public void doExecute(TieredStorageTestContext context)
-            throws ExecutionException, InterruptedException, TimeoutException {
+        throws ExecutionException, InterruptedException, TimeoutException {
         context.updateBrokerConfig(brokerId, configsToBeAdded, configsToBeDeleted);
     }
 

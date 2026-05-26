@@ -51,8 +51,8 @@ public class ByteBufferChannelTest {
     @Test
     public void testWriteMultiplesByteBuffers() {
         ByteBuffer[] buffers = new ByteBuffer[] {
-            ByteBuffer.wrap(Utils.utf8("hello")),
-            ByteBuffer.wrap(Utils.utf8("world"))
+                ByteBuffer.wrap(Utils.utf8("hello")),
+                ByteBuffer.wrap(Utils.utf8("world"))
         };
         int size = Arrays.stream(buffers).mapToInt(ByteBuffer::remaining).sum();
         ByteBuffer buf;

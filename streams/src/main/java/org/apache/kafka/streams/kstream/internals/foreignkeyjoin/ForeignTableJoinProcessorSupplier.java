@@ -44,7 +44,7 @@ import java.util.Collections;
 import java.util.Set;
 
 public class ForeignTableJoinProcessorSupplier<KLeft, KRight, VRight>
-    implements ProcessorSupplier<KRight, Change<VRight>, KLeft, SubscriptionResponseWrapper<VRight>> {
+        implements ProcessorSupplier<KRight, Change<VRight>, KLeft, SubscriptionResponseWrapper<VRight>> {
 
     private static final Logger LOG = LoggerFactory.getLogger(ForeignTableJoinProcessorSupplier.class);
     private final StoreFactory subscriptionStoreFactory;
@@ -85,9 +85,9 @@ public class ForeignTableJoinProcessorSupplier<KLeft, KRight, VRight>
             super.init(context);
             final InternalProcessorContext<?, ?> internalProcessorContext = (InternalProcessorContext<?, ?>) context;
             droppedRecordsSensor = TaskMetrics.droppedRecordsSensor(
-                Thread.currentThread().getName(),
-                internalProcessorContext.taskId().toString(),
-                internalProcessorContext.metrics()
+                    Thread.currentThread().getName(),
+                    internalProcessorContext.taskId().toString(),
+                    internalProcessorContext.metrics()
             );
             subscriptionStore = internalProcessorContext.getStateStore(subscriptionStoreFactory.storeName());
         }
@@ -100,13 +100,13 @@ public class ForeignTableJoinProcessorSupplier<KLeft, KRight, VRight>
                 if (context().recordMetadata().isPresent()) {
                     final RecordMetadata recordMetadata = context().recordMetadata().get();
                     LOG.warn(
-                        "Skipping record due to null key. "
+                            "Skipping record due to null key. "
                             + "topic=[{}] partition=[{}] offset=[{}]",
-                        recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
+                            recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
                     );
                 } else {
                     LOG.warn(
-                        "Skipping record due to null key. Topic, partition, and offset not known."
+                            "Skipping record due to null key. Topic, partition, and offset not known."
                     );
                 }
                 droppedRecordsSensor.record();
@@ -124,7 +124,7 @@ public class ForeignTableJoinProcessorSupplier<KLeft, KRight, VRight>
 
             //Perform the prefixScan and propagate the results
             try (final KeyValueIterator<Bytes, ValueTimestampHeaders<SubscriptionWrapper<KLeft>>> prefixScanResults =
-                     subscriptionStore.range(prefixBytes, ByteUtils.increment(prefixBytes))) {
+                    subscriptionStore.range(prefixBytes, ByteUtils.increment(prefixBytes))) {
 
                 while (prefixScanResults.hasNext()) {
                     final KeyValue<Bytes, ValueTimestampHeaders<SubscriptionWrapper<KLeft>>> next = prefixScanResults.next();
@@ -132,11 +132,11 @@ public class ForeignTableJoinProcessorSupplier<KLeft, KRight, VRight>
                     if (prefixEquals(next.key.get(), prefixBytes.get())) {
                         final CombinedKey<KRight, KLeft> combinedKey = keySchema.fromBytes(next.key, record.headers());
                         context().forward(
-                            record.withKey(combinedKey.primaryKey())
-                                .withValue(new SubscriptionResponseWrapper<>(
-                                    next.value.value().hash(),
-                                    record.value().newValue,
-                                    next.value.value().primaryPartition()))
+                                record.withKey(combinedKey.primaryKey())
+                                    .withValue(new SubscriptionResponseWrapper<>(
+                                        next.value.value().hash(),
+                                        record.value().newValue,
+                                        next.value.value().primaryPartition()))
                         );
                     }
                 }

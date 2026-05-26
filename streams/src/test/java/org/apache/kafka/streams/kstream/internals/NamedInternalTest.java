@@ -36,7 +36,7 @@ public class NamedInternalTest {
 
         @Override
         public String newStoreName(final String prefix) {
-            return prefix + "STORE-"  + index++;
+            return prefix + "STORE-" + index++;
         }
 
     }
@@ -47,14 +47,14 @@ public class NamedInternalTest {
         final TestNameProvider provider = new TestNameProvider();
 
         assertEquals(
-            name + TEST_SUFFIX,
-            NamedInternal.with(name).suffixWithOrElseGet(TEST_SUFFIX, provider, TEST_PREFIX)
+                name + TEST_SUFFIX,
+                NamedInternal.with(name).suffixWithOrElseGet(TEST_SUFFIX, provider, TEST_PREFIX)
         );
 
         // 1, not 0, indicates that the named call still burned an index number.
         assertEquals(
-            "prefix-PROCESSOR-1",
-            NamedInternal.with(null).suffixWithOrElseGet(TEST_SUFFIX, provider, TEST_PREFIX)
+                "prefix-PROCESSOR-1",
+                NamedInternal.with(null).suffixWithOrElseGet(TEST_SUFFIX, provider, TEST_PREFIX)
         );
     }
 
@@ -62,8 +62,8 @@ public class NamedInternalTest {
     public void shouldGenerateWithPrefixGivenEmptyName() {
         final String prefix = "KSTREAM-MAP-";
         assertEquals(prefix + "PROCESSOR-0", NamedInternal.with(null).orElseGenerateWithPrefix(
-            new TestNameProvider(),
-            prefix)
+                new TestNameProvider(),
+                prefix)
         );
     }
 

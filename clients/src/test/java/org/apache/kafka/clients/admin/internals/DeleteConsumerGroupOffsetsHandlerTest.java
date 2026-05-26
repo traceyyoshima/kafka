@@ -93,28 +93,28 @@ public class DeleteConsumerGroupOffsetsHandlerTest {
     @Test
     public void testFailedHandleResponseWithPartitionError() {
         assertPartitionFailed(Collections.singletonMap(t0p0, Errors.GROUP_SUBSCRIBED_TO_TOPIC),
-            handleWithPartitionError(Errors.GROUP_SUBSCRIBED_TO_TOPIC));
+                handleWithPartitionError(Errors.GROUP_SUBSCRIBED_TO_TOPIC));
         assertPartitionFailed(Collections.singletonMap(t0p0, Errors.TOPIC_AUTHORIZATION_FAILED),
-            handleWithPartitionError(Errors.TOPIC_AUTHORIZATION_FAILED));
+                handleWithPartitionError(Errors.TOPIC_AUTHORIZATION_FAILED));
         assertPartitionFailed(Collections.singletonMap(t0p0, Errors.UNKNOWN_TOPIC_OR_PARTITION),
-            handleWithPartitionError(Errors.UNKNOWN_TOPIC_OR_PARTITION));
+                handleWithPartitionError(Errors.UNKNOWN_TOPIC_OR_PARTITION));
     }
 
     private OffsetDeleteResponse buildGroupErrorResponse(Errors error) {
         OffsetDeleteResponse response = new OffsetDeleteResponse(
-            new OffsetDeleteResponseData()
-                .setErrorCode(error.code()));
+                new OffsetDeleteResponseData()
+                    .setErrorCode(error.code()));
         if (error == Errors.NONE) {
             response.data()
                 .setThrottleTimeMs(0)
                 .setTopics(new OffsetDeleteResponseTopicCollection(singletonList(
-                    new OffsetDeleteResponseTopic()
-                        .setName(t0p0.topic())
-                        .setPartitions(new OffsetDeleteResponsePartitionCollection(singletonList(
-                            new OffsetDeleteResponsePartition()
-                                .setPartitionIndex(t0p0.partition())
-                                .setErrorCode(error.code())
-                        )))
+                        new OffsetDeleteResponseTopic()
+                            .setName(t0p0.topic())
+                            .setPartitions(new OffsetDeleteResponsePartitionCollection(singletonList(
+                                new OffsetDeleteResponsePartition()
+                                    .setPartitionIndex(t0p0.partition())
+                                    .setErrorCode(error.code())
+                            )))
                 )));
         }
         return response;
@@ -122,17 +122,17 @@ public class DeleteConsumerGroupOffsetsHandlerTest {
 
     private OffsetDeleteResponse buildPartitionErrorResponse(Errors error) {
         return new OffsetDeleteResponse(
-            new OffsetDeleteResponseData()
-                .setThrottleTimeMs(0)
-                .setTopics(new OffsetDeleteResponseTopicCollection(singletonList(
-                    new OffsetDeleteResponseTopic()
-                        .setName(t0p0.topic())
-                        .setPartitions(new OffsetDeleteResponsePartitionCollection(singletonList(
-                            new OffsetDeleteResponsePartition()
-                                .setPartitionIndex(t0p0.partition())
-                                .setErrorCode(error.code())
-                        )))
-                )))
+                new OffsetDeleteResponseData()
+                    .setThrottleTimeMs(0)
+                    .setTopics(new OffsetDeleteResponseTopicCollection(singletonList(
+                        new OffsetDeleteResponseTopic()
+                            .setName(t0p0.topic())
+                            .setPartitions(new OffsetDeleteResponsePartitionCollection(singletonList(
+                                new OffsetDeleteResponsePartition()
+                                    .setPartitionIndex(t0p0.partition())
+                                    .setErrorCode(error.code())
+                            )))
+                    )))
         );
     }
 

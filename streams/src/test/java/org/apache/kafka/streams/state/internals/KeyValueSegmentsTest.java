@@ -41,7 +41,6 @@ public class KeyValueSegmentsTest extends AbstractSegmentsTest<KeyValueSegments>
     private static final String METRICS_SCOPE = "test-state-id";
     private final String storeName = "test";
 
-
     @Override
     KeyValueSegments getSegments() {
         return new KeyValueSegments(storeName, METRICS_SCOPE, RETENTION_PERIOD, SEGMENT_INTERVAL);

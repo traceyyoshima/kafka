@@ -80,8 +80,8 @@ public class TransactionLog {
                     .collect(Collectors.groupingBy(TopicPartition::topic))
                     .entrySet().stream()
                     .map(entry ->
-                        new TransactionLogValue.PartitionsSchema().setTopic(entry.getKey())
-                            .setPartitionIds(entry.getValue().stream().map(TopicPartition::partition).toList())).toList();
+                            new TransactionLogValue.PartitionsSchema().setTopic(entry.getKey())
+                                .setPartitionIds(entry.getValue().stream().map(TopicPartition::partition).toList())).toList();
         }
 
         short logValueVersion = transactionVersionLevel.transactionLogValueVersion();
@@ -118,8 +118,6 @@ public class TransactionLog {
         }
     }
 
-
-
     public sealed interface ReadResult permits TxnRecord, TxnTombstone, UnknownKeyVersion, UnknownValueVersion { }
 
     public record TxnRecord(String transactionId, TransactionMetadata metadata) implements ReadResult { }
@@ -155,7 +153,7 @@ public class TransactionLog {
         } else {
             short valueVersion = valueBuffer.getShort();
             if (valueVersion >= TransactionLogValue.LOWEST_SUPPORTED_VERSION
-                && valueVersion <= TransactionLogValue.HIGHEST_SUPPORTED_VERSION) {
+                    && valueVersion <= TransactionLogValue.HIGHEST_SUPPORTED_VERSION) {
 
                 TransactionLogValue value = new TransactionLogValue(new ByteBufferAccessor(valueBuffer), valueVersion);
                 TransactionState state = TransactionState.fromId(value.transactionStatus());
@@ -170,18 +168,18 @@ public class TransactionLog {
                 }
 
                 return new TxnRecord(transactionalId, new TransactionMetadata(
-                    transactionalId,
-                    value.producerId(),
-                    value.previousProducerId(),
-                    value.nextProducerId(),
-                    value.producerEpoch(),
-                    RecordBatch.NO_PRODUCER_EPOCH,
-                    value.transactionTimeoutMs(),
-                    state,
-                    tps,
-                    value.transactionStartTimestampMs(),
-                    value.transactionLastUpdateTimestampMs(),
-                    TransactionVersion.fromFeatureLevel(value.clientTransactionVersion()))
+                        transactionalId,
+                        value.producerId(),
+                        value.previousProducerId(),
+                        value.nextProducerId(),
+                        value.producerEpoch(),
+                        RecordBatch.NO_PRODUCER_EPOCH,
+                        value.transactionTimeoutMs(),
+                        state,
+                        tps,
+                        value.transactionStartTimestampMs(),
+                        value.transactionLastUpdateTimestampMs(),
+                        TransactionVersion.fromFeatureLevel(value.clientTransactionVersion()))
                 );
             } else {
                 return new UnknownValueVersion(valueVersion);

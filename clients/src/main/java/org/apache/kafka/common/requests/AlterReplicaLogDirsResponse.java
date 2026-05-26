@@ -61,8 +61,8 @@ public class AlterReplicaLogDirsResponse extends AbstractResponse {
     public Map<Errors, Integer> errorCounts() {
         Map<Errors, Integer> errorCounts = new EnumMap<>(Errors.class);
         data.results().forEach(topicResult ->
-            topicResult.partitions().forEach(partitionResult ->
-                updateErrorCounts(errorCounts, Errors.forCode(partitionResult.errorCode()))));
+                topicResult.partitions().forEach(partitionResult ->
+                        updateErrorCounts(errorCounts, Errors.forCode(partitionResult.errorCode()))));
         return errorCounts;
     }
 

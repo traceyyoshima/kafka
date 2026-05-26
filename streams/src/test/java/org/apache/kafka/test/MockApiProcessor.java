@@ -78,15 +78,15 @@ public class MockApiProcessor<KIn, VIn, KOut, VOut> implements Processor<KIn, VI
         if (scheduleInterval > 0L) {
             scheduleCancellable = (startTime == null)
                     ? context.schedule(
-                    Duration.ofMillis(scheduleInterval),
-                    punctuationType,
-                    (punctuationType == PunctuationType.STREAM_TIME ? punctuatedStreamTime : punctuatedSystemTime)::add
+                            Duration.ofMillis(scheduleInterval),
+                            punctuationType,
+                            (punctuationType == PunctuationType.STREAM_TIME ? punctuatedStreamTime : punctuatedSystemTime)::add
             )
                     : context.schedule(
-                    startTime,
-                    Duration.ofMillis(scheduleInterval),
-                    punctuationType,
-                    (punctuationType == PunctuationType.STREAM_TIME ? punctuatedStreamTime : punctuatedSystemTime)::add
+                            startTime,
+                            Duration.ofMillis(scheduleInterval),
+                            punctuationType,
+                            (punctuationType == PunctuationType.STREAM_TIME ? punctuatedStreamTime : punctuatedSystemTime)::add
             );
         }
     }
@@ -115,9 +115,9 @@ public class MockApiProcessor<KIn, VIn, KOut, VOut> implements Processor<KIn, VI
         for (int i = 0; i < expected.length; i++) {
             final Record<KIn, VIn> record = processed.get(i);
             assertThat(
-                "output[" + i + "]:",
-                new KeyValueTimestamp<>(record.key(), record.value(), record.timestamp()),
-                is(expected[i])
+                    "output[" + i + "]:",
+                    new KeyValueTimestamp<>(record.key(), record.value(), record.timestamp()),
+                    is(expected[i])
             );
         }
 

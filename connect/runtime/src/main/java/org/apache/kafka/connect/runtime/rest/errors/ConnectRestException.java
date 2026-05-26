@@ -58,7 +58,6 @@ public class ConnectRestException extends ConnectException {
         this(status.getStatusCode(), status.getStatusCode(), message, null);
     }
 
-
     public int statusCode() {
         return statusCode;
     }

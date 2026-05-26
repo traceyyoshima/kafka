@@ -46,9 +46,9 @@ public record FinalizedFeatures(
                 Map<String, Short> newFinalizedFeatures = new HashMap<>(finalizedFeatures);
                 newFinalizedFeatures.remove(key);
                 return new FinalizedFeatures(
-                    metadataVersion,
-                    newFinalizedFeatures,
-                    finalizedFeaturesEpoch);
+                        metadataVersion,
+                        newFinalizedFeatures,
+                        finalizedFeaturesEpoch);
             } else {
                 return this;
             }
@@ -56,9 +56,9 @@ public record FinalizedFeatures(
             Map<String, Short> newFinalizedFeatures = new HashMap<>(finalizedFeatures);
             newFinalizedFeatures.put(key, level);
             return new FinalizedFeatures(
-                metadataVersion,
-                newFinalizedFeatures,
-                finalizedFeaturesEpoch);
+                    metadataVersion,
+                    newFinalizedFeatures,
+                    finalizedFeaturesEpoch);
         }
     }
 }

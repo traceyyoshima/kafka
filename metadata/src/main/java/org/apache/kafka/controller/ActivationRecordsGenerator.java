@@ -51,8 +51,8 @@ public class ActivationRecordsGenerator {
             // In-flight bootstrap transaction
             if (!metadataVersion.isMetadataTransactionSupported()) {
                 throw new RuntimeException("Detected partial bootstrap records transaction at " +
-                    transactionStartOffset + ", but the metadata.version " + metadataVersion +
-                    " does not support transactions. Cannot continue.");
+                        transactionStartOffset + ", but the metadata.version " + metadataVersion +
+                        " does not support transactions. Cannot continue.");
             } else {
                 logMessageBuilder
                     .append("Aborting partial bootstrap records transaction at offset ")
@@ -65,9 +65,9 @@ public class ActivationRecordsGenerator {
                     .append(bootstrapMetadata.source())
                     .append("'. ");
                 records.add(new ApiMessageAndVersion(
-                    new AbortTransactionRecord().setReason("Controller failover"), (short) 0));
+                        new AbortTransactionRecord().setReason("Controller failover"), (short) 0));
                 records.add(new ApiMessageAndVersion(
-                    new BeginTransactionRecord().setName("Bootstrap records"), (short) 0));
+                        new BeginTransactionRecord().setName("Bootstrap records"), (short) 0));
             }
         } else {
             // No in-flight transaction
@@ -78,7 +78,7 @@ public class ActivationRecordsGenerator {
                 .append(" bootstrap record(s) ");
             if (metadataVersion.isMetadataTransactionSupported()) {
                 records.add(new ApiMessageAndVersion(
-                    new BeginTransactionRecord().setName("Bootstrap records"), (short) 0));
+                        new BeginTransactionRecord().setName("Bootstrap records"), (short) 0));
                 logMessageBuilder.append("in metadata transaction ");
             }
             logMessageBuilder
@@ -126,15 +126,15 @@ public class ActivationRecordsGenerator {
         if (transactionStartOffset != -1L) {
             if (!curMetadataVersion.isMetadataTransactionSupported()) {
                 throw new RuntimeException("Detected in-progress transaction at offset " + transactionStartOffset +
-                    ", but the metadata.version " + curMetadataVersion +
-                    " does not support transactions. Cannot continue.");
+                        ", but the metadata.version " + curMetadataVersion +
+                        " does not support transactions. Cannot continue.");
             } else {
                 logMessageBuilder
                     .append("Aborting in-progress metadata transaction at offset ")
                     .append(transactionStartOffset)
                     .append(". ");
                 records.add(new ApiMessageAndVersion(
-                    new AbortTransactionRecord().setReason("Controller failover"), (short) 0));
+                        new AbortTransactionRecord().setReason("Controller failover"), (short) 0));
             }
         }
 

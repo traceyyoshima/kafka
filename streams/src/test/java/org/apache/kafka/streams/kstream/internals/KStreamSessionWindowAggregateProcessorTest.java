@@ -103,10 +103,10 @@ public class KStreamSessionWindowAggregateProcessorTest {
 
     public static Stream<Arguments> emitStrategyAndHeadersMatrix() {
         return Stream.of(
-            Arguments.of(EmitStrategy.StrategyType.ON_WINDOW_UPDATE, true),
-            Arguments.of(EmitStrategy.StrategyType.ON_WINDOW_UPDATE, false),
-            Arguments.of(EmitStrategy.StrategyType.ON_WINDOW_CLOSE, true),
-            Arguments.of(EmitStrategy.StrategyType.ON_WINDOW_CLOSE, false)
+                Arguments.of(EmitStrategy.StrategyType.ON_WINDOW_UPDATE, true),
+                Arguments.of(EmitStrategy.StrategyType.ON_WINDOW_UPDATE, false),
+                Arguments.of(EmitStrategy.StrategyType.ON_WINDOW_CLOSE, true),
+                Arguments.of(EmitStrategy.StrategyType.ON_WINDOW_CLOSE, false)
         );
     }
 
@@ -119,14 +119,14 @@ public class KStreamSessionWindowAggregateProcessorTest {
         final StreamsConfig config = new StreamsConfig(prop);
 
         mockContext = new InternalMockProcessorContext<>(
-            TestUtils.tempDirectory(),
-            Serdes.String(),
-            Serdes.String(),
-            streamsMetrics,
-            config,
-            MockRecordCollector::new,
-            new ThreadCache(new LogContext("testCache "), 100000, streamsMetrics),
-            time
+                TestUtils.tempDirectory(),
+                Serdes.String(),
+                Serdes.String(),
+                streamsMetrics,
+                config,
+                MockRecordCollector::new,
+                new ThreadCache(new LogContext("testCache "), 100000, streamsMetrics),
+                time
         ) {
             @Override
             public <K extends Windowed<String>, V extends Change<Long>> void forward(final Record<K, V> record) {
@@ -134,17 +134,16 @@ public class KStreamSessionWindowAggregateProcessorTest {
             }
         };
 
-
         emitFinal = type.equals(EmitStrategy.StrategyType.ON_WINDOW_CLOSE);
         emitStrategy = EmitStrategy.StrategyType.forType(type);
 
         sessionAggregator = new KStreamSessionWindowAggregate<>(
-            SessionWindows.ofInactivityGapWithNoGrace(ofMillis(GAP_MS)),
-            mockStoreFactory(STORE_NAME),
-            emitStrategy,
-            initializer,
-            aggregator,
-            sessionMerger);
+                SessionWindows.ofInactivityGapWithNoGrace(ofMillis(GAP_MS)),
+                mockStoreFactory(STORE_NAME),
+                emitStrategy,
+                initializer,
+                aggregator,
+                sessionMerger);
 
         if (processor != null) {
             processor.close();
@@ -166,8 +165,8 @@ public class KStreamSessionWindowAggregateProcessorTest {
             Stores.persistentSessionStore(STORE_NAME, ofMillis(GAP_MS * 3));
 
         final StoreBuilder<SessionStoreWithHeaders<String, Long>> storeBuilder =
-            Stores.sessionStoreWithHeadersBuilder(supplier, Serdes.String(), Serdes.Long())
-                .withLoggingDisabled();
+                Stores.sessionStoreWithHeadersBuilder(supplier, Serdes.String(), Serdes.Long())
+                    .withLoggingDisabled();
 
         if (enableCaching && emitStrategy.type() != EmitStrategy.StrategyType.ON_WINDOW_CLOSE) {
             storeBuilder.withCachingEnabled();
@@ -194,7 +193,7 @@ public class KStreamSessionWindowAggregateProcessorTest {
         processor.process(new Record<>("john", "second", 500L));
 
         try (final KeyValueIterator<Windowed<String>, AggregationWithHeaders<Long>> values =
-                 sessionStore.findSessions("john", 0, 2000)) {
+                sessionStore.findSessions("john", 0, 2000)) {
             assertTrue(values.hasNext());
             assertEquals(Long.valueOf(2), AggregationWithHeaders.getAggregationOrNull(values.next().value));
         }
@@ -223,7 +222,7 @@ public class KStreamSessionWindowAggregateProcessorTest {
         processor.process(new Record<>(sessionId, "third", GAP_MS / 2));
 
         try (final KeyValueIterator<Windowed<String>, AggregationWithHeaders<Long>> iterator =
-                 sessionStore.findSessions(sessionId, 0, GAP_MS + 1)) {
+                sessionStore.findSessions(sessionId, 0, GAP_MS + 1)) {
             final KeyValue<Windowed<String>, AggregationWithHeaders<Long>> kv = iterator.next();
 
             assertEquals(Long.valueOf(3), AggregationWithHeaders.getAggregationOrNull(kv.value));
@@ -238,7 +237,7 @@ public class KStreamSessionWindowAggregateProcessorTest {
         processor.process(new Record<>("mel", "first", 0L));
         processor.process(new Record<>("mel", "second", 0L));
         try (final KeyValueIterator<Windowed<String>, AggregationWithHeaders<Long>> iterator =
-                 sessionStore.findSessions("mel", 0, 0)) {
+                sessionStore.findSessions("mel", 0, 0)) {
             assertEquals(Long.valueOf(2L), AggregationWithHeaders.getAggregationOrNull(iterator.next().value));
             assertFalse(iterator.hasNext());
         }
@@ -264,35 +263,35 @@ public class KStreamSessionWindowAggregateProcessorTest {
 
         if (emitFinal) {
             assertEquals(
-                Arrays.asList(
-                    new KeyValueTimestamp<>(
-                        new Windowed<>(sessionId, new SessionWindow(0, 0)),
-                        new Change<>(1L, null),
-                        0L),
-                    new KeyValueTimestamp<>(
-                        new Windowed<>(sessionId, new SessionWindow(GAP_MS + 1, GAP_MS + 1)),
-                        new Change<>(2L, null),
-                        GAP_MS + 1)
-                ),
-                results
+                    Arrays.asList(
+                            new KeyValueTimestamp<>(
+                                    new Windowed<>(sessionId, new SessionWindow(0, 0)),
+                                    new Change<>(1L, null),
+                                    0L),
+                            new KeyValueTimestamp<>(
+                                    new Windowed<>(sessionId, new SessionWindow(GAP_MS + 1, GAP_MS + 1)),
+                                    new Change<>(2L, null),
+                                    GAP_MS + 1)
+                    ),
+                    results
             );
         } else {
             assertEquals(
-                Arrays.asList(
-                    new KeyValueTimestamp<>(
-                        new Windowed<>(sessionId, new SessionWindow(0, 0)),
-                        new Change<>(1L, null),
-                        0L),
-                    new KeyValueTimestamp<>(
-                        new Windowed<>(sessionId, new SessionWindow(GAP_MS + 1, GAP_MS + 1)),
-                        new Change<>(2L, null),
-                        GAP_MS + 1),
-                    new KeyValueTimestamp<>(
-                        new Windowed<>(sessionId, new SessionWindow(now, now)),
-                        new Change<>(3L, null),
-                        now)
-                ),
-                results
+                    Arrays.asList(
+                            new KeyValueTimestamp<>(
+                                    new Windowed<>(sessionId, new SessionWindow(0, 0)),
+                                    new Change<>(1L, null),
+                                    0L),
+                            new KeyValueTimestamp<>(
+                                    new Windowed<>(sessionId, new SessionWindow(GAP_MS + 1, GAP_MS + 1)),
+                                    new Change<>(2L, null),
+                                    GAP_MS + 1),
+                            new KeyValueTimestamp<>(
+                                    new Windowed<>(sessionId, new SessionWindow(now, now)),
+                                    new Change<>(3L, null),
+                                    now)
+                    ),
+                    results
             );
         }
     }
@@ -305,18 +304,17 @@ public class KStreamSessionWindowAggregateProcessorTest {
 
         // first ensure it is in the store
         try (final KeyValueIterator<Windowed<String>, AggregationWithHeaders<Long>> a1 =
-                 sessionStore.findSessions("a", 0, 0)) {
+                sessionStore.findSessions("a", 0, 0)) {
             final KeyValue<Windowed<String>, AggregationWithHeaders<Long>> next = a1.next();
             assertEquals(new Windowed<>("a", new SessionWindow(0, 0)), next.key);
             assertEquals(1L, AggregationWithHeaders.getAggregationOrNull(next.value));
         }
 
-
         processor.process(new Record<>("a", "2", 100L));
         // a1 from above should have been removed
         // should have merged session in store
         try (final KeyValueIterator<Windowed<String>, AggregationWithHeaders<Long>> a2 =
-                 sessionStore.findSessions("a", 0, 100)) {
+                sessionStore.findSessions("a", 0, 100)) {
             final KeyValue<Windowed<String>, AggregationWithHeaders<Long>> next = a2.next();
             assertEquals(new Windowed<>("a", new SessionWindow(0, 100)), next.key);
             assertEquals(2L, AggregationWithHeaders.getAggregationOrNull(next.value));
@@ -343,55 +341,55 @@ public class KStreamSessionWindowAggregateProcessorTest {
 
         if (emitFinal) {
             assertEquals(Arrays.asList(
-                new KeyValueTimestamp<>(
-                    new Windowed<>("a", new SessionWindow(0, 0)),
-                    new Change<>(1L, null),
-                    0L),
-                new KeyValueTimestamp<>(
-                    new Windowed<>("b", new SessionWindow(0, 0)),
-                    new Change<>(1L, null),
-                    0L),
-                new KeyValueTimestamp<>(
-                    new Windowed<>("c", new SessionWindow(0, 0)),
-                    new Change<>(1L, null),
-                    0L),
-                new KeyValueTimestamp<>(
-                    new Windowed<>("d", new SessionWindow(0, GAP_MS / 2)),
-                    new Change<>(2L, null),
-                    GAP_MS / 2)
+                    new KeyValueTimestamp<>(
+                            new Windowed<>("a", new SessionWindow(0, 0)),
+                            new Change<>(1L, null),
+                            0L),
+                    new KeyValueTimestamp<>(
+                            new Windowed<>("b", new SessionWindow(0, 0)),
+                            new Change<>(1L, null),
+                            0L),
+                    new KeyValueTimestamp<>(
+                            new Windowed<>("c", new SessionWindow(0, 0)),
+                            new Change<>(1L, null),
+                            0L),
+                    new KeyValueTimestamp<>(
+                            new Windowed<>("d", new SessionWindow(0, GAP_MS / 2)),
+                            new Change<>(2L, null),
+                            GAP_MS / 2)
                 ),
-                results);
+                    results);
         } else {
             assertEquals(
-                Arrays.asList(
-                    new KeyValueTimestamp<>(
-                        new Windowed<>("a", new SessionWindow(0, 0)),
-                        new Change<>(1L, null),
-                        0L),
-                    new KeyValueTimestamp<>(
-                        new Windowed<>("b", new SessionWindow(0, 0)),
-                        new Change<>(1L, null),
-                        0L),
-                    new KeyValueTimestamp<>(
-                        new Windowed<>("c", new SessionWindow(0, 0)),
-                        new Change<>(1L, null),
-                       0L),
-                    new KeyValueTimestamp<>(
-                        new Windowed<>("d", new SessionWindow(0, GAP_MS / 2)),
-                        new Change<>(2L, null),
-                        GAP_MS / 2),
-                    new KeyValueTimestamp<>(
-                        new Windowed<>("b", new SessionWindow(GAP_MS + 1, GAP_MS + 1)),
-                        new Change<>(1L, null),
-                        GAP_MS + 1),
-                    new KeyValueTimestamp<>(
-                        new Windowed<>("a", new SessionWindow(GAP_MS + 1, GAP_MS + 1 + GAP_MS / 2)),
-                        new Change<>(2L, null),
-                        GAP_MS + 1 + GAP_MS / 2),
-                    new KeyValueTimestamp<>(new Windowed<>(
-                        "c",
-                        new SessionWindow(GAP_MS + 1 + GAP_MS / 2, GAP_MS + 1 + GAP_MS / 2)), new Change<>(1L, null),
-                        GAP_MS + 1 + GAP_MS / 2)
+                    Arrays.asList(
+                            new KeyValueTimestamp<>(
+                                    new Windowed<>("a", new SessionWindow(0, 0)),
+                                    new Change<>(1L, null),
+                                    0L),
+                            new KeyValueTimestamp<>(
+                                    new Windowed<>("b", new SessionWindow(0, 0)),
+                                    new Change<>(1L, null),
+                                    0L),
+                            new KeyValueTimestamp<>(
+                                    new Windowed<>("c", new SessionWindow(0, 0)),
+                                    new Change<>(1L, null),
+                                    0L),
+                            new KeyValueTimestamp<>(
+                                    new Windowed<>("d", new SessionWindow(0, GAP_MS / 2)),
+                                    new Change<>(2L, null),
+                                    GAP_MS / 2),
+                            new KeyValueTimestamp<>(
+                                    new Windowed<>("b", new SessionWindow(GAP_MS + 1, GAP_MS + 1)),
+                                    new Change<>(1L, null),
+                                    GAP_MS + 1),
+                            new KeyValueTimestamp<>(
+                                    new Windowed<>("a", new SessionWindow(GAP_MS + 1, GAP_MS + 1 + GAP_MS / 2)),
+                                    new Change<>(2L, null),
+                                    GAP_MS + 1 + GAP_MS / 2),
+                            new KeyValueTimestamp<>(new Windowed<>(
+                            "c",
+                            new SessionWindow(GAP_MS + 1 + GAP_MS / 2, GAP_MS + 1 + GAP_MS / 2)), new Change<>(1L, null),
+                                    GAP_MS + 1 + GAP_MS / 2)
                     ),
                     results
             );
@@ -428,21 +426,21 @@ public class KStreamSessionWindowAggregateProcessorTest {
         processor.process(new Record<>("c", "1", 0L));
 
         assertEquals(
-            Arrays.asList(
-                new KeyValueTimestamp<>(
-                    new Windowed<>("a", new SessionWindow(0, 0)),
-                    new Change<>(1L, null),
-                    0L),
-                new KeyValueTimestamp<>(
-                    new Windowed<>("b", new SessionWindow(0, 0)),
-                    new Change<>(1L, null),
-                    0L),
-                new KeyValueTimestamp<>(
-                    new Windowed<>("c", new SessionWindow(0, 0)),
-                    new Change<>(1L, null),
-                    0L)
-            ),
-            results
+                Arrays.asList(
+                        new KeyValueTimestamp<>(
+                                new Windowed<>("a", new SessionWindow(0, 0)),
+                                new Change<>(1L, null),
+                                0L),
+                        new KeyValueTimestamp<>(
+                                new Windowed<>("b", new SessionWindow(0, 0)),
+                                new Change<>(1L, null),
+                                0L),
+                        new KeyValueTimestamp<>(
+                                new Windowed<>("c", new SessionWindow(0, 0)),
+                                new Change<>(1L, null),
+                                0L)
+                ),
+                results
         );
     }
 
@@ -459,21 +457,21 @@ public class KStreamSessionWindowAggregateProcessorTest {
         processor.process(new Record<>("a", "1", 0L));
         processor.process(new Record<>("a", "1", 5L));
         assertEquals(
-            Arrays.asList(
-                new KeyValueTimestamp<>(
-                    new Windowed<>("a", new SessionWindow(0, 0)),
-                    new Change<>(1L, null),
-                    0L),
-                new KeyValueTimestamp<>(
-                    new Windowed<>("a", new SessionWindow(0, 0)),
-                    new Change<>(null, null),
-                    0L),
-                new KeyValueTimestamp<>(
-                    new Windowed<>("a", new SessionWindow(0, 5)),
-                    new Change<>(2L, null),
-                    5L)
-            ),
-            results
+                Arrays.asList(
+                        new KeyValueTimestamp<>(
+                                new Windowed<>("a", new SessionWindow(0, 0)),
+                                new Change<>(1L, null),
+                                0L),
+                        new KeyValueTimestamp<>(
+                                new Windowed<>("a", new SessionWindow(0, 0)),
+                                new Change<>(null, null),
+                                0L),
+                        new KeyValueTimestamp<>(
+                                new Windowed<>("a", new SessionWindow(0, 5)),
+                                new Change<>(2L, null),
+                                5L)
+                ),
+                results
         );
     }
 
@@ -482,26 +480,26 @@ public class KStreamSessionWindowAggregateProcessorTest {
     public void shouldLogAndMeterWhenSkippingNullKeyWithBuiltInMetrics(final EmitStrategy.StrategyType inputType, final boolean withHeaders) {
         setup(inputType, false, withHeaders);
         mockContext.setRecordContext(
-            new ProcessorRecordContext(-1, -2, -3, "topic", new RecordHeaders())
+                new ProcessorRecordContext(-1, -2, -3, "topic", new RecordHeaders())
         );
 
         try (final LogCaptureAppender appender =
-                 LogCaptureAppender.createAndRegister(KStreamSessionWindowAggregate.class)) {
+                LogCaptureAppender.createAndRegister(KStreamSessionWindowAggregate.class)) {
 
             processor.process(new Record<>(null, "1", 0L));
 
             assertThat(
-                appender.getEvents().stream()
-                    .filter(e -> e.getLevel().equals("WARN"))
-                    .map(Event::getMessage)
-                    .collect(Collectors.toList()),
-                hasItem("Skipping record due to null key. topic=[topic] partition=[-3] offset=[-2]")
+                    appender.getEvents().stream()
+                        .filter(e -> e.getLevel().equals("WARN"))
+                        .map(Event::getMessage)
+                        .collect(Collectors.toList()),
+                    hasItem("Skipping record due to null key. topic=[topic] partition=[-3] offset=[-2]")
             );
         }
 
         assertEquals(
-            1.0,
-            getMetricByName(mockContext.metrics().metrics(), "dropped-records-total", "stream-task-metrics").metricValue()
+                1.0,
+                getMetricByName(mockContext.metrics().metrics(), "dropped-records-total", "stream-task-metrics").metricValue()
         );
     }
 
@@ -510,12 +508,12 @@ public class KStreamSessionWindowAggregateProcessorTest {
     public void shouldLogAndMeterWhenSkippingLateRecordWithZeroGrace(final EmitStrategy.StrategyType inputType, final boolean withHeaders) {
         setup(inputType, false, withHeaders);
         final Processor<String, String, Windowed<String>, Change<Long>> processor = new KStreamSessionWindowAggregate<>(
-            SessionWindows.ofInactivityGapAndGrace(ofMillis(10L), ofMillis(0L)),
-            mockStoreFactory(STORE_NAME),
-            EmitStrategy.onWindowUpdate(),
-            initializer,
-            aggregator,
-            sessionMerger
+                SessionWindows.ofInactivityGapAndGrace(ofMillis(10L), ofMillis(0L)),
+                mockStoreFactory(STORE_NAME),
+                EmitStrategy.onWindowUpdate(),
+                initializer,
+                aggregator,
+                sessionMerger
         ).get();
         processor.init(mockContext);
 
@@ -532,43 +530,43 @@ public class KStreamSessionWindowAggregateProcessorTest {
         processor.process(new Record<>("dummy", "dummy", 11L));
 
         try (final LogCaptureAppender appender =
-                 LogCaptureAppender.createAndRegister(KStreamSessionWindowAggregate.class)) {
+                LogCaptureAppender.createAndRegister(KStreamSessionWindowAggregate.class)) {
 
             // record is late
             mockContext.setRecordContext(new ProcessorRecordContext(0, -2, -3, "topic", new RecordHeaders()));
             processor.process(new Record<>("Late1", "1", 0L));
 
             assertThat(
-                appender.getMessages(),
-                hasItem("Skipping record for expired window." +
-                    " topic=[topic] partition=[-3] offset=[-2] timestamp=[0] window=[0,0] expiration=[1] streamTime=[11]")
+                    appender.getMessages(),
+                    hasItem("Skipping record for expired window." +
+                            " topic=[topic] partition=[-3] offset=[-2] timestamp=[0] window=[0,0] expiration=[1] streamTime=[11]")
             );
         }
 
         final MetricName dropTotal;
         final MetricName dropRate;
         dropTotal = new MetricName(
-            "dropped-records-total",
-            "stream-task-metrics",
-            "The total number of dropped records",
-            mkMap(
-                mkEntry("thread-id", threadId),
-                mkEntry("task-id", "0_0")
-            )
+                "dropped-records-total",
+                "stream-task-metrics",
+                "The total number of dropped records",
+                mkMap(
+                        mkEntry("thread-id", threadId),
+                        mkEntry("task-id", "0_0")
+                )
         );
         dropRate = new MetricName(
-            "dropped-records-rate",
-            "stream-task-metrics",
-            "The average number of dropped records per second",
-            mkMap(
-                mkEntry("thread-id", threadId),
-                mkEntry("task-id", "0_0")
-            )
+                "dropped-records-rate",
+                "stream-task-metrics",
+                "The average number of dropped records per second",
+                mkMap(
+                        mkEntry("thread-id", threadId),
+                        mkEntry("task-id", "0_0")
+                )
         );
         assertThat(metrics.metrics().get(dropTotal).metricValue(), is(1.0));
         assertThat(
-            (Double) metrics.metrics().get(dropRate).metricValue(),
-            greaterThan(0.0)
+                (Double) metrics.metrics().get(dropRate).metricValue(),
+                greaterThan(0.0)
         );
     }
 
@@ -577,17 +575,17 @@ public class KStreamSessionWindowAggregateProcessorTest {
     public void shouldLogAndMeterWhenSkippingLateRecordWithNonzeroGrace(final EmitStrategy.StrategyType inputType, final boolean withHeaders) {
         setup(inputType, false, withHeaders);
         final Processor<String, String, Windowed<String>, Change<Long>> processor = new KStreamSessionWindowAggregate<>(
-            SessionWindows.ofInactivityGapAndGrace(ofMillis(10L), ofMillis(1L)),
-            mockStoreFactory(STORE_NAME),
-            EmitStrategy.onWindowUpdate(),
-            initializer,
-            aggregator,
-            sessionMerger
+                SessionWindows.ofInactivityGapAndGrace(ofMillis(10L), ofMillis(1L)),
+                mockStoreFactory(STORE_NAME),
+                EmitStrategy.onWindowUpdate(),
+                initializer,
+                aggregator,
+                sessionMerger
         ).get();
         processor.init(mockContext);
 
         try (final LogCaptureAppender appender =
-                 LogCaptureAppender.createAndRegister(KStreamSessionWindowAggregate.class)) {
+                LogCaptureAppender.createAndRegister(KStreamSessionWindowAggregate.class)) {
 
             // dummy record to establish stream time = 0
             mockContext.setRecordContext(new ProcessorRecordContext(0, -2, -3, "topic", new RecordHeaders()));
@@ -614,36 +612,36 @@ public class KStreamSessionWindowAggregateProcessorTest {
             processor.process(new Record<>("Late1", "1", 0L));
 
             assertThat(
-                appender.getMessages(),
-                hasItem("Skipping record for expired window." +
-                    " topic=[topic] partition=[-3] offset=[-2] timestamp=[0] window=[0,0] expiration=[1] streamTime=[12]")
+                    appender.getMessages(),
+                    hasItem("Skipping record for expired window." +
+                            " topic=[topic] partition=[-3] offset=[-2] timestamp=[0] window=[0,0] expiration=[1] streamTime=[12]")
             );
         }
 
         final MetricName dropTotal;
         final MetricName dropRate;
         dropTotal = new MetricName(
-            "dropped-records-total",
-            "stream-task-metrics",
-            "The total number of dropped records",
-            mkMap(
-                mkEntry("thread-id", threadId),
-                mkEntry("task-id", "0_0")
-            )
+                "dropped-records-total",
+                "stream-task-metrics",
+                "The total number of dropped records",
+                mkMap(
+                        mkEntry("thread-id", threadId),
+                        mkEntry("task-id", "0_0")
+                )
         );
         dropRate = new MetricName(
-            "dropped-records-rate",
-            "stream-task-metrics",
-            "The average number of dropped records per second",
-            mkMap(
-                mkEntry("thread-id", threadId),
-                mkEntry("task-id", "0_0")
-            )
+                "dropped-records-rate",
+                "stream-task-metrics",
+                "The average number of dropped records per second",
+                mkMap(
+                        mkEntry("thread-id", threadId),
+                        mkEntry("task-id", "0_0")
+                )
         );
 
         assertThat(metrics.metrics().get(dropTotal).metricValue(), is(1.0));
         assertThat(
-            (Double) metrics.metrics().get(dropRate).metricValue(),
-            greaterThan(0.0));
+                (Double) metrics.metrics().get(dropRate).metricValue(),
+                greaterThan(0.0));
     }
 }

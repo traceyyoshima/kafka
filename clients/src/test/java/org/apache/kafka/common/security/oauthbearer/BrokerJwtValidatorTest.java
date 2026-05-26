@@ -56,8 +56,8 @@ public class BrokerJwtValidatorTest extends JwtValidatorTest {
         PublicJsonWebKey jwk = createRsaJwk();
 
         assertThrowsWithMessage(InvalidAlgorithmException.class,
-            () -> testEncryptionAlgorithm(jwk, "fake"),
-            "fake is an unknown, unsupported or unavailable alg algorithm");
+                () -> testEncryptionAlgorithm(jwk, "fake"),
+                "fake is an unknown, unsupported or unavailable alg algorithm");
     }
 
     @Test

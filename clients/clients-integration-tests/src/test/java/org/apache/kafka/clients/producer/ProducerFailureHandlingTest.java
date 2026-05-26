@@ -59,20 +59,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @ClusterTestDefaults(
-    types = {Type.KRAFT},
-    brokers = 2,
-    serverProperties = {
-        @ClusterConfigProperty(key = AUTO_CREATE_TOPICS_ENABLE_CONFIG, value = "false"),
-        //  15000 is filed serverMessageMaxBytes
-        @ClusterConfigProperty(key = MESSAGE_MAX_BYTES_CONFIG, value = "15000"),
-        //  15200 is filed replicaFetchMaxBytes
-        @ClusterConfigProperty(key = REPLICA_FETCH_MAX_BYTES_CONFIG, value = "15200"),
-        //  15400 is filed replicaFetchMaxResponseBytes
-        @ClusterConfigProperty(key = REPLICA_FETCH_RESPONSE_MAX_BYTES_DOC, value = "15400"),
-        // Set a smaller value for the number of partitions for the offset commit topic (__consumer_offset topic)
-        // so that the creation of that topic/partition(s) and subsequent leader assignment doesn't take relatively long
-        @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-    }
+        types = {Type.KRAFT},
+        brokers = 2,
+        serverProperties = {
+            @ClusterConfigProperty(key = AUTO_CREATE_TOPICS_ENABLE_CONFIG, value = "false"),
+            //  15000 is filed serverMessageMaxBytes
+            @ClusterConfigProperty(key = MESSAGE_MAX_BYTES_CONFIG, value = "15000"),
+            //  15200 is filed replicaFetchMaxBytes
+            @ClusterConfigProperty(key = REPLICA_FETCH_MAX_BYTES_CONFIG, value = "15200"),
+            //  15400 is filed replicaFetchMaxResponseBytes
+            @ClusterConfigProperty(key = REPLICA_FETCH_RESPONSE_MAX_BYTES_DOC, value = "15400"),
+            // Set a smaller value for the number of partitions for the offset commit topic (__consumer_offset topic)
+            // so that the creation of that topic/partition(s) and subsequent leader assignment doesn't take relatively long
+            @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+        }
 )
 public class ProducerFailureHandlingTest {
 
@@ -82,7 +82,6 @@ public class ProducerFailureHandlingTest {
     private final int replicaFetchMaxResponseBytes = replicaFetchMaxPartitionBytes + 200;
     private final String topic1 = "topic-1";
     private final String topic2 = "topic-2";
-
 
     /**
      * With ack == 0 the future metadata will have no exceptions with offset -1
@@ -118,7 +117,6 @@ public class ProducerFailureHandlingTest {
         }
     }
 
-
     /**
      * This should succeed as the replica fetcher thread can handle oversized messages since KIP-74
      */
@@ -137,7 +135,6 @@ public class ProducerFailureHandlingTest {
         checkTooLargeRecordForReplicationWithAckAll(clusterInstance, replicaFetchMaxResponseBytes);
     }
 
-
     /**
      * With non-exist-topic the future metadata should return ExecutionException caused by TimeoutException
      */
@@ -150,7 +147,6 @@ public class ProducerFailureHandlingTest {
             assertThrows(ExecutionException.class, () -> producer.send(record).get());
         }
     }
-
 
     /**
      * With incorrect broker-list the future metadata should return ExecutionException caused by TimeoutException
@@ -186,7 +182,6 @@ public class ProducerFailureHandlingTest {
             assertEquals(TimeoutException.class, e.getCause().getClass());
         }
     }
-
 
     /**
      * The send call after producer closed should throw IllegalStateException

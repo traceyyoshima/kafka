@@ -67,7 +67,6 @@ public class ProducerCompressionTest {
         }
     }
 
-
     void processCompressionTest(ClusterInstance cluster, CompressionType compression) throws InterruptedException,
         ExecutionException {
         String compressionTopic = topicName + "_" + compression.name;
@@ -91,20 +90,20 @@ public class ProducerCompressionTest {
             messages.forEach(message -> {
                 // 1. send message without key and header
                 responses.add(producer.send(new ProducerRecord<>(compressionTopic, null, now, null,
-                    message.getBytes())));
+                        message.getBytes())));
                 // 2. send message with key, without header
                 responses.add(producer.send(new ProducerRecord<>(compressionTopic, null, now,
-                    String.valueOf(message.length()).getBytes(), message.getBytes())));
+                        String.valueOf(message.length()).getBytes(), message.getBytes())));
                 // 3. send message with key and header
                 responses.add(producer.send(new ProducerRecord<>(compressionTopic, null, now,
-                    String.valueOf(message.length()).getBytes(), message.getBytes(), headers)));
+                        String.valueOf(message.length()).getBytes(), message.getBytes(), headers)));
             });
             for (int offset = 0; offset < responses.size(); offset++) {
                 assertEquals(offset, responses.get(offset).get().offset(), compression.name);
             }
             verifyConsumerRecords(consumer, messages, now, headerArr, partition, compressionTopic, compression.name);
             verifyConsumerRecords(classicConsumer, messages, now, headerArr, partition, compressionTopic,
-                compression.name);
+                    compression.name);
         } finally {
             //  This consumer close very slowly, which may cause the entire test to time out, and we can't wait for 
             //  it to  auto close 

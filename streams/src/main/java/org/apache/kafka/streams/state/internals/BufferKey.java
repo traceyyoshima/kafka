@@ -47,7 +47,7 @@ public final class BufferKey implements Comparable<BufferKey> {
         }
         final BufferKey bufferKey = (BufferKey) o;
         return time == bufferKey.time &&
-            Objects.equals(key, bufferKey.key);
+                Objects.equals(key, bufferKey.key);
     }
 
     @Override
@@ -65,8 +65,8 @@ public final class BufferKey implements Comparable<BufferKey> {
     @Override
     public String toString() {
         return "BufferKey{" +
-            "key=" + key +
-            ", time=" + time +
-            '}';
+                "key=" + key +
+                ", time=" + time +
+                '}';
     }
 }

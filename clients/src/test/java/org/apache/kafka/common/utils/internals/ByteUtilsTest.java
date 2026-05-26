@@ -77,6 +77,7 @@ public class ByteUtilsTest {
         byte[] input = new byte[]{(byte) 0xFF, (byte) 0xFF, (byte) 0xFF};
         assertThrows(IndexOutOfBoundsException.class, () -> ByteUtils.increment(Bytes.wrap(input)));
     }
+
     @Test
     public void testIncrementWithSubmap() {
         final NavigableMap<Bytes, byte[]> map = new TreeMap<>();
@@ -117,7 +118,6 @@ public class ByteUtilsTest {
         assertEquals(subMapExpected.keySet(), subMapResults.keySet());
     }
 
-
     @Test
     public void testBytesLexicographicCases() {
         assertEquals(0, cmp("", ""));
@@ -150,7 +150,6 @@ public class ByteUtilsTest {
                 l.getBytes(StandardCharsets.UTF_8),
                 r.getBytes(StandardCharsets.UTF_8));
     }
-
 
     @Test
     public void testReadUnsignedIntLEFromArray() {
@@ -505,8 +504,8 @@ public class ByteUtilsTest {
     @Test
     public void testReadInt() {
         int[] values = {
-            0, 1, -1, Byte.MAX_VALUE, Short.MAX_VALUE, 2 * Short.MAX_VALUE, Integer.MAX_VALUE / 2,
-            Integer.MIN_VALUE / 2, Integer.MAX_VALUE, Integer.MIN_VALUE, Integer.MAX_VALUE
+                0, 1, -1, Byte.MAX_VALUE, Short.MAX_VALUE, 2 * Short.MAX_VALUE, Integer.MAX_VALUE / 2,
+                Integer.MIN_VALUE / 2, Integer.MAX_VALUE, Integer.MIN_VALUE, Integer.MAX_VALUE
         };
         ByteBuffer buffer = ByteBuffer.allocate(4 * values.length);
         for (int i = 0; i < values.length; ++i) {

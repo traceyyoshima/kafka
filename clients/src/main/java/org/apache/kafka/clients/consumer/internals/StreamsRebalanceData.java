@@ -115,12 +115,13 @@ public class StreamsRebalanceData {
         @Override
         public String toString() {
             return "HostInfo{" +
-                "host='" + host + '\'' +
-                ", port=" + port +
-                '}';
+                    "host='" + host + '\'' +
+                    ", port=" + port +
+                    '}';
         }
 
     }
+
     public static class EndpointPartitions {
         private final List<TopicPartition> activePartitions;
         private final List<TopicPartition> standbyPartitions;
@@ -138,6 +139,7 @@ public class StreamsRebalanceData {
         public List<TopicPartition> standbyPartitions() {
             return new ArrayList<>(standbyPartitions);
         }
+
         @Override
         public String toString() {
             return "EndpointPartitions {"
@@ -202,9 +204,9 @@ public class StreamsRebalanceData {
             }
             final Assignment that = (Assignment) o;
             return Objects.equals(activeTasks, that.activeTasks)
-                && Objects.equals(standbyTasks, that.standbyTasks)
-                && Objects.equals(warmupTasks, that.warmupTasks)
-                && isGroupReady == that.isGroupReady;
+                    && Objects.equals(standbyTasks, that.standbyTasks)
+                    && Objects.equals(warmupTasks, that.warmupTasks)
+                    && isGroupReady == that.isGroupReady;
         }
 
         @Override
@@ -219,11 +221,11 @@ public class StreamsRebalanceData {
         @Override
         public String toString() {
             return "Assignment{" +
-                "activeTasks=" + activeTasks +
-                ", standbyTasks=" + standbyTasks +
-                ", warmupTasks=" + warmupTasks +
-                ", isGroupReady=" + isGroupReady +
-                '}';
+                    "activeTasks=" + activeTasks +
+                    ", standbyTasks=" + standbyTasks +
+                    ", warmupTasks=" + warmupTasks +
+                    ", isGroupReady=" + isGroupReady +
+                    '}';
         }
     }
 
@@ -243,17 +245,16 @@ public class StreamsRebalanceData {
         ) {
             this.sourceTopics = Set.copyOf(Objects.requireNonNull(sourceTopics, "Subtopology ID cannot be null"));
             this.repartitionSinkTopics =
-                Set.copyOf(Objects.requireNonNull(repartitionSinkTopics, "Repartition sink topics cannot be null"));
+                    Set.copyOf(Objects.requireNonNull(repartitionSinkTopics, "Repartition sink topics cannot be null"));
             this.repartitionSourceTopics =
-                Map.copyOf(Objects.requireNonNull(repartitionSourceTopics, "Repartition source topics cannot be null"));
+                    Map.copyOf(Objects.requireNonNull(repartitionSourceTopics, "Repartition source topics cannot be null"));
             this.stateChangelogTopics =
-                Map.copyOf(Objects.requireNonNull(stateChangelogTopics, "State changelog topics cannot be null"));
+                    Map.copyOf(Objects.requireNonNull(stateChangelogTopics, "State changelog topics cannot be null"));
             this.copartitionGroups =
-                Collections.unmodifiableCollection(Objects.requireNonNull(
-                    copartitionGroups,
-                    "Co-partition groups cannot be null"
-                    )
-                );
+                    Collections.unmodifiableCollection(Objects.requireNonNull(
+                        copartitionGroups,
+                        "Co-partition groups cannot be null"
+                    ));
         }
 
         public Set<String> sourceTopics() {
@@ -279,12 +280,12 @@ public class StreamsRebalanceData {
         @Override
         public String toString() {
             return "Subtopology{" +
-                "sourceTopics=" + sourceTopics +
-                ", repartitionSinkTopics=" + repartitionSinkTopics +
-                ", stateChangelogTopics=" + stateChangelogTopics +
-                ", repartitionSourceTopics=" + repartitionSourceTopics +
-                ", copartitionGroups=" + copartitionGroups +
-                '}';
+                    "sourceTopics=" + sourceTopics +
+                    ", repartitionSinkTopics=" + repartitionSinkTopics +
+                    ", stateChangelogTopics=" + stateChangelogTopics +
+                    ", repartitionSourceTopics=" + repartitionSourceTopics +
+                    ", copartitionGroups=" + copartitionGroups +
+                    '}';
         }
     }
 
@@ -300,7 +301,7 @@ public class StreamsRebalanceData {
             this.numPartitions = Objects.requireNonNull(numPartitions, "Number of partitions cannot be null");
             this.replicationFactor = Objects.requireNonNull(replicationFactor, "Replication factor cannot be null");
             this.topicConfigs =
-                Map.copyOf(Objects.requireNonNull(topicConfigs, "Additional topic configs cannot be null"));
+                    Map.copyOf(Objects.requireNonNull(topicConfigs, "Additional topic configs cannot be null"));
         }
 
         public Optional<Integer> numPartitions() {
@@ -318,10 +319,10 @@ public class StreamsRebalanceData {
         @Override
         public String toString() {
             return "TopicInfo{" +
-                "numPartitions=" + numPartitions +
-                ", replicationFactor=" + replicationFactor +
-                ", topicConfigs=" + topicConfigs +
-                '}';
+                    "numPartitions=" + numPartitions +
+                    ", replicationFactor=" + replicationFactor +
+                    ", topicConfigs=" + topicConfigs +
+                    '}';
         }
     }
 

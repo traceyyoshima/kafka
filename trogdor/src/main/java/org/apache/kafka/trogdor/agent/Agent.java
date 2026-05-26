@@ -172,8 +172,8 @@ public final class Agent {
         Set<String> nodes = controller.targetNodes(platform.topology());
         if (!nodes.contains(platform.curNode().name())) {
             out.println("This task is not configured to run on this node.  It runs on node(s): " +
-                String.join(", ", nodes) + ", whereas this node is " +
-                platform.curNode().name());
+                    String.join(", ", nodes) + ", whereas this node is " +
+                    platform.curNode().name());
             return false;
         }
         KafkaFuture<String> future;
@@ -188,12 +188,12 @@ public final class Agent {
         String error = future.get();
         if (error == null || error.isEmpty()) {
             out.println("Task succeeded with status " +
-                JsonUtil.toPrettyJsonString(workerManager.workerStates().get(EXEC_WORKER_ID).status()));
+                    JsonUtil.toPrettyJsonString(workerManager.workerStates().get(EXEC_WORKER_ID).status()));
             return true;
         } else {
             out.println("Task failed with status " +
-                JsonUtil.toPrettyJsonString(workerManager.workerStates().get(EXEC_WORKER_ID).status()) +
-                " and error " + error);
+                    JsonUtil.toPrettyJsonString(workerManager.workerStates().get(EXEC_WORKER_ID).status()) +
+                    " and error " + error);
             return false;
         }
     }
@@ -241,7 +241,7 @@ public final class Agent {
 
         Platform platform = Platform.Config.parse(nodeName, configPath);
         JsonRestServer restServer =
-            new JsonRestServer(Node.Util.getTrogdorAgentPort(platform.curNode()));
+                new JsonRestServer(Node.Util.getTrogdorAgentPort(platform.curNode()));
         AgentRestResource resource = new AgentRestResource();
         System.out.println("Starting agent process.");
         final Agent agent = new Agent(platform, Scheduler.SYSTEM, restServer, resource);

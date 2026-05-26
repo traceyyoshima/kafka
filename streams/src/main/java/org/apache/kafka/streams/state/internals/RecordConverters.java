@@ -34,17 +34,17 @@ public final class RecordConverters {
                 .put(rawValue)
                 .array();
         return new ConsumerRecord<>(
-            record.topic(),
-            record.partition(),
-            record.offset(),
-            timestamp,
-            record.timestampType(),
-            record.serializedKeySize(),
-            recordValueWithTimestamp != null ? recordValueWithTimestamp.length : 0,
-            record.key(),
-            recordValueWithTimestamp,
-            record.headers(),
-            record.leaderEpoch()
+                record.topic(),
+                record.partition(),
+                record.offset(),
+                timestamp,
+                record.timestampType(),
+                record.serializedKeySize(),
+                recordValueWithTimestamp != null ? recordValueWithTimestamp.length : 0,
+                record.key(),
+                recordValueWithTimestamp,
+                record.headers(),
+                record.leaderEpoch()
         );
     };
 
@@ -53,23 +53,23 @@ public final class RecordConverters {
 
         // Format: [headersSize(varint)][headersBytes][timestamp(8)][value]
         final byte[] recordValueWithTimestampAndHeaders = reconstructFromRaw(
-            rawValue,
-            record.timestamp(),
-            record.headers()
+                rawValue,
+                record.timestamp(),
+                record.headers()
         );
 
         return new ConsumerRecord<>(
-            record.topic(),
-            record.partition(),
-            record.offset(),
-            record.timestamp(),
-            record.timestampType(),
-            record.serializedKeySize(),
-            recordValueWithTimestampAndHeaders != null ? recordValueWithTimestampAndHeaders.length : 0,
-            record.key(),
-            recordValueWithTimestampAndHeaders,
-            record.headers(),
-            record.leaderEpoch()
+                record.topic(),
+                record.partition(),
+                record.offset(),
+                record.timestamp(),
+                record.timestampType(),
+                record.serializedKeySize(),
+                recordValueWithTimestampAndHeaders != null ? recordValueWithTimestampAndHeaders.length : 0,
+                record.key(),
+                recordValueWithTimestampAndHeaders,
+                record.headers(),
+                record.leaderEpoch()
         );
     };
 
@@ -82,22 +82,22 @@ public final class RecordConverters {
 
         // Format: [headersSize(varint)][headersBytes][aggregation] (no timestamp)
         final byte[] recordValueWithHeaders = reconstructSessionFromRaw(
-            rawValue,
-            record.headers()
+                rawValue,
+                record.headers()
         );
 
         return new ConsumerRecord<>(
-            record.topic(),
-            record.partition(),
-            record.offset(),
-            record.timestamp(),
-            record.timestampType(),
-            record.serializedKeySize(),
-            recordValueWithHeaders != null ? recordValueWithHeaders.length : 0,
-            record.key(),
-            recordValueWithHeaders,
-            record.headers(),
-            record.leaderEpoch()
+                record.topic(),
+                record.partition(),
+                record.offset(),
+                record.timestamp(),
+                record.timestampType(),
+                record.serializedKeySize(),
+                recordValueWithHeaders != null ? recordValueWithHeaders.length : 0,
+                record.key(),
+                recordValueWithHeaders,
+                record.headers(),
+                record.leaderEpoch()
         );
     };
 

@@ -138,30 +138,30 @@ public class StreamsBuilderTest {
     public void shouldAddGlobalStore() {
         final StreamsBuilder builder = new StreamsBuilder();
         builder.addGlobalStore(
-            Stores.keyValueStoreBuilder(
-                inMemoryKeyValueStore("store"),
-                Serdes.String(),
-                Serdes.String()
-            ),
-            "topic",
-            Consumed.with(Serdes.String(), Serdes.String()),
-            () -> new Processor<>() {
-                private KeyValueStore<String, String> store;
+                Stores.keyValueStoreBuilder(
+                        inMemoryKeyValueStore("store"),
+                        Serdes.String(),
+                        Serdes.String()
+                ),
+                "topic",
+                Consumed.with(Serdes.String(), Serdes.String()),
+                () -> new Processor<>() {
+                    private KeyValueStore<String, String> store;
 
-                @Override
-                public void init(final ProcessorContext<Void, Void> context) {
-                    store = context.getStateStore("store");
-                }
+                    @Override
+                    public void init(final ProcessorContext<Void, Void> context) {
+                        store = context.getStateStore("store");
+                    }
 
-                @Override
-                public void process(final Record<String, String> record) {
-                    store.put(record.key(), record.value());
+                    @Override
+                    public void process(final Record<String, String> record) {
+                        store.put(record.key(), record.value());
+                    }
                 }
-            }
         );
         try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build())) {
             final TestInputTopic<String, String> inputTopic =
-                driver.createInputTopic("topic", new StringSerializer(), new StringSerializer());
+                    driver.createInputTopic("topic", new StringSerializer(), new StringSerializer());
             inputTopic.pipeInput("hey", "there");
             final KeyValueStore<String, String> store = driver.getKeyValueStore("store");
             final String hey = store.get("hey");
@@ -188,16 +188,16 @@ public class StreamsBuilderTest {
         builder.build();
 
         final ProcessorTopology topology =
-            builder.internalTopologyBuilder.rewriteTopology(new StreamsConfig(props)).buildTopology();
+                builder.internalTopologyBuilder.rewriteTopology(new StreamsConfig(props)).buildTopology();
 
         assertThat(
-            topology.stateStores().size(),
-            equalTo(1));
+                topology.stateStores().size(),
+                equalTo(1));
         assertThat(
-            topology.processorConnectedStateStores("KSTREAM-JOIN-0000000005"),
-            equalTo(Collections.singleton(topology.stateStores().get(0).name())));
+                topology.processorConnectedStateStores("KSTREAM-JOIN-0000000005"),
+                equalTo(Collections.singleton(topology.stateStores().get(0).name())));
         assertTrue(
-            topology.processorConnectedStateStores("KTABLE-FILTER-0000000003").isEmpty());
+                topology.processorConnectedStateStores("KTABLE-FILTER-0000000003").isEmpty());
     }
 
     @Test
@@ -211,17 +211,17 @@ public class StreamsBuilderTest {
         builder.build();
 
         final ProcessorTopology topology =
-            builder.internalTopologyBuilder.rewriteTopology(new StreamsConfig(props)).buildTopology();
+                builder.internalTopologyBuilder.rewriteTopology(new StreamsConfig(props)).buildTopology();
 
         assertThat(
-            topology.stateStores().size(),
-            equalTo(1));
+                topology.stateStores().size(),
+                equalTo(1));
         assertThat(
-            topology.processorConnectedStateStores("KSTREAM-JOIN-0000000005"),
-            equalTo(Collections.singleton("store")));
+                topology.processorConnectedStateStores("KSTREAM-JOIN-0000000005"),
+                equalTo(Collections.singleton("store")));
         assertThat(
-            topology.processorConnectedStateStores("KTABLE-FILTER-0000000003"),
-            equalTo(Collections.singleton("store")));
+                topology.processorConnectedStateStores("KTABLE-FILTER-0000000003"),
+                equalTo(Collections.singleton("store")));
     }
 
     @Test
@@ -235,16 +235,16 @@ public class StreamsBuilderTest {
         builder.build();
 
         final ProcessorTopology topology =
-            builder.internalTopologyBuilder.rewriteTopology(new StreamsConfig(props)).buildTopology();
+                builder.internalTopologyBuilder.rewriteTopology(new StreamsConfig(props)).buildTopology();
 
         assertThat(
-            topology.stateStores().size(),
-            equalTo(1));
+                topology.stateStores().size(),
+                equalTo(1));
         assertThat(
-            topology.processorConnectedStateStores("KSTREAM-JOIN-0000000005"),
-            equalTo(Collections.singleton(topology.stateStores().get(0).name())));
+                topology.processorConnectedStateStores("KSTREAM-JOIN-0000000005"),
+                equalTo(Collections.singleton(topology.stateStores().get(0).name())));
         assertTrue(
-            topology.processorConnectedStateStores("KTABLE-MAPVALUES-0000000003").isEmpty());
+                topology.processorConnectedStateStores("KTABLE-MAPVALUES-0000000003").isEmpty());
     }
 
     @Test
@@ -258,17 +258,17 @@ public class StreamsBuilderTest {
         builder.build();
 
         final ProcessorTopology topology =
-            builder.internalTopologyBuilder.rewriteTopology(new StreamsConfig(props)).buildTopology();
+                builder.internalTopologyBuilder.rewriteTopology(new StreamsConfig(props)).buildTopology();
 
         assertThat(
-            topology.stateStores().size(),
-            equalTo(1));
+                topology.stateStores().size(),
+                equalTo(1));
         assertThat(
-            topology.processorConnectedStateStores("KSTREAM-JOIN-0000000005"),
-            equalTo(Collections.singleton("store")));
+                topology.processorConnectedStateStores("KSTREAM-JOIN-0000000005"),
+                equalTo(Collections.singleton("store")));
         assertThat(
-            topology.processorConnectedStateStores("KTABLE-MAPVALUES-0000000003"),
-            equalTo(Collections.singleton("store")));
+                topology.processorConnectedStateStores("KTABLE-MAPVALUES-0000000003"),
+                equalTo(Collections.singleton("store")));
     }
 
     @Test
@@ -281,16 +281,16 @@ public class StreamsBuilderTest {
         builder.build();
 
         final ProcessorTopology topology =
-            builder.internalTopologyBuilder.rewriteTopology(new StreamsConfig(props)).buildTopology();
+                builder.internalTopologyBuilder.rewriteTopology(new StreamsConfig(props)).buildTopology();
 
         assertThat(
-            topology.stateStores().size(),
-            equalTo(2));
+                topology.stateStores().size(),
+                equalTo(2));
         assertThat(
-            topology.processorConnectedStateStores("KSTREAM-JOIN-0000000010"),
-            equalTo(Set.of(topology.stateStores().get(0).name(), topology.stateStores().get(1).name())));
+                topology.processorConnectedStateStores("KSTREAM-JOIN-0000000010"),
+                equalTo(Set.of(topology.stateStores().get(0).name(), topology.stateStores().get(1).name())));
         assertTrue(
-            topology.processorConnectedStateStores("KTABLE-MERGE-0000000007").isEmpty());
+                topology.processorConnectedStateStores("KTABLE-MERGE-0000000007").isEmpty());
     }
 
     @Test
@@ -300,22 +300,22 @@ public class StreamsBuilderTest {
         builder
             .<Bytes, String>stream(STREAM_TOPIC)
             .join(
-                table1.join(table2, MockValueJoiner.TOSTRING_JOINER, Materialized.as("store")),
-                MockValueJoiner.TOSTRING_JOINER);
+                    table1.join(table2, MockValueJoiner.TOSTRING_JOINER, Materialized.as("store")),
+                    MockValueJoiner.TOSTRING_JOINER);
         builder.build();
 
         final ProcessorTopology topology =
-            builder.internalTopologyBuilder.rewriteTopology(new StreamsConfig(props)).buildTopology();
+                builder.internalTopologyBuilder.rewriteTopology(new StreamsConfig(props)).buildTopology();
 
         assertThat(
-            topology.stateStores().size(),
-            equalTo(3));
+                topology.stateStores().size(),
+                equalTo(3));
         assertThat(
-            topology.processorConnectedStateStores("KSTREAM-JOIN-0000000010"),
-            equalTo(Collections.singleton("store")));
+                topology.processorConnectedStateStores("KSTREAM-JOIN-0000000010"),
+                equalTo(Collections.singleton("store")));
         assertThat(
-            topology.processorConnectedStateStores("KTABLE-MERGE-0000000007"),
-            equalTo(Collections.singleton("store")));
+                topology.processorConnectedStateStores("KTABLE-MERGE-0000000007"),
+                equalTo(Collections.singleton("store")));
     }
 
     @Test
@@ -325,17 +325,17 @@ public class StreamsBuilderTest {
         builder.build();
 
         final ProcessorTopology topology =
-            builder.internalTopologyBuilder.rewriteTopology(new StreamsConfig(props)).buildTopology();
+                builder.internalTopologyBuilder.rewriteTopology(new StreamsConfig(props)).buildTopology();
 
         assertThat(
-            topology.stateStores().size(),
-            equalTo(1));
+                topology.stateStores().size(),
+                equalTo(1));
         assertThat(
-            topology.processorConnectedStateStores("KTABLE-SOURCE-0000000002"),
-            equalTo(Collections.singleton(topology.stateStores().get(0).name())));
+                topology.processorConnectedStateStores("KTABLE-SOURCE-0000000002"),
+                equalTo(Collections.singleton(topology.stateStores().get(0).name())));
         assertThat(
-            topology.processorConnectedStateStores("KSTREAM-JOIN-0000000004"),
-            equalTo(Collections.singleton(topology.stateStores().get(0).name())));
+                topology.processorConnectedStateStores("KSTREAM-JOIN-0000000004"),
+                equalTo(Collections.singleton(topology.stateStores().get(0).name())));
     }
 
     @Test
@@ -348,7 +348,7 @@ public class StreamsBuilderTest {
 
         try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
             final TestInputTopic<String, String> inputTopic =
-                driver.createInputTopic("topic-source", new StringSerializer(), new StringSerializer(), Instant.ofEpochMilli(0L), Duration.ZERO);
+                    driver.createInputTopic("topic-source", new StringSerializer(), new StringSerializer(), Instant.ofEpochMilli(0L), Duration.ZERO);
             inputTopic.pipeInput("A", "aa");
         }
 
@@ -370,7 +370,7 @@ public class StreamsBuilderTest {
 
         try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
             final TestInputTopic<String, String> inputTopic =
-                driver.createInputTopic("topic-source", new StringSerializer(), new StringSerializer(), Instant.ofEpochMilli(0L), Duration.ZERO);
+                    driver.createInputTopic("topic-source", new StringSerializer(), new StringSerializer(), Instant.ofEpochMilli(0L), Duration.ZERO);
             inputTopic.pipeInput("A", "aa");
         }
 
@@ -392,9 +392,9 @@ public class StreamsBuilderTest {
 
         try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
             final TestInputTopic<String, String> inputTopic1 =
-                driver.createInputTopic(topic1, new StringSerializer(), new StringSerializer(), Instant.ofEpochMilli(0L), Duration.ZERO);
+                    driver.createInputTopic(topic1, new StringSerializer(), new StringSerializer(), Instant.ofEpochMilli(0L), Duration.ZERO);
             final TestInputTopic<String, String> inputTopic2 =
-                driver.createInputTopic(topic2, new StringSerializer(), new StringSerializer(), Instant.ofEpochMilli(0L), Duration.ZERO);
+                    driver.createInputTopic(topic2, new StringSerializer(), new StringSerializer(), Instant.ofEpochMilli(0L), Duration.ZERO);
 
             inputTopic1.pipeInput("A", "aa");
             inputTopic2.pipeInput("B", "bb");
@@ -632,7 +632,7 @@ public class StreamsBuilderTest {
 
         try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
             final TestInputTopic<Long, String> inputTopic =
-                driver.createInputTopic(topic, new LongSerializer(), new StringSerializer());
+                    driver.createInputTopic(topic, new LongSerializer(), new StringSerializer());
             inputTopic.pipeInput(1L, "value1");
             inputTopic.pipeInput(2L, "value2");
 
@@ -653,7 +653,7 @@ public class StreamsBuilderTest {
 
         try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
             final TestInputTopic<Long, String> inputTopic =
-                driver.createInputTopic(topic, new LongSerializer(), new StringSerializer());
+                    driver.createInputTopic(topic, new LongSerializer(), new StringSerializer());
             inputTopic.pipeInput(1L, "value1");
             inputTopic.pipeInput(2L, "value2");
             final KeyValueStore<Long, String> store = driver.getKeyValueStore("store");
@@ -667,14 +667,13 @@ public class StreamsBuilderTest {
     public void shouldThrowOnVersionedStoreSupplierForGlobalTable() {
         final String topic = "topic";
         assertThrows(
-            TopologyException.class,
-            () -> builder.globalTable(
-                topic,
-                Materialized.<Long, String>as(Stores.persistentVersionedKeyValueStore("store", Duration.ZERO))
-                    .withKeySerde(Serdes.Long())
-                    .withValueSerde(Serdes.String()
-                )
-            )
+                TopologyException.class,
+                () -> builder.globalTable(
+                    topic,
+                    Materialized.<Long, String>as(Stores.persistentVersionedKeyValueStore("store", Duration.ZERO))
+                        .withKeySerde(Serdes.Long())
+                        .withValueSerde(Serdes.String()
+                ))
         );
     }
 
@@ -684,7 +683,7 @@ public class StreamsBuilderTest {
         builder.table(topic, Materialized.with(Serdes.Long(), Serdes.String()));
 
         final ProcessorTopology topology =
-            builder.internalTopologyBuilder.rewriteTopology(new StreamsConfig(props)).buildTopology();
+                builder.internalTopologyBuilder.rewriteTopology(new StreamsConfig(props)).buildTopology();
 
         assertThat(topology.stateStores().size(), equalTo(0));
     }
@@ -701,17 +700,17 @@ public class StreamsBuilderTest {
         internalTopologyBuilder.rewriteTopology(new StreamsConfig(props));
 
         assertThat(
-            internalTopologyBuilder.buildTopology().storeToChangelogTopic(),
-            equalTo(Collections.singletonMap("store", "topic")));
+                internalTopologyBuilder.buildTopology().storeToChangelogTopic(),
+                equalTo(Collections.singletonMap("store", "topic")));
         assertThat(
-            internalTopologyBuilder.stateStores().keySet(),
-            equalTo(Collections.singleton("store")));
+                internalTopologyBuilder.stateStores().keySet(),
+                equalTo(Collections.singleton("store")));
         assertThat(
-            internalTopologyBuilder.stateStores().get("store").loggingEnabled(),
-            equalTo(false));
+                internalTopologyBuilder.stateStores().get("store").loggingEnabled(),
+                equalTo(false));
         assertThat(
-            internalTopologyBuilder.subtopologyToTopicsInfo().get(SUBTOPOLOGY_0).nonSourceChangelogTopics().isEmpty(),
-            equalTo(true));
+                internalTopologyBuilder.subtopologyToTopicsInfo().get(SUBTOPOLOGY_0).nonSourceChangelogTopics().isEmpty(),
+                equalTo(true));
     }
 
     @Test
@@ -726,20 +725,20 @@ public class StreamsBuilderTest {
         internalTopologyBuilder.rewriteTopology(new StreamsConfig(props));
 
         assertThat(
-            internalTopologyBuilder.buildTopology().storeToChangelogTopic(),
-            equalTo(Collections.singletonMap("store", "appId-store-changelog"))
+                internalTopologyBuilder.buildTopology().storeToChangelogTopic(),
+                equalTo(Collections.singletonMap("store", "appId-store-changelog"))
         );
         assertThat(
-            internalTopologyBuilder.stateStores().keySet(),
-            equalTo(Collections.singleton("store"))
+                internalTopologyBuilder.stateStores().keySet(),
+                equalTo(Collections.singleton("store"))
         );
         assertThat(
-            internalTopologyBuilder.stateStores().get("store").loggingEnabled(),
-            equalTo(true)
+                internalTopologyBuilder.stateStores().get("store").loggingEnabled(),
+                equalTo(true)
         );
         assertThat(
-            internalTopologyBuilder.subtopologyToTopicsInfo().get(SUBTOPOLOGY_1).stateChangelogTopics.keySet(),
-            equalTo(Collections.singleton("appId-store-changelog"))
+                internalTopologyBuilder.subtopologyToTopicsInfo().get(SUBTOPOLOGY_1).stateChangelogTopics.keySet(),
+                equalTo(Collections.singleton("appId-store-changelog"))
         );
     }
 
@@ -752,17 +751,17 @@ public class StreamsBuilderTest {
         internalTopologyBuilder.setApplicationId("appId");
 
         assertThat(
-            internalTopologyBuilder.buildTopology().storeToChangelogTopic(),
-            equalTo(Collections.singletonMap("store", "appId-store-changelog")));
+                internalTopologyBuilder.buildTopology().storeToChangelogTopic(),
+                equalTo(Collections.singletonMap("store", "appId-store-changelog")));
         assertThat(
-            internalTopologyBuilder.stateStores().keySet(),
-            equalTo(Collections.singleton("store")));
+                internalTopologyBuilder.stateStores().keySet(),
+                equalTo(Collections.singleton("store")));
         assertThat(
-            internalTopologyBuilder.stateStores().get("store").loggingEnabled(),
-            equalTo(true));
+                internalTopologyBuilder.stateStores().get("store").loggingEnabled(),
+                equalTo(true));
         assertThat(
-            internalTopologyBuilder.subtopologyToTopicsInfo().get(SUBTOPOLOGY_0).stateChangelogTopics.keySet(),
-            equalTo(Collections.singleton("appId-store-changelog")));
+                internalTopologyBuilder.subtopologyToTopicsInfo().get(SUBTOPOLOGY_0).stateChangelogTopics.keySet(),
+                equalTo(Collections.singleton("appId-store-changelog")));
     }
 
     @Test
@@ -797,11 +796,11 @@ public class StreamsBuilderTest {
         final ProcessorTopology topology = builder.internalTopologyBuilder.rewriteTopology(new StreamsConfig(props)).buildTopology();
 
         assertNamesForOperation(
-            topology,
-            expected + "-source",
-            expected,
-            "KSTREAM-SOURCE-0000000004",
-            "KTABLE-SOURCE-0000000005");
+                topology,
+                expected + "-source",
+                expected,
+                "KSTREAM-SOURCE-0000000004",
+                "KTABLE-SOURCE-0000000005");
     }
 
     @Test
@@ -813,9 +812,9 @@ public class StreamsBuilderTest {
         final ProcessorTopology topology = builder.internalTopologyBuilder.rewriteTopology(new StreamsConfig(props)).buildTopology();
 
         assertNamesForStateStore(
-            topology.globalStateStores(),
-            "stream-topic-STATE-STORE-0000000000",
-            "stream-topic-two-STATE-STORE-0000000003"
+                topology.globalStateStores(),
+                "stream-topic-STATE-STORE-0000000000",
+                "stream-topic-two-STATE-STORE-0000000003"
         );
     }
 
@@ -864,7 +863,7 @@ public class StreamsBuilderTest {
 
     @Test
     public void shouldUseSpecifiedNameForForEachOperation() {
-        builder.stream(STREAM_TOPIC).foreach((k, v) -> { }, Named.as(STREAM_OPERATION_NAME));
+        builder.stream(STREAM_TOPIC).foreach((k, v) -> {}, Named.as(STREAM_OPERATION_NAME));
         builder.build();
         final ProcessorTopology topology = builder.internalTopologyBuilder.rewriteTopology(new StreamsConfig(props)).buildTopology();
         assertNamesForOperation(topology, "KSTREAM-SOURCE-0000000000", STREAM_OPERATION_NAME);
@@ -953,19 +952,19 @@ public class StreamsBuilderTest {
         final KStream<String, String> streamTwo = builder.stream(STREAM_TOPIC_TWO);
 
         streamOne.leftJoin(
-            streamTwo,
-            (value1, value2) -> value1,
-            JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofHours(1)),
-            StreamJoined.<String, String, String>as(STREAM_OPERATION_NAME)
-                .withName(STREAM_OPERATION_NAME)
+                streamTwo,
+                (value1, value2) -> value1,
+                JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofHours(1)),
+                StreamJoined.<String, String, String>as(STREAM_OPERATION_NAME)
+                    .withName(STREAM_OPERATION_NAME)
         );
         builder.build();
 
         final ProcessorTopology topology = builder.internalTopologyBuilder.rewriteTopology(new StreamsConfig(props)).buildTopology();
         assertNamesForStateStore(topology.stateStores(),
-            STREAM_OPERATION_NAME + "-this-join-store",
-            STREAM_OPERATION_NAME + "-outer-other-join-store",
-            STREAM_OPERATION_NAME + "-left-shared-join-store"
+                STREAM_OPERATION_NAME + "-this-join-store",
+                STREAM_OPERATION_NAME + "-outer-other-join-store",
+                STREAM_OPERATION_NAME + "-left-shared-join-store"
         );
         assertNamesForOperation(topology,
                                 "KSTREAM-SOURCE-0000000000",
@@ -983,11 +982,11 @@ public class StreamsBuilderTest {
         final KStream<String, String> streamTwo = builder.stream(STREAM_TOPIC_TWO);
 
         streamOne.leftJoin(
-            streamTwo,
-            (value1, value2) -> value1,
-            JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofHours(1)),
-            StreamJoined.with(Serdes.String(), Serdes.String(), Serdes.String())
-                .withName(STREAM_OPERATION_NAME)
+                streamTwo,
+                (value1, value2) -> value1,
+                JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofHours(1)),
+                StreamJoined.with(Serdes.String(), Serdes.String(), Serdes.String())
+                    .withName(STREAM_OPERATION_NAME)
         );
         builder.build();
 
@@ -1014,9 +1013,9 @@ public class StreamsBuilderTest {
         final KStream<String, String> streamTwo = builder.stream(STREAM_TOPIC_TWO);
 
         streamOne.join(streamTwo,
-            (value1, value2) -> value1,
-            JoinWindows.of(Duration.ofHours(1)),
-            StreamJoined.<String, String, String>as(STREAM_OPERATION_NAME).withName(STREAM_OPERATION_NAME));
+                (value1, value2) -> value1,
+                JoinWindows.of(Duration.ofHours(1)),
+                StreamJoined.<String, String, String>as(STREAM_OPERATION_NAME).withName(STREAM_OPERATION_NAME));
         builder.build();
 
         final ProcessorTopology topology = builder.internalTopologyBuilder.rewriteTopology(new StreamsConfig(props)).buildTopology();
@@ -1041,10 +1040,10 @@ public class StreamsBuilderTest {
         final KStream<String, String> streamTwo = builder.stream(STREAM_TOPIC_TWO);
 
         streamOne.join(streamTwo,
-            (value1, value2) -> value1,
-            JoinWindows.of(Duration.ofHours(1)),
-            StreamJoined.with(Serdes.String(), Serdes.String(), Serdes.String())
-                .withName(STREAM_OPERATION_NAME));
+                (value1, value2) -> value1,
+                JoinWindows.of(Duration.ofHours(1)),
+                StreamJoined.with(Serdes.String(), Serdes.String(), Serdes.String())
+                    .withName(STREAM_OPERATION_NAME));
         builder.build();
 
         final ProcessorTopology topology = builder.internalTopologyBuilder.rewriteTopology(new StreamsConfig(props)).buildTopology();
@@ -1068,11 +1067,11 @@ public class StreamsBuilderTest {
         final KStream<String, String> streamTwo = builder.stream(STREAM_TOPIC_TWO);
 
         streamOne.outerJoin(
-            streamTwo,
-            (value1, value2) -> value1,
-            JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofHours(1)),
-            StreamJoined.<String, String, String>as(STREAM_OPERATION_NAME)
-                .withName(STREAM_OPERATION_NAME)
+                streamTwo,
+                (value1, value2) -> value1,
+                JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofHours(1)),
+                StreamJoined.<String, String, String>as(STREAM_OPERATION_NAME)
+                    .withName(STREAM_OPERATION_NAME)
         );
         builder.build();
         final ProcessorTopology topology = builder.internalTopologyBuilder.rewriteTopology(new StreamsConfig(props)).buildTopology();
@@ -1097,11 +1096,11 @@ public class StreamsBuilderTest {
         final KStream<String, String> streamTwo = builder.stream(STREAM_TOPIC_TWO);
 
         streamOne.outerJoin(
-            streamTwo,
-            (value1, value2) -> value1,
-            JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofHours(1)),
-            StreamJoined.with(Serdes.String(), Serdes.String(), Serdes.String())
-                .withName(STREAM_OPERATION_NAME)
+                streamTwo,
+                (value1, value2) -> value1,
+                JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofHours(1)),
+                StreamJoined.with(Serdes.String(), Serdes.String(), Serdes.String())
+                    .withName(STREAM_OPERATION_NAME)
         );
         builder.build();
 
@@ -1374,26 +1373,26 @@ public class StreamsBuilderTest {
         builder.build();
         final ProcessorTopology topology = builder.internalTopologyBuilder.rewriteTopology(new StreamsConfig(props)).buildTopology();
         assertNamesForStateStore(
-            topology.stateStores(),
-            STREAM_TOPIC + "-STATE-STORE-0000000000",
-            "KTABLE-AGGREGATE-STATE-STORE-0000000004");
+                topology.stateStores(),
+                STREAM_TOPIC + "-STATE-STORE-0000000000",
+                "KTABLE-AGGREGATE-STATE-STORE-0000000004");
 
         assertNamesForOperation(
-            topology,
-            "KSTREAM-SOURCE-0000000001",
-            "KTABLE-SOURCE-0000000002",
-            "group-operation",
-            STREAM_OPERATION_NAME + "-sink",
-            STREAM_OPERATION_NAME + "-source",
-            STREAM_OPERATION_NAME);
+                topology,
+                "KSTREAM-SOURCE-0000000001",
+                "KTABLE-SOURCE-0000000002",
+                "group-operation",
+                STREAM_OPERATION_NAME + "-sink",
+                STREAM_OPERATION_NAME + "-source",
+                STREAM_OPERATION_NAME);
     }
 
     @Test
     public void shouldUseSpecifiedNameForGlobalStoreProcessor() {
         builder.addGlobalStore(Stores.keyValueStoreBuilder(
-                        inMemoryKeyValueStore("store"),
-                        Serdes.String(),
-                        Serdes.String()
+                inMemoryKeyValueStore("store"),
+                Serdes.String(),
+                Serdes.String()
                 ),
                 "topic",
                 Consumed.with(Serdes.String(), Serdes.String()).withName("test"),
@@ -1408,9 +1407,9 @@ public class StreamsBuilderTest {
     @Test
     public void shouldUseDefaultNameForGlobalStoreProcessor() {
         builder.addGlobalStore(Stores.keyValueStoreBuilder(
-                        inMemoryKeyValueStore("store"),
-                        Serdes.String(),
-                        Serdes.String()
+                inMemoryKeyValueStore("store"),
+                Serdes.String(),
+                Serdes.String()
                 ),
                 "topic",
                 Consumed.with(Serdes.String(), Serdes.String()),
@@ -1440,40 +1439,40 @@ public class StreamsBuilderTest {
         final StoreBuilder<?> store = timestampedKeyValueStoreBuilder(inMemoryKeyValueStore("store"), Serdes.String(), Serdes.String());
         builder.stream("input", Consumed.as("source"))
             .process(
-                new ProcessorSupplier<>() {
-                    @Override
-                    public Processor<Object, Object, Object, Object> get() {
-                        return record -> System.out.println("Processing: " + random.nextInt());
-                    }
+                    new ProcessorSupplier<>() {
+                        @Override
+                        public Processor<Object, Object, Object, Object> get() {
+                            return record -> System.out.println("Processing: " + random.nextInt());
+                        }
 
-                    @Override
-                    public Set<StoreBuilder<?>> stores() {
-                        return Collections.singleton(store);
-                    }
-                },
-                Named.as("stateful-process-1"))
+                        @Override
+                        public Set<StoreBuilder<?>> stores() {
+                            return Collections.singleton(store);
+                        }
+                    },
+                    Named.as("stateful-process-1"))
             .process(
-                new ProcessorSupplier<>() {
-                    @Override
-                    public Processor<Object, Object, Object, Object> get() {
-                        return record -> System.out.println("Processing: " + random.nextInt());
-                    }
+                    new ProcessorSupplier<>() {
+                        @Override
+                        public Processor<Object, Object, Object, Object> get() {
+                            return record -> System.out.println("Processing: " + random.nextInt());
+                        }
 
-                    @Override
-                    public Set<StoreBuilder<?>> stores() {
-                        return Collections.singleton(store);
-                    }
-                },
-                Named.as("stateful-process-2"))
+                        @Override
+                        public Set<StoreBuilder<?>> stores() {
+                            return Collections.singleton(store);
+                        }
+                    },
+                    Named.as("stateful-process-2"))
             .processValues(
-                () -> record -> System.out.println("Processing values: " + random.nextInt()),
-                Named.as("stateless-processValues"))
+                    () -> record -> System.out.println("Processing values: " + random.nextInt()),
+                    Named.as("stateless-processValues"))
             .to("output", Produced.as("sink"));
 
         builder.build();
         assertThat(counter.numWrappedProcessors(), CoreMatchers.is(3));
         assertThat(counter.wrappedProcessorNames(), Matchers.containsInAnyOrder(
-            "stateful-process-1", "stateful-process-2", "stateless-processValues"));
+                "stateful-process-1", "stateful-process-2", "stateless-processValues"));
         assertThat(counter.numUniqueStateStores(), CoreMatchers.is(1));
         assertThat(counter.numConnectedStateStores(), CoreMatchers.is(2));
     }
@@ -1496,7 +1495,7 @@ public class StreamsBuilderTest {
 
         builder.build();
         assertThat(counter.wrappedProcessorNames(), Matchers.containsInAnyOrder(
-            "groupBy", "groupBy-repartition-filter", "reduce", "toStream"));
+                "groupBy", "groupBy-repartition-filter", "reduce", "toStream"));
         assertThat(counter.numWrappedProcessors(), CoreMatchers.is(4));
         assertThat(counter.numUniqueStateStores(), CoreMatchers.is(1));
         assertThat(counter.numConnectedStateStores(), CoreMatchers.is(1));
@@ -1647,7 +1646,7 @@ public class StreamsBuilderTest {
         builder.build();
 
         assertThat(counter.wrappedProcessorNames(), Matchers.containsInAnyOrder(
-            "aggregate-cogroup-agg-0", "aggregate-cogroup-agg-1", "aggregate-cogroup-merge", "toStream"
+                "aggregate-cogroup-agg-0", "aggregate-cogroup-agg-1", "aggregate-cogroup-merge", "toStream"
         ));
         assertThat(counter.numWrappedProcessors(), CoreMatchers.is(4));
         assertThat(counter.numUniqueStateStores(), CoreMatchers.is(1));
@@ -1669,7 +1668,7 @@ public class StreamsBuilderTest {
         builder.build();
 
         assertThat(counter.wrappedProcessorNames(),
-            Matchers.containsInAnyOrder("source-table", "map-values", "to-stream"));
+                Matchers.containsInAnyOrder("source-table", "map-values", "to-stream"));
         assertThat(counter.numUniqueStateStores(), is(1));
         assertThat(counter.numConnectedStateStores(), is(1));
     }
@@ -1689,7 +1688,7 @@ public class StreamsBuilderTest {
         builder.build();
 
         assertThat(counter.wrappedProcessorNames(),
-            Matchers.containsInAnyOrder("source-table", "filter", "to-stream"));
+                Matchers.containsInAnyOrder("source-table", "filter", "to-stream"));
         assertThat(counter.numUniqueStateStores(), is(1));
         assertThat(counter.numConnectedStateStores(), is(1));
     }
@@ -1712,7 +1711,7 @@ public class StreamsBuilderTest {
 
         builder.build();
         assertThat(counter.wrappedProcessorNames(), Matchers.containsInAnyOrder(
-            "source-table", "groupBy", "count", "toStream"
+                "source-table", "groupBy", "count", "toStream"
         ));
         assertThat(counter.numWrappedProcessors(), CoreMatchers.is(4));
         assertThat(counter.numUniqueStateStores(), CoreMatchers.is(2));
@@ -1737,7 +1736,7 @@ public class StreamsBuilderTest {
 
         builder.build();
         assertThat(counter.wrappedProcessorNames(), Matchers.containsInAnyOrder(
-            "source-table", "groupBy", "reduce", "toStream"
+                "source-table", "groupBy", "reduce", "toStream"
         ));
         assertThat(counter.numWrappedProcessors(), CoreMatchers.is(4));
         assertThat(counter.numUniqueStateStores(), CoreMatchers.is(2));
@@ -1758,14 +1757,14 @@ public class StreamsBuilderTest {
             .filter((k, v) -> true, Named.as("filter-stream")) // wrapped 1
             .map(KeyValue::new, Named.as("map")) // wrapped 2
             .selectKey((k, v) -> k, Named.as("selectKey")) // wrapped 3
-            .peek((k, v) -> { }, Named.as("peek")) // wrapped 4
+            .peek((k, v) -> {}, Named.as("peek")) // wrapped 4
             .flatMapValues(e -> new ArrayList<>(), Named.as("flatMap")) // wrapped 5
             .to("output", Produced.as("sink"));
 
         builder.build();
         assertThat(counter.numWrappedProcessors(), CoreMatchers.is(5));
         assertThat(counter.wrappedProcessorNames(), Matchers.containsInAnyOrder(
-            "filter-stream", "map", "selectKey", "peek", "flatMap"
+                "filter-stream", "map", "selectKey", "peek", "flatMap"
         ));
         assertThat(counter.numUniqueStateStores(), CoreMatchers.is(0));
         assertThat(counter.numConnectedStateStores(), CoreMatchers.is(0));
@@ -1793,8 +1792,8 @@ public class StreamsBuilderTest {
         builder.build();
         assertThat(counter.numWrappedProcessors(), CoreMatchers.is(6));
         assertThat(counter.wrappedProcessorNames(), Matchers.containsInAnyOrder(
-            "to-table", "map-values", "map-values-stateful",
-            "filter-table", "filter-table-stateful", "to-stream"
+                "to-table", "map-values", "map-values-stateful",
+                "filter-table", "filter-table-stateful", "to-stream"
         ));
         assertThat(counter.numUniqueStateStores(), CoreMatchers.is(2));
         assertThat(counter.numConnectedStateStores(), CoreMatchers.is(2));
@@ -1817,7 +1816,7 @@ public class StreamsBuilderTest {
         builder.build();
         assertThat(counter.numWrappedProcessors(), CoreMatchers.is(2));
         assertThat(counter.wrappedProcessorNames(), Matchers.containsInAnyOrder(
-            "source", "toStream"
+                "source", "toStream"
         ));
         assertThat(counter.numUniqueStateStores(), CoreMatchers.is(0));
         assertThat(counter.numConnectedStateStores(), CoreMatchers.is(0));
@@ -1840,7 +1839,7 @@ public class StreamsBuilderTest {
         builder.build();
         assertThat(counter.numWrappedProcessors(), CoreMatchers.is(2));
         assertThat(counter.wrappedProcessorNames(), Matchers.containsInAnyOrder(
-            "source", "toStream"
+                "source", "toStream"
         ));
         assertThat(counter.numUniqueStateStores(), CoreMatchers.is(1));
         assertThat(counter.numConnectedStateStores(), CoreMatchers.is(1));
@@ -1870,9 +1869,9 @@ public class StreamsBuilderTest {
 
         // TODO: fix these names once we address https://issues.apache.org/jira/browse/KAFKA-18191
         assertThat(counter.wrappedProcessorNames(), Matchers.containsInAnyOrder(
-            "KSTREAM-JOINTHIS-0000000004", "KSTREAM-JOINOTHER-0000000005",
-            "KSTREAM-WINDOWED-0000000003", "KSTREAM-WINDOWED-0000000002",
-            "KSTREAM-MERGE-0000000006"
+                "KSTREAM-JOINTHIS-0000000004", "KSTREAM-JOINOTHER-0000000005",
+                "KSTREAM-WINDOWED-0000000003", "KSTREAM-WINDOWED-0000000002",
+                "KSTREAM-MERGE-0000000006"
         ));
         assertThat(counter.numWrappedProcessors(), CoreMatchers.is(5));
         assertThat(counter.numUniqueStateStores(), CoreMatchers.is(2));
@@ -1903,9 +1902,9 @@ public class StreamsBuilderTest {
 
         // TODO: fix these names once we address https://issues.apache.org/jira/browse/KAFKA-18191
         assertThat(counter.wrappedProcessorNames(), Matchers.containsInAnyOrder(
-            "KSTREAM-JOINTHIS-0000000004", "KSTREAM-OUTEROTHER-0000000005",
-            "KSTREAM-WINDOWED-0000000003", "KSTREAM-WINDOWED-0000000002",
-            "KSTREAM-MERGE-0000000006"
+                "KSTREAM-JOINTHIS-0000000004", "KSTREAM-OUTEROTHER-0000000005",
+                "KSTREAM-WINDOWED-0000000003", "KSTREAM-WINDOWED-0000000002",
+                "KSTREAM-MERGE-0000000006"
         ));
         assertThat(counter.numWrappedProcessors(), CoreMatchers.is(5));
 
@@ -1938,9 +1937,9 @@ public class StreamsBuilderTest {
 
         // TODO: fix these names once we address https://issues.apache.org/jira/browse/KAFKA-18191
         assertThat(counter.wrappedProcessorNames(), Matchers.containsInAnyOrder(
-            "KSTREAM-OUTERTHIS-0000000004", "KSTREAM-OUTEROTHER-0000000005",
-            "KSTREAM-WINDOWED-0000000003", "KSTREAM-WINDOWED-0000000002",
-            "KSTREAM-MERGE-0000000006"
+                "KSTREAM-OUTERTHIS-0000000004", "KSTREAM-OUTEROTHER-0000000005",
+                "KSTREAM-WINDOWED-0000000003", "KSTREAM-WINDOWED-0000000002",
+                "KSTREAM-MERGE-0000000006"
         ));
         assertThat(counter.numWrappedProcessors(), CoreMatchers.is(5));
 
@@ -1974,9 +1973,9 @@ public class StreamsBuilderTest {
 
         // TODO: fix these names once we address https://issues.apache.org/jira/browse/KAFKA-18191
         assertThat(counter.wrappedProcessorNames(), Matchers.containsInAnyOrder(
-            "KSTREAM-OUTERTHIS-0000000004", "KSTREAM-OUTEROTHER-0000000005",
-            "KSTREAM-WINDOWED-0000000003", "KSTREAM-WINDOWED-0000000002",
-            "KSTREAM-MERGE-0000000006"
+                "KSTREAM-OUTERTHIS-0000000004", "KSTREAM-OUTEROTHER-0000000005",
+                "KSTREAM-WINDOWED-0000000003", "KSTREAM-WINDOWED-0000000002",
+                "KSTREAM-MERGE-0000000006"
         ));
         assertThat(counter.numWrappedProcessors(), CoreMatchers.is(5));
         assertThat(counter.numUniqueStateStores(), CoreMatchers.is(2));
@@ -2006,9 +2005,9 @@ public class StreamsBuilderTest {
 
         // TODO: fix these names once we address https://issues.apache.org/jira/browse/KAFKA-18191
         assertThat(counter.wrappedProcessorNames(), Matchers.containsInAnyOrder(
-            "KSTREAM-JOINTHIS-0000000003", "KSTREAM-JOINOTHER-0000000004",
-            "KSTREAM-WINDOWED-0000000001", "KSTREAM-WINDOWED-0000000002",
-            "KSTREAM-MERGE-0000000005"
+                "KSTREAM-JOINTHIS-0000000003", "KSTREAM-JOINOTHER-0000000004",
+                "KSTREAM-WINDOWED-0000000001", "KSTREAM-WINDOWED-0000000002",
+                "KSTREAM-MERGE-0000000005"
         ));
         assertThat(counter.numWrappedProcessors(), CoreMatchers.is(5));
         assertThat(counter.numUniqueStateStores(), CoreMatchers.is(2));
@@ -2041,7 +2040,7 @@ public class StreamsBuilderTest {
 
         // TODO: fix these names once we address https://issues.apache.org/jira/browse/KAFKA-18191
         assertThat(counter.wrappedProcessorNames(), Matchers.containsInAnyOrder(
-            "KSTREAM-WINDOWED-0000000001", "KSTREAM-MERGE-0000000005"
+                "KSTREAM-WINDOWED-0000000001", "KSTREAM-MERGE-0000000005"
         ));
         assertThat(counter.numWrappedProcessors(), CoreMatchers.is(2));
         // only 1 store when topology optimizations enabled due to sharing self-join store
@@ -2071,7 +2070,7 @@ public class StreamsBuilderTest {
         builder.build();
 
         assertThat(counter.wrappedProcessorNames(), Matchers.containsInAnyOrder(
-            "source-table", "st-join"
+                "source-table", "st-join"
         ));
         assertThat(counter.numWrappedProcessors(), CoreMatchers.is(2));
         assertThat(counter.numUniqueStateStores(), CoreMatchers.is(1));
@@ -2090,20 +2089,20 @@ public class StreamsBuilderTest {
 
         final KStream<String, String> stream = builder.stream("input", Consumed.as("source-stream"));
         final KTable<String, String> table = builder.table(
-            "input-table",
-            Consumed.as("versioned-source-table"),
-            Materialized.as(Stores.persistentVersionedKeyValueStore("table-store", Duration.ofDays(1)))
+                "input-table",
+                Consumed.as("versioned-source-table"),
+                Materialized.as(Stores.persistentVersionedKeyValueStore("table-store", Duration.ofDays(1)))
         );
 
         stream.join(
-            table,
-            MockValueJoiner.TOSTRING_JOINER,
-            Joined.<String, String, String>as("st-join").withGracePeriod(Duration.ofDays(1)))
+                table,
+                MockValueJoiner.TOSTRING_JOINER,
+                Joined.<String, String, String>as("st-join").withGracePeriod(Duration.ofDays(1)))
             .to("output", Produced.as("sink"));
 
         builder.build();
         assertThat(counter.wrappedProcessorNames(), Matchers.containsInAnyOrder(
-            "versioned-source-table", "st-join"
+                "versioned-source-table", "st-join"
         ));
         assertThat(counter.numWrappedProcessors(), CoreMatchers.is(2));
         assertThat(counter.numUniqueStateStores(), CoreMatchers.is(2));
@@ -2124,8 +2123,8 @@ public class StreamsBuilderTest {
         final KTable<String, String> t2 = builder.table("input2", Consumed.as("input2")); // 2
 
         t1.join(t2, (v1, v2) -> v1 + v2, Named.as("join-processor"), Materialized.as("the_join")) // 3 (this), 4 (other), 5 (merger)
-                .toStream(Named.as("toStream")) // 6
-                .to("output", Produced.as("sink"));
+                    .toStream(Named.as("toStream")) // 6
+                    .to("output", Produced.as("sink"));
 
         builder.build();
         assertThat(counter.numWrappedProcessors(), CoreMatchers.is(6));
@@ -2156,8 +2155,8 @@ public class StreamsBuilderTest {
         final KTable<String, String> t2 = builder.table("input2", Consumed.as("input2")); // 2
 
         t1.leftJoin(t2, (v1, v2) -> v1 + v2, Named.as("join-processor"), Materialized.as("the_join")) // 3 (this), 4 (other), 5 (merger)
-                .toStream(Named.as("toStream")) // 6
-                .to("output", Produced.as("sink"));
+                    .toStream(Named.as("toStream")) // 6
+                    .to("output", Produced.as("sink"));
 
         builder.build();
         assertThat(counter.numWrappedProcessors(), CoreMatchers.is(6));
@@ -2188,8 +2187,8 @@ public class StreamsBuilderTest {
         final KTable<String, String> t2 = builder.table("input2", Consumed.as("input2")); // 2
 
         t1.outerJoin(t2, (v1, v2) -> v1 + v2, Named.as("join-processor"), Materialized.as("the_join")) // 3 (this), 4 (other), 5 (merger)
-                .toStream(Named.as("toStream")) // 6
-                .to("output", Produced.as("sink"));
+                    .toStream(Named.as("toStream")) // 6
+                    .to("output", Produced.as("sink"));
 
         builder.build();
         assertThat(counter.numWrappedProcessors(), CoreMatchers.is(6));
@@ -2230,15 +2229,15 @@ public class StreamsBuilderTest {
         builder.build();
         assertThat(counter.numWrappedProcessors(), CoreMatchers.is(9));
         assertThat(counter.wrappedProcessorNames().toString(), counter.wrappedProcessorNames(), Matchers.containsInAnyOrder(
-            "input1",
-            "input2",
-            "join-foreign-join-subscription",
-            "join-subscription-join-foreign",
-            "join-subscription-registration-processor",
-            "join-subscription-receive",
-            "join-result",
-            "join-subscription-response-resolver",
-            "toStream"
+                "input1",
+                "input2",
+                "join-foreign-join-subscription",
+                "join-subscription-join-foreign",
+                "join-subscription-registration-processor",
+                "join-subscription-receive",
+                "join-result",
+                "join-subscription-response-resolver",
+                "toStream"
         ));
 
         assertThat(counter.numUniqueStateStores(), CoreMatchers.is(4)); // table1, table2, subscription store, and join materialized
@@ -2259,25 +2258,25 @@ public class StreamsBuilderTest {
         final KTable<String, String> right = builder.table("input2", Consumed.as("input2"));
 
         left.leftJoin(right,
-                  value -> value,
-                  (v1, v2) -> v1 + v2,
-                  TableJoined.as("l-join"),
-                  Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("materialized-store").withValueSerde(Serdes.String()))
+                value -> value,
+                (v1, v2) -> v1 + v2,
+                TableJoined.as("l-join"),
+                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("materialized-store").withValueSerde(Serdes.String()))
             .toStream(Named.as("toStream")) // 6
             .to("output", Produced.as("sink"));
 
         builder.build();
         assertThat(counter.numWrappedProcessors(), CoreMatchers.is(9));
         assertThat(counter.wrappedProcessorNames().toString(), counter.wrappedProcessorNames(), Matchers.containsInAnyOrder(
-            "input1",
-            "input2",
-            "l-join-foreign-join-subscription",
-            "l-join-subscription-join-foreign",
-            "l-join-subscription-registration-processor",
-            "l-join-subscription-receive",
-            "l-join-result",
-            "l-join-subscription-response-resolver",
-            "toStream"
+                "input1",
+                "input2",
+                "l-join-foreign-join-subscription",
+                "l-join-subscription-join-foreign",
+                "l-join-subscription-registration-processor",
+                "l-join-subscription-receive",
+                "l-join-result",
+                "l-join-subscription-response-resolver",
+                "toStream"
         ));
 
         assertThat(counter.numUniqueStateStores(), CoreMatchers.is(4)); // table1, table2, subscription store, and join materialized
@@ -2364,8 +2363,8 @@ public class StreamsBuilderTest {
     @Test
     void shouldThrowWhenGroupByAggregationWithRepartitionNameAndLoggingEnabled() {
         final StreamsBuilder builder = buildWithGroupByAggregationTopology(
-            Grouped.with("repartition-name", Serdes.String(), Serdes.String()),
-            Materialized.with(Serdes.String(), Serdes.Long())
+                Grouped.with("repartition-name", Serdes.String(), Serdes.String()),
+                Materialized.with(Serdes.String(), Serdes.Long())
         );
         final TopologyException e = assertThrows(TopologyException.class, builder::build);
         assertTrue(e.getMessage().contains("Following changelog topic(s) has not been named: KSTREAM-AGGREGATE-STATE-STORE-0000000003-changelog"));
@@ -2388,9 +2387,9 @@ public class StreamsBuilderTest {
     @Test
     void shouldNotThrowWhenGroupByAggregationWithMaterializedName() {
         final StreamsBuilder builder = buildWithGroupByAggregationTopology(
-            Grouped.with(Serdes.String(), Serdes.String()),
-            Materialized.<String, Long, KeyValueStore<Bytes, byte[]>>as("materialized-name")
-                .withKeySerde(Serdes.String()).withValueSerde(Serdes.Long())
+                Grouped.with(Serdes.String(), Serdes.String()),
+                Materialized.<String, Long, KeyValueStore<Bytes, byte[]>>as("materialized-name")
+                    .withKeySerde(Serdes.String()).withValueSerde(Serdes.Long())
         );
         assertBuildDoesNotThrow(builder);
     }
@@ -2398,9 +2397,9 @@ public class StreamsBuilderTest {
     @Test
     void shouldNotThrowWhenGroupByAggregationWithRepartitionNameAndMaterialized() {
         final StreamsBuilder builder = buildWithGroupByAggregationTopology(
-            Grouped.with("repartition-name", Serdes.String(), Serdes.String()),
-            Materialized.<String, Long, KeyValueStore<Bytes, byte[]>>as("materialized-name")
-                .withKeySerde(Serdes.String()).withValueSerde(Serdes.Long())
+                Grouped.with("repartition-name", Serdes.String(), Serdes.String()),
+                Materialized.<String, Long, KeyValueStore<Bytes, byte[]>>as("materialized-name")
+                    .withKeySerde(Serdes.String()).withValueSerde(Serdes.Long())
         );
         assertBuildDoesNotThrow(builder);
     }
@@ -2408,8 +2407,8 @@ public class StreamsBuilderTest {
     @Test
     void shouldThrowWhenGroupByAggregationWithoutRepartitionNameAndMaterializedName() {
         final StreamsBuilder builder = buildWithGroupByAggregationTopology(
-            Grouped.with(Serdes.String(), Serdes.String()),
-            Materialized.with(Serdes.String(), Serdes.Long())
+                Grouped.with(Serdes.String(), Serdes.String()),
+                Materialized.with(Serdes.String(), Serdes.Long())
         );
         final TopologyException e = assertThrows(TopologyException.class, builder::build);
         assertTrue(e.getMessage().contains("Following changelog topic(s) has not been named: KSTREAM-AGGREGATE-STATE-STORE-0000000003-changelog"));
@@ -2435,8 +2434,8 @@ public class StreamsBuilderTest {
     @Test
     void shouldThrowWhenGroupByKeyAggregationWithRepartitionNameAndLoggingEnabled() {
         final StreamsBuilder builder = buildWithGroupByKeyAggregationTopology(
-            Grouped.with("repartition-name", Serdes.String(), Serdes.String()),
-            Materialized.with(Serdes.String(), Serdes.Long())
+                Grouped.with("repartition-name", Serdes.String(), Serdes.String()),
+                Materialized.with(Serdes.String(), Serdes.Long())
         );
         final TopologyException e = assertThrows(TopologyException.class, builder::build);
         assertTrue(e.getMessage().contains("Following changelog topic(s) has not been named: KSTREAM-AGGREGATE-STATE-STORE-0000000003-changelog"));
@@ -2459,9 +2458,9 @@ public class StreamsBuilderTest {
     @Test
     void shouldNotThrowWhenGroupByKeyAggregationWithMaterializedName() {
         final StreamsBuilder builder = buildWithGroupByKeyAggregationTopology(
-             Grouped.with(Serdes.String(), Serdes.String()),
-            Materialized.<String, Long, KeyValueStore<Bytes, byte[]>>as("materialized-name")
-                .withKeySerde(Serdes.String()).withValueSerde(Serdes.Long())
+                Grouped.with(Serdes.String(), Serdes.String()),
+                Materialized.<String, Long, KeyValueStore<Bytes, byte[]>>as("materialized-name")
+                    .withKeySerde(Serdes.String()).withValueSerde(Serdes.Long())
         );
         assertBuildDoesNotThrow(builder);
     }
@@ -2469,9 +2468,9 @@ public class StreamsBuilderTest {
     @Test
     void shouldNotThrowWhenGroupByKeyAggregationWithRepartitionNameAndMaterializedName() {
         final StreamsBuilder builder = buildWithGroupByKeyAggregationTopology(
-            Grouped.with("repartition-name", Serdes.String(), Serdes.String()),
-            Materialized.<String, Long, KeyValueStore<Bytes, byte[]>>as("materialized-name")
-                .withKeySerde(Serdes.String()).withValueSerde(Serdes.Long())
+                Grouped.with("repartition-name", Serdes.String(), Serdes.String()),
+                Materialized.<String, Long, KeyValueStore<Bytes, byte[]>>as("materialized-name")
+                    .withKeySerde(Serdes.String()).withValueSerde(Serdes.Long())
         );
         assertBuildDoesNotThrow(builder);
     }
@@ -2479,8 +2478,8 @@ public class StreamsBuilderTest {
     @Test
     void shouldThrowWhenGroupByKeyAggregationWithoutRepartitionNameAndMaterializedName() {
         final StreamsBuilder builder = buildWithGroupByKeyAggregationTopology(
-             Grouped.with(Serdes.String(), Serdes.String()),
-            Materialized.with(Serdes.String(), Serdes.Long())
+                Grouped.with(Serdes.String(), Serdes.String()),
+                Materialized.with(Serdes.String(), Serdes.Long())
         );
         final TopologyException e = assertThrows(TopologyException.class, builder::build);
         assertTrue(e.getMessage().contains("Following changelog topic(s) has not been named: KSTREAM-AGGREGATE-STATE-STORE-0000000003-changelog"));
@@ -2558,8 +2557,8 @@ public class StreamsBuilderTest {
     @Test
     void shouldThrowWhenKStreamKStreamJoinWithRepartitionNameAndLoggingEnabled() {
         final StreamsBuilder builder = buildKStreamKStreamJoinTopology(
-            StreamJoined.with(Serdes.String(), Serdes.String(), Serdes.String())
-                .withName("repartition-name")
+                StreamJoined.with(Serdes.String(), Serdes.String(), Serdes.String())
+                    .withName("repartition-name")
         );
         final TopologyException e = assertThrows(TopologyException.class, builder::build);
         assertTrue(e.getMessage().contains("Following changelog topic(s) has not been named: KSTREAM-JOINTHIS-0000000012-store-changelog, KSTREAM-OUTEROTHER-0000000013-store-changelog, KSTREAM-OUTERSHARED-0000000012-store-changelog"));
@@ -2581,8 +2580,8 @@ public class StreamsBuilderTest {
     @Test
     void shouldThrowWhenKStreamKStreamJoinWithMaterializedName() {
         final StreamsBuilder builder = buildKStreamKStreamJoinTopology(
-            StreamJoined.with(Serdes.String(), Serdes.String(), Serdes.String())
-                .withStoreName("store-name")
+                StreamJoined.with(Serdes.String(), Serdes.String(), Serdes.String())
+                    .withStoreName("store-name")
         );
         final TopologyException e = assertThrows(TopologyException.class, builder::build);
         assertFalse(e.getMessage().contains("Following changelog topic(s) has not been named"));
@@ -2593,9 +2592,9 @@ public class StreamsBuilderTest {
     @Test
     void shouldNotThrowWhenKStreamKStreamJoinWithRepartitionNameAndMaterializedName() {
         final StreamsBuilder builder = buildKStreamKStreamJoinTopology(
-            StreamJoined.with(Serdes.String(), Serdes.String(), Serdes.String())
-                .withName("repartition-name")
-                .withStoreName("store-name")
+                StreamJoined.with(Serdes.String(), Serdes.String(), Serdes.String())
+                    .withName("repartition-name")
+                    .withStoreName("store-name")
         );
         assertBuildDoesNotThrow(builder);
     }
@@ -2603,7 +2602,7 @@ public class StreamsBuilderTest {
     @Test
     void shouldThrowWhenKStreamKStreamJoinWithoutRepartitionNameAndMaterializedName() {
         final StreamsBuilder builder = buildKStreamKStreamJoinTopology(
-            StreamJoined.with(Serdes.String(), Serdes.String(), Serdes.String())
+                StreamJoined.with(Serdes.String(), Serdes.String(), Serdes.String())
         );
         final TopologyException e = assertThrows(TopologyException.class, builder::build);
         assertTrue(e.getMessage().contains("Following changelog topic(s) has not been named: KSTREAM-JOINTHIS-0000000012-store-changelog, KSTREAM-OUTEROTHER-0000000013-store-changelog, KSTREAM-OUTERSHARED-0000000012-store-changelog"));
@@ -2621,19 +2620,19 @@ public class StreamsBuilderTest {
         streamOne
             .selectKey((k, v) -> v)
             .leftJoin(
-                streamTwo.selectKey((k, v) -> v),
-                (value1, value2) -> value1,
-                JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofHours(1)),
-                streamJoined
-            );
+                    streamTwo.selectKey((k, v) -> v),
+                    (value1, value2) -> value1,
+                    JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofHours(1)),
+                    streamJoined
+        );
         return builder;
     }
 
     @Test
     void shouldThrowWhenKStreamKTableJoinWithRepartitionNameAndLoggingEnabled() {
         final StreamsBuilder builder = buildKStreamKTableJoinTopology(
-            Joined.with(Serdes.String(), Serdes.String(), Serdes.String()).withName("repartition-name"),
-            Materialized.with(Serdes.String(), Serdes.String())
+                Joined.with(Serdes.String(), Serdes.String(), Serdes.String()).withName("repartition-name"),
+                Materialized.with(Serdes.String(), Serdes.String())
         );
         final TopologyException e = assertThrows(TopologyException.class, builder::build);
         assertTrue(e.getMessage().contains("Following changelog topic(s) has not been named: stream-topic-two-STATE-STORE-0000000001-changelog"));
@@ -2656,9 +2655,9 @@ public class StreamsBuilderTest {
     @Test
     void shouldThrowWhenKStreamKTableJoinWithMaterializedName() {
         final StreamsBuilder builder = buildKStreamKTableJoinTopology(
-            Joined.with(Serdes.String(), Serdes.String(), Serdes.String()),
-            Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("materialized-name")
-                .withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
+                Joined.with(Serdes.String(), Serdes.String(), Serdes.String()),
+                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("materialized-name")
+                    .withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
         );
         final TopologyException e = assertThrows(TopologyException.class, builder::build);
         assertFalse(e.getMessage().contains("Following changelog topic(s) has not been named"));
@@ -2669,8 +2668,8 @@ public class StreamsBuilderTest {
     @Test
     void shouldNotThrowWhenKStreamKTableJoinWithRepartitionNameAndMaterializedName() {
         final StreamsBuilder builder = buildKStreamKTableJoinTopology(
-            Joined.with(Serdes.String(), Serdes.String(), Serdes.String()).withName("repartition-name"),
-            Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("materialized-name")
+                Joined.with(Serdes.String(), Serdes.String(), Serdes.String()).withName("repartition-name"),
+                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("materialized-name")
                     .withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
         );
         assertBuildDoesNotThrow(builder);
@@ -2679,8 +2678,8 @@ public class StreamsBuilderTest {
     @Test
     void shouldThrowWhenKStreamKTableJoinWithoutRepartitionNameAndMaterializedName() {
         final StreamsBuilder builder = buildKStreamKTableJoinTopology(
-            Joined.with(Serdes.String(), Serdes.String(), Serdes.String()),
-            Materialized.with(Serdes.String(), Serdes.String())
+                Joined.with(Serdes.String(), Serdes.String(), Serdes.String()),
+                Materialized.with(Serdes.String(), Serdes.String())
         );
         final TopologyException e = assertThrows(TopologyException.class, builder::build);
         assertTrue(e.getMessage().contains("Following changelog topic(s) has not been named: stream-topic-two-STATE-STORE-0000000001-changelog"));
@@ -2688,7 +2687,7 @@ public class StreamsBuilderTest {
         assertTrue(e.getMessage().contains("Following repartition topic(s) has not been named: KSTREAM-KEY-SELECT-0000000004-repartition"));
     }
 
-    private StreamsBuilder buildKStreamKTableJoinTopology(final Joined<String, String, String> joined, 
+    private StreamsBuilder buildKStreamKTableJoinTopology(final Joined<String, String, String> joined,
                                                           final Materialized<String, String, KeyValueStore<Bytes, byte[]>> materialized) {
 
         final Map<Object, Object> props = dummyStreamsConfigMap();
@@ -2699,18 +2698,17 @@ public class StreamsBuilderTest {
         stream
             .selectKey((k, v) -> v)
             .join(
-                table,
-                (value1, value2) -> value1,
-                joined
-            );
+                    table,
+                    (value1, value2) -> value1,
+                    joined
+        );
         return builder;
     }
-
 
     @Test
     void shouldNotThrowWhenKStreamVersionedKTableJoinWithRepartitionName() {
         final StreamsBuilder builder = buildKStreamVersionedKTableJoinTopology(
-            Joined.with(Serdes.String(), Serdes.String(), Serdes.String()).withName("repartition-name")
+                Joined.with(Serdes.String(), Serdes.String(), Serdes.String()).withName("repartition-name")
 
         );
         assertBuildDoesNotThrow(builder);
@@ -2719,7 +2717,7 @@ public class StreamsBuilderTest {
     @Test
     void shouldThrowWhenKStreamVersionedKTableJoinWithoutRepartitionName() {
         final StreamsBuilder builder = buildKStreamVersionedKTableJoinTopology(
-            Joined.with(Serdes.String(), Serdes.String(), Serdes.String())
+                Joined.with(Serdes.String(), Serdes.String(), Serdes.String())
         );
         final TopologyException e = assertThrows(TopologyException.class, builder::build);
         assertTrue(e.getMessage().contains("Following changelog topic(s) has not been named: KSTREAM-JOIN-0000000007-Buffer-changelog"));
@@ -2736,26 +2734,26 @@ public class StreamsBuilderTest {
                 Stores.persistentVersionedKeyValueStore("versioned-ktable-store",
                         Duration.ofDays(1));
         final Materialized<String, String, KeyValueStore<Bytes, byte[]>> materialized =
-            Materialized.<String, String>as(versionedStoreSupplier)
-                .withKeySerde(Serdes.String()).withValueSerde(Serdes.String());
+                Materialized.<String, String>as(versionedStoreSupplier)
+                    .withKeySerde(Serdes.String()).withValueSerde(Serdes.String());
         final KStream<String, String> stream = builder.stream(STREAM_TOPIC);
         final KTable<String, String> table = builder.table(STREAM_TOPIC_TWO, materialized);
         stream
             .selectKey((k, v) -> v)
             .join(
-                table,
-                (value1, value2) -> value1,
-                joined.withGracePeriod(Duration.ofHours(1))
-            )
-                .to("test-topic");
+                    table,
+                    (value1, value2) -> value1,
+                    joined.withGracePeriod(Duration.ofHours(1))
+        )
+            .to("test-topic");
         return builder;
     }
 
     @Test
     void shouldNotThrowWhenKStreamGlobalKTableJoinWithMaterializedName() {
         final StreamsBuilder builder = buildKStreamGlobalKTableJoinTopology(
-            Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("materialized-name")
-                .withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
+                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("materialized-name")
+                    .withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
         );
         assertBuildDoesNotThrow(builder);
     }
@@ -2785,18 +2783,18 @@ public class StreamsBuilderTest {
         stream
             .selectKey((k, v) -> v)
             .join(
-                globalTable,
-                (k, v) -> k,
-                (value1, value2) -> value1
-            );
+                    globalTable,
+                    (k, v) -> k,
+                    (value1, value2) -> value1
+        );
         return builder;
     }
 
     @Test
     void shouldNotThrowWhenRepartitionWithRepartitionName() {
         final StreamsBuilder builder = buildRepartitionTopology(
-            Repartitioned.with(Serdes.String(), Serdes.String())
-                .withName("repartition-name")
+                Repartitioned.with(Serdes.String(), Serdes.String())
+                    .withName("repartition-name")
         );
         assertBuildDoesNotThrow(builder);
     }
@@ -2804,7 +2802,7 @@ public class StreamsBuilderTest {
     @Test
     void shouldThrowWhenRepartitionWithoutRepartition() {
         final StreamsBuilder builder = buildRepartitionTopology(
-            Repartitioned.with(Serdes.String(), Serdes.String())
+                Repartitioned.with(Serdes.String(), Serdes.String())
         );
         final TopologyException e = assertThrows(TopologyException.class, builder::build);
         assertFalse(e.getMessage().contains("Following changelog topic(s) has not been named"));
@@ -2828,8 +2826,8 @@ public class StreamsBuilderTest {
     @Test
     void shouldThrowWhenCoGroupWithRepartitionNameAndLoggingEnabled() {
         final StreamsBuilder builder = buildCoGroupTopology(
-            Grouped.with("repartition-name", Serdes.String(), Serdes.String()),
-            Materialized.with(Serdes.String(), Serdes.String())
+                Grouped.with("repartition-name", Serdes.String(), Serdes.String()),
+                Materialized.with(Serdes.String(), Serdes.String())
         );
         final TopologyException e = assertThrows(TopologyException.class, builder::build);
         assertTrue(e.getMessage().contains("Following changelog topic(s) has not been named: COGROUPKSTREAM-AGGREGATE-STATE-STORE-0000000003-changelog"));
@@ -2852,9 +2850,9 @@ public class StreamsBuilderTest {
     @Test
     void shouldNotThrowWhenCoGroupWithMaterializedName() {
         final StreamsBuilder builder = buildCoGroupTopology(
-            Grouped.with(Serdes.String(), Serdes.String()),
-            Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("materialized-name")
-                .withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
+                Grouped.with(Serdes.String(), Serdes.String()),
+                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("materialized-name")
+                    .withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
         );
         assertBuildDoesNotThrow(builder);
     }
@@ -2862,9 +2860,9 @@ public class StreamsBuilderTest {
     @Test
     void shouldNotThrowWhenCoGroupWithRepartitionNameAndMaterializedName() {
         final StreamsBuilder builder = buildCoGroupTopology(
-            Grouped.with("repartition-name", Serdes.String(), Serdes.String()),
-            Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("materialized-name")
-                .withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
+                Grouped.with("repartition-name", Serdes.String(), Serdes.String()),
+                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("materialized-name")
+                    .withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
         );
         assertBuildDoesNotThrow(builder);
     }
@@ -2872,8 +2870,8 @@ public class StreamsBuilderTest {
     @Test
     void shouldThrowWhenCoGroupWithoutRepartitionNameAndMaterializedName() {
         final StreamsBuilder builder = buildCoGroupTopology(
-            Grouped.with(Serdes.String(), Serdes.String()),
-            Materialized.with(Serdes.String(), Serdes.String())
+                Grouped.with(Serdes.String(), Serdes.String()),
+                Materialized.with(Serdes.String(), Serdes.String())
         );
         final TopologyException e = assertThrows(TopologyException.class, builder::build);
         assertTrue(e.getMessage().contains("Following changelog topic(s) has not been named: COGROUPKSTREAM-AGGREGATE-STATE-STORE-0000000003-changelog"));

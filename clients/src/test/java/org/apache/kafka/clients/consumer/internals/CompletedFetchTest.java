@@ -68,7 +68,7 @@ public class CompletedFetchTest {
         int startingOffset = 10;
         int numRecords = 11;        // Records for 10-20
         FetchResponseData.PartitionData partitionData = new FetchResponseData.PartitionData()
-                .setRecords(newRecords(startingOffset, numRecords, fetchOffset));
+            .setRecords(newRecords(startingOffset, numRecords, fetchOffset));
 
         Deserializers<String, String> deserializers = newStringDeserializers();
         FetchConfig fetchConfig = newFetchConfig(IsolationLevel.READ_UNCOMMITTED, true);

@@ -89,9 +89,9 @@ public interface SamplingTestPlugin {
         StackTraceElement caller = stackTraces[2];
 
         samples.put(caller.getMethodName(), new MethodCallSample(
-            caller,
-            Thread.currentThread().getContextClassLoader(),
-            getClass().getClassLoader()
+                caller,
+                Thread.currentThread().getContextClassLoader(),
+                getClass().getClassLoader()
         ));
     }
 
